@@ -1,0 +1,330 @@
+{
+  "MINIMO": {
+    "description": "Juego mínimo: 1 N1, 2 N2, 1 N3",
+    "phase_A": [
+      {
+        "class_name": "CausalExtractor",
+        "method_name": "_extract_goals",
+        "mother_file": "derek_beach.py",
+        "provides": "causalextractor.extract_goals",
+        "level": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "description": "Extrae actividad, meta, plazos declarados y recursos declarados de documentos de política",
+        "requires": [],
+        "classification_rationale": "Extrae hechos estructurados sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+      }
+    ],
+    "phase_B": [
+      {
+        "class_name": "TemporalLogicVerifier",
+        "method_name": "verify_temporal_consistency",
+        "mother_file": "contradiction_deteccion.py",
+        "provides": "temporallogicverifier.verify_temporal_consistency",
+        "level": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "description": "Evalúa coherencia temporal detectando plazos imposibles y contradicciones temporales",
+        "requires": [
+          "raw_facts"
+        ],
+        "modifies": [
+          "temporal_consistency_scores"
+        ]
+      },
+      {
+        "class_name": "FinancialAuditor",
+        "method_name": "_calculate_sufficiency",
+        "mother_file": "derek_beach.py",
+        "provides": "financialauditor.calculate_sufficiency",
+        "level": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "description": "Evalúa suficiencia mínima de recursos y detecta desbalances evidentes",
+        "requires": [
+          "raw_facts"
+        ],
+        "modifies": [
+          "resource_sufficiency_scores"
+        ]
+      }
+    ],
+    "phase_C": [
+      {
+        "class_name": "TemporalLogicVerifier",
+        "method_name": "_check_deadline_constraints",
+        "mother_file": "contradiction_deteccion.py",
+        "provides": "temporallogicverifier.check_deadline_constraints",
+        "level": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "description": "Valida factibilidad mediante gates: veto por contradicción temporal o recursos insuficientes",
+        "requires": [
+          "raw_facts",
+          "inferred_parameters"
+        ],
+        "classification_rationale": "Valida factibilidad aplicando criterios de falsación débil → N3-AUD (PARTE II, Sección 2.4)",
+        "veto_conditions": {
+          "temporal_contradiction": {
+            "trigger": "temporal_contradiction_detected",
+            "action": "block_branch",
+            "scope": "contradicting_timeline",
+            "confidence_multiplier": 0.0
+          },
+          "insufficient_resources": {
+            "trigger": "resources_explicitly_insufficient",
+            "action": "block_branch",
+            "scope": "underfunded_activities",
+            "confidence_multiplier": 0.0
+          }
+        },
+        "gate_logic": {
+          "temporal_contradiction": {
+            "trigger": "temporal_contradiction_detected",
+            "scope": "contradicting_timeline",
+            "confidence_multiplier": 0.0
+          },
+          "insufficient_resources": {
+            "trigger": "resources_explicitly_insufficient",
+            "scope": "underfunded_activities",
+            "confidence_multiplier": 0.0
+          }
+        }
+      }
+    ]
+  },
+  "CORRECTO": {
+    "description": "Juego correcto: 1 N1, 3 N2, 1 N3",
+    "phase_A": [
+      {
+        "class_name": "CausalExtractor",
+        "method_name": "_extract_goals",
+        "mother_file": "derek_beach.py",
+        "provides": "causalextractor.extract_goals",
+        "level": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "description": "Extrae actividad, meta, plazos declarados y recursos declarados de documentos de política",
+        "requires": [],
+        "classification_rationale": "Extrae hechos estructurados sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+      }
+    ],
+    "phase_B": [
+      {
+        "class_name": "TemporalLogicVerifier",
+        "method_name": "verify_temporal_consistency",
+        "mother_file": "contradiction_deteccion.py",
+        "provides": "temporallogicverifier.verify_temporal_consistency",
+        "level": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "description": "Evalúa coherencia temporal detectando plazos imposibles, contradicciones temporales y secuencias inviables",
+        "requires": [
+          "raw_facts"
+        ],
+        "modifies": [
+          "temporal_consistency_scores"
+        ]
+      },
+      {
+        "class_name": "FinancialAuditor",
+        "method_name": "_calculate_sufficiency",
+        "mother_file": "derek_beach.py",
+        "provides": "financialauditor.calculate_sufficiency",
+        "level": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "description": "Evalúa suficiencia mínima de recursos, detecta desbalances evidentes e incompatibilidades declarativas",
+        "requires": [
+          "raw_facts"
+        ],
+        "modifies": [
+          "resource_sufficiency_scores"
+        ]
+      },
+      {
+        "class_name": "BayesianMechanismInference",
+        "method_name": "_calculate_coherence_factor",
+        "mother_file": "derek_beach.py",
+        "provides": "bayesianmechanisminference.calculate_coherence_factor",
+        "level": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "description": "Evalúa relación explícita y alineación declarativa entre actividad y meta mediante score lógico",
+        "requires": [
+          "raw_facts"
+        ],
+        "modifies": [
+          "activity_goal_coherence_scores"
+        ]
+      }
+    ],
+    "phase_C": [
+      {
+        "class_name": "TemporalLogicVerifier",
+        "method_name": "_check_deadline_constraints",
+        "mother_file": "contradiction_deteccion.py",
+        "provides": "temporallogicverifier.check_deadline_constraints",
+        "level": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "description": "Valida factibilidad mediante gates: veto por contradicción temporal o recursos explícitamente insuficientes",
+        "requires": [
+          "raw_facts",
+          "inferred_parameters"
+        ],
+        "classification_rationale": "Valida factibilidad aplicando criterios de falsación débil (coherencia) → N3-AUD (PARTE II, Sección 2.4)",
+        "veto_conditions": {
+          "temporal_contradiction": {
+            "trigger": "temporal_contradiction_detected",
+            "action": "block_branch",
+            "scope": "contradicting_timeline",
+            "confidence_multiplier": 0.0
+          },
+          "insufficient_resources": {
+            "trigger": "resources_explicitly_insufficient",
+            "action": "block_branch",
+            "scope": "underfunded_activities",
+            "confidence_multiplier": 0.0
+          }
+        },
+        "gate_logic": {
+          "temporal_contradiction": {
+            "trigger": "temporal_contradiction_detected",
+            "scope": "contradicting_timeline",
+            "confidence_multiplier": 0.0
+          },
+          "insufficient_resources": {
+            "trigger": "resources_explicitly_insufficient",
+            "scope": "underfunded_activities",
+            "confidence_multiplier": 0.0
+          }
+        }
+      }
+    ]
+  },
+  "DEFENDIBLE": {
+    "description": "Juego defendible: 1 N1, 3 N2, 1 N3 con validaciones adicionales",
+    "phase_A": [
+      {
+        "class_name": "CausalExtractor",
+        "method_name": "_extract_goals",
+        "mother_file": "derek_beach.py",
+        "provides": "causalextractor.extract_goals",
+        "level": "N1-EMP",
+        "output_type": "FACT",
+        "fusion_behavior": "additive",
+        "description": "Extrae actividad, meta, plazos declarados y recursos declarados de documentos de política. Produce raw_facts estructurados con campos: actividad, meta, plazos, recursos",
+        "requires": [],
+        "classification_rationale": "Extrae hechos estructurados sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+      }
+    ],
+    "phase_B": [
+      {
+        "class_name": "TemporalLogicVerifier",
+        "method_name": "verify_temporal_consistency",
+        "mother_file": "contradiction_deteccion.py",
+        "provides": "temporallogicverifier.verify_temporal_consistency",
+        "level": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "description": "Evalúa coherencia temporal detectando plazos imposibles, contradicciones temporales y secuencias inviables mediante lógica de restricciones",
+        "requires": [
+          "raw_facts"
+        ],
+        "modifies": [
+          "temporal_consistency_scores",
+          "deadline_violations"
+        ]
+      },
+      {
+        "class_name": "FinancialAuditor",
+        "method_name": "_calculate_sufficiency",
+        "mother_file": "derek_beach.py",
+        "provides": "financialauditor.calculate_sufficiency",
+        "level": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "description": "Evalúa suficiencia mínima de recursos, detecta desbalances evidentes e incompatibilidades declarativas mediante análisis de asignación",
+        "requires": [
+          "raw_facts"
+        ],
+        "modifies": [
+          "resource_sufficiency_scores",
+          "allocation_gaps"
+        ]
+      },
+      {
+        "class_name": "BayesianMechanismInference",
+        "method_name": "_calculate_coherence_factor",
+        "mother_file": "derek_beach.py",
+        "provides": "bayesianmechanisminference.calculate_coherence_factor",
+        "level": "N2-INF",
+        "output_type": "PARAMETER",
+        "fusion_behavior": "multiplicative",
+        "description": "Evalúa relación explícita y alineación declarativa entre actividad y meta mediante score lógico (no probabilístico)",
+        "requires": [
+          "raw_facts"
+        ],
+        "modifies": [
+          "activity_goal_coherence_scores",
+          "logical_consistency_scores"
+        ]
+      }
+    ],
+    "phase_C": [
+      {
+        "class_name": "PolicyContradictionDetector",
+        "method_name": "_detect_temporal_conflicts",
+        "mother_file": "contradiction_deteccion.py",
+        "provides": "policycontradictiondetector.detect_temporal_conflicts",
+        "level": "N3-AUD",
+        "output_type": "CONSTRAINT",
+        "fusion_behavior": "gate",
+        "description": "Valida factibilidad mediante gates de falsación débil: veto por contradicción temporal o recursos explícitamente insuficientes. No evalúa aciclicidad ni topología causal",
+        "requires": [
+          "raw_facts",
+          "inferred_parameters"
+        ],
+        "classification_rationale": "Valida factibilidad aplicando criterios de falsación débil (coherencia) → N3-AUD (PARTE II, Sección 2.4)",
+        "veto_conditions": {
+          "temporal_contradiction": {
+            "trigger": "temporal_contradiction_detected",
+            "action": "block_branch",
+            "scope": "contradicting_timeline",
+            "confidence_multiplier": 0.0
+          },
+          "insufficient_resources": {
+            "trigger": "resources_explicitly_insufficient",
+            "action": "block_branch",
+            "scope": "underfunded_activities",
+            "confidence_multiplier": 0.0
+          },
+          "deadline_violation": {
+            "trigger": "deadline_violation_detected",
+            "action": "block_branch",
+            "scope": "violated_deadlines",
+            "confidence_multiplier": 0.0
+          }
+        },
+        "gate_logic": {
+          "temporal_contradiction": {
+            "trigger": "temporal_contradiction_detected",
+            "scope": "contradicting_timeline",
+            "confidence_multiplier": 0.0
+          },
+          "insufficient_resources": {
+            "trigger": "resources_explicitly_insufficient",
+            "scope": "underfunded_activities",
+            "confidence_multiplier": 0.0
+          },
+          "deadline_violation": {
+            "trigger": "deadline_violation_detected",
+            "scope": "violated_deadlines",
+            "confidence_multiplier": 0.0
+          }
+        }
+      }
+    ]
+  }
+}

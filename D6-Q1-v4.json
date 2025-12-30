@@ -12,19 +12,32 @@
     "executor_module": "farfan_pipeline. phases.Phase_two. executors"
   },
   "method_binding": {
-    "method_count": 8,
+    "method_count": 0,
     "execution_phases": {
       "phase_A_construction": {
         "methods": [],
-        "output_type": "FACT"
+        "output_type": "FACT",
+        "dependencies": []
       },
       "phase_B_computation": {
         "methods": [],
-        "output_type": "PARAMETER"
+        "output_type": "PARAMETER",
+        "dependencies": [
+          "phase_A_construction"
+        ],
+        "epistemology": "Lógica relacional y verificación de condiciones"
       },
       "phase_C_litigation": {
         "methods": [],
-        "output_type": "CONSTRAINT"
+        "output_type": "CONSTRAINT",
+        "dependencies": [
+          "phase_A_construction",
+          "phase_B_computation"
+        ],
+        "asymmetry_principle": {
+          "description": "N3 can invalidate N1 and N2 outputs through veto power. N1 and N2 CANNOT invalidate N3.",
+          "asymmetry_domain_note": "En contratos TYPE_E, N3 valida mediante falsación popperiana. Si se detecta una contradicción crítica, N3 puede bloquear completamente los resultados de N1/N2, pero N1/N2 no pueden invalidar las validaciones de N3."
+        }
       }
     }
   },
@@ -34,8 +47,8 @@
   "signal_requirements": {
     "derivation_source": "expected_elements",
     "derivation_rules": {
-      "mandatory": "expected_elements[required=true]. type \u2192 detection_{type}",
-      "optional": "expected_elements[required=false].type \u2192 detection_{type}"
+      "mandatory": "expected_elements[required=true]. type → detection_{type}",
+      "optional": "expected_elements[required=false].type → detection_{type}"
     },
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.5
@@ -50,25 +63,25 @@
         "origin_level": "N1",
         "fusion_operation": "graph_node_addition",
         "merge_behavior": "additive",
-        "symbol": "\u2295"
+        "symbol": "⊕"
       },
       "PARAMETER": {
         "origin_level": "N2",
         "fusion_operation": "edge_weight_modification",
         "merge_behavior": "multiplicative",
-        "symbol": "\u2297"
+        "symbol": "⊗"
       },
       "CONSTRAINT": {
         "origin_level": "N3",
         "fusion_operation": "branch_filtering",
         "merge_behavior": "gate",
-        "symbol": "\u2298"
+        "symbol": "⊘"
       },
       "NARRATIVE": {
         "origin_level": "N4",
         "fusion_operation": "synthesis",
         "merge_behavior": "terminal",
-        "symbol": "\u2299"
+        "symbol": "⊙"
       }
     },
     "assembly_rules": [
@@ -162,7 +175,7 @@
     ]
   },
   "fusion_specification": {
-    "contract_type": "TYPE_B",
+    "contract_type": "TYPE_E",
     "primary_strategy": "bayesian_update",
     "level_strategies": {
       "N1_fact_fusion": {
@@ -194,7 +207,8 @@
         "input": "phase_A_construction. outputs",
         "operation": "BUILD evidence graph from detected gaps and remediations",
         "output": "evidence_graph_v1",
-        "type_consumed": "FACT"
+        "type_consumed": "FACT",
+        "behavior": "additive"
       },
       "stage_2_bayesian_update": {
         "input": [
@@ -278,18 +292,26 @@
         "narrative_style": "declarative",
         "template": {
           "structure": [
-            "**Conclusi\u00f3n**: {verdict_statement}",
+            "**Conclusión**: {verdict_statement}",
             "",
             "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
             "",
-            "**Base Metodol\u00f3gica**: {method_count} m\u00e9todos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+            "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+          ],
+          "placeholders": [
+            "verdict_statement",
+            "final_confidence_pct",
+            "confidence_label",
+            "method_count",
+            "audit_count",
+            "blocked_count"
           ]
         },
         "argumentative_role": "SYNTHESIS"
       },
       {
         "section_id": "S2_empirical_base",
-        "title": "### Base Emp\u00edrica:  Hechos Observados",
+        "title": "### Base Empírica:  Hechos Observados",
         "layer": "N1",
         "data_source": "validated_facts",
         "narrative_style": "descriptive",
@@ -305,12 +327,12 @@
         "argumentative_role": "EMPIRICAL_BASIS",
         "epistemological_note": {
           "include_in_output": true,
-          "text": "\ud83d\udccb *Nota:  Observaciones directas del documento fuente.*"
+          "text": "📋 *Nota:  Observaciones directas del documento fuente.*"
         }
       },
       {
         "section_id": "S3_robustness_audit",
-        "title": "### An\u00e1lisis de Robustez:  Validaci\u00f3n y Limitaciones",
+        "title": "### Análisis de Robustez:  Validación y Limitaciones",
         "layer": "N3",
         "data_source": "audit_results",
         "narrative_style": "critical",
@@ -320,25 +342,25 @@
             "",
             "**Validaciones Ejecutadas**: {validation_count}",
             "",
-            "**Gaps de Asignaci\u00f3n Financiera**: {allocation_gaps}",
+            "**Gaps de Asignación Financiera**: {allocation_gaps}",
             "",
-            "**An\u00e1lisis Contrafactual**: {counterfactual_result}",
+            "**Análisis Contrafactual**: {counterfactual_result}",
             "",
-            "**Rendimiento del An\u00e1lisis**: {performance_assessment}",
+            "**Rendimiento del Análisis**: {performance_assessment}",
             "",
-            "**Limitaciones Metodol\u00f3gicas**:",
+            "**Limitaciones Metodológicas**:",
             "{limitations_list}"
           ]
         },
         "argumentative_role": "ROBUSTNESS_QUALIFIER",
         "veto_display": {
-          "if_veto_triggered": "\u26d4 **MODELO INV\u00c1LIDO**:  {veto_reason}.  NO usar para toma de decisiones.",
-          "if_partial_veto": "\u26a0\ufe0f **ROBUSTEZ PARCIAL**: {partial_veto_count} hallazgos invalidados.",
-          "if_no_veto": "\u2705 **VALIDACI\u00d3N COMPLETA**:  Todos los hallazgos sobrevivieron refutaci\u00f3n."
+          "if_veto_triggered": "⛔ **MODELO INVÁLIDO**:  {veto_reason}.  NO usar para toma de decisiones.",
+          "if_partial_veto": "⚠️ **ROBUSTEZ PARCIAL**: {partial_veto_count} hallazgos invalidados.",
+          "if_no_veto": "✅ **VALIDACIÓN COMPLETA**:  Todos los hallazgos sobrevivieron refutación."
         },
         "epistemological_note": {
           "include_in_output": true,
-          "text": "\ud83d\udd2c *Nota:  Falsacionismo popperiano aplicado.*"
+          "text": "🔬 *Nota:  Falsacionismo popperiano aplicado.*"
         }
       },
       {
@@ -349,7 +371,7 @@
         "narrative_style": "diagnostic",
         "template": {
           "structure": [
-            "**M\u00e9todos sin Resultados**: {empty_methods_count} de {total_methods}",
+            "**Métodos sin Resultados**: {empty_methods_count} de {total_methods}",
             "{empty_methods_details}",
             "",
             "**Impacto en Confianza**:",
@@ -370,19 +392,19 @@
       "N2_roles": [
         {
           "role": "INFERENTIAL_BRIDGE",
-          "description": "Conexi\u00f3n bayesiana",
+          "description": "Conexión bayesiana",
           "narrative_weight": "medium"
         }
       ],
       "N3_roles": [
         {
           "role": "ROBUSTNESS_QUALIFIER",
-          "description": "Advertencia de limitaci\u00f3n",
+          "description": "Advertencia de limitación",
           "narrative_weight": "high"
         },
         {
           "role": "FINANCIAL_CONSTRAINT",
-          "description": "L\u00edmite presupuestal",
+          "description": "Límite presupuestal",
           "narrative_weight": "critical",
           "triggers_veto": true
         }
@@ -401,16 +423,16 @@
           0,
           19
         ],
-        "label": "INV\u00c1LIDO",
-        "display": "\ud83d\udd34"
+        "label": "INVÁLIDO",
+        "display": "🔴"
       },
       "low": {
         "range": [
           20,
           49
         ],
-        "label": "D\u00c9BIL",
-        "display": "\ud83d\udfe0"
+        "label": "DÉBIL",
+        "display": "🟠"
       },
       "medium": {
         "range": [
@@ -418,7 +440,7 @@
           79
         ],
         "label": "MODERADO",
-        "display": "\ud83d\udfe1"
+        "display": "🟡"
       },
       "high": {
         "range": [
@@ -426,7 +448,7 @@
           100
         ],
         "label": "ROBUSTO",
-        "display": "\ud83d\udfe2"
+        "display": "🟢"
       }
     }
   },
@@ -463,8 +485,8 @@
         "confidence_label": {
           "type": "string",
           "enum": [
-            "INV\u00c1LIDO",
-            "D\u00c9BIL",
+            "INVÁLIDO",
+            "DÉBIL",
             "MODERADO",
             "ROBUSTO"
           ]
@@ -527,10 +549,15 @@
           "N1": "Empirismo positivista",
           "N2": "Bayesianismo subjetivista",
           "N3": "Falsacionismo popperiano",
-          "N4": "Reflexividad cr\u00edtica"
+          "N4": "Reflexividad crítica"
         }
       }
-    ]
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "automatic_method_addition": "FORBIDDEN",
+      "semantic_modification_without_review": "FORBIDDEN"
+    }
   },
   "compatibility": {
     "questionnaire_monolith_version": "3.0.0",

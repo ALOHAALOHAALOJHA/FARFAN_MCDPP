@@ -49,7 +49,7 @@ from cross_cutting_infrastructure.irrigation_using_signals.comprehensive_signal_
 @pytest.fixture
 def questionnaire_and_registry():
     """Fixture providing questionnaire and signal registry."""
-    from canonic_phases.Phase_zero.paths import PROJECT_ROOT
+    from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
     
     questionnaire_path = (
         PROJECT_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"

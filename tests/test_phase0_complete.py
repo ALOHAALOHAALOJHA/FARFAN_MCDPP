@@ -35,7 +35,7 @@ from canonic_phases.Phase_one.phase0_input_validation import (
     Phase0ValidationContract,
     PHASE0_VERSION,
 )
-from canonic_phases.Phase_zero.boot_checks import (
+from canonic_phases.Phase_zero.phase0_50_00_boot_checks import (
     BootCheckError,
     check_calibration_files,
     check_contradiction_module_available,
@@ -45,7 +45,7 @@ from canonic_phases.Phase_zero.boot_checks import (
     get_boot_check_summary,
     run_boot_checks,
 )
-from canonic_phases.Phase_zero.runtime_config import (
+from canonic_phases.Phase_zero.phase0_10_01_runtime_config import (
     ConfigurationError,
     FallbackCategory,
     RuntimeConfig,

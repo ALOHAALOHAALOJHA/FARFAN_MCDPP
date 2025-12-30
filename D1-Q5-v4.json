@@ -5,9 +5,9 @@
     "dimension_id": "DIM01",
     "policy_area_ids_served": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
     "contracts_served": ["Q005", "Q035", "Q065", "Q095", "Q125", "Q155", "Q185", "Q215", "Q245", "Q275"],
-    "contract_type": "TYPE_B",
-    "contract_type_name": "Bayesiano",
-    "contract_type_focus": "Significancia estadística, intervalos de confianza, priors",
+    "contract_type": "TYPE_E",
+    "contract_type_name": "Lógico",
+    "contract_type_focus": "Contradicciones, consistencia lógica, complementariedad, verificación temporal",
     "contract_version": "4.0.0-epistemological",
     "created_at": "2025-12-22T18:20:00Z",
     "specification_source": "guia_diligenciamiento_contratos_v4.md"
@@ -20,7 +20,7 @@
 
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
-    "contract_type": "TYPE_B",
+    "contract_type": "TYPE_E",
     "method_count": 7,
     "execution_phases": {
       "phase_A_construction": {
@@ -38,7 +38,8 @@
             "output_type": "FACT",
             "fusion_behavior": "additive",
             "description": "Extrae metadata estructurada de texto de política",
-            "requires": []
+            "requires": [],
+            "classification_rationale": "Extrae metadata directamente del texto sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
           }
         ],
         "dependencies": [],
@@ -49,7 +50,7 @@
         "description": "Inferential analysis layer - temporal and causal coherence analysis",
         "level": "N2",
         "level_name": "Procesamiento Inferencial",
-        "epistemology": "Bayesianismo subjetivista",
+        "epistemology": "Lógica relacional y verificación de condiciones",
         "methods": [
           {
             "class_name": "TemporalLogicVerifier",
@@ -59,7 +60,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Verifica restricciones temporales de deadlines",
+            "description": "Evalúa y verifica restricciones temporales de deadlines calculando scores",
             "requires": ["raw_facts"],
             "modifies": ["temporal_constraint_scores"]
           },
@@ -71,7 +72,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Identifica puntos de falla potenciales en grafo causal",
+            "description": "Evalúa e identifica puntos de falla potenciales analizando consistencia lógica en relaciones",
             "requires": ["raw_facts"],
             "modifies": ["failure_probability_scores"]
           },
@@ -112,7 +113,7 @@
             "modifies": ["causal_dimension_scores"]
           }
         ],
-        "dependencies": ["raw_facts"],
+        "dependencies": ["phase_A_construction"],
         "output_target": "inferred_parameters"
       },
 
@@ -121,6 +122,7 @@
         "level": "N3",
         "level_name": "Auditoría y Robustez",
         "epistemology": "Falsacionismo popperiano",
+        "asymmetry_principle": "N3 can invalidate N1/N2 findings, but N1/N2 CANNOT invalidate N3",
         "methods": [
           {
             "class_name": "TemporalLogicVerifier",
@@ -133,6 +135,7 @@
             "description": "Valida consistencia temporal de secuencia de actividades (puede VETAR)",
             "requires": ["raw_facts", "inferred_parameters"],
             "modulates": ["raw_facts.confidence", "inferred_parameters.confidence"],
+            "classification_rationale": "Valida consistencia temporal consumiendo N1 y N2 → N3-AUD (PARTE II, Sección 2.2)",
             "veto_conditions": {
               "temporal_inconsistency_detected": {
                 "trigger": "bool return value is False indicating temporal logic violation",
@@ -155,7 +158,7 @@
             }
           }
         ],
-        "dependencies": ["raw_facts", "inferred_parameters"],
+        "dependencies": ["phase_A_construction", "phase_B_computation"],
         "output_target": "validated_constraints"
       }
     }
@@ -222,9 +225,9 @@
         "output_type": "FACT"
       },
       {
-        "rule_id": "R2_probabilistic_update",
-        "rule_type": "probabilistic_update",
-        "target": "posterior_belief",
+        "rule_id": "R2_logical_analysis",
+        "rule_type": "computation",
+        "target": "logical_assessment",
         "sources": [
           "temporallogicverifier.check_deadline_constraints",
           "causalinferencesetup.identify_failure_points",
@@ -233,8 +236,8 @@
           "industrialpolicyprocessor.analyze_causal_dimensions"
         ],
         "input_dependencies": ["prior_distribution"],
-        "merge_strategy": "bayesian_update",
-        "operation": "posterior = update_belief(prior, likelihood_from_temporal_analysis)",
+        "merge_strategy": "weighted_mean",
+        "operation": "weighted combination of temporal and causal coherence scores",
         "output_type": "PARAMETER"
       },
       {
@@ -249,15 +252,18 @@
         "gate_logic": {
           "temporal_inconsistency_detected": {
             "condition": "verify_temporal_consistency returns (False, violations)",
-            "action": "downgrade_confidence_to_zero"
+            "action": "downgrade_confidence_to_zero",
+            "confidence_multiplier": 0.0
           },
           "deadline_violation": {
             "condition": "activities scheduled beyond deadlines",
-            "action": "block_branch"
+            "action": "block_branch",
+            "confidence_multiplier": 0.0
           },
           "circular_temporal_dependency": {
             "condition": "circular dependencies in temporal sequence",
-            "action": "invalidate_sequence"
+            "action": "invalidate_sequence",
+            "confidence_multiplier": 0.4
           }
         },
         "output_type": "CONSTRAINT"
@@ -275,8 +281,8 @@
   },
 
   "fusion_specification": {
-    "contract_type": "TYPE_B",
-    "primary_strategy": "bayesian_update",
+    "contract_type": "TYPE_E",
+    "primary_strategy": "weighted_mean",
     "level_strategies": {
       "N1_fact_fusion": {
         "strategy": "concat",
@@ -285,13 +291,13 @@
         "formula": "if same fact detected by multiple methods → confidence = 1 - ∏(1 - conf_i)"
       },
       "N2_parameter_fusion": {
-        "strategy": "bayesian_update",
+        "strategy": "weighted_mean",
         "behavior": "multiplicative",
-        "conflict_resolution": "bayesian_combination",
+        "conflict_resolution": "weighted_voting",
         "affects": ["N1_facts.confidence", "N1_facts.edge_weights"],
         "formula": {
-          "description": "Posterior = Prior × Likelihood / Evidence",
-          "operation": "Bayesian belief update from temporal and failure analysis"
+          "description": "Weighted mean of temporal and causal coherence scores",
+          "operation": "Logical combination of temporal and causal analysis"
         }
       },
       "N3_constraint_fusion": {
@@ -394,7 +400,7 @@
   "human_answer_structure": {
     "format": "markdown",
     "template_mode": "epistemological_narrative",
-    "contract_type": "TYPE_B",
+    "contract_type": "TYPE_E",
     "sections": [
       {
         "section_id": "S1_verdict",
@@ -409,7 +415,33 @@
             "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
             "",
             "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
-          ]
+          ],
+          "placeholders": {
+            "verdict_statement": {
+              "type": "string",
+              "source": "synthesis_output.verdict"
+            },
+            "final_confidence_pct": {
+              "type": "number",
+              "source": "synthesis_output.confidence_pct"
+            },
+            "confidence_label": {
+              "type": "enum",
+              "source": "synthesis_output.confidence_label"
+            },
+            "method_count": {
+              "type": "integer",
+              "source": "pipeline_stats.total_methods"
+            },
+            "audit_count": {
+              "type": "integer",
+              "source": "pipeline_stats.n3_validations"
+            },
+            "blocked_count": {
+              "type": "integer",
+              "source": "pipeline_stats.blocked_branches"
+            }
+          }
         },
         "argumentative_role": "SYNTHESIS"
       },
@@ -448,7 +480,7 @@
             "",
             "**Consistencia Temporal**: {temporal_consistency}",
             "",
-            "**Análisis Bayesiano**: {bayesian_posterior}",
+            "**Análisis Lógico**: {logical_assessment}",
             "",
             "**Limitaciones Metodológicas**:",
             "{limitations_list}"
@@ -456,13 +488,13 @@
         },
         "argumentative_role": "ROBUSTNESS_QUALIFIER",
         "veto_display": {
-          "if_veto_triggered": "⛔ **INCONSISTENCIA TEMPORAL**: {veto_reason}. NO usar para toma de decisiones.",
+          "if_veto_triggered": "⛔ **ALERTA: INCONSISTENCIA TEMPORAL INVÁLIDA**: {veto_reason}. NO usar para toma de decisiones.",
           "if_partial_veto": "⚠️ **ROBUSTEZ PARCIAL**: {partial_veto_count} inconsistencias detectadas.",
           "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: La secuencia temporal es coherente."
         },
         "epistemological_note": {
           "include_in_output": true,
-          "text": "🔬 *Nota: Falsacionismo bayesiano aplicado a validación temporal.*"
+          "text": "🔬 *Nota: Falsacionismo popperiano aplicado a validación temporal y lógica.*"
         }
       },
       {
@@ -508,6 +540,12 @@
           "role": "REFUTATIONAL_SIGNAL",
           "description": "Detección de inconsistencias temporales",
           "narrative_weight": "critical"
+        },
+        {
+          "role": "LOGICAL_INCONSISTENCY",
+          "description": "Inconsistencia lógica detectada en restricciones temporales o de competencias",
+          "narrative_weight": "critical",
+          "triggers_veto": true
         }
       ],
       "N4_roles": [
@@ -596,14 +634,38 @@
   "traceability": {
     "canonical_sources": {
       "questionnaire": "canonic_questionnaire_central/questionnaire_monolith.json",
-      "method_classification": "method_classification_all_30.json",
-      "epistemological_guide": "OPERACIONALIZACIÓN_CONTRATOS_VERSION_4"
+      "method_inventory": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/method_classification_all_30.json",
+      "epistemological_guide": "guia_diligenciamiento_contratos_v4.md"
     },
     "generation": {
       "method": "v4_epistemological_generation",
       "timestamp": "2025-12-22T18:20:00Z",
-      "generator_version": "1.0.0",
-      "notes": "verify_temporal_consistency reclassified from L2 to N3-AUD due to veto capability (returns bool indicating pass/fail)"
+      "generator_version": "1.0.0"
+    },
+    "refactoring_history": [
+      {
+        "from_version": "3.0.0",
+        "to_version": "4.0.0-epistemological",
+        "date": "2025-12-22T18:20:00Z",
+        "changes": [
+          "Epistemological stratification",
+          "Typed fusion",
+          "Veto gates",
+          "Weighted mean strategy for logical analysis"
+        ],
+        "epistemological_framework": {
+          "N1": "Empirismo positivista",
+          "N2": "Lógica relacional y verificación de condiciones",
+          "N3": "Falsacionismo popperiano",
+          "N4": "Reflexividad crítica"
+        }
+      }
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "v3_migration": "FORBIDDEN",
+      "v3_reference": "FORBIDDEN",
+      "non_epistemological_mode": "FORBIDDEN"
     }
   },
 

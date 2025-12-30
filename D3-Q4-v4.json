@@ -1,284 +1,616 @@
 {
-  "contract_version": "4.0.0",
-  "epistemological_framework": "N1_empirical|N2_inferential|N3_audit",
   "identity": {
-    "contract_id": "D3-Q4-v4",
-    "question_id": "Q014",
-    "base_question": "14",
-    "derived_slot": "D3-Q4",
-    "policy_areas": ["Q014", "Q044", "Q074", "Q104", "Q134", "Q164", "Q194", "Q224", "Q254", "Q284"],
-    "contract_type": "TYPE_C_CAUSAL_TOPOLOGICAL",
-    "primary_strategy": "topological_overlay",
+    "base_slot": "D3-Q4",
+    "representative_question_id": "Q014",
+    "dimension_id": "DIM03",
+    "policy_area_ids_served": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "contracts_served": [
+      "Q014",
+      "Q044",
+      "Q074",
+      "Q104",
+      "Q134",
+      "Q164",
+      "Q194",
+      "Q224",
+      "Q254",
+      "Q284"
+    ],
+    "contract_type": "TYPE_E",
+    "contract_type_name": "Lógico",
+    "contract_type_focus": "Evaluación de consistencia lógica y factibilidad mediante lógica de restricciones y falsación débil (coherencia)",
+    "contract_version": "4.0.0-epistemological",
     "created_at": "2025-12-22T21:00:00Z",
-    "version": "4.0.0"
+    "specification_source": "guia_diligenciamiento_contratos_v4.md"
   },
   "executor_binding": {
-    "executor_class": "QuestionExecutor",
-    "execution_mode": "phase_coordinated",
-    "phase_sequence": ["phase_A_construction", "phase_B_computation", "phase_C_litigation"],
-    "coordination_protocol": "sequential_with_veto"
+    "executor_class": "D3_Q4_Executor",
+    "executor_module": "farfan_pipeline.phases.Phase_two.executors"
   },
   "method_binding": {
-    "method_count": 9,
+    "method_count": 6,
     "execution_phases": {
       "phase_A_construction": {
-        "layer": "N1_empirical",
         "output_type": "FACT",
-        "methods": [],
-        "phase_description": "No empirical extraction - N2 consumes PreprocesadoMetadata directly"
+        "methods": [
+          {
+            "class_name": "PolicyContradictionDetector",
+            "method_name": "_extract_temporal_markers",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "policycontradictiondetector.extract_temporal_markers",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extrae marcadores temporales explícitos (plazos, fechas, períodos) de documentos de política. Cubre las 3 dimensiones analíticas: actividad-meta, plazos y recursos.",
+            "requires": [],
+            "classification_rationale": "Extrae hechos temporales sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+          },
+          {
+            "class_name": "TemporalLogicVerifier",
+            "method_name": "_extract_resources",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "temporallogicverifier.extract_resources",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extrae recursos explícitos (montos financieros, asignaciones presupuestales) y plazos de documentos de política. Cubre explícitamente recursos + plazos (ejes centrales de Q014).",
+            "requires": [],
+            "classification_rationale": "Extrae hechos de recursos y plazos sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+          }
+        ],
+        "description": "Empirical observation layer - semantic extraction of activity, goals, deadlines and resources",
+        "level": "N1",
+        "level_name": "Base Empírica",
+        "epistemology": "Empirismo positivista - los datos existen independientemente del observador",
+        "dependencies": [],
+        "output_target": "raw_facts"
       },
       "phase_B_computation": {
-        "layer": "N2_inferential",
         "output_type": "PARAMETER",
         "methods": [
           {
-            "class": "AdvancedDAGValidator",
-            "method": "calculate_acyclicity_pvalue",
-            "module": "farfan_core.analysis.teoria_cambio",
-            "provides": "advanceddagvalidator_acyclicitypvalue",
-            "requires": ["PreprocesadoMetadata"]
+            "class_name": "CausalExtractor",
+            "method_name": "_assess_temporal_coherence",
+            "mother_file": "derek_beach.py",
+            "provides": "causalextractor.assess_temporal_coherence",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa coherencia temporal mediante lógica de restricciones. A pesar del nombre de clase, el método implementa evaluación lógica de coherencia temporal (no inferencia causal fuerte). Cubre las 3 dimensiones analíticas: actividad-meta, plazos y recursos.",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "temporal_coherence_scores",
+              "activity_goal_coherence_scores",
+              "resource_temporal_alignment_scores"
+            ]
           },
           {
-            "class": "AdvancedDAGValidator",
-            "method": "get_graph_stats",
-            "module": "farfan_core.analysis.teoria_cambio",
-            "provides": "advanceddagvalidator_graphstats",
-            "requires": ["PreprocesadoMetadata"]
+            "class_name": "TemporalLogicVerifier",
+            "method_name": "_are_mutually_exclusive",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "temporallogicverifier.are_mutually_exclusive",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y detecta incompatibilidades de plazos y recursos mediante lógica de restricciones. Detecta mutua exclusividad temporal y de recursos (exactamente lo que Q014 pide).",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "mutual_exclusivity_scores",
+              "temporal_conflict_scores",
+              "resource_conflict_scores"
+            ]
           },
           {
-            "class": "AdvancedDAGValidator",
-            "method": "_calculate_node_importance",
-            "module": "farfan_core.analysis.teoria_cambio",
-            "provides": "advanceddagvalidator_nodeimportance",
-            "requires": ["PreprocesadoMetadata"]
-          },
-          {
-            "class": "AdvancedDAGValidator",
-            "method": "_generate_subgraph",
-            "module": "farfan_core.analysis.teoria_cambio",
-            "provides": "advanceddagvalidator_subgraph",
-            "requires": ["PreprocesadoMetadata"]
-          },
-          {
-            "class": "AdvancedDAGValidator",
-            "method": "add_node",
-            "module": "farfan_core.analysis.teoria_cambio",
-            "provides": "advanceddagvalidator_addnode",
-            "requires": ["PreprocesadoMetadata"]
-          },
-          {
-            "class": "AdvancedDAGValidator",
-            "method": "add_edge",
-            "module": "farfan_core.analysis.teoria_cambio",
-            "provides": "advanceddagvalidator_addedge",
-            "requires": ["PreprocesadoMetadata"]
-          },
-          {
-            "class": "AdvancedDAGValidator",
-            "method": "export_nodes",
-            "module": "farfan_core.analysis.teoria_cambio",
-            "provides": "advanceddagvalidator_exportnodes",
-            "requires": ["advanceddagvalidator_acyclicitypvalue", "advanceddagvalidator_graphstats"]
-          },
-          {
-            "class": "AdvancedDAGValidator",
-            "method": "export_edges",
-            "module": "farfan_core.analysis.teoria_cambio",
-            "provides": "advanceddagvalidator_exportedges",
-            "requires": ["advanceddagvalidator_addnode", "advanceddagvalidator_addedge"]
+            "class_name": "FinancialAuditor",
+            "method_name": "_calculate_sufficiency",
+            "mother_file": "derek_beach.py",
+            "provides": "financialauditor.calculate_sufficiency",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa suficiencia mínima de recursos mediante análisis lógico. No infiere impacto, solo evalúa plausibilidad de suficiencia. Último cheque lógico antes del gate.",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "resource_sufficiency_scores",
+              "allocation_plausibility_scores"
+            ]
           }
         ],
-        "phase_description": "Inferential causal topology analysis"
+        "description": "Inferential analysis layer - logical coherence and feasibility evaluation",
+        "level": "N2",
+        "level_name": "Procesamiento Inferencial",
+        "epistemology": "Bayesianismo subjetivista - evaluación de coherencia mediante restricciones lógicas",
+        "dependencies": [
+          "phase_A_construction"
+        ],
+        "output_target": "inferred_parameters"
       },
       "phase_C_litigation": {
-        "layer": "N3_audit",
         "output_type": "CONSTRAINT",
         "methods": [
           {
-            "class": "AdvancedDAGValidator",
-            "method": "_is_acyclic",
-            "module": "farfan_core.analysis.teoria_cambio",
-            "provides": "advanceddagvalidator_isacyclic",
-            "requires": ["advanceddagvalidator_exportnodes", "advanceddagvalidator_exportedges"],
+            "class_name": "TemporalLogicVerifier",
+            "method_name": "_check_deadline_constraints",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "temporallogicverifier.check_deadline_constraints",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Valida factibilidad mediante gates de falsación débil: veto por contradicción temporal o recursos explícitamente insuficientes. No evalúa aciclicidad ni topología de relaciones.",
+            "requires": [
+              "raw_facts",
+              "inferred_parameters"
+            ],
+            "classification_rationale": "Valida factibilidad aplicando criterios de falsación débil (coherencia) → N3-AUD (PARTE II, Sección 2.4)",
             "veto_conditions": {
-              "trigger": "acyclicity_violation",
-              "blocked_layers": ["N1", "N2"],
-              "veto_message": "Causal graph contains cycles - invalid causal structure",
-              "recovery_protocol": "reject_cyclic_dag"
+              "temporal_contradiction": {
+                "trigger": "temporal_contradiction_detected",
+                "action": "block_branch",
+                "scope": "contradicting_timeline",
+                "confidence_multiplier": 0.0
+              },
+              "insufficient_resources": {
+                "trigger": "resources_explicitly_insufficient",
+                "action": "block_branch",
+                "scope": "underfunded_activities",
+                "confidence_multiplier": 0.0
+              }
+            },
+            "gate_logic": {
+              "temporal_contradiction": {
+                "trigger": "temporal_contradiction_detected",
+                "scope": "contradicting_timeline",
+                "confidence_multiplier": 0.0
+              },
+              "insufficient_resources": {
+                "trigger": "resources_explicitly_insufficient",
+                "scope": "underfunded_activities",
+                "confidence_multiplier": 0.0
+              }
             }
           }
         ],
-        "phase_description": "Audit layer with veto power over causal topology"
+        "description": "Audit layer - feasibility validation with veto power (weak falsification - coherence)",
+        "level": "N3",
+        "level_name": "Auditoría y Robustez",
+        "epistemology": "Falsacionismo popperiano - falsación débil mediante coherencia",
+        "dependencies": [
+          "phase_A_construction",
+          "phase_B_computation"
+        ],
+        "output_target": "validated_constraints",
+        "asymmetry_principle": "ASIMETRÍA EXPLÍCITA: N3 can invalidate resultados de N1/N2 mediante veto gates con confidence_multiplier = 0.0, bloqueando completamente hallazgos que N1/N2 aceptarían. Mientras N1 extrae hechos estructurados y N2 evalúa coherencia lógica, N3 aplica criterios de falsación débil (coherencia). CANNOT invalidate N3: N1 y N2 no pueden vetar decisiones de N3, solo pueden proporcionar datos que N3 evalúa"
       }
     },
-    "notes": "Contract with no N1 methods - N2 consumes PreprocesadoMetadata directly. TYPE_C causal contract with topological overlay strategy."
+    "orchestration_mode": "epistemological_pipeline",
+    "contract_type": "TYPE_E"
   },
   "question_context": {
     "monolith_ref": "Q014",
-    "semantic_domain": "causal_topology_validation",
-    "question_type": "causal_dag_analysis"
-  },
-  "signal_requirements": {
-    "required_signals": ["PreprocesadoMetadata"],
-    "optional_signals": [],
-    "signal_dependencies": {}
+    "overrides": null,
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text",
+        "no_temporal_data",
+        "no_resource_data"
+      ],
+      "emit_code": "ABORT-D3-Q4-REQ"
+    }
   },
   "evidence_assembly": {
-    "type_system": "N1_FACT|N2_PARAMETER|N3_CONSTRAINT",
+    "engine": "EVIDENCE_NEXUS",
+    "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
+    "class_name": "EvidenceNexus",
+    "method_name": "assemble",
+    "type_system": {
+      "FACT": {
+        "origin_level": "N1",
+        "fusion_operation": "graph_node_addition",
+        "merge_behavior": "additive",
+        "symbol": "⊕",
+        "description": "Se SUMA al grafo como nodo"
+      },
+      "PARAMETER": {
+        "origin_level": "N2",
+        "fusion_operation": "edge_weight_modification",
+        "merge_behavior": "multiplicative",
+        "symbol": "⊗",
+        "description": "MODIFICA pesos de aristas del grafo"
+      },
+      "CONSTRAINT": {
+        "origin_level": "N3",
+        "fusion_operation": "branch_filtering",
+        "merge_behavior": "gate",
+        "symbol": "⊘",
+        "description": "FILTRA/BLOQUEA ramas si validación falla"
+      },
+      "NARRATIVE": {
+        "origin_level": "N4",
+        "fusion_operation": "synthesis",
+        "merge_behavior": "terminal",
+        "symbol": "⊙",
+        "description": "CONSUME grafo para texto final"
+      }
+    },
     "assembly_rules": [
       {
-        "rule_id": "R1_empirical_foundation",
-        "layer": "N1",
-        "sources": ["PreprocesadoMetadata"],
-        "operation": "direct_consumption",
-        "output_type": "metadata_input",
-        "description": "No N1 methods - N2 consumes preprocessing metadata directly"
+        "rule_id": "R1_empirical_basis",
+        "rule_type": "empirical_basis",
+        "target": "raw_facts",
+        "sources": [
+          "policycontradictiondetector.extract_temporal_markers",
+          "temporallogicverifier.extract_resources"
+        ],
+        "merge_strategy": "concat",
+        "output_type": "FACT"
       },
       {
-        "rule_id": "R2_inferential_fusion",
-        "layer": "N2",
-        "sources": ["advanceddagvalidator_acyclicitypvalue", "advanceddagvalidator_graphstats", "advanceddagvalidator_nodeimportance", "advanceddagvalidator_subgraph", "advanceddagvalidator_addnode", "advanceddagvalidator_addedge", "advanceddagvalidator_exportnodes", "advanceddagvalidator_exportedges"],
-        "operation": "topological_overlay",
-        "output_type": "causal_topology_parameters",
-        "description": "Fuse causal topology parameters using topological overlay"
+        "rule_id": "R2_coherence_computation",
+        "rule_type": "coherence_computation",
+        "target": "logical_coherence_scores",
+        "sources": [
+          "causalextractor.assess_temporal_coherence",
+          "temporallogicverifier.are_mutually_exclusive",
+          "financialauditor.calculate_sufficiency"
+        ],
+        "input_dependencies": [
+          "raw_facts"
+        ],
+        "merge_strategy": "weighted_mean",
+        "output_type": "PARAMETER"
       },
       {
-        "rule_id": "R3_audit_constraint",
-        "layer": "N3",
-        "sources": ["advanceddagvalidator_isacyclic"],
-        "operation": "veto_gate",
-        "output_type": "acyclicity_constraint",
-        "description": "Apply Popperian falsification - veto if DAG contains cycles"
+        "rule_id": "R3_feasibility_validation_gate",
+        "rule_type": "logical_consistency_validation",
+        "target": "validated_constraints",
+        "sources": [
+          "temporallogicverifier.check_deadline_constraints"
+        ],
+        "input_dependencies": [
+          "raw_facts",
+          "logical_coherence_scores"
+        ],
+        "merge_strategy": "veto_gate",
+        "output_type": "CONSTRAINT",
+        "gate_logic": {
+          "temporal_contradiction": {
+            "trigger": "temporal_contradiction_detected",
+            "scope": "contradicting_timeline",
+            "confidence_multiplier": 0.0
+          },
+          "insufficient_resources": {
+            "trigger": "resources_explicitly_insufficient",
+            "scope": "underfunded_activities",
+            "confidence_multiplier": 0.0
+          }
+        }
       },
       {
         "rule_id": "R4_final_synthesis",
-        "layer": "OUTPUT",
-        "sources": ["N2_parameters", "N3_constraints"],
-        "operation": "conditional_assembly",
-        "output_type": "human_answer",
-        "description": "Assemble human answer only if N3 constraints are satisfied"
+        "rule_type": "synthesis",
+        "target": "final_answer",
+        "sources": [
+          "fact_base",
+          "parameter_space",
+          "audited_findings"
+        ],
+        "merge_strategy": "carver_doctoral_synthesis",
+        "output_type": "NARRATIVE"
       }
     ]
   },
   "fusion_specification": {
-    "primary_strategy": "topological_overlay",
+    "contract_type": "TYPE_E",
+    "paradigm": "logical_coherence_evaluation",
+    "asymmetry_principle": "N3 can invalidate N1/N2, N1/N2 cannot invalidate N3",
     "level_strategies": {
-      "N1_fact_aggregation": "none",
-      "N2_parameter_fusion": "topological_overlay",
-      "N3_constraint_application": "acyclicity_veto_gate"
-    },
-    "fusion_parameters": {
-      "topological_overlay": {
-        "graph_construction_method": "incremental_dag_assembly",
-        "acyclicity_enforcement": "monte_carlo_validation",
-        "node_importance_weighting": "centrality_based",
-        "subgraph_generation": "pruning_based"
+      "N1_fact_fusion": {
+        "strategy": "concat",
+        "behavior": "additive"
+      },
+      "N2_parameter_fusion": {
+        "strategy": "weighted_mean",
+        "behavior": "multiplicative"
+      },
+      "N3_constraint_fusion": {
+        "strategy": "veto_gate",
+        "behavior": "gate",
+        "asymmetry_principle": "audit_dominates"
       }
+    },
+    "fusion_pipeline": {
+      "stage_1_fact_accumulation": {
+        "input": "raw_facts",
+        "operation": "Accumulate structured facts (activity, goals, deadlines, resources) from N1 methods",
+        "output": "evidence_base_v1",
+        "type_consumed": "FACT",
+        "behavior": "additive"
+      },
+      "stage_2_parameter_application": {
+        "input": "evidence_base_v1",
+        "operation": "Apply logical coherence evaluation to compute coherence scores",
+        "output": "evidence_base_v2",
+        "type_consumed": "PARAMETER",
+        "behavior": "multiplicative"
+      },
+      "stage_3_constraint_filtering": {
+        "input": "evidence_base_v2",
+        "operation": "Apply feasibility validation with veto gates (temporal contradiction or insufficient resources)",
+        "output": "evidence_base_v3",
+        "type_consumed": "CONSTRAINT",
+        "behavior": "gate"
+      },
+      "stage_4_synthesis": {
+        "input": "evidence_base_v3",
+        "operation": "Synthesize final narrative",
+        "output": "final_answer",
+        "type_produced": "NARRATIVE",
+        "behavior": "terminal"
+      }
+    },
+    "conflict_resolution": {
+      "strategy": "veto_dominates",
+      "description": "N3 veto gates override N1/N2 findings"
     }
   },
   "cross_layer_fusion": {
-    "asymmetry_principle": "Popperian: N3 can veto N2, N2 cannot override N3",
-    "veto_mechanism": "acyclicity_validation",
-    "veto_propagation": "immediate_halt"
+    "N1_to_N2": {
+      "relationship": "N1 feeds facts to N2",
+      "effect": "N2 processes N1 facts to infer parameters",
+      "data_flow": "forward_propagation"
+    },
+    "N2_to_N1": {
+      "relationship": "N2 backpropagates confidence to N1",
+      "effect": "N2 confidence scores modulate N1 fact confidence",
+      "data_flow": "confidence_backpropagation"
+    },
+    "N3_to_N1": {
+      "relationship": "N3 can BLOCK or INVALIDATE N1 facts",
+      "effect": "Failed validation removes invalid facts from graph",
+      "data_flow": "veto_propagation",
+      "asymmetry": "N1 CANNOT invalidate N3"
+    },
+    "N3_to_N2": {
+      "relationship": "N3 can BLOCK or INVALIDATE N2 parameters",
+      "effect": "Failed validation removes invalid parameters from graph",
+      "data_flow": "veto_propagation",
+      "asymmetry": "N2 CANNOT invalidate N3"
+    },
+    "all_to_N4": {
+      "relationship": "All layers feed to N4 synthesis",
+      "effect": "N4 synthesizes final narrative from all layers",
+      "data_flow": "terminal_aggregation"
+    },
+    "blocking_propagation_rules": {
+      "temporal_contradiction": {
+        "condition": "temporal contradiction detected (impossible deadlines or conflicting timelines)",
+        "action": "block_propagation"
+      },
+      "insufficient_resources": {
+        "condition": "resources explicitly insufficient for declared activities",
+        "action": "block_propagation"
+      }
+    }
   },
   "human_answer_structure": {
+    "contract_type": "TYPE_E",
+    "format": "markdown",
+    "template_mode": "epistemological_narrative",
     "sections": [
       {
-        "section_id": "S1_empirical_base",
-        "title": "Causal Structure Foundation",
-        "layer_source": "N1",
+        "section_id": "S1_verdict",
+        "layer": "N4",
+        "narrative_style": "declarative",
+        "argumentative_role": "SYNTHESIS",
         "template": {
           "structure": [
-            "## Causal Structure Foundation\n",
-            "**Data Source**: {preprocessing_metadata_source}\n",
-            "**Nodes Identified**: {node_count}\n",
-            "**Edges Identified**: {edge_count}\n"
+            "**Conclusión**: {verdict_statement}",
+            "",
+            "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
+            "",
+            "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
           ],
-          "assembly_instruction": "markdown_concatenation",
-          "epistemological_note": "N1 layer: No empirical extraction - relies on preprocessing metadata"
-        },
-        "required_fields": ["preprocessing_metadata_source", "node_count", "edge_count"]
+          "placeholders": [
+            "verdict_statement",
+            "final_confidence_pct",
+            "confidence_label",
+            "method_count",
+            "audit_count",
+            "blocked_count"
+          ]
+        }
       },
       {
-        "section_id": "S2_inferential_analysis",
-        "title": "Causal Topology Analysis",
-        "layer_source": "N2",
-        "template": {
-          "structure": [
-            "## Causal Topology Analysis\n",
-            "**Acyclicity P-Value**: {acyclicity_pvalue}\n",
-            "**Graph Statistics**: {graph_stats}\n",
-            "**Node Importance Scores**: {node_importance}\n",
-            "**Critical Subgraphs**: {critical_subgraphs}\n",
-            "\n",
-            "**Causal Topology Assessment**: {topology_assessment}\n"
-          ],
-          "assembly_instruction": "topological_overlay_markdown"
-        },
-        "required_fields": ["acyclicity_pvalue", "graph_stats", "node_importance", "critical_subgraphs", "topology_assessment"]
+        "section_id": "S2_empirical_base",
+        "layer": "N1",
+        "data_source": "validated_facts",
+        "argumentative_role": "EMPIRICAL_BASIS",
+        "epistemological_note": {
+          "include_in_output": true,
+          "note": "Hechos estructurados extraídos directamente: actividad, meta, plazos y recursos"
+        }
       },
       {
-        "section_id": "S3_audit_constraints",
-        "title": "Causal Validity Audit",
-        "layer_source": "N3",
-        "template": {
-          "structure": [
-            "## Causal Validity Audit\n",
-            "**Acyclicity Status**: {acyclicity_status}\n",
-            "**Validation Result**: {validation_result}\n",
-            "\n",
-            "{veto_display}\n"
-          ],
-          "assembly_instruction": "constraint_display",
-          "epistemological_note": "N3 audit: Popperian falsification - vetoes if cycles detected",
-          "veto_display": "⚠️ **CAUSAL STRUCTURE REJECTED**: {veto_reason}"
-        },
-        "required_fields": ["acyclicity_status", "validation_result", "veto_display"]
+        "section_id": "S3_robustness_audit",
+        "layer": "N3",
+        "argumentative_role": "ROBUSTNESS_QUALIFIER",
+        "veto_display": {
+          "if_veto_triggered": "⛔ **ALERTA: FACTIBILIDAD INVÁLIDA**: {veto_reason}. NO usar para toma de decisiones.",
+          "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: La relación actividad-meta es factible según plazos y recursos."
+        }
       },
       {
-        "section_id": "S4_synthesis",
-        "title": "Causal Structure Conclusion",
-        "layer_source": "OUTPUT",
-        "template": {
-          "structure": [
-            "## Causal Structure Conclusion\n",
-            "**Overall Assessment**: {overall_assessment}\n",
-            "**Causal Validity**: {causal_validity}\n",
-            "**Confidence Level**: {confidence_level}\n"
-          ],
-          "assembly_instruction": "conditional_synthesis"
-        },
-        "required_fields": ["overall_assessment", "causal_validity", "confidence_level"]
+        "section_id": "S4_gaps",
+        "layer": "N4-META",
+        "argumentative_role": "META_TRACEABILITY"
       }
-    ]
+    ],
+    "argumentative_roles": {
+      "N1_roles": [
+        {
+          "role": "EMPIRICAL_BASIS",
+          "description": "Base empírica de hechos estructurados extraídos (actividad, meta, plazos, recursos)",
+          "narrative_weight": "high"
+        }
+      ],
+      "N2_roles": [
+        {
+          "role": "INFERENTIAL_BRIDGE",
+          "description": "Evaluación de coherencia lógica y factibilidad mediante lógica de restricciones",
+          "narrative_weight": "high"
+        }
+      ],
+      "N3_roles": [
+        {
+          "role": "ROBUSTNESS_QUALIFIER",
+          "description": "Validación de factibilidad mediante gates de falsación débil",
+          "narrative_weight": "critical",
+          "triggers_veto": true
+        },
+        {
+          "role": "REFUTATIONAL_SIGNAL",
+          "description": "Señal de refutación cuando se detecta contradicción temporal o recursos insuficientes",
+          "narrative_weight": "critical",
+          "triggers_veto": true
+        },
+        {
+          "role": "LOGICAL_INCONSISTENCY",
+          "description": "Inconsistencia lógica detectada en factibilidad (plazos o recursos)",
+          "narrative_weight": "critical",
+          "triggers_veto": true
+        }
+      ],
+      "N4_roles": [
+        {
+          "role": "SYNTHESIS",
+          "description": "Síntesis final post-auditoría de factibilidad",
+          "narrative_weight": "critical"
+        }
+      ]
+    },
+    "confidence_interpretation": {
+      "critical": {
+        "range": [
+          0,
+          19
+        ],
+        "label": "INVÁLIDO",
+        "description": "Factibilidad inválida - veto aplicado por contradicción temporal o recursos insuficientes. NO usar para toma de decisiones.",
+        "display": "🔴"
+      },
+      "low": {
+        "range": [
+          20,
+          49
+        ],
+        "label": "DÉBIL",
+        "description": "Confianza baja - factibilidad cuestionable",
+        "display": "🟡"
+      },
+      "medium": {
+        "range": [
+          50,
+          79
+        ],
+        "label": "MODERADO",
+        "description": "Confianza moderada - factibilidad aceptable con reservas",
+        "display": "🟠"
+      },
+      "high": {
+        "range": [
+          80,
+          100
+        ],
+        "label": "ROBUSTO",
+        "description": "Confianza alta - factibilidad validada sin contradicciones",
+        "display": "🟢"
+      }
+    }
   },
   "output_contract": {
-    "output_format": "structured_markdown",
-    "output_schema": "human_answer_v4",
-    "validation_required": true
-  },
-  "validation_rules": {
-    "N3_veto_enforcement": "mandatory",
-    "output_completeness": "all_sections_required",
-    "evidence_traceability": "full_chain_required"
-  },
-  "error_handling": {
-    "N3_veto_behavior": "halt_and_report",
-    "missing_evidence_behavior": "report_gap",
-    "fusion_failure_behavior": "escalate"
+    "schema": {
+      "required": [
+        "base_slot",
+        "question_id",
+        "evidence",
+        "score",
+        "human_answer"
+      ],
+      "properties": {
+        "base_slot": {
+          "type": "string"
+        },
+        "question_id": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "object"
+        },
+        "score": {
+          "type": "number"
+        },
+        "human_answer": {
+          "type": "string"
+        },
+        "epistemological_trace": {
+          "type": "object"
+        }
+      }
+    }
   },
   "traceability": {
-    "evidence_chain_tracking": "enabled",
-    "method_provenance": "enabled",
-    "veto_audit_trail": "enabled"
-  },
-  "compatibility": {
-    "executor_version": ">=4.0.0",
-    "framework_version": "4.0.0"
-  },
-  "calibration": {
-    "confidence_threshold": 0.7,
-    "veto_sensitivity": "high",
-    "parameter_stability": "required"
+    "canonical_sources": {
+      "epistemological_guide": "guia_diligenciamiento_contratos_v4.md",
+      "questionnaire": "canonic_questionnaire_central/questionnaire_monolith.json"
+    },
+    "generation": {
+      "method": "v4_epistemological_framework",
+      "date": "2025-12-22T21:00:00Z"
+    },
+    "refactoring_history": [
+      {
+        "from_version": "3.0.0",
+        "to_version": "4.0.0-epistemological",
+        "date": "2025-12-22T21:00:00Z",
+        "changes": [
+          "Epistemological stratification",
+          "Reclassification from TYPE_C to TYPE_E (Lógico)",
+          "Logical coherence evaluation",
+          "Feasibility validation with veto gates",
+          "Cross-layer fusion",
+          "Integration of validated method proposal (6 methods: 2 N1, 3 N2, 1 N3)"
+        ],
+        "epistemological_framework": {
+          "N1": "Empirismo positivista",
+          "N2": "Bayesianismo subjetivista",
+          "N3": "Falsacionismo popperiano",
+          "N4": "Reflexividad crítica"
+        }
+      }
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "v3_migration": "FORBIDDEN",
+      "v3_reference": "FORBIDDEN",
+      "non_epistemological_mode": "FORBIDDEN"
+    }
   }
 }

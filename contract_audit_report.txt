@@ -1,0 +1,153 @@
+=== D6-Q1-v4.json ===
+  ❌ METHODS VACÍOS:  phase_A_construction,phase_B_computation,phase_C_litigation,
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_E
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'D6-Q1'
+  ❌ ESPACIOS CORRUPTOS en paths
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D4-Q2-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=NULL
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D5-Q4-v4.json ===
+  ❌ METHODS VACÍOS:  phase_A_construction,phase_B_computation,phase_C_litigation,
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_C
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'D5-Q4'
+  ❌ ESPACIOS CORRUPTOS en paths
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D4-Q3-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=NULL
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D1-Q2-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_B
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+  ❌ ESPACIOS CORRUPTOS en paths
+
+=== D5-Q5-v4.json ===
+  ❌ METHODS VACÍOS:  phase_A_construction,phase_B_computation,phase_C_litigation,
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_D
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'D5-Q5'
+  ❌ ESPACIOS CORRUPTOS en paths
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D3-Q1-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_B
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+
+=== D4-Q1-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=NULL
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D2-Q5-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_E
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+
+=== D6-Q2-v4.json ===
+  ❌ METHODS VACÍOS:  phase_A_construction,phase_B_computation,phase_C_litigation,
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_A
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'D6-Q2'
+  ❌ ESPACIOS CORRUPTOS en paths
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D3-Q3-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_A
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+
+=== D2-Q4-v4.json ===
+  ✅ OK
+
+=== D6-Q3-v4.json ===
+  ❌ METHODS VACÍOS:  phase_A_construction,phase_B_computation,phase_C_litigation,
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_B
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'D6-Q3'
+  ❌ ESPACIOS CORRUPTOS en paths
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D3-Q2-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_D
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+
+=== D1-Q1-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_A
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+
+=== D5-Q3-v4.json ===
+  ❌ METHODS VACÍOS:  phase_A_construction,phase_B_computation,phase_C_litigation,
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_B
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'D5-Q3'
+  ❌ ESPACIOS CORRUPTOS en paths
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D1-Q4-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_D
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+
+=== D4-Q5-v4.json ===
+  ❌ METHODS VACÍOS:  phase_A_construction,phase_B_computation,phase_C_litigation,
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_D
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'D4-Q5'
+  ❌ ESPACIOS CORRUPTOS en paths
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D2-Q1-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_D
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+
+=== D5-Q2-v4.json ===
+  ❌ METHODS VACÍOS:  phase_A_construction,phase_B_computation,phase_C_litigation,
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_A
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'D5-Q2'
+  ❌ ESPACIOS CORRUPTOS en paths
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D1-Q5-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_E
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+
+=== D4-Q4-v4.json ===
+  ❌ METHODS VACÍOS:  phase_A_construction,
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_E
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+
+=== D3-Q4-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_E
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+
+=== D6-Q5-v4.json ===
+  ❌ METHODS VACÍOS:  phase_A_construction,phase_B_computation,phase_C_litigation,
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_D
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'D6-Q5'
+  ❌ ESPACIOS CORRUPTOS en paths
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D2-Q2-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_B
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+
+=== D5-Q1-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_D
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'D5-Q1'
+  ❌ ESPACIOS CORRUPTOS en paths
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D3-Q5-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=NULL
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D6-Q4-v4.json ===
+  ❌ METHODS VACÍOS:  phase_A_construction,phase_B_computation,phase_C_litigation,
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_C
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'D6-Q4'
+  ❌ ESPACIOS CORRUPTOS en paths
+  ⚠️  FALTA:  policy_area_ids_served
+
+=== D2-Q3-v4.json ===
+  ❌ CONTRACT_TYPE MISMATCH: identity= vs fusion=TYPE_C
+  ❌ BASE_SLOT INCORRECTO: tiene '', esperado 'NULL'
+

@@ -41,17 +41,29 @@
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
     "contract_type": "TYPE_C",
-    "method_count": 9,
+    "method_count": 10,
     "execution_phases": {
       "phase_A_construction": {
-        "description": "Empirical observation layer - direct signal consumption",
+        "description": "Empirical observation layer - causal structure extraction",
         "level": "N1",
         "level_name": "Base Empírica",
         "epistemology": "Empirismo positivista",
-        "methods": [],
+        "methods": [
+          {
+            "class_name": "CausalExtractor",
+            "method_name": "_extract_goals",
+            "mother_file": "derek_beach.py",
+            "provides": "causalextractor.extract_goals",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extrae objetivos causales del texto como observación directa sin interpretación",
+            "requires": [],
+            "classification_rationale": "Extrae objetivos directamente del documento sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+          }
+        ],
         "dependencies": [],
-        "output_target": "raw_facts",
-        "note": "This contract consumes PreprocesadoMetadata directly in N2 phase - no N1 extraction needed"
+        "output_target": "raw_facts"
       },
       "phase_B_computation": {
         "description": "Inferential analysis layer - causal graph construction and edge inference",
@@ -67,9 +79,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Extrae enlaces causales del texto con probabilidades",
+            "description": "Evalúa y extrae enlaces causales calculando probabilidades",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "causal_link_probabilities"
@@ -85,7 +97,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Calcula likelihood compuesta de relaciones causales",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "composite_likelihood_scores"
@@ -99,9 +111,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Inicializa distribución prior para inferencia causal",
+            "description": "Evalúa e inicializa distribución prior calculando parámetros para inferencia causal",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "prior_distributions"
@@ -117,7 +129,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Calcula priors de transición entre tipos causales",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "transition_prior_scores"
@@ -131,9 +143,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Identifica aristas causales en el grafo con scoring",
+            "description": "Evalúa e identifica aristas causales calculando scores en el grafo",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "edge_identification_scores"
@@ -147,9 +159,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Refina probabilidades de aristas causales",
+            "description": "Evalúa y refina probabilidades calculando valores mejorados de aristas causales",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "refined_edge_probabilities"
@@ -163,9 +175,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Crea ecuaciones estructurales default para SCM",
+            "description": "Evalúa y crea ecuaciones estructurales calculando parámetros default para SCM",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "scm_equation_scores"
@@ -179,9 +191,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Extrae cubo semántico para análisis dimensional de causalidad",
+            "description": "Evalúa y extrae cubo semántico calculando análisis dimensional de causalidad",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "semantic_dimension_scores"
@@ -189,7 +201,7 @@
           }
         ],
         "dependencies": [
-          "PreprocesadoMetadata"
+          "phase_A_construction"
         ],
         "output_target": "inferred_parameters"
       },
@@ -209,9 +221,10 @@
             "fusion_behavior": "gate",
             "description": "Construye Structural Causal Model - falla si grafo es inválido",
             "requires": [
-              "PreprocesadoMetadata",
+              "raw_facts",
               "inferred_parameters"
             ],
+            "classification_rationale": "Valida estructura causal aplicando criterios de falsación → N3-AUD (PARTE II, Sección 2.4)",
             "modulates": [
               "inferred_parameters.confidence"
             ],
@@ -238,9 +251,10 @@
           }
         ],
         "dependencies": [
-          "PreprocesadoMetadata",
-          "inferred_parameters"
+          "phase_A_construction",
+          "phase_B_computation"
         ],
+        "asymmetry_principle": "ASIMETRÍA EXPLÍCITA: N3 can invalidate resultados de N1/N2 mediante veto gates con confidence_multiplier = 0.0, bloqueando completamente hallazgos que N1/N2 aceptarían. Mientras N1 extrae objetivos causales y N2 construye grafos causales, N3 aplica criterios de falsación popperiana mediante construcción de SCM. CANNOT invalidate N3: N1 y N2 no pueden vetar decisiones de N3, solo pueden proporcionar datos que N3 evalúa",
         "output_target": "validated_constraints"
       }
     }
@@ -304,13 +318,14 @@
     },
     "assembly_rules": [
       {
-        "rule_id": "R1_structure_definition",
-        "rule_type": "structure_definition",
+        "rule_id": "R1_empirical_basis",
+        "rule_type": "empirical_basis",
         "target": "causal_graph",
-        "sources": [],
-        "merge_strategy": "direct_signal_consumption",
-        "output_type": "FACT",
-        "note": "Phase A empty - consumes PreprocesadoMetadata directly in Phase B"
+        "sources": [
+          "causalextractor.extract_goals"
+        ],
+        "merge_strategy": "graph_construction",
+        "output_type": "FACT"
       },
       {
         "rule_id": "R2_edge_inference",
@@ -346,17 +361,22 @@
         "merge_strategy": "veto_gate",
         "gate_logic": {
           "scm_construction_failed": {
+            "trigger": "construct_scm raises exception or returns invalid SCM",
             "action": "invalidate_graph",
-            "multiplier": 0.0
+            "scope": "entire_causal_graph",
+            "confidence_multiplier": 0.0
           },
           "cyclic_dependencies_detected": {
+            "trigger": "SCM construction detects cycles in causal graph",
             "action": "invalidate_graph",
-            "multiplier": 0.0
+            "scope": "circular_dependency_chains",
+            "confidence_multiplier": 0.0
           },
           "structural_equations_invalid": {
+            "trigger": "default equations cannot be constructed for all nodes",
             "action": "block_branch",
             "scope": "nodes_without_valid_equations",
-            "multiplier": 0.3
+            "confidence_multiplier": 0.3
           }
         },
         "output_type": "CONSTRAINT"
@@ -379,9 +399,8 @@
     "primary_strategy": "topological_overlay",
     "level_strategies": {
       "N1_fact_fusion": {
-        "strategy": "direct_signal_consumption",
-        "behavior": "pass_through",
-        "note": "No N1 methods - PreprocesadoMetadata consumed directly by N2"
+        "strategy": "graph_construction",
+        "behavior": "additive"
       },
       "N2_parameter_fusion": {
         "strategy": "topological_overlay",
@@ -414,11 +433,11 @@
     },
     "fusion_pipeline": {
       "stage_1_fact_accumulation": {
-        "input": "PreprocesadoMetadata",
-        "operation": "PASS PreprocesadoMetadata to N2",
+        "input": "raw_facts",
+        "operation": "Construct initial causal graph from N1 facts",
         "output": "evidence_graph_v1",
-        "type_consumed": "SIGNAL",
-        "behavior": "pass_through"
+        "type_consumed": "FACT",
+        "behavior": "additive"
       },
       "stage_2_parameter_application": {
         "input": [
@@ -457,9 +476,15 @@
       "note": "No N1 intermediary - direct signal consumption"
     },
     "N2_to_N1": {
-      "relationship": "Not applicable",
-      "effect": "N2 does not backpropagate to N1 (no N1 layer)",
-      "data_flow": "none"
+      "relationship": "N2 backpropagates confidence to N1",
+      "effect": "N2 confidence scores modulate N1 fact confidence",
+      "data_flow": "confidence_backpropagation"
+    },
+    "N3_to_N1": {
+      "relationship": "N3 can BLOCK or INVALIDATE N1 facts",
+      "effect": "Failed validation removes invalid facts from graph",
+      "data_flow": "veto_propagation",
+      "asymmetry": "N1 CANNOT invalidate N3"
     },
     "N3_to_N2": {
       "relationship": "N3 can INVALIDATE N2 parameters",
@@ -479,11 +504,12 @@
         "scope": "entire_causal_graph",
         "propagation": "total"
       },
-      "cyclic_dependencies": {
+      "cycle_detected": {
         "triggered_by": "BayesianCounterfactualAuditor.construct_scm",
         "action": "invalidate_graph",
         "scope": "circular_dependency_chains",
-        "propagation": "total"
+        "propagation": "total",
+        "description": "Cycle detected in causal graph during SCM construction"
       },
       "invalid_equations": {
         "triggered_by": "BayesianCounterfactualAuditor.construct_scm",
@@ -513,16 +539,24 @@
             "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
             "",
             "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+          ],
+          "placeholders": [
+            "verdict_statement",
+            "final_confidence_pct",
+            "confidence_label",
+            "method_count",
+            "audit_count",
+            "blocked_count"
           ]
         }
       },
       {
         "section_id": "S2_empirical_base",
         "title": "### Base Empírica: Mecanismos Causales",
-        "layer": "N2",
-        "data_source": "inferred_parameters",
+        "layer": "N1",
+        "data_source": "validated_facts",
         "narrative_style": "descriptive",
-        "argumentative_role": "INFERENTIAL_BRIDGE",
+        "argumentative_role": "EMPIRICAL_BASIS",
         "note": "No N1 layer - showing N2 causal graph construction as base",
         "template": {
           "structure": [
@@ -545,7 +579,7 @@
         "narrative_style": "critical",
         "argumentative_role": "ROBUSTNESS_QUALIFIER",
         "veto_display": {
-          "if_veto_triggered": "⛔ **MODELO INVÁLIDO**: {veto_reason}. NO usar para toma de decisiones.",
+          "if_veto_triggered": "⛔ **ALERTA: MODELO INVÁLIDO**: {veto_reason}. NO usar para toma de decisiones.",
           "if_partial_veto": "⚠️ **ROBUSTEZ PARCIAL**: {partial_veto_count} hallazgos invalidados.",
           "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: Todos los hallazgos sobrevivieron refutación."
         },
@@ -585,7 +619,13 @@
       }
     ],
     "argumentative_roles": {
-      "N1_roles": [],
+      "N1_roles": [
+        {
+          "role": "EMPIRICAL_BASIS",
+          "description": "Base empírica de objetivos causales extraídos",
+          "narrative_weight": "high"
+        }
+      ],
       "N2_roles": [
         {
           "role": "INFERENTIAL_BRIDGE",
@@ -749,8 +789,33 @@
     "generation": {
       "method": "v4_epistemological_generation",
       "timestamp": "2025-12-22T18:20:00Z",
-      "generator_version": "1.0.0",
-      "notes": "Contract with no N1 methods - N2 consumes PreprocesadoMetadata directly for causal graph construction. SCM construction acts as critical veto gate."
+      "generator_version": "1.0.0"
+    },
+    "refactoring_history": [
+      {
+        "from_version": "3.0.0",
+        "to_version": "4.0.0-epistemological",
+        "date": "2025-12-22T18:20:00Z",
+        "changes": [
+          "Epistemological stratification",
+          "Added N1 method for causal goal extraction",
+          "Topological overlay strategy",
+          "Veto gates",
+          "Cross-layer fusion"
+        ],
+        "epistemological_framework": {
+          "N1": "Empirismo positivista",
+          "N2": "Bayesianismo subjetivista",
+          "N3": "Falsacionismo popperiano",
+          "N4": "Reflexividad crítica"
+        }
+      }
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "v3_migration": "FORBIDDEN",
+      "v3_reference": "FORBIDDEN",
+      "non_epistemological_mode": "FORBIDDEN"
     }
   },
   "compatibility": {

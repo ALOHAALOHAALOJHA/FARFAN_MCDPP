@@ -1,0 +1,1586 @@
+[
+  {
+    "file": "D1-Q2-v4.json",
+    "status": "PASS",
+    "base_slot": "D1-Q2",
+    "question": "Q002",
+    "contract_type": "TYPE_B",
+    "errors": [],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {}
+  },
+  {
+    "file": "D1-Q4-v4.json",
+    "status": "FAIL",
+    "base_slot": "D1-Q4",
+    "question": "Q004",
+    "contract_type": "TYPE_D",
+    "errors": [
+      "N3 method _validate_entity_activity requires must include raw_facts and inferences"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "2C-N3": [
+        "N3 method _validate_entity_activity requires must include raw_facts and inferences"
+      ]
+    }
+  },
+  {
+    "file": "D1-Q5-v4.json",
+    "status": "FAIL",
+    "base_slot": "D1-Q5",
+    "question": "Q005",
+    "contract_type": "TYPE_B",
+    "errors": [
+      "N3 method verify_temporal_consistency requires must include raw_facts and inferences",
+      "Method level mismatch for D1-Q5: TemporalLogicVerifier.verify_temporal_consistency expected N2-INF, got 'N3-AUD'"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "2-method-inventory": [
+        "Method level mismatch for D1-Q5: TemporalLogicVerifier.verify_temporal_consistency expected N2-INF, got 'N3-AUD'"
+      ],
+      "2C-N3": [
+        "N3 method verify_temporal_consistency requires must include raw_facts and inferences"
+      ]
+    }
+  },
+  {
+    "file": "D1_Q3_v4.json",
+    "status": "FAIL",
+    "base_slot": "D1-Q3",
+    "question": "Q003",
+    "contract_type": "TYPE_D",
+    "errors": [
+      "Method level mismatch for D1-Q3: FinancialAuditor._perform_counterfactual_budget_check expected N2-INF, got 'N3-AUD'",
+      "Method level mismatch for D1-Q3: PDETMunicipalPlanAnalyzer._extract_budget_for_pillar expected N2-INF, got 'N1-EMP'"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "2-method-inventory": [
+        "Method level mismatch for D1-Q3: FinancialAuditor._perform_counterfactual_budget_check expected N2-INF, got 'N3-AUD'",
+        "Method level mismatch for D1-Q3: PDETMunicipalPlanAnalyzer._extract_budget_for_pillar expected N2-INF, got 'N1-EMP'"
+      ]
+    }
+  },
+  {
+    "file": "D2-Q1-v4.json",
+    "status": "FAIL",
+    "base_slot": "D2-Q1",
+    "question": "Q006",
+    "contract_type": "TYPE_D",
+    "errors": [
+      "N3 method _is_likely_header requires must include raw_facts and inferences"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "2C-N3": [
+        "N3 method _is_likely_header requires must include raw_facts and inferences"
+      ]
+    }
+  },
+  {
+    "file": "D2-Q2-v4.json",
+    "status": "FAIL",
+    "base_slot": "D2-Q2",
+    "question": "Q007",
+    "contract_type": "TYPE_B",
+    "errors": [
+      "N3 method _es_conexion_valida requires must include raw_facts and inferences",
+      "N3 method classify_test requires must include raw_facts and inferences",
+      "cross_layer_fusion.N1_to_N2.relationship must mention 'N2 reads N1', got 'N2 reads PreprocesadoMetadata directly'",
+      "cross_layer_fusion.N2_to_N1.relationship must mention 'N2 modifies N1', got 'Not applicable'",
+      "cross_layer_fusion.N2_to_N1.data_flow must be 'confidence_backpropagation', got 'none'",
+      "Missing cross_layer_fusion.N3_to_N1",
+      "Missing or invalid N3_to_N1 relationship"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "5-cross_layer_fusion": [
+        "cross_layer_fusion.N1_to_N2.relationship must mention 'N2 reads N1', got 'N2 reads PreprocesadoMetadata directly'",
+        "cross_layer_fusion.N2_to_N1.relationship must mention 'N2 modifies N1', got 'Not applicable'",
+        "cross_layer_fusion.N2_to_N1.data_flow must be 'confidence_backpropagation', got 'none'"
+      ],
+      "2C-N3": [
+        "N3 method _es_conexion_valida requires must include raw_facts and inferences",
+        "N3 method classify_test requires must include raw_facts and inferences"
+      ],
+      "other": [
+        "Missing cross_layer_fusion.N3_to_N1",
+        "Missing or invalid N3_to_N1 relationship"
+      ]
+    }
+  },
+  {
+    "file": "D2-Q3-v4.json",
+    "status": "FAIL",
+    "base_slot": "D2-Q3",
+    "question": "Q008",
+    "contract_type": "TYPE_C",
+    "errors": [
+      "N3 method construct_scm requires must include raw_facts and inferences",
+      "cross_layer_fusion.N1_to_N2.relationship must mention 'N2 reads N1', got 'N2 reads PreprocesadoMetadata directly'",
+      "cross_layer_fusion.N2_to_N1.relationship must mention 'N2 modifies N1', got 'Not applicable'",
+      "cross_layer_fusion.N2_to_N1.data_flow must be 'confidence_backpropagation', got 'none'",
+      "Missing cross_layer_fusion.N3_to_N1",
+      "Missing or invalid N3_to_N1 relationship"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "5-cross_layer_fusion": [
+        "cross_layer_fusion.N1_to_N2.relationship must mention 'N2 reads N1', got 'N2 reads PreprocesadoMetadata directly'",
+        "cross_layer_fusion.N2_to_N1.relationship must mention 'N2 modifies N1', got 'Not applicable'",
+        "cross_layer_fusion.N2_to_N1.data_flow must be 'confidence_backpropagation', got 'none'"
+      ],
+      "other": [
+        "Missing cross_layer_fusion.N3_to_N1",
+        "Missing or invalid N3_to_N1 relationship"
+      ],
+      "2C-N3": [
+        "N3 method construct_scm requires must include raw_facts and inferences"
+      ]
+    }
+  },
+  {
+    "file": "D2-Q4-v4.json",
+    "status": "FAIL",
+    "base_slot": "D2-Q4",
+    "question": "Q009",
+    "contract_type": "TYPE_D",
+    "errors": [
+      "N3 method refutation_and_sanity_checks requires must include raw_facts and inferences",
+      "cross_layer_fusion.N1_to_N2.relationship must mention 'N2 reads N1', got 'N2 reads PreprocesadoMetadata directly'",
+      "cross_layer_fusion.N2_to_N1.relationship must mention 'N2 modifies N1', got 'Not applicable'",
+      "cross_layer_fusion.N2_to_N1.data_flow must be 'confidence_backpropagation', got 'none'",
+      "Missing cross_layer_fusion.N3_to_N1",
+      "Missing or invalid N3_to_N1 relationship",
+      "Method level mismatch for D2-Q4: BayesianCounterfactualAuditor.refutation_and_sanity_checks expected N2-INF, got 'N3-AUD'"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "5-cross_layer_fusion": [
+        "cross_layer_fusion.N1_to_N2.relationship must mention 'N2 reads N1', got 'N2 reads PreprocesadoMetadata directly'",
+        "cross_layer_fusion.N2_to_N1.relationship must mention 'N2 modifies N1', got 'Not applicable'",
+        "cross_layer_fusion.N2_to_N1.data_flow must be 'confidence_backpropagation', got 'none'"
+      ],
+      "other": [
+        "Missing cross_layer_fusion.N3_to_N1",
+        "Missing or invalid N3_to_N1 relationship"
+      ],
+      "2-method-inventory": [
+        "Method level mismatch for D2-Q4: BayesianCounterfactualAuditor.refutation_and_sanity_checks expected N2-INF, got 'N3-AUD'"
+      ],
+      "2C-N3": [
+        "N3 method refutation_and_sanity_checks requires must include raw_facts and inferences"
+      ]
+    }
+  },
+  {
+    "file": "D2-Q5-v4.json",
+    "status": "FAIL",
+    "base_slot": "D2-Q5",
+    "question": "Q010",
+    "contract_type": "TYPE_E",
+    "errors": [
+      "N3 method audit_sequence_logic requires must include raw_facts and inferences",
+      "cross_layer_fusion.N1_to_N2.relationship must mention 'N2 reads N1', got 'N2 reads PreprocesadoMetadata directly'",
+      "cross_layer_fusion.N2_to_N1.relationship must mention 'N2 modifies N1', got 'Not applicable'",
+      "cross_layer_fusion.N2_to_N1.data_flow must be 'confidence_backpropagation', got 'none'",
+      "Missing cross_layer_fusion.N3_to_N1",
+      "Missing or invalid N3_to_N1 relationship",
+      "Method level mismatch for D2-Q5: OperationalizationAuditor.audit_sequence_logic expected N2-INF, got 'N3-AUD'"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "5-cross_layer_fusion": [
+        "cross_layer_fusion.N1_to_N2.relationship must mention 'N2 reads N1', got 'N2 reads PreprocesadoMetadata directly'",
+        "cross_layer_fusion.N2_to_N1.relationship must mention 'N2 modifies N1', got 'Not applicable'",
+        "cross_layer_fusion.N2_to_N1.data_flow must be 'confidence_backpropagation', got 'none'"
+      ],
+      "other": [
+        "Missing cross_layer_fusion.N3_to_N1",
+        "Missing or invalid N3_to_N1 relationship"
+      ],
+      "2-method-inventory": [
+        "Method level mismatch for D2-Q5: OperationalizationAuditor.audit_sequence_logic expected N2-INF, got 'N3-AUD'"
+      ],
+      "2C-N3": [
+        "N3 method audit_sequence_logic requires must include raw_facts and inferences"
+      ]
+    }
+  },
+  {
+    "file": "D3-Q1-v4.json",
+    "status": "FAIL",
+    "base_slot": "D3-Q1",
+    "question": "Q011",
+    "contract_type": "TYPE_B",
+    "errors": [
+      "N1 method _extract_metadata requires must be []",
+      "N2 method _score_indicators requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method audit_evidence_traceability requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method apply_test_logic requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method diagnose_critical_links requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _calculate_quality_score requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method generate_traceability_record requires must include raw_facts or PreprocesadoMetadata",
+      "N3 method assign_probative_value requires must include raw_facts and inferences",
+      "cross_layer_fusion.N2_to_N1.relationship must mention 'N2 modifies N1', got 'N2 can backpropagate confidence to N1'",
+      "cross_layer_fusion.N3_to_N1.relationship must mention 'N3 can BLOCK N1', got 'N3 can INVALIDATE N1 facts'",
+      "cross_layer_fusion.N3_to_N1.data_flow must be 'veto_propagation', got 'total_blocking'"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "2B-N2": [
+        "N2 method _score_indicators requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method audit_evidence_traceability requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method apply_test_logic requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method diagnose_critical_links requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _calculate_quality_score requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method generate_traceability_record requires must include raw_facts or PreprocesadoMetadata"
+      ],
+      "5-cross_layer_fusion": [
+        "cross_layer_fusion.N2_to_N1.relationship must mention 'N2 modifies N1', got 'N2 can backpropagate confidence to N1'",
+        "cross_layer_fusion.N3_to_N1.relationship must mention 'N3 can BLOCK N1', got 'N3 can INVALIDATE N1 facts'",
+        "cross_layer_fusion.N3_to_N1.data_flow must be 'veto_propagation', got 'total_blocking'"
+      ],
+      "2A-N1": [
+        "N1 method _extract_metadata requires must be []"
+      ],
+      "2C-N3": [
+        "N3 method assign_probative_value requires must include raw_facts and inferences"
+      ]
+    }
+  },
+  {
+    "file": "D3-Q2-v4.json",
+    "status": "FAIL",
+    "base_slot": "",
+    "question": "",
+    "contract_type": "TYPE_D",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "Missing required field: fusion_specification.contract_type",
+      "identity.contract_version must contain 'epistemological', got ''",
+      "Method _calculate_bayesian_posterior has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _calculate_bayesian_posterior requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _calculate_bayesian_posterior missing modifies (non-empty array)",
+      "Method _calculate_confidence_interval has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _calculate_confidence_interval requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _calculate_confidence_interval missing modifies (non-empty array)",
+      "Method _adjust_domain_weights has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _adjust_domain_weights requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _adjust_domain_weights missing modifies (non-empty array)",
+      "Method _log_refactored_components has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _log_refactored_components requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _log_refactored_components missing modifies (non-empty array)",
+      "Method analyze_financial_feasibility has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method analyze_financial_feasibility requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method analyze_financial_feasibility missing modifies (non-empty array)",
+      "Method _score_indicators has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _score_indicators requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _score_indicators missing modifies (non-empty array)",
+      "Method _calculate_sufficiency has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _calculate_sufficiency requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _calculate_sufficiency missing modifies (non-empty array)",
+      "Method _test_sufficiency has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _test_sufficiency requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _test_sufficiency missing modifies (non-empty array)",
+      "Method _test_necessity has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _test_necessity requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _test_necessity missing modifies (non-empty array)",
+      "Method calculate_likelihood_adaptativo has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method calculate_likelihood_adaptativo requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method calculate_likelihood_adaptativo missing modifies (non-empty array)",
+      "Method _calculate_quality_score has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _calculate_quality_score requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _calculate_quality_score missing modifies (non-empty array)",
+      "Method _deduplicate_tables has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _deduplicate_tables requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _deduplicate_tables missing modifies (non-empty array)",
+      "Method _generate_recommendations has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _generate_recommendations requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _generate_recommendations missing modifies (non-empty array)",
+      "Method _compile_pattern_registry has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _compile_pattern_registry requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _compile_pattern_registry missing modifies (non-empty array)",
+      "Method _build_point_patterns has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _build_point_patterns requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _build_point_patterns missing modifies (non-empty array)",
+      "Method _assess_financial_sustainability has wrong fusion_behavior in phase_C_litigation: veto_gate",
+      "N3 method _assess_financial_sustainability requires must include raw_facts and inferences",
+      "N3 method _assess_financial_sustainability missing modulates (non-empty array)",
+      "N3 veto condition trigger must be an object",
+      "N3 veto condition threshold must be an object",
+      "N3 veto condition consequence must be an object",
+      "N3 veto condition rationale must be an object",
+      "N3 veto condition override_possible must be an object",
+      "R3 merge_strategy must be veto_gate, got None",
+      "R3.gate_logic must be a non-empty object",
+      "Missing cross_layer_fusion.N1_to_N2",
+      "Missing cross_layer_fusion.N2_to_N1",
+      "Missing cross_layer_fusion.N3_to_N1",
+      "Missing cross_layer_fusion.N3_to_N2",
+      "Missing cross_layer_fusion.all_to_N4",
+      "Missing or invalid N3_to_N1 relationship",
+      "Missing or invalid N3_to_N2 relationship",
+      "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules",
+      "Missing S3_robustness_audit section"
+    ],
+    "warnings": [],
+    "error_groups": {
+      "2B-N2": [
+        "Method _calculate_bayesian_posterior has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _calculate_bayesian_posterior requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _calculate_bayesian_posterior missing modifies (non-empty array)",
+        "Method _calculate_confidence_interval has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _calculate_confidence_interval requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _calculate_confidence_interval missing modifies (non-empty array)",
+        "Method _adjust_domain_weights has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _adjust_domain_weights requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _adjust_domain_weights missing modifies (non-empty array)",
+        "Method _log_refactored_components has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _log_refactored_components requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _log_refactored_components missing modifies (non-empty array)",
+        "Method analyze_financial_feasibility has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method analyze_financial_feasibility requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method analyze_financial_feasibility missing modifies (non-empty array)",
+        "Method _score_indicators has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _score_indicators requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _score_indicators missing modifies (non-empty array)",
+        "Method _calculate_sufficiency has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _calculate_sufficiency requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _calculate_sufficiency missing modifies (non-empty array)",
+        "Method _test_sufficiency has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _test_sufficiency requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _test_sufficiency missing modifies (non-empty array)",
+        "Method _test_necessity has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _test_necessity requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _test_necessity missing modifies (non-empty array)",
+        "Method calculate_likelihood_adaptativo has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method calculate_likelihood_adaptativo requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method calculate_likelihood_adaptativo missing modifies (non-empty array)",
+        "Method _calculate_quality_score has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _calculate_quality_score requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _calculate_quality_score missing modifies (non-empty array)",
+        "Method _deduplicate_tables has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _deduplicate_tables requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _deduplicate_tables missing modifies (non-empty array)",
+        "Method _generate_recommendations has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _generate_recommendations requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _generate_recommendations missing modifies (non-empty array)",
+        "Method _compile_pattern_registry has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _compile_pattern_registry requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _compile_pattern_registry missing modifies (non-empty array)",
+        "Method _build_point_patterns has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _build_point_patterns requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _build_point_patterns missing modifies (non-empty array)"
+      ],
+      "2C-N3": [
+        "Method _assess_financial_sustainability has wrong fusion_behavior in phase_C_litigation: veto_gate",
+        "N3 method _assess_financial_sustainability requires must include raw_facts and inferences",
+        "N3 method _assess_financial_sustainability missing modulates (non-empty array)",
+        "N3 veto condition trigger must be an object",
+        "N3 veto condition threshold must be an object",
+        "N3 veto condition consequence must be an object",
+        "N3 veto condition rationale must be an object",
+        "N3 veto condition override_possible must be an object"
+      ],
+      "other": [
+        "Missing cross_layer_fusion.N1_to_N2",
+        "Missing cross_layer_fusion.N2_to_N1",
+        "Missing cross_layer_fusion.N3_to_N1",
+        "Missing cross_layer_fusion.N3_to_N2",
+        "Missing cross_layer_fusion.all_to_N4",
+        "Missing or invalid N3_to_N1 relationship",
+        "Missing or invalid N3_to_N2 relationship"
+      ],
+      "0-required-fields": [
+        "Missing required field: identity.base_slot",
+        "Missing required field: fusion_specification.contract_type"
+      ],
+      "3-evidence_assembly": [
+        "R3 merge_strategy must be veto_gate, got None",
+        "R3.gate_logic must be a non-empty object"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got ''"
+      ],
+      "5-cross_layer_fusion": [
+        "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules"
+      ],
+      "6-human_answer_structure": [
+        "Missing S3_robustness_audit section"
+      ]
+    }
+  },
+  {
+    "file": "D3-Q3-v4.json",
+    "status": "FAIL",
+    "base_slot": "",
+    "question": "",
+    "contract_type": "TYPE_A",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "Missing required field: fusion_specification.contract_type",
+      "identity.contract_version must contain 'epistemological', got ''",
+      "Method _match_program_to_node has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _match_program_to_node requires must be a non-empty array",
+      "N2 method _match_program_to_node missing modifies (non-empty array)",
+      "Method _match_goal_to_budget has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _match_goal_to_budget requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _match_goal_to_budget missing modifies (non-empty array)",
+      "Method _consolidate_entities has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _consolidate_entities requires must be a non-empty array",
+      "N2 method _consolidate_entities missing modifies (non-empty array)",
+      "Method identify_responsible_entities has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method identify_responsible_entities requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method identify_responsible_entities missing modifies (non-empty array)",
+      "Method _score_responsibility_clarity has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _score_responsibility_clarity requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _score_responsibility_clarity missing modifies (non-empty array)",
+      "Method process_document has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method process_document requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method process_document missing modifies (non-empty array)",
+      "Method semantic_search has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method semantic_search requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method semantic_search missing modifies (non-empty array)",
+      "Method _apply_mmr has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _apply_mmr requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _apply_mmr missing modifies (non-empty array)",
+      "Method _classify_policy_domain has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _classify_policy_domain requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _classify_policy_domain missing modifies (non-empty array)",
+      "Method _classify_cross_cutting_themes has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _classify_cross_cutting_themes requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _classify_cross_cutting_themes missing modifies (non-empty array)",
+      "Method _classify_value_chain_link has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _classify_value_chain_link requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _classify_value_chain_link missing modifies (non-empty array)",
+      "Method _process_segment has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _process_segment requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _process_segment missing modifies (non-empty array)",
+      "Method _calculate_semantic_complexity has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _calculate_semantic_complexity requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _calculate_semantic_complexity missing modifies (non-empty array)",
+      "Method _compute_evidence_confidence has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method _compute_evidence_confidence requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method _compute_evidence_confidence missing modifies (non-empty array)",
+      "Method generate_traceability_record has wrong fusion_behavior in phase_B_computation: weighted_combination",
+      "N2 method generate_traceability_record requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method generate_traceability_record missing modifies (non-empty array)",
+      "Method _extract_from_responsibility_tables has wrong fusion_behavior in phase_C_litigation: veto_gate",
+      "N3 method _extract_from_responsibility_tables requires must include raw_facts and inferences",
+      "N3 method _extract_from_responsibility_tables missing modulates (non-empty array)",
+      "N3 veto condition trigger must be an object",
+      "N3 veto condition threshold must be an object",
+      "N3 veto condition consequence must be an object",
+      "N3 veto condition rationale must be an object",
+      "N3 veto condition override_possible must be an object",
+      "Method _vectorize_segments has wrong fusion_behavior in phase_C_litigation: veto_gate",
+      "N3 method _vectorize_segments requires must include raw_facts and inferences",
+      "N3 method _vectorize_segments missing modulates (non-empty array)",
+      "N3 veto condition trigger must be an object",
+      "N3 veto condition threshold must be an object",
+      "N3 veto condition consequence must be an object",
+      "N3 veto condition rationale must be an object",
+      "N3 veto condition override_possible must be an object",
+      "R3 merge_strategy must be veto_gate, got None",
+      "R3.gate_logic must be a non-empty object",
+      "Missing cross_layer_fusion.N1_to_N2",
+      "Missing cross_layer_fusion.N2_to_N1",
+      "Missing cross_layer_fusion.N3_to_N1",
+      "Missing cross_layer_fusion.N3_to_N2",
+      "Missing cross_layer_fusion.all_to_N4",
+      "Missing or invalid N3_to_N1 relationship",
+      "Missing or invalid N3_to_N2 relationship",
+      "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules",
+      "Missing S3_robustness_audit section"
+    ],
+    "warnings": [],
+    "error_groups": {
+      "2B-N2": [
+        "Method _match_program_to_node has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _match_program_to_node requires must be a non-empty array",
+        "N2 method _match_program_to_node missing modifies (non-empty array)",
+        "Method _match_goal_to_budget has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _match_goal_to_budget requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _match_goal_to_budget missing modifies (non-empty array)",
+        "Method _consolidate_entities has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _consolidate_entities requires must be a non-empty array",
+        "N2 method _consolidate_entities missing modifies (non-empty array)",
+        "Method identify_responsible_entities has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method identify_responsible_entities requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method identify_responsible_entities missing modifies (non-empty array)",
+        "Method _score_responsibility_clarity has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _score_responsibility_clarity requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _score_responsibility_clarity missing modifies (non-empty array)",
+        "Method process_document has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method process_document requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method process_document missing modifies (non-empty array)",
+        "Method semantic_search has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method semantic_search requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method semantic_search missing modifies (non-empty array)",
+        "Method _apply_mmr has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _apply_mmr requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _apply_mmr missing modifies (non-empty array)",
+        "Method _classify_policy_domain has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _classify_policy_domain requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _classify_policy_domain missing modifies (non-empty array)",
+        "Method _classify_cross_cutting_themes has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _classify_cross_cutting_themes requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _classify_cross_cutting_themes missing modifies (non-empty array)",
+        "Method _classify_value_chain_link has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _classify_value_chain_link requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _classify_value_chain_link missing modifies (non-empty array)",
+        "Method _process_segment has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _process_segment requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _process_segment missing modifies (non-empty array)",
+        "Method _calculate_semantic_complexity has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _calculate_semantic_complexity requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _calculate_semantic_complexity missing modifies (non-empty array)",
+        "Method _compute_evidence_confidence has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method _compute_evidence_confidence requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method _compute_evidence_confidence missing modifies (non-empty array)",
+        "Method generate_traceability_record has wrong fusion_behavior in phase_B_computation: weighted_combination",
+        "N2 method generate_traceability_record requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method generate_traceability_record missing modifies (non-empty array)"
+      ],
+      "2C-N3": [
+        "Method _extract_from_responsibility_tables has wrong fusion_behavior in phase_C_litigation: veto_gate",
+        "N3 method _extract_from_responsibility_tables requires must include raw_facts and inferences",
+        "N3 method _extract_from_responsibility_tables missing modulates (non-empty array)",
+        "N3 veto condition trigger must be an object",
+        "N3 veto condition threshold must be an object",
+        "N3 veto condition consequence must be an object",
+        "N3 veto condition rationale must be an object",
+        "N3 veto condition override_possible must be an object",
+        "Method _vectorize_segments has wrong fusion_behavior in phase_C_litigation: veto_gate",
+        "N3 method _vectorize_segments requires must include raw_facts and inferences",
+        "N3 method _vectorize_segments missing modulates (non-empty array)",
+        "N3 veto condition trigger must be an object",
+        "N3 veto condition threshold must be an object",
+        "N3 veto condition consequence must be an object",
+        "N3 veto condition rationale must be an object",
+        "N3 veto condition override_possible must be an object"
+      ],
+      "other": [
+        "Missing cross_layer_fusion.N1_to_N2",
+        "Missing cross_layer_fusion.N2_to_N1",
+        "Missing cross_layer_fusion.N3_to_N1",
+        "Missing cross_layer_fusion.N3_to_N2",
+        "Missing cross_layer_fusion.all_to_N4",
+        "Missing or invalid N3_to_N1 relationship",
+        "Missing or invalid N3_to_N2 relationship"
+      ],
+      "0-required-fields": [
+        "Missing required field: identity.base_slot",
+        "Missing required field: fusion_specification.contract_type"
+      ],
+      "3-evidence_assembly": [
+        "R3 merge_strategy must be veto_gate, got None",
+        "R3.gate_logic must be a non-empty object"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got ''"
+      ],
+      "5-cross_layer_fusion": [
+        "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules"
+      ],
+      "6-human_answer_structure": [
+        "Missing S3_robustness_audit section"
+      ]
+    }
+  },
+  {
+    "file": "D3-Q4-v4.json",
+    "status": "FAIL",
+    "base_slot": "D3-Q4-v4",
+    "question": "Q014",
+    "contract_type": "TYPE_C_CAUSAL_TOPOLOGICAL",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "Missing required field: fusion_specification.contract_type",
+      "identity.contract_version must contain 'epistemological', got ''",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+      "phase_B_computation method missing/invalid field: class_name",
+      "phase_B_computation method missing/invalid field: method_name",
+      "phase_B_computation method missing/invalid field: mother_file",
+      "phase_B_computation method missing/invalid field: description",
+      "Method None has wrong level in phase_B_computation: None",
+      "Method None has wrong output_type in phase_B_computation: None",
+      "Method None has wrong fusion_behavior in phase_B_computation: None",
+      "N2 method None missing modifies (non-empty array)",
+      "phase_B_computation method missing/invalid field: class_name",
+      "phase_B_computation method missing/invalid field: method_name",
+      "phase_B_computation method missing/invalid field: mother_file",
+      "phase_B_computation method missing/invalid field: description",
+      "Method None has wrong level in phase_B_computation: None",
+      "Method None has wrong output_type in phase_B_computation: None",
+      "Method None has wrong fusion_behavior in phase_B_computation: None",
+      "N2 method None missing modifies (non-empty array)",
+      "phase_B_computation method missing/invalid field: class_name",
+      "phase_B_computation method missing/invalid field: method_name",
+      "phase_B_computation method missing/invalid field: mother_file",
+      "phase_B_computation method missing/invalid field: description",
+      "Method None has wrong level in phase_B_computation: None",
+      "Method None has wrong output_type in phase_B_computation: None",
+      "Method None has wrong fusion_behavior in phase_B_computation: None",
+      "N2 method None missing modifies (non-empty array)",
+      "phase_B_computation method missing/invalid field: class_name",
+      "phase_B_computation method missing/invalid field: method_name",
+      "phase_B_computation method missing/invalid field: mother_file",
+      "phase_B_computation method missing/invalid field: description",
+      "Method None has wrong level in phase_B_computation: None",
+      "Method None has wrong output_type in phase_B_computation: None",
+      "Method None has wrong fusion_behavior in phase_B_computation: None",
+      "N2 method None missing modifies (non-empty array)",
+      "phase_B_computation method missing/invalid field: class_name",
+      "phase_B_computation method missing/invalid field: method_name",
+      "phase_B_computation method missing/invalid field: mother_file",
+      "phase_B_computation method missing/invalid field: description",
+      "Method None has wrong level in phase_B_computation: None",
+      "Method None has wrong output_type in phase_B_computation: None",
+      "Method None has wrong fusion_behavior in phase_B_computation: None",
+      "N2 method None missing modifies (non-empty array)",
+      "phase_B_computation method missing/invalid field: class_name",
+      "phase_B_computation method missing/invalid field: method_name",
+      "phase_B_computation method missing/invalid field: mother_file",
+      "phase_B_computation method missing/invalid field: description",
+      "Method None has wrong level in phase_B_computation: None",
+      "Method None has wrong output_type in phase_B_computation: None",
+      "Method None has wrong fusion_behavior in phase_B_computation: None",
+      "N2 method None missing modifies (non-empty array)",
+      "phase_B_computation method missing/invalid field: class_name",
+      "phase_B_computation method missing/invalid field: method_name",
+      "phase_B_computation method missing/invalid field: mother_file",
+      "phase_B_computation method missing/invalid field: description",
+      "Method None has wrong level in phase_B_computation: None",
+      "Method None has wrong output_type in phase_B_computation: None",
+      "Method None has wrong fusion_behavior in phase_B_computation: None",
+      "N2 method None requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method None missing modifies (non-empty array)",
+      "phase_B_computation method missing/invalid field: class_name",
+      "phase_B_computation method missing/invalid field: method_name",
+      "phase_B_computation method missing/invalid field: mother_file",
+      "phase_B_computation method missing/invalid field: description",
+      "Method None has wrong level in phase_B_computation: None",
+      "Method None has wrong output_type in phase_B_computation: None",
+      "Method None has wrong fusion_behavior in phase_B_computation: None",
+      "N2 method None requires must include raw_facts or PreprocesadoMetadata",
+      "N2 method None missing modifies (non-empty array)",
+      "phase_C_litigation method missing/invalid field: class_name",
+      "phase_C_litigation method missing/invalid field: method_name",
+      "phase_C_litigation method missing/invalid field: mother_file",
+      "phase_C_litigation method missing/invalid field: description",
+      "Method None has wrong level in phase_C_litigation: None",
+      "Method None has wrong output_type in phase_C_litigation: None",
+      "Method None has wrong fusion_behavior in phase_C_litigation: None",
+      "N3 method None requires must include raw_facts and inferences",
+      "N3 method None missing modulates (non-empty array)",
+      "N3 veto condition trigger must be an object",
+      "N3 veto condition blocked_layers must be an object",
+      "N3 veto condition veto_message must be an object",
+      "N3 veto condition recovery_protocol must be an object",
+      "R3 merge_strategy must be veto_gate, got None",
+      "R3.gate_logic must be a non-empty object",
+      "Missing cross_layer_fusion.N1_to_N2",
+      "Missing cross_layer_fusion.N2_to_N1",
+      "Missing cross_layer_fusion.N3_to_N1",
+      "Missing cross_layer_fusion.N3_to_N2",
+      "Missing cross_layer_fusion.all_to_N4",
+      "Missing or invalid N3_to_N1 relationship",
+      "Missing or invalid N3_to_N2 relationship",
+      "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules",
+      "Missing S3_robustness_audit section"
+    ],
+    "warnings": [],
+    "error_groups": {
+      "2B-N2": [
+        "phase_B_computation method missing/invalid field: class_name",
+        "phase_B_computation method missing/invalid field: method_name",
+        "phase_B_computation method missing/invalid field: mother_file",
+        "phase_B_computation method missing/invalid field: description",
+        "Method None has wrong level in phase_B_computation: None",
+        "Method None has wrong output_type in phase_B_computation: None",
+        "Method None has wrong fusion_behavior in phase_B_computation: None",
+        "N2 method None missing modifies (non-empty array)",
+        "phase_B_computation method missing/invalid field: class_name",
+        "phase_B_computation method missing/invalid field: method_name",
+        "phase_B_computation method missing/invalid field: mother_file",
+        "phase_B_computation method missing/invalid field: description",
+        "Method None has wrong level in phase_B_computation: None",
+        "Method None has wrong output_type in phase_B_computation: None",
+        "Method None has wrong fusion_behavior in phase_B_computation: None",
+        "N2 method None missing modifies (non-empty array)",
+        "phase_B_computation method missing/invalid field: class_name",
+        "phase_B_computation method missing/invalid field: method_name",
+        "phase_B_computation method missing/invalid field: mother_file",
+        "phase_B_computation method missing/invalid field: description",
+        "Method None has wrong level in phase_B_computation: None",
+        "Method None has wrong output_type in phase_B_computation: None",
+        "Method None has wrong fusion_behavior in phase_B_computation: None",
+        "N2 method None missing modifies (non-empty array)",
+        "phase_B_computation method missing/invalid field: class_name",
+        "phase_B_computation method missing/invalid field: method_name",
+        "phase_B_computation method missing/invalid field: mother_file",
+        "phase_B_computation method missing/invalid field: description",
+        "Method None has wrong level in phase_B_computation: None",
+        "Method None has wrong output_type in phase_B_computation: None",
+        "Method None has wrong fusion_behavior in phase_B_computation: None",
+        "N2 method None missing modifies (non-empty array)",
+        "phase_B_computation method missing/invalid field: class_name",
+        "phase_B_computation method missing/invalid field: method_name",
+        "phase_B_computation method missing/invalid field: mother_file",
+        "phase_B_computation method missing/invalid field: description",
+        "Method None has wrong level in phase_B_computation: None",
+        "Method None has wrong output_type in phase_B_computation: None",
+        "Method None has wrong fusion_behavior in phase_B_computation: None",
+        "N2 method None missing modifies (non-empty array)",
+        "phase_B_computation method missing/invalid field: class_name",
+        "phase_B_computation method missing/invalid field: method_name",
+        "phase_B_computation method missing/invalid field: mother_file",
+        "phase_B_computation method missing/invalid field: description",
+        "Method None has wrong level in phase_B_computation: None",
+        "Method None has wrong output_type in phase_B_computation: None",
+        "Method None has wrong fusion_behavior in phase_B_computation: None",
+        "N2 method None missing modifies (non-empty array)",
+        "phase_B_computation method missing/invalid field: class_name",
+        "phase_B_computation method missing/invalid field: method_name",
+        "phase_B_computation method missing/invalid field: mother_file",
+        "phase_B_computation method missing/invalid field: description",
+        "Method None has wrong level in phase_B_computation: None",
+        "Method None has wrong output_type in phase_B_computation: None",
+        "Method None has wrong fusion_behavior in phase_B_computation: None",
+        "N2 method None requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method None missing modifies (non-empty array)",
+        "phase_B_computation method missing/invalid field: class_name",
+        "phase_B_computation method missing/invalid field: method_name",
+        "phase_B_computation method missing/invalid field: mother_file",
+        "phase_B_computation method missing/invalid field: description",
+        "Method None has wrong level in phase_B_computation: None",
+        "Method None has wrong output_type in phase_B_computation: None",
+        "Method None has wrong fusion_behavior in phase_B_computation: None",
+        "N2 method None requires must include raw_facts or PreprocesadoMetadata",
+        "N2 method None missing modifies (non-empty array)"
+      ],
+      "2C-N3": [
+        "phase_C_litigation method missing/invalid field: class_name",
+        "phase_C_litigation method missing/invalid field: method_name",
+        "phase_C_litigation method missing/invalid field: mother_file",
+        "phase_C_litigation method missing/invalid field: description",
+        "Method None has wrong level in phase_C_litigation: None",
+        "Method None has wrong output_type in phase_C_litigation: None",
+        "Method None has wrong fusion_behavior in phase_C_litigation: None",
+        "N3 method None requires must include raw_facts and inferences",
+        "N3 method None missing modulates (non-empty array)",
+        "N3 veto condition trigger must be an object",
+        "N3 veto condition blocked_layers must be an object",
+        "N3 veto condition veto_message must be an object",
+        "N3 veto condition recovery_protocol must be an object"
+      ],
+      "other": [
+        "Missing cross_layer_fusion.N1_to_N2",
+        "Missing cross_layer_fusion.N2_to_N1",
+        "Missing cross_layer_fusion.N3_to_N1",
+        "Missing cross_layer_fusion.N3_to_N2",
+        "Missing cross_layer_fusion.all_to_N4",
+        "Missing or invalid N3_to_N1 relationship",
+        "Missing or invalid N3_to_N2 relationship"
+      ],
+      "0-required-fields": [
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type",
+        "Missing required field: fusion_specification.contract_type"
+      ],
+      "3-evidence_assembly": [
+        "R3 merge_strategy must be veto_gate, got None",
+        "R3.gate_logic must be a non-empty object"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got ''"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None"
+      ],
+      "5-cross_layer_fusion": [
+        "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules"
+      ],
+      "6-human_answer_structure": [
+        "Missing S3_robustness_audit section"
+      ]
+    }
+  },
+  {
+    "file": "D3-Q5-v4.json",
+    "status": "FAIL",
+    "base_slot": "",
+    "question": "",
+    "contract_type": null,
+    "errors": [
+      "Missing required field: identity.contract_type",
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "Missing required field: method_binding.execution_phases",
+      "Missing required field: evidence_assembly.type_system",
+      "Missing required field: evidence_assembly.assembly_rules",
+      "Missing required field: fusion_specification.contract_type",
+      "Missing required field: fusion_specification.level_strategies",
+      "Missing required field: cross_layer_fusion",
+      "Missing required field: human_answer_structure.sections",
+      "identity.contract_version must contain 'epistemological', got ''",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+      "Missing phase_A_construction (N1)",
+      "Missing phase_B_computation (N2)",
+      "Missing phase_C_litigation (N3)",
+      "phase_A_construction.methods must be an array",
+      "phase_B_computation.methods must be an array",
+      "phase_C_litigation.methods must be an array",
+      "evidence_assembly.assembly_rules must be an array",
+      "Missing cross_layer_fusion.N1_to_N2",
+      "Missing cross_layer_fusion.N2_to_N1",
+      "Missing cross_layer_fusion.N3_to_N1",
+      "Missing cross_layer_fusion.N3_to_N2",
+      "Missing cross_layer_fusion.all_to_N4",
+      "Missing or invalid N3_to_N1 relationship",
+      "Missing or invalid N3_to_N2 relationship",
+      "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules",
+      "human_answer_structure.sections must be an array"
+    ],
+    "warnings": [],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.contract_type",
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type",
+        "Missing required field: method_binding.execution_phases",
+        "Missing required field: evidence_assembly.type_system",
+        "Missing required field: evidence_assembly.assembly_rules",
+        "Missing required field: fusion_specification.contract_type",
+        "Missing required field: fusion_specification.level_strategies",
+        "Missing required field: cross_layer_fusion",
+        "Missing required field: human_answer_structure.sections"
+      ],
+      "other": [
+        "Missing cross_layer_fusion.N1_to_N2",
+        "Missing cross_layer_fusion.N2_to_N1",
+        "Missing cross_layer_fusion.N3_to_N1",
+        "Missing cross_layer_fusion.N3_to_N2",
+        "Missing cross_layer_fusion.all_to_N4",
+        "Missing or invalid N3_to_N1 relationship",
+        "Missing or invalid N3_to_N2 relationship"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+        "Missing phase_A_construction (N1)",
+        "Missing phase_B_computation (N2)",
+        "Missing phase_C_litigation (N3)"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got ''"
+      ],
+      "2A-N1": [
+        "phase_A_construction.methods must be an array"
+      ],
+      "2B-N2": [
+        "phase_B_computation.methods must be an array"
+      ],
+      "2C-N3": [
+        "phase_C_litigation.methods must be an array"
+      ],
+      "3-evidence_assembly": [
+        "evidence_assembly.assembly_rules must be an array"
+      ],
+      "5-cross_layer_fusion": [
+        "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules"
+      ],
+      "6-human_answer_structure": [
+        "human_answer_structure.sections must be an array"
+      ]
+    }
+  },
+  {
+    "file": "D4-Q1-v4.json",
+    "status": "FAIL",
+    "base_slot": "",
+    "question": "",
+    "contract_type": null,
+    "errors": [
+      "Missing required field: identity.contract_type",
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "Missing required field: method_binding.execution_phases",
+      "Missing required field: evidence_assembly.type_system",
+      "Missing required field: evidence_assembly.assembly_rules",
+      "Missing required field: fusion_specification.contract_type",
+      "Missing required field: fusion_specification.level_strategies",
+      "Missing required field: cross_layer_fusion",
+      "Missing required field: human_answer_structure.sections",
+      "identity.contract_version must contain 'epistemological', got ''",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+      "Missing phase_A_construction (N1)",
+      "Missing phase_B_computation (N2)",
+      "Missing phase_C_litigation (N3)",
+      "phase_A_construction.methods must be an array",
+      "phase_B_computation.methods must be an array",
+      "phase_C_litigation.methods must be an array",
+      "evidence_assembly.assembly_rules must be an array",
+      "Missing cross_layer_fusion.N1_to_N2",
+      "Missing cross_layer_fusion.N2_to_N1",
+      "Missing cross_layer_fusion.N3_to_N1",
+      "Missing cross_layer_fusion.N3_to_N2",
+      "Missing cross_layer_fusion.all_to_N4",
+      "Missing or invalid N3_to_N1 relationship",
+      "Missing or invalid N3_to_N2 relationship",
+      "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules",
+      "human_answer_structure.sections must be an array"
+    ],
+    "warnings": [],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.contract_type",
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type",
+        "Missing required field: method_binding.execution_phases",
+        "Missing required field: evidence_assembly.type_system",
+        "Missing required field: evidence_assembly.assembly_rules",
+        "Missing required field: fusion_specification.contract_type",
+        "Missing required field: fusion_specification.level_strategies",
+        "Missing required field: cross_layer_fusion",
+        "Missing required field: human_answer_structure.sections"
+      ],
+      "other": [
+        "Missing cross_layer_fusion.N1_to_N2",
+        "Missing cross_layer_fusion.N2_to_N1",
+        "Missing cross_layer_fusion.N3_to_N1",
+        "Missing cross_layer_fusion.N3_to_N2",
+        "Missing cross_layer_fusion.all_to_N4",
+        "Missing or invalid N3_to_N1 relationship",
+        "Missing or invalid N3_to_N2 relationship"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+        "Missing phase_A_construction (N1)",
+        "Missing phase_B_computation (N2)",
+        "Missing phase_C_litigation (N3)"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got ''"
+      ],
+      "2A-N1": [
+        "phase_A_construction.methods must be an array"
+      ],
+      "2B-N2": [
+        "phase_B_computation.methods must be an array"
+      ],
+      "2C-N3": [
+        "phase_C_litigation.methods must be an array"
+      ],
+      "3-evidence_assembly": [
+        "evidence_assembly.assembly_rules must be an array"
+      ],
+      "5-cross_layer_fusion": [
+        "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules"
+      ],
+      "6-human_answer_structure": [
+        "human_answer_structure.sections must be an array"
+      ]
+    }
+  },
+  {
+    "file": "D4-Q2-v4.json",
+    "status": "FAIL",
+    "base_slot": "",
+    "question": "",
+    "contract_type": null,
+    "errors": [
+      "Missing required field: identity.contract_type",
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "Missing required field: method_binding.execution_phases",
+      "Missing required field: evidence_assembly.type_system",
+      "Missing required field: evidence_assembly.assembly_rules",
+      "Missing required field: fusion_specification.contract_type",
+      "Missing required field: fusion_specification.level_strategies",
+      "Missing required field: cross_layer_fusion",
+      "Missing required field: human_answer_structure.sections",
+      "identity.contract_version must contain 'epistemological', got ''",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+      "Missing phase_A_construction (N1)",
+      "Missing phase_B_computation (N2)",
+      "Missing phase_C_litigation (N3)",
+      "phase_A_construction.methods must be an array",
+      "phase_B_computation.methods must be an array",
+      "phase_C_litigation.methods must be an array",
+      "evidence_assembly.assembly_rules must be an array",
+      "Missing cross_layer_fusion.N1_to_N2",
+      "Missing cross_layer_fusion.N2_to_N1",
+      "Missing cross_layer_fusion.N3_to_N1",
+      "Missing cross_layer_fusion.N3_to_N2",
+      "Missing cross_layer_fusion.all_to_N4",
+      "Missing or invalid N3_to_N1 relationship",
+      "Missing or invalid N3_to_N2 relationship",
+      "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules",
+      "human_answer_structure.sections must be an array"
+    ],
+    "warnings": [],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.contract_type",
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type",
+        "Missing required field: method_binding.execution_phases",
+        "Missing required field: evidence_assembly.type_system",
+        "Missing required field: evidence_assembly.assembly_rules",
+        "Missing required field: fusion_specification.contract_type",
+        "Missing required field: fusion_specification.level_strategies",
+        "Missing required field: cross_layer_fusion",
+        "Missing required field: human_answer_structure.sections"
+      ],
+      "other": [
+        "Missing cross_layer_fusion.N1_to_N2",
+        "Missing cross_layer_fusion.N2_to_N1",
+        "Missing cross_layer_fusion.N3_to_N1",
+        "Missing cross_layer_fusion.N3_to_N2",
+        "Missing cross_layer_fusion.all_to_N4",
+        "Missing or invalid N3_to_N1 relationship",
+        "Missing or invalid N3_to_N2 relationship"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+        "Missing phase_A_construction (N1)",
+        "Missing phase_B_computation (N2)",
+        "Missing phase_C_litigation (N3)"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got ''"
+      ],
+      "2A-N1": [
+        "phase_A_construction.methods must be an array"
+      ],
+      "2B-N2": [
+        "phase_B_computation.methods must be an array"
+      ],
+      "2C-N3": [
+        "phase_C_litigation.methods must be an array"
+      ],
+      "3-evidence_assembly": [
+        "evidence_assembly.assembly_rules must be an array"
+      ],
+      "5-cross_layer_fusion": [
+        "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules"
+      ],
+      "6-human_answer_structure": [
+        "human_answer_structure.sections must be an array"
+      ]
+    }
+  },
+  {
+    "file": "D4-Q3-v4.json",
+    "status": "FAIL",
+    "base_slot": "",
+    "question": "",
+    "contract_type": null,
+    "errors": [
+      "Missing required field: identity.contract_type",
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "Missing required field: method_binding.execution_phases",
+      "Missing required field: evidence_assembly.type_system",
+      "Missing required field: evidence_assembly.assembly_rules",
+      "Missing required field: fusion_specification.contract_type",
+      "Missing required field: fusion_specification.level_strategies",
+      "Missing required field: cross_layer_fusion",
+      "Missing required field: human_answer_structure.sections",
+      "identity.contract_version must contain 'epistemological', got ''",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+      "Missing phase_A_construction (N1)",
+      "Missing phase_B_computation (N2)",
+      "Missing phase_C_litigation (N3)",
+      "phase_A_construction.methods must be an array",
+      "phase_B_computation.methods must be an array",
+      "phase_C_litigation.methods must be an array",
+      "evidence_assembly.assembly_rules must be an array",
+      "Missing cross_layer_fusion.N1_to_N2",
+      "Missing cross_layer_fusion.N2_to_N1",
+      "Missing cross_layer_fusion.N3_to_N1",
+      "Missing cross_layer_fusion.N3_to_N2",
+      "Missing cross_layer_fusion.all_to_N4",
+      "Missing or invalid N3_to_N1 relationship",
+      "Missing or invalid N3_to_N2 relationship",
+      "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules",
+      "human_answer_structure.sections must be an array"
+    ],
+    "warnings": [],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.contract_type",
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type",
+        "Missing required field: method_binding.execution_phases",
+        "Missing required field: evidence_assembly.type_system",
+        "Missing required field: evidence_assembly.assembly_rules",
+        "Missing required field: fusion_specification.contract_type",
+        "Missing required field: fusion_specification.level_strategies",
+        "Missing required field: cross_layer_fusion",
+        "Missing required field: human_answer_structure.sections"
+      ],
+      "other": [
+        "Missing cross_layer_fusion.N1_to_N2",
+        "Missing cross_layer_fusion.N2_to_N1",
+        "Missing cross_layer_fusion.N3_to_N1",
+        "Missing cross_layer_fusion.N3_to_N2",
+        "Missing cross_layer_fusion.all_to_N4",
+        "Missing or invalid N3_to_N1 relationship",
+        "Missing or invalid N3_to_N2 relationship"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+        "Missing phase_A_construction (N1)",
+        "Missing phase_B_computation (N2)",
+        "Missing phase_C_litigation (N3)"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got ''"
+      ],
+      "2A-N1": [
+        "phase_A_construction.methods must be an array"
+      ],
+      "2B-N2": [
+        "phase_B_computation.methods must be an array"
+      ],
+      "2C-N3": [
+        "phase_C_litigation.methods must be an array"
+      ],
+      "3-evidence_assembly": [
+        "evidence_assembly.assembly_rules must be an array"
+      ],
+      "5-cross_layer_fusion": [
+        "cross_layer_fusion.blocking_propagation_rules must be an object with at least 2 rules"
+      ],
+      "6-human_answer_structure": [
+        "human_answer_structure.sections must be an array"
+      ]
+    }
+  },
+  {
+    "file": "D4-Q4-v4.json",
+    "status": "FAIL",
+    "base_slot": "D4-Q4",
+    "question": "Q019",
+    "contract_type": "TYPE_E",
+    "errors": [
+      "N3 method _detect_allocation_gaps requires must include raw_facts and inferences",
+      "cross_layer_fusion.N1_to_N2.relationship must mention 'N2 reads N1', got 'N2 reads PreprocesadoMetadata directly'",
+      "cross_layer_fusion.N2_to_N1.relationship must mention 'N2 modifies N1', got 'Not applicable'",
+      "cross_layer_fusion.N2_to_N1.data_flow must be 'confidence_backpropagation', got 'none'",
+      "Missing cross_layer_fusion.N3_to_N1",
+      "Missing or invalid N3_to_N1 relationship"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "5-cross_layer_fusion": [
+        "cross_layer_fusion.N1_to_N2.relationship must mention 'N2 reads N1', got 'N2 reads PreprocesadoMetadata directly'",
+        "cross_layer_fusion.N2_to_N1.relationship must mention 'N2 modifies N1', got 'Not applicable'",
+        "cross_layer_fusion.N2_to_N1.data_flow must be 'confidence_backpropagation', got 'none'"
+      ],
+      "other": [
+        "Missing cross_layer_fusion.N3_to_N1",
+        "Missing or invalid N3_to_N1 relationship"
+      ],
+      "2C-N3": [
+        "N3 method _detect_allocation_gaps requires must include raw_facts and inferences"
+      ]
+    }
+  },
+  {
+    "file": "D4-Q5-v4.json",
+    "status": "FAIL",
+    "base_slot": "D4-Q5-v4",
+    "question": "Q020",
+    "contract_type": "TYPE_D",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "identity.contract_version must contain 'epistemological', got '4.0.0'",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+      "Inconsistent contract_type declarations: {'identity': 'TYPE_D', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got '4.0.0'"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None"
+      ],
+      "8-type-consistency": [
+        "Inconsistent contract_type declarations: {'identity': 'TYPE_D', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+      ]
+    }
+  },
+  {
+    "file": "D5-Q1-v4.json",
+    "status": "FAIL",
+    "base_slot": "D5-Q1-v4",
+    "question": "Q021",
+    "contract_type": "TYPE_D",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "identity.contract_version must contain 'epistemological', got '4.0.0'",
+      "Inconsistent contract_type declarations: {'identity': 'TYPE_D', 'method_binding': 'TYPE_D', 'fusion_specification': 'TYPE_D', 'human_answer': 'TYPE_B'}"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.base_slot"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got '4.0.0'"
+      ],
+      "8-type-consistency": [
+        "Inconsistent contract_type declarations: {'identity': 'TYPE_D', 'method_binding': 'TYPE_D', 'fusion_specification': 'TYPE_D', 'human_answer': 'TYPE_B'}"
+      ]
+    }
+  },
+  {
+    "file": "D5-Q2-v4.json",
+    "status": "FAIL",
+    "base_slot": "D5-Q2-v4",
+    "question": "Q022",
+    "contract_type": "TYPE_A",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "identity.contract_version must contain 'epistemological', got '4.0.0'",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+      "Inconsistent contract_type declarations: {'identity': 'TYPE_A', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got '4.0.0'"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None"
+      ],
+      "8-type-consistency": [
+        "Inconsistent contract_type declarations: {'identity': 'TYPE_A', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+      ]
+    }
+  },
+  {
+    "file": "D5-Q3-v4.json",
+    "status": "FAIL",
+    "base_slot": "D5-Q3-v4",
+    "question": "Q023",
+    "contract_type": "TYPE_B",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "identity.contract_version must contain 'epistemological', got '4.0.0'",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got '4.0.0'"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None"
+      ]
+    }
+  },
+  {
+    "file": "D5-Q4-v4.json",
+    "status": "FAIL",
+    "base_slot": "D5-Q4-v4",
+    "question": "Q024",
+    "contract_type": "TYPE_C",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "identity.contract_version must contain 'epistemological', got '4.0.0'",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+      "Inconsistent contract_type declarations: {'identity': 'TYPE_C', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got '4.0.0'"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None"
+      ],
+      "8-type-consistency": [
+        "Inconsistent contract_type declarations: {'identity': 'TYPE_C', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+      ]
+    }
+  },
+  {
+    "file": "D5-Q5-v4.json",
+    "status": "FAIL",
+    "base_slot": "D5-Q5-v4",
+    "question": "Q025",
+    "contract_type": "TYPE_D",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "identity.contract_version must contain 'epistemological', got '4.0.0'",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+      "Inconsistent contract_type declarations: {'identity': 'TYPE_D', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got '4.0.0'"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None"
+      ],
+      "8-type-consistency": [
+        "Inconsistent contract_type declarations: {'identity': 'TYPE_D', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+      ]
+    }
+  },
+  {
+    "file": "D6-Q1-v4.json",
+    "status": "FAIL",
+    "base_slot": "D6-Q1-v4",
+    "question": "Q026",
+    "contract_type": "TYPE_E",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "identity.contract_version must contain 'epistemological', got '4.0.0'",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+      "Inconsistent contract_type declarations: {'identity': 'TYPE_E', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got '4.0.0'"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None"
+      ],
+      "8-type-consistency": [
+        "Inconsistent contract_type declarations: {'identity': 'TYPE_E', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+      ]
+    }
+  },
+  {
+    "file": "D6-Q2-v4.json",
+    "status": "FAIL",
+    "base_slot": "D6-Q2-v4",
+    "question": "Q027",
+    "contract_type": "TYPE_A",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "identity.contract_version must contain 'epistemological', got '4.0.0'",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+      "Inconsistent contract_type declarations: {'identity': 'TYPE_A', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got '4.0.0'"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None"
+      ],
+      "8-type-consistency": [
+        "Inconsistent contract_type declarations: {'identity': 'TYPE_A', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+      ]
+    }
+  },
+  {
+    "file": "D6-Q3-v4.json",
+    "status": "FAIL",
+    "base_slot": "D6-Q3-v4",
+    "question": "Q028",
+    "contract_type": "TYPE_B",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "identity.contract_version must contain 'epistemological', got '4.0.0'",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got '4.0.0'"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None"
+      ]
+    }
+  },
+  {
+    "file": "D6-Q4-v4.json",
+    "status": "FAIL",
+    "base_slot": "D6-Q4-v4",
+    "question": "Q029",
+    "contract_type": "TYPE_C",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "identity.contract_version must contain 'epistemological', got '4.0.0'",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+      "Inconsistent contract_type declarations: {'identity': 'TYPE_C', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got '4.0.0'"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None"
+      ],
+      "8-type-consistency": [
+        "Inconsistent contract_type declarations: {'identity': 'TYPE_C', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+      ]
+    }
+  },
+  {
+    "file": "D6-Q5-v4.json",
+    "status": "FAIL",
+    "base_slot": "D6-Q5-v4",
+    "question": "Q030",
+    "contract_type": "TYPE_D",
+    "errors": [
+      "Missing required field: identity.base_slot",
+      "Missing required field: method_binding.orchestration_mode",
+      "Missing required field: method_binding.contract_type",
+      "identity.contract_version must contain 'epistemological', got '4.0.0'",
+      "method_binding.orchestration_mode must be 'epistemological_pipeline', got None",
+      "Inconsistent contract_type declarations: {'identity': 'TYPE_D', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+    ],
+    "warnings": [
+      "S3.veto_display.if_veto_triggered should contain 'ALERTA' and 'INVÁLIDO'"
+    ],
+    "error_groups": {
+      "0-required-fields": [
+        "Missing required field: identity.base_slot",
+        "Missing required field: method_binding.orchestration_mode",
+        "Missing required field: method_binding.contract_type"
+      ],
+      "1-identity": [
+        "identity.contract_version must contain 'epistemological', got '4.0.0'"
+      ],
+      "2-method_binding": [
+        "method_binding.orchestration_mode must be 'epistemological_pipeline', got None"
+      ],
+      "8-type-consistency": [
+        "Inconsistent contract_type declarations: {'identity': 'TYPE_D', 'method_binding': None, 'fusion_specification': 'TYPE_B', 'human_answer': 'TYPE_B'}"
+      ]
+    }
+  }
+]

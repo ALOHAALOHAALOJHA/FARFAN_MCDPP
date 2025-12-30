@@ -1,0 +1,1078 @@
+{
+  "N1": [
+    {
+      "class": "PolicyContradictionDetector",
+      "method": "_extract_temporal_markers",
+      "file": "contradiction_deteccion.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 3,
+        "recursos": 1
+      },
+      "weighted_total": 16.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "TemporalLogicVerifier",
+      "method": "_extract_resources",
+      "file": "contradiction_deteccion.py",
+      "scores": {
+        "actividad_meta": 0,
+        "plazos": 5,
+        "recursos": 3
+      },
+      "weighted_total": 24.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "now",
+      "method": "_extract_observations",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 0,
+        "recursos": 3
+      },
+      "weighted_total": 21.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "CDAFFramework",
+      "method": "_extract_feedback_from_audit",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 4,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 19.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "FinancialAuditor",
+      "method": "_parse_amount",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 0,
+        "recursos": 3
+      },
+      "weighted_total": 13.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "_extract_budget_for_pillar",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 0,
+        "recursos": 3
+      },
+      "weighted_total": 13.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "PolicyContradictionDetector",
+      "method": "_extract_quantitative_claims",
+      "file": "contradiction_deteccion.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 7.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "_identify_funding_source",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 0,
+        "plazos": 0,
+        "recursos": 6
+      },
+      "weighted_total": 18.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "_extract_from_budget_table",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 0,
+        "plazos": 0,
+        "recursos": 6
+      },
+      "weighted_total": 18.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "PolicyContradictionDetector",
+      "method": "_parse_number",
+      "file": "contradiction_deteccion.py",
+      "scores": {
+        "actividad_meta": 0,
+        "plazos": 0,
+        "recursos": 5
+      },
+      "weighted_total": 15.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "PolicyContradictionDetector",
+      "method": "_extract_resource_mentions",
+      "file": "contradiction_deteccion.py",
+      "scores": {
+        "actividad_meta": 0,
+        "plazos": 0,
+        "recursos": 5
+      },
+      "weighted_total": 15.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "CausalExtractor",
+      "method": "_extract_goals",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 0,
+        "recursos": 0
+      },
+      "weighted_total": 12.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "CausalExtractor",
+      "method": "_parse_goal_context",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 0,
+        "recursos": 0
+      },
+      "weighted_total": 12.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "CausalExtractor",
+      "method": "extract_causal_hierarchy",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 2,
+        "plazos": 0,
+        "recursos": 0
+      },
+      "weighted_total": 8.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "_extract_financial_amounts",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 0,
+        "plazos": 0,
+        "recursos": 2
+      },
+      "weighted_total": 6.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "_identify_confounders",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 0,
+        "plazos": 0,
+        "recursos": 2
+      },
+      "weighted_total": 6.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "PDFProcessor",
+      "method": "extract_text",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 0,
+        "recursos": 0
+      },
+      "weighted_total": 4.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "PDFProcessor",
+      "method": "extract_tables",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 0,
+        "recursos": 0
+      },
+      "weighted_total": 4.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "CausalExtractor",
+      "method": "_extract_goal_text",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 0,
+        "recursos": 0
+      },
+      "weighted_total": 4.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "MechanismPartExtractor",
+      "method": "extract_entity_activity",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 0,
+        "recursos": 0
+      },
+      "weighted_total": 4.0,
+      "dimensions_covered": 1
+    }
+  ],
+  "N2": [
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "generate_executive_report",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 4,
+        "plazos": 2,
+        "recursos": 5
+      },
+      "weighted_total": 37.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "generate_recommendations",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 5,
+        "plazos": 3,
+        "recursos": 1
+      },
+      "weighted_total": 32.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "CausalExtractor",
+      "method": "_assess_temporal_coherence",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 1,
+        "recursos": 3
+      },
+      "weighted_total": 24.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "OperationalizationAuditor",
+      "method": "_get_remediation_text",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 1,
+        "recursos": 3
+      },
+      "weighted_total": 24.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "_scenario_to_dict",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 4,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 22.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "_quality_to_dict",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 4,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 22.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "_generate_recommendations",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 2,
+        "plazos": 1,
+        "recursos": 2
+      },
+      "weighted_total": 17.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "export_causal_network",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 3
+      },
+      "weighted_total": 16.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PolicyContradictionDetector",
+      "method": "_determine_semantic_role",
+      "file": "contradiction_deteccion.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 3
+      },
+      "weighted_total": 16.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "OperationalizationAuditor",
+      "method": "_build_normative_dag",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 2,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 14.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "calculate_quality_score",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 2,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 14.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "AdaptivePriorCalculator",
+      "method": "sensitivity_analysis",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 2
+      },
+      "weighted_total": 13.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "_generate_optimal_remediations",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 2
+      },
+      "weighted_total": 13.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "CausalExtractor",
+      "method": "_get_policy_area_keywords",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 10.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "CausalExtractor",
+      "method": "_calculate_dynamic_weights",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 10.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "CausalExtractor",
+      "method": "_calculate_composite_likelihood",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 10.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "AdaptivePriorCalculator",
+      "method": "__init__",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 10.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "AdaptivePriorCalculator",
+      "method": "calculate_likelihood_adaptativo",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 10.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "FinancialAuditor",
+      "method": "__init__",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 4,
+        "plazos": 0,
+        "recursos": 5
+      },
+      "weighted_total": 31.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "FinancialAuditor",
+      "method": "trace_financial_allocation",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 4,
+        "plazos": 0,
+        "recursos": 5
+      },
+      "weighted_total": 31.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "now",
+      "method": "_infer_single_mechanism",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 6,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 27.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "now",
+      "method": "_calculate_coherence_factor",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 5,
+        "plazos": 0,
+        "recursos": 2
+      },
+      "weighted_total": 26.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "TemporalLogicVerifier",
+      "method": "__init__",
+      "file": "contradiction_deteccion.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 7,
+        "recursos": 0
+      },
+      "weighted_total": 25.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "FinancialAuditor",
+      "method": "_calculate_sufficiency",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 0,
+        "recursos": 4
+      },
+      "weighted_total": 24.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "TemporalLogicVerifier",
+      "method": "_are_mutually_exclusive",
+      "file": "contradiction_deteccion.py",
+      "scores": {
+        "actividad_meta": 0,
+        "plazos": 5,
+        "recursos": 3
+      },
+      "weighted_total": 24.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "now",
+      "method": "_log_refactored_components",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 5,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 23.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "CDAFFramework",
+      "method": "_json_default",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 5,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 23.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "CDAFFramework",
+      "method": "_sanitize_transition_probabilities",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 5,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 23.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "now",
+      "method": "_generate_necessity_remediation",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 4,
+        "plazos": 0,
+        "recursos": 2
+      },
+      "weighted_total": 22.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "DerekBeachProducer",
+      "method": "counterfactual_query",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 4,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 19.0,
+      "dimensions_covered": 2
+    }
+  ],
+  "N3": [
+    {
+      "class": "FinancialAuditor",
+      "method": "_perform_counterfactual_budget_check",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 5,
+        "plazos": 0,
+        "recursos": 5
+      },
+      "weighted_total": 35.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "now",
+      "method": "_test_sufficiency",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 5,
+        "plazos": 0,
+        "recursos": 4
+      },
+      "weighted_total": 32.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "now",
+      "method": "_test_necessity",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 5,
+        "plazos": 0,
+        "recursos": 3
+      },
+      "weighted_total": 29.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "OperationalizationAuditor",
+      "method": "_perform_counterfactual_budget_check",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 4,
+        "plazos": 0,
+        "recursos": 3
+      },
+      "weighted_total": 25.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "FinancialAuditor",
+      "method": "_detect_allocation_gaps",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 0,
+        "recursos": 3
+      },
+      "weighted_total": 21.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "OperationalizationAuditor",
+      "method": "_audit_causal_implications",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 2,
+        "plazos": 0,
+        "recursos": 4
+      },
+      "weighted_total": 20.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "OperationalizationAuditor",
+      "method": "audit_causal_coherence_d6",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 4,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 19.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "BayesianCounterfactualAuditor",
+      "method": "aggregate_risk_and_prioritize",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 0,
+        "recursos": 2
+      },
+      "weighted_total": 18.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "OperationalizationAuditor",
+      "method": "audit_sequence_logic",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 1,
+        "recursos": 0
+      },
+      "weighted_total": 15.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "now",
+      "method": "_detect_gaps",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 15.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "BayesianCounterfactualAuditor",
+      "method": "_test_effect_stability",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 15.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "DerekBeachProducer",
+      "method": "classify_test_type",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 15.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "DerekBeachProducer",
+      "method": "aggregate_risk",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 15.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "BeachEvidentialTest",
+      "method": "classify_test",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 2,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 11.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "OperationalizationAuditor",
+      "method": "_audit_systemic_risk",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 2,
+        "plazos": 1,
+        "recursos": 0
+      },
+      "weighted_total": 11.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "CausalExtractor",
+      "method": "_check_structural_violation",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 2,
+        "recursos": 0
+      },
+      "weighted_total": 10.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "PDETAnalysisException",
+      "method": "_run_quality_gates",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 0,
+        "recursos": 1
+      },
+      "weighted_total": 7.0,
+      "dimensions_covered": 2
+    },
+    {
+      "class": "TemporalLogicVerifier",
+      "method": "_check_deadline_constraints",
+      "file": "contradiction_deteccion.py",
+      "scores": {
+        "actividad_meta": 0,
+        "plazos": 6,
+        "recursos": 0
+      },
+      "weighted_total": 18.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "PolicyContradictionDetector",
+      "method": "_detect_resource_conflicts",
+      "file": "contradiction_deteccion.py",
+      "scores": {
+        "actividad_meta": 0,
+        "plazos": 0,
+        "recursos": 4
+      },
+      "weighted_total": 12.0,
+      "dimensions_covered": 1
+    },
+    {
+      "class": "now",
+      "method": "_aggregate_bayesian_confidence",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 0,
+        "plazos": 0,
+        "recursos": 3
+      },
+      "weighted_total": 9.0,
+      "dimensions_covered": 1
+    }
+  ],
+  "all_3_dimensions": [
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "generate_executive_report",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 4,
+        "plazos": 2,
+        "recursos": 5
+      },
+      "weighted_total": 37.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "generate_recommendations",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 5,
+        "plazos": 3,
+        "recursos": 1
+      },
+      "weighted_total": 32.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "CausalExtractor",
+      "method": "_assess_temporal_coherence",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 1,
+        "recursos": 3
+      },
+      "weighted_total": 24.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "OperationalizationAuditor",
+      "method": "_get_remediation_text",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 3,
+        "plazos": 1,
+        "recursos": 3
+      },
+      "weighted_total": 24.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "_scenario_to_dict",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 4,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 22.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "_quality_to_dict",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 4,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 22.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "_generate_recommendations",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 2,
+        "plazos": 1,
+        "recursos": 2
+      },
+      "weighted_total": 17.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "export_causal_network",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 3
+      },
+      "weighted_total": 16.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PolicyContradictionDetector",
+      "method": "_extract_temporal_markers",
+      "file": "contradiction_deteccion.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 3,
+        "recursos": 1
+      },
+      "weighted_total": 16.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PolicyContradictionDetector",
+      "method": "_determine_semantic_role",
+      "file": "contradiction_deteccion.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 3
+      },
+      "weighted_total": 16.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "OperationalizationAuditor",
+      "method": "_build_normative_dag",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 2,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 14.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "calculate_quality_score",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 2,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 14.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "AdaptivePriorCalculator",
+      "method": "sensitivity_analysis",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 2
+      },
+      "weighted_total": 13.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "PDETMunicipalPlanAnalyzer",
+      "method": "_generate_optimal_remediations",
+      "file": "financiero_viabilidad_tablas.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 2
+      },
+      "weighted_total": 13.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "CausalExtractor",
+      "method": "_get_policy_area_keywords",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 10.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "CausalExtractor",
+      "method": "_calculate_dynamic_weights",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 10.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "CausalExtractor",
+      "method": "_calculate_composite_likelihood",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 10.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "AdaptivePriorCalculator",
+      "method": "__init__",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 10.0,
+      "dimensions_covered": 3
+    },
+    {
+      "class": "AdaptivePriorCalculator",
+      "method": "calculate_likelihood_adaptativo",
+      "file": "derek_beach.py",
+      "scores": {
+        "actividad_meta": 1,
+        "plazos": 1,
+        "recursos": 1
+      },
+      "weighted_total": 10.0,
+      "dimensions_covered": 3
+    }
+  ]
+}

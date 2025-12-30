@@ -3,8 +3,30 @@
     "base_slot": "D1-Q3",
     "representative_question_id": "Q003",
     "dimension_id": "DIM01",
-    "policy_area_ids_served": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
-    "contracts_served": ["Q003", "Q033", "Q063", "Q093", "Q123", "Q153", "Q183", "Q213", "Q243", "Q273"],
+    "policy_area_ids_served": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "contracts_served": [
+      "Q003",
+      "Q033",
+      "Q063",
+      "Q093",
+      "Q123",
+      "Q153",
+      "Q183",
+      "Q213",
+      "Q243",
+      "Q273"
+    ],
     "contract_type": "TYPE_D",
     "contract_type_name": "Financiero",
     "contract_type_focus": "Suficiencia presupuestal, coherencia costo-meta",
@@ -12,12 +34,10 @@
     "created_at": "2025-12-22T00:00:00Z",
     "specification_source": "guia_diligenciamiento_contratos_v4.md"
   },
-
   "executor_binding": {
     "executor_class": "D1_Q3_Executor",
-    "executor_module": "farfan_pipeline.phases. Phase_two.executors"
+    "executor_module": "farfan_pipeline.phases.Phase_two.executors"
   },
-
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
     "contract_type": "TYPE_D",
@@ -38,69 +58,89 @@
             "output_type": "FACT",
             "fusion_behavior": "additive",
             "description": "Extrae presupuesto asignado por pilar del documento",
-            "requires": []
+            "requires": [],
+            "classification_rationale": "Patrón 'extract_' + output numérico literal (COP/$) → N1-EMP (PARTE II, Sec 2.2)"
           }
         ],
         "dependencies": [],
         "output_target": "raw_facts"
       },
-
       "phase_B_computation": {
         "description": "Inferential analysis layer - financial feasibility computation",
         "level": "N2",
         "level_name": "Procesamiento Inferencial",
         "epistemology": "Bayesianismo subjetivista",
-        "methods":  [
+        "methods": [
           {
             "class_name": "FinancialAuditor",
             "method_name": "trace_financial_allocation",
-            "mother_file": "derek_beach. py",
+            "mother_file": "derek_beach.py",
             "provides": "financialauditor.trace_financial_allocation",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Traza asignación financiera entre programas y nodos",
-            "requires": ["raw_facts"],
-            "modifies": ["allocation_map"]
+            "description": "Calcula y traza asignación financiera entre programas y nodos",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "allocation_map"
+            ],
+            "classification_rationale": "Traza relaciones derivando mapas de asignación desde hechos → Output inferido → N2-INF (PARTE II, Sec 2.2)"
           },
           {
-            "class_name":  "FinancialAuditor",
+            "class_name": "FinancialAuditor",
             "method_name": "_process_financial_table",
-            "mother_file":  "derek_beach. py",
+            "mother_file": "derek_beach.py",
             "provides": "financialauditor.process_financial_table",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Procesa tablas financieras extrayendo métricas",
-            "requires": ["raw_facts"],
-            "modifies": ["financial_metrics"]
+            "description": "Analiza y procesa tablas financieras extrayendo métricas",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "financial_metrics"
+            ],
+            "classification_rationale": "Procesa tablas para derivar métricas agregadas → Output analítico → N2-INF"
           },
           {
-            "class_name":  "FinancialAuditor",
+            "class_name": "FinancialAuditor",
             "method_name": "_match_program_to_node",
             "mother_file": "derek_beach.py",
-            "provides": "financialauditor. match_program_to_node",
+            "provides": "financialauditor.match_program_to_node",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Matchea programas a nodos del grafo causal",
-            "requires": ["raw_facts"],
-            "modifies": ["program_node_mapping"]
+            "description": "Evalúa y matchea programas a nodos del grafo financiero",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "program_node_mapping"
+            ],
+            "classification_rationale": "Iniere mapeo estructural programas-nodos → Output relacional derivado → N2-INF"
           },
           {
-            "class_name":  "FinancialAuditor",
+            "class_name": "FinancialAuditor",
             "method_name": "_match_goal_to_budget",
-            "mother_file":  "derek_beach. py",
+            "mother_file": "derek_beach.py",
             "provides": "financialauditor.match_goal_to_budget",
             "level": "N2-INF",
-            "output_type":  "PARAMETER",
+            "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description":  "Matchea metas a líneas presupuestales",
-            "requires": ["raw_facts"],
-            "modifies": ["goal_budget_mapping"]
+            "description": "Compara y matchea metas a líneas presupuestales",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "goal_budget_mapping"
+            ],
+            "classification_rationale": "Calcula correspondencia lógica meta-presupuesto → Output inferencial → N2-INF"
           },
           {
-            "class_name":  "FinancialAuditor",
+            "class_name": "FinancialAuditor",
             "method_name": "_calculate_sufficiency",
             "mother_file": "derek_beach.py",
             "provides": "financialauditor.calculate_sufficiency",
@@ -108,104 +148,146 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "description": "Calcula suficiencia presupuestal por meta",
-            "requires": ["raw_facts"],
-            "modifies": ["sufficiency_scores"]
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "sufficiency_scores"
+            ],
+            "classification_rationale": "Patrón 'calculate_' + output score numérico derivado → N2-INF (PARTE II, Sec 2.2)"
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
             "method_name": "analyze_financial_feasibility",
             "mother_file": "financiero_viabilidad_tablas.py",
-            "provides": "pdetmunicipalplananalyzer. analyze_financial_feasibility",
+            "provides": "pdetmunicipalplananalyzer.analyze_financial_feasibility",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "description": "Analiza viabilidad financiera global del plan",
-            "requires":  ["raw_facts"],
-            "modifies": ["feasibility_score"]
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "feasibility_score"
+            ],
+            "classification_rationale": "Analiza conjunto de hechos para producir score de viabilidad → Output inferido → N2-INF"
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
             "method_name": "_identify_funding_source",
             "mother_file": "financiero_viabilidad_tablas.py",
-            "provides":  "pdetmunicipalplananalyzer.identify_funding_source",
+            "provides": "pdetmunicipalplananalyzer.identify_funding_source",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Identifica fuentes de financiamiento",
-            "requires":  ["raw_facts"],
-            "modifies": ["funding_sources"]
+            "description": "Evalúa e identifica fuentes de financiamiento",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "funding_sources"
+            ],
+            "classification_rationale": "Clasifica fuentes de financiamiento basándose en reglas → Output derivado (categorización) → N2-INF"
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
             "method_name": "_classify_tables",
             "mother_file": "financiero_viabilidad_tablas.py",
             "provides": "pdetmunicipalplananalyzer.classify_tables",
-            "level":  "N2-INF",
+            "level": "N2-INF",
             "output_type": "PARAMETER",
-            "fusion_behavior":  "multiplicative",
-            "description": "Clasifica tablas por tipo financiero",
-            "requires": ["raw_facts"],
-            "modifies": ["table_classification"]
+            "fusion_behavior": "multiplicative",
+            "description": "Analiza y clasifica tablas por tipo financiero",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "table_classification"
+            ],
+            "classification_rationale": "Clasifica estructuras tabulares inferiendo su tipología → Output derivado → N2-INF"
           },
           {
             "class_name": "PDETMunicipalPlanAnalyzer",
             "method_name": "_analyze_funding_sources",
-            "mother_file":  "financiero_viabilidad_tablas.py",
-            "provides": "pdetmunicipalplananalyzer. analyze_funding_sources",
-            "level": "N2-INF",
-            "output_type":  "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "description":  "Analiza diversificación de fuentes de financiamiento",
-            "requires": ["raw_facts"],
-            "modifies":  ["funding_diversity_score"]
-          },
-          {
-            "class_name":  "PDETMunicipalPlanAnalyzer",
-            "method_name": "_score_financial_component",
             "mother_file": "financiero_viabilidad_tablas.py",
-            "provides":  "pdetmunicipalplananalyzer.score_financial_component",
+            "provides": "pdetmunicipalplananalyzer.analyze_funding_sources",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Puntúa componentes financieros individuales",
-            "requires": ["raw_facts"],
-            "modifies": ["component_scores"]
+            "description": "Analiza diversificación de fuentes de financiamiento",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "funding_diversity_score"
+            ],
+            "classification_rationale": "Analiza distribución para calcular score de diversidad → Output derivado → N2-INF"
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_score_financial_component",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.score_financial_component",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y puntúa componentes financieros individuales",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "component_scores"
+            ],
+            "classification_rationale": "Calcula puntuación basada en reglas/heurísticas → Output derivado → N2-INF"
           },
           {
             "class_name": "BayesianCounterfactualAuditor",
             "method_name": "aggregate_risk_and_prioritize",
             "mother_file": "derek_beach.py",
-            "provides":  "bayesiancounterfactualauditor.aggregate_risk_and_prioritize",
-            "level":  "N2-INF",
+            "provides": "bayesiancounterfactualauditor.aggregate_risk_and_prioritize",
+            "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Agrega riesgos y prioriza intervenciones",
-            "requires": ["raw_facts"],
-            "modifies": ["risk_priority_ranking"]
+            "description": "Analiza, agrega riesgos y prioriza intervenciones",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "risk_priority_ranking"
+            ],
+            "classification_rationale": "Agrega múltiples señales de riesgo en un ranking derivado → Output inferencial → N2-INF"
           }
         ],
-        "dependencies": ["phase_A_construction"],
+        "dependencies": [
+          "phase_A_construction"
+        ],
         "output_target": "inferences"
       },
-
       "phase_C_litigation": {
         "description": "Audit layer - financial validation that can VETO findings",
         "level": "N3",
         "level_name": "Auditoría y Robustez",
-        "epistemology":  "Falsacionismo popperiano",
+        "epistemology": "Falsacionismo popperiano",
         "asymmetry_principle": "N3 can invalidate N1/N2 findings, but N1/N2 CANNOT invalidate N3",
-        "methods":  [
+        "methods": [
           {
             "class_name": "FinancialAuditor",
             "method_name": "_perform_counterfactual_budget_check",
             "mother_file": "derek_beach.py",
-            "provides":  "financialauditor.perform_counterfactual_budget_check",
+            "provides": "financialauditor.perform_counterfactual_budget_check",
             "level": "N3-AUD",
             "output_type": "CONSTRAINT",
             "fusion_behavior": "gate",
             "description": "Verificación contrafactual de presupuesto - puede VETAR",
-            "requires":  ["raw_facts", "inferences"],
-            "modulates": ["inferences. confidence", "sufficiency_scores"],
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "modulates": [
+              "inferences.confidence",
+              "sufficiency_scores"
+            ],
             "veto_conditions": {
               "budget_insufficiency_critical": {
                 "trigger": "counterfactual_gap > 0.4",
@@ -214,43 +296,48 @@
                 "confidence_multiplier": 0.3
               },
               "no_funding_source_identified": {
-                "trigger": "funding_sources. count == 0",
+                "trigger": "funding_sources.count == 0",
                 "action": "block_branch",
                 "scope": "financial_claims",
                 "confidence_multiplier": 0.0
               }
-            }
+            },
+            "classification_rationale": "Actúa como VETO GATE validando coherencia financiera bajo lógica popperiana (falsación) → N3-AUD (PARTE II, Sec 2.2)"
           }
         ],
-        "dependencies": ["phase_A_construction", "phase_B_computation"],
-        "output_target":  "audit_results",
+        "dependencies": [
+          "phase_A_construction",
+          "phase_B_computation"
+        ],
+        "output_target": "audit_results",
         "fusion_mode": "modulation"
       }
     }
   },
-
   "question_context": {
     "monolith_ref": "Q003",
     "overrides": null,
     "failure_contract": {
-      "abort_if": ["missing_required_element", "incomplete_text", "no_financial_data"],
-      "emit_code":  "ABORT-D1-Q3-REQ"
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text",
+        "no_financial_data"
+      ],
+      "emit_code": "ABORT-D1-Q3-REQ"
     }
   },
-
   "signal_requirements": {
     "derivation_source": "expected_elements",
     "derivation_rules": {
-      "mandatory":  "expected_elements[required=true]. type → detection_{type}",
-      "optional": "expected_elements[required=false]. type → detection_{type}"
+      "mandatory": "expected_elements[required=true].type → detection_{type}",
+      "optional": "expected_elements[required=false].type → detection_{type}"
     },
     "signal_aggregation": "weighted_mean",
     "minimum_signal_threshold": 0.5
   },
-
   "evidence_assembly": {
     "engine": "EVIDENCE_NEXUS",
-    "module": "farfan_pipeline.phases. Phase_two.evidence_nexus",
+    "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
     "class_name": "EvidenceNexus",
     "method_name": "assemble",
     "type_system": {
@@ -258,15 +345,15 @@
         "origin_level": "N1",
         "fusion_operation": "graph_node_addition",
         "merge_behavior": "additive",
-        "symbol":  "⊕"
+        "symbol": "⊕"
       },
       "PARAMETER": {
-        "origin_level":  "N2",
+        "origin_level": "N2",
         "fusion_operation": "edge_weight_modification",
         "merge_behavior": "multiplicative",
         "symbol": "⊗"
       },
-      "CONSTRAINT":  {
+      "CONSTRAINT": {
         "origin_level": "N3",
         "fusion_operation": "branch_filtering",
         "merge_behavior": "gate",
@@ -274,7 +361,7 @@
       },
       "NARRATIVE": {
         "origin_level": "N4",
-        "fusion_operation":  "synthesis",
+        "fusion_operation": "synthesis",
         "merge_behavior": "terminal",
         "symbol": "⊙"
       }
@@ -283,7 +370,7 @@
       {
         "rule_id": "R1_financial_extraction",
         "rule_type": "empirical_basis",
-        "target":  "raw_facts",
+        "target": "raw_facts",
         "sources": [
           "pdetmunicipalplananalyzer.extract_budget_for_pillar"
         ],
@@ -294,33 +381,38 @@
       {
         "rule_id": "R2_sufficiency_analysis",
         "rule_type": "computation",
-        "target":  "sufficiency_scores",
+        "target": "sufficiency_scores",
         "sources": [
           "financialauditor.trace_financial_allocation",
           "financialauditor.process_financial_table",
           "financialauditor.match_program_to_node",
           "financialauditor.match_goal_to_budget",
           "financialauditor.calculate_sufficiency",
-          "pdetmunicipalplananalyzer. analyze_financial_feasibility",
+          "pdetmunicipalplananalyzer.analyze_financial_feasibility",
           "pdetmunicipalplananalyzer.identify_funding_source",
           "pdetmunicipalplananalyzer.classify_tables",
           "pdetmunicipalplananalyzer.analyze_funding_sources",
           "pdetmunicipalplananalyzer.score_financial_component",
           "bayesiancounterfactualauditor.aggregate_risk_and_prioritize"
         ],
-        "input_dependencies": ["raw_facts"],
-        "merge_strategy":  "weighted_mean",
+        "input_dependencies": [
+          "raw_facts"
+        ],
+        "merge_strategy": "weighted_mean",
         "output_type": "PARAMETER",
-        "confidence_propagation":  "conservative_financial"
+        "confidence_propagation": "conservative_financial"
       },
       {
         "rule_id": "R3_coherence_audit",
         "rule_type": "financial_coherence_audit",
         "target": "validated_financials",
         "sources": [
-          "financialauditor. perform_counterfactual_budget_check"
+          "financialauditor.perform_counterfactual_budget_check"
         ],
-        "input_dependencies": ["raw_facts", "sufficiency_scores"],
+        "input_dependencies": [
+          "raw_facts",
+          "sufficiency_scores"
+        ],
         "merge_strategy": "veto_gate",
         "output_type": "CONSTRAINT",
         "gate_logic": {
@@ -337,21 +429,23 @@
         }
       },
       {
-        "rule_id":  "R4_narrative_synthesis",
+        "rule_id": "R4_narrative_synthesis",
         "rule_type": "synthesis",
         "target": "human_answer",
         "sources": [],
-        "input_dependencies": ["validated_financials", "audit_results"],
-        "merge_strategy":  "carver_doctoral_synthesis",
-        "output_type":  "NARRATIVE",
+        "input_dependencies": [
+          "validated_financials",
+          "audit_results"
+        ],
+        "merge_strategy": "carver_doctoral_synthesis",
+        "output_type": "NARRATIVE",
         "external_handler": {
-          "class":  "DoctoralCarverSynthesizer",
-          "module": "farfan_pipeline.phases. Phase_two.carver"
+          "class": "DoctoralCarverSynthesizer",
+          "module": "farfan_pipeline.phases.Phase_two.carver"
         }
       }
     ]
   },
-
   "fusion_specification": {
     "contract_type": "TYPE_D",
     "primary_strategy": "financial_coherence_audit",
@@ -365,36 +459,48 @@
         "strategy": "weighted_mean",
         "behavior": "multiplicative",
         "conflict_resolution": "financial_weighting",
-        "affects":  ["N1_facts. confidence", "sufficiency_scores"]
+        "affects": [
+          "N1_facts.confidence",
+          "sufficiency_scores"
+        ]
       },
       "N3_constraint_fusion": {
         "strategy": "veto_gate",
         "behavior": "gate",
-        "asymmetry_principle":  "audit_dominates",
-        "propagation":  {
-          "upstream":  "confidence_backpropagation",
+        "asymmetry_principle": "audit_dominates",
+        "propagation": {
+          "upstream": "confidence_backpropagation",
           "downstream": "branch_blocking"
         }
       }
     },
     "fusion_pipeline": {
       "stage_1_fact_accumulation": {
-        "input":  "phase_A_construction. outputs",
+        "input": "phase_A_construction.outputs",
         "operation": "BUILD evidence graph from budget extractions",
         "output": "evidence_graph_v1",
-        "type_consumed": "FACT"
+        "type_consumed": "FACT",
+        "behavior": "additive"
       },
-      "stage_2_financial_computation": {
-        "input": ["evidence_graph_v1", "phase_B_computation.outputs"],
+      "stage_2_parameter_application": {
+        "input": [
+          "evidence_graph_v1",
+          "phase_B_computation.outputs"
+        ],
         "operation": "COMPUTE sufficiency scores and feasibility metrics",
         "output": "evidence_graph_v2_scored",
-        "type_consumed": "PARAMETER"
+        "type_consumed": "PARAMETER",
+        "behavior": "multiplicative"
       },
       "stage_3_constraint_filtering": {
-        "input": ["evidence_graph_v2_scored", "phase_C_litigation.outputs"],
+        "input": [
+          "evidence_graph_v2_scored",
+          "phase_C_litigation.outputs"
+        ],
         "operation": "FILTER/BLOCK branches that fail budget validation",
         "output": "evidence_graph_v3_validated",
-        "type_consumed": "CONSTRAINT"
+        "type_consumed": "CONSTRAINT",
+        "behavior": "gate"
       },
       "stage_4_synthesis": {
         "input": "evidence_graph_v3_validated",
@@ -404,9 +510,8 @@
       }
     }
   },
-
   "cross_layer_fusion": {
-    "N1_to_N2":  {
+    "N1_to_N2": {
       "relationship": "N2 reads N1 budget facts",
       "effect": "N2 computes sufficiency FROM N1 extractions",
       "data_flow": "forward_propagation"
@@ -420,7 +525,7 @@
       "relationship": "N3 can BLOCK N1 facts",
       "effect": "Failed budget checks remove facts from graph",
       "data_flow": "veto_propagation",
-      "asymmetry":  "N1 CANNOT invalidate N3"
+      "asymmetry": "N1 CANNOT invalidate N3"
     },
     "N3_to_N2": {
       "relationship": "N3 can INVALIDATE N2 sufficiency scores",
@@ -434,21 +539,20 @@
       "data_flow": "terminal_aggregation"
     },
     "blocking_propagation_rules": {
-      "budget_insufficiency":  {
+      "budget_insufficiency": {
         "triggered_by": "FinancialAuditor._perform_counterfactual_budget_check",
         "action": "reduce_confidence",
         "scope": "affected_goals",
-        "propagation":  "downstream_only"
+        "propagation": "downstream_only"
       },
-      "no_funding_source":  {
+      "no_funding_source": {
         "triggered_by": "FinancialAuditor._perform_counterfactual_budget_check",
-        "action":  "block_branch",
-        "scope":  "financial_claims",
+        "action": "block_branch",
+        "scope": "financial_claims",
         "propagation": "both"
       }
     }
   },
-
   "human_answer_structure": {
     "format": "markdown",
     "template_mode": "epistemological_narrative",
@@ -462,18 +566,44 @@
         "narrative_style": "declarative",
         "template": {
           "structure": [
-            "**Conclusión**:  {verdict_statement}",
+            "**Conclusión**: {verdict_statement}",
             "",
             "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
             "",
             "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
-          ]
+          ],
+          "placeholders": {
+            "verdict_statement": {
+              "type": "string",
+              "source": "synthesis_output.verdict"
+            },
+            "final_confidence_pct": {
+              "type": "number",
+              "source": "synthesis_output.confidence_pct"
+            },
+            "confidence_label": {
+              "type": "enum",
+              "source": "synthesis_output.confidence_label"
+            },
+            "method_count": {
+              "type": "integer",
+              "source": "pipeline_stats.total_methods"
+            },
+            "audit_count": {
+              "type": "integer",
+              "source": "pipeline_stats.n3_validations"
+            },
+            "blocked_count": {
+              "type": "integer",
+              "source": "pipeline_stats.blocked_branches"
+            }
+          }
         },
         "argumentative_role": "SYNTHESIS"
       },
       {
         "section_id": "S2_empirical_base",
-        "title": "### Base Empírica:  Datos Financieros Observados",
+        "title": "### Base Empírica: Datos Financieros Observados",
         "layer": "N1",
         "data_source": "validated_facts",
         "narrative_style": "descriptive",
@@ -486,20 +616,34 @@
             "",
             "**Fuentes de Financiamiento**:",
             "{funding_sources_list}"
-          ]
+          ],
+          "placeholders": {
+            "total_budget": {
+              "type": "string",
+              "source": "n1_facts.total_budget"
+            },
+            "pillar_budget_list": {
+              "type": "array",
+              "source": "n1_facts.pillars"
+            },
+            "funding_sources_list": {
+              "type": "array",
+              "source": "n1_facts.funding_sources"
+            }
+          }
         },
         "argumentative_role": "EMPIRICAL_BASIS",
         "epistemological_note": {
           "include_in_output": true,
-          "text": "📋 *Nota:  Cifras extraídas directamente de tablas presupuestales del documento.*"
+          "text": "📋 *Nota: Cifras extraídas directamente de tablas presupuestales del documento.*"
         }
       },
       {
         "section_id": "S3_robustness_audit",
-        "title": "### Análisis de Robustez:  Validación Financiera",
+        "title": "### Análisis de Robustez: Validación Financiera",
         "layer": "N3",
         "data_source": "audit_results",
-        "narrative_style":  "critical",
+        "narrative_style": "critical",
         "template": {
           "structure": [
             "{veto_alert}",
@@ -513,28 +657,50 @@
             "",
             "**Limitaciones Metodológicas**:",
             "{limitations_list}"
-          ]
+          ],
+          "placeholders": {
+            "veto_alert": {
+              "type": "string",
+              "source": "n3_audit.veto_alert"
+            },
+            "sufficiency_assessment": {
+              "type": "string",
+              "source": "n2_inferences.sufficiency_status"
+            },
+            "counterfactual_result": {
+              "type": "string",
+              "source": "n3_audit.counterfactual_result"
+            },
+            "budget_gaps_list": {
+              "type": "array",
+              "source": "n3_audit.gaps"
+            },
+            "limitations_list": {
+              "type": "array",
+              "source": "n4_meta.limitations"
+            }
+          }
         },
         "argumentative_role": "ROBUSTNESS_QUALIFIER",
         "veto_display": {
-          "if_veto_triggered": "⛔ **INSUFICIENCIA CRÍTICA**:  {veto_reason}.  El presupuesto NO cubre las metas propuestas.",
+          "if_veto_triggered": "⛔ **ALERTA - INSUFICIENCIA CRÍTICA**: {veto_reason}. El presupuesto NO cubre las metas propuestas.",
           "if_partial_veto": "⚠️ **SUFICIENCIA PARCIAL**: {partial_veto_count} metas con financiamiento insuficiente.",
-          "if_no_veto": "✅ **VIABILIDAD FINANCIERA**:  Todas las metas tienen cobertura presupuestal adecuada."
+          "if_no_veto": "✅ **VIABILIDAD FINANCIERA**: Todas las metas tienen cobertura presupuestal adecuada."
         },
         "epistemological_note": {
           "include_in_output": true,
-          "text": "🔬 *Nota:  Análisis contrafactual aplicado para validar coherencia presupuestal.*"
+          "text": "🔬 *Nota: Análisis contrafactual aplicado para validar coherencia presupuestal.*"
         }
       },
       {
         "section_id": "S4_gaps",
-        "title":  "### Puntos Ciegos:  Información Financiera Faltante",
+        "title": "### Puntos Ciegos: Información Financiera Faltante",
         "layer": "N4-META",
         "data_source": "gap_analysis",
-        "narrative_style":  "diagnostic",
+        "narrative_style": "diagnostic",
         "template": {
           "structure": [
-            "**Métodos sin Resultados**:  {empty_methods_count} de {total_methods}",
+            "**Métodos sin Resultados**: {empty_methods_count} de {total_methods}",
             "{empty_methods_details}",
             "",
             "**Datos Financieros Esperados no Encontrados**:",
@@ -542,27 +708,49 @@
             "",
             "**Impacto en Confianza**:",
             "{gap_impact_assessment}"
-          ]
+          ],
+          "placeholders": {
+            "empty_methods_count": {
+              "type": "integer",
+              "source": "pipeline_stats.empty_methods"
+            },
+            "total_methods": {
+              "type": "integer",
+              "source": "pipeline_stats.total_methods"
+            },
+            "empty_methods_details": {
+              "type": "array",
+              "source": "pipeline_stats.empty_methods_list"
+            },
+            "missing_financial_data": {
+              "type": "array",
+              "source": "n4_meta.missing_data"
+            },
+            "gap_impact_assessment": {
+              "type": "string",
+              "source": "n4_meta.impact"
+            }
+          }
         },
-        "argumentative_role":  "META_TRACEABILITY"
+        "argumentative_role": "META_TRACEABILITY"
       }
     ],
     "argumentative_roles": {
       "N1_roles": [
         {
-          "role":  "EMPIRICAL_BASIS",
+          "role": "EMPIRICAL_BASIS",
           "description": "Cifra presupuestal observable",
           "narrative_weight": "high"
         }
       ],
       "N2_roles": [
         {
-          "role":  "INFERENTIAL_BRIDGE",
+          "role": "INFERENTIAL_BRIDGE",
           "description": "Cálculo de suficiencia derivado",
           "narrative_weight": "medium"
         }
       ],
-      "N3_roles":  [
+      "N3_roles": [
         {
           "role": "ROBUSTNESS_QUALIFIER",
           "description": "Advertencia de limitación financiera",
@@ -571,7 +759,13 @@
         {
           "role": "FINANCIAL_CONSTRAINT",
           "description": "Límite presupuestal que afecta viabilidad",
-          "narrative_weight":  "critical",
+          "narrative_weight": "critical",
+          "triggers_veto": true
+        },
+        {
+          "role": "REFUTATIONAL_SIGNAL",
+          "description": "Señal de refutación para hallazgos financieros inválidos",
+          "narrative_weight": "critical",
           "triggers_veto": true
         }
       ],
@@ -584,75 +778,121 @@
       ]
     },
     "confidence_interpretation": {
-      "critical":  {
-        "range": [0, 19],
+      "critical": {
+        "range": [
+          0,
+          19
+        ],
         "label": "INVÁLIDO",
-        "display":  "🔴"
+        "display": "🔴",
+        "description": "Confianza crítica: resultado inválido por veto financiero. NO usar para decisiones."
       },
       "low": {
-        "range": [20, 49],
+        "range": [
+          20,
+          49
+        ],
         "label": "DÉBIL",
         "display": "🟠"
       },
       "medium": {
-        "range": [50, 79],
+        "range": [
+          50,
+          79
+        ],
         "label": "MODERADO",
         "display": "🟡"
       },
-      "high":  {
-        "range": [80, 100],
+      "high": {
+        "range": [
+          80,
+          100
+        ],
         "label": "ROBUSTO",
         "display": "🟢"
       }
     }
   },
-
   "output_contract": {
     "result_type": "Phase2QuestionResult",
     "schema": {
       "type": "object",
-      "required": ["base_slot", "question_id", "evidence", "score", "human_answer"],
+      "required": [
+        "base_slot",
+        "question_id",
+        "evidence",
+        "score",
+        "human_answer"
+      ],
       "properties": {
-        "base_slot": {"type": "string", "const": "D1-Q3"},
-        "question_id": {"type":  "string"},
-        "dimension_id": {"type": "string"},
-        "policy_area_id": {"type":  "string"},
-        "score": {"type": "number", "minimum":  0, "maximum": 1},
-        "confidence_label": {"type": "string", "enum": ["INVÁLIDO", "DÉBIL", "MODERADO", "ROBUSTO"]},
-        "evidence":  {"type": "object"},
-        "human_answer": {"type":  "string"},
-        "epistemological_trace": {"type": "object"}
+        "base_slot": {
+          "type": "string",
+          "const": "D1-Q3"
+        },
+        "question_id": {
+          "type": "string"
+        },
+        "dimension_id": {
+          "type": "string"
+        },
+        "policy_area_id": {
+          "type": "string"
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "confidence_label": {
+          "type": "string",
+          "enum": [
+            "INVÁLIDO",
+            "DÉBIL",
+            "MODERADO",
+            "ROBUSTO"
+          ]
+        },
+        "evidence": {
+          "type": "object"
+        },
+        "human_answer": {
+          "type": "string"
+        },
+        "epistemological_trace": {
+          "type": "object"
+        }
       }
     }
   },
-
   "validation_rules": {
-    "na_policy":  "abort_on_critical",
+    "na_policy": "abort_on_critical",
     "derivation_source": "expected_elements",
     "engine": "VALIDATION_ENGINE",
-    "module": "farfan_pipeline. phases.Phase_two.evidence_nexus",
+    "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
     "class_name": "ValidationEngine",
     "method_name": "validate"
   },
-
   "error_handling": {
     "on_method_not_found": "raise",
     "on_method_failure": "propagate_with_trace",
     "on_assembly_failure": "propagate_with_trace",
     "failure_contract": {
-      "abort_if": ["missing_required_element", "incomplete_text", "no_financial_data"],
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text",
+        "no_financial_data"
+      ],
       "emit_code": "ABORT-D1-Q3-REQ"
     }
   },
-
-  "traceability":  {
+  "traceability": {
     "canonical_sources": {
-      "questionnaire":  "canonic_questionnaire_central/questionnaire_monolith.json",
+      "questionnaire": "canonic_questionnaire_central/questionnaire_monolith.json",
       "method_inventory": "src/farfan_pipeline/phases/Phase_two/json_files_phase_two/method_classification_all_30.json",
       "epistemological_guide": "guia_diligenciamiento_contratos_v4.md"
     },
-    "generation":  {
-      "method":  "v4_epistemological_generation",
+    "generation": {
+      "method": "v4_epistemological_generation",
       "timestamp": "2025-12-22T00:00:00Z",
       "generator_version": "1.0.0"
     },
@@ -668,26 +908,30 @@
           "Financial coherence audit strategy"
         ],
         "epistemological_framework": {
-          "N1":  "Empirismo positivista",
+          "N1": "Empirismo positivista",
           "N2": "Bayesianismo subjetivista",
           "N3": "Falsacionismo popperiano",
           "N4": "Reflexividad crítica"
         }
       }
-    ]
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "v3_migration": "FORBIDDEN",
+      "v3_reference": "FORBIDDEN",
+      "non_epistemological_mode": "FORBIDDEN"
+    }
   },
-
-  "compatibility":  {
+  "compatibility": {
     "questionnaire_monolith_version": "3.0.0",
     "version_detection": "runtime",
     "minimum_requirements": {
       "signal_registry": "MicroAnsweringSignalPack support",
-      "hydrator":  "ContractHydrator v1.0.0",
+      "hydrator": "ContractHydrator v1.0.0",
       "carver": "DoctoralCarverSynthesizer v3.0.0",
       "evidence_nexus": "EvidenceNexus v2.0.0"
     }
   },
-
   "calibration": {
     "status": "runtime",
     "sources": {

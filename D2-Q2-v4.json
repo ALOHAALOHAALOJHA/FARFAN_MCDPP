@@ -41,17 +41,29 @@
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
     "contract_type": "TYPE_B",
-    "method_count": 11,
+    "method_count": 12,
     "execution_phases": {
       "phase_A_construction": {
-        "description": "Empirical observation layer - direct signal consumption",
+        "description": "Empirical observation layer - metadata extraction",
         "level": "N1",
         "level_name": "Base Empírica",
         "epistemology": "Empirismo positivista",
-        "methods": [],
+        "methods": [
+          {
+            "class_name": "IndustrialPolicyProcessor",
+            "method_name": "_extract_metadata",
+            "mother_file": "industrial_policy_extractor.py",
+            "provides": "industrialpolicyprocessor.extract_metadata",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extrae metadatos empíricos de documentos de política",
+            "requires": [],
+            "classification_rationale": "Extrae metadatos directamente del documento sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+          }
+        ],
         "dependencies": [],
-        "output_target": "raw_facts",
-        "note": "This contract consumes PreprocesadoMetadata directly in N2 phase - no N1 extraction needed"
+        "output_target": "raw_facts"
       },
       "phase_B_computation": {
         "description": "Inferential analysis layer - Bayesian mechanism inference",
@@ -69,7 +81,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Infiere mecanismos causales usando inferencia bayesiana",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "mechanism_posterior_probabilities"
@@ -85,7 +97,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Infiere un mecanismo individual con probabilidad posterior",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "single_mechanism_scores"
@@ -101,7 +113,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Calcula vector de capacidad de cadena causal",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "chain_capacity_scores"
@@ -115,9 +127,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Prueba suficiencia de mecanismo con scoring bayesiano",
+            "description": "Evalúa y prueba suficiencia de mecanismo calculando probabilidades bayesianas",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "sufficiency_scores"
@@ -131,9 +143,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Prueba necesidad de mecanismo con scoring bayesiano",
+            "description": "Evalúa y prueba necesidad de mecanismo calculando probabilidades bayesianas",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "necessity_scores"
@@ -147,9 +159,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Extrae jerarquía causal con scoring de relaciones",
+            "description": "Evalúa y analiza jerarquía causal calculando scores de relaciones causales",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "hierarchy_confidence_scores"
@@ -163,9 +175,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Construye grafo causal con probabilidades de aristas",
+            "description": "Evalúa y construye grafo causal calculando probabilidades de aristas",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "edge_probability_scores"
@@ -179,9 +191,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Construye DAG causal con pesos de nodos",
+            "description": "Evalúa y construye DAG causal calculando pesos de nodos",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "dag_node_weights"
@@ -197,7 +209,7 @@
             "fusion_behavior": "multiplicative",
             "description": "Analiza dimensiones causales con scoring multidimensional",
             "requires": [
-              "PreprocesadoMetadata"
+              "raw_facts"
             ],
             "modifies": [
               "causal_dimension_scores"
@@ -205,7 +217,7 @@
           }
         ],
         "dependencies": [
-          "PreprocesadoMetadata"
+          "phase_A_construction"
         ],
         "output_target": "inferred_parameters"
       },
@@ -225,9 +237,10 @@
             "fusion_behavior": "gate",
             "description": "Valida si conexión causal es lógicamente válida",
             "requires": [
-              "PreprocesadoMetadata",
+              "raw_facts",
               "inferred_parameters"
             ],
+            "classification_rationale": "Valida conexiones causales aplicando criterios de falsación → N3-AUD (PARTE II, Sección 2.4)",
             "modulates": [
               "inferred_parameters.confidence"
             ],
@@ -256,9 +269,10 @@
             "fusion_behavior": "gate",
             "description": "Clasifica tests evidenciales (hoop, smoking gun, doubly decisive, straw-in-the-wind)",
             "requires": [
-              "PreprocesadoMetadata",
+              "raw_facts",
               "inferred_parameters"
             ],
+            "classification_rationale": "Clasifica tests evidenciales aplicando criterios de falsación → N3-AUD (PARTE II, Sección 2.4)",
             "modulates": [
               "inferred_parameters.confidence"
             ],
@@ -279,9 +293,10 @@
           }
         ],
         "dependencies": [
-          "PreprocesadoMetadata",
-          "inferred_parameters"
+          "phase_A_construction",
+          "phase_B_computation"
         ],
+        "asymmetry_principle": "ASIMETRÍA EXPLÍCITA: N3 can invalidate resultados de N1/N2 mediante veto gates con confidence_multiplier = 0.0, bloqueando completamente hallazgos que N1/N2 aceptarían. Mientras N1 extrae metadatos y N2 infiere probabilidades bayesianas, N3 aplica criterios de falsación popperiana. CANNOT invalidate N3: N1 y N2 no pueden vetar decisiones de N3, solo pueden proporcionar datos que N3 evalúa",
         "output_target": "validated_constraints"
       }
     }
@@ -348,10 +363,11 @@
         "rule_id": "R1_empirical_basis",
         "rule_type": "empirical_basis",
         "target": "prior_distribution",
-        "sources": [],
-        "merge_strategy": "direct_signal_consumption",
-        "output_type": "FACT",
-        "note": "Phase A empty - consumes PreprocesadoMetadata directly in Phase B"
+        "sources": [
+          "industrialpolicyprocessor.extract_metadata"
+        ],
+        "merge_strategy": "concat",
+        "output_type": "FACT"
       },
       {
         "rule_id": "R2_probabilistic_update",
@@ -389,21 +405,28 @@
         "merge_strategy": "veto_gate",
         "gate_logic": {
           "invalid_causal_connection": {
-            "condition": "es_conexion_valida returns False",
-            "action": "block_branch"
+            "trigger": "es_conexion_valida returns False",
+            "action": "block_branch",
+            "scope": "invalid_causal_edges",
+            "confidence_multiplier": 0.0
           },
           "illogical_hierarchy": {
-            "condition": "causal hierarchy violates rules",
-            "action": "invalidate_subgraph"
+            "trigger": "causal hierarchy violates rules",
+            "action": "invalidate_subgraph",
+            "scope": "affected_subgraph",
+            "confidence_multiplier": 0.0
           },
           "insufficient_evidential_strength": {
-            "condition": "test classified as weak (straw-in-the-wind)",
+            "trigger": "test classified as weak (straw-in-the-wind)",
             "action": "reduce_confidence",
-            "multiplier": 0.5
+            "scope": "weak_evidence_mechanisms",
+            "confidence_multiplier": 0.5
           },
           "contradictory_test_results": {
-            "condition": "sufficiency and necessity contradict",
-            "action": "block_branch"
+            "trigger": "sufficiency and necessity contradict",
+            "action": "block_branch",
+            "scope": "contradicting_mechanisms",
+            "confidence_multiplier": 0.0
           }
         },
         "output_type": "CONSTRAINT"
@@ -426,9 +449,8 @@
     "primary_strategy": "bayesian_update",
     "level_strategies": {
       "N1_fact_fusion": {
-        "strategy": "direct_signal_consumption",
-        "behavior": "pass_through",
-        "note": "No N1 methods - PreprocesadoMetadata consumed directly by N2"
+        "strategy": "concat",
+        "behavior": "additive"
       },
       "N2_parameter_fusion": {
         "strategy": "bayesian_update",
@@ -461,11 +483,11 @@
     },
     "fusion_pipeline": {
       "stage_1_fact_accumulation": {
-        "input": "PreprocesadoMetadata",
-        "operation": "PASS PreprocesadoMetadata to N2",
+        "input": "raw_facts",
+        "operation": "Accumulate facts from N1 methods",
         "output": "evidence_graph_v1",
-        "type_consumed": "SIGNAL",
-        "behavior": "pass_through"
+        "type_consumed": "FACT",
+        "behavior": "additive"
       },
       "stage_2_parameter_application": {
         "input": [
@@ -504,9 +526,15 @@
       "note": "No N1 intermediary - direct signal consumption"
     },
     "N2_to_N1": {
-      "relationship": "Not applicable",
-      "effect": "N2 does not backpropagate to N1 (no N1 layer)",
-      "data_flow": "none"
+      "relationship": "N2 backpropagates confidence to N1",
+      "effect": "N2 confidence scores modulate N1 fact confidence",
+      "data_flow": "confidence_backpropagation"
+    },
+    "N3_to_N1": {
+      "relationship": "N3 can BLOCK or INVALIDATE N1 facts",
+      "effect": "Failed validation removes invalid facts from graph",
+      "data_flow": "veto_propagation",
+      "asymmetry": "N1 CANNOT invalidate N3"
     },
     "N3_to_N2": {
       "relationship": "N3 can INVALIDATE N2 parameters",
@@ -559,16 +587,24 @@
             "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
             "",
             "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+          ],
+          "placeholders": [
+            "verdict_statement",
+            "final_confidence_pct",
+            "confidence_label",
+            "method_count",
+            "audit_count",
+            "blocked_count"
           ]
         }
       },
       {
         "section_id": "S2_empirical_base",
         "title": "### Base Empírica: Evidencia Observada",
-        "layer": "N2",
-        "data_source": "inferred_parameters",
+        "layer": "N1",
+        "data_source": "validated_facts",
         "narrative_style": "descriptive",
-        "argumentative_role": "INFERENTIAL_BRIDGE",
+        "argumentative_role": "EMPIRICAL_BASIS",
         "note": "No N1 layer - showing N2 inferences as base",
         "template": {
           "structure": [
@@ -592,7 +628,7 @@
         "narrative_style": "critical",
         "argumentative_role": "ROBUSTNESS_QUALIFIER",
         "veto_display": {
-          "if_veto_triggered": "⛔ **MODELO INVÁLIDO**: {veto_reason}. NO usar para toma de decisiones.",
+          "if_veto_triggered": "⛔ **ALERTA: MODELO INVÁLIDO**: {veto_reason}. NO usar para toma de decisiones.",
           "if_partial_veto": "⚠️ **ROBUSTEZ PARCIAL**: {partial_veto_count} hallazgos invalidados.",
           "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: Todos los hallazgos sobrevivieron refutación."
         },
@@ -632,7 +668,13 @@
       }
     ],
     "argumentative_roles": {
-      "N1_roles": [],
+      "N1_roles": [
+        {
+          "role": "EMPIRICAL_BASIS",
+          "description": "Base empírica de metadatos extraídos",
+          "narrative_weight": "high"
+        }
+      ],
       "N2_roles": [
         {
           "role": "INFERENTIAL_BRIDGE",
@@ -796,8 +838,33 @@
     "generation": {
       "method": "v4_epistemological_generation",
       "timestamp": "2025-12-22T18:20:00Z",
-      "generator_version": "1.0.0",
-      "notes": "Contract with no N1 methods - N2 consumes PreprocesadoMetadata directly. BeachEvidentialTest.classify_test is intentionally reclassified and treated as N3-AUD (audit/veto capability) overriding its L3 source-layer label; this override is governed by the v4 epistemological guide and the centralized method reclassification policy applied consistently across all 30 contracts."
+      "generator_version": "1.0.0"
+    },
+    "refactoring_history": [
+      {
+        "from_version": "3.0.0",
+        "to_version": "4.0.0-epistemological",
+        "date": "2025-12-22T18:20:00Z",
+        "changes": [
+          "Epistemological stratification",
+          "Added N1 method for metadata extraction",
+          "Bayesian update strategy",
+          "Veto gates",
+          "Cross-layer fusion"
+        ],
+        "epistemological_framework": {
+          "N1": "Empirismo positivista",
+          "N2": "Bayesianismo subjetivista",
+          "N3": "Falsacionismo popperiano",
+          "N4": "Reflexividad crítica"
+        }
+      }
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "v3_migration": "FORBIDDEN",
+      "v3_reference": "FORBIDDEN",
+      "non_epistemological_mode": "FORBIDDEN"
     }
   },
   "compatibility": {

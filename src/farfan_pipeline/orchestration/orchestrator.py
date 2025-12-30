@@ -32,10 +32,10 @@ from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
 if TYPE_CHECKING:
     from orchestration.factory import CanonicalQuestionnaire
 
-from canonic_phases.Phase_zero.paths import PROJECT_ROOT
-from canonic_phases.Phase_zero.paths import safe_join
-from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
-from canonic_phases.Phase_zero.exit_gates import GateResult
+from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+from canonic_phases.Phase_zero.phase0_10_00_paths import safe_join
+from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from canonic_phases.Phase_zero.phase0_50_01_exit_gates import GateResult
 
 # Define RULES_DIR locally (not exported from paths)
 RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"
@@ -123,7 +123,7 @@ class Phase0ValidationResult:
         validation_time: ISO 8601 timestamp of when validation occurred
     
     Example:
-        >>> from canonic_phases.Phase_zero.exit_gates import check_all_gates
+        >>> from canonic_phases.Phase_zero.phase0_50_01_exit_gates import check_all_gates
         >>> all_passed, gates = check_all_gates(runner)
         >>> validation = Phase0ValidationResult(
         ...     all_passed=all_passed,
@@ -405,13 +405,16 @@ class ResourceLimits:
         self,
         max_memory_mb: float | None = 4096.0,
         max_cpu_percent: float = 85.0,
+        max_disk_mb: float = 5000.0,
         max_workers: int = 32,
         min_workers: int = 4,
         hard_max_workers: int = 64,
         history: int = 120,
+        artifacts_dir: Path | None = None,
     ) -> None:
         self.max_memory_mb = max_memory_mb
         self.max_cpu_percent = max_cpu_percent
+        self.max_disk_mb = max_disk_mb
         self.min_workers = max(1, min_workers)
         self.hard_max_workers = max(self.min_workers, hard_max_workers)
         self._max_workers = max(self.min_workers, min(max_workers, self.hard_max_workers))
@@ -421,6 +424,7 @@ class ResourceLimits:
         self._async_lock: asyncio.Lock | None = None
         self._psutil = None
         self._psutil_process = None
+        self.artifacts_dir = artifacts_dir or Path("artifacts")
         
         try:
             import psutil
@@ -492,6 +496,7 @@ class ResourceLimits:
         cpu_percent = 0.0
         memory_percent = 0.0
         rss_mb = 0.0
+        disk_free_mb = 0.0
         
         if self._psutil:
             try:
@@ -500,6 +505,11 @@ class ResourceLimits:
                 memory_percent = float(virtual_memory.percent)
                 if self._psutil_process:
                     rss_mb = float(self._psutil_process.memory_info().rss / (1024 * 1024))
+                
+                # Disk monitoring
+                if self.artifacts_dir:
+                    disk_usage = self._psutil.disk_usage(str(self.artifacts_dir.parent if not self.artifacts_dir.exists() else self.artifacts_dir))
+                    disk_free_mb = float(disk_usage.free / (1024 * 1024))
             except Exception:
                 cpu_percent = 0.0
         else:
@@ -521,6 +531,7 @@ class ResourceLimits:
             "cpu_percent": cpu_percent,
             "memory_percent": memory_percent,
             "rss_mb": rss_mb,
+            "disk_free_mb": disk_free_mb,
             "worker_budget": float(self._max_workers),
         }
         
@@ -542,6 +553,14 @@ class ResourceLimits:
         if self.max_cpu_percent:
             exceeded = usage.get("cpu_percent", 0.0) > self.max_cpu_percent
         return exceeded, usage
+
+    def check_disk_low(self, usage: dict[str, float] | None = None) -> tuple[bool, dict[str, float]]:
+        """Check if disk space is below required limit."""
+        usage = usage or self.get_resource_usage()
+        low = False
+        if self.max_disk_mb is not None:
+            low = usage.get("disk_free_mb", float('inf')) < self.max_disk_mb
+        return low, usage
     
     def get_usage_history(self) -> list[dict[str, float]]:
         """Get usage history."""
@@ -562,12 +581,14 @@ class PhaseInstrumentation:
         items_total: int | None = None,
         snapshot_interval: int = 10,
         resource_limits: ResourceLimits | None = None,
+        baseline_duration_ms: float | None = None,
     ) -> None:
         self.phase_id = phase_id
         self.name = name
         self.items_total = items_total or 0
         self.snapshot_interval = max(1, snapshot_interval)
         self.resource_limits = resource_limits
+        self.baseline_duration_ms = baseline_duration_ms
         self.items_processed = 0
         self.start_time: float | None = None
         self.end_time: float | None = None
@@ -576,13 +597,19 @@ class PhaseInstrumentation:
         self.resource_snapshots: list[dict[str, Any]] = []
         self.latencies: list[float] = []
         self.anomalies: list[dict[str, Any]] = []
+        self.phase_breakdown: dict[str, float] = {}
     
     def start(self, items_total: int | None = None) -> None:
         """Start phase."""
         if items_total is not None:
             self.items_total = items_total
         self.start_time = time.perf_counter()
+        self.record_step_duration("bootstrap", 0.0) # Start mark
     
+    def record_step_duration(self, step_name: str, duration_ms: float) -> None:
+        """Record duration of a specific step within the phase."""
+        self.phase_breakdown[step_name] = duration_ms
+
     def increment(self, count: int = 1, latency: float | None = None) -> None:
         """Increment progress."""
         self.items_processed += count
@@ -696,10 +723,21 @@ class PhaseInstrumentation:
     
     def build_metrics(self) -> dict[str, Any]:
         """Build metrics summary."""
+        duration = self.duration_ms()
+        percentile_vs_baseline = {}
+        if duration and self.baseline_duration_ms:
+            diff = ((duration / self.baseline_duration_ms) - 1) * 100
+            percentile_vs_baseline = {
+                "vs_baseline_percent": diff,
+                "status": "degraded" if diff > 20 else "nominal"
+            }
+
         return {
             "phase_id": self.phase_id,
             "name": self.name,
-            "duration_ms": self.duration_ms(),
+            "duration_ms": duration,
+            "phase_breakdown": self.phase_breakdown,
+            "percentile_vs_baseline": percentile_vs_baseline,
             "items_processed": self.items_processed,
             "items_total": self.items_total,
             "progress": self.progress(),
@@ -739,7 +777,128 @@ class PhaseTimeoutError(RuntimeError):
         super().__init__(message)
 
 
+# ============================================================================
+# SELF-HEALING & CHAOS INJECTION
+# ============================================================================
+
+class RetryPolicy(TypedDict):
+    max_attempts: int
+    backoff: str | None  # "exponential", "linear", None
+    max_delay: float
+
+RETRY_POLICIES: dict[str, RetryPolicy] = {
+    "network_io": {"max_attempts": 3, "backoff": "exponential", "max_delay": 30.0},
+    "file_io": {"max_attempts": 2, "backoff": "linear", "max_delay": 10.0},
+    "integrity_check": {"max_attempts": 1, "backoff": None, "max_delay": 0.0},
+    "default": {"max_attempts": 2, "backoff": "linear", "max_delay": 5.0},
+}
+
+TRANSIENT_ERRORS = (ConnectionError, asyncio.TimeoutError, IOError)
+# We'll treat PhaseTimeoutError as translatable to transient depending on circumstances
+
+# Chaos Injection Settings
+CHAOS_CONFIG = {
+    "enabled": os.getenv("FARFAN_CHAOS_ENABLED", "false").lower() == "true",
+    "scenarios": [
+        {"type": "latency_injection", "target_phase": "FASE 2", "probability": 0.1, "delay_ms": 2000},
+        {"type": "random_failure", "target_phase": "FASE 3", "probability": 0.05},
+    ]
+}
+
+async def inject_chaos(phase_name: str, instrumentation: PhaseInstrumentation | None = None) -> None:
+    """Inject artificial failure/latency if chaos is enabled."""
+    if not CHAOS_CONFIG["enabled"]:
+        return
+    
+    import random
+    for scenario in CHAOS_CONFIG["scenarios"]:
+        if scenario.get("target_phase") in phase_name:
+            if random.random() < scenario.get("probability", 0.0):
+                if scenario["type"] == "latency_injection":
+                    delay = scenario["delay_ms"] / 1000.0
+                    logger.warning(f"CHAOS: Injecting {delay}s latency into {phase_name}")
+                    await asyncio.sleep(delay)
+                elif scenario["type"] == "random_failure":
+                    logger.error(f"CHAOS: Injecting random failure into {phase_name}")
+                    raise RuntimeError(f"Chaos-injected failure in {phase_name}")
+
+
 async def execute_phase_with_timeout(
+    phase_id: int,
+    phase_name: str,
+    coro: Callable[P, T] | None = None,
+    handler: Callable[P, T] | None = None,
+    args: tuple | None = None,
+    timeout_s: float = 300.0,
+    instrumentation: PhaseInstrumentation | None = None,
+    retry_category: str = "default",
+    **kwargs: P.kwargs,
+) -> T:
+    """Execute phase with timeout, retries, and chaos hooks.
+    
+    Args:
+        phase_id: Phase identifier
+        phase_name: Human-readable phase name
+        coro: Coroutine to execute (for async context)
+        handler: Handler function to execute
+        args: Arguments to pass to handler
+        timeout_s: Timeout in seconds
+        instrumentation: Optional instrumentation
+        retry_category: Category for retry policy (network_io, file_io, etc.)
+        **kwargs: Additional keyword arguments
+    """
+    policy = RETRY_POLICIES.get(retry_category, RETRY_POLICIES["default"])
+    max_attempts = policy["max_attempts"]
+    
+    last_error = None
+    
+    for attempt in range(1, max_attempts + 1):
+        try:
+            # Chaos Injection Hook
+            await inject_chaos(phase_name, instrumentation)
+            
+            return await _execute_once(
+                phase_id, phase_name, coro, handler, args, timeout_s, instrumentation, **kwargs
+            )
+        except (AbortRequested, KeyboardInterrupt):
+            raise
+        except Exception as e:
+            last_error = e
+            is_transient = isinstance(e, TRANSIENT_ERRORS) or isinstance(e, PhaseTimeoutError)
+            
+            if attempt < max_attempts and is_transient:
+                backoff_type = policy["backoff"]
+                delay = 0.0
+                if backoff_type == "linear":
+                    delay = min(attempt * 2.0, policy["max_delay"])
+                elif backoff_type == "exponential":
+                    delay = min(2.0 ** attempt, policy["max_delay"])
+                
+                logger.warning(
+                    f"Phase {phase_id} failed (attempt {attempt}/{max_attempts}). Retrying in {delay}s...",
+                    phase_id=phase_id,
+                    error=str(e),
+                    is_transient=is_transient
+                )
+                if instrumentation:
+                    instrumentation.record_warning(
+                        "retry", 
+                        f"Attempt {attempt} failed, retrying", 
+                        error=str(e), 
+                        delay=delay
+                    )
+                
+                if delay > 0:
+                    await asyncio.sleep(delay)
+                continue
+            else:
+                # Permanent error or max retries reached
+                if attempt > 1:
+                    logger.error(f"Phase {phase_id} failed after {attempt} attempts.")
+                raise
+
+
+async def _execute_once(
     phase_id: int,
     phase_name: str,
     coro: Callable[P, T] | None = None,
@@ -749,25 +908,7 @@ async def execute_phase_with_timeout(
     instrumentation: PhaseInstrumentation | None = None,
     **kwargs: P.kwargs,
 ) -> T:
-    """Execute phase with timeout and 80% warning threshold.
-    
-    Args:
-        phase_id: Phase identifier
-        phase_name: Human-readable phase name
-        coro: Coroutine to execute (for async context)
-        handler: Handler function to execute
-        args: Arguments to pass to handler
-        timeout_s: Timeout in seconds
-        instrumentation: Optional instrumentation for recording warnings
-        **kwargs: Additional keyword arguments
-    
-    Returns:
-        Result from phase execution
-    
-    Raises:
-        PhaseTimeoutError: If phase exceeds timeout
-        asyncio.TimeoutError: If underlying operation times out
-    """
+    """Internal single execution of a phase with timeout."""
     target = coro or handler
     if target is None:
         raise ValueError("Either 'coro' or 'handler' must be provided")

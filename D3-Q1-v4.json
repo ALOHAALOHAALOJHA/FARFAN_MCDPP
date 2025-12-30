@@ -58,17 +58,14 @@
             "output_type": "FACT",
             "fusion_behavior": "additive",
             "description": "Extrae metadatos empíricos de documentos de política",
-            "requires": [
-              "PreprocesadoMetadata"
-            ],
+            "requires": [],
             "produces": [
               "metadata_facts"
-            ]
+            ],
+            "classification_rationale": "Extrae metadatos directamente del documento sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
           }
         ],
-        "dependencies": [
-          "PreprocesadoMetadata"
-        ],
+        "dependencies": [],
         "output_target": "raw_facts"
       },
       "phase_B_computation": {
@@ -85,9 +82,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Puntúa indicadores de calidad",
+            "description": "Evalúa y evalúa y puntúa indicadores de calidad",
             "requires": [
-              "metadata_facts"
+              "raw_facts"
             ],
             "modifies": [
               "indicator_scores"
@@ -101,9 +98,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Audita trazabilidad de evidencia (computa métricas)",
+            "description": "Evalúa y audita trazabilidad de evidencia (computa métricas bayesianas)",
             "requires": [
-              "metadata_facts"
+              "raw_facts"
             ],
             "modifies": [
               "traceability_scores"
@@ -117,9 +114,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Aplica lógica de test evidencial",
+            "description": "Evalúa y evalúa y aplica lógica de test evidencial",
             "requires": [
-              "metadata_facts"
+              "raw_facts"
             ],
             "modifies": [
               "evidential_test_scores"
@@ -133,9 +130,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Diagnostica enlaces críticos en texto",
+            "description": "Evalúa y evalúa y diagnostica enlaces críticos en texto",
             "requires": [
-              "metadata_facts"
+              "raw_facts"
             ],
             "modifies": [
               "critical_link_scores"
@@ -149,9 +146,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Calcula puntaje de calidad de política",
+            "description": "Evalúa y evalúa y calcula puntaje de calidad de política",
             "requires": [
-              "metadata_facts"
+              "raw_facts"
             ],
             "modifies": [
               "quality_scores"
@@ -165,9 +162,9 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Genera registro de trazabilidad bayesiana",
+            "description": "Evalúa y genera registro de trazabilidad bayesiana mediante inferencia estadística",
             "requires": [
-              "metadata_facts"
+              "raw_facts"
             ],
             "modifies": [
               "traceability_records"
@@ -175,7 +172,7 @@
           }
         ],
         "dependencies": [
-          "metadata_facts"
+          "phase_A_construction"
         ],
         "output_target": "inferred_parameters"
       },
@@ -195,7 +192,7 @@
             "fusion_behavior": "gate",
             "description": "Asigna valor probatorio - puede VETAR evidencia insuficiente",
             "requires": [
-              "metadata_facts",
+              "raw_facts",
               "inferred_parameters"
             ],
             "modulates": [
@@ -220,14 +217,16 @@
                 "scope": "unsubstantiated_links",
                 "confidence_multiplier": 0.5
               }
-            }
+            },
+            "classification_rationale": "Valida consistencia bayesiana aplicando criterios de falsación → N3-AUD (PARTE II, Sección 2.4)"
           }
         ],
         "dependencies": [
-          "metadata_facts",
-          "inferred_parameters"
+          "phase_A_construction",
+          "phase_B_computation"
         ],
-        "output_target": "validated_constraints"
+        "output_target": "validated_constraints",
+        "asymmetry_principle": "ASIMETRÍA EXPLÍCITA: N3 can invalidate resultados de N1/N2 mediante veto gates con confidence_multiplier = 0.0, bloqueando completamente hallazgos que N1/N2 aceptarían. Mientras N1 extrae metadatos y N2 realiza inferencia bayesiana, N3 aplica criterios de falsación popperiana. CANNOT invalidate N3: N1 y N2 no pueden vetar decisiones de N3, solo pueden proporcionar datos que N3 evalúa"
       }
     }
   },
@@ -290,7 +289,7 @@
     "assembly_rules": [
       {
         "rule_id": "R1_empirical_extraction",
-        "rule_type": "empirical_extraction",
+        "rule_type": "empirical_basis",
         "target": "metadata_base",
         "sources": [
           "industrialpolicyprocessor.extract_metadata"
@@ -330,15 +329,15 @@
         "gate_logic": {
           "insufficient_probative_value": {
             "action": "block_branch",
-            "multiplier": 0.0
+            "confidence_multiplier": 0.0
           },
           "contradictory_traceability": {
             "action": "reduce_confidence",
-            "multiplier": 0.3
+            "confidence_multiplier": 0.3
           },
           "missing_critical_links": {
             "action": "reduce_confidence",
-            "multiplier": 0.5
+            "confidence_multiplier": 0.5
           }
         },
         "output_type": "CONSTRAINT"
@@ -362,9 +361,7 @@
     "level_strategies": {
       "N1_fact_fusion": {
         "strategy": "concat",
-        "behavior": "additive",
-        "conflict_resolution": "append_all",
-        "note": "Single N1 method - metadata extraction"
+        "behavior": "additive"
       },
       "N2_parameter_fusion": {
         "strategy": "bayesian_update",
@@ -396,11 +393,8 @@
     },
     "fusion_pipeline": {
       "stage_1_fact_accumulation": {
-        "input": [
-          "PreprocesadoMetadata",
-          "phase_A_construction.outputs"
-        ],
-        "operation": "EXTRACT metadata facts via IndustrialPolicyProcessor",
+        "input": "raw_facts",
+        "operation": "Accumulate metadata facts from N1 methods",
         "output": "evidence_graph_v1",
         "type_consumed": "FACT",
         "behavior": "additive"
@@ -441,8 +435,8 @@
       "data_flow": "forward_propagation"
     },
     "N2_to_N1": {
-      "relationship": "N2 can backpropagate confidence to N1",
-      "effect": "Low quality scores reduce confidence in metadata facts",
+      "relationship": "N2 backpropagates confidence to N1",
+      "effect": "N2 confidence scores modulate N1 fact confidence",
       "data_flow": "confidence_backpropagation"
     },
     "N3_to_N2": {
@@ -452,9 +446,9 @@
       "asymmetry": "N2 CANNOT invalidate N3"
     },
     "N3_to_N1": {
-      "relationship": "N3 can INVALIDATE N1 facts",
-      "effect": "Veto blocks entire branches including N1 metadata",
-      "data_flow": "total_blocking",
+      "relationship": "N3 can BLOCK or INVALIDATE N1 facts",
+      "effect": "Failed validation removes invalid facts from graph",
+      "data_flow": "veto_propagation",
       "asymmetry": "N1 CANNOT invalidate N3"
     },
     "all_to_N4": {
@@ -504,6 +498,14 @@
             "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
             "",
             "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+          ],
+          "placeholders": [
+            "verdict_statement",
+            "final_confidence_pct",
+            "confidence_label",
+            "method_count",
+            "audit_count",
+            "blocked_count"
           ]
         }
       },
@@ -511,9 +513,9 @@
         "section_id": "S2_empirical_base",
         "title": "### Base Empírica: Evidencia Observada",
         "layer": "N1",
-        "data_source": "raw_facts",
+        "data_source": "validated_facts",
         "narrative_style": "descriptive",
-        "argumentative_role": "EMPIRICAL_FOUNDATION",
+        "argumentative_role": "EMPIRICAL_BASIS",
         "template": {
           "structure": [
             "**Gaps Detectados**: {gaps_count} brechas identificadas",
@@ -536,7 +538,7 @@
         "narrative_style": "critical",
         "argumentative_role": "ROBUSTNESS_QUALIFIER",
         "veto_display": {
-          "if_veto_triggered": "⛔ **MODELO INVÁLIDO**: {veto_reason}. NO usar para toma de decisiones.",
+          "if_veto_triggered": "⛔ **ALERTA: EVIDENCIA INVÁLIDA**: {veto_reason}. NO usar para toma de decisiones.",
           "if_partial_veto": "⚠️ **ROBUSTEZ PARCIAL**: {partial_veto_count} hallazgos invalidados.",
           "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: Todos los hallazgos sobrevivieron refutación."
         },
@@ -578,9 +580,9 @@
     "argumentative_roles": {
       "N1_roles": [
         {
-          "role": "EMPIRICAL_FOUNDATION",
-          "description": "Metadatos extraídos de documentos",
-          "narrative_weight": "medium"
+          "role": "EMPIRICAL_BASIS",
+          "description": "Base empírica de metadatos extraídos",
+          "narrative_weight": "high"
         }
       ],
       "N2_roles": [
@@ -748,6 +750,31 @@
       "timestamp": "2025-12-22T20:05:00Z",
       "generator_version": "1.0.0",
       "notes": "TYPE_B Bayesian contract. assign_probative_value classified as N3-AUD due to veto capability for insufficient evidence."
+    },
+    "refactoring_history": [
+      {
+        "from_version": "3.0.0",
+        "to_version": "4.0.0-epistemological",
+        "date": "2025-12-22T20:05:00Z",
+        "changes": [
+          "Epistemological stratification",
+          "Bayesian inference layer",
+          "Veto gates",
+          "Cross-layer fusion"
+        ],
+        "epistemological_framework": {
+          "N1": "Empirismo positivista",
+          "N2": "Bayesianismo subjetivista",
+          "N3": "Falsacionismo popperiano",
+          "N4": "Reflexividad crítica"
+        }
+      }
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "v3_migration": "FORBIDDEN",
+      "v3_reference": "FORBIDDEN",
+      "non_epistemological_mode": "FORBIDDEN"
     }
   },
   "compatibility": {

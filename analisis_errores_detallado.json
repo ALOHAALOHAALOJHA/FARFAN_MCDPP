@@ -1,0 +1,5295 @@
+{
+  "total_pending": 16,
+  "analyzed": 10,
+  "error_patterns": {
+    "fusion_strategy_mismatch": {
+      "count": 10,
+      "contracts": [
+        "D3-Q5-v4.json",
+        "D4-Q1-v4.json",
+        "D4-Q2-v4.json",
+        "D4-Q3-v4.json",
+        "D4-Q4-v4.json",
+        "D4-Q5-v4.json",
+        "D5-Q1-v4.json",
+        "D5-Q2-v4.json",
+        "D5-Q3-v4.json",
+        "D5-Q4-v4.json"
+      ],
+      "severity": "CRÍTICO",
+      "examples": [
+        {
+          "contract": "D3-Q5-v4.json",
+          "check_id": "0.8",
+          "message": "Campo obligatorio FALTA: fusion_specification.contract_type"
+        },
+        {
+          "contract": "D4-Q1-v4.json",
+          "check_id": "0.8",
+          "message": "Campo obligatorio FALTA: fusion_specification.contract_type"
+        },
+        {
+          "contract": "D4-Q2-v4.json",
+          "check_id": "0.8",
+          "message": "Campo obligatorio FALTA: fusion_specification.contract_type"
+        }
+      ]
+    },
+    "empty_phase_A": {
+      "count": 9,
+      "contracts": [
+        "D3-Q5-v4.json",
+        "D4-Q1-v4.json",
+        "D4-Q2-v4.json",
+        "D4-Q3-v4.json",
+        "D4-Q4-v4.json",
+        "D4-Q5-v4.json",
+        "D5-Q2-v4.json",
+        "D5-Q3-v4.json",
+        "D5-Q4-v4.json"
+      ],
+      "severity": "CRÍTICO",
+      "examples": [
+        {
+          "contract": "D3-Q5-v4.json",
+          "check_id": "2.3.4",
+          "message": "phase_A.methods es array no vacío"
+        },
+        {
+          "contract": "D4-Q1-v4.json",
+          "check_id": "2.3.4",
+          "message": "phase_A.methods es array no vacío"
+        },
+        {
+          "contract": "D4-Q2-v4.json",
+          "check_id": "2.3.4",
+          "message": "phase_A.methods es array no vacío"
+        }
+      ]
+    },
+    "incorrect_dependencies": {
+      "count": 10,
+      "contracts": [
+        "D3-Q5-v4.json",
+        "D4-Q1-v4.json",
+        "D4-Q2-v4.json",
+        "D4-Q3-v4.json",
+        "D4-Q4-v4.json",
+        "D4-Q5-v4.json",
+        "D5-Q1-v4.json",
+        "D5-Q2-v4.json",
+        "D5-Q3-v4.json",
+        "D5-Q4-v4.json"
+      ],
+      "severity": "CRÍTICO",
+      "examples": [
+        {
+          "contract": "D3-Q5-v4.json",
+          "check_id": "2.3.5",
+          "message": "phase_A.dependencies = [] (array vacío - N1 no depende)"
+        },
+        {
+          "contract": "D4-Q1-v4.json",
+          "check_id": "2.3.5",
+          "message": "phase_A.dependencies = [] (array vacío - N1 no depende)"
+        },
+        {
+          "contract": "D4-Q2-v4.json",
+          "check_id": "2.3.5",
+          "message": "phase_A.dependencies = [] (array vacío - N1 no depende)"
+        }
+      ]
+    },
+    "missing_cross_layer_fusion": {
+      "count": 9,
+      "contracts": [
+        "D3-Q5-v4.json",
+        "D4-Q1-v4.json",
+        "D4-Q2-v4.json",
+        "D4-Q3-v4.json",
+        "D4-Q5-v4.json",
+        "D5-Q1-v4.json",
+        "D5-Q2-v4.json",
+        "D5-Q3-v4.json",
+        "D5-Q4-v4.json"
+      ],
+      "severity": "CRÍTICO",
+      "examples": [
+        {
+          "contract": "D3-Q5-v4.json",
+          "check_id": "2.5.1",
+          "message": "phase_B.level = 'N2'"
+        },
+        {
+          "contract": "D4-Q1-v4.json",
+          "check_id": "2.5.1",
+          "message": "phase_B.level = 'N2'"
+        },
+        {
+          "contract": "D4-Q2-v4.json",
+          "check_id": "2.5.1",
+          "message": "phase_B.level = 'N2'"
+        }
+      ]
+    },
+    "missing_traceability": {
+      "count": 10,
+      "contracts": [
+        "D3-Q5-v4.json",
+        "D4-Q1-v4.json",
+        "D4-Q2-v4.json",
+        "D4-Q3-v4.json",
+        "D4-Q4-v4.json",
+        "D4-Q5-v4.json",
+        "D5-Q1-v4.json",
+        "D5-Q2-v4.json",
+        "D5-Q3-v4.json",
+        "D5-Q4-v4.json"
+      ],
+      "severity": "ALTO",
+      "examples": [
+        {
+          "contract": "D3-Q5-v4.json",
+          "check_id": "2.7.3",
+          "message": "phase_C.epistemology contiene 'Falsacionismo popperiano'"
+        },
+        {
+          "contract": "D4-Q1-v4.json",
+          "check_id": "2.7.3",
+          "message": "phase_C.epistemology contiene 'Falsacionismo popperiano'"
+        },
+        {
+          "contract": "D4-Q2-v4.json",
+          "check_id": "2.7.3",
+          "message": "phase_C.epistemology contiene 'Falsacionismo popperiano'"
+        }
+      ]
+    },
+    "missing_asymmetry": {
+      "count": 10,
+      "contracts": [
+        "D3-Q5-v4.json",
+        "D4-Q1-v4.json",
+        "D4-Q2-v4.json",
+        "D4-Q3-v4.json",
+        "D4-Q4-v4.json",
+        "D4-Q5-v4.json",
+        "D5-Q1-v4.json",
+        "D5-Q2-v4.json",
+        "D5-Q3-v4.json",
+        "D5-Q4-v4.json"
+      ],
+      "severity": "CRÍTICO",
+      "examples": [
+        {
+          "contract": "D3-Q5-v4.json",
+          "check_id": "2.7.6",
+          "message": "phase_C tiene campo asymmetry_principle"
+        },
+        {
+          "contract": "D4-Q1-v4.json",
+          "check_id": "2.7.6",
+          "message": "phase_C tiene campo asymmetry_principle"
+        },
+        {
+          "contract": "D4-Q2-v4.json",
+          "check_id": "2.7.6",
+          "message": "phase_C tiene campo asymmetry_principle"
+        }
+      ]
+    },
+    "method_count_mismatch": {
+      "count": 10,
+      "contracts": [
+        "D3-Q5-v4.json",
+        "D4-Q1-v4.json",
+        "D4-Q2-v4.json",
+        "D4-Q3-v4.json",
+        "D4-Q4-v4.json",
+        "D4-Q5-v4.json",
+        "D5-Q1-v4.json",
+        "D5-Q2-v4.json",
+        "D5-Q3-v4.json",
+        "D5-Q4-v4.json"
+      ],
+      "severity": "CRÍTICO",
+      "examples": [
+        {
+          "contract": "D3-Q5-v4.json",
+          "check_id": "2.9.3",
+          "message": "method_count ≥ 3 (al menos un método por fase)"
+        },
+        {
+          "contract": "D4-Q1-v4.json",
+          "check_id": "2.9.3",
+          "message": "method_count ≥ 3 (al menos un método por fase)"
+        },
+        {
+          "contract": "D4-Q2-v4.json",
+          "check_id": "2.9.3",
+          "message": "method_count ≥ 3 (al menos un método por fase)"
+        }
+      ]
+    },
+    "missing_argumentative_roles": {
+      "count": 10,
+      "contracts": [
+        "D3-Q5-v4.json",
+        "D4-Q1-v4.json",
+        "D4-Q2-v4.json",
+        "D4-Q3-v4.json",
+        "D4-Q4-v4.json",
+        "D4-Q5-v4.json",
+        "D5-Q1-v4.json",
+        "D5-Q2-v4.json",
+        "D5-Q3-v4.json",
+        "D5-Q4-v4.json"
+      ],
+      "severity": "ALTO",
+      "examples": [
+        {
+          "contract": "D3-Q5-v4.json",
+          "check_id": "6.7.N1_roles",
+          "message": "argumentative_roles.N1_roles existe y no está vacío"
+        },
+        {
+          "contract": "D4-Q1-v4.json",
+          "check_id": "6.7.N1_roles",
+          "message": "argumentative_roles.N1_roles existe y no está vacío"
+        },
+        {
+          "contract": "D4-Q2-v4.json",
+          "check_id": "6.7.N1_roles",
+          "message": "argumentative_roles.N1_roles existe y no está vacío"
+        }
+      ]
+    },
+    "incorrect_requires": {
+      "count": 1,
+      "contracts": [
+        "D4-Q4-v4.json"
+      ],
+      "severity": "CRÍTICO",
+      "examples": [
+        {
+          "contract": "D4-Q4-v4.json",
+          "check_id": "2.6.0.requires",
+          "message": "Método N2[0].requires existe y contiene 'raw_facts'"
+        }
+      ]
+    },
+    "gate_logic_issues": {
+      "count": 1,
+      "contracts": [
+        "D4-Q4-v4.json"
+      ],
+      "severity": "CRÍTICO",
+      "examples": [
+        {
+          "contract": "D4-Q4-v4.json",
+          "check_id": "3.9.12",
+          "message": "Al menos UNA condición tiene confidence_multiplier < 0.5"
+        }
+      ]
+    },
+    "missing_placeholders": {
+      "count": 6,
+      "contracts": [
+        "D4-Q4-v4.json",
+        "D4-Q5-v4.json",
+        "D5-Q1-v4.json",
+        "D5-Q2-v4.json",
+        "D5-Q3-v4.json",
+        "D5-Q4-v4.json"
+      ],
+      "severity": "ALTO",
+      "examples": [
+        {
+          "contract": "D4-Q4-v4.json",
+          "check_id": "6.3.verdict_statement",
+          "message": "S1.template.placeholders contiene 'verdict_statement'"
+        },
+        {
+          "contract": "D4-Q5-v4.json",
+          "check_id": "6.3.verdict_statement",
+          "message": "S1.template.placeholders contiene 'verdict_statement'"
+        },
+        {
+          "contract": "D5-Q1-v4.json",
+          "check_id": "6.3.verdict_statement",
+          "message": "S1.template.placeholders contiene 'verdict_statement'"
+        }
+      ]
+    },
+    "r1_sources_issue": {
+      "count": 5,
+      "contracts": [
+        "D4-Q5-v4.json",
+        "D5-Q1-v4.json",
+        "D5-Q2-v4.json",
+        "D5-Q3-v4.json",
+        "D5-Q4-v4.json"
+      ],
+      "severity": "CRÍTICO",
+      "examples": [
+        {
+          "contract": "D4-Q5-v4.json",
+          "check_id": "3.7.8",
+          "message": "R1.sources tiene mismo count que Phase A"
+        },
+        {
+          "contract": "D5-Q1-v4.json",
+          "check_id": "3.7.9",
+          "message": "TODOS los provides de Phase A están en R1.sources"
+        },
+        {
+          "contract": "D5-Q2-v4.json",
+          "check_id": "3.7.8",
+          "message": "R1.sources tiene mismo count que Phase A"
+        }
+      ]
+    },
+    "r2_merge_strategy_issue": {
+      "count": 3,
+      "contracts": [
+        "D4-Q5-v4.json",
+        "D5-Q2-v4.json",
+        "D5-Q4-v4.json"
+      ],
+      "severity": "CRÍTICO",
+      "examples": [
+        {
+          "contract": "D4-Q5-v4.json",
+          "check_id": "3.8.18",
+          "message": "R2.merge_strategy = 'weighted_mean' (TYPE_D)"
+        },
+        {
+          "contract": "D5-Q2-v4.json",
+          "check_id": "3.8.8",
+          "message": "R2.merge_strategy = 'semantic_triangulation' (TYPE_A)"
+        },
+        {
+          "contract": "D5-Q4-v4.json",
+          "check_id": "3.8.15",
+          "message": "R2.merge_strategy = 'topological_overlay' (TYPE_C)"
+        }
+      ]
+    }
+  },
+  "contract_details": {
+    "D3-Q5-v4.json": {
+      "approved": false,
+      "error_count": 123,
+      "errors": [
+        {
+          "check_id": "0.1",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: identity.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.2",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: identity.base_slot",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.3",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.orchestration_mode",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.4",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.5",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.execution_phases",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.6",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: evidence_assembly.type_system",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.7",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: evidence_assembly.assembly_rules",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.8",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: fusion_specification.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.9",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: fusion_specification.level_strategies",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.10",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: cross_layer_fusion",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.11",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: human_answer_structure.sections",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "1.1.1",
+          "severity": "CRÍTICO",
+          "message": "contract_type es válido (TYPE_A/B/C/D/E)",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.2",
+          "severity": "ALTO",
+          "message": "identity.contract_type_name existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.3",
+          "severity": "ALTO",
+          "message": "identity.contract_type_focus existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.4",
+          "severity": "CRÍTICO",
+          "message": "contract_version es 4.0.0-epistemological o contiene 'epistemological'",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "2.1.1",
+          "severity": "CRÍTICO",
+          "message": "orchestration_mode = 'epistemological_pipeline'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.2.1",
+          "severity": "CRÍTICO",
+          "message": "Existe phase_A_construction",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.2.2",
+          "severity": "CRÍTICO",
+          "message": "Existe phase_B_computation",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.2.3",
+          "severity": "CRÍTICO",
+          "message": "Existe phase_C_litigation",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.1",
+          "severity": "CRÍTICO",
+          "message": "phase_A.level = 'N1'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.2",
+          "severity": "ALTO",
+          "message": "phase_A.level_name contiene 'Empírico' o 'Base Empírica'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.3",
+          "severity": "ALTO",
+          "message": "phase_A.epistemology contiene 'Empirismo positivista'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.4",
+          "severity": "CRÍTICO",
+          "message": "phase_A.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.5",
+          "severity": "CRÍTICO",
+          "message": "phase_A.dependencies = [] (array vacío - N1 no depende)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.1",
+          "severity": "CRÍTICO",
+          "message": "phase_B.level = 'N2'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.3",
+          "severity": "ALTO",
+          "message": "phase_B.epistemology contiene 'Bayesianismo' o 'creencias actualizables'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.4",
+          "severity": "CRÍTICO",
+          "message": "phase_B.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.5",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene 'phase_A_construction'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.1",
+          "severity": "CRÍTICO",
+          "message": "phase_C.level = 'N3'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.3",
+          "severity": "ALTO",
+          "message": "phase_C.epistemology contiene 'Falsacionismo popperiano'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.4",
+          "severity": "CRÍTICO",
+          "message": "phase_C.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.5",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.6",
+          "severity": "CRÍTICO",
+          "message": "phase_C tiene campo asymmetry_principle",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.7",
+          "severity": "CRÍTICO",
+          "message": "asymmetry_principle declara asimetría explícitamente",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.9.3",
+          "severity": "ALTO",
+          "message": "method_count ≥ 3 (al menos un método por fase)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "3.1.FACT",
+          "severity": "CRÍTICO",
+          "message": "type_system.FACT existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.1.PARAMETER",
+          "severity": "CRÍTICO",
+          "message": "type_system.PARAMETER existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.1.CONSTRAINT",
+          "severity": "CRÍTICO",
+          "message": "type_system.CONSTRAINT existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.1.NARRATIVE",
+          "severity": "CRÍTICO",
+          "message": "type_system.NARRATIVE existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.1",
+          "severity": "CRÍTICO",
+          "message": "FACT.origin_level = 'N1'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.2",
+          "severity": "CRÍTICO",
+          "message": "FACT.fusion_operation = 'graph_node_addition'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.3",
+          "severity": "CRÍTICO",
+          "message": "FACT.merge_behavior = 'additive'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.4",
+          "severity": "ALTO",
+          "message": "FACT.symbol = '⊕'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.3.1",
+          "severity": "CRÍTICO",
+          "message": "PARAMETER.origin_level = 'N2'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.3.2",
+          "severity": "CRÍTICO",
+          "message": "PARAMETER.fusion_operation = 'edge_weight_modification'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.3.3",
+          "severity": "CRÍTICO",
+          "message": "PARAMETER.merge_behavior = 'multiplicative'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.4.1",
+          "severity": "CRÍTICO",
+          "message": "CONSTRAINT.origin_level = 'N3'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.4.2",
+          "severity": "CRÍTICO",
+          "message": "CONSTRAINT.fusion_operation = 'branch_filtering'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.4.3",
+          "severity": "CRÍTICO",
+          "message": "CONSTRAINT.merge_behavior = 'gate'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.5.1",
+          "severity": "CRÍTICO",
+          "message": "NARRATIVE.origin_level = 'N4'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.5.2",
+          "severity": "CRÍTICO",
+          "message": "NARRATIVE.fusion_operation = 'synthesis'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.5.3",
+          "severity": "CRÍTICO",
+          "message": "NARRATIVE.merge_behavior = 'terminal'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.6.2",
+          "severity": "CRÍTICO",
+          "message": "assembly_rules tiene EXACTAMENTE 4 reglas",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "4.3.N1_fact_fusion",
+          "severity": "CRÍTICO",
+          "message": "level_strategies.N1_fact_fusion existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.3.N2_parameter_fusion",
+          "severity": "CRÍTICO",
+          "message": "level_strategies.N2_parameter_fusion existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.3.N3_constraint_fusion",
+          "severity": "CRÍTICO",
+          "message": "level_strategies.N3_constraint_fusion existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.6.1",
+          "severity": "CRÍTICO",
+          "message": "N3_constraint_fusion.strategy = 'veto_gate' (UNIVERSAL)",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.6.3",
+          "severity": "CRÍTICO",
+          "message": "N3_constraint_fusion.asymmetry_principle = 'audit_dominates'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_1_fact_accumulation",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_1_fact_accumulation existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_2_parameter_application",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_2_parameter_application existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_3_constraint_filtering",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_3_constraint_filtering existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_4_synthesis",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_4_synthesis existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.5",
+          "severity": "CRÍTICO",
+          "message": "stage_1.type_consumed = 'FACT'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.6",
+          "severity": "CRÍTICO",
+          "message": "stage_1.behavior = 'additive'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.8",
+          "severity": "CRÍTICO",
+          "message": "stage_2.type_consumed = 'PARAMETER'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.9",
+          "severity": "CRÍTICO",
+          "message": "stage_2.behavior = 'multiplicative'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.11",
+          "severity": "CRÍTICO",
+          "message": "stage_3.type_consumed = 'CONSTRAINT'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.12",
+          "severity": "CRÍTICO",
+          "message": "stage_3.behavior = 'gate'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.14",
+          "severity": "CRÍTICO",
+          "message": "stage_4.type_produced = 'NARRATIVE'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "5.1.N1_to_N2",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N1_to_N2 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.N2_to_N1",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N2_to_N1 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.N3_to_N1",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N3_to_N1 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.N3_to_N2",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N3_to_N2 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.all_to_N4",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.all_to_N4 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.2.3",
+          "severity": "ALTO",
+          "message": "N1_to_N2.data_flow = 'forward_propagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.3.3",
+          "severity": "ALTO",
+          "message": "N2_to_N1.data_flow = 'confidence_backpropagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.1",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.relationship menciona 'BLOCK' o 'INVALIDATE'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.3",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.data_flow = 'veto_propagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.4",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1 tiene campo asymmetry",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.5",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.asymmetry contiene 'N1 CANNOT invalidate N3'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.5.4",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N2 tiene campo asymmetry",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.5.5",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N2.asymmetry contiene 'N2 CANNOT invalidate N3'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.6.3",
+          "severity": "ALTO",
+          "message": "all_to_N4.data_flow = 'terminal_aggregation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.7.1",
+          "severity": "ALTO",
+          "message": "blocking_propagation_rules existe y no está vacío",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.7.2",
+          "severity": "ALTO",
+          "message": "blocking_propagation_rules tiene al menos 2 condiciones",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "6.1.1",
+          "severity": "CRÍTICO",
+          "message": "format = 'markdown'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.1.2",
+          "severity": "CRÍTICO",
+          "message": "template_mode = 'epistemological_narrative'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.1.5",
+          "severity": "CRÍTICO",
+          "message": "sections tiene EXACTAMENTE 4 secciones",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N1_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N1_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N2_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N2_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N3_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N3_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N4_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N4_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.7",
+          "severity": "ALTO",
+          "message": "N3_roles contiene 'ROBUSTNESS_QUALIFIER'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.8",
+          "severity": "ALTO",
+          "message": "N3_roles contiene 'REFUTATIONAL_SIGNAL'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.critical",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.critical existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.low",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.low existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.medium",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.medium existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.high",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.high existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.13",
+          "severity": "CRÍTICO",
+          "message": "critical.label = 'INVÁLIDO' (EXACTO)",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.14",
+          "severity": "CRÍTICO",
+          "message": "critical.description menciona 'veto' o 'inválido' o 'NO usar'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.15",
+          "severity": "ALTO",
+          "message": "critical.display = '🔴'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.21",
+          "severity": "ALTO",
+          "message": "high.label = 'ROBUSTO'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.22",
+          "severity": "ALTO",
+          "message": "high.display = '🟢'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "7.1.2",
+          "severity": "ALTO",
+          "message": "canonical_sources.epistemological_guide existe",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.2.2",
+          "severity": "ALTO",
+          "message": "generation.method contiene 'v4' o 'epistemological'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.3.1",
+          "severity": "ALTO",
+          "message": "refactoring_history existe y tiene al menos 1 entrada",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.4.2",
+          "severity": "ALTO",
+          "message": "prohibitions.v3_recovery = 'FORBIDDEN'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "11.1.3",
+          "severity": "CRÍTICO",
+          "message": "contract_version >= 4.0 o contiene 'epistemological'",
+          "section": "Prohibiciones y Anti-Patterns"
+        },
+        {
+          "check_id": "12.2.2",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene phase_A",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "12.2.3",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "13.1.base_slot",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'base_slot'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.question_id",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'question_id'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.evidence",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'evidence'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.score",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'score'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.human_answer",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'human_answer'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.7",
+          "severity": "ALTO",
+          "message": "output_contract.schema tiene campo 'epistemological_trace'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "14.4.1",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con confidence_multiplier = 0.0",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.4.2",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con action severa (suppress/block/invalidate)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.1",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N1 (Empirismo positivista)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.2",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N2 (Bayesianismo subjetivista)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.3",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N3 (Falsacionismo popperiano)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.4",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N4 (Reflexividad crítica)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.5",
+          "severity": "CRÍTICO",
+          "message": "Asimetría N3 está técnicamente implementada",
+          "section": "Auditoría Final - Coherencia Global"
+        }
+      ]
+    },
+    "D4-Q1-v4.json": {
+      "approved": false,
+      "error_count": 123,
+      "errors": [
+        {
+          "check_id": "0.1",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: identity.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.2",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: identity.base_slot",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.3",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.orchestration_mode",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.4",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.5",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.execution_phases",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.6",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: evidence_assembly.type_system",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.7",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: evidence_assembly.assembly_rules",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.8",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: fusion_specification.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.9",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: fusion_specification.level_strategies",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.10",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: cross_layer_fusion",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.11",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: human_answer_structure.sections",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "1.1.1",
+          "severity": "CRÍTICO",
+          "message": "contract_type es válido (TYPE_A/B/C/D/E)",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.2",
+          "severity": "ALTO",
+          "message": "identity.contract_type_name existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.3",
+          "severity": "ALTO",
+          "message": "identity.contract_type_focus existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.4",
+          "severity": "CRÍTICO",
+          "message": "contract_version es 4.0.0-epistemological o contiene 'epistemological'",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "2.1.1",
+          "severity": "CRÍTICO",
+          "message": "orchestration_mode = 'epistemological_pipeline'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.2.1",
+          "severity": "CRÍTICO",
+          "message": "Existe phase_A_construction",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.2.2",
+          "severity": "CRÍTICO",
+          "message": "Existe phase_B_computation",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.2.3",
+          "severity": "CRÍTICO",
+          "message": "Existe phase_C_litigation",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.1",
+          "severity": "CRÍTICO",
+          "message": "phase_A.level = 'N1'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.2",
+          "severity": "ALTO",
+          "message": "phase_A.level_name contiene 'Empírico' o 'Base Empírica'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.3",
+          "severity": "ALTO",
+          "message": "phase_A.epistemology contiene 'Empirismo positivista'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.4",
+          "severity": "CRÍTICO",
+          "message": "phase_A.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.5",
+          "severity": "CRÍTICO",
+          "message": "phase_A.dependencies = [] (array vacío - N1 no depende)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.1",
+          "severity": "CRÍTICO",
+          "message": "phase_B.level = 'N2'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.3",
+          "severity": "ALTO",
+          "message": "phase_B.epistemology contiene 'Bayesianismo' o 'creencias actualizables'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.4",
+          "severity": "CRÍTICO",
+          "message": "phase_B.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.5",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene 'phase_A_construction'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.1",
+          "severity": "CRÍTICO",
+          "message": "phase_C.level = 'N3'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.3",
+          "severity": "ALTO",
+          "message": "phase_C.epistemology contiene 'Falsacionismo popperiano'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.4",
+          "severity": "CRÍTICO",
+          "message": "phase_C.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.5",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.6",
+          "severity": "CRÍTICO",
+          "message": "phase_C tiene campo asymmetry_principle",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.7",
+          "severity": "CRÍTICO",
+          "message": "asymmetry_principle declara asimetría explícitamente",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.9.3",
+          "severity": "ALTO",
+          "message": "method_count ≥ 3 (al menos un método por fase)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "3.1.FACT",
+          "severity": "CRÍTICO",
+          "message": "type_system.FACT existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.1.PARAMETER",
+          "severity": "CRÍTICO",
+          "message": "type_system.PARAMETER existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.1.CONSTRAINT",
+          "severity": "CRÍTICO",
+          "message": "type_system.CONSTRAINT existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.1.NARRATIVE",
+          "severity": "CRÍTICO",
+          "message": "type_system.NARRATIVE existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.1",
+          "severity": "CRÍTICO",
+          "message": "FACT.origin_level = 'N1'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.2",
+          "severity": "CRÍTICO",
+          "message": "FACT.fusion_operation = 'graph_node_addition'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.3",
+          "severity": "CRÍTICO",
+          "message": "FACT.merge_behavior = 'additive'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.4",
+          "severity": "ALTO",
+          "message": "FACT.symbol = '⊕'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.3.1",
+          "severity": "CRÍTICO",
+          "message": "PARAMETER.origin_level = 'N2'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.3.2",
+          "severity": "CRÍTICO",
+          "message": "PARAMETER.fusion_operation = 'edge_weight_modification'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.3.3",
+          "severity": "CRÍTICO",
+          "message": "PARAMETER.merge_behavior = 'multiplicative'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.4.1",
+          "severity": "CRÍTICO",
+          "message": "CONSTRAINT.origin_level = 'N3'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.4.2",
+          "severity": "CRÍTICO",
+          "message": "CONSTRAINT.fusion_operation = 'branch_filtering'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.4.3",
+          "severity": "CRÍTICO",
+          "message": "CONSTRAINT.merge_behavior = 'gate'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.5.1",
+          "severity": "CRÍTICO",
+          "message": "NARRATIVE.origin_level = 'N4'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.5.2",
+          "severity": "CRÍTICO",
+          "message": "NARRATIVE.fusion_operation = 'synthesis'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.5.3",
+          "severity": "CRÍTICO",
+          "message": "NARRATIVE.merge_behavior = 'terminal'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.6.2",
+          "severity": "CRÍTICO",
+          "message": "assembly_rules tiene EXACTAMENTE 4 reglas",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "4.3.N1_fact_fusion",
+          "severity": "CRÍTICO",
+          "message": "level_strategies.N1_fact_fusion existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.3.N2_parameter_fusion",
+          "severity": "CRÍTICO",
+          "message": "level_strategies.N2_parameter_fusion existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.3.N3_constraint_fusion",
+          "severity": "CRÍTICO",
+          "message": "level_strategies.N3_constraint_fusion existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.6.1",
+          "severity": "CRÍTICO",
+          "message": "N3_constraint_fusion.strategy = 'veto_gate' (UNIVERSAL)",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.6.3",
+          "severity": "CRÍTICO",
+          "message": "N3_constraint_fusion.asymmetry_principle = 'audit_dominates'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_1_fact_accumulation",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_1_fact_accumulation existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_2_parameter_application",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_2_parameter_application existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_3_constraint_filtering",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_3_constraint_filtering existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_4_synthesis",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_4_synthesis existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.5",
+          "severity": "CRÍTICO",
+          "message": "stage_1.type_consumed = 'FACT'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.6",
+          "severity": "CRÍTICO",
+          "message": "stage_1.behavior = 'additive'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.8",
+          "severity": "CRÍTICO",
+          "message": "stage_2.type_consumed = 'PARAMETER'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.9",
+          "severity": "CRÍTICO",
+          "message": "stage_2.behavior = 'multiplicative'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.11",
+          "severity": "CRÍTICO",
+          "message": "stage_3.type_consumed = 'CONSTRAINT'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.12",
+          "severity": "CRÍTICO",
+          "message": "stage_3.behavior = 'gate'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.14",
+          "severity": "CRÍTICO",
+          "message": "stage_4.type_produced = 'NARRATIVE'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "5.1.N1_to_N2",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N1_to_N2 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.N2_to_N1",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N2_to_N1 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.N3_to_N1",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N3_to_N1 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.N3_to_N2",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N3_to_N2 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.all_to_N4",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.all_to_N4 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.2.3",
+          "severity": "ALTO",
+          "message": "N1_to_N2.data_flow = 'forward_propagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.3.3",
+          "severity": "ALTO",
+          "message": "N2_to_N1.data_flow = 'confidence_backpropagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.1",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.relationship menciona 'BLOCK' o 'INVALIDATE'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.3",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.data_flow = 'veto_propagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.4",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1 tiene campo asymmetry",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.5",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.asymmetry contiene 'N1 CANNOT invalidate N3'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.5.4",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N2 tiene campo asymmetry",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.5.5",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N2.asymmetry contiene 'N2 CANNOT invalidate N3'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.6.3",
+          "severity": "ALTO",
+          "message": "all_to_N4.data_flow = 'terminal_aggregation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.7.1",
+          "severity": "ALTO",
+          "message": "blocking_propagation_rules existe y no está vacío",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.7.2",
+          "severity": "ALTO",
+          "message": "blocking_propagation_rules tiene al menos 2 condiciones",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "6.1.1",
+          "severity": "CRÍTICO",
+          "message": "format = 'markdown'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.1.2",
+          "severity": "CRÍTICO",
+          "message": "template_mode = 'epistemological_narrative'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.1.5",
+          "severity": "CRÍTICO",
+          "message": "sections tiene EXACTAMENTE 4 secciones",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N1_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N1_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N2_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N2_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N3_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N3_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N4_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N4_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.7",
+          "severity": "ALTO",
+          "message": "N3_roles contiene 'ROBUSTNESS_QUALIFIER'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.8",
+          "severity": "ALTO",
+          "message": "N3_roles contiene 'REFUTATIONAL_SIGNAL'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.critical",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.critical existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.low",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.low existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.medium",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.medium existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.high",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.high existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.13",
+          "severity": "CRÍTICO",
+          "message": "critical.label = 'INVÁLIDO' (EXACTO)",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.14",
+          "severity": "CRÍTICO",
+          "message": "critical.description menciona 'veto' o 'inválido' o 'NO usar'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.15",
+          "severity": "ALTO",
+          "message": "critical.display = '🔴'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.21",
+          "severity": "ALTO",
+          "message": "high.label = 'ROBUSTO'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.22",
+          "severity": "ALTO",
+          "message": "high.display = '🟢'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "7.1.2",
+          "severity": "ALTO",
+          "message": "canonical_sources.epistemological_guide existe",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.2.2",
+          "severity": "ALTO",
+          "message": "generation.method contiene 'v4' o 'epistemological'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.3.1",
+          "severity": "ALTO",
+          "message": "refactoring_history existe y tiene al menos 1 entrada",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.4.2",
+          "severity": "ALTO",
+          "message": "prohibitions.v3_recovery = 'FORBIDDEN'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "11.1.3",
+          "severity": "CRÍTICO",
+          "message": "contract_version >= 4.0 o contiene 'epistemological'",
+          "section": "Prohibiciones y Anti-Patterns"
+        },
+        {
+          "check_id": "12.2.2",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene phase_A",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "12.2.3",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "13.1.base_slot",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'base_slot'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.question_id",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'question_id'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.evidence",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'evidence'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.score",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'score'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.human_answer",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'human_answer'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.7",
+          "severity": "ALTO",
+          "message": "output_contract.schema tiene campo 'epistemological_trace'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "14.4.1",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con confidence_multiplier = 0.0",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.4.2",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con action severa (suppress/block/invalidate)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.1",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N1 (Empirismo positivista)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.2",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N2 (Bayesianismo subjetivista)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.3",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N3 (Falsacionismo popperiano)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.4",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N4 (Reflexividad crítica)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.5",
+          "severity": "CRÍTICO",
+          "message": "Asimetría N3 está técnicamente implementada",
+          "section": "Auditoría Final - Coherencia Global"
+        }
+      ]
+    },
+    "D4-Q2-v4.json": {
+      "approved": false,
+      "error_count": 123,
+      "errors": [
+        {
+          "check_id": "0.1",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: identity.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.2",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: identity.base_slot",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.3",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.orchestration_mode",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.4",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.5",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.execution_phases",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.6",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: evidence_assembly.type_system",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.7",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: evidence_assembly.assembly_rules",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.8",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: fusion_specification.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.9",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: fusion_specification.level_strategies",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.10",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: cross_layer_fusion",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.11",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: human_answer_structure.sections",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "1.1.1",
+          "severity": "CRÍTICO",
+          "message": "contract_type es válido (TYPE_A/B/C/D/E)",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.2",
+          "severity": "ALTO",
+          "message": "identity.contract_type_name existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.3",
+          "severity": "ALTO",
+          "message": "identity.contract_type_focus existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.4",
+          "severity": "CRÍTICO",
+          "message": "contract_version es 4.0.0-epistemological o contiene 'epistemological'",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "2.1.1",
+          "severity": "CRÍTICO",
+          "message": "orchestration_mode = 'epistemological_pipeline'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.2.1",
+          "severity": "CRÍTICO",
+          "message": "Existe phase_A_construction",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.2.2",
+          "severity": "CRÍTICO",
+          "message": "Existe phase_B_computation",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.2.3",
+          "severity": "CRÍTICO",
+          "message": "Existe phase_C_litigation",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.1",
+          "severity": "CRÍTICO",
+          "message": "phase_A.level = 'N1'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.2",
+          "severity": "ALTO",
+          "message": "phase_A.level_name contiene 'Empírico' o 'Base Empírica'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.3",
+          "severity": "ALTO",
+          "message": "phase_A.epistemology contiene 'Empirismo positivista'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.4",
+          "severity": "CRÍTICO",
+          "message": "phase_A.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.5",
+          "severity": "CRÍTICO",
+          "message": "phase_A.dependencies = [] (array vacío - N1 no depende)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.1",
+          "severity": "CRÍTICO",
+          "message": "phase_B.level = 'N2'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.3",
+          "severity": "ALTO",
+          "message": "phase_B.epistemology contiene 'Bayesianismo' o 'creencias actualizables'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.4",
+          "severity": "CRÍTICO",
+          "message": "phase_B.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.5",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene 'phase_A_construction'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.1",
+          "severity": "CRÍTICO",
+          "message": "phase_C.level = 'N3'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.3",
+          "severity": "ALTO",
+          "message": "phase_C.epistemology contiene 'Falsacionismo popperiano'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.4",
+          "severity": "CRÍTICO",
+          "message": "phase_C.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.5",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.6",
+          "severity": "CRÍTICO",
+          "message": "phase_C tiene campo asymmetry_principle",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.7",
+          "severity": "CRÍTICO",
+          "message": "asymmetry_principle declara asimetría explícitamente",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.9.3",
+          "severity": "ALTO",
+          "message": "method_count ≥ 3 (al menos un método por fase)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "3.1.FACT",
+          "severity": "CRÍTICO",
+          "message": "type_system.FACT existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.1.PARAMETER",
+          "severity": "CRÍTICO",
+          "message": "type_system.PARAMETER existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.1.CONSTRAINT",
+          "severity": "CRÍTICO",
+          "message": "type_system.CONSTRAINT existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.1.NARRATIVE",
+          "severity": "CRÍTICO",
+          "message": "type_system.NARRATIVE existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.1",
+          "severity": "CRÍTICO",
+          "message": "FACT.origin_level = 'N1'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.2",
+          "severity": "CRÍTICO",
+          "message": "FACT.fusion_operation = 'graph_node_addition'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.3",
+          "severity": "CRÍTICO",
+          "message": "FACT.merge_behavior = 'additive'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.4",
+          "severity": "ALTO",
+          "message": "FACT.symbol = '⊕'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.3.1",
+          "severity": "CRÍTICO",
+          "message": "PARAMETER.origin_level = 'N2'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.3.2",
+          "severity": "CRÍTICO",
+          "message": "PARAMETER.fusion_operation = 'edge_weight_modification'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.3.3",
+          "severity": "CRÍTICO",
+          "message": "PARAMETER.merge_behavior = 'multiplicative'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.4.1",
+          "severity": "CRÍTICO",
+          "message": "CONSTRAINT.origin_level = 'N3'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.4.2",
+          "severity": "CRÍTICO",
+          "message": "CONSTRAINT.fusion_operation = 'branch_filtering'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.4.3",
+          "severity": "CRÍTICO",
+          "message": "CONSTRAINT.merge_behavior = 'gate'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.5.1",
+          "severity": "CRÍTICO",
+          "message": "NARRATIVE.origin_level = 'N4'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.5.2",
+          "severity": "CRÍTICO",
+          "message": "NARRATIVE.fusion_operation = 'synthesis'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.5.3",
+          "severity": "CRÍTICO",
+          "message": "NARRATIVE.merge_behavior = 'terminal'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.6.2",
+          "severity": "CRÍTICO",
+          "message": "assembly_rules tiene EXACTAMENTE 4 reglas",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "4.3.N1_fact_fusion",
+          "severity": "CRÍTICO",
+          "message": "level_strategies.N1_fact_fusion existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.3.N2_parameter_fusion",
+          "severity": "CRÍTICO",
+          "message": "level_strategies.N2_parameter_fusion existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.3.N3_constraint_fusion",
+          "severity": "CRÍTICO",
+          "message": "level_strategies.N3_constraint_fusion existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.6.1",
+          "severity": "CRÍTICO",
+          "message": "N3_constraint_fusion.strategy = 'veto_gate' (UNIVERSAL)",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.6.3",
+          "severity": "CRÍTICO",
+          "message": "N3_constraint_fusion.asymmetry_principle = 'audit_dominates'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_1_fact_accumulation",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_1_fact_accumulation existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_2_parameter_application",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_2_parameter_application existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_3_constraint_filtering",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_3_constraint_filtering existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_4_synthesis",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_4_synthesis existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.5",
+          "severity": "CRÍTICO",
+          "message": "stage_1.type_consumed = 'FACT'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.6",
+          "severity": "CRÍTICO",
+          "message": "stage_1.behavior = 'additive'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.8",
+          "severity": "CRÍTICO",
+          "message": "stage_2.type_consumed = 'PARAMETER'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.9",
+          "severity": "CRÍTICO",
+          "message": "stage_2.behavior = 'multiplicative'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.11",
+          "severity": "CRÍTICO",
+          "message": "stage_3.type_consumed = 'CONSTRAINT'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.12",
+          "severity": "CRÍTICO",
+          "message": "stage_3.behavior = 'gate'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.14",
+          "severity": "CRÍTICO",
+          "message": "stage_4.type_produced = 'NARRATIVE'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "5.1.N1_to_N2",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N1_to_N2 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.N2_to_N1",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N2_to_N1 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.N3_to_N1",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N3_to_N1 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.N3_to_N2",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N3_to_N2 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.all_to_N4",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.all_to_N4 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.2.3",
+          "severity": "ALTO",
+          "message": "N1_to_N2.data_flow = 'forward_propagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.3.3",
+          "severity": "ALTO",
+          "message": "N2_to_N1.data_flow = 'confidence_backpropagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.1",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.relationship menciona 'BLOCK' o 'INVALIDATE'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.3",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.data_flow = 'veto_propagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.4",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1 tiene campo asymmetry",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.5",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.asymmetry contiene 'N1 CANNOT invalidate N3'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.5.4",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N2 tiene campo asymmetry",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.5.5",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N2.asymmetry contiene 'N2 CANNOT invalidate N3'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.6.3",
+          "severity": "ALTO",
+          "message": "all_to_N4.data_flow = 'terminal_aggregation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.7.1",
+          "severity": "ALTO",
+          "message": "blocking_propagation_rules existe y no está vacío",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.7.2",
+          "severity": "ALTO",
+          "message": "blocking_propagation_rules tiene al menos 2 condiciones",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "6.1.1",
+          "severity": "CRÍTICO",
+          "message": "format = 'markdown'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.1.2",
+          "severity": "CRÍTICO",
+          "message": "template_mode = 'epistemological_narrative'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.1.5",
+          "severity": "CRÍTICO",
+          "message": "sections tiene EXACTAMENTE 4 secciones",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N1_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N1_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N2_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N2_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N3_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N3_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N4_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N4_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.7",
+          "severity": "ALTO",
+          "message": "N3_roles contiene 'ROBUSTNESS_QUALIFIER'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.8",
+          "severity": "ALTO",
+          "message": "N3_roles contiene 'REFUTATIONAL_SIGNAL'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.critical",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.critical existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.low",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.low existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.medium",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.medium existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.high",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.high existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.13",
+          "severity": "CRÍTICO",
+          "message": "critical.label = 'INVÁLIDO' (EXACTO)",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.14",
+          "severity": "CRÍTICO",
+          "message": "critical.description menciona 'veto' o 'inválido' o 'NO usar'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.15",
+          "severity": "ALTO",
+          "message": "critical.display = '🔴'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.21",
+          "severity": "ALTO",
+          "message": "high.label = 'ROBUSTO'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.22",
+          "severity": "ALTO",
+          "message": "high.display = '🟢'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "7.1.2",
+          "severity": "ALTO",
+          "message": "canonical_sources.epistemological_guide existe",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.2.2",
+          "severity": "ALTO",
+          "message": "generation.method contiene 'v4' o 'epistemological'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.3.1",
+          "severity": "ALTO",
+          "message": "refactoring_history existe y tiene al menos 1 entrada",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.4.2",
+          "severity": "ALTO",
+          "message": "prohibitions.v3_recovery = 'FORBIDDEN'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "11.1.3",
+          "severity": "CRÍTICO",
+          "message": "contract_version >= 4.0 o contiene 'epistemological'",
+          "section": "Prohibiciones y Anti-Patterns"
+        },
+        {
+          "check_id": "12.2.2",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene phase_A",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "12.2.3",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "13.1.base_slot",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'base_slot'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.question_id",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'question_id'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.evidence",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'evidence'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.score",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'score'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.human_answer",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'human_answer'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.7",
+          "severity": "ALTO",
+          "message": "output_contract.schema tiene campo 'epistemological_trace'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "14.4.1",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con confidence_multiplier = 0.0",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.4.2",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con action severa (suppress/block/invalidate)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.1",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N1 (Empirismo positivista)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.2",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N2 (Bayesianismo subjetivista)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.3",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N3 (Falsacionismo popperiano)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.4",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N4 (Reflexividad crítica)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.5",
+          "severity": "CRÍTICO",
+          "message": "Asimetría N3 está técnicamente implementada",
+          "section": "Auditoría Final - Coherencia Global"
+        }
+      ]
+    },
+    "D4-Q3-v4.json": {
+      "approved": false,
+      "error_count": 123,
+      "errors": [
+        {
+          "check_id": "0.1",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: identity.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.2",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: identity.base_slot",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.3",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.orchestration_mode",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.4",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.5",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.execution_phases",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.6",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: evidence_assembly.type_system",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.7",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: evidence_assembly.assembly_rules",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.8",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: fusion_specification.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.9",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: fusion_specification.level_strategies",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.10",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: cross_layer_fusion",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.11",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: human_answer_structure.sections",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "1.1.1",
+          "severity": "CRÍTICO",
+          "message": "contract_type es válido (TYPE_A/B/C/D/E)",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.2",
+          "severity": "ALTO",
+          "message": "identity.contract_type_name existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.3",
+          "severity": "ALTO",
+          "message": "identity.contract_type_focus existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.4",
+          "severity": "CRÍTICO",
+          "message": "contract_version es 4.0.0-epistemological o contiene 'epistemological'",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "2.1.1",
+          "severity": "CRÍTICO",
+          "message": "orchestration_mode = 'epistemological_pipeline'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.2.1",
+          "severity": "CRÍTICO",
+          "message": "Existe phase_A_construction",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.2.2",
+          "severity": "CRÍTICO",
+          "message": "Existe phase_B_computation",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.2.3",
+          "severity": "CRÍTICO",
+          "message": "Existe phase_C_litigation",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.1",
+          "severity": "CRÍTICO",
+          "message": "phase_A.level = 'N1'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.2",
+          "severity": "ALTO",
+          "message": "phase_A.level_name contiene 'Empírico' o 'Base Empírica'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.3",
+          "severity": "ALTO",
+          "message": "phase_A.epistemology contiene 'Empirismo positivista'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.4",
+          "severity": "CRÍTICO",
+          "message": "phase_A.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.5",
+          "severity": "CRÍTICO",
+          "message": "phase_A.dependencies = [] (array vacío - N1 no depende)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.1",
+          "severity": "CRÍTICO",
+          "message": "phase_B.level = 'N2'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.3",
+          "severity": "ALTO",
+          "message": "phase_B.epistemology contiene 'Bayesianismo' o 'creencias actualizables'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.4",
+          "severity": "CRÍTICO",
+          "message": "phase_B.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.5",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene 'phase_A_construction'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.1",
+          "severity": "CRÍTICO",
+          "message": "phase_C.level = 'N3'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.3",
+          "severity": "ALTO",
+          "message": "phase_C.epistemology contiene 'Falsacionismo popperiano'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.4",
+          "severity": "CRÍTICO",
+          "message": "phase_C.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.5",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.6",
+          "severity": "CRÍTICO",
+          "message": "phase_C tiene campo asymmetry_principle",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.7",
+          "severity": "CRÍTICO",
+          "message": "asymmetry_principle declara asimetría explícitamente",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.9.3",
+          "severity": "ALTO",
+          "message": "method_count ≥ 3 (al menos un método por fase)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "3.1.FACT",
+          "severity": "CRÍTICO",
+          "message": "type_system.FACT existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.1.PARAMETER",
+          "severity": "CRÍTICO",
+          "message": "type_system.PARAMETER existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.1.CONSTRAINT",
+          "severity": "CRÍTICO",
+          "message": "type_system.CONSTRAINT existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.1.NARRATIVE",
+          "severity": "CRÍTICO",
+          "message": "type_system.NARRATIVE existe",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.1",
+          "severity": "CRÍTICO",
+          "message": "FACT.origin_level = 'N1'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.2",
+          "severity": "CRÍTICO",
+          "message": "FACT.fusion_operation = 'graph_node_addition'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.3",
+          "severity": "CRÍTICO",
+          "message": "FACT.merge_behavior = 'additive'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.2.4",
+          "severity": "ALTO",
+          "message": "FACT.symbol = '⊕'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.3.1",
+          "severity": "CRÍTICO",
+          "message": "PARAMETER.origin_level = 'N2'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.3.2",
+          "severity": "CRÍTICO",
+          "message": "PARAMETER.fusion_operation = 'edge_weight_modification'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.3.3",
+          "severity": "CRÍTICO",
+          "message": "PARAMETER.merge_behavior = 'multiplicative'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.4.1",
+          "severity": "CRÍTICO",
+          "message": "CONSTRAINT.origin_level = 'N3'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.4.2",
+          "severity": "CRÍTICO",
+          "message": "CONSTRAINT.fusion_operation = 'branch_filtering'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.4.3",
+          "severity": "CRÍTICO",
+          "message": "CONSTRAINT.merge_behavior = 'gate'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.5.1",
+          "severity": "CRÍTICO",
+          "message": "NARRATIVE.origin_level = 'N4'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.5.2",
+          "severity": "CRÍTICO",
+          "message": "NARRATIVE.fusion_operation = 'synthesis'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.5.3",
+          "severity": "CRÍTICO",
+          "message": "NARRATIVE.merge_behavior = 'terminal'",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.6.2",
+          "severity": "CRÍTICO",
+          "message": "assembly_rules tiene EXACTAMENTE 4 reglas",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "4.3.N1_fact_fusion",
+          "severity": "CRÍTICO",
+          "message": "level_strategies.N1_fact_fusion existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.3.N2_parameter_fusion",
+          "severity": "CRÍTICO",
+          "message": "level_strategies.N2_parameter_fusion existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.3.N3_constraint_fusion",
+          "severity": "CRÍTICO",
+          "message": "level_strategies.N3_constraint_fusion existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.6.1",
+          "severity": "CRÍTICO",
+          "message": "N3_constraint_fusion.strategy = 'veto_gate' (UNIVERSAL)",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.6.3",
+          "severity": "CRÍTICO",
+          "message": "N3_constraint_fusion.asymmetry_principle = 'audit_dominates'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_1_fact_accumulation",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_1_fact_accumulation existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_2_parameter_application",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_2_parameter_application existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_3_constraint_filtering",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_3_constraint_filtering existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_4_synthesis",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_4_synthesis existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.5",
+          "severity": "CRÍTICO",
+          "message": "stage_1.type_consumed = 'FACT'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.6",
+          "severity": "CRÍTICO",
+          "message": "stage_1.behavior = 'additive'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.8",
+          "severity": "CRÍTICO",
+          "message": "stage_2.type_consumed = 'PARAMETER'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.9",
+          "severity": "CRÍTICO",
+          "message": "stage_2.behavior = 'multiplicative'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.11",
+          "severity": "CRÍTICO",
+          "message": "stage_3.type_consumed = 'CONSTRAINT'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.12",
+          "severity": "CRÍTICO",
+          "message": "stage_3.behavior = 'gate'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.14",
+          "severity": "CRÍTICO",
+          "message": "stage_4.type_produced = 'NARRATIVE'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "5.1.N1_to_N2",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N1_to_N2 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.N2_to_N1",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N2_to_N1 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.N3_to_N1",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N3_to_N1 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.N3_to_N2",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N3_to_N2 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.1.all_to_N4",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.all_to_N4 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.2.3",
+          "severity": "ALTO",
+          "message": "N1_to_N2.data_flow = 'forward_propagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.3.3",
+          "severity": "ALTO",
+          "message": "N2_to_N1.data_flow = 'confidence_backpropagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.1",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.relationship menciona 'BLOCK' o 'INVALIDATE'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.3",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.data_flow = 'veto_propagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.4",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1 tiene campo asymmetry",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.5",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.asymmetry contiene 'N1 CANNOT invalidate N3'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.5.4",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N2 tiene campo asymmetry",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.5.5",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N2.asymmetry contiene 'N2 CANNOT invalidate N3'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.6.3",
+          "severity": "ALTO",
+          "message": "all_to_N4.data_flow = 'terminal_aggregation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.7.1",
+          "severity": "ALTO",
+          "message": "blocking_propagation_rules existe y no está vacío",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.7.2",
+          "severity": "ALTO",
+          "message": "blocking_propagation_rules tiene al menos 2 condiciones",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "6.1.1",
+          "severity": "CRÍTICO",
+          "message": "format = 'markdown'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.1.2",
+          "severity": "CRÍTICO",
+          "message": "template_mode = 'epistemological_narrative'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.1.5",
+          "severity": "CRÍTICO",
+          "message": "sections tiene EXACTAMENTE 4 secciones",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N1_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N1_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N2_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N2_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N3_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N3_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N4_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N4_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.7",
+          "severity": "ALTO",
+          "message": "N3_roles contiene 'ROBUSTNESS_QUALIFIER'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.8",
+          "severity": "ALTO",
+          "message": "N3_roles contiene 'REFUTATIONAL_SIGNAL'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.critical",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.critical existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.low",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.low existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.medium",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.medium existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.high",
+          "severity": "CRÍTICO",
+          "message": "confidence_interpretation.high existe",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.13",
+          "severity": "CRÍTICO",
+          "message": "critical.label = 'INVÁLIDO' (EXACTO)",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.14",
+          "severity": "CRÍTICO",
+          "message": "critical.description menciona 'veto' o 'inválido' o 'NO usar'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.15",
+          "severity": "ALTO",
+          "message": "critical.display = '🔴'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.21",
+          "severity": "ALTO",
+          "message": "high.label = 'ROBUSTO'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.22",
+          "severity": "ALTO",
+          "message": "high.display = '🟢'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "7.1.2",
+          "severity": "ALTO",
+          "message": "canonical_sources.epistemological_guide existe",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.2.2",
+          "severity": "ALTO",
+          "message": "generation.method contiene 'v4' o 'epistemological'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.3.1",
+          "severity": "ALTO",
+          "message": "refactoring_history existe y tiene al menos 1 entrada",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.4.2",
+          "severity": "ALTO",
+          "message": "prohibitions.v3_recovery = 'FORBIDDEN'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "11.1.3",
+          "severity": "CRÍTICO",
+          "message": "contract_version >= 4.0 o contiene 'epistemological'",
+          "section": "Prohibiciones y Anti-Patterns"
+        },
+        {
+          "check_id": "12.2.2",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene phase_A",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "12.2.3",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "13.1.base_slot",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'base_slot'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.question_id",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'question_id'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.evidence",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'evidence'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.score",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'score'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.human_answer",
+          "severity": "ALTO",
+          "message": "output_contract.schema.required contiene 'human_answer'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "13.1.7",
+          "severity": "ALTO",
+          "message": "output_contract.schema tiene campo 'epistemological_trace'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "14.4.1",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con confidence_multiplier = 0.0",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.4.2",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con action severa (suppress/block/invalidate)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.1",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N1 (Empirismo positivista)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.2",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N2 (Bayesianismo subjetivista)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.3",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N3 (Falsacionismo popperiano)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.4",
+          "severity": "CRÍTICO",
+          "message": "Existe representación de N4 (Reflexividad crítica)",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.5",
+          "severity": "CRÍTICO",
+          "message": "Asimetría N3 está técnicamente implementada",
+          "section": "Auditoría Final - Coherencia Global"
+        }
+      ]
+    },
+    "D4-Q4-v4.json": {
+      "approved": false,
+      "error_count": 45,
+      "errors": [
+        {
+          "check_id": "2.3.4",
+          "severity": "CRÍTICO",
+          "message": "phase_A.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.3",
+          "severity": "ALTO",
+          "message": "phase_B.epistemology contiene 'Bayesianismo' o 'creencias actualizables'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.5",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene 'phase_A_construction'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.0.requires",
+          "severity": "CRÍTICO",
+          "message": "Método N2[0].requires existe y contiene 'raw_facts'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.1.requires",
+          "severity": "CRÍTICO",
+          "message": "Método N2[1].requires existe y contiene 'raw_facts'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.1.vocab",
+          "severity": "ALTO",
+          "message": "Método N2[1].description contiene vocabulario inferencial",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.2.requires",
+          "severity": "CRÍTICO",
+          "message": "Método N2[2].requires existe y contiene 'raw_facts'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.2.vocab",
+          "severity": "ALTO",
+          "message": "Método N2[2].description contiene vocabulario inferencial",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.3.requires",
+          "severity": "CRÍTICO",
+          "message": "Método N2[3].requires existe y contiene 'raw_facts'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.3.vocab",
+          "severity": "ALTO",
+          "message": "Método N2[3].description contiene vocabulario inferencial",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.4.requires",
+          "severity": "CRÍTICO",
+          "message": "Método N2[4].requires existe y contiene 'raw_facts'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.4.vocab",
+          "severity": "ALTO",
+          "message": "Método N2[4].description contiene vocabulario inferencial",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.5",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.6",
+          "severity": "CRÍTICO",
+          "message": "phase_C tiene campo asymmetry_principle",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.7",
+          "severity": "CRÍTICO",
+          "message": "asymmetry_principle declara asimetría explícitamente",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.8.0.requires",
+          "severity": "CRÍTICO",
+          "message": "Método N3[0].requires contiene raw_facts Y inferences",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.8.0.rationale",
+          "severity": "ALTO",
+          "message": "Método N3[0] classification_rationale referencia guía",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "3.9.12",
+          "severity": "CRÍTICO",
+          "message": "Al menos UNA condición tiene confidence_multiplier < 0.5",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "4.4.2",
+          "severity": "CRÍTICO",
+          "message": "N1_fact_fusion.strategy = 'concat' para TYPE_E",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.5",
+          "severity": "CRÍTICO",
+          "message": "stage_1.type_consumed = 'FACT'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.6",
+          "severity": "CRÍTICO",
+          "message": "stage_1.behavior = 'additive'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "5.1.N3_to_N1",
+          "severity": "CRÍTICO",
+          "message": "cross_layer_fusion.N3_to_N1 existe",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.3.3",
+          "severity": "ALTO",
+          "message": "N2_to_N1.data_flow = 'confidence_backpropagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.1",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.relationship menciona 'BLOCK' o 'INVALIDATE'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.3",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.data_flow = 'veto_propagation'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.4",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1 tiene campo asymmetry",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "5.4.5",
+          "severity": "CRÍTICO",
+          "message": "N3_to_N1.asymmetry contiene 'N1 CANNOT invalidate N3'",
+          "section": "Cross Layer Fusion - Asimetría N3"
+        },
+        {
+          "check_id": "6.3.verdict_statement",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'verdict_statement'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.final_confidence_pct",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'final_confidence_pct'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.confidence_label",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'confidence_label'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.method_count",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'method_count'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.4.2",
+          "severity": "CRÍTICO",
+          "message": "S2.layer = 'N1'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.4.5",
+          "severity": "ALTO",
+          "message": "S2.argumentative_role = 'EMPIRICAL_BASIS'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.N1_roles",
+          "severity": "ALTO",
+          "message": "argumentative_roles.N1_roles existe y no está vacío",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "7.1.2",
+          "severity": "ALTO",
+          "message": "canonical_sources.epistemological_guide existe",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.2.2",
+          "severity": "ALTO",
+          "message": "generation.method contiene 'v4' o 'epistemological'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.3.1",
+          "severity": "ALTO",
+          "message": "refactoring_history existe y tiene al menos 1 entrada",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "7.4.2",
+          "severity": "ALTO",
+          "message": "prohibitions.v3_recovery = 'FORBIDDEN'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "8.5.TYPE_E_n1",
+          "severity": "CRÍTICO",
+          "message": "N1_strategy = 'concat' para TYPE_E",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "9.5.9",
+          "severity": "ALTO",
+          "message": "TYPE_E: N3_roles contiene 'LOGICAL_INCONSISTENCY'",
+          "section": "Validaciones Específicas - TYPE_E"
+        },
+        {
+          "check_id": "12.2.2",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene phase_A",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "12.2.3",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "13.1.7",
+          "severity": "ALTO",
+          "message": "output_contract.schema tiene campo 'epistemological_trace'",
+          "section": "Metadatos y Compatibilidad"
+        },
+        {
+          "check_id": "14.1.4",
+          "severity": "CRÍTICO",
+          "message": "Triple coherencia estratégica para TYPE_E",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.5.5",
+          "severity": "CRÍTICO",
+          "message": "Asimetría N3 está técnicamente implementada",
+          "section": "Auditoría Final - Coherencia Global"
+        }
+      ]
+    },
+    "D4-Q5-v4.json": {
+      "approved": false,
+      "error_count": 56,
+      "errors": [
+        {
+          "check_id": "0.2",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: identity.base_slot",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.3",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.orchestration_mode",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.4",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "1.1.2",
+          "severity": "ALTO",
+          "message": "identity.contract_type_name existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.3",
+          "severity": "ALTO",
+          "message": "identity.contract_type_focus existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_D_name",
+          "severity": "ALTO",
+          "message": "contract_type_name = 'Financiero' para TYPE_D",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_D_focus",
+          "severity": "ALTO",
+          "message": "contract_type_focus contiene keyword esperado para TYPE_D",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_D_contract",
+          "severity": "ALTO",
+          "message": "representative_question_id pertenece a contratos de TYPE_D",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "2.1.1",
+          "severity": "CRÍTICO",
+          "message": "orchestration_mode = 'epistemological_pipeline'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.1.3",
+          "severity": "CRÍTICO",
+          "message": "method_binding.contract_type = identity.contract_type (IGUALDAD ESTRICTA)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.1",
+          "severity": "CRÍTICO",
+          "message": "phase_A.level = 'N1'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.2",
+          "severity": "ALTO",
+          "message": "phase_A.level_name contiene 'Empírico' o 'Base Empírica'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.3",
+          "severity": "ALTO",
+          "message": "phase_A.epistemology contiene 'Empirismo positivista'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.4",
+          "severity": "CRÍTICO",
+          "message": "phase_A.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.5",
+          "severity": "CRÍTICO",
+          "message": "phase_A.dependencies = [] (array vacío - N1 no depende)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.1",
+          "severity": "CRÍTICO",
+          "message": "phase_B.level = 'N2'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.3",
+          "severity": "ALTO",
+          "message": "phase_B.epistemology contiene 'Bayesianismo' o 'creencias actualizables'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.4",
+          "severity": "CRÍTICO",
+          "message": "phase_B.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.5",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene 'phase_A_construction'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.1",
+          "severity": "CRÍTICO",
+          "message": "phase_C.level = 'N3'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.3",
+          "severity": "ALTO",
+          "message": "phase_C.epistemology contiene 'Falsacionismo popperiano'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.4",
+          "severity": "CRÍTICO",
+          "message": "phase_C.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.5",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.6",
+          "severity": "CRÍTICO",
+          "message": "phase_C tiene campo asymmetry_principle",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.7",
+          "severity": "CRÍTICO",
+          "message": "asymmetry_principle declara asimetría explícitamente",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.9.1",
+          "severity": "CRÍTICO",
+          "message": "method_count = suma de métodos en fases",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.9.3",
+          "severity": "ALTO",
+          "message": "method_count ≥ 3 (al menos un método por fase)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "3.7.8",
+          "severity": "CRÍTICO",
+          "message": "R1.sources tiene mismo count que Phase A",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.8.18",
+          "severity": "CRÍTICO",
+          "message": "R2.merge_strategy = 'weighted_mean' (TYPE_D)",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "4.1.1",
+          "severity": "CRÍTICO",
+          "message": "fusion_specification.contract_type = identity.contract_type",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.5.3",
+          "severity": "CRÍTICO",
+          "message": "N2_parameter_fusion.strategy = 'weighted_mean' para TYPE_D",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_2_parameter_application",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_2_parameter_application existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.6",
+          "severity": "CRÍTICO",
+          "message": "stage_1.behavior = 'additive'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.8",
+          "severity": "CRÍTICO",
+          "message": "stage_2.type_consumed = 'PARAMETER'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.9",
+          "severity": "CRÍTICO",
+          "message": "stage_2.behavior = 'multiplicative'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.12",
+          "severity": "CRÍTICO",
+          "message": "stage_3.behavior = 'gate'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "6.1.3",
+          "severity": "CRÍTICO",
+          "message": "human_answer_structure.contract_type = identity.contract_type",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.verdict_statement",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'verdict_statement'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.final_confidence_pct",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'final_confidence_pct'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.confidence_label",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'confidence_label'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.method_count",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'method_count'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.8",
+          "severity": "ALTO",
+          "message": "N3_roles contiene 'REFUTATIONAL_SIGNAL'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.14",
+          "severity": "CRÍTICO",
+          "message": "critical.description menciona 'veto' o 'inválido' o 'NO usar'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "7.4.2",
+          "severity": "ALTO",
+          "message": "prohibitions.v3_recovery = 'FORBIDDEN'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "8.1.5",
+          "severity": "CRÍTICO",
+          "message": "TODOS los contract_type son iguales (identity, method_binding, fusion_spec, human_answer)",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "8.3.1",
+          "severity": "CRÍTICO",
+          "message": "method_count = |phase_A| + |phase_B| + |phase_C|",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "8.5.TYPE_D_n2",
+          "severity": "CRÍTICO",
+          "message": "N2_strategy = 'weighted_mean' para TYPE_D",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "8.5.TYPE_D_r2",
+          "severity": "CRÍTICO",
+          "message": "R2.merge_strategy = 'weighted_mean' para TYPE_D",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "9.TYPE_D.1",
+          "severity": "ALTO",
+          "message": "Contrato incluye clases dominantes de TYPE_D",
+          "section": "Validaciones Específicas - TYPE_D"
+        },
+        {
+          "check_id": "9.4.4",
+          "severity": "CRÍTICO",
+          "message": "TYPE_D: R3.rule_type contiene 'financial_coherence_audit'",
+          "section": "Validaciones Específicas - TYPE_D"
+        },
+        {
+          "check_id": "12.2.2",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene phase_A",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "12.2.3",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "14.1.4",
+          "severity": "CRÍTICO",
+          "message": "Triple coherencia estratégica para TYPE_D",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.2.5",
+          "severity": "CRÍTICO",
+          "message": "Los 4 contract_type son IDÉNTICOS",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.4.1",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con confidence_multiplier = 0.0",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.4.2",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con action severa (suppress/block/invalidate)",
+          "section": "Auditoría Final - Coherencia Global"
+        }
+      ]
+    },
+    "D5-Q1-v4.json": {
+      "approved": false,
+      "error_count": 53,
+      "errors": [
+        {
+          "check_id": "0.2",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: identity.base_slot",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "1.1.2",
+          "severity": "ALTO",
+          "message": "identity.contract_type_name existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.3",
+          "severity": "ALTO",
+          "message": "identity.contract_type_focus existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_D_name",
+          "severity": "ALTO",
+          "message": "contract_type_name = 'Financiero' para TYPE_D",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_D_focus",
+          "severity": "ALTO",
+          "message": "contract_type_focus contiene keyword esperado para TYPE_D",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_D_contract",
+          "severity": "ALTO",
+          "message": "representative_question_id pertenece a contratos de TYPE_D",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "2.3.1",
+          "severity": "CRÍTICO",
+          "message": "phase_A.level = 'N1'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.2",
+          "severity": "ALTO",
+          "message": "phase_A.level_name contiene 'Empírico' o 'Base Empírica'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.3",
+          "severity": "ALTO",
+          "message": "phase_A.epistemology contiene 'Empirismo positivista'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.5",
+          "severity": "CRÍTICO",
+          "message": "phase_A.dependencies = [] (array vacío - N1 no depende)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.4.0.classification_rationale",
+          "severity": "CRÍTICO",
+          "message": "Método N1[0] tiene campo 'classification_rationale' no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.4.0.rationale",
+          "severity": "ALTO",
+          "message": "Método N1[0] classification_rationale referencia 'PARTE II' o 'Sección 2.2'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.4.0.pattern",
+          "severity": "ALTO",
+          "message": "Método N1[0].method_name contiene patrón N1 (extract_, parse_, mine_, chunk_)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.4.1.classification_rationale",
+          "severity": "CRÍTICO",
+          "message": "Método N1[1] tiene campo 'classification_rationale' no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.4.1.rationale",
+          "severity": "ALTO",
+          "message": "Método N1[1] classification_rationale referencia 'PARTE II' o 'Sección 2.2'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.4.1.pattern",
+          "severity": "ALTO",
+          "message": "Método N1[1].method_name contiene patrón N1 (extract_, parse_, mine_, chunk_)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.1",
+          "severity": "CRÍTICO",
+          "message": "phase_B.level = 'N2'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.3",
+          "severity": "ALTO",
+          "message": "phase_B.epistemology contiene 'Bayesianismo' o 'creencias actualizables'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.5",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene 'phase_A_construction'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.0.vocab",
+          "severity": "ALTO",
+          "message": "Método N2[0].description contiene vocabulario inferencial",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.1.vocab",
+          "severity": "ALTO",
+          "message": "Método N2[1].description contiene vocabulario inferencial",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.2.vocab",
+          "severity": "ALTO",
+          "message": "Método N2[2].description contiene vocabulario inferencial",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.3.vocab",
+          "severity": "ALTO",
+          "message": "Método N2[3].description contiene vocabulario inferencial",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.6.4.vocab",
+          "severity": "ALTO",
+          "message": "Método N2[4].description contiene vocabulario inferencial",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.1",
+          "severity": "CRÍTICO",
+          "message": "phase_C.level = 'N3'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.3",
+          "severity": "ALTO",
+          "message": "phase_C.epistemology contiene 'Falsacionismo popperiano'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.5",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.6",
+          "severity": "CRÍTICO",
+          "message": "phase_C tiene campo asymmetry_principle",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.7",
+          "severity": "CRÍTICO",
+          "message": "asymmetry_principle declara asimetría explícitamente",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.8.0.rationale",
+          "severity": "ALTO",
+          "message": "Método N3[0] classification_rationale referencia guía",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "3.7.9",
+          "severity": "CRÍTICO",
+          "message": "TODOS los provides de Phase A están en R1.sources",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "4.7.stage_2_parameter_application",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_2_parameter_application existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.6",
+          "severity": "CRÍTICO",
+          "message": "stage_1.behavior = 'additive'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.8",
+          "severity": "CRÍTICO",
+          "message": "stage_2.type_consumed = 'PARAMETER'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.9",
+          "severity": "CRÍTICO",
+          "message": "stage_2.behavior = 'multiplicative'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.12",
+          "severity": "CRÍTICO",
+          "message": "stage_3.behavior = 'gate'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "6.1.3",
+          "severity": "CRÍTICO",
+          "message": "human_answer_structure.contract_type = identity.contract_type",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.verdict_statement",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'verdict_statement'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.final_confidence_pct",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'final_confidence_pct'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.confidence_label",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'confidence_label'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.method_count",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'method_count'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.8",
+          "severity": "ALTO",
+          "message": "N3_roles contiene 'REFUTATIONAL_SIGNAL'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.14",
+          "severity": "CRÍTICO",
+          "message": "critical.description menciona 'veto' o 'inválido' o 'NO usar'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "7.4.2",
+          "severity": "ALTO",
+          "message": "prohibitions.v3_recovery = 'FORBIDDEN'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "8.1.5",
+          "severity": "CRÍTICO",
+          "message": "TODOS los contract_type son iguales (identity, method_binding, fusion_spec, human_answer)",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "8.2.1",
+          "severity": "CRÍTICO",
+          "message": "Todos los provides de phase_A aparecen en R1.sources",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "12.2.2",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene phase_A",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "12.2.3",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "14.2.5",
+          "severity": "CRÍTICO",
+          "message": "Los 4 contract_type son IDÉNTICOS",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "15._generate_interventions",
+          "severity": "MEDIO",
+          "message": "Posible clasificación 'Contra-Natura' en TYPE_Financiero: El método '_generate_interventions' contiene términos ajenos: text.",
+          "section": "Coherencia Semántica - Anti-Patterns de Dominio"
+        },
+        {
+          "check_id": "15._validar_orden_causal",
+          "severity": "ALTO",
+          "message": "Posible clasificación 'Contra-Natura' en TYPE_Financiero: El método '_validar_orden_causal' contiene términos ajenos: causal.",
+          "section": "Coherencia Semántica - Anti-Patterns de Dominio"
+        },
+        {
+          "check_id": "15._assess_temporal_coherence",
+          "severity": "MEDIO",
+          "message": "Posible clasificación 'Contra-Natura' en TYPE_Financiero: El método '_assess_temporal_coherence' contiene términos ajenos: causal.",
+          "section": "Coherencia Semántica - Anti-Patterns de Dominio"
+        },
+        {
+          "check_id": "15.construct_scm",
+          "severity": "MEDIO",
+          "message": "Posible clasificación 'Contra-Natura' en TYPE_Financiero: El método 'construct_scm' contiene términos ajenos: causal.",
+          "section": "Coherencia Semántica - Anti-Patterns de Dominio"
+        }
+      ]
+    },
+    "D5-Q2-v4.json": {
+      "approved": false,
+      "error_count": 57,
+      "errors": [
+        {
+          "check_id": "0.2",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: identity.base_slot",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.3",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.orchestration_mode",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.4",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "1.1.2",
+          "severity": "ALTO",
+          "message": "identity.contract_type_name existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.3",
+          "severity": "ALTO",
+          "message": "identity.contract_type_focus existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_A_name",
+          "severity": "ALTO",
+          "message": "contract_type_name = 'Semántico' para TYPE_A",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_A_focus",
+          "severity": "ALTO",
+          "message": "contract_type_focus contiene keyword esperado para TYPE_A",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_A_contract",
+          "severity": "ALTO",
+          "message": "representative_question_id pertenece a contratos de TYPE_A",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "2.1.1",
+          "severity": "CRÍTICO",
+          "message": "orchestration_mode = 'epistemological_pipeline'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.1.3",
+          "severity": "CRÍTICO",
+          "message": "method_binding.contract_type = identity.contract_type (IGUALDAD ESTRICTA)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.1",
+          "severity": "CRÍTICO",
+          "message": "phase_A.level = 'N1'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.2",
+          "severity": "ALTO",
+          "message": "phase_A.level_name contiene 'Empírico' o 'Base Empírica'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.3",
+          "severity": "ALTO",
+          "message": "phase_A.epistemology contiene 'Empirismo positivista'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.4",
+          "severity": "CRÍTICO",
+          "message": "phase_A.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.5",
+          "severity": "CRÍTICO",
+          "message": "phase_A.dependencies = [] (array vacío - N1 no depende)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.1",
+          "severity": "CRÍTICO",
+          "message": "phase_B.level = 'N2'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.3",
+          "severity": "ALTO",
+          "message": "phase_B.epistemology contiene 'Bayesianismo' o 'creencias actualizables'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.4",
+          "severity": "CRÍTICO",
+          "message": "phase_B.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.5",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene 'phase_A_construction'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.1",
+          "severity": "CRÍTICO",
+          "message": "phase_C.level = 'N3'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.3",
+          "severity": "ALTO",
+          "message": "phase_C.epistemology contiene 'Falsacionismo popperiano'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.4",
+          "severity": "CRÍTICO",
+          "message": "phase_C.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.5",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.6",
+          "severity": "CRÍTICO",
+          "message": "phase_C tiene campo asymmetry_principle",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.7",
+          "severity": "CRÍTICO",
+          "message": "asymmetry_principle declara asimetría explícitamente",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.9.1",
+          "severity": "CRÍTICO",
+          "message": "method_count = suma de métodos en fases",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.9.3",
+          "severity": "ALTO",
+          "message": "method_count ≥ 3 (al menos un método por fase)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "3.7.8",
+          "severity": "CRÍTICO",
+          "message": "R1.sources tiene mismo count que Phase A",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.8.8",
+          "severity": "CRÍTICO",
+          "message": "R2.merge_strategy = 'semantic_triangulation' (TYPE_A)",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "4.1.1",
+          "severity": "CRÍTICO",
+          "message": "fusion_specification.contract_type = identity.contract_type",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.4.2",
+          "severity": "CRÍTICO",
+          "message": "N1_fact_fusion.strategy = 'semantic_corroboration' para TYPE_A",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.5.3",
+          "severity": "CRÍTICO",
+          "message": "N2_parameter_fusion.strategy = 'dempster_shafer' para TYPE_A",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_2_parameter_application",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_2_parameter_application existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.6",
+          "severity": "CRÍTICO",
+          "message": "stage_1.behavior = 'additive'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.8",
+          "severity": "CRÍTICO",
+          "message": "stage_2.type_consumed = 'PARAMETER'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.9",
+          "severity": "CRÍTICO",
+          "message": "stage_2.behavior = 'multiplicative'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.12",
+          "severity": "CRÍTICO",
+          "message": "stage_3.behavior = 'gate'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "6.1.3",
+          "severity": "CRÍTICO",
+          "message": "human_answer_structure.contract_type = identity.contract_type",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.verdict_statement",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'verdict_statement'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.final_confidence_pct",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'final_confidence_pct'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.confidence_label",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'confidence_label'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.method_count",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'method_count'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.8",
+          "severity": "ALTO",
+          "message": "N3_roles contiene 'REFUTATIONAL_SIGNAL'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.14",
+          "severity": "CRÍTICO",
+          "message": "critical.description menciona 'veto' o 'inválido' o 'NO usar'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "7.4.2",
+          "severity": "ALTO",
+          "message": "prohibitions.v3_recovery = 'FORBIDDEN'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "8.1.5",
+          "severity": "CRÍTICO",
+          "message": "TODOS los contract_type son iguales (identity, method_binding, fusion_spec, human_answer)",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "8.3.1",
+          "severity": "CRÍTICO",
+          "message": "method_count = |phase_A| + |phase_B| + |phase_C|",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "8.5.TYPE_A_n1",
+          "severity": "CRÍTICO",
+          "message": "N1_strategy = 'semantic_corroboration' para TYPE_A",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "8.5.TYPE_A_n2",
+          "severity": "CRÍTICO",
+          "message": "N2_strategy = 'dempster_shafer' para TYPE_A",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "8.5.TYPE_A_r2",
+          "severity": "CRÍTICO",
+          "message": "R2.merge_strategy = 'semantic_triangulation' para TYPE_A",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "9.TYPE_A.1",
+          "severity": "ALTO",
+          "message": "Contrato incluye clases dominantes de TYPE_A",
+          "section": "Validaciones Específicas - TYPE_A"
+        },
+        {
+          "check_id": "12.2.2",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene phase_A",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "12.2.3",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "14.1.4",
+          "severity": "CRÍTICO",
+          "message": "Triple coherencia estratégica para TYPE_A",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.2.5",
+          "severity": "CRÍTICO",
+          "message": "Los 4 contract_type son IDÉNTICOS",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.4.1",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con confidence_multiplier = 0.0",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.4.2",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con action severa (suppress/block/invalidate)",
+          "section": "Auditoría Final - Coherencia Global"
+        }
+      ]
+    },
+    "D5-Q3-v4.json": {
+      "approved": false,
+      "error_count": 48,
+      "errors": [
+        {
+          "check_id": "0.2",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: identity.base_slot",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.3",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.orchestration_mode",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.4",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "1.1.2",
+          "severity": "ALTO",
+          "message": "identity.contract_type_name existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.3",
+          "severity": "ALTO",
+          "message": "identity.contract_type_focus existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_B_name",
+          "severity": "ALTO",
+          "message": "contract_type_name = 'Bayesiano' para TYPE_B",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_B_focus",
+          "severity": "ALTO",
+          "message": "contract_type_focus contiene keyword esperado para TYPE_B",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_B_contract",
+          "severity": "ALTO",
+          "message": "representative_question_id pertenece a contratos de TYPE_B",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "2.1.1",
+          "severity": "CRÍTICO",
+          "message": "orchestration_mode = 'epistemological_pipeline'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.1.3",
+          "severity": "CRÍTICO",
+          "message": "method_binding.contract_type = identity.contract_type (IGUALDAD ESTRICTA)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.1",
+          "severity": "CRÍTICO",
+          "message": "phase_A.level = 'N1'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.2",
+          "severity": "ALTO",
+          "message": "phase_A.level_name contiene 'Empírico' o 'Base Empírica'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.3",
+          "severity": "ALTO",
+          "message": "phase_A.epistemology contiene 'Empirismo positivista'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.4",
+          "severity": "CRÍTICO",
+          "message": "phase_A.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.5",
+          "severity": "CRÍTICO",
+          "message": "phase_A.dependencies = [] (array vacío - N1 no depende)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.1",
+          "severity": "CRÍTICO",
+          "message": "phase_B.level = 'N2'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.3",
+          "severity": "ALTO",
+          "message": "phase_B.epistemology contiene 'Bayesianismo' o 'creencias actualizables'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.4",
+          "severity": "CRÍTICO",
+          "message": "phase_B.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.5",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene 'phase_A_construction'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.1",
+          "severity": "CRÍTICO",
+          "message": "phase_C.level = 'N3'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.3",
+          "severity": "ALTO",
+          "message": "phase_C.epistemology contiene 'Falsacionismo popperiano'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.4",
+          "severity": "CRÍTICO",
+          "message": "phase_C.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.5",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.6",
+          "severity": "CRÍTICO",
+          "message": "phase_C tiene campo asymmetry_principle",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.7",
+          "severity": "CRÍTICO",
+          "message": "asymmetry_principle declara asimetría explícitamente",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.9.1",
+          "severity": "CRÍTICO",
+          "message": "method_count = suma de métodos en fases",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.9.3",
+          "severity": "ALTO",
+          "message": "method_count ≥ 3 (al menos un método por fase)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "3.7.8",
+          "severity": "CRÍTICO",
+          "message": "R1.sources tiene mismo count que Phase A",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "4.7.stage_2_parameter_application",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_2_parameter_application existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.6",
+          "severity": "CRÍTICO",
+          "message": "stage_1.behavior = 'additive'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.8",
+          "severity": "CRÍTICO",
+          "message": "stage_2.type_consumed = 'PARAMETER'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.9",
+          "severity": "CRÍTICO",
+          "message": "stage_2.behavior = 'multiplicative'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.12",
+          "severity": "CRÍTICO",
+          "message": "stage_3.behavior = 'gate'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "6.3.verdict_statement",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'verdict_statement'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.final_confidence_pct",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'final_confidence_pct'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.confidence_label",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'confidence_label'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.method_count",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'method_count'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.8",
+          "severity": "ALTO",
+          "message": "N3_roles contiene 'REFUTATIONAL_SIGNAL'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.14",
+          "severity": "CRÍTICO",
+          "message": "critical.description menciona 'veto' o 'inválido' o 'NO usar'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "7.4.2",
+          "severity": "ALTO",
+          "message": "prohibitions.v3_recovery = 'FORBIDDEN'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "8.1.5",
+          "severity": "CRÍTICO",
+          "message": "TODOS los contract_type son iguales (identity, method_binding, fusion_spec, human_answer)",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "8.3.1",
+          "severity": "CRÍTICO",
+          "message": "method_count = |phase_A| + |phase_B| + |phase_C|",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "9.TYPE_B.1",
+          "severity": "ALTO",
+          "message": "Contrato incluye clases dominantes de TYPE_B",
+          "section": "Validaciones Específicas - TYPE_B"
+        },
+        {
+          "check_id": "12.2.2",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene phase_A",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "12.2.3",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "14.2.5",
+          "severity": "CRÍTICO",
+          "message": "Los 4 contract_type son IDÉNTICOS",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.4.1",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con confidence_multiplier = 0.0",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.4.2",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con action severa (suppress/block/invalidate)",
+          "section": "Auditoría Final - Coherencia Global"
+        }
+      ]
+    },
+    "D5-Q4-v4.json": {
+      "approved": false,
+      "error_count": 58,
+      "errors": [
+        {
+          "check_id": "0.2",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: identity.base_slot",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.3",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.orchestration_mode",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "0.4",
+          "severity": "CRÍTICO",
+          "message": "Campo obligatorio FALTA: method_binding.contract_type",
+          "section": "Pre-validación - Campos Obligatorios"
+        },
+        {
+          "check_id": "1.1.2",
+          "severity": "ALTO",
+          "message": "identity.contract_type_name existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.1.3",
+          "severity": "ALTO",
+          "message": "identity.contract_type_focus existe",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_C_name",
+          "severity": "ALTO",
+          "message": "contract_type_name = 'Causal' para TYPE_C",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_C_focus",
+          "severity": "ALTO",
+          "message": "contract_type_focus contiene keyword esperado para TYPE_C",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "1.2.TYPE_C_contract",
+          "severity": "ALTO",
+          "message": "representative_question_id pertenece a contratos de TYPE_C",
+          "section": "Identity - Clasificación"
+        },
+        {
+          "check_id": "2.1.1",
+          "severity": "CRÍTICO",
+          "message": "orchestration_mode = 'epistemological_pipeline'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.1.3",
+          "severity": "CRÍTICO",
+          "message": "method_binding.contract_type = identity.contract_type (IGUALDAD ESTRICTA)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.1",
+          "severity": "CRÍTICO",
+          "message": "phase_A.level = 'N1'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.2",
+          "severity": "ALTO",
+          "message": "phase_A.level_name contiene 'Empírico' o 'Base Empírica'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.3",
+          "severity": "ALTO",
+          "message": "phase_A.epistemology contiene 'Empirismo positivista'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.4",
+          "severity": "CRÍTICO",
+          "message": "phase_A.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.3.5",
+          "severity": "CRÍTICO",
+          "message": "phase_A.dependencies = [] (array vacío - N1 no depende)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.1",
+          "severity": "CRÍTICO",
+          "message": "phase_B.level = 'N2'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.3",
+          "severity": "ALTO",
+          "message": "phase_B.epistemology contiene 'Bayesianismo' o 'creencias actualizables'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.4",
+          "severity": "CRÍTICO",
+          "message": "phase_B.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.5.5",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene 'phase_A_construction'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.1",
+          "severity": "CRÍTICO",
+          "message": "phase_C.level = 'N3'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.3",
+          "severity": "ALTO",
+          "message": "phase_C.epistemology contiene 'Falsacionismo popperiano'",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.4",
+          "severity": "CRÍTICO",
+          "message": "phase_C.methods es array no vacío",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.5",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.6",
+          "severity": "CRÍTICO",
+          "message": "phase_C tiene campo asymmetry_principle",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.7.7",
+          "severity": "CRÍTICO",
+          "message": "asymmetry_principle declara asimetría explícitamente",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.9.1",
+          "severity": "CRÍTICO",
+          "message": "method_count = suma de métodos en fases",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "2.9.3",
+          "severity": "ALTO",
+          "message": "method_count ≥ 3 (al menos un método por fase)",
+          "section": "Method Binding - Fases Epistemológicas"
+        },
+        {
+          "check_id": "3.7.8",
+          "severity": "CRÍTICO",
+          "message": "R1.sources tiene mismo count que Phase A",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "3.8.15",
+          "severity": "CRÍTICO",
+          "message": "R2.merge_strategy = 'topological_overlay' (TYPE_C)",
+          "section": "Evidence Assembly - Tipología y Reglas"
+        },
+        {
+          "check_id": "4.1.1",
+          "severity": "CRÍTICO",
+          "message": "fusion_specification.contract_type = identity.contract_type",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.4.2",
+          "severity": "CRÍTICO",
+          "message": "N1_fact_fusion.strategy = 'graph_construction' para TYPE_C",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.5.3",
+          "severity": "CRÍTICO",
+          "message": "N2_parameter_fusion.strategy = 'topological_overlay' para TYPE_C",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.stage_2_parameter_application",
+          "severity": "ALTO",
+          "message": "fusion_pipeline.stage_2_parameter_application existe",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.6",
+          "severity": "CRÍTICO",
+          "message": "stage_1.behavior = 'additive'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.8",
+          "severity": "CRÍTICO",
+          "message": "stage_2.type_consumed = 'PARAMETER'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.9",
+          "severity": "CRÍTICO",
+          "message": "stage_2.behavior = 'multiplicative'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "4.7.12",
+          "severity": "CRÍTICO",
+          "message": "stage_3.behavior = 'gate'",
+          "section": "Fusion Specification - Estrategias por Nivel"
+        },
+        {
+          "check_id": "6.1.3",
+          "severity": "CRÍTICO",
+          "message": "human_answer_structure.contract_type = identity.contract_type",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.verdict_statement",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'verdict_statement'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.final_confidence_pct",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'final_confidence_pct'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.confidence_label",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'confidence_label'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.3.method_count",
+          "severity": "ALTO",
+          "message": "S1.template.placeholders contiene 'method_count'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.7.8",
+          "severity": "ALTO",
+          "message": "N3_roles contiene 'REFUTATIONAL_SIGNAL'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "6.9.14",
+          "severity": "CRÍTICO",
+          "message": "critical.description menciona 'veto' o 'inválido' o 'NO usar'",
+          "section": "Human Answer Structure - Narrativa Epistemológica"
+        },
+        {
+          "check_id": "7.4.2",
+          "severity": "ALTO",
+          "message": "prohibitions.v3_recovery = 'FORBIDDEN'",
+          "section": "Traceability - Documentación"
+        },
+        {
+          "check_id": "8.1.5",
+          "severity": "CRÍTICO",
+          "message": "TODOS los contract_type son iguales (identity, method_binding, fusion_spec, human_answer)",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "8.3.1",
+          "severity": "CRÍTICO",
+          "message": "method_count = |phase_A| + |phase_B| + |phase_C|",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "8.5.TYPE_C_n1",
+          "severity": "CRÍTICO",
+          "message": "N1_strategy = 'graph_construction' para TYPE_C",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "8.5.TYPE_C_n2",
+          "severity": "CRÍTICO",
+          "message": "N2_strategy = 'topological_overlay' para TYPE_C",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "8.5.TYPE_C_r2",
+          "severity": "CRÍTICO",
+          "message": "R2.merge_strategy = 'topological_overlay' para TYPE_C",
+          "section": "Validaciones Cruzadas Globales"
+        },
+        {
+          "check_id": "9.TYPE_C.1",
+          "severity": "ALTO",
+          "message": "Contrato incluye clases dominantes de TYPE_C",
+          "section": "Validaciones Específicas - TYPE_C"
+        },
+        {
+          "check_id": "9.3.8",
+          "severity": "CRÍTICO",
+          "message": "TYPE_C: blocking_propagation_rules tiene condición sobre 'cycle'",
+          "section": "Validaciones Específicas - TYPE_C"
+        },
+        {
+          "check_id": "12.2.2",
+          "severity": "CRÍTICO",
+          "message": "phase_B.dependencies contiene phase_A",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "12.2.3",
+          "severity": "CRÍTICO",
+          "message": "phase_C.dependencies contiene phase_A Y phase_B",
+          "section": "Validación Matemática y Lógica"
+        },
+        {
+          "check_id": "14.1.4",
+          "severity": "CRÍTICO",
+          "message": "Triple coherencia estratégica para TYPE_C",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.2.5",
+          "severity": "CRÍTICO",
+          "message": "Los 4 contract_type son IDÉNTICOS",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.4.1",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con confidence_multiplier = 0.0",
+          "section": "Auditoría Final - Coherencia Global"
+        },
+        {
+          "check_id": "14.4.2",
+          "severity": "CRÍTICO",
+          "message": "Existe al menos UN método N3 con action severa (suppress/block/invalidate)",
+          "section": "Auditoría Final - Coherencia Global"
+        }
+      ]
+    }
+  }
+}

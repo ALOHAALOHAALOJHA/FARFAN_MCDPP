@@ -21,7 +21,7 @@
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
     "contract_type": "TYPE_B",
-    "method_count": 12,
+    "method_count": 13,
     "execution_phases": {
       "phase_A_construction": {
         "description": "Empirical observation layer - direct document extraction",
@@ -30,26 +30,17 @@
         "epistemology": "Empirismo positivista",
         "methods": [
           {
-            "class_name": "BayesianMechanismInference",
-            "method_name":  "_detect_gaps",
-            "mother_file": "derek_beach. py",
-            "provides": "bayesianmechanisminference.detect_gaps",
+            "class_name": "PolicyContradictionDetector",
+            "method_name": "_extract_quantitative_claims",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "policycontradictiondetector.extract_quantitative_claims",
             "level": "N1-EMP",
             "output_type": "FACT",
             "fusion_behavior": "additive",
-            "description": "Detecta gaps transformando string a datos estructurados",
-            "requires":  []
-          },
-          {
-            "class_name": "PDETMunicipalPlanAnalyzer",
-            "method_name": "_generate_optimal_remediations",
-            "mother_file": "financiero_viabilidad_tablas.py",
-            "provides": "pdetmunicipalplananalyzer. generate_optimal_remediations",
-            "level": "N1-EMP",
-            "output_type": "FACT",
-            "fusion_behavior": "additive",
-            "description": "Genera remediaciones óptimas como datos estructurados",
-            "requires": []
+            "description": "Extrae afirmaciones cuantitativas estructuradas del texto sin interpretación",
+            "requires": [],
+            "modifies": [],
+            "classification_rationale": "Extrae datos numéricos directamente del texto sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
           }
         ],
         "dependencies": [],
@@ -70,7 +61,7 @@
             "level":  "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Audita evidencia directa computando métricas",
+            "description": "Evalúa y audita evidencia directa computando métricas",
             "requires":  ["raw_facts"],
             "modifies": ["confidence_scores"]
           },
@@ -82,7 +73,7 @@
             "level":  "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior":  "multiplicative",
-            "description": "Análisis de riesgo sistémico",
+            "description": "Analiza riesgo sistémico evaluando probabilidades",
             "requires":  ["raw_facts"],
             "modifies": ["risk_scores"]
           },
@@ -90,11 +81,11 @@
             "class_name":  "PDETMunicipalPlanAnalyzer",
             "method_name": "_simulate_intervention",
             "mother_file":  "financiero_viabilidad_tablas.py",
-            "provides": "pdetmunicipalplananalyzer. simulate_intervention",
+            "provides": "pdetmunicipalplananalyzer.simulate_intervention",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Simulación de intervención con cómputo numérico",
+            "description": "Evalúa simulación de intervención con cómputo numérico",
             "requires": ["raw_facts"],
             "modifies": ["intervention_effects"]
           },
@@ -106,7 +97,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Test de estabilidad de efectos",
+            "description": "Evalúa test de estabilidad de efectos",
             "requires":  ["raw_facts"],
             "modifies": ["stability_scores"]
           },
@@ -118,7 +109,7 @@
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
-            "description": "Detecta inconsistencias numéricas",
+            "description": "Analiza y detecta inconsistencias numéricas",
             "requires": ["raw_facts"],
             "modifies":  ["consistency_scores"]
           },
@@ -138,13 +129,26 @@
             "class_name":  "BayesianConfidenceCalculator",
             "method_name": "calculate_posterior",
             "mother_file": "embedding_policy. py",
-            "provides": "bayesianconfidencecalculator. calculate_posterior",
+            "provides": "bayesianconfidencecalculator.calculate_posterior",
             "level": "N2-INF",
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "description": "Calcula distribución posterior bayesiana",
             "requires": ["raw_facts"],
             "modifies": ["posterior_distribution"]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_generate_optimal_remediations",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.generate_optimal_remediations",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "description": "Evalúa y genera remediaciones óptimas calculando prioridades probabilísticas",
+            "requires": ["raw_facts"],
+            "modifies": ["remediation_priorities"],
+            "classification_rationale": "Consume datos derivados (evidence, implications, risk) y calcula expected_value probabilístico → N2-INF (PARTE II, Sección 2.2)"
           }
         ],
         "dependencies": ["phase_A_construction"],
@@ -176,7 +180,8 @@
                 "scope": "affected_goals",
                 "confidence_multiplier": 0.3
               }
-            }
+            },
+            "classification_rationale": "Valida asignación financiera consumiendo N1 y N2 → N3-AUD (PARTE II, Sección 2.2)"
           },
           {
             "class_name": "BayesianCounterfactualAuditor",
@@ -196,7 +201,8 @@
                 "scope": "causal_claims",
                 "confidence_multiplier": 0.0
               }
-            }
+            },
+            "classification_rationale": "Valida coherencia contrafactual consumiendo N1 y N2 → N3-AUD (PARTE II, Sección 2.2)"
           },
           {
             "class_name":  "PerformanceAnalyzer",
@@ -215,8 +221,42 @@
                 "action": "flag_caution",
                 "scope": "all_inferences",
                 "confidence_multiplier":  0.7
+              },
+              "performance_critical": {
+                "trigger": "performance_score < 0.3",
+                "action": "reduce_confidence",
+                "scope": "all_inferences",
+                "confidence_multiplier": 0.4
               }
-            }
+            },
+            "classification_rationale": "Valida rendimiento del análisis consumiendo N1 y N2 → N3-AUD (PARTE II, Sección 2.2)"
+          },
+          {
+            "class_name": "BayesianMechanismInference",
+            "method_name": "_detect_gaps",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesianmechanisminference.detect_gaps",
+            "level": "N3-AUD",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "description": "Valida calidad de documentación detectando gaps basándose en uncertainty y observations",
+            "requires": ["raw_facts", "inferences"],
+            "modulates": ["inferences.confidence", "raw_facts.confidence"],
+            "veto_conditions": {
+              "high_uncertainty_gap": {
+                "trigger": "uncertainty.total > 0.6",
+                "action": "reduce_confidence",
+                "scope": "affected_mechanisms",
+                "confidence_multiplier": 0.5
+              },
+              "missing_critical_entity": {
+                "trigger": "not observations.entity_activity",
+                "action": "flag_caution",
+                "scope": "affected_nodes",
+                "confidence_multiplier": 0.7
+              }
+            },
+            "classification_rationale": "Valida calidad de documentación basándose en uncertainty y observations derivados → N3-AUD (PARTE II, Sección 2.2)"
           }
         ],
         "dependencies": ["phase_A_construction", "phase_B_computation"],
@@ -282,8 +322,7 @@
         "rule_type": "empirical_basis",
         "target":  "raw_facts",
         "sources": [
-          "bayesianmechanisminference.detect_gaps",
-          "pdetmunicipalplananalyzer.generate_optimal_remediations"
+          "policycontradictiondetector.extract_quantitative_claims"
         ],
         "merge_strategy": "concat_with_deduplication",
         "deduplication_key": "element_id",
@@ -301,7 +340,8 @@
           "bayesiancounterfactualauditor.test_effect_stability",
           "policycontradictiondetector.detect_numerical_inconsistencies",
           "policycontradictiondetector.calculate_numerical_divergence",
-          "bayesianconfidencecalculator.calculate_posterior"
+          "bayesianconfidencecalculator.calculate_posterior",
+          "pdetmunicipalplananalyzer.generate_optimal_remediations"
         ],
         "input_dependencies": ["raw_facts"],
         "merge_strategy":  "bayesian_update",
@@ -320,7 +360,8 @@
         "sources": [
           "financialauditor.detect_allocation_gaps",
           "bayesiancounterfactualauditor.counterfactual_query",
-          "performanceanalyzer.analyze_performance"
+          "performanceanalyzer.analyze_performance",
+          "bayesianmechanisminference.detect_gaps"
         ],
         "input_dependencies": ["raw_facts", "posterior_belief"],
         "merge_strategy": "veto_gate",
@@ -386,22 +427,25 @@
     },
     "fusion_pipeline": {
       "stage_1_fact_accumulation": {
-        "input":  "phase_A_construction. outputs",
-        "operation": "BUILD evidence graph from detected gaps and remediations",
+        "input":  "phase_A_construction.outputs",
+        "operation": "BUILD evidence graph from empirical observations",
         "output": "evidence_graph_v1",
-        "type_consumed": "FACT"
+        "type_consumed": "FACT",
+        "behavior": "additive"
       },
-      "stage_2_bayesian_update": {
+      "stage_2_parameter_application": {
         "input":  ["evidence_graph_v1", "phase_B_computation.outputs"],
         "operation": "UPDATE posterior beliefs using Bayesian inference",
         "output": "evidence_graph_v2_posterior",
-        "type_consumed": "PARAMETER"
+        "type_consumed": "PARAMETER",
+        "behavior": "multiplicative"
       },
       "stage_3_constraint_filtering": {
         "input": ["evidence_graph_v2_posterior", "phase_C_litigation.outputs"],
         "operation": "FILTER/BLOCK branches that fail validation",
         "output": "evidence_graph_v3_validated",
-        "type_consumed": "CONSTRAINT"
+        "type_consumed": "CONSTRAINT",
+        "behavior": "gate"
       },
       "stage_4_synthesis": {
         "input": "evidence_graph_v3_validated",
@@ -474,7 +518,33 @@
             "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
             "",
             "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
-          ]
+          ],
+          "placeholders": {
+            "verdict_statement": {
+              "type": "string",
+              "source": "synthesis_output.verdict"
+            },
+            "final_confidence_pct": {
+              "type": "number",
+              "source": "synthesis_output.confidence_pct"
+            },
+            "confidence_label": {
+              "type": "enum",
+              "source": "synthesis_output.confidence_label"
+            },
+            "method_count": {
+              "type": "integer",
+              "source": "pipeline_stats.total_methods"
+            },
+            "audit_count": {
+              "type": "integer",
+              "source": "pipeline_stats.n3_validations"
+            },
+            "blocked_count": {
+              "type": "integer",
+              "source": "pipeline_stats.blocked_branches"
+            }
+          }
         },
         "argumentative_role": "SYNTHESIS"
       },
@@ -486,12 +556,41 @@
         "narrative_style": "descriptive",
         "template": {
           "structure": [
+            "**Afirmaciones Cuantitativas Extraídas**: {quantitative_claims_count}",
+            "{quantitative_claims_list}",
+            "",
             "**Gaps Detectados**: {gaps_count} brechas identificadas",
             "{gaps_list}",
             "",
             "**Remediaciones Propuestas**: {remediations_count}",
             "{remediations_list}"
-          ]
+          ],
+          "placeholders": {
+            "quantitative_claims_count": {
+              "type": "integer",
+              "source": "raw_facts.quantitative_claims.count"
+            },
+            "quantitative_claims_list": {
+              "type": "string",
+              "source": "raw_facts.quantitative_claims.formatted_list"
+            },
+            "gaps_count": {
+              "type": "integer",
+              "source": "raw_facts.gaps.count"
+            },
+            "gaps_list": {
+              "type": "string",
+              "source": "raw_facts.gaps.formatted_list"
+            },
+            "remediations_count": {
+              "type": "integer",
+              "source": "inferences.remediations.count"
+            },
+            "remediations_list": {
+              "type": "string",
+              "source": "inferences.remediations.formatted_list"
+            }
+          }
         },
         "argumentative_role": "EMPIRICAL_BASIS",
         "epistemological_note": {
@@ -576,6 +675,12 @@
           "description": "Límite presupuestal",
           "narrative_weight": "critical",
           "triggers_veto": true
+        },
+        {
+          "role": "REFUTATIONAL_SIGNAL",
+          "description": "Señal de refutación para hallazgos bayesianos inválidos",
+          "narrative_weight": "critical",
+          "triggers_veto": true
         }
       ],
       "N4_roles": [
@@ -590,7 +695,8 @@
       "critical":  {
         "range": [0, 19],
         "label": "INVÁLIDO",
-        "display":  "🔴"
+        "display":  "🔴",
+        "description": "Confianza crítica: resultado inválido por veto bayesiano. NO usar para decisiones."
       },
       "low": {
         "range": [20, 49],
@@ -677,7 +783,13 @@
           "N4": "Reflexividad crítica"
         }
       }
-    ]
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "v3_migration": "FORBIDDEN",
+      "v3_reference": "FORBIDDEN",
+      "non_epistemological_mode": "FORBIDDEN"
+    }
   },
 
   "compatibility":  {

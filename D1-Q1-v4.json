@@ -1,0 +1,752 @@
+{
+  "identity": {
+    "base_slot": "D1-Q1",
+    "representative_question_id": "Q001",
+    "dimension_id": "DIM01",
+    "policy_area_ids_served": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "contracts_served": [
+      "Q001",
+      "Q031",
+      "Q061",
+      "Q091",
+      "Q121",
+      "Q151",
+      "Q181",
+      "Q211",
+      "Q241",
+      "Q271"
+    ],
+    "contract_type": "TYPE_A",
+    "contract_type_name": "Semántico",
+    "contract_type_focus": "Coherencia narrativa, alineación temática, extracción semántica de datos numéricos, línea base, año de referencia y fuentes",
+    "contract_version": "4.0.0-epistemological",
+    "created_at": "2025-12-23T20:00:00Z",
+    "specification_source": "guia_diligenciamiento_contratos_v4.md"
+  },
+  "executor_binding": {
+    "executor_class": "D1_Q1_Executor",
+    "executor_module": "farfan_pipeline.phases.Phase_two.executors"
+  },
+  "method_binding": {
+    "orchestration_mode": "epistemological_pipeline",
+    "contract_type": "TYPE_A",
+    "method_count": 8,
+    "execution_phases": {
+      "phase_A_construction": {
+        "description": "Empirical observation layer - direct document extraction without interpretation",
+        "level": "N1",
+        "level_name": "Base Empírica",
+        "epistemology": "Empirismo semántico - extracción directa de evidencia factual sin inferencia causal o bayesiana",
+        "methods": [
+          {
+            "class_name": "PolicyContradictionDetector",
+            "method_name": "_extract_quantitative_claims",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "policycontradictiondetector.extract_quantitative_claims",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extrae afirmaciones cuantitativas estructuradas (porcentajes, tasas, cifras) con contexto. Especializado en extracción de datos cuantitativos con contexto, ideal para identificar tasas de VBG y porcentajes.",
+            "requires": [],
+            "modifies": [],
+            "classification_rationale": "Extrae hechos cuantitativos sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+          },
+          {
+            "class_name": "PolicyContradictionDetector",
+            "method_name": "_extract_temporal_markers",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "policycontradictiondetector.extract_temporal_markers",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extrae marcadores temporales (años, períodos, fechas) del texto. Identifica años explícitos en el texto, necesario para verificar año de referencia.",
+            "requires": [],
+            "modifies": [],
+            "classification_rationale": "Extrae hechos temporales sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+          },
+          {
+            "class_name": "PolicyContradictionDetector",
+            "method_name": "_extract_resource_mentions",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "policycontradictiondetector.extract_resource_mentions",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extrae menciones de recursos con montos. Output estructurado (list[tuple]), trazable a spans textuales.",
+            "requires": [],
+            "modifies": [],
+            "classification_rationale": "Extrae hechos de recursos sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_extract_financial_amounts",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.extract_financial_amounts",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extrae montos financieros y datos numéricos de tablas y texto. Extracción literal, estructurada, sin inferencia.",
+            "requires": [],
+            "modifies": [],
+            "classification_rationale": "Extrae datos numéricos de tablas estructuradas sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+          },
+          {
+            "class_name": "IndustrialPolicyProcessor",
+            "method_name": "_extract_point_evidence",
+            "mother_file": "policy_processor.py",
+            "provides": "industrialpolicyprocessor.extract_point_evidence",
+            "level": "N1-EMP",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "description": "Extrae evidencia puntual por área de política usando patrones canónicos. Permite identificar menciones de fuentes oficiales y contexto específico del área de política.",
+            "requires": [],
+            "modifies": [],
+            "classification_rationale": "Extrae evidencia por área de política sin inferencia → N1-EMP (PARTE II, Sección 2.2)"
+          }
+        ],
+        "dependencies": [],
+        "output_target": "raw_facts"
+      },
+      "phase_B_computation": {
+        "description": "Semantic validation layer - deterministic logical validation of coherence and completeness",
+        "level": "N2",
+        "level_name": "Validación Semántica",
+        "epistemology": "Verificación semántica determinista - validación lógica sin inferencia bayesiana",
+        "methods": [
+          {
+            "class_name": "SemanticValidator",
+            "method_name": "validate_semantic_completeness_coherence",
+            "mother_file": "contradiction_deteccion.py",
+            "provides": "semanticvalidator.validate_semantic_completeness_coherence",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "additive",
+            "description": "Valida coherencia semántica y completitud mínima de datos extraídos. Determinista, no probabilístico. Valida: datos numéricos, línea base, año de referencia, fuentes oficiales, compatibilidad recursos-plazos.",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "semantic_validation_flags"
+            ],
+            "classification_rationale": "Validación semántica determinista N2. No infiere, no veta, solo produce flags binarios para downstream N3 auditing."
+          },
+          {
+            "class_name": "IndustrialPolicyProcessor",
+            "method_name": "_match_patterns_in_sentences",
+            "mother_file": "policy_processor.py",
+            "provides": "industrialpolicyprocessor.match_patterns_in_sentences",
+            "level": "N2-INF",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "additive",
+            "description": "Ejecuta matching de patrones de validación (fuentes, años, unidades de medición). Valida presencia de fuentes oficiales y años de referencia usando patrones canónicos.",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "pattern_validation_flags"
+            ],
+            "classification_rationale": "Validación de patrones canónicos determinista → N2-INF (PARTE II, Sección 2.3)"
+          }
+        ],
+        "dependencies": [
+          "phase_A_construction"
+        ],
+        "output_target": "inferred_parameters"
+      },
+      "phase_C_litigation": {
+        "description": "Audit layer - evidence traceability and completeness validation",
+        "level": "N3",
+        "level_name": "Auditoría y Robustez",
+        "epistemology": "Auditoría de cumplimiento - verificación de requisitos contractuales mediante checklist",
+        "methods": [
+          {
+            "class_name": "OperationalizationAuditor",
+            "method_name": "audit_evidence_traceability",
+            "mother_file": "derek_beach.py",
+            "provides": "operationalizationauditor.audit_evidence_traceability",
+            "level": "N3-AUD",
+            "output_type": "AUDIT",
+            "fusion_behavior": "gate",
+            "description": "Audita trazabilidad de evidencia directa (verifica línea base, fuentes, años). Checklist contractual explícito, trazabilidad dura, asimetría epistemológica clara.",
+            "requires": [
+              "raw_facts",
+              "inferred_parameters"
+            ],
+            "modifies": [
+              "audit_results",
+              "traceability_scores"
+            ],
+            "classification_rationale": "Auditoría de evidencia con checklist contractual → N3-AUD (PARTE II, Sección 2.4)",
+            "veto_conditions": {
+              "missing_quantitative_data": {
+                "trigger": "semantic_validation_flags.has_quantitative_data == False",
+                "action": "block_branch",
+                "scope": "all_evidence",
+                "confidence_multiplier": 0.0,
+                "message": "No se encontraron datos numéricos suficientes (tasas, porcentajes, cifras)"
+              },
+              "missing_baseline": {
+                "trigger": "semantic_validation_flags.has_baseline_indicator == False",
+                "action": "block_branch",
+                "scope": "all_evidence",
+                "confidence_multiplier": 0.0,
+                "message": "No se encontraron indicadores de línea base (línea base, año base, situación inicial)"
+              },
+              "missing_year_reference": {
+                "trigger": "semantic_validation_flags.has_year_reference == False",
+                "action": "block_branch",
+                "scope": "all_evidence",
+                "confidence_multiplier": 0.0,
+                "message": "No se encontró año de referencia explícito"
+              },
+              "missing_official_sources": {
+                "trigger": "semantic_validation_flags.has_official_sources == False",
+                "action": "block_branch",
+                "scope": "all_evidence",
+                "confidence_multiplier": 0.0,
+                "message": "No se encontraron menciones de fuentes oficiales (DANE, Medicina Legal, Observatorio de Género, etc.)"
+              }
+            }
+          }
+        ],
+        "dependencies": [
+          "phase_A_construction",
+          "phase_B_computation"
+        ],
+        "asymmetry_principle": {
+          "description": "ASIMETRÍA EXPLÍCITA: N3 puede invalidar resultados de N1/N2 mediante veto gates con confidence_multiplier = 0.0, bloqueando completamente hallazgos que N1/N2 aceptarían. Mientras N1 extrae datos sin validación y N2 valida semánticamente, N3 aplica criterios de cumplimiento contractual. CANNOT invalidate N3: N1 y N2 no pueden vetar decisiones de N3, solo pueden proporcionar datos que N3 evalúa",
+          "asymmetry_domain_note": "En contratos TYPE_A, N3 valida mediante checklist contractual. Si falta algún requisito crítico (datos numéricos, línea base, año, fuentes), N3 puede bloquear completamente los resultados de N1/N2, pero N1/N2 no pueden invalidar las validaciones de N3."
+        },
+        "output_target": "validated_constraints"
+      }
+    }
+  },
+  "question_context": {
+    "monolith_ref": "Q001",
+    "question_text": "¿El diagnóstico presenta datos numéricos (tasas de VBG, porcentajes de participación, cifras de brechas salariales) para el área de Derechos de las mujeres e igualdad de género que sirvan como línea base? Se debe verificar la presencia de un año de referencia y la mención de fuentes (ej. DANE, Medicina Legal, Observatorio de Género).",
+    "overrides": null,
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text",
+        "no_quantitative_data_found"
+      ],
+      "emit_code": "ABORT-D1-Q1-REQ"
+    }
+  },
+  "signal_requirements": {
+    "required_signals": [
+      "PreprocesadoMetadata",
+      "pdf_document"
+    ],
+    "optional_signals": [
+      "extracted_tables",
+      "policy_area_context"
+    ],
+    "derivation_source": "expected_elements",
+    "derivation_rules": {
+      "mandatory": "expected_elements[required=true].type → detection_{type}",
+      "optional": "expected_elements[required=false].type → detection_{type}"
+    }
+  },
+  "evidence_assembly": {
+    "engine": "EVIDENCE_NEXUS",
+    "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
+    "class_name": "EvidenceNexus",
+    "method_name": "assemble",
+    "type_system": {
+      "FACT": {
+        "origin_level": "N1",
+        "fusion_operation": "fact_accumulation",
+        "merge_behavior": "additive",
+        "symbol": "⊕",
+        "description": "Se acumula como hecho empírico"
+      },
+      "PARAMETER": {
+        "origin_level": "N2",
+        "fusion_operation": "coherence_score_aggregation",
+        "merge_behavior": "additive",
+        "symbol": "⊕",
+        "description": "Se agrega como flag de validación semántica"
+      },
+      "AUDIT": {
+        "origin_level": "N3",
+        "fusion_operation": "checklist_validation",
+        "merge_behavior": "gate",
+        "symbol": "⊘",
+        "description": "FILTRA/BLOQUEA si validación de checklist falla"
+      },
+      "NARRATIVE": {
+        "origin_level": "N4",
+        "fusion_operation": "synthesis",
+        "merge_behavior": "terminal",
+        "symbol": "⊙",
+        "description": "CONSUME evidencia para texto final"
+      }
+    },
+    "assembly_rules": [
+      {
+        "rule_id": "R1_quantitative_extraction",
+        "rule_type": "empirical_basis",
+        "target": "quantitative_facts",
+        "sources": [
+          "policycontradictiondetector.extract_quantitative_claims",
+          "pdetmunicipalplananalyzer.extract_financial_amounts"
+        ],
+        "merge_strategy": "concat",
+        "output_type": "FACT"
+      },
+      {
+        "rule_id": "R2_temporal_extraction",
+        "rule_type": "empirical_basis",
+        "target": "temporal_facts",
+        "sources": [
+          "policycontradictiondetector.extract_temporal_markers"
+        ],
+        "merge_strategy": "concat",
+        "output_type": "FACT"
+      },
+      {
+        "rule_id": "R3_source_extraction",
+        "rule_type": "empirical_basis",
+        "target": "source_facts",
+        "sources": [
+          "industrialpolicyprocessor.extract_point_evidence"
+        ],
+        "merge_strategy": "concat",
+        "output_type": "FACT"
+      },
+      {
+        "rule_id": "R4_semantic_validation",
+        "rule_type": "semantic_validation",
+        "target": "semantic_validation_flags",
+        "sources": [
+          "semanticvalidator.validate_semantic_completeness_coherence",
+          "industrialpolicyprocessor.match_patterns_in_sentences"
+        ],
+        "input_dependencies": [
+          "quantitative_facts",
+          "temporal_facts",
+          "source_facts"
+        ],
+        "merge_strategy": "concat",
+        "output_type": "PARAMETER"
+      },
+      {
+        "rule_id": "R5_completeness_audit",
+        "rule_type": "completeness_audit",
+        "target": "audit_results",
+        "sources": [
+          "operationalizationauditor.audit_evidence_traceability"
+        ],
+        "input_dependencies": [
+          "quantitative_facts",
+          "temporal_facts",
+          "source_facts",
+          "semantic_validation_flags"
+        ],
+        "merge_strategy": "veto_gate",
+        "gate_logic": {
+          "missing_quantitative_data": {
+            "trigger": "semantic_validation_flags.has_quantitative_data == False",
+            "action": "block_branch",
+            "scope": "all_evidence",
+            "confidence_multiplier": 0.0
+          },
+          "missing_baseline": {
+            "trigger": "semantic_validation_flags.has_baseline_indicator == False",
+            "action": "block_branch",
+            "scope": "all_evidence",
+            "confidence_multiplier": 0.0
+          },
+          "missing_year_reference": {
+            "trigger": "semantic_validation_flags.has_year_reference == False",
+            "action": "block_branch",
+            "scope": "all_evidence",
+            "confidence_multiplier": 0.0
+          },
+          "missing_official_sources": {
+            "trigger": "semantic_validation_flags.has_official_sources == False",
+            "action": "block_branch",
+            "scope": "all_evidence",
+            "confidence_multiplier": 0.0
+          }
+        },
+        "output_type": "AUDIT"
+      }
+    ]
+  },
+  "fusion_specification": {
+    "contract_type": "TYPE_A",
+    "level_strategies": {
+      "N1_fact_fusion": {
+        "strategy": "concat",
+        "description": "Concatenación de hechos empíricos extraídos"
+      },
+      "N2_parameter_fusion": {
+        "strategy": "concat",
+        "description": "Agregación de flags de validación semántica"
+      },
+      "N3_audit_fusion": {
+        "strategy": "veto_gate",
+        "description": "Gate binario: pasa solo si todos los requisitos se cumplen"
+      }
+    }
+  },
+  "cross_layer_fusion": {
+    "N1_to_N2": {
+      "relationship": "N2 valida semánticamente los raw_facts de N1",
+      "effect": "N2 produce flags de validación semántica basados en raw_facts de N1",
+      "data_flow": "forward_propagation"
+    },
+    "N2_to_N1": {
+      "relationship": "N2 no modifica N1 (validación pura)",
+      "effect": "N2 solo produce flags, no modifica confianza de N1",
+      "data_flow": "no_backpropagation"
+    },
+    "N3_to_N1": {
+      "relationship": "N3 puede BLOQUEAR o INVALIDAR hechos de N1",
+      "effect": "Validación fallida elimina hechos inválidos del grafo",
+      "data_flow": "veto_propagation",
+      "asymmetry": "N1 NO puede invalidar N3"
+    },
+    "N3_to_N2": {
+      "relationship": "N3 puede BLOQUEAR o INVALIDAR parámetros de N2",
+      "effect": "Validación fallida elimina parámetros inválidos del grafo",
+      "data_flow": "veto_propagation",
+      "asymmetry": "N2 NO puede invalidar N3"
+    },
+    "all_to_N4": {
+      "relationship": "Todas las capas alimentan síntesis N4",
+      "effect": "N4 sintetiza narrativa final desde todas las capas",
+      "data_flow": "terminal_aggregation"
+    },
+    "blocking_propagation_rules": {
+      "missing_quantitative_data": {
+        "triggered_by": "SemanticValidator.validate_semantic_completeness_coherence",
+        "condition": "semantic_validation_flags.has_quantitative_data == False",
+        "action": "block_branch",
+        "scope": "all_evidence",
+        "propagation": "downstream_only",
+        "confidence_multiplier": 0.0
+      },
+      "missing_baseline": {
+        "triggered_by": "SemanticValidator.validate_semantic_completeness_coherence",
+        "condition": "semantic_validation_flags.has_baseline_indicator == False",
+        "action": "block_branch",
+        "scope": "all_evidence",
+        "propagation": "downstream_only",
+        "confidence_multiplier": 0.0
+      },
+      "missing_year_reference": {
+        "triggered_by": "SemanticValidator.validate_semantic_completeness_coherence",
+        "condition": "semantic_validation_flags.has_year_reference == False",
+        "action": "block_branch",
+        "scope": "all_evidence",
+        "propagation": "downstream_only",
+        "confidence_multiplier": 0.0
+      },
+      "missing_official_sources": {
+        "triggered_by": "SemanticValidator.validate_semantic_completeness_coherence",
+        "condition": "semantic_validation_flags.has_official_sources == False",
+        "action": "block_branch",
+        "scope": "all_evidence",
+        "propagation": "downstream_only",
+        "confidence_multiplier": 0.0
+      }
+    }
+  },
+  "human_answer_structure": {
+    "format": "markdown",
+    "template_mode": "epistemological_narrative",
+    "contract_type": "TYPE_A",
+    "sections": [
+      {
+        "section_id": "S1_verdict",
+        "title": "### Veredicto",
+        "layer": "N4",
+        "data_source": "synthesis_output",
+        "narrative_style": "declarative",
+        "template": {
+          "structure": [
+            "**Conclusión**: {verdict_statement}",
+            "",
+            "**Confianza Global**: {final_confidence_pct}% ({confidence_label})",
+            "",
+            "**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+          ],
+          "placeholders": [
+            "verdict_statement",
+            "final_confidence_pct",
+            "confidence_label",
+            "method_count",
+            "audit_count",
+            "blocked_count"
+          ]
+        },
+        "argumentative_role": "SYNTHESIS"
+      },
+      {
+        "section_id": "S2_empirical_base",
+        "title": "### Base Empírica: Datos Numéricos y Línea Base",
+        "layer": "N1",
+        "data_source": "validated_facts",
+        "narrative_style": "descriptive",
+        "template": {
+          "structure": [
+            "**Datos Numéricos Identificados**: {quantitative_data_count}",
+            "{quantitative_data_list}",
+            "",
+            "**Año de Referencia**: {year_reference}",
+            "",
+            "**Fuentes Oficiales Mencionadas**: {sources_list}"
+          ],
+          "placeholders": [
+            "quantitative_data_count",
+            "quantitative_data_list",
+            "year_reference",
+            "sources_list"
+          ]
+        },
+        "argumentative_role": "EMPIRICAL_BASIS",
+        "epistemological_note": {
+          "include_in_output": true,
+          "text": "📋 *Nota: Datos numéricos, año de referencia y fuentes extraídos directamente del documento fuente.*"
+        }
+      },
+      {
+        "section_id": "S3_robustness_audit",
+        "title": "### Análisis de Robustez: Completitud de Requisitos",
+        "layer": "N3",
+        "data_source": "audit_results",
+        "narrative_style": "critical",
+        "template": {
+          "structure": [
+            "{veto_alert}",
+            "",
+            "**Validaciones Ejecutadas**: {validation_count}",
+            "",
+            "**Estado de Completitud**: {completeness_assessment}",
+            "",
+            "**Requisitos Cumplidos**: {fulfilled_requirements}",
+            "",
+            "**Requisitos Faltantes**: {missing_requirements}"
+          ],
+          "placeholders": [
+            "veto_alert",
+            "validation_count",
+            "completeness_assessment",
+            "fulfilled_requirements",
+            "missing_requirements"
+          ]
+        },
+        "argumentative_role": "ROBUSTNESS_QUALIFIER",
+        "veto_display": {
+          "if_veto_triggered": "⛔ **ALERTA: REQUISITOS INCOMPLETOS**: {veto_reason}. El diagnóstico NO cumple con los requisitos mínimos para constituir línea base válida.",
+          "if_no_veto": "✅ **VALIDACIÓN COMPLETA**: El diagnóstico presenta datos numéricos, línea base, año de referencia y fuentes oficiales según los requisitos establecidos."
+        }
+      },
+      {
+        "section_id": "S4_gaps",
+        "title": "### Limitaciones y Gaps Identificados",
+        "layer": "N4-META",
+        "data_source": "meta_traceability",
+        "narrative_style": "analytical",
+        "argumentative_role": "META_TRACEABILITY"
+      }
+    ],
+    "placeholders": {
+      "S1_quantitative_data": {
+        "role": "datos_numericos",
+        "description": "Datos numéricos extraídos (tasas, porcentajes, cifras)",
+        "source": "quantitative_facts"
+      },
+      "S2_baseline": {
+        "role": "linea_base",
+        "description": "Indicadores de línea base identificados",
+        "source": "semantic_validation_flags.has_baseline_indicator"
+      },
+      "S3_year_reference": {
+        "role": "año_referencia",
+        "description": "Año de referencia explícito",
+        "source": "temporal_facts"
+      },
+      "S4_sources": {
+        "role": "fuentes",
+        "description": "Fuentes oficiales mencionadas",
+        "source": "source_facts"
+      },
+      "S5_validation_status": {
+        "role": "estado_validacion",
+        "description": "Estado de validación semántica (completo/incompleto)",
+        "source": "semantic_validation_flags.semantic_completeness_pass"
+      }
+    },
+    "narrative_template": "El diagnóstico {S5_validation_status} presenta datos numéricos ({S1_quantitative_data}) que sirven como línea base ({S2_baseline}) para el área de Derechos de las mujeres e igualdad de género. Se verifica la presencia de un año de referencia ({S3_year_reference}) y la mención de fuentes oficiales ({S4_sources})."
+  },
+  "traceability": {
+    "epistemological_framework": {
+      "N1": "Empirismo semántico - extracción directa de evidencia factual",
+      "N2": "Verificación semántica determinista - validación lógica sin inferencia bayesiana",
+      "N3": "Auditoría de cumplimiento - verificación de requisitos contractuales",
+      "N4": "Síntesis narrativa - construcción de respuesta humana"
+    },
+    "method_provenance": {
+      "N1": [
+        "PolicyContradictionDetector._extract_quantitative_claims",
+        "PolicyContradictionDetector._extract_temporal_markers",
+        "PolicyContradictionDetector._extract_resource_mentions",
+        "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+        "IndustrialPolicyProcessor._extract_point_evidence"
+      ],
+      "N2": [
+        "SemanticValidator.validate_semantic_completeness_coherence",
+        "IndustrialPolicyProcessor._match_patterns_in_sentences"
+      ],
+      "N3": [
+        "OperationalizationAuditor.audit_evidence_traceability"
+      ]
+    },
+    "validation_rules_applied": [
+      "buscar_indicadores_cuantitativos",
+      "verificar_fuentes",
+      "series_temporales"
+    ]
+  },
+  "output_contract": {
+    "result_type": "Phase2QuestionResult",
+    "schema": {
+      "type": "object",
+      "required": [
+        "base_slot",
+        "question_id",
+        "evidence",
+        "score",
+        "human_answer"
+      ],
+      "properties": {
+        "base_slot": {
+          "type": "string",
+          "const": "D1-Q1"
+        },
+        "question_id": {
+          "type": "string"
+        },
+        "dimension_id": {
+          "type": "string",
+          "const": "DIM01"
+        },
+        "policy_area_id": {
+          "type": "string"
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "confidence_label": {
+          "type": "string",
+          "enum": [
+            "INVÁLIDO",
+            "DÉBIL",
+            "MODERADO",
+            "ROBUSTO"
+          ]
+        },
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "quantitative_facts": {
+              "type": "array"
+            },
+            "temporal_facts": {
+              "type": "array"
+            },
+            "source_facts": {
+              "type": "array"
+            },
+            "semantic_validation_flags": {
+              "type": "object",
+              "properties": {
+                "has_quantitative_data": {
+                  "type": "boolean"
+                },
+                "has_baseline_indicator": {
+                  "type": "boolean"
+                },
+                "has_year_reference": {
+                  "type": "boolean"
+                },
+                "has_official_sources": {
+                  "type": "boolean"
+                },
+                "resources_temporal_compatible": {
+                  "type": "boolean"
+                },
+                "semantic_completeness_pass": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "audit_results": {
+              "type": "object"
+            }
+          }
+        },
+        "human_answer": {
+          "type": "string"
+        },
+        "epistemological_trace": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "validation_rules": {
+    "na_policy": "abort_on_critical",
+    "derivation_source": "expected_elements",
+    "engine": "VALIDATION_ENGINE",
+    "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
+    "class_name": "ValidationEngine",
+    "method_name": "validate"
+  },
+  "error_handling": {
+    "on_method_not_found": "raise",
+    "on_validation_failure": "abort_with_code",
+    "on_incomplete_evidence": "warn_and_continue"
+  },
+  "confidence_interpretation": {
+    "critical": {
+      "range": [0, 19],
+      "label": "INVÁLIDO",
+      "display": "🔴"
+    },
+    "low": {
+      "range": [20, 49],
+      "label": "DÉBIL",
+      "display": "🟠"
+    },
+    "medium": {
+      "range": [50, 79],
+      "label": "MODERADO",
+      "display": "🟡"
+    },
+    "high": {
+      "range": [80, 100],
+      "label": "ROBUSTO",
+      "display": "🟢"
+    }
+  }
+}
+
