@@ -259,12 +259,15 @@ CANONICAL_RULEBOOK = Rulebook(
         ),
         Rule(
             rule_id="INFRA_002_PRIVATE_TRIVIAL",
-            description="Métodos privados con return None/vacío son INFRASTRUCTURE",
-            triggers=("_", "return_type:none", "return_type:noreturn", "return_type:"),
-            anti_triggers=("validate", "check", "compute", "infer", "generate"),
+            description="Métodos privados triviales (return None y sin señales de lógica) son INFRASTRUCTURE",
+            triggers=("name:_", "return_type:none"),
+            anti_triggers=("validate", "check", "compute", "infer", "generate", "extract", "parse",
+                          "chunk", "split", "normalize", "analyze", "score", "evaluate", "classify",
+                          "posterior", "bayesian", "prior", "credible", "beta", "normal", "gamma",
+                          "detect", "audit", "test", "verify", "format_report", "narrative"),
             target_level="INFRASTRUCTURE",
             target_epistemology="NONE",
-            priority=90,
+            priority=25,  # Baja prioridad - solo gana si nada más aplica
         ),
         Rule(
             rule_id="INFRA_003_ERROR_FORMAT",
@@ -278,9 +281,9 @@ CANONICAL_RULEBOOK = Rulebook(
         # ─── N3-AUD (validación/auditoría) ───
         Rule(
             rule_id="N3_001_BOOL_VALIDATE",
-            description="Bool + validate/check/verify/test/audit ⇒ N3-AUD",
+            description="Bool + validate/check/verify/test/audit ⇒ N3-AUD (excluye cálculos computacionales)",
             triggers=("return_type:bool", "validate", "check", "verify", "test", "audit"),
-            anti_triggers=(),
+            anti_triggers=("calculate", "compute", "infer", "score", "estimate"),  # Excluir métodos computacionales
             target_level="N3-AUD",
             target_epistemology="POPPERIAN_FALSIFICATIONIST",
             priority=80,
@@ -289,10 +292,19 @@ CANONICAL_RULEBOOK = Rulebook(
             rule_id="N3_002_CONSTRAINT",
             description="Métodos con constraint/validation en nombre son N3-AUD",
             triggers=("constraint", "validation", "assert", "ensure"),
-            anti_triggers=(),
+            anti_triggers=("calculate", "compute"),  # Excluir cálculos
             target_level="N3-AUD",
             target_epistemology="POPPERIAN_FALSIFICATIONIST",
             priority=75,
+        ),
+        Rule(
+            rule_id="N3_003_DETECT_AUDIT",
+            description="detect_*/audit_* con señales de auditoría son N3-AUD (prioridad alta)",
+            triggers=("detect", "audit"),
+            anti_triggers=(),
+            target_level="N3-AUD",
+            target_epistemology="POPPERIAN_FALSIFICATIONIST",
+            priority=78,  # Mayor que N1_001B_DETECT_OBSERVABLE (30)
         ),
         # ─── N4-SYN (síntesis narrativa) ───
         Rule(
@@ -316,9 +328,9 @@ CANONICAL_RULEBOOK = Rulebook(
         # ─── N2-INF (inferencia) ───
         Rule(
             rule_id="N2_001_NUMERIC",
-            description="Retornos numéricos son N2-INF",
+            description="Retornos numéricos son N2-INF (derivados computacionales)",
             triggers=("return_type:float", "return_type:ndarray", "return_type:score", "return_type:distribution"),
-            anti_triggers=(),
+            anti_triggers=("validate", "check", "verify", "audit", "test"),  # Excluir validadores booleanos
             target_level="N2-INF",
             target_epistemology="DETERMINISTIC_LOGICAL",
             priority=60,
@@ -353,12 +365,14 @@ CANONICAL_RULEBOOK = Rulebook(
         ),
         Rule(
             rule_id="N1_001B_DETECT_OBSERVABLE",
-            description="detect_* que busca señales observables es N1-EMP",
-            triggers=("detect",),
-            anti_triggers=("contradiction", "conflict", "violation", "inconsistency", "temporal"),
+            description="detect_* solo para señales puramente observables (raro, mayoría son N3)",
+            triggers=("detect", "name:detect_"),
+            anti_triggers=("contradiction", "conflict", "violation", "inconsistency", "temporal",
+                          "gap", "bottleneck", "allocation", "semantic", "numerical", "logical",
+                          "incompatibility", "anomaly", "error"),  # Ampliar: casi todo detect es N3
             target_level="N1-EMP",
             target_epistemology="POSITIVIST_EMPIRICAL",
-            priority=48,
+            priority=30,  # Bajar prioridad - solo gana si NO hay señales de auditoría
         ),
         Rule(
             rule_id="N1_002_RAW",
@@ -400,12 +414,12 @@ CANONICAL_RULEBOOK = Rulebook(
         ),
         Rule(
             rule_id="N2_004_ANALYZE",
-            description="analyze_* produce inferencias derivadas (N2-INF)",
+            description="analyze_* produce inferencias derivadas (N2-INF) - prioridad alta",
             triggers=("analyze", "analysis"),
             anti_triggers=("validate", "check"),
             target_level="N2-INF",
             target_epistemology="DETERMINISTIC_LOGICAL",
-            priority=50,
+            priority=58,  # Aumentar prioridad para dominar sobre N1_001_EXTRACT en casos ambiguos
         ),
         Rule(
             rule_id="N2_005_IDENTIFY",
@@ -471,15 +485,6 @@ CANONICAL_RULEBOOK = Rulebook(
             priority=35,
         ),
         Rule(
-            rule_id="INFRA_004_PRIVATE_HELPER",
-            description="Métodos privados que retornan tipos simples son helpers (INFRASTRUCTURE)",
-            triggers=("name:_",),
-            anti_triggers=("validate", "check", "compute", "infer", "analyze", "generate", "build", "create"),
-            target_level="INFRASTRUCTURE",
-            target_epistemology="NONE",
-            priority=20,
-        ),
-        Rule(
             rule_id="N2_011_RUN_EXECUTE",
             description="run_*/execute_* ejecuta lógica derivada (N2-INF)",
             triggers=("run", "execute", "process"),
@@ -514,6 +519,25 @@ CANONICAL_RULEBOOK = Rulebook(
             target_level="N1-EMP",
             target_epistemology="POSITIVIST_EMPIRICAL",
             priority=10,
+        ),
+        # ─── REGLAS CATCH-ALL (prioridad mínima) ───
+        Rule(
+            rule_id="INFRA_999_RETURN_NONE",
+            description="Métodos con return None/vacío son side-effects → INFRASTRUCTURE (§ 2.3 PASO 6)",
+            triggers=("return_type:none", "return_type:noreturn", "return_type:"),
+            anti_triggers=(),
+            target_level="INFRASTRUCTURE",
+            target_epistemology="NONE",
+            priority=5,
+        ),
+        Rule(
+            rule_id="N2_999_DEFAULT_CONSERVATIVE",
+            description="Default conservador: cualquier método con return type → N2-INF (§ 2.3 PASO 6)",
+            triggers=("name:",),  # Match cualquier método (todos tienen nombre)
+            anti_triggers=(),
+            target_level="N2-INF",
+            target_epistemology="DETERMINISTIC_LOGICAL",
+            priority=1,  # Prioridad mínima - solo aplica si ninguna otra regla ganó
         ),
     ),
 )
@@ -814,7 +838,7 @@ def map_level_to_output(level: str) -> tuple[str, str, str]:
 
 
 def extract_veto_conditions(level: str, docstring: str, method_name: str) -> tuple[VetoCondition, ...] | None:
-    """Extrae condiciones de veto SOLO si hay señales explícitas en docstring."""
+    """Extrae condiciones de veto con plantilla por defecto según § 5.3."""
     if level != "N3-AUD":
         return None
 
@@ -840,9 +864,15 @@ def extract_veto_conditions(level: str, docstring: str, method_name: str) -> tup
                 source_signal=f"docstring_contains:{','.join(matched)}",
             ))
 
-    # Si es N3-AUD pero NO hay señales de veto → retornar None (invariante fallará en construcción)
+    # § 5.3 PLANTILLA POR DEFECTO: Si no hay señales, usar veto genérico
     if not conditions:
-        return None
+        conditions.append(VetoCondition(
+            trigger="return_value indicates failure",
+            action="reduce_confidence",
+            scope="global",
+            confidence_multiplier=0.5,
+            source_signal="default_template_per_spec_5.3",
+        ))
 
     return tuple(conditions)
 
@@ -890,6 +920,17 @@ def infer_contract_compatibility(
 
     if epistemology == "BAYESIAN_PROBABILISTIC":
         compat["TYPE_B"] = True
+
+    # § 4.4 V4.1: Prevención de huérfanos - asignar contrato por defecto según nivel
+    if level != "INFRASTRUCTURE" and not any(compat.values()):
+        if level == "N4-SYN":
+            compat["TYPE_A"] = True  # Síntesis narrativa → semántico
+        elif level == "N1-EMP":
+            compat["TYPE_A"] = True  # Extracción → semántico
+        elif level == "N3-AUD":
+            compat["TYPE_E"] = True  # Auditoría → lógico
+        else:  # N2-INF
+            compat["TYPE_E"] = True  # Inferencia genérica → lógico
 
     return compat
 
@@ -1100,14 +1141,7 @@ def enrich_inventory(
             current_level = decision.level
             current_epistemology = decision.epistemology
 
-            if current_level == "N3-AUD" and veto_conditions is None:
-                fatal(
-                    "N3_MISSING_VETO",
-                    "N3-AUD method lacks explicit veto conditions",
-                    method=method_name,
-                    class_name=class_name,
-                    docstring=_norm(method.get("docstring")),
-                )
+            # Ya no es necesario validar aquí - extract_veto_conditions siempre retorna veto para N3-AUD (§ 5.3)
 
             # Mapear nivel a outputs
             output_type, fusion_behavior, phase_assignment = map_level_to_output(current_level)
@@ -1116,7 +1150,7 @@ def enrich_inventory(
             requires = tuple(sorted(LEVEL_REQUIRED_INPUTS.get(current_level, frozenset())))
             produces = tuple(sorted(LEVEL_REQUIRED_OUTPUTS.get(current_level, frozenset())))
 
-            # Contract compatibility
+            # Contract compatibility (con prevención de huérfanos incorporada)
             blob = _compute_blob(method_name, method)
             contract_compat = infer_contract_compatibility(
                 blob,
@@ -1125,16 +1159,8 @@ def enrich_inventory(
                 class_name=class_name,
                 file_path=file_path,
             )
-            
-            if current_level != "INFRASTRUCTURE" and not any(contract_compat.values()):
-                fatal(
-                    "ORPHAN_METHOD",
-                    "Non-INFRASTRUCTURE method MUST map to at least one contract type",
-                    method=method_name,
-                    class_name=class_name,
-                    level=current_level,
-                    blob=blob,
-                )
+
+            # Ya no es necesario validar - infer_contract_compatibility previene huérfanos (§ 4.4 V4.1)
 
             # Añadir decision DESPUÉS de posibles degradaciones
             method_decisions.append(decision)
