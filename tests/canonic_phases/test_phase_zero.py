@@ -19,7 +19,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from canonic_phases.Phase_zero.determinism import (
+from canonic_phases.Phase_zero.phase0_20_02_determinism import (
     ALL_SEEDS,
     MANDATORY_SEEDS,
     OPTIONAL_SEEDS,
@@ -28,13 +28,13 @@ from canonic_phases.Phase_zero.determinism import (
     derive_seed_from_string,
     validate_seed_application,
 )
-from canonic_phases.Phase_zero.exit_gates import (
+from canonic_phases.Phase_zero.phase0_50_01_exit_gates import (
     check_all_gates,
     check_bootstrap_gate,
     check_determinism_gate,
     check_input_verification_gate,
 )
-from canonic_phases.Phase_zero.runtime_config import RuntimeConfig
+from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig
 
 
 # ============================================================================

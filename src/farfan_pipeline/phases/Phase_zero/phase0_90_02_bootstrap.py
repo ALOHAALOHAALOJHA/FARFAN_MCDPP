@@ -8,11 +8,16 @@ Implements the complete initialization sequence with:
 5. Orchestrator assembly
 
 All initialization is deterministic and observable.
+
+RESOURCE ENFORCEMENT (Phase Zero Stability):
+    When ENFORCE_RESOURCES=true, bootstrapping runs under hard kernel limits
+    via resource.setrlimit(). This provides OOM protection at the OS level.
 """
 
 from __future__ import annotations
 
 import json
+import os
 import time
 from collections import OrderedDict
 from dataclasses import dataclass, field
@@ -21,7 +26,23 @@ from typing import Any
 
 import structlog
 
-from canonic_phases.Phase_zero.paths import CONFIG_DIR, DATA_DIR
+# Resource enforcement integration
+try:
+    from .resource_controller import (
+        ResourceController,
+        ResourceLimits,
+        ResourceExhausted,
+        PSUTIL_AVAILABLE,
+    )
+    ENFORCEMENT_AVAILABLE = True
+except ImportError:
+    ENFORCEMENT_AVAILABLE = False
+    ResourceController = None  # type: ignore[misc, assignment]
+    ResourceLimits = None  # type: ignore[misc, assignment]
+    ResourceExhausted = Exception  # type: ignore[misc, assignment]
+    PSUTIL_AVAILABLE = False
+
+from canonic_phases.Phase_zero.phase0_10_00_paths import CONFIG_DIR, DATA_DIR
 from orchestration.factory import CanonicalQuestionnaire
 from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
 from orchestration.class_registry import build_class_registry
@@ -986,4 +1007,157 @@ class WiringBootstrap:
 __all__ = [
     'WiringComponents',
     'WiringBootstrap',
+    'EnforcedBootstrap',
+    'ENFORCEMENT_AVAILABLE',
 ]
+
+
+class EnforcedBootstrap:
+    """Bootstrap wrapper with hard kernel-level resource enforcement.
+    
+    This is the RECOMMENDED way to run Phase Zero in production.
+    It wraps WiringBootstrap with resource.setrlimit() enforcement.
+    
+    USAGE:
+        # Via environment variable
+        os.environ['ENFORCE_RESOURCES'] = 'true'
+        bootstrap = EnforcedBootstrap.from_env(...)
+        components = bootstrap.execute()
+        
+        # Programmatic with custom limits
+        limits = ResourceLimits(memory_mb=4096, cpu_seconds=600)
+        bootstrap = EnforcedBootstrap(wiring_bootstrap, limits=limits)
+        components = bootstrap.execute()
+    
+    BEHAVIOR:
+        - Pre-flight checks verify sufficient memory/disk before starting
+        - Kernel limits prevent OOM kills (process gets SIGKILL if exceeded)
+        - Memory watchdog provides early warning logs
+        - All limits are restored after execution completes
+    """
+    
+    def __init__(
+        self,
+        wiring_bootstrap: WiringBootstrap,
+        limits: "ResourceLimits | None" = None,
+        enforce: bool = True,
+    ) -> None:
+        """Initialize enforced bootstrap.
+        
+        Args:
+            wiring_bootstrap: The underlying WiringBootstrap instance
+            limits: Resource limits (defaults to ResourceLimits())
+            enforce: Whether to actually enforce limits (for testing)
+        """
+        self.wiring_bootstrap = wiring_bootstrap
+        self.enforce = enforce and ENFORCEMENT_AVAILABLE
+        self._controller: "ResourceController | None" = None
+        self._metrics: dict[str, Any] = {}
+        
+        if self.enforce and ResourceLimits is not None:
+            self._limits = limits or ResourceLimits()
+            self._controller = ResourceController(self._limits)
+        else:
+            self._limits = None
+            if enforce and not ENFORCEMENT_AVAILABLE:
+                logger.warning(
+                    "Resource enforcement requested but not available. "
+                    "Install psutil and ensure resource_controller.py exists."
+                )
+    
+    @classmethod
+    def from_env(
+        cls,
+        questionnaire_path: str | Path,
+        questionnaire_hash: str,
+        executor_config_path: str | Path,
+        calibration_profile: str,
+        abort_on_insufficient: bool,
+        resource_limits_dict: dict[str, int] | None = None,
+        flags: "WiringFeatureFlags | None" = None,
+    ) -> "EnforcedBootstrap":
+        """Create EnforcedBootstrap from environment variables.
+        
+        Reads ENFORCE_RESOURCES and RESOURCE_* env vars.
+        
+        Args:
+            questionnaire_path: Path to questionnaire monolith JSON
+            questionnaire_hash: Expected SHA-256 hash
+            executor_config_path: Path to executor configuration
+            calibration_profile: Calibration profile name
+            abort_on_insufficient: Flag to abort on insufficient data
+            resource_limits_dict: Optional resource limits override
+            flags: Feature flags (defaults to environment)
+            
+        Returns:
+            Configured EnforcedBootstrap instance
+        """
+        enforce = os.getenv("ENFORCE_RESOURCES", "false").lower() in ("true", "1", "yes")
+        
+        # Parse resource limits from environment
+        limits = None
+        if ENFORCEMENT_AVAILABLE and ResourceLimits is not None:
+            limits = ResourceLimits(
+                memory_mb=int(os.getenv("RESOURCE_MEMORY_MB", "2048")),
+                cpu_seconds=int(os.getenv("RESOURCE_CPU_SECONDS", "300")),
+                disk_mb=int(os.getenv("RESOURCE_DISK_MB", "500")),
+                file_descriptors=int(os.getenv("RESOURCE_FILE_DESCRIPTORS", "1024")),
+            )
+        
+        wiring_bootstrap = WiringBootstrap(
+            questionnaire_path=questionnaire_path,
+            questionnaire_hash=questionnaire_hash,
+            executor_config_path=executor_config_path,
+            calibration_profile=calibration_profile,
+            abort_on_insufficient=abort_on_insufficient,
+            resource_limits=resource_limits_dict or {},
+            flags=flags,
+        )
+        
+        return cls(wiring_bootstrap, limits=limits, enforce=enforce)
+    
+    def execute(self) -> WiringComponents:
+        """Execute bootstrap with optional resource enforcement.
+        
+        Returns:
+            WiringComponents with all initialized modules
+            
+        Raises:
+            ResourceExhausted: If pre-flight checks fail
+            WiringInitializationError: If bootstrap fails
+        """
+        if not self.enforce or self._controller is None:
+            logger.info("Executing bootstrap WITHOUT resource enforcement")
+            return self.wiring_bootstrap.bootstrap()
+        
+        logger.info(
+            "Executing bootstrap WITH resource enforcement: "
+            "memory=%dMB, cpu=%ds",
+            self._limits.memory_mb if self._limits else 0,
+            self._limits.cpu_seconds if self._limits else 0,
+        )
+        
+        try:
+            with self._controller.enforced_execution() as ctx:
+                components = self.wiring_bootstrap.bootstrap()
+                
+                # Capture enforcement metrics
+                self._metrics = ctx.get_usage_stats()
+                self._metrics["enforcement_metrics"] = ctx.get_metrics().to_dict()
+                
+                # Add metrics to components for observability
+                components.init_hashes["resource_enforcement"] = "active"
+                
+                return components
+                
+        except ResourceExhausted as e:
+            logger.error(
+                "Resource pre-flight check failed: %s (type=%s)",
+                e,
+                e.resource_type,
+            )
+            raise
+    
+    def get_enforcement_metrics(self) -> dict[str, Any]:
+        """Get metrics from the last enforced execution."""
+        return self._metrics

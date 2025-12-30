@@ -24,8 +24,8 @@ PROJECT_ROOT = Path(__file__).parent
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 # Import REAL phase functions
-from canonic_phases.Phase_zero.boot_checks import run_boot_checks
-from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
+from canonic_phases.Phase_zero.phase0_50_00_boot_checks import run_boot_checks
+from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
 from canonic_phases.Phase_one import execute_phase_1_with_full_contract, CanonicalInput
 from canonic_phases.Phase_three.scoring import transform_micro_result_to_scored
 from canonic_phases.Phase_eight.recommendation_engine import RecommendationEngine

@@ -824,7 +824,7 @@ class SignalIrrigationAuditor:
 
 def main() -> None:
     """Main entry point for audit execution."""
-    from canonic_phases.Phase_zero.paths import PROJECT_ROOT
+    from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
     
     output_dir = PROJECT_ROOT / "artifacts" / "audit_reports"
     output_dir.mkdir(parents=True, exist_ok=True)

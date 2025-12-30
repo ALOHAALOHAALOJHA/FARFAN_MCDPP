@@ -36,13 +36,13 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 # Phase 0 imports
-from canonic_phases.Phase_zero.determinism import (
+from canonic_phases.Phase_zero.phase0_20_02_determinism import (
     apply_seeds_to_rngs,
     derive_seed_from_string,
 )
-from canonic_phases.Phase_zero.exit_gates import check_all_gates
-from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
-from canonic_phases.Phase_zero.verified_pipeline_runner import VerifiedPipelineRunner
+from canonic_phases.Phase_zero.phase0_50_01_exit_gates import check_all_gates
+from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from canonic_phases.Phase_zero.phase0_90_01_verified_pipeline_runner import VerifiedPipelineRunner
 
 
 # ============================================================================
@@ -295,7 +295,7 @@ def test_dura_lex_09_gate_results_independent_of_check_order():
         - Each gate checks independent criteria
         - Gate results don't depend on previous gates (except fail-fast)
     """
-    from canonic_phases.Phase_zero.exit_gates import (
+    from canonic_phases.Phase_zero.phase0_50_01_exit_gates import (
         check_bootstrap_gate,
         check_determinism_gate,
     )

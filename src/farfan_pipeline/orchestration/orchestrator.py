@@ -32,10 +32,10 @@ from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
 if TYPE_CHECKING:
     from orchestration.factory import CanonicalQuestionnaire
 
-from canonic_phases.Phase_zero.paths import PROJECT_ROOT
-from canonic_phases.Phase_zero.paths import safe_join
-from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
-from canonic_phases.Phase_zero.exit_gates import GateResult
+from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+from canonic_phases.Phase_zero.phase0_10_00_paths import safe_join
+from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from canonic_phases.Phase_zero.phase0_50_01_exit_gates import GateResult
 
 # Define RULES_DIR locally (not exported from paths)
 RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"
@@ -123,7 +123,7 @@ class Phase0ValidationResult:
         validation_time: ISO 8601 timestamp of when validation occurred
     
     Example:
-        >>> from canonic_phases.Phase_zero.exit_gates import check_all_gates
+        >>> from canonic_phases.Phase_zero.phase0_50_01_exit_gates import check_all_gates
         >>> all_passed, gates = check_all_gates(runner)
         >>> validation = Phase0ValidationResult(
         ...     all_passed=all_passed,

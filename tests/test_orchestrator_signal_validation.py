@@ -16,7 +16,7 @@ from typing import Any
 from unittest.mock import Mock, MagicMock, patch
 import pytest
 
-from canonic_phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
+from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
 from canonic_phases.Phase_two.executor_config import ExecutorConfig
 
 
