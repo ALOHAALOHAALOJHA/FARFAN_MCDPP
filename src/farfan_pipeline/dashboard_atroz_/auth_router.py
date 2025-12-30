@@ -6,6 +6,7 @@ with the AdminAuthenticator from auth_admin.py.
 
 from __future__ import annotations
 
+import os
 import structlog
 from fastapi import APIRouter, Request, Response
 from fastapi.responses import JSONResponse
@@ -97,11 +98,13 @@ async def login(credentials: LoginRequest, request: Request) -> Response:
     )
     
     # Set session cookie
+    # Use secure cookies in production (HTTPS)
+    is_production = os.getenv("FARFAN_ENV", "development").lower() == "production"
     response.set_cookie(
         key="atroz_session",
         value=session_id,
         httponly=True,
-        secure=False,  # Set to True in production with HTTPS
+        secure=is_production,
         samesite="lax",
         max_age=3600  # 1 hour
     )
@@ -128,8 +131,10 @@ async def logout(request: Request) -> Response:
         session_id = request.headers.get("X-Session-ID")
     
     if session_id:
+        session = auth.get_session(session_id)
+        username = session.username if session else "unknown"
         auth.logout(session_id)
-        logger.info("logout_successful", session_id=session_id[:8] + "...")
+        logger.info("logout_successful", username=username)
     
     response = JSONResponse(
         status_code=200,

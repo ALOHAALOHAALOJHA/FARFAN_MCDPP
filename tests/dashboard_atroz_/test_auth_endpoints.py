@@ -12,14 +12,25 @@ def client():
     return TestClient(app)
 
 
-def test_login_success(client):
+@pytest.fixture
+def test_credentials():
+    """
+    Test credentials fixture.
+    
+    Note: Using default admin credentials for testing.
+    In production, these should be changed or mocked.
+    """
+    return {
+        "username": "admin",
+        "password": "atroz_admin_2024"
+    }
+
+
+def test_login_success(client, test_credentials):
     """Test successful login with default credentials."""
     response = client.post(
         "/auth/login",
-        json={
-            "username": "admin",
-            "password": "atroz_admin_2024"
-        }
+        json=test_credentials
     )
     
     assert response.status_code == 200
@@ -59,15 +70,12 @@ def test_login_nonexistent_user(client):
     assert response.status_code == 401
 
 
-def test_logout(client):
+def test_logout(client, test_credentials):
     """Test logout endpoint."""
     # First login
     login_response = client.post(
         "/auth/login",
-        json={
-            "username": "admin",
-            "password": "atroz_admin_2024"
-        }
+        json=test_credentials
     )
     assert login_response.status_code == 200
     
@@ -78,15 +86,12 @@ def test_logout(client):
     assert data["success"] is True
 
 
-def test_session_validation_valid(client):
+def test_session_validation_valid(client, test_credentials):
     """Test session validation with valid session."""
     # First login
     login_response = client.post(
         "/auth/login",
-        json={
-            "username": "admin",
-            "password": "atroz_admin_2024"
-        }
+        json=test_credentials
     )
     assert login_response.status_code == 200
     session_id = login_response.json()["session_id"]
