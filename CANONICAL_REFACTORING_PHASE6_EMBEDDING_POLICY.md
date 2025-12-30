@@ -136,7 +136,7 @@ Per canonical refactoring guidance:
 - ✅ No `open(...questionnaire...)` or runtime JSON dependency for constants
 - ✅ Policy areas in canonical module (canonical_notation, not duplicated)
 - ✅ Dimensions in canonical module (canonical_notation, not duplicated)
-- ✅ Method-specific constants appropriately scoped
+- ✅ -specific constants appropriately scoped
 - ✅ Clean separation of concerns maintained
 - ✅ Python syntax validated (py_compile passed)
 - ✅ High coding standards maintained (TypedDict, Protocol, dataclasses)
