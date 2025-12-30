@@ -92,7 +92,8 @@
           211,
           241,
           271
-        ]
+        ],
+        "meta_position_global": 1
       },
       "D1.Q2": {
         "code": "D1.Q2",
@@ -111,7 +112,8 @@
           212,
           242,
           272
-        ]
+        ],
+        "meta_position_global": 2
       },
       "D1.Q3": {
         "code": "D1.Q3",
@@ -130,7 +132,8 @@
           213,
           243,
           273
-        ]
+        ],
+        "meta_position_global": 3
       },
       "D1.Q4": {
         "code": "D1.Q4",
@@ -149,7 +152,8 @@
           214,
           244,
           274
-        ]
+        ],
+        "meta_position_global": 4
       },
       "D1.Q5": {
         "code": "D1.Q5",
@@ -168,7 +172,8 @@
           215,
           245,
           275
-        ]
+        ],
+        "meta_position_global": 5
       },
       "D2.Q1": {
         "code": "D2.Q1",
@@ -177,17 +182,18 @@
         "text": "¿Las actividades del sector aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
         "meta_index": 1,
         "corresponds_to_micro_questions": [
-          1,
-          31,
-          61,
-          91,
-          121,
-          151,
-          181,
-          211,
-          241,
-          271
-        ]
+          6,
+          36,
+          66,
+          96,
+          126,
+          156,
+          186,
+          216,
+          246,
+          276
+        ],
+        "meta_position_global": 6
       },
       "D2.Q2": {
         "code": "D2.Q2",
@@ -196,17 +202,18 @@
         "text": "¿La descripción de actividades especifica el instrumento (\"mediante...\", \"a través de...\", \"con...\"), la población o zona objetivo, y explica cómo la actividad contribuye al resultado esperado (\"para...\", \"porque...\", \"con el fin de...\")?",
         "meta_index": 2,
         "corresponds_to_micro_questions": [
-          2,
-          32,
-          62,
-          92,
-          122,
-          152,
-          182,
-          212,
-          242,
-          272
-        ]
+          7,
+          37,
+          67,
+          97,
+          127,
+          157,
+          187,
+          217,
+          247,
+          277
+        ],
+        "meta_position_global": 7
       },
       "D2.Q3": {
         "code": "D2.Q3",
@@ -215,17 +222,18 @@
         "text": "¿Las actividades propuestas se vinculan explícitamente con los problemas, causas, brechas o déficits identificados en el diagnóstico del sector (mediante nexos como \"para atender\", \"debido a\", \"con el fin de\", \"porque\")?",
         "meta_index": 3,
         "corresponds_to_micro_questions": [
-          3,
-          33,
-          63,
-          93,
-          123,
-          153,
-          183,
-          213,
-          243,
-          273
-        ]
+          8,
+          38,
+          68,
+          98,
+          128,
+          158,
+          188,
+          218,
+          248,
+          278
+        ],
+        "meta_position_global": 8
       },
       "D2.Q4": {
         "code": "D2.Q4",
@@ -234,17 +242,18 @@
         "text": "¿El plan identifica posibles obstáculos, riesgos o barreras en la implementación de las actividades del sector y propone medidas explícitas de mitigación o estrategias para superarlos?",
         "meta_index": 4,
         "corresponds_to_micro_questions": [
-          4,
-          34,
-          64,
-          94,
-          124,
-          154,
-          184,
-          214,
-          244,
-          274
-        ]
+          9,
+          39,
+          69,
+          99,
+          129,
+          159,
+          189,
+          219,
+          249,
+          279
+        ],
+        "meta_position_global": 9
       },
       "D2.Q5": {
         "code": "D2.Q5",
@@ -253,17 +262,18 @@
         "text": "¿El plan describe explícitamente cómo las actividades del sector se complementan, refuerzan mutuamente o siguen una secuencia lógica, evidenciando una estrategia articulada (se debe buscar términos como \"complementariedad\", \"sinergia\", \"secuencia\", \"articulación\")?",
         "meta_index": 5,
         "corresponds_to_micro_questions": [
-          5,
-          35,
-          65,
-          95,
-          125,
-          155,
-          185,
-          215,
-          245,
-          275
-        ]
+          10,
+          40,
+          70,
+          100,
+          130,
+          160,
+          190,
+          220,
+          250,
+          280
+        ],
+        "meta_position_global": 10
       },
       "D3.Q1": {
         "code": "D3.Q1",
@@ -272,17 +282,18 @@
         "text": "¿Los indicadores de producto del sector (unidades entregadas, personas atendidas, infraestructura construida, servicios prestados) incluyen línea base, meta cuantitativa y fuente de verificación?",
         "meta_index": 1,
         "corresponds_to_micro_questions": [
-          1,
-          31,
-          61,
-          91,
-          121,
-          151,
-          181,
-          211,
-          241,
-          271
-        ]
+          11,
+          41,
+          71,
+          101,
+          131,
+          161,
+          191,
+          221,
+          251,
+          281
+        ],
+        "meta_position_global": 11
       },
       "D3.Q2": {
         "code": "D3.Q2",
@@ -291,17 +302,18 @@
         "text": "¿Las metas de productos guardan relación con la magnitud del problema o déficit identificado en el diagnóstico, y se especifica la priorización (zonas, población), intensidad (frecuencia, duración) o cobertura de la intervención?",
         "meta_index": 2,
         "corresponds_to_micro_questions": [
-          2,
-          32,
-          62,
-          92,
-          122,
-          152,
-          182,
-          212,
-          242,
-          272
-        ]
+          12,
+          42,
+          72,
+          102,
+          132,
+          162,
+          192,
+          222,
+          252,
+          282
+        ],
+        "meta_position_global": 12
       },
       "D3.Q3": {
         "code": "D3.Q3",
@@ -310,17 +322,18 @@
         "text": "¿Los productos están vinculados a códigos presupuestales (BPIN, PPI, SGP, recursos específicos) y a entidades responsables identificadas (secretarías, oficinas, dependencias)?",
         "meta_index": 3,
         "corresponds_to_micro_questions": [
-          3,
-          33,
-          63,
-          93,
-          123,
-          153,
-          183,
-          213,
-          243,
-          273
-        ]
+          13,
+          43,
+          73,
+          103,
+          133,
+          163,
+          193,
+          223,
+          253,
+          283
+        ],
+        "meta_position_global": 13
       },
       "D3.Q4": {
         "code": "D3.Q4",
@@ -329,17 +342,18 @@
         "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. \"un taller de 8 horas\", \"una campaña de sensibilización\") y la magnitud de la meta del producto asociado, considerando plazos y recursos disponibles? Se debe evaluar si el plan reconoce cuando los resultados requieren intervenciones sostenidas en el tiempo, no eventos puntuales.",
         "meta_index": 4,
         "corresponds_to_micro_questions": [
-          4,
-          34,
-          64,
-          94,
-          124,
-          154,
-          184,
-          214,
-          244,
-          274
-        ]
+          14,
+          44,
+          74,
+          104,
+          134,
+          164,
+          194,
+          224,
+          254,
+          284
+        ],
+        "meta_position_global": 14
       },
       "D3.Q5": {
         "code": "D3.Q5",
@@ -348,17 +362,18 @@
         "text": "¿El plan describe cómo los productos del sector generan o contribuyen a los resultados esperados, explicando esta conexión o ruta (se debe buscar descripciones del tipo \"al lograr X se genera Y porque...\", \"esto permite...\", \"esto conduce a...\")?",
         "meta_index": 5,
         "corresponds_to_micro_questions": [
-          5,
-          35,
-          65,
-          95,
-          125,
-          155,
-          185,
-          215,
-          245,
-          275
-        ]
+          15,
+          45,
+          75,
+          105,
+          135,
+          165,
+          195,
+          225,
+          255,
+          285
+        ],
+        "meta_position_global": 15
       },
       "D4.Q1": {
         "code": "D4.Q1",
@@ -367,17 +382,18 @@
         "text": "¿Los indicadores de resultado del sector (cambios en condiciones, comportamientos, o situaciones de la población) están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
         "meta_index": 1,
         "corresponds_to_micro_questions": [
-          1,
-          31,
-          61,
-          91,
-          121,
-          151,
-          181,
-          211,
-          241,
-          271
-        ]
+          16,
+          46,
+          76,
+          106,
+          136,
+          166,
+          196,
+          226,
+          256,
+          286
+        ],
+        "meta_position_global": 16
       },
       "D4.Q2": {
         "code": "D4.Q2",
@@ -386,17 +402,18 @@
         "text": "¿El plan describe la ruta o secuencia que lleva a los resultados del sector, mencionando condiciones necesarias para que funcione (se debe buscar términos como \"supuestos\", \"si...\", \"siempre que...\", \"condiciones habilitantes\", \"requiere que...\")?",
         "meta_index": 2,
         "corresponds_to_micro_questions": [
-          2,
-          32,
-          62,
-          92,
-          122,
-          152,
-          182,
-          212,
-          242,
-          272
-        ]
+          17,
+          47,
+          77,
+          107,
+          137,
+          167,
+          197,
+          227,
+          257,
+          287
+        ],
+        "meta_position_global": 17
       },
       "D4.Q3": {
         "code": "D4.Q3",
@@ -405,17 +422,18 @@
         "text": "¿La ambición de las metas de resultado se justifica en función de recursos asignados, capacidad institucional, articulación con otros niveles de gobierno, o se compara con casos o municipios similares?",
         "meta_index": 3,
         "corresponds_to_micro_questions": [
-          3,
-          33,
-          63,
-          93,
-          123,
-          153,
-          183,
-          213,
-          243,
-          273
-        ]
+          18,
+          48,
+          78,
+          108,
+          138,
+          168,
+          198,
+          228,
+          258,
+          288
+        ],
+        "meta_position_global": 18
       },
       "D4.Q4": {
         "code": "D4.Q4",
@@ -424,17 +442,18 @@
         "text": "¿Los resultados propuestos para el sector atienden o abordan directamente los problemas, déficits o necesidades priorizadas en el diagnóstico?",
         "meta_index": 4,
         "corresponds_to_micro_questions": [
-          4,
-          34,
-          64,
-          94,
-          124,
-          154,
-          184,
-          214,
-          244,
-          274
-        ]
+          19,
+          49,
+          79,
+          109,
+          139,
+          169,
+          199,
+          229,
+          259,
+          289
+        ],
+        "meta_position_global": 19
       },
       "D4.Q5": {
         "code": "D4.Q5",
@@ -443,17 +462,18 @@
         "text": "¿El plan declara la alineación de sus resultados del sector con el Plan Nacional de Desarrollo, los Objetivos de Desarrollo Sostenible, marcos normativos nacionales o políticas sectoriales relevantes?",
         "meta_index": 5,
         "corresponds_to_micro_questions": [
-          5,
-          35,
-          65,
-          95,
-          125,
-          155,
-          185,
-          215,
-          245,
-          275
-        ]
+          20,
+          50,
+          80,
+          110,
+          140,
+          170,
+          200,
+          230,
+          260,
+          290
+        ],
+        "meta_position_global": 20
       },
       "D5.Q1": {
         "code": "D5.Q1",
@@ -462,17 +482,18 @@
         "text": "¿El plan define impactos o transformaciones de largo plazo para el sector (cambios que trascienden el cuatrienio), describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como \"largo plazo\", \"más allá del cuatrienio\", \"sostenible\", \"consolidado\", \"estructural\")?",
         "meta_index": 1,
         "corresponds_to_micro_questions": [
-          1,
-          31,
-          61,
-          91,
-          121,
-          151,
-          181,
-          211,
-          241,
-          271
-        ]
+          21,
+          51,
+          81,
+          111,
+          141,
+          171,
+          201,
+          231,
+          261,
+          291
+        ],
+        "meta_position_global": 21
       },
       "D5.Q2": {
         "code": "D5.Q2",
@@ -481,17 +502,18 @@
         "text": "¿Se utilizan índices reconocidos o indicadores proxy para medir impactos del sector, justificando por qué son adecuados para capturar las transformaciones esperadas? Cuando un impacto es difícil de medir directamente, ¿se explica la validez y limitaciones del indicador utilizado?",
         "meta_index": 2,
         "corresponds_to_micro_questions": [
-          2,
-          32,
-          62,
-          92,
-          122,
-          152,
-          182,
-          212,
-          242,
-          272
-        ]
+          22,
+          52,
+          82,
+          112,
+          142,
+          172,
+          202,
+          232,
+          262,
+          292
+        ],
+        "meta_position_global": 22
       },
       "D5.Q3": {
         "code": "D5.Q3",
@@ -500,17 +522,18 @@
         "text": "¿Los impactos del sector se alinean con marcos nacionales o globales y consideran riesgos externos (crisis económicas, cambios de política nacional, eventos climáticos, dinámicas regionales) que podrían impedir o revertir los logros esperados?",
         "meta_index": 3,
         "corresponds_to_micro_questions": [
-          3,
-          33,
-          63,
-          93,
-          123,
-          153,
-          183,
-          213,
-          243,
-          273
-        ]
+          23,
+          53,
+          83,
+          113,
+          143,
+          173,
+          203,
+          233,
+          263,
+          293
+        ],
+        "meta_position_global": 23
       },
       "D5.Q4": {
         "code": "D5.Q4",
@@ -519,17 +542,18 @@
         "text": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados o contraproducentes, o reconoce explícitamente los límites de lo que el municipio puede lograr (se debe buscar términos como \"efectos no deseados\", \"limitaciones\", \"alcance limitado a...\", \"depende de...\")?",
         "meta_index": 4,
         "corresponds_to_micro_questions": [
-          4,
-          34,
-          64,
-          94,
-          124,
-          154,
-          184,
-          214,
-          244,
-          274
-        ]
+          24,
+          54,
+          84,
+          114,
+          144,
+          174,
+          204,
+          234,
+          264,
+          294
+        ],
+        "meta_position_global": 24
       },
       "D5.Q5": {
         "code": "D5.Q5",
@@ -538,17 +562,18 @@
         "text": "¿El plan describe cómo se sostendrán los impactos del sector más allá del periodo de gobierno, identificando mecanismos de institucionalización, apropiación comunitaria, fuentes de financiación continua o condiciones para que los cambios perduren (se debe buscar términos como \"sostenibilidad\", \"permanencia\", \"institucionalización\", \"apropiación\", \"continuidad\")?",
         "meta_index": 5,
         "corresponds_to_micro_questions": [
-          5,
-          35,
-          65,
-          95,
-          125,
-          155,
-          185,
-          215,
-          245,
-          275
-        ]
+          25,
+          55,
+          85,
+          115,
+          145,
+          175,
+          205,
+          235,
+          265,
+          295
+        ],
+        "meta_position_global": 25
       },
       "D6.Q1": {
         "code": "D6.Q1",
@@ -557,17 +582,18 @@
         "text": "¿El plan presenta una descripción explícita de cómo se generan los cambios en el sector (se debe buscar términos como \"teoría de cambio\", \"modelo lógico\", \"ruta de impacto\", \"cadena causal\"), preferiblemente en diagrama o matriz, que identifique causas, intervenciones, supuestos y la secuencia insumos→actividades→productos→resultados→impactos?",
         "meta_index": 1,
         "corresponds_to_micro_questions": [
-          1,
-          31,
-          61,
-          91,
-          121,
-          151,
-          181,
-          211,
-          241,
-          271
-        ]
+          26,
+          56,
+          86,
+          116,
+          146,
+          176,
+          206,
+          236,
+          266,
+          296
+        ],
+        "meta_position_global": 26
       },
       "D6.Q2": {
         "code": "D6.Q2",
@@ -576,17 +602,18 @@
         "text": "¿El plan evita saltos desproporcionados en su lógica (por ejemplo, no atribuye transformaciones mayores a actividades puntuales), reconociendo explícitamente cuando se requieren procesos sostenidos, múltiples condiciones o factores externos para lograr los cambios esperados (se debe buscar expresiones de cautela como \"requiere tiempo\", \"depende de...\", \"necesita acompañamiento prolongado\")?",
         "meta_index": 2,
         "corresponds_to_micro_questions": [
-          2,
-          32,
-          62,
-          92,
-          122,
-          152,
-          182,
-          212,
-          242,
-          272
-        ]
+          27,
+          57,
+          87,
+          117,
+          147,
+          177,
+          207,
+          237,
+          267,
+          297
+        ],
+        "meta_position_global": 27
       },
       "D6.Q3": {
         "code": "D6.Q3",
@@ -595,17 +622,18 @@
         "text": "¿El plan reconoce la complejidad del sector, identifica debilidades o incertidumbres en su estrategia, y propone mecanismos para aprender y ajustar (se debe buscar términos como \"pilotos\", \"fase de prueba\", \"evaluación\", \"ajustes\", \"articulación\", \"coordinación\", \"monitoreo adaptativo\")?",
         "meta_index": 3,
         "corresponds_to_micro_questions": [
-          3,
-          33,
-          63,
-          93,
-          123,
-          153,
-          183,
-          213,
-          243,
-          273
-        ]
+          28,
+          58,
+          88,
+          118,
+          148,
+          178,
+          208,
+          238,
+          268,
+          298
+        ],
+        "meta_position_global": 28
       },
       "D6.Q4": {
         "code": "D6.Q4",
@@ -614,17 +642,18 @@
         "text": "¿Se describe un sistema de monitoreo para el sector que incluya mecanismos de alerta temprana, retroalimentación con entidades especializadas o nivel superior, participación de población beneficiaria, y capacidad de aprendizaje para adaptar la estrategia ante desviaciones o resultados inesperados?",
         "meta_index": 4,
         "corresponds_to_micro_questions": [
-          4,
-          34,
-          64,
-          94,
-          124,
-          154,
-          184,
-          214,
-          244,
-          274
-        ]
+          29,
+          59,
+          89,
+          119,
+          149,
+          179,
+          209,
+          239,
+          269,
+          299
+        ],
+        "meta_position_global": 29
       },
       "D6.Q5": {
         "code": "D6.Q5",
@@ -633,17 +662,18 @@
         "text": "¿El plan considera el contexto municipal específico del sector (características territoriales, sociales, económicas, culturales, institucionales), reconoce grupos con necesidades diferenciadas, y explicita restricciones (territoriales, normativas, presupuestales, de capacidad) que condicionan las intervenciones?",
         "meta_index": 5,
         "corresponds_to_micro_questions": [
-          5,
-          35,
-          65,
-          95,
-          125,
-          155,
-          185,
-          215,
-          245,
-          275
-        ]
+          30,
+          60,
+          90,
+          120,
+          150,
+          180,
+          210,
+          240,
+          270,
+          300
+        ],
+        "meta_position_global": 30
       }
     }
   },
