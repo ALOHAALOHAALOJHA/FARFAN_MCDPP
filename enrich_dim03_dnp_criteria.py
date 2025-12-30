@@ -411,7 +411,6 @@ def main():
     print("-" * 80)
     
     # Rebuild blocks with enriched questions
-    question_index = 0
     for key, value in monolith['blocks'].items():
         if isinstance(value, list):
             for i, item in enumerate(value):
