@@ -1,2264 +1,1728 @@
-# POLÍTICA GLOBAL DE NOMENCLATURA JERÁRQUICA F.A.R.F.A.N
+# F.A.R.F.A.N GLOBAL NOMENCLATURE ENFORCEMENT ARCHITECTURE (GNEA)
 
-**Documento:** FPN-GLOBAL-001  
-**Versión:** 1.0.0  
-**Fecha:** 2025-12-21  
-**Estado:** AUTORITATIVO  
-**Alcance:** Todos los artefactos del F.A.R.F.A.N Pipeline
-
----
-
-## TABLA DE CONTENIDOS
-
-1. [Propósito y Alcance](#1-propósito-y-alcance)
-2. [Principios Universales](#2-principios-universales)
-3. [Arquitectura de Nomenclatura](#3-arquitectura-de-nomenclatura)
-4. [Políticas por Categoría de Artefacto](#4-políticas-por-categoría-de-artefacto)
-5. [Jerarquía de Directorios](#5-jerarquía-de-directorios)
-6. [Políticas de Almacenamiento](#6-políticas-de-almacenamiento)
-7. [Sistema de Etiquetado](#7-sistema-de-etiquetado)
-8. [Artefactos Fuera de Fases Canónicas](#8-artefactos-fuera-de-fases-canónicas)
-9. [Validación y Compliance](#9-validación-y-compliance)
-10. [Mantenimiento y Gobernanza](#10-mantenimiento-y-gobernanza)
+**Document:** FPN-GNEA-001  
+**Version:** 2.0.0  
+**Date:** 2025-12-30  
+**Status:** CANONICAL  
+**Classification:** ENFORCEMENT-GRADE  
+**Compliance Level:** MANDATORY WITH AUTOMATED ENFORCEMENT
 
 ---
 
-## 1. PROPÓSITO Y ALCANCE
+## EXECUTIVE MANDATE
 
-### 1.1 Objetivos Estratégicos
-
-Esta política establece el **sistema universal de nomenclatura, organización y almacenamiento** para todos los artefactos del ecosistema F.A.R.F.A.N, garantizando:
-
-- **Trazabilidad Total:** Cada artefacto debe autodescribir su propósito, origen, fase y criticidad
-- **Higiene Extrema:** Zero tolerancia a archivos huérfanos, duplicados o mal clasificados
-- **Escalabilidad Determinística:** Sistema preparado para 10x crecimiento sin refactorización
-- **Auditoría Continua:** Compliance automático verificable en CI/CD
-- **Onboarding Instantáneo:** Cualquier ingeniero debe entender la estructura en <10 minutos
-
-### 1.2 Alcance Total
-
-**INCLUYE:**
-- ✅ Código fuente Python (fases 0-9, infraestructura, utilidades)
-- ✅ Contratos JSON (executor_contracts, templates, schemas)
-- ✅ Documentación (técnica, auditorial, executiva)
-- ✅ Scripts auxiliares (validación, transformación, deployment)
-- ✅ Artefactos de ejecución (logs, traces, reports, metrics)
-- ✅ Configuración (YAML, TOML, INI, ENV)
-- ✅ Tests (unitarios, integración, end-to-end)
-- ✅ Assets multimedia (diagramas, visualizaciones, dashboards)
-
-**EXCLUYE:**
-- ❌ Entornos virtuales (`*-env/`, `venv/`)
-- ❌ Cachés de build (`.pytest_cache/`, `__pycache__/`)
-- ❌ Datos sensibles o credenciales
-- ❌ Dependencias externas (`node_modules/`, `.venv/`)
-
-### 1.3 Autoridad y Precedencia
-
-Este documento es **LA ÚNICA FUENTE AUTORITATIVA** para nomenclatura global. En caso de conflicto:
-
-1. **FPN-GLOBAL-001** (este documento) tiene precedencia absoluta
-2. Políticas específicas de fase (ej. FPN-P2-001) extienden pero NO contradicen esta política
-3. Cualquier desviación requiere:
-   - Aprobación del comité técnico
-   - Justificación documentada en ADR (Architecture Decision Record)
-   - Actualización formal con versión semántica incrementada
+This document supersedes FPN-GLOBAL-001 and establishes the **Global Nomenclature Enforcement Architecture (GNEA)** - a zero-tolerance, machine-enforced naming and organization system for the F.A.R.F. A.N pipeline ecosystem. Non-compliance will result in automatic rejection at multiple enforcement layers.
 
 ---
 
-## 2. PRINCIPIOS UNIVERSALES
+## TABLE OF CONTENTS
 
-### 2.1 Axioma de Autodescripción
-
-```
-AXIOMA: El nombre de cualquier artefacto debe comunicar CLARAMENTE:
-  - Qué es (tipo)
-  - Para qué sirve (propósito)
-  - Dónde vive (jerarquía)
-  - Cuándo se usa (fase/ciclo de vida)
-```
-
-**Ejemplos de cumplimiento:**
-- ✅ `phase2_60_02_arg_router.py` → Fase 2, etapa 60, orden 02, enruta argumentos
-- ✅ `Q005_contract_validation_report.json` → Reporte de validación del contrato Q005
-- ✅ `AUDIT_EXECUTOR_CONTRACTS_V3_Q001_Q020_EXECUTIVE_SUMMARY.md` → Resumen ejecutivo de auditoría de contratos Q001-Q020 versión 3
-
-**Ejemplos de violación:**
-- ❌ `temp.py` → Sin contexto
-- ❌ `utils.json` → Demasiado genérico
-- ❌ `fix_v2_final_FINAL.py` → Caótico, no versionado
-
-### 2.2 Principio de Inmutabilidad de Identidad
-
-Una vez asignado un **identificador canónico** (número de fase, etapa, orden, código de contrato, etc.), **NUNCA SE REASIGNA**:
-
-- Los números son permanentes en logs, trazas, métricas
-- La deprecación NO libera el número para reutilización
-- Se mantiene mapping histórico en `MIGRATION_MAP.json`
-
-### 2.3 Principio de Minimalismo Radical
-
-```
-REGLA: Ningún artefacto debe existir sin propósito activo documentado.
-```
-
-**Acciones obligatorias:**
-- Archivos experimentales → `experimental/` con fecha de expiración
-- Código legacy → `archive/` con timestamp
-- Duplicados → Eliminar sin excepción
-- Archivos sin uso en 90 días → Auditoría de relevancia
-
-### 2.4 Principio de Jerarquía Determinística
-
-La estructura de directorios refleja la **arquitectura del sistema**, no preferencias personales:
-
-```
-BUENA JERARQUÍA: src/ → farfan_pipeline/ → phases/ → Phase_two/ → phase2_*.py
-MALA JERARQUÍA: my_code/ → stuff/ → phase2_v3/ → file.py
-```
-
-### 2.5 Principio de Compliance por Defecto
-
-Todos los artefactos nuevos deben:
-- Pasar validación automática antes de commit (pre-commit hooks)
-- Incluir metadatos mínimos (autor, fecha, versión, propósito)
-- Seguir convenciones de estilo (ruff, black, mypy)
-- Documentar desviaciones explícitamente
+1. [Enforcement Philosophy](#1-enforcement-philosophy)
+2. [Multi-Layer Defense Architecture](#2-multi-layer-defense-architecture)
+3. [Enforcement Strategies by Domain](#3-enforcement-strategies-by-domain)
+4. [Quality Metrics and SLOs](#4-quality-metrics-and-slos)
+5. [Automated Enforcement Actions](#5-automated-enforcement-actions)
+6. [Phase-Specific Enforcement Protocols](#6-phase-specific-enforcement-protocols)
+7. [Real-Time Compliance Monitoring](#7-real-time-compliance-monitoring)
+8. [Violation Response Matrix](#8-violation-response-matrix)
+9. [Enforcement Infrastructure](#9-enforcement-infrastructure)
+10. [Continuous Improvement Protocol](#10-continuous-improvement-protocol)
 
 ---
 
-## 3. ARQUITECTURA DE NOMENCLATURA
+## 1. ENFORCEMENT PHILOSOPHY
 
-### 3.1 Sistema de Prefijos Globales
+### 1.1 Core Enforcement Principles
 
-| Prefijo | Alcance | Formato | Ejemplo |
-|---------|---------|---------|---------|
-| `phase[0-9]_` | Código de fases | `phase{N}_*` | `phase2_60_02_arg_router.py` |
-| `Q[0-9]{3}_` | Contratos/preguntas | `Q{NNN}_*` | `Q005_executor_contract.json` |
-| `FPN-` | Documentos de política | `FPN-{SCOPE}-{NNN}` | `FPN-GLOBAL-001.md` |
-| `AUDIT_` | Reportes de auditoría | `AUDIT_{TOPIC}_*` | `AUDIT_EXECUTOR_METHODS.md` |
-| `BATCH[0-9]+_` | Evaluaciones por lote | `BATCH{N}_*` | `BATCH_8_FINAL_SUMMARY.md` |
-| `CQVR_` | Evaluaciones CQVR | `CQVR_*` | `CQVR_EVALUATION_RESULTS.json` |
-| `PHASE_[0-9]_` | Docs de fase | `PHASE_{N}_*` | `PHASE_0_AUDIT_REPORT.md` |
-
-### 3.2 Convenciones de Sufijos
-
-| Sufijo | Propósito | Extensiones | Ejemplos |
-|--------|-----------|-------------|----------|
-| `_SUMMARY` | Resúmenes ejecutivos | `.md`, `.txt` | `IMPLEMENTATION_SUMMARY.md` |
-| `_REPORT` | Reportes detallados | `.md`, `.json` | `audit_contracts_report.json` |
-| `_SPEC` | Especificaciones técnicas | `.md` | `Technical_Specification_Contract_Loader.md` |
-| `_PLAN` | Planes de acción | `.md` | `ARCHITECTURAL_TRANSFORMATION_MASTER_PLAN.md` |
-| `_GUIDE` | Guías de usuario | `.md` | `TEST_EXECUTION_GUIDE.md` |
-| `_INDEX` | Índices/catálogos | `.md`, `.json` | `CONTRACT_AUDIT_INDEX.md` |
-| `_TRACKING` | Seguimiento de métricas | `.md`, `.json` | `CQVR_IMPROVEMENT_TRACKING.md` |
-| `_MAP` | Mapeos/correspondencias | `.json`, `.txt` | `import_map.txt` |
-
-### 3.3 Reglas de Case Convention
-
-| Contexto | Convención | Regex | Ejemplo |
-|----------|------------|-------|---------|
-| Código Python (módulos) | `snake_case` | `^[a-z][a-z0-9_]+\.py$` | `arg_router.py` |
-| Código Python (clases) | `PascalCase` | `^[A-Z][a-zA-Z0-9]+$` | `ArgRouter` |
-| Código Python (funciones) | `snake_case` | `^[a-z][a-z0-9_]+$` | `route_arguments()` |
-| Contratos JSON | `snake_case` | `^Q[0-9]{3}_[a-z][a-z0-9_]+\.json$` | `Q005_executor_contract.json` |
-| Documentación | `UPPER_SNAKE_CASE` | `^[A-Z][A-Z0-9_]+\.md$` | `AUDIT_REPORT.md` |
-| Scripts auxiliares | `snake_case` | `^[a-z][a-z0-9_]+\.(py\|sh)$` | `validate_contracts.py` |
-| Configuración | `lowercase` o `kebab-case` | Varía por tool | `pyproject.toml`, `.pre-commit-config.yaml` |
-
----
-
-## 4. POLÍTICAS POR CATEGORÍA DE ARTEFACTO
-
-### 4.1 Código Fuente Python - Módulos de Fases Canónicas
-
-#### 4.1.1 Arquitectura de Fases y Etapas
-
-Cada fase tiene su propia **taxonomía de etapas temporales** que reflejan su flujo de procesamiento específico. El sistema de numeración de etapas es **específico por fase**, no global.
-
-**Formato Canónico Universal:**
 ```
-phase{N}_{ETAPA}_{ORDEN}_{nombre_descriptivo}.py
+PRINCIPLE 1: PREVENTION OVER CORRECTION
+- Block violations at creation time, not post-facto
+- IDE integration prevents typing invalid names
+- Git hooks reject commits before push
+
+PRINCIPLE 2: MACHINE AUTHORITY
+- Humans propose, machines enforce
+- Zero manual override capability in production
+- Cryptographic attestation of compliance
+
+PRINCIPLE 3: PROGRESSIVE HARDENING
+- Development:  Warnings + auto-fix suggestions
+- Staging: Hard blocks with migration paths
+- Production: Cryptographic seal requirement
+
+PRINCIPLE 4: TOTAL OBSERVABILITY
+- Every naming decision logged with rationale
+- Compliance score visible in real-time
+- Violation attempts tracked and analyzed
 ```
 
-**Componentes:**
-- `{N}`: Número de fase [0-9]
-- `{ETAPA}`: Identificador de etapa temporal [00-99], **específico de cada fase**
-- `{ORDEN}`: Posición dentro de etapa [00-99], refleja dependencias/ejecución
-- `{nombre_descriptivo}`: snake_case, max 32 chars, autoexplicativo
-
-**Restricciones Técnicas (Universal):**
-- RT-001: El prefijo `phase{N}_` es OBLIGATORIO e INMUTABLE
-- RT-002: ETAPA y ORDEN deben ser integers de EXACTAMENTE 2 DÍGITOS (con leading zero)
-- RT-003: El separador entre ETAPA y ORDEN es UNDERSCORE (_), no punto ni guión
-- RT-004: El nombre_descriptivo debe usar snake_case estricto (minúsculas, underscores, sin números al inicio)
-- RT-005: La longitud total del nombre de archivo no debe exceder 64 caracteres (excluyendo extensión)
-- RT-006: Caracteres permitidos en nombre_descriptivo: [a-z0-9_], sin caracteres especiales, espacios ni Unicode
-
-**Regex de Validación:**
-```python
-PHASE_MODULE_PATTERN = re.compile(
-    r'^phase(?P<fase>[0-9])_'
-    r'(?P<etapa>\d{2})_(?P<orden>\d{2})_'
-    r'(?P<nombre>[a-z][a-z0-9_]+)\.py$'
-)
-```
-
-#### 4.1.2 Taxonomía de Etapas por Fase
-
-Cada fase define su propio mapa de etapas temporales. A continuación, las taxonomías canónicas:
-
-##### **PHASE 0: Validación y Hardening**
-
-| Código | Nombre | Descripción | Cardinalidad | Tiempo |
-|--------|--------|-------------|--------------|--------|
-| 00 | Base Utilities | `__init__`, constantes | 1-3 | t=init |
-| 10 | Schema Validation | Validadores de schemas JSON | 2-5 | t=0 |
-| 20 | Contract Inspection | Inspección de contratos | 2-4 | t=1 |
-| 30 | Wiring Validation | Validación de conexiones | 3-6 | t=2 |
-| 40 | Invariant Checks | Verificación de invariantes | 2-5 | t=3 |
-| 50 | Report Generation | Generación de reportes | 1-3 | t=4 |
-| 90 | Integration | Integración con pipeline | 1-2 | t=5 |
-
-**Etapas Reservadas Phase 0:** 60-89 (futuras validaciones especializadas)
-
-**Ejemplo Phase 0:**
-```python
-# phase0_10_00_contract_schema_validator.py
-# phase0_10_01_method_signature_validator.py
-# phase0_30_00_orchestrator_wiring_checker.py
-```
-
-##### **PHASE 1: Ingestion y Parsing**
-
-| Código | Nombre | Descripción | Cardinalidad | Tiempo |
-|--------|--------|-------------|--------------|--------|
-| 00 | Base Utilities | `__init__`, helpers | 1-3 | t=init |
-| 10 | File Ingestion | Lectura de archivos fuente | 2-4 | t=0 |
-| 20 | Format Detection | Detección de formatos | 1-3 | t=1 |
-| 30 | Parser Selection | Selección de parser | 2-4 | t=2 |
-| 40 | Content Extraction | Extracción de contenido | 3-6 | t=3 |
-| 50 | Normalization | Normalización de datos | 2-5 | t=4 |
-| 60 | Validation | Validación de integridad | 2-4 | t=5 |
-| 90 | Bundle Creation | Creación de ProcessorBundle | 1-2 | t=6 |
-
-**Etapas Reservadas Phase 1:** 70-89
-
-##### **PHASE 2: Orchestration y Execution** ⭐
-
-| Código | Nombre | Descripción | Cardinalidad | Tiempo |
-|--------|--------|-------------|--------------|--------|
-| 00 | Utilidades Base | `__init__`, helpers básicos | 1-5 | t=init |
-| 09 | Utilidades Testing | Test suites, fixtures | 1-5 | t=test |
-| 10 | Inicialización | Factory, registros, configuración | 4-8 | t=0 |
-| 20 | Validación Estática | Validadores pre-ejecución | 2-6 | t=1 |
-| 30 | Gestión de Recursos | Managers, alertas, wrappers | 3-8 | t=2 |
-| 40 | Sincronización | ChunkMatrix, JOIN, ExecutionPlan | 4-8 | t=3 |
-| 50 | Orquestación | TaskExecutor, planificadores | 2-4 | t=4 |
-| 60 | Ejecución Loop | Ejecutores, validadores runtime | 6-12 | t=5-305 |
-| 70 | **(RESERVADO)** | Futura capa de transformación | 0 | - |
-| 80 | Análisis | EvidenceNexus, razonamiento causal | 1-3 | t=306 |
-| 90 | Síntesis | Carver, renderizado narrativo | 1-3 | t=307 |
-| 95 | Telemetría | Profiling, métricas, persistencia | 4-8 | t=1-307 |
-
-**Principios específicos Phase 2:**
-- **Gap Estratégico:** ETAPA 70 reservada para optimización futura
-- **Parallelismo:** Solo ETAPA 95 (Telemetría) ejecuta en paralelo
-- **Hotpath:** ETAPA 60 es CRÍTICA (300 iteraciones)
-- **Singleton:** ETAPA 10 ejecuta UNA sola vez
-
-**Ejemplo Phase 2:**
-```python
-# phase2_10_00_factory.py
-# phase2_40_03_irrigation_synchronizer.py
-# phase2_60_02_arg_router.py
-# phase2_80_00_evidence_nexus.py
-```
-
-##### **PHASE 3: Semantic Analysis**
-
-| Código | Nombre | Descripción | Cardinalidad | Tiempo |
-|--------|--------|-------------|--------------|--------|
-| 00 | Base Utilities | `__init__` | 1-2 | t=init |
-| 10 | Tokenization | Tokenización de texto | 2-4 | t=0 |
-| 20 | Embedding Generation | Generación de embeddings | 3-6 | t=1 |
-| 30 | Semantic Clustering | Clustering semántico | 2-5 | t=2 |
-| 40 | Entity Recognition | NER y entity linking | 3-7 | t=3 |
-| 50 | Relationship Extraction | Extracción de relaciones | 2-5 | t=4 |
-| 60 | Semantic Graph | Construcción de grafo | 2-4 | t=5 |
-| 90 | Integration | Integración con pipeline | 1-2 | t=6 |
-
-**Etapas Reservadas Phase 3:** 70-89
-
-##### **PHASE 4-9: Taxonomías por Definir**
-
-Para fases sin taxonomía establecida, usar estructura genérica:
-
-| Código | Nombre | Propósito |
-|--------|--------|-----------|
-| 00 | Base | Inicialización mínima |
-| 10 | Input Processing | Procesamiento de entrada |
-| 20 | Validation | Validación |
-| 30 | Transformation | Transformación principal |
-| 40 | Analysis | Análisis |
-| 50 | Output Generation | Generación de salida |
-| 90 | Integration | Integración |
-
-**IMPORTANTE:** Cada fase DEBE documentar su taxonomía de etapas en su `README.md` específico.
-
-#### 4.1.3 Reglas de Asignación de Etapas (Universal)
-
-**R-ETAPA-001:** Las etapas se asignan en **múltiplos de 10** para maximizar gaps estratégicos.
-
-**R-ETAPA-002:** Etapas 01-08 están **RESERVADAS** para micro-etapas futuras (excepto 09 para testing).
-
-**R-ETAPA-003:** Cada fase puede definir **hasta 10 etapas principales** (00, 10, 20, ..., 90).
-
-**R-ETAPA-004:** La etapa 70 es tradicionalmente **RESERVADA** para optimización/transformación intermedia.
-
-**R-ETAPA-005:** Telemetría/observabilidad típicamente usa **ETAPA 95** (ejecución paralela).
-
-#### 4.1.4 Reglas de Asignación de Orden (Universal)
-
-**R-ORDEN-001:** Dentro de una etapa, ORDEN comienza en **00** (no 01).
-
-**R-ORDEN-002:** Se incrementa de uno en uno: 00, 01, 02, ..., 99.
-
-**R-ORDEN-003:** Los gaps dentro de una etapa deben **justificarse en documentación** (README de fase).
-
-**R-ORDEN-004:** ORDEN refleja la **secuencia de ejecución o dependencias**, NO orden alfabético.
-
-**R-ORDEN-005:** El módulo con ORDEN=00 en una etapa es típicamente el **componente base** de esa etapa.
-
-**Ejemplo de orden correcto (Phase 2, Etapa 60):**
-```
-60.00 - base_executor           [componente base, debe existir primero]
-60.01 - contract_validator      [valida antes de ejecutar]
-60.02 - arg_router              [rutea argumentos a métodos]
-60.03 - signature_runtime_validator [valida durante ejecución]
-60.04 - resource_aware_executor [wrapper adaptativo de recursos]
-60.05 - calibration_policy      [calibra resultados post-ejecución]
-60.06 - instrumentation_mixin   [hooks de observabilidad]
-```
-
-#### 4.1.5 Nombres Descriptivos (Universal)
-
-**R-NOMBRE-001:** Usar **VERBOS** (para acciones) o **SUSTANTIVOS TÉCNICOS** (para entidades), no palabras genéricas.
-
-**R-NOMBRE-002:** Evitar redundancia con el número de etapa en el nombre.
-
-**R-NOMBRE-003:** Patrones preferidos:
-- `<entidad>` (ej. `factory`, `registry`)
-- `<entidad>_<tipo>` (ej. `contract_validator`, `resource_manager`)
-- `<componente>_<acción>` (ej. `irrigation_synchronizer`, `arg_router`)
-
-**R-NOMBRE-004:** Prohibido usar abreviaturas no estándar o acrónimos oscuros.
-
-**R-NOMBRE-005:** Máximo 32 caracteres para el componente de nombre (sin contar prefijos numéricos).
-
-**Ejemplos buenos:**
-- ✅ `factory` (entidad clara)
-- ✅ `contract_validator_cqvr` (componente + tipo + acrónimo estándar)
-- ✅ `irrigation_synchronizer` (acción + rol)
-- ✅ `evidence_nexus` (componente + metáfora técnica establecida)
-
-**Ejemplos malos:**
-- ❌ `helper` (demasiado genérico)
-- ❌ `utils` (sin información contextual)
-- ❌ `thing_doer` (poco profesional)
-- ❌ `mgr` (abreviatura no estándar)
-
-#### 4.1.6 File Header Template (Mandatory)
-
-**TODAS** las nuevas fases canónicas `.py` DEBEN comenzar con:
+### 1.2 Enforcement Axioms
 
 ```python
-"""
-Module: src.canonic_phases.phase_{N}.<module_name>
-Purpose: <ONE SENTENCE - what this module does>
-Owner: phase{N}_<subsystem>
-Lifecycle: ACTIVE|DEPRECATED|EXPERIMENTAL
-Version: <SEMVER>
-Effective-Date: <YYYY-MM-DD>
-
-Contracts-Enforced:
-    - <ContractName1>: <one-line description>
-    - <ContractName2>: <one-line description>
-
-Determinism:
-    Seed-Strategy: FIXED|PARAMETERIZED|NOT_APPLICABLE
-    State-Management: <description of state handling>
-
-Inputs:
-    - <InputName>: <Type> — <description>
-
-Outputs:
-    - <OutputName>: <Type> — <description>
-
-Failure-Modes:
-    - <FailureMode1>: <ErrorType> — <when this occurs>
-    - <FailureMode2>: <ErrorType> — <when this occurs>
-"""
-from __future__ import annotations
-
-# METADATA
-__version__ = "<SEMVER>"
-__phase__ = <N>
-__stage__ = <ETAPA>
-__order__ = <ORDEN>
-__author__ = "<nombre>"
-__created__ = "<YYYY-MM-DD>"
-__modified__ = "<YYYY-MM-DD>"
-__criticality__ = "CRITICAL|HIGH|MEDIUM|LOW"
-__execution_pattern__ = "Singleton|Per-Task|Continuous|On-Demand|Parallel"
-__module_type__ = "AUTH|REG|CFG|VAL|MGR|EXEC|ORCH|ANAL|SYNT|PROF|UTIL"
-
-# PHASE_LABEL (legacy compatibility)
-PHASE_LABEL = "Phase {N}"
-
-# [Código del módulo]
+class EnforcementAxioms:
+    """Immutable laws of nomenclature enforcement."""
+    
+    AXIOM_1 = "A name that cannot be validated algorithmically is invalid by definition"
+    AXIOM_2 = "Entropy in naming is technical debt measured in milliseconds of confusion"
+    AXIOM_3 = "The cost of enforcement is always less than the cost of chaos"
+    AXIOM_4 = "Compliance is not a state but a continuous proof of correctness"
+    AXIOM_5 = "Every exception weakens the entire system exponentially"
 ```
 
-**Campos Obligatorios:**
-- `Module:` Ruta canónica del módulo
-- `Purpose:` Una oración describiendo responsabilidad única
-- `Owner:` Subsistema responsable (ej. `phase2_orchestration`)
-- `Lifecycle:` Estado actual del módulo
-- `Determinism.Seed-Strategy:` Estrategia de reproducibilidad
-- `Inputs/Outputs:` Contratos de entrada/salida
-- `Failure-Modes:` Modos de falla documentados
+### 1.3 Enforcement Levels
 
-**Validación:**
-Este header es verificado por `scripts/validation/validate_file_headers.py` en pre-commit.
-
-#### 4.1.7 Infraestructura y Utilidades
-
-**Formato:**
-```
-{categoria}/{nombre_descriptivo}.py
-```
-
-**Categorías permitidas:**
-- `src/farfan_core/` → Core del sistema
-- `src/farfan_pipeline/` → Pipeline principal
-- `scripts/` → Scripts auxiliares
-- `tests/` → Test suites
-- `tools/` → Herramientas de desarrollo
-
-**Restricciones:**
-- NO usar `utils/`, `helpers/`, `misc/` (demasiado genéricos)
-- Nombres deben reflejar responsabilidad específica
-- Máximo 3 niveles de anidación
-
-**Ejemplos:**
-- ✅ `src/farfan_core/orchestration/task_scheduler.py`
-- ✅ `scripts/validation/audit_contracts.py`
-- ✅ `tests/integration/test_phase2_pipeline.py`
-- ❌ `src/utils/helper.py`
-- ❌ `scripts/misc/thing.py`
-
-#### 4.1.3 Metadatos Obligatorios en Módulos
-
-Todo módulo Python debe incluir en sus primeras 20 líneas:
-
-```python
-"""
-Descripción concisa del módulo (1-3 líneas).
-
-PHASE_LABEL: Phase {N}  # Para módulos de fase
-MODULE_TYPE: {TIPO}     # AUTH|REG|CFG|VAL|MGR|EXEC|ORCH|ANAL|SYNT|PROF|UTIL
-CRITICALITY: {NIVEL}    # CRITICAL|HIGH|MEDIUM|LOW
-EXECUTION_PATTERN: {PATRON}  # Singleton|Per-Task|Continuous|On-Demand|Parallel
-
-Autor: {nombre}
-Fecha creación: {YYYY-MM-DD}
-Última modificación: {YYYY-MM-DD}
-"""
-```
-
-### 4.2 Contratos JSON
-
-#### 4.2.1 Contratos de Ejecución
-
-**Formato:**
-```
-Q{NNN}_executor_contract.json
-```
-
-**Donde:**
-- `{NNN}`: Número de pregunta [001-300], con leading zeros
-
-**Ubicación:**
-```
-executor_contracts/specialized/Q{NNN}_executor_contract.json
-```
-
-**Validación:**
-- Debe pasar schema validation contra `contract_schema.json`
-- Debe incluir `method_binding.methods[]` no vacío
-- `metadata.contract_id` debe coincidir con `Q{NNN}`
-
-#### 4.2.2 Templates y Schemas
-
-**Formato:**
-```
-{tipo}_{nombre}_template.json
-{nombre}_schema.json
-```
-
-**Ubicación:**
-```
-contract_templates/{categoria}/{nombre}.(json|yaml)
-```
-
-**Ejemplos:**
-- ✅ `contract_templates/executor/base_contract_template.json`
-- ✅ `contract_templates/schemas/cqvr_schema.json`
-- ❌ `templates/my_template.json` (fuera de jerarquía)
-
-### 4.3 Documentación
-
-#### 4.3.1 Documentación Técnica
-
-**Formato:**
-```
-{CATEGORIA}_{TEMA}_{TIPO}.md
-```
-
-**Categorías:**
-- `AUDIT` → Auditorías de código/sistema
-- `PHASE_{N}` → Documentación de fase específica
-- `IMPLEMENTATION` → Guías de implementación
-- `ARCHITECTURE` → Decisiones arquitectónicas
-- `SPECIFICATION` → Especificaciones técnicas
-
-**Tipos:**
-- `REPORT` → Reportes detallados
-- `SUMMARY` → Resúmenes ejecutivos
-- `GUIDE` → Guías paso a paso
-- `SPEC` → Especificaciones formales
-- `INDEX` → Catálogos/índices
-- `PLAN` → Planes de acción
-- `QUICK_REF` → Referencias rápidas
-
-**Ejemplos:**
-- ✅ `AUDIT_EXECUTOR_METHODS_REPORT.md`
-- ✅ `PHASE_2_IMPLEMENTATION_SUMMARY.md`
-- ✅ `ARCHITECTURE_TRANSFORMATION_PLAN.md`
-- ❌ `my_notes.md`
-- ❌ `doc_v3_final.md`
-
-#### 4.3.2 Metadatos Obligatorios en Documentación
-
-Todo documento `.md` debe comenzar con frontmatter:
-
-```markdown
-# {TÍTULO DEL DOCUMENTO}
-
-**Documento:** {CÓDIGO ÚNICO}  
-**Versión:** {SEMVER}  
-**Fecha:** {YYYY-MM-DD}  
-**Estado:** {DRAFT|REVIEW|APPROVED|AUTORITATIVO|DEPRECATED}  
-**Autor:** {nombre}  
-**Alcance:** {descripción breve}  
+| Level | Environment | Action | Recovery |
+|-------|------------|--------|----------|
+| **L0:  Advisory** | Local Dev | Warnings in IDE | Auto-fix available |
+| **L1: Guided** | Pre-commit | Block with suggestions | Interactive fix |
+| **L2: Enforced** | CI/CD | Hard fail | Requires compliance |
+| **L3: Sealed** | Production | Cryptographic attestation | No bypass |
+| **L4: Forensic** | Audit | Historical analysis | Retroactive correction |
 
 ---
 
-[contenido]
-```
+## 2. MULTI-LAYER DEFENSE ARCHITECTURE
 
-### 4.4 Scripts Auxiliares
-
-#### 4.4.1 Scripts de Validación
-
-**Formato:**
-```
-validate_{tema}.py
-audit_{sistema}.py
-```
-
-**Ubicación:**
-```
-scripts/validation/{nombre}.py
-scripts/audit/{nombre}.py
-```
-
-**Estándares:**
-- Deben ser ejecutables: `chmod +x`
-- Incluir shebang: `#!/usr/bin/env python3`
-- Docstring con uso: `--help` flag obligatorio
-- Exit codes: 0=success, 1=validation failed, 2=error
-
-#### 4.4.2 Scripts de Transformación
-
-**Formato:**
-```
-transform_{entidad}.py
-generate_{artefacto}.py
-```
-
-**Ubicación:**
-```
-scripts/transformation/{nombre}.py
-scripts/generation/{nombre}.py
-```
-
-#### 4.4.3 Scripts de Deployment
-
-**Formato:**
-```
-deploy_{target}.sh
-rollback_{componente}.sh
-```
-
-**Ubicación:**
-```
-scripts/deployment/{nombre}.sh
-```
-
-### 4.5 Artefactos de Ejecución
-
-#### 4.5.1 Logs y Trazas
-
-**Formato:**
-```
-{timestamp}_{fase}_{componente}.log
-```
-
-**Ubicación:**
-```
-artifacts/logs/{YYYY-MM-DD}/{nombre}.log
-```
-
-**Ejemplo:**
-```
-artifacts/logs/2025-12-21/143052_phase2_executor.log
-```
-
-#### 4.5.2 Reportes de Ejecución
-
-**Formato:**
-```
-{timestamp}_{tipo}_report.{json|md}
-```
-
-**Ubicación:**
-```
-artifacts/reports/{categoria}/{timestamp}_{nombre}.{ext}
-```
-
-**Ejemplo:**
-```
-artifacts/reports/cqvr/20251221_Q005_evaluation_report.json
-```
-
-#### 4.5.3 Métricas y Telemetría
-
-**Formato:**
-```
-{timestamp}_metrics_{componente}.json
-```
-
-**Ubicación:**
-```
-artifacts/metrics/{YYYY-MM}/{timestamp}_{nombre}.json
-```
-
-### 4.6 Tests
-
-#### 4.6.1 Tests Unitarios
-
-**Formato:**
-```
-test_{modulo_a_testear}.py
-```
-
-**Ubicación:**
-```
-tests/unit/phase_{N}/test_{nombre}.py
-```
-
-**Ejemplo:**
-```
-tests/unit/phase_2/test_arg_router.py
-```
-
-#### 4.6.2 Tests de Integración
-
-**Formato:**
-```
-test_{flujo}_integration.py
-```
-
-**Ubicación:**
-```
-tests/integration/test_{nombre}_integration.py
-```
-
-#### 4.6.3 Tests End-to-End
-
-**Formato:**
-```
-test_{escenario}_e2e.py
-```
-
-**Ubicación:**
-```
-tests/e2e/test_{nombre}_e2e.py
-```
-
----
-
-## 5. JERARQUÍA DE DIRECTORIOS
-
-### 5.1 Estructura Canónica de Fases
-
-Cada fase canónica (Phase_zero - Phase_nine) DEBE seguir esta estructura estricta:
-
-```
-src/farfan_pipeline/phases/Phase_{name}/
-│
-├── README.md                         # 📘 README OBLIGATORIO (formato peer-review journal)
-├── PHASE_{N}_CONSTANTS.py           # 🔒 Constantes de fase (OBLIGATORIO)
-├── __init__.py                       # Inicialización del paquete
-│
-├── phase{N}_*.py                     # Módulos con nomenclatura posicional
-│   ├── phase{N}_00.00___init__.py   # (si aplica)
-│   ├── phase{N}_10.00_<nombre>.py   # Etapa 10
-│   ├── phase{N}_10.01_<nombre>.py
-│   ├── phase{N}_20.00_<nombre>.py   # Etapa 20
-│   └── ...
-│
-├── json_files_phase_{name}/          # 📂 JSON auxiliares (si aplica)
-│   ├── schemas/                      # Schemas de validación
-│   ├── configs/                      # Configuraciones
-│   └── mappings/                     # Mapeos de datos
-│
-├── contracts/                        # 📜 Contratos específicos de fase (si aplica)
-│   ├── input_contracts/
-│   └── output_contracts/
-│
-├── tests/                            # 🧪 Tests específicos de fase
-│   ├── unit/
-│   ├── integration/
-│   └── fixtures/
-│
-└── docs/                             # 📚 Documentación técnica de fase
-    ├── architecture.md               # Arquitectura de la fase
-    ├── irrigation_flow.md            # 💧 Diagrama de irrigación (OBLIGATORIO)
-    ├── transformation_narrative.md   # 📖 Narrativa de transformación (OBLIGATORIO)
-    └── module_dependencies.dot       # Grafo de dependencias
-```
-
-### 5.2 Archivo README.md de Fase (OBLIGATORIO)
-
-**TODAS** las fases canónicas DEBEN incluir un `README.md` con estructura de **artículo peer-review**:
-
-```markdown
-# Phase {N}: {Nombre de la Fase}
-
-**Document ID:** PHASE-{N}-README  
-**Version:** {SEMVER}  
-**Date:** {YYYY-MM-DD}  
-**Status:** ACTIVE  
-**Authors:** {lista de autores}
-
----
-
-## Abstract
-
-{Resumen ejecutivo de 150-250 palabras describiendo propósito, metodología y resultados de la fase}
-
----
-
-## 1. Introduction
-
-### 1.1 Phase Overview
-{Descripción general de la fase, su rol en el pipeline}
-
-### 1.2 Motivation
-{Por qué existe esta fase, qué problema resuelve}
-
-### 1.3 Scope and Boundaries
-{Qué incluye y qué NO incluye la fase}
-
----
-
-## 2. Architecture
-
-### 2.1 Stage Taxonomy
-
-**Tabla de Etapas Canónicas:**
-
-| Código | Nombre | Descripción | Cardinalidad | Tiempo |
-|--------|--------|-------------|--------------|--------|
-| 00 | ... | ... | ... | ... |
-| 10 | ... | ... | ... | ... |
-| ... | ... | ... | ... | ... |
-
-### 2.2 Stage Dependency Graph
-
-```
-[ASCII diagram o referencia a docs/module_dependencies.dot]
-```
-
-### 2.3 Module Classification
-
-**Por Tipo:**
-- AUTH: {lista de módulos}
-- EXEC: {lista de módulos}
-- VAL: {lista de módulos}
-- ...
-
-**Por Criticidad:**
-- CRITICAL: {módulos}
-- HIGH: {módulos}
-- MEDIUM: {módulos}
-- LOW: {módulos}
-
----
-
-## 3. Transformation Narrative (Narrativa de Forzamiento)
-
-### 3.1 Input Specification
-
-**Formato de Entrada:**
-```python
-{Estructura de datos de entrada con tipos}
-```
-
-**Precondiciones:**
-- {Lista de precondiciones que debe cumplir el input}
-
-### 3.2 Processing Pipeline
-
-**Flujo de Transformación:**
-
-```
-INPUT → [ETAPA 10] → [ETAPA 20] → ... → OUTPUT
-```
-
-**Detalle por Etapa:**
-
-#### 3.2.1 ETAPA 10: {Nombre}
-- **Input:** {tipo}
-- **Processing:** {descripción detallada del procesamiento}
-- **Output:** {tipo}
-- **Invariants:** {invariantes que se mantienen}
-- **Side Effects:** {efectos secundarios, si aplica}
-
-#### 3.2.2 ETAPA 20: {Nombre}
-[repetir estructura]
-
-### 3.3 Output Specification
-
-**Formato de Salida:**
-```python
-{Estructura de datos de salida con tipos}
-```
-
-**Postcondiciones:**
-- {Lista de postcondiciones garantizadas}
-
----
-
-## 4. Irrigation Flow (Flujo de Irrigación) 💧
-
-### 4.1 Signal Propagation
-
-**Diagrama de Irrigación:**
-```
-[Referencia a docs/irrigation_flow.md o diagrama inline]
-```
-
-### 4.2 Data Dependencies
-
-**Matriz de Dependencias:**
-
-| Módulo | Consume | Produce | Observa |
-|--------|---------|---------|---------|
-| phase{N}_10.00 | {datos} | {datos} | {señales} |
-| phase{N}_20.00 | {datos} | {datos} | {señales} |
-| ... | ... | ... | ... |
-
-### 4.3 Synchronization Points
-
-- **Punto 1:** {descripción de sincronización crítica}
-- **Punto 2:** ...
-
----
-
-## 5. Module Inventory
-
-### 5.1 Complete File List
-
-**Módulos activos:**
-
-| Archivo | Etapa | Orden | Tipo | Criticidad | Propósito |
-|---------|-------|-------|------|------------|-----------|
-| phase{N}_10.00_xxx.py | 10 | 00 | AUTH | CRITICAL | {propósito} |
-| phase{N}_10.01_yyy.py | 10 | 01 | REG | HIGH | {propósito} |
-| ... | ... | ... | ... | ... | ... |
-
-**Total:** {N} módulos activos
-
-### 5.2 Deprecated Modules
-
-{Lista de módulos deprecados con fecha y razón}
-
----
-
-## 6. Determinism and Reproducibility
-
-### 6.1 Seed Management
-{Estrategia de seeds para reproducibilidad}
-
-### 6.2 State Management
-{Manejo de estado mutable, si aplica}
-
-### 6.3 Idempotency Guarantees
-{Garantías de idempotencia}
-
----
-
-## 7. Performance Characteristics
-
-### 7.1 Computational Complexity
-- **Time Complexity:** O(...)
-- **Space Complexity:** O(...)
-
-### 7.2 Resource Requirements
-- **RAM:** {estimación}
-- **CPU:** {estimación}
-- **Disk I/O:** {estimación}
-
-### 7.3 Bottlenecks
-{Identificación de cuellos de botella conocidos}
-
----
-
-## 8. Testing Strategy
-
-### 8.1 Test Coverage
-- **Unit Tests:** {N} tests, {X}% coverage
-- **Integration Tests:** {N} tests
-- **E2E Tests:** {N} tests
-
-### 8.2 Critical Test Scenarios
-{Lista de escenarios críticos testeados}
-
----
-
-## 9. Error Handling and Recovery
-
-### 9.1 Failure Modes
-{Tabla de modos de falla por módulo}
-
-### 9.2 Recovery Strategies
-{Estrategias de recuperación ante fallos}
-
-### 9.3 Circuit Breakers
-{Circuit breakers implementados, si aplica}
-
----
-
-## 10. Maintenance and Evolution
-
-### 10.1 Known Issues
-{Issues conocidos sin resolver}
-
-### 10.2 Future Enhancements
-{Mejoras planificadas}
-
-### 10.3 Migration Notes
-{Notas de migración para cambios breaking}
-
----
-
-## 11. References
-
-### 11.1 Related Documentation
-- {Enlaces a documentación relacionada}
-
-### 11.2 External Dependencies
-- {Lista de dependencias externas con versiones}
-
-### 11.3 Academic References
-{Referencias académicas si aplica}
-
----
-
-## Appendices
-
-### A. Glossary
-{Glosario de términos específicos de la fase}
-
-### B. Configuration Examples
-{Ejemplos de configuración}
-
-### C. Troubleshooting Guide
-{Guía de troubleshooting común}
-
----
-
-**Document History:**
-
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0.0 | YYYY-MM-DD | {autor} | Initial version |
-
-```
-
-**Validación:**
-El README es verificado por `scripts/validation/validate_phase_readme.py` que verifica:
-- Presencia de todas las secciones obligatorias
-- Tabla de etapas completa
-- Inventario de módulos actualizado
-- Narrativa de irrigación presente
-
-### 5.3 Archivo PHASE_{N}_CONSTANTS.py (OBLIGATORIO)
-
-Cada fase DEBE tener un archivo de constantes:
-
-```python
-"""
-Module: src.canonic_phases.phase_{N}.PHASE_{N}_CONSTANTS
-Purpose: Constantes globales de Phase {N}
-Owner: phase{N}_core
-Lifecycle: ACTIVE
-Version: 1.0.0
-Effective-Date: YYYY-MM-DD
-"""
-from __future__ import annotations
-
-from typing import Final
-
-# METADATA
-__version__ = "1.0.0"
-__phase__ = {N}
-
-# ============================================================================
-# PHASE IDENTIFICATION
-# ============================================================================
-
-PHASE_NUMBER: Final[int] = {N}
-PHASE_NAME: Final[str] = "Phase {N}: {Nombre}"
-PHASE_LABEL: Final[str] = f"Phase {PHASE_NUMBER}"
-
-# ============================================================================
-# STAGE DEFINITIONS
-# ============================================================================
-
-STAGE_BASE: Final[int] = 0
-STAGE_TESTING: Final[int] = 9
-STAGE_INIT: Final[int] = 10
-STAGE_VALIDATION: Final[int] = 20
-STAGE_RESOURCES: Final[int] = 30
-# ... [definir todas las etapas de la fase]
-
-VALID_STAGES: Final[set[int]] = {
-    STAGE_BASE,
-    STAGE_TESTING,
-    STAGE_INIT,
-    # ... [todas las etapas válidas]
-}
-
-# ============================================================================
-# MODULE TYPES
-# ============================================================================
-
-TYPE_AUTHORITY: Final[str] = "AUTH"
-TYPE_REGISTRY: Final[str] = "REG"
-TYPE_CONFIG: Final[str] = "CFG"
-TYPE_VALIDATOR: Final[str] = "VAL"
-TYPE_MANAGER: Final[str] = "MGR"
-TYPE_EXECUTOR: Final[str] = "EXEC"
-TYPE_ORCHESTRATOR: Final[str] = "ORCH"
-TYPE_ANALYZER: Final[str] = "ANAL"
-TYPE_SYNTHESIZER: Final[str] = "SYNT"
-TYPE_PROFILER: Final[str] = "PROF"
-TYPE_UTILITY: Final[str] = "UTIL"
-
-VALID_MODULE_TYPES: Final[set[str]] = {
-    TYPE_AUTHORITY,
-    TYPE_REGISTRY,
-    TYPE_CONFIG,
-    TYPE_VALIDATOR,
-    TYPE_MANAGER,
-    TYPE_EXECUTOR,
-    TYPE_ORCHESTRATOR,
-    TYPE_ANALYZER,
-    TYPE_SYNTHESIZER,
-    TYPE_PROFILER,
-    TYPE_UTILITY,
-}
-
-# ============================================================================
-# CRITICALITY LEVELS
-# ============================================================================
-
-CRITICALITY_CRITICAL: Final[str] = "CRITICAL"
-CRITICALITY_HIGH: Final[str] = "HIGH"
-CRITICALITY_MEDIUM: Final[str] = "MEDIUM"
-CRITICALITY_LOW: Final[str] = "LOW"
-
-VALID_CRITICALITY_LEVELS: Final[set[str]] = {
-    CRITICALITY_CRITICAL,
-    CRITICALITY_HIGH,
-    CRITICALITY_MEDIUM,
-    CRITICALITY_LOW,
-}
-
-# ============================================================================
-# EXECUTION PATTERNS
-# ============================================================================
-
-PATTERN_SINGLETON: Final[str] = "Singleton"
-PATTERN_PER_TASK: Final[str] = "Per-Task"
-PATTERN_CONTINUOUS: Final[str] = "Continuous"
-PATTERN_ON_DEMAND: Final[str] = "On-Demand"
-PATTERN_PARALLEL: Final[str] = "Parallel"
-
-VALID_EXECUTION_PATTERNS: Final[set[str]] = {
-    PATTERN_SINGLETON,
-    PATTERN_PER_TASK,
-    PATTERN_CONTINUOUS,
-    PATTERN_ON_DEMAND,
-    PATTERN_PARALLEL,
-}
-
-# ============================================================================
-# RESOURCE LIMITS (if applicable to phase)
-# ============================================================================
-
-MAX_MEMORY_MB: Final[int] = 4096
-MAX_CPU_PERCENT: Final[float] = 80.0
-TIMEOUT_SECONDS: Final[int] = 300
-
-# ============================================================================
-# DETERMINISM
-# ============================================================================
-
-DEFAULT_SEED: Final[int] = 42
-SEED_STRATEGY: Final[str] = "FIXED"  # or "PARAMETERIZED" or "NOT_APPLICABLE"
-
-# ============================================================================
-# PHASE-SPECIFIC CONSTANTS
-# ============================================================================
-
-# [Añadir constantes específicas de la fase aquí]
-# Ejemplos:
-# - Phase 2: CHUNK_SIZE, TASK_COUNT, etc.
-# - Phase 3: EMBEDDING_DIMENSION, MAX_TOKENS, etc.
-```
-
-### 5.4 Archivo docs/irrigation_flow.md (OBLIGATORIO)
-
-Cada fase DEBE documentar su flujo de irrigación:
-
-```markdown
-# Phase {N}: Irrigation Flow Diagram
-
-**Document ID:** PHASE-{N}-IRRIGATION  
-**Version:** 1.0.0  
-**Date:** YYYY-MM-DD
-
----
-
-## 1. Irrigation Overview
-
-{Descripción general del flujo de señales/datos en la fase}
-
-## 2. Signal Taxonomy
-
-### 2.1 Input Signals
-
-| Signal | Type | Source | Description |
-|--------|------|--------|-------------|
-| {nombre} | {tipo} | {módulo/fase} | {descripción} |
-
-### 2.2 Internal Signals
-
-| Signal | Type | Producer | Consumer(s) | Lifecycle |
-|--------|------|----------|-------------|-----------|
-| {nombre} | {tipo} | {módulo} | {módulos} | {cuándo existe} |
-
-### 2.3 Output Signals
-
-| Signal | Type | Destination | Description |
-|--------|------|-------------|-------------|
-| {nombre} | {tipo} | {módulo/fase} | {descripción} |
-
-## 3. Irrigation Diagram
+### 2.1 Layer Stack
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    PHASE {N} IRRIGATION                      │
+│                    LAYER 5: AUDIT & FORENSICS               │
+│  Historical Analysis | Pattern Detection | Drift Prevention  │
+├─────────────────────────────────────────────────────────────┤
+│                    LAYER 4: RUNTIME ENFORCEMENT             │
+│     Live Validation | Dynamic Checks | Performance Impact    │
+├─────────────────────────────────────────────────────────────┤
+│                    LAYER 3: DEPLOYMENT GATES                │
+│    Cryptographic Sealing | Attestation | Immutable Proof    │
+├─────────────────────────────────────────────────────────────┤
+│                    LAYER 2: CI/CD PIPELINE                  │
+│        Automated Validation | Integration Tests | Reports    │
+├─────────────────────────────────────────────────────────────┤
+│                    LAYER 1: PRE-COMMIT HOOKS                │
+│          Local Validation | Auto-fix | Developer Feedback    │
+├─────────────────────────────────────────────────────────────┤
+│                    LAYER 0: IDE INTEGRATION                 │
+│    Real-time Hints | Syntax Highlighting | Auto-complete    │
 └─────────────────────────────────────────────────────────────┘
-
-INPUT SIGNALS
-    ↓
-┌───────────────┐
-│  ETAPA 10     │ → [signal_a] ─────────┐
-│  {nombre}     │                        │
-└───────────────┘                        ↓
-                                    ┌───────────────┐
-                                    │  ETAPA 20     │
-INPUT SIGNALS ──→ [signal_b] ───→   │  {nombre}     │
-                                    └───────────────┘
-                                         ↓
-                                    [signal_c]
-                                         ↓
-                                    ┌───────────────┐
-                                    │  ETAPA 30     │
-                                    │  {nombre}     │
-                                    └───────────────┘
-                                         ↓
-                                    OUTPUT SIGNALS
 ```
 
-## 4. Synchronization Points
+### 2.2 Layer Implementation
 
-### 4.1 Critical Joins
+#### Layer 0: IDE Integration
 
-{Descripción de puntos donde múltiples señales se sincronizan}
-
-### 4.2 Barriers
-
-{Descripción de barreras de sincronización}
-
-### 4.3 Deadlock Prevention
-
-{Estrategias para prevenir deadlocks}
-
-## 5. Data Dependencies
-
-{Matriz o grafo de dependencias de datos entre módulos}
-
-## 6. Performance Implications
-
-{Impacto de la irrigación en performance}
-```
-
-### 5.5 Estructura Global Completa
-
-```
-F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/
-│
-├── src/                              # Código fuente
-│   ├── farfan_core/                  # Core del sistema
-│   │   ├── core/                     # Lógica central
-│   │   ├── orchestration/            # Orquestación
-│   │   ├── analysis/                 # Métodos de análisis
-│   │   └── api/                      # API REST
-│   │
-│   └── farfan_pipeline/              # Pipeline principal
-│       ├── phases/                   # 🔹 FASES CANÓNICAS (estructura estricta)
-│       │   ├── Phase_zero/
-│       │   │   ├── README.md          # ✅ OBLIGATORIO
-│       │   │   ├── PHASE_0_CONSTANTS.py  # ✅ OBLIGATORIO
-│       │   │   ├── docs/
-│       │   │   │   ├── irrigation_flow.md  # ✅ OBLIGATORIO
-│       │   │   │   └── transformation_narrative.md  # ✅ OBLIGATORIO
-│       │   │   ├── phase0_*.py
-│       │   │   └── tests/
-│       │   ├── Phase_one/
-│       │   │   ├── README.md
-│       │   │   ├── PHASE_1_CONSTANTS.py
-│       │   │   ├── docs/
-│       │   │   ├── phase1_*.py
-│       │   │   └── tests/
-│       │   ├── Phase_two/           # ⭐ Referencia canónica
-│       │   │   ├── README.md
-│       │   │   ├── PHASE_2_CONSTANTS.py
-│       │   │   ├── docs/
-│       │   │   │   ├── irrigation_flow.md
-│       │   │   │   ├── transformation_narrative.md
-│       │   │   │   └── module_dependencies.dot
-│       │   │   ├── phase2_*.py       # Módulos con nomenclatura posicional
-│       │   │   ├── json_files_phase_two/
-│       │   │   │   ├── schemas/
-│       │   │   │   ├── configs/
-│       │   │   │   └── mappings/
-│       │   │   ├── contracts/
-│       │   │   └── tests/
-│       │   ├── Phase_three/
-│       │   │   └── [estructura idéntica]
-│       │   ├── ...
-│       │   └── Phase_nine/
-│       │       └── [estructura idéntica]
-│       │
-│       ├── methods_dispensary/       # Métodos del dispensario
-│       │   ├── __init__.py
-│       │   ├── class_registry.py
-│       │   └── {metodo}.py
-│       │
-│       └── infrastructure/           # SISAS, recursos
-│
-├── executor_contracts/               # Contratos de ejecución
-│   ├── specialized/                  # Q001-Q300
-│   │   └── Q{NNN}_executor_contract.json
-│   └── templates/                    # Templates base
-│
-├── contract_templates/               # Templates y schemas
-│   ├── executor/
-│   ├── schemas/
-│   └── validation/
-│
-├── scripts/                          # Scripts auxiliares
-│   ├── validation/
-│   ├── transformation/
-│   ├── deployment/
-│   └── migration/
-│
-├── tests/                            # Test suites
-│   ├── unit/
-│   │   ├── phase_0/
-│   │   ├── phase_2/
-│   │   └── ...
-│   ├── integration/
-│   └── e2e/
-│
-├── artifacts/                        # Artefactos de ejecución
-│   ├── logs/
-│   │   └── {YYYY-MM-DD}/
-│   ├── reports/
-│   │   ├── cqvr/
-│   │   ├── audit/
-│   │   └── execution/
-│   ├── metrics/
-│   │   └── {YYYY-MM}/
-│   └── traces/
-│
-├── docs/                             # Documentación versionada
-│   ├── architecture/
-│   ├── api/
-│   ├── guides/
-│   └── policies/
-│
-├── archive/                          # Código legacy
-│   └── {YYYY-MM-DD}_{descripcion}/
-│
-├── experimental/                     # Experimentos temporales
-│   └── {fecha_expiracion}_{nombre}/
-│
-├── data/                             # Datos de entrada
-│   ├── input/
-│   ├── reference/
-│   └── test_fixtures/
-│
-├── dashboard/                        # Dashboards y visualización
-│   ├── html/
-│   ├── static/
-│   └── templates/
-│
-├── reports/                          # Reportes estáticos (root)
-│   ├── AUDIT_*.md
-│   ├── PHASE_*.md
-│   ├── BATCH_*.md
-│   └── CQVR_*.md
-│
-├── .github/                          # CI/CD
-│   └── workflows/
-│
-├── .git/
-├── .gitignore
-├── README.md
-├── pyproject.toml
-├── requirements.txt
-└── setup.py
-```
-
-### 5.2 Reglas de Jerarquía
-
-**R-HIERARCHY-001:** Máximo 5 niveles de anidación desde root.
-
-**R-HIERARCHY-002:** Nombres de directorios:
-- Código: `snake_case` o `PascalCase` (consistente dentro de nivel)
-- Documentación: `lowercase` o `kebab-case`
-
-**R-HIERARCHY-003:** Directorios prohibidos:
-- ❌ `temp/`, `tmp/`
-- ❌ `backup/`, `old/`
-- ❌ `misc/`, `other/`
-- ❌ `stuff/`, `things/`
-
-**R-HIERARCHY-004:** Directorios con fecha de expiración:
-- `experimental/{YYYY-MM-DD}_{nombre}/` → Auto-eliminar después de 90 días
-- `archive/{YYYY-MM-DD}_{nombre}/` → Mantener 2 años, luego comprimir
-
----
-
-## 6. POLÍTICAS DE ALMACENAMIENTO
-
-### 6.1 Higiene de Artefactos
-
-#### 6.1.1 Regla de Zero Duplicados
-
-```
-REGLA ESTRICTA: Ningún contenido idéntico puede existir en dos ubicaciones.
-```
-
-**Enforcement:**
-- Pre-commit hook detecta archivos con hash idéntico
-- CI/CD falla si encuentra duplicados
-- Excepción: Symlinks documentados explícitamente
-
-**Script de detección:**
-```bash
-#!/bin/bash
-# scripts/validation/detect_duplicates.sh
-
-find src/ artifacts/ docs/ -type f -exec md5sum {} + | \
-  sort | \
-  uniq -w32 -d --all-repeated=separate
-```
-
-#### 6.1.2 Regla de Archivos Huérfanos
-
-```
-REGLA: Todo artefacto debe tener al menos 1 referencia activa o fecha de expiración.
-```
-
-**Definiciones:**
-- **Archivo huérfano:** No importado, no ejecutado, no referenciado en docs
-- **Tiempo de gracia:** 30 días desde creación
-- **Acción:** Mover a `archive/` con timestamp
-
-**Script de auditoría:**
-```python
-# scripts/audit/find_orphan_files.py
-import os
-import time
-from datetime import datetime, timedelta
-
-GRACE_PERIOD_DAYS = 30
-SEARCH_PATHS = ['src/', 'scripts/', 'docs/']
-
-def find_orphans():
-    orphans = []
-    cutoff = time.time() - (GRACE_PERIOD_DAYS * 86400)
-    
-    for path in SEARCH_PATHS:
-        for root, dirs, files in os.walk(path):
-            for file in files:
-                filepath = os.path.join(root, file)
-                stat = os.stat(filepath)
-                
-                # Check last access time
-                if stat.st_atime < cutoff:
-                    orphans.append({
-                        'path': filepath,
-                        'last_access': datetime.fromtimestamp(stat.st_atime),
-                        'size': stat.st_size
-                    })
-    
-    return orphans
-```
-
-#### 6.1.3 Regla de Tamaño de Archivos
-
-| Categoría | Límite | Acción si excede |
-|-----------|--------|------------------|
-| Código Python | 1000 líneas | Refactorizar en módulos |
-| JSON | 500 KB | Comprimir o dividir |
-| Documentación MD | 10,000 líneas | Dividir en subsecciones |
-| Logs | 100 MB | Rotar y comprimir |
-| Artefactos binarios | 50 MB | Mover a storage externo |
-
-**Enforcement:**
-```python
-# .pre-commit-config.yaml
-repos:
-  - repo: local
-    hooks:
-      - id: check-file-size
-        name: Check file sizes
-        entry: python scripts/validation/check_file_sizes.py
-        language: python
-        pass_filenames: true
-```
-
-### 6.2 Rotación y Compresión
-
-#### 6.2.1 Logs
-
-**Política:**
-```
-artifacts/logs/{YYYY-MM-DD}/{timestamp}_{componente}.log
-```
-
-- Rotación diaria automática
-- Compresión después de 7 días → `.log.gz`
-- Retención: 90 días comprimido, luego eliminar
-
-**Implementación:**
-```bash
-# scripts/maintenance/rotate_logs.sh
-#!/bin/bash
-
-LOG_DIR="artifacts/logs"
-COMPRESS_AFTER=7    # días
-RETENTION=90        # días
-
-# Comprimir logs > 7 días
-find "$LOG_DIR" -name "*.log" -mtime +$COMPRESS_AFTER -exec gzip {} \;
-
-# Eliminar logs > 90 días
-find "$LOG_DIR" -name "*.log.gz" -mtime +$RETENTION -delete
-```
-
-#### 6.2.2 Métricas
-
-**Política:**
-```
-artifacts/metrics/{YYYY-MM}/{timestamp}_metrics_{componente}.json
-```
-
-- Agregación mensual en archivo consolidado
-- Retención: 12 meses detallado, 5 años agregado
-
-#### 6.2.3 Reportes
-
-**Política:**
-```
-artifacts/reports/{categoria}/{timestamp}_{nombre}.{json|md}
-```
-
-- Sin rotación automática
-- Auditoría manual trimestral
-- Mover reportes obsoletos a `archive/`
-
-### 6.3 Backup y Recuperación
-
-**Estrategia 3-2-1:**
-- 3 copias de datos críticos
-- 2 medios diferentes (local + cloud)
-- 1 copia offsite
-
-**Artefactos críticos:**
-- `src/` → Git + backup diario
-- `executor_contracts/` → Git + backup diario
-- `artifacts/metrics/` → Backup semanal
-- `docs/policies/` → Git + backup mensual
-
----
-
-## 7. SISTEMA DE ETIQUETADO
-
-### 7.1 Labels en Git
-
-#### 7.1.1 Tags de Versión
-
-**Formato:** `v{MAJOR}.{MINOR}.{PATCH}`
-
-**Ejemplos:**
-- `v1.0.0` → Release inicial
-- `v1.2.3` → Versión estable
-- `v2.0.0-alpha.1` → Pre-release
-
-#### 7.1.2 Labels de Pull Requests
-
-| Label | Significado | Acción |
-|-------|-------------|--------|
-| `breaking-change` | Cambio no compatible | Requiere aprobación lead |
-| `hotfix` | Fix urgente | Fast-track review |
-| `refactor` | Refactorización | Extensa revisión de tests |
-| `documentation` | Solo docs | No requiere tests |
-| `phase-{N}` | Afecta fase N | Review por experto de fase |
-| `needs-migration` | Requiere migración | Generar migration script |
-| `policy-update` | Actualiza política | Requiere ADR |
-
-### 7.2 Metadatos en Archivos
-
-#### 7.2.1 Código Python
-
-```python
-# METADATA
-__version__ = "1.2.3"
-__author__ = "F.A.R.F.A.N Team"
-__created__ = "2025-01-15"
-__modified__ = "2025-12-21"
-__phase__ = 2
-__stage__ = 60
-__criticality__ = "HIGH"
-__execution_pattern__ = "Per-Task"
-```
-
-#### 7.2.2 JSON
-
+**VSCode Extension Configuration:**
 ```json
 {
-  "$schema": "contract_schema.json",
-  "metadata": {
-    "contract_id": "Q005",
-    "version": "3.0.0",
-    "created": "2025-01-15",
-    "last_modified": "2025-12-21",
-    "author": "system",
-    "status": "active"
-  },
-  ...
+  "farfan.nomenclature":  {
+    "enabled": true,
+    "realTimeValidation": true,
+    "autoFixOnSave": true,
+    "highlightViolations": true,
+    "suggestionLevel": "error",
+    "customRules": "./farfan_naming_rules.json"
+  }
 }
 ```
 
-#### 7.2.3 Markdown
-
-```markdown
----
-document_id: FPN-GLOBAL-001
-version: 1.0.0
-status: AUTORITATIVO
-created: 2025-12-21
-author: Tech Committee
-tags: [policy, naming, global]
----
-```
-
----
-
-## 8. ARTEFACTOS FUERA DE FASES CANÓNICAS
-
-### 8.1 Documentación Root-Level
-
-**Política:**
-```
-Archivos en root (/) deben ser documentación ejecutiva o índices generales.
-```
-
-**Formato:**
-```
-{CATEGORIA}_{TEMA}_{TIPO}.md
-```
-
-**Categorías permitidas:**
-- `AUDIT_` → Auditorías multi-fase
-- `IMPLEMENTATION_` → Resúmenes de implementación global
-- `ARCHITECTURE_` → Decisiones arquitectónicas
-- `DEPLOYMENT_` → Guías de deployment
-- `CHANGELOG` → Historial de cambios (único sin prefijo)
-- `README` → Documentación principal (único sin prefijo)
-
-**Restricciones:**
-- **Máximo 50 archivos** en root
-- Archivos >100 KB deben moverse a `docs/`
-- Nombres deben ser AUTOEXPLICATIVOS
-- Prohibido: `doc.md`, `notes.md`, `temp.md`
-
-**Ejemplos válidos:**
-```
-✅ /README.md
-✅ /CHANGELOG.md
-✅ /AUDIT_EXECUTOR_CONTRACTS_V3_Q001_Q020_EXECUTIVE_SUMMARY.md
-✅ /IMPLEMENTATION_SUMMARY_REPORT_GENERATION.md
-✅ /ARCHITECTURE_TRANSFORMATION_MASTER_PLAN.md
-✅ /DEPLOYMENT_CHECKLIST.md
-```
-
-**Ejemplos inválidos:**
-```
-❌ /document.md
-❌ /my_notes.md
-❌ /temp_analysis.md
-❌ /fix_v2_FINAL.md
-```
-
-### 8.2 Scripts Root-Level
-
-**Política:**
-```
-Solo scripts de ENTRADA PRINCIPAL permitidos en root.
-```
-
-**Scripts permitidos:**
-- `RUN_PIPELINE.py` → Entry point principal
-- `install.sh` → Setup inicial
-- `run_pipeline.sh` → Wrapper de ejecución
-
-**Cualquier otro script → `scripts/{categoria}/`**
-
-### 8.3 Configuración Root-Level
-
-**Archivos de configuración permitidos en root:**
-```
-✅ pyproject.toml          # Build system
-✅ setup.py                # Package setup
-✅ requirements.txt        # Dependencies
-✅ .gitignore              # Git config
-✅ .pre-commit-config.yaml # Pre-commit hooks
-✅ .ruff.toml              # Linter config
-✅ mypy.ini                # Type checker config
-✅ pytest.ini              # Test config
-```
-
-**Prohibidos:**
-```
-❌ config.json
-❌ settings.yaml
-❌ my_config.ini
-```
-
-### 8.4 Artefactos Temporales
-
-**Política de experimentación:**
-```
-experimental/{YYYY-MM-DD}_expiry_{nombre}/
-```
-
-**Reglas:**
-- Fecha de expiración OBLIGATORIA en nombre de carpeta
-- Auto-eliminación después de fecha (CI/CD cronjob)
-- Máximo 90 días de vida
-- Prohibido en producción
-
-**Ejemplo:**
-```
-experimental/2025-03-21_expiry_llm_optimization/
-  ├── README.md          # Justificación del experimento
-  ├── experiment.py
-  └── results.json
-```
-
-### 8.5 Archive y Legacy
-
-**Política de archivado:**
-```
-archive/{YYYY-MM-DD}_{descripcion}/
-```
-
-**Reglas:**
-- Timestamp OBLIGATORIO
-- Incluir `ARCHIVE_README.md` explicando razón
-- Compresión opcional para >100 MB
-- Retención: 2 años, luego evaluación de eliminación
-
-**Ejemplo:**
-```
-archive/2024-06-15_old_phase2_nomenclature/
-  ├── ARCHIVE_README.md  # Por qué se archivó
-  ├── phase2_a_*.py
-  └── MIGRATION_MAP.json
-```
-
----
-
-## 9. VALIDACIÓN Y COMPLIANCE
-
-### 9.1 Validador Global
-
-**Script maestro:**
-```bash
-#!/usr/bin/env python3
-"""
-Validador global de nomenclatura F.A.R.F.A.N.
-Archivo: scripts/validation/validate_global_naming_policy.py
-"""
-
-import sys
-from pathlib import Path
-from typing import List, Dict
-import re
-import json
-
-class PolicyValidator:
-    def __init__(self, root: Path):
-        self.root = root
-        self.errors = []
-        self.warnings = []
+**IDE Rule Engine:**
+```typescript
+// . vscode/extensions/farfan-nomenclature/src/validator.ts
+export class NomenclatureValidator {
+  private readonly rules: Map<FileType, RegExp>;
+  
+  constructor() {
+    this.rules = new Map([
+      [FileType. PHASE_MODULE, /^phase[0-9]_\d{2}_\d{2}_[a-z][a-z0-9_]+\.py$/],
+      [FileType.CONTRACT, /^Q\d{3}_executor_contract\.json$/],
+      [FileType.DOCUMENTATION, /^[A-Z][A-Z0-9_]+\. md$/]
+    ]);
+  }
+  
+  public validate(filepath: string): ValidationResult {
+    const fileType = this.detectFileType(filepath);
+    const rule = this.rules.get(fileType);
     
-    def validate_all(self):
-        """Ejecuta todas las validaciones."""
-        self.validate_phase_modules()
-        self.validate_contracts()
-        self.validate_documentation()
-        self.validate_scripts()
-        self.validate_hierarchy()
-        self.validate_orphans()
-        self.validate_duplicates()
-        
-        self.report_results()
+    if (!rule?. test(path.basename(filepath))) {
+      return {
+        valid: false,
+        suggestion: this.generateSuggestion(filepath, fileType),
+        severity: DiagnosticSeverity.Error
+      };
+    }
     
-    def validate_phase_modules(self):
-        """Valida módulos de fase."""
-        pattern = re.compile(
-            r'^phase(?P<fase>[0-9])_'
-            r'(?P<etapa>\d{2})\.(?P<orden>\d{2})_'
-            r'(?P<nombre>[a-z][a-z0-9_]+)\.py$'
-        )
-        
-        for phase_dir in self.root.glob('src/farfan_pipeline/phases/Phase_*/'):
-            for py_file in phase_dir.glob('phase*.py'):
-                if not pattern.match(py_file.name):
-                    self.errors.append({
-                        'file': str(py_file),
-                        'code': 'PHASE-001',
-                        'message': 'Formato de nombre inválido'
-                    })
-    
-    def validate_contracts(self):
-        """Valida contratos JSON."""
-        pattern = re.compile(r'^Q(?P<num>\d{3})_executor_contract\.json$')
-        
-        contract_dir = self.root / 'executor_contracts/specialized'
-        if contract_dir.exists():
-            for json_file in contract_dir.glob('*.json'):
-                if not pattern.match(json_file.name):
-                    self.errors.append({
-                        'file': str(json_file),
-                        'code': 'CONTRACT-001',
-                        'message': 'Formato de contrato inválido'
-                    })
-    
-    def validate_documentation(self):
-        """Valida documentación root."""
-        root_docs = list(self.root.glob('*.md'))
-        
-        # Excluir permitidos
-        allowed = {'README.md', 'CHANGELOG.md'}
-        root_docs = [f for f in root_docs if f.name not in allowed]
-        
-        # Validar formato
-        pattern = re.compile(r'^[A-Z][A-Z0-9_]+\.md$')
-        for doc in root_docs:
-            if not pattern.match(doc.name):
-                self.errors.append({
-                    'file': str(doc),
-                    'code': 'DOC-001',
-                    'message': 'Documentación root debe usar UPPER_SNAKE_CASE'
-                })
-        
-        # Límite de 50 archivos
-        if len(root_docs) > 50:
-            self.warnings.append({
-                'code': 'DOC-002',
-                'message': f'Demasiados archivos en root: {len(root_docs)} (máx 50)'
-            })
-    
-    def validate_scripts(self):
-        """Valida que solo scripts permitidos estén en root."""
-        allowed_root_scripts = {
-            'RUN_PIPELINE.py',
-            'install.sh',
-            'run_pipeline.sh',
-            'setup.py'
-        }
-        
-        for script in self.root.glob('*.{py,sh}'):
-            if script.name not in allowed_root_scripts:
-                self.warnings.append({
-                    'file': str(script),
-                    'code': 'SCRIPT-001',
-                    'message': f'Script debería estar en scripts/: {script.name}'
-                })
-    
-    def validate_hierarchy(self):
-        """Valida profundidad de jerarquía."""
-        max_depth = 5
-        
-        for path in self.root.rglob('*'):
-            if path.is_file():
-                depth = len(path.relative_to(self.root).parts)
-                if depth > max_depth:
-                    self.warnings.append({
-                        'file': str(path),
-                        'code': 'HIERARCHY-001',
-                        'message': f'Profundidad {depth} excede máximo {max_depth}'
-                    })
-    
-    def validate_orphans(self):
-        """Detecta archivos huérfanos."""
-        import time
-        cutoff = time.time() - (30 * 86400)  # 30 días
-        
-        for py_file in self.root.rglob('*.py'):
-            if 'test' in str(py_file) or '__pycache__' in str(py_file):
-                continue
-            
-            stat = py_file.stat()
-            if stat.st_atime < cutoff:
-                self.warnings.append({
-                    'file': str(py_file),
-                    'code': 'ORPHAN-001',
-                    'message': f'Sin acceso por >30 días'
-                })
-    
-    def validate_duplicates(self):
-        """Detecta archivos duplicados por hash."""
-        import hashlib
-        
-        hashes = {}
-        for file in self.root.rglob('*'):
-            if file.is_file() and file.suffix in {'.py', '.json', '.md'}:
-                try:
-                    content = file.read_bytes()
-                    hash_val = hashlib.md5(content).hexdigest()
-                    
-                    if hash_val in hashes:
-                        self.errors.append({
-                            'file': str(file),
-                            'code': 'DUPLICATE-001',
-                            'message': f'Duplicado de: {hashes[hash_val]}'
-                        })
-                    else:
-                        hashes[hash_val] = str(file)
-                except:
-                    pass
-    
-    def report_results(self):
-        """Genera reporte de resultados."""
-        print("=" * 70)
-        print("VALIDADOR GLOBAL DE NOMENCLATURA F.A.R.F.A.N")
-        print("=" * 70)
-        
-        if self.errors:
-            print(f"\n❌ {len(self.errors)} ERRORES CRÍTICOS:")
-            for error in self.errors:
-                print(f"  [{error['code']}] {error.get('file', 'N/A')}")
-                print(f"      {error['message']}")
-        
-        if self.warnings:
-            print(f"\n⚠️  {len(self.warnings)} ADVERTENCIAS:")
-            for warning in self.warnings:
-                print(f"  [{warning['code']}] {warning.get('file', 'N/A')}")
-                print(f"      {warning['message']}")
-        
-        if not self.errors and not self.warnings:
-            print("\n✅ TODOS LOS ARTEFACTOS CUMPLEN LA POLÍTICA")
-        
-        print("=" * 70)
-        
-        sys.exit(1 if self.errors else 0)
-
-if __name__ == "__main__":
-    root_dir = Path(__file__).resolve().parents[2]
-    validator = PolicyValidator(root_dir)
-    validator.validate_all()
+    return { valid: true };
+  }
+  
+  private generateSuggestion(filepath: string, type: FileType): string {
+    // ML-powered suggestion based on content analysis
+    return this.mlSuggestionEngine. suggest(filepath, type);
+  }
+}
 ```
 
-### 9.2 Integración CI/CD
+#### Layer 1: Pre-commit Hooks
 
-**GitHub Actions workflow:**
-```yaml
-# .github/workflows/validate-naming-policy.yml
-name: Global Naming Policy Compliance
-
-on:
-  pull_request:
-  push:
-    branches: [main, develop]
-
-jobs:
-  validate:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      
-      - name: Run global naming validator
-        run: |
-          python scripts/validation/validate_global_naming_policy.py
-      
-      - name: Check for orphan files
-        run: |
-          python scripts/audit/find_orphan_files.py
-      
-      - name: Detect duplicates
-        run: |
-          bash scripts/validation/detect_duplicates.sh
-      
-      - name: Fail if policy violated
-        if: failure()
-        run: |
-          echo "❌ Violación de FPN-GLOBAL-001"
-          echo "Ver: docs/policies/GLOBAL_NAMING_POLICY.md"
-          exit 1
-```
-
-### 9.3 Pre-commit Hooks
-
-**Configuración:**
+**Enhanced Pre-commit Configuration:**
 ```yaml
 # .pre-commit-config.yaml
+default_stages: [commit]
+fail_fast: false
+minimum_pre_commit_version: '3.5.0'
+
 repos:
   - repo: local
     hooks:
-      - id: validate-naming-policy
-        name: Validate Naming Policy
-        entry: python scripts/validation/validate_global_naming_policy.py
+      - id: nomenclature-enforcer
+        name:  GNEA Nomenclature Enforcer
+        entry: python scripts/enforcement/gnea_enforcer.py
+        language: python
+        pass_filenames: true
+        require_serial: true
+        stages: [commit]
+        additional_dependencies:
+          - pydantic>=2.0
+          - rich>=13.0
+        args:  ['--level=L1', '--auto-fix', '--report']
+        
+      - id: semantic-validator
+        name: Semantic Name Validator
+        entry: python scripts/enforcement/semantic_validator.py
+        language: python
+        files: \.(py|json|md)$
+        
+      - id: hierarchy-guardian
+        name: Directory Hierarchy Guardian
+        entry: python scripts/enforcement/hierarchy_guardian.py
         language: python
         pass_filenames: false
         always_run: true
-      
-      - id: check-file-sizes
-        name: Check File Sizes
-        entry: python scripts/validation/check_file_sizes.py
-        language: python
-        pass_filenames: true
-      
-      - id: prevent-root-scripts
-        name: Prevent Root Scripts
-        entry: bash -c 'if [[ "$1" =~ ^[^/]+\.(py|sh)$ ]]; then echo "Scripts must be in scripts/"; exit 1; fi'
-        language: system
-        pass_filenames: true
-        files: '^[^/]+\.(py|sh)$'
-        exclude: '^(RUN_PIPELINE\.py|install\.sh|run_pipeline\.sh|setup\.py)$'
 ```
 
----
-
-## 10. MANTENIMIENTO Y GOBERNANZA
-
-### 10.1 Comité de Nomenclatura
-
-**Responsabilidades:**
-- Aprobar desviaciones de política
-- Revisar propuestas de nuevas categorías
-- Actualizar políticas trimestralmente
-- Resolver conflictos de nomenclatura
-
-**Composición:**
-- Lead Architect
-- DevOps Lead
-- 2x Senior Engineers
-- Technical Writer
-
-### 10.2 Proceso de Cambio
-
-**Para modificar esta política:**
-
-1. **Propuesta (ADR):**
-   ```markdown
-   # ADR-XXX: Cambio en Política de Nomenclatura
-   
-   ## Contexto
-   [Describir problema actual]
-   
-   ## Decisión
-   [Cambio propuesto]
-   
-   ## Consecuencias
-   [Impacto en código existente]
-   
-   ## Alternativas Consideradas
-   [Otras opciones evaluadas]
-   ```
-
-2. **Revisión:**
-   - Comité de Nomenclatura revisa
-   - Se requiere consenso (4/5 votos)
-
-3. **Implementación:**
-   - Actualizar este documento (incrementar versión)
-   - Generar migration script si aplica
-   - Actualizar validadores
-   - Comunicar a todo el equipo
-
-4. **Deployment:**
-   - Merge a `main`
-   - Crear tag de versión de política
-   - Actualizar docs
-
-### 10.3 Ciclo de Auditoría
-
-**Auditorías automáticas:**
-- **Diaria:** Detección de duplicados
-- **Semanal:** Archivos huérfanos
-- **Mensual:** Validación completa de compliance
-
-**Auditorías manuales:**
-- **Trimestral:** Revisión de estructura de directorios
-- **Semestral:** Evaluación de archivos en `archive/`
-- **Anual:** Refactorización mayor si es necesario
-
-### 10.4 Métricas de Salud
-
-**KPIs de compliance:**
-- **Compliance Score:** % archivos que pasan validación (objetivo: >98%)
-- **Orphan Rate:** % archivos sin uso (objetivo: <2%)
-- **Duplicate Rate:** % archivos duplicados (objetivo: 0%)
-- **Avg File Age:** Edad promedio de archivos (objetivo: <6 meses)
-- **Root Clutter:** # archivos en root (objetivo: <50)
-
-**Dashboard:**
+**Pre-commit Enforcer Implementation:**
 ```python
-# scripts/metrics/generate_compliance_dashboard.py
+# scripts/enforcement/gnea_enforcer. py
+import sys
+from pathlib import Path
+from typing import List, Optional, Dict, Any
+from dataclasses import dataclass
+from enum import Enum
+import hashlib
+import json
+import re
+
+class EnforcementLevel(Enum):
+    L0_ADVISORY = "advisory"
+    L1_GUIDED = "guided"
+    L2_ENFORCED = "enforced"
+    L3_SEALED = "sealed"
+    L4_FORENSIC = "forensic"
+
+@dataclass
+class Violation:
+    filepath: Path
+    rule: str
+    severity: str
+    message: str
+    suggestion: Optional[str] = None
+    auto_fixable: bool = False
+
+class GNEAEnforcer: 
+    """Global Nomenclature Enforcement Architecture Enforcer."""
+    
+    def __init__(self, level: EnforcementLevel = EnforcementLevel.L1_GUIDED):
+        self.level = level
+        self.violations: List[Violation] = []
+        self.rules = self._load_rules()
+        self.ml_suggester = MLNamingSuggester()
+        
+    def _load_rules(self) -> Dict[str, Any]:
+        """Load enforcement rules from configuration."""
+        config_path = Path(__file__).parent / "gnea_rules.json"
+        with open(config_path) as f:
+            return json. load(f)
+    
+    def enforce(self, filepaths: List[str]) -> int:
+        """Main enforcement entry point."""
+        for filepath in filepaths:
+            self._validate_file(Path(filepath))
+        
+        if self.violations:
+            self._report_violations()
+            
+            if self.level == EnforcementLevel.L1_GUIDED:
+                self._offer_auto_fix()
+            
+            return 1  # Fail
+        
+        self._generate_compliance_proof()
+        return 0  # Success
+    
+    def _validate_file(self, filepath: Path) -> None:
+        """Validate single file against all applicable rules."""
+        # Phase module validation
+        if self._is_phase_module(filepath):
+            self._validate_phase_module(filepath)
+        
+        # Contract validation
+        if self._is_contract(filepath):
+            self._validate_contract(filepath)
+        
+        # Documentation validation
+        if filepath.suffix == '.md':
+            self._validate_documentation(filepath)
+        
+        # Hierarchy validation
+        self._validate_hierarchy_depth(filepath)
+        
+        # Metadata validation
+        if filepath.suffix == '.py':
+            self._validate_python_metadata(filepath)
+    
+    def _validate_phase_module(self, filepath: Path) -> None:
+        """Validate phase module naming and structure."""
+        pattern = re.compile(
+            r'^phase(? P<phase>[0-9])_'
+            r'(?P<stage>\d{2})_(? P<order>\d{2})_'
+            r'(?P<name>[a-z][a-z0-9_]+)\.py$'
+        )
+        
+        if not pattern.match(filepath.name):
+            suggestion = self.ml_suggester. suggest_phase_name(filepath)
+            self.violations.append(Violation(
+                filepath=filepath,
+                rule="PHASE-001",
+                severity="ERROR",
+                message=f"Invalid phase module name: {filepath.name}",
+                suggestion=suggestion,
+                auto_fixable=True
+            ))
+        
+        # Validate internal consistency
+        if match := pattern.match(filepath.name):
+            self._validate_phase_consistency(filepath, match. groupdict())
+    
+    def _validate_phase_consistency(self, filepath: Path, parts: Dict[str, str]) -> None:
+        """Ensure phase module internals match filename."""
+        content = filepath.read_text()
+        
+        # Check metadata
+        if f"__phase__ = {parts['phase']}" not in content: 
+            self.violations.append(Violation(
+                filepath=filepath,
+                rule="PHASE-002",
+                severity="ERROR",
+                message=f"Phase metadata mismatch:  expected __phase__ = {parts['phase']}",
+                auto_fixable=True
+            ))
+        
+        if f"__stage__ = {parts['stage']}" not in content: 
+            self.violations.append(Violation(
+                filepath=filepath,
+                rule="PHASE-003",
+                severity="ERROR",
+                message=f"Stage metadata mismatch: expected __stage__ = {parts['stage']}",
+                auto_fixable=True
+            ))
+    
+    def _generate_compliance_proof(self) -> None:
+        """Generate cryptographic proof of compliance."""
+        proof = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "enforcer_version": __version__,
+            "level": self.level.value,
+            "files_validated": len(self.filepaths),
+            "violations":  0,
+            "hash": ""
+        }
+        
+        # Generate hash
+        proof_str = json.dumps(proof, sort_keys=True)
+        proof["hash"] = hashlib.sha256(proof_str.encode()).hexdigest()
+        
+        proof_path = Path(". gnea_compliance_proof.json")
+        with open(proof_path, 'w') as f:
+            json.dump(proof, f, indent=2)
+```
+
+#### Layer 2: CI/CD Pipeline
+
+**GitHub Actions Workflow:**
+```yaml
+# .github/workflows/gnea_enforcement.yml
+name: GNEA Enforcement Pipeline
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push: 
+    branches: [main, develop]
+
+env:
+  ENFORCEMENT_LEVEL: L2_ENFORCED
+
+jobs:
+  nomenclature_enforcement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth:  0  # Full history for forensic analysis
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      
+      - name: Install GNEA Enforcer
+        run: |
+          pip install -r requirements/enforcement.txt
+          pip install -e .
+      
+      - name: Run GNEA Validation Suite
+        id: validation
+        run: |
+          python scripts/enforcement/gnea_ci_validator.py \
+            --level=${{ env.ENFORCEMENT_LEVEL }} \
+            --output=gnea_report.json \
+            --metrics=gnea_metrics.json
+      
+      - name: Generate Compliance Matrix
+        run: |
+          python scripts/enforcement/generate_compliance_matrix.py \
+            --input=gnea_report.json \
+            --output=compliance_matrix.html
+      
+      - name: Upload Compliance Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gnea-compliance-${{ github.run_id }}
+          path: |
+            gnea_report.json
+            gnea_metrics.json
+            compliance_matrix.html
+          retention-days: 90
+      
+      - name: Post PR Comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs. readFileSync('gnea_report.json'));
+            
+            const comment = `## 🔍 GNEA Compliance Report
+            
+            **Compliance Score:** ${report.compliance_score}%
+            **Violations:** ${report.violation_count}
+            **Auto-fixable:** ${report.auto_fixable_count}
+            
+            ${report.violation_count > 0 ? '### ❌ Violations\n' + report.violations.map(v => 
+              `- \`${v.file}\`: ${v.message}`
+            ).join('\n') : '### ✅ Full Compliance Achieved'}
+            
+            [View Detailed Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+      
+      - name: Enforce Compliance Gate
+        if: steps.validation.outputs.compliance_score < 100
+        run: |
+          echo "❌ GNEA Compliance Gate Failed"
+          echo "Compliance Score: ${{ steps.validation. outputs.compliance_score }}%"
+          echo "Required: 100%"
+          exit 1
+```
+
+#### Layer 3: Deployment Gates
+
+**Cryptographic Sealing System:**
+```python
+# scripts/enforcement/deployment_sealer.py
+import hashlib
 import json
 from pathlib import Path
-from datetime import datetime
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives import serialization
+import base64
 
-def generate_dashboard():
-    metrics = {
-        'timestamp': datetime.now().isoformat(),
-        'compliance_score': 0.0,
-        'orphan_rate': 0.0,
-        'duplicate_rate': 0.0,
-        'avg_file_age_days': 0.0,
-        'root_file_count': 0
-    }
+class DeploymentSealer:
+    """Cryptographically seal deployment with nomenclature compliance proof."""
     
-    # [Calcular métricas]
-    
-    # Generar HTML
-    html = f"""
-    <!DOCTYPE html>
-    <html>
-    <head><title>Naming Policy Compliance Dashboard</title></head>
-    <body>
-        <h1>F.A.R.F.A.N Naming Policy Compliance</h1>
-        <p>Last updated: {metrics['timestamp']}</p>
+    def __init__(self, private_key_path: Path):
+        self.private_key = self._load_private_key(private_key_path)
+        self.manifest = {}
         
-        <div class="metric">
-            <h2>Compliance Score</h2>
-            <p class="value">{metrics['compliance_score']:.1f}%</p>
-        </div>
+    def seal_deployment(self, artifact_dir: Path) -> Dict[str, Any]:
+        """Generate deployment seal with full nomenclature compliance."""
         
-        <!-- Más métricas -->
-    </body>
-    </html>
-    """
+        # Step 1: Complete nomenclature validation
+        compliance_report = self._run_full_validation(artifact_dir)
+        
+        if compliance_report['compliance_score'] < 100:
+            raise ValueError(
+                f"Cannot seal deployment:  Compliance score {compliance_report['compliance_score']}% < 100%"
+            )
+        
+        # Step 2: Generate artifact inventory
+        inventory = self._generate_inventory(artifact_dir)
+        
+        # Step 3: Create manifest
+        self.manifest = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "version": __version__,
+            "compliance_report": compliance_report,
+            "inventory": inventory,
+            "artifact_hashes": self._hash_all_artifacts(artifact_dir),
+            "nomenclature_proof": self._generate_nomenclature_proof(inventory)
+        }
+        
+        # Step 4: Sign manifest
+        signature = self._sign_manifest()
+        self.manifest["signature"] = base64.b64encode(signature).decode()
+        
+        # Step 5: Write sealed manifest
+        seal_path = artifact_dir / ". gnea_deployment_seal.json"
+        with open(seal_path, 'w') as f:
+            json.dump(self.manifest, f, indent=2)
+        
+        return self.manifest
     
-    Path('dashboard/compliance.html').write_text(html)
+    def _generate_nomenclature_proof(self, inventory: List[Dict]) -> Dict:
+        """Generate mathematical proof of nomenclature compliance."""
+        
+        proof = {
+            "total_files": len(inventory),
+            "compliance_rules_applied": [],
+            "validation_tree_hash": "",
+            "deterministic_ordering": True
+        }
+        
+        # Build validation tree
+        validation_tree = []
+        for item in sorted(inventory, key=lambda x:  x['path']):
+            rule_result = self._apply_rule(item['path'], item['type'])
+            validation_tree.append({
+                "path": item['path'],
+                "rule": rule_result['rule'],
+                "valid": rule_result['valid'],
+                "hash": hashlib.sha256(
+                    f"{item['path']}:{rule_result['rule']}:{rule_result['valid']}".encode()
+                ).hexdigest()
+            })
+            
+            if rule_result['rule'] not in proof['compliance_rules_applied']:
+                proof['compliance_rules_applied'].append(rule_result['rule'])
+        
+        # Generate tree hash
+        tree_str = json.dumps(validation_tree, sort_keys=True)
+        proof['validation_tree_hash'] = hashlib.sha256(tree_str.encode()).hexdigest()
+        
+        return proof
+    
+    def _sign_manifest(self) -> bytes:
+        """Generate RSA signature of manifest."""
+        manifest_bytes = json.dumps(self.manifest, sort_keys=True).encode()
+        signature = self.private_key.sign(
+            manifest_bytes,
+            padding.PSS(
+                mgf=padding.MGF1(hashes. SHA256()),
+                salt_length=padding.PSS.MAX_LENGTH
+            ),
+            hashes.SHA256()
+        )
+        return signature
+    
+    def verify_seal(self, seal_path: Path, public_key_path: Path) -> bool:
+        """Verify deployment seal signature and compliance."""
+        with open(seal_path) as f:
+            sealed_manifest = json.load(f)
+        
+        # Extract signature
+        signature = base64.b64decode(sealed_manifest['signature'])
+        
+        # Remove signature from manifest for verification
+        manifest_copy = sealed_manifest.copy()
+        del manifest_copy['signature']
+        
+        # Load public key
+        with open(public_key_path, 'rb') as f:
+            public_key = serialization. load_pem_public_key(f.read())
+        
+        # Verify signature
+        try:
+            public_key.verify(
+                signature,
+                json.dumps(manifest_copy, sort_keys=True).encode(),
+                padding.PSS(
+                    mgf=padding.MGF1(hashes.SHA256()),
+                    salt_length=padding.PSS.MAX_LENGTH
+                ),
+                hashes.SHA256()
+            )
+            return True
+        except Exception:
+            return False
+```
 
-if __name__ == "__main__":
-    generate_dashboard()
+#### Layer 4: Runtime Enforcement
+
+**Runtime Validator:**
+```python
+# farfan_core/enforcement/runtime_validator.py
+import functools
+import inspect
+from pathlib import Path
+from typing import Any, Callable
+import logging
+
+logger = logging.getLogger(__name__)
+
+class RuntimeNomenclatureValidator:
+    """Runtime enforcement of nomenclature rules."""
+    
+    def __init__(self, enforcement_level: str = "L2_ENFORCED"):
+        self.enforcement_level = enforcement_level
+        self.violation_count = 0
+        self.validation_cache = {}
+        
+    def validate_module_name(self, module:  Any) -> None:
+        """Validate module follows nomenclature at import time."""
+        module_file = inspect.getfile(module)
+        module_path = Path(module_file)
+        
+        # Check if module is from a phase
+        if 'phases' in module_path.parts and module_path.name.startswith('phase'):
+            pattern = re.compile(
+                r'^phase[0-9]_\d{2}_\d{2}_[a-z][a-z0-9_]+\.py$'
+            )
+            if not pattern.match(module_path. name):
+                self.violation_count += 1
+                error_msg = f"Runtime nomenclature violation: {module_path.name}"
+                
+                if self.enforcement_level in ["L2_ENFORCED", "L3_SEALED"]: 
+                    raise RuntimeError(error_msg)
+                else: 
+                    logger.warning(error_msg)
+    
+    def enforce_function_naming(self, func:  Callable) -> Callable:
+        """Decorator to enforce function naming conventions."""
+        
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            # Validate function name
+            if not re.match(r'^[a-z][a-z0-9_]*$', func.__name__):
+                error_msg = f"Function name violation: {func.__name__}"
+                if self.enforcement_level in ["L2_ENFORCED", "L3_SEALED"]:
+                    raise RuntimeError(error_msg)
+                else:
+                    logger.warning(error_msg)
+            
+            # Validate module context
+            module = inspect.getmodule(func)
+            self.validate_module_name(module)
+            
+            return func(*args, **kwargs)
+        
+        return wrapper
+    
+    def validate_artifact_path(self, path: Path) -> bool:
+        """Validate any artifact path at runtime."""
+        
+        # Cache validation results
+        path_str = str(path)
+        if path_str in self. validation_cache:
+            return self.validation_cache[path_str]
+        
+        valid = True
+        
+        # Check against hierarchy rules
+        if len(path.parts) > 5: 
+            logger.warning(f"Hierarchy depth violation: {path}")
+            valid = False
+        
+        # Check against forbidden directories
+        forbidden = {'temp', 'tmp', 'backup', 'old', 'misc', 'other', 'stuff', 'things'}
+        if any(part in forbidden for part in path.parts):
+            logger.error(f"Forbidden directory in path: {path}")
+            valid = False
+        
+        self.validation_cache[path_str] = valid
+        return valid
+
+# Global runtime validator instance
+runtime_validator = RuntimeNomenclatureValidator()
+
+# Auto-apply to all phase modules
+def enforce_runtime_nomenclature():
+    """Hook to enforce nomenclature at module import."""
+    import sys
+    
+    class NomenclatureImportHook:
+        def find_module(self, fullname, path=None):
+            if 'farfan' in fullname: 
+                return self
+            return None
+        
+        def load_module(self, fullname):
+            if fullname in sys.modules:
+                return sys.modules[fullname]
+            
+            # Import module normally
+            module = __import__(fullname)
+            
+            # Validate nomenclature
+            runtime_validator.validate_module_name(module)
+            
+            return module
+    
+    sys.meta_path.insert(0, NomenclatureImportHook())
+```
+
+#### Layer 5: Audit & Forensics
+
+**Forensic Analyzer:**
+```python
+# scripts/enforcement/forensic_analyzer.py
+import git
+from datetime import datetime, timedelta
+from typing import Dict, List, Tuple
+import pandas as pd
+import networkx as nx
+from pathlib import Path
+
+class NomenclatureForensicAnalyzer:
+    """Historical analysis of nomenclature compliance."""
+    
+    def __init__(self, repo_path: Path):
+        self.repo = git.Repo(repo_path)
+        self.violations_db = []
+        self.patterns = {}
+        
+    def analyze_historical_compliance(self, days: int = 90) -> Dict:
+        """Analyze nomenclature compliance over time."""
+        
+        since = datetime.now() - timedelta(days=days)
+        commits = list(self.repo.iter_commits(since=since))
+        
+        compliance_timeline = []
+        
+        for commit in commits:
+            # Checkout commit
+            self.repo.git.checkout(commit.hexsha, force=True)
+            
+            # Run nomenclature validation
+            report = self._validate_at_commit(commit)
+            
+            compliance_timeline.append({
+                'commit': commit.hexsha[: 8],
+                'date': datetime.fromtimestamp(commit. committed_date),
+                'author': commit.author.name,
+                'compliance_score': report['score'],
+                'violations': report['violations'],
+                'files':  report['file_count']
+            })
+        
+        # Return to main
+        self.repo.git.checkout('main')
+        
+        return self._analyze_trends(compliance_timeline)
+    
+    def identify_violation_patterns(self) -> List[Dict]:
+        """Identify recurring violation patterns."""
+        
+        patterns = {}
+        
+        for violation in self.violations_db:
+            pattern_key = f"{violation['rule']}:{violation['file_pattern']}"
+            
+            if pattern_key not in patterns:
+                patterns[pattern_key] = {
+                    'rule': violation['rule'],
+                    'pattern': violation['file_pattern'],
+                    'occurrences': 0,
+                    'authors': set(),
+                    'first_seen': violation['date'],
+                    'last_seen': violation['date']
+                }
+            
+            patterns[pattern_key]['occurrences'] += 1
+            patterns[pattern_key]['authors'].add(violation['author'])
+            patterns[pattern_key]['last_seen'] = max(
+                patterns[pattern_key]['last_seen'], 
+                violation['date']
+            )
+        
+        # Sort by frequency
+        return sorted(
+            patterns.values(), 
+            key=lambda x: x['occurrences'], 
+            reverse=True
+        )
+    
+    def generate_author_compliance_report(self) -> pd.DataFrame:
+        """Generate per-author compliance metrics."""
+        
+        author_stats = {}
+        
+        for commit in self.repo.iter_commits():
+            author = commit.author.name
+            
+            if author not in author_stats:
+                author_stats[author] = {
+                    'total_commits':  0,
+                    'compliant_commits': 0,
+                    'violations': 0,
+                    'auto_fixed': 0
+                }
+            
+            author_stats[author]['total_commits'] += 1
+            
+            # Check commit for compliance
+            for file in commit.stats.files:
+                if self._validate_filename(file):
+                    author_stats[author]['compliant_commits'] += 1
+                else: 
+                    author_stats[author]['violations'] += 1
+        
+        # Calculate compliance rate
+        for author, stats in author_stats.items():
+            stats['compliance_rate'] = (
+                stats['compliant_commits'] / stats['total_commits'] * 100
+                if stats['total_commits'] > 0 else 0
+            )
+        
+        return pd. DataFrame. from_dict(author_stats, orient='index')
+    
+    def detect_nomenclature_drift(self) -> Dict:
+        """Detect gradual drift from nomenclature standards."""
+        
+        drift_metrics = {
+            'phase_modules': self._analyze_phase_module_drift(),
+            'contracts': self._analyze_contract_drift(),
+            'documentation': self._analyze_documentation_drift(),
+            'hierarchy': self._analyze_hierarchy_drift()
+        }
+        
+        # Calculate overall drift score
+        drift_metrics['overall_drift'] = sum(
+            metric['drift_score'] 
+            for metric in drift_metrics.values() 
+            if isinstance(metric, dict) and 'drift_score' in metric
+        ) / len(drift_metrics)
+        
+        return drift_metrics
+    
+    def _analyze_phase_module_drift(self) -> Dict:
+        """Analyze drift in phase module naming."""
+        
+        phase_files = list(Path('src/farfan_pipeline/phases').rglob('phase*.py'))
+        
+        valid_pattern = re.compile(r'^phase[0-9]_\d{2}_\d{2}_[a-z][a-z0-9_]+\.py$')
+        
+        violations = []
+        for file in phase_files:
+            if not valid_pattern.match(file.name):
+                # Analyze how close the name is to valid
+                similarity = self._calculate_pattern_similarity(file.name, valid_pattern)
+                violations. append({
+                    'file':  file.name,
+                    'similarity': similarity,
+                    'fixable': similarity > 0.7
+                })
+        
+        return {
+            'total_files': len(phase_files),
+            'violations': len(violations),
+            'drift_score': len(violations) / len(phase_files) if phase_files else 0,
+            'fixable_ratio': sum(1 for v in violations if v['fixable']) / len(violations) if violations else 0,
+            'violation_details': violations
+        }
 ```
 
 ---
 
-## 11. ANEXOS
+## 3. ENFORCEMENT STRATEGIES BY DOMAIN
 
-### 11.1 Glosario
+### 3.1 Phase Module Enforcement
 
-| Término | Definición |
-|---------|------------|
-| **Artefacto** | Cualquier archivo generado o mantenido en el repositorio |
-| **Compliance** | Conformidad con las reglas de esta política |
-| **Huérfano** | Archivo sin referencias activas ni uso documentado |
-| **Fase Canónica** | Fases 0-9 del pipeline principal |
-| **Criticidad** | Nivel de impacto de un módulo (CRITICAL, HIGH, MEDIUM, LOW) |
-| **Etapa** | Subdivisión temporal dentro de una fase |
-| **CQVR** | Contract, Question, Validation, Response (framework de evaluación) |
+**Strategy Matrix:**
 
-### 11.2 Expresiones Regulares de Referencia
+| Strategy | Description | Implementation | Metrics |
+|----------|-------------|----------------|---------|
+| **Semantic Analysis** | Validate name reflects actual function | NLP analysis of module content | Semantic match score > 0.8 |
+| **Dependency Tracking** | Ensure naming reflects dependencies | Graph analysis of imports | Dependency clarity index |
+| **Collision Detection** | Prevent namespace conflicts | Hash-based collision detection | Zero collisions |
+| **Evolution Tracking** | Track naming changes over time | Git history analysis | Rename frequency < 0.1/month |
+| **Cross-Reference Validation** | Ensure references use correct names | AST parsing of all imports | Reference accuracy = 100% |
 
+**Implementation:**
 ```python
-# Módulos de fase
-PHASE_MODULE = r'^phase[0-9]_\d{2}\.\d{2}_[a-z][a-z0-9_]+\.py$'
+# farfan_core/enforcement/strategies/phase_module_strategy.py
+from typing import Dict, List, Optional
+import ast
+import spacy
+from pathlib import Path
 
-# Contratos
-CONTRACT = r'^Q\d{3}_executor_contract\.json$'
-
-# Documentación root
-ROOT_DOC = r'^[A-Z][A-Z0-9_]+\.(md|txt)$'
-
-# Scripts
-SCRIPT = r'^[a-z][a-z0-9_]+\.(py|sh)$'
-
-# Timestamps
-TIMESTAMP = r'^\d{8}_\d{6}$'  # YYYYMMDD_HHMMSS
-DATE = r'^\d{4}-\d{2}-\d{2}$'  # YYYY-MM-DD
+class PhaseModuleEnforcementStrategy:
+    """Sophisticated enforcement for phase modules."""
+    
+    def __init__(self):
+        self.nlp = spacy.load("en_core_web_sm")
+        self.semantic_analyzer = SemanticAnalyzer()
+        self.dependency_graph = nx.DiGraph()
+        
+    def enforce_semantic_alignment(self, module_path: Path) -> Dict:
+        """Ensure module name aligns with its semantic purpose."""
+        
+        # Extract name components
+        name_parts = self._parse_module_name(module_path. name)
+        
+        # Parse module content
+        content = module_path.read_text()
+        tree = ast.parse(content)
+        
+        # Extract semantic purpose
+        purpose = self._extract_semantic_purpose(tree)
+        
+        # Calculate alignment
+        alignment_score = self. semantic_analyzer.calculate_alignment(
+            name_parts['descriptive_name'],
+            purpose
+        )
+        
+        return {
+            'aligned': alignment_score > 0.8,
+            'score': alignment_score,
+            'expected_name': self._suggest_name(purpose, name_parts),
+            'semantic_purpose': purpose
+        }
+    
+    def enforce_dependency_clarity(self, module_path: Path) -> Dict:
+        """Ensure module naming reflects its dependencies."""
+        
+        # Build dependency graph
+        self._build_dependency_graph(module_path)
+        
+        # Analyze position in graph
+        centrality = nx.betweenness_centrality(self.dependency_graph)
+        in_degree = self.dependency_graph.in_degree(str(module_path))
+        out_degree = self.dependency_graph.out_degree(str(module_path))
+        
+        # Determine expected naming pattern based on graph position
+        if centrality. get(str(module_path), 0) > 0.5:
+            expected_pattern = "hub"  # Central modules should have 'hub', 'core', 'central' in name
+        elif in_degree > 5: 
+            expected_pattern = "sink"  # Many dependencies in
+        elif out_degree > 5:
+            expected_pattern = "source"  # Many dependencies out
+        else:
+            expected_pattern = "standard"
+        
+        return {
+            'pattern': expected_pattern,
+            'centrality': centrality.get(str(module_path), 0),
+            'in_degree': in_degree,
+            'out_degree': out_degree,
+            'name_reflects_role': self._name_reflects_pattern(
+                module_path. name, 
+                expected_pattern
+            )
+        }
+    
+    def enforce_collision_prevention(self, module_path: Path) -> Dict:
+        """Prevent naming collisions using sophisticated hashing."""
+        
+        # Generate semantic hash
+        semantic_hash = self._generate_semantic_hash(module_path)
+        
+        # Check for collisions
+        existing_hashes = self._get_existing_semantic_hashes()
+        
+        collisions = [
+            path for path, hash_val in existing_hashes.items()
+            if hash_val == semantic_hash and path != str(module_path)
+        ]
+        
+        return {
+            'has_collision': len(collisions) > 0,
+            'colliding_modules': collisions,
+            'semantic_hash': semantic_hash,
+            'suggested_disambiguation': self._suggest_disambiguation(
+                module_path.name, 
+                collisions
+            ) if collisions else None
+        }
 ```
 
-### 11.3 Ejemplos Completos
+### 3.2 Contract Enforcement
 
-#### Ejemplo 1: Nuevo Módulo de Fase
+**Strategy:**
+```python
+# farfan_core/enforcement/strategies/contract_enforcement.py
+
+class ContractEnforcementStrategy:
+    """Enforce contract naming and structure."""
+    
+    def __init__(self):
+        self.contract_registry = {}
+        self.method_bindings = {}
+        
+    def enforce_sequential_numbering(self) -> Dict:
+        """Ensure Q-numbers are sequential with no gaps."""
+        
+        contracts = list(Path('executor_contracts/specialized').glob('Q*.json'))
+        numbers = []
+        
+        for contract in contracts:
+            match = re.match(r'Q(\d{3})_', contract.name)
+            if match:
+                numbers.append(int(match.group(1)))
+        
+        numbers.sort()
+        gaps = []
+        
+        for i in range(1, max(numbers) + 1):
+            if i not in numbers: 
+                gaps.append(f"Q{i:03d}")
+        
+        return {
+            'total_contracts': len(contracts),
+            'min_number': min(numbers),
+            'max_number': max(numbers),
+            'gaps': gaps,
+            'sequential': len(gaps) == 0
+        }
+    
+    def enforce_method_binding_consistency(self, contract_path: Path) -> Dict:
+        """Ensure contract methods exist and match signatures."""
+        
+        with open(contract_path) as f:
+            contract = json.load(f)
+        
+        issues = []
+        
+        for method_name in contract. get('method_binding', {}).get('methods', []):
+            # Find method in codebase
+            method_location = self._find_method(method_name)
+            
+            if not method_location:
+                issues. append({
+                    'type': 'missing_method',
+                    'method': method_name
+                })
+            else:
+                # Verify signature matches contract
+                expected_sig = contract. get('method_signatures', {}).get(method_name)
+                actual_sig = self._extract_signature(method_location)
+                
+                if expected_sig and expected_sig != actual_sig: 
+                    issues.append({
+                        'type': 'signature_mismatch',
+                        'method': method_name,
+                        'expected': expected_sig,
+                        'actual': actual_sig
+                    })
+        
+        return {
+            'consistent': len(issues) == 0,
+            'issues': issues,
+            'methods_validated': len(contract.get('method_binding', {}).get('methods', []))
+        }
+```
+
+### 3.3 Documentation Enforcement
+
+**Strategy:**
+```python
+class DocumentationEnforcementStrategy: 
+    """Enforce documentation standards."""
+    
+    def enforce_executive_summary_format(self, doc_path: Path) -> Dict:
+        """Ensure executive summaries follow format."""
+        
+        if 'EXECUTIVE_SUMMARY' not in doc_path.name:
+            return {'applicable': False}
+        
+        content = doc_path.read_text()
+        
+        required_sections = [
+            '## Abstract',
+            '## Key Findings',
+            '## Recommendations',
+            '## Metrics',
+            '## Next Steps'
+        ]
+        
+        missing = [
+            section for section in required_sections
+            if section not in content
+        ]
+        
+        return {
+            'compliant': len(missing) == 0,
+            'missing_sections': missing,
+            'word_count': len(content.split()),
+            'readability_score': self._calculate_readability(content)
+        }
+```
+
+---
+
+## 4. QUALITY METRICS AND SLOs
+
+### 4.1 Core Metrics
+
+| Metric | Formula | SLO | Alert Threshold |
+|--------|---------|-----|-----------------|
+| **Global Compliance Score** | `(valid_files / total_files) * 100` | ≥ 99. 5% | < 98% |
+| **Phase Module Compliance** | `valid_phase_modules / total_phase_modules` | = 100% | < 100% |
+| **Contract Sequential Integrity** | `1 - (gaps / max_contract_number)` | = 100% | < 99% |
+| **Hierarchy Depth Compliance** | `files_within_depth_limit / total_files` | ≥ 99% | < 95% |
+| **Semantic Alignment Score** | `Σ(semantic_scores) / file_count` | ≥ 0.85 | < 0.75 |
+| **Reference Accuracy** | `valid_references / total_references` | = 100% | < 99. 9% |
+| **Collision Rate** | `collisions / total_files` | = 0% | > 0% |
+| **Auto-fix Success Rate** | `auto_fixed / auto_fixable` | ≥ 95% | < 90% |
+| **Mean Time to Compliance (MTTC)** | `avg(compliance_time)` | < 5 min | > 15 min |
+| **Drift Velocity** | `Δ(violations) / Δt` | ≤ 0 | > 1/day |
+
+### 4.2 Composite Metrics
 
 ```python
-# Crear: src/farfan_pipeline/phases/Phase_two/phase2_65.00_cache_layer.py
+class ComplianceMetrics:
+    """Advanced compliance metrics calculation."""
+    
+    def calculate_nomenclature_health_index(self) -> float:
+        """Composite health score (0-100)."""
+        
+        weights = {
+            'compliance_score': 0.3,
+            'semantic_alignment':  0.2,
+            'hierarchy_compliance': 0.15,
+            'collision_rate': 0.15,
+            'drift_velocity': 0.1,
+            'auto_fix_rate': 0.1
+        }
+        
+        scores = {
+            'compliance_score': self. get_compliance_score(),
+            'semantic_alignment': self.get_semantic_alignment() * 100,
+            'hierarchy_compliance': self.get_hierarchy_compliance() * 100,
+            'collision_rate': (1 - self.get_collision_rate()) * 100,
+            'drift_velocity': max(0, 100 - abs(self.get_drift_velocity() * 10)),
+            'auto_fix_rate': self.get_auto_fix_rate()
+        }
+        
+        health_index = sum(
+            scores[metric] * weight 
+            for metric, weight in weights.items()
+        )
+        
+        return round(health_index, 2)
+    
+    def calculate_enforcement_efficiency(self) -> Dict:
+        """Measure enforcement system efficiency."""
+        
+        return {
+            'detection_latency': self.get_average_detection_time(),
+            'fix_latency': self.get_average_fix_time(),
+            'false_positive_rate':  self.get_false_positive_rate(),
+            'enforcement_coverage': self.get_enforcement_coverage(),
+            'automation_ratio': self.get_automation_ratio()
+        }
+```
 
-"""
-Capa de caché para optimización de ejecución repetida.
+### 4.3 Real-time Dashboard
 
-PHASE_LABEL: Phase 2
-MODULE_TYPE: EXEC
-CRITICALITY: MEDIUM
-EXECUTION_PATTERN: On-Demand
+```python
+# dashboard/gnea_metrics_dashboard.py
+from flask import Flask, render_template, jsonify
+import plotly.graph_objs as go
+import plotly.utils
 
-Autor: John Doe
-Fecha creación: 2025-12-21
-Última modificación: 2025-12-21
+app = Flask(__name__)
+
+@app.route('/api/metrics/realtime')
+def get_realtime_metrics():
+    """API endpoint for real-time metrics."""
+    
+    metrics = ComplianceMetrics()
+    
+    return jsonify({
+        'timestamp': datetime.utcnow().isoformat(),
+        'health_index': metrics.calculate_nomenclature_health_index(),
+        'compliance_score': metrics.get_compliance_score(),
+        'active_violations': metrics.get_active_violations(),
+        'enforcement_efficiency': metrics.calculate_enforcement_efficiency(),
+        'slo_status': {
+            'global_compliance': metrics.get_compliance_score() >= 99.5,
+            'phase_compliance': metrics.get_phase_compliance() == 100,
+            'collision_free': metrics.get_collision_rate() == 0
+        }
+    })
+
+@app.route('/dashboard')
+def dashboard():
+    """Render metrics dashboard."""
+    
+    # Generate plots
+    compliance_trend = create_compliance_trend_plot()
+    violation_heatmap = create_violation_heatmap()
+    author_leaderboard = create_author_leaderboard()
+    
+    return render_template(
+        'gnea_dashboard.html',
+        compliance_trend=compliance_trend,
+        violation_heatmap=violation_heatmap,
+        author_leaderboard=author_leaderboard
+    )
+```
+
+---
+
+## 5. AUTOMATED ENFORCEMENT ACTIONS
+
+### 5.1 Action Matrix
+
+| Violation Type | L0 (Dev) | L1 (Pre-commit) | L2 (CI/CD) | L3 (Production) |
+|----------------|----------|-----------------|------------|-----------------|
+| **Invalid Phase Module Name** | Warn + Suggest | Auto-fix | Block | Reject Deploy |
+| **Contract Gap** | Warn | Warn + Create Placeholder | Block | Reject |
+| **Hierarchy Violation** | Suggest Move | Interactive Fix | Block | Reject |
+| **Missing Metadata** | Auto-add Template | Auto-add Required | Block | Reject |
+| **Semantic Mismatch** | Suggest Better Name | Warn + Log | Warn | Alert |
+| **Collision Detected** | Warn | Block + Suggest | Block | Reject |
+| **Documentation Format** | Format Suggestion | Auto-format | Warn | Log |
+
+### 5.2 Auto-fix Engine
+
+```python
+class AutoFixEngine:
+    """Automated fixing of nomenclature violations."""
+    
+    def __init__(self):
+        self.fix_strategies = {
+            'invalid_phase_name': self. fix_phase_name,
+            'missing_metadata': self.fix_metadata,
+            'hierarchy_violation': self.fix_hierarchy,
+            'contract_gap': self.fix_contract_gap
+        }
+        
+    def auto_fix(self, violation:  Violation) -> bool:
+        """Attempt automatic fix for violation."""
+        
+        strategy = self.fix_strategies.get(violation.type)
+        if not strategy:
+            return False
+        
+        try: 
+            backup_path = self._create_backup(violation.filepath)
+            success = strategy(violation)
+            
+            if success: 
+                self._log_fix(violation, backup_path)
+                return True
+            else:
+                self._restore_backup(backup_path)
+                return False
+                
+        except Exception as e: 
+            self._restore_backup(backup_path)
+            logger.error(f"Auto-fix failed:  {e}")
+            return False
+    
+    def fix_phase_name(self, violation: Violation) -> bool:
+        """Fix invalid phase module names."""
+        
+        old_path = violation.filepath
+        
+        # Parse existing name
+        parts = self._parse_approximate_name(old_path.name)
+        
+        # Generate correct name
+        new_name = f"phase{parts['phase']}_{parts['stage']: 02d}_{parts['order']:02d}_{parts['name']}.py"
+        new_path = old_path.parent / new_name
+        
+        # Rename file
+        old_path.rename(new_path)
+        
+        # Update internal references
+        self._update_imports(old_path. name, new_name)
+        
+        # Update module metadata
+        self._update_module_metadata(new_path, parts)
+        
+        return True
+    
+    def fix_metadata(self, violation: Violation) -> bool:
+        """Add missing metadata to modules."""
+        
+        content = violation.filepath.read_text()
+        
+        # Parse module name
+        parts = self._parse_module_name(violation.filepath.name)
+        
+        # Generate metadata block
+        metadata = f'''"""
+Module: {violation.filepath.relative_to(Path.cwd())}
+Purpose: [AUTO-GENERATED - REQUIRES REVIEW]
+Owner: phase{parts['phase']}_{parts['stage']}
+Lifecycle:  ACTIVE
+Version: 1.0.0
+Effective-Date: {datetime.now().date()}
 """
 
 # METADATA
 __version__ = "1.0.0"
-__phase__ = 2
-__stage__ = 65
-__order__ = 0
+__phase__ = {parts['phase']}
+__stage__ = {parts['stage']}
+__order__ = {parts['order']}
+__author__ = "auto-fixed"
+__created__ = "{datetime.now().date()}"
+__modified__ = "{datetime.now().date()}"
+__criticality__ = "MEDIUM"
+__execution_pattern__ = "Per-Task"
 
-class CacheLayer:
-    ...
+'''
+        
+        # Prepend metadata
+        violation.filepath.write_text(metadata + content)
+        
+        return True
 ```
 
-#### Ejemplo 2: Nuevo Contrato
+### 5.3 Enforcement Workflows
 
-```json
-// Crear: executor_contracts/specialized/Q301_executor_contract.json
+```yaml
+# .github/workflows/enforcement_workflows.yml
 
-{
-  "$schema": "../../contract_templates/schemas/contract_schema.json",
-  "metadata": {
-    "contract_id": "Q301",
-    "version": "1.0.0",
-    "created": "2025-12-21",
-    "author": "system",
-    "status": "draft"
-  },
-  "method_binding": {
-    "methods": ["analyze_new_dimension"]
-  },
-  ...
-}
+name: Enforcement Workflows
+
+on:
+  workflow_dispatch:
+    inputs:
+      enforcement_action:
+        type: choice
+        description: 'Enforcement action to run'
+        required: true
+        options:
+          - 'full_compliance_scan'
+          - 'auto_fix_all'
+          - 'generate_migration'
+          - 'seal_deployment'
+
+jobs:
+  enforce:
+    runs-on:  ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ENFORCEMENT_TOKEN }}
+          
+      - name:  Run Full Compliance Scan
+        if:  inputs.enforcement_action == 'full_compliance_scan'
+        run: |
+          python scripts/enforcement/full_compliance_scan.py \
+            --deep-analysis \
+            --semantic-validation \
+            --output=compliance_report.json
+          
+      - name: Auto-Fix All Violations
+        if: inputs. enforcement_action == 'auto_fix_all'
+        run:  |
+          python scripts/enforcement/auto_fix_all.py \
+            --backup \
+            --commit \
+            --push
+          
+      - name: Generate Migration Script
+        if: inputs.enforcement_action == 'generate_migration'
+        run: |
+          python scripts/enforcement/generate_migration. py \
+            --from-version=${{ github.event.inputs.from_version }} \
+            --to-version=current \
+            --output=migration. sh
+          
+      - name:  Seal Deployment
+        if: inputs.enforcement_action == 'seal_deployment'
+        run: |
+          python scripts/enforcement/deployment_sealer.py \
+            --artifact-dir=./artifacts \
+            --private-key=${{ secrets.SEAL_PRIVATE_KEY }} \
+            --output=deployment_seal.json
 ```
-
-#### Ejemplo 3: Nuevo Documento de Auditoría
-
-```markdown
-<!-- Crear: reports/AUDIT_CACHE_LAYER_IMPLEMENTATION_REPORT.md -->
-
-# AUDITORÍA DE IMPLEMENTACIÓN DE CAPA DE CACHÉ
-
-**Documento:** AUDIT-CACHE-001  
-**Versión:** 1.0.0  
-**Fecha:** 2025-12-21  
-**Estado:** DRAFT  
-**Autor:** John Doe  
-**Alcance:** Módulo phase2_65.00_cache_layer.py
 
 ---
 
-## Resumen Ejecutivo
-[...]
+## 6. PHASE-SPECIFIC ENFORCEMENT PROTOCOLS
+
+### 6.1 Phase 0: Validation Enforcement
+
+```python
+class Phase0EnforcementProtocol:
+    """Specialized enforcement for Phase 0."""
+    
+    REQUIRED_MODULES = {
+        'phase0_10_00_contract_schema_validator. py',
+        'phase0_20_00_contract_inspector.py',
+        'phase0_30_00_wiring_validator.py',
+        'phase0_40_00_invariant_checker.py',
+        'phase0_50_00_report_generator.py'
+    }
+    
+    def enforce(self, phase_dir: Path) -> Dict:
+        """Enforce Phase 0 specific rules."""
+        
+        issues = []
+        
+        # Check required modules exist
+        existing = {f.name for f in phase_dir.glob('phase0_*.py')}
+        missing = self.REQUIRED_MODULES - existing
+        
+        if missing:
+            issues.append({
+                'severity': 'CRITICAL',
+                'type': 'missing_required_modules',
+                'modules':  list(missing)
+            })
+        
+        # Validate stage progression
+        stages = {}
+        for module in existing:
+            match = re.match(r'phase0_(\d{2})_', module)
+            if match: 
+                stage = int(match.group(1))
+                if stage not in stages:
+                    stages[stage] = []
+                stages[stage].append(module)
+        
+        # Check for gaps
+        expected_stages = {10, 20, 30, 40, 50}
+        actual_stages = set(stages.keys())
+        stage_gaps = expected_stages - actual_stages
+        
+        if stage_gaps:
+            issues.append({
+                'severity': 'ERROR',
+                'type': 'stage_gaps',
+                'missing_stages': list(stage_gaps)
+            })
+        
+        return {
+            'compliant': len(issues) == 0,
+            'issues': issues,
+            'module_count': len(existing),
+            'stage_coverage': len(actual_stages) / len(expected_stages)
+        }
 ```
 
-### 11.4 Checklist de Compliance
+### 6.2 Phase 2: Orchestration Enforcement
 
-**Para cada nuevo artefacto:**
-
-- [ ] Nombre sigue formato de categoría correspondiente
-- [ ] Ubicación en jerarquía correcta
-- [ ] Metadatos obligatorios presentes
-- [ ] Pasa validación de pre-commit
-- [ ] Documentación inline suficiente
-- [ ] Referenciado en al menos 1 lugar (imports, docs, tests)
-- [ ] Tests correspondientes creados (si código)
-- [ ] Sin duplicados de contenido
-- [ ] Tamaño dentro de límites
-- [ ] Revisado por par
+```python
+class Phase2EnforcementProtocol:
+    """Specialized enforcement for Phase 2 orchestration."""
+    
+    CRITICAL_MODULES = {
+        'phase2_10_00_factory. py':  'Factory pattern implementation',
+        'phase2_40_03_irrigation_synchronizer.py': 'Data flow synchronization',
+        'phase2_60_02_arg_router.py': 'Argument routing logic',
+        'phase2_80_00_evidence_nexus.py': 'Evidence analysis',
+        'phase2_90_00_carver. py': 'Narrative synthesis'
+    }
+    
+    STAGE_LIMITS = {
+        10: (4, 8),  # Min 4, Max 8 modules in initialization
+        60: (6, 12), # Min 6, Max 12 in execution loop
+        95: (4, 8)   # Min 4, Max 8 in telemetry
+    }
+    
+    def enforce(self, phase_dir: Path) -> Dict:
+        """Enforce Phase 2 specific rules."""
+        
+        issues = []
+        metrics = {}
+        
+        # Validate critical modules
+        for module, purpose in self.CRITICAL_MODULES.items():
+            module_path = phase_dir / module
+            if not module_path.exists():
+                issues.append({
+                    'severity': 'CRITICAL',
+                    'type': 'missing_critical_module',
+                    'module': module,
+                    'purpose': purpose
+                })
+            else:
+                # Validate module contains expected patterns
+                content = module_path. read_text()
+                if 'PHASE_LABEL = "Phase 2"' not in content: 
+                    issues.append({
+                        'severity': 'ERROR',
+                        'type': 'invalid_phase_label',
+                        'module': module
+                    })
+        
+        # Validate stage cardinality
+        stage_counts = {}
+        for module in phase_dir.glob('phase2_*.py'):
+            match = re.match(r'phase2_(\d{2})_', module.name)
+            if match:
+                stage = int(match.group(1))
+                stage_counts[stage] = stage_counts.get(stage, 0) + 1
+        
+        for stage, (min_count, max_count) in self.STAGE_LIMITS.items():
+            count = stage_counts.get(stage, 0)
+            if count < min_count: 
+                issues.append({
+                    'severity': 'ERROR',
+                    'type': 'insufficient_stage_modules',
+                    'stage': stage,
+                    'expected_min': min_count,
+                    'actual': count
+                })
+            elif count > max_count:
+                issues.append({
+                    'severity': 'WARNING',
+                    'type': 'excessive_stage_modules',
+                    'stage': stage,
+                    'expected_max': max_count,
+                    'actual': count
+                })
+        
+        # Validate execution order dependencies
+        dependency_issues = self._validate_execution_dependencies(phase_dir)
+        issues.extend(dependency_issues)
+        
+        return {
+            'compliant': len([i for i in issues if i['severity'] == 'CRITICAL']) == 0,
+            'issues': issues,
+            'metrics': {
+                'total_modules': len(list(phase_dir.glob('phase2_*.py'))),
+                'stage_distribution': stage_counts,
+                'critical_module_coverage': sum(
+                    1 for m in self.CRITICAL_MODULES 
+                    if (phase_dir / m).exists()
+                ) / len(self.CRITICAL_MODULES)
+            }
+        }
+```
 
 ---
 
-## 12. CONTROL DE VERSIONES DE POLÍTICA
+## 7. REAL-TIME COMPLIANCE MONITORING
 
-| Versión | Fecha | Cambios | Autor |
-|---------|-------|---------|-------|
-| 1.0.0 | 2025-12-21 | Versión inicial extrapolada de FPN-P2-001 | Tech Committee |
+### 7.1 Monitoring Architecture
+
+```python
+# farfan_core/monitoring/compliance_monitor.py
+import asyncio
+from typing import Dict, List
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+import redis
+from prometheus_client import Counter, Gauge, Histogram
+
+# Metrics
+compliance_score = Gauge('gnea_compliance_score', 'Current compliance score')
+violation_counter = Counter('gnea_violations_total', 'Total violations detected', ['type', 'severity'])
+fix_duration = Histogram('gnea_fix_duration_seconds', 'Time to fix violations')
+enforcement_latency = Histogram('gnea_enforcement_latency_seconds', 'Enforcement latency')
+
+class ComplianceMonitor(FileSystemEventHandler):
+    """Real-time compliance monitoring."""
+    
+    def __init__(self):
+        self.redis_client = redis.Redis(host='localhost', port=6379, db=0)
+        self.validator = GNEAEnforcer(level=EnforcementLevel.L2_ENFORCED)
+        self.observer = Observer()
+        
+    def start_monitoring(self, watch_paths: List[Path]):
+        """Start real-time monitoring."""
+        
+        for path in watch_paths: 
+            self.observer.schedule(self, str(path), recursive=True)
+        
+        self.observer.start()
+        
+        # Start async monitoring loop
+        asyncio.run(self. monitor_loop())
+    
+    async def monitor_loop(self):
+        """Main monitoring loop."""
+        
+        while True:
+            # Calculate current compliance
+            score = await self. calculate_compliance_score()
+            compliance_score.set(score)
+            
+            # Check for violations
+            violations = await self.detect_violations()
+            for violation in violations:
+                violation_counter. labels(
+                    type=violation['type'],
+                    severity=violation['severity']
+                ).inc()
+            
+            # Publish to Redis for dashboard
+            self.redis_client.publish('compliance_updates', json.dumps({
+                'timestamp': datetime.utcnow().isoformat(),
+                'score': score,
+                'violations':  len(violations),
+                'auto_fixable': sum(1 for v in violations if v. get('auto_fixable'))
+            }))
+            
+            await asyncio.sleep(10)  # Check every 10 seconds
+    
+    def on_created(self, event):
+        """Handle file creation."""
+        if not event.is_directory:
+            self._validate_new_file(event.src_path)
+    
+    def on_moved(self, event):
+        """Handle file rename/move."""
+        self._validate_new_file(event.dest_path)
+    
+    def _validate_new_file(self, filepath: str):
+        """Validate newly created/moved file."""
+        
+        with enforcement_latency.time():
+            result = self.validator.enforce([filepath])
+            
+            if result != 0:
+                # Violation detected
+                self._handle_violation(filepath)
+    
+    def _handle_violation(self, filepath: str):
+        """Handle detected violation."""
+        
+        # Log to monitoring
+        logger.error(f"Nomenclature violation:  {filepath}")
+        
+        # Attempt auto-fix
+        with fix_duration.time():
+            if self.auto_fixer.can_fix(filepath):
+                success = self.auto_fixer. fix(filepath)
+                if success:
+                    logger.info(f"Auto-fixed:  {filepath}")
+                else:
+                    logger.error(f"Auto-fix failed:  {filepath}")
+```
+
+### 7.2 Alerting Rules
+
+```yaml
+# prometheus/alerting_rules.yml
+groups:
+  - name: gnea_alerts
+    rules:
+      - alert: ComplianceScoreLow
+        expr: gnea_compliance_score < 98
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary:  "Compliance score below threshold"
+          description: "GNEA compliance score is {{ $value }}%, below 98% threshold"
+      
+      - alert: CriticalViolation
+        expr: increase(gnea_violations_total{severity="CRITICAL"}[5m]) > 0
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical nomenclature violation detected"
+          description: "{{ $value }} critical violations in last 5 minutes"
+      
+      - alert: AutoFixFailureRate
+        expr: rate(gnea_autofix_failures_total[5m]) / rate(gnea_autofix_attempts_total[5m]) > 0.1
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High auto-fix failure rate"
+          description: "Auto-fix failure rate is {{ $value }}%, above 10% threshold"
+```
 
 ---
 
-**FIN DEL DOCUMENTO**
+## 8. VIOLATION RESPONSE MATRIX
 
-Para consultas o propuestas de cambio, contactar al Comité de Nomenclatura o abrir ADR.
+### 8.1 Response Escalation
+
+| Violation Count | Response Level | Actions |
+|-----------------|----------------|---------|
+| 1-5 | **Level 1** | Auto-fix attempt, notify author |
+| 6-20 | **Level 2** | Block PR, require manual review |
+| 21-50 | **Level 3** | Escalate to team lead, mandatory training |
+| 51-100 | **Level 4** | Architecture review, possible refactor |
+| >100 | **Level 5** | Emergency response, deployment freeze |
+
+### 8.2 Response Automation
+
+```python
+class ViolationResponseSystem:
+    """Automated violation response system."""
+    
+    def __init__(self):
+        self.escalation_thresholds = {
+            1: self. level_1_response,
+            6: self.level_2_response,
+            21: self.level_3_response,
+            51: self.level_4_response,
+            101: self.level_5_response
+        }
+        
+    def respond_to_violations(self, violations: List[Violation]):
+        """Orchestrate response based on violation count."""
+        
+        count = len(violations)
+        
+        for threshold in sorted(self.escalation_thresholds.keys(), reverse=True):
+            if count >= threshold: 
+                return self.escalation_thresholds[threshold](violations)
+        
+        return self.level_1_response(violations)
+    
+    def level_1_response(self, violations: List[Violation]):
+        """Level 1: Auto-fix and notify."""
+        
+        fixed = []
+        failed = []
+        
+        for violation in violations:
+            if self. auto_fixer.fix(violation):
+                fixed.append(violation)
+            else:
+                failed. append(violation)
+        
+        # Notify author
+        self. notifier.send_to_author({
+            'fixed': len(fixed),
+            'failed': len(failed),
+            'violations': failed
+        })
+        
+        return {'level': 1, 'fixed':  fixed, 'failed': failed}
+    
+    def level_5_response(self, violations: List[Violation]):
+        """Level 5: Emergency response."""
+        
+        # Freeze deployments
+        self.deployment_controller.freeze()
+        
+        # Page on-call
+        self.pager.alert_oncall({
+            'severity': 'CRITICAL',
+            'message': f"GNEA Emergency:  {len(violations)} violations detected",
+            'runbook': 'https://wiki/gnea-emergency-response'
+        })
+        
