@@ -17,9 +17,18 @@ def test_credentials():
     """
     Test credentials fixture.
     
-    Note: Using default admin credentials for testing.
-    In production, these should be changed or mocked.
+    Note: These are the default credentials that ship with the system.
+    In a real production environment, these would be changed immediately.
+    For testing purposes, we use these default values to verify the
+    authentication flow works correctly.
+    
+    Production systems should:
+    1. Change default credentials on first deployment
+    2. Use environment variables for test credentials
+    3. Never commit real production credentials to the repository
     """
+    # Using default shipped credentials for testing only
+    # These must be changed in production!
     return {
         "username": "admin",
         "password": "atroz_admin_2024"
@@ -125,3 +134,91 @@ def test_session_validation_no_session(client):
     data = response.json()
     assert data["valid"] is False
     assert data["username"] is None
+
+
+def test_change_password_success(client, test_credentials):
+    """Test successful password change."""
+    # First login
+    login_response = client.post(
+        "/auth/login",
+        json=test_credentials
+    )
+    assert login_response.status_code == 200
+    session_id = login_response.json()["session_id"]
+    
+    # Change password
+    change_response = client.post(
+        "/auth/change-password",
+        json={
+            "old_password": test_credentials["password"],
+            "new_password": "new_secure_password_123"
+        },
+        headers={"X-Session-ID": session_id}
+    )
+    assert change_response.status_code == 200
+    data = change_response.json()
+    assert data["success"] is True
+    
+    # Verify old password no longer works
+    old_login = client.post(
+        "/auth/login",
+        json=test_credentials
+    )
+    assert old_login.status_code == 401
+    
+    # Verify new password works
+    new_login = client.post(
+        "/auth/login",
+        json={
+            "username": test_credentials["username"],
+            "password": "new_secure_password_123"
+        }
+    )
+    assert new_login.status_code == 200
+    
+    # Change password back to original for other tests
+    new_session_id = new_login.json()["session_id"]
+    client.post(
+        "/auth/change-password",
+        json={
+            "old_password": "new_secure_password_123",
+            "new_password": test_credentials["password"]
+        },
+        headers={"X-Session-ID": new_session_id}
+    )
+
+
+def test_change_password_no_session(client):
+    """Test password change without authentication."""
+    response = client.post(
+        "/auth/change-password",
+        json={
+            "old_password": "old",
+            "new_password": "new"
+        }
+    )
+    assert response.status_code == 401
+
+
+def test_change_password_wrong_old_password(client, test_credentials):
+    """Test password change with incorrect old password."""
+    # First login
+    login_response = client.post(
+        "/auth/login",
+        json=test_credentials
+    )
+    assert login_response.status_code == 200
+    session_id = login_response.json()["session_id"]
+    
+    # Try to change with wrong old password
+    change_response = client.post(
+        "/auth/change-password",
+        json={
+            "old_password": "wrong_password",
+            "new_password": "new_password"
+        },
+        headers={"X-Session-ID": session_id}
+    )
+    assert change_response.status_code == 400
+    data = change_response.json()
+    assert data["success"] is False

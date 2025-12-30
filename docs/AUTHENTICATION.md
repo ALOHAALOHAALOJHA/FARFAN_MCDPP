@@ -87,6 +87,50 @@ Validate the current session.
 }
 ```
 
+### POST /auth/change-password
+
+Change the password for the currently authenticated user.
+
+**Request Headers/Cookies:**
+- Cookie: `atroz_session=<session_id>`
+- OR Header: `X-Session-ID: <session_id>`
+
+**Request Body:**
+```json
+{
+  "old_password": "current_password",
+  "new_password": "new_secure_password"
+}
+```
+
+**Success Response (200):**
+```json
+{
+  "success": true,
+  "message": "Password changed successfully"
+}
+```
+
+**Error Response - Wrong Old Password (400):**
+```json
+{
+  "success": false,
+  "message": "Invalid old password"
+}
+```
+
+**Error Response - No Session (401):**
+```json
+{
+  "success": false,
+  "message": "Authentication required"
+}
+```
+
+**Validation Rules:**
+- Old password: minimum 1 character, maximum 100 characters
+- New password: minimum 8 characters, maximum 100 characters
+
 ## Security Features
 
 1. **Password Hashing**: Passwords are hashed using SHA-256 with unique salts
@@ -100,10 +144,38 @@ Validate the current session.
 
 ## Default Credentials
 
-**Username**: `admin`  
-**Password**: `atroz_admin_2024`
+The system ships with default administrator credentials that **MUST** be changed before deploying to production:
 
-⚠️ **WARNING**: Change the default password in production!
+**Username**: `admin`  
+**Password**: (See `auth_admin.py` for the default password hash)
+
+⚠️ **CRITICAL SECURITY WARNING**: 
+- The default password is hard-coded in `src/farfan_pipeline/dashboard_atroz_/auth_admin.py`
+- This password **MUST** be changed immediately upon first deployment
+- Failure to change the default password is a critical security vulnerability
+- Use the password change endpoint or `AdminAuthenticator.change_password()` method
+
+**To change the default password**:
+
+```python
+from farfan_pipeline.dashboard_atroz_.auth_admin import get_authenticator
+
+auth = get_authenticator()
+auth.change_password(
+    username="admin",
+    old_password="[default_password_here]",
+    new_password="your_secure_password_here"
+)
+```
+
+Or via the API (once logged in with default credentials):
+
+```bash
+curl -X POST http://localhost:8000/auth/change-password \
+  -H "Content-Type: application/json" \
+  -H "X-Session-ID: your_session_id" \
+  -d '{"old_password":"[default]","new_password":"secure_new_password"}'
+```
 
 ## Usage Examples
 
