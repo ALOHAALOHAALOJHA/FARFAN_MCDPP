@@ -1,0 +1,1319 @@
+{
+  "enrichment_summary": {
+    "total_dim03_questions": 50,
+    "questions_enriched": 50,
+    "enrichment_completion": "100.0%"
+  },
+  "dnp_sources": {
+    "pdf_guide": "Guia_orientadora_definicion_de_productos-2.pdf",
+    "excel_catalog": "CATALOGO_DE_PRODUCTOS.xlsx",
+    "product_types_extracted": 257,
+    "products_in_catalog": 424,
+    "validation_sections": 2,
+    "measurement_sections": 13
+  },
+  "enrichment_details": [
+    {
+      "question_id": "Q011",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q011",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q011",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q012",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q012",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q012",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q013",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q013",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q013",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q014",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q014",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q014",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q015",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q015",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q015",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q041",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q041",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q041",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q042",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q042",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q042",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q043",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q043",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q043",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q044",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q044",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q044",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q045",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q045",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q045",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q071",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q071",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q071",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q072",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q072",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q072",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q073",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q073",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q073",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q074",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q074",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q074",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q075",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q075",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q075",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q101",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q101",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q101",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q102",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q102",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q102",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q103",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q103",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q103",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q104",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q104",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q104",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q105",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q105",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q105",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q131",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q131",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q131",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q132",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q132",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q132",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q133",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q133",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q133",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q134",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q134",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q134",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q135",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q135",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q135",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q161",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q161",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q161",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q162",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q162",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q162",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q163",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q163",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q163",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q164",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q164",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q164",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q165",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q165",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q165",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q191",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q191",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q191",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q192",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q192",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q192",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q193",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q193",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q193",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q194",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q194",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q194",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q195",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q195",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q195",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q221",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q221",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q221",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q222",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q222",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q222",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q223",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q223",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q223",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q224",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q224",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q224",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q225",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q225",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q225",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q251",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q251",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q251",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q252",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q252",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q252",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q253",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q253",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q253",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q254",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q254",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q254",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q255",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q255",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q255",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q281",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q281",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q281",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q282",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q282",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q282",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q283",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q283",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q283",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q284",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q284",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q284",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    },
+    {
+      "question_id": "Q285",
+      "enrichment_type": "patterns",
+      "added_count": 3,
+      "sources": [
+        "CATALOGO_DE_PRODUCTOS.xlsx",
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q285",
+      "enrichment_type": "validations",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf"
+      ]
+    },
+    {
+      "question_id": "Q285",
+      "enrichment_type": "expected_elements",
+      "added_count": 3,
+      "sources": [
+        "Guia_orientadora_definicion_de_productos-2.pdf",
+        "CATALOGO_DE_PRODUCTOS.xlsx"
+      ]
+    }
+  ],
+  "timestamp": "2025-12-30T21:37:07.597032",
+  "compliance_standard": "DNP_PRODUCTOS_2024"
+}
