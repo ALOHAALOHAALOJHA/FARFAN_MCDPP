@@ -281,9 +281,9 @@ CANONICAL_RULEBOOK = Rulebook(
         # ─── N3-AUD (validación/auditoría) ───
         Rule(
             rule_id="N3_001_BOOL_VALIDATE",
-            description="Bool + validate/check/verify/test/audit ⇒ N3-AUD",
+            description="Bool + validate/check/verify/test/audit ⇒ N3-AUD (excluye cálculos computacionales)",
             triggers=("return_type:bool", "validate", "check", "verify", "test", "audit"),
-            anti_triggers=(),
+            anti_triggers=("calculate", "compute", "infer", "score", "estimate"),  # Excluir métodos computacionales
             target_level="N3-AUD",
             target_epistemology="POPPERIAN_FALSIFICATIONIST",
             priority=80,
@@ -292,10 +292,19 @@ CANONICAL_RULEBOOK = Rulebook(
             rule_id="N3_002_CONSTRAINT",
             description="Métodos con constraint/validation en nombre son N3-AUD",
             triggers=("constraint", "validation", "assert", "ensure"),
-            anti_triggers=(),
+            anti_triggers=("calculate", "compute"),  # Excluir cálculos
             target_level="N3-AUD",
             target_epistemology="POPPERIAN_FALSIFICATIONIST",
             priority=75,
+        ),
+        Rule(
+            rule_id="N3_003_DETECT_AUDIT",
+            description="detect_*/audit_* con señales de auditoría son N3-AUD (prioridad alta)",
+            triggers=("detect", "audit"),
+            anti_triggers=(),
+            target_level="N3-AUD",
+            target_epistemology="POPPERIAN_FALSIFICATIONIST",
+            priority=78,  # Mayor que N1_001B_DETECT_OBSERVABLE (30)
         ),
         # ─── N4-SYN (síntesis narrativa) ───
         Rule(
@@ -319,9 +328,9 @@ CANONICAL_RULEBOOK = Rulebook(
         # ─── N2-INF (inferencia) ───
         Rule(
             rule_id="N2_001_NUMERIC",
-            description="Retornos numéricos son N2-INF",
+            description="Retornos numéricos son N2-INF (derivados computacionales)",
             triggers=("return_type:float", "return_type:ndarray", "return_type:score", "return_type:distribution"),
-            anti_triggers=(),
+            anti_triggers=("validate", "check", "verify", "audit", "test"),  # Excluir validadores booleanos
             target_level="N2-INF",
             target_epistemology="DETERMINISTIC_LOGICAL",
             priority=60,
@@ -356,12 +365,14 @@ CANONICAL_RULEBOOK = Rulebook(
         ),
         Rule(
             rule_id="N1_001B_DETECT_OBSERVABLE",
-            description="detect_* que busca señales observables es N1-EMP",
-            triggers=("detect",),
-            anti_triggers=("contradiction", "conflict", "violation", "inconsistency", "temporal"),
+            description="detect_* solo para señales puramente observables (raro, mayoría son N3)",
+            triggers=("detect", "name:detect_"),
+            anti_triggers=("contradiction", "conflict", "violation", "inconsistency", "temporal",
+                          "gap", "bottleneck", "allocation", "semantic", "numerical", "logical",
+                          "incompatibility", "anomaly", "error"),  # Ampliar: casi todo detect es N3
             target_level="N1-EMP",
             target_epistemology="POSITIVIST_EMPIRICAL",
-            priority=48,
+            priority=30,  # Bajar prioridad - solo gana si NO hay señales de auditoría
         ),
         Rule(
             rule_id="N1_002_RAW",
@@ -403,12 +414,12 @@ CANONICAL_RULEBOOK = Rulebook(
         ),
         Rule(
             rule_id="N2_004_ANALYZE",
-            description="analyze_* produce inferencias derivadas (N2-INF)",
+            description="analyze_* produce inferencias derivadas (N2-INF) - prioridad alta",
             triggers=("analyze", "analysis"),
             anti_triggers=("validate", "check"),
             target_level="N2-INF",
             target_epistemology="DETERMINISTIC_LOGICAL",
-            priority=50,
+            priority=58,  # Aumentar prioridad para dominar sobre N1_001_EXTRACT en casos ambiguos
         ),
         Rule(
             rule_id="N2_005_IDENTIFY",
