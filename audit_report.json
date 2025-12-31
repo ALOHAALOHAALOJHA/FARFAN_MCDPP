@@ -1,0 +1,132 @@
+{
+  "audit_timestamp": "2025-12-31T18:34:30.471473",
+  "audit_version": "5.0.0",
+  "questions": {
+    "Q001": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q002": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q003": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q004": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q005": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q006": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q007": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q008": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q009": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q010": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q011": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q012": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q013": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q014": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q015": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q016": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q017": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q018": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q019": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q020": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q021": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q022": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q023": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q024": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q025": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q026": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q027": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q028": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q029": {
+      "status": "PASSED",
+      "issues": []
+    },
+    "Q030": {
+      "status": "PASSED",
+      "issues": []
+    }
+  },
+  "antipatterns_detected": [],
+  "summary": {
+    "total": 30,
+    "failed": 0,
+    "repaired": 0
+  }
+}

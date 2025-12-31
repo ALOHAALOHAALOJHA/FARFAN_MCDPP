@@ -1260,11 +1260,12 @@ Legacy files should be renamed according to the manifest in `PHASE_0_CONSTANTS.p
 | 40 | 03 | phase0_40_03_coverage_gate.py | coverage_gate.py | VAL | MEDIUM | 252 |
 | 50 | 00 | phase0_50_00_boot_checks.py | boot_checks.py | ORCH | CRITICAL | 289 |
 | 50 | 01 | phase0_50_01_exit_gates.py | exit_gates.py | ORCH | HIGH | 668 |
-| 90 | 00 | phase0_90_00_main.py | main.py | ENTRY | CRITICAL | 1829 |
+| 90 | 00 | phase0_90_00_main.py | main.py | ENTRY | CRITICAL | 157 |
 | 90 | 01 | phase0_90_01_verified_pipeline_runner.py | verified_pipeline_runner.py | ORCH | CRITICAL | 516 |
 | 90 | 02 | phase0_90_02_bootstrap.py | bootstrap.py | ORCH | CRITICAL | 1163 |
+| 90 | 03 | phase0_90_03_wiring_validator.py | N/A (new) | VAL | CRITICAL | 848 |
 
-**Total:** 21 modules, 9498 lines of code
+**Total:** 22 modules, 8702 lines of code
 
 ### Appendix C: Error Code Reference
 
@@ -1288,6 +1289,7 @@ Legacy files should be renamed according to the manifest in `PHASE_0_CONSTANTS.p
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0.0 | 2025-12-29 | F.A.R.F.A.N Core Team | Initial version with complete stage taxonomy |
+| 1.1.0 | 2025-12-31 | F.A.R.F.A.N Core Team | Added phase0_90_03_wiring_validator.py (7-tier structural integrity gate); Refactored phase0_90_00_main.py to thin CLI wrapper (1829→157 LOC); Updated module count (21→22) and total LOC (9498→8702) |
 
 ---
 
