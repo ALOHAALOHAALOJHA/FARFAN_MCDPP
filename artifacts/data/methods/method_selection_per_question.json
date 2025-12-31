@@ -12,15 +12,15 @@
       "question_text": "¿El diagnóstico del sector presenta datos cuantitativos (tasas, porcentajes, cifras absolutas) con año de referencia y fuente identificada, desagregados por territorio o población?",
       "semantic_profile": {
         "n1_keywords": [
-          "referencia",
-          "año",
-          "identificada",
+          "desagregación",
           "fuente",
-          "desagregación"
+          "identificada",
+          "año",
+          "referencia"
         ],
         "n2_operations": [
-          "semantic_bundling",
-          "dempster_shafer"
+          "dempster_shafer",
+          "semantic_bundling"
         ],
         "n3_veto_conditions": [
           "semantic_contradiction"
@@ -237,8 +237,8 @@
       "semantic_profile": {
         "n1_keywords": [
           "información",
-          "datos",
-          "evidencia"
+          "evidencia",
+          "datos"
         ],
         "n2_operations": [
           "bayesian_update",
@@ -410,10 +410,10 @@
       "semantic_profile": {
         "n1_keywords": [
           "PPI",
-          "recursos",
-          "asignación",
           "COP",
-          "presupuesto"
+          "recursos",
+          "presupuesto",
+          "asignación"
         ],
         "n2_operations": [
           "financial_aggregation",
@@ -634,10 +634,10 @@
       "question_text": "¿El plan identifica las entidades responsables del sector, describe sus capacidades (personal, equipos, protocolos) y señala limitaciones institucionales o necesidades de articulación con el departamento, la nación o entidades especializadas?",
       "semantic_profile": {
         "n1_keywords": [
-          "recursos",
           "articulación",
           "asignación",
-          "presupuesto"
+          "presupuesto",
+          "recursos"
         ],
         "n2_operations": [
           "financial_aggregation",
@@ -860,8 +860,8 @@
         "n1_keywords": [
           "articulación",
           "información",
-          "datos",
-          "evidencia"
+          "evidencia",
+          "datos"
         ],
         "n2_operations": [
           "bayesian_update",
@@ -1032,10 +1032,10 @@
       "question_text": "¿Las actividades del sector aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
       "semantic_profile": {
         "n1_keywords": [
-          "recursos",
           "asignación",
+          "PPI",
           "presupuesto",
-          "PPI"
+          "recursos"
         ],
         "n2_operations": [
           "financial_aggregation",
@@ -1259,9 +1259,9 @@
       "semantic_profile": {
         "n1_keywords": [
           "información",
-          "datos",
           "resultado",
-          "evidencia"
+          "evidencia",
+          "datos"
         ],
         "n2_operations": [
           "bayesian_update",
@@ -1432,13 +1432,13 @@
       "question_text": "¿Las actividades propuestas se vinculan explícitamente con los problemas, causas, brechas o déficits identificados en el diagnóstico del sector (mediante nexos como 'para atender', 'debido a', 'con el fin de', 'porque')?",
       "semantic_profile": {
         "n1_keywords": [
-          "relación",
           "resultado",
+          "relación",
           "actividad"
         ],
         "n2_operations": [
-          "topological_overlay",
-          "graph_construction"
+          "graph_construction",
+          "topological_overlay"
         ],
         "n3_veto_conditions": [
           "cycle_detected"
@@ -1654,9 +1654,9 @@
       "question_text": "¿El plan identifica posibles obstáculos, riesgos o barreras en la implementación de las actividades del sector y propone medidas explícitas de mitigación o estrategias para superarlos?",
       "semantic_profile": {
         "n1_keywords": [
-          "recursos",
           "asignación",
-          "presupuesto"
+          "presupuesto",
+          "recursos"
         ],
         "n2_operations": [
           "financial_aggregation",
@@ -1877,15 +1877,15 @@
       "question_text": "¿El plan describe explícitamente cómo las actividades del sector se complementan, refuerzan mutuamente o siguen una secuencia lógica, evidenciando una estrategia articulada (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación')?",
       "semantic_profile": {
         "n1_keywords": [
-          "contradicción",
-          "articulación",
-          "lógica",
           "factibilidad",
-          "coherencia"
+          "contradicción",
+          "coherencia",
+          "articulación",
+          "lógica"
         ],
         "n2_operations": [
-          "min_consistency",
-          "logical_consistency_check"
+          "logical_consistency_check",
+          "min_consistency"
         ],
         "n3_veto_conditions": [
           "any_contradiction"
@@ -2102,11 +2102,11 @@
       "question_text": "¿Los indicadores de producto del sector (unidades entregadas, personas atendidas, infraestructura construida, servicios prestados) incluyen línea base, meta cuantitativa y fuente de verificación?",
       "semantic_profile": {
         "n1_keywords": [
-          "información",
           "evidencia",
+          "datos",
+          "información",
           "fuente",
-          "línea base",
-          "datos"
+          "línea base"
         ],
         "n2_operations": [
           "bayesian_update",
@@ -2279,9 +2279,9 @@
       "question_text": "¿Las metas de productos guardan relación con la magnitud del problema o déficit identificado en el diagnóstico, y se especifica la priorización (zonas, población), intensidad (frecuencia, duración) o cobertura de la intervención?",
       "semantic_profile": {
         "n1_keywords": [
-          "recursos",
           "asignación",
-          "presupuesto"
+          "presupuesto",
+          "recursos"
         ],
         "n2_operations": [
           "financial_aggregation",
@@ -2502,16 +2502,16 @@
       "question_text": "¿Los productos están vinculados a códigos presupuestales (BPIN, PPI, SGP, recursos específicos) y a entidades responsables identificadas (secretarías, oficinas, dependencias)?",
       "semantic_profile": {
         "n1_keywords": [
-          "referencia",
+          "PPI",
+          "desagregación",
           "BPIN",
           "fuente",
-          "PPI",
           "SGP",
-          "desagregación"
+          "referencia"
         ],
         "n2_operations": [
-          "semantic_bundling",
-          "dempster_shafer"
+          "dempster_shafer",
+          "semantic_bundling"
         ],
         "n3_veto_conditions": [
           "semantic_contradiction"
@@ -2727,15 +2727,15 @@
       "question_text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'un taller de 8 horas', 'una campaña de sensibilización') y la magnitud de la meta del producto asociado, considerando plazos y recursos disponibles? Se debe evaluar si el plan reconoce cuando los resultados requieren intervenciones sostenidas en el tiempo, no eventos puntuales.",
       "semantic_profile": {
         "n1_keywords": [
-          "factibilidad",
-          "factible",
           "recursos",
+          "factibilidad",
           "contradicción",
-          "coherencia"
+          "coherencia",
+          "factible"
         ],
         "n2_operations": [
-          "min_consistency",
-          "logical_consistency_check"
+          "logical_consistency_check",
+          "min_consistency"
         ],
         "n3_veto_conditions": [
           "any_contradiction"
@@ -2952,9 +2952,9 @@
       "question_text": "¿El plan describe cómo los productos del sector generan o contribuyen a los resultados esperados, explicando esta conexión o ruta (se debe buscar descripciones del tipo 'al lograr X se genera Y porque...', 'esto permite...', 'esto conduce a...')?",
       "semantic_profile": {
         "n1_keywords": [
-          "recursos",
           "asignación",
-          "presupuesto"
+          "presupuesto",
+          "recursos"
         ],
         "n2_operations": [
           "financial_aggregation",
@@ -3175,16 +3175,16 @@
       "question_text": "¿Los indicadores de resultado del sector (cambios en condiciones, comportamientos, o situaciones de la población) están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
       "semantic_profile": {
         "n1_keywords": [
-          "resultado",
           "2027",
           "relación",
-          "línea base",
+          "actividad",
           "horizonte",
-          "actividad"
+          "resultado",
+          "línea base"
         ],
         "n2_operations": [
-          "topological_overlay",
-          "graph_construction"
+          "graph_construction",
+          "topological_overlay"
         ],
         "n3_veto_conditions": [
           "cycle_detected"
@@ -3401,8 +3401,8 @@
       "semantic_profile": {
         "n1_keywords": [
           "información",
-          "datos",
-          "evidencia"
+          "evidencia",
+          "datos"
         ],
         "n2_operations": [
           "bayesian_update",
@@ -3573,12 +3573,12 @@
       "question_text": "¿La ambición de las metas de resultado se justifica en función de recursos asignados, capacidad institucional, articulación con otros niveles de gobierno, o se compara con casos o municipios similares?",
       "semantic_profile": {
         "n1_keywords": [
-          "información",
-          "resultado",
           "evidencia",
+          "datos",
+          "información",
           "recursos",
           "articulación",
-          "datos"
+          "resultado"
         ],
         "n2_operations": [
           "bayesian_update",
@@ -3749,13 +3749,13 @@
       "question_text": "¿Los resultados propuestos para el sector atienden o abordan directamente los problemas, déficits o necesidades priorizadas en el diagnóstico?",
       "semantic_profile": {
         "n1_keywords": [
-          "factibilidad",
           "contradicción",
-          "coherencia"
+          "coherencia",
+          "factibilidad"
         ],
         "n2_operations": [
-          "min_consistency",
-          "logical_consistency_check"
+          "logical_consistency_check",
+          "min_consistency"
         ],
         "n3_veto_conditions": [
           "any_contradiction"
@@ -3973,8 +3973,8 @@
       "semantic_profile": {
         "n1_keywords": [
           "información",
-          "datos",
-          "evidencia"
+          "evidencia",
+          "datos"
         ],
         "n2_operations": [
           "bayesian_update",
@@ -4145,11 +4145,11 @@
       "question_text": "¿El plan define impactos o transformaciones de largo plazo para el sector (cambios que trascienden el cuatrienio), describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural')?",
       "semantic_profile": {
         "n1_keywords": [
-          "cuatrienio",
           "recursos",
-          "asignación",
+          "horizonte",
           "presupuesto",
-          "horizonte"
+          "asignación",
+          "cuatrienio"
         ],
         "n2_operations": [
           "financial_aggregation",
@@ -4370,10 +4370,10 @@
       "question_text": "¿Se utilizan índices reconocidos o indicadores proxy para medir impactos del sector, justificando por qué son adecuados para capturar las transformaciones esperadas? Cuando un impacto es difícil de medir directamente, ¿se explica la validez y limitaciones del indicador utilizado?",
       "semantic_profile": {
         "n1_keywords": [
-          "recursos",
           "asignación",
+          "impacto",
           "presupuesto",
-          "impacto"
+          "recursos"
         ],
         "n2_operations": [
           "financial_aggregation",
@@ -4597,8 +4597,8 @@
       "semantic_profile": {
         "n1_keywords": [
           "información",
-          "datos",
-          "evidencia"
+          "evidencia",
+          "datos"
         ],
         "n2_operations": [
           "bayesian_update",
@@ -4770,9 +4770,9 @@
       "semantic_profile": {
         "n1_keywords": [
           "información",
-          "datos",
           "impacto",
-          "evidencia"
+          "evidencia",
+          "datos"
         ],
         "n2_operations": [
           "bayesian_update",
@@ -4946,8 +4946,8 @@
       "semantic_profile": {
         "n1_keywords": [
           "información",
-          "datos",
-          "evidencia"
+          "evidencia",
+          "datos"
         ],
         "n2_operations": [
           "bayesian_update",
@@ -5118,16 +5118,16 @@
       "question_text": "¿El plan presenta una descripción explícita de cómo se generan los cambios en el sector (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal'), preferiblemente en diagrama o matriz, que identifique causas, intervenciones, supuestos y la secuencia insumos→actividades→productos→resultados→impactos?",
       "semantic_profile": {
         "n1_keywords": [
-          "resultado",
           "teoría de cambio",
           "cadena",
           "impacto",
-          "relación",
-          "actividad"
+          "actividad",
+          "resultado",
+          "relación"
         ],
         "n2_operations": [
-          "topological_overlay",
-          "graph_construction"
+          "graph_construction",
+          "topological_overlay"
         ],
         "n3_veto_conditions": [
           "cycle_detected"
@@ -5343,10 +5343,10 @@
       "question_text": "¿El plan evita saltos desproporcionados en su lógica (por ejemplo, no atribuye transformaciones mayores a actividades puntuales), reconociendo explícitamente cuando se requieren procesos sostenidos, múltiples condiciones o factores externos para lograr los cambios esperados (se debe buscar expresiones de cautela como 'requiere tiempo', 'depende de...', 'necesita acompañamiento prolongado')?",
       "semantic_profile": {
         "n1_keywords": [
-          "lógica",
           "información",
-          "datos",
-          "evidencia"
+          "evidencia",
+          "lógica",
+          "datos"
         ],
         "n2_operations": [
           "bayesian_update",
@@ -5517,14 +5517,14 @@
       "question_text": "¿El plan reconoce la complejidad del sector, identifica debilidades o incertidumbres en su estrategia, y propone mecanismos para aprender y ajustar (se debe buscar términos como 'pilotos', 'fase de prueba', 'evaluación', 'ajustes', 'articulación', 'coordinación', 'monitoreo adaptativo')?",
       "semantic_profile": {
         "n1_keywords": [
-          "factibilidad",
           "articulación",
-          "contradicción",
-          "coherencia"
+          "coherencia",
+          "factibilidad",
+          "contradicción"
         ],
         "n2_operations": [
-          "min_consistency",
-          "logical_consistency_check"
+          "logical_consistency_check",
+          "min_consistency"
         ],
         "n3_veto_conditions": [
           "any_contradiction"
@@ -5742,8 +5742,8 @@
       "semantic_profile": {
         "n1_keywords": [
           "información",
-          "datos",
-          "evidencia"
+          "evidencia",
+          "datos"
         ],
         "n2_operations": [
           "bayesian_update",
@@ -5914,13 +5914,13 @@
       "question_text": "¿El plan considera el contexto municipal específico del sector (características territoriales, sociales, económicas, culturales, institucionales), reconoce grupos con necesidades diferenciadas, y explicita restricciones (territoriales, normativas, presupuestales, de capacidad) que condicionan las intervenciones?",
       "semantic_profile": {
         "n1_keywords": [
-          "relación",
           "resultado",
+          "relación",
           "actividad"
         ],
         "n2_operations": [
-          "topological_overlay",
-          "graph_construction"
+          "graph_construction",
+          "topological_overlay"
         ],
         "n3_veto_conditions": [
           "cycle_detected"
