@@ -89,7 +89,8 @@ async def login(credentials: LoginRequest, request: Request) -> Response:
             # Take the rightmost IP (last proxy in chain, most trustworthy)
             ips = [ip.strip() for ip in forwarded_for.split(",")]
             client_ip = ips[-1] if ips else "unknown"
-        elif not client_ip or client_ip == "unknown":
+        else:
+            # Fallback to X-Real-IP if X-Forwarded-For is not present
             client_ip = request.headers.get("X-Real-IP", "unknown")
 
     session_id = auth.authenticate(
