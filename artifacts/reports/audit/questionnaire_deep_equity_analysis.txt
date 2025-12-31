@@ -1,0 +1,276 @@
+====================================================================================================
+DEEP EQUITY ANALYSIS REPORT - questionnaire_monolith.json
+====================================================================================================
+
+Generated: 2025-12-31
+Focus: Hidden imbalances, cross-cutting themes, methodological diversity
+
+====================================================================================================
+1. VALIDATION EQUITY BY POLICY AREA
+====================================================================================================
+
+Policy Area | Mean | Min | Max | Weak (<2) | Assessment
+----------------------------------------------------------------------------------------------------
+PA01     | 1.77 |   1 |   5 | 23 ( 76.7%) | ⚠️ MODERATE
+PA02     | 1.63 |   1 |   5 | 24 ( 80.0%) | ⚠️ MODERATE
+PA03     | 1.63 |   1 |   5 | 24 ( 80.0%) | ⚠️ MODERATE
+PA04     | 1.63 |   1 |   5 | 24 ( 80.0%) | ⚠️ MODERATE
+PA05     | 1.63 |   1 |   5 | 24 ( 80.0%) | ⚠️ MODERATE
+PA06     | 1.63 |   1 |   5 | 24 ( 80.0%) | ⚠️ MODERATE
+PA07     | 1.63 |   1 |   5 | 24 ( 80.0%) | ⚠️ MODERATE
+PA08     | 1.63 |   1 |   5 | 24 ( 80.0%) | ⚠️ MODERATE
+PA09     | 1.63 |   1 |   5 | 24 ( 80.0%) | ⚠️ MODERATE
+PA10     | 1.63 |   1 |   5 | 24 ( 80.0%) | ⚠️ MODERATE
+
+KEY FINDINGS:
+  • Least validated: PA02 (mean: 1.63)
+  • Most validated: PA01 (mean: 1.77)
+  • Range: 0.14 validations
+
+====================================================================================================
+2. VALIDATION EQUITY BY DIMENSION
+====================================================================================================
+
+Dimension | Mean | Min | Max | Weak (<2) | Assessment
+----------------------------------------------------------------------------------------------------
+DIM01     | 1.80 |   1 |   5 | 40 ( 80.0%) | ⚠️ MODERATE
+DIM02     | 1.08 |   1 |   5 | 49 ( 98.0%) | ⚠️ HIGH RISK
+DIM03     | 4.00 |   4 |   4 |  0 (  0.0%) | ✓ OK
+DIM04     | 1.00 |   1 |   1 | 50 (100.0%) | ⚠️ HIGH RISK
+DIM05     | 1.00 |   1 |   1 | 50 (100.0%) | ⚠️ HIGH RISK
+DIM06     | 1.00 |   1 |   1 | 50 (100.0%) | ⚠️ HIGH RISK
+
+====================================================================================================
+3. SCORING MODALITY DIVERSITY BY POLICY AREA
+====================================================================================================
+
+PA01:
+  TYPE_A: 26 (86.7%)
+  TYPE_B: 3 (10.0%)
+  TYPE_E: 1 (3.3%)
+
+PA02:
+  TYPE_A: 26 (86.7%)
+  TYPE_B: 3 (10.0%)
+  TYPE_E: 1 (3.3%)
+
+PA03:
+  TYPE_A: 26 (86.7%)
+  TYPE_B: 3 (10.0%)
+  TYPE_E: 1 (3.3%)
+
+PA04:
+  TYPE_A: 26 (86.7%)
+  TYPE_B: 3 (10.0%)
+  TYPE_E: 1 (3.3%)
+
+PA05:
+  TYPE_A: 26 (86.7%)
+  TYPE_B: 3 (10.0%)
+  TYPE_E: 1 (3.3%)
+
+PA06:
+  TYPE_A: 26 (86.7%)
+  TYPE_B: 3 (10.0%)
+  TYPE_E: 1 (3.3%)
+
+PA07:
+  TYPE_A: 26 (86.7%)
+  TYPE_B: 3 (10.0%)
+  TYPE_E: 1 (3.3%)
+
+PA08:
+  TYPE_A: 26 (86.7%)
+  TYPE_B: 3 (10.0%)
+  TYPE_E: 1 (3.3%)
+
+PA09:
+  TYPE_A: 26 (86.7%)
+  TYPE_B: 3 (10.0%)
+  TYPE_E: 1 (3.3%)
+
+PA10:
+  TYPE_A: 26 (86.7%)
+  TYPE_B: 3 (10.0%)
+  TYPE_E: 1 (3.3%)
+
+ASSESSMENT:
+  • Check if any policy area is over-reliant on a single modality
+  • Verify if modality choice matches policy area evaluation needs
+
+====================================================================================================
+4. EXPECTED ELEMENTS TYPE DIVERSITY
+====================================================================================================
+
+Top 20 Most Common Element Types (Global):
+
+  producto_definicion: 50
+  descripcion_tecnica: 50
+  unidad_medida: 50
+  fuentes_oficiales: 10
+  indicadores_cuantitativos: 10
+  series_temporales_años: 10
+  vacios_explicitos: 10
+  asignacion_explicita: 10
+  suficiencia_justificada: 10
+  trazabilidad_ppi_bpin: 10
+  cuellos_botella: 10
+  gobernanza: 10
+  procesos: 10
+  talento_humano: 10
+  coherencia_demostrada: 10
+  restricciones_legales: 10
+  restricciones_presupuestales: 10
+  columna_costo: 10
+  columna_cronograma: 10
+  columna_producto: 10
+
+Element Type Usage by Policy Area (Top 10 per area):
+
+PA01:
+  producto_definicion: 5
+  descripcion_tecnica: 5
+  unidad_medida: 5
+  cobertura_territorial_especificada: 1
+  fuentes_oficiales: 1
+
+PA02:
+  producto_definicion: 5
+  descripcion_tecnica: 5
+  unidad_medida: 5
+  cobertura_territorial_especificada: 1
+  fuentes_oficiales: 1
+
+PA03:
+  producto_definicion: 5
+  descripcion_tecnica: 5
+  unidad_medida: 5
+  fuentes_oficiales: 1
+  indicadores_cuantitativos: 1
+
+PA04:
+  producto_definicion: 5
+  descripcion_tecnica: 5
+  unidad_medida: 5
+  fuentes_oficiales: 1
+  indicadores_cuantitativos: 1
+
+PA05:
+  producto_definicion: 5
+  descripcion_tecnica: 5
+  unidad_medida: 5
+  fuentes_oficiales: 1
+  indicadores_cuantitativos: 1
+
+PA06:
+  producto_definicion: 5
+  descripcion_tecnica: 5
+  unidad_medida: 5
+  fuentes_oficiales: 1
+  indicadores_cuantitativos: 1
+
+PA07:
+  producto_definicion: 5
+  descripcion_tecnica: 5
+  unidad_medida: 5
+  fuentes_oficiales: 1
+  indicadores_cuantitativos: 1
+
+PA08:
+  producto_definicion: 5
+  descripcion_tecnica: 5
+  unidad_medida: 5
+  fuentes_oficiales: 1
+  indicadores_cuantitativos: 1
+
+PA09:
+  producto_definicion: 5
+  descripcion_tecnica: 5
+  unidad_medida: 5
+  fuentes_oficiales: 1
+  indicadores_cuantitativos: 1
+
+PA10:
+  producto_definicion: 5
+  descripcion_tecnica: 5
+  unidad_medida: 5
+  fuentes_oficiales: 1
+  indicadores_cuantitativos: 1
+
+====================================================================================================
+5. METHOD CLASS DISTRIBUTION
+====================================================================================================
+
+Top 20 Most Used Method Classes (Global):
+
+  PDETMunicipalPlanAnalyzer: 840
+  CausalExtractor: 250
+  BayesianMechanismInference: 210
+  AdvancedDAGValidator: 200
+  IndustrialPolicyProcessor: 190
+  BayesianCounterfactualAuditor: 170
+  PolicyAnalysisEmbedder: 160
+  FinancialAuditor: 140
+  AdaptivePriorCalculator: 140
+  PolicyContradictionDetector: 120
+  HierarchicalGenerativeModel: 120
+  IndustrialGradeValidator: 110
+  TeoriaCambio: 100
+  OperationalizationAuditor: 90
+  SemanticAnalyzer: 90
+  TextMiningEngine: 60
+  PerformanceAnalyzer: 60
+  SemanticProcessor: 50
+  TemporalLogicVerifier: 50
+  ReportingEngine: 50
+
+====================================================================================================
+6. CROSS-CUTTING THEME ANALYSIS
+====================================================================================================
+
+Analysis of gender, rights, and vulnerability themes across all policy areas:
+
+Policy Area | Total Q | Gender Coverage | Rights Coverage | Vulnerability Coverage
+----------------------------------------------------------------------------------------------------
+PA01     |      30 | 30 (100.0%)     | 2 (6.7%)        | 0 (0.0%)              
+PA02     |      30 | 0 (0.0%)        | 0 (0.0%)        | 1 (3.3%)              
+PA03     |      30 | 0 (0.0%)        | 0 (0.0%)        | 2 (6.7%)              
+PA04     |      30 | 0 (0.0%)        | 1 (3.3%)        | 2 (6.7%)              
+PA05     |      30 | 0 (0.0%)        | 1 (3.3%)        | 0 (0.0%)              
+PA06     |      30 | 0 (0.0%)        | 2 (6.7%)        | 2 (6.7%)              
+PA07     |      30 | 0 (0.0%)        | 0 (0.0%)        | 0 (0.0%)              
+PA08     |      30 | 0 (0.0%)        | 0 (0.0%)        | 0 (0.0%)              
+PA09     |      30 | 2 (6.7%)        | 2 (6.7%)        | 0 (0.0%)              
+PA10     |      30 | 1 (3.3%)        | 0 (0.0%)        | 0 (0.0%)              
+
+EQUITY ASSESSMENT:
+  • Policy areas with <10% gender coverage may need enrichment
+  • Rights-based approach should appear in multiple policy areas
+  • Vulnerability considerations should not be limited to PA10
+
+====================================================================================================
+7. KEY RECOMMENDATIONS FOR EQUITY
+====================================================================================================
+
+Based on this deep analysis:
+
+1. VALIDATION NORMALIZATION:
+
+2. SCORING MODALITY REVIEW:
+   • Examine policy areas with 100% TYPE_A scoring
+   • Consider TYPE_B, TYPE_E for qualitative assessments
+   • Introduce TYPE_C/D/F for specialized evaluation needs
+
+3. CROSS-CUTTING ENRICHMENT:
+   • Add gender perspective to non-PA01 areas with <10% coverage
+   • Integrate rights-based language across all dimensions
+   • Ensure vulnerability is addressed beyond PA10
+
+4. METHOD DIVERSIFICATION:
+   • Review method class concentration by policy area
+   • Ensure analytical diversity matches policy complexity
+   • Avoid over-reliance on single method classes
+
+====================================================================================================
+END OF DEEP EQUITY ANALYSIS
+====================================================================================================
