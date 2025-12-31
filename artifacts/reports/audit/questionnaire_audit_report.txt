@@ -1,0 +1,156 @@
+====================================================================================================
+QUESTIONNAIRE_MONOLITH.JSON - COMPREHENSIVE AUDIT REPORT
+====================================================================================================
+
+Generated: 2025-12-31
+Audit Scope: Structure, Hierarchy, Coverage, Balance, and Equity
+
+====================================================================================================
+1. OVERALL STRUCTURE
+====================================================================================================
+Schema Version: 2.0.0
+Version: 1.0.0
+Generated At: 2025-10-29T02:21:25.777170+00:00
+Top-level Keys: canonical_notation, blocks, generated_at, integrity, observability, schema_version, version
+Has Integrity Section: YES
+Has Observability Section: YES
+
+====================================================================================================
+2. CANONICAL NOTATION
+====================================================================================================
+Dimensions: 6 (D1, D2, D3, D4, D5, D6)
+Policy Areas: 10 (PA01, PA02, PA03, PA04, PA05, PA06, PA07, PA08, PA09, PA10)
+Clusters: 0 ()
+
+====================================================================================================
+3. MICRO QUESTIONS OVERVIEW
+====================================================================================================
+Total Micro Questions: 300
+
+Distribution by Policy Area:
+  PA01: 30 questions
+  PA02: 30 questions
+  PA03: 30 questions
+  PA04: 30 questions
+  PA05: 30 questions
+  PA06: 30 questions
+  PA07: 30 questions
+  PA08: 30 questions
+  PA09: 30 questions
+  PA10: 30 questions
+
+Distribution by Dimension:
+  DIM01: 50 questions
+  DIM02: 50 questions
+  DIM03: 50 questions
+  DIM04: 50 questions
+  DIM05: 50 questions
+  DIM06: 50 questions
+
+Distribution by Cluster:
+  CL01: 90 questions
+  CL02: 90 questions
+  CL03: 60 questions
+  CL04: 60 questions
+
+Distribution by Scoring Modality:
+  TYPE_A: 260 questions
+  TYPE_B: 30 questions
+  TYPE_E: 10 questions
+
+====================================================================================================
+4. GAPS AND ISSUES IDENTIFIED
+====================================================================================================
+
+4.1 Signal/Element Richness Issues
+  - Questions with MISSING signals: 0
+  - Questions with WEAK signals (<3): 0
+  - Questions with MISSING expected_elements: 0
+  - Questions with VAGUE expected_elements: 0
+
+4.2 Validation Issues
+  - Questions with NO validations: 0
+  - Questions with WEAK validations (<2): 239
+
+4.3 Scoring & Method Issues
+  - Questions with MISSING scoring_modality: 0
+  - Questions with MISSING method_sets: 0
+
+4.4 Documentation Issues
+  - Questions with MISSING/WEAK documentation: 300
+  - Questions with MISSING failure_contract: 0
+  - Questions with MISSING patterns: 0
+
+====================================================================================================
+5. EQUITY AND BALANCE METRICS
+====================================================================================================
+
+5.1 Policy Area Distribution Balance
+  Mean questions per policy area: 30.0
+  Standard deviation: 0.0
+  Coefficient of variation: 0.0%
+  Assessment: BALANCED
+
+5.2 Validation Distribution Balance
+  Mean validations per question: 1.65
+  Standard deviation: 1.29
+  Range: 1 - 5
+  Coefficient of variation: 78.44%
+  Assessment: IMBALANCED
+
+5.3 Expected Elements Distribution Balance
+  Mean expected_elements per question: 3.31
+  Standard deviation: 1.21
+  Range: 2 - 6
+  Coefficient of variation: 36.45%
+  Assessment: BALANCED
+
+====================================================================================================
+6. DETAILED ISSUE LISTS (Top 20 per category)
+====================================================================================================
+
+6.3 Questions with WEAK/MISSING Documentation (sample):
+  - Q001
+  - Q002
+  - Q003
+  - Q004
+  - Q005
+  - Q006
+  - Q007
+  - Q008
+  - Q009
+  - Q010
+  - Q011
+  - Q012
+  - Q013
+  - Q014
+  - Q015
+  - Q016
+  - Q017
+  - Q018
+  - Q019
+  - Q020
+  ... and 280 more
+
+====================================================================================================
+7. RECOMMENDATIONS
+====================================================================================================
+
+Based on this audit, the following actions are recommended:
+
+Priority 1 - Critical Issues:
+  • Validation distribution is highly imbalanced (CV: 78.44%)
+
+Priority 2 - High Priority:
+  • Enrich 0 questions with weak signals
+  • Add documentation to 300 questions
+  • Clarify 0 questions with vague expected_elements
+
+Priority 3 - Medium Priority:
+  • Add failure_contracts to 0 questions
+  • Add patterns to 0 questions
+  • Review and normalize scoring modalities across all questions
+
+====================================================================================================
+END OF AUDIT REPORT
+====================================================================================================
