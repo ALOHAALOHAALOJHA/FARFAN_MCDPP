@@ -1,0 +1,332 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "specification_source": "episte_refact.md Section 1.1 (Type Classification)",
+    "purpose": "Prevent ontological flattening across question types",
+    "created": "2024-12-31",
+    "description": "Ensure different question types have distinct method profiles reflecting their semantic differences"
+  },
+  "diversity_principle": {
+    "description": "Different TYPEs should have methodologically distinct N1/N2/N3 profiles",
+    "principle": "Questions with different domain_weights should select different method sets",
+    "problem_identified": "Q001 (TYPE_A Semantic) and Q003 (TYPE_D Financial) have nearly identical N1 method sets",
+    "root_cause": "Method selector defaults to concat without considering TYPE-specific semantic requirements"
+  },
+  "type_method_profiles": {
+    "TYPE_A": {
+      "name": "Semantic Triangulation",
+      "domain_signature": {
+        "financial": 0.0,
+        "semantic": 1.0,
+        "temporal": 0.43,
+        "causal": 0.2
+      },
+      "preferred_n1_methods": {
+        "description": "N1 methods for semantic extraction",
+        "patterns": [
+          "semantic.*chunk",
+          "text.*mining",
+          "semantic.*embedding",
+          "AdvancedSemanticChunker",
+          "TextMiningEngine",
+          "statement.*extract"
+        ],
+        "excluded_patterns": [
+          "financial.*extract",
+          "budget.*parse",
+          "table.*financial"
+        ]
+      },
+      "preferred_n2_methods": {
+        "description": "N2 methods for semantic reasoning",
+        "patterns": [
+          "semantic.*score",
+          "dempster.*shafer",
+          "triangulat",
+          "semantic.*coherence"
+        ],
+        "excluded_patterns": [
+          "financial.*aggreg",
+          "weighted.*mean.*financial",
+          "budget.*coherence"
+        ]
+      },
+      "preferred_n3_methods": {
+        "description": "N3 methods for semantic validation",
+        "patterns": [
+          "contradiction.*detect",
+          "semantic.*valid",
+          "semantic.*coherence.*check"
+        ],
+        "excluded_patterns": [
+          "cycle.*detect",
+          "fiscal.*valid",
+          "statistical.*gate"
+        ]
+      }
+    },
+    "TYPE_B": {
+      "name": "Bayesian Causal",
+      "domain_signature": {
+        "financial": 0.2,
+        "semantic": 0.4,
+        "temporal": 0.6,
+        "causal": 0.8
+      },
+      "preferred_n1_methods": {
+        "description": "N1 methods for evidence extraction",
+        "patterns": [
+          "prior.*extract",
+          "likelihood.*extract",
+          "evidence.*extract",
+          "causal.*link.*extract"
+        ],
+        "excluded_patterns": [
+          "financial.*table.*parse"
+        ]
+      },
+      "preferred_n2_methods": {
+        "description": "N2 methods for Bayesian inference",
+        "patterns": [
+          "bayesian.*update",
+          "posterior.*calcul",
+          "evaluate.*policy",
+          "compare.*policies",
+          "BayesianNumericalAnalyzer"
+        ],
+        "excluded_patterns": [
+          "semantic.*triangulat",
+          "financial.*aggreg"
+        ]
+      },
+      "preferred_n3_methods": {
+        "description": "N3 methods for statistical validation",
+        "patterns": [
+          "statistical.*gate",
+          "significance.*test",
+          "p.*value.*valid",
+          "sample.*valid",
+          "StatisticalGateAuditor"
+        ],
+        "excluded_patterns": [
+          "contradiction.*domin",
+          "cycle.*detect"
+        ]
+      }
+    },
+    "TYPE_C": {
+      "name": "Causal DAG",
+      "domain_signature": {
+        "financial": 0.0,
+        "semantic": 0.3,
+        "temporal": 0.5,
+        "causal": 1.0
+      },
+      "preferred_n1_methods": {
+        "description": "N1 methods for causal extraction",
+        "patterns": [
+          "causal.*link.*extract",
+          "graph.*construct",
+          "teoria.*cambio",
+          "causal.*statement.*parse"
+        ],
+        "excluded_patterns": [
+          "semantic.*chunk",
+          "financial.*extract"
+        ]
+      },
+      "preferred_n2_methods": {
+        "description": "N2 methods for graph construction",
+        "patterns": [
+          "graph.*construct",
+          "topological.*sort",
+          "path.*detect",
+          "dag.*build"
+        ],
+        "excluded_patterns": [
+          "semantic.*triangulat",
+          "weighted.*mean"
+        ]
+      },
+      "preferred_n3_methods": {
+        "description": "N3 methods for cycle detection",
+        "patterns": [
+          "cycle.*detect",
+          "dag.*valid",
+          "acyclic.*check",
+          "DAGCycleDetector"
+        ],
+        "excluded_patterns": [
+          "contradiction.*domin",
+          "statistical.*gate"
+        ]
+      }
+    },
+    "TYPE_D": {
+      "name": "Financial",
+      "domain_signature": {
+        "financial": 1.0,
+        "semantic": 0.0,
+        "temporal": 0.0,
+        "causal": 0.1
+      },
+      "preferred_n1_methods": {
+        "description": "N1 methods for financial extraction",
+        "patterns": [
+          "financial.*extract",
+          "budget.*parse",
+          "table.*parse.*financial",
+          "TableParser.*financial"
+        ],
+        "excluded_patterns": [
+          "semantic.*chunk",
+          "text.*mining"
+        ]
+      },
+      "preferred_n2_methods": {
+        "description": "N2 methods for financial aggregation",
+        "patterns": [
+          "financial.*aggreg",
+          "weighted.*mean",
+          "budget.*coherence",
+          "per.*capita.*calcul",
+          "FinancialAggregator"
+        ],
+        "excluded_patterns": [
+          "semantic.*triangulat",
+          "bayesian.*update"
+        ]
+      },
+      "preferred_n3_methods": {
+        "description": "N3 methods for fiscal validation",
+        "patterns": [
+          "fiscal.*valid",
+          "budget.*audit",
+          "sustainability.*check"
+        ],
+        "excluded_patterns": [
+          "contradiction.*domin",
+          "cycle.*detect"
+        ]
+      }
+    },
+    "TYPE_E": {
+      "name": "Logical Consistency",
+      "domain_signature": {
+        "financial": 0.0,
+        "semantic": 0.5,
+        "temporal": 0.3,
+        "causal": 0.6
+      },
+      "preferred_n1_methods": {
+        "description": "N1 methods for logical extraction",
+        "patterns": [
+          "logical.*statement.*extract",
+          "proposition.*parse"
+        ],
+        "excluded_patterns": [
+          "financial.*extract",
+          "semantic.*chunk"
+        ]
+      },
+      "preferred_n2_methods": {
+        "description": "N2 methods for consistency checking",
+        "patterns": [
+          "logical.*consist",
+          "min.*conf",
+          "and.*logic",
+          "LogicalConsistencyChecker"
+        ],
+        "excluded_patterns": [
+          "weighted.*mean",
+          "average",
+          "mean"
+        ]
+      },
+      "preferred_n3_methods": {
+        "description": "N3 methods for contradiction veto",
+        "patterns": [
+          "contradiction.*domin",
+          "veto.*gate",
+          "popperian.*falsif",
+          "ContradictionDominator"
+        ],
+        "excluded_patterns": [
+          "cycle.*detect",
+          "statistical.*gate"
+        ]
+      }
+    }
+  },
+  "diversity_validation_rules": {
+    "method_selection_scoring": {
+      "description": "Adjust method scores based on TYPE compatibility",
+      "implementation": """
+      def calculate_diversity_adjusted_score(method, question_type, base_score):
+          '''
+          Applies score multiplier based on TYPE-specific preference
+          '''
+          type_profile = TYPE_METHOD_PROFILES[question_type]
+          method_id = method['method_id']
+
+          # Check if method matches preferred patterns for this TYPE
+          for layer in ['n1', 'n2', 'n3']:
+              preferred = type_profile[f'preferred_{layer}_methods']['patterns']
+              excluded = type_profile[f'preferred_{layer}_methods']['excluded_patterns']
+
+              # Check excluded patterns
+              if any(re.search(pattern, method_id, re.IGNORECASE) for pattern in excluded):
+                  return 0.0  # Exclude this method for this TYPE
+
+              # Check preferred patterns
+              if any(re.search(pattern, method_id, re.IGNORECASE) for pattern in preferred):
+                  return base_score * 1.2  # Boost score for preferred methods
+
+          # Neutral if no match
+          return base_score
+      """
+    },
+    "cross_question_diversity_check": {
+      "description": "Verify that different TYPE questions have different method profiles",
+      "checks": [
+        {
+          "check": "n1_method_overlap",
+          "description": "N1 methods for TYPE_A and TYPE_D should be < 30% overlap",
+          "threshold": 0.3,
+          "rationale": "Semantic and financial extraction are fundamentally different"
+        },
+        {
+          "check": "n2_method_distinctness",
+          "description": "N2 methods should be distinct across TYPEs",
+          "threshold": 0.5,
+          "rationale": "Inference methods should match the TYPE's epistemology"
+        },
+        {
+          "check": "domain_weight_alignment",
+          "description": "Method selection should align with domain_weights",
+          "implementation": "If domain_weights['financial'] = 1.0, N1 should prioritize financial extractors"
+        }
+      ]
+    }
+  },
+  "penalty_factors": {
+    "description": "Score penalties for violating diversity constraints",
+    "penalties": [
+      {
+        "violation": "method_excluded_for_type",
+        "penalty": "score = 0.0",
+        "rationale": "Method fundamentally incompatible with TYPE"
+      },
+      {
+        "violation": "method_not_preferred_for_type",
+        "penalty": "score *= 0.7",
+        "rationale": "Method not optimal for TYPE but can be used"
+      },
+      {
+        "violation": "excessive_method_homogeneity",
+        "penalty": "regenerate_contract",
+        "rationale": "Too much similarity across TYPEs indicates selector failure"
+      }
+    ]
+  }
+}

@@ -28,7 +28,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Protocol, Any
 
 if TYPE_CHECKING:
-    from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig
+    from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig
 
 
 class Phase0Runner(Protocol):

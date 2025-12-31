@@ -1,0 +1,213 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "specification_source": "episte_refact.md PARTE III Section 3.2 (Type System)",
+    "purpose": "Validate fusion strategy matches output type and TYPE contract",
+    "created": "2024-12-31",
+    "description": "Ensures merge_behavior respects the epistemological nature of fused outputs"
+  },
+  "output_type_fusion_rules": {
+    "FACT": {
+      "description": "N1-EMP outputs are literal observations",
+      "valid_merge_behaviors": ["concat", "concat_with_deduplication"],
+      "invalid_merge_behaviors": ["weighted_mean", "average", "multiplicative", "bayesian_update"],
+      "rationale": "Facts cannot be averaged or combined - they must be concatenated"
+    },
+    "PARAMETER": {
+      "description": "N2-INF outputs are computed/combined values",
+      "valid_merge_behaviors": ["multiplicative", "weighted_mean", "dempster_shafer", "min_consistency"],
+      "invalid_merge_behaviors": ["concat", "concat_only", "simple_concat"],
+      "rationale": "Parameters must be combined using their mathematical operation"
+    },
+    "CONSTRAINT": {
+      "description": "N3-AUD outputs are veto decisions",
+      "valid_merge_behaviors": ["veto_gate", "min", "logical_and", "popperian_falsification"],
+      "invalid_merge_behaviors": ["weighted_mean", "average", "concat"],
+      "rationale": "Constraints use veto logic - ONE veto = TOTAL veto"
+    }
+  },
+  "type_fusion_strategies": {
+    "TYPE_A": {
+      "name": "Semantic Triangulation",
+      "R1_strategy": "concat",
+      "R2_strategy": "semantic_triangulation",
+      "description": "Multi-source semantic coherence assessment",
+      "valid_combinations": [
+        {"N1_output": "FACT", "N1_merge": "concat"},
+        {"N2_output": "PARAMETER", "N2_merge": "dempster_shafer"},
+        {"N3_output": "CONSTRAINT", "N3_merge": "veto_gate"}
+      ],
+      "prohibited_combinations": [
+        {"layer": "N2", "merge": "weighted_mean", "rationale": "Semantic beliefs use Dempster-Shafer, not averaging"},
+        {"layer": "N3", "merge": "concat", "rationale": "Constraints cannot be concatenated"}
+      ]
+    },
+    "TYPE_B": {
+      "name": "Bayesian Causal",
+      "R1_strategy": "concat",
+      "R2_strategy": "bayesian_update",
+      "description": "Posterior estimation given causal structure",
+      "valid_combinations": [
+        {"N1_output": "FACT", "N1_merge": "concat"},
+        {"N2_output": "PARAMETER", "N2_merge": "bayesian_update"},
+        {"N3_output": "CONSTRAINT", "N3_merge": "statistical_gate"}
+      ],
+      "prohibited_combinations": [
+        {"layer": "N2", "merge": "weighted_mean", "rationale": "Bayesian uses update rules, not averaging"},
+        {"layer": "N3", "merge": "concat", "rationale": "Statistical gates use veto logic"}
+      ]
+    },
+    "TYPE_C": {
+      "name": "Causal DAG",
+      "R1_strategy": "graph_construction",
+      "R2_strategy": "topological_overlay",
+      "description": "DAG construction and topological validation",
+      "valid_combinations": [
+        {"N1_output": "FACT", "N1_merge": "concat"},
+        {"N2_output": "PARAMETER", "N2_merge": "graph_construction"},
+        {"N3_output": "CONSTRAINT", "N3_merge": "cycle_detection_veto"}
+      ],
+      "prohibited_combinations": [
+        {"layer": "N1", "merge": "weighted_mean", "rationale": "Graph nodes cannot be averaged"},
+        {"layer": "N3", "merge": "concat", "rationale": "Cycle detection is a veto gate"}
+      ]
+    },
+    "TYPE_D": {
+      "name": "Financial",
+      "R1_strategy": "concat",
+      "R2_strategy": "weighted_mean",
+      "description": "Budget sufficiency and cost-goal coherence",
+      "valid_combinations": [
+        {"N1_output": "FACT", "N1_merge": "concat"},
+        {"N2_output": "PARAMETER", "N2_merge": "weighted_mean"},
+        {"N3_output": "CONSTRAINT", "N3_merge": "fiscal_veto"}
+      ],
+      "prohibited_combinations": [
+        {"layer": "N1", "merge": "weighted_mean", "rationale": "Extracted facts must be concatenated, not averaged"},
+        {"layer": "N2", "merge": "concat", "rationale": "Financial parameters must be aggregated"}
+      ]
+    },
+    "TYPE_E": {
+      "name": "Logical Consistency",
+      "R1_strategy": "concat",
+      "R2_strategy": "min_consistency",
+      "description": "Non-contradiction and logical validity",
+      "valid_combinations": [
+        {"N1_output": "FACT", "N1_merge": "concat"},
+        {"N2_output": "PARAMETER", "N2_merge": "min_consistency"},
+        {"N3_output": "CONSTRAINT", "N3_merge": "contradiction_veto"}
+      ],
+      "prohibited_combinations": [
+        {"layer": "N2", "merge": "weighted_mean", "rationale": "Logical uses AND (min), not averaging"},
+        {"layer": "N2", "merge": "average", "rationale": "Logical uses AND (min), not averaging"},
+        {"layer": "N3", "merge": "concat", "rationale": "Contradiction veto is a gate, not concatenable"}
+      ],
+      "runtime_enforcement": {
+        "prohibited_methods": ["weighted_mean", "average", "mean", "avg"],
+        "enforcement": "raise TypeError if detected",
+        "rationale": "TYPE_E MUST use MIN logic per episte_refact.md"
+      }
+    }
+  },
+  "validation_rules": {
+    "layer_strategy_validation": {
+      "description": "Validate each layer uses correct merge strategy for its TYPE",
+      "checks": [
+        {
+          "check": "N1_merge_behavior",
+          "valid_for_all_types": ["concat", "concat_with_deduplication"],
+          "rationale": "N1 outputs are always FACTs - must concatenate"
+        },
+        {
+          "check": "N2_merge_behavior_matches_TYPE",
+          "type_specific": true,
+          "rationale": "N2 outputs are PARAMETERS - strategy depends on TYPE"
+        },
+        {
+          "check": "N3_merge_behavior_is_veto",
+          "valid_for_all_types": ["veto_gate", "cycle_detection_veto", "contradiction_veto", "statistical_gate"],
+          "prohibited": ["concat", "weighted_mean"],
+          "rationale": "N3 outputs are CONSTRAINTS - must use veto logic"
+        }
+      ]
+    },
+    "fusion_correctness_validation": {
+      "description": "Validate the fusion operation respects mathematical nature of outputs",
+      "principle": "Concatenating PARAMETERS violates their multiplicative nature",
+      "implementation": """
+      def validate_fusion_strategy(method, layer, contract_type):
+          output_type = method.get('output_type')
+          merge_behavior = method.get('merge_behavior', 'concat')
+
+          # Get rules for this output type
+          rules = OUTPUT_TYPE_FUSION_RULES[output_type]
+
+          if merge_behavior in rules['invalid_merge_behaviors']:
+              raise FusionStrategyError(
+                  f"Method {method['method_id']} (layer={layer}, type={output_type}) "
+                  f"uses invalid merge_behavior '{merge_behavior}'. "
+                  f"Valid: {rules['valid_merge_behaviors']}. "
+                  f"Rationale: {rules['rationale']}"
+              )
+
+          # Check TYPE-specific constraints
+          type_rules = TYPE_FUSION_STRATEGIES[contract_type]
+          for prohibited in type_rules.get('prohibited_combinations', []):
+              if prohibited['layer'] == layer and prohibited['merge'] == merge_behavior:
+                  raise FusionStrategyError(
+                      f"TYPE_{contract_type} layer {layer} cannot use {merge_behavior}. "
+                      f"Rationale: {prohibited['rationale']}"
+                  )
+      """
+    }
+  },
+  "error_codes": {
+    "FUSION_STRATEGY_INVALID": {
+      "code": "EPISTEMIC-FUSION-001",
+      "severity": "FATAL",
+      "message_template": "Invalid fusion strategy {merge_behavior} for layer {layer} (output_type={output_type})"
+    },
+    "FUSION_TYPE_MISMATCH": {
+      "code": "EPISTEMIC-FUSION-002",
+      "severity": "FATAL",
+      "message_template": "Merge strategy {merge_behavior} invalid for TYPE_{contract_type}"
+    },
+    "PROHIBITED_OPERATION": {
+      "code": "EPISTEMIC-FUSION-003",
+      "severity": "FATAL",
+      "message_template": "Prohibited operation {operation} for TYPE_{contract_type}. Use {required_strategy} instead"
+    }
+  },
+  "remediation_actions": {
+    "auto_correct": {
+      "description": "Automatically correct fusion strategies when possible",
+      "corrections": [
+        {
+          "detect": "N1 merge_behavior is 'weighted_mean'",
+          "correct_to": "concat",
+          "rationale": "N1 outputs are FACTs - must concatenate"
+        },
+        {
+          "detect": "N2 merge_behavior is 'concat' for TYPE_A",
+          "correct_to": "dempster_shafer",
+          "rationale": "TYPE_A N2 uses Dempster-Shafer belief combination"
+        },
+        {
+          "detect": "N2 merge_behavior is 'concat' for TYPE_B",
+          "correct_to": "bayesian_update",
+          "rationale": "TYPE_B N2 uses Bayesian update"
+        },
+        {
+          "detect": "N2 merge_behavior is 'weighted_mean' for TYPE_E",
+          "correct_to": "min_consistency",
+          "rationale": "TYPE_E N2 uses MIN (AND logic), not averaging"
+        },
+        {
+          "detect": "N3 merge_behavior is 'concat'",
+          "correct_to": "veto_gate",
+          "rationale": "N3 outputs are CONSTRAINTS - must use veto logic"
+        }
+      ]
+    }
+  }
+}

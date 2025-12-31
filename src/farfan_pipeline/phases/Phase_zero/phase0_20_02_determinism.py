@@ -29,7 +29,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Iterator
 
 if TYPE_CHECKING:
-    from orchestration.seed_registry import SeedRegistry
+    from farfan_pipeline.orchestration.seed_registry import SeedRegistry
 
 try:
     import numpy as np
@@ -232,7 +232,7 @@ def initialize_determinism_from_registry(
         P00-EN v2.0 Section 3.4 - Determinism Context
         
     Example:
-        >>> from orchestration.seed_registry import get_global_seed_registry
+        >>> from farfan_pipeline.orchestration.seed_registry import get_global_seed_registry
         >>> registry = get_global_seed_registry()
         >>> seeds, status, errors = initialize_determinism_from_registry(
         ...     registry, "plan_2024", "exec_001"
