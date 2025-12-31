@@ -70,8 +70,8 @@ except ImportError as e:
         "Install with: pip install 'pydantic>=2.0'"
     ) from e
 
-# Phase protocol from same directory
-from canonic_phases.phase_1_cpp_ingestion.phase_protocol import (
+# Phase protocol from Phase One
+from farfan_pipeline.phases.Phase_one.phase_protocol import (
     ContractValidationResult,
     PhaseContract,
 )

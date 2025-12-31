@@ -252,10 +252,14 @@ _CalibrationOrchestrator = None  # type: ignore[assignment]
 _DEFAULT_CALIBRATION_CONFIG = None  # type: ignore[assignment]
 _HAS_CALIBRATION = False
 
-from orchestration.wiring.errors import MissingDependencyError, WiringInitializationError
-from orchestration.wiring.feature_flags import WiringFeatureFlags
-from orchestration.wiring.phase_0_validator import Phase0Validator
-from orchestration.wiring.validation import WiringValidator
+# Import wiring support from consolidated module
+from farfan_pipeline.phases.Phase_zero.phase0_90_03_wiring_validator import (
+    MissingDependencyError,
+    WiringInitializationError,
+    WiringFeatureFlags,
+    Phase0Validator,
+    WiringValidator,
+)
 
 logger = structlog.get_logger(__name__)
 
