@@ -2605,7 +2605,24 @@
             ],
             "specificity": "MEDIUM"
           }
-        }
+        },
+        "definition": {
+          "title": "Líneas base con fuente y desagregación",
+          "text": "¿El diagnóstico del sector presenta datos cuantitativos (tasas, porcentajes, cifras absolutas) con año de referencia y fuente identificada, desagregados por territorio o población?",
+          "code": "D1.Q1"
+        },
+        "children_questions": [
+          "Q001",
+          "Q031",
+          "Q061",
+          "Q091",
+          "Q121",
+          "Q151",
+          "Q181",
+          "Q211",
+          "Q241",
+          "Q271"
+        ]
       },
       {
         "base_slot": "D1-Q2",
@@ -2848,7 +2865,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Cuantificación de brechas y vacíos de información",
+          "text": "¿El diagnóstico dimensiona numéricamente la magnitud del problema o déficit del sector y reconoce explícitamente limitaciones en los datos como 'subregistro', 'información insuficiente', 'ausencia de caracterización' o 'vacíos de información'?",
+          "code": "D1.Q2"
+        },
+        "children_questions": [
+          "Q002",
+          "Q032",
+          "Q062",
+          "Q092",
+          "Q122",
+          "Q152",
+          "Q182",
+          "Q212",
+          "Q242",
+          "Q272"
+        ]
       },
       {
         "base_slot": "D1-Q3",
@@ -3123,7 +3157,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Recursos presupuestales asignados al sector",
+          "text": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a programas, proyectos o intervenciones específicas del sector?",
+          "code": "D1.Q3"
+        },
+        "children_questions": [
+          "Q003",
+          "Q033",
+          "Q063",
+          "Q093",
+          "Q123",
+          "Q153",
+          "Q183",
+          "Q213",
+          "Q243",
+          "Q273"
+        ]
       },
       {
         "base_slot": "D1-Q4",
@@ -3398,7 +3449,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Capacidades institucionales para gestión del sector",
+          "text": "¿El plan identifica las entidades responsables del sector, describe sus capacidades (personal, equipos, protocolos) y señala limitaciones institucionales o necesidades de articulación con el departamento, la nación o entidades especializadas?",
+          "code": "D1.Q4"
+        },
+        "children_questions": [
+          "Q004",
+          "Q034",
+          "Q064",
+          "Q094",
+          "Q124",
+          "Q154",
+          "Q184",
+          "Q214",
+          "Q244",
+          "Q274"
+        ]
       },
       {
         "base_slot": "D1-Q5",
@@ -3624,7 +3692,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Justificación de alcance y competencias",
+          "text": "¿El plan justifica el alcance de sus intervenciones en el sector mencionando el marco normativo aplicable o reconociendo explícitamente qué competencias son municipales directas, cuáles son concurrentes y cuáles requieren articulación con el departamento o la nación?",
+          "code": "D1.Q5"
+        },
+        "children_questions": [
+          "Q005",
+          "Q035",
+          "Q065",
+          "Q095",
+          "Q125",
+          "Q155",
+          "Q185",
+          "Q215",
+          "Q245",
+          "Q275"
+        ]
       },
       {
         "base_slot": "D2-Q1",
@@ -3819,7 +3904,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Actividades operacionalizadas en instrumentos",
+          "text": "¿Las actividades del sector aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
+          "code": "D2.Q1"
+        },
+        "children_questions": [
+          "Q006",
+          "Q036",
+          "Q066",
+          "Q096",
+          "Q126",
+          "Q156",
+          "Q186",
+          "Q216",
+          "Q246",
+          "Q276"
+        ]
       },
       {
         "base_slot": "D2-Q2",
@@ -4509,7 +4611,24 @@
             "Added technical_approach to all 12 methods with paradigm, steps, complexity, assumptions",
             "Added SemanticProcessor.extract_semantic_relationships as 12th method"
           ]
-        }
+        },
+        "definition": {
+          "title": "Detalle de instrumentos, población objetivo y contribución al resultado",
+          "text": "¿La descripción de actividades especifica el instrumento ('mediante...', 'a través de...', 'con...'), la población o zona objetivo, y explica cómo la actividad contribuye al resultado esperado ('para...', 'porque...', 'con el fin de...')?",
+          "code": "D2.Q2"
+        },
+        "children_questions": [
+          "Q007",
+          "Q037",
+          "Q067",
+          "Q097",
+          "Q127",
+          "Q157",
+          "Q187",
+          "Q217",
+          "Q247",
+          "Q277"
+        ]
       },
       {
         "base_slot": "D2-Q3",
@@ -4701,7 +4820,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Vínculo actividades con causas diagnosticadas",
+          "text": "¿Las actividades propuestas se vinculan explícitamente con los problemas, causas, brechas o déficits identificados en el diagnóstico del sector (mediante nexos como 'para atender', 'debido a', 'con el fin de', 'porque')?",
+          "code": "D2.Q3"
+        },
+        "children_questions": [
+          "Q008",
+          "Q038",
+          "Q068",
+          "Q098",
+          "Q128",
+          "Q158",
+          "Q188",
+          "Q218",
+          "Q248",
+          "Q278"
+        ]
       },
       {
         "base_slot": "D2-Q4",
@@ -4938,7 +5074,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Riesgos y medidas de mitigación",
+          "text": "¿El plan identifica posibles obstáculos, riesgos o barreras en la implementación de las actividades del sector y propone medidas explícitas de mitigación o estrategias para superarlos?",
+          "code": "D2.Q4"
+        },
+        "children_questions": [
+          "Q009",
+          "Q039",
+          "Q069",
+          "Q099",
+          "Q129",
+          "Q159",
+          "Q189",
+          "Q219",
+          "Q249",
+          "Q279"
+        ]
       },
       {
         "base_slot": "D2-Q5",
@@ -5123,7 +5276,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Coherencia estratégica entre actividades",
+          "text": "¿El plan describe explícitamente cómo las actividades del sector se complementan, refuerzan mutuamente o siguen una secuencia lógica, evidenciando una estrategia articulada (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación')?",
+          "code": "D2.Q5"
+        },
+        "children_questions": [
+          "Q010",
+          "Q040",
+          "Q070",
+          "Q100",
+          "Q130",
+          "Q160",
+          "Q190",
+          "Q220",
+          "Q250",
+          "Q280"
+        ]
       },
       {
         "base_slot": "D3-Q1",
@@ -5510,7 +5680,24 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524126"
-        }
+        },
+        "definition": {
+          "title": "Indicadores de producto con línea base, meta y verificación",
+          "text": "¿Los indicadores de producto del sector (unidades entregadas, personas atendidas, infraestructura construida, servicios prestados) incluyen línea base, meta cuantitativa y fuente de verificación?",
+          "code": "D3.Q1"
+        },
+        "children_questions": [
+          "Q011",
+          "Q041",
+          "Q071",
+          "Q101",
+          "Q131",
+          "Q161",
+          "Q191",
+          "Q221",
+          "Q251",
+          "Q281"
+        ]
       },
       {
         "base_slot": "D3-Q2",
@@ -5971,7 +6158,24 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524177"
-        }
+        },
+        "definition": {
+          "title": "Proporcionalidad meta con magnitud del problema",
+          "text": "¿Las metas de productos guardan relación con la magnitud del problema o déficit identificado en el diagnóstico, y se especifica la priorización (zonas, población), intensidad (frecuencia, duración) o cobertura de la intervención?",
+          "code": "D3.Q2"
+        },
+        "children_questions": [
+          "Q012",
+          "Q042",
+          "Q072",
+          "Q102",
+          "Q132",
+          "Q162",
+          "Q192",
+          "Q222",
+          "Q252",
+          "Q282"
+        ]
       },
       {
         "base_slot": "D3-Q3",
@@ -6413,7 +6617,24 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524240"
-        }
+        },
+        "definition": {
+          "title": "Trazabilidad presupuestal y organizacional",
+          "text": "¿Los productos están vinculados a códigos presupuestales (BPIN, PPI, SGP, recursos específicos) y a entidades responsables identificadas (secretarías, oficinas, dependencias)?",
+          "code": "D3.Q3"
+        },
+        "children_questions": [
+          "Q013",
+          "Q043",
+          "Q073",
+          "Q103",
+          "Q133",
+          "Q163",
+          "Q193",
+          "Q223",
+          "Q253",
+          "Q283"
+        ]
       },
       {
         "base_slot": "D3-Q4",
@@ -6874,7 +7095,24 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524286"
-        }
+        },
+        "definition": {
+          "title": "Factibilidad entre actividad y meta de producto",
+          "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'un taller de 8 horas', 'una campaña de sensibilización') y la magnitud de la meta del producto asociado, considerando plazos y recursos disponibles? Se debe evaluar si el plan reconoce cuando los resultados requieren intervenciones sostenidas en el tiempo, no eventos puntuales.",
+          "code": "D3.Q4"
+        },
+        "children_questions": [
+          "Q014",
+          "Q044",
+          "Q074",
+          "Q104",
+          "Q134",
+          "Q164",
+          "Q194",
+          "Q224",
+          "Q254",
+          "Q284"
+        ]
       },
       {
         "base_slot": "D3-Q5",
@@ -7324,7 +7562,24 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524329"
-        }
+        },
+        "definition": {
+          "title": "Mecanismo producto→resultado",
+          "text": "¿El plan describe cómo los productos del sector generan o contribuyen a los resultados esperados, explicando esta conexión o ruta (se debe buscar descripciones del tipo 'al lograr X se genera Y porque...', 'esto permite...', 'esto conduce a...')?",
+          "code": "D3.Q5"
+        },
+        "children_questions": [
+          "Q015",
+          "Q045",
+          "Q075",
+          "Q105",
+          "Q135",
+          "Q165",
+          "Q195",
+          "Q225",
+          "Q255",
+          "Q285"
+        ]
       },
       {
         "base_slot": "D4-Q1",
@@ -7586,7 +7841,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Indicadores de resultado con línea base, meta y horizonte",
+          "text": "¿Los indicadores de resultado del sector (cambios en condiciones, comportamientos, o situaciones de la población) están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
+          "code": "D4.Q1"
+        },
+        "children_questions": [
+          "Q016",
+          "Q046",
+          "Q076",
+          "Q106",
+          "Q136",
+          "Q166",
+          "Q196",
+          "Q226",
+          "Q256",
+          "Q286"
+        ]
       },
       {
         "base_slot": "D4-Q2",
@@ -7775,7 +8047,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Ruta causal con supuestos y condiciones habilitantes",
+          "text": "¿El plan describe la ruta o secuencia que lleva a los resultados del sector, mencionando condiciones necesarias para que funcione (se debe buscar términos como 'supuestos', 'si...', 'siempre que...', 'condiciones habilitantes', 'requiere que...')?",
+          "code": "D4.Q2"
+        },
+        "children_questions": [
+          "Q017",
+          "Q047",
+          "Q077",
+          "Q107",
+          "Q137",
+          "Q167",
+          "Q197",
+          "Q227",
+          "Q257",
+          "Q287"
+        ]
       },
       {
         "base_slot": "D4-Q3",
@@ -7964,7 +8253,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Justificación de ambición de metas",
+          "text": "¿La ambición de las metas de resultado se justifica en función de recursos asignados, capacidad institucional, articulación con otros niveles de gobierno, o se compara con casos o municipios similares?",
+          "code": "D4.Q3"
+        },
+        "children_questions": [
+          "Q018",
+          "Q048",
+          "Q078",
+          "Q108",
+          "Q138",
+          "Q168",
+          "Q198",
+          "Q228",
+          "Q258",
+          "Q288"
+        ]
       },
       {
         "base_slot": "D4-Q4",
@@ -8148,7 +8454,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Atención a problemas priorizados en diagnóstico",
+          "text": "¿Los resultados propuestos para el sector atienden o abordan directamente los problemas, déficits o necesidades priorizadas en el diagnóstico?",
+          "code": "D4.Q4"
+        },
+        "children_questions": [
+          "Q019",
+          "Q049",
+          "Q079",
+          "Q109",
+          "Q139",
+          "Q169",
+          "Q199",
+          "Q229",
+          "Q259",
+          "Q289"
+        ]
       },
       {
         "base_slot": "D4-Q5",
@@ -8293,7 +8616,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Alineación con marcos superiores",
+          "text": "¿El plan declara la alineación de sus resultados del sector con el Plan Nacional de Desarrollo, los Objetivos de Desarrollo Sostenible, marcos normativos nacionales o políticas sectoriales relevantes?",
+          "code": "D4.Q5"
+        },
+        "children_questions": [
+          "Q020",
+          "Q050",
+          "Q080",
+          "Q110",
+          "Q140",
+          "Q170",
+          "Q200",
+          "Q230",
+          "Q260",
+          "Q290"
+        ]
       },
       {
         "base_slot": "D5-Q1",
@@ -8482,7 +8822,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Impactos o transformaciones de largo plazo",
+          "text": "¿El plan define impactos o transformaciones de largo plazo para el sector (cambios que trascienden el cuatrienio), describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural')?",
+          "code": "D5.Q1"
+        },
+        "children_questions": [
+          "Q021",
+          "Q051",
+          "Q081",
+          "Q111",
+          "Q141",
+          "Q171",
+          "Q201",
+          "Q231",
+          "Q261",
+          "Q291"
+        ]
       },
       {
         "base_slot": "D5-Q2",
@@ -8785,7 +9142,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Uso de índices o proxies para medir impactos",
+          "text": "¿Se utilizan índices reconocidos o indicadores proxy para medir impactos del sector, justificando por qué son adecuados para capturar las transformaciones esperadas? Cuando un impacto es difícil de medir directamente, ¿se explica la validez y limitaciones del indicador utilizado?",
+          "code": "D5.Q2"
+        },
+        "children_questions": [
+          "Q022",
+          "Q052",
+          "Q082",
+          "Q112",
+          "Q142",
+          "Q172",
+          "Q202",
+          "Q232",
+          "Q262",
+          "Q292"
+        ]
       },
       {
         "base_slot": "D5-Q3",
@@ -8984,7 +9358,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Alineación de impactos y riesgos sistémicos",
+          "text": "¿Los impactos del sector se alinean con marcos nacionales o globales y consideran riesgos externos (crisis económicas, cambios de política nacional, eventos climáticos, dinámicas regionales) que podrían impedir o revertir los logros esperados?",
+          "code": "D5.Q3"
+        },
+        "children_questions": [
+          "Q023",
+          "Q053",
+          "Q083",
+          "Q113",
+          "Q143",
+          "Q173",
+          "Q203",
+          "Q233",
+          "Q263",
+          "Q293"
+        ]
       },
       {
         "base_slot": "D5-Q4",
@@ -9149,7 +9540,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Realismo de impactos y efectos no deseados",
+          "text": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados o contraproducentes, o reconoce explícitamente los límites de lo que el municipio puede lograr (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado a...', 'depende de...')?",
+          "code": "D5.Q4"
+        },
+        "children_questions": [
+          "Q024",
+          "Q054",
+          "Q084",
+          "Q114",
+          "Q144",
+          "Q174",
+          "Q204",
+          "Q234",
+          "Q264",
+          "Q294"
+        ]
       },
       {
         "base_slot": "D5-Q5",
@@ -9338,7 +9746,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Sostenibilidad de los impactos",
+          "text": "¿El plan describe cómo se sostendrán los impactos del sector más allá del periodo de gobierno, identificando mecanismos de institucionalización, apropiación comunitaria, fuentes de financiación continua o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación', 'continuidad')?",
+          "code": "D5.Q5"
+        },
+        "children_questions": [
+          "Q025",
+          "Q055",
+          "Q085",
+          "Q115",
+          "Q145",
+          "Q175",
+          "Q205",
+          "Q235",
+          "Q265",
+          "Q295"
+        ]
       },
       {
         "base_slot": "D6-Q1",
@@ -9540,7 +9965,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Teoría de cambio o cadena causal explícita",
+          "text": "¿El plan presenta una descripción explícita de cómo se generan los cambios en el sector (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal'), preferiblemente en diagrama o matriz, que identifique causas, intervenciones, supuestos y la secuencia insumos→actividades→productos→resultados→impactos?",
+          "code": "D6.Q1"
+        },
+        "children_questions": [
+          "Q026",
+          "Q056",
+          "Q086",
+          "Q116",
+          "Q146",
+          "Q176",
+          "Q206",
+          "Q236",
+          "Q266",
+          "Q296"
+        ]
       },
       {
         "base_slot": "D6-Q2",
@@ -9695,7 +10137,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Proporcionalidad y realismo en saltos causales",
+          "text": "¿El plan evita saltos desproporcionados en su lógica (por ejemplo, no atribuye transformaciones mayores a actividades puntuales), reconociendo explícitamente cuando se requieren procesos sostenidos, múltiples condiciones o factores externos para lograr los cambios esperados (se debe buscar expresiones de cautela como 'requiere tiempo', 'depende de...', 'necesita acompañamiento prolongado')?",
+          "code": "D6.Q2"
+        },
+        "children_questions": [
+          "Q027",
+          "Q057",
+          "Q087",
+          "Q117",
+          "Q147",
+          "Q177",
+          "Q207",
+          "Q237",
+          "Q267",
+          "Q297"
+        ]
       },
       {
         "base_slot": "D6-Q3",
@@ -9867,7 +10326,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Reconocimiento de complejidad y mecanismos de aprendizaje",
+          "text": "¿El plan reconoce la complejidad del sector, identifica debilidades o incertidumbres en su estrategia, y propone mecanismos para aprender y ajustar (se debe buscar términos como 'pilotos', 'fase de prueba', 'evaluación', 'ajustes', 'articulación', 'coordinación', 'monitoreo adaptativo')?",
+          "code": "D6.Q3"
+        },
+        "children_questions": [
+          "Q028",
+          "Q058",
+          "Q088",
+          "Q118",
+          "Q148",
+          "Q178",
+          "Q208",
+          "Q238",
+          "Q268",
+          "Q298"
+        ]
       },
       {
         "base_slot": "D6-Q4",
@@ -10049,7 +10525,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Sistema de monitoreo con retroalimentación",
+          "text": "¿Se describe un sistema de monitoreo para el sector que incluya mecanismos de alerta temprana, retroalimentación con entidades especializadas o nivel superior, participación de población beneficiaria, y capacidad de aprendizaje para adaptar la estrategia ante desviaciones o resultados inesperados?",
+          "code": "D6.Q4"
+        },
+        "children_questions": [
+          "Q029",
+          "Q059",
+          "Q089",
+          "Q119",
+          "Q149",
+          "Q179",
+          "Q209",
+          "Q239",
+          "Q269",
+          "Q299"
+        ]
       },
       {
         "base_slot": "D6-Q5",
@@ -10242,7 +10735,24 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "definition": {
+          "title": "Contextualización territorial y grupos diferenciados",
+          "text": "¿El plan considera el contexto municipal específico del sector (características territoriales, sociales, económicas, culturales, institucionales), reconoce grupos con necesidades diferenciadas, y explicita restricciones (territoriales, normativas, presupuestales, de capacidad) que condicionan las intervenciones?",
+          "code": "D6.Q5"
+        },
+        "children_questions": [
+          "Q030",
+          "Q060",
+          "Q090",
+          "Q120",
+          "Q150",
+          "Q180",
+          "Q210",
+          "Q240",
+          "Q270",
+          "Q300"
+        ]
       },
       {
         "base_slot": "D1-Q1",
@@ -10673,7 +11183,19 @@
             ],
             "specificity": "MEDIUM"
           }
-        }
+        },
+        "children_questions": [
+          "Q001",
+          "Q031",
+          "Q061",
+          "Q091",
+          "Q121",
+          "Q151",
+          "Q181",
+          "Q211",
+          "Q241",
+          "Q271"
+        ]
       },
       {
         "base_slot": "D1-Q2",
@@ -10903,7 +11425,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q002",
+          "Q032",
+          "Q062",
+          "Q092",
+          "Q122",
+          "Q152",
+          "Q182",
+          "Q212",
+          "Q242",
+          "Q272"
+        ]
       },
       {
         "base_slot": "D1-Q3",
@@ -11157,7 +11691,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q003",
+          "Q033",
+          "Q063",
+          "Q093",
+          "Q123",
+          "Q153",
+          "Q183",
+          "Q213",
+          "Q243",
+          "Q273"
+        ]
       },
       {
         "base_slot": "D1-Q4",
@@ -11414,7 +11960,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q004",
+          "Q034",
+          "Q064",
+          "Q094",
+          "Q124",
+          "Q154",
+          "Q184",
+          "Q214",
+          "Q244",
+          "Q274"
+        ]
       },
       {
         "base_slot": "D1-Q5",
@@ -11626,7 +12184,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q005",
+          "Q035",
+          "Q065",
+          "Q095",
+          "Q125",
+          "Q155",
+          "Q185",
+          "Q215",
+          "Q245",
+          "Q275"
+        ]
       },
       {
         "base_slot": "D2-Q1",
@@ -11817,7 +12387,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q006",
+          "Q036",
+          "Q066",
+          "Q096",
+          "Q126",
+          "Q156",
+          "Q186",
+          "Q216",
+          "Q246",
+          "Q276"
+        ]
       },
       {
         "base_slot": "D2-Q2",
@@ -12039,7 +12621,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q007",
+          "Q037",
+          "Q067",
+          "Q097",
+          "Q127",
+          "Q157",
+          "Q187",
+          "Q217",
+          "Q247",
+          "Q277"
+        ]
       },
       {
         "base_slot": "D2-Q3",
@@ -12231,7 +12825,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q008",
+          "Q038",
+          "Q068",
+          "Q098",
+          "Q128",
+          "Q158",
+          "Q188",
+          "Q218",
+          "Q248",
+          "Q278"
+        ]
       },
       {
         "base_slot": "D2-Q4",
@@ -12443,7 +13049,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q009",
+          "Q039",
+          "Q069",
+          "Q099",
+          "Q129",
+          "Q159",
+          "Q189",
+          "Q219",
+          "Q249",
+          "Q279"
+        ]
       },
       {
         "base_slot": "D2-Q5",
@@ -12615,7 +13233,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q010",
+          "Q040",
+          "Q070",
+          "Q100",
+          "Q130",
+          "Q160",
+          "Q190",
+          "Q220",
+          "Q250",
+          "Q280"
+        ]
       },
       {
         "base_slot": "D3-Q1",
@@ -12989,7 +13619,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524367"
-        }
+        },
+        "children_questions": [
+          "Q011",
+          "Q041",
+          "Q071",
+          "Q101",
+          "Q131",
+          "Q161",
+          "Q191",
+          "Q221",
+          "Q251",
+          "Q281"
+        ]
       },
       {
         "base_slot": "D3-Q2",
@@ -13424,7 +14066,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524409"
-        }
+        },
+        "children_questions": [
+          "Q012",
+          "Q042",
+          "Q072",
+          "Q102",
+          "Q132",
+          "Q162",
+          "Q192",
+          "Q222",
+          "Q252",
+          "Q282"
+        ]
       },
       {
         "base_slot": "D3-Q3",
@@ -13877,7 +14531,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524451"
-        }
+        },
+        "children_questions": [
+          "Q013",
+          "Q043",
+          "Q073",
+          "Q103",
+          "Q133",
+          "Q163",
+          "Q193",
+          "Q223",
+          "Q253",
+          "Q283"
+        ]
       },
       {
         "base_slot": "D3-Q4",
@@ -14338,7 +15004,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524491"
-        }
+        },
+        "children_questions": [
+          "Q014",
+          "Q044",
+          "Q074",
+          "Q104",
+          "Q134",
+          "Q164",
+          "Q194",
+          "Q224",
+          "Q254",
+          "Q284"
+        ]
       },
       {
         "base_slot": "D3-Q5",
@@ -14788,7 +15466,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524532"
-        }
+        },
+        "children_questions": [
+          "Q015",
+          "Q045",
+          "Q075",
+          "Q105",
+          "Q135",
+          "Q165",
+          "Q195",
+          "Q225",
+          "Q255",
+          "Q285"
+        ]
       },
       {
         "base_slot": "D4-Q1",
@@ -15050,7 +15740,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q016",
+          "Q046",
+          "Q076",
+          "Q106",
+          "Q136",
+          "Q166",
+          "Q196",
+          "Q226",
+          "Q256",
+          "Q286"
+        ]
       },
       {
         "base_slot": "D4-Q2",
@@ -15239,7 +15941,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q017",
+          "Q047",
+          "Q077",
+          "Q107",
+          "Q137",
+          "Q167",
+          "Q197",
+          "Q227",
+          "Q257",
+          "Q287"
+        ]
       },
       {
         "base_slot": "D4-Q3",
@@ -15428,7 +16142,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q018",
+          "Q048",
+          "Q078",
+          "Q108",
+          "Q138",
+          "Q168",
+          "Q198",
+          "Q228",
+          "Q258",
+          "Q288"
+        ]
       },
       {
         "base_slot": "D4-Q4",
@@ -15581,7 +16307,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q019",
+          "Q049",
+          "Q079",
+          "Q109",
+          "Q139",
+          "Q169",
+          "Q199",
+          "Q229",
+          "Q259",
+          "Q289"
+        ]
       },
       {
         "base_slot": "D4-Q5",
@@ -15726,7 +16464,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q020",
+          "Q050",
+          "Q080",
+          "Q110",
+          "Q140",
+          "Q170",
+          "Q200",
+          "Q230",
+          "Q260",
+          "Q290"
+        ]
       },
       {
         "base_slot": "D5-Q1",
@@ -15915,7 +16665,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q021",
+          "Q051",
+          "Q081",
+          "Q111",
+          "Q141",
+          "Q171",
+          "Q201",
+          "Q231",
+          "Q261",
+          "Q291"
+        ]
       },
       {
         "base_slot": "D5-Q2",
@@ -16260,7 +17022,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q022",
+          "Q052",
+          "Q082",
+          "Q112",
+          "Q142",
+          "Q172",
+          "Q202",
+          "Q232",
+          "Q262",
+          "Q292"
+        ]
       },
       {
         "base_slot": "D5-Q3",
@@ -16422,7 +17196,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q023",
+          "Q053",
+          "Q083",
+          "Q113",
+          "Q143",
+          "Q173",
+          "Q203",
+          "Q233",
+          "Q263",
+          "Q293"
+        ]
       },
       {
         "base_slot": "D5-Q4",
@@ -16600,7 +17386,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q024",
+          "Q054",
+          "Q084",
+          "Q114",
+          "Q144",
+          "Q174",
+          "Q204",
+          "Q234",
+          "Q264",
+          "Q294"
+        ]
       },
       {
         "base_slot": "D5-Q5",
@@ -16789,7 +17587,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q025",
+          "Q055",
+          "Q085",
+          "Q115",
+          "Q145",
+          "Q175",
+          "Q205",
+          "Q235",
+          "Q265",
+          "Q295"
+        ]
       },
       {
         "base_slot": "D6-Q1",
@@ -16966,7 +17776,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q026",
+          "Q056",
+          "Q086",
+          "Q116",
+          "Q146",
+          "Q176",
+          "Q206",
+          "Q236",
+          "Q266",
+          "Q296"
+        ]
       },
       {
         "base_slot": "D6-Q2",
@@ -17118,7 +17940,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q027",
+          "Q057",
+          "Q087",
+          "Q117",
+          "Q147",
+          "Q177",
+          "Q207",
+          "Q237",
+          "Q267",
+          "Q297"
+        ]
       },
       {
         "base_slot": "D6-Q3",
@@ -17303,7 +18137,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q028",
+          "Q058",
+          "Q088",
+          "Q118",
+          "Q148",
+          "Q178",
+          "Q208",
+          "Q238",
+          "Q268",
+          "Q298"
+        ]
       },
       {
         "base_slot": "D6-Q4",
@@ -17485,7 +18331,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q029",
+          "Q059",
+          "Q089",
+          "Q119",
+          "Q149",
+          "Q179",
+          "Q209",
+          "Q239",
+          "Q269",
+          "Q299"
+        ]
       },
       {
         "base_slot": "D6-Q5",
@@ -17691,7 +18549,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q030",
+          "Q060",
+          "Q090",
+          "Q120",
+          "Q150",
+          "Q180",
+          "Q210",
+          "Q240",
+          "Q270",
+          "Q300"
+        ]
       },
       {
         "base_slot": "D1-Q1",
@@ -18083,7 +18953,19 @@
             ],
             "specificity": "MEDIUM"
           }
-        }
+        },
+        "children_questions": [
+          "Q001",
+          "Q031",
+          "Q061",
+          "Q091",
+          "Q121",
+          "Q151",
+          "Q181",
+          "Q211",
+          "Q241",
+          "Q271"
+        ]
       },
       {
         "base_slot": "D1-Q2",
@@ -18326,7 +19208,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q002",
+          "Q032",
+          "Q062",
+          "Q092",
+          "Q122",
+          "Q152",
+          "Q182",
+          "Q212",
+          "Q242",
+          "Q272"
+        ]
       },
       {
         "base_slot": "D1-Q3",
@@ -18580,7 +19474,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q003",
+          "Q033",
+          "Q063",
+          "Q093",
+          "Q123",
+          "Q153",
+          "Q183",
+          "Q213",
+          "Q243",
+          "Q273"
+        ]
       },
       {
         "base_slot": "D1-Q4",
@@ -18837,7 +19743,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q004",
+          "Q034",
+          "Q064",
+          "Q094",
+          "Q124",
+          "Q154",
+          "Q184",
+          "Q214",
+          "Q244",
+          "Q274"
+        ]
       },
       {
         "base_slot": "D1-Q5",
@@ -19049,7 +19967,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q005",
+          "Q035",
+          "Q065",
+          "Q095",
+          "Q125",
+          "Q155",
+          "Q185",
+          "Q215",
+          "Q245",
+          "Q275"
+        ]
       },
       {
         "base_slot": "D2-Q1",
@@ -19240,7 +20170,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q006",
+          "Q036",
+          "Q066",
+          "Q096",
+          "Q126",
+          "Q156",
+          "Q186",
+          "Q216",
+          "Q246",
+          "Q276"
+        ]
       },
       {
         "base_slot": "D2-Q2",
@@ -19475,7 +20417,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q007",
+          "Q037",
+          "Q067",
+          "Q097",
+          "Q127",
+          "Q157",
+          "Q187",
+          "Q217",
+          "Q247",
+          "Q277"
+        ]
       },
       {
         "base_slot": "D2-Q3",
@@ -19680,7 +20634,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q008",
+          "Q038",
+          "Q068",
+          "Q098",
+          "Q128",
+          "Q158",
+          "Q188",
+          "Q218",
+          "Q248",
+          "Q278"
+        ]
       },
       {
         "base_slot": "D2-Q4",
@@ -19892,7 +20858,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q009",
+          "Q039",
+          "Q069",
+          "Q099",
+          "Q129",
+          "Q159",
+          "Q189",
+          "Q219",
+          "Q249",
+          "Q279"
+        ]
       },
       {
         "base_slot": "D2-Q5",
@@ -20064,7 +21042,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q010",
+          "Q040",
+          "Q070",
+          "Q100",
+          "Q130",
+          "Q160",
+          "Q190",
+          "Q220",
+          "Q250",
+          "Q280"
+        ]
       },
       {
         "base_slot": "D3-Q1",
@@ -20438,7 +21428,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524572"
-        }
+        },
+        "children_questions": [
+          "Q011",
+          "Q041",
+          "Q071",
+          "Q101",
+          "Q131",
+          "Q161",
+          "Q191",
+          "Q221",
+          "Q251",
+          "Q281"
+        ]
       },
       {
         "base_slot": "D3-Q2",
@@ -20856,7 +21858,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524609"
-        }
+        },
+        "children_questions": [
+          "Q012",
+          "Q042",
+          "Q072",
+          "Q102",
+          "Q132",
+          "Q162",
+          "Q192",
+          "Q222",
+          "Q252",
+          "Q282"
+        ]
       },
       {
         "base_slot": "D3-Q3",
@@ -21298,7 +22312,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524645"
-        }
+        },
+        "children_questions": [
+          "Q013",
+          "Q043",
+          "Q073",
+          "Q103",
+          "Q133",
+          "Q163",
+          "Q193",
+          "Q223",
+          "Q253",
+          "Q283"
+        ]
       },
       {
         "base_slot": "D3-Q4",
@@ -21759,7 +22785,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524681"
-        }
+        },
+        "children_questions": [
+          "Q014",
+          "Q044",
+          "Q074",
+          "Q104",
+          "Q134",
+          "Q164",
+          "Q194",
+          "Q224",
+          "Q254",
+          "Q284"
+        ]
       },
       {
         "base_slot": "D3-Q5",
@@ -22209,7 +23247,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524722"
-        }
+        },
+        "children_questions": [
+          "Q015",
+          "Q045",
+          "Q075",
+          "Q105",
+          "Q135",
+          "Q165",
+          "Q195",
+          "Q225",
+          "Q255",
+          "Q285"
+        ]
       },
       {
         "base_slot": "D4-Q1",
@@ -22484,7 +23534,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q016",
+          "Q046",
+          "Q076",
+          "Q106",
+          "Q136",
+          "Q166",
+          "Q196",
+          "Q226",
+          "Q256",
+          "Q286"
+        ]
       },
       {
         "base_slot": "D4-Q2",
@@ -22673,7 +23735,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q017",
+          "Q047",
+          "Q077",
+          "Q107",
+          "Q137",
+          "Q167",
+          "Q197",
+          "Q227",
+          "Q257",
+          "Q287"
+        ]
       },
       {
         "base_slot": "D4-Q3",
@@ -22862,7 +23936,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q018",
+          "Q048",
+          "Q078",
+          "Q108",
+          "Q138",
+          "Q168",
+          "Q198",
+          "Q228",
+          "Q258",
+          "Q288"
+        ]
       },
       {
         "base_slot": "D4-Q4",
@@ -23028,7 +24114,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q019",
+          "Q049",
+          "Q079",
+          "Q109",
+          "Q139",
+          "Q169",
+          "Q199",
+          "Q229",
+          "Q259",
+          "Q289"
+        ]
       },
       {
         "base_slot": "D4-Q5",
@@ -23177,7 +24275,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q020",
+          "Q050",
+          "Q080",
+          "Q110",
+          "Q140",
+          "Q170",
+          "Q200",
+          "Q230",
+          "Q260",
+          "Q290"
+        ]
       },
       {
         "base_slot": "D5-Q1",
@@ -23366,7 +24476,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q021",
+          "Q051",
+          "Q081",
+          "Q111",
+          "Q141",
+          "Q171",
+          "Q201",
+          "Q231",
+          "Q261",
+          "Q291"
+        ]
       },
       {
         "base_slot": "D5-Q2",
@@ -23682,7 +24804,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q022",
+          "Q052",
+          "Q082",
+          "Q112",
+          "Q142",
+          "Q172",
+          "Q202",
+          "Q232",
+          "Q262",
+          "Q292"
+        ]
       },
       {
         "base_slot": "D5-Q3",
@@ -23844,7 +24978,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q023",
+          "Q053",
+          "Q083",
+          "Q113",
+          "Q143",
+          "Q173",
+          "Q203",
+          "Q233",
+          "Q263",
+          "Q293"
+        ]
       },
       {
         "base_slot": "D5-Q4",
@@ -24022,7 +25168,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q024",
+          "Q054",
+          "Q084",
+          "Q114",
+          "Q144",
+          "Q174",
+          "Q204",
+          "Q234",
+          "Q264",
+          "Q294"
+        ]
       },
       {
         "base_slot": "D5-Q5",
@@ -24211,7 +25369,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q025",
+          "Q055",
+          "Q085",
+          "Q115",
+          "Q145",
+          "Q175",
+          "Q205",
+          "Q235",
+          "Q265",
+          "Q295"
+        ]
       },
       {
         "base_slot": "D6-Q1",
@@ -24388,7 +25558,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q026",
+          "Q056",
+          "Q086",
+          "Q116",
+          "Q146",
+          "Q176",
+          "Q206",
+          "Q236",
+          "Q266",
+          "Q296"
+        ]
       },
       {
         "base_slot": "D6-Q2",
@@ -24540,7 +25722,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q027",
+          "Q057",
+          "Q087",
+          "Q117",
+          "Q147",
+          "Q177",
+          "Q207",
+          "Q237",
+          "Q267",
+          "Q297"
+        ]
       },
       {
         "base_slot": "D6-Q3",
@@ -24725,7 +25919,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q028",
+          "Q058",
+          "Q088",
+          "Q118",
+          "Q148",
+          "Q178",
+          "Q208",
+          "Q238",
+          "Q268",
+          "Q298"
+        ]
       },
       {
         "base_slot": "D6-Q4",
@@ -24907,7 +26113,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q029",
+          "Q059",
+          "Q089",
+          "Q119",
+          "Q149",
+          "Q179",
+          "Q209",
+          "Q239",
+          "Q269",
+          "Q299"
+        ]
       },
       {
         "base_slot": "D6-Q5",
@@ -25099,7 +26317,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q030",
+          "Q060",
+          "Q090",
+          "Q120",
+          "Q150",
+          "Q180",
+          "Q210",
+          "Q240",
+          "Q270",
+          "Q300"
+        ]
       },
       {
         "base_slot": "D1-Q1",
@@ -25526,7 +26756,19 @@
             ],
             "specificity": "MEDIUM"
           }
-        }
+        },
+        "children_questions": [
+          "Q001",
+          "Q031",
+          "Q061",
+          "Q091",
+          "Q121",
+          "Q151",
+          "Q181",
+          "Q211",
+          "Q241",
+          "Q271"
+        ]
       },
       {
         "base_slot": "D1-Q2",
@@ -25756,7 +26998,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q002",
+          "Q032",
+          "Q062",
+          "Q092",
+          "Q122",
+          "Q152",
+          "Q182",
+          "Q212",
+          "Q242",
+          "Q272"
+        ]
       },
       {
         "base_slot": "D1-Q3",
@@ -26010,7 +27264,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q003",
+          "Q033",
+          "Q063",
+          "Q093",
+          "Q123",
+          "Q153",
+          "Q183",
+          "Q213",
+          "Q243",
+          "Q273"
+        ]
       },
       {
         "base_slot": "D1-Q4",
@@ -26267,7 +27533,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q004",
+          "Q034",
+          "Q064",
+          "Q094",
+          "Q124",
+          "Q154",
+          "Q184",
+          "Q214",
+          "Q244",
+          "Q274"
+        ]
       },
       {
         "base_slot": "D1-Q5",
@@ -26492,7 +27770,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q005",
+          "Q035",
+          "Q065",
+          "Q095",
+          "Q125",
+          "Q155",
+          "Q185",
+          "Q215",
+          "Q245",
+          "Q275"
+        ]
       },
       {
         "base_slot": "D2-Q1",
@@ -26683,7 +27973,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q006",
+          "Q036",
+          "Q066",
+          "Q096",
+          "Q126",
+          "Q156",
+          "Q186",
+          "Q216",
+          "Q246",
+          "Q276"
+        ]
       },
       {
         "base_slot": "D2-Q2",
@@ -26918,7 +28220,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q007",
+          "Q037",
+          "Q067",
+          "Q097",
+          "Q127",
+          "Q157",
+          "Q187",
+          "Q217",
+          "Q247",
+          "Q277"
+        ]
       },
       {
         "base_slot": "D2-Q3",
@@ -27123,7 +28437,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q008",
+          "Q038",
+          "Q068",
+          "Q098",
+          "Q128",
+          "Q158",
+          "Q188",
+          "Q218",
+          "Q248",
+          "Q278"
+        ]
       },
       {
         "base_slot": "D2-Q4",
@@ -27335,7 +28661,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q009",
+          "Q039",
+          "Q069",
+          "Q099",
+          "Q129",
+          "Q159",
+          "Q189",
+          "Q219",
+          "Q249",
+          "Q279"
+        ]
       },
       {
         "base_slot": "D2-Q5",
@@ -27507,7 +28845,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q010",
+          "Q040",
+          "Q070",
+          "Q100",
+          "Q130",
+          "Q160",
+          "Q190",
+          "Q220",
+          "Q250",
+          "Q280"
+        ]
       },
       {
         "base_slot": "D3-Q1",
@@ -27881,7 +29231,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524760"
-        }
+        },
+        "children_questions": [
+          "Q011",
+          "Q041",
+          "Q071",
+          "Q101",
+          "Q131",
+          "Q161",
+          "Q191",
+          "Q221",
+          "Q251",
+          "Q281"
+        ]
       },
       {
         "base_slot": "D3-Q2",
@@ -28299,7 +29661,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524808"
-        }
+        },
+        "children_questions": [
+          "Q012",
+          "Q042",
+          "Q072",
+          "Q102",
+          "Q132",
+          "Q162",
+          "Q192",
+          "Q222",
+          "Q252",
+          "Q282"
+        ]
       },
       {
         "base_slot": "D3-Q3",
@@ -28741,7 +30115,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524844"
-        }
+        },
+        "children_questions": [
+          "Q013",
+          "Q043",
+          "Q073",
+          "Q103",
+          "Q133",
+          "Q163",
+          "Q193",
+          "Q223",
+          "Q253",
+          "Q283"
+        ]
       },
       {
         "base_slot": "D3-Q4",
@@ -29202,7 +30588,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524887"
-        }
+        },
+        "children_questions": [
+          "Q014",
+          "Q044",
+          "Q074",
+          "Q104",
+          "Q134",
+          "Q164",
+          "Q194",
+          "Q224",
+          "Q254",
+          "Q284"
+        ]
       },
       {
         "base_slot": "D3-Q5",
@@ -29652,7 +31050,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524922"
-        }
+        },
+        "children_questions": [
+          "Q015",
+          "Q045",
+          "Q075",
+          "Q105",
+          "Q135",
+          "Q165",
+          "Q195",
+          "Q225",
+          "Q255",
+          "Q285"
+        ]
       },
       {
         "base_slot": "D4-Q1",
@@ -29927,7 +31337,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q016",
+          "Q046",
+          "Q076",
+          "Q106",
+          "Q136",
+          "Q166",
+          "Q196",
+          "Q226",
+          "Q256",
+          "Q286"
+        ]
       },
       {
         "base_slot": "D4-Q2",
@@ -30116,7 +31538,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q017",
+          "Q047",
+          "Q077",
+          "Q107",
+          "Q137",
+          "Q167",
+          "Q197",
+          "Q227",
+          "Q257",
+          "Q287"
+        ]
       },
       {
         "base_slot": "D4-Q3",
@@ -30292,7 +31726,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q018",
+          "Q048",
+          "Q078",
+          "Q108",
+          "Q138",
+          "Q168",
+          "Q198",
+          "Q228",
+          "Q258",
+          "Q288"
+        ]
       },
       {
         "base_slot": "D4-Q4",
@@ -30458,7 +31904,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q019",
+          "Q049",
+          "Q079",
+          "Q109",
+          "Q139",
+          "Q169",
+          "Q199",
+          "Q229",
+          "Q259",
+          "Q289"
+        ]
       },
       {
         "base_slot": "D4-Q5",
@@ -30603,7 +32061,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q020",
+          "Q050",
+          "Q080",
+          "Q110",
+          "Q140",
+          "Q170",
+          "Q200",
+          "Q230",
+          "Q260",
+          "Q290"
+        ]
       },
       {
         "base_slot": "D5-Q1",
@@ -30792,7 +32262,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q021",
+          "Q051",
+          "Q081",
+          "Q111",
+          "Q141",
+          "Q171",
+          "Q201",
+          "Q231",
+          "Q261",
+          "Q291"
+        ]
       },
       {
         "base_slot": "D5-Q2",
@@ -31108,7 +32590,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q022",
+          "Q052",
+          "Q082",
+          "Q112",
+          "Q142",
+          "Q172",
+          "Q202",
+          "Q232",
+          "Q262",
+          "Q292"
+        ]
       },
       {
         "base_slot": "D5-Q3",
@@ -31270,7 +32764,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q023",
+          "Q053",
+          "Q083",
+          "Q113",
+          "Q143",
+          "Q173",
+          "Q203",
+          "Q233",
+          "Q263",
+          "Q293"
+        ]
       },
       {
         "base_slot": "D5-Q4",
@@ -31448,7 +32954,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q024",
+          "Q054",
+          "Q084",
+          "Q114",
+          "Q144",
+          "Q174",
+          "Q204",
+          "Q234",
+          "Q264",
+          "Q294"
+        ]
       },
       {
         "base_slot": "D5-Q5",
@@ -31637,7 +33155,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q025",
+          "Q055",
+          "Q085",
+          "Q115",
+          "Q145",
+          "Q175",
+          "Q205",
+          "Q235",
+          "Q265",
+          "Q295"
+        ]
       },
       {
         "base_slot": "D6-Q1",
@@ -31814,7 +33344,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q026",
+          "Q056",
+          "Q086",
+          "Q116",
+          "Q146",
+          "Q176",
+          "Q206",
+          "Q236",
+          "Q266",
+          "Q296"
+        ]
       },
       {
         "base_slot": "D6-Q2",
@@ -31966,7 +33508,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q027",
+          "Q057",
+          "Q087",
+          "Q117",
+          "Q147",
+          "Q177",
+          "Q207",
+          "Q237",
+          "Q267",
+          "Q297"
+        ]
       },
       {
         "base_slot": "D6-Q3",
@@ -32151,7 +33705,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q028",
+          "Q058",
+          "Q088",
+          "Q118",
+          "Q148",
+          "Q178",
+          "Q208",
+          "Q238",
+          "Q268",
+          "Q298"
+        ]
       },
       {
         "base_slot": "D6-Q4",
@@ -32344,7 +33910,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q029",
+          "Q059",
+          "Q089",
+          "Q119",
+          "Q149",
+          "Q179",
+          "Q209",
+          "Q239",
+          "Q269",
+          "Q299"
+        ]
       },
       {
         "base_slot": "D6-Q5",
@@ -32550,7 +34128,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q030",
+          "Q060",
+          "Q090",
+          "Q120",
+          "Q150",
+          "Q180",
+          "Q210",
+          "Q240",
+          "Q270",
+          "Q300"
+        ]
       },
       {
         "base_slot": "D1-Q1",
@@ -32929,7 +34519,19 @@
             ],
             "specificity": "MEDIUM"
           }
-        }
+        },
+        "children_questions": [
+          "Q001",
+          "Q031",
+          "Q061",
+          "Q091",
+          "Q121",
+          "Q151",
+          "Q181",
+          "Q211",
+          "Q241",
+          "Q271"
+        ]
       },
       {
         "base_slot": "D1-Q2",
@@ -33159,7 +34761,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q002",
+          "Q032",
+          "Q062",
+          "Q092",
+          "Q122",
+          "Q152",
+          "Q182",
+          "Q212",
+          "Q242",
+          "Q272"
+        ]
       },
       {
         "base_slot": "D1-Q3",
@@ -33413,7 +35027,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q003",
+          "Q033",
+          "Q063",
+          "Q093",
+          "Q123",
+          "Q153",
+          "Q183",
+          "Q213",
+          "Q243",
+          "Q273"
+        ]
       },
       {
         "base_slot": "D1-Q4",
@@ -33670,7 +35296,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q004",
+          "Q034",
+          "Q064",
+          "Q094",
+          "Q124",
+          "Q154",
+          "Q184",
+          "Q214",
+          "Q244",
+          "Q274"
+        ]
       },
       {
         "base_slot": "D1-Q5",
@@ -33882,7 +35520,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q005",
+          "Q035",
+          "Q065",
+          "Q095",
+          "Q125",
+          "Q155",
+          "Q185",
+          "Q215",
+          "Q245",
+          "Q275"
+        ]
       },
       {
         "base_slot": "D2-Q1",
@@ -34073,7 +35723,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q006",
+          "Q036",
+          "Q066",
+          "Q096",
+          "Q126",
+          "Q156",
+          "Q186",
+          "Q216",
+          "Q246",
+          "Q276"
+        ]
       },
       {
         "base_slot": "D2-Q2",
@@ -34308,7 +35970,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q007",
+          "Q037",
+          "Q067",
+          "Q097",
+          "Q127",
+          "Q157",
+          "Q187",
+          "Q217",
+          "Q247",
+          "Q277"
+        ]
       },
       {
         "base_slot": "D2-Q3",
@@ -34487,7 +36161,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q008",
+          "Q038",
+          "Q068",
+          "Q098",
+          "Q128",
+          "Q158",
+          "Q188",
+          "Q218",
+          "Q248",
+          "Q278"
+        ]
       },
       {
         "base_slot": "D2-Q4",
@@ -34699,7 +36385,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q009",
+          "Q039",
+          "Q069",
+          "Q099",
+          "Q129",
+          "Q159",
+          "Q189",
+          "Q219",
+          "Q249",
+          "Q279"
+        ]
       },
       {
         "base_slot": "D2-Q5",
@@ -34871,7 +36569,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q010",
+          "Q040",
+          "Q070",
+          "Q100",
+          "Q130",
+          "Q160",
+          "Q190",
+          "Q220",
+          "Q250",
+          "Q280"
+        ]
       },
       {
         "base_slot": "D3-Q1",
@@ -35258,7 +36968,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.524958"
-        }
+        },
+        "children_questions": [
+          "Q011",
+          "Q041",
+          "Q071",
+          "Q101",
+          "Q131",
+          "Q161",
+          "Q191",
+          "Q221",
+          "Q251",
+          "Q281"
+        ]
       },
       {
         "base_slot": "D3-Q2",
@@ -35676,7 +37398,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525000"
-        }
+        },
+        "children_questions": [
+          "Q012",
+          "Q042",
+          "Q072",
+          "Q102",
+          "Q132",
+          "Q162",
+          "Q192",
+          "Q222",
+          "Q252",
+          "Q282"
+        ]
       },
       {
         "base_slot": "D3-Q3",
@@ -36118,7 +37852,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525086"
-        }
+        },
+        "children_questions": [
+          "Q013",
+          "Q043",
+          "Q073",
+          "Q103",
+          "Q133",
+          "Q163",
+          "Q193",
+          "Q223",
+          "Q253",
+          "Q283"
+        ]
       },
       {
         "base_slot": "D3-Q4",
@@ -36579,7 +38325,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525124"
-        }
+        },
+        "children_questions": [
+          "Q014",
+          "Q044",
+          "Q074",
+          "Q104",
+          "Q134",
+          "Q164",
+          "Q194",
+          "Q224",
+          "Q254",
+          "Q284"
+        ]
       },
       {
         "base_slot": "D3-Q5",
@@ -37029,7 +38787,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525159"
-        }
+        },
+        "children_questions": [
+          "Q015",
+          "Q045",
+          "Q075",
+          "Q105",
+          "Q135",
+          "Q165",
+          "Q195",
+          "Q225",
+          "Q255",
+          "Q285"
+        ]
       },
       {
         "base_slot": "D4-Q1",
@@ -37304,7 +39074,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q016",
+          "Q046",
+          "Q076",
+          "Q106",
+          "Q136",
+          "Q166",
+          "Q196",
+          "Q226",
+          "Q256",
+          "Q286"
+        ]
       },
       {
         "base_slot": "D4-Q2",
@@ -37493,7 +39275,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q017",
+          "Q047",
+          "Q077",
+          "Q107",
+          "Q137",
+          "Q167",
+          "Q197",
+          "Q227",
+          "Q257",
+          "Q287"
+        ]
       },
       {
         "base_slot": "D4-Q3",
@@ -37669,7 +39463,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q018",
+          "Q048",
+          "Q078",
+          "Q108",
+          "Q138",
+          "Q168",
+          "Q198",
+          "Q228",
+          "Q258",
+          "Q288"
+        ]
       },
       {
         "base_slot": "D4-Q4",
@@ -37835,7 +39641,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q019",
+          "Q049",
+          "Q079",
+          "Q109",
+          "Q139",
+          "Q169",
+          "Q199",
+          "Q229",
+          "Q259",
+          "Q289"
+        ]
       },
       {
         "base_slot": "D4-Q5",
@@ -37984,7 +39802,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q020",
+          "Q050",
+          "Q080",
+          "Q110",
+          "Q140",
+          "Q170",
+          "Q200",
+          "Q230",
+          "Q260",
+          "Q290"
+        ]
       },
       {
         "base_slot": "D5-Q1",
@@ -38160,7 +39990,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q021",
+          "Q051",
+          "Q081",
+          "Q111",
+          "Q141",
+          "Q171",
+          "Q201",
+          "Q231",
+          "Q261",
+          "Q291"
+        ]
       },
       {
         "base_slot": "D5-Q2",
@@ -38476,7 +40318,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q022",
+          "Q052",
+          "Q082",
+          "Q112",
+          "Q142",
+          "Q172",
+          "Q202",
+          "Q232",
+          "Q262",
+          "Q292"
+        ]
       },
       {
         "base_slot": "D5-Q3",
@@ -38638,7 +40492,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q023",
+          "Q053",
+          "Q083",
+          "Q113",
+          "Q143",
+          "Q173",
+          "Q203",
+          "Q233",
+          "Q263",
+          "Q293"
+        ]
       },
       {
         "base_slot": "D5-Q4",
@@ -38816,7 +40682,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q024",
+          "Q054",
+          "Q084",
+          "Q114",
+          "Q144",
+          "Q174",
+          "Q204",
+          "Q234",
+          "Q264",
+          "Q294"
+        ]
       },
       {
         "base_slot": "D5-Q5",
@@ -39005,7 +40883,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q025",
+          "Q055",
+          "Q085",
+          "Q115",
+          "Q145",
+          "Q175",
+          "Q205",
+          "Q235",
+          "Q265",
+          "Q295"
+        ]
       },
       {
         "base_slot": "D6-Q1",
@@ -39182,7 +41072,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q026",
+          "Q056",
+          "Q086",
+          "Q116",
+          "Q146",
+          "Q176",
+          "Q206",
+          "Q236",
+          "Q266",
+          "Q296"
+        ]
       },
       {
         "base_slot": "D6-Q2",
@@ -39347,7 +41249,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q027",
+          "Q057",
+          "Q087",
+          "Q117",
+          "Q147",
+          "Q177",
+          "Q207",
+          "Q237",
+          "Q267",
+          "Q297"
+        ]
       },
       {
         "base_slot": "D6-Q3",
@@ -39532,7 +41446,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q028",
+          "Q058",
+          "Q088",
+          "Q118",
+          "Q148",
+          "Q178",
+          "Q208",
+          "Q238",
+          "Q268",
+          "Q298"
+        ]
       },
       {
         "base_slot": "D6-Q4",
@@ -39714,7 +41640,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q029",
+          "Q059",
+          "Q089",
+          "Q119",
+          "Q149",
+          "Q179",
+          "Q209",
+          "Q239",
+          "Q269",
+          "Q299"
+        ]
       },
       {
         "base_slot": "D6-Q5",
@@ -39906,7 +41844,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q030",
+          "Q060",
+          "Q090",
+          "Q120",
+          "Q150",
+          "Q180",
+          "Q210",
+          "Q240",
+          "Q270",
+          "Q300"
+        ]
       },
       {
         "base_slot": "D1-Q1",
@@ -40333,7 +42283,19 @@
             ],
             "specificity": "MEDIUM"
           }
-        }
+        },
+        "children_questions": [
+          "Q001",
+          "Q031",
+          "Q061",
+          "Q091",
+          "Q121",
+          "Q151",
+          "Q181",
+          "Q211",
+          "Q241",
+          "Q271"
+        ]
       },
       {
         "base_slot": "D1-Q2",
@@ -40576,7 +42538,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q002",
+          "Q032",
+          "Q062",
+          "Q092",
+          "Q122",
+          "Q152",
+          "Q182",
+          "Q212",
+          "Q242",
+          "Q272"
+        ]
       },
       {
         "base_slot": "D1-Q3",
@@ -40830,7 +42804,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q003",
+          "Q033",
+          "Q063",
+          "Q093",
+          "Q123",
+          "Q153",
+          "Q183",
+          "Q213",
+          "Q243",
+          "Q273"
+        ]
       },
       {
         "base_slot": "D1-Q4",
@@ -41087,7 +43073,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q004",
+          "Q034",
+          "Q064",
+          "Q094",
+          "Q124",
+          "Q154",
+          "Q184",
+          "Q214",
+          "Q244",
+          "Q274"
+        ]
       },
       {
         "base_slot": "D1-Q5",
@@ -41299,7 +43297,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q005",
+          "Q035",
+          "Q065",
+          "Q095",
+          "Q125",
+          "Q155",
+          "Q185",
+          "Q215",
+          "Q245",
+          "Q275"
+        ]
       },
       {
         "base_slot": "D2-Q1",
@@ -41490,7 +43500,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q006",
+          "Q036",
+          "Q066",
+          "Q096",
+          "Q126",
+          "Q156",
+          "Q186",
+          "Q216",
+          "Q246",
+          "Q276"
+        ]
       },
       {
         "base_slot": "D2-Q2",
@@ -41725,7 +43747,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q007",
+          "Q037",
+          "Q067",
+          "Q097",
+          "Q127",
+          "Q157",
+          "Q187",
+          "Q217",
+          "Q247",
+          "Q277"
+        ]
       },
       {
         "base_slot": "D2-Q3",
@@ -41930,7 +43964,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q008",
+          "Q038",
+          "Q068",
+          "Q098",
+          "Q128",
+          "Q158",
+          "Q188",
+          "Q218",
+          "Q248",
+          "Q278"
+        ]
       },
       {
         "base_slot": "D2-Q4",
@@ -42142,7 +44188,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q009",
+          "Q039",
+          "Q069",
+          "Q099",
+          "Q129",
+          "Q159",
+          "Q189",
+          "Q219",
+          "Q249",
+          "Q279"
+        ]
       },
       {
         "base_slot": "D2-Q5",
@@ -42314,7 +44372,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q010",
+          "Q040",
+          "Q070",
+          "Q100",
+          "Q130",
+          "Q160",
+          "Q190",
+          "Q220",
+          "Q250",
+          "Q280"
+        ]
       },
       {
         "base_slot": "D3-Q1",
@@ -42701,7 +44771,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525204"
-        }
+        },
+        "children_questions": [
+          "Q011",
+          "Q041",
+          "Q071",
+          "Q101",
+          "Q131",
+          "Q161",
+          "Q191",
+          "Q221",
+          "Q251",
+          "Q281"
+        ]
       },
       {
         "base_slot": "D3-Q2",
@@ -43136,7 +45218,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525255"
-        }
+        },
+        "children_questions": [
+          "Q012",
+          "Q042",
+          "Q072",
+          "Q102",
+          "Q132",
+          "Q162",
+          "Q192",
+          "Q222",
+          "Q252",
+          "Q282"
+        ]
       },
       {
         "base_slot": "D3-Q3",
@@ -43578,7 +45672,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525292"
-        }
+        },
+        "children_questions": [
+          "Q013",
+          "Q043",
+          "Q073",
+          "Q103",
+          "Q133",
+          "Q163",
+          "Q193",
+          "Q223",
+          "Q253",
+          "Q283"
+        ]
       },
       {
         "base_slot": "D3-Q4",
@@ -44039,7 +46145,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525334"
-        }
+        },
+        "children_questions": [
+          "Q014",
+          "Q044",
+          "Q074",
+          "Q104",
+          "Q134",
+          "Q164",
+          "Q194",
+          "Q224",
+          "Q254",
+          "Q284"
+        ]
       },
       {
         "base_slot": "D3-Q5",
@@ -44489,7 +46607,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525373"
-        }
+        },
+        "children_questions": [
+          "Q015",
+          "Q045",
+          "Q075",
+          "Q105",
+          "Q135",
+          "Q165",
+          "Q195",
+          "Q225",
+          "Q255",
+          "Q285"
+        ]
       },
       {
         "base_slot": "D4-Q1",
@@ -44764,7 +46894,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q016",
+          "Q046",
+          "Q076",
+          "Q106",
+          "Q136",
+          "Q166",
+          "Q196",
+          "Q226",
+          "Q256",
+          "Q286"
+        ]
       },
       {
         "base_slot": "D4-Q2",
@@ -44953,7 +47095,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q017",
+          "Q047",
+          "Q077",
+          "Q107",
+          "Q137",
+          "Q167",
+          "Q197",
+          "Q227",
+          "Q257",
+          "Q287"
+        ]
       },
       {
         "base_slot": "D4-Q3",
@@ -45129,7 +47283,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q018",
+          "Q048",
+          "Q078",
+          "Q108",
+          "Q138",
+          "Q168",
+          "Q198",
+          "Q228",
+          "Q258",
+          "Q288"
+        ]
       },
       {
         "base_slot": "D4-Q4",
@@ -45295,7 +47461,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q019",
+          "Q049",
+          "Q079",
+          "Q109",
+          "Q139",
+          "Q169",
+          "Q199",
+          "Q229",
+          "Q259",
+          "Q289"
+        ]
       },
       {
         "base_slot": "D4-Q5",
@@ -45440,7 +47618,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q020",
+          "Q050",
+          "Q080",
+          "Q110",
+          "Q140",
+          "Q170",
+          "Q200",
+          "Q230",
+          "Q260",
+          "Q290"
+        ]
       },
       {
         "base_slot": "D5-Q1",
@@ -45630,7 +47820,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q021",
+          "Q051",
+          "Q081",
+          "Q111",
+          "Q141",
+          "Q171",
+          "Q201",
+          "Q231",
+          "Q261",
+          "Q291"
+        ]
       },
       {
         "base_slot": "D5-Q2",
@@ -45946,7 +48148,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q022",
+          "Q052",
+          "Q082",
+          "Q112",
+          "Q142",
+          "Q172",
+          "Q202",
+          "Q232",
+          "Q262",
+          "Q292"
+        ]
       },
       {
         "base_slot": "D5-Q3",
@@ -46108,7 +48322,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q023",
+          "Q053",
+          "Q083",
+          "Q113",
+          "Q143",
+          "Q173",
+          "Q203",
+          "Q233",
+          "Q263",
+          "Q293"
+        ]
       },
       {
         "base_slot": "D5-Q4",
@@ -46286,7 +48512,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q024",
+          "Q054",
+          "Q084",
+          "Q114",
+          "Q144",
+          "Q174",
+          "Q204",
+          "Q234",
+          "Q264",
+          "Q294"
+        ]
       },
       {
         "base_slot": "D5-Q5",
@@ -46475,7 +48713,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q025",
+          "Q055",
+          "Q085",
+          "Q115",
+          "Q145",
+          "Q175",
+          "Q205",
+          "Q235",
+          "Q265",
+          "Q295"
+        ]
       },
       {
         "base_slot": "D6-Q1",
@@ -46652,7 +48902,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q026",
+          "Q056",
+          "Q086",
+          "Q116",
+          "Q146",
+          "Q176",
+          "Q206",
+          "Q236",
+          "Q266",
+          "Q296"
+        ]
       },
       {
         "base_slot": "D6-Q2",
@@ -46817,7 +49079,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q027",
+          "Q057",
+          "Q087",
+          "Q117",
+          "Q147",
+          "Q177",
+          "Q207",
+          "Q237",
+          "Q267",
+          "Q297"
+        ]
       },
       {
         "base_slot": "D6-Q3",
@@ -47002,7 +49276,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q028",
+          "Q058",
+          "Q088",
+          "Q118",
+          "Q148",
+          "Q178",
+          "Q208",
+          "Q238",
+          "Q268",
+          "Q298"
+        ]
       },
       {
         "base_slot": "D6-Q4",
@@ -47184,7 +49470,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q029",
+          "Q059",
+          "Q089",
+          "Q119",
+          "Q149",
+          "Q179",
+          "Q209",
+          "Q239",
+          "Q269",
+          "Q299"
+        ]
       },
       {
         "base_slot": "D6-Q5",
@@ -47376,7 +49674,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q030",
+          "Q060",
+          "Q090",
+          "Q120",
+          "Q150",
+          "Q180",
+          "Q210",
+          "Q240",
+          "Q270",
+          "Q300"
+        ]
       },
       {
         "base_slot": "D1-Q1",
@@ -47781,7 +50091,19 @@
             ],
             "specificity": "MEDIUM"
           }
-        }
+        },
+        "children_questions": [
+          "Q001",
+          "Q031",
+          "Q061",
+          "Q091",
+          "Q121",
+          "Q151",
+          "Q181",
+          "Q211",
+          "Q241",
+          "Q271"
+        ]
       },
       {
         "base_slot": "D1-Q2",
@@ -48011,7 +50333,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q002",
+          "Q032",
+          "Q062",
+          "Q092",
+          "Q122",
+          "Q152",
+          "Q182",
+          "Q212",
+          "Q242",
+          "Q272"
+        ]
       },
       {
         "base_slot": "D1-Q3",
@@ -48265,7 +50599,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q003",
+          "Q033",
+          "Q063",
+          "Q093",
+          "Q123",
+          "Q153",
+          "Q183",
+          "Q213",
+          "Q243",
+          "Q273"
+        ]
       },
       {
         "base_slot": "D1-Q4",
@@ -48522,7 +50868,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q004",
+          "Q034",
+          "Q064",
+          "Q094",
+          "Q124",
+          "Q154",
+          "Q184",
+          "Q214",
+          "Q244",
+          "Q274"
+        ]
       },
       {
         "base_slot": "D1-Q5",
@@ -48734,7 +51092,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q005",
+          "Q035",
+          "Q065",
+          "Q095",
+          "Q125",
+          "Q155",
+          "Q185",
+          "Q215",
+          "Q245",
+          "Q275"
+        ]
       },
       {
         "base_slot": "D2-Q1",
@@ -48925,7 +51295,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q006",
+          "Q036",
+          "Q066",
+          "Q096",
+          "Q126",
+          "Q156",
+          "Q186",
+          "Q216",
+          "Q246",
+          "Q276"
+        ]
       },
       {
         "base_slot": "D2-Q2",
@@ -49160,7 +51542,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q007",
+          "Q037",
+          "Q067",
+          "Q097",
+          "Q127",
+          "Q157",
+          "Q187",
+          "Q217",
+          "Q247",
+          "Q277"
+        ]
       },
       {
         "base_slot": "D2-Q3",
@@ -49352,7 +51746,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q008",
+          "Q038",
+          "Q068",
+          "Q098",
+          "Q128",
+          "Q158",
+          "Q188",
+          "Q218",
+          "Q248",
+          "Q278"
+        ]
       },
       {
         "base_slot": "D2-Q4",
@@ -49564,7 +51970,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q009",
+          "Q039",
+          "Q069",
+          "Q099",
+          "Q129",
+          "Q159",
+          "Q189",
+          "Q219",
+          "Q249",
+          "Q279"
+        ]
       },
       {
         "base_slot": "D2-Q5",
@@ -49736,7 +52154,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q010",
+          "Q040",
+          "Q070",
+          "Q100",
+          "Q130",
+          "Q160",
+          "Q190",
+          "Q220",
+          "Q250",
+          "Q280"
+        ]
       },
       {
         "base_slot": "D3-Q1",
@@ -50110,7 +52540,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525414"
-        }
+        },
+        "children_questions": [
+          "Q011",
+          "Q041",
+          "Q071",
+          "Q101",
+          "Q131",
+          "Q161",
+          "Q191",
+          "Q221",
+          "Q251",
+          "Q281"
+        ]
       },
       {
         "base_slot": "D3-Q2",
@@ -50515,7 +52957,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525453"
-        }
+        },
+        "children_questions": [
+          "Q012",
+          "Q042",
+          "Q072",
+          "Q102",
+          "Q132",
+          "Q162",
+          "Q192",
+          "Q222",
+          "Q252",
+          "Q282"
+        ]
       },
       {
         "base_slot": "D3-Q3",
@@ -50944,7 +53398,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525494"
-        }
+        },
+        "children_questions": [
+          "Q013",
+          "Q043",
+          "Q073",
+          "Q103",
+          "Q133",
+          "Q163",
+          "Q193",
+          "Q223",
+          "Q253",
+          "Q283"
+        ]
       },
       {
         "base_slot": "D3-Q4",
@@ -51405,7 +53871,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525532"
-        }
+        },
+        "children_questions": [
+          "Q014",
+          "Q044",
+          "Q074",
+          "Q104",
+          "Q134",
+          "Q164",
+          "Q194",
+          "Q224",
+          "Q254",
+          "Q284"
+        ]
       },
       {
         "base_slot": "D3-Q5",
@@ -51855,7 +54333,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525572"
-        }
+        },
+        "children_questions": [
+          "Q015",
+          "Q045",
+          "Q075",
+          "Q105",
+          "Q135",
+          "Q165",
+          "Q195",
+          "Q225",
+          "Q255",
+          "Q285"
+        ]
       },
       {
         "base_slot": "D4-Q1",
@@ -52143,7 +54633,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q016",
+          "Q046",
+          "Q076",
+          "Q106",
+          "Q136",
+          "Q166",
+          "Q196",
+          "Q226",
+          "Q256",
+          "Q286"
+        ]
       },
       {
         "base_slot": "D4-Q2",
@@ -52332,7 +54834,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q017",
+          "Q047",
+          "Q077",
+          "Q107",
+          "Q137",
+          "Q167",
+          "Q197",
+          "Q227",
+          "Q257",
+          "Q287"
+        ]
       },
       {
         "base_slot": "D4-Q3",
@@ -52508,7 +55022,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q018",
+          "Q048",
+          "Q078",
+          "Q108",
+          "Q138",
+          "Q168",
+          "Q198",
+          "Q228",
+          "Q258",
+          "Q288"
+        ]
       },
       {
         "base_slot": "D4-Q4",
@@ -52674,7 +55200,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q019",
+          "Q049",
+          "Q079",
+          "Q109",
+          "Q139",
+          "Q169",
+          "Q199",
+          "Q229",
+          "Q259",
+          "Q289"
+        ]
       },
       {
         "base_slot": "D4-Q5",
@@ -52823,7 +55361,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q020",
+          "Q050",
+          "Q080",
+          "Q110",
+          "Q140",
+          "Q170",
+          "Q200",
+          "Q230",
+          "Q260",
+          "Q290"
+        ]
       },
       {
         "base_slot": "D5-Q1",
@@ -53012,7 +55562,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q021",
+          "Q051",
+          "Q081",
+          "Q111",
+          "Q141",
+          "Q171",
+          "Q201",
+          "Q231",
+          "Q261",
+          "Q291"
+        ]
       },
       {
         "base_slot": "D5-Q2",
@@ -53328,7 +55890,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q022",
+          "Q052",
+          "Q082",
+          "Q112",
+          "Q142",
+          "Q172",
+          "Q202",
+          "Q232",
+          "Q262",
+          "Q292"
+        ]
       },
       {
         "base_slot": "D5-Q3",
@@ -53490,7 +56064,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q023",
+          "Q053",
+          "Q083",
+          "Q113",
+          "Q143",
+          "Q173",
+          "Q203",
+          "Q233",
+          "Q263",
+          "Q293"
+        ]
       },
       {
         "base_slot": "D5-Q4",
@@ -53668,7 +56254,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q024",
+          "Q054",
+          "Q084",
+          "Q114",
+          "Q144",
+          "Q174",
+          "Q204",
+          "Q234",
+          "Q264",
+          "Q294"
+        ]
       },
       {
         "base_slot": "D5-Q5",
@@ -53857,7 +56455,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q025",
+          "Q055",
+          "Q085",
+          "Q115",
+          "Q145",
+          "Q175",
+          "Q205",
+          "Q235",
+          "Q265",
+          "Q295"
+        ]
       },
       {
         "base_slot": "D6-Q1",
@@ -54034,7 +56644,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q026",
+          "Q056",
+          "Q086",
+          "Q116",
+          "Q146",
+          "Q176",
+          "Q206",
+          "Q236",
+          "Q266",
+          "Q296"
+        ]
       },
       {
         "base_slot": "D6-Q2",
@@ -54199,7 +56821,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q027",
+          "Q057",
+          "Q087",
+          "Q117",
+          "Q147",
+          "Q177",
+          "Q207",
+          "Q237",
+          "Q267",
+          "Q297"
+        ]
       },
       {
         "base_slot": "D6-Q3",
@@ -54384,7 +57018,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q028",
+          "Q058",
+          "Q088",
+          "Q118",
+          "Q148",
+          "Q178",
+          "Q208",
+          "Q238",
+          "Q268",
+          "Q298"
+        ]
       },
       {
         "base_slot": "D6-Q4",
@@ -54566,7 +57212,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q029",
+          "Q059",
+          "Q089",
+          "Q119",
+          "Q149",
+          "Q179",
+          "Q209",
+          "Q239",
+          "Q269",
+          "Q299"
+        ]
       },
       {
         "base_slot": "D6-Q5",
@@ -54758,7 +57416,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q030",
+          "Q060",
+          "Q090",
+          "Q120",
+          "Q150",
+          "Q180",
+          "Q210",
+          "Q240",
+          "Q270",
+          "Q300"
+        ]
       },
       {
         "base_slot": "D1-Q1",
@@ -55161,7 +57831,19 @@
             ],
             "specificity": "MEDIUM"
           }
-        }
+        },
+        "children_questions": [
+          "Q001",
+          "Q031",
+          "Q061",
+          "Q091",
+          "Q121",
+          "Q151",
+          "Q181",
+          "Q211",
+          "Q241",
+          "Q271"
+        ]
       },
       {
         "base_slot": "D1-Q2",
@@ -55391,7 +58073,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q002",
+          "Q032",
+          "Q062",
+          "Q092",
+          "Q122",
+          "Q152",
+          "Q182",
+          "Q212",
+          "Q242",
+          "Q272"
+        ]
       },
       {
         "base_slot": "D1-Q3",
@@ -55645,7 +58339,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q003",
+          "Q033",
+          "Q063",
+          "Q093",
+          "Q123",
+          "Q153",
+          "Q183",
+          "Q213",
+          "Q243",
+          "Q273"
+        ]
       },
       {
         "base_slot": "D1-Q4",
@@ -55902,7 +58608,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q004",
+          "Q034",
+          "Q064",
+          "Q094",
+          "Q124",
+          "Q154",
+          "Q184",
+          "Q214",
+          "Q244",
+          "Q274"
+        ]
       },
       {
         "base_slot": "D1-Q5",
@@ -56125,7 +58843,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q005",
+          "Q035",
+          "Q065",
+          "Q095",
+          "Q125",
+          "Q155",
+          "Q185",
+          "Q215",
+          "Q245",
+          "Q275"
+        ]
       },
       {
         "base_slot": "D2-Q1",
@@ -56327,7 +59057,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q006",
+          "Q036",
+          "Q066",
+          "Q096",
+          "Q126",
+          "Q156",
+          "Q186",
+          "Q216",
+          "Q246",
+          "Q276"
+        ]
       },
       {
         "base_slot": "D2-Q2",
@@ -56562,7 +59304,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q007",
+          "Q037",
+          "Q067",
+          "Q097",
+          "Q127",
+          "Q157",
+          "Q187",
+          "Q217",
+          "Q247",
+          "Q277"
+        ]
       },
       {
         "base_slot": "D2-Q3",
@@ -56767,7 +59521,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q008",
+          "Q038",
+          "Q068",
+          "Q098",
+          "Q128",
+          "Q158",
+          "Q188",
+          "Q218",
+          "Q248",
+          "Q278"
+        ]
       },
       {
         "base_slot": "D2-Q4",
@@ -56979,7 +59745,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q009",
+          "Q039",
+          "Q069",
+          "Q099",
+          "Q129",
+          "Q159",
+          "Q189",
+          "Q219",
+          "Q249",
+          "Q279"
+        ]
       },
       {
         "base_slot": "D2-Q5",
@@ -57151,7 +59929,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q010",
+          "Q040",
+          "Q070",
+          "Q100",
+          "Q130",
+          "Q160",
+          "Q190",
+          "Q220",
+          "Q250",
+          "Q280"
+        ]
       },
       {
         "base_slot": "D3-Q1",
@@ -57549,7 +60339,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525612"
-        }
+        },
+        "children_questions": [
+          "Q011",
+          "Q041",
+          "Q071",
+          "Q101",
+          "Q131",
+          "Q161",
+          "Q191",
+          "Q221",
+          "Q251",
+          "Q281"
+        ]
       },
       {
         "base_slot": "D3-Q2",
@@ -57954,7 +60756,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525650"
-        }
+        },
+        "children_questions": [
+          "Q012",
+          "Q042",
+          "Q072",
+          "Q102",
+          "Q132",
+          "Q162",
+          "Q192",
+          "Q222",
+          "Q252",
+          "Q282"
+        ]
       },
       {
         "base_slot": "D3-Q3",
@@ -58396,7 +61210,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525690"
-        }
+        },
+        "children_questions": [
+          "Q013",
+          "Q043",
+          "Q073",
+          "Q103",
+          "Q133",
+          "Q163",
+          "Q193",
+          "Q223",
+          "Q253",
+          "Q283"
+        ]
       },
       {
         "base_slot": "D3-Q4",
@@ -58857,7 +61683,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525729"
-        }
+        },
+        "children_questions": [
+          "Q014",
+          "Q044",
+          "Q074",
+          "Q104",
+          "Q134",
+          "Q164",
+          "Q194",
+          "Q224",
+          "Q254",
+          "Q284"
+        ]
       },
       {
         "base_slot": "D3-Q5",
@@ -59307,7 +62145,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525768"
-        }
+        },
+        "children_questions": [
+          "Q015",
+          "Q045",
+          "Q075",
+          "Q105",
+          "Q135",
+          "Q165",
+          "Q195",
+          "Q225",
+          "Q255",
+          "Q285"
+        ]
       },
       {
         "base_slot": "D4-Q1",
@@ -59582,7 +62432,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q016",
+          "Q046",
+          "Q076",
+          "Q106",
+          "Q136",
+          "Q166",
+          "Q196",
+          "Q226",
+          "Q256",
+          "Q286"
+        ]
       },
       {
         "base_slot": "D4-Q2",
@@ -59782,7 +62644,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q017",
+          "Q047",
+          "Q077",
+          "Q107",
+          "Q137",
+          "Q167",
+          "Q197",
+          "Q227",
+          "Q257",
+          "Q287"
+        ]
       },
       {
         "base_slot": "D4-Q3",
@@ -59958,7 +62832,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q018",
+          "Q048",
+          "Q078",
+          "Q108",
+          "Q138",
+          "Q168",
+          "Q198",
+          "Q228",
+          "Q258",
+          "Q288"
+        ]
       },
       {
         "base_slot": "D4-Q4",
@@ -60124,7 +63010,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q019",
+          "Q049",
+          "Q079",
+          "Q109",
+          "Q139",
+          "Q169",
+          "Q199",
+          "Q229",
+          "Q259",
+          "Q289"
+        ]
       },
       {
         "base_slot": "D4-Q5",
@@ -60273,7 +63171,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q020",
+          "Q050",
+          "Q080",
+          "Q110",
+          "Q140",
+          "Q170",
+          "Q200",
+          "Q230",
+          "Q260",
+          "Q290"
+        ]
       },
       {
         "base_slot": "D5-Q1",
@@ -60449,7 +63359,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q021",
+          "Q051",
+          "Q081",
+          "Q111",
+          "Q141",
+          "Q171",
+          "Q201",
+          "Q231",
+          "Q261",
+          "Q291"
+        ]
       },
       {
         "base_slot": "D5-Q2",
@@ -60765,7 +63687,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q022",
+          "Q052",
+          "Q082",
+          "Q112",
+          "Q142",
+          "Q172",
+          "Q202",
+          "Q232",
+          "Q262",
+          "Q292"
+        ]
       },
       {
         "base_slot": "D5-Q3",
@@ -60927,7 +63861,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q023",
+          "Q053",
+          "Q083",
+          "Q113",
+          "Q143",
+          "Q173",
+          "Q203",
+          "Q233",
+          "Q263",
+          "Q293"
+        ]
       },
       {
         "base_slot": "D5-Q4",
@@ -61105,7 +64051,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q024",
+          "Q054",
+          "Q084",
+          "Q114",
+          "Q144",
+          "Q174",
+          "Q204",
+          "Q234",
+          "Q264",
+          "Q294"
+        ]
       },
       {
         "base_slot": "D5-Q5",
@@ -61294,7 +64252,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q025",
+          "Q055",
+          "Q085",
+          "Q115",
+          "Q145",
+          "Q175",
+          "Q205",
+          "Q235",
+          "Q265",
+          "Q295"
+        ]
       },
       {
         "base_slot": "D6-Q1",
@@ -61471,7 +64441,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q026",
+          "Q056",
+          "Q086",
+          "Q116",
+          "Q146",
+          "Q176",
+          "Q206",
+          "Q236",
+          "Q266",
+          "Q296"
+        ]
       },
       {
         "base_slot": "D6-Q2",
@@ -61636,7 +64618,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q027",
+          "Q057",
+          "Q087",
+          "Q117",
+          "Q147",
+          "Q177",
+          "Q207",
+          "Q237",
+          "Q267",
+          "Q297"
+        ]
       },
       {
         "base_slot": "D6-Q3",
@@ -61821,7 +64815,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q028",
+          "Q058",
+          "Q088",
+          "Q118",
+          "Q148",
+          "Q178",
+          "Q208",
+          "Q238",
+          "Q268",
+          "Q298"
+        ]
       },
       {
         "base_slot": "D6-Q4",
@@ -62003,7 +65009,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q029",
+          "Q059",
+          "Q089",
+          "Q119",
+          "Q149",
+          "Q179",
+          "Q209",
+          "Q239",
+          "Q269",
+          "Q299"
+        ]
       },
       {
         "base_slot": "D6-Q5",
@@ -62196,7 +65214,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q030",
+          "Q060",
+          "Q090",
+          "Q120",
+          "Q150",
+          "Q180",
+          "Q210",
+          "Q240",
+          "Q270",
+          "Q300"
+        ]
       },
       {
         "base_slot": "D1-Q1",
@@ -62599,7 +65629,19 @@
             ],
             "specificity": "MEDIUM"
           }
-        }
+        },
+        "children_questions": [
+          "Q001",
+          "Q031",
+          "Q061",
+          "Q091",
+          "Q121",
+          "Q151",
+          "Q181",
+          "Q211",
+          "Q241",
+          "Q271"
+        ]
       },
       {
         "base_slot": "D1-Q2",
@@ -62842,7 +65884,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q002",
+          "Q032",
+          "Q062",
+          "Q092",
+          "Q122",
+          "Q152",
+          "Q182",
+          "Q212",
+          "Q242",
+          "Q272"
+        ]
       },
       {
         "base_slot": "D1-Q3",
@@ -63107,7 +66161,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q003",
+          "Q033",
+          "Q063",
+          "Q093",
+          "Q123",
+          "Q153",
+          "Q183",
+          "Q213",
+          "Q243",
+          "Q273"
+        ]
       },
       {
         "base_slot": "D1-Q4",
@@ -63375,7 +66441,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q004",
+          "Q034",
+          "Q064",
+          "Q094",
+          "Q124",
+          "Q154",
+          "Q184",
+          "Q214",
+          "Q244",
+          "Q274"
+        ]
       },
       {
         "base_slot": "D1-Q5",
@@ -63600,7 +66678,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q005",
+          "Q035",
+          "Q065",
+          "Q095",
+          "Q125",
+          "Q155",
+          "Q185",
+          "Q215",
+          "Q245",
+          "Q275"
+        ]
       },
       {
         "base_slot": "D2-Q1",
@@ -63791,7 +66881,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q006",
+          "Q036",
+          "Q066",
+          "Q096",
+          "Q126",
+          "Q156",
+          "Q186",
+          "Q216",
+          "Q246",
+          "Q276"
+        ]
       },
       {
         "base_slot": "D2-Q2",
@@ -64026,7 +67128,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q007",
+          "Q037",
+          "Q067",
+          "Q097",
+          "Q127",
+          "Q157",
+          "Q187",
+          "Q217",
+          "Q247",
+          "Q277"
+        ]
       },
       {
         "base_slot": "D2-Q3",
@@ -64231,7 +67345,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q008",
+          "Q038",
+          "Q068",
+          "Q098",
+          "Q128",
+          "Q158",
+          "Q188",
+          "Q218",
+          "Q248",
+          "Q278"
+        ]
       },
       {
         "base_slot": "D2-Q4",
@@ -64443,7 +67569,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q009",
+          "Q039",
+          "Q069",
+          "Q099",
+          "Q129",
+          "Q159",
+          "Q189",
+          "Q219",
+          "Q249",
+          "Q279"
+        ]
       },
       {
         "base_slot": "D2-Q5",
@@ -64615,7 +67753,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q010",
+          "Q040",
+          "Q070",
+          "Q100",
+          "Q130",
+          "Q160",
+          "Q190",
+          "Q220",
+          "Q250",
+          "Q280"
+        ]
       },
       {
         "base_slot": "D3-Q1",
@@ -64989,7 +68139,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525808"
-        }
+        },
+        "children_questions": [
+          "Q011",
+          "Q041",
+          "Q071",
+          "Q101",
+          "Q131",
+          "Q161",
+          "Q191",
+          "Q221",
+          "Q251",
+          "Q281"
+        ]
       },
       {
         "base_slot": "D3-Q2",
@@ -65394,7 +68556,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525848"
-        }
+        },
+        "children_questions": [
+          "Q012",
+          "Q042",
+          "Q072",
+          "Q102",
+          "Q132",
+          "Q162",
+          "Q192",
+          "Q222",
+          "Q252",
+          "Q282"
+        ]
       },
       {
         "base_slot": "D3-Q3",
@@ -65836,7 +69010,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525889"
-        }
+        },
+        "children_questions": [
+          "Q013",
+          "Q043",
+          "Q073",
+          "Q103",
+          "Q133",
+          "Q163",
+          "Q193",
+          "Q223",
+          "Q253",
+          "Q283"
+        ]
       },
       {
         "base_slot": "D3-Q4",
@@ -66297,7 +69483,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525928"
-        }
+        },
+        "children_questions": [
+          "Q014",
+          "Q044",
+          "Q074",
+          "Q104",
+          "Q134",
+          "Q164",
+          "Q194",
+          "Q224",
+          "Q254",
+          "Q284"
+        ]
       },
       {
         "base_slot": "D3-Q5",
@@ -66747,7 +69945,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.525968"
-        }
+        },
+        "children_questions": [
+          "Q015",
+          "Q045",
+          "Q075",
+          "Q105",
+          "Q135",
+          "Q165",
+          "Q195",
+          "Q225",
+          "Q255",
+          "Q285"
+        ]
       },
       {
         "base_slot": "D4-Q1",
@@ -67022,7 +70232,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q016",
+          "Q046",
+          "Q076",
+          "Q106",
+          "Q136",
+          "Q166",
+          "Q196",
+          "Q226",
+          "Q256",
+          "Q286"
+        ]
       },
       {
         "base_slot": "D4-Q2",
@@ -67211,7 +70433,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q017",
+          "Q047",
+          "Q077",
+          "Q107",
+          "Q137",
+          "Q167",
+          "Q197",
+          "Q227",
+          "Q257",
+          "Q287"
+        ]
       },
       {
         "base_slot": "D4-Q3",
@@ -67400,7 +70634,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q018",
+          "Q048",
+          "Q078",
+          "Q108",
+          "Q138",
+          "Q168",
+          "Q198",
+          "Q228",
+          "Q258",
+          "Q288"
+        ]
       },
       {
         "base_slot": "D4-Q4",
@@ -67566,7 +70812,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q019",
+          "Q049",
+          "Q079",
+          "Q109",
+          "Q139",
+          "Q169",
+          "Q199",
+          "Q229",
+          "Q259",
+          "Q289"
+        ]
       },
       {
         "base_slot": "D4-Q5",
@@ -67715,7 +70973,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q020",
+          "Q050",
+          "Q080",
+          "Q110",
+          "Q140",
+          "Q170",
+          "Q200",
+          "Q230",
+          "Q260",
+          "Q290"
+        ]
       },
       {
         "base_slot": "D5-Q1",
@@ -67891,7 +71161,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q021",
+          "Q051",
+          "Q081",
+          "Q111",
+          "Q141",
+          "Q171",
+          "Q201",
+          "Q231",
+          "Q261",
+          "Q291"
+        ]
       },
       {
         "base_slot": "D5-Q2",
@@ -68207,7 +71489,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q022",
+          "Q052",
+          "Q082",
+          "Q112",
+          "Q142",
+          "Q172",
+          "Q202",
+          "Q232",
+          "Q262",
+          "Q292"
+        ]
       },
       {
         "base_slot": "D5-Q3",
@@ -68369,7 +71663,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q023",
+          "Q053",
+          "Q083",
+          "Q113",
+          "Q143",
+          "Q173",
+          "Q203",
+          "Q233",
+          "Q263",
+          "Q293"
+        ]
       },
       {
         "base_slot": "D5-Q4",
@@ -68547,7 +71853,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q024",
+          "Q054",
+          "Q084",
+          "Q114",
+          "Q144",
+          "Q174",
+          "Q204",
+          "Q234",
+          "Q264",
+          "Q294"
+        ]
       },
       {
         "base_slot": "D5-Q5",
@@ -68736,7 +72054,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q025",
+          "Q055",
+          "Q085",
+          "Q115",
+          "Q145",
+          "Q175",
+          "Q205",
+          "Q235",
+          "Q265",
+          "Q295"
+        ]
       },
       {
         "base_slot": "D6-Q1",
@@ -68913,7 +72243,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q026",
+          "Q056",
+          "Q086",
+          "Q116",
+          "Q146",
+          "Q176",
+          "Q206",
+          "Q236",
+          "Q266",
+          "Q296"
+        ]
       },
       {
         "base_slot": "D6-Q2",
@@ -69078,7 +72420,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q027",
+          "Q057",
+          "Q087",
+          "Q117",
+          "Q147",
+          "Q177",
+          "Q207",
+          "Q237",
+          "Q267",
+          "Q297"
+        ]
       },
       {
         "base_slot": "D6-Q3",
@@ -69263,7 +72617,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q028",
+          "Q058",
+          "Q088",
+          "Q118",
+          "Q148",
+          "Q178",
+          "Q208",
+          "Q238",
+          "Q268",
+          "Q298"
+        ]
       },
       {
         "base_slot": "D6-Q4",
@@ -69451,7 +72817,19 @@
             ],
             "specificity": "MEDIUM"
           }
-        }
+        },
+        "children_questions": [
+          "Q029",
+          "Q059",
+          "Q089",
+          "Q119",
+          "Q149",
+          "Q179",
+          "Q209",
+          "Q239",
+          "Q269",
+          "Q299"
+        ]
       },
       {
         "base_slot": "D6-Q5",
@@ -69656,7 +73034,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q030",
+          "Q060",
+          "Q090",
+          "Q120",
+          "Q150",
+          "Q180",
+          "Q210",
+          "Q240",
+          "Q270",
+          "Q300"
+        ]
       },
       {
         "base_slot": "D1-Q1",
@@ -70059,7 +73449,19 @@
             ],
             "specificity": "MEDIUM"
           }
-        }
+        },
+        "children_questions": [
+          "Q001",
+          "Q031",
+          "Q061",
+          "Q091",
+          "Q121",
+          "Q151",
+          "Q181",
+          "Q211",
+          "Q241",
+          "Q271"
+        ]
       },
       {
         "base_slot": "D1-Q2",
@@ -70302,7 +73704,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q002",
+          "Q032",
+          "Q062",
+          "Q092",
+          "Q122",
+          "Q152",
+          "Q182",
+          "Q212",
+          "Q242",
+          "Q272"
+        ]
       },
       {
         "base_slot": "D1-Q3",
@@ -70556,7 +73970,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q003",
+          "Q033",
+          "Q063",
+          "Q093",
+          "Q123",
+          "Q153",
+          "Q183",
+          "Q213",
+          "Q243",
+          "Q273"
+        ]
       },
       {
         "base_slot": "D1-Q4",
@@ -70800,7 +74226,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q004",
+          "Q034",
+          "Q064",
+          "Q094",
+          "Q124",
+          "Q154",
+          "Q184",
+          "Q214",
+          "Q244",
+          "Q274"
+        ]
       },
       {
         "base_slot": "D1-Q5",
@@ -71012,7 +74450,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q005",
+          "Q035",
+          "Q065",
+          "Q095",
+          "Q125",
+          "Q155",
+          "Q185",
+          "Q215",
+          "Q245",
+          "Q275"
+        ]
       },
       {
         "base_slot": "D2-Q1",
@@ -71203,7 +74653,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q006",
+          "Q036",
+          "Q066",
+          "Q096",
+          "Q126",
+          "Q156",
+          "Q186",
+          "Q216",
+          "Q246",
+          "Q276"
+        ]
       },
       {
         "base_slot": "D2-Q2",
@@ -71451,7 +74913,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q007",
+          "Q037",
+          "Q067",
+          "Q097",
+          "Q127",
+          "Q157",
+          "Q187",
+          "Q217",
+          "Q247",
+          "Q277"
+        ]
       },
       {
         "base_slot": "D2-Q3",
@@ -71656,7 +75130,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q008",
+          "Q038",
+          "Q068",
+          "Q098",
+          "Q128",
+          "Q158",
+          "Q188",
+          "Q218",
+          "Q248",
+          "Q278"
+        ]
       },
       {
         "base_slot": "D2-Q4",
@@ -71868,7 +75354,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q009",
+          "Q039",
+          "Q069",
+          "Q099",
+          "Q129",
+          "Q159",
+          "Q189",
+          "Q219",
+          "Q249",
+          "Q279"
+        ]
       },
       {
         "base_slot": "D2-Q5",
@@ -72040,7 +75538,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q010",
+          "Q040",
+          "Q070",
+          "Q100",
+          "Q130",
+          "Q160",
+          "Q190",
+          "Q220",
+          "Q250",
+          "Q280"
+        ]
       },
       {
         "base_slot": "D3-Q1",
@@ -72427,7 +75937,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.526048"
-        }
+        },
+        "children_questions": [
+          "Q011",
+          "Q041",
+          "Q071",
+          "Q101",
+          "Q131",
+          "Q161",
+          "Q191",
+          "Q221",
+          "Q251",
+          "Q281"
+        ]
       },
       {
         "base_slot": "D3-Q2",
@@ -72849,7 +76371,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.526087"
-        }
+        },
+        "children_questions": [
+          "Q012",
+          "Q042",
+          "Q072",
+          "Q102",
+          "Q132",
+          "Q162",
+          "Q192",
+          "Q222",
+          "Q252",
+          "Q282"
+        ]
       },
       {
         "base_slot": "D3-Q3",
@@ -73291,7 +76825,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.526124"
-        }
+        },
+        "children_questions": [
+          "Q013",
+          "Q043",
+          "Q073",
+          "Q103",
+          "Q133",
+          "Q163",
+          "Q193",
+          "Q223",
+          "Q253",
+          "Q283"
+        ]
       },
       {
         "base_slot": "D3-Q4",
@@ -73751,7 +77297,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.526174"
-        }
+        },
+        "children_questions": [
+          "Q014",
+          "Q044",
+          "Q074",
+          "Q104",
+          "Q134",
+          "Q164",
+          "Q194",
+          "Q224",
+          "Q254",
+          "Q284"
+        ]
       },
       {
         "base_slot": "D3-Q5",
@@ -74201,7 +77759,19 @@
           ],
           "compliance_standard": "DNP_PRODUCTOS_2024",
           "audit_trail": "Enhanced with DNP technical criteria on 2025-12-30T21:37:07.526213"
-        }
+        },
+        "children_questions": [
+          "Q015",
+          "Q045",
+          "Q075",
+          "Q105",
+          "Q135",
+          "Q165",
+          "Q195",
+          "Q225",
+          "Q255",
+          "Q285"
+        ]
       },
       {
         "base_slot": "D4-Q1",
@@ -74489,7 +78059,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q016",
+          "Q046",
+          "Q076",
+          "Q106",
+          "Q136",
+          "Q166",
+          "Q196",
+          "Q226",
+          "Q256",
+          "Q286"
+        ]
       },
       {
         "base_slot": "D4-Q2",
@@ -74678,7 +78260,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q017",
+          "Q047",
+          "Q077",
+          "Q107",
+          "Q137",
+          "Q167",
+          "Q197",
+          "Q227",
+          "Q257",
+          "Q287"
+        ]
       },
       {
         "base_slot": "D4-Q3",
@@ -74854,7 +78448,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q018",
+          "Q048",
+          "Q078",
+          "Q108",
+          "Q138",
+          "Q168",
+          "Q198",
+          "Q228",
+          "Q258",
+          "Q288"
+        ]
       },
       {
         "base_slot": "D4-Q4",
@@ -75020,7 +78626,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q019",
+          "Q049",
+          "Q079",
+          "Q109",
+          "Q139",
+          "Q169",
+          "Q199",
+          "Q229",
+          "Q259",
+          "Q289"
+        ]
       },
       {
         "base_slot": "D4-Q5",
@@ -75169,7 +78787,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q020",
+          "Q050",
+          "Q080",
+          "Q110",
+          "Q140",
+          "Q170",
+          "Q200",
+          "Q230",
+          "Q260",
+          "Q290"
+        ]
       },
       {
         "base_slot": "D5-Q1",
@@ -75345,7 +78975,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q021",
+          "Q051",
+          "Q081",
+          "Q111",
+          "Q141",
+          "Q171",
+          "Q201",
+          "Q231",
+          "Q261",
+          "Q291"
+        ]
       },
       {
         "base_slot": "D5-Q2",
@@ -75661,7 +79303,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q022",
+          "Q052",
+          "Q082",
+          "Q112",
+          "Q142",
+          "Q172",
+          "Q202",
+          "Q232",
+          "Q262",
+          "Q292"
+        ]
       },
       {
         "base_slot": "D5-Q3",
@@ -75823,7 +79477,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q023",
+          "Q053",
+          "Q083",
+          "Q113",
+          "Q143",
+          "Q173",
+          "Q203",
+          "Q233",
+          "Q263",
+          "Q293"
+        ]
       },
       {
         "base_slot": "D5-Q4",
@@ -76001,7 +79667,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q024",
+          "Q054",
+          "Q084",
+          "Q114",
+          "Q144",
+          "Q174",
+          "Q204",
+          "Q234",
+          "Q264",
+          "Q294"
+        ]
       },
       {
         "base_slot": "D5-Q5",
@@ -76190,7 +79868,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q025",
+          "Q055",
+          "Q085",
+          "Q115",
+          "Q145",
+          "Q175",
+          "Q205",
+          "Q235",
+          "Q265",
+          "Q295"
+        ]
       },
       {
         "base_slot": "D6-Q1",
@@ -76367,7 +80057,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q026",
+          "Q056",
+          "Q086",
+          "Q116",
+          "Q146",
+          "Q176",
+          "Q206",
+          "Q236",
+          "Q266",
+          "Q296"
+        ]
       },
       {
         "base_slot": "D6-Q2",
@@ -76532,7 +80234,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q027",
+          "Q057",
+          "Q087",
+          "Q117",
+          "Q147",
+          "Q177",
+          "Q207",
+          "Q237",
+          "Q267",
+          "Q297"
+        ]
       },
       {
         "base_slot": "D6-Q3",
@@ -76717,7 +80431,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q028",
+          "Q058",
+          "Q088",
+          "Q118",
+          "Q148",
+          "Q178",
+          "Q208",
+          "Q238",
+          "Q268",
+          "Q298"
+        ]
       },
       {
         "base_slot": "D6-Q4",
@@ -76899,7 +80625,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q029",
+          "Q059",
+          "Q089",
+          "Q119",
+          "Q149",
+          "Q179",
+          "Q209",
+          "Q239",
+          "Q269",
+          "Q299"
+        ]
       },
       {
         "base_slot": "D6-Q5",
@@ -77091,7 +80829,19 @@
             "type": "completeness",
             "threshold": 0.8
           }
-        }
+        },
+        "children_questions": [
+          "Q030",
+          "Q060",
+          "Q090",
+          "Q120",
+          "Q150",
+          "Q180",
+          "Q210",
+          "Q240",
+          "Q270",
+          "Q300"
+        ]
       }
     ],
     "niveles_abstraccion": {

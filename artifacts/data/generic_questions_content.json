@@ -1,0 +1,122 @@
+{
+    "D1.Q1": {
+        "title": "Líneas base con fuente y desagregación",
+        "text": "¿El diagnóstico del sector presenta datos cuantitativos (tasas, porcentajes, cifras absolutas) con año de referencia y fuente identificada, desagregados por territorio o población?"
+    },
+    "D1.Q2": {
+        "title": "Cuantificación de brechas y vacíos de información",
+        "text": "¿El diagnóstico dimensiona numéricamente la magnitud del problema o déficit del sector y reconoce explícitamente limitaciones en los datos como 'subregistro', 'información insuficiente', 'ausencia de caracterización' o 'vacíos de información'?"
+    },
+    "D1.Q3": {
+        "title": "Recursos presupuestales asignados al sector",
+        "text": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a programas, proyectos o intervenciones específicas del sector?"
+    },
+    "D1.Q4": {
+        "title": "Capacidades institucionales para gestión del sector",
+        "text": "¿El plan identifica las entidades responsables del sector, describe sus capacidades (personal, equipos, protocolos) y señala limitaciones institucionales o necesidades de articulación con el departamento, la nación o entidades especializadas?"
+    },
+    "D1.Q5": {
+        "title": "Justificación de alcance y competencias",
+        "text": "¿El plan justifica el alcance de sus intervenciones en el sector mencionando el marco normativo aplicable o reconociendo explícitamente qué competencias son municipales directas, cuáles son concurrentes y cuáles requieren articulación con el departamento o la nación?"
+    },
+    "D2.Q1": {
+        "title": "Actividades operacionalizadas en instrumentos",
+        "text": "¿Las actividades del sector aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?"
+    },
+    "D2.Q2": {
+        "title": "Detalle de instrumentos, población objetivo y contribución al resultado",
+        "text": "¿La descripción de actividades especifica el instrumento ('mediante...', 'a través de...', 'con...'), la población o zona objetivo, y explica cómo la actividad contribuye al resultado esperado ('para...', 'porque...', 'con el fin de...')?"
+    },
+    "D2.Q3": {
+        "title": "Vínculo actividades con causas diagnosticadas",
+        "text": "¿Las actividades propuestas se vinculan explícitamente con los problemas, causas, brechas o déficits identificados en el diagnóstico del sector (mediante nexos como 'para atender', 'debido a', 'con el fin de', 'porque')?"
+    },
+    "D2.Q4": {
+        "title": "Riesgos y medidas de mitigación",
+        "text": "¿El plan identifica posibles obstáculos, riesgos o barreras en la implementación de las actividades del sector y propone medidas explícitas de mitigación o estrategias para superarlos?"
+    },
+    "D2.Q5": {
+        "title": "Coherencia estratégica entre actividades",
+        "text": "¿El plan describe explícitamente cómo las actividades del sector se complementan, refuerzan mutuamente o siguen una secuencia lógica, evidenciando una estrategia articulada (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación')?"
+    },
+    "D3.Q1": {
+        "title": "Indicadores de producto con línea base, meta y verificación",
+        "text": "¿Los indicadores de producto del sector (unidades entregadas, personas atendidas, infraestructura construida, servicios prestados) incluyen línea base, meta cuantitativa y fuente de verificación?"
+    },
+    "D3.Q2": {
+        "title": "Proporcionalidad meta con magnitud del problema",
+        "text": "¿Las metas de productos guardan relación con la magnitud del problema o déficit identificado en el diagnóstico, y se especifica la priorización (zonas, población), intensidad (frecuencia, duración) o cobertura de la intervención?"
+    },
+    "D3.Q3": {
+        "title": "Trazabilidad presupuestal y organizacional",
+        "text": "¿Los productos están vinculados a códigos presupuestales (BPIN, PPI, SGP, recursos específicos) y a entidades responsables identificadas (secretarías, oficinas, dependencias)?"
+    },
+    "D3.Q4": {
+        "title": "Factibilidad entre actividad y meta de producto",
+        "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'un taller de 8 horas', 'una campaña de sensibilización') y la magnitud de la meta del producto asociado, considerando plazos y recursos disponibles? Se debe evaluar si el plan reconoce cuando los resultados requieren intervenciones sostenidas en el tiempo, no eventos puntuales."
+    },
+    "D3.Q5": {
+        "title": "Mecanismo producto→resultado",
+        "text": "¿El plan describe cómo los productos del sector generan o contribuyen a los resultados esperados, explicando esta conexión o ruta (se debe buscar descripciones del tipo 'al lograr X se genera Y porque...', 'esto permite...', 'esto conduce a...')?"
+    },
+    "D4.Q1": {
+        "title": "Indicadores de resultado con línea base, meta y horizonte",
+        "text": "¿Los indicadores de resultado del sector (cambios en condiciones, comportamientos, o situaciones de la población) están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?"
+    },
+    "D4.Q2": {
+        "title": "Ruta causal con supuestos y condiciones habilitantes",
+        "text": "¿El plan describe la ruta o secuencia que lleva a los resultados del sector, mencionando condiciones necesarias para que funcione (se debe buscar términos como 'supuestos', 'si...', 'siempre que...', 'condiciones habilitantes', 'requiere que...')?"
+    },
+    "D4.Q3": {
+        "title": "Justificación de ambición de metas",
+        "text": "¿La ambición de las metas de resultado se justifica en función de recursos asignados, capacidad institucional, articulación con otros niveles de gobierno, o se compara con casos o municipios similares?"
+    },
+    "D4.Q4": {
+        "title": "Atención a problemas priorizados en diagnóstico",
+        "text": "¿Los resultados propuestos para el sector atienden o abordan directamente los problemas, déficits o necesidades priorizadas en el diagnóstico?"
+    },
+    "D4.Q5": {
+        "title": "Alineación con marcos superiores",
+        "text": "¿El plan declara la alineación de sus resultados del sector con el Plan Nacional de Desarrollo, los Objetivos de Desarrollo Sostenible, marcos normativos nacionales o políticas sectoriales relevantes?"
+    },
+    "D5.Q1": {
+        "title": "Impactos o transformaciones de largo plazo",
+        "text": "¿El plan define impactos o transformaciones de largo plazo para el sector (cambios que trascienden el cuatrienio), describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural')?"
+    },
+    "D5.Q2": {
+        "title": "Uso de índices o proxies para medir impactos",
+        "text": "¿Se utilizan índices reconocidos o indicadores proxy para medir impactos del sector, justificando por qué son adecuados para capturar las transformaciones esperadas? Cuando un impacto es difícil de medir directamente, ¿se explica la validez y limitaciones del indicador utilizado?"
+    },
+    "D5.Q3": {
+        "title": "Alineación de impactos y riesgos sistémicos",
+        "text": "¿Los impactos del sector se alinean con marcos nacionales o globales y consideran riesgos externos (crisis económicas, cambios de política nacional, eventos climáticos, dinámicas regionales) que podrían impedir o revertir los logros esperados?"
+    },
+    "D5.Q4": {
+        "title": "Realismo de impactos y efectos no deseados",
+        "text": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados o contraproducentes, o reconoce explícitamente los límites de lo que el municipio puede lograr (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado a...', 'depende de...')"
+    },
+    "D5.Q5": {
+        "title": "Sostenibilidad de los impactos",
+        "text": "¿El plan describe cómo se sostendrán los impactos del sector más allá del periodo de gobierno, identificando mecanismos de institucionalización, apropiación comunitaria, fuentes de financiación continua o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación', 'continuidad')?"
+    },
+    "D6.Q1": {
+        "title": "Teoría de cambio o cadena causal explícita",
+        "text": "¿El plan presenta una descripción explícita de cómo se generan los cambios en el sector (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal'), preferiblemente en diagrama o matriz, que identifique causas, intervenciones, supuestos y la secuencia insumos→actividades→productos→resultados→impactos?"
+    },
+    "D6.Q2": {
+        "title": "Proporcionalidad y realismo en saltos causales",
+        "text": "¿El plan evita saltos desproporcionados en su lógica (por ejemplo, no atribuye transformaciones mayores a actividades puntuales), reconociendo explícitamente cuando se requieren procesos sostenidos, múltiples condiciones o factores externos para lograr los cambios esperados (se debe buscar expresiones de cautela como 'requiere tiempo', 'depende de...', 'necesita acompañamiento prolongado')?"
+    },
+    "D6.Q3": {
+        "title": "Reconocimiento de complejidad y mecanismos de aprendizaje",
+        "text": "¿El plan reconoce la complejidad del sector, identifica debilidades o incertidumbres en su estrategia, y propone mecanismos para aprender y ajustar (se debe buscar términos como 'pilotos', 'fase de prueba', 'evaluación', 'ajustes', 'articulación', 'coordinación', 'monitoreo adaptativo')?"
+    },
+    "D6.Q4": {
+        "title": "Sistema de monitoreo con retroalimentación",
+        "text": "¿Se describe un sistema de monitoreo para el sector que incluya mecanismos de alerta temprana, retroalimentación con entidades especializadas o nivel superior, participación de población beneficiaria, y capacidad de aprendizaje para adaptar la estrategia ante desviaciones o resultados inesperados?"
+    },
+    "D6.Q5": {
+        "title": "Contextualización territorial y grupos diferenciados",
+        "text": "¿El plan considera el contexto municipal específico del sector (características territoriales, sociales, económicas, culturales, institucionales), reconoce grupos con necesidades diferenciadas, y explicita restricciones (territoriales, normativas, presupuestales, de capacidad) que condicionan las intervenciones?"
+    }
+}
