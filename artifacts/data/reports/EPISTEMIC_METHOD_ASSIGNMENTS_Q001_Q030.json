@@ -76,7 +76,7 @@
         ]
       },
       "fusion_strategy": {
-        "R1": "concat",
+        "R1": "semantic_bundling",
         "R2": "semantic_triangulation",
         "R3": "contradiction_veto"
       },
@@ -278,7 +278,7 @@
         ]
       },
       "fusion_strategy": {
-        "R1": "concat",
+        "R1": "financial_aggregation",
         "R2": "weighted_mean",
         "R3": "sufficiency_gate"
       }
@@ -364,7 +364,7 @@
         ]
       },
       "fusion_strategy": {
-        "R1": "concat",
+        "R1": "financial_aggregation",
         "R2": "weighted_mean",
         "R3": "sufficiency_gate"
       }
@@ -493,7 +493,7 @@
         ]
       },
       "fusion_strategy": {
-        "R1": "concat",
+        "R1": "financial_aggregation",
         "R2": "weighted_mean",
         "R3": "sufficiency_gate"
       }
@@ -530,7 +530,7 @@
         ]
       },
       "fusion_strategy": {
-        "R1": "concat",
+        "R1": "fact_collation",
         "R2": "min_consistency",
         "R3": "contradiction_veto"
       }
@@ -610,7 +610,7 @@
         ]
       },
       "fusion_strategy": {
-        "R1": "concat",
+        "R1": "financial_aggregation",
         "R2": "weighted_mean",
         "R3": "sufficiency_gate"
       }
@@ -653,7 +653,7 @@
         ]
       },
       "fusion_strategy": {
-        "R1": "concat",
+        "R1": "semantic_bundling",
         "R2": "semantic_triangulation",
         "R3": "contradiction_veto"
       }
@@ -690,7 +690,7 @@
         ]
       },
       "fusion_strategy": {
-        "R1": "concat",
+        "R1": "fact_collation",
         "R2": "min_consistency",
         "R3": "contradiction_veto"
       }
@@ -727,7 +727,7 @@
         ]
       },
       "fusion_strategy": {
-        "R1": "concat",
+        "R1": "financial_aggregation",
         "R2": "weighted_mean",
         "R3": "sufficiency_gate"
       }
@@ -893,7 +893,7 @@
         ]
       },
       "fusion_strategy": {
-        "R1": "concat",
+        "R1": "fact_collation",
         "R2": "min_consistency",
         "R3": "contradiction_veto"
       }
@@ -973,7 +973,7 @@
         ]
       },
       "fusion_strategy": {
-        "R1": "concat",
+        "R1": "financial_aggregation",
         "R2": "weighted_mean",
         "R3": "sufficiency_gate"
       }
@@ -1262,7 +1262,7 @@
         ]
       },
       "fusion_strategy": {
-        "R1": "concat",
+        "R1": "fact_collation",
         "R2": "min_consistency",
         "R3": "contradiction_veto"
       }

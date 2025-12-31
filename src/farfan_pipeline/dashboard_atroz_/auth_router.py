@@ -6,6 +6,7 @@ with the AdminAuthenticator from auth_admin.py.
 
 from __future__ import annotations
 
+import os
 import structlog
 from fastapi import APIRouter, Request, Response
 from fastapi.responses import JSONResponse
@@ -45,6 +46,18 @@ class SessionResponse(BaseModel):
     message: str
 
 
+class ChangePasswordRequest(BaseModel):
+    """Password change request"""
+    old_password: str = Field(..., min_length=1, max_length=100)
+    new_password: str = Field(..., min_length=8, max_length=100)
+
+
+class ChangePasswordResponse(BaseModel):
+    """Password change response"""
+    success: bool
+    message: str
+
+
 @router.post("/login", response_model=LoginResponse)
 async def login(credentials: LoginRequest, request: Request) -> Response:
     """
@@ -58,7 +71,15 @@ async def login(credentials: LoginRequest, request: Request) -> Response:
         LoginResponse with session_id if successful
     """
     auth = get_authenticator()
-    client_ip = request.client.host if request.client else "unknown"
+    
+    # Get client IP, considering proxy headers
+    client_ip = request.headers.get("X-Forwarded-For", "").split(",")[0].strip()
+    if not client_ip:
+        client_ip = request.headers.get("X-Real-IP", "")
+    if not client_ip and request.client:
+        client_ip = request.client.host
+    if not client_ip:
+        client_ip = "unknown"
     
     session_id = auth.authenticate(
         username=credentials.username,
@@ -97,11 +118,13 @@ async def login(credentials: LoginRequest, request: Request) -> Response:
     )
     
     # Set session cookie
+    # Use secure cookies in production (HTTPS)
+    is_production = os.getenv("FARFAN_ENV", "development").lower() == "production"
     response.set_cookie(
         key="atroz_session",
         value=session_id,
         httponly=True,
-        secure=False,  # Set to True in production with HTTPS
+        secure=is_production,
         samesite="lax",
         max_age=3600  # 1 hour
     )
@@ -128,8 +151,10 @@ async def logout(request: Request) -> Response:
         session_id = request.headers.get("X-Session-ID")
     
     if session_id:
+        session = auth.get_session(session_id)
+        username = session.username if session else "unknown"
         auth.logout(session_id)
-        logger.info("logout_successful", session_id=session_id[:8] + "...")
+        logger.info("logout_successful", username=username)
     
     response = JSONResponse(
         status_code=200,
@@ -192,5 +217,81 @@ async def validate_session(request: Request) -> Response:
             "valid": False,
             "username": None,
             "message": "Session is invalid or expired"
+        }
+    )
+
+
+@router.post("/change-password", response_model=ChangePasswordResponse)
+async def change_password(
+    password_change: ChangePasswordRequest,
+    request: Request
+) -> Response:
+    """
+    Change user password.
+    
+    Requires valid session (via cookie or header).
+    
+    Args:
+        password_change: Old and new password
+        request: FastAPI request object (for session)
+    
+    Returns:
+        ChangePasswordResponse indicating success
+    """
+    auth = get_authenticator()
+    
+    # Get session from cookie or header
+    session_id = request.cookies.get("atroz_session")
+    if not session_id:
+        session_id = request.headers.get("X-Session-ID")
+    
+    if not session_id:
+        return JSONResponse(
+            status_code=401,
+            content={
+                "success": False,
+                "message": "Authentication required"
+            }
+        )
+    
+    # Validate session
+    session = auth.get_session(session_id)
+    if not session:
+        return JSONResponse(
+            status_code=401,
+            content={
+                "success": False,
+                "message": "Invalid or expired session"
+            }
+        )
+    
+    # Change password
+    success = auth.change_password(
+        username=session.username,
+        old_password=password_change.old_password,
+        new_password=password_change.new_password
+    )
+    
+    if not success:
+        logger.warning(
+            "password_change_failed",
+            username=session.username,
+            reason="Invalid old password"
+        )
+        return JSONResponse(
+            status_code=400,
+            content={
+                "success": False,
+                "message": "Invalid old password"
+            }
+        )
+    
+    logger.info("password_changed", username=session.username)
+    
+    return JSONResponse(
+        status_code=200,
+        content={
+            "success": True,
+            "message": "Password changed successfully"
         }
     )
