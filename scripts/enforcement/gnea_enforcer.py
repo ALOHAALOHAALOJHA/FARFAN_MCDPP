@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 __version__ = "2.0.0"
 
@@ -43,11 +43,11 @@ class Violation:
     rule: str
     severity: Severity
     message: str
-    suggestion: Optional[str] = None
+    suggestion: str | None = None
     auto_fixable: bool = False
-    line_number: Optional[int] = None
+    line_number: int | None = None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "filepath": str(self.filepath),
             "rule": self.rule,
@@ -62,7 +62,7 @@ class Violation:
 @dataclass
 class ValidationResult:
     valid: bool
-    violations: List[Violation] = field(default_factory=list)
+    violations: list[Violation] = field(default_factory=list)
     files_validated: int = 0
     auto_fixed: int = 0
     compliance_score: float = 100.0
@@ -100,13 +100,13 @@ class GNEAEnforcer:
     def __init__(
         self,
         level: EnforcementLevel = EnforcementLevel.L1_GUIDED,
-        root: Optional[Path] = None,
+        root: Path | None = None,
         auto_fix: bool = False,
     ):
         self.level = level
         self.root = root or Path.cwd()
         self.auto_fix = auto_fix
-        self.violations: List[Violation] = []
+        self.violations: list[Violation] = []
         self.files_validated = 0
         self.auto_fixed_count = 0
         self._load_rules()
@@ -120,7 +120,7 @@ class GNEAEnforcer:
         else:
             self.rules = {}
 
-    def enforce(self, paths: Optional[List[str]] = None) -> ValidationResult:
+    def enforce(self, paths: list[str] | None = None) -> ValidationResult:
         """Main enforcement entry point."""
         if paths:
             filepaths = [Path(p) for p in paths]
@@ -211,7 +211,7 @@ class GNEAEnforcer:
         if match:
             self._validate_phase_metadata(filepath, match.groupdict())
 
-    def _validate_phase_metadata(self, filepath: Path, parts: Dict[str, str]) -> None:
+    def _validate_phase_metadata(self, filepath: Path, parts: dict[str, str]) -> None:
         """Validate phase module internal metadata."""
         try:
             content = filepath.read_text(encoding="utf-8")
@@ -333,6 +333,8 @@ class GNEAEnforcer:
                             )
                         )
                 except ValueError:
+                    # If for any reason the path cannot be made relative to root, skip it.
+                    # This is a defensive guard for edge cases in filesystem traversal.
                     pass
 
             if path.is_dir() and path.name.lower() in self.FORBIDDEN_DIRS:
@@ -401,7 +403,7 @@ class GNEAEnforcer:
 
     def _check_duplicates(self) -> None:
         """Detect duplicate files by content hash."""
-        hashes: Dict[str, Path] = {}
+        hashes: dict[str, Path] = {}
         extensions = {".py", ".json", ".md"}
 
         for filepath in self.root.rglob("*"):
@@ -425,6 +427,8 @@ class GNEAEnforcer:
                     else:
                         hashes[hash_val] = filepath
                 except Exception:
+                    # Best-effort duplicate detection: ignore files that cannot be read
+                    # (e.g., binary files, permission issues, or encoding errors).
                     pass
 
     def _suggest_phase_name(self, current_name: str) -> str:
@@ -477,7 +481,7 @@ class GNEAEnforcer:
         error_count = sum(1 for v in self.violations if v.severity in [Severity.ERROR, Severity.CRITICAL])
         return max(0.0, 100.0 - (error_count / self.files_validated * 100))
 
-    def generate_report(self) -> Dict[str, Any]:
+    def generate_report(self) -> dict[str, Any]:
         """Generate enforcement report."""
         return {
             "timestamp": datetime.utcnow().isoformat(),
@@ -496,7 +500,7 @@ class GNEAEnforcer:
             },
         }
 
-    def generate_compliance_proof(self) -> Dict[str, Any]:
+    def generate_compliance_proof(self) -> dict[str, Any]:
         """Generate cryptographic proof of compliance."""
         report = self.generate_report()
         proof_str = json.dumps(report, sort_keys=True)
@@ -587,7 +591,7 @@ def main():
             print(f"    {v.message}")
             if v.suggestion:
                 print(f"    💡 {v.suggestion}")
-        
+
         if len(result.violations) > 20:
             print(f"\n... and {len(result.violations) - 20} more violations")
     else:

@@ -3,12 +3,13 @@ AtroZ Admin Authentication Module
 Minimal but secure authentication for admin panel access
 """
 
-import hashlib
 import logging
 import secrets
 import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+
+import bcrypt
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +37,7 @@ class AdminAuthenticator:
     Simple but secure authentication system for admin panel.
 
     Security features:
-    - Password hashing with salt
+    - Password hashing using bcrypt (industry-standard KDF)
     - Session management with timeout
     - Rate limiting on login attempts
     - IP-based session tracking
@@ -51,17 +52,16 @@ class AdminAuthenticator:
         # Default password: "atroz_admin_2024"
         self.users = {
             "admin": {
-                "password_hash": self._hash_password("atroz_admin_2024", "default_salt"),
-                "salt": "default_salt",
+                "password_hash": self._hash_password("atroz_admin_2024"),
                 "role": "administrator"
             }
         }
 
         logger.info("Admin authenticator initialized")
 
-    def _hash_password(self, password: str, salt: str) -> str:
-        """Hash password with salt using SHA-256"""
-        return hashlib.sha256(f"{password}{salt}".encode()).hexdigest()
+    def _hash_password(self, password: str) -> bytes:
+        """Hash password using bcrypt (industry-standard password hashing)"""
+        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
     def _generate_session_id(self) -> str:
         """Generate secure random session ID"""
@@ -116,10 +116,18 @@ class AdminAuthenticator:
             return None
 
         user = self.users[username]
-        password_hash = self._hash_password(password, user["salt"])
 
-        # Verify password
-        if password_hash != user["password_hash"]:
+        # Verify password using bcrypt
+        try:
+            password_valid = bcrypt.checkpw(
+                password.encode('utf-8'),
+                user["password_hash"]
+            )
+        except (ValueError, TypeError):
+            logger.warning(f"Invalid password hash format for user: {username}")
+            return None
+
+        if not password_valid:
             logger.warning(f"Failed login attempt for user: {username} from IP: {ip_address}")
             return None
 
@@ -195,12 +203,10 @@ class AdminAuthenticator:
 
     def add_user(self, username: str, password: str, role: str = "user") -> None:
         """Add new user (admin function)"""
-        salt = secrets.token_hex(16)
-        password_hash = self._hash_password(password, salt)
+        password_hash = self._hash_password(password)
 
         self.users[username] = {
             "password_hash": password_hash,
-            "salt": salt,
             "role": role
         }
 
@@ -212,18 +218,25 @@ class AdminAuthenticator:
             return False
 
         user = self.users[username]
-        old_hash = self._hash_password(old_password, user["salt"])
 
-        if old_hash != user["password_hash"]:
+        # Verify old password using bcrypt
+        try:
+            old_password_valid = bcrypt.checkpw(
+                old_password.encode('utf-8'),
+                user["password_hash"]
+            )
+        except (ValueError, TypeError):
+            logger.warning(f"Invalid password hash format for user: {username}")
+            return False
+
+        if not old_password_valid:
             logger.warning(f"Failed password change for user: {username}")
             return False
 
-        # Generate new salt for additional security
-        new_salt = secrets.token_hex(16)
-        new_hash = self._hash_password(new_password, new_salt)
+        # Hash new password with bcrypt (automatically generates new salt)
+        new_hash = self._hash_password(new_password)
 
         self.users[username]["password_hash"] = new_hash
-        self.users[username]["salt"] = new_salt
 
         logger.info(f"Password changed for user: {username}")
         return True

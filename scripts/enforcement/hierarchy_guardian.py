@@ -12,7 +12,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Set
+from typing import Any
 
 __version__ = "2.0.0"
 
@@ -21,7 +21,7 @@ class HierarchyGuardian:
     """Guards directory hierarchy compliance."""
 
     MAX_DEPTH = 5
-    FORBIDDEN_DIRS: Set[str] = {"temp", "tmp", "backup", "old", "misc", "other", "stuff", "things"}
+    FORBIDDEN_DIRS: set[str] = {"temp", "tmp", "backup", "old", "misc", "other", "stuff", "things"}
 
     REQUIRED_PHASE_STRUCTURE = {
         "files": [
@@ -47,9 +47,9 @@ class HierarchyGuardian:
 
     def __init__(self, root: Path):
         self.root = root
-        self.violations: List[Dict[str, Any]] = []
+        self.violations: list[dict[str, Any]] = []
 
-    def validate(self) -> Dict[str, Any]:
+    def validate(self) -> dict[str, Any]:
         """Run all hierarchy validations."""
         self._check_depth()
         self._check_forbidden_dirs()
@@ -84,6 +84,9 @@ class HierarchyGuardian:
                             "depth": depth,
                         })
                 except ValueError:
+                    # Defensive guard: paths come from self.root.rglob("*"), so relative_to(self.root)
+                    # should not fail. If it does due to an unexpected filesystem edge case, skip
+                    # this path rather than failing the entire validation run.
                     pass
 
     def _check_forbidden_dirs(self) -> None:

@@ -7,6 +7,7 @@ with the AdminAuthenticator from auth_admin.py.
 from __future__ import annotations
 
 import os
+
 import structlog
 from fastapi import APIRouter, Request, Response
 from fastapi.responses import JSONResponse
@@ -71,22 +72,32 @@ async def login(credentials: LoginRequest, request: Request) -> Response:
         LoginResponse with session_id if successful
     """
     auth = get_authenticator()
-    
-    # Get client IP, considering proxy headers
-    client_ip = request.headers.get("X-Forwarded-For", "").split(",")[0].strip()
-    if not client_ip:
-        client_ip = request.headers.get("X-Real-IP", "")
-    if not client_ip and request.client:
+
+    # Get client IP address securely
+    # In production behind a reverse proxy, configure the proxy to set X-Forwarded-For
+    # and only trust IPs from known proxies. For now, we prioritize direct connection.
+    client_ip = "unknown"
+
+    # Direct connection is most trustworthy
+    if request.client:
         client_ip = request.client.host
-    if not client_ip:
-        client_ip = "unknown"
-    
+    # Only trust proxy headers if configured (via environment variable)
+    elif os.getenv("TRUST_PROXY_HEADERS", "false").lower() == "true":
+        # Get the last IP in X-Forwarded-For (closest proxy we control)
+        forwarded_for = request.headers.get("X-Forwarded-For", "")
+        if forwarded_for:
+            # Take the rightmost IP (last proxy in chain, most trustworthy)
+            ips = [ip.strip() for ip in forwarded_for.split(",")]
+            client_ip = ips[-1] if ips else "unknown"
+        elif not client_ip or client_ip == "unknown":
+            client_ip = request.headers.get("X-Real-IP", "unknown")
+
     session_id = auth.authenticate(
         username=credentials.username,
         password=credentials.password,
         ip_address=client_ip
     )
-    
+
     if session_id is None:
         logger.warning(
             "login_failed",
@@ -100,13 +111,13 @@ async def login(credentials: LoginRequest, request: Request) -> Response:
                 "error": "Invalid credentials or rate limit exceeded"
             }
         )
-    
+
     logger.info(
         "login_successful",
         username=credentials.username,
         ip=client_ip
     )
-    
+
     response = JSONResponse(
         status_code=200,
         content={
@@ -116,19 +127,21 @@ async def login(credentials: LoginRequest, request: Request) -> Response:
             "message": "Login successful"
         }
     )
-    
+
     # Set session cookie
-    # Use secure cookies in production (HTTPS)
+    # Use secure cookies in production (HTTPS only)
+    # Use strict samesite in production for stronger CSRF protection
     is_production = os.getenv("FARFAN_ENV", "development").lower() == "production"
     response.set_cookie(
         key="atroz_session",
         value=session_id,
         httponly=True,
         secure=is_production,
-        samesite="lax",
-        max_age=3600  # 1 hour
+        samesite="strict" if is_production else "lax",
+        max_age=3600,  # 1 hour
+        domain=os.getenv("COOKIE_DOMAIN") if os.getenv("COOKIE_DOMAIN") else None,
     )
-    
+
     return response
 
 
@@ -144,18 +157,18 @@ async def logout(request: Request) -> Response:
         LogoutResponse indicating success
     """
     auth = get_authenticator()
-    
+
     # Get session from cookie or header
     session_id = request.cookies.get("atroz_session")
     if not session_id:
         session_id = request.headers.get("X-Session-ID")
-    
+
     if session_id:
         session = auth.get_session(session_id)
         username = session.username if session else "unknown"
         auth.logout(session_id)
         logger.info("logout_successful", username=username)
-    
+
     response = JSONResponse(
         status_code=200,
         content={
@@ -163,10 +176,10 @@ async def logout(request: Request) -> Response:
             "message": "Logged out successfully"
         }
     )
-    
+
     # Clear session cookie
     response.delete_cookie(key="atroz_session")
-    
+
     return response
 
 
@@ -182,12 +195,12 @@ async def validate_session(request: Request) -> Response:
         SessionResponse indicating if session is valid
     """
     auth = get_authenticator()
-    
+
     # Get session from cookie or header
     session_id = request.cookies.get("atroz_session")
     if not session_id:
         session_id = request.headers.get("X-Session-ID")
-    
+
     if not session_id:
         return JSONResponse(
             status_code=200,
@@ -197,9 +210,9 @@ async def validate_session(request: Request) -> Response:
                 "message": "No session found"
             }
         )
-    
+
     client_ip = request.client.host if request.client else None
-    
+
     if auth.validate_session(session_id, client_ip):
         session = auth.get_session(session_id)
         return JSONResponse(
@@ -210,7 +223,7 @@ async def validate_session(request: Request) -> Response:
                 "message": "Session is valid"
             }
         )
-    
+
     return JSONResponse(
         status_code=200,
         content={
@@ -239,12 +252,12 @@ async def change_password(
         ChangePasswordResponse indicating success
     """
     auth = get_authenticator()
-    
+
     # Get session from cookie or header
     session_id = request.cookies.get("atroz_session")
     if not session_id:
         session_id = request.headers.get("X-Session-ID")
-    
+
     if not session_id:
         return JSONResponse(
             status_code=401,
@@ -253,7 +266,7 @@ async def change_password(
                 "message": "Authentication required"
             }
         )
-    
+
     # Validate session
     session = auth.get_session(session_id)
     if not session:
@@ -264,14 +277,14 @@ async def change_password(
                 "message": "Invalid or expired session"
             }
         )
-    
+
     # Change password
     success = auth.change_password(
         username=session.username,
         old_password=password_change.old_password,
         new_password=password_change.new_password
     )
-    
+
     if not success:
         logger.warning(
             "password_change_failed",
@@ -285,9 +298,9 @@ async def change_password(
                 "message": "Invalid old password"
             }
         )
-    
+
     logger.info("password_changed", username=session.username)
-    
+
     return JSONResponse(
         status_code=200,
         content={
