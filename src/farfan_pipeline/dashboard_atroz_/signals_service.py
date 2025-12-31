@@ -34,6 +34,7 @@ from orchestration.factory import load_questionnaire
 from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
 from farfan_pipeline.dashboard_atroz_.api_v1_errors import AtrozAPIException, api_error_response
 from farfan_pipeline.dashboard_atroz_.api_v1_router import router as atroz_router
+from farfan_pipeline.dashboard_atroz_.auth_router import router as auth_router
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
@@ -148,6 +149,7 @@ app = FastAPI(
 )
 
 app.include_router(atroz_router)
+app.include_router(auth_router)
 
 
 @app.exception_handler(AtrozAPIException)
