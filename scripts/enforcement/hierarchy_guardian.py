@@ -84,6 +84,9 @@ class HierarchyGuardian:
                             "depth": depth,
                         })
                 except ValueError:
+                    # Defensive guard: paths come from self.root.rglob("*"), so relative_to(self.root)
+                    # should not fail. If it does due to an unexpected filesystem edge case, skip
+                    # this path rather than failing the entire validation run.
                     pass
 
     def _check_forbidden_dirs(self) -> None:
