@@ -2,17 +2,15 @@
 """
 Comprehensive Audit Script for questionnaire_monolith.json
 
-This script performs a detailed analysis of the questionnaire structure to identify:
-1. Signal/Element Richness gaps
-2. Validation Diversity issues
-3. Scoring Modality imbalances
-4. Cluster & Policy Area Coverage
-5. Documentation gaps
-6. Expected Elements granularity
-7. Equity imbalances
-
-Author: FARFAN Audit Team
-Date: 2025-12-31
+This script performs an equity-focused audit of the questionnaire structure,
+analyzing hierarchy, coverage, balance, and identifying gaps across:
+- Signal and expected_elements richness
+- Validation contract diversity
+- Scoring modalities
+- Cluster and policy area coverage
+- Documentation completeness
+- Expected elements granularity
+- Intersectionality and cross-cutting issues
 """
 
 import json
@@ -20,478 +18,577 @@ import sys
 from collections import defaultdict, Counter
 from pathlib import Path
 from typing import Dict, List, Any, Tuple
+from datetime import datetime
 
 
 class QuestionnaireAuditor:
-    """Auditor for questionnaire_monolith.json structure and content."""
-
+    """Comprehensive auditor for questionnaire_monolith.json"""
+    
     def __init__(self, json_path: str):
-        """Initialize the auditor with the path to questionnaire_monolith.json."""
-        self.json_path = Path(json_path)
-        self.data = self._load_json()
+        self.json_path = json_path
+        self.data: Dict[str, Any] = {}
+        self.micro_questions: List[Dict] = []
+        self.audit_results: Dict[str, Any] = {}
+        
+    def load_data(self) -> None:
+        """Load the questionnaire JSON file"""
+        with open(self.json_path, 'r', encoding='utf-8') as f:
+            self.data = json.load(f)
+        
         self.micro_questions = self.data.get('blocks', {}).get('micro_questions', [])
-        self.canonical_notation = self.data.get('canonical_notation', {})
+        print(f"✓ Loaded {len(self.micro_questions)} micro questions")
+    
+    def audit_structure_hierarchy(self) -> Dict[str, Any]:
+        """Audit 1: Structure and hierarchy analysis"""
+        print("\n=== AUDIT 1: Structure & Hierarchy ===")
         
-        # Statistics containers
-        self.stats = {
-            'total_questions': len(self.micro_questions),
-            'by_policy_area': Counter(),
-            'by_dimension': Counter(),
-            'by_cluster': Counter(),
-            'by_scoring_modality': Counter(),
-            'validation_counts': [],
-            'signal_richness': [],
-            'expected_elements_counts': [],
-            'method_sets_counts': [],
-            'missing_fields': defaultdict(list),
-            'empty_fields': defaultdict(list),
-        }
-
-    def _load_json(self) -> Dict:
-        """Load and parse the JSON file."""
-        try:
-            with open(self.json_path, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except FileNotFoundError:
-            print(f"ERROR: File not found: {self.json_path}")
-            sys.exit(1)
-        except json.JSONDecodeError as e:
-            print(f"ERROR: Invalid JSON: {e}")
-            sys.exit(1)
-
-    def audit_structure(self) -> Dict[str, Any]:
-        """Audit the overall structure of the questionnaire."""
-        return {
-            'schema_version': self.data.get('schema_version', 'MISSING'),
-            'version': self.data.get('version', 'MISSING'),
-            'generated_at': self.data.get('generated_at', 'MISSING'),
-            'top_level_keys': list(self.data.keys()),
-            'has_integrity': 'integrity' in self.data,
-            'has_observability': 'observability' in self.data,
-        }
-
-    def audit_canonical_notation(self) -> Dict[str, Any]:
-        """Audit the canonical notation section."""
-        dimensions = self.canonical_notation.get('dimensions', {})
-        policy_areas = self.canonical_notation.get('policy_areas', {})
-        clusters = self.canonical_notation.get('clusters', {})
+        canonical = self.data.get('canonical_notation', {})
+        dimensions = canonical.get('dimensions', {})
+        policy_areas = canonical.get('policy_areas', {})
+        clusters = canonical.get('clusters', {})
         
-        return {
+        result = {
             'dimensions_count': len(dimensions),
-            'dimensions_list': list(dimensions.keys()),
             'policy_areas_count': len(policy_areas),
-            'policy_areas_list': list(policy_areas.keys()),
             'clusters_count': len(clusters),
-            'clusters_list': list(clusters.keys()),
-        }
-
-    def audit_micro_questions(self) -> Dict[str, Any]:
-        """Perform detailed audit of micro questions."""
-        issues = {
-            'missing_signals': [],
-            'weak_signals': [],
-            'missing_expected_elements': [],
-            'vague_expected_elements': [],
-            'missing_validations': [],
-            'weak_validations': [],
-            'missing_failure_contract': [],
-            'missing_scoring_modality': [],
-            'missing_method_sets': [],
-            'missing_documentation': [],
-            'missing_patterns': [],
+            'total_micro_questions': len(self.micro_questions),
+            'dimensions': list(dimensions.keys()),
+            'policy_areas': list(policy_areas.keys()),
+            'clusters': list(clusters.keys()) if clusters else []
         }
         
-        for idx, q in enumerate(self.micro_questions):
-            q_id = q.get('question_id', f'UNKNOWN_{idx}')
+        print(f"  - Dimensions: {result['dimensions_count']}")
+        print(f"  - Policy Areas: {result['policy_areas_count']}")
+        print(f"  - Clusters: {result['clusters_count']}")
+        print(f"  - Micro Questions: {result['total_micro_questions']}")
+        
+        return result
+    
+    def audit_classification_distribution(self) -> Dict[str, Any]:
+        """Audit 2: Classification distribution across dimensions, policy areas, clusters"""
+        print("\n=== AUDIT 2: Classification Distribution ===")
+        
+        dimension_counts = defaultdict(int)
+        policy_area_counts = defaultdict(int)
+        cluster_counts = defaultdict(int)
+        
+        # Track questions without proper classification
+        missing_dimension = []
+        missing_policy_area = []
+        missing_cluster = []
+        
+        for i, q in enumerate(self.micro_questions):
+            q_id = q.get('question_id', f'Q{i+1:03d}')
+            dim = q.get('dimension_id', None)
+            cluster = q.get('cluster_id', None)
             
-            # Collect statistics
-            policy_area = q.get('policy_area_id', 'UNKNOWN')
-            dimension = q.get('dimension_id', 'UNKNOWN')
-            cluster = q.get('cluster_id', 'UNKNOWN')
-            scoring_modality = q.get('scoring_modality', 'UNKNOWN')
+            # Check for policy area in base_slot pattern (e.g., "D1-Q1-PA01")
+            base_slot = q.get('base_slot', '')
+            pa = None
+            if '-PA' in base_slot:
+                pa = base_slot.split('-PA')[-1][:2]
+                pa = f'PA{pa}'
             
-            self.stats['by_policy_area'][policy_area] += 1
-            self.stats['by_dimension'][dimension] += 1
-            self.stats['by_cluster'][cluster] += 1
-            self.stats['by_scoring_modality'][scoring_modality] += 1
-            
-            # Note: 'signals' field does not exist in current schema v2.0.0
-            # Keeping this check for future compatibility
-            signals = q.get('signals', [])
-            if 'signals' in q and not signals:
-                issues['missing_signals'].append(q_id)
-            elif 'signals' in q and len(signals) < 3:
-                issues['weak_signals'].append((q_id, len(signals)))
-            
-            # Audit expected_elements (can be list of dicts or strings)
-            expected_elements = q.get('expected_elements', [])
-            if not expected_elements:
-                issues['missing_expected_elements'].append(q_id)
+            if dim:
+                dimension_counts[dim] += 1
             else:
-                self.stats['expected_elements_counts'].append(len(expected_elements))
-                # Check for elements with insufficient detail
-                weak_elements = []
-                for e in expected_elements:
-                    if isinstance(e, dict):
-                        # Check if dict has minimal info (type-only)
-                        if len(e.keys()) == 1 and 'type' in e:
-                            weak_elements.append(e)
-                    elif isinstance(e, str) and len(e.split()) <= 2:
-                        weak_elements.append(e)
-                
-                if len(weak_elements) > len(expected_elements) * 0.5:
-                    issues['vague_expected_elements'].append((q_id, len(weak_elements), len(expected_elements)))
+                missing_dimension.append(q_id)
             
-            # Audit validations
-            validations = q.get('validations', [])
-            self.stats['validation_counts'].append(len(validations))
-            if not validations:
-                issues['missing_validations'].append(q_id)
-            elif len(validations) < 2:
-                issues['weak_validations'].append((q_id, len(validations)))
+            if pa:
+                policy_area_counts[pa] += 1
+            else:
+                missing_policy_area.append(q_id)
             
-            # Audit failure_contract (should have abort_if or conditions)
-            failure_contract = q.get('failure_contract', {})
-            if not failure_contract:
-                issues['missing_failure_contract'].append(q_id)
-            elif not failure_contract.get('abort_if') and not failure_contract.get('conditions'):
-                issues['missing_failure_contract'].append(q_id)
-            
-            # Audit scoring_modality
-            if not scoring_modality or scoring_modality == 'UNKNOWN':
-                issues['missing_scoring_modality'].append(q_id)
-            
-            # Audit method_sets
-            method_sets = q.get('method_sets', [])
-            self.stats['method_sets_counts'].append(len(method_sets))
-            if not method_sets:
-                issues['missing_method_sets'].append(q_id)
-            
-            # Audit documentation/definition
-            definition = q.get('definition', '')
-            if not definition or len(definition) < 20:
-                issues['missing_documentation'].append(q_id)
-            
-            # Audit patterns
-            patterns = q.get('patterns', [])
-            if not patterns:
-                issues['missing_patterns'].append(q_id)
+            if cluster:
+                cluster_counts[cluster] += 1
+            else:
+                missing_cluster.append(q_id)
         
-        return issues
-
-    def calculate_equity_metrics(self) -> Dict[str, Any]:
-        """Calculate metrics related to equity and balance across the questionnaire."""
-        # Calculate standard deviation and coefficient of variation for distributions
-        
-        # Questions per policy area balance
-        pa_counts = list(self.stats['by_policy_area'].values())
-        pa_mean = sum(pa_counts) / len(pa_counts) if pa_counts else 0
-        pa_variance = sum((x - pa_mean) ** 2 for x in pa_counts) / len(pa_counts) if pa_counts else 0
-        pa_std = pa_variance ** 0.5
-        pa_cv = (pa_std / pa_mean * 100) if pa_mean > 0 else 0
-        
-        # Validations per question balance
-        val_counts = self.stats['validation_counts']
-        val_mean = sum(val_counts) / len(val_counts) if val_counts else 0
-        val_variance = sum((x - val_mean) ** 2 for x in val_counts) / len(val_counts) if val_counts else 0
-        val_std = val_variance ** 0.5
-        val_cv = (val_std / val_mean * 100) if val_mean > 0 else 0
-        
-        # Expected elements per question balance
-        ee_counts = self.stats['expected_elements_counts']
-        ee_mean = sum(ee_counts) / len(ee_counts) if ee_counts else 0
-        ee_variance = sum((x - ee_mean) ** 2 for x in ee_counts) / len(ee_counts) if ee_counts else 0
-        ee_std = ee_variance ** 0.5
-        ee_cv = (ee_std / ee_mean * 100) if ee_mean > 0 else 0
-        
-        return {
-            'policy_area_distribution': {
-                'mean': round(pa_mean, 2),
-                'std_dev': round(pa_std, 2),
-                'coefficient_variation': round(pa_cv, 2),
-                'counts': dict(self.stats['by_policy_area']),
-            },
-            'validation_distribution': {
-                'mean': round(val_mean, 2),
-                'std_dev': round(val_std, 2),
-                'coefficient_variation': round(val_cv, 2),
-                'min': min(val_counts) if val_counts else 0,
-                'max': max(val_counts) if val_counts else 0,
-            },
-            'expected_elements_distribution': {
-                'mean': round(ee_mean, 2),
-                'std_dev': round(ee_std, 2),
-                'coefficient_variation': round(ee_cv, 2),
-                'min': min(ee_counts) if ee_counts else 0,
-                'max': max(ee_counts) if ee_counts else 0,
-            },
-        }
-
-    def generate_report(self) -> str:
-        """Generate a comprehensive audit report."""
-        structure = self.audit_structure()
-        canonical = self.audit_canonical_notation()
-        issues = self.audit_micro_questions()
-        equity = self.calculate_equity_metrics()
-        
-        report_lines = [
-            "=" * 100,
-            "QUESTIONNAIRE_MONOLITH.JSON - COMPREHENSIVE AUDIT REPORT",
-            "=" * 100,
-            "",
-            "Generated: 2025-12-31",
-            "Audit Scope: Structure, Hierarchy, Coverage, Balance, and Equity",
-            "",
-            "=" * 100,
-            "1. OVERALL STRUCTURE",
-            "=" * 100,
-            f"Schema Version: {structure['schema_version']}",
-            f"Version: {structure['version']}",
-            f"Generated At: {structure['generated_at']}",
-            f"Top-level Keys: {', '.join(structure['top_level_keys'])}",
-            f"Has Integrity Section: {'YES' if structure['has_integrity'] else 'NO'}",
-            f"Has Observability Section: {'YES' if structure['has_observability'] else 'NO'}",
-            "",
-            "=" * 100,
-            "2. CANONICAL NOTATION",
-            "=" * 100,
-            f"Dimensions: {canonical['dimensions_count']} ({', '.join(canonical['dimensions_list'])})",
-            f"Policy Areas: {canonical['policy_areas_count']} ({', '.join(canonical['policy_areas_list'])})",
-            f"Clusters: {canonical['clusters_count']} ({', '.join(canonical['clusters_list'])})",
-            "",
-            "=" * 100,
-            "3. MICRO QUESTIONS OVERVIEW",
-            "=" * 100,
-            f"Total Micro Questions: {self.stats['total_questions']}",
-            "",
-            "Distribution by Policy Area:",
-        ]
-        
-        for pa in sorted(self.stats['by_policy_area'].keys()):
-            report_lines.append(f"  {pa}: {self.stats['by_policy_area'][pa]} questions")
-        
-        report_lines.extend([
-            "",
-            "Distribution by Dimension:",
-        ])
-        
-        for dim in sorted(self.stats['by_dimension'].keys()):
-            report_lines.append(f"  {dim}: {self.stats['by_dimension'][dim]} questions")
-        
-        report_lines.extend([
-            "",
-            "Distribution by Cluster:",
-        ])
-        
-        for cluster in sorted(self.stats['by_cluster'].keys()):
-            report_lines.append(f"  {cluster}: {self.stats['by_cluster'][cluster]} questions")
-        
-        report_lines.extend([
-            "",
-            "Distribution by Scoring Modality:",
-        ])
-        
-        for modality in sorted(self.stats['by_scoring_modality'].keys()):
-            report_lines.append(f"  {modality}: {self.stats['by_scoring_modality'][modality]} questions")
-        
-        report_lines.extend([
-            "",
-            "=" * 100,
-            "4. GAPS AND ISSUES IDENTIFIED",
-            "=" * 100,
-            "",
-            f"4.1 Signal/Element Richness Issues",
-            f"  - Questions with MISSING signals: {len(issues['missing_signals'])}",
-            f"  - Questions with WEAK signals (<3): {len(issues['weak_signals'])}",
-            f"  - Questions with MISSING expected_elements: {len(issues['missing_expected_elements'])}",
-            f"  - Questions with VAGUE expected_elements: {len(issues['vague_expected_elements'])}",
-            "",
-            f"4.2 Validation Issues",
-            f"  - Questions with NO validations: {len(issues['missing_validations'])}",
-            f"  - Questions with WEAK validations (<2): {len(issues['weak_validations'])}",
-            "",
-            f"4.3 Scoring & Method Issues",
-            f"  - Questions with MISSING scoring_modality: {len(issues['missing_scoring_modality'])}",
-            f"  - Questions with MISSING method_sets: {len(issues['missing_method_sets'])}",
-            "",
-            f"4.4 Documentation Issues",
-            f"  - Questions with MISSING/WEAK documentation: {len(issues['missing_documentation'])}",
-            f"  - Questions with MISSING failure_contract: {len(issues['missing_failure_contract'])}",
-            f"  - Questions with MISSING patterns: {len(issues['missing_patterns'])}",
-            "",
-            "=" * 100,
-            "5. EQUITY AND BALANCE METRICS",
-            "=" * 100,
-            "",
-            "5.1 Policy Area Distribution Balance",
-            f"  Mean questions per policy area: {equity['policy_area_distribution']['mean']}",
-            f"  Standard deviation: {equity['policy_area_distribution']['std_dev']}",
-            f"  Coefficient of variation: {equity['policy_area_distribution']['coefficient_variation']}%",
-            f"  Assessment: {'BALANCED' if equity['policy_area_distribution']['coefficient_variation'] < 10 else 'IMBALANCED'}",
-            "",
-            "5.2 Validation Distribution Balance",
-            f"  Mean validations per question: {equity['validation_distribution']['mean']}",
-            f"  Standard deviation: {equity['validation_distribution']['std_dev']}",
-            f"  Range: {equity['validation_distribution']['min']} - {equity['validation_distribution']['max']}",
-            f"  Coefficient of variation: {equity['validation_distribution']['coefficient_variation']}%",
-            f"  Assessment: {'BALANCED' if equity['validation_distribution']['coefficient_variation'] < 50 else 'IMBALANCED'}",
-            "",
-            "5.3 Expected Elements Distribution Balance",
-            f"  Mean expected_elements per question: {equity['expected_elements_distribution']['mean']}",
-            f"  Standard deviation: {equity['expected_elements_distribution']['std_dev']}",
-            f"  Range: {equity['expected_elements_distribution']['min']} - {equity['expected_elements_distribution']['max']}",
-            f"  Coefficient of variation: {equity['expected_elements_distribution']['coefficient_variation']}%",
-            f"  Assessment: {'BALANCED' if equity['expected_elements_distribution']['coefficient_variation'] < 50 else 'IMBALANCED'}",
-            "",
-            "=" * 100,
-            "6. DETAILED ISSUE LISTS (Top 20 per category)",
-            "=" * 100,
-            "",
-        ])
-        
-        # Add detailed lists of issues (limited to first 20 for readability)
-        if issues['missing_signals']:
-            report_lines.append("6.1 Questions with MISSING Signals (sample):")
-            for q_id in issues['missing_signals'][:20]:
-                report_lines.append(f"  - {q_id}")
-            if len(issues['missing_signals']) > 20:
-                report_lines.append(f"  ... and {len(issues['missing_signals']) - 20} more")
-            report_lines.append("")
-        
-        if issues['missing_validations']:
-            report_lines.append("6.2 Questions with NO Validations (sample):")
-            for q_id in issues['missing_validations'][:20]:
-                report_lines.append(f"  - {q_id}")
-            if len(issues['missing_validations']) > 20:
-                report_lines.append(f"  ... and {len(issues['missing_validations']) - 20} more")
-            report_lines.append("")
-        
-        if issues['missing_documentation']:
-            report_lines.append("6.3 Questions with WEAK/MISSING Documentation (sample):")
-            for q_id in issues['missing_documentation'][:20]:
-                report_lines.append(f"  - {q_id}")
-            if len(issues['missing_documentation']) > 20:
-                report_lines.append(f"  ... and {len(issues['missing_documentation']) - 20} more")
-            report_lines.append("")
-        
-        if issues['vague_expected_elements']:
-            report_lines.append("6.4 Questions with VAGUE Expected Elements (sample):")
-            for q_id, vague_count, total_count in issues['vague_expected_elements'][:20]:
-                report_lines.append(f"  - {q_id}: {vague_count}/{total_count} elements are vague")
-            if len(issues['vague_expected_elements']) > 20:
-                report_lines.append(f"  ... and {len(issues['vague_expected_elements']) - 20} more")
-            report_lines.append("")
-        
-        report_lines.extend([
-            "=" * 100,
-            "7. RECOMMENDATIONS",
-            "=" * 100,
-            "",
-            "Based on this audit, the following actions are recommended:",
-            "",
-            "Priority 1 - Critical Issues:",
-        ])
-        
-        critical_issues = []
-        if len(issues['missing_validations']) > self.stats['total_questions'] * 0.1:
-            critical_issues.append(f"  • {len(issues['missing_validations'])} questions lack validations (>{10}% of total)")
-        if len(issues['missing_expected_elements']) > self.stats['total_questions'] * 0.05:
-            critical_issues.append(f"  • {len(issues['missing_expected_elements'])} questions lack expected_elements (>{5}% of total)")
-        if equity['validation_distribution']['coefficient_variation'] > 50:
-            critical_issues.append(f"  • Validation distribution is highly imbalanced (CV: {equity['validation_distribution']['coefficient_variation']}%)")
-        
-        if critical_issues:
-            report_lines.extend(critical_issues)
-        else:
-            report_lines.append("  • No critical issues identified")
-        
-        report_lines.extend([
-            "",
-            "Priority 2 - High Priority:",
-            f"  • Enrich {len(issues['weak_signals'])} questions with weak signals",
-            f"  • Add documentation to {len(issues['missing_documentation'])} questions",
-            f"  • Clarify {len(issues['vague_expected_elements'])} questions with vague expected_elements",
-            "",
-            "Priority 3 - Medium Priority:",
-            f"  • Add failure_contracts to {len(issues['missing_failure_contract'])} questions",
-            f"  • Add patterns to {len(issues['missing_patterns'])} questions",
-            f"  • Review and normalize scoring modalities across all questions",
-            "",
-            "=" * 100,
-            "END OF AUDIT REPORT",
-            "=" * 100,
-        ])
-        
-        return "\n".join(report_lines)
-
-    def save_detailed_json_report(self, output_path: str):
-        """Save a detailed JSON report with all issues for programmatic access."""
-        structure = self.audit_structure()
-        canonical = self.audit_canonical_notation()
-        issues = self.audit_micro_questions()
-        equity = self.calculate_equity_metrics()
-        
-        detailed_report = {
-            'audit_metadata': {
-                'generated_at': '2025-12-31T21:13:00Z',
-                'questionnaire_file': str(self.json_path),
-                'total_questions_audited': self.stats['total_questions'],
-            },
-            'structure': structure,
-            'canonical_notation': canonical,
-            'statistics': {
-                'by_policy_area': dict(self.stats['by_policy_area']),
-                'by_dimension': dict(self.stats['by_dimension']),
-                'by_cluster': dict(self.stats['by_cluster']),
-                'by_scoring_modality': dict(self.stats['by_scoring_modality']),
-            },
-            'issues': issues,
-            'equity_metrics': equity,
-            'summary': {
-                'total_issues_found': sum(len(v) if isinstance(v, list) else len(v) for v in issues.values()),
-                'critical_severity': len(issues['missing_validations']) + len(issues['missing_expected_elements']),
-                'high_severity': len(issues['weak_signals']) + len(issues['missing_documentation']),
-                'medium_severity': len(issues['missing_failure_contract']) + len(issues['missing_patterns']),
+        result = {
+            'by_dimension': dict(dimension_counts),
+            'by_policy_area': dict(policy_area_counts),
+            'by_cluster': dict(cluster_counts),
+            'missing_classification': {
+                'dimension': len(missing_dimension),
+                'policy_area': len(missing_policy_area),
+                'cluster': len(missing_cluster)
             }
         }
         
-        with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(detailed_report, f, indent=2, ensure_ascii=False)
+        print(f"\n  Distribution by Dimension:")
+        for dim, count in sorted(dimension_counts.items()):
+            print(f"    {dim}: {count} questions")
         
-        print(f"\nDetailed JSON report saved to: {output_path}")
+        print(f"\n  Distribution by Policy Area:")
+        for pa, count in sorted(policy_area_counts.items()):
+            print(f"    {pa}: {count} questions")
+        
+        print(f"\n  Distribution by Cluster:")
+        for cluster, count in sorted(cluster_counts.items()):
+            print(f"    {cluster}: {count} questions")
+        
+        if missing_dimension or missing_policy_area or missing_cluster:
+            print(f"\n  ⚠ Missing Classifications:")
+            if missing_dimension:
+                print(f"    - {len(missing_dimension)} questions without dimension")
+            if missing_policy_area:
+                print(f"    - {len(missing_policy_area)} questions without policy area")
+            if missing_cluster:
+                print(f"    - {len(missing_cluster)} questions without cluster")
+        
+        return result
+    
+    def audit_expected_elements_richness(self) -> Dict[str, Any]:
+        """Audit 3: Expected elements richness and granularity"""
+        print("\n=== AUDIT 3: Expected Elements Richness ===")
+        
+        total_with_expected = 0
+        total_without_expected = 0
+        element_type_counts = Counter()
+        required_counts = defaultdict(int)
+        granularity_scores = []
+        vague_elements = []
+        
+        for i, q in enumerate(self.micro_questions):
+            q_id = q.get('question_id', f'Q{i+1:03d}')
+            expected = q.get('expected_elements', [])
+            
+            if expected:
+                total_with_expected += 1
+                granularity_scores.append(len(expected))
+                
+                for elem in expected:
+                    elem_type = elem.get('type', 'unspecified')
+                    element_type_counts[elem_type] += 1
+                    
+                    if elem.get('required', False):
+                        required_counts[elem_type] += 1
+                    
+                    # Flag vague elements
+                    if elem_type in ['texto_general', 'unspecified', 'general']:
+                        vague_elements.append((q_id, elem_type))
+            else:
+                total_without_expected += 1
+        
+        avg_granularity = sum(granularity_scores) / len(granularity_scores) if granularity_scores else 0
+        
+        result = {
+            'with_expected_elements': total_with_expected,
+            'without_expected_elements': total_without_expected,
+            'average_elements_per_question': avg_granularity,
+            'element_types_used': dict(element_type_counts),
+            'required_elements': dict(required_counts),
+            'vague_elements_count': len(vague_elements)
+        }
+        
+        print(f"  - Questions with expected_elements: {total_with_expected} ({total_with_expected/len(self.micro_questions)*100:.1f}%)")
+        print(f"  - Questions without expected_elements: {total_without_expected}")
+        print(f"  - Average elements per question: {avg_granularity:.2f}")
+        print(f"  - Unique element types: {len(element_type_counts)}")
+        print(f"  - Vague/unspecified elements: {len(vague_elements)}")
+        
+        print(f"\n  Top element types:")
+        for elem_type, count in element_type_counts.most_common(10):
+            print(f"    {elem_type}: {count}")
+        
+        return result
+    
+    def audit_signals_richness(self) -> Dict[str, Any]:
+        """Audit 4: Signals richness and depth"""
+        print("\n=== AUDIT 4: Signals Richness ===")
+        
+        total_with_signals = 0
+        total_without_signals = 0
+        signal_counts = []
+        signal_types = Counter()
+        
+        for i, q in enumerate(self.micro_questions):
+            signals = q.get('signals', [])
+            
+            if signals:
+                total_with_signals += 1
+                signal_counts.append(len(signals))
+                
+                for signal in signals:
+                    if isinstance(signal, dict):
+                        signal_type = signal.get('type', 'unspecified')
+                        signal_types[signal_type] += 1
+            else:
+                total_without_signals += 1
+        
+        avg_signals = sum(signal_counts) / len(signal_counts) if signal_counts else 0
+        
+        result = {
+            'with_signals': total_with_signals,
+            'without_signals': total_without_signals,
+            'average_signals_per_question': avg_signals,
+            'signal_types': dict(signal_types)
+        }
+        
+        print(f"  - Questions with signals: {total_with_signals} ({total_with_signals/len(self.micro_questions)*100:.1f}%)")
+        print(f"  - Questions without signals: {total_without_signals}")
+        print(f"  - Average signals per question: {avg_signals:.2f}")
+        
+        return result
+    
+    def audit_validation_contracts(self) -> Dict[str, Any]:
+        """Audit 5: Validation contract diversity and distribution"""
+        print("\n=== AUDIT 5: Validation Contracts ===")
+        
+        total_with_validation = 0
+        total_without_validation = 0
+        validation_types = Counter()
+        abort_conditions = Counter()
+        
+        for i, q in enumerate(self.micro_questions):
+            failure_contract = q.get('failure_contract', {})
+            validation_contract = q.get('validation_contract', {})
+            
+            has_validation = bool(failure_contract or validation_contract)
+            
+            if has_validation:
+                total_with_validation += 1
+                
+                # Analyze failure contract
+                if failure_contract:
+                    abort_if = failure_contract.get('abort_if', [])
+                    for condition in abort_if:
+                        abort_conditions[condition] += 1
+                
+                # Analyze validation contract
+                if validation_contract:
+                    for key in validation_contract.keys():
+                        validation_types[key] += 1
+            else:
+                total_without_validation += 1
+        
+        result = {
+            'with_validation': total_with_validation,
+            'without_validation': total_without_validation,
+            'abort_conditions': dict(abort_conditions),
+            'validation_types': dict(validation_types)
+        }
+        
+        print(f"  - Questions with validation: {total_with_validation} ({total_with_validation/len(self.micro_questions)*100:.1f}%)")
+        print(f"  - Questions without validation: {total_without_validation}")
+        print(f"  - Unique abort conditions: {len(abort_conditions)}")
+        
+        print(f"\n  Top abort conditions:")
+        for condition, count in abort_conditions.most_common(10):
+            print(f"    {condition}: {count}")
+        
+        return result
+    
+    def audit_scoring_modalities(self) -> Dict[str, Any]:
+        """Audit 6: Scoring modalities (TYPE_A-F) usage and balance"""
+        print("\n=== AUDIT 6: Scoring Modalities ===")
+        
+        modality_counts = Counter()
+        modality_by_dimension = defaultdict(Counter)
+        modality_by_policy_area = defaultdict(Counter)
+        
+        for i, q in enumerate(self.micro_questions):
+            scoring = q.get('scoring', {})
+            modality = scoring.get('modality', 'UNSPECIFIED')
+            
+            modality_counts[modality] += 1
+            
+            dim = q.get('dimension_id', 'UNKNOWN')
+            modality_by_dimension[dim][modality] += 1
+            
+            base_slot = q.get('base_slot', '')
+            pa = 'UNKNOWN'
+            if '-PA' in base_slot:
+                pa = base_slot.split('-PA')[-1][:2]
+                pa = f'PA{pa}'
+            modality_by_policy_area[pa][modality] += 1
+        
+        result = {
+            'overall_modality_distribution': dict(modality_counts),
+            'by_dimension': {dim: dict(counts) for dim, counts in modality_by_dimension.items()},
+            'by_policy_area': {pa: dict(counts) for pa, counts in modality_by_policy_area.items()}
+        }
+        
+        print(f"  Overall modality distribution:")
+        for modality, count in sorted(modality_counts.items()):
+            print(f"    {modality}: {count} ({count/len(self.micro_questions)*100:.1f}%)")
+        
+        return result
+    
+    def audit_method_sets(self) -> Dict[str, Any]:
+        """Audit 7: Method sets coverage and patterns"""
+        print("\n=== AUDIT 7: Method Sets Coverage ===")
+        
+        total_with_methods = 0
+        total_without_methods = 0
+        method_counts = []
+        class_usage = Counter()
+        function_usage = Counter()
+        method_type_usage = Counter()
+        
+        for i, q in enumerate(self.micro_questions):
+            method_sets = q.get('method_sets', [])
+            
+            if method_sets:
+                total_with_methods += 1
+                method_counts.append(len(method_sets))
+                
+                for method in method_sets:
+                    class_name = method.get('class', 'Unknown')
+                    function_name = method.get('function', 'Unknown')
+                    method_type = method.get('method_type', 'unspecified')
+                    
+                    class_usage[class_name] += 1
+                    function_usage[f"{class_name}.{function_name}"] += 1
+                    method_type_usage[method_type] += 1
+            else:
+                total_without_methods += 1
+        
+        avg_methods = sum(method_counts) / len(method_counts) if method_counts else 0
+        
+        result = {
+            'with_method_sets': total_with_methods,
+            'without_method_sets': total_without_methods,
+            'average_methods_per_question': avg_methods,
+            'unique_classes': len(class_usage),
+            'unique_functions': len(function_usage),
+            'method_types': dict(method_type_usage),
+            'top_classes': dict(class_usage.most_common(15)),
+            'top_functions': dict(function_usage.most_common(15))
+        }
+        
+        print(f"  - Questions with method_sets: {total_with_methods} ({total_with_methods/len(self.micro_questions)*100:.1f}%)")
+        print(f"  - Questions without method_sets: {total_without_methods}")
+        print(f"  - Average methods per question: {avg_methods:.2f}")
+        print(f"  - Unique classes used: {len(class_usage)}")
+        print(f"  - Unique functions used: {len(function_usage)}")
+        
+        print(f"\n  Top 5 classes:")
+        for class_name, count in class_usage.most_common(5):
+            print(f"    {class_name}: {count}")
+        
+        return result
+    
+    def audit_documentation(self) -> Dict[str, Any]:
+        """Audit 8: Documentation completeness"""
+        print("\n=== AUDIT 8: Documentation Completeness ===")
+        
+        fields_to_check = [
+            'question_id',
+            'question_text',
+            'rationale',
+            'documentation',
+            'description',
+            'context',
+            'guidance'
+        ]
+        
+        field_presence = defaultdict(int)
+        fully_documented = 0
+        poorly_documented = []
+        
+        for i, q in enumerate(self.micro_questions):
+            q_id = q.get('question_id', f'Q{i+1:03d}')
+            doc_count = 0
+            
+            for field in fields_to_check:
+                if field in q and q[field]:
+                    field_presence[field] += 1
+                    doc_count += 1
+            
+            if doc_count >= 5:
+                fully_documented += 1
+            elif doc_count < 2:
+                poorly_documented.append(q_id)
+        
+        result = {
+            'field_presence': dict(field_presence),
+            'fully_documented': fully_documented,
+            'poorly_documented_count': len(poorly_documented),
+            'documentation_coverage': {
+                field: (count / len(self.micro_questions) * 100)
+                for field, count in field_presence.items()
+            }
+        }
+        
+        print(f"  - Fully documented questions: {fully_documented} ({fully_documented/len(self.micro_questions)*100:.1f}%)")
+        print(f"  - Poorly documented questions: {len(poorly_documented)}")
+        
+        print(f"\n  Field presence:")
+        for field in fields_to_check:
+            count = field_presence.get(field, 0)
+            pct = count / len(self.micro_questions) * 100
+            print(f"    {field}: {count} ({pct:.1f}%)")
+        
+        return result
+    
+    def audit_intersectionality(self) -> Dict[str, Any]:
+        """Audit 9: Cross-cutting issues and intersectionality"""
+        print("\n=== AUDIT 9: Intersectionality & Cross-Cutting Issues ===")
+        
+        # Keywords for cross-cutting themes
+        gender_keywords = ['género', 'mujer', 'mujeres', 'femenino', 'masculino', 'lgbti', 'diversidad sexual']
+        rights_keywords = ['derecho', 'derechos', 'humanos', 'dignidad', 'libertad']
+        vulnerability_keywords = ['vulnerable', 'vulnerabilidad', 'pobreza', 'exclusión', 'marginación', 'discriminación']
+        equity_keywords = ['equidad', 'igualdad', 'inclusión', 'acceso', 'participación']
+        
+        gender_mentions = 0
+        rights_mentions = 0
+        vulnerability_mentions = 0
+        equity_mentions = 0
+        
+        cross_cutting_by_policy_area = defaultdict(lambda: {'gender': 0, 'rights': 0, 'vulnerability': 0, 'equity': 0})
+        
+        for i, q in enumerate(self.micro_questions):
+            q_text = str(q.get('question_text', '')).lower()
+            
+            base_slot = q.get('base_slot', '')
+            pa = 'UNKNOWN'
+            if '-PA' in base_slot:
+                pa = base_slot.split('-PA')[-1][:2]
+                pa = f'PA{pa}'
+            
+            has_gender = any(kw in q_text for kw in gender_keywords)
+            has_rights = any(kw in q_text for kw in rights_keywords)
+            has_vulnerability = any(kw in q_text for kw in vulnerability_keywords)
+            has_equity = any(kw in q_text for kw in equity_keywords)
+            
+            if has_gender:
+                gender_mentions += 1
+                cross_cutting_by_policy_area[pa]['gender'] += 1
+            if has_rights:
+                rights_mentions += 1
+                cross_cutting_by_policy_area[pa]['rights'] += 1
+            if has_vulnerability:
+                vulnerability_mentions += 1
+                cross_cutting_by_policy_area[pa]['vulnerability'] += 1
+            if has_equity:
+                equity_mentions += 1
+                cross_cutting_by_policy_area[pa]['equity'] += 1
+        
+        result = {
+            'gender_mentions': gender_mentions,
+            'rights_mentions': rights_mentions,
+            'vulnerability_mentions': vulnerability_mentions,
+            'equity_mentions': equity_mentions,
+            'by_policy_area': dict(cross_cutting_by_policy_area)
+        }
+        
+        print(f"  - Gender mentions: {gender_mentions} ({gender_mentions/len(self.micro_questions)*100:.1f}%)")
+        print(f"  - Rights mentions: {rights_mentions} ({rights_mentions/len(self.micro_questions)*100:.1f}%)")
+        print(f"  - Vulnerability mentions: {vulnerability_mentions} ({vulnerability_mentions/len(self.micro_questions)*100:.1f}%)")
+        print(f"  - Equity mentions: {equity_mentions} ({equity_mentions/len(self.micro_questions)*100:.1f}%)")
+        
+        return result
+    
+    def identify_equity_risks(self) -> Dict[str, Any]:
+        """Audit 10: Identify equity risks and imbalances"""
+        print("\n=== AUDIT 10: Equity Risks & Imbalances ===")
+        
+        risks = []
+        
+        # Check distribution imbalances
+        dimension_counts = defaultdict(int)
+        for q in self.micro_questions:
+            dim = q.get('dimension_id', 'UNKNOWN')
+            dimension_counts[dim] += 1
+        
+        if dimension_counts:
+            avg_per_dim = sum(dimension_counts.values()) / len(dimension_counts)
+            for dim, count in dimension_counts.items():
+                if count < avg_per_dim * 0.7:
+                    risks.append({
+                        'type': 'under_representation',
+                        'area': f'Dimension {dim}',
+                        'severity': 'MEDIUM',
+                        'description': f'{dim} has only {count} questions, below average of {avg_per_dim:.0f}'
+                    })
+        
+        # Check validation coverage imbalance
+        validation_by_dim = defaultdict(lambda: {'with': 0, 'without': 0})
+        for q in self.micro_questions:
+            dim = q.get('dimension_id', 'UNKNOWN')
+            has_validation = bool(q.get('failure_contract') or q.get('validation_contract'))
+            if has_validation:
+                validation_by_dim[dim]['with'] += 1
+            else:
+                validation_by_dim[dim]['without'] += 1
+        
+        for dim, counts in validation_by_dim.items():
+            total = counts['with'] + counts['without']
+            if total > 0:
+                validation_pct = counts['with'] / total * 100
+                if validation_pct < 50:
+                    risks.append({
+                        'type': 'validation_gap',
+                        'area': f'Dimension {dim}',
+                        'severity': 'HIGH',
+                        'description': f'Only {validation_pct:.1f}% of questions in {dim} have validation'
+                    })
+        
+        result = {
+            'total_risks': len(risks),
+            'risks': risks
+        }
+        
+        print(f"  - Total equity risks identified: {len(risks)}")
+        for risk in risks[:10]:
+            print(f"    [{risk['severity']}] {risk['type']}: {risk['description']}")
+        
+        return result
+    
+    def generate_report(self) -> Dict[str, Any]:
+        """Generate comprehensive audit report"""
+        print("\n" + "="*60)
+        print("COMPREHENSIVE AUDIT OF questionnaire_monolith.json")
+        print("="*60)
+        
+        self.audit_results = {
+            'audit_metadata': {
+                'timestamp': datetime.now().isoformat(),
+                'file_path': self.json_path,
+                'auditor_version': '1.0.0'
+            },
+            'structure_hierarchy': self.audit_structure_hierarchy(),
+            'classification_distribution': self.audit_classification_distribution(),
+            'expected_elements_richness': self.audit_expected_elements_richness(),
+            'signals_richness': self.audit_signals_richness(),
+            'validation_contracts': self.audit_validation_contracts(),
+            'scoring_modalities': self.audit_scoring_modalities(),
+            'method_sets': self.audit_method_sets(),
+            'documentation': self.audit_documentation(),
+            'intersectionality': self.audit_intersectionality(),
+            'equity_risks': self.identify_equity_risks()
+        }
+        
+        return self.audit_results
+    
+    def save_report(self, output_path: str) -> None:
+        """Save audit report to JSON file"""
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(self.audit_results, f, indent=2, ensure_ascii=False)
+        print(f"\n✓ Audit report saved to: {output_path}")
 
 
 def main():
-    """Main execution function."""
-    # Determine the path to questionnaire_monolith.json
+    """Main execution function"""
     repo_root = Path(__file__).parent.parent.parent
     json_path = repo_root / 'canonic_questionnaire_central' / 'questionnaire_monolith.json'
+    output_path = repo_root / 'artifacts' / 'reports' / 'audit' / 'questionnaire_monolith_audit_report.json'
     
-    if not json_path.exists():
-        print(f"ERROR: questionnaire_monolith.json not found at {json_path}")
-        sys.exit(1)
+    # Ensure output directory exists
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     
-    # Create auditor and run audit
+    # Run audit
     auditor = QuestionnaireAuditor(str(json_path))
+    auditor.load_data()
+    auditor.generate_report()
+    auditor.save_report(str(output_path))
     
-    # Generate text report
-    report = auditor.generate_report()
-    print(report)
-    
-    # Save text report
-    report_dir = repo_root / 'artifacts' / 'reports' / 'audit'
-    report_dir.mkdir(parents=True, exist_ok=True)
-    
-    text_report_path = report_dir / 'questionnaire_audit_report.txt'
-    with open(text_report_path, 'w', encoding='utf-8') as f:
-        f.write(report)
-    print(f"\nText report saved to: {text_report_path}")
-    
-    # Save detailed JSON report
-    json_report_path = report_dir / 'questionnaire_audit_report.json'
-    auditor.save_detailed_json_report(str(json_report_path))
-    
-    print("\n✓ Audit complete!")
+    print("\n" + "="*60)
+    print("AUDIT COMPLETE")
+    print("="*60)
+    print(f"\nSee detailed results in: {output_path}")
 
 
 if __name__ == '__main__':
