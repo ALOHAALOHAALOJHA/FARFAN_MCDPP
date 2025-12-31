@@ -143,7 +143,6 @@ def analyze_method_class_distribution(data: Dict) -> Dict[str, Any]:
 def identify_cross_cutting_gaps(data: Dict) -> Dict[str, Any]:
     """Identify potential gaps in cross-cutting themes like gender, rights, vulnerability."""
     micro_questions = data.get('blocks', {}).get('micro_questions', [])
-    policy_areas = data.get('canonical_notation', {}).get('policy_areas', {})
     
     # Keywords to search for
     gender_keywords = ['género', 'mujer', 'mujeres', 'gender', 'femenin', 'masculin', 'equidad de género']
