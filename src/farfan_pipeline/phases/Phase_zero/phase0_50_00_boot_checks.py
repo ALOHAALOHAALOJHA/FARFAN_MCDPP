@@ -72,7 +72,7 @@ def check_wiring_validator_available(config: RuntimeConfig) -> bool:
         BootCheckError: If validator unavailable in strict PROD mode
     """
     try:
-        from orchestration.wiring.validator import WiringValidator
+        from farfan_pipeline.phases.Phase_zero.phase0_90_03_wiring_validator import WiringValidator
         return True
     except ImportError as e:
         if config.mode == RuntimeMode.PROD and not config.allow_validator_disable:
@@ -201,7 +201,7 @@ def check_orchestration_metrics_contract(config: RuntimeConfig) -> bool:
     """
     try:
         # Import orchestrator to check metrics contract
-        from orchestration.orchestrator import Orchestrator
+        from farfan_pipeline.orchestration.orchestrator import Orchestrator
         
         # Verify phase_2 metrics schema exists
         # This is a placeholder - actual implementation would check the schema

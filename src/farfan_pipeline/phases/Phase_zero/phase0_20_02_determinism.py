@@ -29,7 +29,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Iterator
 
 if TYPE_CHECKING:
-    from orchestration.seed_registry import SeedRegistry
+    from farfan_pipeline.orchestration.seed_registry import SeedRegistry
 
 try:
     import numpy as np
