@@ -11,210 +11,1240 @@
       "family": "Semántico",
       "question_text": "¿El diagnóstico del sector presenta datos cuantitativos (tasas, porcentajes, cifras absolutas) con año de referencia y fuente identificada, desagregados por territorio o población?",
       "question_title": "Líneas base con fuente y desagregación",
-      "generic_code": "D1.Q1"
+      "generic_code": "D1.Q1",
+      "n1_strategy_refined": {
+        "name": "semantic_bundling",
+        "operation": "Agrupa evidencia preservando contexto semántico",
+        "differs_from_concat": "Mantiene metadata de fuente y contexto",
+        "output": "Bundle con trazabilidad semántica",
+        "example": {
+          "input": [
+            {
+              "source": "DANE",
+              "text": "tasa 45.3%",
+              "context": "párrafo 12"
+            },
+            {
+              "source": "Med Legal",
+              "text": "12 casos",
+              "context": "tabla 3"
+            }
+          ],
+          "output": {
+            "bundle_type": "semantic",
+            "facts": [],
+            "provenance": "preserved"
+          }
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "dempster_shafer",
+        "operation": "Combina masas de probabilidad con gestión de conflicto",
+        "rationale": "Maneja incertidumbre + conflicto semántico",
+        "conflict_resolution": "Dempster's rule of combination"
+      },
+      "n3_fusion_refined": {
+        "name": "contradiction_veto",
+        "operation": "Veto duro si contradicción semántica detectada",
+        "formula": "if semantic_contradiction: confidence = 0.0"
+      },
+      "epistemological_justification": "Bundling preserva contexto semántico"
     },
     "Q013": {
       "type": "TYPE_A",
       "family": "Semántico",
       "question_text": "¿Los productos están vinculados a códigos presupuestales (BPIN, PPI, SGP, recursos específicos) y a entidades responsables identificadas (secretarías, oficinas, dependencias)?",
       "question_title": "Trazabilidad presupuestal y organizacional",
-      "generic_code": "D3.Q3"
+      "generic_code": "D3.Q3",
+      "n1_strategy_refined": {
+        "name": "semantic_bundling",
+        "operation": "Agrupa evidencia preservando contexto semántico",
+        "differs_from_concat": "Mantiene metadata de fuente y contexto",
+        "output": "Bundle con trazabilidad semántica",
+        "example": {
+          "input": [
+            {
+              "source": "DANE",
+              "text": "tasa 45.3%",
+              "context": "párrafo 12"
+            },
+            {
+              "source": "Med Legal",
+              "text": "12 casos",
+              "context": "tabla 3"
+            }
+          ],
+          "output": {
+            "bundle_type": "semantic",
+            "facts": [],
+            "provenance": "preserved"
+          }
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "dempster_shafer",
+        "operation": "Combina masas de probabilidad con gestión de conflicto",
+        "rationale": "Maneja incertidumbre + conflicto semántico",
+        "conflict_resolution": "Dempster's rule of combination"
+      },
+      "n3_fusion_refined": {
+        "name": "contradiction_veto",
+        "operation": "Veto duro si contradicción semántica detectada",
+        "formula": "if semantic_contradiction: confidence = 0.0"
+      },
+      "epistemological_justification": "Bundling preserva contexto semántico"
     },
     "Q002": {
       "type": "TYPE_B",
       "family": "Bayesiano",
       "question_text": "¿El diagnóstico dimensiona numéricamente la magnitud del problema o déficit del sector y reconoce explícitamente limitaciones en los datos como 'subregistro', 'información insuficiente', 'ausencia de caracterización' o 'vacíos de información'?",
       "question_title": "Cuantificación de brechas y vacíos de información",
-      "generic_code": "D1.Q2"
+      "generic_code": "D1.Q2",
+      "n1_strategy_refined": {
+        "name": "evidence_concatenation",
+        "operation": "Concatenación estándar pre-bayesiana",
+        "rationale": "Prior + likelihood deben coexistir antes de update",
+        "preserve": "concat es CORRECTO aquí",
+        "output": "Array de evidencia heterogénea"
+      },
+      "n2_strategy_refined": {
+        "name": "bayesian_update",
+        "operation": "P(H|E) = P(E|H) * P(H) / P(E)",
+        "rationale": "Actualización bayesiana clásica",
+        "no_change": "Ya está bien especificado"
+      },
+      "n3_fusion_refined": {
+        "name": "statistical_gate",
+        "operation": "Veto si significancia estadística falla",
+        "conditions": [
+          {
+            "trigger": "p_value > 0.05",
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          },
+          {
+            "trigger": "sample_size < 30",
+            "action": "flag_caution",
+            "multiplier": 0.7
+          }
+        ]
+      },
+      "epistemological_justification": "Concatenación pre-bayesiana legítima"
     },
     "Q005": {
       "type": "TYPE_B",
       "family": "Bayesiano",
       "question_text": "¿El plan justifica el alcance de sus intervenciones en el sector mencionando el marco normativo aplicable o reconociendo explícitamente qué competencias son municipales directas, cuáles son concurrentes y cuáles requieren articulación con el departamento o la nación?",
       "question_title": "Justificación de alcance y competencias",
-      "generic_code": "D1.Q5"
+      "generic_code": "D1.Q5",
+      "n1_strategy_refined": {
+        "name": "evidence_concatenation",
+        "operation": "Concatenación estándar pre-bayesiana",
+        "rationale": "Prior + likelihood deben coexistir antes de update",
+        "preserve": "concat es CORRECTO aquí",
+        "output": "Array de evidencia heterogénea"
+      },
+      "n2_strategy_refined": {
+        "name": "bayesian_update",
+        "operation": "P(H|E) = P(E|H) * P(H) / P(E)",
+        "rationale": "Actualización bayesiana clásica",
+        "no_change": "Ya está bien especificado"
+      },
+      "n3_fusion_refined": {
+        "name": "statistical_gate",
+        "operation": "Veto si significancia estadística falla",
+        "conditions": [
+          {
+            "trigger": "p_value > 0.05",
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          },
+          {
+            "trigger": "sample_size < 30",
+            "action": "flag_caution",
+            "multiplier": 0.7
+          }
+        ]
+      },
+      "epistemological_justification": "Concatenación pre-bayesiana legítima"
     },
     "Q007": {
       "type": "TYPE_B",
       "family": "Bayesiano",
       "question_text": "¿La descripción de actividades especifica el instrumento ('mediante...', 'a través de...', 'con...'), la población o zona objetivo, y explica cómo la actividad contribuye al resultado esperado ('para...', 'porque...', 'con el fin de...')?",
       "question_title": "Detalle de instrumentos, población objetivo y contribución al resultado",
-      "generic_code": "D2.Q2"
+      "generic_code": "D2.Q2",
+      "n1_strategy_refined": {
+        "name": "evidence_concatenation",
+        "operation": "Concatenación estándar pre-bayesiana",
+        "rationale": "Prior + likelihood deben coexistir antes de update",
+        "preserve": "concat es CORRECTO aquí",
+        "output": "Array de evidencia heterogénea"
+      },
+      "n2_strategy_refined": {
+        "name": "bayesian_update",
+        "operation": "P(H|E) = P(E|H) * P(H) / P(E)",
+        "rationale": "Actualización bayesiana clásica",
+        "no_change": "Ya está bien especificado"
+      },
+      "n3_fusion_refined": {
+        "name": "statistical_gate",
+        "operation": "Veto si significancia estadística falla",
+        "conditions": [
+          {
+            "trigger": "p_value > 0.05",
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          },
+          {
+            "trigger": "sample_size < 30",
+            "action": "flag_caution",
+            "multiplier": 0.7
+          }
+        ]
+      },
+      "epistemological_justification": "Concatenación pre-bayesiana legítima"
     },
     "Q011": {
       "type": "TYPE_B",
       "family": "Bayesiano",
       "question_text": "¿Los indicadores de producto del sector (unidades entregadas, personas atendidas, infraestructura construida, servicios prestados) incluyen línea base, meta cuantitativa y fuente de verificación?",
       "question_title": "Indicadores de producto con línea base, meta y verificación",
-      "generic_code": "D3.Q1"
+      "generic_code": "D3.Q1",
+      "n1_strategy_refined": {
+        "name": "evidence_concatenation",
+        "operation": "Concatenación estándar pre-bayesiana",
+        "rationale": "Prior + likelihood deben coexistir antes de update",
+        "preserve": "concat es CORRECTO aquí",
+        "output": "Array de evidencia heterogénea"
+      },
+      "n2_strategy_refined": {
+        "name": "bayesian_update",
+        "operation": "P(H|E) = P(E|H) * P(H) / P(E)",
+        "rationale": "Actualización bayesiana clásica",
+        "no_change": "Ya está bien especificado"
+      },
+      "n3_fusion_refined": {
+        "name": "statistical_gate",
+        "operation": "Veto si significancia estadística falla",
+        "conditions": [
+          {
+            "trigger": "p_value > 0.05",
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          },
+          {
+            "trigger": "sample_size < 30",
+            "action": "flag_caution",
+            "multiplier": 0.7
+          }
+        ]
+      },
+      "epistemological_justification": "Concatenación pre-bayesiana legítima"
     },
     "Q017": {
       "type": "TYPE_B",
       "family": "Bayesiano",
       "question_text": "¿El plan describe la ruta o secuencia que lleva a los resultados del sector, mencionando condiciones necesarias para que funcione (se debe buscar términos como 'supuestos', 'si...', 'siempre que...', 'condiciones habilitantes', 'requiere que...')?",
       "question_title": "Ruta causal con supuestos y condiciones habilitantes",
-      "generic_code": "D4.Q2"
+      "generic_code": "D4.Q2",
+      "n1_strategy_refined": {
+        "name": "evidence_concatenation",
+        "operation": "Concatenación estándar pre-bayesiana",
+        "rationale": "Prior + likelihood deben coexistir antes de update",
+        "preserve": "concat es CORRECTO aquí",
+        "output": "Array de evidencia heterogénea"
+      },
+      "n2_strategy_refined": {
+        "name": "bayesian_update",
+        "operation": "P(H|E) = P(E|H) * P(H) / P(E)",
+        "rationale": "Actualización bayesiana clásica",
+        "no_change": "Ya está bien especificado"
+      },
+      "n3_fusion_refined": {
+        "name": "statistical_gate",
+        "operation": "Veto si significancia estadística falla",
+        "conditions": [
+          {
+            "trigger": "p_value > 0.05",
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          },
+          {
+            "trigger": "sample_size < 30",
+            "action": "flag_caution",
+            "multiplier": 0.7
+          }
+        ]
+      },
+      "epistemological_justification": "Concatenación pre-bayesiana legítima"
     },
     "Q018": {
       "type": "TYPE_B",
       "family": "Bayesiano",
       "question_text": "¿La ambición de las metas de resultado se justifica en función de recursos asignados, capacidad institucional, articulación con otros niveles de gobierno, o se compara con casos o municipios similares?",
       "question_title": "Justificación de ambición de metas",
-      "generic_code": "D4.Q3"
+      "generic_code": "D4.Q3",
+      "n1_strategy_refined": {
+        "name": "evidence_concatenation",
+        "operation": "Concatenación estándar pre-bayesiana",
+        "rationale": "Prior + likelihood deben coexistir antes de update",
+        "preserve": "concat es CORRECTO aquí",
+        "output": "Array de evidencia heterogénea"
+      },
+      "n2_strategy_refined": {
+        "name": "bayesian_update",
+        "operation": "P(H|E) = P(E|H) * P(H) / P(E)",
+        "rationale": "Actualización bayesiana clásica",
+        "no_change": "Ya está bien especificado"
+      },
+      "n3_fusion_refined": {
+        "name": "statistical_gate",
+        "operation": "Veto si significancia estadística falla",
+        "conditions": [
+          {
+            "trigger": "p_value > 0.05",
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          },
+          {
+            "trigger": "sample_size < 30",
+            "action": "flag_caution",
+            "multiplier": 0.7
+          }
+        ]
+      },
+      "epistemological_justification": "Concatenación pre-bayesiana legítima"
     },
     "Q020": {
       "type": "TYPE_B",
       "family": "Bayesiano",
       "question_text": "¿El plan declara la alineación de sus resultados del sector con el Plan Nacional de Desarrollo, los Objetivos de Desarrollo Sostenible, marcos normativos nacionales o políticas sectoriales relevantes?",
       "question_title": "Alineación con marcos superiores",
-      "generic_code": "D4.Q5"
+      "generic_code": "D4.Q5",
+      "n1_strategy_refined": {
+        "name": "evidence_concatenation",
+        "operation": "Concatenación estándar pre-bayesiana",
+        "rationale": "Prior + likelihood deben coexistir antes de update",
+        "preserve": "concat es CORRECTO aquí",
+        "output": "Array de evidencia heterogénea"
+      },
+      "n2_strategy_refined": {
+        "name": "bayesian_update",
+        "operation": "P(H|E) = P(E|H) * P(H) / P(E)",
+        "rationale": "Actualización bayesiana clásica",
+        "no_change": "Ya está bien especificado"
+      },
+      "n3_fusion_refined": {
+        "name": "statistical_gate",
+        "operation": "Veto si significancia estadística falla",
+        "conditions": [
+          {
+            "trigger": "p_value > 0.05",
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          },
+          {
+            "trigger": "sample_size < 30",
+            "action": "flag_caution",
+            "multiplier": 0.7
+          }
+        ]
+      },
+      "epistemological_justification": "Concatenación pre-bayesiana legítima"
     },
     "Q023": {
       "type": "TYPE_B",
       "family": "Bayesiano",
       "question_text": "¿Los impactos del sector se alinean con marcos nacionales o globales y consideran riesgos externos (crisis económicas, cambios de política nacional, eventos climáticos, dinámicas regionales) que podrían impedir o revertir los logros esperados?",
       "question_title": "Alineación de impactos y riesgos sistémicos",
-      "generic_code": "D5.Q3"
+      "generic_code": "D5.Q3",
+      "n1_strategy_refined": {
+        "name": "evidence_concatenation",
+        "operation": "Concatenación estándar pre-bayesiana",
+        "rationale": "Prior + likelihood deben coexistir antes de update",
+        "preserve": "concat es CORRECTO aquí",
+        "output": "Array de evidencia heterogénea"
+      },
+      "n2_strategy_refined": {
+        "name": "bayesian_update",
+        "operation": "P(H|E) = P(E|H) * P(H) / P(E)",
+        "rationale": "Actualización bayesiana clásica",
+        "no_change": "Ya está bien especificado"
+      },
+      "n3_fusion_refined": {
+        "name": "statistical_gate",
+        "operation": "Veto si significancia estadística falla",
+        "conditions": [
+          {
+            "trigger": "p_value > 0.05",
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          },
+          {
+            "trigger": "sample_size < 30",
+            "action": "flag_caution",
+            "multiplier": 0.7
+          }
+        ]
+      },
+      "epistemological_justification": "Concatenación pre-bayesiana legítima"
     },
     "Q024": {
       "type": "TYPE_B",
       "family": "Bayesiano",
       "question_text": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados o contraproducentes, o reconoce explícitamente los límites de lo que el municipio puede lograr (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado a...', 'depende de...')",
       "question_title": "Realismo de impactos y efectos no deseados",
-      "generic_code": "D5.Q4"
+      "generic_code": "D5.Q4",
+      "n1_strategy_refined": {
+        "name": "evidence_concatenation",
+        "operation": "Concatenación estándar pre-bayesiana",
+        "rationale": "Prior + likelihood deben coexistir antes de update",
+        "preserve": "concat es CORRECTO aquí",
+        "output": "Array de evidencia heterogénea"
+      },
+      "n2_strategy_refined": {
+        "name": "bayesian_update",
+        "operation": "P(H|E) = P(E|H) * P(H) / P(E)",
+        "rationale": "Actualización bayesiana clásica",
+        "no_change": "Ya está bien especificado"
+      },
+      "n3_fusion_refined": {
+        "name": "statistical_gate",
+        "operation": "Veto si significancia estadística falla",
+        "conditions": [
+          {
+            "trigger": "p_value > 0.05",
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          },
+          {
+            "trigger": "sample_size < 30",
+            "action": "flag_caution",
+            "multiplier": 0.7
+          }
+        ]
+      },
+      "epistemological_justification": "Concatenación pre-bayesiana legítima"
     },
     "Q025": {
       "type": "TYPE_B",
       "family": "Bayesiano",
       "question_text": "¿El plan describe cómo se sostendrán los impactos del sector más allá del periodo de gobierno, identificando mecanismos de institucionalización, apropiación comunitaria, fuentes de financiación continua o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación', 'continuidad')?",
       "question_title": "Sostenibilidad de los impactos",
-      "generic_code": "D5.Q5"
+      "generic_code": "D5.Q5",
+      "n1_strategy_refined": {
+        "name": "evidence_concatenation",
+        "operation": "Concatenación estándar pre-bayesiana",
+        "rationale": "Prior + likelihood deben coexistir antes de update",
+        "preserve": "concat es CORRECTO aquí",
+        "output": "Array de evidencia heterogénea"
+      },
+      "n2_strategy_refined": {
+        "name": "bayesian_update",
+        "operation": "P(H|E) = P(E|H) * P(H) / P(E)",
+        "rationale": "Actualización bayesiana clásica",
+        "no_change": "Ya está bien especificado"
+      },
+      "n3_fusion_refined": {
+        "name": "statistical_gate",
+        "operation": "Veto si significancia estadística falla",
+        "conditions": [
+          {
+            "trigger": "p_value > 0.05",
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          },
+          {
+            "trigger": "sample_size < 30",
+            "action": "flag_caution",
+            "multiplier": 0.7
+          }
+        ]
+      },
+      "epistemological_justification": "Concatenación pre-bayesiana legítima"
     },
     "Q027": {
       "type": "TYPE_B",
       "family": "Bayesiano",
       "question_text": "¿El plan evita saltos desproporcionados en su lógica (por ejemplo, no atribuye transformaciones mayores a actividades puntuales), reconociendo explícitamente cuando se requieren procesos sostenidos, múltiples condiciones o factores externos para lograr los cambios esperados (se debe buscar expresiones de cautela como 'requiere tiempo', 'depende de...', 'necesita acompañamiento prolongado')?",
       "question_title": "Proporcionalidad y realismo en saltos causales",
-      "generic_code": "D6.Q2"
+      "generic_code": "D6.Q2",
+      "n1_strategy_refined": {
+        "name": "evidence_concatenation",
+        "operation": "Concatenación estándar pre-bayesiana",
+        "rationale": "Prior + likelihood deben coexistir antes de update",
+        "preserve": "concat es CORRECTO aquí",
+        "output": "Array de evidencia heterogénea"
+      },
+      "n2_strategy_refined": {
+        "name": "bayesian_update",
+        "operation": "P(H|E) = P(E|H) * P(H) / P(E)",
+        "rationale": "Actualización bayesiana clásica",
+        "no_change": "Ya está bien especificado"
+      },
+      "n3_fusion_refined": {
+        "name": "statistical_gate",
+        "operation": "Veto si significancia estadística falla",
+        "conditions": [
+          {
+            "trigger": "p_value > 0.05",
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          },
+          {
+            "trigger": "sample_size < 30",
+            "action": "flag_caution",
+            "multiplier": 0.7
+          }
+        ]
+      },
+      "epistemological_justification": "Concatenación pre-bayesiana legítima"
     },
     "Q029": {
       "type": "TYPE_B",
       "family": "Bayesiano",
       "question_text": "¿Se describe un sistema de monitoreo para el sector que incluya mecanismos de alerta temprana, retroalimentación con entidades especializadas o nivel superior, participación de población beneficiaria, y capacidad de aprendizaje para adaptar la estrategia ante desviaciones o resultados inesperados?",
       "question_title": "Sistema de monitoreo con retroalimentación",
-      "generic_code": "D6.Q4"
+      "generic_code": "D6.Q4",
+      "n1_strategy_refined": {
+        "name": "evidence_concatenation",
+        "operation": "Concatenación estándar pre-bayesiana",
+        "rationale": "Prior + likelihood deben coexistir antes de update",
+        "preserve": "concat es CORRECTO aquí",
+        "output": "Array de evidencia heterogénea"
+      },
+      "n2_strategy_refined": {
+        "name": "bayesian_update",
+        "operation": "P(H|E) = P(E|H) * P(H) / P(E)",
+        "rationale": "Actualización bayesiana clásica",
+        "no_change": "Ya está bien especificado"
+      },
+      "n3_fusion_refined": {
+        "name": "statistical_gate",
+        "operation": "Veto si significancia estadística falla",
+        "conditions": [
+          {
+            "trigger": "p_value > 0.05",
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          },
+          {
+            "trigger": "sample_size < 30",
+            "action": "flag_caution",
+            "multiplier": 0.7
+          }
+        ]
+      },
+      "epistemological_justification": "Concatenación pre-bayesiana legítima"
     },
     "Q008": {
       "type": "TYPE_C",
       "family": "Causal",
       "question_text": "¿Las actividades propuestas se vinculan explícitamente con los problemas, causas, brechas o déficits identificados en el diagnóstico del sector (mediante nexos como 'para atender', 'debido a', 'con el fin de', 'porque')?",
       "question_title": "Vínculo actividades con causas diagnosticadas",
-      "generic_code": "D2.Q3"
+      "generic_code": "D2.Q3",
+      "n1_strategy_refined": {
+        "name": "graph_element_collection",
+        "operation": "Recolecta nodos, aristas y contextos para construcción de DAG",
+        "rationale": "DAG construction requiere elementos simultáneos",
+        "structure": {
+          "nodes": [
+            "lista de entidades"
+          ],
+          "edges": [
+            "lista de relaciones"
+          ],
+          "contexts": [
+            "lista de condiciones"
+          ]
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "topological_overlay",
+        "operation": "Fusiona grafos detectando ciclos y validando topología",
+        "rationale": "Combina grafos parciales en estructura coherente",
+        "validation": "Verifica acyclicity en cada fusión"
+      },
+      "n3_fusion_refined": {
+        "name": "cycle_detection_veto",
+        "operation": "Veto TOTAL si ciclo detectado en DAG",
+        "formula": "if has_cycle(DAG): confidence = 0.0; status = INVALID",
+        "severity": "CRITICAL"
+      },
+      "epistemological_justification": "Recolección para construcción de DAG"
     },
     "Q016": {
       "type": "TYPE_C",
       "family": "Causal",
       "question_text": "¿Los indicadores de resultado del sector (cambios en condiciones, comportamientos, o situaciones de la población) están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
       "question_title": "Indicadores de resultado con línea base, meta y horizonte",
-      "generic_code": "D4.Q1"
+      "generic_code": "D4.Q1",
+      "n1_strategy_refined": {
+        "name": "graph_element_collection",
+        "operation": "Recolecta nodos, aristas y contextos para construcción de DAG",
+        "rationale": "DAG construction requiere elementos simultáneos",
+        "structure": {
+          "nodes": [
+            "lista de entidades"
+          ],
+          "edges": [
+            "lista de relaciones"
+          ],
+          "contexts": [
+            "lista de condiciones"
+          ]
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "topological_overlay",
+        "operation": "Fusiona grafos detectando ciclos y validando topología",
+        "rationale": "Combina grafos parciales en estructura coherente",
+        "validation": "Verifica acyclicity en cada fusión"
+      },
+      "n3_fusion_refined": {
+        "name": "cycle_detection_veto",
+        "operation": "Veto TOTAL si ciclo detectado en DAG",
+        "formula": "if has_cycle(DAG): confidence = 0.0; status = INVALID",
+        "severity": "CRITICAL"
+      },
+      "epistemological_justification": "Recolección para construcción de DAG"
     },
     "Q026": {
       "type": "TYPE_C",
       "family": "Causal",
       "question_text": "¿El plan presenta una descripción explícita de cómo se generan los cambios en el sector (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal'), preferiblemente en diagrama o matriz, que identifique causas, intervenciones, supuestos y la secuencia insumos→actividades→productos→resultados→impactos?",
       "question_title": "Teoría de cambio o cadena causal explícita",
-      "generic_code": "D6.Q1"
+      "generic_code": "D6.Q1",
+      "n1_strategy_refined": {
+        "name": "graph_element_collection",
+        "operation": "Recolecta nodos, aristas y contextos para construcción de DAG",
+        "rationale": "DAG construction requiere elementos simultáneos",
+        "structure": {
+          "nodes": [
+            "lista de entidades"
+          ],
+          "edges": [
+            "lista de relaciones"
+          ],
+          "contexts": [
+            "lista de condiciones"
+          ]
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "topological_overlay",
+        "operation": "Fusiona grafos detectando ciclos y validando topología",
+        "rationale": "Combina grafos parciales en estructura coherente",
+        "validation": "Verifica acyclicity en cada fusión"
+      },
+      "n3_fusion_refined": {
+        "name": "cycle_detection_veto",
+        "operation": "Veto TOTAL si ciclo detectado en DAG",
+        "formula": "if has_cycle(DAG): confidence = 0.0; status = INVALID",
+        "severity": "CRITICAL"
+      },
+      "epistemological_justification": "Recolección para construcción de DAG"
     },
     "Q030": {
       "type": "TYPE_C",
       "family": "Causal",
       "question_text": "¿El plan considera el contexto municipal específico del sector (características territoriales, sociales, económicas, culturales, institucionales), reconoce grupos con necesidades diferenciadas, y explicita restricciones (territoriales, normativas, presupuestales, de capacidad) que condicionan las intervenciones?",
       "question_title": "Contextualización territorial y grupos diferenciados",
-      "generic_code": "D6.Q5"
+      "generic_code": "D6.Q5",
+      "n1_strategy_refined": {
+        "name": "graph_element_collection",
+        "operation": "Recolecta nodos, aristas y contextos para construcción de DAG",
+        "rationale": "DAG construction requiere elementos simultáneos",
+        "structure": {
+          "nodes": [
+            "lista de entidades"
+          ],
+          "edges": [
+            "lista de relaciones"
+          ],
+          "contexts": [
+            "lista de condiciones"
+          ]
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "topological_overlay",
+        "operation": "Fusiona grafos detectando ciclos y validando topología",
+        "rationale": "Combina grafos parciales en estructura coherente",
+        "validation": "Verifica acyclicity en cada fusión"
+      },
+      "n3_fusion_refined": {
+        "name": "cycle_detection_veto",
+        "operation": "Veto TOTAL si ciclo detectado en DAG",
+        "formula": "if has_cycle(DAG): confidence = 0.0; status = INVALID",
+        "severity": "CRITICAL"
+      },
+      "epistemological_justification": "Recolección para construcción de DAG"
     },
     "Q003": {
       "type": "TYPE_D",
       "family": "Financiero",
       "question_text": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a programas, proyectos o intervenciones específicas del sector?",
       "question_title": "Recursos presupuestales asignados al sector",
-      "generic_code": "D1.Q3"
+      "generic_code": "D1.Q3",
+      "n1_strategy_refined": {
+        "name": "financial_aggregation",
+        "operation": "Agrega datos financieros con metadata de unidades",
+        "differs_from_concat": "Preserva unidades y convierte a forma comparable",
+        "normalization": {
+          "COP": "Convertir a % del presupuesto total",
+          "personas": "Convertir a % de población objetivo",
+          "metas": "Convertir a % de magnitud del problema"
+        },
+        "output": {
+          "values": [],
+          "units_normalized": true,
+          "base_reference": "presupuesto_total"
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "weighted_financial_mean",
+        "operation": "Promedio ponderado con pesos EXPLÍCITOS",
+        "differs_from_weighted_mean": "Pesos documentados y justificados",
+        "weight_schema": {
+          "magnitud_problema": 0.4,
+          "suficiencia_presupuestal": 0.4,
+          "cobertura_meta": 0.2
+        },
+        "formula": "Σ(wi * vi_normalized) donde Σwi = 1.0",
+        "transparency": "Pesos deben estar en contrato"
+      },
+      "n3_fusion_refined": {
+        "name": "sufficiency_gate",
+        "operation": "Veto si presupuesto < umbral de viabilidad",
+        "conditions": [
+          {
+            "trigger": "budget_gap > 50%",
+            "action": "block_branch",
+            "multiplier": 0.0
+          },
+          {
+            "trigger": "budget_gap > 30%",
+            "action": "reduce_confidence",
+            "multiplier": 0.3
+          }
+        ]
+      },
+      "epistemological_justification": "Agregación con pesos explícitos"
     },
     "Q004": {
       "type": "TYPE_D",
       "family": "Financiero",
       "question_text": "¿El plan identifica las entidades responsables del sector, describe sus capacidades (personal, equipos, protocolos) y señala limitaciones institucionales o necesidades de articulación con el departamento, la nación o entidades especializadas?",
       "question_title": "Capacidades institucionales para gestión del sector",
-      "generic_code": "D1.Q4"
+      "generic_code": "D1.Q4",
+      "n1_strategy_refined": {
+        "name": "financial_aggregation",
+        "operation": "Agrega datos financieros con metadata de unidades",
+        "differs_from_concat": "Preserva unidades y convierte a forma comparable",
+        "normalization": {
+          "COP": "Convertir a % del presupuesto total",
+          "personas": "Convertir a % de población objetivo",
+          "metas": "Convertir a % de magnitud del problema"
+        },
+        "output": {
+          "values": [],
+          "units_normalized": true,
+          "base_reference": "presupuesto_total"
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "weighted_financial_mean",
+        "operation": "Promedio ponderado con pesos EXPLÍCITOS",
+        "differs_from_weighted_mean": "Pesos documentados y justificados",
+        "weight_schema": {
+          "magnitud_problema": 0.4,
+          "suficiencia_presupuestal": 0.4,
+          "cobertura_meta": 0.2
+        },
+        "formula": "Σ(wi * vi_normalized) donde Σwi = 1.0",
+        "transparency": "Pesos deben estar en contrato"
+      },
+      "n3_fusion_refined": {
+        "name": "sufficiency_gate",
+        "operation": "Veto si presupuesto < umbral de viabilidad",
+        "conditions": [
+          {
+            "trigger": "budget_gap > 50%",
+            "action": "block_branch",
+            "multiplier": 0.0
+          },
+          {
+            "trigger": "budget_gap > 30%",
+            "action": "reduce_confidence",
+            "multiplier": 0.3
+          }
+        ]
+      },
+      "epistemological_justification": "Agregación con pesos explícitos"
     },
     "Q006": {
       "type": "TYPE_D",
       "family": "Financiero",
       "question_text": "¿Las actividades del sector aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
       "question_title": "Actividades operacionalizadas en instrumentos",
-      "generic_code": "D2.Q1"
+      "generic_code": "D2.Q1",
+      "n1_strategy_refined": {
+        "name": "financial_aggregation",
+        "operation": "Agrega datos financieros con metadata de unidades",
+        "differs_from_concat": "Preserva unidades y convierte a forma comparable",
+        "normalization": {
+          "COP": "Convertir a % del presupuesto total",
+          "personas": "Convertir a % de población objetivo",
+          "metas": "Convertir a % de magnitud del problema"
+        },
+        "output": {
+          "values": [],
+          "units_normalized": true,
+          "base_reference": "presupuesto_total"
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "weighted_financial_mean",
+        "operation": "Promedio ponderado con pesos EXPLÍCITOS",
+        "differs_from_weighted_mean": "Pesos documentados y justificados",
+        "weight_schema": {
+          "magnitud_problema": 0.4,
+          "suficiencia_presupuestal": 0.4,
+          "cobertura_meta": 0.2
+        },
+        "formula": "Σ(wi * vi_normalized) donde Σwi = 1.0",
+        "transparency": "Pesos deben estar en contrato"
+      },
+      "n3_fusion_refined": {
+        "name": "sufficiency_gate",
+        "operation": "Veto si presupuesto < umbral de viabilidad",
+        "conditions": [
+          {
+            "trigger": "budget_gap > 50%",
+            "action": "block_branch",
+            "multiplier": 0.0
+          },
+          {
+            "trigger": "budget_gap > 30%",
+            "action": "reduce_confidence",
+            "multiplier": 0.3
+          }
+        ]
+      },
+      "epistemological_justification": "Agregación con pesos explícitos"
     },
     "Q009": {
       "type": "TYPE_D",
       "family": "Financiero",
       "question_text": "¿El plan identifica posibles obstáculos, riesgos o barreras en la implementación de las actividades del sector y propone medidas explícitas de mitigación o estrategias para superarlos?",
       "question_title": "Riesgos y medidas de mitigación",
-      "generic_code": "D2.Q4"
+      "generic_code": "D2.Q4",
+      "n1_strategy_refined": {
+        "name": "financial_aggregation",
+        "operation": "Agrega datos financieros con metadata de unidades",
+        "differs_from_concat": "Preserva unidades y convierte a forma comparable",
+        "normalization": {
+          "COP": "Convertir a % del presupuesto total",
+          "personas": "Convertir a % de población objetivo",
+          "metas": "Convertir a % de magnitud del problema"
+        },
+        "output": {
+          "values": [],
+          "units_normalized": true,
+          "base_reference": "presupuesto_total"
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "weighted_financial_mean",
+        "operation": "Promedio ponderado con pesos EXPLÍCITOS",
+        "differs_from_weighted_mean": "Pesos documentados y justificados",
+        "weight_schema": {
+          "magnitud_problema": 0.4,
+          "suficiencia_presupuestal": 0.4,
+          "cobertura_meta": 0.2
+        },
+        "formula": "Σ(wi * vi_normalized) donde Σwi = 1.0",
+        "transparency": "Pesos deben estar en contrato"
+      },
+      "n3_fusion_refined": {
+        "name": "sufficiency_gate",
+        "operation": "Veto si presupuesto < umbral de viabilidad",
+        "conditions": [
+          {
+            "trigger": "budget_gap > 50%",
+            "action": "block_branch",
+            "multiplier": 0.0
+          },
+          {
+            "trigger": "budget_gap > 30%",
+            "action": "reduce_confidence",
+            "multiplier": 0.3
+          }
+        ]
+      },
+      "epistemological_justification": "Agregación con pesos explícitos"
     },
     "Q012": {
       "type": "TYPE_D",
       "family": "Financiero",
       "question_text": "¿Las metas de productos guardan relación con la magnitud del problema o déficit identificado en el diagnóstico, y se especifica la priorización (zonas, población), intensidad (frecuencia, duración) o cobertura de la intervención?",
       "question_title": "Proporcionalidad meta con magnitud del problema",
-      "generic_code": "D3.Q2"
+      "generic_code": "D3.Q2",
+      "n1_strategy_refined": {
+        "name": "financial_aggregation",
+        "operation": "Agrega datos financieros con metadata de unidades",
+        "differs_from_concat": "Preserva unidades y convierte a forma comparable",
+        "normalization": {
+          "COP": "Convertir a % del presupuesto total",
+          "personas": "Convertir a % de población objetivo",
+          "metas": "Convertir a % de magnitud del problema"
+        },
+        "output": {
+          "values": [],
+          "units_normalized": true,
+          "base_reference": "presupuesto_total"
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "weighted_financial_mean",
+        "operation": "Promedio ponderado con pesos EXPLÍCITOS",
+        "differs_from_weighted_mean": "Pesos documentados y justificados",
+        "weight_schema": {
+          "magnitud_problema": 0.4,
+          "suficiencia_presupuestal": 0.4,
+          "cobertura_meta": 0.2
+        },
+        "formula": "Σ(wi * vi_normalized) donde Σwi = 1.0",
+        "transparency": "Pesos deben estar en contrato"
+      },
+      "n3_fusion_refined": {
+        "name": "sufficiency_gate",
+        "operation": "Veto si presupuesto < umbral de viabilidad",
+        "conditions": [
+          {
+            "trigger": "budget_gap > 50%",
+            "action": "block_branch",
+            "multiplier": 0.0
+          },
+          {
+            "trigger": "budget_gap > 30%",
+            "action": "reduce_confidence",
+            "multiplier": 0.3
+          }
+        ]
+      },
+      "epistemological_justification": "Agregación con pesos explícitos"
     },
     "Q015": {
       "type": "TYPE_D",
       "family": "Financiero",
       "question_text": "¿El plan describe cómo los productos del sector generan o contribuyen a los resultados esperados, explicando esta conexión o ruta (se debe buscar descripciones del tipo 'al lograr X se genera Y porque...', 'esto permite...', 'esto conduce a...')?",
       "question_title": "Mecanismo producto→resultado",
-      "generic_code": "D3.Q5"
+      "generic_code": "D3.Q5",
+      "n1_strategy_refined": {
+        "name": "financial_aggregation",
+        "operation": "Agrega datos financieros con metadata de unidades",
+        "differs_from_concat": "Preserva unidades y convierte a forma comparable",
+        "normalization": {
+          "COP": "Convertir a % del presupuesto total",
+          "personas": "Convertir a % de población objetivo",
+          "metas": "Convertir a % de magnitud del problema"
+        },
+        "output": {
+          "values": [],
+          "units_normalized": true,
+          "base_reference": "presupuesto_total"
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "weighted_financial_mean",
+        "operation": "Promedio ponderado con pesos EXPLÍCITOS",
+        "differs_from_weighted_mean": "Pesos documentados y justificados",
+        "weight_schema": {
+          "magnitud_problema": 0.4,
+          "suficiencia_presupuestal": 0.4,
+          "cobertura_meta": 0.2
+        },
+        "formula": "Σ(wi * vi_normalized) donde Σwi = 1.0",
+        "transparency": "Pesos deben estar en contrato"
+      },
+      "n3_fusion_refined": {
+        "name": "sufficiency_gate",
+        "operation": "Veto si presupuesto < umbral de viabilidad",
+        "conditions": [
+          {
+            "trigger": "budget_gap > 50%",
+            "action": "block_branch",
+            "multiplier": 0.0
+          },
+          {
+            "trigger": "budget_gap > 30%",
+            "action": "reduce_confidence",
+            "multiplier": 0.3
+          }
+        ]
+      },
+      "epistemological_justification": "Agregación con pesos explícitos"
     },
     "Q021": {
       "type": "TYPE_D",
       "family": "Financiero",
       "question_text": "¿El plan define impactos o transformaciones de largo plazo para el sector (cambios que trascienden el cuatrienio), describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural')?",
       "question_title": "Impactos o transformaciones de largo plazo",
-      "generic_code": "D5.Q1"
+      "generic_code": "D5.Q1",
+      "n1_strategy_refined": {
+        "name": "financial_aggregation",
+        "operation": "Agrega datos financieros con metadata de unidades",
+        "differs_from_concat": "Preserva unidades y convierte a forma comparable",
+        "normalization": {
+          "COP": "Convertir a % del presupuesto total",
+          "personas": "Convertir a % de población objetivo",
+          "metas": "Convertir a % de magnitud del problema"
+        },
+        "output": {
+          "values": [],
+          "units_normalized": true,
+          "base_reference": "presupuesto_total"
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "weighted_financial_mean",
+        "operation": "Promedio ponderado con pesos EXPLÍCITOS",
+        "differs_from_weighted_mean": "Pesos documentados y justificados",
+        "weight_schema": {
+          "magnitud_problema": 0.4,
+          "suficiencia_presupuestal": 0.4,
+          "cobertura_meta": 0.2
+        },
+        "formula": "Σ(wi * vi_normalized) donde Σwi = 1.0",
+        "transparency": "Pesos deben estar en contrato"
+      },
+      "n3_fusion_refined": {
+        "name": "sufficiency_gate",
+        "operation": "Veto si presupuesto < umbral de viabilidad",
+        "conditions": [
+          {
+            "trigger": "budget_gap > 50%",
+            "action": "block_branch",
+            "multiplier": 0.0
+          },
+          {
+            "trigger": "budget_gap > 30%",
+            "action": "reduce_confidence",
+            "multiplier": 0.3
+          }
+        ]
+      },
+      "epistemological_justification": "Agregación con pesos explícitos"
     },
     "Q022": {
       "type": "TYPE_D",
       "family": "Financiero",
       "question_text": "¿Se utilizan índices reconocidos o indicadores proxy para medir impactos del sector, justificando por qué son adecuados para capturar las transformaciones esperadas? Cuando un impacto es difícil de medir directamente, ¿se explica la validez y limitaciones del indicador utilizado?",
       "question_title": "Uso de índices o proxies para medir impactos",
-      "generic_code": "D5.Q2"
+      "generic_code": "D5.Q2",
+      "n1_strategy_refined": {
+        "name": "financial_aggregation",
+        "operation": "Agrega datos financieros con metadata de unidades",
+        "differs_from_concat": "Preserva unidades y convierte a forma comparable",
+        "normalization": {
+          "COP": "Convertir a % del presupuesto total",
+          "personas": "Convertir a % de población objetivo",
+          "metas": "Convertir a % de magnitud del problema"
+        },
+        "output": {
+          "values": [],
+          "units_normalized": true,
+          "base_reference": "presupuesto_total"
+        }
+      },
+      "n2_strategy_refined": {
+        "name": "weighted_financial_mean",
+        "operation": "Promedio ponderado con pesos EXPLÍCITOS",
+        "differs_from_weighted_mean": "Pesos documentados y justificados",
+        "weight_schema": {
+          "magnitud_problema": 0.4,
+          "suficiencia_presupuestal": 0.4,
+          "cobertura_meta": 0.2
+        },
+        "formula": "Σ(wi * vi_normalized) donde Σwi = 1.0",
+        "transparency": "Pesos deben estar en contrato"
+      },
+      "n3_fusion_refined": {
+        "name": "sufficiency_gate",
+        "operation": "Veto si presupuesto < umbral de viabilidad",
+        "conditions": [
+          {
+            "trigger": "budget_gap > 50%",
+            "action": "block_branch",
+            "multiplier": 0.0
+          },
+          {
+            "trigger": "budget_gap > 30%",
+            "action": "reduce_confidence",
+            "multiplier": 0.3
+          }
+        ]
+      },
+      "epistemological_justification": "Agregación con pesos explícitos"
     },
     "Q010": {
       "type": "TYPE_E",
       "family": "Lógico",
       "question_text": "¿El plan describe explícitamente cómo las actividades del sector se complementan, refuerzan mutuamente o siguen una secuencia lógica, evidenciando una estrategia articulada (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación')?",
       "question_title": "Coherencia estratégica entre actividades",
-      "generic_code": "D2.Q5"
+      "generic_code": "D2.Q5",
+      "n1_strategy_refined": {
+        "name": "fact_collation",
+        "operation": "Recolecta hechos para análisis de consistencia lógica",
+        "rationale": "Gate lógico necesita ver TODOS los hechos",
+        "preserve": "concat es correcto aquí (como audit dossier)"
+      },
+      "n2_strategy_refined": {
+        "name": "logical_consistency_check",
+        "operation": "Verifica consistencia lógica SIN promediar",
+        "differs_from_weighted_mean": "NO promedia contradicciones",
+        "logic": "AND-based: todas las condiciones deben pasar",
+        "formula": "consistency = min(c1, c2, ..., cn) NOT mean(c1, c2, ..., cn)",
+        "output": {
+          "is_consistent": "boolean",
+          "violations": [
+            "lista de contradicciones"
+          ],
+          "severity": "max(violation_severities)"
+        }
+      },
+      "n3_fusion_refined": {
+        "name": "contradiction_dominance",
+        "operation": "UNA contradicción domina TODO",
+        "principle": "Lógica de Popper: una falsación invalida la teoría",
+        "formula": "if any_contradiction: confidence = 0.0",
+        "rationale": "Contradicciones NO son aditivas ni promediables",
+        "examples": {
+          "Q014": "Desproporción actividad-meta → INVÁLIDO (no 'confianza media')",
+          "Q019": "Resultado no atiende problema → INVÁLIDO (no 'parcialmente válido')"
+        }
+      },
+      "epistemological_justification": "Colección para gate lógico"
     },
     "Q014": {
       "type": "TYPE_E",
       "family": "Lógico",
       "question_text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'un taller de 8 horas', 'una campaña de sensibilización') y la magnitud de la meta del producto asociado, considerando plazos y recursos disponibles? Se debe evaluar si el plan reconoce cuando los resultados requieren intervenciones sostenidas en el tiempo, no eventos puntuales.",
       "question_title": "Factibilidad entre actividad y meta de producto",
-      "generic_code": "D3.Q4"
+      "generic_code": "D3.Q4",
+      "n1_strategy_refined": {
+        "name": "fact_collation",
+        "operation": "Recolecta hechos para análisis de consistencia lógica",
+        "rationale": "Gate lógico necesita ver TODOS los hechos",
+        "preserve": "concat es correcto aquí (como audit dossier)"
+      },
+      "n2_strategy_refined": {
+        "name": "logical_consistency_check",
+        "operation": "Verifica consistencia lógica SIN promediar",
+        "differs_from_weighted_mean": "NO promedia contradicciones",
+        "logic": "AND-based: todas las condiciones deben pasar",
+        "formula": "consistency = min(c1, c2, ..., cn) NOT mean(c1, c2, ..., cn)",
+        "output": {
+          "is_consistent": "boolean",
+          "violations": [
+            "lista de contradicciones"
+          ],
+          "severity": "max(violation_severities)"
+        }
+      },
+      "n3_fusion_refined": {
+        "name": "contradiction_dominance",
+        "operation": "UNA contradicción domina TODO",
+        "principle": "Lógica de Popper: una falsación invalida la teoría",
+        "formula": "if any_contradiction: confidence = 0.0",
+        "rationale": "Contradicciones NO son aditivas ni promediables",
+        "examples": {
+          "Q014": "Desproporción actividad-meta → INVÁLIDO (no 'confianza media')",
+          "Q019": "Resultado no atiende problema → INVÁLIDO (no 'parcialmente válido')"
+        }
+      },
+      "epistemological_justification": "Colección para gate lógico"
     },
     "Q019": {
       "type": "TYPE_E",
       "family": "Lógico",
       "question_text": "¿Los resultados propuestos para el sector atienden o abordan directamente los problemas, déficits o necesidades priorizadas en el diagnóstico?",
       "question_title": "Atención a problemas priorizados en diagnóstico",
-      "generic_code": "D4.Q4"
+      "generic_code": "D4.Q4",
+      "n1_strategy_refined": {
+        "name": "fact_collation",
+        "operation": "Recolecta hechos para análisis de consistencia lógica",
+        "rationale": "Gate lógico necesita ver TODOS los hechos",
+        "preserve": "concat es correcto aquí (como audit dossier)"
+      },
+      "n2_strategy_refined": {
+        "name": "logical_consistency_check",
+        "operation": "Verifica consistencia lógica SIN promediar",
+        "differs_from_weighted_mean": "NO promedia contradicciones",
+        "logic": "AND-based: todas las condiciones deben pasar",
+        "formula": "consistency = min(c1, c2, ..., cn) NOT mean(c1, c2, ..., cn)",
+        "output": {
+          "is_consistent": "boolean",
+          "violations": [
+            "lista de contradicciones"
+          ],
+          "severity": "max(violation_severities)"
+        }
+      },
+      "n3_fusion_refined": {
+        "name": "contradiction_dominance",
+        "operation": "UNA contradicción domina TODO",
+        "principle": "Lógica de Popper: una falsación invalida la teoría",
+        "formula": "if any_contradiction: confidence = 0.0",
+        "rationale": "Contradicciones NO son aditivas ni promediables",
+        "examples": {
+          "Q014": "Desproporción actividad-meta → INVÁLIDO (no 'confianza media')",
+          "Q019": "Resultado no atiende problema → INVÁLIDO (no 'parcialmente válido')"
+        }
+      },
+      "epistemological_justification": "Colección para gate lógico"
     },
     "Q028": {
       "type": "TYPE_E",
       "family": "Lógico",
       "question_text": "¿El plan reconoce la complejidad del sector, identifica debilidades o incertidumbres en su estrategia, y propone mecanismos para aprender y ajustar (se debe buscar términos como 'pilotos', 'fase de prueba', 'evaluación', 'ajustes', 'articulación', 'coordinación', 'monitoreo adaptativo')?",
       "question_title": "Reconocimiento de complejidad y mecanismos de aprendizaje",
-      "generic_code": "D6.Q3"
+      "generic_code": "D6.Q3",
+      "n1_strategy_refined": {
+        "name": "fact_collation",
+        "operation": "Recolecta hechos para análisis de consistencia lógica",
+        "rationale": "Gate lógico necesita ver TODOS los hechos",
+        "preserve": "concat es correcto aquí (como audit dossier)"
+      },
+      "n2_strategy_refined": {
+        "name": "logical_consistency_check",
+        "operation": "Verifica consistencia lógica SIN promediar",
+        "differs_from_weighted_mean": "NO promedia contradicciones",
+        "logic": "AND-based: todas las condiciones deben pasar",
+        "formula": "consistency = min(c1, c2, ..., cn) NOT mean(c1, c2, ..., cn)",
+        "output": {
+          "is_consistent": "boolean",
+          "violations": [
+            "lista de contradicciones"
+          ],
+          "severity": "max(violation_severities)"
+        }
+      },
+      "n3_fusion_refined": {
+        "name": "contradiction_dominance",
+        "operation": "UNA contradicción domina TODO",
+        "principle": "Lógica de Popper: una falsación invalida la teoría",
+        "formula": "if any_contradiction: confidence = 0.0",
+        "rationale": "Contradicciones NO son aditivas ni promediables",
+        "examples": {
+          "Q014": "Desproporción actividad-meta → INVÁLIDO (no 'confianza media')",
+          "Q019": "Resultado no atiende problema → INVÁLIDO (no 'parcialmente válido')"
+        }
+      },
+      "epistemological_justification": "Colección para gate lógico"
     }
   },
   "refined_strategies": {
@@ -254,7 +1284,8 @@
         "name": "contradiction_veto",
         "operation": "Veto duro si contradicción semántica detectada",
         "formula": "if semantic_contradiction: confidence = 0.0"
-      }
+      },
+      "justification": "Bundling preserva contexto semántico"
     },
     "TYPE_B": {
       "n1_strategy": {
@@ -285,7 +1316,8 @@
             "multiplier": 0.7
           }
         ]
-      }
+      },
+      "justification": "Concatenación pre-bayesiana legítima"
     },
     "TYPE_C": {
       "n1_strategy": {
@@ -315,7 +1347,8 @@
         "operation": "Veto TOTAL si ciclo detectado en DAG",
         "formula": "if has_cycle(DAG): confidence = 0.0; status = INVALID",
         "severity": "CRITICAL"
-      }
+      },
+      "justification": "Recolección para construcción de DAG"
     },
     "TYPE_D": {
       "n1_strategy": {
@@ -360,7 +1393,8 @@
             "multiplier": 0.3
           }
         ]
-      }
+      },
+      "justification": "Agregación con pesos explícitos"
     },
     "TYPE_E": {
       "n1_strategy": {
@@ -393,7 +1427,8 @@
           "Q014": "Desproporción actividad-meta → INVÁLIDO (no 'confianza media')",
           "Q019": "Resultado no atiende problema → INVÁLIDO (no 'parcialmente válido')"
         }
-      }
+      },
+      "justification": "Colección para gate lógico"
     }
   },
   "comparative_table": [
