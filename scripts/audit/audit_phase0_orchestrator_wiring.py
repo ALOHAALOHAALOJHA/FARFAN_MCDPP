@@ -23,11 +23,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 SRC_DIR = PROJECT_ROOT / "src"
-PHASE_ZERO_DIR = SRC_DIR / "canonic_phases" / "Phase_zero"
-ORCHESTRATOR_FILE = SRC_DIR / "orchestration" / "orchestrator.py"
-FACTORY_FILE = SRC_DIR / "orchestration" / "factory.py"
+PHASE_ZERO_DIR = SRC_DIR / "farfan_pipeline" / "phases" / "Phase_zero"
+ORCHESTRATOR_FILE = SRC_DIR / "farfan_pipeline" / "orchestration" / "orchestrator.py"
+FACTORY_FILE = SRC_DIR / "farfan_pipeline" / "phases" / "Phase_two" / "phase2_10_00_factory.py"
 
 
 @dataclass

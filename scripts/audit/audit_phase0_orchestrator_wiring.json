@@ -1,0 +1,50 @@
+{
+  "phase0_modules": [],
+  "orchestrator_phase0_method": null,
+  "wiring_points": [],
+  "runtime_config_usage": [],
+  "factory_integration": {},
+  "exit_gates": [],
+  "issues": [
+    {
+      "severity": "critical",
+      "category": "missing_directory",
+      "message": "Phase_zero directory not found: /Users/recovered/Downloads/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/scripts/audit/src/canonic_phases/Phase_zero"
+    },
+    {
+      "severity": "critical",
+      "category": "missing_file",
+      "message": "Orchestrator file not found: /Users/recovered/Downloads/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/scripts/audit/src/orchestration/orchestrator.py"
+    },
+    {
+      "severity": "critical",
+      "category": "missing_file",
+      "message": "Factory file not found: /Users/recovered/Downloads/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/scripts/audit/src/orchestration/factory.py"
+    },
+    {
+      "severity": "warning",
+      "category": "missing_module",
+      "message": "exit_gates.py not found in Phase_zero"
+    },
+    {
+      "severity": "warning",
+      "category": "missing_integration",
+      "message": "Orchestrator does not import Phase_zero bootstrap components"
+    },
+    {
+      "severity": "critical",
+      "category": "missing_runtime_config",
+      "message": "RuntimeConfig not propagated to orchestrator"
+    },
+    {
+      "severity": "warning",
+      "category": "limited_integration",
+      "message": "Only 0 wiring points found - minimal integration"
+    }
+  ],
+  "recommendations": [
+    "Factory should load RuntimeConfig and pass to orchestrator during initialization",
+    "Create Phase_zero/exit_gates.py to consolidate gate checking logic",
+    "Orchestrator._load_configuration should validate Phase 0 bootstrap completion"
+  ]
+}
