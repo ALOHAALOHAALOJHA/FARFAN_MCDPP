@@ -133,7 +133,7 @@ Change the password for the currently authenticated user.
 
 ## Security Features
 
-1. **Password Hashing**: Passwords are hashed using SHA-256 with unique salts
+1. **Password Hashing**: Passwords are hashed using a dedicated password hashing function (e.g. Argon2id) with unique per-password salts and strong parameters
 2. **Session Management**: Sessions expire after 60 minutes of inactivity
 3. **Rate Limiting**: Maximum 5 login attempts per IP within 15 minutes
 4. **IP Tracking**: Sessions are tied to the originating IP address
