@@ -133,14 +133,16 @@ Change the password for the currently authenticated user.
 
 ## Security Features
 
-1. **Password Hashing**: Passwords are hashed using a dedicated password hashing function (e.g. Argon2id) with unique per-password salts and strong parameters
+1. **Password Hashing**: Passwords are hashed using bcrypt (industry-standard password-hardening KDF with automatic salting)
 2. **Session Management**: Sessions expire after 60 minutes of inactivity
 3. **Rate Limiting**: Maximum 5 login attempts per IP within 15 minutes
-4. **IP Tracking**: Sessions are tied to the originating IP address
+4. **IP Tracking**: Sessions are tied to the originating IP address (with secure extraction)
 5. **HttpOnly Cookies**: Session cookies are not accessible via JavaScript
 6. **Secure Cookies**: In production (when `FARFAN_ENV=production`), cookies are only sent over HTTPS
-7. **Automatic Cleanup**: Expired sessions are automatically removed
-8. **No Session ID Logging**: Session IDs are never logged to prevent enumeration attacks
+7. **SameSite Protection**: Strict CSRF protection in production, lax in development
+8. **Cookie Scoping**: Optional domain parameter for multi-subdomain deployments
+9. **Automatic Cleanup**: Expired sessions are automatically removed
+10. **No Session ID Logging**: Session IDs are never logged to prevent enumeration attacks
 
 ## Default Credentials
 
@@ -265,7 +267,11 @@ The authentication endpoints use the existing `AdminAuthenticator` class from `a
 
 ### Environment Variables
 
-- `FARFAN_ENV`: Set to `production` to enable secure cookies (HTTPS only)
+- `FARFAN_ENV`: Set to `production` to enable secure cookies (HTTPS only) and strict SameSite policy
+- `COOKIE_DOMAIN`: Optional domain for cookie scoping (useful for multi-subdomain deployments)
+- `TRUST_PROXY_HEADERS`: Set to `true` to trust X-Forwarded-For headers from reverse proxies (default: `false`)
+- `TEST_ADMIN_USERNAME`: Test admin username for automated tests (optional, defaults to "admin")
+- `TEST_ADMIN_PASSWORD`: Test admin password for automated tests (optional, defaults to default password)
   - Development: Cookies work over HTTP
   - Production: Cookies only sent over HTTPS
 

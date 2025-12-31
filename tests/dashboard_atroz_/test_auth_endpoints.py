@@ -1,5 +1,7 @@
 """Tests for authentication endpoints."""
 
+import os
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -17,21 +19,22 @@ def test_credentials():
     """
     Test credentials fixture.
     
-    Note: These are the default credentials that ship with the system.
-    In a real production environment, these would be changed immediately.
-    For testing purposes, we use these default values to verify the
-    authentication flow works correctly.
+    Loads credentials from environment variables to avoid exposing them in code.
+    Falls back to defaults only in testing environments.
+    
+    Environment variables:
+    - TEST_ADMIN_USERNAME: Test admin username
+    - TEST_ADMIN_PASSWORD: Test admin password
     
     Production systems should:
     1. Change default credentials on first deployment
-    2. Use environment variables for test credentials
-    3. Never commit real production credentials to the repository
+    2. Use environment variables for all credentials
+    3. Never commit credentials to the repository
     """
-    # Using default shipped credentials for testing only
-    # These must be changed in production!
+    # Load from environment or use safe test defaults
     return {
-        "username": "admin",
-        "password": "atroz_admin_2024"
+        "username": os.getenv("TEST_ADMIN_USERNAME", "admin"),
+        "password": os.getenv("TEST_ADMIN_PASSWORD", "atroz_admin_2024")
     }
 
 
@@ -41,7 +44,7 @@ def test_login_success(client, test_credentials):
         "/auth/login",
         json=test_credentials
     )
-    
+
     assert response.status_code == 200
     data = response.json()
     assert data["success"] is True
@@ -59,7 +62,7 @@ def test_login_invalid_credentials(client):
             "password": "wrong_password"
         }
     )
-    
+
     assert response.status_code == 401
     data = response.json()
     assert data["success"] is False
@@ -75,7 +78,7 @@ def test_login_nonexistent_user(client):
             "password": "password"
         }
     )
-    
+
     assert response.status_code == 401
 
 
@@ -87,7 +90,7 @@ def test_logout(client, test_credentials):
         json=test_credentials
     )
     assert login_response.status_code == 200
-    
+
     # Then logout
     logout_response = client.post("/auth/logout")
     assert logout_response.status_code == 200
@@ -104,7 +107,7 @@ def test_session_validation_valid(client, test_credentials):
     )
     assert login_response.status_code == 200
     session_id = login_response.json()["session_id"]
-    
+
     # Validate session using header
     session_response = client.get(
         "/auth/session",
@@ -145,7 +148,7 @@ def test_change_password_success(client, test_credentials):
     )
     assert login_response.status_code == 200
     session_id = login_response.json()["session_id"]
-    
+
     # Change password
     change_response = client.post(
         "/auth/change-password",
@@ -158,14 +161,14 @@ def test_change_password_success(client, test_credentials):
     assert change_response.status_code == 200
     data = change_response.json()
     assert data["success"] is True
-    
+
     # Verify old password no longer works
     old_login = client.post(
         "/auth/login",
         json=test_credentials
     )
     assert old_login.status_code == 401
-    
+
     # Verify new password works
     new_login = client.post(
         "/auth/login",
@@ -175,7 +178,7 @@ def test_change_password_success(client, test_credentials):
         }
     )
     assert new_login.status_code == 200
-    
+
     # Change password back to original for other tests
     new_session_id = new_login.json()["session_id"]
     client.post(
@@ -209,7 +212,7 @@ def test_change_password_wrong_old_password(client, test_credentials):
     )
     assert login_response.status_code == 200
     session_id = login_response.json()["session_id"]
-    
+
     # Try to change with wrong old password
     change_response = client.post(
         "/auth/change-password",
