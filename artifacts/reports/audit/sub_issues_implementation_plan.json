@@ -1,0 +1,487 @@
+{
+  "audit_metadata": {
+    "audit_date": "2025-12-31",
+    "questionnaire_version": "2.0.0",
+    "total_questions_audited": 300,
+    "auditor": "FARFAN Audit Team (Copilot)",
+    "repository": "ASSDSDS/FARFAN_MPP"
+  },
+  "critical_findings": {
+    "dimension_validation_imbalance": {
+      "severity": "CRITICAL",
+      "description": "Massive validation imbalance by dimension: DIM03 has 4 validations per question while DIM02, DIM04, DIM05, DIM06 have 1.0-1.08 average",
+      "impact": "66.7% of questions (200/300) have minimal validation",
+      "equity_risk": "Systematic bias favoring product evaluation over process and outcome evaluation",
+      "affected_dimensions": ["DIM02", "DIM04", "DIM05", "DIM06"],
+      "affected_question_count": 200
+    },
+    "documentation_absence": {
+      "severity": "CRITICAL",
+      "description": "100% of questions lack detailed documentation/definitions",
+      "impact": "Reduced transparency, inconsistent interpretation, difficult to audit",
+      "affected_question_count": 300
+    },
+    "cross_cutting_theme_gaps": {
+      "severity": "HIGH",
+      "description": "Gender, rights, and vulnerability themes are siloed, not cross-cutting",
+      "gender_coverage": {
+        "PA01": "100%",
+        "PA02_to_PA08": "0%",
+        "PA09": "6.7%",
+        "PA10": "3.3%"
+      },
+      "rights_coverage": "2.7% overall",
+      "vulnerability_coverage": "2.3% overall"
+    }
+  },
+  "sub_issues": [
+    {
+      "id": "SUB-1",
+      "title": "Normalize Validation Contracts for DIM02, DIM04, DIM05, DIM06",
+      "priority": "CRITICAL",
+      "phase": 1,
+      "estimated_weeks": 2,
+      "description": "Bring 200 under-validated questions in dimensions 2, 4, 5, 6 up to minimum standard of 2 validations per question",
+      "scope": {
+        "affected_dimensions": ["DIM02", "DIM04", "DIM05", "DIM06"],
+        "question_count": 200,
+        "current_avg_validations": {
+          "DIM02": 1.08,
+          "DIM04": 1.0,
+          "DIM05": 1.0,
+          "DIM06": 1.0
+        },
+        "target_avg_validations": 2.0,
+        "weak_validation_percentage": {
+          "DIM02": 98,
+          "DIM04": 100,
+          "DIM05": 100,
+          "DIM06": 100
+        }
+      },
+      "deliverables": [
+        "Validation distribution report by dimension",
+        "Validation templates (5-10 standard patterns)",
+        "Updated questionnaire_monolith.json",
+        "Validation equity report showing CV reduction"
+      ],
+      "success_metrics": {
+        "validation_cv": "< 40% (currently 78.44%)",
+        "min_validations_per_question": 2,
+        "weak_validation_percentage": "< 20%"
+      },
+      "tasks": [
+        "Analyze current validation patterns in DIM02, DIM04, DIM05, DIM06",
+        "Create validation templates by question type",
+        "Apply minimum 2-validation standard to all 200 questions",
+        "Ensure validation diversity (different check types)",
+        "Test validation changes with sample questions",
+        "Update questionnaire_monolith.json",
+        "Re-run audit to verify improvements"
+      ]
+    },
+    {
+      "id": "SUB-2",
+      "title": "Create Documentation Template & Document First 100 Questions",
+      "priority": "CRITICAL",
+      "phase": 1,
+      "estimated_weeks": 2,
+      "description": "Develop comprehensive documentation template and apply it to first 100 questions, prioritizing under-validated dimensions",
+      "scope": {
+        "question_count": 100,
+        "focus_dimensions": ["DIM02", "DIM04", "DIM05", "DIM06"],
+        "documentation_length": "100-300 words per question"
+      },
+      "deliverables": [
+        "Documentation template with standard sections",
+        "Style guide for documentation",
+        "100 questions with full documentation",
+        "Sample documentation for 10 representative questions"
+      ],
+      "documentation_template_sections": [
+        "Purpose & Rationale",
+        "Expected Evidence & Quality Criteria",
+        "Scoring Interpretation Guide",
+        "Examples (Strong/Weak/Absent Evidence)",
+        "Related Policy Frameworks",
+        "Common Pitfalls"
+      ],
+      "tasks": [
+        "Design documentation template",
+        "Create style guide",
+        "Document 50 questions from DIM02, DIM04-06",
+        "Document 50 questions from other dimensions",
+        "Peer review sample documentation",
+        "Update questionnaire_monolith.json",
+        "Verify template usability"
+      ]
+    },
+    {
+      "id": "SUB-3",
+      "title": "Complete Documentation for Remaining 200 Questions",
+      "priority": "HIGH",
+      "phase": 2,
+      "estimated_weeks": 2,
+      "description": "Apply documentation template to remaining 200 questions",
+      "scope": {
+        "question_count": 200,
+        "builds_on": "SUB-2"
+      },
+      "deliverables": [
+        "Remaining 200 questions with full documentation",
+        "Updated questionnaire_monolith.json",
+        "Documentation quality report"
+      ],
+      "tasks": [
+        "Document remaining 200 questions using template",
+        "Quality review of all documentation",
+        "Consistency check across all 300 questions",
+        "Update questionnaire_monolith.json",
+        "Generate documentation coverage report"
+      ]
+    },
+    {
+      "id": "SUB-4",
+      "title": "Integrate Gender Perspective Across All Policy Areas",
+      "priority": "HIGH",
+      "phase": 2,
+      "estimated_weeks": 1,
+      "description": "Ensure gender and intersectionality considerations permeate all policy areas, not just PA01",
+      "scope": {
+        "current_coverage": {
+          "PA01": "100%",
+          "PA02_to_PA08": "0%"
+        },
+        "target_coverage": "≥50% of questions in each policy area",
+        "policy_areas_affected": ["PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
+      },
+      "deliverables": [
+        "Gender integration strategy document",
+        "Modified/enriched questions with gender perspective",
+        "Updated questionnaire_monolith.json",
+        "Gender coverage report by policy area"
+      ],
+      "tasks": [
+        "Identify questions in PA02-PA10 where gender is relevant",
+        "Add gender-specific expected_elements where appropriate",
+        "Modify question text to include gender considerations",
+        "Add intersectionality markers",
+        "Update questionnaire_monolith.json",
+        "Re-run cross-cutting theme analysis"
+      ]
+    },
+    {
+      "id": "SUB-5",
+      "title": "Diversify Scoring Modalities (Reduce TYPE_A Concentration)",
+      "priority": "HIGH",
+      "phase": 2,
+      "estimated_weeks": 1.5,
+      "description": "Review and diversify scoring modality assignments to reduce TYPE_A concentration from 86.7%",
+      "scope": {
+        "current_distribution": {
+          "TYPE_A": "260 (86.7%)",
+          "TYPE_B": "30 (10.0%)",
+          "TYPE_E": "10 (3.3%)",
+          "TYPE_C": "0",
+          "TYPE_D": "0",
+          "TYPE_F": "0"
+        },
+        "target_distribution": {
+          "TYPE_A": "<70%",
+          "TYPE_B_to_F": ">30%"
+        },
+        "questions_to_review": 260
+      },
+      "deliverables": [
+        "Scoring modality selection guide",
+        "Question-by-question modality review report",
+        "Updated questionnaire_monolith.json",
+        "Modality distribution report"
+      ],
+      "tasks": [
+        "Document criteria for each scoring modality (TYPE_A through TYPE_F)",
+        "Review all 260 TYPE_A questions for appropriateness",
+        "Identify candidates for TYPE_B, TYPE_C, TYPE_D, TYPE_E, TYPE_F",
+        "Update scoring_modality field for ~80 questions",
+        "Ensure even distribution across policy areas",
+        "Update questionnaire_monolith.json",
+        "Verify modality diversity improvements"
+      ]
+    },
+    {
+      "id": "SUB-6",
+      "title": "Add Rights-Based Language Across Dimensions",
+      "priority": "HIGH",
+      "phase": 2,
+      "estimated_weeks": 1,
+      "description": "Integrate rights-based approach and human rights language across all dimensions",
+      "scope": {
+        "current_coverage": "2.7% (8 questions)",
+        "target_coverage": "≥20% (60 questions)",
+        "focus_dimensions": ["DIM01", "DIM02", "DIM04", "DIM05"]
+      },
+      "deliverables": [
+        "Rights-based integration strategy",
+        "Modified questions with rights language",
+        "Updated questionnaire_monolith.json",
+        "Rights coverage report"
+      ],
+      "tasks": [
+        "Identify questions where rights-based approach is relevant",
+        "Add rights-related expected_elements",
+        "Modify question text to include rights considerations",
+        "Reference relevant human rights frameworks",
+        "Update questionnaire_monolith.json",
+        "Re-run cross-cutting theme analysis"
+      ]
+    },
+    {
+      "id": "SUB-7",
+      "title": "Expand Vulnerability Considerations Beyond PA10",
+      "priority": "HIGH",
+      "phase": 2,
+      "estimated_weeks": 1,
+      "description": "Ensure vulnerability and marginalization considerations appear across all policy areas",
+      "scope": {
+        "current_coverage": "2.3% (7 questions)",
+        "target_coverage": "≥15% (45 questions)",
+        "policy_areas_to_enrich": ["PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09"]
+      },
+      "deliverables": [
+        "Vulnerability integration strategy",
+        "Modified questions with vulnerability perspective",
+        "Updated questionnaire_monolith.json",
+        "Vulnerability coverage report"
+      ],
+      "tasks": [
+        "Identify questions where vulnerability is relevant",
+        "Add vulnerability-related expected_elements",
+        "Consider disability, poverty, discrimination, exclusion",
+        "Update questionnaire_monolith.json",
+        "Re-run cross-cutting theme analysis"
+      ]
+    },
+    {
+      "id": "SUB-8",
+      "title": "Enrich Failure Contracts with Severity & Recovery",
+      "priority": "MEDIUM",
+      "phase": 3,
+      "estimated_weeks": 1,
+      "description": "Enhance failure contracts beyond simple abort_if conditions",
+      "scope": {
+        "question_count": 300,
+        "current_structure": "abort_if + emit_code only"
+      },
+      "deliverables": [
+        "Failure contract enhancement template",
+        "Updated questionnaire_monolith.json",
+        "Failure handling guide"
+      ],
+      "enhancements": [
+        "Severity levels (CRITICAL, HIGH, MEDIUM, LOW)",
+        "Recovery strategies",
+        "Fallback scoring mechanisms",
+        "More granular failure conditions"
+      ],
+      "tasks": [
+        "Define failure severity taxonomy",
+        "Design recovery strategies for common failures",
+        "Implement fallback scoring mechanisms",
+        "Update all 300 failure_contracts",
+        "Update questionnaire_monolith.json"
+      ]
+    },
+    {
+      "id": "SUB-9",
+      "title": "Audit Method Set Diversity by Policy Area",
+      "priority": "MEDIUM",
+      "phase": 3,
+      "estimated_weeks": 1,
+      "description": "Verify method_sets diversity and appropriateness across policy areas",
+      "scope": {
+        "question_count": 300,
+        "focus": "Method distribution and appropriateness"
+      },
+      "deliverables": [
+        "Method distribution report by policy area/dimension",
+        "Method-question fit analysis",
+        "Recommended method additions/modifications",
+        "Updated questionnaire if needed"
+      ],
+      "tasks": [
+        "Map method class distribution across dimensions/policy areas",
+        "Identify method concentration or gaps",
+        "Verify method-question fit",
+        "Propose alternative methods where needed",
+        "Update questionnaire_monolith.json if changes needed"
+      ]
+    },
+    {
+      "id": "SUB-10",
+      "title": "Semantic Review of Expected Element Types",
+      "priority": "MEDIUM",
+      "phase": 3,
+      "estimated_weeks": 1,
+      "description": "Review expected_element types for semantic richness and specificity",
+      "scope": {
+        "element_types_count": "~50 unique types",
+        "focus": "Avoid generic types, increase specificity"
+      },
+      "deliverables": [
+        "Element type catalog",
+        "Generic type identification report",
+        "Proposed type refinements",
+        "Updated questionnaire"
+      ],
+      "tasks": [
+        "Catalog all element types used",
+        "Identify overly generic types",
+        "Propose more specific type definitions",
+        "Add constraints (minimum, required) where missing",
+        "Update questionnaire_monolith.json"
+      ]
+    },
+    {
+      "id": "SUB-11",
+      "title": "Implement Equity Monitoring Dashboard",
+      "priority": "ONGOING",
+      "phase": 4,
+      "estimated_weeks": 2,
+      "description": "Create automated dashboard to track equity metrics and flag imbalances",
+      "scope": {
+        "builds_on": "Existing audit scripts"
+      },
+      "deliverables": [
+        "Equity KPI framework",
+        "Enhanced automated audit script",
+        "HTML/JSON dashboard with visualizations",
+        "Monitoring documentation",
+        "Alert configuration"
+      ],
+      "kpis": [
+        "Validation distribution by dimension/policy area",
+        "Scoring modality diversity",
+        "Cross-cutting theme coverage",
+        "Documentation completeness",
+        "Method diversity"
+      ],
+      "tasks": [
+        "Define equity KPIs and thresholds",
+        "Enhance existing audit scripts",
+        "Create visualization dashboard (HTML)",
+        "Set up periodic audit triggers",
+        "Document monitoring procedures"
+      ]
+    },
+    {
+      "id": "SUB-12",
+      "title": "Establish Questionnaire Governance Process",
+      "priority": "ONGOING",
+      "phase": 4,
+      "estimated_weeks": 1,
+      "description": "Define processes for adding, modifying, or deprecating questions while maintaining equity",
+      "scope": {
+        "focus": "Long-term governance and quality control"
+      },
+      "deliverables": [
+        "Governance policy document",
+        "Question proposal template",
+        "Review checklist",
+        "Training materials",
+        "Version control procedures"
+      ],
+      "governance_elements": [
+        "Question addition/modification template",
+        "Review and approval process",
+        "Equity impact assessment requirement",
+        "Version control procedures",
+        "Stakeholder involvement process"
+      ],
+      "tasks": [
+        "Draft governance policy",
+        "Create question proposal template",
+        "Define review checklist",
+        "Document approval workflow",
+        "Create training materials"
+      ]
+    }
+  ],
+  "implementation_roadmap": {
+    "phase_1": {
+      "name": "Critical Fixes",
+      "duration_weeks": "1-2",
+      "sub_issues": ["SUB-1", "SUB-2"],
+      "goals": [
+        "Normalize validation for 200 questions in DIM02, DIM04-06",
+        "Document 100 questions with new template"
+      ]
+    },
+    "phase_2": {
+      "name": "High Priority Enrichment",
+      "duration_weeks": "3-4",
+      "sub_issues": ["SUB-3", "SUB-4", "SUB-5", "SUB-6", "SUB-7"],
+      "goals": [
+        "Complete documentation for all 300 questions",
+        "Integrate cross-cutting themes (gender, rights, vulnerability)",
+        "Diversify scoring modalities"
+      ]
+    },
+    "phase_3": {
+      "name": "Medium Priority Improvements",
+      "duration_weeks": "5-6",
+      "sub_issues": ["SUB-8", "SUB-9", "SUB-10"],
+      "goals": [
+        "Enrich failure contracts",
+        "Verify method diversity",
+        "Review expected elements"
+      ]
+    },
+    "phase_4": {
+      "name": "Continuous Improvement",
+      "duration_weeks": "7+",
+      "sub_issues": ["SUB-11", "SUB-12"],
+      "goals": [
+        "Implement monitoring dashboard",
+        "Establish governance"
+      ]
+    }
+  },
+  "success_metrics": {
+    "validation_equity": {
+      "metric": "Coefficient of Variation",
+      "current": 78.44,
+      "target": 40,
+      "unit": "percent"
+    },
+    "documentation_coverage": {
+      "metric": "Questions with detailed definitions",
+      "current": 0,
+      "target": 300,
+      "unit": "questions"
+    },
+    "cross_cutting_gender": {
+      "metric": "Questions with gender considerations",
+      "current": "10%",
+      "target": "≥50% in each PA",
+      "unit": "percentage"
+    },
+    "cross_cutting_rights": {
+      "metric": "Questions with rights language",
+      "current": "2.7%",
+      "target": "≥20%",
+      "unit": "percentage"
+    },
+    "cross_cutting_vulnerability": {
+      "metric": "Questions with vulnerability considerations",
+      "current": "2.3%",
+      "target": "≥15%",
+      "unit": "percentage"
+    },
+    "scoring_diversity": {
+      "metric": "TYPE_A concentration",
+      "current": 86.7,
+      "target": 70,
+      "unit": "percent"
+    }
+  }
+}
