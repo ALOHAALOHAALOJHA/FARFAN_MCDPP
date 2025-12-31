@@ -70,8 +70,8 @@ except ImportError as e:
         "Install with: pip install 'pydantic>=2.0'"
     ) from e
 
-# Phase protocol from same directory
-from canonic_phases.phase_1_cpp_ingestion.phase_protocol import (
+# Phase protocol from Phase One
+from farfan_pipeline.phases.Phase_one.phase_protocol import (
     ContractValidationResult,
     PhaseContract,
 )
@@ -431,7 +431,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
         # 1. Resolve questionnaire path
         questionnaire_path = input_data.questionnaire_path
         if questionnaire_path is None:
-            from canonic_phases.Phase_zero.phase0_10_00_paths import QUESTIONNAIRE_FILE
+            from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import QUESTIONNAIRE_FILE
 
             questionnaire_path = QUESTIONNAIRE_FILE
             warnings.append(
