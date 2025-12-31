@@ -42,19 +42,18 @@ except ImportError:
     ResourceExhausted = Exception  # type: ignore[misc, assignment]
     PSUTIL_AVAILABLE = False
 
-from canonic_phases.Phase_zero.phase0_10_00_paths import CONFIG_DIR, DATA_DIR
-from orchestration.factory import CanonicalQuestionnaire
-from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
-from orchestration.class_registry import build_class_registry
-from canonic_phases.Phase_two.executors.executor_config import ExecutorConfig
-from orchestration.factory import CoreModuleFactory
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import (
+from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import CONFIG_DIR, DATA_DIR
+from farfan_pipeline.phases.Phase_two.phase2_10_00_factory import CanonicalQuestionnaire
+from farfan_pipeline.phases.Phase_two.phase2_60_02_arg_router import ExtendedArgRouter
+from farfan_pipeline.phases.Phase_two.phase2_10_01_class_registry import build_class_registry
+from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import ExecutorConfig
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
     InMemorySignalSource,
     SignalClient,
     SignalPack,
     SignalRegistry,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
     AccessLevel,
     get_access_audit,
 )
@@ -253,10 +252,14 @@ _CalibrationOrchestrator = None  # type: ignore[assignment]
 _DEFAULT_CALIBRATION_CONFIG = None  # type: ignore[assignment]
 _HAS_CALIBRATION = False
 
-from orchestration.wiring.errors import MissingDependencyError, WiringInitializationError
-from orchestration.wiring.feature_flags import WiringFeatureFlags
-from orchestration.wiring.phase_0_validator import Phase0Validator
-from orchestration.wiring.validation import WiringValidator
+# Import wiring support from consolidated module
+from farfan_pipeline.phases.Phase_zero.phase0_90_03_wiring_validator import (
+    MissingDependencyError,
+    WiringInitializationError,
+    WiringFeatureFlags,
+    Phase0Validator,
+    WiringValidator,
+)
 
 logger = structlog.get_logger(__name__)
 
