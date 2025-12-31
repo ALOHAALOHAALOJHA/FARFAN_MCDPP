@@ -425,6 +425,7 @@ class GNEAEnforcer:
                     else:
                         hashes[hash_val] = filepath
                 except Exception:
+                    # Best-effort duplicate detection: ignore files that cannot be read
                     pass
 
     def _suggest_phase_name(self, current_name: str) -> str:
