@@ -984,6 +984,255 @@ class AdvancedDAGValidator:
 
 
 # ============================================================================
+# PRIORITY 2: N3-AUD DAG CYCLE DETECTOR (TYPE_C Veto Gate)
+# ============================================================================
+
+class DAGCycleDetector:
+    """
+    N3-AUD cycle detection for TYPE_C causal contracts.
+
+    Epistemological Classification:
+    - Level: N3-AUD (Audit/veto only, no extraction)
+    - Output Type: CONSTRAINT
+    - Fusion Behavior: veto_gate (cycle detection)
+    - Epistemology: GRAPH_THEORETIC_VALIDATION
+    - Contract Compatibility: TYPE_C only
+
+    Scope & Purpose:
+    Validates acyclicity of causal DAGs. One cycle -> TOTAL veto.
+    Required for TYPE_C questions (Q008, Q016, Q026, Q030).
+
+    Dependencies:
+    - Requires: ["causal_graph", "nodes", "edges", "topological_candidates"]
+    - Provides: ["cycle_report", "acyclicity_constraint", "dag_validation"]
+
+    Veto Conditions:
+    - cycle_detected: "TOTAL_VETO"
+
+    Integration Points:
+    - Enhances AdvancedDAGValidator (already in this file)
+    - Works with TeoriaCambio graph construction
+    - Satisfies forcing rule: TYPE_C MUST_INCLUDE_N3: ['cycle_detection']
+    """
+
+    # Veto configuration
+    VETO_CONDITIONS = {
+        "cycle_detected": "TOTAL_VETO",
+        "min_cycles": 1,
+        "confidence_on_veto": 0.0
+    }
+
+    def __init__(self) -> None:
+        self.logger = logging.getLogger(self.__class__.__name__)
+
+    def detect_cycles(self, graph: dict | AdvancedDAGValidator) -> dict:
+        """
+        Topological sort with cycle detection via DFS.
+
+        Args:
+            graph: {"nodes": list, "edges": list[(source, target)]}
+                   OR AdvancedDAGValidator instance
+
+        Returns:
+            {
+                "cycles_found": list[list[str]],
+                "is_acyclic": bool,
+                "topological_order": list[str] | None
+            }
+        """
+        # Handle both dict input and AdvancedDAGValidator
+        if isinstance(graph, AdvancedDAGValidator):
+            nodes = list(graph.graph_nodes.keys())
+            edges = [
+                (dep, name)
+                for name, node in graph.graph_nodes.items()
+                for dep in node.dependencies
+            ]
+        else:
+            nodes = graph.get("nodes", [])
+            edges = graph.get("edges", [])
+
+        # Build adjacency list
+        adjacency = self._build_adjacency_list(nodes, edges)
+
+        # Detect cycles using DFS
+        cycles = self._find_all_cycles(adjacency, nodes)
+        is_acyclic = len(cycles) == 0
+
+        # Compute topological order if acyclic
+        topological_order = None
+        if is_acyclic:
+            topological_order = self._topological_sort(adjacency, nodes)
+
+        return {
+            "cycles_found": cycles,
+            "is_acyclic": is_acyclic,
+            "topological_order": topological_order,
+            "node_count": len(nodes),
+            "edge_count": len(edges)
+        }
+
+    def veto_on_cycle(self, graph: dict | AdvancedDAGValidator) -> dict:
+        """
+        Apply TOTAL veto if ANY cycle detected.
+
+        Returns:
+            {
+                "status": "VALID" | "INVALID",
+                "confidence": float,
+                "veto_reason": str,
+                "cycle_details": list
+            }
+        """
+        detection_result = self.detect_cycles(graph)
+
+        if not detection_result["is_acyclic"]:
+            cycles = detection_result["cycles_found"]
+            self.logger.warning(
+                f"CYCLE DETECTION VETO: {len(cycles)} cycle(s) found in causal DAG"
+            )
+
+            return {
+                "status": "INVALID",
+                "confidence": 0.0,  # TOTAL veto
+                "veto_applied": True,
+                "veto_reason": f"Graph-theoretic validation: {len(cycles)} cycle(s) detected",
+                "cycle_details": cycles,
+                "cycle_count": len(cycles),
+                "rationale": "Causal DAGs must be acyclic; cycles violate temporal/causal ordering"
+            }
+        else:
+            # Calculate acyclicity confidence
+            confidence = self.calculate_acyclicity_confidence(graph)
+
+            return {
+                "status": "VALID",
+                "confidence": confidence,
+                "veto_applied": False,
+                "veto_reason": "No cycles detected - DAG structure valid",
+                "cycle_details": [],
+                "topological_order": detection_result.get("topological_order"),
+                "rationale": "Acyclic causal structure confirmed"
+            }
+
+    def calculate_acyclicity_confidence(self, graph: dict | AdvancedDAGValidator) -> float:
+        """
+        Statistical measure of DAG validity (0.0 if cycle, 1.0 if perfectly acyclic).
+
+        Returns:
+            Confidence score in [0, 1]
+        """
+        detection_result = self.detect_cycles(graph)
+
+        if not detection_result["is_acyclic"]:
+            return 0.0
+
+        # Additional confidence factors
+        node_count = detection_result.get("node_count", 0)
+        edge_count = detection_result.get("edge_count", 0)
+
+        if node_count == 0:
+            return 1.0
+
+        # Calculate density (edges / possible_edges)
+        possible_edges = node_count * (node_count - 1)
+        density = edge_count / possible_edges if possible_edges > 0 else 0
+
+        # Higher density DAGs are more robust
+        # But too high density may indicate overfitting
+        # Optimal range: 0.1 - 0.5
+        if 0.1 <= density <= 0.5:
+            density_score = 1.0
+        elif density < 0.1:
+            density_score = 0.8  # Sparse but valid
+        else:
+            density_score = max(0.5, 1.0 - (density - 0.5))  # Penalize very dense
+
+        return density_score
+
+    def _build_adjacency_list(
+        self,
+        nodes: list,
+        edges: list[tuple]
+    ) -> dict[str, list[str]]:
+        """Build adjacency list from nodes and edges."""
+        adjacency = {node: [] for node in nodes}
+        for source, target in edges:
+            if source in adjacency and target in adjacency:
+                adjacency[source].append(target)
+        return adjacency
+
+    def _find_all_cycles(
+        self,
+        adjacency: dict[str, list[str]],
+        nodes: list
+    ) -> list[list[str]]:
+        """Find all cycles in the graph using DFS."""
+        cycles = []
+        visited = set()
+        rec_stack = set()
+        path = []
+
+        def dfs(node: str) -> None:
+            visited.add(node)
+            rec_stack.add(node)
+            path.append(node)
+
+            for neighbor in adjacency.get(node, []):
+                if neighbor not in visited:
+                    dfs(neighbor)
+                elif neighbor in rec_stack:
+                    # Found a cycle - extract it
+                    cycle_start = path.index(neighbor)
+                    cycle = path[cycle_start:] + [neighbor]
+                    cycles.append(cycle)
+
+            path.pop()
+            rec_stack.remove(node)
+
+        for node in nodes:
+            if node not in visited:
+                dfs(node)
+
+        return cycles
+
+    def _topological_sort(
+        self,
+        adjacency: dict[str, list[str]],
+        nodes: list
+    ) -> list[str] | None:
+        """
+        Perform topological sort using Kahn's algorithm.
+        Returns None if graph has cycles (should not happen here).
+        """
+        in_degree = {node: 0 for node in nodes}
+        for node in nodes:
+            for neighbor in adjacency.get(node, []):
+                if neighbor in in_degree:
+                    in_degree[neighbor] += 1
+
+        # Start with nodes having no incoming edges
+        queue = [node for node, degree in in_degree.items() if degree == 0]
+        topological_order = []
+
+        while queue:
+            u = queue.pop(0)
+            topological_order.append(u)
+
+            for v in adjacency.get(u, []):
+                if v in in_degree:
+                    in_degree[v] -= 1
+                    if in_degree[v] == 0:
+                        queue.append(v)
+
+        # If we couldn't process all nodes, there's a cycle
+        if len(topological_order) != len(nodes):
+            return None
+
+        return topological_order
+
+
+# ============================================================================
 # 5. ORQUESTADOR DE CERTIFICACIÓN INDUSTRIAL
 # ============================================================================
 

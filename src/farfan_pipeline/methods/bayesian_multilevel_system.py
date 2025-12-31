@@ -28,6 +28,7 @@ Python: 3.10+
 from __future__ import annotations
 
 import logging
+import re
 from dataclasses import dataclass, field
 from enum import Enum, auto
 from pathlib import Path
@@ -1275,6 +1276,499 @@ class MultiLevelBayesianOrchestrator:
         self.logger.info(f"  Final macro score: {macro_analysis.adjusted_score:.4f}")
 
         return macro_analysis
+
+# ============================================================================
+# PRIORITY 1: N1-EMP BAYESIAN EVIDENCE EXTRACTOR
+# ============================================================================
+
+class BayesianEvidenceExtractor:
+    """
+    N1-EMP extractor for TYPE_B Bayesian contracts.
+
+    Epistemological Classification:
+    - Level: N1-EMP (Pure extraction, no inference)
+    - Output Type: FACT
+    - Fusion Behavior: concatenative
+    - Epistemology: EMPIRICAL_EXTRACTION
+    - Contract Compatibility: TYPE_B only
+
+    Scope & Purpose:
+    Extracts Bayesian evidence components (priors, likelihoods, statistical metadata)
+    from policy documents. Solves the critical TYPE_B N1-EMP shortage affecting
+    12 questions (Q002, Q005, Q007, Q011, Q017, Q018, Q020, Q023, Q024, Q025, Q027, Q029).
+
+    Dependencies:
+    - Requires: ["raw_text", "policy_document", "numerical_data"]
+    - Provides: ["prior_beliefs", "likelihood_evidence", "statistical_metadata", "bayesian_facts"]
+
+    Integration Points:
+    - Consumes outputs from existing extractors in analyzer_one.py
+    - Feeds into BayesianUpdater (already exists in this file)
+    - Aligns with forcing rule: TYPE_B MUST_INCLUDE_N1: ['prior', 'likelihood', 'evidence']
+    """
+
+    # Patterns for detecting prior belief statements
+    PRIOR_INDICATORS = [
+        r'(?:se\s+espera|se\s+asume|se\s+presume|se\s+considera)',
+        r'(?:bas[eé]ndose|con\s+base|partiendo|tomando)',
+        r'(?:inicialmente|originalmente|al\s+inicio)',
+        r'(?:hip[óo]tesis|supuesto|asunci[óo]n)',
+        r'(?:prior|a\s+priori)',
+    ]
+
+    # Patterns for detecting likelihood evidence
+    LIKELIHOOD_INDICATORS = [
+        r'(?:seg[úu]n|conforme|de\s+acuerdo)',
+        r'(?:datos|estad[íi]sticas|indicadores)',
+        r'(?:medici[óo]n|registro|reporte)',
+        r'(?:muestra|poblaci[óo]n|casos)',
+        r'(?:observado|observaci[óo]n)',
+    ]
+
+    def __init__(self) -> None:
+        self.logger = logging.getLogger(self.__class__.__name__)
+        # Compile regex patterns for efficiency
+        self._prior_patterns = [re.compile(p, re.IGNORECASE) for p in self.PRIOR_INDICATORS]
+        self._likelihood_patterns = [re.compile(p, re.IGNORECASE) for p in self.LIKELIHOOD_INDICATORS]
+
+    def extract_prior_beliefs(self, document: dict) -> list[dict]:
+        """
+        Extract baseline beliefs/assumptions from policy text.
+
+        Returns:
+            List of prior belief statements with confidence intervals
+            [{"statement": str, "prior_probability": float,
+              "source_line": str, "context": str}]
+        """
+        prior_beliefs = []
+        raw_text = document.get("raw_text", "")
+        policy_document = document.get("policy_document", {})
+
+        # Extract text from policy document structure
+        if not raw_text and policy_document:
+            raw_text = policy_document.get("text", "")
+
+        if not raw_text:
+            self.logger.warning("No raw text available for prior belief extraction")
+            return prior_beliefs
+
+        # Split into lines for processing
+        lines = raw_text.split("\n")
+
+        for i, line in enumerate(lines, 1):
+            line_stripped = line.strip()
+            if not line_stripped or len(line_stripped) < 10:
+                continue
+
+            # Check if line contains prior indicators
+            for pattern in self._prior_patterns:
+                if pattern.search(line_stripped):
+                    # Extract the prior statement
+                    prior_prob = self._extract_probability(line_stripped)
+                    prior_beliefs.append({
+                        "statement": line_stripped,
+                        "prior_probability": prior_prob,
+                        "source_line": str(i),
+                        "context": self._get_context(lines, i - 1)
+                    })
+                    break  # Only match first pattern per line
+
+        self.logger.info(f"Extracted {len(prior_beliefs)} prior beliefs from document")
+        return prior_beliefs
+
+    def extract_likelihood_evidence(self, document: dict) -> list[dict]:
+        """
+        Extract observable evidence for Bayesian updating.
+
+        Returns:
+            List of likelihood evidence with measurements
+            [{"observation": str, "likelihood_value": float,
+              "measurement_unit": str, "sample_size": int}]
+        """
+        likelihood_evidence = []
+        raw_text = document.get("raw_text", "")
+        numerical_data = document.get("numerical_data", [])
+
+        # Extract from policy document structure
+        if not raw_text:
+            policy_document = document.get("policy_document", {})
+            raw_text = policy_document.get("text", "")
+
+        if not raw_text:
+            self.logger.warning("No raw text available for likelihood evidence extraction")
+            return likelihood_evidence
+
+        lines = raw_text.split("\n")
+
+        for i, line in enumerate(lines, 1):
+            line_stripped = line.strip()
+            if not line_stripped or len(line_stripped) < 10:
+                continue
+
+            # Check if line contains likelihood indicators
+            for pattern in self._likelihood_patterns:
+                if pattern.search(line_stripped):
+                    # Extract numerical evidence
+                    likelihood_val = self._extract_likelihood_value(line_stripped)
+                    measurement_unit = self._extract_measurement_unit(line_stripped)
+                    sample_size = self._extract_sample_size(line_stripped)
+
+                    likelihood_evidence.append({
+                        "observation": line_stripped,
+                        "likelihood_value": likelihood_val,
+                        "measurement_unit": measurement_unit,
+                        "sample_size": sample_size,
+                        "source_line": str(i)
+                    })
+                    break  # Only match first pattern per line
+
+        self.logger.info(f"Extracted {len(likelihood_evidence)} likelihood observations")
+        return likelihood_evidence
+
+    def extract_statistical_metadata(self, evidence: list) -> dict:
+        """
+        Extract sample size, variance, confidence intervals.
+
+        Returns:
+            {"sample_size": int, "variance": float,
+             "confidence_interval": tuple, "data_quality_score": float}
+        """
+        if not evidence:
+            return {
+                "sample_size": 0,
+                "variance": 0.0,
+                "confidence_interval": (0.0, 0.0),
+                "data_quality_score": 0.0
+            }
+
+        # Extract sample sizes from evidence
+        sample_sizes = [e.get("sample_size", 0) for e in evidence if e.get("sample_size", 0) > 0]
+
+        # Extract likelihood values for variance calculation
+        likelihood_values = [
+            e.get("likelihood_value", 0.5)
+            for e in evidence
+            if e.get("likelihood_value") is not None
+        ]
+
+        # Calculate statistical metadata
+        total_sample_size = sum(sample_sizes) if sample_sizes else 0
+        variance = float(np.var(likelihood_values)) if likelihood_values else 0.0
+
+        # Calculate confidence interval (95% Wilson score interval)
+        if total_sample_size > 0 and likelihood_values:
+            mean_likelihood = np.mean(likelihood_values)
+            ci_half_width = 1.96 * np.sqrt(variance / max(len(likelihood_values), 1))
+            confidence_interval = (
+                max(0.0, mean_likelihood - ci_half_width),
+                min(1.0, mean_likelihood + ci_half_width)
+            )
+        else:
+            confidence_interval = (0.0, 0.0)
+
+        # Calculate data quality score
+        data_quality_score = self._calculate_data_quality_score(
+            total_sample_size, variance, confidence_interval, len(evidence)
+        )
+
+        return {
+            "sample_size": total_sample_size,
+            "variance": variance,
+            "confidence_interval": confidence_interval,
+            "data_quality_score": data_quality_score
+        }
+
+    def _extract_probability(self, text: str) -> float:
+        """Extract prior probability from text."""
+        # Look for percentage patterns
+        pct_match = re.search(r'(\d+(?:\.\d+)?)\s*%', text)
+        if pct_match:
+            return min(1.0, max(0.0, float(pct_match.group(1)) / 100.0))
+
+        # Look for probability keywords
+        if re.search(r'(?:alta|probable|seguro|cierto)', text, re.IGNORECASE):
+            return 0.75
+        elif re.search(r'(?:media|moderada|posible)', text, re.IGNORECASE):
+            return 0.50
+        elif re.search(r'(?:baja|improbable|incierto|dudoso)', text, re.IGNORECASE):
+            return 0.25
+
+        # Default neutral prior
+        return 0.5
+
+    def _extract_likelihood_value(self, text: str) -> float:
+        """Extract likelihood value from text."""
+        # Look for percentage patterns
+        pct_match = re.search(r'(\d+(?:\.\d+)?)\s*%', text)
+        if pct_match:
+            return min(1.0, max(0.0, float(pct_match.group(1)) / 100.0))
+
+        # Look for ratio patterns (e.g., "3 de cada 5")
+        ratio_match = re.search(r'(\d+)\s*(?:de|del?|de\s+los)\s*(\d+)', text, re.IGNORECASE)
+        if ratio_match:
+            num, denom = float(ratio_match.group(1)), float(ratio_match.group(2))
+            return min(1.0, max(0.0, num / max(denom, 1.0)))
+
+        # Look for decimal patterns
+        dec_match = re.search(r'(\d+(?:\.\d+)?)', text)
+        if dec_match:
+            val = float(dec_match.group(1))
+            if val <= 1.0:
+                return val
+            elif val <= 100.0:
+                return val / 100.0
+
+        return 0.5
+
+    def _extract_measurement_unit(self, text: str) -> str:
+        """Extract measurement unit from text."""
+        unit_patterns = [
+            (r'\$|COP|pesos|millones|miles', 'COP'),
+            (r'%|porcentaje|por\s+ciento', '%'),
+            (r'personas|individuos|habitantes|poblaci[óo]n', 'personas'),
+            (r'unidades|items|elementos', 'unidades'),
+            (r'años|meses|d[íi]as', 'tiempo'),
+        ]
+
+        for pattern, unit in unit_patterns:
+            if re.search(pattern, text, re.IGNORECASE):
+                return unit
+
+        return 'dimensionless'
+
+    def _extract_sample_size(self, text: str) -> int:
+        """Extract sample size from text."""
+        # Look for explicit sample size mentions
+        patterns = [
+            r'muestra\s+(?:de\s+)?(\d+)',
+            r'n\s*=\s*(\d+)',
+            r'(\d+)\s*(?:casos|registros|observaciones|encuestados)',
+            r'poblaci[óo]n\s+(?:de\s+)?(\d+)',
+        ]
+
+        for pattern in patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                return int(match.group(1))
+
+        return 0
+
+    def _get_context(self, lines: list[str], index: int, window: int = 2) -> str:
+        """Get context window around a line."""
+        start = max(0, index - window)
+        end = min(len(lines), index + window + 1)
+        return " ".join(lines[start:end]).strip()
+
+    def _calculate_data_quality_score(
+        self,
+        sample_size: int,
+        variance: float,
+        confidence_interval: tuple,
+        evidence_count: int
+    ) -> float:
+        """
+        Calculate data quality score based on multiple factors.
+
+        Returns:
+            float: Quality score in [0, 1]
+        """
+        score = 0.5  # Base score
+
+        # Sample size contribution (larger is better, up to 1000)
+        sample_score = min(1.0, sample_size / 1000.0)
+        score += sample_score * 0.3
+
+        # Variance contribution (lower variance is better)
+        variance_penalty = min(0.3, variance * 0.5)
+        score -= variance_penalty
+
+        # Confidence interval width contribution (narrower is better)
+        ci_width = confidence_interval[1] - confidence_interval[0]
+        if ci_width > 0:
+            ci_score = max(0.0, 0.2 - ci_width * 0.2)
+            score += ci_score
+
+        # Evidence count contribution (more evidence is better)
+        evidence_score = min(0.2, evidence_count / 20.0)
+        score += evidence_score
+
+        return max(0.0, min(1.0, score))
+
+
+# ============================================================================
+# PRIORITY 2: N3-AUD STATISTICAL GATE AUDITOR
+# ============================================================================
+
+class StatisticalGateAuditor:
+    """
+    N3-AUD statistical veto gate for TYPE_B contracts.
+
+    Epistemological Classification:
+    - Level: N3-AUD (Audit/veto only, no extraction)
+    - Output Type: CONSTRAINT
+    - Fusion Behavior: statistical_threshold_gate
+    - Epistemology: FREQUENTIST_VALIDATION
+    - Contract Compatibility: TYPE_B only
+
+    Scope & Purpose:
+    Implements frequentist statistical validation gates for TYPE_B Bayesian contracts.
+    Applies veto thresholds on p-values and sample sizes to ensure statistical rigor.
+
+    Dependencies:
+    - Requires: ["posterior_distribution", "sample_metadata", "statistical_tests"]
+    - Provides: ["significance_test_result", "sample_validation", "statistical_constraint"]
+
+    Veto Conditions:
+    - p_value_threshold: 0.05
+    - min_sample_size: 30
+    """
+
+    def __init__(
+        self,
+        p_value_threshold: float = 0.05,
+        min_sample_size: int = 30,
+        confidence_level: float = 0.95
+    ) -> None:
+        self.p_value_threshold = p_value_threshold
+        self.min_sample_size = min_sample_size
+        self.confidence_level = confidence_level
+        self.logger = logging.getLogger(self.__class__.__name__)
+
+    def test_significance(self, posterior: dict, alpha: float = 0.05) -> dict:
+        """
+        p-value calculation and thresholding.
+
+        Args:
+            posterior: Dictionary containing posterior distribution data
+            alpha: Significance threshold (default: 0.05)
+
+        Returns:
+            {
+                "p_value": float,
+                "is_significant": bool,
+                "test_statistic": float,
+                "critical_value": float,
+                "veto_applied": bool
+            }
+        """
+        # Extract posterior statistics
+        posterior_mean = posterior.get("mean", 0.5)
+        posterior_std = posterior.get("std", 0.1)
+        sample_size = posterior.get("sample_size", 0)
+        null_hypothesis = posterior.get("null_hypothesis", 0.5)
+
+        if sample_size < 2:
+            return {
+                "p_value": 1.0,
+                "is_significant": False,
+                "test_statistic": 0.0,
+                "critical_value": 0.0,
+                "veto_applied": True,
+                "rationale": "Insufficient sample size for significance testing"
+            }
+
+        # Calculate z-statistic
+        standard_error = posterior_std / np.sqrt(sample_size)
+        z_statistic = abs((posterior_mean - null_hypothesis) / max(standard_error, 1e-10))
+
+        # Calculate two-tailed p-value
+        p_value = 2 * (1 - stats.norm.cdf(z_statistic))
+
+        # Determine if significant
+        is_significant = p_value < alpha
+
+        # Calculate critical value
+        critical_value = stats.norm.ppf(1 - alpha / 2)
+
+        # Apply veto if not significant
+        veto_applied = not is_significant
+
+        return {
+            "p_value": p_value,
+            "is_significant": is_significant,
+            "test_statistic": z_statistic,
+            "critical_value": critical_value,
+            "veto_applied": veto_applied,
+            "rationale": f"p-value {p_value:.4f} {'<' if is_significant else '>='} threshold {alpha:.2f}"
+        }
+
+    def validate_sample_size(self, data: dict, min_size: int = 30) -> dict:
+        """
+        Minimum sample requirements check.
+
+        Args:
+            data: Dictionary containing sample metadata
+            min_size: Minimum required sample size (default: 30)
+
+        Returns:
+            {
+                "sample_size": int,
+                "min_required": int,
+                "is_valid": bool,
+                "veto_applied": bool,
+                "shortfall": int
+            }
+        """
+        sample_size = data.get("sample_size", 0)
+        is_valid = sample_size >= min_size
+        veto_applied = not is_valid
+        shortfall = max(0, min_size - sample_size)
+
+        return {
+            "sample_size": sample_size,
+            "min_required": min_size,
+            "is_valid": is_valid,
+            "veto_applied": veto_applied,
+            "shortfall": shortfall,
+            "rationale": f"Sample size {sample_size} {'>=' if is_valid else '<'} minimum {min_size}"
+        }
+
+    def apply_statistical_veto(self, results: dict) -> dict:
+        """
+        Veto if p_value > 0.05 OR sample_size < 30.
+
+        Args:
+            results: Dictionary containing significance and sample validation results
+
+        Returns:
+            {
+                "veto_applied": bool,
+                "overall_status": "VALID" | "INVALID",
+                "veto_reasons": list[str],
+                "combined_confidence": float
+            }
+        """
+        veto_reasons = []
+
+        # Check significance test
+        significance_result = results.get("significance_test", {})
+        if significance_result.get("veto_applied", False):
+            veto_reasons.append(significance_result.get("rationale", "Failed significance test"))
+
+        # Check sample size
+        sample_result = results.get("sample_validation", {})
+        if sample_result.get("veto_applied", False):
+            veto_reasons.append(sample_result.get("rationale", "Insufficient sample size"))
+
+        # Determine overall veto status
+        veto_applied = len(veto_reasons) > 0
+
+        # Calculate combined confidence
+        combined_confidence = 1.0
+        if significance_result:
+            p_value = significance_result.get("p_value", 1.0)
+            combined_confidence *= (1 - p_value)
+        if sample_result:
+            is_valid = sample_result.get("is_valid", True)
+            combined_confidence *= (1.0 if is_valid else 0.0)
+
+        return {
+            "veto_applied": veto_applied,
+            "overall_status": "INVALID" if veto_applied else "VALID",
+            "veto_reasons": veto_reasons,
+            "combined_confidence": combined_confidence
+        }
+
 
 # ============================================================================
 # MAIN ENTRY POINT

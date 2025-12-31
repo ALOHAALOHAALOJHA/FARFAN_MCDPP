@@ -209,6 +209,16 @@ def generate_enriched():
         }
     }
 
+    # Load Dispensary Signatures (Forensic)
+    DISPENSARY_PATH = "artifacts/data/METHODS_DISPENSARY_SIGNATURES_ENRICHED_FORENSIC.json"
+    print(f"Loading dispensary signatures from {DISPENSARY_PATH}...")
+    try:
+        with open(DISPENSARY_PATH, 'r') as f:
+            dispensary_data = json.load(f)
+    except FileNotFoundError:
+        print(f"WARNING: Dispensary file not found at {DISPENSARY_PATH}. Skipping injection.")
+        dispensary_data = {}
+
     print(f"Enriched {enriched_count} contracts with text.")
     
     # Second pass: Enrich contracts with their specific refined strategies
@@ -226,6 +236,7 @@ def generate_enriched():
     master["contracts"] = contracts
     master["refined_strategies"] = REFINED_STRATEGIES
     master["generic_questions_inventory"] = content_map
+    master["methods_dispensary_signatures"] = dispensary_data
     
     print(f"Saving to {OUTPUT_PATH}...")
     

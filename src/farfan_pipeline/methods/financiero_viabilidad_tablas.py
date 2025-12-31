@@ -2603,6 +2603,237 @@ async def main_example() -> None:
         print(f"❌ Error inesperado: {e}")
         raise
 
+
+# ============================================================================
+# PRIORITY 3: N1-EMP FINANCIAL AGGREGATOR (TYPE_D Data Normalization)
+# ============================================================================
+
+class FinancialAggregator:
+    """
+    N1-EMP financial data aggregator with unit normalization for TYPE_D.
+
+    Epistemological Classification:
+    - Level: N1-EMP (Pure extraction, no inference)
+    - Output Type: FACT
+    - Fusion Behavior: normalization_aggregation
+    - Epistemology: FINANCIAL_STANDARDIZATION
+    - Contract Compatibility: TYPE_D only
+
+    Scope & Purpose:
+    Aggregates and normalizes financial data from PDT documents.
+    Converts raw amounts to standardized units (%, per-capita, budget share).
+
+    Dependencies:
+    - Requires: ["financial_raw_data", "budget_total", "population_data"]
+    - Provides: ["normalized_financial_facts", "budget_percentages", "per_capita_values"]
+
+    Integration Points:
+    - Works with PlanPlurianuaInversiones data from types.py
+    - Processes FuenteFinanciacion types (SGP, SGR, etc.)
+    """
+
+    def __init__(self) -> None:
+        self.logger = logging.getLogger(self.__class__.__name__)
+
+    def aggregate_financial_data(
+        self,
+        raw_data: list[dict] | dict,
+        total_budget: float | None = None,
+        population: int | None = None
+    ) -> dict:
+        """
+        Unit normalization (COP -> %, per capita, etc.).
+
+        Args:
+            raw_data: List of financial entries OR dict from PlanPlurianuaInversiones
+            total_budget: Total budget for percentage calculations
+            population: Population for per-capita calculations
+
+        Returns:
+            {
+                "normalized_financial_facts": list,
+                "budget_percentages": dict,
+                "per_capita_values": dict,
+                "summary_statistics": dict
+            }
+        """
+        # Handle both list and dict input (dict from PlanPlurianuaInversiones)
+        if isinstance(raw_data, dict):
+            # Extract from PlanPlurianuaInversiones structure
+            entries = self._extract_from_ppi_dict(raw_data)
+            if total_budget is None:
+                total_budget = raw_data.get("total_cuatrienio")
+        else:
+            entries = raw_data
+
+        if not entries:
+            return {
+                "normalized_financial_facts": [],
+                "budget_percentages": {},
+                "per_capita_values": {},
+                "summary_statistics": {
+                    "total_amount": 0.0,
+                    "entry_count": 0,
+                    "sources_covered": []
+                }
+            }
+
+        # Normalize amounts to budget base
+        budget_percentages = self.normalize_to_budget_base(
+            [e.get("amount", 0) for e in entries],
+            total_budget or sum(e.get("amount", 0) for e in entries)
+        )
+
+        # Calculate per-capita values if population provided
+        per_capita_values = {}
+        if population and population > 0:
+            per_capita_values = self.normalize_to_population(
+                [e.get("amount", 0) for e in entries],
+                population
+            )
+
+        # Build normalized facts
+        normalized_facts = []
+        for i, entry in enumerate(entries):
+            normalized_fact = {
+                "source": entry.get("source", "UNKNOWN"),
+                "amount_cop": entry.get("amount", 0.0),
+                "percentage_of_budget": budget_percentages[i] if i < len(budget_percentages) else 0.0,
+                "year": entry.get("year", "UNKNOWN"),
+                "category": entry.get("category", "GENERAL")
+            }
+
+            if per_capita_values:
+                normalized_fact["per_capita_cop"] = per_capita_values.get(i, 0.0)
+
+            normalized_facts.append(normalized_fact)
+
+        # Calculate summary statistics
+        sources_covered = list(set(e.get("source", "UNKNOWN") for e in entries))
+        summary = {
+            "total_amount": sum(e.get("amount", 0) for e in entries),
+            "entry_count": len(entries),
+            "sources_covered": sources_covered,
+            "has_population_data": population is not None,
+            "has_budget_data": total_budget is not None
+        }
+
+        return {
+            "normalized_financial_facts": normalized_facts,
+            "budget_percentages": {
+                i: budget_percentages[i] if i < len(budget_percentages) else 0.0
+                for i in range(len(entries))
+            },
+            "per_capita_values": per_capita_values,
+            "summary_statistics": summary
+        }
+
+    def normalize_to_budget_base(
+        self,
+        amounts: list[float],
+        total_budget: float
+    ) -> list[float]:
+        """
+        Express amounts as % of total budget.
+
+        Args:
+            amounts: List of monetary amounts
+            total_budget: Total budget for normalization
+
+        Returns:
+            List of percentages (0-100)
+        """
+        if not amounts:
+            return []
+
+        if total_budget <= 0:
+            # If no budget provided, calculate sum as base
+            total_budget = sum(amounts)
+
+        if total_budget == 0:
+            return [0.0] * len(amounts)
+
+        return [(amt / total_budget) * 100.0 for amt in amounts]
+
+    def normalize_to_population(
+        self,
+        amounts: list[float],
+        population: int
+    ) -> dict[int, float]:
+        """
+        Calculate per-capita values.
+
+        Args:
+            amounts: List of monetary amounts
+            population: Population for per-capita calculation
+
+        Returns:
+            Dict mapping index to per-capita value
+        """
+        if not amounts or population <= 0:
+            return {}
+
+        return {
+            i: amt / population
+            for i, amt in enumerate(amounts)
+        }
+
+    def _extract_from_ppi_dict(self, ppi_dict: dict) -> list[dict]:
+        """
+        Extract financial entries from PlanPlurianuaInversiones structure.
+
+        This handles the PDT document structure defined in types.py.
+        """
+        entries = []
+
+        # Extract annual totals
+        for year in [2024, 2025, 2026, 2027]:
+            year_key = f"total_{year}"
+            if year_key in ppi_dict:
+                entries.append({
+                    "source": f"PPI_Annual_{year}",
+                    "amount": ppi_dict[year_key],
+                    "year": str(year),
+                    "category": "ANNUAL_TOTAL"
+                })
+
+        # Extract by funding source
+        source_mapping = {
+            "total_sgp": "SGP",
+            "total_sgr": "SGR",
+            "total_recursos_propios": "RECURSOS_PROPIOS",
+            "total_credito": "CREDITO",
+            "total_cooperacion": "COOPERACION",
+            "total_otras_fuentes": "OTRAS"
+        }
+
+        for ppi_key, source_name in source_mapping.items():
+            if ppi_key in ppi_dict and ppi_dict[ppi_key] is not None:
+                entries.append({
+                    "source": source_name,
+                    "amount": ppi_dict[ppi_key],
+                    "year": "CUATRIENIO",
+                    "category": "FUNDING_SOURCE"
+                })
+
+        # Extract from matrix if available
+        matriz = ppi_dict.get("matriz_inversiones", [])
+        for row in matriz:
+            if isinstance(row, dict):
+                # Extract annual amounts from matrix row
+                for year in [2024, 2025, 2026, 2027]:
+                    year_str = str(year)
+                    if year_str in row:
+                        entries.append({
+                            "source": row.get("programa", row.get("linea", "UNKNOWN")),
+                            "amount": row[year_str],
+                            "year": year_str,
+                            "category": row.get("sector", "UNKNOWN")
+                        })
+
+        return entries
+
+
 # ============================================================================
 # INTERNAL QUALITY GATES (IMPORT-TIME, NON-FATAL)
 # ============================================================================

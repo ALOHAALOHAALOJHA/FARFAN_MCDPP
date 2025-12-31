@@ -31,9 +31,9 @@ except ImportError:
     import logging
     logger = logging.getLogger(__name__)
 
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import SignalManifest, generate_signal_manifests
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import SignalPack
-from cross_cutting_infrastructure.irrigation_using_signals.ports import QuestionnairePort
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import SignalManifest, generate_signal_manifests
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import SignalPack
+from farfan_pipeline.infrastructure.irrigation_using_signals.ports import QuestionnairePort
 
 
 def compute_fingerprint(content: str | bytes) -> str:

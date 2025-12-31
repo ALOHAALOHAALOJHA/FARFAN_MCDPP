@@ -697,4 +697,575 @@ class PolicyContradictionDetector:
             "graph_statistics": self._get_graph_statistics()
         }
 
-    # ... existing code continues ...
+
+# ============================================================================
+# PRIORITY 1: N3-AUD CONTRADICTION DOMINATOR (TYPE_E Veto Gate)
+# ============================================================================
+
+class ContradictionDominator:
+    """
+    N3-AUD veto gate for TYPE_E logical contracts - Popperian falsification.
+
+    Epistemological Classification:
+    - Level: N3-AUD (Audit/veto only, no extraction)
+    - Output Type: CONSTRAINT
+    - Fusion Behavior: veto_gate (total dominance)
+    - Epistemology: POPPERIAN_FALSIFICATION
+    - Contract Compatibility: TYPE_E only
+
+    Scope & Purpose:
+    Implements Popperian falsification principle: ONE contradiction -> confidence = 0.0.
+    Critical for TYPE_E logical contracts (Q010, Q014, Q019, Q028) which MUST NEVER
+    use averaging.
+
+    Dependencies:
+    - Requires: ["logical_facts", "consistency_flags", "contradiction_evidence"]
+    - Provides: ["veto_decision", "dominance_constraint", "falsification_report"]
+
+    Veto Conditions:
+    - contradiction_detected: "TOTAL_VETO"
+    - min_contradictions: 1
+
+    Integration Points:
+    - Consumes outputs from PolicyContradictionDetector._detect_logical_incompatibilities
+    - Must be final gate in TYPE_E processing chain
+    - PROHIBITED: Must never use weighted_mean, average, or mean operations
+    """
+
+    # Veto configuration
+    VETO_CONDITIONS = {
+        "contradiction_detected": "TOTAL_VETO",
+        "min_contradictions": 1,
+        "confidence_on_veto": 0.0
+    }
+
+    # PROHIBITED operations for TYPE_E (enforced at runtime)
+    FORBIDDEN_OPERATIONS = ['weighted_mean', 'average', 'mean', 'avg']
+
+    def __init__(self) -> None:
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self._veto_count = 0
+
+    def apply_dominance_veto(
+        self,
+        facts: list[dict] | list[ContradictionEvidence]
+    ) -> dict:
+        """
+        Apply total veto if ANY contradiction detected.
+        ONE contradiction -> confidence = 0.0 (non-negotiable).
+
+        Args:
+            facts: List of logical facts from N1 with consistency flags,
+                   or ContradictionEvidence objects from PolicyContradictionDetector
+
+        Returns:
+            {
+                "status": "VALID" | "INVALID",
+                "confidence": float (0.0 or original),
+                "contradiction_detected": bool,
+                "veto_applied": bool,
+                "rationale": str
+            }
+        """
+        # Handle both dict facts and ContradictionEvidence objects
+        has_contradiction = False
+        original_confidence = 0.5
+
+        if facts and isinstance(facts[0], ContradictionEvidence):
+            # Processing ContradictionEvidence objects
+            for evidence in facts:
+                if evidence.contradiction_type in [
+                    ContradictionType.LOGICAL_INCOMPATIBILITY,
+                    ContradictionType.SEMANTIC_OPPOSITION,
+                    ContradictionType.NUMERICAL_INCONSISTENCY
+                ]:
+                    has_contradiction = True
+                    break
+            original_confidence = 1.0 - max([
+                (1.0 - e.confidence) for e in facts
+            ], default=0.0) if facts else 0.5
+        else:
+            # Processing dict facts
+            has_contradiction = self._detect_any_contradiction_from_dicts(facts)
+            original_confidence = self._calculate_original_confidence_from_dicts(facts)
+
+        if has_contradiction:
+            self._veto_count += 1
+            veto_report = self._generate_veto_report_from_facts(facts)
+
+            self.logger.warning(
+                f"CONTRADICTION DOMINANCE VETO APPLIED: "
+                f"contradiction(s) detected -> confidence = 0.0"
+            )
+
+            return {
+                "status": "INVALID",
+                "confidence": 0.0,  # TOTAL veto - non-negotiable
+                "contradiction_detected": True,
+                "veto_applied": True,
+                "rationale": "Popperian falsification: ONE contradiction refutes the hypothesis",
+                "veto_report": veto_report
+            }
+        else:
+            return {
+                "status": "VALID",
+                "confidence": original_confidence,
+                "contradiction_detected": False,
+                "veto_applied": False,
+                "rationale": "No contradictions detected - hypothesis remains viable"
+            }
+
+    def detect_any_contradiction(
+        self,
+        facts: list[dict] | list[ContradictionEvidence]
+    ) -> bool:
+        """
+        Scan facts for ANY contradiction (binary check).
+
+        Args:
+            facts: List of logical facts or ContradictionEvidence objects
+
+        Returns:
+            True if ANY contradiction exists, False otherwise
+        """
+        if not facts:
+            return False
+
+        if isinstance(facts[0], ContradictionEvidence):
+            return any(
+                e.contradiction_type in [
+                    ContradictionType.LOGICAL_INCOMPATIBILITY,
+                    ContradictionType.SEMANTIC_OPPOSITION,
+                    ContradictionType.NUMERICAL_INCONSISTENCY
+                ]
+                for e in facts
+            )
+        else:
+            return self._detect_any_contradiction_from_dicts(facts)
+
+    def _detect_any_contradiction_from_dicts(self, facts: list[dict]) -> bool:
+        """Detect contradictions in dict-based facts."""
+        if not facts:
+            return False
+
+        # Check for explicit contradiction flags
+        for fact in facts:
+            if fact.get("has_contradiction", False):
+                return True
+            if fact.get("consistency_flag") == "CONTRADICTORY":
+                return True
+            if fact.get("inconsistent_with"):
+                return True
+
+        return False
+
+    def generate_veto_report(
+        self,
+        facts: list[dict] | list[ContradictionEvidence]
+    ) -> dict:
+        """
+        Generate detailed report when veto is applied.
+
+        Returns:
+            {
+                "contradictions_found": list[dict],
+                "affected_facts": list[str],
+                "veto_timestamp": str,
+                "severity": str
+            }
+        """
+        return self._generate_veto_report_from_facts(facts)
+
+    def _generate_veto_report_from_facts(
+        self,
+        facts: list[dict] | list[ContradictionEvidence]
+    ) -> dict:
+        """Generate veto report from facts (dict or ContradictionEvidence)."""
+        contradictions_found = []
+        affected_facts = []
+
+        if facts and isinstance(facts[0], ContradictionEvidence):
+            for evidence in facts:
+                contradictions_found.append({
+                    "fact_id": str(id(evidence)),
+                    "statement_a": str(evidence.statement_a.text[:100]),
+                    "statement_b": str(evidence.statement_b.text[:100]),
+                    "contradiction_type": evidence.contradiction_type.name,
+                    "confidence": float(evidence.confidence)
+                })
+                affected_facts.append(str(id(evidence)))
+        else:
+            for fact in facts:
+                if fact.get("has_contradiction") or fact.get("consistency_flag") == "CONTRADICTORY":
+                    contradictions_found.append({
+                        "fact_id": fact.get("id", "UNKNOWN"),
+                        "fact_text": fact.get("text", "")[:100],
+                        "contradiction_type": fact.get("contradiction_type", "LOGICAL"),
+                        "inconsistent_with": fact.get("inconsistent_with", [])
+                    })
+                    affected_facts.append(fact.get("id", "UNKNOWN"))
+
+        severity = "CRITICAL" if len(contradictions_found) == 1 else "CATASTROPHIC"
+
+        return {
+            "contradictions_found": contradictions_found,
+            "affected_facts": affected_facts,
+            "veto_count": self._veto_count,
+            "veto_timestamp": logging.getLogger(__name__).name,
+            "severity": severity,
+            "popperian_principle": "Single refutation suffices for falsification"
+        }
+
+    def _calculate_original_confidence_from_dicts(self, facts: list[dict]) -> float:
+        """
+        Calculate original confidence WITHOUT averaging (uses MIN for TYPE_E).
+
+        This enforces the epistemological constraint that TYPE_E contracts
+        use AND logic (min) rather than averaging.
+        """
+        if not facts:
+            return 0.0
+
+        # Use MIN (not mean!) for TYPE_E - weakest link determines strength
+        confidences = [f.get("confidence", 0.5) for f in facts if "confidence" in f]
+
+        if not confidences:
+            return 0.5
+
+        return min(confidences)
+
+
+# ============================================================================
+# PRIORITY 2: N2-INF DEMPSTER-SHAFER COMBINATOR (TYPE_A Belief Combination)
+# ============================================================================
+
+class DempsterShaferCombinator:
+    """
+    N2-INF belief combination for TYPE_A semantic contracts.
+
+    Epistemological Classification:
+    - Level: N2-INF (Computation/combination, no veto)
+    - Output Type: PARAMETER
+    - Fusion Behavior: dempster_shafer (belief combination)
+    - Epistemology: EVIDENTIAL_REASONING
+    - Contract Compatibility: TYPE_A only
+
+    Scope & Purpose:
+    Implements Dempster-Shafer theory for combining belief masses from multiple
+    semantic sources with conflict handling. Required for TYPE_A questions (Q001, Q013).
+
+    Dependencies:
+    - Requires: ["semantic_facts", "belief_masses", "source_provenance"]
+    - Provides: ["combined_belief", "conflict_resolution", "semantic_fusion_score"]
+
+    Integration Points:
+    - Consumes outputs from AdvancedSemanticChunker and TextMiningEngine
+    - Satisfies forcing rule: TYPE_A MUST_INCLUDE_N2: ['semantic_score', 'dempster']
+    """
+
+    def __init__(self, normalization_threshold: float = 0.95) -> None:
+        """
+        Args:
+            normalization_threshold: Minimum combined mass required for normalization
+        """
+        self.normalization_threshold = normalization_threshold
+        self.logger = logging.getLogger(self.__class__.__name__)
+
+    def combine_belief_masses(self, sources: list[dict]) -> dict:
+        """
+        Dempster's rule: m(A) = SUM(m1(X) * m2(Y)) / (1 - K)
+        where K = conflict mass.
+
+        Args:
+            sources: List of belief mass assignments from N1 extractors
+                [{"proposition": str, "belief_mass": float, "source_id": str}]
+
+        Returns:
+            {
+                "combined_belief": dict,
+                "conflict_mass": float,
+                "normalization_factor": float,
+                "reliability_score": float
+            }
+        """
+        if not sources:
+            return {
+                "combined_belief": {},
+                "conflict_mass": 0.0,
+                "normalization_factor": 1.0,
+                "reliability_score": 0.0
+            }
+
+        if len(sources) == 1:
+            # Single source - return as-is
+            prop = sources[0].get("proposition", "unknown")
+            mass = sources[0].get("belief_mass", 0.5)
+            return {
+                "combined_belief": {prop: mass},
+                "conflict_mass": 0.0,
+                "normalization_factor": 1.0,
+                "reliability_score": mass
+            }
+
+        # Calculate conflict mass K
+        K = self.calculate_conflict_mass(sources)
+
+        # Combine beliefs using Dempster's rule
+        combined = self._dempster_combination(sources, K)
+
+        # Normalize by (1 - K)
+        normalized = self.normalize_belief_distribution(combined, K)
+
+        # Calculate reliability score
+        reliability = self._calculate_reliability_score(normalized, K, len(sources))
+
+        return {
+            "combined_belief": normalized,
+            "conflict_mass": K,
+            "normalization_factor": 1.0 - K,
+            "reliability_score": reliability
+        }
+
+    def calculate_conflict_mass(self, sources: list[dict]) -> float:
+        """
+        Calculate K = SUM(m1(X) * m2(Y)) for all X∩Y = ∅.
+
+        Returns:
+            Conflict mass K in [0, 1]
+        """
+        K = 0.0
+
+        # Group by proposition
+        propositions = {}
+        for source in sources:
+            prop = source.get("proposition", "unknown")
+            mass = source.get("belief_mass", 0.5)
+            if prop not in propositions:
+                propositions[prop] = []
+            propositions[prop].append(mass)
+
+        # For Dempster-Shafer, conflict occurs when masses are assigned
+        # to mutually exclusive propositions from different sources
+        if len(propositions) <= 1:
+            return 0.0
+
+        # Calculate conflict as cross-product of masses for different propositions
+        prop_names = list(propositions.keys())
+        for i, prop1 in enumerate(prop_names):
+            for prop2 in prop_names[i + 1:]:
+                for mass1 in propositions[prop1]:
+                    for mass2 in propositions[prop2]:
+                        K += mass1 * mass2
+
+        return min(1.0, K)
+
+    def normalize_belief_distribution(
+        self,
+        raw_belief: dict,
+        K: float
+    ) -> dict:
+        """
+        Normalize by (1 - K) to ensure belief mass sums to 1.
+
+        Returns:
+            Normalized belief distribution
+        """
+        if K >= 1.0:
+            # Total conflict - return uniform distribution
+            n_props = len(raw_belief)
+            return {k: 1.0 / max(n_props, 1) for k in raw_belief}
+
+        normalization_factor = 1.0 - K
+
+        if normalization_factor < 1e-10:
+            # Near-total conflict - return uniform
+            n_props = len(raw_belief)
+            return {k: 1.0 / max(n_props, 1) for k in raw_belief}
+
+        normalized = {}
+        for prop, mass in raw_belief.items():
+            normalized[prop] = mass / normalization_factor
+
+        return normalized
+
+    def _dempster_combination(self, sources: list[dict], K: float) -> dict[str, float]:
+        """Perform Dempster's rule combination."""
+        # Initialize combined beliefs
+        combined = {}
+
+        # Group masses by proposition
+        for source in sources:
+            prop = source.get("proposition", "unknown")
+            mass = source.get("belief_mass", 0.5)
+            if prop not in combined:
+                combined[prop] = 0.0
+            # For orthogonal combination, multiply masses for same proposition
+            if combined[prop] == 0.0:
+                combined[prop] = mass
+            else:
+                combined[prop] *= mass
+
+        return combined
+
+    def _calculate_reliability_score(
+        self,
+        normalized: dict,
+        K: float,
+        n_sources: int
+    ) -> float:
+        """
+        Calculate reliability score based on:
+        - Conflict mass (lower is better)
+        - Number of sources (more is better, up to a point)
+        - Belief concentration (higher max belief is better)
+        """
+        # Conflict penalty
+        conflict_penalty = K * 0.5
+
+        # Source count bonus (diminishing returns)
+        source_bonus = min(0.3, n_sources * 0.1)
+
+        # Concentration bonus (higher max belief indicates agreement)
+        max_belief = max(normalized.values()) if normalized else 0.0
+        concentration_bonus = max_belief * 0.2
+
+        reliability = 1.0 - conflict_penalty + source_bonus + concentration_bonus
+        return max(0.0, min(1.0, reliability))
+
+
+# ============================================================================
+# PRIORITY 2: N2-INF LOGICAL CONSISTENCY CHECKER (TYPE_E AND Logic)
+# ============================================================================
+
+class LogicalConsistencyChecker:
+    """
+    N2-INF consistency checker for TYPE_E - AND logic only.
+
+    Epistemological Classification:
+    - Level: N2-INF (Computation, no veto)
+    - Output Type: PARAMETER
+    - Fusion Behavior: min_consistency (AND logic, NOT averaging)
+    - Epistemology: LOGICAL_CONJUNCTION
+    - Contract Compatibility: TYPE_E only
+
+    Scope & Purpose:
+    Checks logical consistency using AND-based logic (min, NOT mean).
+    PROHIBITION: Must never use averaging for TYPE_E.
+
+    Dependencies:
+    - Requires: ["logical_facts", "consistency_markers", "fact_confidences"]
+    - Provides: ["consistency_score", "min_confidence", "logical_validation"]
+
+    Integration Points:
+    - Satisfies forcing rule: TYPE_E MUST_INCLUDE_N2: ['logical_consistency', 'min']
+    - Must explicitly avoid methods in FORBIDDEN list
+    """
+
+    # PROHIBITED for TYPE_E - enforcement is mandatory
+    FORBIDDEN_METHODS = ['weighted_mean', 'average', 'mean']
+
+    def __init__(self) -> None:
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self._enforce_no_averaging_prohibition()
+
+    def check_consistency(self, facts: list[dict]) -> dict:
+        """
+        AND-based logic: consistency = min(c1, c2, ..., cn)
+        NEVER: mean(c1, c2, ..., cn).
+
+        Args:
+            facts: [{"fact": str, "confidence": float, "logical_role": str}]
+
+        Returns:
+            {
+                "consistency_score": float (min of all confidences),
+                "weakest_link": dict,
+                "logical_violations": list,
+                "fusion_method": "MIN" (NEVER "MEAN")
+            }
+        """
+        if not facts:
+            return {
+                "consistency_score": 0.0,
+                "weakest_link": None,
+                "logical_violations": [],
+                "fusion_method": "MIN"
+            }
+
+        # Extract confidences
+        confidences = [f.get("confidence", 0.5) for f in facts]
+
+        # AND logic: use MIN (not mean!)
+        consistency_score = min(confidences) if confidences else 0.0
+
+        # Find weakest link (the fact with minimum confidence)
+        weakest_idx = confidences.index(consistency_score) if confidences else 0
+        weakest_link = {
+            "fact": facts[weakest_idx].get("fact", ""),
+            "confidence": consistency_score,
+            "logical_role": facts[weakest_idx].get("logical_role", "unknown")
+        }
+
+        # Detect logical violations
+        violations = self.detect_logical_violations(facts)
+
+        return {
+            "consistency_score": consistency_score,
+            "weakest_link": weakest_link,
+            "logical_violations": violations,
+            "fusion_method": "MIN",  # Explicitly MIN, never MEAN
+            "fact_count": len(facts),
+            "epistemology": "LOGICAL_CONJUNCTION"
+        }
+
+    def detect_logical_violations(self, facts: list[dict]) -> list[dict]:
+        """
+        Identify logical incompatibilities (beyond contradictions).
+
+        Returns:
+            List of violation reports
+        """
+        violations = []
+
+        # Check for explicit violation flags
+        for fact in facts:
+            if fact.get("has_violation", False):
+                violations.append({
+                    "fact": fact.get("fact", ""),
+                    "violation_type": fact.get("violation_type", "UNKNOWN"),
+                    "description": fact.get("violation_description", "")
+                })
+
+        # Check for consistency flags
+        for fact in facts:
+            consistency_flag = fact.get("consistency_flag", "")
+            if consistency_flag and consistency_flag not in ["CONSISTENT", "VALID"]:
+                violations.append({
+                    "fact": fact.get("fact", ""),
+                    "violation_type": "INCONSISTENCY",
+                    "description": f"Consistency flag: {consistency_flag}"
+                })
+
+        return violations
+
+    def enforce_no_averaging_prohibition(self) -> None:
+        """
+        Runtime assertion: raise exception if averaging attempted.
+        Enforces epistemological prohibition for TYPE_E.
+        """
+        # Check if this class has forbidden methods
+        for method_name in self.FORBIDDEN_METHODS:
+            if hasattr(self, method_name):
+                raise TypeError(
+                    f"TYPE_E PROHIBITION: Method '{method_name}' is forbidden for "
+                    f"logical contracts. Use MIN-based logic instead."
+                )
+
+    def _enforce_no_averaging_prohibition(self) -> None:
+        """Enforce prohibition at initialization."""
+        self.enforce_no_averaging_prohibition()
+
+
+# ============================================================================
+# END OF NEW METHODS
+# ============================================================================
