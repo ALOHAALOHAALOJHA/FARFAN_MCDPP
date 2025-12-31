@@ -333,6 +333,7 @@ class GNEAEnforcer:
                             )
                         )
                 except ValueError:
+                    # If for any reason the path cannot be made relative to root, skip it.
                     pass
 
             if path.is_dir() and path.name.lower() in self.FORBIDDEN_DIRS:
