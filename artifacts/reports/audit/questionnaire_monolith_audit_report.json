@@ -1,7 +1,7 @@
 {
   "audit_metadata": {
-    "timestamp": "2025-12-31T21:21:48.430680",
-    "file_path": "/home/runner/work/FARFAN_MPP/FARFAN_MPP/canonic_questionnaire_central/questionnaire_monolith.json",
+    "timestamp": "2025-12-31T23:48:09.740587",
+    "file_path": "/Users/recovered/Downloads/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL/canonic_questionnaire_central/questionnaire_monolith.json",
     "auditor_version": "1.0.0"
   },
   "structure_hierarchy": {
@@ -285,31 +285,37 @@
   },
   "scoring_modalities": {
     "overall_modality_distribution": {
-      "UNSPECIFIED": 300
+      "TYPE_A": 260,
+      "TYPE_B": 30,
+      "TYPE_E": 10
     },
     "by_dimension": {
       "DIM01": {
-        "UNSPECIFIED": 50
+        "TYPE_A": 10,
+        "TYPE_B": 30,
+        "TYPE_E": 10
       },
       "DIM02": {
-        "UNSPECIFIED": 50
+        "TYPE_A": 50
       },
       "DIM03": {
-        "UNSPECIFIED": 50
+        "TYPE_A": 50
       },
       "DIM04": {
-        "UNSPECIFIED": 50
+        "TYPE_A": 50
       },
       "DIM05": {
-        "UNSPECIFIED": 50
+        "TYPE_A": 50
       },
       "DIM06": {
-        "UNSPECIFIED": 50
+        "TYPE_A": 50
       }
     },
     "by_policy_area": {
       "UNKNOWN": {
-        "UNSPECIFIED": 300
+        "TYPE_A": 260,
+        "TYPE_B": 30,
+        "TYPE_E": 10
       }
     }
   },
@@ -363,20 +369,29 @@
   },
   "documentation": {
     "field_presence": {
-      "question_id": 300
+      "question_id": 300,
+      "text": 300
     },
     "fully_documented": 0,
-    "poorly_documented_count": 300,
+    "poorly_documented_count": 0,
     "documentation_coverage": {
-      "question_id": 100.0
+      "question_id": 100.0,
+      "text": 100.0
     }
   },
   "intersectionality": {
-    "gender_mentions": 0,
-    "rights_mentions": 0,
-    "vulnerability_mentions": 0,
-    "equity_mentions": 0,
-    "by_policy_area": {}
+    "gender_mentions": 33,
+    "rights_mentions": 9,
+    "vulnerability_mentions": 7,
+    "equity_mentions": 22,
+    "by_policy_area": {
+      "UNKNOWN": {
+        "gender": 33,
+        "rights": 9,
+        "vulnerability": 7,
+        "equity": 22
+      }
+    }
   },
   "equity_risks": {
     "total_risks": 0,

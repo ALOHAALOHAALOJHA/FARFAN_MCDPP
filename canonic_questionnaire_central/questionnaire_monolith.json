@@ -2536,7 +2536,7 @@
         "question_id": "Q001",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿El diagnóstico presenta datos numéricos (tasas de VBG, porcentajes de participación, cifras de brechas salariales) para el área de Derechos de las mujeres e igualdad de género que sirvan como línea base? Se debe verificar la presencia de un año de referencia y la mención de fuentes (ej. DANE, Medicina Legal, Observatorio de Género).",
+        "text": "¿El diagnóstico de las inequidades y brechas de género presenta datos cuantitativos (tasas de violencia basada en género, porcentajes de participación política, cifras de desempleo femenino o brecha salarial) con año de referencia y fuente identificada (Medicina Legal, DANE, Observatorio de Género), desagregados por territorio (rural/urbano) o grupos poblacionales (mujeres diversas, étnicas)?",
         "validations": {
           "buscar_indicadores_cuantitativos": {
             "minimum_required": 3,
@@ -2859,7 +2859,7 @@
         "question_id": "Q002",
         "scoring_definition_ref": "scoring_modalities.TYPE_B",
         "scoring_modality": "TYPE_B",
-        "text": "¿El texto dimensiona el problema de la desigualdad de género cuantificando la brecha o déficit? Se debe buscar si se mencionan explícitamente limitaciones en los datos, como 'subregistro', 'información insuficiente' o 'vacíos de información'.",
+        "text": "¿El diagnóstico dimensiona numéricamente la magnitud de las desigualdades o violencias contra las mujeres y reconoce explícitamente limitaciones en los datos como 'subregistro de denuncias', 'información insuficiente sobre economía del cuidado', 'falta de caracterización de violencias no físicas' o 'vacíos en cifras municipales'?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -3151,7 +3151,7 @@
         "question_id": "Q003",
         "scoring_definition_ref": "scoring_modalities.TYPE_B",
         "scoring_modality": "TYPE_B",
-        "text": "¿Se identifican en el Plan Plurianual de Inversiones (PPI) o en tablas presupuestales, recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas para la equidad de género, la Casa de la Mujer o la atención a VBG?",
+        "text": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a programas de prevención de violencias, funcionamiento de la Casa de la Mujer, estrategias de autonomía económica o transversalización del enfoque de género (Trazador Presupuestal de Género)?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -3443,7 +3443,7 @@
         "question_id": "Q004",
         "scoring_definition_ref": "scoring_modalities.TYPE_B",
         "scoring_modality": "TYPE_B",
-        "text": "¿El PDM describe las capacidades para gestionar la política de género, mencionando entidades (ej. Secretaría de la Mujer, Comisaría) y sus necesidades? Se debe buscar términos como 'equipo psicosocial', 'protocolo de atención' y si se identifican 'limitaciones' o 'barreras' institucionales.",
+        "text": "¿El plan identifica las entidades responsables de la política de mujer y equidad (ej. Secretaría de la Mujer, Comisaría de Familia, mecanismos de género), describe sus capacidades (equipos psicosociales y jurídicos, duplas de atención) y señala limitaciones institucionales o necesidades de articulación con Fiscalía, ICBF o Gobernación?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -3686,7 +3686,7 @@
         "question_id": "Q005",
         "scoring_definition_ref": "scoring_modalities.TYPE_E",
         "scoring_modality": "TYPE_E",
-        "text": "¿El plan justifica su alcance en materia de género mencionando el marco legal (ej. Ley 1257) o reconociendo restricciones explícitas de tipo presupuestal, temporal o de competencias?",
+        "text": "¿El plan justifica el alcance de sus intervenciones en equidad de género mencionando el marco normativo (Ley 1257 de 2008, CONPES 4080) o reconociendo explícitamente qué competencias son municipales (prevención, atención inicial, rutas, empoderamiento) y cuáles dependen del nivel nacional (judicialización, protección material de alto riesgo)?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -3898,7 +3898,7 @@
         "question_id": "Q006",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿Las actividades para la equidad de género se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto' o 'entregable', 'cronograma' y 'costo' o 'presupuesto'?",
+        "text": "¿Las actividades para el cierre de brechas y atención a violencias (ej. operación de rutas de atención, escuelas de liderazgo político, formación en oficios no tradicionales, consejos de seguridad para mujeres) aparecen en formato estructurado (tabla, matriz, Plan Indicativo) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -4523,7 +4523,7 @@
         "question_id": "Q007",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿La descripción de las actividades de género detalla el instrumento ('mediante talleres', 'a través de capital semilla'), la población objetivo ('mujeres rurales', 'madres cabeza de familia') y la lógica causal ('para generar autonomía', 'porque reduce la dependencia')?",
+        "text": "¿La descripción de actividades especifica el instrumento ('mediante Casas de la Mujer', 'a través de la Patrulla Púrpura', 'con capital semilla'), la población objetivo (mujeres rurales, víctimas de violencia, jefas de hogar) y explica cómo la actividad contribuye a la equidad ('para romper ciclos de dependencia', 'porque previene la feminización de la pobreza', 'con el fin de garantizar una vida libre de violencias')?",
         "validations": {
           "buscar_instrumento": {
             "minimum_required": 1,
@@ -4814,7 +4814,7 @@
         "question_id": "Q008",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿El PDM vincula explícitamente las actividades propuestas con las 'causas raíz' de la desigualdad de género (ej. dependencia económica, patrones culturales) identificadas en el diagnóstico?",
+        "text": "¿Las actividades propuestas se vinculan explícitamente con las causas estructurales de la desigualdad identificadas en el diagnóstico, tales como la dependencia económica, los estereotipos de género, la sobrecarga de cuidado o la debilidad en la respuesta institucional ante violencias?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -5068,7 +5068,7 @@
         "question_id": "Q009",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿El plan identifica posibles riesgos, 'obstáculos' o 'barreras' en la implementación de las actividades de género (ej. revictimización, baja participación) y propone 'medidas de mitigación'?",
+        "text": "¿El plan identifica posibles obstáculos o resistencias en la implementación de la política de género (ej. revictimización institucional, patrones culturales machistas arraigados, falta de denuncia por miedo) y propone medidas explícitas de mitigación o estrategias de cambio cultural para superarlos?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -5270,7 +5270,7 @@
         "question_id": "Q010",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿El conjunto de actividades de género demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad', 'sinergia', o una 'secuencia' lógica entre ellas.",
+        "text": "¿El plan describe explícitamente cómo las actividades de empoderamiento y prevención se complementan o siguen una secuencia lógica (ej. formación en derechos → empoderamiento económico → participación política; o sensibilización → denuncia → atención integral), evidenciando una estrategia articulada de transversalización?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -5618,7 +5618,7 @@
         "question_id": "Q011",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿Los indicadores de producto para género (ej. mujeres capacitadas, kits entregados) incluyen 'línea base', 'meta' cuantitativa, y 'fuente de verificación'?",
+        "text": "¿Los indicadores de producto (mujeres atendidas en rutas de violencia, funcionarias/os capacitados en género, emprendimientos femeninos fortalecidos, lideresas formadas) incluyen línea base, meta cuantitativa y fuente de verificación?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -6096,7 +6096,7 @@
         "question_id": "Q012",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿Las metas de los productos de género (ej. 'cobertura del 15% de mujeres rurales') son proporcionales a la magnitud de la brecha diagnosticada? Se debe buscar si se define la 'intensidad' o 'frecuencia' de la intervención.",
+        "text": "¿Las metas de productos guardan relación con la magnitud de la brecha o violencia identificada en el diagnóstico, y se especifica la priorización (mujeres en riesgo de feminicidio, ruralidad dispersa) o la cobertura de la intervención frente a la demanda potencial?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -6555,7 +6555,7 @@
         "question_id": "Q013",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿Los productos de género tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de la Mujer' o dependencia responsable)?",
+        "text": "¿Los productos están vinculados a códigos presupuestales específicos (Trazador de Género, recursos propios, SGP) y a entidades responsables identificadas (Secretaría de la Mujer, Desarrollo Social, Gobierno, Comisaría)?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -7033,7 +7033,7 @@
         "question_id": "Q014",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿Existe una relación factible entre la actividad (ej. 'un taller de formación') y la meta del producto asociado (ej. '5.000 mujeres emprendedoras') para el área de Derechos de las mujeres e igualdad de género? Se debe evaluar si los 'plazos' y recursos son realistas.",
+        "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'una charla de sensibilización') y la magnitud de la meta del producto asociado (ej. 'reducción de la tolerancia social a la violencia'), considerando que los cambios en equidad requieren procesos sostenidos y no solo eventos puntuales?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -7500,7 +7500,7 @@
         "question_id": "Q015",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿El PDM explica cómo los productos de la política de género (ej. 'mujeres capacitadas') contribuyen a generar resultados (ej. 'aumento de ingresos')? Se debe buscar la descripción de este 'mecanismo' o 'eslabón' causal.",
+        "text": "¿El plan describe cómo los productos (ej. 'mujeres con autonomía económica', 'rutas de atención activas', 'Consejos Consultivos operando') generan o contribuyen a los resultados esperados (ej. 'reducción de brechas', 'garantía de derechos', 'empoderamiento real'), explicando esta conexión o ruta causal?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -7835,7 +7835,7 @@
         "question_id": "Q016",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿Los indicadores de resultado para género (ej. 'tasa de participación política', 'reducción de la VBG') están definidos con línea base, meta y un horizonte temporal ('cuatrienio', 'para 2027')?",
+        "text": "¿Los indicadores de resultado en materia de género (tasa de violencia intrafamiliar, brecha de desempleo por sexo, porcentaje de participación de mujeres en cargos directivos/elección, índice de desigualdad de género) están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -8041,7 +8041,7 @@
         "question_id": "Q017",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿Se explicita la cadena causal que lleva a los resultados de género, mencionando los 'supuestos' clave (ej. 'si las mujeres denuncian') o las 'condiciones habilitantes' para que funcione?",
+        "text": "¿El plan describe la ruta que lleva a la igualdad y la garantía de derechos de las mujeres, mencionando condiciones necesarias o supuestos para que funcione (ej. 'si hay corresponsabilidad en el cuidado', 'si el mercado laboral absorbe la mano de obra femenina', 'si el sistema judicial no revictimiza')?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -8247,7 +8247,7 @@
         "question_id": "Q018",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿La ambición de las metas de resultado en materia de género (ej. 'reducir la brecha salarial en 10%') se justifica en función de los recursos asignados, la capacidad institucional o se compara con 'casos' similares?",
+        "text": "¿La ambición de las metas de resultado (ej. reducción de la VBG, aumento de la participación) se justifica en función de recursos asignados, capacidad institucional instalada (Comisarías, equipos), articulación con otros niveles, o se compara con la media nacional o municipios similares?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -8448,7 +8448,7 @@
         "question_id": "Q019",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿Los resultados propuestos para la igualdad de género (ej. 'aumento de la autonomía económica') 'atienden' o 'abordan' directamente los problemas priorizados en el diagnóstico?",
+        "text": "¿Los resultados propuestos (ej. 'vida libre de violencias', 'autonomía económica', 'participación incidente') atienden o abordan directamente las brechas, desigualdades y violencias priorizadas en el diagnóstico situacional de las mujeres?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -8610,7 +8610,7 @@
         "question_id": "Q020",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿El plan declara la alineación de sus resultados de género con marcos superiores como el PND o los ODS (especialmente el ODS 5)?",
+        "text": "¿El plan declara la alineación de sus resultados de género con la Política Pública Nacional de Equidad de Género, los Objetivos de Desarrollo Sostenible (especialmente ODS 5), o los lineamientos departamentales de mujer y género?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -8816,7 +8816,7 @@
         "question_id": "Q021",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿El PDM define 'impactos' o 'transformaciones estructurales' de largo plazo en equidad de género? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+        "text": "¿El plan define impactos o transformaciones estructurales de largo plazo para las mujeres (ej. 'transformación de roles de género', 'erradicación de la feminización de la pobreza', 'democracia paritaria consolidada'), describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado más allá del cuatrienio?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -9136,7 +9136,7 @@
         "question_id": "Q022",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿Se utilizan 'índices' (ej. Índice de Equidad de Género) o 'proxies' para medir los impactos en la política de género, justificando por qué son válidos para 'capturar el mecanismo' de cambio?",
+        "text": "¿Se utilizan índices reconocidos (ej. Índice de Paridad Política, Índice de Brecha Global de Género) o indicadores proxy para medir impactos en equidad, justificando por qué son adecuados para capturar las transformaciones culturales y estructurales esperadas?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -9352,7 +9352,7 @@
         "question_id": "Q023",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "Cuando un impacto en género es difícil de medir (ej. 'cambio en patrones culturales'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+        "text": "¿Los impactos en equidad de género se alinean con marcos globales y consideran riesgos externos (retrocesos en derechos, crisis económicas que afectan desproporcionadamente a mujeres, aumento de violencias en contextos de inseguridad) que podrían impedir o revertir los logros esperados?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -9534,7 +9534,7 @@
         "question_id": "Q024",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿Los impactos en género se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. crisis económica) que podrían romper el mecanismo causal?",
+        "text": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados (ej. doble jornada laboral sin redistribución del cuidado, violencia como reacción al empoderamiento) y propone un enfoque de \"acción sin daño\" o límites de la gestión municipal?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -9740,7 +9740,7 @@
         "question_id": "Q025",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿La ambición del impacto para la igualdad de género es realista? Se debe buscar si se analizan posibles 'efectos no deseados' (ej. sobrecarga en mujeres) o se declaran 'hipótesis límite'.",
+        "text": "¿El plan describe cómo se sostendrán los logros en equidad de género más allá del periodo de gobierno, identificando mecanismos de institucionalización (ej. Política Pública Municipal por Acuerdo, transversalización presupuestal), apropiación por organizaciones de mujeres o fortalecimiento de la sociedad civil?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -9959,7 +9959,7 @@
         "question_id": "Q026",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿Existe una 'teoría de cambio' explícita para la política de género, preferiblemente en un 'diagrama', que identifique causas, mediadores y 'supuestos verificables'?",
+        "text": "¿El plan presenta una descripción explícitamente de cómo se genera el cambio hacia la igualdad (ej. modelo ecológico para violencia, empoderamiento multidimensional), preferiblemente en diagrama o matriz, que identifique causas estructurales, intervenciones, supuestos y la secuencia insumos→actividades→productos→resultados→impactos?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -10131,7 +10131,7 @@
         "question_id": "Q027",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿Los saltos en la cadena causal de género son proporcionales y realistas (ej. un taller de 2 horas no genera 'empoderamiento económico total')?",
+        "text": "¿El plan evita saltos desproporcionados en su lógica (ej. no asume que un taller elimina el machismo), reconociendo explícitamente que la transformación de inequidades de género requiere procesos culturales y estructurales sostenidos en el tiempo y no solo acciones afirmativas puntuales?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -10320,7 +10320,7 @@
         "question_id": "Q028",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿El plan reconoce 'inconsistencias' en su lógica causal para género y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+        "text": "¿El plan reconoce la complejidad de las relaciones de género, identifica incertidumbres en su estrategia de cambio cultural, y propone mecanismos para aprender y ajustar (ej. observatorios de género, consejos consultivos activos, evaluaciones cualitativas)?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -10519,7 +10519,7 @@
         "question_id": "Q029",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿Se describe un sistema de monitoreo para la política de género que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia en caso de desviaciones?",
+        "text": "¿Se describe un sistema de monitoreo para la política de género que incluya indicadores desagregados, mecanismos de alerta temprana (ej. en violencias), retroalimentación con organizaciones de mujeres o Consejos Consultivos, y capacidad de adaptar la estrategia ante nuevas dinámicas de desigualdad?",
         "validations": {
           "completeness_check": {
             "type": "completeness",
@@ -10729,7 +10729,7 @@
         "question_id": "Q030",
         "scoring_definition_ref": "scoring_modalities.TYPE_A",
         "scoring_modality": "TYPE_A",
-        "text": "¿La lógica causal para la equidad de género considera el contexto, reconociendo 'grupos afectados' (ej. mujeres rurales, víctimas, étnicas) y 'restricciones' territoriales, culturales o normativas?",
+        "text": "¿El plan considera el contexto municipal específico (ruralidad, presencia de conflicto, vocación económica), reconoce la diversidad de las mujeres (enfoque interseccional: campesinas, afro, indígenas, con discapacidad) y explicita restricciones que condicionan el cierre de brechas en el territorio?",
         "validations": {
           "completeness_check": {
             "type": "completeness",

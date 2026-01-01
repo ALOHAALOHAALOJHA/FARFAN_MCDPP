@@ -289,7 +289,10 @@ class QuestionnaireAuditor:
         
         for i, q in enumerate(self.micro_questions):
             scoring = q.get('scoring', {})
-            modality = scoring.get('modality', 'UNSPECIFIED')
+            if isinstance(scoring, dict):
+                modality = scoring.get('modality', q.get('scoring_modality', 'UNSPECIFIED'))
+            else:
+                modality = q.get('scoring_modality', 'UNSPECIFIED')
             
             modality_counts[modality] += 1
             
@@ -375,7 +378,7 @@ class QuestionnaireAuditor:
         
         fields_to_check = [
             'question_id',
-            'question_text',
+            'text',
             'rationale',
             'documentation',
             'description',
@@ -440,7 +443,7 @@ class QuestionnaireAuditor:
         cross_cutting_by_policy_area = defaultdict(lambda: {'gender': 0, 'rights': 0, 'vulnerability': 0, 'equity': 0})
         
         for i, q in enumerate(self.micro_questions):
-            q_text = str(q.get('question_text', '')).lower()
+            q_text = str(q.get('text', '')).lower()
             
             base_slot = q.get('base_slot', '')
             pa = 'UNKNOWN'

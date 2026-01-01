@@ -1,8 +1,8 @@
 # Phase 0: Validation, Hardening & Bootstrap
 
 **Document ID:** PHASE-0-README  
-**Version:** 1.1.0  
-**Date:** 2025-12-31  
+**Version:** 1.2.0  
+**Date:** 2026-01-01  
 **Status:** ACTIVE  
 **Authors:** F.A.R.F.A.N Core Architecture Team  
 **Classification:** Technical Specification - Internal
