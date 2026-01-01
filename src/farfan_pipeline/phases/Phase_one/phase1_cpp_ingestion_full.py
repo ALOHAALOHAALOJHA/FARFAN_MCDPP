@@ -61,8 +61,11 @@ import re
 import unicodedata
 import warnings
 from datetime import datetime, timezone
+from functools import lru_cache
+import inspect
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Set
+from enum import Enum
 
 # Core pipeline imports - REAL PATHS based on actual project structure
 # Phase 0/1 models from same directory
@@ -72,6 +75,24 @@ from canonic_phases.phase_1_cpp_ingestion.phase1_models import (
     Chunk, CausalChains, IntegratedCausal, Arguments, Temporal, Discourse, Strategic,
     SmartChunk, ValidationResult, CausalGraph, CANONICAL_TYPES_AVAILABLE
 )
+
+# PDT Section Types and Hierarchy Levels
+class HierarchyLevel(Enum):
+    H1 = "H1"  # Título/Capítulo
+    H2 = "H2"  # Subcapítulo/Eje
+    H3 = "H3"  # Programa
+    H4 = "H4"  # Subprograma/Proyecto
+    H5 = "H5"  # Meta/Actividad
+
+class PDTSectionType(Enum):
+    PRESENTACION = "Presentación/Fundamentos"
+    DIAGNOSTICO = "Diagnóstico"
+    ESTRATEGICA = "Parte Estratégica"
+    INVERSIONES = "Plan Plurianual de Inversiones"
+    SEGUIMIENTO = "Seguimiento y Evaluación"
+    ESPECIAL = "Capítulos Especiales"
+
+PDT_TYPES_AVAILABLE = True
 
 # CPP models - REAL PRODUCTION MODELS (no stubs)
 from canonic_phases.phase_1_cpp_ingestion.cpp_models import (
@@ -1111,26 +1132,27 @@ class Phase1CPPIngestionFullContract:
         )
 
     def _execute_sp2_structural(self, preprocessed: PreprocessedDoc) -> StructureData:
-        """
-        SP2: Structural Analysis per FORCING ROUTE SECCIÓN 4.
-        [EXEC-SP2-001] through [EXEC-SP2-006]
-        """
         logger.info("SP2: Starting structural analysis")
-        
-        sections = []
-        hierarchy = {}
-        paragraph_mapping = {}
-        
-        # Pattern for section detection (CAPÍTULO, ARTÍCULO, PARTE, numbers)
-        section_patterns = [
-            r'^(?:CAPÍTULO|CAPITULO)\s+([IVXLCDM]+|\d+)',
-            r'^(?:ARTÍCULO|ARTICULO)\s+(\d+)',
-            r'^(?:SECCIÓN|SECCION)\s+(\d+)',
-            r'^(?:PARTE)\s+([IVXLCDM]+|\d+)',
-            r'^(\d+\.\d*\.?)\s+[A-ZÁÉÍÓÚ]',
+
+        sections: List[str] = []
+        hierarchy: Dict[str, Optional[str]] = {}
+        paragraph_mapping: Dict[int, str] = {}
+        structure_annotations: Dict[str, Dict[str, Any]] = {}
+
+        base_patterns = [
+            r"^(?:CAP[IÍ]TULO|CAPITULO)\s+([IVXLCDM]+|\d+)",
+            r"^(?:ART[IÍ]CULO|ARTICULO)\s+(\d+)",
+            r"^(?:SECCI[ÓO]N|SECCION)\s+(\d+)",
+            r"^(?:PARTE)\s+([IVXLCDM]+|\d+)",
+            r"^(\d+\.\d*\.?)\s+[A-ZÁÉÍÓÚÑ]",
         ]
-        combined_pattern = re.compile('|'.join(f'({p})' for p in section_patterns), re.MULTILINE | re.IGNORECASE)
-        
+        spec = self._load_unit_analysis_spec()
+        spec_patterns = self._build_heading_patterns_from_spec(spec)
+        combined_pattern = re.compile(
+            "|".join(f"({p})" for p in (base_patterns + spec_patterns)),
+            re.MULTILINE | re.IGNORECASE,
+        )
+
         # Use StructuralNormalizer if available
         if STRUCTURAL_AVAILABLE:
             try:
@@ -1144,38 +1166,53 @@ class Phase1CPPIngestionFullContract:
             except Exception as e:
                 logger.warning(f"SP2: StructuralNormalizer failed: {e}, using fallback")
         
-        # Fallback section detection
         if not sections:
             current_section = "DOCUMENTO_PRINCIPAL"
             sections = [current_section]
             hierarchy[current_section] = None
-            
+
             for i, para in enumerate(preprocessed.paragraphs):
-                match = combined_pattern.search(para[:200])  # Check first 200 chars
+                head = para[:250]
+                match = combined_pattern.search(head)
                 if match:
-                    section_name = match.group(0).strip()[:100]
+                    section_name = match.group(0).strip()
+                    section_name = re.sub(r"\s+", " ", section_name)[:100]
                     if section_name not in sections:
                         sections.append(section_name)
                         hierarchy[section_name] = current_section
                         current_section = section_name
                 paragraph_mapping[i] = current_section
         else:
-            # Map paragraphs to detected sections
             for i in range(len(preprocessed.paragraphs)):
-                paragraph_mapping[i] = sections[min(i // max(1, len(preprocessed.paragraphs) // len(sections)), len(sections) - 1)]
-        
-        # Ensure all sections have hierarchy entry
+                idx = min(i // max(1, len(preprocessed.paragraphs) // len(sections)), len(sections) - 1)
+                paragraph_mapping[i] = sections[idx]
+
         for section in sections:
             if section not in hierarchy:
                 hierarchy[section] = None
-        
+
+        if PDT_TYPES_AVAILABLE:
+            for section in sections:
+                snippet = ""
+                for p_idx, s_name in paragraph_mapping.items():
+                    if s_name == section:
+                        snippet = (preprocessed.paragraphs[p_idx] or "")[:400]
+                        break
+                structure_annotations[section] = {
+                    "nivel_jerarquico": self._infer_nivel_jerarquico(section),
+                    "seccion_pdt": self._infer_seccion_pdt(section, snippet),
+                }
+            self.subphase_results["structure_annotations"] = {
+                k: {
+                    "nivel_jerarquico": (v["nivel_jerarquico"].name if v["nivel_jerarquico"] else None),
+                    "seccion_pdt": (v["seccion_pdt"].value if v["seccion_pdt"] else None),
+                }
+                for k, v in structure_annotations.items()
+            }
+
         logger.info(f"SP2: Identified {len(sections)} sections, mapped {len(paragraph_mapping)} paragraphs")
-        
-        return StructureData(
-            sections=sections,
-            hierarchy=hierarchy,
-            paragraph_mapping=paragraph_mapping
-        )
+
+        return StructureData(sections=sections, hierarchy=hierarchy, paragraph_mapping=paragraph_mapping)
 
     def _execute_sp3_knowledge_graph(self, preprocessed: PreprocessedDoc, structure: StructureData) -> KnowledgeGraph:
         """
@@ -2094,41 +2131,40 @@ class Phase1CPPIngestionFullContract:
         logger.info("SP11: Starting SmartChunk generation - CONSTITUTIONAL INVARIANT")
         
         smart_chunks: List[SmartChunk] = []
-        
+
         for idx, chunk in enumerate(chunks):
             try:
-                # [EXEC-SP11-005] Validate chunk_id format PA{01-10}-DIM{01-06}
                 chunk_id = f"{chunk.policy_area_id}-{chunk.dimension_id}"
-                
-                # Extract text from segmentation metadata
-                text = ''
-                if hasattr(chunk, 'segmentation_metadata') and chunk.segmentation_metadata:
-                    text = chunk.segmentation_metadata.get('text', '')[:2000]
-                elif hasattr(chunk, 'text'):
-                    text = chunk.text or ''
-                
-                # Build SmartChunk with all enrichment fields
-                # [EXEC-SP11-006/007/008] causal_graph, temporal_markers, signal_tags
-                smart_chunk = SmartChunk(
-                    chunk_id=chunk_id,
-                    text=text,
-                    chunk_type='semantic',
-                    source_page=None,
-                    chunk_index=idx,
-                    # Enrichment fields populated by SP5-SP10
-                    causal_graph=chunk.causal_graph if chunk.causal_graph else CausalGraph(),
-                    temporal_markers=chunk.temporal_markers if chunk.temporal_markers else {},
-                    arguments=chunk.arguments if chunk.arguments else {},
-                    discourse_mode=chunk.discourse_mode if chunk.discourse_mode else 'unknown',
-                    strategic_rank=chunk.strategic_rank if hasattr(chunk, 'strategic_rank') else 0,
-                    irrigation_links=[],
-                    signal_tags=chunk.signal_tags if chunk.signal_tags else [],
-                    signal_scores=chunk.signal_scores if chunk.signal_scores else {},
-                    signal_version='v1.0.0'
-                )
-                
+                pa_id, dim_id = chunk.policy_area_id, chunk.dimension_id
+
+                text = ""
+                if hasattr(chunk, "segmentation_metadata") and chunk.segmentation_metadata:
+                    text = chunk.segmentation_metadata.get("text", "")[:2000]
+                elif hasattr(chunk, "text"):
+                    text = chunk.text or ""
+
+                kwargs = {
+                    "chunk_id": chunk_id,
+                    "text": text,
+                    "chunk_type": "semantic",
+                    "source_page": None,
+                    "chunk_index": idx,
+                    "policy_area_id": pa_id,
+                    "dimension_id": dim_id,
+                    "policy_area": getattr(chunk, "policy_area", None),
+                    "dimension": getattr(chunk, "dimension", None),
+                    "causal_graph": chunk.causal_graph if chunk.causal_graph else CausalGraph(),
+                    "temporal_markers": chunk.temporal_markers if chunk.temporal_markers else {},
+                    "arguments": chunk.arguments if chunk.arguments else {},
+                    "discourse_mode": chunk.discourse_mode if chunk.discourse_mode else "unknown",
+                    "strategic_rank": chunk.strategic_rank if hasattr(chunk, "strategic_rank") else 0,
+                    "irrigation_links": [],
+                    "signal_tags": chunk.signal_tags if chunk.signal_tags else [],
+                    "signal_scores": chunk.signal_scores if chunk.signal_scores else {},
+                    "signal_version": "v1.0.0",
+                }
+                smart_chunk = SmartChunk(**self._smartchunk_kwargs_filter(kwargs))
                 smart_chunks.append(smart_chunk)
-                
             except Exception as e:
                 logger.error(f"SP11: Failed to create SmartChunk {idx}: {e}")
                 raise Phase1FatalError(f"SP11: SmartChunk {idx} construction failed: {e}")
@@ -2753,6 +2789,102 @@ class Phase1CPPIngestionFullContract:
         logger.info(f"  ✓ execution_trace = 16 entries (SP0-SP15)")
         logger.info(f"  ✓ PA×DIM coverage = COMPLETE")
         logger.info(f"  ✓ Weight-based contract compliance = VERIFIED")
+
+    def _load_unit_analysis_spec(self) -> Dict[str, Any]:
+        """
+        Load the unit of analysis specification from JSON.
+        Returns the 'reporte_unit_of_analysis' dictionary.
+        """
+        try:
+            # Assuming file is relative to project root
+            # The context says project root is /Users/recovered/Downloads/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL
+            base_path = Path("/Users/recovered/Downloads/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL")
+            spec_path = base_path / "artifacts/data/canonic_description_unit_analysis.json"
+            
+            if not spec_path.exists():
+                logger.warning(f"Unit of analysis spec not found at {spec_path}")
+                return {}
+                
+            with open(spec_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                return data.get('reporte_unit_of_analysis', {})
+        except Exception as e:
+            logger.error(f"Failed to load unit of analysis spec: {e}")
+            return {}
+
+    def _build_heading_patterns_from_spec(self, spec: Dict[str, Any]) -> List[str]:
+        """
+        Build regex patterns for headings based on the spec.
+        """
+        patterns = []
+        if not spec:
+            return patterns
+            
+        # Look for "Patrones de delimitación de secciones" which is section II
+        secciones = spec.get('secciones', [])
+        patrones_section = next((s for s in secciones if s.get('id') == 'II'), None)
+        
+        if patrones_section:
+            # Look for "Formatos exactos de los encabezados"
+            puntos = patrones_section.get('puntos', [])
+            formatos_punto = next((p for p in puntos if p.get('id') == '1'), None)
+            
+            if formatos_punto:
+                tabla = formatos_punto.get('tabla_formatos', [])
+                for row in tabla:
+                    # Convert descriptive format to regex
+                    fmt = row.get('formato_texto_tipico', '')
+                    if fmt:
+                        # Heuristic regex conversion from description
+                        if "CAPÍTULO" in fmt:
+                            patterns.append(r"CAP[IÍ]TULO\s+(?:[IVX]+|\d+)")
+                        if "Línea estratégica" in fmt:
+                            patterns.append(r"L[ií]nea\s+Estrat[eé]gica\s+(?:\d+|[IVX]+)")
+                        if "Sector:" in fmt:
+                            patterns.append(r"Sector:\s+.+")
+                        if "Programa:" in fmt:
+                            patterns.append(r"Programa:\s+.+")
+        return patterns
+
+    def _infer_nivel_jerarquico(self, section_text: str) -> Optional[HierarchyLevel]:
+        """Infer hierarchy level (H1-H4) from section title."""
+        if not PDT_TYPES_AVAILABLE:
+            return None
+            
+        upper_text = section_text.upper()
+        if re.match(r'^(?:CAP[IÍ]TULO|T[IÍ]TULO|PARTE)\s+(?:[IVX]+|\d+)', upper_text):
+            return HierarchyLevel.H1
+        if re.match(r'^(?:ART[IÍ]CULO|SECCI[ÓO]N)\s+\d+', upper_text):
+            return HierarchyLevel.H2
+        if "LÍNEA ESTRATÉGICA" in upper_text or "EJE ESTRATÉGICO" in upper_text:
+            return HierarchyLevel.H2
+        if "PROGRAMA:" in upper_text:
+            return HierarchyLevel.H3
+        if "SUBPROGRAMA" in upper_text or "PROYECTO" in upper_text:
+            return HierarchyLevel.H4
+        return None
+
+    def _infer_seccion_pdt(self, section_text: str, snippet: str) -> Optional[PDTSectionType]:
+        """Infer PDT section type based on content analysis."""
+        if not PDT_TYPES_AVAILABLE:
+            return None
+            
+        text = (section_text + " " + snippet).upper()
+        
+        if "DIAGNÓSTICO" in text or "CARACTERIZACIÓN" in text or "SITUACIÓN ACTUAL" in text:
+            return PDTSectionType.DIAGNOSTICO
+        if "ESTRATÉGICA" in text or "LÍNEA" in text or "EJE" in text:
+            return PDTSectionType.ESTRATEGICA
+        if "INVERSIONES" in text or "FINANCIERO" in text or "PPI" in text:
+            return PDTSectionType.INVERSIONES
+        if "SEGUIMIENTO" in text or "EVALUACIÓN" in text or "INDICADORES" in text:
+            return PDTSectionType.SEGUIMIENTO
+        if "PAZ" in text or "VÍCTIMAS" in text or "SGR" in text or "REGALÍAS" in text:
+            return PDTSectionType.ESPECIAL
+        if "PRESENTACIÓN" in text or "INTRODUCCIÓN" in text:
+            return PDTSectionType.PRESENTACION
+            
+        return None
 
 def execute_phase_1_with_full_contract(
     canonical_input: CanonicalInput,
