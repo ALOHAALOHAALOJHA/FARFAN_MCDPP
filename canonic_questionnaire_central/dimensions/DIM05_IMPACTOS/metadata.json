@@ -1,0 +1,12 @@
+{
+  "description": "Evalúa la proyección de impactos (transformaciones estructurales) con rutas de transmisión, rezagos temporales y consideración de riesgos sistémicos.",
+  "dimension_id": "DIM05",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_en": "Impactos (Largo Plazo)",
+      "label_es": "Impactos (Largo Plazo)"
+    }
+  },
+  "legacy_id": "D5"
+}

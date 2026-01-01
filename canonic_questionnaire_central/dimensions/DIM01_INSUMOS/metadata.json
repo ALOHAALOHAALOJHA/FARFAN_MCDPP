@@ -1,0 +1,12 @@
+{
+  "description": "Evalúa la calidad del diagnóstico territorial, líneas base cuantitativas, identificación de brechas y suficiencia de recursos.",
+  "dimension_id": "DIM01",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_en": "Insumos (Diagnóstico y Líneas Base)",
+      "label_es": "Insumos (Diagnóstico y Líneas Base)"
+    }
+  },
+  "legacy_id": "D1"
+}

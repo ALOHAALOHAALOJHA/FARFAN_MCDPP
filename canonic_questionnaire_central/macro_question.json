@@ -1,0 +1,36 @@
+{
+  "aggregation_method": "holistic_assessment",
+  "clusters": [
+    "CL01",
+    "CL02",
+    "CL03",
+    "CL04"
+  ],
+  "fallback": {
+    "condition": "always_true",
+    "pattern": "MACRO_AMBIGUO",
+    "priority": 999
+  },
+  "patterns": [
+    {
+      "description": "Evaluar coherencia narrativa global del plan",
+      "priority": 1,
+      "type": "narrative_coherence"
+    },
+    {
+      "description": "Verificar integración entre todos los clusters",
+      "priority": 1,
+      "type": "cross_cluster_integration"
+    },
+    {
+      "description": "Evaluar visión de largo plazo y transformación estructural",
+      "priority": 2,
+      "type": "long_term_vision"
+    }
+  ],
+  "question_global": 305,
+  "question_id": "MACRO_1",
+  "scoring_modality": "MACRO_HOLISTIC",
+  "text": "¿El Plan de Desarrollo presenta una visión integral y coherente que articula todos los clusters y dimensiones?",
+  "type": "MACRO"
+}

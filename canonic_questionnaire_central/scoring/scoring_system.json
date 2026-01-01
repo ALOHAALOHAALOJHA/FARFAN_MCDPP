@@ -1,0 +1,97 @@
+{
+  "micro_levels": [
+    {
+      "color": "green",
+      "level": "EXCELENTE",
+      "min_score": 0.85
+    },
+    {
+      "color": "blue",
+      "level": "BUENO",
+      "min_score": 0.7
+    },
+    {
+      "color": "yellow",
+      "level": "ACEPTABLE",
+      "min_score": 0.55
+    },
+    {
+      "color": "red",
+      "level": "INSUFICIENTE",
+      "min_score": 0.0
+    }
+  ],
+  "modalities": {
+    "TYPE_A": {
+      "description": "Count 4 elements and scale to 0-3",
+      "levels": [],
+      "max_score": 3
+    },
+    "TYPE_B": {
+      "description": "Count up to 3 elements, each worth 1 point",
+      "levels": [],
+      "max_score": 3
+    },
+    "TYPE_C": {
+      "description": "Count 2 elements and scale to 0-3",
+      "levels": [],
+      "max_score": 3
+    },
+    "TYPE_D": {
+      "description": "Calculate ratio and apply thresholds",
+      "levels": [],
+      "max_score": 3
+    },
+    "TYPE_E": {
+      "description": "Apply if-then-else logic",
+      "levels": [],
+      "max_score": 3
+    },
+    "TYPE_F": {
+      "description": "Semantic matching with cosine similarity",
+      "levels": [],
+      "max_score": 3
+    }
+  },
+  "modality_definitions": {
+    "TYPE_A": {
+      "aggregation": "presence_threshold",
+      "description": "Count 4 elements and scale to 0-3",
+      "failure_code": "F-A-MIN",
+      "threshold": 0.7
+    },
+    "TYPE_B": {
+      "aggregation": "binary_sum",
+      "description": "Count up to 3 elements, each worth 1 point",
+      "failure_code": "F-B-MIN",
+      "max_score": 3
+    },
+    "TYPE_C": {
+      "aggregation": "presence_threshold",
+      "description": "Count 2 elements and scale to 0-3",
+      "failure_code": "F-C-MIN",
+      "threshold": 0.5
+    },
+    "TYPE_D": {
+      "aggregation": "weighted_sum",
+      "description": "Count 3 elements, weighted",
+      "failure_code": "F-D-MIN",
+      "weights": [
+        0.4,
+        0.3,
+        0.3
+      ]
+    },
+    "TYPE_E": {
+      "aggregation": "binary_presence",
+      "description": "Boolean presence check",
+      "failure_code": "F-E-MIN"
+    },
+    "TYPE_F": {
+      "aggregation": "normalized_continuous",
+      "description": "Continuous scale",
+      "failure_code": "F-F-MIN",
+      "normalization": "minmax"
+    }
+  }
+}

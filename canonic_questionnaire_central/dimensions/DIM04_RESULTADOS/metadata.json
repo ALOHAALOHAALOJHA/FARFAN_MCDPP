@@ -1,0 +1,12 @@
+{
+  "description": "Evalúa la definición de resultados (cambios en la población) con métricas, líneas base, metas y encadenamiento causal.",
+  "dimension_id": "DIM04",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_en": "Resultados (Medibles)",
+      "label_es": "Resultados (Medibles)"
+    }
+  },
+  "legacy_id": "D4"
+}

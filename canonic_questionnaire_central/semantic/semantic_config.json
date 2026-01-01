@@ -1,0 +1,14 @@
+{
+  "disambiguation": {
+    "confidence_threshold": 0.72,
+    "entity_linker": "spaCy_es_core_news_lg"
+  },
+  "embedding_strategy": {
+    "dimension": 768,
+    "hybrid": {
+      "bm25": true,
+      "fusion": "RRF"
+    },
+    "model": "multilingual-e5-base"
+  }
+}

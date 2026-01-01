@@ -1,0 +1,12 @@
+{
+  "description": "Evalúa la especificación de productos (bienes y servicios) con indicadores verificables, fórmulas, fuentes y trazabilidad presupuestal.",
+  "dimension_id": "DIM03",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_en": "Productos (Verificables)",
+      "label_es": "Productos (Verificables)"
+    }
+  },
+  "legacy_id": "D3"
+}

@@ -1,0 +1,12 @@
+{
+  "description": "Evalúa la formalización de actividades con estructura clara, responsables, cronogramas, costos y mecanismos causales.",
+  "dimension_id": "DIM02",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_en": "Actividades (Diseño de Intervención)",
+      "label_es": "Actividades (Diseño de Intervención)"
+    }
+  },
+  "legacy_id": "D2"
+}

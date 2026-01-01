@@ -1,0 +1,163 @@
+{
+  "version": "3.0.0",
+  "generated_at": "2026-01-01T11:18:29.386625Z",
+  "description": "Validation templates for normalizing validation contracts across dimensions",
+  "templates": {
+    "DIM02_ACTIVIDADES": [
+      {
+        "type": "completeness",
+        "threshold": 0.8,
+        "description": "Ensures minimum text completeness",
+        "priority": 1
+      },
+      {
+        "type": "causal_link_verification",
+        "min_links": 2,
+        "description": "Verifies explicit causal connections between activity and problem",
+        "priority": 2,
+        "colombian_context": "Activities in Colombian PDMs must explicitly link to diagnosed problems"
+      },
+      {
+        "type": "resource_consistency",
+        "check": "budget_match",
+        "description": "Validates that activities have corresponding budget allocation",
+        "priority": 3,
+        "colombian_context": "BPIN/SIGOP numbering required for Colombian investment projects"
+      },
+      {
+        "type": "responsibility_assignment",
+        "required": true,
+        "description": "Ensures responsible entity is identified",
+        "priority": 4,
+        "colombian_context": "Secretaría, entidad, or dependencia must be named"
+      },
+      {
+        "type": "temporal_coherence",
+        "check": "plausible_timeline",
+        "description": "Validates activity duration is realistic",
+        "priority": 5,
+        "colombian_context": "Activities must fit within 4-year mayoral term"
+      }
+    ],
+    "DIM04_RESULTADOS": [
+      {
+        "type": "completeness",
+        "threshold": 0.8,
+        "description": "Ensures minimum text completeness",
+        "priority": 1
+      },
+      {
+        "type": "outcome_traceability",
+        "check": "result_to_product",
+        "description": "Verifies outcomes are traceable to products",
+        "priority": 2,
+        "colombian_context": "Results must derive from products (Ley 152 de 1994)"
+      },
+      {
+        "type": "indicator_validity",
+        "requires": [
+          "linea_base",
+          "meta",
+          "unidad_medida"
+        ],
+        "description": "Validates outcome indicators have baseline, target, and unit",
+        "priority": 3,
+        "colombian_context": "INDICADOR-PDM format following DNP standards"
+      },
+      {
+        "type": "temporal_coherence",
+        "horizon": "medium_term",
+        "description": "Validates outcome temporal consistency",
+        "priority": 4,
+        "colombian_context": "Outcomes typically 2-4 year horizon"
+      },
+      {
+        "type": "measurability",
+        "check": "quantifiable",
+        "description": "Ensures outcome can be measured",
+        "priority": 5,
+        "colombian_context": "DNP requires measurable outcomes for follow-up"
+      }
+    ],
+    "DIM05_IMPACTOS": [
+      {
+        "type": "completeness",
+        "threshold": 0.8,
+        "description": "Ensures minimum text completeness",
+        "priority": 1
+      },
+      {
+        "type": "impact_chain_completeness",
+        "requires": [
+          "outcome_to_impact_link"
+        ],
+        "description": "Verifies impact chain from outcomes to long-term impacts",
+        "priority": 2,
+        "colombian_context": "Impacts are long-term (10+ years) structural changes"
+      },
+      {
+        "type": "theoretical_coherence",
+        "check": "change_theory_aligned",
+        "description": "Validates impact aligns with theory of change",
+        "priority": 3,
+        "colombian_context": "Must align with Teoría de Cambio del PDM"
+      },
+      {
+        "type": "strategic_alignment",
+        "frameworks": [
+          "PND",
+          "ODS",
+          "plan_sectorial"
+        ],
+        "description": "Validates alignment with national/global frameworks",
+        "priority": 4,
+        "colombian_context": "PND, ODS, CONPES alignment required"
+      },
+      {
+        "type": "ambition_realism_balance",
+        "check": "ambitious_but_achievable",
+        "description": "Balances ambitious goals with feasibility",
+        "priority": 5,
+        "colombian_context": "Impact targets must be ambitious yet municipality-feasible"
+      }
+    ],
+    "DIM06_CAUSALIDAD": [
+      {
+        "type": "completeness",
+        "threshold": 0.8,
+        "description": "Ensures minimum text completeness",
+        "priority": 1
+      },
+      {
+        "type": "causal_chain_integrity",
+        "min_links": 3,
+        "description": "Verifies complete causal chain from activities to impacts",
+        "priority": 2,
+        "colombian_context": "Cadena de resultados must be complete"
+      },
+      {
+        "type": "assumption_explicitness",
+        "requires": [
+          "supuestos_clave"
+        ],
+        "description": "Validates key assumptions are explicitly stated",
+        "priority": 3,
+        "colombian_context": "Supuestos y riesgos must be documented"
+      },
+      {
+        "type": "logical_consistency",
+        "check": "no_circular_reasoning",
+        "description": "Detects circular reasoning or logical fallacies",
+        "priority": 4,
+        "colombian_context": "Common fallacy: 'we will achieve X by achieving X'"
+      },
+      {
+        "type": "contextual_adaptation",
+        "check": "territorial_specificity",
+        "description": "Validates causal logic is adapted to municipal context",
+        "priority": 5,
+        "colombian_context": "Causal mechanisms must reflect municipal realities"
+      }
+    ]
+  }
+}

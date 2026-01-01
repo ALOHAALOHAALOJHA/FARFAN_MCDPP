@@ -1,0 +1,12 @@
+{
+  "description": "Evalúa la explicitación de teorías de cambio, identificación de causas raíz, mediadores, moderadores y supuestos verificables.",
+  "dimension_id": "DIM06",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_en": "Causalidad (Teoría de Cambio Explícita)",
+      "label_es": "Causalidad (Teoría de Cambio Explícita)"
+    }
+  },
+  "legacy_id": "D6"
+}

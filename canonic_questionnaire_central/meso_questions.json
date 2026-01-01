@@ -1,0 +1,96 @@
+[
+  {
+    "aggregation_method": "weighted_average",
+    "cluster_id": "CL01",
+    "patterns": [
+      {
+        "description": "Verificar referencias cruzadas entre áreas ['P2', 'P3', 'P7']",
+        "type": "cross_reference"
+      },
+      {
+        "description": "Evaluar coherencia narrativa entre políticas del cluster",
+        "type": "coherence"
+      }
+    ],
+    "policy_areas": [
+      "P2",
+      "P3",
+      "P7"
+    ],
+    "question_global": 301,
+    "question_id": "MESO_1",
+    "scoring_modality": "MESO_INTEGRATION",
+    "text": "¿Cómo se integran las políticas en el cluster Seguridad y Paz?",
+    "type": "MESO"
+  },
+  {
+    "aggregation_method": "weighted_average",
+    "cluster_id": "CL02",
+    "patterns": [
+      {
+        "description": "Verificar referencias cruzadas entre áreas ['P1', 'P5', 'P6']",
+        "type": "cross_reference"
+      },
+      {
+        "description": "Evaluar coherencia narrativa entre políticas del cluster",
+        "type": "coherence"
+      }
+    ],
+    "policy_areas": [
+      "P1",
+      "P5",
+      "P6"
+    ],
+    "question_global": 302,
+    "question_id": "MESO_2",
+    "scoring_modality": "MESO_INTEGRATION",
+    "text": "¿Cómo se integran las políticas en el cluster Grupos Poblacionales?",
+    "type": "MESO"
+  },
+  {
+    "aggregation_method": "weighted_average",
+    "cluster_id": "CL03",
+    "patterns": [
+      {
+        "description": "Verificar referencias cruzadas entre áreas ['P4', 'P8']",
+        "type": "cross_reference"
+      },
+      {
+        "description": "Evaluar coherencia narrativa entre políticas del cluster",
+        "type": "coherence"
+      }
+    ],
+    "policy_areas": [
+      "P4",
+      "P8"
+    ],
+    "question_global": 303,
+    "question_id": "MESO_3",
+    "scoring_modality": "MESO_INTEGRATION",
+    "text": "¿Cómo se integran las políticas en el cluster Territorio-Ambiente?",
+    "type": "MESO"
+  },
+  {
+    "aggregation_method": "weighted_average",
+    "cluster_id": "CL04",
+    "patterns": [
+      {
+        "description": "Verificar referencias cruzadas entre áreas ['P9', 'P10']",
+        "type": "cross_reference"
+      },
+      {
+        "description": "Evaluar coherencia narrativa entre políticas del cluster",
+        "type": "coherence"
+      }
+    ],
+    "policy_areas": [
+      "P9",
+      "P10"
+    ],
+    "question_global": 304,
+    "question_id": "MESO_4",
+    "scoring_modality": "MESO_INTEGRATION",
+    "text": "¿Cómo se integran las políticas en el cluster Derechos Sociales & Crisis?",
+    "type": "MESO"
+  }
+]
