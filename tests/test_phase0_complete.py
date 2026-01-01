@@ -27,7 +27,7 @@ from unittest.mock import Mock, patch
 import pytest
 
 # Phase 0 components
-from canonic_phases.Phase_one.phase0_input_validation import (
+from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import (
     CanonicalInput,
     CanonicalInputValidator,
     Phase0Input,
@@ -35,7 +35,7 @@ from canonic_phases.Phase_one.phase0_input_validation import (
     Phase0ValidationContract,
     PHASE0_VERSION,
 )
-from canonic_phases.Phase_zero.phase0_50_00_boot_checks import (
+from farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks import (
     BootCheckError,
     check_calibration_files,
     check_contradiction_module_available,
@@ -45,7 +45,7 @@ from canonic_phases.Phase_zero.phase0_50_00_boot_checks import (
     get_boot_check_summary,
     run_boot_checks,
 )
-from canonic_phases.Phase_zero.phase0_10_01_runtime_config import (
+from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import (
     ConfigurationError,
     FallbackCategory,
     RuntimeConfig,
@@ -502,7 +502,7 @@ class TestBootChecks:
         assert "TEST_ERROR_CODE" in str(error)
         print("  ✓ BootCheckError structure correct")
     
-    @patch('canonic_phases.Phase_zero.boot_checks.importlib.import_module')
+    @patch('farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks.importlib.import_module')
     def test_contradiction_module_check_prod_strict(self, mock_import):
         """Test contradiction module check fails in PROD mode."""
         mock_import.side_effect = ImportError("Module not found")
@@ -521,7 +521,7 @@ class TestBootChecks:
         config = RuntimeConfig.from_env()
         
         # Should not raise, just return False
-        with patch('canonic_phases.Phase_zero.boot_checks.importlib.import_module') as mock_import:
+        with patch('farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks.importlib.import_module') as mock_import:
             mock_import.side_effect = ImportError("Module not found")
             result = check_contradiction_module_available(config)
             assert result is False
