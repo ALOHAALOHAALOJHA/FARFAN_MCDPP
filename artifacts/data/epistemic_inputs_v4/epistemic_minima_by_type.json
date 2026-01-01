@@ -1,0 +1,190 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "specification_source": "episte_refact.md Section 1.1 (Type Classification)",
+    "purpose": "Enforce TYPE-specific method ratios and mandatory patterns",
+    "created": "2024-12-31",
+    "description": "Each TYPE has specific epistemic requirements - these must be satisfied regardless of score threshold"
+  },
+  "type_specifications": {
+    "TYPE_A": {
+      "name": "Semantic Triangulation",
+      "focus": "Semantic coherence, triangulation across sources",
+      "expected_layer_ratio": {
+        "description": "N2 should dominate for semantic reasoning",
+        "N1_EMP": {"min": 0.2, "max": 0.4},
+        "N2_INF": {"min": 0.4, "max": 0.6},
+        "N3_AUD": {"min": 0.1, "max": 0.3}
+      },
+      "mandatory_patterns": {
+        "N1": ["semantic.*chunk", "text.*mining", "semantic.*extract"],
+        "N2": ["semantic_score", "dempster", "triangulat"],
+        "N3": ["contradiction.*detect", "semantic.*valid"]
+      },
+      "fusion_strategy": {
+        "R1": "concat",
+        "R2": "semantic_triangulation",
+        "prohibited": ["weighted_mean", "concat_only"]
+      },
+      "rationale": "Semantic reasoning requires multi-source triangulation, not just extraction"
+    },
+    "TYPE_B": {
+      "name": "Bayesian Causal",
+      "focus": "Posterior estimation given causal structure",
+      "expected_layer_ratio": {
+        "description": "Balanced N1 (evidence) + N2 (inference) + N3 (validation)",
+        "N1_EMP": {"min": 0.25, "max": 0.45},
+        "N2_INF": {"min": 0.30, "max": 0.50},
+        "N3_AUD": {"min": 0.15, "max": 0.35}
+      },
+      "mandatory_patterns": {
+        "N1": ["prior", "likelihood", "evidence.*extract"],
+        "N2": ["bayesian", "posterior", ".*update", "evaluate.*policy", "compare.*policies"],
+        "N3": ["statistical.*test", "significance", "sample.*valid", "p.*value"]
+      },
+      "fusion_strategy": {
+        "R1": "concat",
+        "R2": "bayesian_update",
+        "prohibited": ["weighted_mean", "simple_concat"]
+      },
+      "epistemic_necessity_override": {
+        "description": "These methods MUST be included even if below score threshold",
+        "forced_inclusions": [
+          "BayesianNumericalAnalyzer.*",
+          "BayesianUpdater.*",
+          "StatisticalGateAuditor.*"
+        ],
+        "rationale": "Bayesian inference requires these components - epistemically necessary"
+      }
+    },
+    "TYPE_C": {
+      "name": "Causal DAG",
+      "focus": "DAG validity, acyclicity, topological ordering",
+      "expected_layer_ratio": {
+        "description": "N3 (graph validation) should be strong",
+        "N1_EMP": {"min": 0.2, "max": 0.4},
+        "N2_INF": {"min": 0.25, "max": 0.45},
+        "N3_AUD": {"min": 0.25, "max": 0.45}
+      },
+      "mandatory_patterns": {
+        "N1": ["causal.*extract", "graph.*construct", "teoria.*cambio"],
+        "N2": ["graph.*construct", "topological", "path.*detect"],
+        "N3": ["cycle.*detect", "dag.*valid", "acyclic", "topological.*sort"]
+      },
+      "fusion_strategy": {
+        "R1": "graph_construction",
+        "R2": "topological_overlay",
+        "prohibited": ["concat_only", "weighted_mean"]
+      },
+      "rationale": "Causal DAGs must be acyclic - N3 veto is critical"
+    },
+    "TYPE_D": {
+      "name": "Financial",
+      "focus": "Budget sufficiency, cost-goal coherence",
+      "expected_layer_ratio": {
+        "description": "N2 (aggregation/analysis) should dominate, NOT N1",
+        "N1_EMP": {"min": 0.15, "max": 0.35},
+        "N2_INF": {"min": 0.45, "max": 0.65},
+        "N3_AUD": {"min": 0.15, "max": 0.30}
+      },
+      "mandatory_patterns": {
+        "N1": ["financial.*extract", "budget.*parse", "table.*read"],
+        "N2": ["financial.*aggreg", "weighted.*mean", "budget.*coherence", "per.*capita"],
+        "N3": ["fiscal.*valid", "budget.*audit", "sustainability.*check"]
+      },
+      "fusion_strategy": {
+        "R1": "concat",
+        "R2": "weighted_mean",
+        "prohibited": ["concat_only", "simple_concat"]
+      },
+      "epistemic_necessity_override": {
+        "description": "Financial analysis requires aggregation methods",
+        "forced_inclusions": [
+          "FinancialAggregator.*",
+          ".*weighted.*aggregat",
+          ".*budget.*coherence.*"
+        ],
+        "rationale": "Financial questions require aggregation - N2 dominance is mandatory"
+      }
+    },
+    "TYPE_E": {
+      "name": "Logical Consistency",
+      "focus": "Non-contradiction, logical validity",
+      "expected_layer_ratio": {
+        "description": "N3 (veto gates) should dominate for Popperian falsification",
+        "N1_EMP": {"min": 0.15, "max": 0.35},
+        "N2_INF": {"min": 0.30, "max": 0.50},
+        "N3_AUD": {"min": 0.25, "max": 0.45}
+      },
+      "mandatory_patterns": {
+        "N1": ["logical.*extract", "statement.*parse"],
+        "N2": ["logical.*consist", "min.*conf", "and.*logic"],
+        "N3": ["contradiction.*domin", "veto.*gate", "popperian", "falsif"]
+      },
+      "fusion_strategy": {
+        "R1": "concat",
+        "R2": "min_consistency",
+        "prohibited": ["weighted_mean", "average", "mean"]
+      },
+      "critical_constraint": {
+        "description": "TYPE_E MUST use MIN logic, NEVER averaging",
+        "prohibited_operations": ["weighted_mean", "average", "mean", "avg"],
+        "enforcement": "runtime_error_if_detected"
+      },
+      "rationale": "Logical contracts use AND logic - weakest link determines validity"
+    }
+  },
+  "validation_rules": {
+    "mandatory_pattern_satisfaction": {
+      "description": "Each layer MUST have at least one method matching mandatory patterns",
+      "severity": "FATAL",
+      "action": "REGENERATE_CONTRACT"
+    },
+    "layer_ratio_violation": {
+      "description": "If layer ratios fall outside expected range",
+      "severity": "WARNING",
+      "action": "LOG_WARNING_AND_ADJUST"
+    },
+    "fusion_strategy_mismatch": {
+      "description": "If fusion_strategy doesn't match TYPE specification",
+      "severity": "FATAL",
+      "action": "CORRECT_FUSION_STRATEGY"
+    },
+    "prohibited_operation_detected": {
+      "description": "If prohibited operation is used for the TYPE",
+      "severity": "FATAL",
+      "action": "ABORT_WITH_ERROR"
+    }
+  },
+  "epistemic_necessity_logic": {
+    "description": "Override score threshold for epistemically necessary methods",
+    "implementation": """
+    def select_with_epistemic_override(candidates, question_type, level):
+        type_requirements = EPISTEMIC_MINIMA[question_type]
+
+        # Get forced inclusions for this level
+        forced_patterns = type_requirements["mandatory_patterns"][level]
+        forced_inclusions = type_requirements.get("epistemic_necessity_override", {}).get("forced_inclusions", [])
+
+        # Always include methods matching mandatory patterns
+        selected = []
+        for candidate in candidates:
+            method_id = candidate.get("method_id", "")
+
+            # Check if method matches forced inclusion pattern
+            if any(re.search(pattern, method_id, re.IGNORECASE) for pattern in forced_inclusions):
+                candidate["selection_reason"] = "epistemic_necessity_override"
+                candidate["effective_score"] = 1.0  # Force inclusion
+                selected.append(candidate)
+            elif any(re.search(pattern, method_id, re.IGNORECASE) for pattern in forced_patterns):
+                if candidate.get("score", 0) >= EPISTEMIC_THRESHOLD:
+                    candidate["selection_reason"] = "mandatory_pattern_match"
+                    selected.append(candidate)
+            elif candidate.get("score", 0) >= SCORE_THRESHOLD:
+                candidate["selection_reason"] = "score_threshold"
+                selected.append(candidate)
+
+        return selected
+    """
+  }
+}
