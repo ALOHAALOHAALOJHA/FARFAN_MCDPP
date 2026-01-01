@@ -17,6 +17,7 @@ Design Principles:
 from __future__ import annotations
 
 import logging
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from types import MappingProxyType
 from typing import Any
@@ -27,6 +28,21 @@ from farfan_pipeline.core.types import ChunkData, PreprocessedDocument, Provenan
 logger = logging.getLogger(__name__)
 
 _EMPTY_MAPPING = MappingProxyType({})
+
+
+@dataclass
+class ChunkArtifacts:
+    """Container for all outputs produced by processing a single chunk."""
+
+    sentence: dict[str, Any]
+    sentence_metadata: dict[str, Any]
+    chunk_summary: dict[str, Any]
+    chunk_data: ChunkData
+    table: dict[str, Any] | None
+    entity_mentions: dict[str, list[int]]
+    temporal_mentions: dict[str, list[int]]
+    chunk_text_length: int
+    has_provenance: bool
 
 
 class CPPAdapterError(Exception):
@@ -51,7 +67,6 @@ class CPPAdapter:
         """
         self.logger = logging.getLogger(self.__class__.__name__)
 
-        # Initialize WiringValidator for runtime contract validation
         self.enable_runtime_validation = enable_runtime_validation
         if enable_runtime_validation:
             try:
@@ -68,6 +83,294 @@ class CPPAdapter:
                 self.wiring_validator = None
         else:
             self.wiring_validator = None
+
+        self.config = {
+            "confidence_layout_default": ParameterLoaderV2.get(
+                "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                "auto_param_L256_66",
+                0.0,
+            ),
+            "confidence_layout_missing": ParameterLoaderV2.get(
+                "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                "auto_param_L256_108",
+                0.0,
+            ),
+            "confidence_ocr_default": ParameterLoaderV2.get(
+                "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                "auto_param_L257_60",
+                0.0,
+            ),
+            "confidence_ocr_missing": ParameterLoaderV2.get(
+                "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                "auto_param_L257_102",
+                0.0,
+            ),
+            "confidence_typing_default": ParameterLoaderV2.get(
+                "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                "auto_param_L258_66",
+                0.0,
+            ),
+            "confidence_typing_missing": ParameterLoaderV2.get(
+                "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                "auto_param_L258_108",
+                0.0,
+            ),
+            "quality_metrics_defaults": {
+                "provenance_completeness": ParameterLoaderV2.get(
+                    "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                    "auto_param_L328_117",
+                    0.0,
+                ),
+                "structural_consistency": ParameterLoaderV2.get(
+                    "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                    "auto_param_L329_114",
+                    0.0,
+                ),
+                "boundary_f1": ParameterLoaderV2.get(
+                    "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                    "auto_param_L330_81",
+                    0.0,
+                ),
+                "kpi_linkage_rate": ParameterLoaderV2.get(
+                    "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                    "auto_param_L331_96",
+                    0.0,
+                ),
+                "budget_consistency_score": ParameterLoaderV2.get(
+                    "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                    "auto_param_L332_120",
+                    0.0,
+                ),
+                "temporal_robustness": ParameterLoaderV2.get(
+                    "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                    "auto_param_L333_105",
+                    0.0,
+                ),
+                "chunk_context_coverage": ParameterLoaderV2.get(
+                    "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                    "auto_param_L334_114",
+                    0.0,
+                ),
+            },
+            "provenance_completeness_default": ParameterLoaderV2.get(
+                "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
+                "auto_param_L397_92",
+                0.0,
+            ),
+        }
+
+    def _resolve_chunk_attributes(self, chunk: Any) -> dict[str, Any]:
+        """Extract all needed attributes from a chunk in a single pass.
+
+        Args:
+            chunk: Chunk object to extract attributes from
+
+        Returns:
+            Dictionary with resolved attribute values
+        """
+        return {
+            "policy_area_id": getattr(chunk, "policy_area_id", None),
+            "dimension_id": getattr(chunk, "dimension_id", None),
+            "resolution": (
+                chunk.resolution.value.lower()
+                if hasattr(chunk, "resolution") and chunk.resolution
+                else None
+            ),
+            "confidence": getattr(chunk, "confidence", None),
+            "provenance": getattr(chunk, "provenance", None),
+            "entities": getattr(chunk, "entities", None),
+            "time_facets": getattr(chunk, "time_facets", None),
+            "geo_facets": getattr(chunk, "geo_facets", None),
+            "policy_facets": getattr(chunk, "policy_facets", None),
+            "kpi": getattr(chunk, "kpi", None),
+            "budget": getattr(chunk, "budget", None),
+        }
+
+    def _process_chunk(
+        self, chunk: Any, idx: int, current_offset: int
+    ) -> ChunkArtifacts:
+        """Process a single chunk and return all its artifacts.
+
+        Args:
+            chunk: Chunk object to process
+            idx: Index of the chunk in the sorted list
+            current_offset: Current character offset in the full text
+
+        Returns:
+            ChunkArtifacts containing all outputs for this chunk
+
+        Raises:
+            CPPAdapterError: If chunk data is invalid
+        """
+        chunk_text = chunk.text
+        chunk_start = current_offset
+        chunk_end = chunk_start + len(chunk_text)
+
+        attrs = self._resolve_chunk_attributes(chunk)
+
+        sentence = {
+            "text": chunk_text,
+            "chunk_id": chunk.id,
+            "resolution": attrs["resolution"],
+        }
+
+        extra_metadata = {
+            "chunk_id": chunk.id,
+            "policy_area_id": attrs["policy_area_id"],
+            "dimension_id": attrs["dimension_id"],
+            "resolution": attrs["resolution"],
+        }
+
+        if attrs["policy_facets"]:
+            extra_metadata["policy_facets"] = {
+                "axes": getattr(attrs["policy_facets"], "axes", []),
+                "programs": getattr(attrs["policy_facets"], "programs", []),
+                "projects": getattr(attrs["policy_facets"], "projects", []),
+            }
+
+        if attrs["time_facets"]:
+            extra_metadata["time_facets"] = {
+                "years": getattr(attrs["time_facets"], "years", []),
+                "periods": getattr(attrs["time_facets"], "periods", []),
+            }
+
+        if attrs["geo_facets"]:
+            extra_metadata["geo_facets"] = {
+                "territories": getattr(attrs["geo_facets"], "territories", []),
+                "regions": getattr(attrs["geo_facets"], "regions", []),
+            }
+
+        sentence_metadata = {
+            "index": idx,
+            "page_number": None,
+            "start_char": chunk_start,
+            "end_char": chunk_end,
+            "extra": dict(extra_metadata),
+        }
+
+        confidence_dict = {
+            "layout": (
+                getattr(attrs["confidence"], "layout", self.config["confidence_layout_default"])
+                if attrs["confidence"]
+                else self.config["confidence_layout_missing"]
+            ),
+            "ocr": (
+                getattr(attrs["confidence"], "ocr", self.config["confidence_ocr_default"])
+                if attrs["confidence"]
+                else self.config["confidence_ocr_missing"]
+            ),
+            "typing": (
+                getattr(attrs["confidence"], "typing", self.config["confidence_typing_default"])
+                if attrs["confidence"]
+                else self.config["confidence_typing_missing"]
+            ),
+        }
+
+        chunk_summary = {
+            "id": chunk.id,
+            "resolution": attrs["resolution"],
+            "text_span": {"start": chunk_start, "end": chunk_end},
+            "policy_area_id": extra_metadata["policy_area_id"],
+            "dimension_id": extra_metadata["dimension_id"],
+            "has_kpi": attrs["kpi"] is not None,
+            "has_budget": attrs["budget"] is not None,
+            "confidence": confidence_dict,
+        }
+
+        if attrs["provenance"]:
+            if not hasattr(attrs["provenance"], "page_number") or attrs["provenance"].page_number is None:
+                raise CPPAdapterError(
+                    f"Missing provenance.page_number in chunk {chunk.id}"
+                )
+            if not hasattr(attrs["provenance"], "section_header") or not attrs["provenance"].section_header:
+                raise CPPAdapterError(
+                    f"Missing provenance.section_header in chunk {chunk.id}"
+                )
+        else:
+            raise CPPAdapterError(f"Missing provenance in chunk {chunk.id}")
+
+        entity_mentions: dict[str, list[int]] = {}
+        if attrs["entities"]:
+            for entity in attrs["entities"]:
+                entity_text = getattr(entity, "text", str(entity))
+                if entity_text not in entity_mentions:
+                    entity_mentions[entity_text] = []
+                entity_mentions[entity_text].append(idx)
+
+        temporal_mentions: dict[str, list[int]] = {}
+        if attrs["time_facets"] and hasattr(attrs["time_facets"], "years") and attrs["time_facets"].years:
+            for year in attrs["time_facets"].years:
+                year_key = str(year)
+                if year_key not in temporal_mentions:
+                    temporal_mentions[year_key] = []
+                temporal_mentions[year_key].append(idx)
+
+        table = None
+        if attrs["budget"]:
+            budget = attrs["budget"]
+            table = {
+                "table_id": f"budget_{idx}",
+                "label": f"Budget: {getattr(budget, 'source', 'Unknown')}",
+                "amount": getattr(budget, "amount", 0),
+                "currency": getattr(budget, "currency", "COP"),
+                "year": getattr(budget, "year", None),
+                "use": getattr(budget, "use", None),
+                "source": getattr(budget, "source", None),
+            }
+
+        chunk_type_value = chunk.chunk_type
+        if chunk_type_value not in [
+            "diagnostic",
+            "activity",
+            "indicator",
+            "resource",
+            "temporal",
+            "entity",
+        ]:
+            raise CPPAdapterError(
+                f"Invalid chunk_type '{chunk_type_value}' in chunk {chunk.id}"
+            )
+
+        chunk_data = ChunkData(
+            id=idx,
+            text=chunk_text,
+            chunk_type=chunk_type_value,
+            sentences=[idx],
+            tables=[idx] if table else [],
+            start_pos=chunk_start,
+            end_pos=chunk_end,
+            confidence=(
+                getattr(attrs["confidence"], "overall", 1.0)
+                if attrs["confidence"]
+                else 1.0
+            ),
+            edges_out=[],
+            policy_area_id=extra_metadata["policy_area_id"],
+            dimension_id=extra_metadata["dimension_id"],
+            provenance=(
+                Provenance(
+                    page_number=attrs["provenance"].page_number,
+                    section_header=getattr(attrs["provenance"], "section_header", None),
+                    bbox=getattr(attrs["provenance"], "bbox", None),
+                    span_in_page=getattr(attrs["provenance"], "span_in_page", None),
+                    source_file=getattr(attrs["provenance"], "source_file", None),
+                )
+                if attrs["provenance"]
+                else None
+            ),
+        )
+
+        return ChunkArtifacts(
+            sentence=sentence,
+            sentence_metadata=sentence_metadata,
+            chunk_summary=chunk_summary,
+            chunk_data=chunk_data,
+            table=table,
+            entity_mentions=entity_mentions,
+            temporal_mentions=temporal_mentions,
+            chunk_text_length=len(chunk_text),
+            has_provenance=attrs["provenance"] is not None,
+        )
 
     def to_preprocessed_document(
         self, canon_package: Any, document_id: str
@@ -207,300 +510,61 @@ class CPPAdapter:
 
         self.logger.info(f"Processing {len(sorted_chunks)} chunks")
 
-        # Build full text by concatenating chunks
-        full_text_parts: list[str] = []
-        sentences: list[dict[str, Any]] = []
-        sentence_metadata: list[dict[str, Any]] = []
-        tables: list[dict[str, Any]] = []
         chunk_index: dict[str, int] = {}
-        chunk_summaries: list[dict[str, Any]] = []
-        chunks_data: list[ChunkData] = []
-
-        # Track indices for building indexes
         term_index: dict[str, list[int]] = {}
         numeric_index: dict[str, list[int]] = {}
         temporal_index: dict[str, list[int]] = {}
         entity_index: dict[str, list[int]] = {}
 
-        # Track running offset that matches how full_text is built
         current_offset = 0
-
         provenance_with_data = 0
+        table_counter = 0
 
+        artifacts_list = []
         for idx, chunk in enumerate(sorted_chunks):
-            chunk_text = chunk.text
-            chunk_start = current_offset
             chunk_index[chunk.id] = idx
+            artifacts = self._process_chunk(chunk, idx, current_offset)
+            artifacts_list.append(artifacts)
 
-            # Add to full text
-            full_text_parts.append(chunk_text)
-
-            # Create sentence entry (each chunk is represented as a sentence for orchestrator compatibility)
-            sentences.append(
-                {
-                    "text": chunk_text,
-                    "chunk_id": chunk.id,
-                    "resolution": (
-                        chunk.resolution.value.lower()
-                        if hasattr(chunk, "resolution")
-                        else None
-                    ),
-                }
-            )
-
-            # Create chunk metadata for per-sentence tracking
-            chunk_end = chunk_start + len(chunk_text)
-
-            # CRITICAL: Preserve PA×DIM metadata for Phase 2 question routing
-            extra_metadata = {
-                "chunk_id": chunk.id,
-                "policy_area_id": (
-                    chunk.policy_area_id if hasattr(chunk, "policy_area_id") else None
-                ),
-                "dimension_id": (
-                    chunk.dimension_id if hasattr(chunk, "dimension_id") else None
-                ),
-                "resolution": (
-                    chunk.resolution.value.lower()
-                    if hasattr(chunk, "resolution")
-                    else None
-                ),
-            }
-
-            # Add facets if available
-            if hasattr(chunk, "policy_facets") and chunk.policy_facets:
-                extra_metadata["policy_facets"] = {
-                    "axes": (
-                        chunk.policy_facets.axes
-                        if hasattr(chunk.policy_facets, "axes")
-                        else []
-                    ),
-                    "programs": (
-                        chunk.policy_facets.programs
-                        if hasattr(chunk.policy_facets, "programs")
-                        else []
-                    ),
-                    "projects": (
-                        chunk.policy_facets.projects
-                        if hasattr(chunk.policy_facets, "projects")
-                        else []
-                    ),
-                }
-
-            if hasattr(chunk, "time_facets") and chunk.time_facets:
-                extra_metadata["time_facets"] = {
-                    "years": (
-                        chunk.time_facets.years
-                        if hasattr(chunk.time_facets, "years")
-                        else []
-                    ),
-                    "periods": (
-                        chunk.time_facets.periods
-                        if hasattr(chunk.time_facets, "periods")
-                        else []
-                    ),
-                }
-
-            if hasattr(chunk, "geo_facets") and chunk.geo_facets:
-                extra_metadata["geo_facets"] = {
-                    "territories": (
-                        chunk.geo_facets.territories
-                        if hasattr(chunk.geo_facets, "territories")
-                        else []
-                    ),
-                    "regions": (
-                        chunk.geo_facets.regions
-                        if hasattr(chunk.geo_facets, "regions")
-                        else []
-                    ),
-                }
-
-            sentence_metadata.append(
-                {
-                    "index": idx,
-                    "page_number": None,
-                    "start_char": chunk_start,
-                    "end_char": chunk_end,
-                    "extra": dict(extra_metadata),
-                }
-            )
-
-            chunk_summary = {
-                "id": chunk.id,
-                "resolution": (
-                    chunk.resolution.value.lower()
-                    if hasattr(chunk, "resolution")
-                    else None
-                ),
-                "text_span": {"start": chunk_start, "end": chunk_end},
-                "policy_area_id": extra_metadata["policy_area_id"],
-                "dimension_id": extra_metadata["dimension_id"],
-                "has_kpi": hasattr(chunk, "kpi") and chunk.kpi is not None,
-                "has_budget": hasattr(chunk, "budget") and chunk.budget is not None,
-                "confidence": {
-                    "layout": (
-                        getattr(
-                            chunk.confidence,
-                            "layout",
-                            ParameterLoaderV2.get(
-                                "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                                "auto_param_L256_66",
-                                0.0,
-                            ),
-                        )
-                        if hasattr(chunk, "confidence")
-                        else ParameterLoaderV2.get(
-                            "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                            "auto_param_L256_108",
-                            0.0,
-                        )
-                    ),
-                    "ocr": (
-                        getattr(
-                            chunk.confidence,
-                            "ocr",
-                            ParameterLoaderV2.get(
-                                "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                                "auto_param_L257_60",
-                                0.0,
-                            ),
-                        )
-                        if hasattr(chunk, "confidence")
-                        else ParameterLoaderV2.get(
-                            "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                            "auto_param_L257_102",
-                            0.0,
-                        )
-                    ),
-                    "typing": (
-                        getattr(
-                            chunk.confidence,
-                            "typing",
-                            ParameterLoaderV2.get(
-                                "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                                "auto_param_L258_66",
-                                0.0,
-                            ),
-                        )
-                        if hasattr(chunk, "confidence")
-                        else ParameterLoaderV2.get(
-                            "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                            "auto_param_L258_108",
-                            0.0,
-                        )
-                    ),
-                },
-            }
-            chunk_summaries.append(chunk_summary)
-
-            if hasattr(chunk, "provenance") and chunk.provenance:
+            if artifacts.has_provenance:
                 provenance_with_data += 1
-                if (
-                    not hasattr(chunk.provenance, "page_number")
-                    or chunk.provenance.page_number is None
-                ):
-                    raise CPPAdapterError(
-                        f"Missing provenance.page_number in chunk {chunk.id}"
-                    )
-                if (
-                    not hasattr(chunk.provenance, "section_header")
-                    or not chunk.provenance.section_header
-                ):
-                    raise CPPAdapterError(
-                        f"Missing provenance.section_header in chunk {chunk.id}"
-                    )
-            else:
-                raise CPPAdapterError(f"Missing provenance in chunk {chunk.id}")
 
-            # Advance offset by chunk length + 1 space separator
-            current_offset = chunk_end + 1
+            for entity_text, indices in artifacts.entity_mentions.items():
+                if entity_text not in entity_index:
+                    entity_index[entity_text] = []
+                entity_index[entity_text].extend(indices)
 
-            # Extract entities for entity_index
-            if hasattr(chunk, "entities") and chunk.entities:
-                for entity in chunk.entities:
-                    entity_text = (
-                        entity.text if hasattr(entity, "text") else str(entity)
-                    )
-                    if entity_text not in entity_index:
-                        entity_index[entity_text] = []
-                    entity_index[entity_text].append(idx)
+            for year_key, indices in artifacts.temporal_mentions.items():
+                if year_key not in temporal_index:
+                    temporal_index[year_key] = []
+                temporal_index[year_key].extend(indices)
 
-            # Extract temporal markers for temporal_index
-            if hasattr(chunk, "time_facets") and chunk.time_facets:
-                if hasattr(chunk.time_facets, "years") and chunk.time_facets.years:
-                    for year in chunk.time_facets.years:
-                        year_key = str(year)
-                        if year_key not in temporal_index:
-                            temporal_index[year_key] = []
-                        temporal_index[year_key].append(idx)
+            current_offset += artifacts.chunk_text_length + 1
 
-            # Extract budget for tables
-            if hasattr(chunk, "budget") and chunk.budget:
-                budget = chunk.budget
-                tables.append(
-                    {
-                        "table_id": f"budget_{idx}",
-                        "label": f"Budget: {budget.source if hasattr(budget, 'source') else 'Unknown'}",
-                        "amount": getattr(budget, "amount", 0),
-                        "currency": getattr(budget, "currency", "COP"),
-                        "year": getattr(budget, "year", None),
-                        "use": getattr(budget, "use", None),
-                        "source": getattr(budget, "source", None),
-                    }
+        full_text_parts = [art.sentence["text"] for art in artifacts_list]
+        sentences = [art.sentence for art in artifacts_list]
+        sentence_metadata = [art.sentence_metadata for art in artifacts_list]
+        chunk_summaries = [art.chunk_summary for art in artifacts_list]
+        chunks_data = [art.chunk_data for art in artifacts_list]
+        tables = [art.table for art in artifacts_list if art.table is not None]
+
+        for idx, art in enumerate(artifacts_list):
+            if art.table is not None:
+                chunks_data[idx] = ChunkData(
+                    id=chunks_data[idx].id,
+                    text=chunks_data[idx].text,
+                    chunk_type=chunks_data[idx].chunk_type,
+                    sentences=chunks_data[idx].sentences,
+                    tables=[table_counter],
+                    start_pos=chunks_data[idx].start_pos,
+                    end_pos=chunks_data[idx].end_pos,
+                    confidence=chunks_data[idx].confidence,
+                    edges_out=chunks_data[idx].edges_out,
+                    policy_area_id=chunks_data[idx].policy_area_id,
+                    dimension_id=chunks_data[idx].dimension_id,
+                    provenance=chunks_data[idx].provenance,
                 )
-
-            # Create ChunkData object
-            chunk_type_value = chunk.chunk_type
-            if chunk_type_value not in [
-                "diagnostic",
-                "activity",
-                "indicator",
-                "resource",
-                "temporal",
-                "entity",
-            ]:
-                raise CPPAdapterError(
-                    f"Invalid chunk_type '{chunk_type_value}' in chunk {chunk.id}"
-                )
-
-            chunks_data.append(
-                ChunkData(
-                    id=idx,
-                    text=chunk_text,
-                    chunk_type=chunk_type_value,
-                    sentences=[idx],
-                    tables=(
-                        [len(tables) - 1]
-                        if hasattr(chunk, "budget") and chunk.budget
-                        else []
-                    ),
-                    start_pos=chunk_start,
-                    end_pos=chunk_end,
-                    confidence=(
-                        getattr(chunk.confidence, "overall", 1.0)
-                        if hasattr(chunk, "confidence")
-                        else 1.0
-                    ),
-                    edges_out=[],  # Edges populated later if needed or from chunk_graph
-                    policy_area_id=extra_metadata["policy_area_id"],
-                    dimension_id=extra_metadata["dimension_id"],
-                    provenance=(
-                        Provenance(
-                            page_number=chunk.provenance.page_number,
-                            section_header=getattr(
-                                chunk.provenance, "section_header", None
-                            ),
-                            bbox=getattr(chunk.provenance, "bbox", None),
-                            span_in_page=getattr(
-                                chunk.provenance, "span_in_page", None
-                            ),
-                            source_file=getattr(chunk.provenance, "source_file", None),
-                        )
-                        if hasattr(chunk, "provenance") and chunk.provenance
-                        else None
-                    ),
-                )
-            )
+                table_counter += 1
 
         # Join full text
         full_text = " ".join(full_text_parts)
@@ -532,69 +596,42 @@ class CPPAdapter:
         # Add quality metrics if available
         if hasattr(canon_package, "quality_metrics") and canon_package.quality_metrics:
             qm = canon_package.quality_metrics
+            qm_defaults = self.config["quality_metrics_defaults"]
             metadata_dict["quality_metrics"] = {
                 "provenance_completeness": (
                     qm.provenance_completeness
                     if hasattr(qm, "provenance_completeness")
-                    else ParameterLoaderV2.get(
-                        "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                        "auto_param_L328_117",
-                        0.0,
-                    )
+                    else qm_defaults["provenance_completeness"]
                 ),
                 "structural_consistency": (
                     qm.structural_consistency
                     if hasattr(qm, "structural_consistency")
-                    else ParameterLoaderV2.get(
-                        "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                        "auto_param_L329_114",
-                        0.0,
-                    )
+                    else qm_defaults["structural_consistency"]
                 ),
                 "boundary_f1": (
                     qm.boundary_f1
                     if hasattr(qm, "boundary_f1")
-                    else ParameterLoaderV2.get(
-                        "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                        "auto_param_L330_81",
-                        0.0,
-                    )
+                    else qm_defaults["boundary_f1"]
                 ),
                 "kpi_linkage_rate": (
                     qm.kpi_linkage_rate
                     if hasattr(qm, "kpi_linkage_rate")
-                    else ParameterLoaderV2.get(
-                        "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                        "auto_param_L331_96",
-                        0.0,
-                    )
+                    else qm_defaults["kpi_linkage_rate"]
                 ),
                 "budget_consistency_score": (
                     qm.budget_consistency_score
                     if hasattr(qm, "budget_consistency_score")
-                    else ParameterLoaderV2.get(
-                        "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                        "auto_param_L332_120",
-                        0.0,
-                    )
+                    else qm_defaults["budget_consistency_score"]
                 ),
                 "temporal_robustness": (
                     qm.temporal_robustness
                     if hasattr(qm, "temporal_robustness")
-                    else ParameterLoaderV2.get(
-                        "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                        "auto_param_L333_105",
-                        0.0,
-                    )
+                    else qm_defaults["temporal_robustness"]
                 ),
                 "chunk_context_coverage": (
                     qm.chunk_context_coverage
                     if hasattr(qm, "chunk_context_coverage")
-                    else ParameterLoaderV2.get(
-                        "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                        "auto_param_L334_114",
-                        0.0,
-                    )
+                    else qm_defaults["chunk_context_coverage"]
                 ),
             }
 
@@ -663,14 +700,10 @@ class CPPAdapter:
                 preprocessed_dict = {
                     "document_id": preprocessed_doc.document_id,
                     "sentence_metadata": preprocessed_doc.sentence_metadata,
-                    "resolution_index": {},  # Placeholder, as it's not generated by the adapter
+                    "resolution_index": {},
                     "provenance_completeness": metadata_dict.get(
                         "provenance_completeness",
-                        ParameterLoaderV2.get(
-                            "farfan_core.utils.cpp_adapter.CPPAdapter.__init__",
-                            "auto_param_L397_92",
-                            0.0,
-                        ),
+                        self.config["provenance_completeness_default"],
                     ),
                 }
                 self.wiring_validator.validate_adapter_to_orchestrator(
