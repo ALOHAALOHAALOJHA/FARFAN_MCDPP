@@ -16,15 +16,6 @@ import hashlib
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum, auto
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_two.epistemological_assets.epistemological_method_classifier import (  # type: ignore[import-not-found]
-        ContractType,
-        EpistemologicalLevel,
-    )
-
-
 class CalibrationPhase(Enum):
     """Phase in which calibration applies."""
 
