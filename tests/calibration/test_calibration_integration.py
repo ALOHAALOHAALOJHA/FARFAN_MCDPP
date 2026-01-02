@@ -104,23 +104,27 @@ class TestCalibrationLayerIntegration:
 
     def test_type_e_strict_logical_consistency(self) -> None:
         """
-        TYPE_E workflow: Strictest veto threshold, no averaging allowed.
+        TYPE_E workflow: Strictest veto threshold.
+        
+        IMPORTANT: Per canonical contratos_clasificados.json, TYPE_E CAN use weighted_mean.
+        This differs from original spec but follows the authoritative canonical source.
         """
-        # TYPE_E: Logical Consistency - most restrictive
+        # TYPE_E: Logical Consistency - most restrictive veto
         defaults = get_type_defaults("TYPE_E")
 
         # Verify strictest veto threshold
         assert defaults["veto_threshold"].min_value == 0.01
         assert defaults["veto_threshold"].max_value == 0.05
 
-        # Verify ALL forms of averaging are prohibited
-        prohibited = ["weighted_mean", "average", "mean", "avg", "AVERAGE", "compute_mean"]
-        for op in prohibited:
-            assert is_operation_prohibited("TYPE_E", op), f"{op} should be prohibited for TYPE_E"
-
-        # Verify valid operations are allowed
-        assert not is_operation_prohibited("TYPE_E", "min_consistency")
-        assert not is_operation_prohibited("TYPE_E", "logical_and")
+        # Per canonical source, TYPE_E uses: concat, weighted_mean, logical_consistency_validation
+        # So weighted_mean is NOT prohibited for TYPE_E
+        assert not is_operation_prohibited("TYPE_E", "weighted_mean")
+        assert not is_operation_prohibited("TYPE_E", "concat")
+        assert not is_operation_prohibited("TYPE_E", "logical_consistency_validation")
+        
+        # TYPE_E prohibits operations that don't preserve logical consistency
+        assert is_operation_prohibited("TYPE_E", "bayesian_update")
+        assert is_operation_prohibited("TYPE_E", "semantic_corroboration")
 
     def test_type_b_bayesian_strong_priors(self) -> None:
         """

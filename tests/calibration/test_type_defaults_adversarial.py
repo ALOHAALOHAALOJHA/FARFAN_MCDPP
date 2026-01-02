@@ -57,47 +57,68 @@ class TestProhibitedOperations:
     """Test prohibited operations enforcement."""
 
     def test_type_a_prohibitions(self) -> None:
-        """TYPE_A must prohibit weighted_mean and concat_only."""
+        """TYPE_A must prohibit non-semantic operations (based on canonical contratos_clasificados.json)."""
+        # TYPE_A uses: semantic_corroboration, dempster_shafer, veto_gate
         assert is_operation_prohibited("TYPE_A", "weighted_mean")
-        assert is_operation_prohibited("TYPE_A", "concat_only")
-        assert not is_operation_prohibited("TYPE_A", "semantic_triangulation")
+        assert is_operation_prohibited("TYPE_A", "bayesian_update")
+        assert not is_operation_prohibited("TYPE_A", "semantic_corroboration")
+        assert not is_operation_prohibited("TYPE_A", "dempster_shafer")
 
     def test_type_b_prohibitions(self) -> None:
-        """TYPE_B must prohibit weighted_mean and simple_concat."""
+        """TYPE_B must prohibit non-Bayesian aggregation (based on canonical source)."""
+        # TYPE_B uses: bayesian_update, concat, veto_gate
         assert is_operation_prohibited("TYPE_B", "weighted_mean")
-        assert is_operation_prohibited("TYPE_B", "simple_concat")
+        assert is_operation_prohibited("TYPE_B", "semantic_corroboration")
         assert not is_operation_prohibited("TYPE_B", "bayesian_update")
+        assert not is_operation_prohibited("TYPE_B", "concat")
 
     def test_type_c_prohibitions(self) -> None:
-        """TYPE_C must prohibit concat_only and weighted_mean."""
-        assert is_operation_prohibited("TYPE_C", "concat_only")
+        """TYPE_C must prohibit operations that don't preserve graph structure."""
+        # TYPE_C uses: topological_overlay, graph_construction, veto_gate
         assert is_operation_prohibited("TYPE_C", "weighted_mean")
+        assert is_operation_prohibited("TYPE_C", "concat")
         assert not is_operation_prohibited("TYPE_C", "topological_overlay")
+        assert not is_operation_prohibited("TYPE_C", "graph_construction")
 
     def test_type_d_prohibitions(self) -> None:
-        """TYPE_D must prohibit concat_only and simple_concat."""
-        assert is_operation_prohibited("TYPE_D", "concat_only")
-        assert is_operation_prohibited("TYPE_D", "simple_concat")
-        assert not is_operation_prohibited("TYPE_D", "weighted_mean")
+        """TYPE_D must prohibit non-financial operations."""
+        # TYPE_D uses: weighted_mean, concat, financial_coherence_audit
+        # Financial contracts CAN use weighted_mean for budget aggregation
+        assert is_operation_prohibited("TYPE_D", "semantic_corroboration")
+        assert is_operation_prohibited("TYPE_D", "topological_overlay")
+        assert not is_operation_prohibited("TYPE_D", "weighted_mean")  # ALLOWED for financial
+        assert not is_operation_prohibited("TYPE_D", "concat")
 
-    def test_type_e_no_averaging(self) -> None:
-        """TYPE_E CRITICAL: must prohibit ALL forms of averaging."""
-        assert is_operation_prohibited("TYPE_E", "weighted_mean")
-        assert is_operation_prohibited("TYPE_E", "average")
-        assert is_operation_prohibited("TYPE_E", "mean")
-        assert is_operation_prohibited("TYPE_E", "avg")
-        assert not is_operation_prohibited("TYPE_E", "min_consistency")
+    def test_type_e_logical_operations(self) -> None:
+        """
+        TYPE_E logical consistency contracts per canonical source.
+        
+        IMPORTANT: Based on contratos_clasificados.json, TYPE_E USES weighted_mean.
+        This differs from the original spec but follows the canonical data.
+        TYPE_E uses: concat, weighted_mean, logical_consistency_validation
+        """
+        # TYPE_E CAN use weighted_mean per canonical source
+        assert not is_operation_prohibited("TYPE_E", "weighted_mean")
+        assert not is_operation_prohibited("TYPE_E", "concat")
+        assert not is_operation_prohibited("TYPE_E", "logical_consistency_validation")
+        
+        # TYPE_E prohibits operations that don't preserve logical consistency
+        assert is_operation_prohibited("TYPE_E", "bayesian_update")
+        assert is_operation_prohibited("TYPE_E", "semantic_corroboration")
+        assert is_operation_prohibited("TYPE_E", "graph_construction")
 
     def test_case_insensitive_checking(self) -> None:
         """Prohibition checking must be case-insensitive."""
-        assert is_operation_prohibited("TYPE_E", "WEIGHTED_MEAN")
-        assert is_operation_prohibited("TYPE_E", "Average")
-        assert is_operation_prohibited("TYPE_E", "MEAN")
+        # Test with operations that ARE prohibited
+        assert is_operation_prohibited("TYPE_A", "WEIGHTED_MEAN")
+        assert is_operation_prohibited("TYPE_A", "Bayesian_Update")
+        assert is_operation_prohibited("TYPE_B", "SEMANTIC_CORROBORATION")
 
     def test_substring_matching(self) -> None:
         """Operations containing prohibited terms must be caught."""
-        assert is_operation_prohibited("TYPE_E", "compute_weighted_mean_value")
-        assert is_operation_prohibited("TYPE_E", "calculate_average_score")
+        # Test substring matching with operations that ARE prohibited
+        assert is_operation_prohibited("TYPE_A", "compute_weighted_mean_value")
+        assert is_operation_prohibited("TYPE_B", "calculate_semantic_corroboration_score")
 
     def test_prohibited_operations_immutable(self) -> None:
         """PROHIBITED_OPERATIONS must be immutable."""
@@ -111,17 +132,16 @@ class TestProhibitedOperations:
         Document substring matching behavior - intentionally conservative.
         
         The current implementation uses substring matching which may produce
-        false positives (e.g., "meaningful" contains "mean"). This is by design
-        to ensure no prohibited operations slip through. If this becomes
-        problematic, switch to word-boundary matching.
+        false positives. This is by design to ensure no prohibited operations
+        slip through. If this becomes problematic, switch to word-boundary matching.
         """
-        # Current behavior: This IS blocked due to substring matching
-        assert is_operation_prohibited("TYPE_E", "meaningful_analysis")  # Contains "mean"
+        # Test with TYPE_A which prohibits "weighted_mean"
+        # "compute_weighted_mean" contains "weighted_mean" substring
+        assert is_operation_prohibited("TYPE_A", "compute_weighted_mean")
         
-        # This is NOT blocked (doesn't contain prohibited substrings)
-        assert not is_operation_prohibited("TYPE_E", "stream_processor")
+        # This is NOT blocked (doesn't contain prohibited substrings for TYPE_A)
+        assert not is_operation_prohibited("TYPE_A", "stream_processor")
         
-        # These are correctly blocked (actual averaging operations)
-        assert is_operation_prohibited("TYPE_E", "compute_mean")
-        assert is_operation_prohibited("TYPE_E", "calculate_average")
-        assert is_operation_prohibited("TYPE_E", "weighted_mean_calc")
+        # These are correctly blocked (actual prohibited operations)
+        assert is_operation_prohibited("TYPE_A", "use_bayesian_update")
+        assert is_operation_prohibited("TYPE_B", "apply_semantic_corroboration")

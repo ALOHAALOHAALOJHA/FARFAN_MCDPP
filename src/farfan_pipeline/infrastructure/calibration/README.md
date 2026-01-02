@@ -76,7 +76,7 @@ Complete calibration configuration for a contract:
 
 ### Type-Specific Defaults
 
-The `type_defaults.py` module provides type-specific calibration defaults derived from `artifacts/data/epistemic_inputs_v4/epistemic_minima_by_type.json`.
+The `type_defaults.py` module provides type-specific calibration defaults derived from `src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json` (canonical source).
 
 #### get_type_defaults(contract_type_code: str) -> dict[str, CalibrationBounds]
 
@@ -182,7 +182,7 @@ prior_strength = CalibrationParameter(
     value=defaults["prior_strength"].default_value,
     bounds=defaults["prior_strength"],
     rationale="Default prior for TYPE_A",
-    source_evidence="artifacts/data/epistemic_inputs_v4/epistemic_minima_by_type.json",
+    source_evidence="src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json",
     calibration_date=now,
     validity_days=90,
 )
@@ -300,7 +300,7 @@ This implementation is complete for JOB FRONT 1 but designed for extension:
 ## References
 
 - **Specification:** JF1-CAL-ARCH-2026-01-02
-- **Epistemic Foundation:** `artifacts/data/epistemic_inputs_v4/epistemic_minima_by_type.json`
+- **Epistemic Foundation:** `src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json`
 - **Phase 2 Architecture:** `src/farfan_pipeline/phases/Phase_two/`
 - **Test Suite:** `tests/calibration/`
 
