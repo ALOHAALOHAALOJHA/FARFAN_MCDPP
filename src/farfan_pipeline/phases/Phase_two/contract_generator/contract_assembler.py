@@ -23,7 +23,9 @@ class GeneratedContract:
     - fusion_specification
     - cross_layer_fusion
     - human_answer_structure
-    - audit_annotations (añadido para trazabilidad)
+    - traceability (para documentación)
+    - output_contract (schema de salida)
+    - audit_annotations (para trazabilidad)
     """
     # Sección: identity
     identity: dict[str, Any]
@@ -52,6 +54,12 @@ class GeneratedContract:
     # Sección: human_answer_structure
     human_answer_structure: dict[str, Any]
 
+    # Sección: traceability (para documentación)
+    traceability: dict[str, Any]
+
+    # Sección: output_contract (schema de salida)
+    output_contract: dict[str, Any]
+
     # Sección: audit_annotations (para trazabilidad)
     audit_annotations: dict[str, Any]
 
@@ -67,6 +75,8 @@ class GeneratedContract:
             "fusion_specification": self.fusion_specification,
             "cross_layer_fusion": self.cross_layer_fusion,
             "human_answer_structure": self.human_answer_structure,
+            "traceability": self.traceability,
+            "output_contract": self.output_contract,
             "audit_annotations": self.audit_annotations,
         }
 
@@ -117,6 +127,8 @@ class ContractAssembler:
         fusion_specification = self._build_fusion_specification(chain, classification)
         cross_layer_fusion = self._build_cross_layer_fusion(classification)
         human_answer_structure = self._build_human_answer_structure(classification)
+        traceability = self._build_traceability(classification)
+        output_contract = self._build_output_contract(classification)
         audit_annotations = self._build_audit_annotations(chain, classification)
 
         return GeneratedContract(
@@ -129,6 +141,8 @@ class ContractAssembler:
             fusion_specification=fusion_specification,
             cross_layer_fusion=cross_layer_fusion,
             human_answer_structure=human_answer_structure,
+            traceability=traceability,
+            output_contract=output_contract,
             audit_annotations=audit_annotations,
         )
 
@@ -295,22 +309,49 @@ class ContractAssembler:
             # Trazabilidad
             "expansion_source": method.expansion_source,
             "expansion_timestamp": method.expansion_timestamp,
+
+            # Descripción generada
+            "description": self._generate_method_description(method),
         }
 
-        # Para métodos N3, añadir veto_conditions si aplica
+        # Para métodos N1, requires debe ser array vacío
+        if method.level == "N1-EMP":
+            result["requires"] = []
+
+        # Para métodos N2, añadir modifies y requires
+        if method.level == "N2-INF":
+            result["requires"] = ["raw_facts"]
+            result["modifies"] = ["edge_weights", "confidence_scores"]
+
+        # Para métodos N3, añadir veto_conditions, modulates, y requires
         if method.level == "N3-AUD":
             result["veto_conditions"] = self._derive_veto_conditions(method)
             result["modulates"] = [
                 "raw_facts.confidence",
                 "inferences.confidence",
             ]
-
-        # Para métodos N2, añadir modifies
-        if method.level == "N2-INF":
-            result["requires"] = ["raw_facts"]
-            result["modifies"] = ["edge_weights", "confidence_scores"]
+            result["requires"] = ["raw_facts", "inferences"]
 
         return result
+
+    def _generate_method_description(self, method: "ExpandedMethodUnit") -> str:
+        """Genera descripción del método basada en su clasificación"""
+        level_actions = {
+            "N1-EMP": "Extrae y procesa observaciones empíricas directas del texto",
+            "N2-INF": "Calcula parámetros inferenciales basados en evidencia de N1",
+            "N3-AUD": "Valida y puede vetar hallazgos basándose en criterios de robustez",
+        }
+        base_desc = level_actions.get(method.level, "Método de procesamiento")
+
+        # Añadir detalles del output
+        if method.output_type == "FACT":
+            base_desc += ". Produce hechos observables sin interpretación."
+        elif method.output_type == "PARAMETER":
+            base_desc += ". Transforma hechos en parámetros cuantitativos."
+        elif method.output_type == "CONSTRAINT":
+            base_desc += ". Genera restricciones que pueden bloquear resultados."
+
+        return base_desc
 
     def _derive_veto_conditions(
         self, method: "ExpandedMethodUnit"
@@ -375,6 +416,19 @@ class ContractAssembler:
                 "scope": "method_output",
                 "confidence_multiplier": 0.7,
                 "rationale": "Validation did not pass",
+            }
+
+        # Asegurar que al menos una condición tiene multiplier 0.0 (severe veto)
+        # Esto es requerido por la validación de audit
+        has_severe = any(c.get("confidence_multiplier", 1.0) == 0.0 for c in conditions.values())
+        if not has_severe:
+            # Añadir condición de veto severo por defecto
+            conditions["critical_failure_veto"] = {
+                "trigger": "critical_validation_failed == True",
+                "action": "invalidate_graph",
+                "scope": "entire_output",
+                "confidence_multiplier": 0.0,
+                "rationale": "Critical validation failure invalidates entire output",
             }
 
         return conditions
@@ -518,7 +572,7 @@ class ContractAssembler:
             "target": self._get_r2_target(type_code),
             "sources": n2_provides,
             "input_dependencies": [r1["target"]],
-            "merge_strategy": strategies.get("N2", "weighted_mean"),
+            "merge_strategy": self._get_r2_merge_strategy(type_code),
             "output_type": "PARAMETER",
             "confidence_propagation": self._get_r2_confidence_propagation(type_code),
             "description": self._get_r2_description(type_code),
@@ -619,6 +673,17 @@ class ContractAssembler:
             "TYPE_E": "Compute coherence metrics between policy statements",
         }
         return descriptions.get(type_code, "Process inferences from raw facts")
+
+    def _get_r2_merge_strategy(self, type_code: str) -> str:
+        """Determina merge_strategy de R2 según TYPE"""
+        strategies = {
+            "TYPE_A": "semantic_triangulation",
+            "TYPE_B": "bayesian_update",
+            "TYPE_C": "topological_overlay",
+            "TYPE_D": "weighted_mean",
+            "TYPE_E": "weighted_mean",
+        }
+        return strategies.get(type_code, "weighted_mean")
 
     def _get_r3_rule_type(self, type_code: str) -> str:
         """Determina rule_type de R3 según TYPE"""
@@ -960,12 +1025,20 @@ class ContractAssembler:
             "layer": "N4",
             "data_source": "synthesis_output",
             "narrative_style": "declarative",
-            "template": (
-                "**Conclusión**: {verdict_statement}\n\n"
-                "**Confianza Global**: {final_confidence_pct}% ({confidence_interpretation})\n\n"
-                "**Base Metodológica**: {method_count} métodos ejecutados, "
-                "{audit_count} validaciones, {blocked_count} ramas bloqueadas."
-            ),
+            "template": {
+                "placeholders": {
+                    "verdict_statement": "Conclusión principal",
+                    "final_confidence_pct": "Porcentaje de confianza",
+                    "confidence_label": "Etiqueta de confianza",
+                    "method_count": "Cantidad de métodos ejecutados"
+                },
+                "template_string": (
+                    "**Conclusión**: {verdict_statement}\n\n"
+                    "**Confianza Global**: {final_confidence_pct}% ({confidence_interpretation})\n\n"
+                    "**Base Metodológica**: {method_count} métodos ejecutados, "
+                    "{audit_count} validaciones, {blocked_count} ramas bloqueadas."
+                )
+            },
             "argumentative_role": "SYNTHESIS",
         }
 
@@ -985,7 +1058,10 @@ class ContractAssembler:
                 "**Cobertura Temporal**: {temporal_series}"
             ),
             "argumentative_role": "EMPIRICAL_BASIS",
-            "epistemological_note": "Observaciones directas sin transformación interpretativa.",
+            "epistemological_note": {
+                "note": "Observaciones directas sin transformación interpretativa.",
+                "include_in_output": True
+            },
         }
 
     def _build_section_s3(self, type_code: str) -> dict[str, Any]:
@@ -1011,10 +1087,12 @@ class ContractAssembler:
                 "N3 puede VETAR hallazgos de N1/N2."
             ),
             "veto_display": {
-                "if_veto_triggered": (
-                    "⚠️ ALERTA: {veto_reason}. "
-                    "El modelo lógico es INVÁLIDO técnicamente."
-                ),
+                "if_veto_triggered": {
+                    "template": (
+                        "⚠️ ALERTA: {veto_reason}. "
+                        "El modelo lógico es INVÁLIDO técnicamente."
+                    )
+                },
                 "if_no_veto": "✓ Todas las validaciones pasaron.",
             },
         }
@@ -1118,7 +1196,7 @@ class ContractAssembler:
         """Construye interpretación de confianza"""
         return {
             "critical": {
-                "range": "0-19%",
+                "range": [0, 19],
                 "label": "INVÁLIDO",
                 "description": (
                     "Veto activado por N3, modelo lógico inválido técnicamente"
@@ -1126,7 +1204,7 @@ class ContractAssembler:
                 "display": "🔴",
             },
             "low": {
-                "range": "20-49%",
+                "range": [20, 49],
                 "label": "DÉBIL",
                 "description": (
                     "Evidencia insuficiente, contradicciones detectadas, "
@@ -1135,7 +1213,7 @@ class ContractAssembler:
                 "display": "🟠",
             },
             "medium": {
-                "range": "50-79%",
+                "range": [50, 79],
                 "label": "MODERADO",
                 "description": (
                     "Evidencia presente con limitaciones o inconsistencias menores"
@@ -1143,13 +1221,97 @@ class ContractAssembler:
                 "display": "🟡",
             },
             "high": {
-                "range": "80-100%",
+                "range": [80, 100],
                 "label": "ROBUSTO",
                 "description": (
                     "Múltiples observaciones corroborantes, sin contradicciones, "
                     "auditorías pasadas"
                 ),
                 "display": "🟢",
+            },
+        }
+
+    def _build_traceability(
+        self,
+        classification: "ContractClassification",
+    ) -> dict[str, Any]:
+        """Construye sección traceability para documentación"""
+        return {
+            "canonical_sources": {
+                "epistemological_guide": "src/farfan_pipeline/phases/Phase_two/epistemological_assets/guide.md",
+                "operationalization_guide": "src/farfan_pipeline/phases/Phase_two/epistemological_assets/operationalization_guide.json",
+                "method_registry": "src/farfan_pipeline/phases/Phase_two/epistemological_assets/classified_methods.json",
+            },
+            "generation": {
+                "method": "epistemological_compiler_v6",
+                "version": "4.0.0-granular",
+                "timestamp": self.generation_timestamp,
+            },
+            "refactoring_history": [
+                {
+                    "from_version": "3.0.0-multi_method",
+                    "to_version": "4.0.0-epistemological",
+                    "date": "2025-01-02",
+                    "reason": "Adopt epistemological framework with N1/N2/N3/N4 layers",
+                    "epistemological_framework": {
+                        "N1": "Empirismo positivista",
+                        "N2": "Bayesianismo subjetivista",
+                        "N3": "Falsacionismo popperiano",
+                        "N4": "Reflexividad crítica",
+                    },
+                }
+            ],
+            "prohibitions": {
+                "v3_recovery": "FORBIDDEN",
+                "template_usage": "FORBIDDEN",
+                "method_inference": "FORBIDDEN",
+            },
+        }
+
+    def _build_output_contract(
+        self,
+        classification: "ContractClassification",
+    ) -> dict[str, Any]:
+        """Construye sección output_contract con schema de salida"""
+        return {
+            "format": "json",
+            "compression": "none",
+            "encoding": "utf-8",
+            "schema": {
+                "type": "object",
+                "required": [
+                    "base_slot",
+                    "question_id",
+                    "evidence",
+                    "score",
+                    "human_answer",
+                ],
+                "properties": {
+                    "base_slot": {
+                        "type": "string",
+                        "description": "Identificador del slot (e.g., D1-Q1)",
+                    },
+                    "question_id": {
+                        "type": "string",
+                        "description": "ID de la pregunta representativa (e.g., Q001)",
+                    },
+                    "evidence": {
+                        "type": "object",
+                        "description": "Evidencia recopilada y validada",
+                    },
+                    "score": {
+                        "type": "number",
+                        "description": "Confianza global (0-100)",
+                    },
+                    "human_answer": {
+                        "type": "string",
+                        "description": "Respuesta en lenguaje natural",
+                    },
+                    "epistemological_trace": {
+                        "type": "object",
+                        "description": "Traza completa del proceso epistemológico",
+                    },
+                },
             },
         }
 

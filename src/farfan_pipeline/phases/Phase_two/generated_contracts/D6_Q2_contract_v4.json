@@ -31,7 +31,7 @@
     "contract_type_name": "Bayesiano",
     "contract_type_focus": "Evaluación de proporcionalidad causal",
     "contract_version": "4.0.0-epistemological",
-    "created_at": "2026-01-02T06:03:42.530493+00:00",
+    "created_at": "2026-01-02T15:12:54.350062+00:00",
     "generator_version": "4.0.0-granular",
     "specification_source": "operationalization_guide.json"
   },
@@ -95,7 +95,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00"
+            "expansion_timestamp": "2026-01-02T15:12:54.350062+00:00"
           },
           {
             "class_name": "DerekBeachProducer",
@@ -142,7 +142,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00"
+            "expansion_timestamp": "2026-01-02T15:12:54.350062+00:00"
           },
           {
             "class_name": "EmbeddingPolicyProducer",
@@ -189,7 +189,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00"
+            "expansion_timestamp": "2026-01-02T15:12:54.350062+00:00"
           },
           {
             "class_name": "DocumentProcessor",
@@ -236,7 +236,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00"
+            "expansion_timestamp": "2026-01-02T15:12:54.350062+00:00"
           },
           {
             "class_name": "PDFProcessor",
@@ -283,7 +283,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00"
+            "expansion_timestamp": "2026-01-02T15:12:54.350062+00:00"
           }
         ],
         "dependencies": [],
@@ -341,7 +341,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T15:12:54.350062+00:00",
             "requires": [
               "raw_facts"
             ],
@@ -396,7 +396,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T15:12:54.350062+00:00",
             "requires": [
               "raw_facts"
             ],
@@ -451,7 +451,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T15:12:54.350062+00:00",
             "requires": [
               "raw_facts"
             ],
@@ -506,7 +506,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T15:12:54.350062+00:00",
             "requires": [
               "raw_facts"
             ],
@@ -561,7 +561,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T15:12:54.350062+00:00",
             "requires": [
               "raw_facts"
             ],
@@ -630,7 +630,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T15:12:54.350062+00:00",
             "veto_conditions": {
               "validation_failed": {
                 "trigger": "validation_result == False",
@@ -693,7 +693,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T15:12:54.350062+00:00",
             "veto_conditions": {
               "validation_failed": {
                 "trigger": "validation_result == False",
@@ -756,7 +756,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T15:12:54.350062+00:00",
             "veto_conditions": {
               "validation_failed": {
                 "trigger": "validation_result == False",
@@ -1106,7 +1106,15 @@
         "layer": "N4",
         "data_source": "synthesis_output",
         "narrative_style": "declarative",
-        "template": "**Conclusión**: {verdict_statement}\n\n**Confianza Global**: {final_confidence_pct}% ({confidence_interpretation})\n\n**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas.",
+        "template": {
+          "placeholders": {
+            "verdict_statement": "Conclusión principal",
+            "final_confidence_pct": "Porcentaje de confianza",
+            "confidence_label": "Etiqueta de confianza",
+            "method_count": "Cantidad de métodos ejecutados"
+          },
+          "template_string": "**Conclusión**: {verdict_statement}\n\n**Confianza Global**: {final_confidence_pct}% ({confidence_interpretation})\n\n**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+        },
         "argumentative_role": "SYNTHESIS"
       },
       {
@@ -1117,7 +1125,10 @@
         "narrative_style": "descriptive",
         "template": "**Elementos Detectados**: {fact_count} hechos extraídos de {document_coverage_pct}% del texto.\n\n**Fuentes Oficiales**: {official_sources_list}\n\n**Indicadores Cuantitativos**: {quantitative_indicators}\n\n**Cobertura Temporal**: {temporal_series}",
         "argumentative_role": "EMPIRICAL_BASIS",
-        "epistemological_note": "Observaciones directas sin transformación interpretativa."
+        "epistemological_note": {
+          "note": "Observaciones directas sin transformación interpretativa.",
+          "include_in_output": true
+        }
       },
       {
         "section_id": "S3_robustness_audit",
@@ -1129,7 +1140,9 @@
         "argumentative_role": "ROBUSTNESS_QUALIFIER",
         "epistemological_note": "Meta-juicios sobre confiabilidad. N3 puede VETAR hallazgos de N1/N2.",
         "veto_display": {
-          "if_veto_triggered": "⚠️ ALERTA: {veto_reason}. El modelo lógico es INVÁLIDO técnicamente.",
+          "if_veto_triggered": {
+            "template": "⚠️ ALERTA: {veto_reason}. El modelo lógico es INVÁLIDO técnicamente."
+          },
           "if_no_veto": "✓ Todas las validaciones pasaron."
         }
       },
@@ -1203,25 +1216,37 @@
     },
     "confidence_interpretation": {
       "critical": {
-        "range": "0-19%",
+        "range": [
+          0,
+          19
+        ],
         "label": "INVÁLIDO",
         "description": "Veto activado por N3, modelo lógico inválido técnicamente",
         "display": "🔴"
       },
       "low": {
-        "range": "20-49%",
+        "range": [
+          20,
+          49
+        ],
         "label": "DÉBIL",
         "description": "Evidencia insuficiente, contradicciones detectadas, o validación fallida",
         "display": "🟠"
       },
       "medium": {
-        "range": "50-79%",
+        "range": [
+          50,
+          79
+        ],
         "label": "MODERADO",
         "description": "Evidencia presente con limitaciones o inconsistencias menores",
         "display": "🟡"
       },
       "high": {
-        "range": "80-100%",
+        "range": [
+          80,
+          100
+        ],
         "label": "ROBUSTO",
         "description": "Múltiples observaciones corroborantes, sin contradicciones, auditorías pasadas",
         "display": "🟢"
@@ -1231,7 +1256,7 @@
   "audit_annotations": {
     "generation_metadata": {
       "generator_version": "4.0.0-granular",
-      "generation_timestamp": "2026-01-02T06:03:42.530493+00:00",
+      "generation_timestamp": "2026-01-02T15:12:54.350062+00:00",
       "input_hashes": {
         "classified_methods": "e3b57835bbe2cca5",
         "contratos_clasificados": "4b348284ad32888c",
@@ -1265,7 +1290,7 @@
       "temporal_validity_validated": true,
       "cross_reference_validated": true,
       "validation_pass_rate": 1.0,
-      "validation_timestamp": "2026-01-02T06:03:42.530493+00:00"
+      "validation_timestamp": "2026-01-02T15:12:54.350062+00:00"
     }
   }
 }
