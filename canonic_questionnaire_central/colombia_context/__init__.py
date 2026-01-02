@@ -116,6 +116,57 @@ class KeyStatistic:
     source: str
 
 
+@dataclass
+class MunicipalCategory:
+    """A municipal category based on population and ICLD."""
+    category: str
+    population_range: str
+    icld_range: str
+    description: str
+    fiscal_autonomy: str
+
+
+@dataclass
+class SgpComponent:
+    """A component of the Sistema General de Participaciones."""
+    percentage: float
+    uses: list[str]
+    rigidity: str
+
+
+@dataclass
+class PdetPillar:
+    """A pillar of the PDET (Programas de Desarrollo con Enfoque Territorial)."""
+    pillar_id: str
+    name: str
+    focus: list[str]
+    status: str | None = None
+
+
+@dataclass
+class PdetInfo:
+    """PDET (Programas de Desarrollo con Enfoque Territorial) information."""
+    full_name: str
+    acronym: str
+    legal_basis: str
+    planning_horizon_years: int
+    territorial_scope: dict[str, Any]
+    pillars: list[PdetPillar]
+    implementation_status: dict[str, Any]
+    key_gaps: dict[str, Any]
+
+
+@dataclass
+class MunicipalGovernance:
+    """Colombian municipal governance context."""
+    constitutional_foundation: dict[str, Any]
+    legal_framework: dict[str, Any]
+    categorization: list[MunicipalCategory]
+    competencies: dict[str, Any]
+    financial_ecosystem: dict[str, Any]
+    pdet_regime: PdetInfo
+
+
 # =============================================================================
 # CONFIGURATION LOADER
 # =============================================================================
@@ -282,6 +333,137 @@ class ColombiaContextLoader:
         """
         return self._data.get("peace_agreement_context", {})
 
+    def _get_municipal_governance_data(self) -> dict[str, Any]:
+        """Get municipal governance data from JSON file.
+
+        Returns:
+            Dict with municipal governance information
+        """
+        with open(_MUNICIPAL_GOVERNANCE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    def get_municipal_governance(self) -> MunicipalGovernance:
+        """Get municipal governance context.
+
+        Returns:
+            MunicipalGovernance dataclass with comprehensive governance information
+        """
+        data = self._get_municipal_governance_data()
+
+        # Parse municipal categories
+        categories_data = data.get("municipal_categorization", {}).get("categories", [])
+        categories = [
+            MunicipalCategory(
+                category=cat.get("category", ""),
+                population_range=cat.get("population_range", ""),
+                icld_range=cat.get("icld_range", ""),
+                description=cat.get("description", ""),
+                fiscal_autonomy=cat.get("fiscal_autonomy", "")
+            )
+            for cat in categories_data
+        ]
+
+        # Parse PDET pillars
+        pdet_data = data.get("pdet_regime", {})
+        pillars_data = pdet_data.get("eight_pillars", {})
+        pillars = [
+            PdetPillar(
+                pillar_id=key,
+                name=pillar_data.get("name", ""),
+                focus=pillar_data.get("focus", []),
+                status=pillar_data.get("status")
+            )
+            for key, pillar_data in pillars_data.items()
+        ]
+
+        # Build PDET info
+        pdet_info = PdetInfo(
+            full_name=pdet_data.get("full_name", ""),
+            acronym=pdet_data.get("acronym", ""),
+            legal_basis=pdet_data.get("legal_basis", ""),
+            planning_horizon_years=pdet_data.get("planning_horizon", 0),
+            territorial_scope=pdet_data.get("territorial_scope", {}),
+            pillars=pillars,
+            implementation_status=pdet_data.get("implementation_status_2024", {}),
+            key_gaps=pdet_data.get("the_gap", {})
+        )
+
+        return MunicipalGovernance(
+            constitutional_foundation=data.get("constitutional_foundation", {}),
+            legal_framework=data.get("legal_framework", {}),
+            categorization=categories,
+            competencies=data.get("municipal_competencies", {}),
+            financial_ecosystem=data.get("financial_ecosystem", {}),
+            pdet_regime=pdet_info
+        )
+
+    def get_pdet_info(self) -> PdetInfo:
+        """Get PDET (Programas de Desarrollo con Enfoque Territorial) information.
+
+        Returns:
+            PdetInfo dataclass with PDET details
+        """
+        governance = self.get_municipal_governance()
+        return governance.pdet_regime
+
+    def get_municipal_category(self, category_name: str) -> MunicipalCategory | None:
+        """Get a specific municipal category.
+
+        Args:
+            category_name: Category name (e.g., "Special", "First", "Sixth")
+
+        Returns:
+            MunicipalCategory if found, None otherwise
+        """
+        governance = self.get_municipal_governance()
+        for category in governance.categorization:
+            if category.category.lower() == category_name.lower():
+                return category
+        return None
+
+    def get_sgp_components(self) -> dict[str, SgpComponent]:
+        """Get Sistema General de Participaciones (SGP) components.
+
+        Returns:
+            Dict of SGP components by name
+        """
+        data = self._get_municipal_governance_data()
+        sgp_data = data.get("financial_ecosystem", {}).get("system_general_participations", {})
+        structure = sgp_data.get("structure", {})
+
+        return {
+            name: SgpComponent(
+                percentage=value.get("percentage", 0.0),
+                uses=value.get("uses", []),
+                rigidity=value.get("rigidity", "")
+            )
+            for name, value in structure.items()
+        }
+
+    def get_ocad_paz_approvals(self) -> dict[str, Any]:
+        """Get OCAD Paz historical approval data.
+
+        Returns:
+            Dict with OCAD Paz approval information
+        """
+        data = self._get_municipal_governance_data()
+        return data.get("financial_ecosystem", {}).get("system_general_royalties", {}).get("ocad_paz", {})
+
+    def get_pdet_pillar(self, pillar_id: str) -> PdetPillar | None:
+        """Get a specific PDET pillar.
+
+        Args:
+            pillar_id: Pillar identifier (e.g., "pillar_1", "pillar_2")
+
+        Returns:
+            PdetPillar if found, None otherwise
+        """
+        pdet_info = self.get_pdet_info()
+        for pillar in pdet_info.pillars:
+            if pillar.pillar_id == pillar_id:
+                return pillar
+        return None
+
 
 # =============================================================================
 # GLOBAL LOADER INSTANCE
@@ -370,6 +552,70 @@ def get_sectoral_plans() -> list[dict[str, Any]]:
 def get_peace_agreement_context() -> dict[str, Any]:
     """Get Peace Agreement context."""
     return _get_loader().get_peace_agreement_context()
+
+
+def get_municipal_governance() -> MunicipalGovernance:
+    """Get municipal governance context.
+
+    Returns:
+        MunicipalGovernance dataclass with comprehensive governance information
+        including constitutional foundation, legal framework, categorization,
+        competencies, financial ecosystem, and PDET regime.
+    """
+    return _get_loader().get_municipal_governance()
+
+
+def get_pdet_info() -> PdetInfo:
+    """Get PDET (Programas de Desarrollo con Enfoque Territorial) information.
+
+    Returns:
+        PdetInfo dataclass with PDET details including legal basis,
+        planning horizon, territorial scope, pillars, and implementation status.
+    """
+    return _get_loader().get_pdet_info()
+
+
+def get_municipal_category(category_name: str) -> MunicipalCategory | None:
+    """Get a specific municipal category.
+
+    Args:
+        category_name: Category name (e.g., "Special", "First", "Sixth")
+
+    Returns:
+        MunicipalCategory if found, None otherwise
+    """
+    return _get_loader().get_municipal_category(category_name)
+
+
+def get_sgp_components() -> dict[str, SgpComponent]:
+    """Get Sistema General de Participaciones (SGP) components.
+
+    Returns:
+        Dict of SGP components by name (education, health, water_sanitation, etc.)
+    """
+    return _get_loader().get_sgp_components()
+
+
+def get_ocad_paz_approvals() -> dict[str, Any]:
+    """Get OCAD Paz historical approval data.
+
+    Returns:
+        Dict with OCAD Paz approval information including project counts
+        and investment values.
+    """
+    return _get_loader().get_ocad_paz_approvals()
+
+
+def get_pdet_pillar(pillar_id: str) -> PdetPillar | None:
+    """Get a specific PDET pillar.
+
+    Args:
+        pillar_id: Pillar identifier (e.g., "pillar_1", "pillar_2")
+
+    Returns:
+        PdetPillar if found, None otherwise
+    """
+    return _get_loader().get_pdet_pillar(pillar_id)
 
 
 # =============================================================================
