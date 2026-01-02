@@ -8,7 +8,6 @@ from src.farfan_pipeline.infrastructure.calibration import (
     get_type_defaults,
     is_operation_prohibited,
     PROHIBITED_OPERATIONS,
-    CalibrationBounds,
 )
 
 
