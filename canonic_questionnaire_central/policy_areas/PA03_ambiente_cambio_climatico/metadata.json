@@ -1,0 +1,26 @@
+{
+  "policy_area_id": "PA03",
+  "name": "Ambiente sano, cambio climático, prevención y atención a desastres",
+  "legacy_id": "P3",
+  "cluster_id": "CL01",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_es": "Ambiente sano, cambio climático, prevención y atención a desastres",
+      "label_en": "Ambiente sano, cambio climático, prevención y atención a desastres"
+    }
+  },
+  "dimension_ids": [
+    "DIM01",
+    "DIM02",
+    "DIM03",
+    "DIM04",
+    "DIM05",
+    "DIM06"
+  ],
+  "required_evidence_keys": [
+    "official_stats",
+    "official_documents",
+    "third_party_research"
+  ]
+}

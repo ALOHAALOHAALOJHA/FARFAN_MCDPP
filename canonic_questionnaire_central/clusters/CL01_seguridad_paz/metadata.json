@@ -1,0 +1,21 @@
+{
+  "cluster_id": "CL01",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_en": "Seguridad y Paz",
+      "label_es": "Seguridad y Paz"
+    }
+  },
+  "legacy_policy_area_ids": [
+    "P2",
+    "P3",
+    "P7"
+  ],
+  "policy_area_ids": [
+    "PA02",
+    "PA03",
+    "PA07"
+  ],
+  "rationale": "Seguridad humana, protección de la vida y paz territorial"
+}

@@ -1,0 +1,26 @@
+{
+  "policy_area_id": "PA08",
+  "name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
+  "legacy_id": "P8",
+  "cluster_id": "CL03",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_es": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
+      "label_en": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza"
+    }
+  },
+  "dimension_ids": [
+    "DIM01",
+    "DIM02",
+    "DIM03",
+    "DIM04",
+    "DIM05",
+    "DIM06"
+  ],
+  "required_evidence_keys": [
+    "official_stats",
+    "official_documents",
+    "third_party_research"
+  ]
+}

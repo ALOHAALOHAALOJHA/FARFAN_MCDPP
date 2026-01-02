@@ -1,0 +1,21 @@
+{
+  "cluster_id": "CL02",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_en": "Grupos Poblacionales",
+      "label_es": "Grupos Poblacionales"
+    }
+  },
+  "legacy_policy_area_ids": [
+    "P1",
+    "P5",
+    "P6"
+  ],
+  "policy_area_ids": [
+    "PA01",
+    "PA05",
+    "PA06"
+  ],
+  "rationale": "Enfoque diferencial y derechos de grupos específicos"
+}

@@ -1,0 +1,26 @@
+{
+  "policy_area_id": "PA04",
+  "name": "Derechos económicos, sociales y culturales",
+  "legacy_id": "P4",
+  "cluster_id": "CL03",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_es": "Derechos económicos, sociales y culturales",
+      "label_en": "Derechos económicos, sociales y culturales"
+    }
+  },
+  "dimension_ids": [
+    "DIM01",
+    "DIM02",
+    "DIM03",
+    "DIM04",
+    "DIM05",
+    "DIM06"
+  ],
+  "required_evidence_keys": [
+    "official_stats",
+    "official_documents",
+    "third_party_research"
+  ]
+}

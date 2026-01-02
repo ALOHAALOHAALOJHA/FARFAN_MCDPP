@@ -1,0 +1,26 @@
+{
+  "policy_area_id": "PA05",
+  "name": "Derechos de las víctimas y construcción de paz",
+  "legacy_id": "P5",
+  "cluster_id": "CL02",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_es": "Derechos de las víctimas y construcción de paz",
+      "label_en": "Derechos de las víctimas y construcción de paz"
+    }
+  },
+  "dimension_ids": [
+    "DIM01",
+    "DIM02",
+    "DIM03",
+    "DIM04",
+    "DIM05",
+    "DIM06"
+  ],
+  "required_evidence_keys": [
+    "official_stats",
+    "official_documents",
+    "third_party_research"
+  ]
+}

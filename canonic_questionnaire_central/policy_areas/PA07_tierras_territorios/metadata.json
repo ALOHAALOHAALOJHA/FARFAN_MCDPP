@@ -1,0 +1,26 @@
+{
+  "policy_area_id": "PA07",
+  "name": "Tierras y territorios",
+  "legacy_id": "P7",
+  "cluster_id": "CL01",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_es": "Tierras y territorios",
+      "label_en": "Tierras y territorios"
+    }
+  },
+  "dimension_ids": [
+    "DIM01",
+    "DIM02",
+    "DIM03",
+    "DIM04",
+    "DIM05",
+    "DIM06"
+  ],
+  "required_evidence_keys": [
+    "official_stats",
+    "official_documents",
+    "third_party_research"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "policy_area_id": "PA10",
+  "name": "Migración transfronteriza",
+  "legacy_id": "P10",
+  "cluster_id": "CL04",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_es": "Migración transfronteriza",
+      "label_en": "Migración transfronteriza"
+    }
+  },
+  "dimension_ids": [
+    "DIM01",
+    "DIM02",
+    "DIM03",
+    "DIM04",
+    "DIM05",
+    "DIM06"
+  ],
+  "required_evidence_keys": [
+    "official_stats",
+    "official_documents",
+    "third_party_research"
+  ]
+}

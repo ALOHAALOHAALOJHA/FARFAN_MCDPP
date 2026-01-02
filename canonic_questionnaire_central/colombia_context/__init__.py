@@ -12,6 +12,7 @@ The context includes:
 - Key statistics (violence, gender, environment, migration)
 - Territorial context (regions and their specific issues)
 - Peace Agreement context
+- Municipal governance (PDET regime, financial ecosystem, categorization)
 
 Usage:
 ------
@@ -20,6 +21,8 @@ Usage:
         get_laws_for_policy_area,
         get_territorial_region_issues,
         get_key_statistics,
+        get_municipal_governance,
+        get_pdet_info,
     )
 
     # Get country information
@@ -31,8 +34,14 @@ Usage:
     # Get territorial context
     pacific_issues = get_territorial_region_issues("pacific_region")
 
+    # Get municipal governance context
+    gov = get_municipal_governance()
+
+    # Get PDET information
+    pdet = get_pdet_info()
+
 Author: F.A.R.F.A.N Pipeline Team
-Version: 1.0.0
+Version: 2.0.0
 """
 
 from __future__ import annotations
@@ -632,6 +641,12 @@ __all__ = [
     "DevelopmentPlan",
     "KeyStatistic",
     "ColombiaContextLoader",
+    # Municipal governance data structures
+    "MunicipalCategory",
+    "PdetPillar",
+    "PdetInfo",
+    "SgpComponent",
+    "MunicipalGovernance",
     # API functions
     "get_country_info",
     "get_territorial_organization",
@@ -647,4 +662,11 @@ __all__ = [
     "get_development_plan",
     "get_sectoral_plans",
     "get_peace_agreement_context",
+    # Municipal governance API functions
+    "get_municipal_governance",
+    "get_pdet_info",
+    "get_municipal_category",
+    "get_sgp_components",
+    "get_ocad_paz_approvals",
+    "get_pdet_pillar",
 ]

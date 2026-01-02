@@ -1,0 +1,26 @@
+{
+  "policy_area_id": "PA09",
+  "name": "Crisis de derechos de personas privadas de la libertad",
+  "legacy_id": "P9",
+  "cluster_id": "CL04",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_es": "Crisis de derechos de personas privadas de la libertad",
+      "label_en": "Crisis de derechos de personas privadas de la libertad"
+    }
+  },
+  "dimension_ids": [
+    "DIM01",
+    "DIM02",
+    "DIM03",
+    "DIM04",
+    "DIM05",
+    "DIM06"
+  ],
+  "required_evidence_keys": [
+    "official_stats",
+    "official_documents",
+    "third_party_research"
+  ]
+}
