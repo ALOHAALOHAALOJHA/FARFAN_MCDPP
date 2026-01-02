@@ -54,12 +54,13 @@ class TestCalibrationLayerIntegration:
             validity_days=90,
         )
 
+        # Note: Using actual method files from the repository for provenance validation
         chunk_size = CalibrationParameter(
             name="chunk_size",
             value=512.0,
             bounds=CalibrationBounds(min_value=128.0, max_value=2048.0, default_value=512.0, unit="tokens"),
             rationale="Semantic chunk size optimized for NLP processing",
-            source_evidence="src/farfan_pipeline/methods/semantic_processor.py",
+            source_evidence="src/farfan_pipeline/methods/semantic_chunking_policy.py",
             calibration_date=now,
             validity_days=90,
         )
@@ -69,7 +70,7 @@ class TestCalibrationLayerIntegration:
             value=0.85,
             bounds=CalibrationBounds(min_value=0.5, max_value=1.0, default_value=0.85, unit="ratio"),
             rationale="Target coverage for semantic extraction methods",
-            source_evidence="src/farfan_pipeline/methods/text_mining_engine.py",
+            source_evidence="src/farfan_pipeline/methods/policy_processor.py",
             calibration_date=now,
             validity_days=90,
         )

@@ -105,3 +105,23 @@ class TestProhibitedOperations:
         assert isinstance(prohibited, frozenset)
         with pytest.raises(AttributeError):
             prohibited.add("new_operation")  # type: ignore[union-attr]
+
+    def test_substring_matching_behavior_documented(self) -> None:
+        """
+        Document substring matching behavior - intentionally conservative.
+        
+        The current implementation uses substring matching which may produce
+        false positives (e.g., "meaningful" contains "mean"). This is by design
+        to ensure no prohibited operations slip through. If this becomes
+        problematic, switch to word-boundary matching.
+        """
+        # Current behavior: This IS blocked due to substring matching
+        assert is_operation_prohibited("TYPE_E", "meaningful_analysis")  # Contains "mean"
+        
+        # This is NOT blocked (doesn't contain prohibited substrings)
+        assert not is_operation_prohibited("TYPE_E", "stream_processor")
+        
+        # These are correctly blocked (actual averaging operations)
+        assert is_operation_prohibited("TYPE_E", "compute_mean")
+        assert is_operation_prohibited("TYPE_E", "calculate_average")
+        assert is_operation_prohibited("TYPE_E", "weighted_mean_calc")
