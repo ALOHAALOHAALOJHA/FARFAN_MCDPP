@@ -23,6 +23,23 @@ _CONTRATOS_CLASIFICADOS_PATH: Final[Path] = Path(
     "src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json"
 )
 
+# Calibration Constants
+# These values are derived from epistemic regime requirements and type-specific characteristics
+
+# Prior strength bounds (Bayesian inference weight)
+PRIOR_STRENGTH_MIN: Final[float] = 0.1
+PRIOR_STRENGTH_MAX: Final[float] = 10.0
+PRIOR_STRENGTH_DEFAULT: Final[float] = 1.0
+PRIOR_STRENGTH_BAYESIAN: Final[float] = 2.0  # TYPE_B uses stronger priors
+
+# Veto threshold bounds (probability for veto gates)
+VETO_THRESHOLD_STRICTEST_MIN: Final[float] = 0.01  # TYPE_E (logical consistency)
+VETO_THRESHOLD_STRICTEST_MAX: Final[float] = 0.05
+VETO_THRESHOLD_STANDARD_MIN: Final[float] = 0.03  # TYPE_A, TYPE_B, TYPE_C
+VETO_THRESHOLD_STANDARD_MAX: Final[float] = 0.07
+VETO_THRESHOLD_LENIENT_MIN: Final[float] = 0.05  # TYPE_D (financial)
+VETO_THRESHOLD_LENIENT_MAX: Final[float] = 0.10
+
 
 @lru_cache(maxsize=6)  # 5 main types + SUBTIPO_F
 def get_type_defaults(contract_type_code: str) -> dict[str, CalibrationBounds]:
@@ -86,8 +103,12 @@ def _derive_calibration_bounds(
             "n1_ratio": CalibrationBounds(0.20, 0.40, 0.30, "ratio"),
             "n2_ratio": CalibrationBounds(0.40, 0.60, 0.50, "ratio"),  # Increased for semantic reasoning
             "n3_ratio": CalibrationBounds(0.10, 0.30, 0.20, "ratio"),
-            "veto_threshold": CalibrationBounds(0.03, 0.07, 0.05, "probability"),
-            "prior_strength": CalibrationBounds(0.1, 10.0, 1.0, "prior_weight"),
+            "veto_threshold": CalibrationBounds(
+                VETO_THRESHOLD_STANDARD_MIN, VETO_THRESHOLD_STANDARD_MAX, 0.05, "probability"
+            ),
+            "prior_strength": CalibrationBounds(
+                PRIOR_STRENGTH_MIN, PRIOR_STRENGTH_MAX, PRIOR_STRENGTH_DEFAULT, "prior_weight"
+            ),
         }
     elif contract_type_code == "TYPE_B":
         # Bayesian: Balanced with strong priors
@@ -95,8 +116,12 @@ def _derive_calibration_bounds(
             "n1_ratio": CalibrationBounds(0.25, 0.45, 0.35, "ratio"),
             "n2_ratio": CalibrationBounds(0.30, 0.50, 0.40, "ratio"),
             "n3_ratio": CalibrationBounds(0.15, 0.35, 0.25, "ratio"),
-            "veto_threshold": CalibrationBounds(0.03, 0.07, 0.05, "probability"),
-            "prior_strength": CalibrationBounds(0.1, 10.0, 2.0, "prior_weight"),  # Stronger priors
+            "veto_threshold": CalibrationBounds(
+                VETO_THRESHOLD_STANDARD_MIN, VETO_THRESHOLD_STANDARD_MAX, 0.05, "probability"
+            ),
+            "prior_strength": CalibrationBounds(
+                PRIOR_STRENGTH_MIN, PRIOR_STRENGTH_MAX, PRIOR_STRENGTH_BAYESIAN, "prior_weight"
+            ),
         }
     elif contract_type_code == "TYPE_C":
         # Causal: Strong N3 for graph validation
@@ -104,8 +129,12 @@ def _derive_calibration_bounds(
             "n1_ratio": CalibrationBounds(0.20, 0.40, 0.30, "ratio"),
             "n2_ratio": CalibrationBounds(0.25, 0.45, 0.35, "ratio"),
             "n3_ratio": CalibrationBounds(0.25, 0.45, 0.35, "ratio"),  # Strong N3 for DAG validation
-            "veto_threshold": CalibrationBounds(0.03, 0.07, 0.05, "probability"),
-            "prior_strength": CalibrationBounds(0.1, 10.0, 1.0, "prior_weight"),
+            "veto_threshold": CalibrationBounds(
+                VETO_THRESHOLD_STANDARD_MIN, VETO_THRESHOLD_STANDARD_MAX, 0.05, "probability"
+            ),
+            "prior_strength": CalibrationBounds(
+                PRIOR_STRENGTH_MIN, PRIOR_STRENGTH_MAX, PRIOR_STRENGTH_DEFAULT, "prior_weight"
+            ),
         }
     elif contract_type_code == "TYPE_D":
         # Financial: N2-dominant for aggregation, lenient veto
@@ -113,8 +142,12 @@ def _derive_calibration_bounds(
             "n1_ratio": CalibrationBounds(0.15, 0.35, 0.25, "ratio"),
             "n2_ratio": CalibrationBounds(0.45, 0.65, 0.55, "ratio"),  # Dominant for financial aggregation
             "n3_ratio": CalibrationBounds(0.15, 0.30, 0.20, "ratio"),
-            "veto_threshold": CalibrationBounds(0.05, 0.10, 0.07, "probability"),  # More lenient
-            "prior_strength": CalibrationBounds(0.1, 10.0, 1.0, "prior_weight"),
+            "veto_threshold": CalibrationBounds(
+                VETO_THRESHOLD_LENIENT_MIN, VETO_THRESHOLD_LENIENT_MAX, 0.07, "probability"
+            ),
+            "prior_strength": CalibrationBounds(
+                PRIOR_STRENGTH_MIN, PRIOR_STRENGTH_MAX, PRIOR_STRENGTH_DEFAULT, "prior_weight"
+            ),
         }
     elif contract_type_code == "TYPE_E":
         # Logical: Strong N3 for contradiction detection, strict veto
@@ -122,8 +155,12 @@ def _derive_calibration_bounds(
             "n1_ratio": CalibrationBounds(0.15, 0.35, 0.25, "ratio"),
             "n2_ratio": CalibrationBounds(0.30, 0.50, 0.40, "ratio"),
             "n3_ratio": CalibrationBounds(0.25, 0.45, 0.35, "ratio"),  # Strong N3 for veto gates
-            "veto_threshold": CalibrationBounds(0.01, 0.05, 0.03, "probability"),  # Strictest
-            "prior_strength": CalibrationBounds(0.1, 10.0, 1.0, "prior_weight"),
+            "veto_threshold": CalibrationBounds(
+                VETO_THRESHOLD_STRICTEST_MIN, VETO_THRESHOLD_STRICTEST_MAX, 0.03, "probability"
+            ),
+            "prior_strength": CalibrationBounds(
+                PRIOR_STRENGTH_MIN, PRIOR_STRENGTH_MAX, PRIOR_STRENGTH_DEFAULT, "prior_weight"
+            ),
         }
     else:
         # Default/fallback for SUBTIPO_F or unknown types
@@ -131,8 +168,12 @@ def _derive_calibration_bounds(
             "n1_ratio": BASE_N1_RATIO,
             "n2_ratio": BASE_N2_RATIO,
             "n3_ratio": BASE_N3_RATIO,
-            "veto_threshold": CalibrationBounds(0.03, 0.07, 0.05, "probability"),
-            "prior_strength": CalibrationBounds(0.1, 10.0, 1.0, "prior_weight"),
+            "veto_threshold": CalibrationBounds(
+                VETO_THRESHOLD_STANDARD_MIN, VETO_THRESHOLD_STANDARD_MAX, 0.05, "probability"
+            ),
+            "prior_strength": CalibrationBounds(
+                PRIOR_STRENGTH_MIN, PRIOR_STRENGTH_MAX, PRIOR_STRENGTH_DEFAULT, "prior_weight"
+            ),
         }
 
 
