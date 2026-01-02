@@ -1,0 +1,394 @@
+{
+  "_comment": "Colombia-specific context for FARFAN questionnaire analysis",
+  "_version": "1.0.0",
+  "_generated_at": "2026-01-01T00:00:00Z",
+
+  "country": {
+    "name": "Colombia",
+    "iso_code": "CO",
+    "capital": "Bogotá",
+    "currency": "COP",
+    "population": {
+      "total": 51520000,
+      "year": 2023,
+      "source": "DANE"
+    }
+  },
+
+  "territorial_organization": {
+    "description": "División político-administrativa de Colombia",
+    "departments": 32,
+    "districts": 1,
+    "municipalities": 1119,
+    "indigenous_territories": 184,
+    "black_community_territories": 167,
+    "peasant_reserve_zones": 7,
+    "special_regions": [
+      {
+        "region_id": "BOR",
+        "name": "Bogotá",
+        "type": "Distrito Capital"
+      },
+      {
+        "region_id": "SAN",
+        "name": "San Andrés y Providencia",
+        "type": "Departamento"
+      },
+      {
+        "region_id": "RAP",
+        "name": "Región Amazónica de Planección",
+        "type": "Región especial"
+      },
+      {
+        "region_id": "RPEP",
+        "name": "Región para la Paz y el Progreso",
+        "type": "Región especial"
+      }
+    ]
+  },
+
+  "legal_framework": {
+    "constitution": {
+      "year": 1991,
+      "key_articles": {
+        "rights": ["Artículo 1", "Artículo 2", "Artículo 13"],
+        "gender": ["Artículo 13", "Artículo 40", "Artículo 43"],
+        "environment": ["Artículo 79", "Artículo 80", "Artículo 81"],
+        "victims": ["Artículo Transitorio 60"],
+        "peace": ["Artículo 22", "Artículo Transitorio 66"]
+      }
+    },
+    "key_laws": [
+      {
+        "law_id": "L1448_2011",
+        "name": "Ley de Víctimas y Restitución de Tierras",
+        "relevance": ["PA02", "PA05", "PA07"]
+      },
+      {
+        "law_id": "L1757_2015",
+        "name": "Ley de Cuotas de Género",
+        "relevance": ["PA01"]
+      },
+      {
+        "law_id": "L1709_2014",
+        "name": "Ley Garante de una Vida Libre de Violencias contra las Mujeres",
+        "relevance": ["PA01", "PA02"]
+      },
+      {
+        "law_id": "L1776_2016",
+        "name": "Ruta Integral de Atención para la Prevención y Atención de Violencias Sexuales",
+        "relevance": ["PA01", "PA02"]
+      },
+      {
+        "law_id": "L1907_2018",
+        "name": "Régimen de Reparación Integral a las Víctimas del Conflicto Armado Interno",
+        "relevance": ["PA02", "PA05"]
+      },
+      {
+        "law_id": "L2046_2020",
+        "name": "Ley de Defensores de Derechos Humanos",
+        "relevance": ["PA08"]
+      },
+      {
+        "law_id": "L2272_2022",
+        "name": "Ley de Garantías para la Lideresa Social y Defensora de DDHH",
+        "relevance": ["PA08"]
+      },
+      {
+        "law_id": "L2157_2021",
+        "name": "Ley de Niñez y Adolescencia",
+        "relevance": ["PA06"]
+      },
+      {
+        "law_id": "L2097_2021",
+        "name": "Ley de Acción Climática",
+        "relevance": ["PA03"]
+      }
+    ],
+    "international_treaties": [
+      {
+        "treaty": "Convención Belém do Pará",
+        "year": 1995,
+        "ratification_year": 1996,
+        "relevance": ["PA01", "PA02"]
+      },
+      {
+        "treaty": "CEDAW",
+        "year": 1979,
+        "ratification_year": 1981,
+        "relevance": ["PA01"]
+      },
+      {
+        "treaty": "Acuerdo de Paz",
+        "year": 2016,
+        "type": "Peace Agreement",
+        "relevance": ["PA02", "PA05", "PA07"]
+      }
+    ]
+  },
+
+  "institutional_framework": {
+    "executive_branch": {
+      "description": "Entidades del nivel central y territorial",
+      "national_level": [
+        {
+          "entity_id": "DNP",
+          "name": "Departamento Nacional de Planeación",
+          "role": "planificación y coordinación"
+        },
+        {
+          "entity_id": "MINTIC",
+          "name": "Ministerio de Tecnologías de la Información y Comunicaciones",
+          "role": "política digital"
+        },
+        {
+          "entity_id": "MINHACIENDA",
+          "name": "Ministerio de Hacienda y Crédito Público",
+          "role": "política fiscal"
+        }
+      ],
+      "sectorial_ministries": [
+        {"id": "MININTERIOR", "name": "Ministerio del Interior", "pa": ["PA01", "PA06"]},
+        {"id": "MINMUJER", "name": "Ministerio de la Mujer", "pa": ["PA01"]},
+        {"id": "MINDEFENSA", "name": "Ministerio de Defensa", "pa": ["PA02", "PA07"]},
+        {"id": "MINAMBIENTE", "name": "Ministerio de Ambiente", "pa": ["PA03"]},
+        {"id": "MINTRABAJO", "name": "Ministerio del Trabajo", "pa": ["PA04"]},
+        {"id": "MINJUSTICIA", "name": "Ministerio de Justicia", "pa": ["PA09"]},
+        {"id": "MINRELACIONES", "name": "Ministerio de Relaciones Exteriores", "pa": ["PA10"]}
+      ]
+    },
+    "special_entities": [
+      {
+        "entity_id": "CONPES",
+        "name": "Consejo Nacional de Política Económica y Social",
+        "role": "política intersectorial"
+      },
+      {
+        "entity_id": "CONPESD",
+        "name": "Consejo Nacional de Seguridad y Defensa",
+        "role": "política de seguridad"
+      },
+      {
+        "entity_id": "CNR",
+        "name": "Comisión Nacional de Reparación",
+        "role": "política de víctimas"
+      },
+      {
+        "entity_id": "CNRR",
+        "name": "Comisión Nacional de Búsqueda de Personas dadas por Desaparecidas",
+        "role": "búsqueda de desaparecidos"
+      },
+      {
+        "entity_id": "UMPJ",
+        "name": "Unidad de Búsqueda de Personas dadas por Desaparecidas",
+        "role": "búsqueda de desaparecidos"
+      },
+      {
+        "entity_id": "CNAI",
+        "name": "Comisión de Seguimiento y Monitoreo",
+        "role": "implementación del Acuerdo de Paz"
+      }
+    ]
+  },
+
+  "development_plans": {
+    "national_development_plan": {
+      "acronym": "PND",
+      "current_period": "2022-2026",
+      "name": "Colombia Potencia Mundial de la Vida",
+      "pillars": [
+        "Pilar 1: Derechos sociales y seguridad social integral",
+        "Pilar 2: Derechos humanos, seguridad y convivencia",
+        "Pilar 3: Crecimiento económico con productividad y competitividad",
+        "Pilar 4: Transformación climática y sostenibilidad ambiental",
+        "Pilar 5: Paz y legitimidad",
+        "Pilar 6: Desarrollo regional equilibrado"
+      ]
+    },
+    "sectoral_plans": [
+      {
+        "plan_id": "PNPSV",
+        "name": "Política Nacional de Seguridad y Convivencia",
+        "period": "2022-2032"
+      },
+      {
+        "plan_id": "PNG",
+        "name": "Política Nacional de Género",
+        "period": "2023-2027"
+      },
+      {
+        "plan_id": "CONPES",
+        "name": "CONPES de Niñez y Adolescencia",
+        "period": "2023-2035"
+      },
+      {
+        "plan_id": "PISGVA",
+        "name": "Plan Integral de Sustitución de Cultivos Ilícitos",
+        "period": "2023-2033"
+      }
+    ]
+  },
+
+  "key_statistics": {
+    "violence_indicators": {
+      "homicide_rate": {
+        "value": 25.8,
+        "unit": "por 100.000 habitantes",
+        "year": 2022,
+        "source": "INMLCF"
+      },
+      "femicide_rate": {
+        "value": 0.69,
+        "unit": "por 100.000 mujeres",
+        "year": 2022,
+        "source": "INMLCF"
+      },
+      "disappeared_population": {
+        "value": 120000,
+        "year": 2023,
+        "source": "CNRR"
+      }
+    },
+    "gender_indicators": {
+      "women_labor_force_participation": {
+        "value": 52.4,
+        "unit": "porcentaje",
+        "year": 2022,
+        "source": "DANE"
+      },
+      "gender_wage_gap": {
+        "value": 14.8,
+        "unit": "porcentaje",
+        "year": 2022,
+        "source": "DANE"
+      }
+    },
+    "environmental_indicators": {
+      "deforestation_rate": {
+        "value": 117000,
+        "unit": "hectáreas",
+        "year": 2022,
+        "source": "IDEAM"
+      },
+      "ghg_emissions": {
+        "value": 280,
+        "unit": "millones de toneladas CO2eq",
+        "year": 2021,
+        "source": "IDEAM"
+      }
+    },
+    "migration_indicators": {
+      "venezuelan_migrants": {
+        "value": 2850000,
+        "year": 2023,
+        "source": "Migración Colombia"
+      }
+    }
+  },
+
+  "territorial_context": {
+    "pacific_region": {
+      "key_issues": [
+        "conflicto armado",
+        "economías ilícitas",
+        "minería ilegal",
+        "biodiversidad",
+        "culturas afrodescendientes"
+      ],
+      "departments": [
+        "Chocó",
+        "Valle del Cauca",
+        "Cauca",
+        "Nariño"
+      ]
+    },
+    "caribbean_region": {
+      "key_issues": [
+        "migración venezolana",
+        "turismo",
+        "zonas áridas",
+        "pueblos indígenas",
+        "economía costera"
+      ],
+      "departments": [
+        "La Guajira",
+        "Magdalena",
+        "Atlántico",
+        "Bolívar",
+        "Cesar",
+        "Córdoba",
+        "Sucre"
+      ]
+    },
+    "amazon_region": {
+      "key_issues": [
+        "deforestación",
+        "minería ilegal",
+        "pueblos indígenas en aislamiento",
+        "frontera agrícola",
+        "cambio climático"
+      ],
+      "departments": [
+        "Amazonas",
+        "Caquetá",
+        "Putumayo",
+        "Guainía",
+        "Guaviare",
+        "Vaupés",
+        "Vichada"
+      ]
+    },
+    "orinoquia_region": {
+      "key_issues": [
+        "agroindustria",
+        "frontera agrícola",
+        "conflicto por tierras",
+        "economías extractivas",
+        "ganadería extensiva"
+      ],
+      "departments": [
+        "Arauca",
+        "Casanare",
+        "Meta",
+        "Vichada"
+      ]
+    },
+    "andean_region": {
+      "key_issues": [
+        "urbanización",
+        "seguridad ciudadana",
+        "corredores industriales",
+        "conflicto social",
+        "movilidad"
+      ],
+      "departments": [
+        "Antioquia",
+        "Boyacá",
+        "Caldas",
+        "Cundinamarca",
+        "Huila",
+        "Norte de Santander",
+        "Quindío",
+        "Risaralda",
+        "Santander",
+        "Tolima"
+      ]
+    }
+  },
+
+  "peace_agreement_context": {
+    "acuerdo": "Acuerdo Final para la Terminación del Conflicto y la Construcción de una Paz Estable y Duradera",
+    "year": 2016,
+    "implementation": {
+      "status": "en implementación",
+      "challenges": [
+        "security guarantees",
+        "rural reform",
+        "political participation",
+        "illicit crop substitution",
+        "victim reparations"
+      ]
+    },
+    "relevant_policy_areas": ["PA02", "PA05", "PA07"]
+  }
+}

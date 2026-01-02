@@ -1,97 +1,153 @@
 {
+  "_comment": "Canonical Scoring System Configuration",
+  "_comment_aligned_with": "Phase Three primitives (src/farfan_pipeline/phases/Phase_three/primitives/)",
+  "_version": "2.0.0",
+  "_generated_at": "2026-01-01T00:00:00Z",
+
   "micro_levels": [
     {
-      "color": "green",
       "level": "EXCELENTE",
-      "min_score": 0.85
+      "color": "green",
+      "min_score": 0.85,
+      "_aligned_with": "Phase Three QualityLevel.EXCELENTE"
     },
     {
-      "color": "blue",
       "level": "BUENO",
-      "min_score": 0.7
+      "color": "blue",
+      "min_score": 0.70,
+      "_aligned_with": "Phase Three QualityLevel.GOOD (Spanish canonical)"
     },
     {
-      "color": "yellow",
       "level": "ACEPTABLE",
-      "min_score": 0.55
+      "color": "yellow",
+      "min_score": 0.55,
+      "_aligned_with": "Phase Three QualityLevel.ADEQUATE (Spanish canonical)"
     },
     {
-      "color": "red",
       "level": "INSUFICIENTE",
-      "min_score": 0.0
+      "color": "red",
+      "min_score": 0.0,
+      "_aligned_with": "Phase Three QualityLevel.POOR (Spanish canonical)"
     }
   ],
+
   "modalities": {
     "TYPE_A": {
-      "description": "Count 4 elements and scale to 0-3",
-      "levels": [],
-      "max_score": 3
+      "description": "Quantitative indicators (high threshold, precise)",
+      "max_score": 3,
+      "aggregation": "presence_threshold",
+      "threshold": 0.7,
+      "use_case": "numeric indicators, budgets, goals",
+      "_aligned_with": "Phase Three score_type_a()"
     },
     "TYPE_B": {
-      "description": "Count up to 3 elements, each worth 1 point",
-      "levels": [],
-      "max_score": 3
+      "description": "Qualitative descriptors (medium threshold, patterns)",
+      "max_score": 3,
+      "aggregation": "binary_sum",
+      "threshold": 0.65,
+      "use_case": "institutional actors, policy instruments",
+      "_aligned_with": "Phase Three score_type_b()"
     },
     "TYPE_C": {
-      "description": "Count 2 elements and scale to 0-3",
-      "levels": [],
-      "max_score": 3
+      "description": "Mixed evidence (balanced weights)",
+      "max_score": 3,
+      "aggregation": "presence_threshold",
+      "threshold": 0.5,
+      "use_case": "mixed quantitative/qualitative questions",
+      "_aligned_with": "Phase Three score_type_c()"
     },
     "TYPE_D": {
-      "description": "Calculate ratio and apply thresholds",
-      "levels": [],
-      "max_score": 3
+      "description": "Temporal series (sequence-aware)",
+      "max_score": 3,
+      "aggregation": "weighted_sum",
+      "threshold": 0.65,
+      "weights": [0.4, 0.3, 0.3],
+      "use_case": "time series, historical trends",
+      "_aligned_with": "Phase Three score_type_d()"
     },
     "TYPE_E": {
-      "description": "Apply if-then-else logic",
-      "levels": [],
-      "max_score": 3
+      "description": "Territorial coverage (spatial)",
+      "max_score": 3,
+      "aggregation": "binary_presence",
+      "threshold": 0.65,
+      "use_case": "geographic distribution, regional policies",
+      "_aligned_with": "Phase Three score_type_e()"
     },
     "TYPE_F": {
-      "description": "Semantic matching with cosine similarity",
-      "levels": [],
-      "max_score": 3
+      "description": "Institutional actors (relational)",
+      "max_score": 3,
+      "aggregation": "normalized_continuous",
+      "threshold": 0.65,
+      "normalization": "minmax",
+      "use_case": "actor networks, governance structures",
+      "_aligned_with": "Phase Three score_type_f()"
     }
   },
+
   "modality_definitions": {
     "TYPE_A": {
       "aggregation": "presence_threshold",
       "description": "Count 4 elements and scale to 0-3",
       "failure_code": "F-A-MIN",
-      "threshold": 0.7
+      "threshold": 0.7,
+      "weights": [0.5, 0.3, 0.2]
     },
     "TYPE_B": {
       "aggregation": "binary_sum",
       "description": "Count up to 3 elements, each worth 1 point",
       "failure_code": "F-B-MIN",
-      "max_score": 3
+      "max_score": 3,
+      "weights": [0.4, 0.3, 0.3]
     },
     "TYPE_C": {
       "aggregation": "presence_threshold",
       "description": "Count 2 elements and scale to 0-3",
       "failure_code": "F-C-MIN",
-      "threshold": 0.5
+      "threshold": 0.5,
+      "weights": [0.33, 0.34, 0.33]
     },
     "TYPE_D": {
       "aggregation": "weighted_sum",
       "description": "Count 3 elements, weighted",
       "failure_code": "F-D-MIN",
-      "weights": [
-        0.4,
-        0.3,
-        0.3
-      ]
+      "threshold": 0.65,
+      "weights": [0.4, 0.3, 0.3]
     },
     "TYPE_E": {
       "aggregation": "binary_presence",
       "description": "Boolean presence check",
-      "failure_code": "F-E-MIN"
+      "failure_code": "F-E-MIN",
+      "threshold": 0.65
     },
     "TYPE_F": {
       "aggregation": "normalized_continuous",
       "description": "Continuous scale",
       "failure_code": "F-F-MIN",
+      "threshold": 0.65,
       "normalization": "minmax"
     }
+  },
+
+  "quality_level_mapping": {
+    "completeness_to_quality": {
+      "complete": "EXCELENTE",
+      "partial": "ACEPTABLE",
+      "insufficient": "INSUFICIENTE",
+      "not_applicable": "NO_APLICABLE",
+      "_aligned_with": "Phase Three map_completeness_to_quality()"
+    },
+    "score_to_quality": {
+      "excellent_min": 0.85,
+      "good_min": 0.70,
+      "adequate_min": 0.55,
+      "_aligned_with": "Phase Three determine_quality_level()"
+    }
+  },
+
+  "invariants": {
+    "INV-SC-001": "All scores must be in range [0.0, 1.0]",
+    "INV-SC-002": "Quality level must be deterministic from score",
+    "INV-SC-003": "Scoring metadata must include modality and threshold",
+    "INV-SC-004": "Normalized scores must be in range [0, 100]"
   }
 }

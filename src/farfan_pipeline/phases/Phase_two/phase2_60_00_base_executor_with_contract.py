@@ -3,6 +3,7 @@
 PHASE_LABEL: Phase 2
 PHASE_COMPONENT: Base Executor
 PHASE_ROLE: Abstract base class for contract-driven executors with method routing
+"""
 
 from __future__ import annotations
 

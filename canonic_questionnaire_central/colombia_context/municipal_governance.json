@@ -1,0 +1,475 @@
+{
+  "_comment": "Colombian Municipal Governance and PDET Context",
+  "_version": "2.0.0",
+  "_generated_at": "2026-01-01T00:00:00Z",
+  "_sources": [
+    "Constitución Política de 1991",
+    "Ley 136 de 1994",
+    "Ley 1551 de 2012",
+    "Ley 617 de 2000",
+    "Decreto Ley 893 de 2017 (PDET)",
+    "DNP - Central de Información PDET",
+    "OCAD Paz Session Records"
+  ],
+
+  "constitutional_foundation": {
+    "constitution_year": 1991,
+    "municipality_definition": "Entidad fundamental de la división político-administrativa del Estado",
+    "autonomy_principle": "Autonomía para gestionar sus intereses regulada por leyes de modernización",
+    "modernization_mandate": "Leyes que han ajustado progresivamente el régimen municipal"
+  },
+
+  "legal_framework": {
+    "law_136_1994": {
+      "name": "Ley 136 de 1994",
+      "description": "Régimen municipal general",
+      "key_provisions": [
+        "Define la estructura básica municipal",
+        "Establece competencias y funciones",
+        "Regula la relación municipio-nación"
+      ]
+    },
+    "law_1551_2012": {
+      "name": "Ley 1551 de 2012",
+      "description": "Moderniza el régimen municipal de la Ley 136/1994",
+      "paradigm_shift": "Cambio de provisión de servicios a 'modernizar normas como instrumento de gestión'",
+      "article_2_five_rights": {
+        "political_election": "Derecho a elegir autoridades (Alcaldes, Concejales)",
+        "competence_exercise": "Autoridad para ejercer funciones asignadas por Constitución y ley",
+        "fiscal_administration": "Derecho a administrar recursos y establecer tributos (ICA, Predial)",
+        "national_rent_participation": "Participación en rentas nacionales (Sistema General de Participaciones)",
+        "administrative_structure": "Derecho a adoptar estructura administrativa autofinanciable"
+      },
+      "article_3_development_mandate": {
+        "obligation": "Promover el desarrollo de su territorio",
+        "construction_mandate": "Construir las obras que demande el progreso municipal",
+        "indigenous_consideration": "Considerar planes de vida de comunidades indígenas",
+        "communal_plans": "Considerar planes de desarrollo de comunidades negras",
+        "pdet_hook": "Base legal para la estrategia PDET como contrato de transformación territorial"
+      }
+    },
+    "law_617_2000": {
+      "name": "Ley 617 de 2000",
+      "description": "Régimen de categorización municipal",
+      "fiscal_straitjacket": "Determina la capacidad operativa del municipio",
+      "classification_criteria": {
+        "variables": ["Población", "Ingresos Corrientes de Libre Destinación (ICLD)"],
+        "unit": "Salario Mínimo Mensual Legal Vigente (SMMLV)"
+      },
+      "implications": {
+        "operating_expense_limits": "Límites estrictos a gastos de funcionamiento",
+        "dependency": "Dependencia de transferencias nacionales para inversión",
+        "salary_caps": "Techos salariales para Alcaldes y Concejales"
+      }
+    },
+    "decree_law_893_2017": {
+      "name": "Decreto Ley 893 de 2017",
+      "description": "Régimen de los PDET (Programas de Desarrollo con Enfoque Territorial)",
+      "legal_basis": "Acuerdo de Paz Punto 1 - Reforma Rural Integral",
+      "state_policy": "Política de Estado que trasciende períodos municipales",
+      "planning_horizon": "15 años",
+      "alignment_mandate": "Obligación de incorporar PATR en Planes de Desarrollo Municipales"
+    }
+  },
+
+  "municipal_categorization": {
+    "system": "Basado en Población e ICLD (SMMLV)",
+    "categories": [
+      {
+        "category": "Special",
+        "population_range": "> 500,001",
+        "icld_range": "> 400,000",
+        "description": "Hubs económicos/políticos mayores (Bogotá, Medellín)",
+        "fiscal_autonomy": "Alta"
+      },
+      {
+        "category": "First",
+        "population_range": "100,001 - 500,000",
+        "icld_range": "100,000 - 400,000",
+        "description": "Capitales regionales, alta autonomía fiscal",
+        "fiscal_autonomy": "Alta"
+      },
+      {
+        "category": "Second",
+        "population_range": "50,001 - 100,000",
+        "icld_range": "50,000 - 100,000",
+        "description": "Ciudades intermedias",
+        "fiscal_autonomy": "Media-Alta"
+      },
+      {
+        "category": "Third",
+        "population_range": "30,001 - 50,000",
+        "icld_range": "30,000 - 50,000",
+        "description": "Nodos urbanos emergentes",
+        "fiscal_autonomy": "Media"
+      },
+      {
+        "category": "Fourth",
+        "population_range": "20,001 - 30,000",
+        "icld_range": "25,000 - 30,000",
+        "description": "Centros urbanos pequeños",
+        "fiscal_autonomy": "Media-Baja"
+      },
+      {
+        "category": "Fifth",
+        "population_range": "10,001 - 20,000",
+        "icld_range": "15,000 - 25,000",
+        "description": "Municipios rurales",
+        "fiscal_autonomy": "Baja"
+      },
+      {
+        "category": "Sixth",
+        "population_range": "< 10,000",
+        "icld_range": "< 15,000",
+        "description": "Rural profundo, fiscalidad de subsistencia",
+        "fiscal_autonomy": "Muy baja",
+        "pdet_majority": "88.8% de municipios PDET son Categoría 6"
+      }
+    ]
+  },
+
+  "municipal_competencies": {
+    "principles": {
+      "coordination": "Coordinación entre niveles de gobierno",
+      "concurrence": "Concurrencia en la provisión de servicios",
+      "subsidiarity": "Subsidiariedad - Nación/Departamento suplen cuando el municipio no puede"
+    },
+    "mandatory_competencies": {
+      "description": "Asignadas por Constitución y leyes (Ley 715, Ley 1176)",
+      "cannot_be_renounced": true,
+      "areas": [
+        {
+          "area": "Public Services",
+          "description": "Provisión de acueducto, alcantarillado, servicios básicos",
+          "implementation": "A través de empresas descentralizadas"
+        },
+        {
+          "area": "Social Infrastructure",
+          "description": "Construcción y mantenimiento de infraestructura educativa y de salud (primer nivel de complejidad)"
+        },
+        {
+          "area": "Transport",
+          "description": "Construcción y mantenimiento de vías terciarias (vías rurales)",
+          "pdet_relevance": "Crítico para conectividad PDET"
+        },
+        {
+          "area": "Vulnerable Populations",
+          "description": "Cuidado específico de niñez, personas mayores y víctimas del conflicto"
+        }
+      ]
+    },
+    "voluntary_competencies": {
+      "description": "Funciones adicionales si demuestran capacidad técnica y administrativa",
+      "law_1551_introduction": "Ley 1551 introduce concepto de competencias voluntarias",
+      "pdet_context": "Municipios pueden asumir formalización de tierras o gestión ambiental avanzada",
+      "capacity_constraint": "A menudo carecen de capacidad certificada en PDETs"
+    }
+  },
+
+  "financial_ecosystem": {
+    "shift": "De impuestos locales a transferencias nacionales y fondos de regalías",
+    "system_general_participations": {
+      "acronym": "SGP",
+      "constitutional_basis": "Artículos 356/357 de la Constitución",
+      "legal_framework": "Ley 715 de 2001",
+      "lifeline": "El SGP es la línea de vida del municipio",
+      "structure": {
+        "education": {
+          "percentage": 58.5,
+          "uses": ["Salarios de maestros", "Infraestructura educativa"],
+          "rigidity": "Alta - fondos muy rígidos"
+        },
+        "health": {
+          "percentage": 24.5,
+          "uses": ["Régimen subsidiado de salud"],
+          "rigidity": "Alta - fondos muy rígidos"
+        },
+        "water_sanitation": {
+          "percentage": 5.4,
+          "acronym": "APSB",
+          "uses": ["Acueducto y alcantarillado"],
+          "rigidity": "Media"
+        },
+        "general_purpose": {
+          "percentage": 11.6,
+          "uses": ["Propósito general"],
+          "flexibility_window": "Categorías 4, 5, 6 pueden usar hasta 42% para inversión libre",
+          "pdet_relevance": "A menudo el único efectivo 'no restringido' para iniciativas PDET que no encajan en proyectos grandes"
+        },
+        "special_allocations": {
+          "percentage": 4,
+          "uses": ["Alimentación escolar", "Resguardos indígenas", "Municipios ribereños"]
+        }
+      }
+    },
+    "system_general_royalties": {
+      "acronym": "SGR",
+      "peace_allocations": "Asignación para la Paz creada por reforma del sistema de regalías",
+      "ocad_paz": {
+        "name": "Órgano Colegiado de Administración y Decisión para la Paz",
+        "role": "Gatekeeper de proyectos financiados por Asignación para la Paz",
+        "membership": ["Gobierno Nacional (DNP, MHCP)", "Departamentos", "Municipios"],
+        "historic_approval": {
+          "session": "1 de octubre de 2025",
+          "projects": 100,
+          "investment": "$1.76 billones COP",
+          "sectoral_priority": "Transporte (48%) y Agricultura (18%)"
+        },
+        "bottleneck": "Requisitos técnicos MGA muy altos para capacidad limitada de municipios Categoría 6"
+      },
+      "sectoral_distribution_2025": [
+        {"sector": "Transport", "projects": 43, "value_cop_millions": 859270},
+        {"sector": "Agriculture & Rural Dev.", "projects": 22, "value_cop_millions": 318506},
+        {"sector": "Housing & Territory", "projects": 18, "value_cop_millions": 255368},
+        {"sector": "ICT (Connectivity)", "projects": 8, "value_cop_millions": 159152},
+        {"sector": "Commerce/Tourism", "projects": 3, "value_cop_millions": 119950},
+        {"sector": "Mines & Energy", "projects": 3, "value_cop_millions": 25274},
+        {"sector": "Environment", "projects": 2, "value_cop_millions": 9438},
+        {"sector": "Health", "projects": 1, "value_cop_millions": 13930}
+      ]
+    },
+    "works_for_taxes": {
+      "name": "Obras por Impuestos",
+      "mechanism": "Empresas privadas pagan hasta 50% de su impuesto de renta ejecutando proyectos en ZOMAC y PDET",
+      "bypass": "Evita la tesorería local, entrega infraestructura directamente",
+      "quota_evolution": {
+        "2018": "$250 billones COP",
+        "2024": "$1 billón COP"
+      },
+      "total_since_2018": "$3 billones COP aprobados",
+      "main_contributor": "Sector energético (Ecopetrol) - 30% de proyectos totales",
+      "key_sectors": ["Infraestructura vial ($1 billón)", "Educación ($862 billones)"]
+    }
+  },
+
+  "pdet_regime": {
+    "full_name": "Programas de Desarrollo con Enfoque Territorial",
+    "acronym": "PDET",
+    "legal_basis": "Acuerdo de Paz Punto 1 + Decreto Ley 893 de 2017",
+    "planning_horizon": "15 años",
+    "nature": "Política de Estado que trasciende períodos municipales individuales",
+
+    "territorial_scope": {
+      "municipalities": 170,
+      "subregions": 16,
+      "veredas": 11000,
+      "population": 6600000,
+      "rural_percentage": "24% de la población rural de Colombia"
+    },
+
+    "the_gap": {
+      "justification": "Brecha entre PDET y promedio nacional",
+      "multidimensional_poverty": {
+        "pdet": "39.2%",
+        "context": "Significativamente mayor al promedio nacional"
+      },
+      "connectivity": {
+        "internet_coverage": "Solo 28.8% de municipios PDET tienen cobertura decente"
+      },
+      "water": {
+        "without_aqueduct": "40% de viviendas carecen de acueducto"
+      },
+      "formality": {
+        "formal_enterprises_per_100k": {
+          "pdet": 77.9,
+          "national": 192.1
+        }
+      }
+    },
+
+    "participatory_construction": {
+      "period": "2017-2018",
+      "participants": "> 200,000 personas",
+      "method": "Asambleas veredales",
+      "initiatives_generated": 32808,
+      "consolidation": "Action Plans for Regional Transformation (PATR)"
+    },
+
+    "eight_pillars": {
+      "pillar_1": {
+        "name": "Ordenamiento Social de la Propiedad y Uso Rural de la Tierra",
+        "focus": ["Formalización", "Catastro", "Acceso a tierras"],
+        "status": "Pilar más rezagado",
+        "warning": "A ritmo actual de ejecución de ANT, tomaría 400 años alcanzar meta de 3 millones de hectáreas"
+      },
+      "pillar_2": {
+        "name": "Infraestructura y Adecuación de Tierras",
+        "focus": ["Carreteras", "Puentes", "Riego"],
+        "investment_volume": "Mayor volumen de inversión"
+      },
+      "pillar_3": {
+        "name": "Salud Rural",
+        "focus": ["Infraestructura", "Modelos de servicio"]
+      },
+      "pillar_4": {
+        "name": "Educación Rural y Primera Infancia",
+        "focus": ["Cobertura", "Calidad"]
+      },
+      "pillar_5": {
+        "name": "Vivienda Rural, Agua y Saneamiento Básico",
+        "focus": ["Reducción de déficit cualitativo"],
+        "initiatives": "~1,643 iniciativas"
+      },
+      "pillar_6": {
+        "name": "Reactivación Económica y Producción Agrícola",
+        "focus": ["Apoyo a pequeños productores", "Modelos asociativos"],
+        "initiatives": "~1,523 iniciativas"
+      },
+      "pillar_7": {
+        "name": "Derecho a la Alimentación",
+        "focus": ["Sistemas de seguridad alimentaria"]
+      },
+      "pillar_8": {
+        "name": "Reconciliación, Convivencia y Construcción de Paz",
+        "focus": ["Fortalecimiento del tejido social"]
+      }
+    },
+
+    "implementation_status_2024": {
+      "monitoring": "Central de Información PDET",
+      "active_route_initiatives": 20352,
+      "completed_works": 5759,
+      "royalty_investment_2021_2024": "$8.9 billones COP"
+    },
+
+    "subregional_distribution": [
+      {"subregion": "Chocó", "projects": 7, "value_cop_millions": 158419},
+      {"subregion": "Alto Patía y Norte del Cauca", "projects": 12, "value_cop_millions": 155219},
+      {"subregion": "Bajo Cauca y Nordeste Ant.", "projects": 9, "value_cop_millions": 153670},
+      {"subregion": "Sur del Tolima", "projects": 6, "value_cop_millions": 152865},
+      {"subregion": "Urabá Antioqueño", "projects": 5, "value_cop_millions": 115657},
+      {"subregion": "Macarena – Guaviare", "projects": 4, "value_cop_millions": 116063},
+      {"subregion": "Cuenca del Caguán (Caquetá)", "projects": 6, "value_cop_millions": 110745},
+      {"subregion": "Sierra Nevada y Perijá", "projects": 7, "value_cop_millions": 110332},
+      {"subregion": "Montes de María", "projects": 4, "value_cop_millions": 110207},
+      {"subregion": "Sur de Córdoba", "projects": 6, "value_cop_millions": 108961},
+      {"subregion": "Putumayo", "projects": 10, "value_cop_millions": 108830},
+      {"subregion": "Sur de Bolívar", "projects": 7, "value_cop_millions": 103394},
+      {"subregion": "Pacífico y Frontera Nariñense", "projects": 9, "value_cop_millions": 100808},
+      {"subregion": "Arauca", "projects": 3, "value_cop_millions": 85733},
+      {"subregion": "Catatumbo", "projects": 4, "value_cop_millions": 66551},
+      {"subregion": "Pacífico Medio", "projects": 1, "value_cop_millions": 3431}
+    ]
+  },
+
+  "alignment_2024_2027": {
+    "challenge": "Alineación de Planes de Desarrollo 2024-2027 con iniciativas PATR",
+    "legal_mandate": "No es opcional - Decreto 893/2017 y PND obligan incorporar PATR",
+    "transition_empalme": {
+      "requirement": "Alcaldes salientes deben presentar 'Informe de Gestión PDET'",
+      "purpose": "Garantizar continuidad"
+    },
+    "kit_de_planeacion": {
+      "name": "Kit de Planeación Territorial (KPT)",
+      "provider": "DNP",
+      "function": "Permite a nuevos alcaldes ver 32,808 iniciativas y etiquetarlas en sus planes"
+    },
+    "incorporation_mechanisms": {
+      "diagnosis_integration": "Usar datos PATR como diagnóstico base del territorio",
+      "strategic_line_matching": "Mapear iniciativas a líneas estratégicas del PDM",
+      "multi_level_articulation": "Sesiones institucionales donde ART, DNP, Alcaldes y Gobernadores negocian financiamiento"
+    },
+    "case_studies": [
+      {
+        "municipality": "San Pedro de Urabá (Antioquia)",
+        "mayor": "Never Jacinto Carvajal",
+        "period": "2024-2027",
+        "approach": "Equipo de transición usó informe PDET para diagnosticar obras pendientes",
+        "result": "Plan incorpora explícitamente 184 iniciativas del pacto municipal"
+      },
+      {
+        "municipality": "Tumaco (Nariño)",
+        "plan": "Juntos por Tumaco 2024-2027",
+        "approach": "Construcción colaborativa armonizando presupuesto municipal con fuentes PDET",
+        "fiscal_strategy": "Artículo 3 faculta al alcalde para modificar presupuesto e incorporar recursos externos"
+      },
+      {
+        "municipality": "Santander de Quilichao (Cauca)",
+        "plan": "Quilichao Somos Todos",
+        "approach": "Estructura basada en pilares que refleja RRI",
+        "continuity": "Declara dar continuidad a iniciativas de administraciones anteriores"
+      }
+    ],
+    "alignment_gaps": {
+      "ethnic_lag": "Solo 25.15% de iniciativas étnicas PDET tienen ruta activa de implementación",
+      "instrumental_vs_substantive": "Riesgo de que PDETs permanezcan como 'lista de deseos' desconectada de inversión",
+      "warning": "FIP encontró capítulos de paz puramente diagnósticos pero desconectados de PPI"
+    }
+  },
+
+  "state_policy_actors": {
+    "art": {
+      "name": "Agencia de Renovación del Territorio",
+      "role": "Gestor de los PDETs",
+      "description": "No reemplaza al alcalde pero actúa como puente con el gobierno nacional",
+      "functions": [
+        "Implementar Esquemas de Estructuración para convertir ideas locales en proyectos MGA",
+        "Gestionar 16 planes PATR",
+        "Monitorear 32,808 iniciativas vía Central de Información PDET"
+      ]
+    },
+    "dnp": {
+      "name": "Departamento Nacional de Planeación",
+      "ocad_paz_role": "Secretaría del OCAD Paz",
+      "approval_power": "Posee el poder de aprobación financiera",
+      "bottleneck": "Requisitos técnicos MGA muy altos para capacidad limitada municipal"
+    },
+    "control_bodies": {
+      "shift": "De auditoría post-facto a 'advertencias preventivas'",
+      "contraloria_warnings": {
+        "400_years_warning": "A ritmo actual, formalización de tierras tomaría 400 años para meta de 3M hectáreas",
+        "fiscal_findings": "511 hallazgos con incidencia fiscal totalizando $141 billones COP",
+        "disconnect": "Desconexión entre alto volumen de aprobaciones y bajo avance físico"
+      },
+      "procuraduria_6th_report": {
+        "period": "Abril 2023 - Marzo 2024",
+        "land_adjudication_progress": "0.87% de la meta",
+        "recommendations": "Recomendaciones a ANT para acelerar entrada de tierras compradas al Fondo de Tierras"
+      }
+    },
+    "international_cooperation": {
+      "actors": ["PNUD", "USAID", "FAO"],
+      "role": "Subsidiariedad - llenan vacíos de presencia estatal débil",
+      "mechanisms": [
+        "Capacity Building en regiones como Catatumbo",
+        "Multi-Partner Trust Fund (MPTF) para ejecución directa eludiendo sistemas lentos"
+      ]
+    }
+  },
+
+  "restrictions_bottlenecks": {
+    "institutional_trap": {
+      "definition": "Municipios con mayores necesidades tienen menor capacidad para acceder a recursos",
+      "project_structuring": "OCAD Paz requiere MGA - municipios Categoría 6 carecen de ingenieros especializados",
+      "unique_proponent_risk": "Tenderes atraen solo un postor en zonas de conflicto, elevando riesgos de corrupción"
+    },
+    "fiscal_straitjacket": {
+      "informality_barrier": "Alta informalidad (90%) impide generación de ICA",
+      "dependency_cycle": "Perpetúa dependencia del SGP",
+      "spending_limits": "Ley 617 prohíbe usar transferencias para gastos de funcionamiento más allá de cierto porcentaje",
+      "white_elephants": "Alcalde puede construir escuela (inversión) pero no contratar administrador (operación)"
+    }
+  },
+
+  "municipal_council": {
+    "name": "Concejo Municipal",
+    "roles": {
+      "control": "Ejerce control político sobre el alcalde",
+      "planning": "Aprueba Plan de Desarrollo Local (PDM)",
+      "budget": "Aprueba presupuesto anual",
+      "publicity": "Ley 1551 exige publicación electrónica de actos",
+      "welfare": "Derechos a seguridad social y pensión para concejales"
+    },
+    "operating_costs": "Costos de bienestar social suman a gastos de funcionamiento de municipios pequeños"
+  },
+
+  "key_indicators": {
+    "total_initiatives": 32808,
+    "active_route_initiatives": 20352,
+    "multidimensional_poverty_pdet": "39.2%",
+    "land_formalization_progress": "0.87% de meta de 3M hectáreas",
+    "obras_por_impuestos_quota_2024": "$1.0 billón COP",
+    "works_completed": 5759,
+    "ocad_paz_latest_approval": "$1.76 billones COP para 100 proyectos (octubre 2025)"
+  }
+}
