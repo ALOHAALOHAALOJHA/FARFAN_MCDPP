@@ -1,0 +1,285 @@
+{
+  "generation_metadata": {
+    "timestamp": "2026-01-02T06:03:42.530493+00:00",
+    "total_contracts": 30,
+    "valid_contracts": 30,
+    "invalid_contracts": 0
+  },
+  "contracts": [
+    {
+      "contract_id": "Q001",
+      "question_id": "D1-Q1",
+      "type": "TYPE_A",
+      "method_count": 13,
+      "efficiency_score": 1.058,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q002",
+      "question_id": "D1-Q2",
+      "type": "TYPE_B",
+      "method_count": 13,
+      "efficiency_score": 1.0109,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q003",
+      "question_id": "D1-Q3",
+      "type": "TYPE_D",
+      "method_count": 13,
+      "efficiency_score": 1.0256,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q004",
+      "question_id": "D1-Q4",
+      "type": "TYPE_D",
+      "method_count": 13,
+      "efficiency_score": 1.0256,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q005",
+      "question_id": "D1-Q5",
+      "type": "TYPE_B",
+      "method_count": 13,
+      "efficiency_score": 1.0109,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q006",
+      "question_id": "D2-Q1",
+      "type": "TYPE_D",
+      "method_count": 13,
+      "efficiency_score": 1.0256,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q007",
+      "question_id": "D2-Q2",
+      "type": "TYPE_B",
+      "method_count": 13,
+      "efficiency_score": 1.0109,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q008",
+      "question_id": "D2-Q3",
+      "type": "TYPE_C",
+      "method_count": 13,
+      "efficiency_score": 1.0405,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q009",
+      "question_id": "D2-Q4",
+      "type": "TYPE_D",
+      "method_count": 13,
+      "efficiency_score": 1.0256,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q010",
+      "question_id": "D2-Q5",
+      "type": "TYPE_E",
+      "method_count": 13,
+      "efficiency_score": 0.9694,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q011",
+      "question_id": "D3-Q1",
+      "type": "TYPE_B",
+      "method_count": 13,
+      "efficiency_score": 1.0109,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q012",
+      "question_id": "D3-Q2",
+      "type": "TYPE_D",
+      "method_count": 13,
+      "efficiency_score": 1.0256,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q013",
+      "question_id": "D3-Q3",
+      "type": "TYPE_A",
+      "method_count": 13,
+      "efficiency_score": 1.058,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q014",
+      "question_id": "D3-Q4",
+      "type": "TYPE_E",
+      "method_count": 13,
+      "efficiency_score": 0.9694,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q015",
+      "question_id": "D3-Q5",
+      "type": "TYPE_D",
+      "method_count": 13,
+      "efficiency_score": 1.0256,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q016",
+      "question_id": "D4-Q1",
+      "type": "TYPE_C",
+      "method_count": 13,
+      "efficiency_score": 1.0405,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q017",
+      "question_id": "D4-Q2",
+      "type": "TYPE_B",
+      "method_count": 13,
+      "efficiency_score": 1.0109,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q018",
+      "question_id": "D4-Q3",
+      "type": "TYPE_B",
+      "method_count": 13,
+      "efficiency_score": 1.0109,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q019",
+      "question_id": "D4-Q4",
+      "type": "TYPE_E",
+      "method_count": 13,
+      "efficiency_score": 0.9694,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q020",
+      "question_id": "D4-Q5",
+      "type": "TYPE_B",
+      "method_count": 13,
+      "efficiency_score": 1.0109,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q021",
+      "question_id": "D5-Q1",
+      "type": "TYPE_D",
+      "method_count": 13,
+      "efficiency_score": 1.0256,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q022",
+      "question_id": "D5-Q2",
+      "type": "TYPE_D",
+      "method_count": 13,
+      "efficiency_score": 1.0256,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q023",
+      "question_id": "D5-Q3",
+      "type": "TYPE_B",
+      "method_count": 13,
+      "efficiency_score": 1.0109,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q024",
+      "question_id": "D5-Q4",
+      "type": "TYPE_B",
+      "method_count": 13,
+      "efficiency_score": 1.0109,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q025",
+      "question_id": "D5-Q5",
+      "type": "TYPE_B",
+      "method_count": 13,
+      "efficiency_score": 1.0109,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q026",
+      "question_id": "D6-Q1",
+      "type": "TYPE_C",
+      "method_count": 13,
+      "efficiency_score": 1.0405,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q027",
+      "question_id": "D6-Q2",
+      "type": "TYPE_B",
+      "method_count": 13,
+      "efficiency_score": 1.0109,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q028",
+      "question_id": "D6-Q3",
+      "type": "TYPE_E",
+      "method_count": 13,
+      "efficiency_score": 0.9694,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q029",
+      "question_id": "D6-Q4",
+      "type": "TYPE_B",
+      "method_count": 13,
+      "efficiency_score": 1.0109,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    },
+    {
+      "contract_id": "Q030",
+      "question_id": "D6-Q5",
+      "type": "TYPE_C",
+      "method_count": 13,
+      "efficiency_score": 1.0405,
+      "validation_pass_rate": 1.0,
+      "is_valid": true
+    }
+  ],
+  "input_hashes": {
+    "classified_methods": "e3b57835bbe2cca5",
+    "contratos_clasificados": "4b348284ad32888c",
+    "method_sets": "c5c5810e0d2c6f60"
+  }
+}

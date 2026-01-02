@@ -1,0 +1,193 @@
+{
+  "_comment": "Governance metadata for FARFAN questionnaire",
+  "_version": "1.0.0",
+  "_generated_at": "2026-01-01T00:00:00Z",
+
+  "version_control": {
+    "current_version": "3.0.0",
+    "compatibility": {
+      "pipeline": ">= 1.0.0",
+      "scoring": ">= 1.0.0"
+    },
+    "migration_notes": {
+      "2.0.0 -> 3.0.0": "Modular structure introduced, monolith.json deprecated",
+      "1.0.0 -> 2.0.0": "Quality levels aligned with Phase Three primitives"
+    }
+  },
+
+  "data_governance": {
+    "ownership": {
+      "questionnaire_central": "F.A.R.F.A.N Pipeline Team",
+      "scoring_system": "Phase Three Team",
+      "validation_rules": "Contract Team"
+    },
+    "stewardship": {
+      "dimensions": "Domain Experts",
+      "policy_areas": "Policy Analysts",
+      "cross_cutting": "Cross-Cutting Themes Coordinator"
+    },
+    "access_control": {
+      "read": "public",
+      "write": "authenticated",
+      "admin": "pipeline_admin"
+    }
+  },
+
+  "quality_assurance": {
+    "validation_level": "strict",
+    "required_fields": {
+      "question": ["question_id", "text", "dimension_id", "policy_area_id"],
+      "dimension": ["dimension_id", "name", "description"],
+      "policy_area": ["policy_area_id", "name", "cluster_id"]
+    },
+    "consistency_rules": [
+      {
+        "rule_id": "Q001",
+        "description": "Every question must belong to exactly one dimension",
+        "enforcement": "error"
+      },
+      {
+        "rule_id": "Q002",
+        "description": "Every question must belong to exactly one policy area",
+        "enforcement": "error"
+      },
+      {
+        "rule_id": "Q003",
+        "description": "question_id must be unique across all questions",
+        "enforcement": "error"
+      },
+      {
+        "rule_id": "Q004",
+        "description": "base_slot must be consistent with dimension_id",
+        "enforcement": "warning"
+      },
+      {
+        "rule_id": "Q005",
+        "description": "question_global must be sequential and unique",
+        "enforcement": "error"
+      }
+    ]
+  },
+
+  "change_management": {
+    "change_request_process": {
+      "steps": [
+        "Submit change request with rationale",
+        "Technical review by pipeline team",
+        "Domain validation by subject matter experts",
+        "Impact assessment on scoring and aggregation",
+        "Approval by governance board",
+        "Implementation with backward compatibility check"
+      ]
+    },
+    "versioning_strategy": {
+      "major_version": "Breaking changes (structural changes)",
+      "minor_version": "New features (backward compatible)",
+      "patch_version": "Bug fixes (no API changes)"
+    },
+    "deprecation_policy": {
+      "notice_period": "6 months",
+      "support_period": "12 months",
+      "migration_path": "required"
+    }
+  },
+
+  "audit_trail": {
+    "enabled": true,
+    "log_fields": [
+      "timestamp",
+      "user",
+      "action",
+      "entity_type",
+      "entity_id",
+      "changes"
+    ],
+    "retention_days": 365
+  },
+
+  "compliance": {
+    "data_protection": {
+      "personal_data": "None (aggregated statistics only)",
+      "sensitive_data": "None (no personal identifiers)"
+    },
+    "open_source": {
+      "license": "MIT",
+      "attribution": "F.A.R.F.A.N Pipeline Team",
+      "repository": "FARFAN_MPP"
+    },
+    "documentation_standards": {
+      "api_docs": "Required for all public interfaces",
+      "changelog": "Required for all versions",
+      "readme": "Required for all modules"
+    }
+  },
+
+  "performance_metrics": {
+    "target_load_time": "< 100ms for questionnaire load",
+    "target_query_time": "< 50ms for question lookup",
+    "target_validation_time": "< 200ms for full validation"
+  },
+
+  "integration_points": {
+    "pipeline_integration": {
+      "phase_zero": "Paths and configuration",
+      "phase_one": "Question ingestion",
+      "phase_two": "Evidence extraction",
+      "phase_three": "Scoring",
+      "phase_four": "Aggregation by dimension",
+      "phase_five": "Aggregation by policy area",
+      "phase_six": "Aggregation by cluster",
+      "phase_seven": "Macro aggregation",
+      "phase_eight": "Exit validation"
+    },
+    "external_systems": [
+      {
+        "system": "SISAS",
+        "integration_type": "signal_irrigation",
+        "description": "Signal-based question enhancement"
+      },
+      {
+        "system": "EvidenceNexus",
+        "integration_type": "evidence_graph",
+        "description": "Evidence extraction and validation"
+      }
+    ]
+  },
+
+  "security": {
+    "authentication": {
+      "development": "local",
+      "production": "oauth2"
+    },
+    "authorization": {
+      "read_access": "all_users",
+      "write_access": "admins_only",
+      "admin_access": "system_admins"
+    },
+    "encryption": {
+      "at_rest": "aes256",
+      "in_transit": "tls"
+    }
+  },
+
+  "monitoring": {
+    "health_checks": {
+      "questionnaire_integrity": "every 5 minutes",
+      "scoring_alignment": "every hour",
+      "consistency_checks": "every 15 minutes"
+    },
+    "alerts": {
+      "questionnaire_corruption": "critical",
+      "scoring_misalignment": "high",
+      "validation_failure": "medium"
+    }
+  },
+
+  "backup_and_recovery": {
+    "backup_frequency": "daily",
+    "backup_location": "cloud_storage",
+    "retention": "90 days",
+    "recovery_time_objective": "1 hour",
+    "recovery_point_objective": "24 hours"
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "_comment": "Cross-cutting themes that apply across all dimensions and policy areas",
+  "_version": "1.0.0",
+  "_generated_at": "2026-01-01T00:00:00Z",
+
+  "themes": [
+    {
+      "theme_id": "CC_ENFOQUE_DIFERENCIAL",
+      "name": "Enfoque Diferencial",
+      "description": "Consideración de las particularidades y necesidades específicas de diferentes grupos poblacionales",
+      "i18n": {
+        "default": "es",
+        "keys": {
+          "label_en": "Differential Approach",
+          "label_es": "Enfoque Diferencial"
+        }
+      },
+      "applies_to": {
+        "dimensions": ["DIM01", "DIM02", "DIM03", "DIM04", "DIM05", "DIM06"],
+        "policy_areas": ["PA01", "PA05", "PA06"]
+      },
+      "indicators": [
+        "reconocimiento_grupos_especificos",
+        "analisis_interseccional",
+        "medidas_ajustadas",
+        "participacion_efectiva"
+      ],
+      "validation_rules": {
+        "required_for": ["PA01", "PA05", "PA06"],
+        "optional_for": ["PA02", "PA03", "PA04", "PA07", "PA08", "PA09", "PA10"]
+      }
+    },
+    {
+      "theme_id": "CC_PERSPECTIVA_GENERO",
+      "name": "Perspectiva de Género",
+      "description": "Análisis de impacto diferenciado por género y transversalización de la igualdad",
+      "i18n": {
+        "default": "es",
+        "keys": {
+          "label_en": "Gender Perspective",
+          "label_es": "Perspectiva de Género"
+        }
+      },
+      "applies_to": {
+        "dimensions": ["DIM01", "DIM02", "DIM03", "DIM04", "DIM05", "DIM06"],
+        "policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
+      },
+      "indicators": [
+        "analisis_impacto_genero",
+        "brechas_identificadas",
+        "medidas_correccion",
+        "participacion_mujeres",
+        "presupuesto_sensibilizado_genero"
+      ],
+      "validation_rules": {
+        "required_for": ["PA01"],
+        "recommended_for": ["PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
+      }
+    },
+    {
+      "theme_id": "CC_ENTORNO_TERRITORIAL",
+      "name": "Entorno Territorial",
+      "description": "Consideración de las particularidades territoriales y ambientales",
+      "i18n": {
+        "default": "es",
+        "keys": {
+          "label_en": "Territorial Context",
+          "label_es": "Entorno Territorial"
+        }
+      },
+      "applies_to": {
+        "dimensions": ["DIM01", "DIM02", "DIM03", "DIM04", "DIM05"],
+        "policy_areas": ["PA03", "PA04", "PA07", "PA08", "PA10"]
+      },
+      "indicators": [
+        "caracterizacion_territorial",
+        "riesgos_ambientales",
+        "vulnerabilidad_climatica",
+        "ordenamiento_territorial",
+        "cosmovisiones_locales"
+      ],
+      "validation_rules": {
+        "required_for": ["PA03", "PA07"],
+        "recommended_for": ["PA04", "PA08", "PA10"]
+      }
+    },
+    {
+      "theme_id": "CC_PARTICIPACION_CIUDADANA",
+      "name": "Participación Ciudadana",
+      "description": "Mecanismos de participación y control social",
+      "i18n": {
+        "default": "es",
+        "keys": {
+          "label_en": "Citizen Participation",
+          "label_es": "Participación Ciudadana"
+        }
+      },
+      "applies_to": {
+        "dimensions": ["DIM02", "DIM03", "DIM04", "DIM06"],
+        "policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
+      },
+      "indicators": [
+        "espacios_participacion",
+        "mecanismos_incidencia",
+        "control_social",
+        "rendicion_cuentas",
+        "retroalimentacion_ciudadana"
+      ],
+      "validation_rules": {
+        "recommended_for": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
+      }
+    },
+    {
+      "theme_id": "CC_COHERENCIA_NORMATIVA",
+      "name": "Coherencia Normativa",
+      "description": "Alineación con el marco jurídico nacional e internacional",
+      "i18n": {
+        "default": "es",
+        "keys": {
+          "label_en": "Normative Coherence",
+          "label_es": "Coherencia Normativa"
+        }
+      },
+      "applies_to": {
+        "dimensions": ["DIM01", "DIM02", "DIM03", "DIM04", "DIM05", "DIM06"],
+        "policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
+      },
+      "indicators": [
+        "marco_juridico_nacional",
+        "tratados_internacionales",
+        "jurisprudencia_relevante",
+        "politicas_publicas_concordantes"
+      ],
+      "validation_rules": {
+        "required_for_all": true
+      }
+    },
+    {
+      "theme_id": "CC_SOSTENIBILIDAD_PRESUPUESTAL",
+      "name": "Sostenibilidad Presupuestal",
+      "description": "Viabilidad financiera y sostenibilidad fiscal",
+      "i18n": {
+        "default": "es",
+        "keys": {
+          "label_en": "Budgetary Sustainability",
+          "label_es": "Sostenibilidad Presupuestal"
+        }
+      },
+      "applies_to": {
+        "dimensions": ["DIM01", "DIM02", "DIM03"],
+        "policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
+      },
+      "indicators": [
+        "fuente_financiacion",
+        "proyeccion_multianual",
+        "costos_unitarios",
+        "relacion_beneficio_costo",
+        "alternativas_financiacion"
+      ],
+      "validation_rules": {
+        "required_for_all": true
+      }
+    },
+    {
+      "theme_id": "CC_INTEROPERABILIDAD",
+      "name": "Interoperabilidad Institucional",
+      "description": "Coordinación entre entidades y niveles de gobierno",
+      "i18n": {
+        "default": "es",
+        "keys": {
+          "label_en": "Institutional Interoperability",
+          "label_es": "Interoperabilidad Institucional"
+        }
+      },
+      "applies_to": {
+        "dimensions": ["DIM02", "DIM03", "DIM04", "DIM06"],
+        "policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
+      },
+      "indicators": [
+        "entes_coordinadores",
+        "comites_interinstitucionales",
+        "flujos_informacion",
+        "sistemas_integrados",
+        "responsabilidades_claras"
+      ],
+      "validation_rules": {
+        "recommended_for": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
+      }
+    },
+    {
+      "theme_id": "CC_MECANISMOS_SEGUIMIENTO",
+      "name": "Mecanismos de Seguimiento y Evaluación",
+      "description": "Sistemas de medición, monitoreo y evaluación de resultados",
+      "i18n": {
+        "default": "es",
+        "keys": {
+          "label_en": "Monitoring and Evaluation Mechanisms",
+          "label_es": "Mecanismos de Seguimiento y Evaluación"
+        }
+      },
+      "applies_to": {
+        "dimensions": ["DIM03", "DIM04", "DIM05"],
+        "policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
+      },
+      "indicators": [
+        "sistemas_informacion",
+        "indicadores_misionales",
+        "frecuencia_medicion",
+        "evaluaciones_externas",
+        "ajustes_basedatos"
+      ],
+      "validation_rules": {
+        "required_for_all": true
+      }
+    }
+  ],
+
+  "theme_combinations": [
+    {
+      "combination_id": "CC_GENERO_DIFERENCIAL",
+      "themes": ["CC_PERSPECTIVA_GENERO", "CC_ENFOQUE_DIFERENCIAL"],
+      "description": "Intersección entre género y enfoque diferencial",
+      "priority": "alta"
+    },
+    {
+      "combination_id": "CC_TERRITORIO_PARTICIPACION",
+      "themes": ["CC_ENTORNO_TERRITORIAL", "CC_PARTICIPACION_CIUDADANA"],
+      "description": "Participación en contexto territorial",
+      "priority": "media"
+    },
+    {
+      "combination_id": "CC_INTEROPERABILIDAD_SEGUIMIENTO",
+      "themes": ["CC_INTEROPERABILIDAD", "CC_MECANISMOS_SEGUIMIENTO"],
+      "description": "Coordinación para seguimiento interinstitucional",
+      "priority": "alta"
+    }
+  ],
+
+  "validation_rules": {
+    "minimum_themes_per_policy_area": 3,
+    "required_themes_all": ["CC_COHERENCIA_NORMATIVA", "CC_SOSTENIBILIDAD_PRESUPUESTAL", "CC_MECANISMOS_SEGUIMIENTO"],
+    "theme_priority_order": [
+      "CC_ENFOQUE_DIFERENCIAL",
+      "CC_PERSPECTIVA_GENERO",
+      "CC_ENTORNO_TERRITORIAL",
+      "CC_PARTICIPACION_CIUDADANA",
+      "CC_COHERENCIA_NORMATIVA",
+      "CC_SOSTENIBILIDAD_PRESUPUESTAL",
+      "CC_INTEROPERABILIDAD",
+      "CC_MECANISMOS_SEGUIMIENTO"
+    ]
+  }
+}
