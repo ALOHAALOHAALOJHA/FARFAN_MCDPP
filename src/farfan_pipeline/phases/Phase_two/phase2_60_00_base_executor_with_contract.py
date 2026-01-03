@@ -20,10 +20,26 @@ try:
     from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
 except ImportError:
     from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
-# NEW: Replace legacy evidence modules with EvidenceNexus and Carver
-from canonic_phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
-from canonic_phases.Phase_two.carver import DoctoralCarverSynthesizer
-from canonic_phases.Phase_two.calibration_policy import CalibrationPolicy, create_default_policy
+
+try:
+    from canonic_phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
+except ImportError:
+    from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import EvidenceNexus, process_evidence
+
+try:
+    from canonic_phases.Phase_two.carver import DoctoralCarverSynthesizer
+except ImportError:
+    from farfan_pipeline.phases.Phase_two.phase2_90_00_carver import DoctoralCarverSynthesizer
+
+try:
+    from canonic_phases.Phase_two.calibration_policy import CalibrationPolicy, create_default_policy
+except ImportError:
+    try:
+        from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import CalibrationPolicy, create_default_policy
+    except ImportError:
+        from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import CalibrationPolicy
+        def create_default_policy():
+            return CalibrationPolicy()
 
 if TYPE_CHECKING:
     from orchestration.orchestrator import MethodExecutor

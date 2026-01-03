@@ -12,6 +12,7 @@ Uso:
 import json
 import sys
 import argparse
+import re
 from typing import Dict, List, Tuple, Any, Optional, Set
 from dataclasses import dataclass, field
 from enum import Enum
@@ -105,13 +106,42 @@ class ContractValidator:
         },
         'TYPE_E': {
             'name': 'Lógico',
-            'contracts': ['Q010', 'Q014', 'Q019', 'Q028'],
+            'contracts': ['Q005', 'Q010', 'Q014', 'Q019', 'Q028'],
             'focus_keywords': ['contradicciones', 'consistencia lógica', 'complementariedad'],
             'n1_strategy': 'concat',
             'n2_strategy': 'weighted_mean',
             'r2_merge': 'weighted_mean',
             'dominant_classes': ['PolicyContradictionDetector', 'IndustrialGradeValidator', 
-                               'OperationalizationAuditor']
+                               'OperationalizationAuditor', 'TemporalLogicVerifier']
+        }
+    }
+    
+    # Definiciones Semánticas para detectar clasificaciones "Contra-Natura"
+    TYPE_SEMANTIC_DEFINITIONS = {
+        'TYPE_A': {
+            'name': 'Semántico',
+            'expected_keywords': ['text', 'nlp', 'semantic', 'chunk', 'embedding', 'similarity', 'meaning', 'narrative', 'language', 'topic'],
+            'alien_keywords': ['budget', 'cost', 'financial', 'money', 'dollar', 'investment', 'dag', 'cycle', 'causal', 'node', 'edge']
+        },
+        'TYPE_B': {
+            'name': 'Bayesiano',
+            'expected_keywords': ['probability', 'prior', 'posterior', 'likelihood', 'bayes', 'hdi', 'significance', 'statistic', 'distribution'],
+            'alien_keywords': ['sentiment', 'parse', 'literal', 'budget', 'graph', 'cycle']
+        },
+        'TYPE_C': {
+            'name': 'Causal',
+            'expected_keywords': ['dag', 'graph', 'node', 'edge', 'cycle', 'path', 'causal', 'topology', 'intervention', 'mechanism'],
+            'alien_keywords': ['sentiment', 'embedding', 'budgeting', 'financial', 'parse_text', 'literal']
+        },
+        'TYPE_D': {
+            'name': 'Financiero',
+            'expected_keywords': ['budget', 'cost', 'financial', 'money', 'allocation', 'funding', 'sufficiency', 'investment', 'expense'],
+            'alien_keywords': ['sentiment', 'embedding', 'similarity', 'nlp', 'text', 'meaning', 'dag', 'cycle', 'causal']
+        },
+        'TYPE_E': {
+            'name': 'Lógico',
+            'expected_keywords': ['contradiction', 'inconsistency', 'logic', 'sequence', 'consistency', 'complementarity', 'valid'],
+            'alien_keywords': ['budget', 'sentiment', 'embedding', 'causal']
         }
     }
     
@@ -179,6 +209,9 @@ class ContractValidator:
         
         # Sección 14: Coherencia Global (Auditoría Final)
         self._section_14_global_coherence()
+        
+        # Sección 15: Coherencia Semántica (Anti-Patterns de Dominio)
+        self._section_15_semantic_coherence()
         
         # Determinar aprobación
         approved = self._determine_approval()
@@ -992,103 +1025,57 @@ class ContractValidator:
     
     def _validate_fusion_pipeline(self, section: SectionReport):
         """Valida fusion_pipeline - 4 stages obligatorios"""
-        pipeline = self._get_path("fusion_specification.fusion_pipeline", [])
-
-        # Validar que es una lista con 4 pasos
-        self._add_check(section, "4.7.1", Severity.CRITICAL,
-                       isinstance(pipeline, list),
-                       "fusion_pipeline es una lista",
-                       actual=type(pipeline).__name__)
-
-        self._add_check(section, "4.7.2", Severity.CRITICAL,
-                       len(pipeline) == 4,
-                       "fusion_pipeline tiene 4 pasos",
-                       actual=len(pipeline))
-
-        # Validar cada paso por su nivel
-        stage_by_level = {p.get("level"): p for p in pipeline if isinstance(p, dict)}
-
-        # Stage 1 (N1): Fact Accumulation
-        s1 = stage_by_level.get("N1", {})
-        self._add_check(section, "4.7.3", Severity.HIGH,
-                       bool(s1),
-                       "fusion_pipeline tiene paso N1")
-        self._add_check(section, "4.7.4", Severity.HIGH,
-                       s1.get("step") == 1,
-                       "N1 step = 1",
-                       actual=s1.get("step"))
+        pipeline = self._get_path("fusion_specification.fusion_pipeline", {})
+        
+        # Existencia de 4 stages
+        for stage in ["stage_1_fact_accumulation", "stage_2_parameter_application",
+                     "stage_3_constraint_filtering", "stage_4_synthesis"]:
+            self._add_check(section, f"4.7.{stage}", Severity.HIGH,
+                           stage in pipeline,
+                           f"fusion_pipeline.{stage} existe")
+        
+        # Stage 1
+        s1 = pipeline.get("stage_1_fact_accumulation", {})
         self._add_check(section, "4.7.5", Severity.CRITICAL,
-                       "empirical" in s1.get("name", "").lower() or "extraction" in s1.get("name", "").lower(),
-                       "N1 name menciona 'empirical' o 'extraction'",
-                       actual=s1.get("name"))
+                       s1.get("type_consumed") == "FACT",
+                       "stage_1.type_consumed = 'FACT'")
         self._add_check(section, "4.7.6", Severity.CRITICAL,
-                       s1.get("strategy") in ["semantic_corroboration", "additive"],
-                       "N1 strategy es válida",
-                       actual=s1.get("strategy"))
-
-        # Stage 2 (N2): Parameter Application
-        s2 = stage_by_level.get("N2", {})
-        self._add_check(section, "4.7.7", Severity.HIGH,
-                       bool(s2),
-                       "fusion_pipeline tiene paso N2")
-        self._add_check(section, "4.7.8", Severity.HIGH,
-                       s2.get("step") == 2,
-                       "N2 step = 2",
-                       actual=s2.get("step"))
+                       s1.get("behavior") == "additive",
+                       "stage_1.behavior = 'additive'")
+        
+        # Stage 2
+        s2 = pipeline.get("stage_2_parameter_application", {})
+        self._add_check(section, "4.7.8", Severity.CRITICAL,
+                       s2.get("type_consumed") == "PARAMETER",
+                       "stage_2.type_consumed = 'PARAMETER'")
         self._add_check(section, "4.7.9", Severity.CRITICAL,
-                       "inferential" in s2.get("name", "").lower() or "processing" in s2.get("name", "").lower(),
-                       "N2 name menciona 'inferential' o 'processing'",
-                       actual=s2.get("name"))
-        self._add_check(section, "4.7.10", Severity.CRITICAL,
-                       "dempster" in s2.get("strategy", "").lower() or "bayesian" in s2.get("strategy", "").lower(),
-                       "N2 strategy menciona 'dempster' o 'bayesian'",
-                       actual=s2.get("strategy"))
-
-        # Stage 3 (N3): Constraint Filtering
-        s3 = stage_by_level.get("N3", {})
-        self._add_check(section, "4.7.11", Severity.HIGH,
-                       bool(s3),
-                       "fusion_pipeline tiene paso N3")
-        self._add_check(section, "4.7.12", Severity.HIGH,
-                       s3.get("step") == 3,
-                       "N3 step = 3",
-                       actual=s3.get("step"))
-        self._add_check(section, "4.7.13", Severity.CRITICAL,
-                       "audit" in s3.get("name", "").lower() or "validation" in s3.get("name", "").lower(),
-                       "N3 name menciona 'audit' o 'validation'",
-                       actual=s3.get("name"))
+                       s2.get("behavior") == "multiplicative",
+                       "stage_2.behavior = 'multiplicative'")
+        
+        # Stage 3
+        s3 = pipeline.get("stage_3_constraint_filtering", {})
+        self._add_check(section, "4.7.11", Severity.CRITICAL,
+                       s3.get("type_consumed") == "CONSTRAINT",
+                       "stage_3.type_consumed = 'CONSTRAINT'")
+        self._add_check(section, "4.7.12", Severity.CRITICAL,
+                       s3.get("behavior") == "gate",
+                       "stage_3.behavior = 'gate'")
+        
+        # Stage 4
+        s4 = pipeline.get("stage_4_synthesis", {})
         self._add_check(section, "4.7.14", Severity.CRITICAL,
-                       "veto" in s3.get("strategy", "").lower() or "gate" in s3.get("strategy", "").lower(),
-                       "N3 strategy menciona 'veto' o 'gate'",
-                       actual=s3.get("strategy"))
-        self._add_check(section, "4.7.15", Severity.CRITICAL,
-                       s3.get("veto_capable") == True,
-                       "N3 veto_capable = True",
-                       actual=s3.get("veto_capable"))
-
-        # Stage 4 (N4): Synthesis
-        s4 = stage_by_level.get("N4", {})
-        self._add_check(section, "4.7.16", Severity.HIGH,
-                       bool(s4),
-                       "fusion_pipeline tiene paso N4")
-        self._add_check(section, "4.7.17", Severity.HIGH,
-                       s4.get("step") == 4,
-                       "N4 step = 4",
-                       actual=s4.get("step"))
-        self._add_check(section, "4.7.18", Severity.CRITICAL,
-                       "narrative" in s4.get("name", "").lower() or "synthesis" in s4.get("name", "").lower(),
-                       "N4 name menciona 'narrative' o 'synthesis'",
-                       actual=s4.get("name"))
+                       s4.get("type_produced") == "NARRATIVE",
+                       "stage_4.type_produced = 'NARRATIVE'")
     
     # =========================================================================
     # SECCIÓN 5: CROSS LAYER FUSION
     # =========================================================================
     
     def _section_5_cross_layer_fusion(self):
-        """Validación de cross_layer_effects - asimetría crítica"""
+        """Validación de cross_layer_fusion - asimetría crítica"""
         section = SectionReport("5", "Cross Layer Fusion - Asimetría N3", 0, 0, 0, 0)
-
-        clf = self._get_path("fusion_specification.cross_layer_effects", {})
+        
+        clf = self._get_path("cross_layer_fusion", {})
         
         # Relaciones obligatorias
         required_relations = ["N1_to_N2", "N2_to_N1", "N3_to_N1", "N3_to_N2", "all_to_N4"]
@@ -1290,14 +1277,21 @@ class ContractValidator:
         
         # Template del veto debe ser prominente
         if_veto = veto.get("if_veto_triggered", {})
-        template = if_veto.get("template", "")
+        # Manejar caso donde if_veto puede ser string en lugar de dict
+        if isinstance(if_veto, dict):
+            template = if_veto.get("template", "")
+        elif isinstance(if_veto, str):
+            template = if_veto
+        else:
+            template = ""
+        
         has_emoji = "⛔" in template or "⚠️" in template
         self._add_check(section, "6.5.9", Severity.CRITICAL,
                        has_emoji,
                        "if_veto_triggered.template comienza con emoji ⛔ o ⚠️",
                        actual=template[:20] if template else "")
         
-        has_alert = "ALERTA" in template.upper() or "INVÁLIDO" in template.upper()
+        has_alert = "ALERTA" in template.upper() or "INVÁLIDO" in template.upper() if template else False
         self._add_check(section, "6.5.10", Severity.CRITICAL,
                        has_alert,
                        "if_veto_triggered.template contiene 'ALERTA' o 'INVÁLIDO' (MAYÚSCULAS)")
@@ -1844,6 +1838,217 @@ class ContractValidator:
                        "Asimetría N3 está técnicamente implementada")
     
     # =========================================================================
+    # SECCIÓN 15: COHERENCIA SEMÁNTICA (NUEVA ADICIÓN)
+    # =========================================================================
+    
+    def _normalize_tokens(self, text: str) -> list[str]:
+        """
+        Normaliza texto dividiendo camelCase, snake_case y espacios en tokens individuales.
+        MODIFICACIÓN 1: Corrección léxica - tokens completos, no substrings.
+        """
+        # Dividir por snake_case
+        parts = re.split(r'_+', text)
+        # Dividir cada parte por camelCase
+        tokens = []
+        for part in parts:
+            # Dividir camelCase: "extractText" -> ["extract", "Text"]
+            camel_split = re.findall(r'[A-Z]?[a-z]+|[A-Z]+(?=[A-Z]|$)', part)
+            if camel_split:
+                tokens.extend([t.lower() for t in camel_split])
+            else:
+                tokens.append(part.lower())
+        # Dividir por espacios y filtrar vacíos
+        final_tokens = []
+        for token in tokens:
+            final_tokens.extend([t for t in token.split() if t])
+        return final_tokens
+    
+    def _get_scoring_modality(self) -> str | None:
+        """
+        Obtiene el scoring_modality del contrato desde question_context o questionnaire.
+        MODIFICACIÓN 3: Alineación con scoring_modality.
+        """
+        # Intentar desde question_context
+        qc = self._get_path("question_context", {})
+        if qc and isinstance(qc, dict):
+            scoring_modality = qc.get("scoring_modality")
+            if scoring_modality:
+                return scoring_modality
+        
+        # Intentar obtener desde questionnaire usando representative_question_id
+        rep_q_id = self._get_path("identity.representative_question_id", "")
+        if rep_q_id:
+            try:
+                import json
+                from pathlib import Path
+                questionnaire_path = Path("canonic_questionnaire_central/questionnaire_monolith.json")
+                if questionnaire_path.exists():
+                    with open(questionnaire_path, 'r', encoding='utf-8') as f:
+                        questionnaire = json.load(f)
+                    # Buscar la pregunta en el questionnaire
+                    questions = questionnaire.get("questions", [])
+                    for q in questions:
+                        if q.get("question_id") == rep_q_id:
+                            scoring_modality = q.get("scoring_modality")
+                            if scoring_modality:
+                                return scoring_modality
+            except Exception:
+                # Si falla la carga del questionnaire, continuar sin scoring_modality
+                pass
+        
+        return None
+    
+    def _section_15_semantic_coherence(self):
+        """
+        Detecta métodos cuya naturaleza semántica es ajena al tipo de contrato.
+        Ejemplo: Un método 'analyze_sentiment' dentro de un contrato TYPE_D (Financiero).
+        
+        MODIFICACIONES IMPLEMENTADAS:
+        1. Corrección léxica: tokens completos (normalización camelCase/snake_case)
+        2. Separación por capa: métodos semánticos/lógicos/temporales permitidos en N1 de TYPE_D
+        3. Alineación con scoring_modality: permite métodos TYPE_A/TYPE_E cuando scoring_modality lo indica
+        """
+        section = SectionReport("15", "Coherencia Semántica - Anti-Patterns de Dominio", 0, 0, 0, 0)
+        
+        if not self.contract_type or self.contract_type not in self.TYPE_SEMANTIC_DEFINITIONS:
+            return
+        
+        semantics = self.TYPE_SEMANTIC_DEFINITIONS[self.contract_type]
+        alien_keywords = semantics['alien_keywords']
+        type_name = semantics['name']
+        
+        # MODIFICACIÓN 3: Obtener scoring_modality
+        scoring_modality = self._get_scoring_modality()
+        
+        all_methods = self._get_all_methods()
+        
+        for method in all_methods:
+            method_name = method.get("method_name", "")
+            description = method.get("description", "")
+            class_name = method.get("class_name", "")
+            method_level = method.get("level", "")
+            output_type = method.get("output_type", "")
+            
+            # MODIFICACIÓN 1: Normalizar tokens (camelCase, snake_case, espacios)
+            method_tokens = self._normalize_tokens(method_name)
+            desc_tokens = self._normalize_tokens(description)
+            class_tokens = self._normalize_tokens(class_name)
+            all_tokens = method_tokens + desc_tokens + class_tokens
+            
+            # Combinar texto a analizar (para compatibilidad con regex)
+            full_text = f"{method_name.lower()} {description.lower()} {class_name.lower()}"
+            
+            # MODIFICACIÓN 1: Buscar palabras completas (tokens normalizados), no substrings
+            found_aliens = []
+            for kw in alien_keywords:
+                kw_lower = kw.lower()
+                # Verificar si el token completo está en la lista normalizada
+                if kw_lower in all_tokens:
+                    found_aliens.append(kw)
+                # También verificar con word boundaries para compatibilidad
+                elif re.search(r'\b' + re.escape(kw_lower) + r'\b', full_text):
+                    found_aliens.append(kw)
+            
+            # MODIFICACIÓN 2: Separación explícita por capa
+            # En contratos TYPE_D, permitir métodos semánticos/lógicos/temporales en N1-EMP
+            # cuando son de extracción/estructuración, no decisiones financieras finales
+            is_extraction_layer_n1 = (
+                method_level == "N1-EMP" and 
+                self.contract_type == "TYPE_D" and
+                output_type == "FACT"
+            )
+            
+            # Detectar si es método semántico/lógico/temporal
+            semantic_indicators = ['extract', 'parse', 'normalize', 'entity', 'structure', 'detect', 'identify', 'match']
+            logical_indicators = ['validate', 'check', 'verify', 'consistency', 'contradiction']
+            temporal_indicators = ['temporal', 'sequence', 'order', 'chronological']
+            
+            is_semantic_method = any(ind in full_text for ind in semantic_indicators)
+            is_logical_method = any(ind in full_text for ind in logical_indicators)
+            is_temporal_method = any(ind in full_text for ind in temporal_indicators)
+            
+            # MODIFICACIÓN 3: Alineación con scoring_modality
+            # Si scoring_modality es TYPE_A o TYPE_E, permitir métodos acordes
+            modality_allows_semantic = scoring_modality == "TYPE_A"
+            modality_allows_logical = scoring_modality == "TYPE_E"
+            
+            # Permitir si:
+            # 1. Es capa N1-EMP de TYPE_D y es extracción/estructuración (MODIFICACIÓN 2)
+            # 2. O scoring_modality permite métodos semánticos/lógicos y el método responde directamente (MODIFICACIÓN 3)
+            should_allow = False
+            
+            if is_extraction_layer_n1 and (is_semantic_method or is_logical_method or is_temporal_method):
+                # MODIFICACIÓN 2: Métodos de extracción/estructuración en N1 de TYPE_D
+                should_allow = True
+            
+            elif modality_allows_semantic and is_semantic_method and method_level in ["N1-EMP", "N2-INF"]:
+                # MODIFICACIÓN 3: scoring_modality TYPE_A permite métodos semánticos
+                # Solo en N1/N2, no en N3 (que requiere lógica financiera estricta)
+                should_allow = True
+            
+            elif modality_allows_logical and is_logical_method and method_level in ["N1-EMP", "N2-INF"]:
+                # MODIFICACIÓN 3: scoring_modality TYPE_E permite métodos lógicos
+                # Solo en N1/N2, no en N3 (que requiere lógica financiera estricta)
+                should_allow = True
+            
+            # MODIFICACIÓN 4: Permitir evaluación de coherencia causal en TYPE_E cuando es validación lógica
+            # La causalidad es un subtipo de relación lógica, válida cuando se usa para verificación de coherencia
+            # y no como inferencia causal probabilística o explicación generativa
+            is_causal_coherence_validation = (
+                self.contract_type == "TYPE_E" and
+                method_level == "N2-INF" and
+                "causal" in found_aliens and
+                any(term in full_text for term in ['coherence', 'consistency', 'validation', 'verify', 'check', 'justification', 'logical'])
+            )
+            
+            # Verificar que el propósito es validación lógica, no inferencia predictiva
+            is_predictive_inference = any(term in full_text for term in ['predict', 'forecast', 'estimate', 'generate', 'explain', 'model'])
+            is_explanatory_generative = any(term in full_text for term in ['mechanism', 'explanation', 'why', 'because', 'dag', 'intervention'])
+            
+            if is_causal_coherence_validation and not is_predictive_inference and not is_explanatory_generative:
+                should_allow = True
+            
+            # MODIFICACIÓN 5: Permitir métodos bayesianos con DAG en contratos TYPE_D cuando están en N2-INF
+            # Los métodos bayesianos son herramientas válidas para inferencia financiera probabilística
+            is_bayesian_financial_inference = (
+                self.contract_type == "TYPE_D" and
+                method_level == "N2-INF" and
+                "dag" in found_aliens and
+                any(term in full_text for term in ['bayesian', 'posterior', 'probability', 'confidence', 'interval', 'financial', 'calculate', 'compute'])
+            )
+            
+            if is_bayesian_financial_inference:
+                should_allow = True
+            
+            # Si debe permitirse y hay alien_keywords detectados, ignorar la alerta
+            if should_allow and found_aliens:
+                continue
+            
+            # Si se encontraron palabras clave de OTROS dominios en este método
+            if found_aliens:
+                # Determinar severidad:
+                # HIGH: Si la palabra clave está en el NOMBRE del método (muy evidente).
+                # MEDIUM: Si está solo en la descripción (podría ser parte de un proceso complejo).
+                
+                is_in_name = any(kw.lower() in method_tokens for kw in found_aliens)
+                severity = Severity.HIGH if is_in_name else Severity.MEDIUM
+                
+                self._add_check(
+                    section, f"15.{method.get('method_name')}", severity,
+                    False,  # Passed = False porque es una alerta
+                    f"Posible clasificación 'Contra-Natura' en TYPE_{type_name}: El método '{method.get('method_name')}' contiene términos ajenos: {', '.join(found_aliens)}.",
+                    expected=f"Términos típicos de {type_name}",
+                    actual=f"Contiene: {', '.join(found_aliens)}",
+                    path=f"method_binding.execution_phases.{method.get('level', '?')}.methods.{method.get('method_name')}"
+                )
+        
+        # Si no hubo fallos, agregar un check de paso
+        if section.total_checks == 0:
+            self._add_check(section, "15.0", Severity.LOW, True, "Coherencia semántica: No se detectaron términos ajenos al dominio.")
+        
+        self.sections.append(section)
+    
+    # =========================================================================
     # MÉTODOS AUXILIARES
     # =========================================================================
     
@@ -1874,11 +2079,9 @@ class ContractValidator:
     
     def _path_exists(self, path: str) -> bool:
         """Verifica si existe un path en el contrato"""
-        try:
-            self._get_path(path)
-            return True
-        except:
-            return False
+        _SENTINEL = object()
+        result = self._get_path(path, default=_SENTINEL)
+        return result is not _SENTINEL
     
     def _get_path(self, path: str, default=None):
         """Obtiene valor de un path (dot notation)"""

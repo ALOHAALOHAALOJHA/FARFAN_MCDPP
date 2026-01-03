@@ -968,8 +968,8 @@ class ContractAssembler:
         con fusion_behavior='gate'). La ausencia de veto se representa por ausencia
         del campo, no por contenido vacío (arquitectura de existencia semántica).
         """
-        # Obtener métodos N3 actuales de la cadena epistémica
-        n3_methods = [m for m in chain.methods if m.level == "N3-AUD"]
+        # Obtener métodos N3 actuales de la cadena epistémica (phase_c_chain)
+        n3_methods = chain.phase_c_chain
 
         # Filtrar solo métodos con capacidad de veto (fusion_behavior='gate')
         veto_methods = [m for m in n3_methods if m.fusion_behavior == "gate"]

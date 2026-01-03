@@ -1,6 +1,6 @@
 {
   "generation_metadata": {
-    "timestamp": "2026-01-03T03:20:06.794169+00:00",
+    "timestamp": "2026-01-03T05:33:36.055405+00:00",
     "total_contracts": 30,
     "valid_contracts": 30,
     "invalid_contracts": 0
@@ -12,7 +12,7 @@
       "type": "TYPE_A",
       "method_count": 17,
       "efficiency_score": 1.058,
-      "validation_pass_rate": 1.0,
+      "validation_pass_rate": 0.971830985915493,
       "is_valid": true
     },
     {
@@ -280,6 +280,6 @@
   "input_hashes": {
     "classified_methods": "e3b57835bbe2cca5",
     "contratos_clasificados": "4b348284ad32888c",
-    "method_sets": "fed1999a9f63f898"
+    "method_sets": "890b9b84cd1bddda"
   }
 }

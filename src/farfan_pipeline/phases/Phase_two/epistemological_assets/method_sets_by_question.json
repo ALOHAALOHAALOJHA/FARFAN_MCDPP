@@ -95,32 +95,6 @@
           "is_private": false
         },
         {
-          "class_name": "TextMiningEngine",
-          "method_name": "diagnose_critical_links",
-          "mother_file": "analyzer_one.py",
-          "provides": "textminingengine.diagnose_critical_links",
-          "level": "N1-EMP",
-          "level_name": "Base Empírica",
-          "epistemology": "Empirismo positivista",
-          "output_type": "FACT",
-          "fusion_behavior": "additive",
-          "fusion_symbol": "⊕",
-          "classification_rationale": "Keyword 'text' detectado → N1-EMP",
-          "confidence_score": 0.8,
-          "contract_affinities": {
-            "TYPE_A": 1.0,
-            "TYPE_B": 0.5,
-            "TYPE_C": 0.7,
-            "TYPE_D": 0.8,
-            "TYPE_E": 0.5
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
-        },
-        {
           "class_name": "PolicyAnalysisEmbedder",
           "method_name": "_extract_numerical_values",
           "mother_file": "embedding_policy.py",
