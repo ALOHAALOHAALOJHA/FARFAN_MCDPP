@@ -415,6 +415,9 @@ class ContractAssembler:
             # Dimensión
             "dimension_id": dimension_id,
 
+            # Identificador representativo para validación
+            "representative_question_id": unique_contract_id,
+
             # Tipo de contrato
             "contract_type": classification.tipo_contrato["codigo"],
             "contract_type_name":  classification.tipo_contrato["nombre"],
@@ -980,7 +983,12 @@ class ContractAssembler:
         classification: "ContractClassification",
     ) -> dict[str, Any]:
         """Construye sección human_answer_structure según PARTE VI."""
+        type_code = classification.tipo_contrato["codigo"]
+
         return {
+            "format": "markdown",
+            "template_mode": "epistemological_narrative",
+            "contract_type": type_code,
             "sections": {
                 "S1_VEREDICTO": {
                     "role": "SYNTHESIS",
@@ -1019,9 +1027,30 @@ class ContractAssembler:
                 },
             },
             "confidence_interpretation": {
-                "high": {"range": [0.8, 1.0], "label": "Alta confianza"},
-                "medium":  {"range": [0.5, 0.8], "label":  "Confianza moderada"},
-                "low": {"range": [0.0, 0.5], "label": "Baja confianza"},
+                "critical": {
+                    "range": [0, 19],
+                    "label": "INVÁLIDO",
+                    "description": "Veto activado por N3, modelo lógico inválido técnicamente",
+                    "display": "🔴",
+                },
+                "low": {
+                    "range": [20, 49],
+                    "label": "DÉBIL",
+                    "description": "Evidencia insuficiente o contradicciones detectadas",
+                    "display": "🟠",
+                },
+                "medium": {
+                    "range": [50, 79],
+                    "label": "MODERADO",
+                    "description": "Evidencia presente con limitaciones menores",
+                    "display": "🟡",
+                },
+                "high": {
+                    "range": [80, 100],
+                    "label": "ROBUSTO",
+                    "description": "Múltiples observaciones corroborantes, auditorías pasadas",
+                    "display": "🟢",
+                },
             },
             "roles_argumentativos": list(classification.roles_argumentativos),
         }
@@ -1103,31 +1132,52 @@ class ContractAssembler:
         chain: "EpistemicChain",
         classification: "ContractClassification",
         sector: "SectorDefinition",
-    ) -> dict[str, Any]: 
+    ) -> dict[str, Any]:
         """Construye sección audit_annotations."""
         # Detectar métodos de baja confianza
         low_confidence_methods = [
-            m. method_id
+            m.method_id
             for m in chain.full_chain_ordered
             if m.confidence_score < 0.7
         ]
 
         # Detectar métodos N3 con veto power
         veto_capable_methods = [
-            m. method_id
+            m.method_id
             for m in chain.phase_c_chain
-            if m.has_veto_power
+            if hasattr(m, 'has_veto_power') and m.has_veto_power
         ]
 
         return {
-            "generation_audit":  {
-                "timestamp": self. generation_timestamp,
+            "generation_metadata": {
                 "generator_version": self.generator_version,
+                "generation_timestamp": self.generation_timestamp,
                 "input_hashes": {
-                    "methods": self.registry.classified_methods_hash,
-                    "contracts": self.registry.contratos_clasificados_hash,
-                    "assignments": self.registry.method_sets_hash,
+                    "classified_methods": self.registry.classified_methods_hash,
+                    "contratos_clasificados": self.registry.contratos_clasificados_hash,
+                    "method_sets": self.registry.method_sets_hash,
                 },
+            },
+            "source_references": {
+                "method_assignments_source": "method_sets_by_question.json",
+                "contract_classification_source": "contratos_clasificados.json",
+                "method_definitions_source": "classified_methods.json",
+                "doctrine_source": "operationalization_guide.json",
+            },
+            "composition_trace": {
+                "question_id": chain.question_id,
+                "contract_id": classification.contract_id,
+                "type_code": classification.tipo_contrato["codigo"],
+                "methods_in_chain": chain.total_methods,
+                "n1_methods": chain.n1_count,
+                "n2_methods": chain.n2_count,
+                "n3_methods": chain.n3_count,
+                "efficiency_score": chain.efficiency_score,
+            },
+            "validity_conditions": {
+                "temporal_validity": "Until next input revision",
+                "review_trigger": "Changes to any input file",
+                "expiration_policy": "Regenerate if input hashes change",
             },
             "quality_flags": {
                 "low_confidence_methods": low_confidence_methods,
@@ -1137,13 +1187,20 @@ class ContractAssembler:
             },
             "validation_status": {
                 "phase_level_coherence": "PASSED",
-                "method_expansion":  "COMPLETED",
+                "method_expansion": "COMPLETED",
                 "chain_composition": "COMPLETED",
                 "contract_assembly": "COMPLETED",
             },
-            "sector_specific":  {
-                "sector_id":  sector.sector_id,
+            "sector_specific": {
+                "sector_id": sector.sector_id,
                 "sector_name": sector.canonical_name,
+            },
+            "audit_checklist": {
+                "structure_validated": False,
+                "epistemic_coherence_validated": False,
+                "temporal_validity_validated": False,
+                "cross_reference_validated": False,
+                "sector_validated": False,
             },
         }
 

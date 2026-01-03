@@ -129,6 +129,13 @@ class ContractGenerator:
                     contract, report = self._generate_single_contract(
                         question_id, sector, contract_number
                     )
+
+                    if not report.is_valid:
+                        logger.warning(f"    ✗ Invalid Report Details for {report.contract_id}:")
+                        for result in report.results:
+                            if not result.passed:
+                                logger.warning(f"      - [{result.severity.value}] {result.message} (Expected: {result.expected}, Actual: {result.actual})")
+
                     contracts.append(contract)
                     reports.append(report)
 

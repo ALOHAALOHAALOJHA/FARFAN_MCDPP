@@ -52,8 +52,8 @@ class JSONEmitter:
             )
 
         # Construir nombre de archivo
-        base_slot = contract.identity.get("base_slot", "UNKNOWN")
-        filename = f"{base_slot.replace('-', '_')}_contract_v4.json"
+        contract_id = contract.identity.get("contract_id", "UNKNOWN")
+        filename = f"{contract_id}_contract_v4.json"
         output_path = self.output_dir / filename
 
         # Construir diccionario final con validation status

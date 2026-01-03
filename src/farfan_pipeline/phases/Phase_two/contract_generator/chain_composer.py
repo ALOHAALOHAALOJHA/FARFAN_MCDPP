@@ -9,6 +9,16 @@ from typing import Any
 
 
 @dataclass(frozen=True)
+class PhaseMetadata:
+    """Metadata for a specific execution phase."""
+    level_prefix: str
+    level_name: str
+    epistemology: str
+    dependencies: tuple[str, ...]
+    output_target: str
+
+
+@dataclass(frozen=True)
 class EpistemicChain:
     """
     Cadena epistémica ordenada.
@@ -39,6 +49,53 @@ class EpistemicChain:
     def full_chain_ordered(self) -> tuple["ExpandedMethodUnit", ...]:
         """Retorna cadena completa en orden: N1 → N2 → N3"""
         return self.phase_a_chain + self.phase_b_chain + self.phase_c_chain
+
+    @property
+    def contract_type_code(self) -> str:
+        """Código del tipo de contrato (e.g., TYPE_A)."""
+        return self.contract_type.get("codigo") or self.contract_type.get("code") or "UNKNOWN"
+
+    @property
+    def n1_count(self) -> int:
+        return len(self.phase_a_chain)
+
+    @property
+    def n2_count(self) -> int:
+        return len(self.phase_b_chain)
+
+    @property
+    def n3_count(self) -> int:
+        return len(self.phase_c_chain)
+
+    @property
+    def phase_a_metadata(self) -> PhaseMetadata:
+        return PhaseMetadata(
+            level_prefix="N1",
+            level_name="Empirical Foundation",
+            epistemology="Positivist",
+            dependencies=(),
+            output_target="raw_facts"
+        )
+
+    @property
+    def phase_b_metadata(self) -> PhaseMetadata:
+        return PhaseMetadata(
+            level_prefix="N2",
+            level_name="Inferential Processing",
+            epistemology="Bayesian/Constructivist",
+            dependencies=("raw_facts",),
+            output_target="inferences"
+        )
+
+    @property
+    def phase_c_metadata(self) -> PhaseMetadata:
+        return PhaseMetadata(
+            level_prefix="N3",
+            level_name="Epistemic Audit",
+            epistemology="Popperian Falsificationism",
+            dependencies=("raw_facts", "inferences"),
+            output_target="validated_output"
+        )
 
 
 class ChainComposer:
