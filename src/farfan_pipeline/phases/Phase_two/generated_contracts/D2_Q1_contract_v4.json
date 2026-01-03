@@ -31,7 +31,7 @@
     "contract_type_name": "Financiero",
     "contract_type_focus": "Coherencia estructural actividad-presupuesto",
     "contract_version": "4.0.0-epistemological",
-    "created_at": "2026-01-02T06:03:42.530493+00:00",
+    "created_at": "2026-01-02T17:03:47.638824+00:00",
     "generator_version": "4.0.0-granular",
     "specification_source": "operationalization_guide.json"
   },
@@ -62,7 +62,7 @@
             "output_type": "FACT",
             "fusion_behavior": "additive",
             "fusion_symbol": "⊕",
-            "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2)",
+            "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2) (PARTE II, Sección 2.2)",
             "confidence_score": 0.88,
             "contract_affinities": {
               "TYPE_A": 0.7,
@@ -95,7 +95,9 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00"
+            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
+            "requires": []
           },
           {
             "class_name": "FinancialAggregator",
@@ -109,7 +111,7 @@
             "output_type": "FACT",
             "fusion_behavior": "additive",
             "fusion_symbol": "⊕",
-            "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2)",
+            "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2) (PARTE II, Sección 2.2)",
             "confidence_score": 0.88,
             "contract_affinities": {
               "TYPE_A": 0.7,
@@ -142,7 +144,9 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00"
+            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
+            "requires": []
           },
           {
             "class_name": "DocumentProcessor",
@@ -156,7 +160,7 @@
             "output_type": "FACT",
             "fusion_behavior": "additive",
             "fusion_symbol": "⊕",
-            "classification_rationale": "Clase DocumentProcessor listada en N1-EMP + patrón 'load_'",
+            "classification_rationale": "Clase DocumentProcessor listada en N1-EMP + patrón 'load_' (PARTE II, Sección 2.2)",
             "confidence_score": 0.92,
             "contract_affinities": {
               "TYPE_A": 0.7,
@@ -189,7 +193,9 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00"
+            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
+            "requires": []
           },
           {
             "class_name": "PDFProcessor",
@@ -203,7 +209,7 @@
             "output_type": "FACT",
             "fusion_behavior": "additive",
             "fusion_symbol": "⊕",
-            "classification_rationale": "Clase PDFProcessor listada en N1-EMP + patrón 'load_'",
+            "classification_rationale": "Clase PDFProcessor listada en N1-EMP + patrón 'load_' (PARTE II, Sección 2.2)",
             "confidence_score": 0.92,
             "contract_affinities": {
               "TYPE_A": 0.7,
@@ -236,7 +242,9 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00"
+            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
+            "requires": []
           },
           {
             "class_name": "BayesianEvidenceExtractor",
@@ -250,7 +258,7 @@
             "output_type": "FACT",
             "fusion_behavior": "additive",
             "fusion_symbol": "⊕",
-            "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2)",
+            "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2) (PARTE II, Sección 2.2)",
             "confidence_score": 0.88,
             "contract_affinities": {
               "TYPE_A": 0.7,
@@ -283,7 +291,9 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00"
+            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
+            "requires": []
           }
         ],
         "dependencies": [],
@@ -307,7 +317,7 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "fusion_symbol": "⊗",
-            "classification_rationale": "Patrón de nombre 'analyze_' → N2-INF (PARTE II, Sec 2.2)",
+            "classification_rationale": "Patrón de nombre 'analyze_' → N2-INF (PARTE II, Sec 2.2) (PARTE II, Sección 2.2)",
             "confidence_score": 0.88,
             "contract_affinities": {
               "TYPE_A": 0.8,
@@ -341,7 +351,8 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
             ],
@@ -362,7 +373,7 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "fusion_symbol": "⊗",
-            "classification_rationale": "Patrón de nombre 'aggregate_' → N2-INF (PARTE II, Sec 2.2)",
+            "classification_rationale": "Patrón de nombre 'aggregate_' → N2-INF (PARTE II, Sec 2.2) (PARTE II, Sección 2.2)",
             "confidence_score": 0.88,
             "contract_affinities": {
               "TYPE_A": 0.8,
@@ -396,7 +407,8 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
             ],
@@ -417,7 +429,7 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "fusion_symbol": "⊗",
-            "classification_rationale": "Clase SemanticAnalyzer listada en N2-INF + patrón 'compute_'",
+            "classification_rationale": "Clase SemanticAnalyzer listada en N2-INF + patrón 'compute_' (PARTE II, Sección 2.2)",
             "confidence_score": 0.92,
             "contract_affinities": {
               "TYPE_A": 1.0,
@@ -451,7 +463,8 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
             ],
@@ -472,7 +485,7 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "fusion_symbol": "⊗",
-            "classification_rationale": "Clase DispersionEngine listada en N2-INF + patrón 'calculate_'",
+            "classification_rationale": "Clase DispersionEngine listada en N2-INF + patrón 'calculate_' (PARTE II, Sección 2.2)",
             "confidence_score": 0.92,
             "contract_affinities": {
               "TYPE_A": 0.8,
@@ -506,7 +519,8 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
             ],
@@ -527,7 +541,7 @@
             "output_type": "PARAMETER",
             "fusion_behavior": "multiplicative",
             "fusion_symbol": "⊗",
-            "classification_rationale": "Clase PeerCalibrator listada en N2-INF + patrón 'compare_'",
+            "classification_rationale": "Clase PeerCalibrator listada en N2-INF + patrón 'compare_' (PARTE II, Sección 2.2)",
             "confidence_score": 0.92,
             "contract_affinities": {
               "TYPE_A": 0.8,
@@ -561,7 +575,8 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
             ],
@@ -594,7 +609,7 @@
             "output_type": "CONSTRAINT",
             "fusion_behavior": "gate",
             "fusion_symbol": "⊘",
-            "classification_rationale": "Clase FinancialAuditor listada en N3-AUD + patrón 'detect_'",
+            "classification_rationale": "Clase FinancialAuditor listada en N3-AUD + patrón 'detect_' (PARTE II, Sección 2.2)",
             "confidence_score": 0.92,
             "contract_affinities": {
               "TYPE_A": 0.5,
@@ -630,7 +645,8 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "budget_insufficiency": {
                 "trigger": "budget_gap > 50%",
@@ -638,11 +654,22 @@
                 "scope": "affected_goals",
                 "confidence_multiplier": 0.3,
                 "rationale": "Insufficient budget allocation"
+              },
+              "critical_failure_veto": {
+                "trigger": "critical_validation_failed == True",
+                "action": "invalidate_graph",
+                "scope": "entire_output",
+                "confidence_multiplier": 0.0,
+                "rationale": "Critical validation failure invalidates entire output"
               }
             },
             "modulates": [
               "raw_facts.confidence",
               "inferences.confidence"
+            ],
+            "requires": [
+              "raw_facts",
+              "inferences"
             ]
           },
           {
@@ -657,7 +684,7 @@
             "output_type": "CONSTRAINT",
             "fusion_behavior": "gate",
             "fusion_symbol": "⊘",
-            "classification_rationale": "Clase OperationalizationAuditor es dominante en N3-AUD",
+            "classification_rationale": "Clase OperationalizationAuditor es dominante en N3-AUD (PARTE II, Sección 2.2)",
             "confidence_score": 0.85,
             "contract_affinities": {
               "TYPE_A": 0.5,
@@ -693,7 +720,8 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "validation_failed": {
                 "trigger": "validation_result == False",
@@ -701,11 +729,22 @@
                 "scope": "method_output",
                 "confidence_multiplier": 0.7,
                 "rationale": "Validation did not pass"
+              },
+              "critical_failure_veto": {
+                "trigger": "critical_validation_failed == True",
+                "action": "invalidate_graph",
+                "scope": "entire_output",
+                "confidence_multiplier": 0.0,
+                "rationale": "Critical validation failure invalidates entire output"
               }
             },
             "modulates": [
               "raw_facts.confidence",
               "inferences.confidence"
+            ],
+            "requires": [
+              "raw_facts",
+              "inferences"
             ]
           },
           {
@@ -720,7 +759,7 @@
             "output_type": "CONSTRAINT",
             "fusion_behavior": "gate",
             "fusion_symbol": "⊘",
-            "classification_rationale": "Keyword 'consistency' detectado → N3-AUD",
+            "classification_rationale": "Keyword 'consistency' detectado → N3-AUD (PARTE II, Sección 2.2)",
             "confidence_score": 0.8,
             "contract_affinities": {
               "TYPE_A": 0.5,
@@ -756,7 +795,8 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T06:03:42.530493+00:00",
+            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "validation_failed": {
                 "trigger": "validation_result == False",
@@ -764,11 +804,22 @@
                 "scope": "method_output",
                 "confidence_multiplier": 0.7,
                 "rationale": "Validation did not pass"
+              },
+              "critical_failure_veto": {
+                "trigger": "critical_validation_failed == True",
+                "action": "invalidate_graph",
+                "scope": "entire_output",
+                "confidence_multiplier": 0.0,
+                "rationale": "Critical validation failure invalidates entire output"
               }
             },
             "modulates": [
               "raw_facts.confidence",
               "inferences.confidence"
+            ],
+            "requires": [
+              "raw_facts",
+              "inferences"
             ]
           }
         ],
@@ -777,7 +828,7 @@
           "phase_B_computation"
         ],
         "output_target": "audit_results",
-        "asymmetry_principle": "N3 can invalidate N1/N2, but NOT vice versa",
+        "asymmetry_principle": "N3 can invalidate N1/N2 outputs; N1 and N2 CANNOT invalidate N3",
         "fusion_mode": "modulation"
       }
     },
@@ -927,12 +978,12 @@
           "budget_gap_detected": {
             "condition": "gap > 50%",
             "action": "flag_insufficiency",
-            "multiplier": 0.3,
+            "confidence_multiplier": 0.3,
             "scope": "affected_goals"
           },
           "allocation_mismatch": {
             "action": "reduce_confidence",
-            "multiplier": 0.5,
+            "confidence_multiplier": 0.4,
             "scope": "mismatched_items"
           }
         },
@@ -1111,7 +1162,15 @@
         "layer": "N4",
         "data_source": "synthesis_output",
         "narrative_style": "declarative",
-        "template": "**Conclusión**: {verdict_statement}\n\n**Confianza Global**: {final_confidence_pct}% ({confidence_interpretation})\n\n**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas.",
+        "template": {
+          "placeholders": {
+            "verdict_statement": "Conclusión principal",
+            "final_confidence_pct": "Porcentaje de confianza",
+            "confidence_label": "Etiqueta de confianza",
+            "method_count": "Cantidad de métodos ejecutados"
+          },
+          "template_string": "**Conclusión**: {verdict_statement}\n\n**Confianza Global**: {final_confidence_pct}% ({confidence_interpretation})\n\n**Base Metodológica**: {method_count} métodos ejecutados, {audit_count} validaciones, {blocked_count} ramas bloqueadas."
+        },
         "argumentative_role": "SYNTHESIS"
       },
       {
@@ -1122,7 +1181,10 @@
         "narrative_style": "descriptive",
         "template": "**Elementos Detectados**: {fact_count} hechos extraídos de {document_coverage_pct}% del texto.\n\n**Fuentes Oficiales**: {official_sources_list}\n\n**Indicadores Cuantitativos**: {quantitative_indicators}\n\n**Cobertura Temporal**: {temporal_series}",
         "argumentative_role": "EMPIRICAL_BASIS",
-        "epistemological_note": "Observaciones directas sin transformación interpretativa."
+        "epistemological_note": {
+          "note": "Observaciones directas sin transformación interpretativa.",
+          "include_in_output": true
+        }
       },
       {
         "section_id": "S3_robustness_audit",
@@ -1134,7 +1196,9 @@
         "argumentative_role": "ROBUSTNESS_QUALIFIER",
         "epistemological_note": "Meta-juicios sobre confiabilidad. N3 puede VETAR hallazgos de N1/N2.",
         "veto_display": {
-          "if_veto_triggered": "⚠️ ALERTA: {veto_reason}. El modelo lógico es INVÁLIDO técnicamente.",
+          "if_veto_triggered": {
+            "template": "⚠️ ALERTA: {veto_reason}. El modelo lógico es INVÁLIDO técnicamente."
+          },
           "if_no_veto": "✓ Todas las validaciones pasaron."
         },
         "type_specific_note": "Para contratos financieros: brechas presupuestales > 50% son bloqueantes."
@@ -1209,35 +1273,119 @@
     },
     "confidence_interpretation": {
       "critical": {
-        "range": "0-19%",
+        "range": [
+          0,
+          19
+        ],
         "label": "INVÁLIDO",
         "description": "Veto activado por N3, modelo lógico inválido técnicamente",
         "display": "🔴"
       },
       "low": {
-        "range": "20-49%",
+        "range": [
+          20,
+          49
+        ],
         "label": "DÉBIL",
         "description": "Evidencia insuficiente, contradicciones detectadas, o validación fallida",
         "display": "🟠"
       },
       "medium": {
-        "range": "50-79%",
+        "range": [
+          50,
+          79
+        ],
         "label": "MODERADO",
         "description": "Evidencia presente con limitaciones o inconsistencias menores",
         "display": "🟡"
       },
       "high": {
-        "range": "80-100%",
+        "range": [
+          80,
+          100
+        ],
         "label": "ROBUSTO",
         "description": "Múltiples observaciones corroborantes, sin contradicciones, auditorías pasadas",
         "display": "🟢"
       }
     }
   },
+  "traceability": {
+    "canonical_sources": {
+      "epistemological_guide": "src/farfan_pipeline/phases/Phase_two/epistemological_assets/guide.md",
+      "operationalization_guide": "src/farfan_pipeline/phases/Phase_two/epistemological_assets/operationalization_guide.json",
+      "method_registry": "src/farfan_pipeline/phases/Phase_two/epistemological_assets/classified_methods.json"
+    },
+    "generation": {
+      "method": "epistemological_compiler_v6",
+      "version": "4.0.0-granular",
+      "timestamp": "2026-01-02T17:03:47.638824+00:00"
+    },
+    "refactoring_history": [
+      {
+        "from_version": "3.0.0-multi_method",
+        "to_version": "4.0.0-epistemological",
+        "date": "2025-01-02",
+        "reason": "Adopt epistemological framework with N1/N2/N3/N4 layers",
+        "epistemological_framework": {
+          "N1": "Empirismo positivista",
+          "N2": "Bayesianismo subjetivista",
+          "N3": "Falsacionismo popperiano",
+          "N4": "Reflexividad crítica"
+        }
+      }
+    ],
+    "prohibitions": {
+      "v3_recovery": "FORBIDDEN",
+      "template_usage": "FORBIDDEN",
+      "method_inference": "FORBIDDEN"
+    }
+  },
+  "output_contract": {
+    "format": "json",
+    "compression": "none",
+    "encoding": "utf-8",
+    "schema": {
+      "type": "object",
+      "required": [
+        "base_slot",
+        "question_id",
+        "evidence",
+        "score",
+        "human_answer"
+      ],
+      "properties": {
+        "base_slot": {
+          "type": "string",
+          "description": "Identificador del slot (e.g., D1-Q1)"
+        },
+        "question_id": {
+          "type": "string",
+          "description": "ID de la pregunta representativa (e.g., Q001)"
+        },
+        "evidence": {
+          "type": "object",
+          "description": "Evidencia recopilada y validada"
+        },
+        "score": {
+          "type": "number",
+          "description": "Confianza global (0-100)"
+        },
+        "human_answer": {
+          "type": "string",
+          "description": "Respuesta en lenguaje natural"
+        },
+        "epistemological_trace": {
+          "type": "object",
+          "description": "Traza completa del proceso epistemológico"
+        }
+      }
+    }
+  },
   "audit_annotations": {
     "generation_metadata": {
       "generator_version": "4.0.0-granular",
-      "generation_timestamp": "2026-01-02T06:03:42.530493+00:00",
+      "generation_timestamp": "2026-01-02T17:03:47.638824+00:00",
       "input_hashes": {
         "classified_methods": "e3b57835bbe2cca5",
         "contratos_clasificados": "4b348284ad32888c",
@@ -1271,7 +1419,7 @@
       "temporal_validity_validated": true,
       "cross_reference_validated": true,
       "validation_pass_rate": 1.0,
-      "validation_timestamp": "2026-01-02T06:03:42.530493+00:00"
+      "validation_timestamp": "2026-01-02T17:03:47.638824+00:00"
     }
   }
 }

@@ -1,0 +1,26 @@
+{
+  "policy_area_id": "PA02",
+  "name": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
+  "legacy_id": "P2",
+  "cluster_id": "CL01",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_es": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
+      "label_en": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales"
+    }
+  },
+  "dimension_ids": [
+    "DIM01",
+    "DIM02",
+    "DIM03",
+    "DIM04",
+    "DIM05",
+    "DIM06"
+  ],
+  "required_evidence_keys": [
+    "official_stats",
+    "official_documents",
+    "third_party_research"
+  ]
+}

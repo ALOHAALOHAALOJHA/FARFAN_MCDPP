@@ -1,0 +1,19 @@
+{
+  "cluster_id": "CL03",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_en": "Territorio-Ambiente",
+      "label_es": "Territorio-Ambiente"
+    }
+  },
+  "legacy_policy_area_ids": [
+    "P4",
+    "P8"
+  ],
+  "policy_area_ids": [
+    "PA04",
+    "PA08"
+  ],
+  "rationale": "Sostenibilidad territorial y gestión ambiental"
+}

@@ -1,0 +1,26 @@
+{
+  "policy_area_id": "PA06",
+  "name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
+  "legacy_id": "P6",
+  "cluster_id": "CL02",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_es": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
+      "label_en": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores"
+    }
+  },
+  "dimension_ids": [
+    "DIM01",
+    "DIM02",
+    "DIM03",
+    "DIM04",
+    "DIM05",
+    "DIM06"
+  ],
+  "required_evidence_keys": [
+    "official_stats",
+    "official_documents",
+    "third_party_research"
+  ]
+}

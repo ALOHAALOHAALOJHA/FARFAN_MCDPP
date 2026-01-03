@@ -1,0 +1,19 @@
+{
+  "cluster_id": "CL04",
+  "i18n": {
+    "default": "es",
+    "keys": {
+      "label_en": "Derechos Sociales & Crisis",
+      "label_es": "Derechos Sociales & Crisis"
+    }
+  },
+  "legacy_policy_area_ids": [
+    "P9",
+    "P10"
+  ],
+  "policy_area_ids": [
+    "PA09",
+    "PA10"
+  ],
+  "rationale": "DESC y gestión de crisis migratoria"
+}

@@ -150,6 +150,9 @@ class MethodExpander:
         failure_modes = self._derive_failure_modes(assignment.level)
         interaction = self._derive_interaction_notes(assignment, question_context)
 
+        # Enriquecer classification_rationale con referencia a la guía
+        enhanced_rationale = f"{assignment.classification_rationale} (PARTE II, Sección 2.2)"
+
         return ExpandedMethodUnit(
             # Identidad
             method_id=assignment.full_id,
@@ -169,7 +172,7 @@ class MethodExpander:
             fusion_symbol=assignment.fusion_symbol,
 
             # Justificación
-            classification_rationale=assignment.classification_rationale,
+            classification_rationale=enhanced_rationale,
             confidence_score=assignment.confidence_score,
             contract_affinities=assignment.contract_affinities,
 
