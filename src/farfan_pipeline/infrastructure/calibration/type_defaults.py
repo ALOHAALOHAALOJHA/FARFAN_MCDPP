@@ -220,8 +220,8 @@ class EpistemicLayerRatios:
         if abs(default_sum - 1.0) > RATIO_SUM_TOLERANCE:
             raise ConfigurationError(
                 f"Epistemic layer ratio midpoints must sum to 1.0 (±{RATIO_SUM_TOLERANCE}); "
-                f"got {default_sum:. 4f} = "
-                f"n1({self.n1_empirical. midpoint():.3f}) + "
+                f"got {default_sum:.4f} = "
+                f"n1({self.n1_empirical.midpoint():.3f}) + "
                 f"n2({self.n2_inferential.midpoint():.3f}) + "
                 f"n3({self.n3_audit.midpoint():.3f})"
             )
@@ -508,7 +508,7 @@ def _create_type_d_defaults() -> ContractTypeDefaults:
         epistemic_ratios=EpistemicLayerRatios(
             n1_empirical=ClosedInterval(lower=0.15, upper=0.35),
             n2_inferential=ClosedInterval(lower=0.45, upper=0.65),  # Dominant
-            n3_audit=ClosedInterval(lower=0.15, upper=0.30),
+            n3_audit=ClosedInterval(lower=0.10, upper=0.30),  # Adjusted for sum=1.0
         ),
         veto_threshold=ClosedInterval(
             lower=VETO_THRESHOLD_LENIENT_MIN,

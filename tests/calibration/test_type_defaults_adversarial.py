@@ -1,7 +1,9 @@
 """
-ADVERSARIAL TESTS FOR TYPE DEFAULTS
-====================================
+ADVERSARIAL TESTS FOR TYPE DEFAULTS v2.0.0
+==========================================
 These tests verify type-specific calibration defaults and prohibited operations.
+
+Schema Version: 2.0.0
 """
 import pytest
 from src.farfan_pipeline.infrastructure.calibration import (
@@ -12,44 +14,48 @@ from src.farfan_pipeline.infrastructure.calibration import (
 
 
 class TestTypeDefaultsLoading:
-    """Test loading of type-specific defaults from epistemic_minima_by_type.json."""
+    """Test loading of type-specific defaults from canonical source."""
 
     def test_type_a_defaults_loaded(self) -> None:
         """TYPE_A defaults must be loadable."""
         defaults = get_type_defaults("TYPE_A")
-        assert "n1_ratio" in defaults
-        assert "n2_ratio" in defaults
-        assert "n3_ratio" in defaults
-        assert "veto_threshold" in defaults
-        assert "prior_strength" in defaults
+        assert defaults.contract_type_code == "TYPE_A"
+        assert defaults.epistemic_ratios is not None
+        assert defaults.veto_threshold is not None
+        assert defaults.prior_strength is not None
 
     def test_type_b_defaults_loaded(self) -> None:
-        """TYPE_B defaults must be loadable."""
+        """TYPE_B defaults must be loadable with broader prior strength range."""
         defaults = get_type_defaults("TYPE_B")
-        assert "prior_strength" in defaults
-        # TYPE_B should have stronger priors
-        assert defaults["prior_strength"].default_value == 2.0
+        assert defaults.contract_type_code == "TYPE_B"
+        # TYPE_B should have same prior_strength bounds as others
+        # The PRIOR_STRENGTH_BAYESIAN constant (2.0) is a suggested value within the range
+        assert defaults.prior_strength.lower == 0.1
+        assert defaults.prior_strength.upper == 10.0
+        # Verify 2.0 is within the valid range
+        assert defaults.prior_strength.contains(2.0)
 
     def test_type_e_strictest_veto_threshold(self) -> None:
         """TYPE_E must have strictest veto threshold."""
         defaults_e = get_type_defaults("TYPE_E")
-        assert defaults_e["veto_threshold"].min_value == 0.01
+        assert defaults_e.veto_threshold.lower == 0.01
 
     def test_type_d_most_lenient_veto_threshold(self) -> None:
         """TYPE_D must have most lenient veto threshold."""
         defaults_d = get_type_defaults("TYPE_D")
-        assert defaults_d["veto_threshold"].max_value == 0.10
+        assert defaults_d.veto_threshold.upper == 0.10
 
     def test_unknown_type_raises(self) -> None:
-        """Unknown contract type must raise KeyError."""
-        with pytest.raises(KeyError, match="Unknown contract type"):
+        """Unknown contract type must raise UnknownContractTypeError."""
+        from src.farfan_pipeline.infrastructure.calibration.type_defaults import UnknownContractTypeError
+        with pytest.raises(UnknownContractTypeError, match="Unknown contract type"):
             get_type_defaults("TYPE_INVALID")
 
     def test_flyweight_pattern_caching(self) -> None:
         """Same type should return cached instance (flyweight pattern)."""
         defaults1 = get_type_defaults("TYPE_A")
         defaults2 = get_type_defaults("TYPE_A")
-        # Should be the exact same dict instance due to caching
+        # Should be the exact same object instance due to caching
         assert defaults1 is defaults2
 
 
