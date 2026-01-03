@@ -1,21 +1,20 @@
 """
-Módulo:  contract_assembler.py
-Propósito: Ensamblar contrato completo desde cadena epistémica
+Módulo:  method_expander.py
+Propósito: Expandir cada método asignado en una unidad semántica completa
 
-Ubicación: src/farfan_pipeline/phases/Phase_two/contract_generator/contract_assembler.py
+Ubicación: src/farfan_pipeline/phases/Phase_two/contract_generator/method_expander.py
 
 RESPONSABILIDADES:
-1. Transformar EpistemicChain en GeneratedContract
-2. Construir cada sección del contrato según operationalization_guide.json
-3. Preservar granularidad completa de métodos expandidos
-4. Generar secciones derivadas del TYPE sin templates
-5. Validar estructura post-ensamblaje
+1. Transformar MethodAssignment en ExpandedMethodUnit
+2. Derivar campos semánticos desde la clasificación (NO inventar)
+3. Enriquecer con metadata de contexto
+4. Generar veto_conditions para métodos N3
+5. Preservar trazabilidad completa
 
 PRINCIPIOS: 
-- La cadena epistémica ES el contrato (no se transforma conceptualmente)
-- TYPE es overlay interpretativo sobre la cadena
-- Cada sección se deriva de la cadena, no de templates
-- Verbosidad completa en method_binding
+- El expander NUNCA inventa información epistémica
+- Toda derivación se basa en reglas documentadas en la guía
+- Los campos expandidos son derivaciones lógicas, no inferencias
 
 Versión: 4.0.0-granular
 Fecha: 2026-01-03
@@ -24,1139 +23,742 @@ Fecha: 2026-01-03
 from __future__ import annotations
 
 import logging
-import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from . chain_composer import EpistemicChain
-    from .input_registry import ContractClassification, InputRegistry, SectorDefinition
-    from .method_expander import ExpandedMethodUnit
+    from . input_registry import MethodAssignment
 
-logger = logging.getLogger(__name__)
+logger = logging. getLogger(__name__)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# CONSTANTES
+# CONSTANTES DE DERIVACIÓN
 # ══════════════════════════════════════════════════════════════════════════════
 
-ASSEMBLER_VERSION = "4.0.0-granular"
+EXPANDER_VERSION = "4.0.0-granular"
 
-# Estrategias por TYPE según operationalization_guide.json (PARTE IV)
-TYPE_STRATEGIES:  dict[str, dict[str, str]] = {
-    "TYPE_A": {
-        "N1": "semantic_corroboration",
-        "N2": "dempster_shafer",
-        "N3": "veto_gate",
-        "primary":  "semantic_triangulation",
-    },
-    "TYPE_B": {
-        "N1": "concat",
-        "N2": "bayesian_update",
-        "N3":  "veto_gate",
-        "primary": "bayesian_update",
-    },
-    "TYPE_C": {
-        "N1": "graph_construction",
-        "N2": "topological_overlay",
-        "N3": "veto_gate",
-        "primary": "topological_overlay",
-    },
-    "TYPE_D": {
-        "N1": "concat",
-        "N2": "weighted_mean",
-        "N3": "financial_coherence_audit",
-        "primary": "financial_coherence_audit",
-    },
-    "TYPE_E":  {
-        "N1": "concat",
-        "N2":  "weighted_mean",
-        "N3": "logical_consistency_validation",
-        "primary": "logical_consistency_validation",
-    },
+# Mapeo de nivel a evidence requirements típicos (PARTE II, Sec 2.2)
+LEVEL_EVIDENCE_REQUIREMENTS:  dict[str, tuple[str, ...]] = {
+    "N1-EMP": (
+        "raw_document_text",
+        "preprocesado_metadata",
+    ),
+    "N2-INF": (
+        "raw_facts_from_N1",
+        "confidence_scores",
+    ),
+    "N3-AUD": (
+        "raw_facts_from_N1",
+        "inferences_from_N2",
+        "audit_criteria",
+    ),
 }
 
-# Gate logic por TYPE (PARTE III, assembly_rules)
-TYPE_GATE_LOGIC: dict[str, dict[str, dict[str, Any]]] = {
+# Mapeo de output_type a claims típicos (PARTE I, Sec 1.3)
+OUTPUT_TYPE_CLAIMS: dict[str, tuple[str, ...]] = {
+    "FACT": (
+        "observable_datum",
+        "literal_extraction",
+    ),
+    "PARAMETER": (
+        "derived_score",
+        "probability_estimate",
+        "relational_inference",
+    ),
+    "CONSTRAINT": (
+        "validation_flag",
+        "confidence_modulator",
+        "veto_signal",
+    ),
+}
+
+# Mapeo de nivel a failure modes típicos (PARTE II, Sec 2.2)
+LEVEL_FAILURE_MODES: dict[str, tuple[str, ...]] = {
+    "N1-EMP":  (
+        "empty_extraction",
+        "pattern_not_found",
+        "malformed_input",
+    ),
+    "N2-INF": (
+        "insufficient_evidence",
+        "prior_undefined",
+        "computation_error",
+    ),
+    "N3-AUD": (
+        "validation_inconclusive",
+        "criteria_not_met",
+        "veto_triggered",
+    ),
+}
+
+# Mapeo de nivel a constraints base (PARTE II, Sec 2.2)
+LEVEL_BASE_CONSTRAINTS: dict[str, tuple[str, ...]] = {
+    "N1-EMP": (
+        "output_must_be_literal",
+        "no_transformation_allowed",
+    ),
+    "N2-INF": (
+        "requires_N1_input",
+        "output_is_derived",
+    ),
+    "N3-AUD": (
+        "requires_N1_and_N2_input",
+        "can_veto_lower_levels",
+        "asymmetric_authority",
+    ),
+}
+
+# Mapeo de nivel a descripción de fase (PARTE II)
+LEVEL_PHASE_DESCRIPTIONS: dict[str, str] = {
+    "N1-EMP": (
+        "Extrae y procesa observaciones empíricas directas del texto.  "
+        "Produce hechos observables sin interpretación."
+    ),
+    "N2-INF": (
+        "Calcula parámetros inferenciales basados en evidencia de N1. "
+        "Transforma hechos en parámetros cuantitativos."
+    ),
+    "N3-AUD":  (
+        "Valida y puede vetar hallazgos basándose en criterios de robustez. "
+        "Genera restricciones que pueden bloquear resultados."
+    ),
+}
+
+# Mapeo de nivel a dependencies (para method_binding)
+LEVEL_DEPENDENCIES:  dict[str, tuple[str, ...]] = {
+    "N1-EMP":  (),
+    "N2-INF": ("raw_facts",),
+    "N3-AUD": ("raw_facts", "inferences"),
+}
+
+# Mapeo de nivel a modulates (para N3)
+LEVEL_MODULATES:  dict[str, tuple[str, ...]] = {
+    "N1-EMP": (),
+    "N2-INF": ("edge_weights", "confidence_scores"),
+    "N3-AUD": ("raw_facts. confidence", "inferences.confidence"),
+}
+
+# Veto conditions por defecto para N3 según tipo de contrato (PARTE V)
+DEFAULT_VETO_CONDITIONS: dict[str, dict[str, dict[str, Any]]] = {
     "TYPE_A": {
-        "contradiction_detected": {
-            "action": "suppress_fact",
-            "multiplier": 0.0,
+        "semantic_contradiction": {
+            "trigger": "semantic_contradiction_detected == True",
+            "action": "block_branch",
+            "scope": "contradicting_nodes",
+            "confidence_multiplier": 0.0,
+            "rationale": "Semantic contradiction invalidates affected nodes",
         },
         "low_coherence": {
+            "trigger":  "coherence_score < 0.5",
             "action": "reduce_confidence",
-            "multiplier": 0.5,
+            "scope": "source_facts",
+            "confidence_multiplier": 0.5,
+            "rationale": "Low coherence reduces reliability",
         },
     },
     "TYPE_B":  {
-        "statistical_power_below_threshold": {
-            "condition": "result < 0.8",
-            "action": "downgrade_confidence_to_zero",
+        "statistical_significance_failed": {
+            "trigger": "p_value > 0.05",
+            "action": "reduce_confidence",
+            "scope":  "source_facts",
+            "confidence_multiplier": 0.5,
+            "rationale":  "Statistical insignificance degrades confidence",
+        },
+        "sample_size_insufficient": {
+            "trigger": "sample_size < 30",
+            "action":  "flag_caution",
+            "scope": "affected_inferences",
+            "confidence_multiplier": 0.7,
+            "rationale": "Small sample size warrants caution",
         },
     },
-    "TYPE_C":  {
-        "cycle_detected":  {
-            "action": "invalidate_graph",
-            "multiplier": 0.0,
+    "TYPE_C": {
+        "cycle_detected": {
+            "trigger": "has_cycle(DAG) == True",
+            "action":  "invalidate_graph",
+            "scope": "entire_causal_graph",
+            "confidence_multiplier": 0.0,
+            "rationale": "Cyclic DAG is epistemically invalid",
         },
-        "scm_construction_failed": {
+        "topological_violation": {
+            "trigger": "topological_order_violated == True",
             "action":  "block_branch",
-            "scope": "affected_subgraph",
+            "scope":  "affected_subgraph",
+            "confidence_multiplier": 0.0,
+            "rationale": "Topological violation invalidates causal chain",
         },
     },
     "TYPE_D": {
-        "budget_gap_detected": {
-            "action": "flag_insufficiency",
-            "multiplier": 0.3,
+        "budget_gap_critical": {
+            "trigger": "budget_gap > 0.5",
+            "action": "block_branch",
+            "scope":  "affected_goals",
+            "confidence_multiplier": 0.0,
+            "rationale": "Critical budget gap blocks feasibility",
         },
-        "allocation_mismatch": {
+        "budget_gap_significant": {
+            "trigger": "budget_gap > 0.3",
             "action": "reduce_confidence",
-            "multiplier": 0.5,
+            "scope":  "affected_goals",
+            "confidence_multiplier": 0.3,
+            "rationale": "Significant budget gap reduces confidence",
         },
     },
     "TYPE_E": {
-        "logical_contradiction":  {
-            "action": "suppress_contradicting_nodes",
-            "multiplier": 0.0,
+        "logical_contradiction": {
+            "trigger": "logical_contradiction_detected == True",
+            "action": "block_branch",
+            "scope": "contradicting_nodes",
+            "confidence_multiplier": 0.0,
+            "rationale": "Logical contradiction invalidates affected nodes (Popper)",
         },
         "sequence_violation": {
-            "action": "flag_invalid_sequence",
-            "multiplier": 0.2,
+            "trigger": "sequence_logic_violated == True",
+            "action": "flag_caution",
+            "scope": "affected_sequence",
+            "confidence_multiplier": 0.2,
+            "rationale": "Sequence violation degrades logical coherence",
         },
     },
 }
 
-# Cross-layer fusion definitions (PARTE V)
-CROSS_LAYER_FUSION_TEMPLATE:  dict[str, dict[str, Any]] = {
-    "N1_to_N2": {
-        "relationship": "N2 reads N1 facts",
-        "effect": "N2 computes parameters FROM N1 observations",
-        "data_flow": "forward_propagation",
-    },
-    "N2_to_N1": {
-        "relationship": "N2 modifies N1 confidence",
-        "effect": "Edge weights adjust fact confidence scores",
-        "data_flow":  "confidence_backpropagation",
-    },
-    "N3_to_N1": {
-        "relationship": "N3 can BLOCK N1 facts",
-        "effect": "Failed constraints remove facts from graph",
-        "data_flow":  "veto_propagation",
-        "asymmetry":  "N1 CANNOT invalidate N3",
-    },
-    "N3_to_N2": {
-        "relationship": "N3 can INVALIDATE N2 parameters",
-        "effect": "Failed constraints nullify parameter modifications",
-        "data_flow":  "inference_modulation",
-        "asymmetry": "N2 CANNOT invalidate N3",
-    },
-    "all_to_N4": {
-        "relationship": "N4 consumes validated outputs from all layers",
-        "effect": "Synthesis constructs narrative from filtered graph",
-        "data_flow":  "terminal_aggregation",
+# Veto conditions genéricas para cualquier N3
+GENERIC_N3_VETO_CONDITIONS:  dict[str, dict[str, Any]] = {
+    "critical_failure_veto": {
+        "trigger":  "critical_validation_failed == True",
+        "action":  "invalidate_graph",
+        "scope": "entire_output",
+        "confidence_multiplier":  0.0,
+        "rationale": "Critical validation failure invalidates entire output",
     },
 }
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# DATACLASS PRINCIPAL - CONTRATO GENERADO
+# DATACLASS PRINCIPAL - UNIDAD EXPANDIDA
 # ══════════════════════════════════════════════════════════════════════════════
 
 
-@dataclass
-class GeneratedContract:
+@dataclass(frozen=True)
+class ExpandedMethodUnit: 
     """
-    Contrato ejecutor generado. 
+    Unidad de método completamente expandida. 
 
-    ESTRUCTURA SEGÚN operationalization_guide.json:
-    - identity: Identificación del contrato
-    - executor_binding: Clase ejecutora
-    - method_binding: Métodos por fase (LA MÁS GRANULAR)
-    - question_context: Contexto de la pregunta
-    - signal_requirements: Requisitos de señal
-    - evidence_assembly: Ensamblaje de evidencia
-    - fusion_specification: Especificación de fusión
-    - cross_layer_fusion: Fusión entre capas
-    - human_answer_structure: Estructura de respuesta
-    - traceability:  Trazabilidad
-    - output_contract: Schema de salida
-    - audit_annotations: Anotaciones de auditoría
+    Representa un método con toda su información semántica explícita,
+    lista para ser incluida en un contrato. 
+
+    INMUTABLE después de creación. 
+
+    Esta estructura captura: 
+    - Identidad del método (class, name, file, provides)
+    - Clasificación epistémica (level, epistemology, output_type)
+    - Comportamiento de fusión (fusion_behavior, fusion_symbol)
+    - Justificación (rationale, confidence, affinities)
+    - Firma técnica (parameters, return_type, is_private)
+    - Campos expandidos derivados (evidence, claims, constraints, failures)
+    - Veto conditions (solo para N3)
+    - Metadata de trazabilidad
     """
-    # Secciones del contrato
-    identity: dict[str, Any]
-    executor_binding: dict[str, Any]
-    method_binding: dict[str, Any]
-    question_context: dict[str, Any]
-    signal_requirements: dict[str, Any]
-    evidence_assembly: dict[str, Any]
-    fusion_specification: dict[str, Any]
-    cross_layer_fusion: dict[str, Any]
-    human_answer_structure: dict[str, Any]
-    traceability: dict[str, Any]
-    output_contract: dict[str, Any]
-    audit_annotations: dict[str, Any]
+    # ══════════════════════════════════════════════════════════════════════
+    # IDENTIDAD
+    # ══════════════════════════════════════════════════════════════════════
+    method_id: str  # ClassName. method_name
+    class_name:  str
+    method_name: str
+    mother_file: str
+    provides: str
 
-    # Metadata (no se serializa directamente)
-    _contract_number: int = field(default=0, repr=False)
-    _sector_id: str = field(default="", repr=False)
+    # ══════════════════════════════════════════════════════════════════════
+    # CLASIFICACIÓN EPISTÉMICA
+    # ══════════════════════════════════════════════════════════════════════
+    level: str  # N1-EMP, N2-INF, N3-AUD
+    level_name: str  # Base Empírica, Procesamiento Inferencial, etc.
+    epistemology: str  # Empirismo positivista, Bayesianismo, Falsacionismo
+    output_type:  str  # FACT, PARAMETER, CONSTRAINT
 
-    def to_dict(self) -> dict[str, Any]:
-        """Serializa a diccionario ordenado para JSON."""
-        return {
-            "identity": self.identity,
-            "executor_binding": self. executor_binding,
-            "method_binding": self.method_binding,
-            "question_context":  self.question_context,
-            "signal_requirements": self.signal_requirements,
-            "evidence_assembly": self.evidence_assembly,
-            "fusion_specification": self.fusion_specification,
-            "cross_layer_fusion": self. cross_layer_fusion,
-            "human_answer_structure": self.human_answer_structure,
-            "traceability": self. traceability,
-            "output_contract": self.output_contract,
-            "audit_annotations":  self.audit_annotations,
-        }
+    # ══════════════════════════════════════════════════════════════════════
+    # COMPORTAMIENTO DE FUSIÓN
+    # ══════════════════════════════════════════════════════════════════════
+    fusion_behavior: str  # additive, multiplicative, gate
+    fusion_symbol: str  # ⊕, ⊗, ⊘
+
+    # ══════════════════════════════════════════════════════════════════════
+    # JUSTIFICACIÓN
+    # ══════════════════════════════════════════════════════════════════════
+    classification_rationale: str
+    confidence_score: float
+    contract_affinities: dict[str, float]
+
+    # ══════════════════════════════════════════════════════════════════════
+    # FIRMA TÉCNICA
+    # ══════════════════════════════════════════════════════════════════════
+    parameters: tuple[str, ...]
+    return_type: str
+    is_private: bool
+
+    # ══════════════════════════════════════════════════════════════════════
+    # CAMPOS EXPANDIDOS (derivados, no inventados)
+    # ══════════════════════════════════════════════════════════════════════
+    evidence_requirements: tuple[str, ...]
+    output_claims: tuple[str, ...]
+    constraints_and_limits: tuple[str, ...]
+    failure_modes: tuple[str, ...]
+    interaction_notes: str
+    description: str
+
+    # ══════════════════════════════════════════════════════════════════════
+    # DEPENDENCIAS Y MODIFICACIONES
+    # ══════════════════════════════════════════════════════════════════════
+    requires:  tuple[str, ...]  # Dependencias de entrada
+    modifies: tuple[str, ...]  # Lo que modifica (para N2) o modulates (para N3)
+
+    # ══════════════════════════════════════════════════════════════════════
+    # VETO CONDITIONS (solo para N3)
+    # ══════════════════════════════════════════════════════════════════════
+    veto_conditions: dict[str, dict[str, Any]] = field(default_factory=dict)
+
+    # ══════════════════════════════════════════════════════════════════════
+    # METADATA DE TRAZABILIDAD
+    # ══════════════════════════════════════════════════════════════════════
+    expansion_source: str
+    expansion_timestamp: str
 
     @property
-    def contract_id(self) -> str:
-        """ID del contrato desde identity."""
-        return self.identity. get("contract_id", "")
+    def level_prefix(self) -> str:
+        """Prefijo del nivel (N1, N2, N3)"""
+        return self.level.split("-")[0] if "-" in self.level else self.level
 
     @property
-    def sector_id(self) -> str:
-        """ID del sector."""
-        return self._sector_id or self.identity.get("sector_id", "")
+    def is_n3_auditor(self) -> bool:
+        """Indica si es un método de auditoría (N3)"""
+        return self.level. startswith("N3")
 
     @property
-    def contract_type(self) -> str:
-        """Tipo del contrato."""
-        return self. identity.get("contract_type", "")
+    def is_low_confidence(self) -> bool:
+        """Indica si tiene baja confianza (< 0.7)"""
+        return self.confidence_score < 0.7
 
     @property
-    def total_methods(self) -> int:
-        """Total de métodos en el contrato."""
-        return self.method_binding.get("method_count", 0)
+    def has_veto_power(self) -> bool:
+        """Indica si tiene poder de veto"""
+        return self.is_n3_auditor and len(self.veto_conditions) > 0
 
-
-# ══════════════════════════════════════════════════════════════════════════════
-# CLASE ENSAMBLADORA
-# ══════════════════════════════════════════════════════════════════════════════
-
-
-class ContractAssembler:
-    """
-    Ensambla contratos desde cadenas epistémicas.
-
-    RESPONSABILIDADES:
-    1. Transformar EpistemicChain + Sector → GeneratedContract
-    2. Construir cada sección según la guía de operacionalización
-    3. Preservar verbosidad completa en method_binding
-    4. Generar secciones derivadas del TYPE
-    5. Embeber regex/patterns específicos del sector
-
-    PRINCIPIOS:
-    - La cadena epistémica ES el contrato (no se transforma conceptualmente)
-    - TYPE es overlay interpretativo sobre la cadena
-    - Cada sección se deriva de la cadena, no de templates
-    - Verbosidad completa:  NO hay compresión ni resumen
-
-    USO:
-        assembler = ContractAssembler(registry, timestamp, version)
-        contract = assembler.assemble_contract(chain, classification, sector, number)
-    """
-
-    def __init__(
-        self,
-        registry: "InputRegistry",
-        generation_timestamp: str,
-        generator_version: str,
-    ):
+    def to_contract_dict(self) -> dict[str, Any]:
         """
-        Inicializa el assembler.
-
-        Args:
-            registry: InputRegistry con datos cargados
-            generation_timestamp:  Timestamp ISO de generación
-            generator_version:  Versión del generador
-        """
-        self.registry = registry
-        self.generation_timestamp = generation_timestamp
-        self.generator_version = generator_version
-        self._assembly_count = 0
-
-        logger.info(f"ContractAssembler initialized, version {ASSEMBLER_VERSION}")
-
-    def assemble_contract(
-        self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-        sector: "SectorDefinition",
-        contract_number: int,
-    ) -> GeneratedContract:
-        """
-        Ensambla contrato completo desde cadena epistémica y sector.
-
-        SECUENCIA:
-        1. Construir identity con sector embebido
-        2. Construir executor_binding
-        3. Construir method_binding (GRANULAR)
-        4. Construir question_context
-        5. Construir signal_requirements
-        6. Construir evidence_assembly
-        7. Construir fusion_specification
-        8. Construir cross_layer_fusion
-        9. Construir human_answer_structure
-        10. Construir traceability
-        11. Construir output_contract
-        12. Construir audit_annotations
-        13. Ensamblar GeneratedContract
-
-        Args:
-            chain: EpistemicChain compuesta
-            classification: ContractClassification para contexto
-            sector: SectorDefinition del sector
-            contract_number:  Número del contrato (1-300)
+        Convierte a diccionario para inclusión en contrato JSON. 
 
         Returns:
-            GeneratedContract completo
+            Diccionario con todos los campos para el contrato
         """
-        logger.debug(
-            f"Assembling contract {contract_number}:  "
-            f"{classification.contract_id} + {sector.sector_id}"
+        base_dict = {
+            "class_name": self.class_name,
+            "method_name":  self.method_name,
+            "mother_file": self.mother_file,
+            "provides":  self.provides,
+            "method_id": self.method_id,
+            "level": self. level,
+            "level_name": self.level_name,
+            "epistemology": self. epistemology,
+            "output_type": self.output_type,
+            "fusion_behavior":  self.fusion_behavior,
+            "fusion_symbol": self.fusion_symbol,
+            "classification_rationale": self.classification_rationale,
+            "confidence_score": self.confidence_score,
+            "contract_affinities":  self.contract_affinities,
+            "parameters": list(self.parameters),
+            "return_type": self.return_type,
+            "is_private": self.is_private,
+            "evidence_requirements": list(self.evidence_requirements),
+            "output_claims": list(self.output_claims),
+            "constraints_and_limits": list(self.constraints_and_limits),
+            "failure_modes": list(self.failure_modes),
+            "interaction_notes": self. interaction_notes,
+            "expansion_source": self.expansion_source,
+            "expansion_timestamp":  self.expansion_timestamp,
+            "description": self.description,
+            "requires": list(self.requires),
+        }
+
+        # Añadir modifies/modulates según nivel
+        if self.level.startswith("N2"):
+            base_dict["modifies"] = list(self.modifies)
+        elif self.level.startswith("N3"):
+            base_dict["veto_conditions"] = self.veto_conditions
+            base_dict["modulates"] = list(self.modifies)
+
+        return base_dict
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# CLASE EXPANDIDORA
+# ══════════════════════════════════════════════════════════════════════════════
+
+
+class MethodExpander:
+    """
+    Expande métodos asignados en unidades semánticas completas.
+
+    RESPONSABILIDADES:
+    1. Transformar MethodAssignment → ExpandedMethodUnit
+    2. Derivar campos semánticos de la clasificación existente
+    3. Generar veto_conditions para métodos N3
+    4. Preservar trazabilidad completa
+
+    PRINCIPIOS:
+    - NUNCA inventa información epistémica
+    - Toda derivación se basa en reglas documentadas
+    - Los campos expandidos son derivaciones lógicas
+
+    USO:
+        expander = MethodExpander()
+        expanded = expander.expand_method(assignment, context)
+    """
+
+    def __init__(self, timestamp: str | None = None):
+        """
+        Inicializa el expander. 
+
+        Args:
+            timestamp:  ISO timestamp para trazabilidad.  Si None, se genera automáticamente. 
+        """
+        self.expansion_timestamp = timestamp or datetime.now(timezone.utc).isoformat()
+        self._expansion_count = 0
+
+        logger.info(f"MethodExpander initialized, version {EXPANDER_VERSION}")
+
+    def expand_method(
+        self,
+        assignment: "MethodAssignment",
+        context: dict[str, Any],
+    ) -> ExpandedMethodUnit:
+        """
+        Expande un método asignado en unidad semántica completa.
+
+        SECUENCIA: 
+        1. Derivar evidence_requirements del nivel
+        2. Derivar output_claims del output_type
+        3. Derivar constraints del nivel y contexto
+        4. Derivar failure_modes del nivel
+        5. Generar interaction_notes del contexto
+        6. Generar description del nivel
+        7. Derivar dependencies del nivel
+        8. Generar veto_conditions si es N3
+        9. Ensamblar ExpandedMethodUnit
+
+        Args: 
+            assignment: MethodAssignment del method_sets_by_question. json
+            context: Contexto de la pregunta con: 
+                - type_code: Código del tipo de contrato (TYPE_A, etc.)
+                - type_name: Nombre del tipo
+                - fusion_strategy: Estrategia de fusión
+                - question_id: ID de la pregunta
+                - phase_id: ID de la fase (opcional)
+
+        Returns:
+            ExpandedMethodUnit con todos los campos poblados
+        """
+        # ══════════════════════════════════════════════════════════════════
+        # DERIVACIONES BASADAS EN CLASIFICACIÓN (NO INVENTA)
+        # ══════════════════════════════════════════════════════════════════
+
+        # 1. Evidence requirements del nivel
+        evidence_reqs = self._derive_evidence_requirements(assignment. level)
+
+        # 2. Output claims del output_type
+        output_claims = self._derive_output_claims(assignment.output_type)
+
+        # 3. Constraints del nivel y contexto
+        constraints = self._derive_constraints(assignment, context)
+
+        # 4. Failure modes del nivel
+        failure_modes = self._derive_failure_modes(assignment.level)
+
+        # 5. Interaction notes del contexto
+        interaction = self._derive_interaction_notes(assignment, context)
+
+        # 6. Description del nivel
+        description = self._derive_description(assignment. level)
+
+        # 7. Dependencies del nivel
+        requires = self._derive_requires(assignment.level)
+        modifies = self._derive_modifies(assignment.level)
+
+        # 8. Veto conditions si es N3
+        veto_conditions = self._derive_veto_conditions(assignment, context)
+
+        # 9. Enriquecer classification_rationale con referencia a la guía
+        enhanced_rationale = (
+            f"{assignment.classification_rationale} (PARTE II, Sección 2.2)"
         )
 
         # ══════════════════════════════════════════════════════════════════
-        # CONSTRUIR CADA SECCIÓN
+        # ENSAMBLAJE
         # ══════════════════════════════════════════════════════════════════
 
-        identity = self._build_identity(chain, classification, sector, contract_number)
-        executor_binding = self._build_executor_binding(chain, sector, contract_number)
-        method_binding = self._build_method_binding(chain)
-        question_context = self._build_question_context(classification, sector)
-        signal_requirements = self._build_signal_requirements(chain, classification)
-        evidence_assembly = self._build_evidence_assembly(chain, classification)
-        fusion_specification = self._build_fusion_specification(chain, classification)
-        cross_layer_fusion = self._build_cross_layer_fusion(chain, classification)
-        human_answer_structure = self._build_human_answer_structure(classification)
-        traceability = self._build_traceability(chain, classification, sector)
-        output_contract = self._build_output_contract(classification)
-        audit_annotations = self._build_audit_annotations(chain, classification, sector)
-
-        # ══════════════════════════════════════════════════════════════════
-        # ENSAMBLAR CONTRATO
-        # ══════════════════════════════════════════════════════════════════
-
-        contract = GeneratedContract(
-            identity=identity,
-            executor_binding=executor_binding,
-            method_binding=method_binding,
-            question_context=question_context,
-            signal_requirements=signal_requirements,
-            evidence_assembly=evidence_assembly,
-            fusion_specification=fusion_specification,
-            cross_layer_fusion=cross_layer_fusion,
-            human_answer_structure=human_answer_structure,
-            traceability=traceability,
-            output_contract=output_contract,
-            audit_annotations=audit_annotations,
-            _contract_number=contract_number,
-            _sector_id=sector.sector_id,
+        expanded = ExpandedMethodUnit(
+            # Identidad
+            method_id=assignment.full_id,
+            class_name=assignment.class_name,
+            method_name=assignment.method_name,
+            mother_file=assignment.mother_file,
+            provides=assignment.provides,
+            # Clasificación epistémica
+            level=assignment.level,
+            level_name=assignment.level_name,
+            epistemology=assignment.epistemology,
+            output_type=assignment.output_type,
+            # Comportamiento de fusión
+            fusion_behavior=assignment.fusion_behavior,
+            fusion_symbol=assignment.fusion_symbol,
+            # Justificación
+            classification_rationale=enhanced_rationale,
+            confidence_score=assignment.confidence_score,
+            contract_affinities=dict(assignment.contract_affinities),
+            # Firma técnica
+            parameters=assignment.parameters,
+            return_type=assignment. return_type,
+            is_private=assignment.is_private,
+            # Campos expandidos
+            evidence_requirements=evidence_reqs,
+            output_claims=output_claims,
+            constraints_and_limits=constraints,
+            failure_modes=failure_modes,
+            interaction_notes=interaction,
+            description=description,
+            # Dependencias
+            requires=requires,
+            modifies=modifies,
+            # Veto conditions
+            veto_conditions=veto_conditions,
+            # Trazabilidad
+            expansion_source="method_sets_by_question.json",
+            expansion_timestamp=self.expansion_timestamp,
         )
 
-        self._assembly_count += 1
+        self._expansion_count += 1
+        logger.debug(f"  Expanded {assignment.full_id} ({assignment.level})")
 
-        logger.debug(
-            f"  Contract {contract_number} assembled:  "
-            f"{contract.total_methods} methods, type {contract.contract_type}"
+        return expanded
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # MÉTODOS PRIVADOS - DERIVACIONES
+    # ══════════════════════════════════════════════════════════════════════════
+
+    def _derive_evidence_requirements(self, level: str) -> tuple[str, ...]:
+        """
+        Deriva evidence requirements del nivel.
+
+        Basado en PARTE II, Sección 2.2 de la guía. 
+
+        Args:
+            level: Nivel epistémico (N1-EMP, N2-INF, N3-AUD)
+
+        Returns:
+            Tupla de requirements
+        """
+        return LEVEL_EVIDENCE_REQUIREMENTS. get(level, ())
+
+    def _derive_output_claims(self, output_type: str) -> tuple[str, ...]:
+        """
+        Deriva output claims del output_type. 
+
+        Basado en PARTE I, Sección 1.3 de la guía.
+
+        Args:
+            output_type:  Tipo de output (FACT, PARAMETER, CONSTRAINT)
+
+        Returns:
+            Tupla de claims
+        """
+        return OUTPUT_TYPE_CLAIMS.get(output_type, ())
+
+    def _derive_constraints(
+        self,
+        assignment: "MethodAssignment",
+        context: dict[str, Any],
+    ) -> tuple[str, ...]:
+        """
+        Deriva constraints de la clasificación y contexto.
+
+        Basado en PARTE II, Sección 2.2 de la guía.
+
+        Args:
+            assignment: MethodAssignment con clasificación
+            context: Contexto de la pregunta
+
+        Returns:
+            Tupla de constraints
+        """
+        constraints:  list[str] = []
+
+        # Constraints base del nivel
+        base_constraints = LEVEL_BASE_CONSTRAINTS.get(assignment. level, ())
+        constraints. extend(base_constraints)
+
+        # Constraint de confianza baja
+        if assignment.confidence_score < 0.7:
+            constraints.append("low_confidence_method")
+
+        return tuple(constraints)
+
+    def _derive_failure_modes(self, level: str) -> tuple[str, ...]:
+        """
+        Deriva failure modes del nivel. 
+
+        Basado en PARTE II, Sección 2.2 de la guía.
+
+        Args:
+            level: Nivel epistémico
+
+        Returns:
+            Tupla de failure modes
+        """
+        return LEVEL_FAILURE_MODES.get(level, ())
+
+    def _derive_interaction_notes(
+        self,
+        assignment: "MethodAssignment",
+        context: dict[str, Any],
+    ) -> str:
+        """
+        Deriva notas de interacción del contexto.
+
+        Args:
+            assignment: MethodAssignment
+            context: Contexto de la pregunta
+
+        Returns:
+            String con notas de interacción
+        """
+        type_code = context.get("type_code", "UNKNOWN")
+        strategy = context.get("fusion_strategy", "UNKNOWN")
+
+        return (
+            f"Method operates within {type_code} contract.  "
+            f"Fusion strategy: {strategy}. "
+            f"Level {assignment.level} provides {assignment.output_type} output."
         )
 
-        return contract
-
-    # ══════════════════════════════════════════════════════════════════════════
-    # BUILDERS - IDENTITY
-    # ══════════════════════════════════════════════════════════════════════════
-
-    def _build_identity(
-        self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-        sector: "SectorDefinition",
-        contract_number: int,
-    ) -> dict[str, Any]:
+    def _derive_description(self, level:  str) -> str:
         """
-        Construye sección identity.
+        Deriva descripción del nivel.
 
-        PARA 300 CONTRATOS:
-        - contract_id: Q001_PA01, Q001_PA02, ..., Q030_PA10
-        - sector_id: PA01, PA02, ..., PA10
-        - sector_name: Nombre canónico del sector
+        Basado en PARTE II de la guía.
+
+        Args:
+            level: Nivel epistémico
+
+        Returns:
+            String con descripción
         """
-        q_id = chain.question_id  # e.g., "D1_Q1"
-        base_contract_id = classification.contract_id  # e. g., "Q001"
+        return LEVEL_PHASE_DESCRIPTIONS.get(level, "")
 
-        # Contract ID único:  base + sector
-        unique_contract_id = f"{base_contract_id}_{sector.sector_id}"
-
-        # Extraer dimension_id
-        dimension_id = self._extract_dimension_id(q_id)
-
-        return {
-            # Identificadores únicos
-            "contract_id":  unique_contract_id,
-            "contract_number": contract_number,
-            "base_contract_id": base_contract_id,
-            "base_slot":  q_id. replace("_", "-"),  # D1_Q1 → D1-Q1
-
-            # Sector
-            "sector_id": sector.sector_id,
-            "sector_name": sector.canonical_name,
-
-            # Dimensión
-            "dimension_id": dimension_id,
-
-            # Tipo de contrato
-            "contract_type": classification.tipo_contrato["codigo"],
-            "contract_type_name":  classification.tipo_contrato["nombre"],
-            "contract_type_focus": classification.tipo_contrato["foco"],
-
-            # Versión y metadata
-            "contract_version": "4.0.0-epistemological",
-            "created_at": self.generation_timestamp,
-            "generator_version":  self.generator_version,
-            "specification_source": "operationalization_guide.json",
-        }
-
-    def _extract_dimension_id(self, question_id: str) -> str:
+    def _derive_requires(self, level: str) -> tuple[str, ...]: 
         """
-        Extrae dimension_id de question_id.
+        Deriva dependencias de entrada del nivel.
 
-        Input: "D1_Q1", "D2_Q3", "D6_Q5"
-        Output: "DIM01", "DIM02", "DIM06"
+        Args:
+            level: Nivel epistémico
+
+        Returns:
+            Tupla de dependencias
         """
-        pattern = r'^D(\d+)_Q\d+$'
-        match = re.match(pattern, question_id)
+        return LEVEL_DEPENDENCIES.get(level, ())
 
-        if not match:
-            raise ValueError(
-                f"Invalid question_id format: '{question_id}'\n"
-                f"Expected format: 'D<num>_Q<num>' (e.g., 'D1_Q1')"
-            )
-
-        dimension_num = int(match.group(1))
-
-        if not 1 <= dimension_num <= 6:
-            raise ValueError(
-                f"Dimension number out of range: {dimension_num}\n"
-                f"Expected:  1-6 (from question_id '{question_id}')"
-            )
-
-        return f"DIM{dimension_num: 02d}"
-
-    # ══════════════════════════════════════════════════════════════════════════
-    # BUILDERS - EXECUTOR BINDING
-    # ══════════════════════════════════════════════════════════════════════════
-
-    def _build_executor_binding(
-        self,
-        chain: "EpistemicChain",
-        sector: "SectorDefinition",
-        contract_number: int,
-    ) -> dict[str, Any]:
-        """Construye sección executor_binding."""
-        q_id = chain.question_id
-
-        return {
-            "executor_class": f"{q_id}_{sector.sector_id}_Executor",
-            "executor_module": "farfan_pipeline. phases.Phase_two. executors",
-            "contract_number": contract_number,
-        }
-
-    # ══════════════════════════════════════════════════════════════════════════
-    # BUILDERS - METHOD BINDING (LA MÁS GRANULAR)
-    # ══════════════════════════════════════════════════════════════════════════
-
-    def _build_method_binding(self, chain: "EpistemicChain") -> dict[str, Any]:
+    def _derive_modifies(self, level: str) -> tuple[str, ...]:
         """
-        Construye sección method_binding.
+        Deriva lo que el método modifica o modula.
 
-        ESTA ES LA SECCIÓN MÁS GRANULAR. 
-        Cada método expandido se vuelca íntegramente.
-        NO hay compresión ni resumen. 
+        Para N2: modifies (edge_weights, confidence_scores)
+        Para N3: modulates (raw_facts. confidence, inferences.confidence)
+
+        Args:
+            level: Nivel epistémico
+
+        Returns:
+            Tupla de targets modificados
         """
-        return {
-            "orchestration_mode": "epistemological_pipeline",
-            "contract_type": chain.contract_type_code,
-            "method_count": chain.total_methods,
-            "execution_phases": {
-                "phase_A_construction": self._build_phase_section(
-                    methods=chain.phase_a_chain,
-                    metadata=chain.phase_a_metadata,
-                ),
-                "phase_B_computation": self._build_phase_section(
-                    methods=chain. phase_b_chain,
-                    metadata=chain.phase_b_metadata,
-                ),
-                "phase_C_litigation": self._build_phase_section(
-                    methods=chain. phase_c_chain,
-                    metadata=chain.phase_c_metadata,
-                ),
-            },
-            "efficiency_score": chain.efficiency_score,
-            "mathematical_evidence": chain.mathematical_evidence,
-            "doctoral_justification": chain.doctoral_justification,
-        }
+        return LEVEL_MODULATES.get(level, ())
 
-    def _build_phase_section(
+    def _derive_veto_conditions(
         self,
-        methods: tuple["ExpandedMethodUnit", ...],
-        metadata: Any,  # PhaseMetadata
-    ) -> dict[str, Any]:
+        assignment: "MethodAssignment",
+        context: dict[str, Any],
+    ) -> dict[str, dict[str, Any]]:
         """
-        Construye sección de una fase con todos los métodos expandidos.
+        Deriva veto conditions para métodos N3.
 
-        VERBOSIDAD TOTAL:  Cada campo de cada método se incluye. 
+        Basado en PARTE V de la guía (blocking_propagation_rules).
+
+        Solo aplica a métodos N3-AUD.  Retorna dict vacío para otros niveles.
+
+        Args:
+            assignment: MethodAssignment
+            context: Contexto con type_code
+
+        Returns:
+            Diccionario de veto conditions
         """
-        section = {
-            "description": self._get_phase_description(metadata. level_prefix),
-            "level":  metadata.level_prefix,
-            "level_name": metadata.level_name,
-            "epistemology": metadata.epistemology,
-            "methods": [m.to_contract_dict() for m in methods],
-            "dependencies": list(metadata.dependencies),
-            "output_target": metadata.output_target,
-        }
+        # Solo N3 tiene veto conditions
+        if not assignment.level.startswith("N3"):
+            return {}
 
-        # Añadir campos específicos para N3
-        if metadata.level_prefix == "N3":
-            section["asymmetry_principle"] = (
-                "N3 can invalidate N1/N2 outputs; "
-                "N1 and N2 CANNOT invalidate N3"
-            )
-            section["fusion_mode"] = "modulation"
+        type_code = context.get("type_code", "TYPE_A")
+        veto_conditions:  dict[str, dict[str, Any]] = {}
 
-        return section
+        # Obtener veto conditions específicas del tipo
+        type_specific = DEFAULT_VETO_CONDITIONS.get(type_code, {})
 
-    def _get_phase_description(self, level:  str) -> str:
-        """Obtiene descripción de fase por nivel."""
-        descriptions = {
-            "N1":  "Empirical observation layer - direct extraction without interpretation",
-            "N2": "Inferential analysis layer - transformation into analytical constructs",
-            "N3":  "Audit layer - attempt to 'break' results.  Acts as VETO GATE.",
-        }
-        return descriptions.get(level, "")
+        # Seleccionar veto conditions relevantes basado en el nombre del método
+        method_name_lower = assignment.method_name.lower()
 
-    # ══════════════════════════════════════════════════════════════════════════
-    # BUILDERS - QUESTION CONTEXT
-    # ══════════════════════════════════════════════════════════════════════════
+        # Heurísticas para seleccionar veto conditions
+        if "coherence" in method_name_lower or "semantic" in method_name_lower: 
+            if "low_coherence" in type_specific:
+                veto_conditions["low_coherence"] = type_specific["low_coherence"]
+            if "semantic_contradiction" in type_specific:
+                veto_conditions["semantic_contradiction"] = type_specific["semantic_contradiction"]
 
-    def _build_question_context(
-        self,
-        classification: "ContractClassification",
-        sector: "SectorDefinition",
-    ) -> dict[str, Any]:
-        """Construye sección question_context."""
-        return {
-            "monolith_ref": classification.contract_id,
-            "pregunta_completa": classification.pregunta,
-            "sector_id": sector.sector_id,
-            "sector_name": sector.canonical_name,
-            "overrides": None,
-            "failure_contract":  {
-                "abort_if":  [
-                    "missing_required_element",
-                    "incomplete_text",
-                    "no_quantitative_data",
-                ],
-                "emit_code": (
-                    f"ABORT-{classification.dimension_key. replace('_', '-')}-"
-                    f"{sector.sector_id}-REQ"
-                ),
-            },
-        }
+        if "statistical" in method_name_lower or "significance" in method_name_lower: 
+            if "statistical_significance_failed" in type_specific:
+                veto_conditions["statistical_significance_failed"] = type_specific["statistical_significance_failed"]
 
-    # ══════════════════════════════════════════════════════════════════════════
-    # BUILDERS - SIGNAL REQUIREMENTS
-    # ══════════════════════════════════════════════════════════════════════════
+        if "cycle" in method_name_lower or "acyclic" in method_name_lower:
+            if "cycle_detected" in type_specific: 
+                veto_conditions["cycle_detected"] = type_specific["cycle_detected"]
 
-    def _build_signal_requirements(
-        self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-    ) -> dict[str, Any]: 
-        """Construye sección signal_requirements."""
-        return {
-            "derivation_source": "expected_elements",
-            "derivation_rules": {
-                "mandatory": "expected_elements[required=true]. type → detection_{type}",
-                "optional": "expected_elements[required=false]. type → detection_{type}",
-            },
-            "signal_aggregation": "weighted_mean",
-            "minimum_signal_threshold": 0.5,
-        }
+        if "budget" in method_name_lower or "sufficiency" in method_name_lower: 
+            if "budget_gap_critical" in type_specific:
+                veto_conditions["budget_gap_critical"] = type_specific["budget_gap_critical"]
+            if "budget_gap_significant" in type_specific:
+                veto_conditions["budget_gap_significant"] = type_specific["budget_gap_significant"]
 
-    # ══════════════════════════════════════════════════════════════════════════
-    # BUILDERS - EVIDENCE ASSEMBLY
-    # ══════════════════════════════════════════════════════════════════════════
+        if "logical" in method_name_lower or "contradiction" in method_name_lower: 
+            if "logical_contradiction" in type_specific:
+                veto_conditions["logical_contradiction"] = type_specific["logical_contradiction"]
 
-    def _build_evidence_assembly(
-        self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-    ) -> dict[str, Any]: 
-        """
-        Construye sección evidence_assembly según operationalization_guide.json.
+        if "sequence" in method_name_lower: 
+            if "sequence_violation" in type_specific:
+                veto_conditions["sequence_violation"] = type_specific["sequence_violation"]
 
-        Las reglas de ensamblaje dependen del TYPE. 
-        """
-        type_code = classification.tipo_contrato["codigo"]
+        # Si no se encontraron veto conditions específicas, añadir la genérica
+        if not veto_conditions:
+            veto_conditions["critical_failure_veto"] = GENERIC_N3_VETO_CONDITIONS["critical_failure_veto"]
 
-        # Sistema de tipos (común para todos)
-        type_system = {
-            "FACT": {
-                "origin_level": "N1",
-                "fusion_operation": "graph_node_addition",
-                "merge_behavior": "additive",
-                "symbol":  "⊕",
-                "description": "Se SUMA al grafo como nodo",
-            },
-            "PARAMETER": {
-                "origin_level": "N2",
-                "fusion_operation": "edge_weight_modification",
-                "merge_behavior":  "multiplicative",
-                "symbol": "⊗",
-                "description": "MODIFICA pesos de aristas del grafo",
-            },
-            "CONSTRAINT": {
-                "origin_level": "N3",
-                "fusion_operation": "branch_filtering",
-                "merge_behavior":  "gate",
-                "symbol": "⊘",
-                "description": "FILTRA/BLOQUEA ramas si validación falla",
-            },
-            "NARRATIVE": {
-                "origin_level": "N4",
-                "fusion_operation": "synthesis",
-                "merge_behavior": "terminal",
-                "symbol": "⊙",
-                "description": "CONSUME grafo para texto final",
-            },
-        }
-
-        # Recolectar provides de cada fase
-        n1_provides = [m.provides for m in chain.phase_a_chain]
-        n2_provides = [m.provides for m in chain.phase_b_chain]
-        n3_provides = [m.provides for m in chain.phase_c_chain]
-
-        # Construir reglas según TYPE
-        assembly_rules = self._build_assembly_rules(
-            type_code=type_code,
-            n1_provides=n1_provides,
-            n2_provides=n2_provides,
-            n3_provides=n3_provides,
-            strategies=classification.estrategias_fusion,
-        )
-
-        return {
-            "engine":  "EVIDENCE_NEXUS",
-            "module": "farfan_pipeline. phases.Phase_two.evidence_nexus",
-            "class_name": "EvidenceNexus",
-            "method_name": "assemble",
-            "type_system": type_system,
-            "assembly_rules": assembly_rules,
-        }
-
-    def _build_assembly_rules(
-        self,
-        type_code: str,
-        n1_provides: list[str],
-        n2_provides: list[str],
-        n3_provides: list[str],
-        strategies: dict[str, str],
-    ) -> list[dict[str, Any]]: 
-        """
-        Construye reglas de ensamblaje específicas por TYPE. 
-
-        SEGÚN operationalization_guide.json:
-        - TYPE_A: semantic_corroboration → dempster_shafer → veto_gate
-        - TYPE_B: concat → bayesian_update → veto_gate
-        - TYPE_C: graph_construction → topological_overlay → veto_gate
-        - TYPE_D: concat → weighted_mean → financial_coherence_audit
-        - TYPE_E: concat → weighted_mean → logical_consistency_validation
-        """
-        type_strats = TYPE_STRATEGIES.get(type_code, TYPE_STRATEGIES["TYPE_A"])
-
-        # R1: Extracción empírica (N1)
-        r1_target = self._get_r1_target(type_code)
-        r1 = {
-            "rule_id": "R1_empirical_extraction",
-            "rule_type": "empirical_basis",
-            "target": r1_target,
-            "sources": n1_provides,
-            "merge_strategy": type_strats["N1"],
-            "output_type": "FACT",
-            "confidence_propagation": "preserve_individual",
-            "description": "Extract raw facts from document without interpretation",
-        }
-
-        if type_code == "TYPE_A":
-            r1["deduplication_key"] = "element_id"
-
-        # R2: Procesamiento inferencial (N2)
-        r2_target = self._get_r2_target(type_code)
-        r2 = {
-            "rule_id": "R2_inferential_processing",
-            "rule_type": self._get_r2_rule_type(type_code),
-            "target": r2_target,
-            "sources": n2_provides,
-            "input_dependencies": [r1_target],
-            "merge_strategy": type_strats["N2"],
-            "output_type":  "PARAMETER",
-            "confidence_propagation": self._get_r2_confidence_propagation(type_code),
-            "description": self._get_r2_description(type_code),
-        }
-
-        # Añadir operación específica
-        r2_operation = self._get_r2_operation(type_code)
-        if r2_operation:
-            r2["operation"] = r2_operation
-
-        # R3: Auditoría (N3)
-        r3_target = self._get_r3_target(type_code)
-        r3 = {
-            "rule_id": "R3_audit_gate",
-            "rule_type":  self._get_r3_rule_type(type_code),
-            "target": r3_target,
-            "sources": n3_provides,
-            "input_dependencies": [r1_target, r2_target],
-            "merge_strategy": "veto_gate",
-            "output_type": "CONSTRAINT",
-            "gate_logic": TYPE_GATE_LOGIC.get(type_code, {}),
-            "asymmetry_declaration": (
-                "N3 can invalidate N1/N2 outputs; "
-                "N1/N2 CANNOT invalidate N3"
-            ),
-            "description": "Validate and potentially veto lower-level findings",
-        }
-
-        # R4: Síntesis (N4)
-        r4 = {
-            "rule_id": "R4_narrative_synthesis",
-            "rule_type": "synthesis",
-            "target": "human_answer",
-            "sources": [],
-            "input_dependencies": [r3_target, r2_target, "audit_results"],
-            "merge_strategy":  "carver_doctoral_synthesis",
-            "output_type":  "NARRATIVE",
-            "external_handler": "DoctoralCarverSynthesizer",
-            "description": "Synthesize validated evidence into human-readable answer",
-        }
-
-        return [r1, r2, r3, r4]
-
-    def _get_r1_target(self, type_code: str) -> str:
-        """Target de R1 según TYPE."""
-        targets = {
-            "TYPE_A": "raw_facts",
-            "TYPE_B": "prior_distribution",
-            "TYPE_C":  "causal_graph",
-            "TYPE_D":  "financial_facts",
-            "TYPE_E":  "policy_statements",
-        }
-        return targets.get(type_code, "raw_facts")
-
-    def _get_r2_target(self, type_code: str) -> str:
-        """Target de R2 según TYPE."""
-        targets = {
-            "TYPE_A": "triangulated_facts",
-            "TYPE_B": "posterior_belief",
-            "TYPE_C":  "weighted_causal_graph",
-            "TYPE_D": "sufficiency_scores",
-            "TYPE_E":  "coherence_metrics",
-        }
-        return targets.get(type_code, "inferences")
-
-    def _get_r3_target(self, type_code: str) -> str:
-        """Target de R3 según TYPE."""
-        targets = {
-            "TYPE_A": "validated_facts",
-            "TYPE_B": "validated_posterior",
-            "TYPE_C": "validated_graph",
-            "TYPE_D":  "validated_financials",
-            "TYPE_E": "validated_statements",
-        }
-        return targets.get(type_code, "validated_output")
-
-    def _get_r2_rule_type(self, type_code: str) -> str:
-        """Rule type de R2 según TYPE."""
-        rule_types = {
-            "TYPE_A": "corroboration",
-            "TYPE_B": "probabilistic_update",
-            "TYPE_C":  "edge_inference",
-            "TYPE_D":  "computation",
-            "TYPE_E": "computation",
-        }
-        return rule_types.get(type_code, "computation")
-
-    def _get_r3_rule_type(self, type_code: str) -> str:
-        """Rule type de R3 según TYPE."""
-        rule_types = {
-            "TYPE_A": "robustness_gate",
-            "TYPE_B":  "robustness_gate",
-            "TYPE_C": "validity_check",
-            "TYPE_D":  "financial_coherence_audit",
-            "TYPE_E": "logical_consistency_validation",
-        }
-        return rule_types.get(type_code, "robustness_gate")
-
-    def _get_r2_confidence_propagation(self, type_code: str) -> str:
-        """Confidence propagation de R2 según TYPE."""
-        propagations = {
-            "TYPE_A": "corroborative_boost",
-            "TYPE_B":  "bayesian_update",
-            "TYPE_C": "topological_merge",
-            "TYPE_D":  "weighted_average",
-            "TYPE_E":  "weighted_average",
-        }
-        return propagations.get(type_code, "preserve_individual")
-
-    def _get_r2_description(self, type_code: str) -> str:
-        """Description de R2 según TYPE."""
-        descriptions = {
-            "TYPE_A": "Triangulate and corroborate facts from multiple sources",
-            "TYPE_B": "Update prior beliefs with evidence likelihood",
-            "TYPE_C":  "Infer edge weights and merge causal paths",
-            "TYPE_D":  "Compute sufficiency scores from financial data",
-            "TYPE_E": "Compute coherence metrics from policy statements",
-        }
-        return descriptions.get(type_code, "Process inferential analysis")
-
-    def _get_r2_operation(self, type_code: str) -> str | None:
-        """Operation de R2 según TYPE."""
-        operations = {
-            "TYPE_A": (
-                "if TextMining AND IndustrialPolicy extract same datum → "
-                "merge nodes, increase confidence"
-            ),
-            "TYPE_B": "posterior = update_belief(prior, likelihood_from_evidence)",
-            "TYPE_C": (
-                "if TeoriaCambio path AND CausalExtractor path → "
-                "check for cycles, merge edges"
-            ),
-        }
-        return operations.get(type_code)
-
-    # ══════════════════════════════════════════════════════════════════════════
-    # BUILDERS - FUSION SPECIFICATION
-    # ══════════════════════════════════════════════════════════════════════════
-
-    def _build_fusion_specification(
-        self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-    ) -> dict[str, Any]:
-        """Construye sección fusion_specification."""
-        type_code = classification.tipo_contrato["codigo"]
-        type_strats = TYPE_STRATEGIES.get(type_code, TYPE_STRATEGIES["TYPE_A"])
-
-        return {
-            "contract_type": type_code,
-            "primary_strategy": type_strats["primary"],
-            "level_strategies": {
-                "N1_fact_fusion": {
-                    "strategy": type_strats["N1"],
-                    "behavior": "additive",
-                    "conflict_resolution": "corroborative_stacking",
-                    "formula": "if same_fact detected by multiple methods → confidence = 1 - ∏(1 - conf_i)",
-                },
-                "N2_parameter_fusion": {
-                    "strategy": type_strats["N2"],
-                    "behavior": "multiplicative",
-                    "conflict_resolution": "weighted_voting",
-                    "affects":  ["N1_facts. confidence", "N1_facts.edge_weights"],
-                },
-                "N3_constraint_fusion": {
-                    "strategy": "veto_gate",
-                    "behavior": "gate",
-                    "asymmetry_principle": "audit_dominates",
-                    "propagation":  {
-                        "upstream": "confidence_backpropagation",
-                        "downstream": "branch_blocking",
-                    },
-                },
-            },
-            "fusion_pipeline": {
-                "step_1": "Execute all N1 methods → collect FACTS",
-                "step_2":  "Execute all N2 methods → compute PARAMETERS",
-                "step_3": "Execute all N3 methods → apply CONSTRAINTS",
-                "step_4": "Synthesize validated graph → NARRATIVE",
-            },
-        }
-
-    # ══════════════════════════════════════════════════════════════════════════
-    # BUILDERS - CROSS LAYER FUSION
-    # ══════════════════════════════════════════════════════════════════════════
-
-    def _build_cross_layer_fusion(
-        self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-    ) -> dict[str, Any]:
-        """Construye sección cross_layer_fusion."""
-        type_code = classification.tipo_contrato["codigo"]
-
-        # Base template
-        result = dict(CROSS_LAYER_FUSION_TEMPLATE)
-
-        # Añadir blocking_propagation_rules específicas del TYPE
-        result["blocking_propagation_rules"] = self._get_blocking_rules(type_code)
-
-        return result
-
-    def _get_blocking_rules(self, type_code: str) -> dict[str, dict[str, Any]]:
-        """Obtiene blocking rules específicas del TYPE."""
-        base_rules = {
-            "matrix_not_positive_definite": {
-                "triggered_by": "IndustrialGradeValidator",
-                "action": "block_branch",
-                "scope": "affected_subgraph",
-                "propagation": "upstream_and_downstream",
-            },
-        }
-
-        type_specific = {
-            "TYPE_A":  {
-                "semantic_contradiction": {
-                    "triggered_by":  "SemanticValidator",
-                    "action": "block_branch",
-                    "scope": "contradicting_nodes",
-                    "propagation":  "both",
-                },
-            },
-            "TYPE_B":  {
-                "statistical_significance_failed": {
-                    "triggered_by": "PolicyContradictionDetector._statistical_significance_test",
-                    "action": "block_branch",
-                    "scope": "source_facts",
-                    "propagation":  "downstream_only",
-                },
-            },
-            "TYPE_C":  {
-                "cycle_detected": {
-                    "triggered_by": "AdvancedDAGValidator._is_acyclic",
-                    "action": "invalidate_graph",
-                    "scope": "entire_causal_graph",
-                    "propagation":  "total",
-                },
-            },
-            "TYPE_D": {
-                "budget_insufficiency": {
-                    "triggered_by": "FinancialAuditor._calculate_sufficiency",
-                    "action": "flag_insufficiency",
-                    "scope":  "affected_goals",
-                    "propagation":  "downstream_only",
-                },
-            },
-            "TYPE_E": {
-                "logical_contradiction": {
-                    "triggered_by": "PolicyContradictionDetector._detect_logical_incompatibilities",
-                    "action": "block_branch",
-                    "scope": "contradicting_nodes",
-                    "propagation": "both",
-                },
-            },
-        }
-
-        result = dict(base_rules)
-        result.update(type_specific. get(type_code, {}))
-        return result
-
-    # ══════════════════════════════════════════════════════════════════════════
-    # BUILDERS - HUMAN ANSWER STRUCTURE
-    # ══════════════════════════════════════════════════════════════════════════
-
-    def _build_human_answer_structure(
-        self,
-        classification: "ContractClassification",
-    ) -> dict[str, Any]:
-        """Construye sección human_answer_structure según PARTE VI."""
-        return {
-            "sections": {
-                "S1_VEREDICTO": {
-                    "role": "SYNTHESIS",
-                    "content": [
-                        "respuesta_directa",
-                        "confianza_global",
-                        "caveats_principales",
-                    ],
-                    "max_length": 200,
-                },
-                "S2_EVIDENCIA_DURA": {
-                    "role":  "EMPIRICAL_N1",
-                    "content":  [
-                        "hallazgos_factuales",
-                        "fuentes_citadas",
-                        "datos_cuantitativos",
-                    ],
-                    "source_levels": ["N1-EMP"],
-                },
-                "S3_ANALISIS_ROBUSTEZ": {
-                    "role": "AUDIT_N3",
-                    "content": [
-                        "validaciones_pasadas",
-                        "validaciones_fallidas",
-                        "modulaciones_aplicadas",
-                    ],
-                    "source_levels": ["N3-AUD"],
-                },
-                "S4_PUNTOS_CIEGOS": {
-                    "role": "GAPS",
-                    "content": [
-                        "informacion_faltante",
-                        "supuestos_no_verificables",
-                        "limitaciones_metodologicas",
-                    ],
-                },
-            },
-            "confidence_interpretation": {
-                "high": {"range": [0.8, 1.0], "label": "Alta confianza"},
-                "medium":  {"range": [0.5, 0.8], "label":  "Confianza moderada"},
-                "low": {"range": [0.0, 0.5], "label": "Baja confianza"},
-            },
-            "roles_argumentativos": list(classification.roles_argumentativos),
-        }
-
-    # ══════════════════════════════════════════════════════════════════════════
-    # BUILDERS - TRACEABILITY
-    # ══════════════════════════════════════════════════════════════════════════
-
-    def _build_traceability(
-        self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-        sector: "SectorDefinition",
-    ) -> dict[str, Any]:
-        """Construye sección traceability."""
-        return {
-            "input_files": {
-                "classified_methods": {
-                    "file":  "classified_methods.json",
-                    "hash": self. registry.classified_methods_hash,
-                },
-                "contratos_clasificados": {
-                    "file": "contratos_clasificados.json",
-                    "hash": self.registry.contratos_clasificados_hash,
-                },
-                "method_sets": {
-                    "file":  "method_sets_by_question.json",
-                    "hash": self.registry.method_sets_hash,
-                },
-            },
-            "generation_metadata": {
-                "timestamp": self.generation_timestamp,
-                "generator_version": self.generator_version,
-                "assembler_version":  ASSEMBLER_VERSION,
-                "composition_timestamp": chain.composition_timestamp,
-            },
-            "contract_lineage": {
-                "base_question": classification.dimension_key,
-                "base_contract_id": classification.contract_id,
-                "sector_id": sector.sector_id,
-                "contract_type": classification.tipo_contrato["codigo"],
-            },
-            "method_count": {
-                "N1": chain.n1_count,
-                "N2": chain.n2_count,
-                "N3": chain.n3_count,
-                "total": chain.total_methods,
-            },
-        }
-
-    # ══════════════════════════════════════════════════════════════════════════
-    # BUILDERS - OUTPUT CONTRACT
-    # ══════════════════════════════════════════════════════════════════════════
-
-    def _build_output_contract(
-        self,
-        classification: "ContractClassification",
-    ) -> dict[str, Any]:
-        """Construye sección output_contract (schema de salida)."""
-        return {
-            "schema_version": "4.0.0",
-            "required_fields": [
-                "confidence_score",
-                "human_answer",
-                "evidence_graph",
-                "audit_trail",
-            ],
-            "confidence_bounds": {"min": 0.0, "max": 1.0},
-            "human_answer_format": "structured_markdown",
-            "evidence_graph_format": "networkx_json",
-        }
-
-    # ══════════════════════════════════════════════════════════════════════════
-    # BUILDERS - AUDIT ANNOTATIONS
-    # ══════════════════════════════════════════════════════════════════════════
-
-    def _build_audit_annotations(
-        self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-        sector: "SectorDefinition",
-    ) -> dict[str, Any]: 
-        """Construye sección audit_annotations."""
-        # Detectar métodos de baja confianza
-        low_confidence_methods = [
-            m. method_id
-            for m in chain.full_chain_ordered
-            if m.confidence_score < 0.7
-        ]
-
-        # Detectar métodos N3 con veto power
-        veto_capable_methods = [
-            m. method_id
-            for m in chain.phase_c_chain
-            if m.has_veto_power
-        ]
-
-        return {
-            "generation_audit":  {
-                "timestamp": self. generation_timestamp,
-                "generator_version": self.generator_version,
-                "input_hashes": {
-                    "methods": self.registry.classified_methods_hash,
-                    "contracts": self.registry.contratos_clasificados_hash,
-                    "assignments": self.registry.method_sets_hash,
-                },
-            },
-            "quality_flags": {
-                "low_confidence_methods": low_confidence_methods,
-                "low_confidence_count": len(low_confidence_methods),
-                "veto_capable_methods": veto_capable_methods,
-                "veto_capable_count": len(veto_capable_methods),
-            },
-            "validation_status": {
-                "phase_level_coherence": "PASSED",
-                "method_expansion":  "COMPLETED",
-                "chain_composition": "COMPLETED",
-                "contract_assembly": "COMPLETED",
-            },
-            "sector_specific":  {
-                "sector_id":  sector.sector_id,
-                "sector_name": sector.canonical_name,
-            },
-        }
+        return veto_conditions
 
     # ══════════════════════════════════════════════════════════════════════════
     # PROPIEDADES PÚBLICAS
     # ══════════════════════════════════════════════════════════════════════════
 
     @property
-    def assembly_count(self) -> int:
-        """Número de contratos ensamblados por esta instancia."""
-        return self._assembly_count
+    def expansion_count(self) -> int:
+        """Número de métodos expandidos por esta instancia."""
+        return self._expansion_count
 
     @property
     def version(self) -> str:
-        """Versión del assembler."""
-        return ASSEMBLER_VERSION
+        """Versión del expander."""
+        return EXPANDER_VERSION
