@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 # Imports de módulos internos
-from .input_registry import InputLoader, InputRegistry
+from .input_registry import InputLoader, InputRegistry, SectorDefinition
 from .method_expander import MethodExpander
 from .chain_composer import ChainComposer
 from .contract_assembler import ContractAssembler, GeneratedContract
@@ -108,28 +108,41 @@ class ContractGenerator:
         contracts: list[GeneratedContract] = []
         reports: list[ValidationReport] = []
 
-        # Obtener orden determinista de preguntas
+        # Obtener orden determinista de preguntas y sectores
         question_ids = sorted(self.registry.method_sets_by_question.keys())
+        sectors = self.registry.sectors_ordered  # Ya está ordenado PA01-PA10
 
-        for i, question_id in enumerate(question_ids, 1):
-            logger.info(f"  [{i:02d}/30] Procesando {question_id}...")
+        # Contador global de contratos (1-300)
+        contract_number = 0
 
-            try:
-                contract, report = self._generate_single_contract(question_id)
-                contracts.append(contract)
-                reports.append(report)
+        # BUCLE ANIDADO: 30 preguntas × 10 sectores = 300 contratos
+        for q_idx, question_id in enumerate(question_ids, 1):
+            for s_idx, sector in enumerate(sectors, 1):
+                contract_number += 1
 
-                status = "✓" if report.is_valid else "✗"
                 logger.info(
-                    f"    {status} {report.contract_id}: "
-                    f"{report.passed_checks}/{report.total_checks} checks passed, "
-                    f"{contract.method_binding.get('method_count')} methods"
+                    f"  [{contract_number:03d}/300] Procesando {question_id} × {sector.sector_id} "
+                    f"(Q{q_idx}/30, S{s_idx}/10)..."
                 )
 
-            except Exception as e:
-                logger.error(f"    ✗ FALLO en {question_id}: {e}")
-                if self.strict_mode:
-                    raise
+                try:
+                    contract, report = self._generate_single_contract(
+                        question_id, sector, contract_number
+                    )
+                    contracts.append(contract)
+                    reports.append(report)
+
+                    status = "✓" if report.is_valid else "✗"
+                    logger.info(
+                        f"    {status} {report.contract_id}: "
+                        f"{report.passed_checks}/{report.total_checks} checks passed, "
+                        f"{contract.method_binding.get('method_count')} methods"
+                    )
+
+                except Exception as e:
+                    logger.error(f"    ✗ FALLO en {question_id} × {sector.sector_id}: {e}")
+                    if self.strict_mode:
+                        raise
 
         # Paso 3: Emitir contratos
         logger.info("Paso 3: Emitiendo contratos...")
@@ -189,7 +202,7 @@ class ContractGenerator:
         self.emitter = JSONEmitter(self.output_path)
 
     def _generate_single_contract(
-        self, question_id: str
+        self, question_id: str, sector: "SectorDefinition", contract_number: int
     ) -> tuple[GeneratedContract, ValidationReport]:
         """
         Genera un único contrato.
@@ -198,8 +211,13 @@ class ContractGenerator:
         1. Obtener method_set del registry
         2. Obtener classification del registry
         3. Componer cadena epistémica
-        4. Ensamblar contrato
+        4. Ensamblar contrato con sector específico
         5. Validar contrato
+
+        Args:
+            question_id: ID de la pregunta (D1_Q1, etc.)
+            sector: Definición del sector de política pública
+            contract_number: Número de contrato (1-300)
         """
         # Obtener datos del registry
         method_set = self.registry.method_sets_by_question[question_id]
@@ -208,8 +226,8 @@ class ContractGenerator:
         # Componer cadena epistémica (Layer 1 + Layer 2)
         chain = self.composer.compose_chain(method_set, classification)
 
-        # Ensamblar contrato (Layer 3)
-        contract = self.assembler.assemble_contract(chain, classification)
+        # Ensamblar contrato (Layer 3) con sector y número
+        contract = self.assembler.assemble_contract(chain, classification, sector, contract_number)
 
         # Validar contrato (Layer 4)
         report = self.validator.validate_contract(contract)

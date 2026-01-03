@@ -85,6 +85,20 @@ class MethodAssignment:
 
 
 @dataclass(frozen=True)
+class SectorDefinition:
+    """
+    Definición de un sector de política pública.
+    Proviene de sectors.json.
+    INMUTABLE.
+    """
+    sector_id: str  # PA01, PA02, ..., PA10
+    canonical_name: str  # Educación, Salud, etc.
+    description: str
+    keywords: tuple[str, ...]
+    regex_patterns: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class QuestionMethodSet:
     """
     Conjunto de métodos asignados a una pregunta.
@@ -116,6 +130,7 @@ class InputRegistry:
     classified_methods_hash: str
     contratos_clasificados_hash: str
     method_sets_hash: str
+    sectors_hash: str
 
     # Índices de métodos
     methods_by_full_id: dict[str, MethodDefinition]
@@ -129,9 +144,14 @@ class InputRegistry:
     # Asignaciones autoritativas
     method_sets_by_question: dict[str, QuestionMethodSet]
 
+    # Sectores de política pública
+    sectors_by_id: dict[str, SectorDefinition]
+    sectors_ordered: tuple[SectorDefinition, ...]
+
     # Estadísticas para validación
     total_methods: int
     total_contracts: int
+    total_sectors: int
     level_counts: dict[str, int]
 
 
@@ -172,21 +192,25 @@ class InputLoader:
         classified_methods_raw = self._load_json("classified_methods.json")
         contratos_clasificados_raw = self._load_json("contratos_clasificados.json")
         method_sets_raw = self._load_json("method_sets_by_question.json")
+        sectors_raw = self._load_json("sectors.json")
 
         # Paso 2: Calcular hashes (para reproducibilidad)
         cm_hash = self._compute_hash(classified_methods_raw)
         cc_hash = self._compute_hash(contratos_clasificados_raw)
         ms_hash = self._compute_hash(method_sets_raw)
+        sectors_hash = self._compute_hash(sectors_raw)
 
         # Paso 3: Validar estructuras
         self._validate_classified_methods_structure(classified_methods_raw)
         self._validate_contratos_clasificados_structure(contratos_clasificados_raw)
         self._validate_method_sets_structure(method_sets_raw)
+        self._validate_sectors_structure(sectors_raw)
 
         # Paso 4: Construir objetos tipados
         methods_by_full_id = self._build_method_definitions(classified_methods_raw)
         contracts_by_id = self._build_contract_classifications(contratos_clasificados_raw)
         method_sets = self._build_method_sets(method_sets_raw)
+        sectors_by_id, sectors_ordered = self._build_sectors(sectors_raw)
 
         # Paso 5: Construir índices secundarios
         methods_by_level = self._index_methods_by_level(methods_by_full_id)
@@ -203,14 +227,18 @@ class InputLoader:
             classified_methods_hash=cm_hash,
             contratos_clasificados_hash=cc_hash,
             method_sets_hash=ms_hash,
+            sectors_hash=sectors_hash,
             methods_by_full_id=methods_by_full_id,
             methods_by_level=methods_by_level,
             methods_by_class=methods_by_class,
             contracts_by_id=contracts_by_id,
             contracts_by_type=contracts_by_type,
             method_sets_by_question=method_sets,
+            sectors_by_id=sectors_by_id,
+            sectors_ordered=sectors_ordered,
             total_methods=len(methods_by_full_id),
             total_contracts=len(contracts_by_id),
+            total_sectors=len(sectors_by_id),
             level_counts=level_counts,
         )
 
@@ -543,3 +571,59 @@ class InputLoader:
                     f"  Move methods to the correct phase in method_sets_by_question.json\n"
                     f"  OR correct the method's level classification in classified_methods.json"
                 )
+
+    def _validate_sectors_structure(self, data: dict[str, Any]) -> None:
+        """
+        Valida estructura de sectors.json
+
+        ESTRUCTURA ESPERADA:
+        {
+            "metadata": {...},
+            "sectors": {
+                "PA01": {...},
+                ...
+            }
+        }
+        """
+        if "sectors" not in data:
+            raise ValueError("HARD FAILURE: sectors.json missing 'sectors' key")
+
+        if len(data["sectors"]) != 10:
+            raise ValueError(
+                f"HARD FAILURE: Expected 10 sectors, found {len(data['sectors'])}"
+            )
+
+        # Validar IDs de sectores PA01-PA10
+        expected_ids = {f"PA{i:02d}" for i in range(1, 11)}
+        actual_ids = set(data["sectors"].keys())
+        if expected_ids != actual_ids:
+            missing = expected_ids - actual_ids
+            extra = actual_ids - expected_ids
+            raise ValueError(
+                f"HARD FAILURE: Sector IDs mismatch.\n"
+                f"  Missing: {missing}\n"
+                f"  Extra: {extra}"
+            )
+
+    def _build_sectors(
+        self, data: dict[str, Any]
+    ) -> tuple[dict[str, SectorDefinition], tuple[SectorDefinition, ...]]:
+        """Construye diccionario y tupla ordenada de sectores"""
+        sectors_dict = {}
+
+        for sector_id, sector_data in data["sectors"].items():
+            sector_def = SectorDefinition(
+                sector_id=sector_data["sector_id"],
+                canonical_name=sector_data["canonical_name"],
+                description=sector_data["description"],
+                keywords=tuple(sector_data["keywords"]),
+                regex_patterns=tuple(sector_data["regex_patterns"]),
+            )
+            sectors_dict[sector_id] = sector_def
+
+        # Ordenar sectores por ID (PA01, PA02, ..., PA10)
+        sectors_ordered = tuple(
+            sectors_dict[f"PA{i:02d}"] for i in range(1, 11)
+        )
+
+        return sectors_dict, sectors_ordered
