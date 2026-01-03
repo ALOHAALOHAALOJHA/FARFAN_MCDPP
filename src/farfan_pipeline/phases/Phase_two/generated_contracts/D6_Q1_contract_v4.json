@@ -2,18 +2,36 @@
   "identity": {
     "base_slot": "D6-Q1",
     "representative_question_id": "Q026",
-    "dimension_id": "DIM6_",
+    "dimension_id": "DIM06",
     "policy_area_ids_served": [
-      "PA01"
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
     ],
     "contracts_served": [
-      "Q026"
+      "Q026",
+      "Q056",
+      "Q086",
+      "Q116",
+      "Q146",
+      "Q176",
+      "Q206",
+      "Q236",
+      "Q266",
+      "Q296"
     ],
     "contract_type": "TYPE_C",
     "contract_type_name": "Causal",
     "contract_type_focus": "Topología de teoría de cambio",
     "contract_version": "4.0.0-epistemological",
-    "created_at": "2026-01-03T05:33:36.055405+00:00",
+    "created_at": "2026-01-03T17:29:12.177745+00:00",
     "generator_version": "4.0.0-granular",
     "specification_source": "operationalization_guide.json"
   },
@@ -77,7 +95,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -126,7 +144,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -175,7 +193,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -224,7 +242,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -273,7 +291,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           }
@@ -333,7 +351,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -390,7 +408,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -447,7 +465,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -503,7 +521,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -559,7 +577,63 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
+            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ]
+          },
+          {
+            "class_name": "BayesianMechanismInference",
+            "method_name": "infer_mechanisms",
+            "mother_file": "derek_beach.py",
+            "provides": "bayesianmechanisminference.infer_mechanisms",
+            "method_id": "BayesianMechanismInference.infer_mechanisms",
+            "level": "N2-INF",
+            "level_name": "Procesamiento Inferencial",
+            "epistemology": "Bayesianismo subjetivista",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "fusion_symbol": "⊗",
+            "classification_rationale": "Clase BayesianMechanismInference listada en N2-INF + patrón 'infer_' (PARTE II, Sección 2.2)",
+            "confidence_score": 0.92,
+            "contract_affinities": {
+              "TYPE_A": 0.8,
+              "TYPE_B": 1.0,
+              "TYPE_C": 0.8,
+              "TYPE_D": 0.6,
+              "TYPE_E": 0.6
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": false,
+            "evidence_requirements": [
+              "raw_facts_from_N1",
+              "confidence_scores"
+            ],
+            "output_claims": [
+              "derived_score",
+              "probability_estimate",
+              "relational_inference"
+            ],
+            "constraints_and_limits": [
+              "requires_N1_input",
+              "output_is_derived"
+            ],
+            "failure_modes": [
+              "insufficient_evidence",
+              "prior_undefined",
+              "computation_error"
+            ],
+            "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N2-INF provides PARAMETER output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -629,7 +703,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "validation_failed": {
@@ -704,7 +778,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "validation_failed": {
@@ -779,7 +853,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "validation_failed": {
@@ -854,7 +928,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "low_coherence": {
@@ -879,62 +953,6 @@
             "requires": [
               "raw_facts",
               "inferences"
-            ]
-          },
-          {
-            "class_name": "BayesianMechanismInference",
-            "method_name": "infer_mechanisms",
-            "mother_file": "derek_beach.py",
-            "provides": "bayesianmechanisminference.infer_mechanisms",
-            "method_id": "BayesianMechanismInference.infer_mechanisms",
-            "level": "N2-INF",
-            "level_name": "Procesamiento Inferencial",
-            "epistemology": "Bayesianismo subjetivista",
-            "output_type": "PARAMETER",
-            "fusion_behavior": "multiplicative",
-            "fusion_symbol": "⊗",
-            "classification_rationale": "Clase BayesianMechanismInference listada en N2-INF + patrón 'infer_' (PARTE II, Sección 2.2)",
-            "confidence_score": 0.92,
-            "contract_affinities": {
-              "TYPE_A": 0.8,
-              "TYPE_B": 1.0,
-              "TYPE_C": 0.8,
-              "TYPE_D": 0.6,
-              "TYPE_E": 0.6
-            },
-            "parameters": [
-              "self"
-            ],
-            "return_type": "Any",
-            "is_private": false,
-            "evidence_requirements": [
-              "raw_facts_from_N1",
-              "confidence_scores"
-            ],
-            "output_claims": [
-              "derived_score",
-              "probability_estimate",
-              "relational_inference"
-            ],
-            "constraints_and_limits": [
-              "requires_N1_input",
-              "output_is_derived"
-            ],
-            "failure_modes": [
-              "insufficient_evidence",
-              "prior_undefined",
-              "computation_error"
-            ],
-            "interaction_notes": "Method operates within TYPE_C contract. Fusion strategy: topological_overlay. Level N2-INF provides PARAMETER output.",
-            "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
-            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
-            "requires": [
-              "raw_facts"
-            ],
-            "modifies": [
-              "edge_weights",
-              "confidence_scores"
             ]
           }
         ],
@@ -1064,7 +1082,8 @@
           "teoriacambio.es_conexion_valida",
           "pdetmunicipalplananalyzer.construct_causal_dag",
           "bayesianmechanisminference.infer_mechanisms",
-          "hierarchicalgenerativemodel.infer_mechanism_posterior"
+          "hierarchicalgenerativemodel.infer_mechanism_posterior",
+          "bayesianmechanisminference.infer_mechanisms"
         ],
         "input_dependencies": [
           "causal_graph"
@@ -1083,8 +1102,7 @@
           "dagcycledetector.detect_cycles",
           "causalextractor.check_structural_violation",
           "advanceddagvalidator.add_node",
-          "operationalizationauditor.audit_causal_coherence_d6",
-          "bayesianmechanisminference.infer_mechanisms"
+          "operationalizationauditor.audit_causal_coherence_d6"
         ],
         "input_dependencies": [
           "causal_graph",
@@ -1449,7 +1467,7 @@
     "generation": {
       "method": "epistemological_compiler_v6",
       "version": "4.0.0-granular",
-      "timestamp": "2026-01-03T05:33:36.055405+00:00"
+      "timestamp": "2026-01-03T17:29:12.177745+00:00"
     },
     "refactoring_history": [
       {
@@ -1515,11 +1533,11 @@
   "audit_annotations": {
     "generation_metadata": {
       "generator_version": "4.0.0-granular",
-      "generation_timestamp": "2026-01-03T05:33:36.055405+00:00",
+      "generation_timestamp": "2026-01-03T17:29:12.177745+00:00",
       "input_hashes": {
         "classified_methods": "e3b57835bbe2cca5",
         "contratos_clasificados": "4b348284ad32888c",
-        "method_sets": "890b9b84cd1bddda"
+        "method_sets": "3c64c710b70eb9e9"
       }
     },
     "source_references": {
@@ -1534,8 +1552,8 @@
       "type_code": "TYPE_C",
       "methods_in_chain": 15,
       "n1_methods": 5,
-      "n2_methods": 5,
-      "n3_methods": 5,
+      "n2_methods": 6,
+      "n3_methods": 4,
       "efficiency_score": 1.0405
     },
     "validity_conditions": {
@@ -1548,8 +1566,8 @@
       "epistemic_coherence_validated": true,
       "temporal_validity_validated": true,
       "cross_reference_validated": true,
-      "validation_pass_rate": 0.9855072463768116,
-      "validation_timestamp": "2026-01-03T05:33:36.055405+00:00"
+      "validation_pass_rate": 1.0,
+      "validation_timestamp": "2026-01-03T17:29:12.177745+00:00"
     }
   }
 }

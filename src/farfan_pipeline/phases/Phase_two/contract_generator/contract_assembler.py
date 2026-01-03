@@ -151,23 +151,31 @@ class ContractAssembler:
         chain: "EpistemicChain",
         classification: "ContractClassification",
     ) -> dict[str, Any]:
-        """Construye sección identity"""
-        # Mapear question_id a contract_id y otros campos
+        """Construye sección identity con validación estricta de formatos"""
         q_id = chain.question_id  # e.g., "D1_Q1"
         contract_id = classification.contract_id  # e.g., "Q001"
 
-        # CADA contrato responde a UNA pregunta específica
-        # policy_area_ids_served: Determinado por el área de la pregunta (PA01 para Q001-Q030)
-        question_num = int(contract_id[1:])  # Q001 → 1
-        policy_area_num = ((question_num - 1) // 30) + 1  # Q001-Q030 → PA01, Q031-Q060 → PA02
-        policy_area_id = f"PA{str(policy_area_num).zfill(2)}"
+        # ══════════════════════════════════════════════════════════════════
+        # EXTRACCIÓN ROBUSTA DE DIMENSION (E-003)
+        # ══════════════════════════════════════════════════════════════════
+        dimension_id = self._extract_dimension_id(q_id)
 
-        return {
-            "base_slot": q_id.replace("_", "-"),  # D1-Q1
+        # ══════════════════════════════════════════════════════════════════
+        # DERIVACIÓN DE CONTRACTS_SERVED (E-004)
+        # ══════════════════════════════════════════════════════════════════
+        contracts_served = self._derive_contracts_served(contract_id)
+
+        # ══════════════════════════════════════════════════════════════════
+        # DERIVACIÓN DE POLICY_AREAS_SERVED (E-005)
+        # ══════════════════════════════════════════════════════════════════
+        policy_areas_served = self._derive_policy_areas_served()
+
+        identity = {
+            "base_slot": q_id.replace("_", "-"),  # D1_Q1 → D1-Q1
             "representative_question_id": contract_id,
-            "dimension_id": f"DIM{q_id[1:3]}",  # D1 → DIM01
-            "policy_area_ids_served": [policy_area_id],  # UN área por contrato
-            "contracts_served": [contract_id],  # UN contrato responde UNA pregunta
+            "dimension_id": dimension_id,
+            "policy_area_ids_served": policy_areas_served,
+            "contracts_served": contracts_served,
             "contract_type": classification.tipo_contrato["codigo"],
             "contract_type_name": classification.tipo_contrato["nombre"],
             "contract_type_focus": classification.tipo_contrato["foco"],
@@ -176,6 +184,127 @@ class ContractAssembler:
             "generator_version": self.generator_version,
             "specification_source": "operationalization_guide.json",
         }
+
+        # ══════════════════════════════════════════════════════════════════
+        # VALIDACIÓN POST-CONSTRUCCIÓN
+        # ══════════════════════════════════════════════════════════════════
+        self._validate_identity_section(identity, q_id)
+
+        return identity
+
+    def _extract_dimension_id(self, question_id: str) -> str:
+        """
+        Extrae dimension_id de question_id con validación.
+
+        FORMATO ESPERADO:
+        - Input: "D1_Q1", "D2_Q3", "D6_Q5"
+        - Output: "DIM01", "DIM02", "DIM06"
+        """
+        import re
+
+        pattern = r'^D(\d+)_Q\d+$'
+        match = re.match(pattern, question_id)
+
+        if not match:
+            raise ValueError(
+                f"Invalid question_id format: '{question_id}'\n"
+                f"Expected format: 'D<num>_Q<num>' (e.g., 'D1_Q1', 'D6_Q5')"
+            )
+
+        dimension_num = int(match.group(1))
+
+        if not 1 <= dimension_num <= 6:
+            raise ValueError(
+                f"Dimension number out of range: {dimension_num}\n"
+                f"Expected: 1-6 (from question_id '{question_id}')"
+            )
+
+        dimension_id = f"DIM{dimension_num:02d}"
+        return dimension_id
+
+    def _derive_contracts_served(self, contract_id: str) -> list[str]:
+        """
+        Deriva el contrato servido por este contrato base.
+
+        CADA CONTRATO RESPONDE UNA PREGUNTA (UN contrato servido).
+        El contrato se sirve a sí mismo.
+
+        FÓRMULA:
+        - Base contract: Q001
+        - Served: [Q001] (sí mismo)
+
+        TOTAL ESPERADO: 1 contrato por contrato base
+        """
+        import re
+
+        match = re.match(r'^Q(\d+)$', contract_id)
+        if not match:
+            raise ValueError(
+                f"Invalid contract_id format: '{contract_id}'\n"
+                f"Expected format: 'Qxxx' (e.g., 'Q001', 'Q030')"
+            )
+
+        base_num = int(match.group(1))
+
+        if not 1 <= base_num <= 30:
+            raise ValueError(
+                f"Contract number out of range: {base_num}\n"
+                f"Expected: 1-30 (base contracts)"
+            )
+
+        return [contract_id]
+
+    def _derive_policy_areas_served(self) -> list[str]:
+        """
+        Genera los 10 policy area IDs servidos.
+
+        FORMATO: PA01, PA02, ..., PA10
+        """
+        return [f"PA{i:02d}" for i in range(1, 11)]
+
+    def _validate_identity_section(self, identity: dict[str, Any], question_id: str) -> None:
+        """
+        Validación post-construcción de la sección identity.
+        """
+        import re
+
+        if not re.match(r'^D\d+-Q\d+$', identity["base_slot"]):
+            raise ValueError(
+                f"Invalid base_slot format: '{identity['base_slot']}'\n"
+                f"Expected: 'Dx-Qy' (e.g., 'D1-Q1')"
+            )
+
+        if not re.match(r'^DIM\d{2}$', identity["dimension_id"]):
+            raise ValueError(
+                f"Invalid dimension_id format: '{identity['dimension_id']}'\n"
+                f"Expected: 'DIMxx' (e.g., 'DIM01')"
+            )
+
+        if len(identity["contracts_served"]) != 10:
+            raise ValueError(
+                f"contracts_served must have exactly 10 entries\n"
+                f"Got: {len(identity['contracts_served'])}"
+            )
+
+        for cid in identity["contracts_served"]:
+            if not re.match(r'^Q\d{3}$', cid):
+                raise ValueError(
+                    f"Invalid contract_id in contracts_served: '{cid}'\n"
+                    f"Expected format: 'Qxxx'"
+                )
+
+        if len(identity["policy_area_ids_served"]) != 10:
+            raise ValueError(
+                f"policy_area_ids_served must have exactly 10 entries\n"
+                f"Got: {len(identity['policy_area_ids_served'])}"
+            )
+
+        for paid in identity["policy_area_ids_served"]:
+            if not re.match(r'^PA\d{2}$', paid):
+                raise ValueError(
+                    f"Invalid policy_area_id: '{paid}'\n"
+                    f"Expected format: 'PAxx'"
+                )
 
     def _build_executor_binding(self, chain: "EpistemicChain") -> dict[str, Any]:
         """Construye sección executor_binding"""

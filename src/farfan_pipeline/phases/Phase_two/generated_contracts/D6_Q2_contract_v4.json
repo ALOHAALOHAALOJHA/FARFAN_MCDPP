@@ -2,18 +2,36 @@
   "identity": {
     "base_slot": "D6-Q2",
     "representative_question_id": "Q027",
-    "dimension_id": "DIM6_",
+    "dimension_id": "DIM06",
     "policy_area_ids_served": [
-      "PA01"
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
     ],
     "contracts_served": [
-      "Q027"
+      "Q027",
+      "Q057",
+      "Q087",
+      "Q117",
+      "Q147",
+      "Q177",
+      "Q207",
+      "Q237",
+      "Q267",
+      "Q297"
     ],
     "contract_type": "TYPE_B",
     "contract_type_name": "Bayesiano",
     "contract_type_focus": "Evaluación de proporcionalidad causal",
     "contract_version": "4.0.0-epistemological",
-    "created_at": "2026-01-03T05:33:36.055405+00:00",
+    "created_at": "2026-01-03T17:29:12.177745+00:00",
     "generator_version": "4.0.0-granular",
     "specification_source": "operationalization_guide.json"
   },
@@ -77,7 +95,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -126,7 +144,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -175,7 +193,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -224,7 +242,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -273,7 +291,56 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
+            "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
+            "requires": []
+          },
+          {
+            "class_name": "BayesianEvidenceExtractor",
+            "method_name": "extract_statistical_metadata",
+            "mother_file": "bayesian_multilevel_system.py",
+            "provides": "bayesianevidenceextractor.extract_statistical_metadata",
+            "method_id": "BayesianEvidenceExtractor.extract_statistical_metadata",
+            "level": "N1-EMP",
+            "level_name": "Base Empírica",
+            "epistemology": "Empirismo positivista",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "fusion_symbol": "⊕",
+            "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2) (PARTE II, Sección 2.2)",
+            "confidence_score": 0.88,
+            "contract_affinities": {
+              "TYPE_A": 0.7,
+              "TYPE_B": 0.8,
+              "TYPE_C": 0.7,
+              "TYPE_D": 0.8,
+              "TYPE_E": 0.5
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": false,
+            "evidence_requirements": [
+              "raw_document_text",
+              "preprocesado_metadata"
+            ],
+            "output_claims": [
+              "observable_datum",
+              "literal_extraction"
+            ],
+            "constraints_and_limits": [
+              "output_must_be_literal",
+              "no_transformation_allowed"
+            ],
+            "failure_modes": [
+              "empty_extraction",
+              "pattern_not_found",
+              "malformed_input"
+            ],
+            "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           }
@@ -333,7 +400,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -389,7 +456,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -445,7 +512,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -501,7 +568,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -557,7 +624,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -566,55 +633,6 @@
               "edge_weights",
               "confidence_scores"
             ]
-          },
-          {
-            "class_name": "BayesianEvidenceExtractor",
-            "method_name": "extract_statistical_metadata",
-            "mother_file": "bayesian_multilevel_system.py",
-            "provides": "bayesianevidenceextractor.extract_statistical_metadata",
-            "method_id": "BayesianEvidenceExtractor.extract_statistical_metadata",
-            "level": "N1-EMP",
-            "level_name": "Base Empírica",
-            "epistemology": "Empirismo positivista",
-            "output_type": "FACT",
-            "fusion_behavior": "additive",
-            "fusion_symbol": "⊕",
-            "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2) (PARTE II, Sección 2.2)",
-            "confidence_score": 0.88,
-            "contract_affinities": {
-              "TYPE_A": 0.7,
-              "TYPE_B": 0.8,
-              "TYPE_C": 0.7,
-              "TYPE_D": 0.8,
-              "TYPE_E": 0.5
-            },
-            "parameters": [
-              "self"
-            ],
-            "return_type": "Any",
-            "is_private": false,
-            "evidence_requirements": [
-              "raw_document_text",
-              "preprocesado_metadata"
-            ],
-            "output_claims": [
-              "observable_datum",
-              "literal_extraction"
-            ],
-            "constraints_and_limits": [
-              "output_must_be_literal",
-              "no_transformation_allowed"
-            ],
-            "failure_modes": [
-              "empty_extraction",
-              "pattern_not_found",
-              "malformed_input"
-            ],
-            "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
-            "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
-            "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
-            "requires": []
           }
         ],
         "dependencies": [
@@ -676,7 +694,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "validation_failed": {
@@ -751,7 +769,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "validation_failed": {
@@ -826,7 +844,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract. Fusion strategy: bayesian_update. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-03T05:33:36.055405+00:00",
+            "expansion_timestamp": "2026-01-03T17:29:12.177745+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "validation_failed": {
@@ -964,7 +982,8 @@
           "derekbeachproducer.get_success_probability",
           "embeddingpolicyproducer.get_comparison_probability",
           "documentprocessor.load_pdf",
-          "pdfprocessor.load_document"
+          "pdfprocessor.load_document",
+          "bayesianevidenceextractor.extract_statistical_metadata"
         ],
         "merge_strategy": "concat",
         "output_type": "FACT",
@@ -980,8 +999,7 @@
           "adaptivepriorcalculator.calculate_likelihood_adaptativo",
           "hierarchicalgenerativemodel.infer_mechanism_posterior",
           "bayesiannumericalanalyzer.evaluate_policy_metric",
-          "bayesianevidenceintegrator.integrate_evidence",
-          "bayesianevidenceextractor.extract_statistical_metadata"
+          "bayesianevidenceintegrator.integrate_evidence"
         ],
         "input_dependencies": [
           "prior_distribution"
@@ -1357,7 +1375,7 @@
     "generation": {
       "method": "epistemological_compiler_v6",
       "version": "4.0.0-granular",
-      "timestamp": "2026-01-03T05:33:36.055405+00:00"
+      "timestamp": "2026-01-03T17:29:12.177745+00:00"
     },
     "refactoring_history": [
       {
@@ -1423,11 +1441,11 @@
   "audit_annotations": {
     "generation_metadata": {
       "generator_version": "4.0.0-granular",
-      "generation_timestamp": "2026-01-03T05:33:36.055405+00:00",
+      "generation_timestamp": "2026-01-03T17:29:12.177745+00:00",
       "input_hashes": {
         "classified_methods": "e3b57835bbe2cca5",
         "contratos_clasificados": "4b348284ad32888c",
-        "method_sets": "890b9b84cd1bddda"
+        "method_sets": "3c64c710b70eb9e9"
       }
     },
     "source_references": {
@@ -1441,8 +1459,8 @@
       "contract_id": "Q027",
       "type_code": "TYPE_B",
       "methods_in_chain": 14,
-      "n1_methods": 5,
-      "n2_methods": 6,
+      "n1_methods": 6,
+      "n2_methods": 5,
       "n3_methods": 3,
       "efficiency_score": 1.0109
     },
@@ -1456,8 +1474,8 @@
       "epistemic_coherence_validated": true,
       "temporal_validity_validated": true,
       "cross_reference_validated": true,
-      "validation_pass_rate": 0.9852941176470589,
-      "validation_timestamp": "2026-01-03T05:33:36.055405+00:00"
+      "validation_pass_rate": 1.0,
+      "validation_timestamp": "2026-01-03T17:29:12.177745+00:00"
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "generation_metadata": {
-    "timestamp": "2026-01-03T05:33:36.055405+00:00",
+    "timestamp": "2026-01-03T17:29:12.177745+00:00",
     "total_contracts": 30,
     "valid_contracts": 30,
     "invalid_contracts": 0
@@ -12,7 +12,7 @@
       "type": "TYPE_A",
       "method_count": 17,
       "efficiency_score": 1.058,
-      "validation_pass_rate": 0.971830985915493,
+      "validation_pass_rate": 1.0,
       "is_valid": true
     },
     {
@@ -21,7 +21,7 @@
       "type": "TYPE_B",
       "method_count": 15,
       "efficiency_score": 1.0109,
-      "validation_pass_rate": 0.9855072463768116,
+      "validation_pass_rate": 1.0,
       "is_valid": true
     },
     {
@@ -102,7 +102,7 @@
       "type": "TYPE_B",
       "method_count": 15,
       "efficiency_score": 1.0109,
-      "validation_pass_rate": 0.9855072463768116,
+      "validation_pass_rate": 1.0,
       "is_valid": true
     },
     {
@@ -138,7 +138,7 @@
       "type": "TYPE_D",
       "method_count": 14,
       "efficiency_score": 1.0256,
-      "validation_pass_rate": 0.9852941176470589,
+      "validation_pass_rate": 1.0,
       "is_valid": true
     },
     {
@@ -156,7 +156,7 @@
       "type": "TYPE_B",
       "method_count": 14,
       "efficiency_score": 1.0109,
-      "validation_pass_rate": 0.9852941176470589,
+      "validation_pass_rate": 1.0,
       "is_valid": true
     },
     {
@@ -228,7 +228,7 @@
       "type": "TYPE_B",
       "method_count": 15,
       "efficiency_score": 1.0109,
-      "validation_pass_rate": 0.9855072463768116,
+      "validation_pass_rate": 1.0,
       "is_valid": true
     },
     {
@@ -237,7 +237,7 @@
       "type": "TYPE_C",
       "method_count": 15,
       "efficiency_score": 1.0405,
-      "validation_pass_rate": 0.9855072463768116,
+      "validation_pass_rate": 1.0,
       "is_valid": true
     },
     {
@@ -246,7 +246,7 @@
       "type": "TYPE_B",
       "method_count": 14,
       "efficiency_score": 1.0109,
-      "validation_pass_rate": 0.9852941176470589,
+      "validation_pass_rate": 1.0,
       "is_valid": true
     },
     {
@@ -273,13 +273,13 @@
       "type": "TYPE_C",
       "method_count": 14,
       "efficiency_score": 1.0405,
-      "validation_pass_rate": 0.9852941176470589,
+      "validation_pass_rate": 1.0,
       "is_valid": true
     }
   ],
   "input_hashes": {
     "classified_methods": "e3b57835bbe2cca5",
     "contratos_clasificados": "4b348284ad32888c",
-    "method_sets": "890b9b84cd1bddda"
+    "method_sets": "3c64c710b70eb9e9"
   }
 }
