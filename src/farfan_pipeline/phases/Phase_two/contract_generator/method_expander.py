@@ -315,15 +315,15 @@ class ExpandedMethodUnit:
     modifies: tuple[str, ...]  # Lo que modifica (para N2) o modulates (para N3)
 
     # ══════════════════════════════════════════════════════════════════════
-    # VETO CONDITIONS (solo para N3)
-    # ══════════════════════════════════════════════════════════════════════
-    veto_conditions: dict[str, dict[str, Any]] = field(default_factory=dict)
-
-    # ══════════════════════════════════════════════════════════════════════
     # METADATA DE TRAZABILIDAD
     # ══════════════════════════════════════════════════════════════════════
     expansion_source: str
     expansion_timestamp: str
+
+    # ══════════════════════════════════════════════════════════════════════
+    # VETO CONDITIONS (solo para N3)
+    # ══════════════════════════════════════════════════════════════════════
+    veto_conditions: dict[str, dict[str, Any]] = field(default_factory=dict)
 
     @property
     def level_prefix(self) -> str:
