@@ -4,34 +4,16 @@
     "representative_question_id": "Q014",
     "dimension_id": "DIM3_",
     "policy_area_ids_served": [
-      "PA01",
-      "PA02",
-      "PA03",
-      "PA04",
-      "PA05",
-      "PA06",
-      "PA07",
-      "PA08",
-      "PA09",
-      "PA10"
+      "PA01"
     ],
     "contracts_served": [
-      "Q014",
-      "Q044",
-      "Q074",
-      "Q104",
-      "Q134",
-      "Q164",
-      "Q194",
-      "Q224",
-      "Q254",
-      "Q284"
+      "Q014"
     ],
     "contract_type": "TYPE_E",
     "contract_type_name": "Lógico",
     "contract_type_focus": "Validación de factibilidad lógica",
     "contract_version": "4.0.0-epistemological",
-    "created_at": "2026-01-02T17:03:47.638824+00:00",
+    "created_at": "2026-01-03T03:20:06.794169+00:00",
     "generator_version": "4.0.0-granular",
     "specification_source": "operationalization_guide.json"
   },
@@ -95,7 +77,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_E contract. Fusion strategy: logical_consistency_validation. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -144,7 +126,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_E contract. Fusion strategy: logical_consistency_validation. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -193,7 +175,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_E contract. Fusion strategy: logical_consistency_validation. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -242,7 +224,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_E contract. Fusion strategy: logical_consistency_validation. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -291,7 +273,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_E contract. Fusion strategy: logical_consistency_validation. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           }
@@ -351,7 +333,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_E contract. Fusion strategy: logical_consistency_validation. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -407,7 +389,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_E contract. Fusion strategy: logical_consistency_validation. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -463,7 +445,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_E contract. Fusion strategy: logical_consistency_validation. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -519,7 +501,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_E contract. Fusion strategy: logical_consistency_validation. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -576,7 +558,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_E contract. Fusion strategy: logical_consistency_validation. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -646,7 +628,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_E contract. Fusion strategy: logical_consistency_validation. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "validation_failed": {
@@ -721,7 +703,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_E contract. Fusion strategy: logical_consistency_validation. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "logical_contradiction_detected": {
@@ -789,7 +771,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_E contract. Fusion strategy: logical_consistency_validation. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "validation_failed": {
@@ -1305,7 +1287,7 @@
     "generation": {
       "method": "epistemological_compiler_v6",
       "version": "4.0.0-granular",
-      "timestamp": "2026-01-02T17:03:47.638824+00:00"
+      "timestamp": "2026-01-03T03:20:06.794169+00:00"
     },
     "refactoring_history": [
       {
@@ -1371,11 +1353,11 @@
   "audit_annotations": {
     "generation_metadata": {
       "generator_version": "4.0.0-granular",
-      "generation_timestamp": "2026-01-02T17:03:47.638824+00:00",
+      "generation_timestamp": "2026-01-03T03:20:06.794169+00:00",
       "input_hashes": {
         "classified_methods": "e3b57835bbe2cca5",
         "contratos_clasificados": "4b348284ad32888c",
-        "method_sets": "c5c5810e0d2c6f60"
+        "method_sets": "fed1999a9f63f898"
       }
     },
     "source_references": {
@@ -1405,7 +1387,7 @@
       "temporal_validity_validated": true,
       "cross_reference_validated": true,
       "validation_pass_rate": 1.0,
-      "validation_timestamp": "2026-01-02T17:03:47.638824+00:00"
+      "validation_timestamp": "2026-01-03T03:20:06.794169+00:00"
     }
   }
 }

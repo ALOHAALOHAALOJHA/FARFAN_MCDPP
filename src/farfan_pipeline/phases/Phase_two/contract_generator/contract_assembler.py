@@ -125,7 +125,7 @@ class ContractAssembler:
         signal_requirements = self._build_signal_requirements(chain)
         evidence_assembly = self._build_evidence_assembly(chain, classification)
         fusion_specification = self._build_fusion_specification(chain, classification)
-        cross_layer_fusion = self._build_cross_layer_fusion(classification)
+        cross_layer_fusion = self._build_cross_layer_fusion(chain, classification)
         human_answer_structure = self._build_human_answer_structure(classification)
         traceability = self._build_traceability(classification)
         output_contract = self._build_output_contract(classification)
@@ -156,20 +156,18 @@ class ContractAssembler:
         q_id = chain.question_id  # e.g., "D1_Q1"
         contract_id = classification.contract_id  # e.g., "Q001"
 
-        # Derivar policy_areas y contracts_served
-        # Según la guía, cada contrato sirve 10 sectores
-        base_num = int(contract_id[1:])  # Q001 → 1
-        contracts_served = [
-            f"Q{str(base_num + (i * 30)).zfill(3)}"
-            for i in range(10)
-        ]
+        # CADA contrato responde a UNA pregunta específica
+        # policy_area_ids_served: Determinado por el área de la pregunta (PA01 para Q001-Q030)
+        question_num = int(contract_id[1:])  # Q001 → 1
+        policy_area_num = ((question_num - 1) // 30) + 1  # Q001-Q030 → PA01, Q031-Q060 → PA02
+        policy_area_id = f"PA{str(policy_area_num).zfill(2)}"
 
         return {
             "base_slot": q_id.replace("_", "-"),  # D1-Q1
             "representative_question_id": contract_id,
             "dimension_id": f"DIM{q_id[1:3]}",  # D1 → DIM01
-            "policy_area_ids_served": [f"PA{str(i+1).zfill(2)}" for i in range(10)],
-            "contracts_served": contracts_served,
+            "policy_area_ids_served": [policy_area_id],  # UN área por contrato
+            "contracts_served": [contract_id],  # UN contrato responde UNA pregunta
             "contract_type": classification.tipo_contrato["codigo"],
             "contract_type_name": classification.tipo_contrato["nombre"],
             "contract_type_focus": classification.tipo_contrato["foco"],
@@ -918,7 +916,7 @@ class ContractAssembler:
         ]
 
     def _build_cross_layer_fusion(
-        self, classification: "ContractClassification"
+        self, chain: "EpistemicChain", classification: "ContractClassification"
     ) -> dict[str, Any]:
         """
         Construye sección cross_layer_fusion.
@@ -951,49 +949,58 @@ class ContractAssembler:
                 "effect": "Synthesis constructs narrative from filtered graph",
                 "data_flow": "terminal_aggregation",
             },
-            "blocking_propagation_rules": self._build_blocking_rules(classification),
+            "blocking_propagation_rules": self._build_blocking_rules(chain, classification),
         }
+
+        # Remove blocking_propagation_rules if None (absence of veto = absence of field)
+        if cross_layer_fusion.get("blocking_propagation_rules") is None:
+            del cross_layer_fusion["blocking_propagation_rules"]
+
+        return cross_layer_fusion
 
     def _build_blocking_rules(
-        self, classification: "ContractClassification"
-    ) -> dict[str, dict[str, Any]]:
-        """Construye reglas de propagación de bloqueo"""
-        type_code = classification.tipo_contrato["codigo"]
+        self, chain: "EpistemicChain", classification: "ContractClassification"
+    ) -> dict[str, dict[str, Any]] | None:
+        """
+        Construye reglas de propagación de bloqueo basadas en ACTUALES métodos N3.
 
-        base_rules = {
-            "statistical_significance_failed": {
-                "triggered_by": "PolicyContradictionDetector._statistical_significance_test",
-                "action": "block_branch",
-                "scope": "source_facts",
+        Retorna None si no hay suficientes condiciones de veto reales (< 2 métodos N3
+        con fusion_behavior='gate'). La ausencia de veto se representa por ausencia
+        del campo, no por contenido vacío (arquitectura de existencia semántica).
+        """
+        # Obtener métodos N3 actuales de la cadena epistémica
+        n3_methods = [m for m in chain.methods if m.level == "N3-AUD"]
+
+        # Filtrar solo métodos con capacidad de veto (fusion_behavior='gate')
+        veto_methods = [m for m in n3_methods if m.fusion_behavior == "gate"]
+
+        # Si hay menos de 2 condiciones de veto reales, no emitir campo
+        if len(veto_methods) < 2:
+            return None
+
+        # Construir reglas basadas en los ACTUALES métodos N3
+        blocking_rules = {}
+
+        for method in veto_methods:
+            method_name = method.method_name
+
+            # Crear regla de bloqueo basada en el método N3
+            rule_key = f"veto_{method_name}"
+
+            # Determinar alcance basado en nivel de confianza del método
+            confidence = method.confidence_score
+            scope = "entire_pipeline" if confidence >= 0.8 else "affected_branch"
+
+            blocking_rules[rule_key] = {
+                "triggered_by": f"{method.class_name}.{method_name}",
+                "action": "block_propagation",
+                "scope": scope,
                 "propagation": "downstream_only",
-            },
-            "logical_contradiction": {
-                "triggered_by": "PolicyContradictionDetector._detect_logical_incompatibilities",
-                "action": "block_branch",
-                "scope": "contradicting_nodes",
-                "propagation": "both",
-            },
-        }
-
-        # Añadir reglas específicas por TYPE
-        if type_code == "TYPE_C":
-            base_rules["cycle_detected"] = {
-                "triggered_by": "AdvancedDAGValidator._is_acyclic",
-                "action": "invalidate_graph",
-                "scope": "entire_causal_graph",
-                "propagation": "total",
+                "veto_level": "N3-AUD",
+                "output_type": "CONSTRAINT",
             }
 
-        if type_code == "TYPE_D":
-            base_rules["budget_insufficiency"] = {
-                "triggered_by": "FinancialAuditor._detect_allocation_gaps",
-                "action": "flag_and_reduce",
-                "scope": "affected_goals",
-                "propagation": "downstream_only",
-                "confidence_multiplier": 0.3,
-            }
-
-        return base_rules
+        return blocking_rules
 
     def _build_human_answer_structure(
         self, classification: "ContractClassification"

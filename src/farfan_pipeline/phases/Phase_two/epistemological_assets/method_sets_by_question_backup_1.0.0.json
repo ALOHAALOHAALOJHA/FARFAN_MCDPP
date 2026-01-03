@@ -1,10 +1,9 @@
 {
   "metadata": {
-    "version": "1.1.0-excellence",
+    "version": "1.0.0",
     "source": "episte_refact.md",
     "total_questions": 30,
-    "generation_date": "2026-01-02",
-    "update_notes": "Excellence version: Added ~50 verified methods from dispensary for enhanced epistemic quality"
+    "generation_date": "2025-01-01"
   },
   "method_sets": {
     "D1_Q1": {
@@ -122,48 +121,22 @@
         },
         {
           "class_name": "PolicyAnalysisEmbedder",
-          "method_name": "_extract_numerical_values",
+          "method_name": "_embed_texts",
           "mother_file": "embedding_policy.py",
-          "provides": "policyanalysisembedder.extract_numerical_values",
+          "provides": "policyanalysisembedder.embed_texts",
           "level": "N1-EMP",
           "level_name": "Base Empírica",
           "epistemology": "Empirismo positivista",
           "output_type": "FACT",
           "fusion_behavior": "additive",
           "fusion_symbol": "⊕",
-          "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2)",
-          "confidence_score": 0.88,
+          "classification_rationale": "Keyword 'text' detectado → N1-EMP",
+          "confidence_score": 0.8,
           "contract_affinities": {
-            "TYPE_A": 0.7,
+            "TYPE_A": 0.9,
             "TYPE_B": 0.5,
             "TYPE_C": 0.7,
             "TYPE_D": 0.8,
-            "TYPE_E": 0.5
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": true
-        },
-        {
-          "class_name": "PDETMunicipalPlanAnalyzer",
-          "method_name": "_extract_financial_amounts",
-          "mother_file": "financiero_viabilidad_tablas.py",
-          "provides": "pdetmunicipalplananalyzer.extract_financial_amounts",
-          "level": "N1-EMP",
-          "level_name": "Base Empírica",
-          "epistemology": "Empirismo positivista",
-          "output_type": "FACT",
-          "fusion_behavior": "additive",
-          "fusion_symbol": "⊕",
-          "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2)",
-          "confidence_score": 0.88,
-          "contract_affinities": {
-            "TYPE_A": 0.7,
-            "TYPE_B": 0.5,
-            "TYPE_C": 0.7,
-            "TYPE_D": 1.0,
             "TYPE_E": 0.5
           },
           "parameters": [
@@ -303,58 +276,6 @@
           ],
           "return_type": "Any",
           "is_private": true
-        },
-        {
-          "class_name": "TextMiningEngine",
-          "method_name": "diagnose_critical_links",
-          "mother_file": "analyzer_one.py",
-          "provides": "textminingengine.diagnose_critical_links",
-          "level": "N1-EMP",
-          "level_name": "Base Empírica",
-          "epistemology": "Empirismo positivista",
-          "output_type": "FACT",
-          "fusion_behavior": "additive",
-          "fusion_symbol": "⊕",
-          "classification_rationale": "Keyword 'text' detectado → N1-EMP",
-          "confidence_score": 0.8,
-          "contract_affinities": {
-            "TYPE_A": 1.0,
-            "TYPE_B": 0.5,
-            "TYPE_C": 0.7,
-            "TYPE_D": 0.8,
-            "TYPE_E": 0.5
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
-        },
-        {
-          "class_name": "PolicyAnalysisEmbedder",
-          "method_name": "_embed_texts",
-          "mother_file": "embedding_policy.py",
-          "provides": "policyanalysisembedder.embed_texts",
-          "level": "N1-EMP",
-          "level_name": "Base Empírica",
-          "epistemology": "Empirismo positivista",
-          "output_type": "FACT",
-          "fusion_behavior": "additive",
-          "fusion_symbol": "⊕",
-          "classification_rationale": "Keyword 'text' detectado → N1-EMP",
-          "confidence_score": 0.8,
-          "contract_affinities": {
-            "TYPE_A": 0.9,
-            "TYPE_B": 0.5,
-            "TYPE_C": 0.7,
-            "TYPE_D": 0.8,
-            "TYPE_E": 0.5
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": true
         }
       ],
       "phase_c_N3": [
@@ -427,58 +348,6 @@
             "TYPE_A": 0.6,
             "TYPE_B": 0.6,
             "TYPE_C": 0.9,
-            "TYPE_D": 0.9,
-            "TYPE_E": 0.9
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": true
-        },
-        {
-          "class_name": "SemanticValidator",
-          "method_name": "_check_official_sources",
-          "mother_file": "contradiction_deteccion.py",
-          "provides": "semanticvalidator.check_official_sources",
-          "level": "N3-AUD",
-          "level_name": "Auditoría y Robustez",
-          "epistemology": "Falsacionismo popperiano",
-          "output_type": "CONSTRAINT",
-          "fusion_behavior": "gate",
-          "fusion_symbol": "⊘",
-          "classification_rationale": "Clase SemanticValidator listada en N3-AUD + patrón 'check_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.5,
-            "TYPE_B": 0.6,
-            "TYPE_C": 0.8,
-            "TYPE_D": 0.9,
-            "TYPE_E": 0.9
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": true
-        },
-        {
-          "class_name": "SemanticValidator",
-          "method_name": "_check_year_reference",
-          "mother_file": "contradiction_deteccion.py",
-          "provides": "semanticvalidator.check_year_reference",
-          "level": "N3-AUD",
-          "level_name": "Auditoría y Robustez",
-          "epistemology": "Falsacionismo popperiano",
-          "output_type": "CONSTRAINT",
-          "fusion_behavior": "gate",
-          "fusion_symbol": "⊘",
-          "classification_rationale": "Clase SemanticValidator listada en N3-AUD + patrón 'check_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.5,
-            "TYPE_B": 0.6,
-            "TYPE_C": 0.8,
             "TYPE_D": 0.9,
             "TYPE_E": 0.9
           },
@@ -793,58 +662,6 @@
           ],
           "return_type": "Any",
           "is_private": false
-        },
-        {
-          "class_name": "DispersionEngine",
-          "method_name": "calculate_max_gap",
-          "mother_file": "bayesian_multilevel_system.py",
-          "provides": "dispersionengine.calculate_max_gap",
-          "level": "N2-INF",
-          "level_name": "Procesamiento Inferencial",
-          "epistemology": "Bayesianismo subjetivista",
-          "output_type": "PARAMETER",
-          "fusion_behavior": "multiplicative",
-          "fusion_symbol": "⊗",
-          "classification_rationale": "Clase DispersionEngine listada en N2-INF + patrón 'calculate_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.8,
-            "TYPE_B": 0.9,
-            "TYPE_C": 0.7,
-            "TYPE_D": 0.6,
-            "TYPE_E": 0.6
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
-        },
-        {
-          "class_name": "FinancialAuditor",
-          "method_name": "_detect_allocation_gaps",
-          "mother_file": "derek_beach.py",
-          "provides": "financialauditor.detect_allocation_gaps",
-          "level": "N3-AUD",
-          "level_name": "Auditoría y Robustez",
-          "epistemology": "Falsacionismo popperiano",
-          "output_type": "CONSTRAINT",
-          "fusion_behavior": "gate",
-          "fusion_symbol": "⊘",
-          "classification_rationale": "Clase FinancialAuditor listada en N3-AUD + patrón 'detect_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.5,
-            "TYPE_B": 0.6,
-            "TYPE_C": 0.8,
-            "TYPE_D": 1.0,
-            "TYPE_E": 0.9
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": true
         }
       ],
       "phase_c_N3": [
@@ -1090,32 +907,6 @@
           "contract_affinities": {
             "TYPE_A": 0.7,
             "TYPE_B": 0.9,
-            "TYPE_C": 0.7,
-            "TYPE_D": 0.8,
-            "TYPE_E": 0.5
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
-        },
-        {
-          "class_name": "PDFProcessor",
-          "method_name": "extract_tables",
-          "mother_file": "derek_beach.py",
-          "provides": "pdfprocessor.extract_tables",
-          "level": "N1-EMP",
-          "level_name": "Base Empírica",
-          "epistemology": "Empirismo positivista",
-          "output_type": "FACT",
-          "fusion_behavior": "additive",
-          "fusion_symbol": "⊕",
-          "classification_rationale": "Clase PDFProcessor listada en N1-EMP + patrón 'extract_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.7,
-            "TYPE_B": 0.5,
             "TYPE_C": 0.7,
             "TYPE_D": 0.8,
             "TYPE_E": 0.5
@@ -1502,32 +1293,6 @@
           "contract_affinities": {
             "TYPE_A": 0.7,
             "TYPE_B": 0.9,
-            "TYPE_C": 0.7,
-            "TYPE_D": 0.8,
-            "TYPE_E": 0.5
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
-        },
-        {
-          "class_name": "MechanismPartExtractor",
-          "method_name": "extract_entity_activity",
-          "mother_file": "derek_beach.py",
-          "provides": "mechanismpartextractor.extract_entity_activity",
-          "level": "N1-EMP",
-          "level_name": "Base Empírica",
-          "epistemology": "Empirismo positivista",
-          "output_type": "FACT",
-          "fusion_behavior": "additive",
-          "fusion_symbol": "⊕",
-          "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2)",
-          "confidence_score": 0.88,
-          "contract_affinities": {
-            "TYPE_A": 0.7,
-            "TYPE_B": 0.5,
             "TYPE_C": 0.7,
             "TYPE_D": 0.8,
             "TYPE_E": 0.5
@@ -2135,32 +1900,6 @@
           ],
           "return_type": "Any",
           "is_private": false
-        },
-        {
-          "class_name": "_FallbackTemporalVerifier",
-          "method_name": "verify_temporal_consistency",
-          "mother_file": "policy_processor.py",
-          "provides": "_fallbacktemporalverifier.verify_temporal_consistency",
-          "level": "N3-AUD",
-          "level_name": "Auditoría y Robustez",
-          "epistemology": "Falsacionismo popperiano",
-          "output_type": "CONSTRAINT",
-          "fusion_behavior": "gate",
-          "fusion_symbol": "⊘",
-          "classification_rationale": "Patrón de nombre 'verify_' → N3-AUD (PARTE II, Sec 2.2)",
-          "confidence_score": 0.88,
-          "contract_affinities": {
-            "TYPE_A": 0.5,
-            "TYPE_B": 0.6,
-            "TYPE_C": 0.8,
-            "TYPE_D": 0.9,
-            "TYPE_E": 1.0
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
         }
       ],
       "efficiency_score": 1.0109,
@@ -2326,32 +2065,6 @@
           "contract_affinities": {
             "TYPE_A": 0.7,
             "TYPE_B": 0.9,
-            "TYPE_C": 0.7,
-            "TYPE_D": 0.8,
-            "TYPE_E": 0.5
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
-        },
-        {
-          "class_name": "PDFProcessor",
-          "method_name": "extract_tables",
-          "mother_file": "derek_beach.py",
-          "provides": "pdfprocessor.extract_tables",
-          "level": "N1-EMP",
-          "level_name": "Base Empírica",
-          "epistemology": "Empirismo positivista",
-          "output_type": "FACT",
-          "fusion_behavior": "additive",
-          "fusion_symbol": "⊕",
-          "classification_rationale": "Clase PDFProcessor listada en N1-EMP + patrón 'extract_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.7,
-            "TYPE_B": 0.5,
             "TYPE_C": 0.7,
             "TYPE_D": 0.8,
             "TYPE_E": 0.5
@@ -2959,32 +2672,6 @@
           ],
           "return_type": "Any",
           "is_private": false
-        },
-        {
-          "class_name": "OperationalizationAuditor",
-          "method_name": "audit_causal_coherence_d6",
-          "mother_file": "derek_beach.py",
-          "provides": "operationalizationauditor.audit_causal_coherence_d6",
-          "level": "N3-AUD",
-          "level_name": "Auditoría y Robustez",
-          "epistemology": "Falsacionismo popperiano",
-          "output_type": "CONSTRAINT",
-          "fusion_behavior": "gate",
-          "fusion_symbol": "⊘",
-          "classification_rationale": "Clase OperationalizationAuditor listada en N3-AUD + patrón 'audit_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.6,
-            "TYPE_B": 0.6,
-            "TYPE_C": 0.9,
-            "TYPE_D": 0.9,
-            "TYPE_E": 1.0
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
         }
       ],
       "efficiency_score": 1.0109,
@@ -3365,32 +3052,6 @@
             "TYPE_C": 1.0,
             "TYPE_D": 0.9,
             "TYPE_E": 0.9
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
-        },
-        {
-          "class_name": "OperationalizationAuditor",
-          "method_name": "audit_causal_coherence_d6",
-          "mother_file": "derek_beach.py",
-          "provides": "operationalizationauditor.audit_causal_coherence_d6",
-          "level": "N3-AUD",
-          "level_name": "Auditoría y Robustez",
-          "epistemology": "Falsacionismo popperiano",
-          "output_type": "CONSTRAINT",
-          "fusion_behavior": "gate",
-          "fusion_symbol": "⊘",
-          "classification_rationale": "Clase OperationalizationAuditor listada en N3-AUD + patrón 'audit_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.6,
-            "TYPE_B": 0.6,
-            "TYPE_C": 0.9,
-            "TYPE_D": 0.9,
-            "TYPE_E": 1.0
           },
           "parameters": [
             "self"
@@ -4475,58 +4136,6 @@
           ],
           "return_type": "Any",
           "is_private": false
-        },
-        {
-          "class_name": "BayesianPortfolioComposer",
-          "method_name": "calculate_coverage",
-          "mother_file": "bayesian_multilevel_system.py",
-          "provides": "bayesianportfoliocomposer.calculate_coverage",
-          "level": "N2-INF",
-          "level_name": "Procesamiento Inferencial",
-          "epistemology": "Bayesianismo subjetivista",
-          "output_type": "PARAMETER",
-          "fusion_behavior": "multiplicative",
-          "fusion_symbol": "⊗",
-          "classification_rationale": "Patrón de nombre 'calculate_' → N2-INF (PARTE II, Sec 2.2)",
-          "confidence_score": 0.88,
-          "contract_affinities": {
-            "TYPE_A": 0.8,
-            "TYPE_B": 0.9,
-            "TYPE_C": 0.7,
-            "TYPE_D": 0.6,
-            "TYPE_E": 0.6
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
-        },
-        {
-          "class_name": "BayesianEvidenceExtractor",
-          "method_name": "extract_statistical_metadata",
-          "mother_file": "bayesian_multilevel_system.py",
-          "provides": "bayesianevidenceextractor.extract_statistical_metadata",
-          "level": "N1-EMP",
-          "level_name": "Base Empírica",
-          "epistemology": "Empirismo positivista",
-          "output_type": "FACT",
-          "fusion_behavior": "additive",
-          "fusion_symbol": "⊕",
-          "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2)",
-          "confidence_score": 0.88,
-          "contract_affinities": {
-            "TYPE_A": 0.7,
-            "TYPE_B": 0.8,
-            "TYPE_C": 0.7,
-            "TYPE_D": 0.8,
-            "TYPE_E": 0.5
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
         }
       ],
       "phase_c_N3": [
@@ -5299,32 +4908,6 @@
           ],
           "return_type": "Any",
           "is_private": true
-        },
-        {
-          "class_name": "BayesianPortfolioComposer",
-          "method_name": "calculate_coverage",
-          "mother_file": "bayesian_multilevel_system.py",
-          "provides": "bayesianportfoliocomposer.calculate_coverage",
-          "level": "N2-INF",
-          "level_name": "Procesamiento Inferencial",
-          "epistemology": "Bayesianismo subjetivista",
-          "output_type": "PARAMETER",
-          "fusion_behavior": "multiplicative",
-          "fusion_symbol": "⊗",
-          "classification_rationale": "Patrón de nombre 'calculate_' → N2-INF (PARTE II, Sec 2.2)",
-          "confidence_score": 0.88,
-          "contract_affinities": {
-            "TYPE_A": 0.8,
-            "TYPE_B": 0.9,
-            "TYPE_C": 0.7,
-            "TYPE_D": 0.6,
-            "TYPE_E": 0.6
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
         }
       ],
       "phase_c_N3": [
@@ -6177,32 +5760,6 @@
           ],
           "return_type": "Any",
           "is_private": true
-        },
-        {
-          "class_name": "PDETMunicipalPlanAnalyzer",
-          "method_name": "_assess_financial_sustainability",
-          "mother_file": "financiero_viabilidad_tablas.py",
-          "provides": "pdetmunicipalplananalyzer.assess_financial_sustainability",
-          "level": "N2-INF",
-          "level_name": "Procesamiento Inferencial",
-          "epistemology": "Bayesianismo subjetivista",
-          "output_type": "PARAMETER",
-          "fusion_behavior": "multiplicative",
-          "fusion_symbol": "⊗",
-          "classification_rationale": "Clasificación por defecto (requiere revisión manual)",
-          "confidence_score": 0.5,
-          "contract_affinities": {
-            "TYPE_A": 0.8,
-            "TYPE_B": 0.9,
-            "TYPE_C": 0.7,
-            "TYPE_D": 1.0,
-            "TYPE_E": 0.6
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": true
         }
       ],
       "efficiency_score": 1.0256,
@@ -6589,32 +6146,6 @@
           ],
           "return_type": "Any",
           "is_private": false
-        },
-        {
-          "class_name": "OperationalizationAuditor",
-          "method_name": "audit_causal_coherence_d6",
-          "mother_file": "derek_beach.py",
-          "provides": "operationalizationauditor.audit_causal_coherence_d6",
-          "level": "N3-AUD",
-          "level_name": "Auditoría y Robustez",
-          "epistemology": "Falsacionismo popperiano",
-          "output_type": "CONSTRAINT",
-          "fusion_behavior": "gate",
-          "fusion_symbol": "⊘",
-          "classification_rationale": "Clase OperationalizationAuditor listada en N3-AUD + patrón 'audit_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.6,
-            "TYPE_B": 0.6,
-            "TYPE_C": 0.9,
-            "TYPE_D": 0.9,
-            "TYPE_E": 1.0
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
         }
       ],
       "efficiency_score": 1.0405,
@@ -6915,32 +6446,6 @@
             "TYPE_C": 0.7,
             "TYPE_D": 0.6,
             "TYPE_E": 0.6
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
-        },
-        {
-          "class_name": "BayesianEvidenceExtractor",
-          "method_name": "extract_statistical_metadata",
-          "mother_file": "bayesian_multilevel_system.py",
-          "provides": "bayesianevidenceextractor.extract_statistical_metadata",
-          "level": "N1-EMP",
-          "level_name": "Base Empírica",
-          "epistemology": "Empirismo positivista",
-          "output_type": "FACT",
-          "fusion_behavior": "additive",
-          "fusion_symbol": "⊕",
-          "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2)",
-          "confidence_score": 0.88,
-          "contract_affinities": {
-            "TYPE_A": 0.7,
-            "TYPE_B": 0.8,
-            "TYPE_C": 0.7,
-            "TYPE_D": 0.8,
-            "TYPE_E": 0.5
           },
           "parameters": [
             "self"
@@ -7413,58 +6918,6 @@
           ],
           "return_type": "Any",
           "is_private": false
-        },
-        {
-          "class_name": "OperationalizationAuditor",
-          "method_name": "_perform_counterfactual_budget_check",
-          "mother_file": "derek_beach.py",
-          "provides": "operationalizationauditor.perform_counterfactual_budget_check",
-          "level": "N3-AUD",
-          "level_name": "Auditoría y Robustez",
-          "epistemology": "Falsacionismo popperiano",
-          "output_type": "CONSTRAINT",
-          "fusion_behavior": "gate",
-          "fusion_symbol": "⊘",
-          "classification_rationale": "Clase OperationalizationAuditor es dominante en N3-AUD",
-          "confidence_score": 0.85,
-          "contract_affinities": {
-            "TYPE_A": 0.5,
-            "TYPE_B": 0.6,
-            "TYPE_C": 0.8,
-            "TYPE_D": 1.0,
-            "TYPE_E": 1.0
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": true
-        },
-        {
-          "class_name": "FinancialAuditor",
-          "method_name": "_calculate_sufficiency",
-          "mother_file": "derek_beach.py",
-          "provides": "financialauditor.calculate_sufficiency",
-          "level": "N3-AUD",
-          "level_name": "Auditoría y Robustez",
-          "epistemology": "Falsacionismo popperiano",
-          "output_type": "CONSTRAINT",
-          "fusion_behavior": "gate",
-          "fusion_symbol": "⊘",
-          "classification_rationale": "Clase FinancialAuditor es dominante en N3-AUD",
-          "confidence_score": 0.85,
-          "contract_affinities": {
-            "TYPE_A": 0.5,
-            "TYPE_B": 0.6,
-            "TYPE_C": 0.8,
-            "TYPE_D": 1.0,
-            "TYPE_E": 0.9
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": true
         }
       ],
       "efficiency_score": 1.0109,
@@ -8543,32 +7996,6 @@
           ],
           "return_type": "Any",
           "is_private": false
-        },
-        {
-          "class_name": "BayesianMechanismInference",
-          "method_name": "infer_mechanisms",
-          "mother_file": "derek_beach.py",
-          "provides": "bayesianmechanisminference.infer_mechanisms",
-          "level": "N2-INF",
-          "level_name": "Procesamiento Inferencial",
-          "epistemology": "Bayesianismo subjetivista",
-          "output_type": "PARAMETER",
-          "fusion_behavior": "multiplicative",
-          "fusion_symbol": "⊗",
-          "classification_rationale": "Clase BayesianMechanismInference listada en N2-INF + patrón 'infer_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.8,
-            "TYPE_B": 1.0,
-            "TYPE_C": 0.8,
-            "TYPE_D": 0.6,
-            "TYPE_E": 0.6
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
         }
       ],
       "phase_c_N3": [
@@ -8955,32 +8382,6 @@
           ],
           "return_type": "Any",
           "is_private": false
-        },
-        {
-          "class_name": "PDETMunicipalPlanAnalyzer",
-          "method_name": "_assess_financial_sustainability",
-          "mother_file": "financiero_viabilidad_tablas.py",
-          "provides": "pdetmunicipalplananalyzer.assess_financial_sustainability",
-          "level": "N2-INF",
-          "level_name": "Procesamiento Inferencial",
-          "epistemology": "Bayesianismo subjetivista",
-          "output_type": "PARAMETER",
-          "fusion_behavior": "multiplicative",
-          "fusion_symbol": "⊗",
-          "classification_rationale": "Clasificación por defecto (requiere revisión manual)",
-          "confidence_score": 0.5,
-          "contract_affinities": {
-            "TYPE_A": 0.8,
-            "TYPE_B": 0.9,
-            "TYPE_C": 0.7,
-            "TYPE_D": 1.0,
-            "TYPE_E": 0.6
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": true
         }
       ],
       "phase_c_N3": [
@@ -9753,32 +9154,6 @@
           ],
           "return_type": "Any",
           "is_private": false
-        },
-        {
-          "class_name": "PeerCalibrator",
-          "method_name": "compare_to_peers",
-          "mother_file": "bayesian_multilevel_system.py",
-          "provides": "peercalibrator.compare_to_peers",
-          "level": "N2-INF",
-          "level_name": "Procesamiento Inferencial",
-          "epistemology": "Bayesianismo subjetivista",
-          "output_type": "PARAMETER",
-          "fusion_behavior": "multiplicative",
-          "fusion_symbol": "⊗",
-          "classification_rationale": "Clase PeerCalibrator listada en N2-INF + patrón 'compare_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.8,
-            "TYPE_B": 0.9,
-            "TYPE_C": 0.7,
-            "TYPE_D": 0.6,
-            "TYPE_E": 0.6
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
         }
       ],
       "phase_c_N3": [
@@ -10245,58 +9620,6 @@
           ],
           "return_type": "Any",
           "is_private": false
-        },
-        {
-          "class_name": "OperationalizationAuditor",
-          "method_name": "audit_evidence_traceability",
-          "mother_file": "derek_beach.py",
-          "provides": "operationalizationauditor.audit_evidence_traceability",
-          "level": "N3-AUD",
-          "level_name": "Auditoría y Robustez",
-          "epistemology": "Falsacionismo popperiano",
-          "output_type": "CONSTRAINT",
-          "fusion_behavior": "gate",
-          "fusion_symbol": "⊘",
-          "classification_rationale": "Clase OperationalizationAuditor listada en N3-AUD + patrón 'audit_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.5,
-            "TYPE_B": 0.6,
-            "TYPE_C": 0.8,
-            "TYPE_D": 0.9,
-            "TYPE_E": 1.0
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
-        },
-        {
-          "class_name": "PDETMunicipalPlanAnalyzer",
-          "method_name": "_assess_financial_sustainability",
-          "mother_file": "financiero_viabilidad_tablas.py",
-          "provides": "pdetmunicipalplananalyzer.assess_financial_sustainability",
-          "level": "N2-INF",
-          "level_name": "Procesamiento Inferencial",
-          "epistemology": "Bayesianismo subjetivista",
-          "output_type": "PARAMETER",
-          "fusion_behavior": "multiplicative",
-          "fusion_symbol": "⊗",
-          "classification_rationale": "Clasificación por defecto (requiere revisión manual)",
-          "confidence_score": 0.5,
-          "contract_affinities": {
-            "TYPE_A": 0.8,
-            "TYPE_B": 0.9,
-            "TYPE_C": 0.7,
-            "TYPE_D": 1.0,
-            "TYPE_E": 0.6
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": true
         }
       ],
       "efficiency_score": 1.0109,
@@ -10683,58 +10006,6 @@
           ],
           "return_type": "Any",
           "is_private": false
-        },
-        {
-          "class_name": "OperationalizationAuditor",
-          "method_name": "audit_causal_coherence_d6",
-          "mother_file": "derek_beach.py",
-          "provides": "operationalizationauditor.audit_causal_coherence_d6",
-          "level": "N3-AUD",
-          "level_name": "Auditoría y Robustez",
-          "epistemology": "Falsacionismo popperiano",
-          "output_type": "CONSTRAINT",
-          "fusion_behavior": "gate",
-          "fusion_symbol": "⊘",
-          "classification_rationale": "Clase OperationalizationAuditor listada en N3-AUD + patrón 'audit_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.6,
-            "TYPE_B": 0.6,
-            "TYPE_C": 0.9,
-            "TYPE_D": 0.9,
-            "TYPE_E": 1.0
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
-        },
-        {
-          "class_name": "BayesianMechanismInference",
-          "method_name": "infer_mechanisms",
-          "mother_file": "derek_beach.py",
-          "provides": "bayesianmechanisminference.infer_mechanisms",
-          "level": "N2-INF",
-          "level_name": "Procesamiento Inferencial",
-          "epistemology": "Bayesianismo subjetivista",
-          "output_type": "PARAMETER",
-          "fusion_behavior": "multiplicative",
-          "fusion_symbol": "⊗",
-          "classification_rationale": "Clase BayesianMechanismInference listada en N2-INF + patrón 'infer_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.8,
-            "TYPE_B": 1.0,
-            "TYPE_C": 0.8,
-            "TYPE_D": 0.6,
-            "TYPE_E": 0.6
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
         }
       ],
       "efficiency_score": 1.0405,
@@ -11035,32 +10306,6 @@
             "TYPE_C": 0.7,
             "TYPE_D": 0.6,
             "TYPE_E": 0.6
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
-        },
-        {
-          "class_name": "BayesianEvidenceExtractor",
-          "method_name": "extract_statistical_metadata",
-          "mother_file": "bayesian_multilevel_system.py",
-          "provides": "bayesianevidenceextractor.extract_statistical_metadata",
-          "level": "N1-EMP",
-          "level_name": "Base Empírica",
-          "epistemology": "Empirismo positivista",
-          "output_type": "FACT",
-          "fusion_behavior": "additive",
-          "fusion_symbol": "⊕",
-          "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2)",
-          "confidence_score": 0.88,
-          "contract_affinities": {
-            "TYPE_A": 0.7,
-            "TYPE_B": 0.8,
-            "TYPE_C": 0.7,
-            "TYPE_D": 0.8,
-            "TYPE_E": 0.5
           },
           "parameters": [
             "self"
@@ -11919,32 +11164,6 @@
           ],
           "return_type": "Any",
           "is_private": false
-        },
-        {
-          "class_name": "OperationalizationAuditor",
-          "method_name": "audit_evidence_traceability",
-          "mother_file": "derek_beach.py",
-          "provides": "operationalizationauditor.audit_evidence_traceability",
-          "level": "N3-AUD",
-          "level_name": "Auditoría y Robustez",
-          "epistemology": "Falsacionismo popperiano",
-          "output_type": "CONSTRAINT",
-          "fusion_behavior": "gate",
-          "fusion_symbol": "⊘",
-          "classification_rationale": "Clase OperationalizationAuditor listada en N3-AUD + patrón 'audit_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.5,
-            "TYPE_B": 0.6,
-            "TYPE_C": 0.8,
-            "TYPE_D": 0.9,
-            "TYPE_E": 1.0
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
         }
       ],
       "efficiency_score": 1.0109,
@@ -12245,32 +11464,6 @@
             "TYPE_C": 0.8,
             "TYPE_D": 0.6,
             "TYPE_E": 0.6
-          },
-          "parameters": [
-            "self"
-          ],
-          "return_type": "Any",
-          "is_private": false
-        },
-        {
-          "class_name": "OperationalizationAuditor",
-          "method_name": "audit_causal_coherence_d6",
-          "mother_file": "derek_beach.py",
-          "provides": "operationalizationauditor.audit_causal_coherence_d6",
-          "level": "N3-AUD",
-          "level_name": "Auditoría y Robustez",
-          "epistemology": "Falsacionismo popperiano",
-          "output_type": "CONSTRAINT",
-          "fusion_behavior": "gate",
-          "fusion_symbol": "⊘",
-          "classification_rationale": "Clase OperationalizationAuditor listada en N3-AUD + patrón 'audit_'",
-          "confidence_score": 0.92,
-          "contract_affinities": {
-            "TYPE_A": 0.6,
-            "TYPE_B": 0.6,
-            "TYPE_C": 0.9,
-            "TYPE_D": 0.9,
-            "TYPE_E": 1.0
           },
           "parameters": [
             "self"

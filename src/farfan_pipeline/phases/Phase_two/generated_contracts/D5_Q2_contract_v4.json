@@ -4,34 +4,16 @@
     "representative_question_id": "Q022",
     "dimension_id": "DIM5_",
     "policy_area_ids_served": [
-      "PA01",
-      "PA02",
-      "PA03",
-      "PA04",
-      "PA05",
-      "PA06",
-      "PA07",
-      "PA08",
-      "PA09",
-      "PA10"
+      "PA01"
     ],
     "contracts_served": [
-      "Q022",
-      "Q052",
-      "Q082",
-      "Q112",
-      "Q142",
-      "Q172",
-      "Q202",
-      "Q232",
-      "Q262",
-      "Q292"
+      "Q022"
     ],
     "contract_type": "TYPE_D",
     "contract_type_name": "Financiero",
     "contract_type_focus": "Validez de indicadores proxy",
     "contract_version": "4.0.0-epistemological",
-    "created_at": "2026-01-02T17:03:47.638824+00:00",
+    "created_at": "2026-01-03T03:20:06.794169+00:00",
     "generator_version": "4.0.0-granular",
     "specification_source": "operationalization_guide.json"
   },
@@ -42,7 +24,7 @@
   "method_binding": {
     "orchestration_mode": "epistemological_pipeline",
     "contract_type": "TYPE_D",
-    "method_count": 13,
+    "method_count": 14,
     "execution_phases": {
       "phase_A_construction": {
         "description": "Empirical observation layer - direct extraction without interpretation",
@@ -95,7 +77,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -144,7 +126,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -193,7 +175,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -242,7 +224,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -291,7 +273,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto. Produce hechos observables sin interpretación.",
             "requires": []
           }
@@ -351,7 +333,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -407,7 +389,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -463,7 +445,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -519,7 +501,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -575,7 +557,64 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
+            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_assess_financial_sustainability",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.assess_financial_sustainability",
+            "method_id": "PDETMunicipalPlanAnalyzer._assess_financial_sustainability",
+            "level": "N2-INF",
+            "level_name": "Procesamiento Inferencial",
+            "epistemology": "Bayesianismo subjetivista",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "fusion_symbol": "⊗",
+            "classification_rationale": "Clasificación por defecto (requiere revisión manual) (PARTE II, Sección 2.2)",
+            "confidence_score": 0.5,
+            "contract_affinities": {
+              "TYPE_A": 0.8,
+              "TYPE_B": 0.9,
+              "TYPE_C": 0.7,
+              "TYPE_D": 1.0,
+              "TYPE_E": 0.6
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": true,
+            "evidence_requirements": [
+              "raw_facts_from_N1",
+              "confidence_scores"
+            ],
+            "output_claims": [
+              "derived_score",
+              "probability_estimate",
+              "relational_inference"
+            ],
+            "constraints_and_limits": [
+              "requires_N1_input",
+              "output_is_derived",
+              "low_confidence_method"
+            ],
+            "failure_modes": [
+              "insufficient_evidence",
+              "prior_undefined",
+              "computation_error"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -645,7 +684,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "budget_insufficiency": {
@@ -720,7 +759,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "validation_failed": {
@@ -795,7 +834,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_D contract. Fusion strategy: financial_coherence_audit. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-01-02T17:03:47.638824+00:00",
+            "expansion_timestamp": "2026-01-03T03:20:06.794169+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "veto_conditions": {
               "validation_failed": {
@@ -949,7 +988,8 @@
           "financialaggregator.aggregate_financial_data",
           "semanticanalyzer.compute_unit_of_analysis_natural_blocks",
           "dispersionengine.calculate_cv",
-          "peercalibrator.compare_to_peers"
+          "peercalibrator.compare_to_peers",
+          "pdetmunicipalplananalyzer.assess_financial_sustainability"
         ],
         "input_dependencies": [
           "financial_facts"
@@ -1319,7 +1359,7 @@
     "generation": {
       "method": "epistemological_compiler_v6",
       "version": "4.0.0-granular",
-      "timestamp": "2026-01-02T17:03:47.638824+00:00"
+      "timestamp": "2026-01-03T03:20:06.794169+00:00"
     },
     "refactoring_history": [
       {
@@ -1385,11 +1425,11 @@
   "audit_annotations": {
     "generation_metadata": {
       "generator_version": "4.0.0-granular",
-      "generation_timestamp": "2026-01-02T17:03:47.638824+00:00",
+      "generation_timestamp": "2026-01-03T03:20:06.794169+00:00",
       "input_hashes": {
         "classified_methods": "e3b57835bbe2cca5",
         "contratos_clasificados": "4b348284ad32888c",
-        "method_sets": "c5c5810e0d2c6f60"
+        "method_sets": "fed1999a9f63f898"
       }
     },
     "source_references": {
@@ -1402,9 +1442,9 @@
       "question_id": "D5_Q2",
       "contract_id": "Q022",
       "type_code": "TYPE_D",
-      "methods_in_chain": 13,
+      "methods_in_chain": 14,
       "n1_methods": 5,
-      "n2_methods": 5,
+      "n2_methods": 6,
       "n3_methods": 3,
       "efficiency_score": 1.0256
     },
@@ -1419,7 +1459,7 @@
       "temporal_validity_validated": true,
       "cross_reference_validated": true,
       "validation_pass_rate": 1.0,
-      "validation_timestamp": "2026-01-02T17:03:47.638824+00:00"
+      "validation_timestamp": "2026-01-03T03:20:06.794169+00:00"
     }
   }
 }
