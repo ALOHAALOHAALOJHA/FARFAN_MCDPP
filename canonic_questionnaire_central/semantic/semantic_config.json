@@ -1,14 +1,168 @@
 {
+  "_version": "2.0.0",
+  "_generated_at": "2026-01-03T00:00:00Z",
+  "_description": "Enhanced semantic processing configuration for FARFAN questionnaire analysis",
+
   "disambiguation": {
     "confidence_threshold": 0.72,
-    "entity_linker": "spaCy_es_core_news_lg"
+    "entity_linker": "spaCy_es_core_news_lg",
+    "fallback_threshold": 0.60,
+    "context_window": 3,
+    "disambiguation_strategies": [
+      {
+        "strategy": "contextual_embedding",
+        "weight": 0.5,
+        "description": "Use sentence embeddings to disambiguate based on context"
+      },
+      {
+        "strategy": "entity_type_matching",
+        "weight": 0.3,
+        "description": "Match entity types (ORG, LOC, PERSON) to expected types"
+      },
+      {
+        "strategy": "glossary_lookup",
+        "weight": 0.2,
+        "description": "Use glossary metadata for Colombian policy terms"
+      }
+    ]
   },
+
   "embedding_strategy": {
+    "model": "multilingual-e5-base",
     "dimension": 768,
+    "pooling_strategy": "mean",
+    "normalize": true,
     "hybrid": {
+      "enabled": true,
       "bm25": true,
-      "fusion": "RRF"
+      "fusion": "RRF",
+      "weights": {
+        "semantic": 0.7,
+        "lexical": 0.3
+      }
     },
-    "model": "multilingual-e5-base"
+    "batch_size": 32,
+    "max_seq_length": 512
+  },
+
+  "named_entity_recognition": {
+    "enabled": true,
+    "model": "spaCy_es_core_news_lg",
+    "entity_types": [
+      "ORG",
+      "LOC",
+      "PERSON",
+      "DATE",
+      "MONEY",
+      "PERCENT",
+      "QUANTITY"
+    ],
+    "custom_entities": {
+      "COLOMBIAN_INSTITUTION": {
+        "examples": ["DNP", "DANE", "ART", "OCAD Paz", "Secretaría de Planeación"],
+        "pattern_file": "patterns/institutional_patterns.json"
+      },
+      "POLICY_INSTRUMENT": {
+        "examples": ["PND", "PDM", "PATR", "PPI", "CONPES"],
+        "pattern_file": "patterns/policy_instrument_patterns.json"
+      },
+      "TERRITORIAL_UNIT": {
+        "examples": ["municipio", "departamento", "vereda", "corregimiento", "resguardo"],
+        "pattern_file": "patterns/territorial_patterns.json"
+      }
+    },
+    "min_confidence": 0.65
+  },
+
+  "semantic_similarity": {
+    "similarity_metric": "cosine",
+    "min_similarity_threshold": 0.75,
+    "reranking": {
+      "enabled": true,
+      "model": "cross-encoder/ms-marco-MiniLM-L-12-v2",
+      "top_k": 10
+    },
+    "caching": {
+      "enabled": true,
+      "cache_size": 10000,
+      "ttl_hours": 24
+    }
+  },
+
+  "pattern_matching": {
+    "match_types": {
+      "REGEX": {
+        "case_sensitive": false,
+        "multiline": true,
+        "flags": "IGNORECASE|MULTILINE"
+      },
+      "LITERAL": {
+        "case_sensitive": false,
+        "fuzzy_matching": {
+          "enabled": true,
+          "max_edit_distance": 2
+        }
+      },
+      "NER_OR_REGEX": {
+        "priority": "NER_first",
+        "fallback_to_regex": true
+      }
+    },
+    "context_scopes": {
+      "SENTENCE": {"max_chars": 500},
+      "PARAGRAPH": {"max_chars": 2000},
+      "SECTION": {"max_chars": 5000},
+      "DOCUMENT": {"max_chars": null}
+    }
+  },
+
+  "text_preprocessing": {
+    "lowercase": false,
+    "remove_accents": false,
+    "remove_stopwords": false,
+    "lemmatization": {
+      "enabled": true,
+      "pos_tags": ["NOUN", "VERB", "ADJ"]
+    },
+    "tokenization": {
+      "tokenizer": "spaCy",
+      "preserve_entities": true
+    }
+  },
+
+  "colombian_context_awareness": {
+    "territorial_disambiguation": {
+      "enabled": true,
+      "use_municipal_registry": true,
+      "prioritize_pdet_municipalities": true
+    },
+    "institutional_normalization": {
+      "enabled": true,
+      "normalize_acronyms": true,
+      "expand_abbreviations": true,
+      "reference_file": "colombia_context/municipal_governance.json"
+    },
+    "policy_framework_linking": {
+      "enabled": true,
+      "link_to_legal_framework": true,
+      "link_to_pnd": true,
+      "link_to_ods": true
+    }
+  },
+
+  "quality_thresholds": {
+    "minimum_text_length": 50,
+    "maximum_text_length": 10000,
+    "minimum_keyword_matches": 2,
+    "minimum_pattern_confidence": 0.65,
+    "minimum_entity_confidence": 0.70
+  },
+
+  "performance_optimization": {
+    "use_gpu": false,
+    "max_workers": 4,
+    "batch_processing": true,
+    "async_processing": false,
+    "memory_limit_mb": 2048
   }
 }

@@ -1,0 +1,380 @@
+{
+  "_version": "1.0.0",
+  "_generated_at": "2026-01-03T00:00:00Z",
+  "_description": "Comprehensive quality assurance test suite for canonic_questionnaire_central",
+
+  "test_categories": {
+    "structural_tests": {
+      "description": "Tests for file structure and organization",
+      "tests": [
+        {
+          "test_id": "STRUCT-001",
+          "name": "Directory structure completeness",
+          "description": "Verify all required directories exist",
+          "expected_directories": [
+            "dimensions",
+            "policy_areas",
+            "clusters",
+            "scoring",
+            "semantic",
+            "validations",
+            "governance",
+            "cross_cutting",
+            "colombia_context",
+            "patterns"
+          ],
+          "severity": "error"
+        },
+        {
+          "test_id": "STRUCT-002",
+          "name": "Dimension folder completeness",
+          "description": "Each dimension should have metadata.json and questions.json",
+          "expected_files_per_dimension": [
+            "metadata.json",
+            "questions.json"
+          ],
+          "total_dimensions": 6,
+          "severity": "error"
+        },
+        {
+          "test_id": "STRUCT-003",
+          "name": "Policy area folder completeness",
+          "description": "Each policy area should have metadata.json, questions.json, and keywords.json",
+          "expected_files_per_policy_area": [
+            "metadata.json",
+            "questions.json",
+            "keywords.json"
+          ],
+          "total_policy_areas": 10,
+          "severity": "error"
+        }
+      ]
+    },
+    "content_completeness_tests": {
+      "description": "Tests for content completeness",
+      "tests": [
+        {
+          "test_id": "CONTENT-001",
+          "name": "Total question count",
+          "description": "Verify total question count matches expected (300 micro + 4 meso + 1 macro = 305)",
+          "expected_total": 305,
+          "breakdown": {
+            "micro": 300,
+            "meso": 4,
+            "macro": 1
+          },
+          "severity": "error"
+        },
+        {
+          "test_id": "CONTENT-002",
+          "name": "Questions per dimension",
+          "description": "Each dimension should have exactly 50 micro questions",
+          "expected_per_dimension": 50,
+          "severity": "error"
+        },
+        {
+          "test_id": "CONTENT-003",
+          "name": "Questions per policy area",
+          "description": "Each policy area should have exactly 30 micro questions",
+          "expected_per_policy_area": 30,
+          "severity": "error"
+        },
+        {
+          "test_id": "CONTENT-004",
+          "name": "Validation template coverage",
+          "description": "All 6 dimensions should have validation templates",
+          "expected_templates": [
+            "DIM01_INSUMOS",
+            "DIM02_ACTIVIDADES",
+            "DIM03_PRODUCTOS",
+            "DIM04_RESULTADOS",
+            "DIM05_IMPACTOS",
+            "DIM06_CAUSALIDAD"
+          ],
+          "severity": "error"
+        },
+        {
+          "test_id": "CONTENT-005",
+          "name": "Scoring modality definitions",
+          "description": "All modalities referenced in questions should be defined",
+          "expected_modalities": [
+            "TYPE_A",
+            "TYPE_B",
+            "TYPE_C",
+            "TYPE_D",
+            "TYPE_E",
+            "TYPE_F",
+            "MESO_INTEGRATION",
+            "MACRO_HOLISTIC"
+          ],
+          "severity": "error"
+        }
+      ]
+    },
+    "referential_integrity_tests": {
+      "description": "Tests for referential integrity across files",
+      "tests": [
+        {
+          "test_id": "REF-INT-001",
+          "name": "Dimension ID consistency",
+          "description": "All dimension_id references should exist in niveles_abstraccion.json",
+          "severity": "error",
+          "reference_file": "niveles_abstraccion.json"
+        },
+        {
+          "test_id": "REF-INT-002",
+          "name": "Policy area ID consistency",
+          "description": "All policy_area_id references should exist in niveles_abstraccion.json",
+          "severity": "error",
+          "reference_file": "niveles_abstraccion.json"
+        },
+        {
+          "test_id": "REF-INT-003",
+          "name": "Cluster ID consistency",
+          "description": "All cluster_id references should exist in niveles_abstraccion.json",
+          "severity": "error",
+          "reference_file": "niveles_abstraccion.json"
+        },
+        {
+          "test_id": "REF-INT-004",
+          "name": "Question ID uniqueness",
+          "description": "All question_id values should be unique",
+          "severity": "error"
+        },
+        {
+          "test_id": "REF-INT-005",
+          "name": "Question global uniqueness and sequentiality",
+          "description": "All question_global values should be unique and sequential (1-305)",
+          "severity": "error"
+        }
+      ]
+    },
+    "interdependency_tests": {
+      "description": "Tests for causal chain and interdependency validation",
+      "tests": [
+        {
+          "test_id": "INTERDEP-001",
+          "name": "Dimension flow validation",
+          "description": "Verify logical flow DIM01→DIM02→DIM03→DIM04→DIM05→DIM06",
+          "severity": "warning"
+        },
+        {
+          "test_id": "INTERDEP-002",
+          "name": "Cross-dimension linkages",
+          "description": "Verify activities reference diagnostics, products reference activities, etc.",
+          "severity": "warning"
+        },
+        {
+          "test_id": "INTERDEP-003",
+          "name": "Circular reasoning detection",
+          "description": "Detect circular reasoning patterns in causal chains",
+          "severity": "error"
+        }
+      ]
+    },
+    "cross_cutting_theme_tests": {
+      "description": "Tests for cross-cutting theme integration",
+      "tests": [
+        {
+          "test_id": "CC-THEME-001",
+          "name": "Required theme presence",
+          "description": "Verify required cross-cutting themes are present in designated policy areas",
+          "severity": "error",
+          "required_themes": [
+            "CC_COHERENCIA_NORMATIVA",
+            "CC_SOSTENIBILIDAD_PRESUPUESTAL",
+            "CC_MECANISMOS_SEGUIMIENTO"
+          ]
+        },
+        {
+          "test_id": "CC-THEME-002",
+          "name": "Theme pattern matching",
+          "description": "Verify theme-specific patterns are detectable in relevant questions",
+          "severity": "warning"
+        }
+      ]
+    },
+    "semantic_configuration_tests": {
+      "description": "Tests for semantic processing configuration",
+      "tests": [
+        {
+          "test_id": "SEMANTIC-001",
+          "name": "NER model availability",
+          "description": "Verify NER model (spaCy_es_core_news_lg) is configured",
+          "severity": "error"
+        },
+        {
+          "test_id": "SEMANTIC-002",
+          "name": "Embedding model configuration",
+          "description": "Verify embedding model (multilingual-e5-base) is configured",
+          "severity": "error"
+        },
+        {
+          "test_id": "SEMANTIC-003",
+          "name": "Colombian context awareness",
+          "description": "Verify Colombian context configuration is enabled",
+          "severity": "warning"
+        }
+      ]
+    },
+    "pattern_quality_tests": {
+      "description": "Tests for pattern registry quality",
+      "tests": [
+        {
+          "test_id": "PATTERN-001",
+          "name": "Pattern ID uniqueness",
+          "description": "All pattern_id values should be unique",
+          "severity": "error"
+        },
+        {
+          "test_id": "PATTERN-002",
+          "name": "Pattern syntax validity",
+          "description": "All REGEX patterns should have valid syntax",
+          "severity": "error"
+        },
+        {
+          "test_id": "PATTERN-003",
+          "name": "Pattern contextual weights",
+          "description": "Patterns should have confidence_weight defined",
+          "severity": "warning"
+        }
+      ]
+    },
+    "scoring_system_tests": {
+      "description": "Tests for scoring system configuration",
+      "tests": [
+        {
+          "test_id": "SCORING-001",
+          "name": "Quality level definitions",
+          "description": "Verify all 4 quality levels are defined (EXCELENTE, BUENO, ACEPTABLE, INSUFICIENTE)",
+          "expected_levels": 4,
+          "severity": "error"
+        },
+        {
+          "test_id": "SCORING-002",
+          "name": "Scoring threshold consistency",
+          "description": "Verify score thresholds are in ascending order",
+          "severity": "error"
+        },
+        {
+          "test_id": "SCORING-003",
+          "name": "Modality formula validity",
+          "description": "Verify all scoring modalities have explicit formulas",
+          "severity": "warning"
+        }
+      ]
+    },
+    "colombia_context_tests": {
+      "description": "Tests for Colombian context data integrity",
+      "tests": [
+        {
+          "test_id": "COLOMBIA-001",
+          "name": "Legal framework completeness",
+          "description": "Verify key laws and frameworks are documented",
+          "severity": "warning"
+        },
+        {
+          "test_id": "COLOMBIA-002",
+          "name": "PDET municipality count",
+          "description": "Verify PDET data shows 170 municipalities in 16 subregions",
+          "expected_municipalities": 170,
+          "expected_subregions": 16,
+          "severity": "info"
+        },
+        {
+          "test_id": "COLOMBIA-003",
+          "name": "Institutional registry",
+          "description": "Verify major Colombian institutions are documented",
+          "severity": "warning"
+        }
+      ]
+    },
+    "validation_normalization_tests": {
+      "description": "Tests for validation normalization effectiveness",
+      "tests": [
+        {
+          "test_id": "VALNORM-001",
+          "name": "Validation CV reduction",
+          "description": "Verify coefficient of variation reduced below 40%",
+          "target_cv": 40.0,
+          "severity": "warning",
+          "reference": "validations/normalization_report.json"
+        },
+        {
+          "test_id": "VALNORM-002",
+          "name": "Weak validation elimination",
+          "description": "Verify no dimension has >20% weak validations (≤1 validation per question)",
+          "max_weak_pct": 20.0,
+          "severity": "warning"
+        }
+      ]
+    }
+  },
+
+  "test_execution_order": [
+    "structural_tests",
+    "content_completeness_tests",
+    "referential_integrity_tests",
+    "semantic_configuration_tests",
+    "pattern_quality_tests",
+    "scoring_system_tests",
+    "cross_cutting_theme_tests",
+    "interdependency_tests",
+    "colombia_context_tests",
+    "validation_normalization_tests"
+  ],
+
+  "test_report_format": {
+    "report_version": "1.0.0",
+    "execution_timestamp": "ISO 8601",
+    "total_tests": "integer",
+    "tests_passed": "integer",
+    "tests_failed": "integer",
+    "tests_skipped": "integer",
+    "severity_breakdown": {
+      "errors": "integer",
+      "warnings": "integer",
+      "info": "integer"
+    },
+    "test_results": [
+      {
+        "test_id": "string",
+        "test_name": "string",
+        "category": "string",
+        "status": "passed|failed|skipped",
+        "severity": "error|warning|info",
+        "message": "string",
+        "details": "object|null"
+      }
+    ],
+    "overall_status": "passed|failed_with_errors|failed_with_warnings"
+  },
+
+  "continuous_validation": {
+    "description": "Automated validation should run on file changes",
+    "trigger_events": [
+      "file_modification",
+      "git_commit",
+      "pull_request",
+      "manual_trigger"
+    ],
+    "notification_channels": [
+      "console",
+      "file_report",
+      "git_hook_output"
+    ]
+  },
+
+  "test_automation_script": {
+    "script_name": "run_qa_tests.py",
+    "location": "canonic_questionnaire_central/validations/",
+    "usage": "python run_qa_tests.py --suite quality_assurance_test_suite.json --output qa_report.json",
+    "options": {
+      "--suite": "Path to test suite configuration",
+      "--output": "Path to output report",
+      "--severity": "Filter by severity (error|warning|info)",
+      "--category": "Filter by category",
+      "--verbose": "Enable verbose output"
+    }
+  }
+}
