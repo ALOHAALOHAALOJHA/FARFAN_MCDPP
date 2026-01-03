@@ -128,6 +128,34 @@ VETO_THRESHOLD_LENIENT_MIN: Final[float] = 0.05
 VETO_THRESHOLD_LENIENT_MAX: Final[float] = 0.10
 VETO_THRESHOLD_LENIENT_DEFAULT: Final[float] = 0.07
 
+# Public API for this module
+__all__ = [
+    "RATIO_SUM_TOLERANCE",
+    "CONTRACT_TYPE_A",
+    "CONTRACT_TYPE_B",
+    "CONTRACT_TYPE_C",
+    "CONTRACT_TYPE_D",
+    "CONTRACT_TYPE_E",
+    "CONTRACT_SUBTIPO_F",
+    "VALID_CONTRACT_TYPES",
+    "PRIOR_STRENGTH_MIN",
+    "PRIOR_STRENGTH_MAX",
+    "PRIOR_STRENGTH_DEFAULT",
+    "PRIOR_STRENGTH_BAYESIAN",
+    "VETO_THRESHOLD_STRICTEST_MIN",
+    "VETO_THRESHOLD_STRICTEST_MAX",
+    "VETO_THRESHOLD_STRICTEST_DEFAULT",
+    "VETO_THRESHOLD_STANDARD_MIN",
+    "VETO_THRESHOLD_STANDARD_MAX",
+    "VETO_THRESHOLD_STANDARD_DEFAULT",
+    "VETO_THRESHOLD_LENIENT_MIN",
+    "VETO_THRESHOLD_LENIENT_MAX",
+    "VETO_THRESHOLD_LENIENT_DEFAULT",
+    "CalibrationDefaultsError",
+    "CanonicalSourceError",
+    "UnknownContractTypeError",
+]
+
 
 # =============================================================================
 # EXCEPTIONS
