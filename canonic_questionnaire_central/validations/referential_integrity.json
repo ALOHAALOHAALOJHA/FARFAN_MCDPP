@@ -14,7 +14,7 @@
       "reference_file": "niveles_abstraccion.json",
       "reference_path": "$.dimensions[*].dimension_id",
       "enforcement": "error",
-      "validation_query": "SELECT dimension_id FROM questions WHERE dimension_id NOT IN (SELECT dimension_id FROM niveles_abstraccion.dimensions)"
+      "validation_query": "Ensure every dimension_id in questions exists in niveles_abstraccion.dimensions (see reference_path)"
     },
     "policy_area_references": {
       "rule_id": "REF-INT-002",
