@@ -1,0 +1,212 @@
+{
+  "_version": "1.0.0",
+  "_generated_at": "2026-01-03T00:00:00Z",
+  "_description": "Interdependency mapping and causal chain validation for questions across dimensions",
+
+  "dimension_flow": {
+    "description": "Logical flow and dependencies between dimensions in the evaluation framework",
+    "sequence": [
+      "DIM01_INSUMOS",
+      "DIM02_ACTIVIDADES",
+      "DIM03_PRODUCTOS",
+      "DIM04_RESULTADOS",
+      "DIM05_IMPACTOS",
+      "DIM06_CAUSALIDAD"
+    ],
+    "dependencies": {
+      "DIM02_ACTIVIDADES": {
+        "depends_on": ["DIM01_INSUMOS"],
+        "dependency_type": "informational",
+        "rationale": "Activities must be informed by diagnostic findings and baselines",
+        "validation_rule": "Activities should reference problems/gaps identified in DIM01"
+      },
+      "DIM03_PRODUCTOS": {
+        "depends_on": ["DIM02_ACTIVIDADES"],
+        "dependency_type": "logical",
+        "rationale": "Products are outputs of activities",
+        "validation_rule": "Each product must be traceable to at least one activity"
+      },
+      "DIM04_RESULTADOS": {
+        "depends_on": ["DIM03_PRODUCTOS"],
+        "dependency_type": "causal",
+        "rationale": "Results are outcomes derived from delivery of products",
+        "validation_rule": "Results must show causal link to products (product → outcome logic)"
+      },
+      "DIM05_IMPACTOS": {
+        "depends_on": ["DIM04_RESULTADOS"],
+        "dependency_type": "causal",
+        "rationale": "Impacts are long-term changes driven by accumulated results",
+        "validation_rule": "Impacts must be linked to results with explicit transmission mechanisms"
+      },
+      "DIM06_CAUSALIDAD": {
+        "depends_on": ["DIM01_INSUMOS", "DIM02_ACTIVIDADES", "DIM03_PRODUCTOS", "DIM04_RESULTADOS", "DIM05_IMPACTOS"],
+        "dependency_type": "meta_analytical",
+        "rationale": "Theory of change synthesizes the entire causal chain",
+        "validation_rule": "Theory of change must reference elements from all prior dimensions"
+      }
+    }
+  },
+
+  "causal_chain_templates": {
+    "description": "Templates for validating causal logic across dimension boundaries",
+    "basic_chain": {
+      "structure": "DIM01(problema/brecha) → DIM02(actividad) → DIM03(producto) → DIM04(resultado) → DIM05(impacto)",
+      "minimum_links": 4,
+      "validation_method": "pattern_matching_and_semantic_similarity"
+    },
+    "explicit_chain": {
+      "structure": "DIM06 must explicitly articulate: supuestos + mediadores + moderadores connecting DIM02→DIM03→DIM04→DIM05",
+      "minimum_elements": {
+        "supuestos": 2,
+        "mediadores": 1,
+        "moderadores": 0
+      }
+    }
+  },
+
+  "cross_dimension_validation_rules": {
+    "rule_001": {
+      "rule_id": "INTERDEP-001",
+      "description": "Every activity (DIM02) must reference at least one diagnostic finding (DIM01)",
+      "enforcement": "warning",
+      "validation_query": "Check if DIM02 questions contain references to DIM01 elements (problems, gaps, baselines)"
+    },
+    "rule_002": {
+      "rule_id": "INTERDEP-002",
+      "description": "Every product (DIM03) must be traceable to at least one activity (DIM02)",
+      "enforcement": "error",
+      "validation_query": "Verify DIM03 products link to DIM02 activities via pattern matching or explicit references"
+    },
+    "rule_003": {
+      "rule_id": "INTERDEP-003",
+      "description": "Results (DIM04) must show input-output logic from products (DIM03)",
+      "enforcement": "error",
+      "validation_query": "Validate that DIM04 results can be derived from DIM03 products"
+    },
+    "rule_004": {
+      "rule_id": "INTERDEP-004",
+      "description": "Impacts (DIM05) must specify transmission pathways from results (DIM04)",
+      "enforcement": "warning",
+      "validation_query": "Check if DIM05 impacts describe how results lead to long-term changes"
+    },
+    "rule_005": {
+      "rule_id": "INTERDEP-005",
+      "description": "Theory of change (DIM06) must synthesize the complete chain",
+      "enforcement": "error",
+      "validation_query": "Validate DIM06 references elements from DIM01-DIM05"
+    },
+    "rule_006": {
+      "rule_id": "INTERDEP-006",
+      "description": "Budget allocation (DIM02/DIM03) must align with identified gaps (DIM01)",
+      "enforcement": "warning",
+      "validation_query": "Check if resource allocation addresses highest-priority gaps"
+    },
+    "rule_007": {
+      "rule_id": "INTERDEP-007",
+      "description": "Indicators in DIM03/DIM04 must be measurable against baselines in DIM01",
+      "enforcement": "error",
+      "validation_query": "Verify indicator units and sources align with DIM01 baselines"
+    }
+  },
+
+  "policy_area_coherence_rules": {
+    "description": "Rules for validating coherence within a policy area across dimensions",
+    "PA_coherence_check": {
+      "rule_id": "PA-COHERENCE-001",
+      "description": "All 6 dimensions must be present for each policy area",
+      "enforcement": "error",
+      "validation_query": "Check that each policy area (PA01-PA10) has questions in all dimensions (DIM01-DIM06)"
+    },
+    "PA_thematic_consistency": {
+      "rule_id": "PA-COHERENCE-002",
+      "description": "Policy area keywords should be consistent across dimensions",
+      "enforcement": "warning",
+      "validation_query": "Validate that policy area keywords appear in questions across multiple dimensions"
+    }
+  },
+
+  "cluster_integration_rules": {
+    "description": "Rules for validating integration across policy areas within a cluster",
+    "CL_cross_reference": {
+      "rule_id": "CL-INTEGRATION-001",
+      "description": "Clusters should show explicit cross-references between constituent policy areas",
+      "enforcement": "recommended",
+      "minimum_cross_references": 2,
+      "validation_query": "Check for references between policy areas within the same cluster"
+    },
+    "CL_shared_indicators": {
+      "rule_id": "CL-INTEGRATION-002",
+      "description": "Policy areas in a cluster should share at least one common indicator",
+      "enforcement": "recommended",
+      "validation_query": "Identify shared indicators across policy areas in the same cluster"
+    }
+  },
+
+  "temporal_coherence_rules": {
+    "description": "Rules for validating temporal consistency across the causal chain",
+    "temporal_ordering": {
+      "rule_id": "TEMPORAL-001",
+      "description": "Temporal horizons must increase along the causal chain",
+      "sequence": {
+        "DIM01": "baseline (historical)",
+        "DIM02": "short-term (0-1 year)",
+        "DIM03": "short-term (1-2 years)",
+        "DIM04": "medium-term (2-4 years)",
+        "DIM05": "long-term (5-15 years)",
+        "DIM06": "entire horizon"
+      },
+      "enforcement": "warning"
+    },
+    "mayoral_term_constraint": {
+      "rule_id": "TEMPORAL-002",
+      "description": "Activities and products must fit within 4-year mayoral term",
+      "enforcement": "error",
+      "validation_query": "Verify DIM02/DIM03 timelines do not exceed 4 years"
+    }
+  },
+
+  "circular_reasoning_detection": {
+    "description": "Rules to detect and prevent circular reasoning in causal chains",
+    "tautology_detection": {
+      "rule_id": "CIRCULAR-001",
+      "description": "Detect statements like 'We will achieve X by achieving X'",
+      "patterns": [
+        "lograr\\s+(.+?)\\s+mediante\\s+(.+?)\\s+\\1\\b",
+        "alcanzar\\s+(.+?)\\s+a través de\\s+(.+?)\\s+\\1\\b",
+        "conseguir\\s+(.+?)\\s+implementando\\s+(.+?)\\s+\\1\\b"
+      ],
+      "enforcement": "error"
+    },
+    "outcome_activity_conflation": {
+      "rule_id": "CIRCULAR-002",
+      "description": "Detect when outcomes are described as activities",
+      "validation_query": "Check if DIM04 results are worded as actions (verbs) instead of states (nouns)",
+      "enforcement": "warning"
+    }
+  },
+
+  "validation_workflow": {
+    "step_1": "Load all questions for a policy area across all dimensions",
+    "step_2": "Apply cross_dimension_validation_rules sequentially",
+    "step_3": "Check policy_area_coherence_rules",
+    "step_4": "Validate temporal_coherence_rules",
+    "step_5": "Run circular_reasoning_detection",
+    "step_6": "Generate interdependency report with violations and warnings"
+  },
+
+  "interdependency_scoring": {
+    "description": "How interdependency validation affects overall scores",
+    "perfect_chain": {
+      "bonus": 0.10,
+      "criteria": "All validation rules pass with no warnings"
+    },
+    "broken_chain": {
+      "penalty": 0.20,
+      "criteria": "One or more error-level validation rules fail"
+    },
+    "weak_chain": {
+      "penalty": 0.05,
+      "criteria": "More than 3 warning-level validation rules fail"
+    }
+  }
+}

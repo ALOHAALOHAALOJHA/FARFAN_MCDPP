@@ -1,8 +1,61 @@
 {
-  "version": "3.0.0",
-  "generated_at": "2026-01-01T11:18:29.386625Z",
+  "version": "3.1.0",
+  "generated_at": "2026-01-03T00:00:00Z",
   "description": "Validation templates for normalizing validation contracts across dimensions",
   "templates": {
+    "DIM01_INSUMOS": [
+      {
+        "type": "completeness",
+        "threshold": 0.8,
+        "description": "Ensures minimum text completeness",
+        "priority": 1
+      },
+      {
+        "type": "diagnostic_quality",
+        "requires": [
+          "cobertura_territorial_especificada",
+          "fuentes_oficiales",
+          "indicadores_cuantitativos"
+        ],
+        "min_data_sources": 2,
+        "description": "Validates diagnostic rigor with territorial coverage and official sources",
+        "priority": 2,
+        "colombian_context": "Diagnóstico territorial must cite DANE, local observatories, or official registries"
+      },
+      {
+        "type": "baseline_validity",
+        "requires": [
+          "linea_base_cuantitativa",
+          "fuente_verificacion",
+          "año_referencia"
+        ],
+        "min_temporal_series": 3,
+        "description": "Validates baseline indicators have quantitative values, sources, and temporal references",
+        "priority": 3,
+        "colombian_context": "DNP requires baselines with at least 3-year time series for trend analysis"
+      },
+      {
+        "type": "gap_identification",
+        "check": "brecha_explicitada",
+        "description": "Validates that gaps between current state and desired state are explicitly identified",
+        "priority": 4,
+        "colombian_context": "Brechas must be quantified (e.g., 'current: 45%, target: 80%, gap: 35 p.p.')"
+      },
+      {
+        "type": "resource_assessment",
+        "check": "recursos_identificados",
+        "description": "Validates identification of available resources and resource gaps",
+        "priority": 5,
+        "colombian_context": "Must reference SGP, royalties, or other financing sources"
+      },
+      {
+        "type": "territorial_specificity",
+        "check": "desagregacion_territorial",
+        "description": "Validates territorial disaggregation (urban/rural, corregimiento, vereda)",
+        "priority": 6,
+        "colombian_context": "PDET municipalities must disaggregate data to vereda level when possible"
+      }
+    ],
     "DIM02_ACTIVIDADES": [
       {
         "type": "completeness",
@@ -37,6 +90,65 @@
         "description": "Validates activity duration is realistic",
         "priority": 5,
         "colombian_context": "Activities must fit within 4-year mayoral term"
+      }
+    ],
+    "DIM03_PRODUCTOS": [
+      {
+        "type": "completeness",
+        "threshold": 0.8,
+        "description": "Ensures minimum text completeness",
+        "priority": 1
+      },
+      {
+        "type": "product_specification",
+        "requires": [
+          "producto_especificado",
+          "indicador_producto",
+          "unidad_medida",
+          "meta_cuatrienio"
+        ],
+        "description": "Validates products are concretely specified with measurable indicators",
+        "priority": 2,
+        "colombian_context": "Products (bienes y servicios) must follow BPIN structure: quantity + unit + timeframe"
+      },
+      {
+        "type": "indicator_formula",
+        "check": "formula_calculo",
+        "description": "Validates indicator has explicit calculation formula",
+        "priority": 3,
+        "colombian_context": "Formula must be verifiable (e.g., '(Número de viviendas mejoradas / Total viviendas) * 100')"
+      },
+      {
+        "type": "verification_source",
+        "requires": [
+          "fuente_verificacion",
+          "responsable_medicion"
+        ],
+        "description": "Validates product has designated verification source and responsible entity",
+        "priority": 4,
+        "colombian_context": "Source must be official (DANE, SISBEN, Sistema de Información sectorial)"
+      },
+      {
+        "type": "budget_traceability",
+        "check": "trazabilidad_presupuestal",
+        "description": "Validates product is linked to budget allocation in PPI",
+        "priority": 5,
+        "colombian_context": "Must reference specific line in Plan Plurianual de Inversiones (PPI)"
+      },
+      {
+        "type": "activity_linkage",
+        "check": "enlace_actividades",
+        "min_linked_activities": 1,
+        "description": "Validates product is traceable to specific activities (DIM02)",
+        "priority": 6,
+        "colombian_context": "Products must derive from activities via clear input-output logic"
+      },
+      {
+        "type": "temporal_distribution",
+        "check": "cronograma_anualizado",
+        "description": "Validates product has annualized delivery schedule",
+        "priority": 7,
+        "colombian_context": "4-year term must show phased delivery (e.g., Year 1: 25%, Year 2: 30%, Year 3: 30%, Year 4: 15%)"
       }
     ],
     "DIM04_RESULTADOS": [
