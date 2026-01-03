@@ -62,7 +62,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Final, Mapping
 
-from farfan_pipeline.infrastructure.calibration.calibration_core import (
+from .calibration_core import (
     ClosedInterval,
     ValidationError,
 )
