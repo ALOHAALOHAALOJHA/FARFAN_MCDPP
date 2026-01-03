@@ -249,8 +249,8 @@ class ContractValidator:
         results.append(ValidationResult(
             check_id=check_id,
             passed=passed,
-            severity=ValidationSeverity.HIGH,
-            message="N3→N1 asymmetry must be declared",
+            severity=ValidationSeverity.CRITICAL,
+            message="N3→N1 asymmetry must be declared (VETO GATE - CRITICAL)",
             section="cross_layer_fusion",
             expected="asymmetry: 'N1 CANNOT invalidate N3'",
             actual=n3_to_n1.get("asymmetry", "NOT DECLARED"),
@@ -261,8 +261,8 @@ class ContractValidator:
         results.append(ValidationResult(
             check_id=check_id,
             passed=passed,
-            severity=ValidationSeverity.HIGH,
-            message="N3→N2 asymmetry must be declared",
+            severity=ValidationSeverity.CRITICAL,
+            message="N3→N2 asymmetry must be declared (VETO GATE - CRITICAL)",
             section="cross_layer_fusion",
             expected="asymmetry: 'N2 CANNOT invalidate N3'",
             actual=n3_to_n2.get("asymmetry", "NOT DECLARED"),

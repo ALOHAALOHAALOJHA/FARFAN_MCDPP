@@ -61,8 +61,3 @@
 3.  **Corregir Orquestador:** Modificar `ContractGenerator.generate` para iterar `for question in questions: for sector in sectors: ...`.
 4.  **Corregir Llamada a Assembler:** Pasar `sector` y `contract_number` (contador global 1-300) a `assemble_contract`.
 5.  **Elevar Severidad:** Cambiar validación de asimetría N3 a `ValidationSeverity.CRITICAL`.
-
-## FIRMA
-Certifico que esta auditoría fue conducida con rigor y sin sesgos. El software en su estado actual es **inutilizable**.
-
-*Gemini CLI Auditor*
