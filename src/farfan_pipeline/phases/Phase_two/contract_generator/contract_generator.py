@@ -5,7 +5,9 @@ Propósito: Orquestador principal de generación de contratos
 
 from __future__ import annotations
 import logging
-from datetime import datetime, timezone
+import hashlib
+import os
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -64,9 +66,7 @@ class ContractGenerator:
         self.assets_path = assets_path
         self.output_path = output_path
         self.strict_mode = strict_mode
-
-        # Timestamp de generación (único para toda la ejecución)
-        self.generation_timestamp = datetime.now(timezone.utc).isoformat()
+        self.generation_timestamp: str | None = None
 
         # Componentes (inicializados en generate())
         self.registry: InputRegistry | None = None
@@ -89,7 +89,6 @@ class ContractGenerator:
         """
         logger.info("=" * 60)
         logger.info("INICIANDO GENERACIÓN DE CONTRATOS")
-        logger.info(f"Timestamp: {self.generation_timestamp}")
         logger.info(f"Assets: {self.assets_path}")
         logger.info(f"Output: {self.output_path}")
         logger.info("=" * 60)
@@ -97,6 +96,7 @@ class ContractGenerator:
         # Paso 1: Cargar inputs
         logger.info("Paso 1: Cargando inputs...")
         self._initialize_components()
+        logger.info(f"Timestamp determinista: {self.generation_timestamp}")
         logger.info(f"  - Métodos cargados: {self.registry.total_methods}")
         logger.info(f"  - Contratos a generar: {self.registry.total_contracts}")
         logger.info(f"  - Hash classified_methods: {self.registry.classified_methods_hash}")
@@ -191,6 +191,8 @@ class ContractGenerator:
         loader = InputLoader(self.assets_path)
         self.registry = loader.load_and_validate()
 
+        self.generation_timestamp = self._compute_deterministic_timestamp(self.registry)
+
         self.expander = MethodExpander(self.generation_timestamp)
         self.composer = ChainComposer(self.expander)
         self.assembler = ContractAssembler(
@@ -200,6 +202,29 @@ class ContractGenerator:
         )
         self.validator = ContractValidator()
         self.emitter = JSONEmitter(self.output_path)
+
+    def _compute_deterministic_timestamp(self, registry: InputRegistry) -> str:
+        """
+        Genera timestamp determinista a partir de los hashes de input.
+
+        Usa override FARFAN_GENERATION_TIMESTAMP si está presente.
+        """
+        env_override = os.getenv("FARFAN_GENERATION_TIMESTAMP")
+        if env_override:
+            return env_override
+
+        fingerprint = "|".join(
+            [
+                registry.classified_methods_hash,
+                registry.contratos_clasificados_hash,
+                registry.method_sets_hash,
+                registry.sectors_hash,
+            ]
+        )
+        digest = hashlib.sha256(fingerprint.encode("utf-8")).hexdigest()
+        seconds = int(digest[:8], 16) % (10 * 365 * 24 * 3600)  # ventana 10 años
+        base = datetime(2024, 1, 1, tzinfo=timezone.utc)
+        return (base + timedelta(seconds=seconds)).isoformat()
 
     def _generate_single_contract(
         self, question_id: str, sector: "SectorDefinition", contract_number: int
