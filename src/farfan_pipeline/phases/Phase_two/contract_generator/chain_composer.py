@@ -64,10 +64,11 @@ class ChainComposer:
         Compone cadena epistémica para una pregunta.
 
         SECUENCIA:
-        1. Expandir métodos N1 (preservando orden)
-        2. Expandir métodos N2 (preservando orden)
-        3. Expandir métodos N3 (preservando orden)
-        4. Ensamblar cadena con metadata
+        1. Validar coherencia nivel-fase (E-001)
+        2. Expandir métodos N1 (preservando orden)
+        3. Expandir métodos N2 (preservando orden)
+        4. Expandir métodos N3 (preservando orden)
+        5. Ensamblar cadena con metadata
 
         Args:
             method_set: QuestionMethodSet con métodos asignados
@@ -76,6 +77,11 @@ class ChainComposer:
         Returns:
             EpistemicChain inmutable
         """
+        # ══════════════════════════════════════════════════════════════════
+        # VALIDACIÓN PRE-COMPOSICIÓN: Coherencia Nivel-Fase (E-001)
+        # ══════════════════════════════════════════════════════════════════
+        self._validate_phase_level_coherence(method_set)
+
         # Construir contexto para expansión
         context = {
             "type_code": contract_classification.tipo_contrato["codigo"],
@@ -113,3 +119,51 @@ class ChainComposer:
             mathematical_evidence=method_set.mathematical_evidence,
             doctoral_justification=method_set.doctoral_justification,
         )
+
+    def _validate_phase_level_coherence(self, method_set: "QuestionMethodSet") -> None:
+        """
+        Valida que los métodos asignados a cada fase tengan el nivel correcto.
+
+        REGLAS ESTRICTAS:
+        - phase_a_N1 → SOLO métodos con level que empiece con "N1"
+        - phase_b_N2 → SOLO métodos con level que empiece con "N2"
+        - phase_c_N3 → SOLO métodos con level que empiece con "N3"
+
+        FALLA DURO si cualquier método viola esta regla.
+        """
+        violations = []
+
+        # Validar phase_a_N1
+        for method in method_set.phase_a_N1:
+            if not method.level.startswith("N1"):
+                violations.append(
+                    f"  - phase_a_N1 contains {method.full_id} with level '{method.level}' "
+                    f"(expected N1-*)"
+                )
+
+        # Validar phase_b_N2
+        for method in method_set.phase_b_N2:
+            if not method.level.startswith("N2"):
+                violations.append(
+                    f"  - phase_b_N2 contains {method.full_id} with level '{method.level}' "
+                    f"(expected N2-*)"
+                )
+
+        # Validar phase_c_N3
+        for method in method_set.phase_c_N3:
+            if not method.level.startswith("N3"):
+                violations.append(
+                    f"  - phase_c_N3 contains {method.full_id} with level '{method.level}' "
+                    f"(expected N3-*)"
+                )
+
+        if violations:
+            error_report = "\n".join(violations)
+            raise ValueError(
+                f"HARD FAILURE (E-001): Phase-Level Coherence Violation\n"
+                f"  Question: {method_set.question_id}\n"
+                f"  Violations: {len(violations)}\n"
+                f"Details:\n{error_report}\n\n"
+                f"This error should have been caught by InputLoader. "
+                f"Check method_sets_by_question.json for inconsistencies."
+            )

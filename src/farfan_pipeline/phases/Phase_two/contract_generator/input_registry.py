@@ -472,6 +472,7 @@ class InputLoader:
         FALLA SI:
         - Un método asignado no existe en el dispensario
         - Un método tiene full_id duplicado
+        - Un método está asignado a una fase que no corresponde a su nivel (E-001)
         """
         for q_id, q_set in method_sets.items():
             for method in q_set.all_methods_ordered:
@@ -482,3 +483,63 @@ class InputLoader:
                         f"HARD FAILURE: {q_id} has method {method.full_id} "
                         f"with invalid level {method.level} for contract generation"
                     )
+
+        # ══════════════════════════════════════════════════════════════════
+        # VALIDACIÓN E-001: Coherencia Nivel-Fase
+        # ══════════════════════════════════════════════════════════════════
+        self._validate_phase_level_coherence(methods, method_sets)
+
+    def _validate_phase_level_coherence(
+        self,
+        methods: dict[str, MethodDefinition],
+        method_sets: dict[str, QuestionMethodSet],
+    ) -> None:
+        """
+        Valida que los métodos asignados a cada fase tengan el nivel correcto.
+
+        REGLAS ESTRICTAS:
+        - phase_a_N1 → SOLO métodos con level que empiece con "N1"
+        - phase_b_N2 → SOLO métodos con level que empiece con "N2"
+        - phase_c_N3 → SOLO métodos con level que empiece con "N3"
+
+        FALLA DURO si cualquier método viola esta regla.
+        """
+        for q_id, q_set in method_sets.items():
+            violations = []
+
+            # Validar phase_a_N1
+            for method in q_set.phase_a_N1:
+                if not method.level.startswith("N1"):
+                    violations.append(
+                        f"  - phase_a_N1 contains {method.full_id} with level '{method.level}' "
+                        f"(expected N1-*)"
+                    )
+
+            # Validar phase_b_N2
+            for method in q_set.phase_b_N2:
+                if not method.level.startswith("N2"):
+                    violations.append(
+                        f"  - phase_b_N2 contains {method.full_id} with level '{method.level}' "
+                        f"(expected N2-*)"
+                    )
+
+            # Validar phase_c_N3
+            for method in q_set.phase_c_N3:
+                if not method.level.startswith("N3"):
+                    violations.append(
+                        f"  - phase_c_N3 contains {method.full_id} with level '{method.level}' "
+                        f"(expected N3-*)"
+                    )
+
+            if violations:
+                error_report = "\n".join(violations)
+                raise ValueError(
+                    f"INPUT VALIDATION FAILURE (E-001): Phase-Level Coherence Violation\n"
+                    f"  Question: {q_id}\n"
+                    f"  File: method_sets_by_question.json\n"
+                    f"  Violations: {len(violations)}\n"
+                    f"Details:\n{error_report}\n\n"
+                    f"CORRECTIVE ACTION REQUIRED:\n"
+                    f"  Move methods to the correct phase in method_sets_by_question.json\n"
+                    f"  OR correct the method's level classification in classified_methods.json"
+                )
