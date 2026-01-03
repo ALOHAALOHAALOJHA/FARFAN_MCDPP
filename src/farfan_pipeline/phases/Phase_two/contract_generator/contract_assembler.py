@@ -168,7 +168,7 @@ class ContractAssembler:
         # ══════════════════════════════════════════════════════════════════
         # DERIVACIÓN DE POLICY_AREAS_SERVED (E-005)
         # ══════════════════════════════════════════════════════════════════
-        policy_areas_served = self._derive_policy_areas_served()
+        policy_areas_served = self._derive_policy_areas_served(contract_id)
 
         identity = {
             "base_slot": q_id.replace("_", "-"),  # D1_Q1 → D1-Q1
@@ -254,13 +254,39 @@ class ContractAssembler:
 
         return [contract_id]
 
-    def _derive_policy_areas_served(self) -> list[str]:
+    def _derive_policy_areas_served(self, contract_id: str) -> list[str]:
         """
-        Genera los 10 policy area IDs servidos.
+        Deriva el policy area ID servido por este contrato base.
 
-        FORMATO: PA01, PA02, ..., PA10
+        CADA CONTRATO PERTENECE A UN POLICY AREA.
+        - Q001-Q030 → PA01 (10 questions)
+        - Q031-Q060 → PA02 (10 questions)
+        - etc.
+
+        FÓRMULA: policy_area_num = ((question_num - 1) // 10) + 1
         """
-        return [f"PA{i:02d}" for i in range(1, 11)]
+        import re
+
+        match = re.match(r'^Q(\d+)$', contract_id)
+        if not match:
+            raise ValueError(
+                f"Invalid contract_id format: '{contract_id}'\n"
+                f"Expected format: 'Qxxx' (e.g., 'Q001', 'Q030')"
+            )
+
+        question_num = int(match.group(1))
+
+        if not 1 <= question_num <= 30:
+            raise ValueError(
+                f"Question number out of range: {question_num}\n"
+                f"Expected: 1-30 (base contracts)"
+            )
+
+        # Calculate policy area: Q001-Q010 → PA01, Q011-Q020 → PA02, etc.
+        policy_area_num = ((question_num - 1) // 10) + 1
+        policy_area_id = f"PA{policy_area_num:02d}"
+
+        return [policy_area_id]
 
     def _validate_identity_section(self, identity: dict[str, Any], question_id: str) -> None:
         """
@@ -280,9 +306,9 @@ class ContractAssembler:
                 f"Expected: 'DIMxx' (e.g., 'DIM01')"
             )
 
-        if len(identity["contracts_served"]) != 10:
+        if len(identity["contracts_served"]) != 1:
             raise ValueError(
-                f"contracts_served must have exactly 10 entries\n"
+                f"contracts_served must have exactly 1 entry (each contract serves itself)\n"
                 f"Got: {len(identity['contracts_served'])}"
             )
 
@@ -293,9 +319,9 @@ class ContractAssembler:
                     f"Expected format: 'Qxxx'"
                 )
 
-        if len(identity["policy_area_ids_served"]) != 10:
+        if len(identity["policy_area_ids_served"]) != 1:
             raise ValueError(
-                f"policy_area_ids_served must have exactly 10 entries\n"
+                f"policy_area_ids_served must have exactly 1 entry (each contract belongs to one policy area)\n"
                 f"Got: {len(identity['policy_area_ids_served'])}"
             )
 

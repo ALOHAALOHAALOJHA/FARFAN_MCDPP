@@ -38,6 +38,18 @@ from .ingestion_calibrator import (
     AggressiveCalibrationStrategy,
     ConservativeCalibrationStrategy,
 )
+from .method_binding_validator import (
+    EpistemicViolation,
+    MethodBinding,
+    MethodBindingSet,
+    MethodBindingValidator,
+    ValidationResult,
+    ValidationSeverity,
+)
+from .phase2_calibrator import (
+    Phase2CalibrationResult,
+    Phase2Calibrator,
+)
 
 __all__ = [
     # Core types
@@ -66,4 +78,14 @@ __all__ = [
     "StandardCalibrationStrategy",
     "AggressiveCalibrationStrategy",
     "ConservativeCalibrationStrategy",
+    # Method Binding Validator
+    "EpistemicViolation",
+    "MethodBinding",
+    "MethodBindingSet",
+    "MethodBindingValidator",
+    "ValidationResult",
+    "ValidationSeverity",
+    # Phase-2 Calibrator
+    "Phase2CalibrationResult",
+    "Phase2Calibrator",
 ]
