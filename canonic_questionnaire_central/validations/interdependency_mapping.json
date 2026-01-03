@@ -171,9 +171,9 @@
       "rule_id": "CIRCULAR-001",
       "description": "Detect statements like 'We will achieve X by achieving X'",
       "patterns": [
-        "lograr\\s+(.+?)\\s+mediante\\s+(.+?)\\s+\\1\\b",
-        "alcanzar\\s+(.+?)\\s+a través de\\s+(.+?)\\s+\\1\\b",
-        "conseguir\\s+(.+?)\\s+implementando\\s+(.+?)\\s+\\1\\b"
+        "lograr\\s+(.+?)\\s+mediante\\s+\\1\\b",
+        "alcanzar\\s+(.+?)\\s+a través de\\s+\\1\\b",
+        "conseguir\\s+(.+?)\\s+implementando\\s+\\1\\b"
       ],
       "enforcement": "error"
     },

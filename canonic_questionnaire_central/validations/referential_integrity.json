@@ -14,7 +14,7 @@
       "reference_file": "niveles_abstraccion.json",
       "reference_path": "$.dimensions[*].dimension_id",
       "enforcement": "error",
-      "validation_query": "Ensure every dimension_id in questions exists in niveles_abstraccion.dimensions (see reference_path)"
+      "validation_query": "Verify all dimension_id values in source_files exist in reference_path"
     },
     "policy_area_references": {
       "rule_id": "REF-INT-002",
@@ -179,7 +179,8 @@
         "DIM05_IMPACTOS",
         "DIM06_CAUSALIDAD"
       ],
-      "enforcement": "error"
+      "enforcement": "error",
+      "validation_query": "Verify that every dimension listed in required_templates exists in validations/validation_templates.json"
     }
   },
 
