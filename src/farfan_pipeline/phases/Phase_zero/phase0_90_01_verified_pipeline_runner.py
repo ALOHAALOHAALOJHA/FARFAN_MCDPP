@@ -123,6 +123,10 @@ class VerifiedPipelineRunner:
         self.input_pdf_sha256: str = ""
         self.questionnaire_sha256: str = ""
         
+        # Initialize protocol attributes for later gates (P0.4+)
+        self.method_executor: Any | None = None
+        self.questionnaire: Any | None = None
+        
         # P0.0.1: Load runtime configuration
         self.runtime_config: RuntimeConfig | None = None
         try:

@@ -26,6 +26,18 @@ from .type_defaults import (
     get_type_defaults,
     is_operation_prohibited,
 )
+from .unit_of_analysis import (
+    FiscalContext,
+    MunicipalityCategory,
+    UnitOfAnalysis,
+)
+from .ingestion_calibrator import (
+    CalibrationStrategy,
+    IngestionCalibrator,
+    StandardCalibrationStrategy,
+    AggressiveCalibrationStrategy,
+    ConservativeCalibrationStrategy,
+)
 
 __all__ = [
     # Core types
@@ -44,4 +56,14 @@ __all__ = [
     "get_type_defaults",
     "is_operation_prohibited",
     "PROHIBITED_OPERATIONS",
+    # Unit of Analysis
+    "FiscalContext",
+    "MunicipalityCategory",
+    "UnitOfAnalysis",
+    # Ingestion Calibrator
+    "CalibrationStrategy",
+    "IngestionCalibrator",
+    "StandardCalibrationStrategy",
+    "AggressiveCalibrationStrategy",
+    "ConservativeCalibrationStrategy",
 ]

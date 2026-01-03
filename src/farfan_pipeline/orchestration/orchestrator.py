@@ -2317,9 +2317,9 @@ class Orchestrator:
                     continue
 
                 try:
-                    # Create GenericContractExecutor with question_id
+                    # Create DynamicContractExecutor with question_id
                     # This loads the contract from executor_contracts/specialized/{question_id}.v3.json
-                    instance = GenericContractExecutor(
+                    instance = DynamicContractExecutor(
                         method_executor=self.executor,
                         signal_registry=getattr(self.executor, "signal_registry", None),
                         config=self.executor_config,

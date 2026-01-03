@@ -16,7 +16,10 @@ try:
 except Exception:  # pragma: no cover
     Draft7Validator = Any  # type: ignore[misc,assignment]
 
-from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+try:
+    from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+except ImportError:
+    from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
 # NEW: Replace legacy evidence modules with EvidenceNexus and Carver
 from canonic_phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
 from canonic_phases.Phase_two.carver import DoctoralCarverSynthesizer
