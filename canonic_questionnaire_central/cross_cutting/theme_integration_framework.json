@@ -1,0 +1,304 @@
+{
+  "_version": "1.0.0",
+  "_generated_at": "2026-01-03T00:00:00Z",
+  "_description": "Framework for integrating cross-cutting themes into question evaluation and scoring",
+
+  "integration_strategy": {
+    "description": "How cross-cutting themes are operationalized in the evaluation framework",
+    "enforcement_levels": {
+      "required": {
+        "description": "Theme MUST be present and validated",
+        "scoring_impact": "Questions fail validation if theme not addressed",
+        "weight_in_score": 0.25
+      },
+      "recommended": {
+        "description": "Theme SHOULD be present, bonus points if included",
+        "scoring_impact": "Bonus points awarded if theme addressed",
+        "weight_in_score": 0.10
+      },
+      "optional": {
+        "description": "Theme MAY be present, no scoring impact",
+        "scoring_impact": "No impact on score",
+        "weight_in_score": 0.0
+      }
+    }
+  },
+
+  "theme_application_matrix": {
+    "description": "Mapping of which themes apply to which dimensions and policy areas",
+    "CC_ENFOQUE_DIFERENCIAL": {
+      "enforcement": {
+        "PA01": "required",
+        "PA05": "required",
+        "PA06": "required",
+        "PA02": "recommended",
+        "PA03": "recommended",
+        "PA04": "recommended",
+        "PA07": "recommended",
+        "PA08": "recommended",
+        "PA09": "recommended",
+        "PA10": "recommended"
+      },
+      "validation_indicators": [
+        "reconocimiento_grupos_especificos",
+        "analisis_interseccional",
+        "medidas_ajustadas",
+        "participacion_efectiva"
+      ],
+      "patterns_to_match": [
+        "enfoque diferencial",
+        "grupos étnicos",
+        "poblaciones vulnerables",
+        "discriminación positiva",
+        "acciones afirmativas"
+      ]
+    },
+    "CC_PERSPECTIVA_GENERO": {
+      "enforcement": {
+        "PA01": "required",
+        "PA02": "recommended",
+        "PA03": "recommended",
+        "PA04": "recommended",
+        "PA05": "recommended",
+        "PA06": "recommended",
+        "PA07": "recommended",
+        "PA08": "recommended",
+        "PA09": "recommended",
+        "PA10": "recommended"
+      },
+      "validation_indicators": [
+        "analisis_impacto_genero",
+        "brechas_identificadas",
+        "medidas_correccion",
+        "participacion_mujeres",
+        "presupuesto_sensibilizado_genero"
+      ],
+      "patterns_to_match": [
+        "perspectiva de género",
+        "enfoque de género",
+        "equidad de género",
+        "igualdad de género",
+        "brecha de género",
+        "mujeres",
+        "violencia basada en género"
+      ]
+    },
+    "CC_ENTORNO_TERRITORIAL": {
+      "enforcement": {
+        "PA03": "required",
+        "PA07": "required",
+        "PA04": "recommended",
+        "PA08": "recommended",
+        "PA10": "recommended"
+      },
+      "validation_indicators": [
+        "caracterizacion_territorial",
+        "riesgos_ambientales",
+        "vulnerabilidad_climatica",
+        "ordenamiento_territorial",
+        "cosmovisiones_locales"
+      ],
+      "patterns_to_match": [
+        "territorio",
+        "ordenamiento territorial",
+        "caracterización territorial",
+        "rural",
+        "urbano",
+        "vereda",
+        "corregimiento"
+      ]
+    },
+    "CC_PARTICIPACION_CIUDADANA": {
+      "enforcement": {
+        "PA01": "recommended",
+        "PA02": "recommended",
+        "PA03": "recommended",
+        "PA04": "recommended",
+        "PA05": "recommended",
+        "PA06": "recommended",
+        "PA07": "recommended",
+        "PA08": "recommended",
+        "PA09": "recommended",
+        "PA10": "recommended"
+      },
+      "validation_indicators": [
+        "espacios_participacion",
+        "mecanismos_incidencia",
+        "control_social",
+        "rendicion_cuentas",
+        "retroalimentacion_ciudadana"
+      ],
+      "patterns_to_match": [
+        "participación ciudadana",
+        "veedurías",
+        "control social",
+        "rendición de cuentas",
+        "consulta ciudadana",
+        "mesa de participación"
+      ]
+    },
+    "CC_COHERENCIA_NORMATIVA": {
+      "enforcement": {
+        "PA01": "required",
+        "PA02": "required",
+        "PA03": "required",
+        "PA04": "required",
+        "PA05": "required",
+        "PA06": "required",
+        "PA07": "required",
+        "PA08": "required",
+        "PA09": "required",
+        "PA10": "required"
+      },
+      "validation_indicators": [
+        "marco_juridico_nacional",
+        "tratados_internacionales",
+        "jurisprudencia_relevante",
+        "politicas_publicas_concordantes"
+      ],
+      "patterns_to_match": [
+        "Ley \\d+",
+        "Decreto \\d+",
+        "Constitución",
+        "CONPES",
+        "PND",
+        "ODS",
+        "jurisprudencia"
+      ]
+    },
+    "CC_SOSTENIBILIDAD_PRESUPUESTAL": {
+      "enforcement": {
+        "PA01": "required",
+        "PA02": "required",
+        "PA03": "required",
+        "PA04": "required",
+        "PA05": "required",
+        "PA06": "required",
+        "PA07": "required",
+        "PA08": "required",
+        "PA09": "required",
+        "PA10": "required"
+      },
+      "validation_indicators": [
+        "fuente_financiacion",
+        "proyeccion_multianual",
+        "costos_unitarios",
+        "relacion_beneficio_costo",
+        "alternativas_financiacion"
+      ],
+      "patterns_to_match": [
+        "SGP",
+        "regalías",
+        "PPI",
+        "Plan Plurianual de Inversiones",
+        "presupuesto",
+        "financiación",
+        "BPIN",
+        "OCAD"
+      ]
+    },
+    "CC_INTEROPERABILIDAD": {
+      "enforcement": {
+        "PA01": "recommended",
+        "PA02": "recommended",
+        "PA03": "recommended",
+        "PA04": "recommended",
+        "PA05": "recommended",
+        "PA06": "recommended",
+        "PA07": "recommended",
+        "PA08": "recommended",
+        "PA09": "recommended",
+        "PA10": "recommended"
+      },
+      "validation_indicators": [
+        "entes_coordinadores",
+        "comites_interinstitucionales",
+        "flujos_informacion",
+        "sistemas_integrados",
+        "responsabilidades_claras"
+      ],
+      "patterns_to_match": [
+        "coordinación",
+        "articulación",
+        "interinstitucional",
+        "comité",
+        "mesa técnica",
+        "Secretaría",
+        "entidad responsable"
+      ]
+    },
+    "CC_MECANISMOS_SEGUIMIENTO": {
+      "enforcement": {
+        "PA01": "required",
+        "PA02": "required",
+        "PA03": "required",
+        "PA04": "required",
+        "PA05": "required",
+        "PA06": "required",
+        "PA07": "required",
+        "PA08": "required",
+        "PA09": "required",
+        "PA10": "required"
+      },
+      "validation_indicators": [
+        "sistemas_informacion",
+        "indicadores_misionales",
+        "frecuencia_medicion",
+        "evaluaciones_externas",
+        "ajustes_basedatos"
+      ],
+      "patterns_to_match": [
+        "indicador",
+        "medición",
+        "seguimiento",
+        "monitoreo",
+        "evaluación",
+        "línea base",
+        "meta",
+        "fuente de verificación"
+      ]
+    }
+  },
+
+  "scoring_adjustment_rules": {
+    "description": "How cross-cutting theme presence/absence affects scoring",
+    "required_theme_missing": {
+      "action": "reduce_score",
+      "reduction_factor": 0.25,
+      "failure_code": "F-CC-REQUIRED"
+    },
+    "recommended_theme_present": {
+      "action": "bonus_points",
+      "bonus_factor": 0.10,
+      "max_bonus": 0.15
+    },
+    "all_required_themes_present": {
+      "action": "coherence_bonus",
+      "bonus_factor": 0.05,
+      "description": "Bonus for comprehensive cross-cutting integration"
+    }
+  },
+
+  "validation_workflow": {
+    "step_1": {
+      "action": "identify_applicable_themes",
+      "description": "Based on dimension_id and policy_area_id, determine which themes apply"
+    },
+    "step_2": {
+      "action": "extract_theme_indicators",
+      "description": "Search for patterns and indicators in the text"
+    },
+    "step_3": {
+      "action": "validate_required_themes",
+      "description": "Ensure all required themes are present"
+    },
+    "step_4": {
+      "action": "score_theme_presence",
+      "description": "Calculate theme presence score"
+    },
+    "step_5": {
+      "action": "apply_scoring_adjustments",
+      "description": "Apply bonuses or penalties based on theme presence"
+    }
+  }
+}
