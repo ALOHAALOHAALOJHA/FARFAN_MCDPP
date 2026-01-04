@@ -148,6 +148,9 @@ class InputRegistry:
     sectors_by_id: dict[str, SectorDefinition]
     sectors_ordered: tuple[SectorDefinition, ...]
 
+    # Preguntas específicas por sector {sector_id: {question_id: text}}
+    sector_questions: dict[str, dict[str, str]]
+
     # Estadísticas para validación
     total_methods: int
     total_contracts: int
@@ -244,6 +247,10 @@ class InputLoader:
 
     def _load_json(self, filename: str) -> dict[str, Any]:
         """Carga JSON preservando orden de claves"""
+        # Override para sectors.json: Cargar desde fuente canónica
+        if filename == "sectors.json":
+            return self._load_canonical_sectors()
+
         path = self.assets_path / filename
         if not path.exists():
             raise FileNotFoundError(f"HARD FAILURE: Required file not found: {path}")
@@ -251,6 +258,64 @@ class InputLoader:
         with open(path, "r", encoding="utf-8") as f:
             # json.load preserva orden en Python 3.7+
             return json.load(f)
+
+    def _load_canonical_sectors(self) -> dict[str, Any]:
+        """Carga sectores desde la fuente canónica en canonic_questionnaire_central"""
+        # Ruta hardcoded a la fuente canónica relativa al root del proyecto
+        # Asumiendo que el script corre desde root o src/...
+        # Ajustar ruta base según necesidad. Aquí intentamos resolverla dinámicamente.
+        
+        # Intentar localizar la carpeta canónica
+        repo_root = Path(__file__).resolve().parent.parent.parent.parent.parent.parent
+        canonical_dir = repo_root / "canonic_questionnaire_central" / "policy_areas"
+        
+        if not canonical_dir.exists():
+             # Fallback si la ruta relativa falla (ej. symlinks)
+             canonical_dir = Path("canonic_questionnaire_central/policy_areas")
+        
+        if not canonical_dir.exists():
+            raise FileNotFoundError(f"CRITICAL: Canonical policy areas not found at {canonical_dir}")
+
+        sectors_data = {}
+        
+        # Listar carpetas PAxx
+        sector_folders = sorted([f for f in canonical_dir.iterdir() if f.is_dir() and f.name.startswith("PA")])
+        
+        if len(sector_folders) != 10:
+             raise ValueError(f"CRITICAL: Expected 10 canonical sector folders, found {len(sector_folders)}")
+
+        for folder in sector_folders:
+            # Extraer ID (PA01, PA02...)
+            sector_id = folder.name.split("_")[0]
+            
+            # Leer metadata
+            meta_path = folder / "metadata.json"
+            if not meta_path.exists():
+                raise FileNotFoundError(f"Missing metadata.json in {folder}")
+                
+            with open(meta_path, "r", encoding="utf-8") as f:
+                meta = json.load(f)
+                
+            # Leer keywords
+            kw_path = folder / "keywords.json"
+            keywords = []
+            if kw_path.exists():
+                with open(kw_path, "r", encoding="utf-8") as f:
+                    kw = json.load(f)
+                    keywords = kw.get("keywords", [])
+            
+            sectors_data[sector_id] = {
+                "sector_id": sector_id,
+                "canonical_name": meta["name"],
+                "description": f"Área canónica: {meta['name']}",
+                "keywords": keywords,
+                "regex_patterns": keywords[:5] # Fallback patterns
+            }
+            
+        return {
+            "metadata": {"source": "canonical_filesystem"},
+            "sectors": sectors_data
+        }
 
     def _compute_hash(self, data: dict[str, Any]) -> str:
         """Computa hash determinista de datos"""

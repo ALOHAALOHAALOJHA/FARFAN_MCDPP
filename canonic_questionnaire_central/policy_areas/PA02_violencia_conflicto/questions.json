@@ -523,7 +523,7 @@
       "question_id": "Q031",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El diagnóstico presenta datos numéricos (tasas de homicidio, cifras de desplazamiento, casos de reclutamiento) para el área de Prevención de la violencia y protección frente al conflicto que sirvan como línea base? Se debe verificar el año de referencia y fuentes (ej. Policía Nacional, UARIV, Defensoría del Pueblo).",
+      "text": "¿El diagnóstico de seguridad y convivencia presenta datos cuantitativos sobre delitos de alto impacto (homicidios, extorsión, hurto), presencia de actores armados o economías ilegales, desagregados por zona (urbana/rural) y población afectada, con año de referencia y fuente identificada (Policía Nacional, Medicina Legal, Sistema de Información Estadístico, Delincuencial, Contravencional y Operativo - SIEDCO)?",
       "validations": {
         "buscar_indicadores_cuantitativos": {
           "minimum_required": 3,
@@ -821,7 +821,7 @@
       "question_id": "Q032",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El texto dimensiona el problema de la violencia y el conflicto cuantificando la brecha o el aumento de casos? Se debe buscar si se mencionan explícitamente limitaciones en los datos, como 'subregistro', 'cifra negra' o 'vacíos de información'.",
+      "text": "¿El diagnóstico dimensiona numéricamente la afectación por dinámicas de violencia o criminalidad y reconoce explícitamente limitaciones en los datos como 'subregistro de denuncias por miedo', 'cifras negras en extorsión', 'zonas de silencio' o 'dificultad de acceso a información de inteligencia'?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1087,7 +1087,7 @@
       "question_id": "Q033",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de prevención, protección, atención a víctimas o funcionamiento del Sistema de Alertas Tempranas (SAT)?",
+      "text": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $), incluyendo los provenientes del Fondo Cuenta Territorial de Seguridad y Convivencia Ciudadana (FONSET), a programas de prevención del delito, fortalecimiento de organismos de seguridad o tecnologías de vigilancia?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1356,7 +1356,7 @@
       "question_id": "Q034",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El PDM describe las capacidades para gestionar la protección y atención a víctimas, mencionando entidades (Comité de Justicia Transicional, Enlace de Víctimas) y sus necesidades? Se debe buscar términos como 'rutas de protección', 'sistemas de información' y si se identifican 'limitaciones' o 'barreras'.",
+      "text": "¿El plan identifica las instancias responsables de la seguridad y el orden público (Secretaría de Gobierno, Inspecciones de Policía, Comisarías), describe su capacidad operativa y señala necesidades de articulación con la Fuerza Pública (Policía, Ejército), Fiscalía o la Unidad Nacional de Protección (UNP)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1580,7 +1580,7 @@
       "question_id": "Q035",
       "scoring_definition_ref": "scoring_modalities.TYPE_E",
       "scoring_modality": "TYPE_E",
-      "text": "¿El plan justifica su alcance en prevención de violencia mencionando el marco legal (ej. Ley 1448) o reconociendo restricciones explícitas de tipo presupuestal o de coordinación interinstitucional?",
+      "text": "¿El plan justifica el alcance de sus intervenciones en seguridad mencionando instrumentos rectores como el Plan Integral de Seguridad y Convivencia Ciudadana (PISCC) o reconociendo explícitamente la distinción entre las competencias municipales de prevención y coordinación administrativa, frente a las funciones operativas y judiciales del nivel nacional?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1783,7 +1783,7 @@
       "question_id": "Q036",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las actividades de prevención y protección se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "text": "¿Las actividades orientadas a la reducción del delito y la protección (ej. realización de Consejos de Seguridad, mantenimiento de parque automotor de Fuerza Pública, instalación de cámaras, jornadas de prevención de reclutamiento) aparecen en formato estructurado con atributos verificables como responsable, producto esperado, cronograma y presupuesto?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2017,7 +2017,7 @@
       "question_id": "Q037",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La descripción de las actividades de protección detalla el instrumento ('mediante la activación de rutas', 'a través de albergues temporales'), la población objetivo ('víctimas de desplazamiento', 'NNA en riesgo') y la lógica causal ('para mitigar el riesgo')?",
+      "text": "¿La descripción de actividades especifica el instrumento ('mediante sistemas de videovigilancia', 'a través del pago de recompensas', 'con entornos escolares seguros'), la población o zona priorizada (puntos calientes, jóvenes en riesgo, comerciantes extorsionados) y explica cómo la actividad contribuye a la seguridad ('para disuadir el accionar delictivo', 'para desarticular rentas criminales')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2221,7 +2221,7 @@
       "question_id": "Q038",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM vincula explícitamente las actividades (ej. patrullajes) con las 'causas raíz' de la violencia (ej. economías ilegales, disputas territoriales) identificadas en el diagnóstico?",
+      "text": "¿Las actividades propuestas se vinculan explícitamente con los factores generadores de violencia identificados en el diagnóstico (ej. disputas por microtráfico, presencia de cultivos ilícitos, debilidad institucional en zonas rurales, falta de oportunidades para jóvenes expuestos a reclutamiento)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2445,7 +2445,7 @@
       "question_id": "Q039",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan identifica posibles riesgos en la implementación de las medidas de protección (ej. agudización del conflicto, estigmatización de comunidades) y propone 'medidas de mitigación'?",
+      "text": "¿El plan identifica posibles riesgos en la implementación de la estrategia de seguridad (ej. corrupción o infiltración de instituciones, represalias contra funcionarios, desplazamiento del delito a zonas vecinas - efecto globo) y propone medidas de mitigación o controles internos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2629,7 +2629,7 @@
       "question_id": "Q040",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El conjunto de actividades de prevención y protección demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. alertas tempranas + respuesta institucional) o 'secuencia' lógica.",
+      "text": "¿El plan describe explícitamente cómo se articulan las medidas de control y coerción (Policía, justicia) con las estrategias de prevención social y situacional (iluminación, gestión de conflictos, oferta social), evidenciando una visión integral de la seguridad y la convivencia?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2959,7 +2959,7 @@
       "question_id": "Q041",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de producto para prevención (ej. alertas gestionadas, personas en rutas de protección) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "text": "¿Los indicadores de producto (Consejos de Seguridad realizados, alarmas comunitarias instaladas, frentes de seguridad creados, campañas de desmovilización o prevención ejecutadas) incluyen línea base, meta cuantitativa y fuente de verificación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3406,7 +3406,7 @@
       "question_id": "Q042",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las metas de los productos (ej. 'cobertura del 80% de las alertas tempranas') son proporcionales a la magnitud del riesgo diagnosticado? Se debe buscar si se define la 'frecuencia' de la respuesta.",
+      "text": "¿Las metas de productos guardan relación con la magnitud de la criminalidad o la amenaza identificada, y se especifica la priorización de intervenciones en las zonas de mayor concentración delictiva o riesgo de vulneración de derechos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3871,7 +3871,7 @@
       "question_id": "Q043",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los productos de protección tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Gobierno' o entidad responsable)?",
+      "text": "¿Los productos están vinculados a fuentes de financiación específicas (recursos propios, SGP, FONSET, gestión ante Ministerio del Interior/FONSECON) y a responsables claros dentro de la administración municipal o en coordinación con organismos de seguridad?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4344,7 +4344,7 @@
       "question_id": "Q044",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una relación factible entre la actividad (ej. 'conformar un comité') y la meta del producto asociado (ej. '100% de alertas respondidas') para el área de Prevención de la violencia? Se debe evaluar si los 'plazos' y recursos son realistas.",
+      "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'dotación de combustible') y la meta del producto asociado (ej. 'operatividad de cuadrantes garantizada'), considerando si los recursos municipales son suficientes para sostener la capacidad operativa requerida por la Fuerza Pública en el territorio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4806,7 +4806,7 @@
       "question_id": "Q045",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM explica cómo los productos de protección (ej. 'personas atendidas en albergues') contribuyen a generar resultados (ej. 'reducción de la vulnerabilidad')? Se debe buscar la descripción de este 'mecanismo' causal.",
+      "text": "¿El plan describe cómo los productos (ej. 'parque automotor renovado', 'redes de cooperantes activas', 'jóvenes vinculados a oferta cultural') contribuyen a los resultados esperados (ej. 'mejora en tiempos de respuesta', 'anticipación del delito', 'reducción del reclutamiento forzado'), explicando la lógica de esta contribución?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5136,7 +5136,7 @@
       "question_id": "Q046",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de resultado para la prevención de la violencia (ej. 'tasa de homicidios', 'reducción de eventos de desplazamiento') están definidos con línea base, meta y un horizonte temporal ('cuatrienio')?",
+      "text": "¿Los indicadores de resultado en seguridad (tasa de homicidios por 100 mil habitantes, tasa de hurto, casos de extorsión reportados, percepción de seguridad ciudadana) están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5337,7 +5337,7 @@
       "question_id": "Q047",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se explicita la cadena causal que lleva a la reducción de la violencia, mencionando los 'supuestos' clave (ej. 'si la comunidad confía en las instituciones') o las 'condiciones habilitantes'?",
+      "text": "¿El plan describe la ruta que lleva a la mejora de la seguridad y convivencia, mencionando condiciones necesarias o supuestos externos (ej. 'si se mantiene el pie de fuerza policial asignado', 'si la Fiscalía avanza en el esclarecimiento judicial', 'si no hay reconfiguración abrupta de actores armados')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5538,7 +5538,7 @@
       "question_id": "Q048",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición de las metas de resultado (ej. 'reducir la tasa de homicidios en 15%') se justifica en función de los recursos, la capacidad policial o se compara con 'casos' similares?",
+      "text": "¿La ambición de las metas de resultado se justifica considerando que el municipio no tiene control directo sobre variables macrocriminales o el sistema judicial, pero sí sobre la gestión de la convivencia y la coordinación interinstitucional, o se compara con municipios de tipología similar?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5703,7 +5703,7 @@
       "question_id": "Q049",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los resultados propuestos (ej. 'mejora de la percepción de seguridad') 'atienden' o 'abordan' directamente los problemas de violencia (homicidio, confinamiento) priorizados en el diagnóstico?",
+      "text": "¿Los resultados propuestos (ej. 'reducción de delitos de alto impacto', 'control territorial institucional', 'disminución de la conflictividad social') atienden directamente las dinámicas de violencia, presencia de grupos organizados o economías ilegales priorizadas en el diagnóstico?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5860,7 +5860,7 @@
       "question_id": "Q050",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan declara la alineación de sus resultados de prevención y protección con marcos superiores como el PND o los ODS (especialmente el ODS 16)?",
+      "text": "¿El plan declara la alineación de sus resultados con la Política de Defensa y Seguridad Nacional, el Plan Nacional de Desarrollo (capítulo de Seguridad Humana), o las Alertas Tempranas emitidas por la Defensoría del Pueblo para el territorio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6061,7 +6061,7 @@
       "question_id": "Q051",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM define 'impactos' o 'transformaciones estructurales' de largo plazo (ej. 'consolidación de la paz territorial')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "text": "¿El plan define impactos estructurales de largo plazo en materia de seguridad (ej. 'consolidación de la cultura de la legalidad', 'territorios libres de miedo', 'desarticulación de economías ilícitas como motor económico'), describiendo cómo se llega a ellos y el horizonte temporal esperado?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6418,7 +6418,7 @@
       "question_id": "Q052",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se utilizan 'índices' (ej. Índice de Seguridad Humana) o 'proxies' (ej. inversión privada en la zona) para medir los impactos en la estabilización, justificando su validez?",
+      "text": "¿Se utilizan índices reconocidos (ej. Índice de Paz Ciudadana) o indicadores proxy para medir impactos difíciles de cuantificar (ej. 'confianza en las instituciones de seguridad', 'nivel de denuncia', 'apropiación de espacios públicos recuperados'), justificando su pertinencia?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6592,7 +6592,7 @@
       "question_id": "Q053",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "Cuando un impacto en la paz es difícil de medir (ej. 'restablecimiento del tejido social'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "text": "¿Los impactos esperados se alinean con la construcción de paz y legalidad, y consideran riesgos sistémicos (transnacionalización del crimen, crisis carcelaria, fluctuaciones en mercados ilegales globales) que podrían obstaculizar el logro de un entorno seguro y estable?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6782,7 +6782,7 @@
       "question_id": "Q054",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los impactos en la paz se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. resurgimiento de actores armados) que podrían romper el mecanismo causal?",
+      "text": "¿El plan evalúa si la ambición del impacto es realista frente a las capacidades locales, y considera posibles efectos no deseados (ej. estigmatización de zonas intervenidas, abuso de autoridad, desplazamiento de la violencia a áreas rurales) proponiendo enfoques de seguridad basada en derechos humanos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6983,7 +6983,7 @@
       "question_id": "Q055",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición del impacto (ej. 'erradicación total de la violencia') es realista? Se debe buscar si se analizan 'efectos no deseados' (ej. estigmatización) o se declaran 'hipótesis límite'.",
+      "text": "¿El plan describe cómo se sostendrán las mejoras en seguridad y convivencia más allá del gobierno actual, identificando mecanismos de fortalecimiento comunitario, cultura ciudadana o inversión social sostenida que reduzcan la dependencia exclusiva de la presencia policial permanente?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7172,7 +7172,7 @@
       "question_id": "Q056",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una 'teoría de cambio' explícita para la prevención de la violencia, preferiblemente en un 'diagrama', que identifique causas, mediadores (ej. control territorial) y 'supuestos verificables'?",
+      "text": "¿El plan presenta una descripción explícita de su modelo de seguridad (ej. prevención social + disuasión situacional + control policial), preferiblemente en diagrama, que identifique las causas del delito, las intervenciones, y la secuencia insumos→actividades→productos→resultados→impactos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7336,7 +7336,7 @@
       "question_id": "Q057",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los saltos en la cadena causal de la seguridad son proporcionales (ej. la instalación de 10 cámaras no garantiza una reducción del 50% en homicidios)?",
+      "text": "¿El plan evita atribuir reducciones masivas de la criminalidad a acciones aisladas (ej. no asume que 'instalar cámaras' elimina automáticamente el homicidio), reconociendo la necesidad de estrategias integrales que aborden tanto los factores de riesgo social como las oportunidades delictivas?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7533,7 +7533,7 @@
       "question_id": "Q058",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan reconoce 'inconsistencias' en su lógica de seguridad y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "text": "¿El plan reconoce la complejidad y adaptabilidad del crimen organizado, identifica incertidumbres, y propone mecanismos de inteligencia contextual o análisis del delito (observatorios del delito, consejos de seguridad analíticos) para ajustar las estrategias operativas y preventivas?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7727,7 +7727,7 @@
       "question_id": "Q059",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se describe un sistema de monitoreo para la seguridad que incluya 'mecanismos de corrección' o 'aprendizaje' para adaptar la estrategia policial o de prevención?",
+      "text": "¿Se describe un sistema de seguimiento a la situación de orden público que incluya la revisión periódica de cifras del SIEDCO, seguimiento a Alertas Tempranas (CIPRAT), y retroalimentación con la comunidad para evaluar la efectividad y legitimidad de las medidas de seguridad adoptadas?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7945,7 +7945,7 @@
       "question_id": "Q060",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La lógica causal para la prevención de la violencia considera el contexto, reconociendo 'grupos afectados' (ej. jóvenes, firmantes de paz) y 'restricciones' territoriales o de acceso?",
+      "text": "¿El plan considera las particularidades del territorio (corredores estratégicos, zonas de cultivo ilícito, frontera) y reconoce riesgos diferenciados para poblaciones específicas (líderes sociales, jóvenes, comerciantes, mujeres), adaptando las medidas de protección y prevención a estas realidades?",
       "validations": {
         "completeness_check": {
           "type": "completeness",

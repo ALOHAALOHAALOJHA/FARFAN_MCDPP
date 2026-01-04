@@ -5,14 +5,14 @@
     "base_contract_id": "Q029",
     "base_slot": "D6-Q4",
     "sector_id": "PA03",
-    "sector_name": "Infraestructura y Transporte",
+    "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "dimension_id": "DIM 6",
     "representative_question_id": "Q029_PA03",
     "contract_type": "TYPE_B",
     "contract_type_name": "Bayesiano",
     "contract_type_focus": "Evaluación de sistema de retroalimentación",
     "contract_version": "4.0.0-epistemological",
-    "created_at": "2026-07-23T15:10:17+00:00",
+    "created_at": "2026-10-17T04:23:05+00:00",
     "generator_version": "4.0.0-granular",
     "specification_source": "operationalization_guide.json"
   },
@@ -77,7 +77,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto.  Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -126,7 +126,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto.  Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -175,7 +175,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto.  Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -224,7 +224,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto.  Produce hechos observables sin interpretación.",
             "requires": []
           },
@@ -273,7 +273,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N1-EMP provides FACT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Extrae y procesa observaciones empíricas directas del texto.  Produce hechos observables sin interpretación.",
             "requires": []
           }
@@ -333,7 +333,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -389,7 +389,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -445,7 +445,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -501,7 +501,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -557,7 +557,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N2-INF provides PARAMETER output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
             "requires": [
               "raw_facts"
@@ -627,7 +627,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "requires": [
               "raw_facts",
@@ -695,7 +695,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "requires": [
               "raw_facts",
@@ -763,7 +763,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "requires": [
               "raw_facts",
@@ -831,7 +831,7 @@
             ],
             "interaction_notes": "Method operates within TYPE_B contract.  Fusion strategy: bayesian_update. Level N3-AUD provides CONSTRAINT output.",
             "expansion_source": "method_sets_by_question.json",
-            "expansion_timestamp": "2026-07-23T15:10:17+00:00",
+            "expansion_timestamp": "2026-10-17T04:23:05+00:00",
             "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
             "requires": [
               "raw_facts",
@@ -899,7 +899,7 @@
     "monolith_ref": "Q029",
     "pregunta_completa": "¿Se describe un sistema de monitoreo para el sector que incluya mecanismos de alerta temprana, retroalimentación con entidades especializadas, participación de población beneficiaria?",
     "sector_id": "PA03",
-    "sector_name": "Infraestructura y Transporte",
+    "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
@@ -1217,10 +1217,10 @@
       }
     },
     "generation_metadata": {
-      "timestamp": "2026-07-23T15:10:17+00:00",
+      "timestamp": "2026-10-17T04:23:05+00:00",
       "generator_version": "4.0.0-granular",
       "assembler_version": "4.0.0-granular",
-      "composition_timestamp": "2026-07-23T15:10:17+00:00"
+      "composition_timestamp": "2026-10-17T04:23:05+00:00"
     },
     "contract_lineage": {
       "base_question": "D6_Q4",
@@ -1253,7 +1253,7 @@
   "audit_annotations": {
     "generation_metadata": {
       "generator_version": "4.0.0-granular",
-      "generation_timestamp": "2026-07-23T15:10:17+00:00",
+      "generation_timestamp": "2026-10-17T04:23:05+00:00",
       "input_hashes": {
         "classified_methods": "e3b57835bbe2cca5",
         "contratos_clasificados": "4b348284ad32888c",
@@ -1300,7 +1300,7 @@
     },
     "sector_specific": {
       "sector_id": "PA03",
-      "sector_name": "Infraestructura y Transporte"
+      "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres"
     },
     "audit_checklist": {
       "structure_validated": true,
@@ -1308,7 +1308,7 @@
       "temporal_validity_validated": true,
       "cross_reference_validated": true,
       "validation_pass_rate": 1.0,
-      "validation_timestamp": "2026-07-23T15:10:17+00:00"
+      "validation_timestamp": "2026-10-17T04:23:05+00:00"
     }
   }
 }

@@ -7947,7 +7947,7 @@
       "question_id": "Q026",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan presenta una descripción explícitamente de cómo se genera el cambio hacia la igualdad (ej. modelo ecológico para violencia, empoderamiento multidimensional), preferiblemente en diagrama o matriz, que identifique causas estructurales, intervenciones, supuestos y la secuencia insumos→actividades→productos→resultados→impactos?",
+      "text": "¿El plan presenta una descripción explícita de cómo se genera el cambio hacia la igualdad (ej. modelo ecológico para violencia, empoderamiento multidimensional), preferiblemente en diagrama o matriz, que identifique causas estructurales, intervenciones, supuestos y la secuencia insumos→actividades→productos→resultados→impactos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",

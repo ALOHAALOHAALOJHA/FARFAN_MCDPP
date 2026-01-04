@@ -621,7 +621,7 @@
       "question_id": "Q271",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El diagnóstico presenta datos numéricos (flujo de migrantes, número de PPT expedidos, NNA migrantes en el sistema escolar) sobre el área de Migración transfronteriza que sirvan como línea base? Se debe verificar el año y fuentes (ej. Migración Colombia, DANE, Personería).",
+      "text": "¿El diagnóstico del sector presenta datos cuantitativos (número de migrantes venezolanos o de otras nacionalidades, población retornada, refugiados, porcentaje con PPT o en irregularidad) con año de referencia y fuente identificada (Migración Colombia, RUMV, registros administrativos), desagregados por perfil demográfico o estatus migratorio?",
       "validations": {
         "buscar_indicadores_cuantitativos": {
           "minimum_required": 3,
@@ -932,7 +932,7 @@
       "question_id": "Q272",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El texto dimensiona la magnitud del fenómeno migratorio, cuantificando la presión sobre los servicios públicos o la población con necesidades humanitarias? Se debe buscar si se mencionan 'vacíos de información' (ej. sobre población irregular en tránsito).",
+      "text": "¿El diagnóstico dimensiona numéricamente la magnitud de las barreras de integración (niños migrantes fuera del sistema escolar, población sin afiliación a salud, hogares en hacinamiento, desempleo en población migrante) y reconoce explícitamente limitaciones como 'subregistro de población irregular', 'población flotante no caracterizada' o 'vacíos de información post-pandemia'?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1198,7 +1198,7 @@
       "question_id": "Q273",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de atención humanitaria, integración socioeconómica o fortalecimiento de la respuesta institucional a la migración?",
+      "text": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a programas de atención humanitaria, centros de integración, estrategias de regularización, inclusión socioeconómica o partidas de cooperación internacional para gestión migratoria?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1454,7 +1454,7 @@
       "question_id": "Q274",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El PDM describe las capacidades para la gestión migratoria, mencionando entidades (Secretaría de Gobierno, enlace de migrantes) y sus necesidades? Se debe buscar términos como 'centros de atención al migrante', 'rutas de integración' y si se identifican 'limitaciones' en la articulación.",
+      "text": "¿El plan identifica las entidades responsables de la atención a población migrante (ej. Oficina de Asuntos Migratorios, enlace con Migración Colombia, Secretaría de Inclusión), describe sus capacidades (equipos interdisciplinarios, puntos de atención) y señala limitaciones institucionales o necesidades de articulación con Cancillería, Migración Colombia o agencias de cooperación (OIM, ACNUR)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1678,7 +1678,7 @@
       "question_id": "Q275",
       "scoring_definition_ref": "scoring_modalities.TYPE_E",
       "scoring_modality": "TYPE_E",
-      "text": "¿El plan justifica su alcance en la política migratoria mencionando el marco legal (Estatuto Temporal de Protección) o reconociendo restricciones de competencias (Migración Colombia vs. municipio), presupuestales o de capacidad de respuesta?",
+      "text": "¿El plan justifica el alcance de sus intervenciones en movilidad humana mencionando el marco normativo (Estatuto Temporal de Protección - ETPV, Ley 2136) o reconociendo explícitamente qué competencias son municipales (acceso a servicios, convivencia, integración) y cuáles son del nivel nacional (control fronterizo, expedición de visas o PPT, deportación)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1881,7 +1881,7 @@
       "question_id": "Q276",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las actividades para la población migrante se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "text": "¿Las actividades de atención e integración (jornadas de registro en Sisbén, matriculatón escolar, ferias de servicios, rutas de empleabilidad, campañas antixenofobia) aparecen en formato estructurado (tabla, matriz, Plan Indicativo) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2141,7 +2141,7 @@
       "question_id": "Q277",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La descripción de las actividades para migrantes detalla el instrumento ('mediante jornadas de regularización', 'a través de asistencia humanitaria'), la población objetivo ('migrantes pendulares', 'población de acogida', 'retornados') y la lógica causal?",
+      "text": "¿La descripción de actividades especifica el instrumento ('mediante Centros Intégrate', 'a través de focalización', 'con rutas de convalidación'), la población objetivo (población con vocación de permanencia, migrantes en tránsito, pendulares, retornados) y explica cómo la actividad contribuye a la integración ('para reducir barreras de acceso', 'porque facilita la regularización', 'con el fin de aprovechar el bono laboral')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2358,7 +2358,7 @@
       "question_id": "Q278",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM vincula explícitamente las actividades (ej. ferias de empleo) con las 'causas raíz' de los problemas de la población migrante (ej. barreras de acceso al mercado laboral) identificadas en el diagnóstico?",
+      "text": "¿Las actividades propuestas se vinculan explícitamente con los problemas, barreras o déficits identificados en el diagnóstico (ej. desconocimiento de rutas, falta de documentos para contratación, barreras culturales, xenofobia, convalidación de títulos) mediante nexos causales claros?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2582,7 +2582,7 @@
       "question_id": "Q279",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan identifica posibles riesgos en la implementación de la respuesta migratoria (ej. brotes de xenofobia, saturación de servicios sociales) y propone 'medidas de mitigación'?",
+      "text": "¿El plan identifica posibles obstáculos o riesgos en la implementación (ej. brotes de xenofobia en comunidades de acogida, saturación de servicios públicos, alta movilidad que dificulta seguimiento) y propone medidas explícitas de mitigación o estrategias de cohesión social para superarlos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2766,7 +2766,7 @@
       "question_id": "Q280",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El conjunto de actividades para la migración demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. regularización + acceso a servicios) o una 'secuencia' lógica.",
+      "text": "¿El plan describe explícitamente cómo las actividades de gestión migratoria siguen una secuencia lógica o se complementan (ej. regularización → afiliación a salud/Sisbén → formación → empleo formal), evidenciando una estrategia articulada que transita de la asistencia humanitaria a la integración socioeconómica?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3109,7 +3109,7 @@
       "question_id": "Q281",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de producto para migración (ej. migrantes regularizados, kits de ayuda entregados) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "text": "¿Los indicadores de producto del sector (migrantes atendidos en centros de referencia, niños matriculados, población afiliada al sistema de salud, emprendimientos apoyados, funcionarios capacitados en normativa migratoria) incluyen línea base, meta cuantitativa y fuente de verificación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3543,7 +3543,7 @@
       "question_id": "Q282",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las metas de los productos (ej. 'atender a 5.000 migrantes en albergues') son proporcionales a la magnitud del flujo migratorio diagnosticado?",
+      "text": "¿Las metas de productos guardan relación con la magnitud del flujo migratorio identificado en el diagnóstico, y se especifica la priorización (población regularizada con PPT, grupos vulnerables, mujeres gestantes) o la cobertura de la intervención frente a la demanda total?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3997,7 +3997,7 @@
       "question_id": "Q283",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los productos para migración tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Gobierno' o entidad responsable)?",
+      "text": "¿Los productos están vinculados a códigos presupuestales (SGP, recursos propios, gestión de cooperación) y a entidades responsables identificadas (Secretaría de Salud, Educación, Desarrollo Económico, Enlace de Migración)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4469,7 +4469,7 @@
       "question_id": "Q284",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una relación factible entre la actividad (ej. 'una jornada de atención') y la meta del producto asociado (ej. '10.000 migrantes con acceso a salud') para la política migratoria? Se debe evaluar si los 'plazos' son realistas.",
+      "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'una feria de empleo puntual') y la magnitud de la meta del producto asociado (ej. 'integración laboral efectiva de migrantes'), considerando que procesos como la convalidación de títulos o la regularización administrativa requieren tiempos prolongados y gestión interinstitucional?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4931,7 +4931,7 @@
       "question_id": "Q285",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM explica cómo los productos (ej. 'migrantes con estatus regularizado') contribuyen a generar resultados (ej. 'aumento de la integración socioeconómica')? Se debe buscar este 'mecanismo'.",
+      "text": "¿El plan describe cómo los productos (ej. 'migrantes regularizados y sisbenizados', 'rutas de empleo activadas', 'espacios de integración cultural') generan o contribuyen a los resultados esperados (ej. 'acceso efectivo a derechos', 'reducción de vulnerabilidad', 'cohesión social'), explicando esta conexión o ruta causal?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5287,7 +5287,7 @@
       "question_id": "Q286",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de resultado para migración (ej. 'porcentaje de migrantes afiliados a salud', 'tasa de ocupación de la población migrante') están definidos con línea base, meta y un horizonte temporal?",
+      "text": "¿Los indicadores de resultado del sector (tasa de desempleo en población migrante, cobertura educativa de niños migrantes, índice de percepción de xenofobia, acceso efectivo a salud) están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5488,7 +5488,7 @@
       "question_id": "Q287",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se explicita la cadena causal que lleva a la integración de la población migrante, mencionando 'supuestos' clave (ej. 'si el sector privado contrata a migrantes regularizados') o 'condiciones habilitantes'?",
+      "text": "¿El plan describe la ruta que lleva a la integración socioeconómica y cultural, mencionando condiciones necesarias o supuestos para que funcione (ej. 'si el Gobierno Nacional mantiene el ETPV', 'si los empresarios contratan personal con PPT', 'si la comunidad de acogida está abierta al diálogo')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5676,7 +5676,7 @@
       "question_id": "Q288",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición de las metas de resultado (ej. 'lograr la afiliación a salud del 80% de los migrantes') se justifica en función de los recursos, la capacidad del sistema o se compara con 'casos' de otras ciudades fronterizas?",
+      "text": "¿La ambición de las metas de resultado se justifica en función de recursos asignados, capacidad de carga de servicios públicos, apoyo de cooperación internacional, o se compara con municipios receptores con dinámicas similares?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5854,7 +5854,7 @@
       "question_id": "Q289",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los resultados propuestos (ej. 'mejora de la convivencia entre migrantes y comunidad de acogida') 'atienden' o 'abordan' directamente los problemas de integración y xenofobia priorizados en el diagnóstico?",
+      "text": "¿Los resultados propuestos (ej. 'inclusión productiva', 'acceso a derechos sin barreras', 'convivencia pacífica') atienden o abordan directamente las necesidades y barreras de la población migrante y retornada priorizadas en el diagnóstico?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6015,7 +6015,7 @@
       "question_id": "Q290",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan declara la alineación de sus resultados de migración con marcos superiores como el PND, los ODS (10, 11) o los pactos globales sobre migración?",
+      "text": "¿El plan declara la alineación de sus resultados con el Pacto Mundial para una Migración Segura, Ordenada y Regular, la Ley 2136 de 2021 (Política Integral Migratoria), los ODS (especialmente ODS 10 y 8) o lineamientos nacionales de integración?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6203,7 +6203,7 @@
       "question_id": "Q291",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM define 'impactos' de largo plazo (ej. 'integración social y económica sostenible de la población migrante', 'cohesión social')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "text": "¿El plan define impactos de largo plazo para la movilidad humana (ej. 'integración plena de nuevos residentes', 'aprovechamiento del bono demográfico', 'ciudadanía activa migrante', 'cohesión social consolidada'), describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado más allá del cuatrienio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6531,7 +6531,7 @@
       "question_id": "Q292",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se utilizan 'índices' o 'proxies' (ej. encuestas de percepción sobre la migración) para medir los impactos en la integración, justificando su validez?",
+      "text": "¿Se utilizan índices reconocidos (ej. Índice de Integración, mediciones de cohesión social) o indicadores proxy para medir impactos (ej. 'matrimonios mixtos', 'participación en JAC', 'reducción de denuncias por discriminación'), justificando por qué son adecuados para capturar la integración efectiva y la convivencia?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6705,7 +6705,7 @@
       "question_id": "Q293",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "Cuando un impacto migratorio es difícil de medir (ej. 'integración cultural'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "text": "¿Los impactos de integración se alinean con marcos globales y consideran riesgos externos (nuevos flujos masivos por crisis en origen, cambios restrictivos en política nacional, crisis económicas locales) que podrían impedir o revertir los logros de cohesión e inclusión?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6895,7 +6895,7 @@
       "question_id": "Q294",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los impactos en la integración se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. cambios en la política migratoria del país vecino) que podrían romper el mecanismo causal?",
+      "text": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados (ej. desplazamiento de mano de obra local generando tensiones, percepción de preferencia institucional, segregación espacial), y propone un enfoque de 'acción sin daño' o beneficios compartidos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7096,7 +7096,7 @@
       "question_id": "Q295",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición del impacto (ej. 'plena integración de toda la población migrante') es realista? Se debe buscar si se analizan 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "text": "¿El plan describe cómo se sostendrán los procesos de integración más allá del periodo de gobierno, identificando mecanismos de institucionalización (ej. inclusión en política pública ordinaria), apropiación comunitaria, o condiciones para que la población migrante sea autónoma y no dependiente de asistencia?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7285,7 +7285,7 @@
       "question_id": "Q296",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una 'teoría de cambio' explícita para la política migratoria, preferiblemente en un 'diagrama', que identifique causas, mediadores (ej. regularización) y 'supuestos verificables'?",
+      "text": "¿El plan presenta una descripción explícita de cómo se genera la integración y gestión migratoria (ej. modelo de acogida e inclusión), preferiblemente en diagrama o matriz, que identifique retos, intervenciones, supuestos y la secuencia insumos→actividades→productos→resultados→impactos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7462,7 +7462,7 @@
       "question_id": "Q297",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los saltos en la cadena causal de la migración son proporcionales (ej. una jornada de orientación no genera por sí sola 'integración socioeconómica total')?",
+      "text": "¿El plan evita saltos desproporcionados en su lógica (ej. no asume que la 'ayuda humanitaria' genera 'integración económica'), reconociendo explícitamente que la integración es un proceso de largo aliento que requiere regularización, convalidación y cambio cultural sostenido?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7659,7 +7659,7 @@
       "question_id": "Q298",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan reconoce 'inconsistencias' en su lógica de integración y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "text": "¿El plan reconoce la complejidad y dinamismo del fenómeno migratorio (multicausalidad, flujos cambiantes), identifica incertidumbres, y propone mecanismos para aprender y ajustar (ej. observatorios de migración, monitoreo de flujos, mesas intersectoriales adaptativas)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7853,7 +7853,7 @@
       "question_id": "Q299",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se describe un sistema de monitoreo para la política migratoria que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia ante cambios en los flujos?",
+      "text": "¿Se describe un sistema de monitoreo que incluya desagregación por estatus y nacionalidad, mecanismos de alerta ante cambios en flujos, retroalimentación con la Mesa de Migración o Consejos Consultivos, y capacidad de adaptar la oferta de servicios según el perfil cambiante de la población?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -8057,7 +8057,7 @@
       "question_id": "Q300",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La lógica causal para la migración considera el contexto, reconociendo 'grupos afectados' (NNA no acompañados, mujeres migrantes, caminantes) y 'restricciones' territoriales o de seguridad?",
+      "text": "¿El plan considera el contexto municipal específico (frontera vs. interior, tránsito vs. vocación de permanencia), reconoce grupos con necesidades diferenciadas (caminantes, pendulares, residentes, retornados, mujeres, niños), y explicita restricciones territoriales o de capacidad que condicionan la atención?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
