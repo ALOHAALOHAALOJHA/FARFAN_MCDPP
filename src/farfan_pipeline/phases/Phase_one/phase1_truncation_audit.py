@@ -7,7 +7,7 @@ Lifecycle State: ACTIVE
 """
 
 from dataclasses import dataclass
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 import logging
 
 logger = logging.getLogger(__name__)

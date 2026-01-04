@@ -1,6 +1,6 @@
 import unittest
 import threading
-import time
+
 from farfan_pipeline.phases.Phase_one.thread_safe_results import ThreadSafeResults
 from farfan_pipeline.phases.Phase_one.phase1_truncation_audit import TruncationAudit
 from farfan_pipeline.phases.Phase_one.phase1_models import SmartChunk, Chunk
@@ -36,7 +36,7 @@ class TestPhase1Remediation(unittest.TestCase):
 
         self.assertEqual(len(tsr), 10)
         self.assertEqual(tsr["key_0"], 0)
-        self.assertTrue("key_5" in tsr)
+        self.assertIn("key_5", tsr)
 
     def test_truncation_audit(self):
         audit = TruncationAudit.create(

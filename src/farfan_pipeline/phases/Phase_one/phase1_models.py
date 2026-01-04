@@ -290,9 +290,9 @@ class SmartChunk:
     def __post_init__(self):
         # Validate SPEC-002 Traceability
         if self.assignment_method not in ('semantic', 'fallback_sequential'):
-             raise ValueError(f"Invalid assignment_method: {self.assignment_method}")
+            raise ValueError(f"Invalid assignment_method: {self.assignment_method}")
         if not (0.0 <= self.semantic_confidence <= 1.0):
-             raise ValueError(f"Invalid semantic_confidence: {self.semantic_confidence}")
+            raise ValueError(f"Invalid semantic_confidence: {self.semantic_confidence}")
 
         CHUNK_ID_PATTERN = r'^PA(0[1-9]|10)-DIM0[1-6]$'
         if not re.match(CHUNK_ID_PATTERN, self.chunk_id):

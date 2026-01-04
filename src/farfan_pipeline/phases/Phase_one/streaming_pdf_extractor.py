@@ -6,7 +6,7 @@ Owner Module: Phase 1 CPP Ingestion
 Lifecycle State: ACTIVE
 """
 
-from typing import Generator, Optional, Tuple
+from typing import Generator, Tuple
 import logging
 from pathlib import Path
 
@@ -27,13 +27,9 @@ class StreamingPDFExtractor:
     def __init__(self, pdf_path: Path):
         self.pdf_path = pdf_path
 
-    def extract_text_stream(self, chunk_size_pages: int = 10) -> Generator[str, None, None]:
+    def extract_text_stream(self) -> Generator[str, None, None]:
         """
-        Yields text from the PDF page by page or in chunks of pages.
-
-        Args:
-            chunk_size_pages: Number of pages to process before yielding (not strictly used here,
-                              we yield per page for simplicity and max granularity).
+        Yields text from the PDF page by page, minimizing memory usage.
         """
         if not PYMUPDF_AVAILABLE:
             raise RuntimeError("PyMuPDF (fitz) is not installed. Cannot extract PDF text.")

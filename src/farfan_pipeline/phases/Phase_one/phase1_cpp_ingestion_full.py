@@ -2158,7 +2158,7 @@ class Phase1CPPIngestionFullContract:
         """
         Filter kwargs to match SmartChunk fields to avoid unexpected argument errors.
         """
-        # Get valid field names from the dataclass
+        # Get valid field names from the SmartChunk dataclass fields
         valid_fields = {f for f in SmartChunk.__dataclass_fields__}
         return {k: v for k, v in kwargs.items() if k in valid_fields}
 
@@ -2203,8 +2203,8 @@ class Phase1CPPIngestionFullContract:
                     "signal_scores": chunk.signal_scores if chunk.signal_scores else {},
                     "signal_version": "v1.0.0",
                     # Traceability (SPEC-002)
-                    "assignment_method": getattr(chunk, "assignment_method", "semantic"),
-                    "semantic_confidence": getattr(chunk, "semantic_confidence", 0.0),
+                    "assignment_method": chunk.assignment_method,
+                    "semantic_confidence": chunk.semantic_confidence,
                 }
                 smart_chunk = SmartChunk(**self._smartchunk_kwargs_filter(kwargs))
                 smart_chunks.append(smart_chunk)
