@@ -652,7 +652,7 @@
       "question_id": "Q091",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El diagnóstico presenta datos numéricos (cobertura educativa, tasa de mortalidad infantil, déficit de vivienda) para el área de Derechos económicos, sociales y culturales (DESC) que sirvan como línea base? Se debe verificar el año de referencia y fuentes (ej. DANE, SIMAT, SISPRO).",
+      "text": "¿El diagnóstico presenta datos cuantitativos sobre cobertura de afiliación al Sistema General de Seguridad Social en Salud, tasas de mortalidad infantil o materna, cobertura educativa o deserción escolar, déficit habitacional cuantitativo o cualitativo, tasa de desempleo o informalidad laboral, infraestructura cultural disponible (bibliotecas, casas de cultura), con año de referencia y fuente identificada (ej. MSPS, MEN, Secretaría de Educación, DANE, Sisben, CNPV)?",
       "validations": {
         "buscar_indicadores_cuantitativos": {
           "minimum_required": 3,
@@ -950,7 +950,7 @@
       "question_id": "Q092",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El texto dimensiona la magnitud de los problemas sociales (ej. desnutrición, analfabetismo) cuantificando el déficit o la población desatendida? Se debe buscar si se mencionan 'vacíos de información' (ej. falta de caracterización de la informalidad).",
+      "text": "¿El diagnóstico dimensiona numéricamente las carencias en derechos económicos, sociales y culturales (número de hogares sin vivienda digna, porcentaje de niños con desnutrición crónica, tasa de informalidad laboral, hogares sin acceso a agua potable, déficit de cupos escolares, ausencia de oferta cultural) y reconoce explícitamente limitaciones como 'datos desactualizados de Sisben', 'ausencia de caracterización cultural' o 'subregistro en economía informal'?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1216,7 +1216,7 @@
       "question_id": "Q093",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de educación, salud, vivienda, agua potable o seguridad alimentaria?",
+      "text": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a infraestructura educativa, Programa de Alimentación Escolar (PAE), transporte escolar, mejoramiento de IPS municipales, vivienda de interés social (VIS), mejoramiento de vivienda, fomento al empleo o emprendimiento, fortalecimiento de bibliotecas o casas de cultura, recuperación de patrimonio cultural?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1485,7 +1485,7 @@
       "question_id": "Q094",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El PDM describe las capacidades para la gestión social, mencionando entidades (Secretarías de Educación, Salud, ESE) y sus necesidades? Se debe buscar términos como 'infraestructura educativa', 'red de prestadores de salud' y si se identifican 'limitaciones'.",
+      "text": "¿El plan identifica las entidades responsables de los derechos sociales, económicos y culturales (ej. Secretaría de Salud, Secretaría de Educación, Secretaría de Desarrollo Económico, Secretaría de Cultura, Secretaría de Vivienda, oficina de PAE), describe sus capacidades (nutricionistas, promotores culturales, gestores de empleo, supervisores escolares) y señala limitaciones o necesidades de articulación con el departamento, EPS, IPS o entidades nacionales?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1722,7 +1722,7 @@
       "question_id": "Q095",
       "scoring_definition_ref": "scoring_modalities.TYPE_E",
       "scoring_modality": "TYPE_E",
-      "text": "¿El plan justifica su alcance en DESC mencionando el marco legal (ej. leyes de salud/educación, SGP) o reconociendo restricciones explícitas de tipo presupuestal, de competencias o de capacidad instalada?",
+      "text": "¿El plan justifica el alcance de sus intervenciones en DESC reconociendo explícitamente qué competencias son municipales directas (infraestructura escolar, PAE, transporte escolar, bibliotecas, fomento económico local, VIS, mejoramiento de vivienda) y cuáles son concurrentes con el departamento o la nación (prestación de servicios de salud en IPS, nombramiento docente, régimen subsidiado de salud), citando el marco normativo (Ley 715, Ley 1438, Ley 397 de Cultura)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1925,7 +1925,7 @@
       "question_id": "Q096",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las actividades para garantizar los DESC se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "text": "¿Las actividades para garantizar derechos económicos, sociales y culturales (construcción de aulas escolares, dotación de IPS municipales, programas de emprendimiento, entrega de subsidios de vivienda, festivales culturales, comedores escolares, bancos de alimentos) aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2172,7 +2172,7 @@
       "question_id": "Q097",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La descripción de las actividades sociales detalla el instrumento ('mediante subsidios', 'a través de la construcción de aulas'), la población objetivo ('hogares con IPM alto', 'estudiantes de zonas rurales') y la lógica causal?",
+      "text": "¿La descripción de actividades especifica el instrumento ('mediante mejoramiento de infraestructura escolar', 'a través de capital semilla para emprendedores', 'con comedores escolares', 'mediante subsidios de vivienda', 'a través de escuelas de formación artística', 'con dotación de IPS'), la población objetivo ('estudiantes de zona rural', 'adultos mayores sin afiliación a salud', 'familias en déficit habitacional', 'desempleados jóvenes', 'artistas locales') y explica cómo la actividad contribuye al resultado esperado ('para mejorar el acceso', 'porque reduce la deserción escolar', 'con el fin de generar ingresos', 'para fortalecer la identidad cultural', 'porque garantiza atención oportuna')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2389,7 +2389,7 @@
       "question_id": "Q098",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM vincula explícitamente las actividades (ej. programa de alimentación escolar) con las 'causas raíz' de los problemas sociales (ej. desnutrición crónica) identificadas en el diagnóstico?",
+      "text": "¿Las actividades propuestas se vinculan explícitamente con las carencias identificadas en el diagnóstico (ej. déficit de infraestructura educativa, barreras de acceso a salud, desnutrición infantil, desempleo juvenil, pérdida de patrimonio cultural, hacinamiento en vivienda, ausencia de espacios culturales)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2613,7 +2613,7 @@
       "question_id": "Q099",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan identifica posibles riesgos en la implementación de los programas sociales (ej. focalización inadecuada, baja calidad de los servicios) y propone 'medidas de mitigación'?",
+      "text": "¿El plan identifica posibles obstáculos en la implementación (ej. baja adherencia a programas de salud preventiva, deserción escolar por factores socioeconómicos, resistencia a formalización empresarial, retrasos en titulación de vivienda, baja participación en actividades culturales, dependencia de transferencias nacionales) y propone medidas explícitas de mitigación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2797,7 +2797,7 @@
       "question_id": "Q100",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El conjunto de actividades sociales demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. mejora de vías + transporte escolar) o 'secuencia' lógica.",
+      "text": "¿El plan describe explícitamente cómo las actividades en derechos económicos, sociales y culturales se complementan entre subsectores (ej. PAE + transporte escolar + infraestructura = retención escolar; o formación técnica + capital semilla + comercialización = generación de ingresos; o vivienda digna + agua potable + saneamiento = hábitat saludable; o casas de cultura + escuelas artísticas + festivales = ecosistema cultural), evidenciando una estrategia articulada (se debe buscar términos como 'complementariedad', 'sinergia', 'articulación intersectorial', 'enfoque integral')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3127,7 +3127,7 @@
       "question_id": "Q101",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de producto social (ej. cupos escolares creados, familias con subsidio de vivienda) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "text": "¿Los indicadores de producto (ej. estudiantes beneficiados con PAE, IPS dotadas con equipamiento, familias con subsidio de vivienda asignado, emprendimientos apoyados con capital semilla, eventos culturales realizados, adultos mayores afiliados al régimen subsidiado, kilómetros de vías terciarias mejoradas para acceso a servicios) incluyen línea base, meta cuantitativa y fuente de verificación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3557,7 +3557,7 @@
       "question_id": "Q102",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las metas de los productos sociales (ej. 'construir 200 viviendas') son proporcionales a la magnitud del problema diagnosticado (ej. 'déficit de 1.000 viviendas')?",
+      "text": "¿Las metas de productos guardan relación con la magnitud de la carencia identificada en el diagnóstico (ej. 'construir 10 aulas para déficit de 50', 'entregar 200 subsidios de vivienda para déficit de 2.000 hogares', 'formar 500 emprendedores de 3.000 desempleados', 'dotar 3 bibliotecas en zona rural sin oferta cultural'), y se especifica la priorización (zonas rurales dispersas, población vulnerable, sectores con mayores brechas), intensidad (frecuencia de atención, duración de programas) o cobertura por subsector (educación, salud, vivienda, empleo, cultura)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4011,7 +4011,7 @@
       "question_id": "Q103",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los productos sociales tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Desarrollo Social' o entidad responsable)?",
+      "text": "¿Los productos están vinculados a códigos presupuestales (SGP educación, SGP salud, SGP cultura, recursos propios para empleo y vivienda, cofinanciación departamental o nacional) y a entidades responsables específicas (Secretaría de Educación, Secretaría de Salud, Secretaría de Cultura, Secretaría de Desarrollo Económico, Secretaría de Vivienda)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4484,7 +4484,7 @@
       "question_id": "Q104",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una relación factible entre la actividad (ej. 'jornadas de afiliación') y la meta del producto asociado (ej. '10.000 nuevos afiliados a salud') para el área de DESC? Se debe evaluar si los 'plazos' y recursos son realistas.",
+      "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'un taller de formación empresarial de 20 horas', 'una jornada de afiliación al régimen subsidiado') y la magnitud de la meta del producto asociado (ej. '1.000 empresas formalizadas y sostenibles', 'cobertura universal en régimen subsidiado'), considerando plazos y recursos disponibles? Se debe evaluar si el plan reconoce cuando los resultados requieren acompañamiento prolongado (ej. formalización empresarial requiere seguimiento, no solo formación; o mejoramiento de vivienda requiere titulación, no solo obra física).",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4946,7 +4946,7 @@
       "question_id": "Q105",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM explica cómo los productos sociales (ej. 'estudiantes beneficiados con PAE') contribuyen a generar resultados (ej. 'reducción de la deserción escolar')? Se debe buscar la descripción de este 'mecanismo'.",
+      "text": "¿El plan describe cómo los productos (ej. 'infraestructura educativa mejorada', 'población afiliada a salud', 'emprendimientos en operación', 'viviendas mejoradas', 'bibliotecas funcionando', 'comedores escolares operando') generan o contribuyen a los resultados esperados (ej. 'reducción de deserción', 'disminución de mortalidad evitable', 'aumento de ingresos familiares', 'mejora en calidad de vida', 'fortalecimiento de identidad cultural'), explicando esta conexión o ruta (se debe buscar descripciones del tipo 'al lograr X se genera Y porque...', 'esto permite que los estudiantes...', 'esto facilita el acceso a...')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5289,7 +5289,7 @@
       "question_id": "Q106",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de resultado social (ej. 'tasa de cobertura neta en educación', 'reducción del IPM') están definidos con línea base, meta y un horizonte temporal?",
+      "text": "¿Los indicadores de resultado incluyen métricas de múltiples subsectores (ej. 'tasa de deserción escolar', 'porcentaje de cobertura en régimen subsidiado de salud', 'tasa de desempleo municipal', 'déficit habitacional cuantitativo', 'tasa de mortalidad infantil', 'número de visitantes a espacios culturales', 'tasa de informalidad laboral') están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5490,7 +5490,7 @@
       "question_id": "Q107",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se explicita la cadena causal que lleva a la mejora social, mencionando 'supuestos' (ej. 'si los padres llevan a sus hijos a la escuela') o 'condiciones habilitantes'?",
+      "text": "¿El plan describe la ruta o secuencia que lleva a los resultados en derechos sociales, económicos y culturales, mencionando condiciones necesarias para que funcione (se debe buscar términos como 'supuestos', 'si las familias valoran la educación', 'si hay oferta laboral disponible', 'si la EPS atiende oportunamente', 'si hay mercados para productos locales', 'si se mantiene el financiamiento del PAE', 'siempre que haya articulación con el departamento', 'requiere que...')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5678,7 +5678,7 @@
       "question_id": "Q108",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición de las metas de resultado social (ej. 'aumentar la cobertura educativa en 5 puntos') se justifica en función de la inversión, la capacidad instalada o se compara con 'casos' similares?",
+      "text": "¿La ambición de las metas de resultado (ej. 'alcanzar 100% de cobertura en régimen subsidiado', 'reducir deserción escolar del 8% al 3%', 'disminuir déficit habitacional en 40%', 'aumentar formalización empresarial en 25%', 'reducir mortalidad infantil a menos de 10 por cada 1.000 nacidos vivos') se justifica en función de recursos asignados, competencias municipales, articulación con nivel nacional o se compara con municipios similares?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5856,7 +5856,7 @@
       "question_id": "Q109",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los resultados propuestos (ej. 'mejora en las condiciones de habitabilidad') 'atienden' o 'abordan' directamente los problemas de déficit de vivienda o salud priorizados en el diagnóstico?",
+      "text": "¿Los resultados propuestos cubren equilibradamente los subsectores priorizados en el diagnóstico (ej. 'acceso universal a salud', 'permanencia escolar garantizada', 'vivienda digna para población vulnerable', 'generación de empleo e ingresos', 'fortalecimiento del sector cultural') sin sesgo hacia educación o salud, reconociendo que el municipio tiene mayor autonomía en cultura, vivienda y fomento económico?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6013,7 +6013,7 @@
       "question_id": "Q110",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan declara la alineación de sus resultados sociales con marcos superiores como el PND o los ODS (1, 2, 3, 4)?",
+      "text": "¿El plan declara la alineación de sus resultados en DESC con el Plan Nacional de Desarrollo, el Pacto Internacional de Derechos Económicos, Sociales y Culturales, o los ODS (especialmente ODS 1: Fin de la Pobreza, ODS 2: Hambre Cero, ODS 3: Salud, ODS 4: Educación de Calidad, ODS 8: Trabajo Decente, ODS 11: Ciudades Sostenibles)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6214,7 +6214,7 @@
       "question_id": "Q111",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM define 'impactos' de largo plazo para los DESC (ej. 'mejora del capital humano', 'reducción de la pobreza multidimensional')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "text": "¿El plan define impactos o transformaciones de largo plazo en derechos económicos, sociales y culturales (cambios que trascienden el cuatrienio) como 'erradicación de la pobreza extrema', 'universalización de acceso a salud y educación de calidad', 'consolidación de economía local sostenible', 'arraigo de identidad cultural', 'eliminación del déficit habitacional', describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6542,7 +6542,7 @@
       "question_id": "Q112",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se utilizan 'índices' (ej. Índice de Desarrollo Humano, IPM) o 'proxies' para medir los impactos en el bienestar, justificando su validez?",
+      "text": "¿Se utilizan índices (ej. Índice de Pobreza Multidimensional, Índice de Desarrollo Humano, Índice de Calidad de Vida) o indicadores proxy para medir impactos en bienestar integral, justificando por qué son adecuados para capturar transformaciones en calidad de vida y ejercicio de derechos? Cuando un impacto es difícil de medir directamente (ej. 'desarrollo humano integral', 'capital cultural arraigado', 'movilidad social ascendente'), ¿se explica la validez y limitaciones del indicador proxy utilizado (ej. 'años promedio de escolaridad', 'participación en eventos culturales per cápita', 'transiciones de informalidad a formalidad')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6716,7 +6716,7 @@
       "question_id": "Q113",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "Cuando un impacto social es difícil de medir (ej. 'fortalecimiento del tejido social'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "text": "¿Los impactos en DESC se alinean con marcos nacionales o globales y consideran riesgos externos (crisis económicas que aumentan desempleo e informalidad, reformas en régimen subsidiado de salud, recortes presupuestales del SGP, migraciones que presionan servicios sociales) que podrían impedir o revertir los logros esperados?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6906,7 +6906,7 @@
       "question_id": "Q114",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los impactos sociales se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. crisis económica, pandemia) que podrían romper el mecanismo causal?",
+      "text": "¿El plan evalúa si la ambición del impacto en DESC es realista, considerando posibles efectos no deseados diferenciados por subsector (ej. dependencia de subsidios sin generación de autonomía en programas de empleo, gentrificación por mejoras en vivienda que desplaza población vulnerable, sobrecarga en servicios de salud por afiliación masiva sin aumento de oferta, fuga de talento cultural hacia ciudades), o reconoce explícitamente los límites de las intervenciones municipales en cada subsector (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado en salud y educación', 'mayor autonomía en cultura y vivienda')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7107,7 +7107,7 @@
       "question_id": "Q115",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición del impacto social (ej. 'pobreza cero') es realista? Se debe buscar si se analizan posibles 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "text": "¿El plan describe cómo se sostendrán los impactos en DESC más allá del periodo de gobierno, identificando mecanismos diferenciados por subsector: institucionalización (protocolos de atención en salud permanentes, PAE incluido en presupuesto base), apropiación comunitaria (promotores culturales locales, veedurías escolares, organizaciones de vivienda), fuentes de financiación continua (SGP garantizado, recursos de cultura del nivel nacional, fondos rotatorios de emprendimiento) o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación', 'continuidad')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7296,7 +7296,7 @@
       "question_id": "Q116",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una 'teoría de cambio' explícita para la política social, preferiblemente en un 'diagrama', que identifique causas (ej. bajo logro educativo), mediadores y 'supuestos verificables'?",
+      "text": "¿El plan presenta una descripción explícita de cómo se generan los cambios en la garantía de derechos económicos, sociales y culturales (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal', 'enfoque multidimensional'), preferiblemente en diagrama o matriz, que identifique carencias multidimensionales (pobreza, exclusión, desnutrición, informalidad, pérdida cultural), intervenciones diferenciadas por subsector (infraestructura educativa, servicios de salud, oportunidades económicas, vivienda digna, espacios culturales), supuestos verificables (ej. 'si familias priorizan educación', 'si hay empleadores') y la secuencia insumos→actividades→productos→resultados→impactos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7460,7 +7460,7 @@
       "question_id": "Q117",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los saltos en la cadena causal social son proporcionales (ej. la entrega de un kit escolar no garantiza por sí sola la calidad educativa)?",
+      "text": "¿El plan evita saltos desproporcionados en su lógica para los distintos subsectores (por ejemplo, no atribuye 'calidad educativa' solo a construcción de un colegio sin docentes capacitados; o 'empresas sostenibles' a entrega de capital semilla sin mercados y acompañamiento técnico; o 'arraigo cultural' a una biblioteca sin programación permanente y articulación comunitaria; o 'erradicación de pobreza' a un programa asistencial sin generación de ingresos autónomos), reconociendo explícitamente cuando se requieren procesos sostenidos, múltiples condiciones o factores externos (se debe buscar expresiones de cautela como 'requiere articulación con el departamento', 'depende de mercado laboral', 'necesita cambios culturales')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7657,7 +7657,7 @@
       "question_id": "Q118",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan reconoce 'inconsistencias' en su lógica social y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "text": "¿El plan reconoce la naturaleza multidimensional e interdependiente de los DESC (salud↔educación↔vivienda↔empleo↔cultura se refuerzan mutuamente), identifica debilidades o incertidumbres en su estrategia intersectorial, y propone mecanismos para aprender y ajustar como articulación entre secretarías, comités técnicos intersectoriales, evaluaciones de programas integrados o pilotos (se debe buscar términos como 'pilotos', 'articulación intersectorial', 'comités técnicos', 'coordinación entre secretarías', 'evaluación', 'ajustes', 'enfoque integral')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7862,7 +7862,7 @@
       "question_id": "Q119",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se describe un sistema de monitoreo para la política social que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia?",
+      "text": "¿Se describe un sistema de monitoreo que incluya indicadores transversales a múltiples subsectores (ej. Índice de Pobreza Multidimensional desagregado, indicadores del tablero de mando sectorial), mecanismos de coordinación intersectorial (comités técnicos que articulen salud-educación-cultura-empleo-vivienda), retroalimentación con nivel departamental o nacional (MSPS, MEN, MinCultura), participación de población beneficiaria, y capacidad de aprendizaje para adaptar estrategias ante cambios en determinantes sociales?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -8080,7 +8080,7 @@
       "question_id": "Q120",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La lógica causal de la política social considera el contexto, reconociendo 'grupos afectados' (población rural, migrantes, discapacitados) y 'restricciones' territoriales o culturales?",
+      "text": "¿El plan considera el contexto municipal específico de DESC (urbano/rural, vocación productiva, composición étnica, niveles de pobreza, infraestructura social disponible), reconoce grupos específicos con carencias diferenciadas en múltiples subsectores (niños en primera infancia sin atención integral, adultos mayores sin protección social, población rural dispersa sin servicios básicos, jóvenes sin oportunidades educativas o laborales, artistas locales sin espacios, familias víctimas del conflicto con necesidades múltiples), y explicita restricciones diferenciadas por subsector (límites del SGP en salud y educación, mayor autonomía municipal en cultura y fomento económico, dependencia de cofinanciación departamental en vivienda)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",

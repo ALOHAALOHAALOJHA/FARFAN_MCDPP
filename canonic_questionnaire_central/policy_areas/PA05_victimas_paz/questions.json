@@ -540,7 +540,7 @@
       "question_id": "Q121",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El diagnóstico presenta datos numéricos del Registro Único de Víctimas (RUV) para el área de Derechos de las víctimas y construcción de paz, como número de personas a reparar o solicitudes de retorno, que sirvan como línea base? Se debe verificar el año y fuentes (ej. UARIV, personería).",
+      "text": "¿El diagnóstico presenta datos cuantitativos sobre víctimas del conflicto armado registradas en el RUV (Registro Único de Víctimas), hechos victimizantes por tipo (desplazamiento, despojo, homicidio, desaparición forzada, violencia sexual), excombatientes en proceso de reintegración, solicitudes de restitución de tierras, o avances en implementación del Acuerdo Final de Paz, con año de referencia y fuente identificada (ej. UARIV, Unidad de Restitución de Tierras, ARN, Red Nacional de Información)?",
       "validations": {
         "buscar_indicadores_cuantitativos": {
           "minimum_required": 3,
@@ -838,7 +838,7 @@
       "question_id": "Q122",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El texto dimensiona la magnitud del problema de la atención a víctimas cuantificando la brecha de reparación (ej. porcentaje de víctimas sin reparar)? Se debe buscar si se mencionan 'vacíos de información' o 'subregistro' en el RUV.",
+      "text": "¿El diagnóstico dimensiona numéricamente la magnitud del daño causado por el conflicto (número de víctimas por hecho victimizante, hectáreas despojadas o abandonadas, familias sin reparación integral, excombatientes sin reintegración efectiva) y reconoce explícitamente limitaciones como 'subregistro de víctimas', 'ausencia de caracterización psicosocial', 'datos incompletos de restitución' o 'información desactualizada del RUV'?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1104,7 +1104,7 @@
       "question_id": "Q123",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de reparación integral, asistencia humanitaria, retornos, o medidas de satisfacción y memoria?",
+      "text": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a atención psicosocial a víctimas, indemnizaciones administrativas, acompañamiento en restitución de tierras, proyectos productivos para víctimas, centros de memoria histórica, iniciativas de reconciliación comunitaria, reintegración de excombatientes, o implementación de PDET?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1373,7 +1373,7 @@
       "question_id": "Q124",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El PDM describe las capacidades para la atención a víctimas, mencionando entidades (Enlace de Víctimas, Mesa de Participación) y sus necesidades? Se debe buscar términos como 'centro de atención', 'equipo psicosocial' y si se identifican 'limitaciones'.",
+      "text": "¿El plan identifica las entidades responsables de la política de víctimas y construcción de paz (ej. Oficina de Víctimas, enlace municipal UARIV, Comité de Justicia Transicional, Mesa Municipal de Víctimas, oficina de PDET), describe sus capacidades (equipos psicosociales, jurídicos, gestores de proyectos productivos) y señala limitaciones o necesidades de articulación con UARIV, Unidad de Restitución, ARN o nivel nacional?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1597,7 +1597,7 @@
       "question_id": "Q125",
       "scoring_definition_ref": "scoring_modalities.TYPE_E",
       "scoring_modality": "TYPE_E",
-      "text": "¿El plan justifica su alcance en la política de víctimas mencionando el marco legal (Ley 1448, Decretos Ley) o reconociendo restricciones explícitas de tipo presupuestal o de competencias (UARIV vs. municipio)?",
+      "text": "¿El plan justifica el alcance de sus intervenciones en derechos de víctimas y construcción de paz mencionando el marco normativo (Ley 1448, Acuerdo Final de Paz, Decreto 1953 PDET, Auto 092 de enfoque diferencial) o reconociendo explícitamente que competencias como indemnización son nacionales pero el municipio acompaña en reparación simbólica, atención psicosocial y garantías de no repetición?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1800,7 +1800,7 @@
       "question_id": "Q126",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las actividades para las víctimas y la paz se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "text": "¿Las actividades para atención a víctimas, reparación del daño o construcción de paz territorial (atención psicosocial, actos de memoria, proyectos productivos para población reincorporada, jornadas de reconciliación, acompañamiento en restitución) aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2047,7 +2047,7 @@
       "question_id": "Q127",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La descripción de las actividades para víctimas detalla el instrumento ('mediante indemnización administrativa', 'a través de proyectos productivos'), la población objetivo ('víctimas de desplazamiento forzado', 'sujetos de reparación colectiva') y la lógica causal?",
+      "text": "¿La descripción de actividades especifica el instrumento ('mediante atención psicosocial', 'a través de centros de memoria', 'con proyectos productivos', 'mediante iniciativas de reconciliación comunitaria'), la población objetivo ('víctimas de desplazamiento forzado', 'excombatientes en reintegración', 'familias despojadas', 'mujeres víctimas de violencia sexual en el conflicto', 'comunidades en territorios PDET') y explica cómo la actividad contribuye al resultado esperado ('para la reparación integral', 'porque dignifica la memoria', 'con el fin de garantizar la no repetición', 'para reconstruir tejido social')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2238,7 +2238,7 @@
       "question_id": "Q128",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM vincula explícitamente las actividades (ej. actos de memoria) con las 'causas raíz' del conflicto y las necesidades de las víctimas (ej. dignificación) identificadas en el diagnóstico?",
+      "text": "¿Las actividades propuestas se vinculan explícitamente con los daños y necesidades identificadas en el diagnóstico (ej. daño psicosocial no atendido, despojos sin restitución, ausencia de memoria histórica, víctimas sin reparación, excombatientes sin oportunidades económicas, comunidades fragmentadas por el conflicto)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2462,7 +2462,7 @@
       "question_id": "Q129",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan identifica posibles riesgos en la implementación de la política de víctimas (ej. revictimización, riesgos de seguridad en retornos) y propone 'medidas de mitigación'?",
+      "text": "¿El plan identifica posibles obstáculos en la implementación (ej. revictimización en procesos de atención, resistencias comunitarias a la reconciliación, estigmatización de población reincorporada, dificultades en titulación de predios restituidos, amenazas contra líderes de víctimas) y propone medidas explícitas de mitigación con enfoque psicosocial y de seguridad?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2646,7 +2646,7 @@
       "question_id": "Q130",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El conjunto de actividades para las víctimas demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. reparación individual + reparación colectiva) o una 'secuencia' lógica.",
+      "text": "¿El plan describe explícitamente cómo las actividades para víctimas y construcción de paz se complementan o siguen una secuencia lógica (ej. atención psicosocial→dignificación→reconciliación; o restitución de tierras→proyectos productivos→sostenibilidad económica; o memoria histórica→pedagogía de paz→garantías de no repetición), evidenciando una estrategia articulada (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2989,7 +2989,7 @@
       "question_id": "Q131",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de producto para víctimas (ej. indemnizaciones pagadas, familias retornadas) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación' (ej. RUV)?",
+      "text": "¿Los indicadores de producto (ej. víctimas con atención psicosocial, familias acompañadas en restitución de tierras, excombatientes vinculados a proyectos productivos, iniciativas de memoria realizadas, jornadas de reconciliación ejecutadas, personas formadas en pedagogía de paz) incluyen línea base, meta cuantitativa y fuente de verificación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3419,7 +3419,7 @@
       "question_id": "Q132",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las metas de los productos (ej. 'reparar a 1.000 víctimas') son proporcionales a la magnitud del universo de víctimas diagnosticado?",
+      "text": "¿Las metas de productos (ej. 'atención psicosocial al 30% de víctimas registradas', 'apoyo a 50 familias de 500 con solicitudes de restitución', '100 excombatientes en proyectos productivos') guardan relación con la magnitud de la población víctima o en proceso de reintegración identificada en el diagnóstico, y se especifica la priorización (enfoque diferencial étnico, de género, territorial), intensidad (frecuencia de acompañamiento) o cobertura?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3873,7 +3873,7 @@
       "question_id": "Q133",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los productos para víctimas tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados al 'Enlace de Víctimas' o entidad responsable)?",
+      "text": "¿Los productos están vinculados a códigos presupuestales (SGP, transferencias UARIV, fondos PDET, cofinanciación con ARN) y a entidades responsables específicas (Oficina de Víctimas, Secretaría de Gobierno, Comité de Justicia Transicional)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4346,7 +4346,7 @@
       "question_id": "Q134",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una relación factible entre la actividad (ej. 'acompañamiento a retornos') y la meta del producto asociado (ej. '500 familias retornadas con sostenibilidad') para la política de víctimas? Se debe evaluar si los 'plazos' son realistas.",
+      "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'talleres de reconciliación de 4 horas') y la magnitud de la meta del producto asociado (ej. 'reconciliación comunitaria consolidada en 20 veredas'), considerando plazos y recursos disponibles? Se debe evaluar si el plan reconoce que la reconciliación es un proceso de largo aliento que requiere acompañamiento sostenido, no eventos puntuales.",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4808,7 +4808,7 @@
       "question_id": "Q135",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM explica cómo los productos (ej. 'medidas de satisfacción') contribuyen a generar resultados (ej. 'restablecimiento de la confianza')? Se debe buscar la descripción de este 'mecanismo'.",
+      "text": "¿El plan describe cómo los productos (ej. 'víctimas con atención psicosocial', 'tierras restituidas en producción', 'memorias históricas construidas', 'excombatientes reintegrados económicamente') generan o contribuyen a los resultados esperados (ej. 'reparación integral efectiva', 'no repetición', 'convivencia pacífica', 'tejido social reconstruido'), explicando esta conexión o ruta (se debe buscar descripciones del tipo 'al lograr X se genera Y porque...', 'esto permite...', 'esto conduce a...')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5151,7 +5151,7 @@
       "question_id": "Q136",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de resultado para víctimas (ej. 'porcentaje de víctimas con reparación integral', 'tasa de retornos sostenibles') están definidos con línea base, meta y un horizonte temporal?",
+      "text": "¿Los indicadores de resultado (ej. 'porcentaje de víctimas con reparación integral', 'hectáreas restituidas efectivamente produciendo', 'tasa de reincidencia de excombatientes', 'índice de convivencia comunitaria', 'número de garantías de no repetición implementadas') están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5352,7 +5352,7 @@
       "question_id": "Q137",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se explicita la cadena causal que lleva a la reparación y reconciliación, mencionando 'supuestos' clave (ej. 'si las condiciones de seguridad lo permiten') o 'condiciones habilitantes'?",
+      "text": "¿El plan describe la ruta o secuencia que lleva a la reparación integral y construcción de paz, mencionando condiciones necesarias para que funcione (se debe buscar términos como 'supuestos', 'si las comunidades receptoras aceptan a población reincorporada', 'si se mantiene financiación nacional para víctimas', 'si hay voluntad política de actores armados de no repetición', 'si las víctimas confían en las instituciones', 'siempre que...', 'requiere que...')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5540,7 +5540,7 @@
       "question_id": "Q138",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición de las metas de resultado (ej. 'lograr la reparación del 60% del universo de víctimas') se justifica en función de los recursos, la capacidad de la UARIV o se compara con 'casos' de otros municipios?",
+      "text": "¿La ambición de las metas de resultado (ej. 'reparación integral al 80% de víctimas registradas', 'restitución del 50% de predios solicitados', 'cero reincidencia en ilegalidad de excombatientes') se justifica en función de recursos asignados, capacidad institucional municipal, articulación con nivel nacional (UARIV, Unidad de Restitución, ARN) o se compara con municipios PDET similares?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5718,7 +5718,7 @@
       "question_id": "Q139",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los resultados propuestos (ej. 'avance en la reconciliación comunitaria') 'atienden' o 'abordan' directamente las necesidades de reparación y no repetición identificadas en el diagnóstico?",
+      "text": "¿Los resultados propuestos (ej. 'reparación integral garantizada', 'restitución de tierras efectiva', 'reintegración sostenible de excombatientes', 'memoria histórica preservada', 'convivencia y reconciliación fortalecidas') atienden o abordan directamente las necesidades y derechos de víctimas priorizados en el diagnóstico?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5879,7 +5879,7 @@
       "question_id": "Q140",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan declara la alineación de sus resultados de paz y víctimas con marcos superiores como el PND, los Acuerdos de Paz o los ODS?",
+      "text": "¿El plan declara la alineación de sus resultados en víctimas y construcción de paz con el Acuerdo Final de Paz (especialmente puntos sobre víctimas, reincorporación, participación política), la Ley 1448 de Víctimas, los PDET o el ODS 16 (Paz, Justicia e Instituciones Sólidas)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6067,7 +6067,7 @@
       "question_id": "Q141",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM define 'impactos' de largo plazo para la construcción de paz (ej. 'reconciliación territorial', 'garantías de no repetición')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "text": "¿El plan define impactos o transformaciones de largo plazo en construcción de paz (cambios que trascienden el cuatrienio) como 'paz territorial consolidada', 'tejido social reconstruido', 'garantías de no repetición efectivas', 'memoria histórica como pedagogía generacional', 'reconciliación comunitaria arraigada', describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6395,7 +6395,7 @@
       "question_id": "Q142",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se utilizan 'índices' o 'proxies' (ej. encuestas de confianza interpersonal) para medir los impactos en la reconciliación, justificando su validez?",
+      "text": "¿Se utilizan índices (ej. Índice de Paz Municipal, Índice de Convivencia, Índice de Construcción de Paz) o indicadores proxy para medir impactos en paz territorial y reparación, justificando por qué son adecuados para capturar transformaciones en dignidad de víctimas y consolidación de paz? Cuando un impacto es difícil de medir directamente (ej. 'reconciliación genuina', 'dignidad restaurada', 'cultura de paz arraigada'), ¿se explica la validez y limitaciones del indicador proxy utilizado (ej. 'participación de víctimas en espacios públicos', 'nivel de confianza interpersonal', 'reducción de estigmatización')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6569,7 +6569,7 @@
       "question_id": "Q143",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "Cuando un impacto en la paz es difícil de medir (ej. 'sanación del tejido social'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "text": "¿Los impactos en construcción de paz se alinean con marcos nacionales o globales y consideran riesgos externos (cambios en política nacional de paz, reconfiguración de grupos armados, reversión de restitución de tierras por violencia, crisis económica que afecta proyectos productivos, polarización política) que podrían impedir o revertir los logros esperados?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6759,7 +6759,7 @@
       "question_id": "Q144",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los impactos en la paz se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. reconfiguración del conflicto) que podrían romper el mecanismo causal?",
+      "text": "¿El plan evalúa si la ambición del impacto en paz territorial es realista, considerando posibles efectos no deseados (ej. estigmatización de población reincorporada generando exclusión, dependencia asistencial de víctimas sin autonomía económica, narrativas de memoria que reabren heridas sin sanación, competencia por recursos entre víctimas y comunidades receptoras), o reconoce explícitamente los límites de las intervenciones municipales (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado a...', 'depende de...')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6960,7 +6960,7 @@
       "question_id": "Q145",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición del impacto de la construcción de paz (ej. 'paz total y duradera') es realista? Se debe buscar si se analizan 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "text": "¿El plan describe cómo se sostendrán los impactos en paz territorial y reparación de víctimas más allá del periodo de gobierno, identificando mecanismos de institucionalización (protocolos permanentes de atención), apropiación comunitaria (liderazgos locales formados), fuentes de financiación continua (recursos del SGP, articulación con nivel nacional) o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación', 'continuidad')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7149,7 +7149,7 @@
       "question_id": "Q146",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una 'teoría de cambio' explícita para la política de víctimas y construcción de paz, preferiblemente en un 'diagrama', que identifique causas, mediadores (ej. confianza) y 'supuestos verificables'?",
+      "text": "¿El plan presenta una descripción explícita de cómo se generan los cambios en atención a víctimas y construcción de paz territorial (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal'), preferiblemente en diagrama o matriz, que identifique daños del conflicto (psicosociales, materiales, al tejido social), intervenciones (atención integral, restitución, memoria, reconciliación), supuestos verificables (ej. 'si hay voluntad comunitaria', 'si se mantiene seguridad') y la secuencia insumos→actividades→productos→resultados→impactos, diferenciando competencias municipales de responsabilidades nacionales?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7326,7 +7326,7 @@
       "question_id": "Q147",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los saltos en la cadena causal de la paz son proporcionales (ej. un acto de memoria no genera por sí solo 'reconciliación total')?",
+      "text": "¿El plan evita saltos desproporcionados en su lógica (por ejemplo, no atribuye 'reconciliación total' a un acto simbólico de memoria sin procesos sostenidos de diálogo; o 'reparación integral' a la entrega de indemnización sin atención psicosocial; o 'reintegración comunitaria' a un proyecto productivo puntual sin aceptación social), reconociendo explícitamente cuando se requieren procesos sostenidos, múltiples condiciones o factores externos (se debe buscar expresiones de cautela como 'requiere tiempo', 'depende de acompañamiento prolongado', 'necesita trabajo psicosocial sostenido')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7523,7 +7523,7 @@
       "question_id": "Q148",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan reconoce 'inconsistencias' en su lógica de reparación y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "text": "¿El plan reconoce la complejidad de los procesos de reparación y construcción de paz (dimensiones individuales, familiares, comunitarias; diversidad de daños; tiempos diferenciados de sanación), identifica debilidades o incertidumbres en su estrategia, y propone mecanismos para aprender y ajustar como enfoques diferenciales (étnico, de género, generacional), acompañamiento psicosocial especializado o evaluaciones de estrategias de reconciliación (se debe buscar términos como 'pilotos', 'fase de prueba', 'evaluación', 'ajustes', 'articulación', 'enfoque diferencial', 'monitoreo adaptativo')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7717,7 +7717,7 @@
       "question_id": "Q149",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se describe un sistema de monitoreo para la política de víctimas que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia?",
+      "text": "¿Se describe un sistema de monitoreo que incluya participación activa de la Mesa Municipal de Víctimas, mecanismos de retroalimentación con UARIV o Unidad de Restitución, indicadores de satisfacción de víctimas con la atención recibida, alertas tempranas sobre revictimización o incumplimientos, y capacidad de aprendizaje para adaptar estrategias de reparación y reconciliación según contexto territorial y resultados observados?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7921,7 +7921,7 @@
       "question_id": "Q150",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La lógica causal para la reparación considera el contexto, reconociendo 'grupos afectados' (sujetos de reparación colectiva, víctimas en el exterior) y 'restricciones' territoriales o de seguridad?",
+      "text": "¿El plan considera el contexto municipal específico (tipo de conflicto vivido, actores armados presentes históricamente, magnitud de desplazamiento/despojo, composición étnica, si es municipio PDET), reconoce grupos de víctimas con necesidades diferenciadas (mujeres víctimas de violencia sexual, niños desvinculados, comunidades étnicas, líderes amenazados, familias de desaparecidos, excombatientes), y explicita restricciones (culturales, territoriales, de seguridad, de articulación con nivel nacional) que condicionan los procesos de reparación y reconciliación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",

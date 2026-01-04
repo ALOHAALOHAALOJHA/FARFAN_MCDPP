@@ -576,7 +576,7 @@
       "question_id": "Q181",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El diagnóstico presenta datos numéricos (porcentaje de predios sin formalizar, km de vías terciarias en mal estado, avance del catastro multipropósito) sobre el área de Tierras y territorios que sirvan como línea base? Se debe verificar el año y fuentes (ej. IGAC, ANT, INVIAS).",
+      "text": "¿El diagnóstico presenta datos cuantitativos sobre ordenamiento territorial vigente (POT/EOT/PBOT actualizado o desactualizado), catastro municipal (predios formalizados vs. informales, actualización catastral), tenencia de la tierra (porcentaje de predios con títulos, informalidad predial, solicitudes de titulación), conflictos de uso del suelo (áreas en usos no conformes al POT), concentración de la propiedad rural (Gini de tierras), déficit de Unidades Agrícolas Familiares (UAF), asentamientos informales urbanos, zonas de expansión urbana sin planificación, con año de referencia y fuente identificada (ej. IGAC, ANT, Catastro Municipal, Secretaría de Planeación, Oficina de Registro)?",
       "validations": {
         "buscar_indicadores_cuantitativos": {
           "minimum_required": 3,
@@ -874,7 +874,7 @@
       "question_id": "Q182",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El texto dimensiona la magnitud de los problemas de tierras y desarrollo rural, cuantificando el déficit (ej. de formalización, de infraestructura vial) o la población afectada? Se debe buscar si se mencionan 'vacíos de información' (ej. desactualización catastral).",
+      "text": "¿El diagnóstico dimensiona numéricamente las problemáticas de tierras y ordenamiento (hectáreas o predios sin titular, número de familias en asentamientos informales, porcentaje de desactualización catastral, conflictos por linderos o uso del suelo, áreas con sobreexplotación o subutilización del suelo rural) y reconoce explícitamente limitaciones como 'cartografía desactualizada', 'ausencia de catastro multipropósito', 'vacíos en información predial rural' o 'datos incompletos sobre baldíos'?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1140,7 +1140,7 @@
       "question_id": "Q183",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de formalización, catastro multipropósito, mejora de vías terciarias o distritos de riego?",
+      "text": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a actualización o revisión del POT/EOT/PBOT, actualización catastral, legalización de asentamientos urbanos informales, saneamiento de la propiedad rural, regularización de baldíos, gestión de bancos de tierras municipales, Planes Parciales, estudios de conflicto de uso del suelo?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1409,7 +1409,7 @@
       "question_id": "Q184",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El PDM describe las capacidades para la gestión de tierras, mencionando entidades (Oficina de Catastro, UMATA) y sus necesidades? Se debe buscar términos como 'gestión predial', 'sistemas de información geográfica' y si se identifican 'limitaciones'.",
+      "text": "¿El plan identifica las entidades responsables de ordenamiento y tierras (ej. Secretaría de Planeación, oficina de catastro, curador urbano, UMATA, Consejo Municipal de Planeación, Consejo Territorial de Planeación), describe sus capacidades (cartografía, sistemas de información geográfica, topógrafos, abogados para saneamiento predial) y señala limitaciones o necesidades de articulación con IGAC, ANT, Superintendencia de Notariado, Oficina de Registro de Instrumentos Públicos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1633,7 +1633,7 @@
       "question_id": "Q185",
       "scoring_definition_ref": "scoring_modalities.TYPE_E",
       "scoring_modality": "TYPE_E",
-      "text": "¿El plan justifica su alcance en tierras mencionando el marco legal (ej. Ley 388, Acuerdo de Paz) o reconociendo restricciones explícitas de tipo presupuestal, técnico o de competencias?",
+      "text": "¿El plan justifica el alcance de sus intervenciones en tierras y ordenamiento territorial mencionando el marco normativo (Ley 388 de Ordenamiento Territorial, Ley 1551, Decreto 1077 de 2015, Ley 160 de reforma agraria) o reconociendo explícitamente que competencias como adopción del POT son municipales directas, titulación de baldíos es de la ANT pero el municipio acompaña, y actualización catastral requiere articulación con el IGAC?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1836,7 +1836,7 @@
       "question_id": "Q186",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las actividades de tierras y territorios se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "text": "¿Las actividades para ordenamiento territorial, actualización catastral, formalización predial o gestión del uso del suelo (revisión del POT, actualización de catastro, legalización de barrios, saneamiento de títulos rurales, delimitación de suelo de expansión, elaboración de Planes Parciales, formación catastral, resolución de conflictos de linderos) aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2083,7 +2083,7 @@
       "question_id": "Q187",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La descripción de las actividades de tierras detalla el instrumento ('mediante barrido predial', 'a través de convenios con INVIAS'), la población objetivo ('pequeños propietarios', 'comunidades rurales') y la lógica causal?",
+      "text": "¿La descripción de actividades especifica el instrumento ('mediante actualización del POT', 'a través de formación catastral', 'con jornadas de saneamiento de títulos', 'mediante Planes Parciales', 'a través de bancos de tierras'), el área o población objetivo ('zona de expansión urbana sin regular', 'asentamientos informales en ladera', 'predios rurales sin titular', 'pequeños productores sin UAF formalizada', 'zonas con conflicto por uso del suelo') y explica cómo la actividad contribuye al resultado esperado ('para garantizar seguridad jurídica', 'porque ordena el crecimiento urbano', 'con el fin de aumentar recaudo predial', 'para reducir conflictos territoriales', 'porque facilita acceso a crédito')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2287,7 +2287,7 @@
       "question_id": "Q188",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM vincula explícitamente las actividades (ej. actualización catastral) con las 'causas raíz' de los problemas (ej. baja tributación predial, conflictos por linderos) identificadas en el diagnóstico?",
+      "text": "¿Las actividades propuestas se vinculan explícitamente con las problemáticas identificadas en el diagnóstico (ej. POT desactualizado que no refleja dinámicas reales, informalidad predial que impide inversión, conflictos de uso del suelo que generan degradación, concentración de tierras que excluye a pequeños productores, catastro desactualizado que afecta recaudo, asentamientos sin servicios ni seguridad jurídica)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2511,7 +2511,7 @@
       "question_id": "Q189",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan identifica posibles riesgos en la implementación de la política de tierras (ej. conflictos por la tierra, demoras en trámites registrales) y propone 'medidas de mitigación'?",
+      "text": "¿El plan identifica posibles obstáculos en la implementación (ej. resistencia a actualización catastral por temor a aumento de impuestos, conflictos políticos en adopción de POT, dificultades técnicas en levantamiento topográfico en zonas rurales dispersas, complejidad de saneamiento de títulos con múltiples tradiciones, oposición a legalización de asentamientos por intereses urbanísticos) y propone medidas explícitas de mitigación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2695,7 +2695,7 @@
       "question_id": "Q190",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El conjunto de actividades de tierras demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. formalización + asistencia técnica agropecuaria) o una 'secuencia' lógica.",
+      "text": "¿El plan describe explícitamente cómo las actividades de ordenamiento y tierras se complementan o siguen una secuencia lógica (ej. actualización catastral + actualización POT + licencias urbanísticas = ordenamiento efectivo; o identificación de baldíos + clarificación + adjudicación + UAF productivas = acceso a tierra; o delimitación de expansión + Planes Parciales + legalización = crecimiento urbano ordenado), evidenciando una estrategia articulada (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3025,7 +3025,7 @@
       "question_id": "Q191",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de producto para tierras (ej. predios formalizados, km de vía mejorados) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "text": "¿Los indicadores de producto (ej. POT/EOT actualizado y adoptado, predios con actualización catastral, familias con títulos de propiedad saneados, asentamientos informales legalizados, hectáreas con uso del suelo regularizado, Planes Parciales adoptados, expedientes de baldíos tramitados, bancos de tierras constituidos) incluyen línea base, meta cuantitativa y fuente de verificación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3442,7 +3442,7 @@
       "question_id": "Q192",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las metas de los productos de tierras (ej. 'formalizar 500 predios') son proporcionales a la magnitud del problema diagnosticado (ej. 'existen 5.000 predios informales')?",
+      "text": "¿Las metas de productos (ej. 'actualizar catastro del 50% de predios urbanos', 'legalizar 10 asentamientos de 30 identificados', 'sanear títulos de 500 predios rurales de 2.000 informales') guardan relación con la magnitud de la informalidad, desactualización o conflictos identificados en el diagnóstico, y se especifica priorización (zonas críticas, población vulnerable, predios con mayor potencial productivo), intensidad (hectáreas por año, familias por trimestre) o fases de intervención?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3883,7 +3883,7 @@
       "question_id": "Q193",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los productos de tierras tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Planeación' o entidad responsable)?",
+      "text": "¿Los productos están vinculados a códigos presupuestales (recursos propios, SGP ordenamiento, cofinanciación con IGAC o ANT, fondos nacionales de formalización) y a entidades responsables específicas (Secretaría de Planeación, oficina de catastro, UMATA, curador urbano)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4356,7 +4356,7 @@
       "question_id": "Q194",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una relación factible entre la actividad (ej. 'un convenio con la ANT') y la meta del producto asociado (ej. '2.000 títulos entregados') para el área de tierras? Se debe evaluar si los 'plazos' son realistas.",
+      "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'iniciar proceso de actualización del POT') y la magnitud de la meta del producto asociado (ej. 'POT adoptado en 12 meses'), considerando plazos y recursos disponibles? Se debe evaluar si el plan reconoce que los POT requieren estudios técnicos, participación ciudadana, concepto de la CAR y aprobación del Consejo (pueden tomar 18-36 meses); o que la formalización predial requiere levantamiento topográfico, saneamiento jurídico y trámites registrales prolongados, no eventos puntuales.",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4818,7 +4818,7 @@
       "question_id": "Q195",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM explica cómo los productos (ej. 'vías terciarias mejoradas') contribuyen a generar resultados (ej. 'reducción de costos de transporte para campesinos')? Se debe buscar este 'mecanismo'.",
+      "text": "¿El plan describe cómo los productos (ej. 'POT actualizado', 'predios formalizados', 'catastro actualizado', 'asentamientos legalizados', 'conflictos de uso resueltos') generan o contribuyen a los resultados esperados (ej. 'ordenamiento territorial efectivo', 'seguridad jurídica para inversión', 'aumento de recaudo predial', 'reducción de conflictos por tierra', 'acceso a crédito para pequeños productores'), explicando esta conexión o ruta (se debe buscar descripciones del tipo 'al lograr X se facilita Y porque...', 'esto permite que los propietarios...', 'esto reduce la conflictividad territorial')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5174,7 +5174,7 @@
       "question_id": "Q196",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de resultado para tierras (ej. 'porcentaje de actualización catastral', 'reducción del tiempo de viaje en zonas rurales') están definidos con línea base, meta y un horizonte temporal?",
+      "text": "¿Los indicadores de resultado (ej. 'porcentaje de suelo urbano con uso conforme al POT', 'tasa de formalización predial rural', 'actualización catastral (% de predios con avalúo actualizado)', 'índice Gini de concentración de tierras', 'número de conflictos por linderos resueltos', 'recaudo por impuesto predial') están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5375,7 +5375,7 @@
       "question_id": "Q197",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se explicita la cadena causal que lleva a la mejora territorial, mencionando 'supuestos' clave (ej. 'si los propietarios registran los títulos') o 'condiciones habilitantes'?",
+      "text": "¿El plan describe la ruta o secuencia que lleva a los resultados en ordenamiento y acceso a tierras, mencionando condiciones necesarias para que funcione (se debe buscar términos como 'supuestos', 'si propietarios valoran la seguridad jurídica sobre evasión tributaria', 'si la CAR aprueba determinantes ambientales del POT', 'si hay voluntad política para controlar urbanización ilegal', 'si la ANT agiliza trámites de baldíos', 'si hay oferta de notarios y registradores en zonas rurales', 'siempre que...', 'requiere que...')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5563,7 +5563,7 @@
       "question_id": "Q198",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición de las metas de resultado (ej. 'actualizar el 100% del catastro') se justifica en función de los recursos, la capacidad técnica o se compara con 'casos' de otros municipios?",
+      "text": "¿La ambición de las metas de resultado (ej. 'alcanzar 80% de formalización predial rural', 'actualizar 100% del catastro municipal', 'reducir conflictos de uso del suelo en 50%', 'aumentar recaudo predial en 30%') se justifica en función de recursos asignados, capacidad técnica municipal, articulación con IGAC o ANT, o se compara con municipios de categoría similar?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5741,7 +5741,7 @@
       "question_id": "Q199",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los resultados propuestos (ej. 'aumento de la seguridad jurídica de la tenencia') 'atienden' o 'abordan' directamente los problemas de informalidad y conflicto por la tierra priorizados en el diagnóstico?",
+      "text": "¿Los resultados propuestos (ej. 'ordenamiento territorial actualizado y efectivo', 'seguridad jurídica en tenencia de tierras', 'formalización de asentamientos urbanos', 'acceso a tierra para pequeños productores', 'uso sostenible del suelo rural', 'recaudo predial suficiente para inversión') atienden o abordan directamente las problemáticas de tierras, catastro y ordenamiento priorizadas en el diagnóstico?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5902,7 +5902,7 @@
       "question_id": "Q200",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan declara la alineación de sus resultados de tierras con marcos superiores como el PND, los ODS o la Reforma Rural Integral?",
+      "text": "¿El plan declara la alineación de sus resultados en tierras y territorios con la Ley 388 de Ordenamiento Territorial, Ley 160 de reforma agraria, política de catastro multipropósito, PDET (en zonas aplicables), o los ODS (especialmente ODS 1: Fin de la Pobreza, ODS 2: Hambre Cero, ODS 11: Ciudades Sostenibles, ODS 15: Gestión Sostenible de la Tierra)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6103,7 +6103,7 @@
       "question_id": "Q201",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM define 'impactos' de largo plazo (ej. 'ordenamiento sostenible del territorio', 'desarrollo rural competitivo')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "text": "¿El plan define impactos o transformaciones de largo plazo en ordenamiento y acceso a tierras (cambios que trascienden el cuatrienio) como 'territorio ordenado con crecimiento sostenible', 'seguridad jurídica universal en tenencia de tierras', 'democratización del acceso a tierra rural', 'catastro multipropósito consolidado', 'eliminación de la informalidad predial', 'usos del suelo sostenibles y productivos', describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6431,7 +6431,7 @@
       "question_id": "Q202",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se utilizan 'índices' (ej. Índice de Competitividad Rural) o 'proxies' para medir los impactos en el desarrollo territorial, justificando su validez?",
+      "text": "¿Se utilizan índices (ej. Índice de Ordenamiento Territorial, Índice de Gini de tierras, Índice de Formalidad Predial) o indicadores proxy para medir impactos en ordenamiento territorial y equidad en acceso a tierras, justificando por qué son adecuados para capturar transformaciones estructurales en organización espacial y distribución de la propiedad? Cuando un impacto es difícil de medir directamente (ej. 'apropiación social del ordenamiento', 'cultura de legalidad predial', 'seguridad jurídica percibida'), ¿se explica la validez y limitaciones del indicador proxy utilizado (ej. 'porcentaje de solicitudes de licencias urbanísticas conformes al POT', 'reducción de litigios por linderos', 'aumento de transacciones inmobiliarias formales')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6605,7 +6605,7 @@
       "question_id": "Q203",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "Cuando un impacto territorial es difícil de medir (ej. 'arraigo de la población al campo'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "text": "¿Los impactos en ordenamiento y tierras se alinean con marcos nacionales o globales y consideran riesgos externos (presiones de urbanización ilegal por migración, cambios en política nacional de tierras, especulación inmobiliaria que concentra propiedad, conflictos armados que impiden formalización rural, crisis agrícolas que desincentivan inversión en UAF) que podrían impedir o revertir los logros esperados?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6795,7 +6795,7 @@
       "question_id": "Q204",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los impactos territoriales se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. cambios en el uso del suelo a gran escala) que podrían romper el mecanismo causal?",
+      "text": "¿El plan evalúa si la ambición del impacto en ordenamiento y tierras es realista, considerando posibles efectos no deseados (ej. gentrificación por legalización de barrios con aumento de valorización, aumento de carga tributaria que afecta población vulnerable tras actualización catastral, especulación con baldíos adjudicados, resistencia social a restricciones de POT que limitan usos tradicionales), o reconoce explícitamente los límites de las intervenciones municipales (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado sin ANT', 'depende de articulación con IGAC')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6996,7 +6996,7 @@
       "question_id": "Q205",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición del impacto (ej. 'cierre total de la brecha rural-urbana') es realista? Se debe buscar si se analizan posibles 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "text": "¿El plan describe cómo se sostendrán los impactos en ordenamiento territorial y gestión de tierras más allá del periodo de gobierno, identificando mecanismos de institucionalización (POT con vigencia de largo plazo, oficina de catastro permanente), apropiación comunitaria (veedurías de control urbano, organizaciones de propietarios), fuentes de financiación continua (impuesto predial incrementado por actualización catastral, convenios permanentes con IGAC) o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación', 'continuidad')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7185,7 +7185,7 @@
       "question_id": "Q206",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una 'teoría de cambio' explícita para la política de tierras, preferiblemente en un 'diagrama', que identifique causas (ej. catastro desactualizado), mediadores y 'supuestos verificables'?",
+      "text": "¿El plan presenta una descripción explícita de cómo se generan los cambios en ordenamiento territorial y gestión de tierras (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal'), preferiblemente en diagrama o matriz, que identifique problemáticas (informalidad predial, desactualización catastral, conflictos de uso, concentración de tierras, crecimiento urbano desordenado), intervenciones (POT, catastro, titulación, licencias, Planes Parciales, UAF), supuestos verificables (ej. 'si hay control urbano efectivo', 'si propietarios valoran formalidad') y la secuencia insumos→actividades→productos→resultados→impactos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7362,7 +7362,7 @@
       "question_id": "Q207",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los saltos en la cadena causal de tierras son proporcionales (ej. la formalización de un predio no genera por sí sola 'desarrollo rural integral')?",
+      "text": "¿El plan evita saltos desproporcionados en su lógica (por ejemplo, no atribuye 'ordenamiento efectivo' a adoptar un POT sin control urbano, sanciones y cultura de legalidad; o 'aumento de recaudo' a actualizar el catastro sin capacidad de cobro y fiscalización; o 'desarrollo rural' a titular predios sin acceso a crédito, asistencia técnica y mercados), reconociendo explícitamente cuando se requieren procesos sostenidos, múltiples condiciones o factores externos (se debe buscar expresiones de cautela como 'requiere control urbano permanente', 'depende de articulación con ANT', 'necesita cambio en cultura tributaria')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7559,7 +7559,7 @@
       "question_id": "Q208",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan reconoce 'inconsistencias' en su lógica de tierras y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "text": "¿El plan reconoce la complejidad de la gestión territorial (intereses económicos, políticos, sociales en conflicto; diversidad de actores; multiplicidad de regulaciones), identifica debilidades o incertidumbres en su estrategia, y propone mecanismos para aprender y ajustar como estrategias graduales (pilotos de formalización en zonas priorizadas, actualización catastral por fases), articulación interinstitucional (IGAC, ANT, CAR, notarios) o mecanismos de participación ciudadana (se debe buscar términos como 'pilotos', 'fases', 'evaluación', 'ajustes', 'articulación interinstitucional', 'participación ciudadana')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7753,7 +7753,7 @@
       "question_id": "Q209",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se describe un sistema de monitoreo para la política de tierras que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia?",
+      "text": "¿Se describe un sistema de monitoreo que incluya sistemas de información geográfica (SIG), indicadores de control urbano (licencias otorgadas vs. construcciones reales), seguimiento a expedientes de formalización predial, mecanismos de retroalimentación con IGAC y ANT, alertas sobre urbanización ilegal o conflictos emergentes de uso del suelo, y capacidad de aprendizaje para adaptar estrategias de ordenamiento y gestión de tierras?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7957,7 +7957,7 @@
       "question_id": "Q210",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La lógica causal para tierras considera el contexto, reconociendo 'grupos afectados' (comunidades étnicas, campesinos sin tierra) y 'restricciones' territoriales o ambientales?",
+      "text": "¿El plan considera el contexto municipal específico (municipio urbano vs. rural, presión migratoria, vocación productiva del suelo, presencia de actores armados que impiden formalización, patrones históricos de concentración o informalidad, topografía que dificulta catastro), reconoce actores con necesidades diferenciadas (pequeños campesinos sin tierra, población en asentamientos informales urbanos, empresarios agrícolas con predios sin clarificar, comunidades étnicas con territorios colectivos, desarrolladores urbanos, familias víctimas de despojo), y explicita restricciones (técnicas, presupuestales, normativas de la CAR, superposiciones con áreas protegidas, límites a licencias por capacidad de infraestructura) que condicionan las intervenciones?",
       "validations": {
         "completeness_check": {
           "type": "completeness",

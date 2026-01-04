@@ -535,7 +535,7 @@
       "question_id": "Q061",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El diagnóstico presenta datos numéricos (hectáreas deforestadas, nivel de IRCA, familias en riesgo) para el área de Ambiente sano, cambio climático y gestión de desastres que sirvan como línea base? Se debe verificar el año y fuentes (ej. IDEAM, CAR, CMGRD).",
+      "text": "¿El diagnóstico presenta datos cuantitativos sobre calidad del aire, cobertura de acueducto y alcantarillado, gestión de residuos sólidos, áreas de amenaza por deslizamientos o inundaciones, emisiones de gases de efecto invernadero municipales, o eventos climáticos extremos registrados, con año de referencia y fuente identificada (ej. CAR, IDEAM, UNGRD, Superservicios, inventarios de emisiones)?",
       "validations": {
         "buscar_indicadores_cuantitativos": {
           "minimum_required": 3,
@@ -846,7 +846,7 @@
       "question_id": "Q062",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El texto dimensiona la magnitud de los problemas ambientales o la vulnerabilidad ante desastres, cuantificando el déficit de conservación o el alcance del riesgo? Se debe buscar si se mencionan 'vacíos de información' (ej. falta de estudios de riesgo detallados).",
+      "text": "¿El diagnóstico dimensiona numéricamente las problemáticas ambientales y de riesgo (hectáreas de ecosistemas degradados, toneladas de residuos generados, número de familias en zonas de alto riesgo, porcentaje de cobertura de saneamiento básico) y reconoce explícitamente limitaciones como 'ausencia de estaciones de monitoreo', 'mapas de amenaza desactualizados' o 'información climática insuficiente'?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1112,7 +1112,7 @@
       "question_id": "Q063",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de reforestación, saneamiento básico (PTAR), gestión del riesgo o adaptación al cambio climático?",
+      "text": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a programas de gestión de residuos sólidos (PGIRS), agua potable y saneamiento básico (PSMV), restauración ecológica, adaptación al cambio climático, fortalecimiento del CMGRD, sistemas de alerta temprana o reubicación de familias en zonas de alto riesgo?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1381,7 +1381,7 @@
       "question_id": "Q064",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El PDM describe las capacidades para la gestión ambiental y del riesgo, mencionando entidades (CMGRD, Secretaría de Ambiente) y sus necesidades? Se debe buscar términos como 'sistemas de monitoreo ambiental' e 'instrumentos de ordenamiento'.",
+      "text": "¿El plan identifica las entidades responsables (ej. Secretaría de Ambiente, Oficina de Gestión del Riesgo, CMGRD, empresas de servicios públicos), describe sus capacidades (equipos de monitoreo, personal especializado, maquinaria para emergencias, protocolos de respuesta) y señala limitaciones o necesidades de articulación con la CAR, el departamento o la UNGRD?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1605,7 +1605,7 @@
       "question_id": "Q065",
       "scoring_definition_ref": "scoring_modalities.TYPE_E",
       "scoring_modality": "TYPE_E",
-      "text": "¿El plan justifica su alcance en materia ambiental mencionando el marco legal (ej. Ley 1523) o reconociendo restricciones explícitas de tipo presupuestal, técnico o de competencias (ej. con la CAR)?",
+      "text": "¿El plan justifica el alcance de sus intervenciones ambientales, climáticas y de gestión del riesgo mencionando el marco normativo (ej. Ley 99, Ley 1523 de Gestión del Riesgo, Acuerdo de París) o reconociendo explícitamente qué competencias son municipales directas (PGIRS, agua potable, CMGRD) y cuáles requieren articulación con la CAR, el departamento o el nivel nacional?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1808,7 +1808,7 @@
       "question_id": "Q066",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las actividades ambientales y de gestión del riesgo se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "text": "¿Las actividades para mejorar la calidad ambiental, reducir vulnerabilidad climática o prevenir desastres (Planes de Saneamiento y Manejo de Vertimientos, sistemas de alerta temprana, campañas de separación en la fuente, reforestación de cuencas, reubicación de familias) aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2055,7 +2055,7 @@
       "question_id": "Q067",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La descripción de las actividades ambientales detalla el instrumento ('mediante la construcción de un jarillón', 'a través de incentivos a la conservación'), la población objetivo ('familias en zonas de riesgo', 'propietarios de predios en cuencas') y la lógica causal?",
+      "text": "¿La descripción de actividades especifica el instrumento ('mediante Planes de Saneamiento y Manejo de Vertimientos', 'a través de sistemas de alerta temprana', 'con campañas de separación en la fuente', 'mediante reforestación de cuencas'), la población o zona objetivo ('familias en zonas de ladera', 'cuenca del río X', 'área urbana con déficit de alcantarillado', 'sectores productivos con altas emisiones') y explica cómo la actividad contribuye al resultado esperado ('para reducir la vulnerabilidad', 'porque protege fuentes hídricas', 'con el fin de disminuir emisiones de GEI')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2272,7 +2272,7 @@
       "question_id": "Q068",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM vincula explícitamente las actividades (ej. reforestación) con las 'causas raíz' de los problemas ambientales (ej. expansión de la frontera agrícola) identificadas en el diagnóstico?",
+      "text": "¿Las actividades propuestas se vinculan explícitamente con las causas identificadas en el diagnóstico (ej. deforestación de cuencas, disposición inadecuada de residuos, asentamientos en zonas de amenaza, contaminación de fuentes hídricas, eventos climáticos extremos recurrentes, emisiones del transporte)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2496,7 +2496,7 @@
       "question_id": "Q069",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan identifica posibles riesgos en la implementación (ej. baja adopción de prácticas sostenibles, eventos climáticos extremos) y propone 'medidas de mitigación'?",
+      "text": "¿El plan identifica posibles obstáculos en la implementación (ej. resistencia comunitaria a reubicación, incumplimiento en separación de residuos, dependencia de recursos de la CAR, condiciones climáticas adversas para obras, conflictos por uso del suelo) y propone medidas explícitas de mitigación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2680,7 +2680,7 @@
       "question_id": "Q070",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El conjunto de actividades ambientales demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. protección de cuencas + optimización del acueducto) o 'secuencia' lógica.",
+      "text": "¿El plan describe explícitamente cómo las actividades ambientales, climáticas y de gestión del riesgo se complementan o siguen una secuencia lógica (ej. mapeo de amenazas→reubicación de familias→recuperación de zonas; o educación ambiental→separación en la fuente→aprovechamiento de residuos→economía circular), evidenciando una estrategia articulada (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3010,7 +3010,7 @@
       "question_id": "Q071",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de producto para ambiente (ej. hectáreas reforestadas, metros de jarillón construidos) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "text": "¿Los indicadores de producto (ej. kilómetros de rondas hídricas recuperadas, familias reubicadas de zonas de alto riesgo, toneladas de residuos aprovechados, hectáreas reforestadas, sistemas de alerta temprana instalados, inventarios de emisiones GEI actualizados) incluyen línea base, meta cuantitativa y fuente de verificación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3440,7 +3440,7 @@
       "question_id": "Q072",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las metas de los productos ambientales (ej. 'reforestar 100 hectáreas') son proporcionales a la magnitud del problema diagnosticado (ej. 'se deforestan 500 hectáreas/año')?",
+      "text": "¿Las metas de productos (ej. 'reubicar 200 familias de las 800 en alto riesgo', 'aumentar aprovechamiento de residuos del 5% al 20%', 'reforestar 100 hectáreas de cuenca') guardan relación con la magnitud del problema identificado en el diagnóstico, y se especifica la priorización (zonas críticas, ecosistemas estratégicos), intensidad (hectáreas por año, frecuencia de recolección) o cobertura?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3894,7 +3894,7 @@
       "question_id": "Q073",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los productos ambientales tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Ambiente' o entidad responsable)?",
+      "text": "¿Los productos están vinculados a códigos presupuestales (BPIN, PPI, recursos de regalías, cofinanciación CAR) y a entidades responsables específicas (ej. Secretaría de Ambiente, empresa de acueducto, CMGRD, Secretaría de Planeación)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4367,7 +4367,7 @@
       "question_id": "Q074",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una relación factible entre la actividad (ej. 'un programa de educación ambiental') y la meta del producto asociado (ej. 'reducción del 50% de residuos sólidos') para el área ambiental? Se debe evaluar si los 'plazos' son realistas.",
+      "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'campañas de sensibilización ambiental') y la magnitud de la meta del producto asociado (ej. 'aumentar separación en la fuente del 10% al 60%'), considerando plazos, recursos disponibles y cambios culturales necesarios? Se debe evaluar si el plan reconoce que logros ambientales requieren tiempo de maduración (restauración ecológica, cambio de comportamientos), no eventos puntuales.",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4829,7 +4829,7 @@
       "question_id": "Q075",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM explica cómo los productos (ej. 'construcción de una PTAR') contribuyen a generar resultados (ej. 'mejora de la calidad del agua del río')? Se debe buscar la descripción de este 'mecanismo' causal.",
+      "text": "¿El plan describe cómo los productos (ej. 'familias reubicadas', 'plantas de tratamiento operando', 'áreas protegidas declaradas', 'sistemas de alerta instalados') generan o contribuyen a los resultados esperados (ej. 'reducción de muertes por desastres', 'mejora en calidad del agua', 'disminución de emisiones'), explicando esta conexión o ruta (se debe buscar descripciones del tipo 'al lograr X se genera Y porque...', 'esto permite...', 'esto reduce el riesgo de...')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5172,7 +5172,7 @@
       "question_id": "Q076",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de resultado ambiental (ej. 'Índice de Riesgo de la Calidad del Agua - IRCA', 'reducción de emisiones GEI') están definidos con línea base, meta y un horizonte temporal?",
+      "text": "¿Los indicadores de resultado (ej. 'Índice de Calidad del Agua', 'porcentaje de reducción de emisiones GEI municipales', 'número de eventos de desastre con víctimas', 'cobertura de alcantarillado', 'toneladas de CO2 equivalente reducidas') están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5373,7 +5373,7 @@
       "question_id": "Q077",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se explicita la cadena causal que lleva a la mejora ambiental, mencionando 'supuestos' (ej. 'si la comunidad adopta la separación de residuos') o 'condiciones habilitantes'?",
+      "text": "¿El plan describe la ruta o secuencia que lleva a los resultados ambientales o de reducción de riesgo, mencionando condiciones necesarias para que funcione (se debe buscar términos como 'supuestos', 'si la comunidad adopta prácticas sostenibles', 'si la CAR cofinancia', 'si no hay eventos extremos atípicos', 'si se mantiene la vigilancia y control', 'siempre que...', 'requiere que...')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5574,7 +5574,7 @@
       "question_id": "Q078",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición de las metas de resultado ambiental (ej. 'alcanzar un IRCA por debajo del 5%') se justifica en función de la inversión, la tecnología disponible o se compara con 'casos' de otros municipios?",
+      "text": "¿La ambición de las metas de resultado (ej. 'reducir emisiones municipales en 20%', 'alcanzar 95% de cobertura de acueducto', 'cero víctimas mortales por desastres') se justifica en función de recursos asignados, capacidad técnica municipal, articulación con CAR o se compara con municipios de categoría similar?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5752,7 +5752,7 @@
       "question_id": "Q079",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los resultados propuestos (ej. 'reducción de la vulnerabilidad ante inundaciones') 'atienden' o 'abordan' directamente los problemas de riesgo o ambientales priorizados en el diagnóstico?",
+      "text": "¿Los resultados propuestos (ej. 'mejora en calidad del aire y agua', 'reducción de vulnerabilidad climática', 'disminución de riesgo de desastres', 'gestión integral de residuos sólidos') atienden o abordan directamente los problemas ambientales, climáticos y de riesgo priorizados en el diagnóstico?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5913,7 +5913,7 @@
       "question_id": "Q080",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan declara la alineación de sus resultados ambientales con marcos superiores como el PND, los ODS (6, 11, 13) o el Acuerdo de París?",
+      "text": "¿El plan declara la alineación de sus resultados ambientales con el Plan Nacional de Desarrollo, la Contribución Nacionalmente Determinada (NDC) de Colombia, los ODS (especialmente ODS 6: Agua Limpia, ODS 11: Ciudades Sostenibles, ODS 13: Acción Climática, ODS 15: Vida de Ecosistemas Terrestres)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6114,7 +6114,7 @@
       "question_id": "Q081",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM define 'impactos' de largo plazo (ej. 'sostenibilidad hídrica del territorio')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "text": "¿El plan define impactos o transformaciones de largo plazo (cambios que trascienden el cuatrienio) como 'restauración integral de cuencas hidrográficas', 'carbono neutralidad municipal', 'resiliencia climática consolidada', 'eliminación de zonas de alto riesgo no mitigable', describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6442,7 +6442,7 @@
       "question_id": "Q082",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se utilizan 'índices' (ej. Índice de Sostenibilidad Ambiental) o 'proxies' para medir los impactos en el área ambiental, justificando por qué son válidos para 'capturar el mecanismo' de resiliencia?",
+      "text": "¿Se utilizan índices (ej. Índice de Calidad Ambiental Urbana, Índice de Riesgo Climático, huella de carbono municipal) o indicadores proxy para medir impactos en sostenibilidad ambiental, justificando por qué son adecuados para capturar transformaciones estructurales? Cuando un impacto ambiental es difícil de medir directamente (ej. 'servicios ecosistémicos restaurados', 'cultura ambiental arraigada', 'adaptación climática efectiva'), ¿se explica la validez y limitaciones del indicador proxy utilizado (ej. 'caudal de fuentes hídricas', 'participación en programas de reciclaje', 'reducción de pérdidas económicas por eventos climáticos')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6616,7 +6616,7 @@
       "question_id": "Q083",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "Cuando un impacto ambiental es difícil de medir (ej. 'aumento de la conciencia ambiental'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "text": "¿Los impactos ambientales se alinean con marcos nacionales o globales y consideran riesgos externos (eventos climáticos extremos fuera de proyecciones, cambios en política ambiental nacional, crisis económicas que reducen inversión en sostenibilidad) que podrían impedir o revertir los logros esperados?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6806,7 +6806,7 @@
       "question_id": "Q084",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los impactos ambientales se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. cambio en los patrones de lluvia a nivel regional) que podrían romper el mecanismo causal?",
+      "text": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados (ej. gentrificación por mejoras ambientales, desplazamiento de comunidades en reubicaciones, dependencia de recursos externos no sostenibles, trade-offs entre desarrollo económico y protección ambiental), o reconoce explícitamente los límites (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado a...', 'depende de la CAR', 'requiere articulación nacional')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7007,7 +7007,7 @@
       "question_id": "Q085",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición del impacto ambiental (ej. 'territorio carbono neutro') es realista? Se debe buscar si se analizan posibles 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "text": "¿El plan describe cómo se sostendrán los impactos ambientales y de gestión del riesgo más allá del periodo de gobierno, identificando mecanismos de institucionalización (protocolos permanentes de la CAR, CMGRD consolidado), apropiación comunitaria (promotores ambientales locales, guardianes de cuenca), fuentes de financiación continua (tasas ambientales, recursos SGP, cofinanciación permanente) o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación', 'continuidad')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7196,7 +7196,7 @@
       "question_id": "Q086",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una 'teoría de cambio' explícita para la gestión ambiental, preferiblemente en un 'diagrama', que identifique causas (ej. falta de POT), mediadores y 'supuestos verificables'?",
+      "text": "¿El plan presenta una descripción explícita de cómo se generan los cambios en sostenibilidad ambiental y gestión del riesgo (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal'), preferiblemente en diagrama o matriz, que identifique causas (deforestación, contaminación, vulnerabilidad), intervenciones (educación ambiental, infraestructura verde, sistemas de monitoreo), supuestos verificables (ej. 'si la comunidad adopta prácticas', 'si la CAR aprueba') y la secuencia insumos→actividades→productos→resultados→impactos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7360,7 +7360,7 @@
       "question_id": "Q087",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los saltos en la cadena causal ambiental son proporcionales (ej. un programa de reciclaje no genera por sí solo 'sostenibilidad ambiental total')?",
+      "text": "¿El plan evita saltos desproporcionados en su lógica (por ejemplo, no atribuye 'cambio cultural masivo' a una campaña de sensibilización; o 'servicios ecosistémicos completos' a la siembra de árboles sin décadas de maduración; o 'eliminación total del riesgo' a un sistema de alerta sin reubicación de familias en zonas no mitigables), reconociendo explícitamente cuando se requieren procesos sostenidos, múltiples condiciones o factores externos (se debe buscar expresiones de cautela como 'requiere tiempo de maduración ecológica', 'depende de cambios culturales', 'necesita financiación permanente')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7557,7 +7557,7 @@
       "question_id": "Q088",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan reconoce 'inconsistencias' en su lógica ambiental y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "text": "¿El plan reconoce la complejidad de sistemas socio-ecológicos, identifica incertidumbres en su estrategia ambiental (ej. variabilidad climática impredecible, respuesta ecosistémica), y propone mecanismos para aprender y ajustar como monitoreos adaptativos, articulación con centros de investigación o evaluaciones de intervenciones piloto (se debe buscar términos como 'pilotos', 'fase de prueba', 'monitoreo adaptativo', 'evaluación', 'ajustes', 'articulación con CAR', 'articulación con IDEAM')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7751,7 +7751,7 @@
       "question_id": "Q089",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se describe un sistema de monitoreo para la gestión ambiental que incluya 'mecanismos de corrección' o 'aprendizaje' para adaptar la estrategia (ej. ante una nueva mancha de deforestación)?",
+      "text": "¿Se describe un sistema de monitoreo ambiental y de gestión del riesgo que incluya indicadores de alerta temprana (ej. niveles de ríos, calidad de aire en tiempo real, tendencias de emisiones), mecanismos de retroalimentación con CAR, IDEAM o UNGRD, participación comunitaria en veedurías ambientales, y capacidad de aprendizaje para adaptar estrategias ante cambios climáticos o eventos inesperados?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7955,7 +7955,7 @@
       "question_id": "Q090",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La lógica causal ambiental considera el contexto, reconociendo 'grupos afectados' (ej. comunidades ribereñas) y 'restricciones' territoriales (zonas de reserva) o regulatorias?",
+      "text": "¿El plan considera el contexto municipal específico (altitud, régimen de lluvias, ecosistemas presentes, vulnerabilidad sísmica o de inundación, patrones productivos contaminantes), reconoce grupos específicos afectados (comunidades en rondas hídricas, sectores productivos con altas emisiones, población rural dependiente de recursos naturales), y explicita restricciones (ecológicas, normativas del POT, determinantes ambientales de la CAR, capacidad técnica) que condicionan las intervenciones?",
       "validations": {
         "completeness_check": {
           "type": "completeness",

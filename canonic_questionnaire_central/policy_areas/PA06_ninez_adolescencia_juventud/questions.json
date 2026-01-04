@@ -577,7 +577,7 @@
       "question_id": "Q151",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El diagnóstico presenta datos numéricos (tasa de deserción escolar, embarazo adolescente, trabajo infantil) para el área de Derechos de la niñez, adolescencia y juventud que sirvan como línea base? Se debe verificar el año y fuentes (ej. SIMAT, SISPRO, ICBF).",
+      "text": "¿El diagnóstico presenta datos cuantitativos sobre desarrollo infantil temprano (desnutrición crónica, vacunación, estimulación), vulneraciones de derechos (maltrato infantil, abuso sexual, trabajo infantil, explotación), embarazo adolescente, consumo de sustancias psicoactivas en adolescentes, deserción escolar por factores de riesgo psicosocial, participación juvenil en espacios de decisión, con año de referencia y fuente identificada (ej. ICBF, Comisaría de Familia, Secretaría de Educación, DANE, Observatorio de Drogas)?",
       "validations": {
         "buscar_indicadores_cuantitativos": {
           "minimum_required": 3,
@@ -888,7 +888,7 @@
       "question_id": "Q152",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El texto dimensiona la magnitud de los problemas de la niñez y juventud (ej. consumo de SPA, violencia intrafamiliar) cuantificando el déficit de atención o la población en riesgo? Se debe buscar si se mencionan 'vacíos de información'.",
+      "text": "¿El diagnóstico dimensiona numéricamente las afectaciones a niños, niñas, adolescentes y jóvenes (número de casos de maltrato reportados, tasa de embarazo adolescente, porcentaje de trabajo infantil, jóvenes sin oportunidades educativas o laborales, deserción escolar asociada a violencias) y reconoce explícitamente limitaciones como 'subregistro de abuso sexual', 'ausencia de caracterización de consumo de SPA', 'datos desactualizados de primera infancia' o 'información limitada sobre salud mental adolescente'?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1154,7 +1154,7 @@
       "question_id": "Q153",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de primera infancia, alimentación escolar (PAE), prevención del reclutamiento o empleo juvenil?",
+      "text": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a atención integral a primera infancia (CDI, hogares comunitarios), prevención de embarazo adolescente, prevención de consumo de sustancias psicoactivas, fortalecimiento de Comisarías de Familia, escuelas de familia, prevención de trabajo infantil, espacios de participación juvenil, programas de empleabilidad juvenil?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1423,7 +1423,7 @@
       "question_id": "Q154",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El PDM describe las capacidades para la gestión de políticas de niñez y juventud, mencionando entidades (Comisarías, ICBF, Plataformas Juveniles) y sus necesidades? Se debe buscar términos como 'orientación escolar', 'programas de prevención' y si se identifican 'limitaciones'.",
+      "text": "¿El plan identifica las entidades responsables de la política de infancia, adolescencia y juventud (ej. Comisaría de Familia, enlace ICBF, Consejo de Política Social COMPOS, Secretaría de Desarrollo Social, Plataforma de Juventud, Consejo Municipal de Juventud), describe sus capacidades (psicólogos, trabajadores sociales, defensores de familia, protocolos de activación de rutas de atención) y señala limitaciones o necesidades de articulación con ICBF, Fiscalía, Policía de Infancia?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1647,7 +1647,7 @@
       "question_id": "Q155",
       "scoring_definition_ref": "scoring_modalities.TYPE_E",
       "scoring_modality": "TYPE_E",
-      "text": "¿El plan justifica su alcance en niñez y juventud mencionando el marco legal (Código de Infancia y Adolescencia, Ley de Juventud) o reconociendo restricciones explícitas de tipo presupuestal o de competencias?",
+      "text": "¿El plan justifica el alcance de sus intervenciones en niñez, adolescencia y juventud mencionando el marco normativo (Ley 1098 Código de Infancia y Adolescencia, Ley 1622 Estatuto de Ciudadanía Juvenil, Política De Cero a Siempre) o reconociendo explícitamente que competencias como restablecimiento de derechos (adopción, declaratorias) son del ICBF pero el municipio fortalece prevención, detección temprana y entornos protectores?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1850,7 +1850,7 @@
       "question_id": "Q156",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las actividades para niñez y juventud se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "text": "¿Las actividades para protección de niños, niñas, adolescentes y jóvenes (CDI, escuelas de familia, jornadas de prevención de embarazo adolescente, campañas contra trabajo infantil, programas de prevención de consumo de SPA, fortalecimiento de Comisarías, espacios de participación juvenil) aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2097,7 +2097,7 @@
       "question_id": "Q157",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La descripción de las actividades para jóvenes detalla el instrumento ('mediante escuelas de formación deportiva', 'a través de centros de escucha'), la población objetivo ('jóvenes en riesgo', 'NNA desescolarizados') y la lógica causal?",
+      "text": "¿La descripción de actividades especifica el instrumento ('mediante atención integral en CDI', 'a través de escuelas de familia', 'con estrategias de prevención de SPA', 'mediante Consejos de Juventud', 'a través de rutas de atención a vulneraciones'), el ciclo vital objetivo ('primera infancia 0-5 años', 'adolescentes escolarizados', 'jóvenes rurales sin oportunidades', 'familias con factores de riesgo'), el entorno protector ('familia', 'escuela', 'comunidad', 'institucional') y explica cómo la actividad contribuye al resultado esperado ('para prevenir vulneraciones', 'porque fortalece vínculos familiares', 'con el fin de garantizar desarrollo integral', 'para reducir factores de riesgo')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2314,7 +2314,7 @@
       "question_id": "Q158",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM vincula explícitamente las actividades (ej. transporte escolar) con las 'causas raíz' de los problemas (ej. deserción escolar por barreras de acceso) identificadas en el diagnóstico?",
+      "text": "¿Las actividades propuestas se vinculan explícitamente con las vulneraciones, brechas o factores de riesgo identificados en el diagnóstico (ej. desnutrición infantil, maltrato intrafamiliar, abuso sexual, embarazo adolescente, consumo de SPA, trabajo infantil, deserción escolar, violencia en entornos escolares, jóvenes sin proyecto de vida)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2538,7 +2538,7 @@
       "question_id": "Q159",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan identifica posibles riesgos en la implementación de los programas para niñez y juventud (ej. baja participación, estigmatización) y propone 'medidas de mitigación'?",
+      "text": "¿El plan identifica posibles obstáculos en la implementación (ej. subregistro de vulneraciones por miedo a denunciar, resistencia familiar a intervenciones, estigmatización de adolescentes embarazadas, normalización de trabajo infantil, baja participación juvenil, revictimización en rutas de atención) y propone medidas explícitas de mitigación con enfoque de entornos protectores?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2722,7 +2722,7 @@
       "question_id": "Q160",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El conjunto de actividades para niñez y juventud demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. jornada escolar complementaria + prevención de SPA) o 'secuencia' lógica.",
+      "text": "¿El plan describe explícitamente cómo las actividades para niñez, adolescencia y juventud se complementan entre ciclos vitales y entornos (ej. atención en primera infancia + escuelas de familia + ambientes escolares protectores = desarrollo integral; o prevención de embarazo + proyecto de vida + oportunidades educativas = autonomía juvenil; o detección temprana + ruta de atención + restablecimiento de derechos = protección efectiva), evidenciando una estrategia articulada (se debe buscar términos como 'complementariedad', 'sinergia', 'continuum por ciclo vital', 'entornos protectores simultáneos')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3065,7 +3065,7 @@
       "question_id": "Q161",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de producto para niñez y juventud (ej. cupos en CDI, raciones de PAE entregadas) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "text": "¿Los indicadores de producto (ej. niños en CDI, familias participando en escuelas de padres, adolescentes en programas de prevención de embarazo, jóvenes en formación para el empleo, casos de vulneración atendidos por Comisaría, Consejos de Juventud funcionando, rutas de atención activadas) incluyen línea base, meta cuantitativa desagregada por ciclo vital y fuente de verificación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3512,7 +3512,7 @@
       "question_id": "Q162",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las metas de los productos para niñez y juventud (ej. 'cobertura del PAE al 90% de la matrícula') son proporcionales a la magnitud de la población objetivo diagnosticada?",
+      "text": "¿Las metas de productos (ej. 'atención integral al 60% de primera infancia', 'prevención de embarazo con 80% de adolescentes escolarizados', 'activación de ruta en 100% de casos reportados de maltrato') guardan relación con la magnitud de las vulneraciones o necesidades identificadas en el diagnóstico, y se especifica priorización (zonas rurales, población vulnerable, grupos en mayor riesgo), intensidad (frecuencia de atención psicosocial, duración de acompañamiento) o cobertura por ciclo vital?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3966,7 +3966,7 @@
       "question_id": "Q163",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los productos para niñez y juventud tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Desarrollo Social' o entidad responsable)?",
+      "text": "¿Los productos están vinculados a códigos presupuestales (SGP primera infancia, recursos propios, cofinanciación ICBF, transferencias para juventud) y a entidades responsables específicas (Comisaría de Familia, Secretaría de Desarrollo Social, Secretaría de Educación, Plataforma de Juventud)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4439,7 +4439,7 @@
       "question_id": "Q164",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una relación factible entre la actividad (ej. 'un taller vocacional') y la meta del producto asociado (ej. '500 jóvenes con proyecto de vida estructurado') para el área de niñez y juventud? Se debe evaluar si los 'plazos' son realistas.",
+      "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'una jornada de sensibilización sobre derechos') y la magnitud de la meta del producto asociado (ej. 'reducción del 50% en casos de maltrato infantil'), considerando plazos y recursos disponibles? Se debe evaluar si el plan reconoce que la prevención de vulneraciones requiere intervenciones sostenidas en múltiples entornos (familia, escuela, comunidad), no eventos puntuales.",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4901,7 +4901,7 @@
       "question_id": "Q165",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM explica cómo los productos (ej. 'jóvenes formados en habilidades para el empleo') contribuyen a generar resultados (ej. 'aumento de la tasa de ocupación juvenil')? Se debe buscar este 'mecanismo'.",
+      "text": "¿El plan describe cómo los productos (ej. 'niños con atención integral', 'adolescentes con proyecto de vida', 'familias fortalecidas en pautas de crianza', 'rutas de atención operando', 'jóvenes participando en decisiones') generan o contribuyen a los resultados esperados (ej. 'reducción de vulneraciones', 'desarrollo integral garantizado', 'prevención de embarazo adolescente', 'disminución de consumo de SPA', 'ciudadanía juvenil activa'), explicando esta conexión o ruta (se debe buscar descripciones del tipo 'al lograr X se previene Y porque...', 'esto permite que las familias...', 'esto reduce el riesgo de...')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5244,7 +5244,7 @@
       "question_id": "Q166",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de resultado para niñez y juventud (ej. 'tasa de deserción escolar', 'tasa de fecundidad adolescente') están definidos con línea base, meta y un horizonte temporal?",
+      "text": "¿Los indicadores de resultado (ej. 'tasa de desnutrición crónica en menores de 5 años', 'porcentaje de reducción en embarazo adolescente', 'prevalencia de consumo de SPA en adolescentes', 'casos de maltrato infantil por 100.000 niños', 'porcentaje de jóvenes en educación superior o empleo formal', 'cobertura de atención integral en primera infancia') están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5445,7 +5445,7 @@
       "question_id": "Q167",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se explicita la cadena causal que lleva a la mejora del bienestar juvenil, mencionando 'supuestos' clave (ej. 'si los jóvenes aplican a las ofertas laborales') o 'condiciones habilitantes'?",
+      "text": "¿El plan describe la ruta o secuencia que lleva a la protección integral y desarrollo de niños, adolescentes y jóvenes, mencionando condiciones necesarias para que funcione (se debe buscar términos como 'supuestos', 'si las familias adoptan pautas de crianza positiva', 'si se mantiene continuidad en atención', 'si hay oportunidades educativas y laborales disponibles', 'si los docentes detectan y activan rutas', 'si la comunidad no estigmatiza', 'siempre que ICBF responda', 'requiere que...')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5633,7 +5633,7 @@
       "question_id": "Q168",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición de las metas de resultado (ej. 'reducir la deserción en 3 puntos porcentuales') se justifica en función de la inversión, la capacidad de las instituciones educativas o se compara con 'casos' similares?",
+      "text": "¿La ambición de las metas de resultado (ej. 'reducir embarazo adolescente en 40%', 'cero tolerancia al trabajo infantil', 'disminuir deserción escolar por violencias en 50%', 'aumentar participación juvenil en 30%') se justifica en función de recursos asignados, capacidad institucional, articulación con ICBF o nivel nacional, o se compara con municipios similares?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5811,7 +5811,7 @@
       "question_id": "Q169",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los resultados propuestos (ej. 'reducción del trabajo infantil') 'atienden' o 'abordan' directamente los problemas de vulneración de derechos priorizados en el diagnóstico?",
+      "text": "¿Los resultados propuestos cubren los ciclos vitales priorizados en el diagnóstico (ej. 'desarrollo integral en primera infancia', 'prevención de vulneraciones en niñez', 'reducción de embarazo adolescente y consumo de SPA', 'jóvenes con proyecto de vida y participación ciudadana') sin sesgo hacia un solo grupo etario, reconociendo necesidades diferenciadas por edad?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5968,7 +5968,7 @@
       "question_id": "Q170",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan declara la alineación de sus resultados de niñez y juventud con marcos superiores como el PND o los ODS (4, 5, 8)?",
+      "text": "¿El plan declara la alineación de sus resultados en niñez, adolescencia y juventud con el Código de Infancia y Adolescencia (Ley 1098), la Política De Cero a Siempre, el Estatuto de Ciudadanía Juvenil (Ley 1622), o los ODS (especialmente ODS 3: Salud y Bienestar, ODS 4: Educación de Calidad, ODS 5: Igualdad de Género, ODS 16: Paz)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6170,7 +6170,7 @@
       "question_id": "Q171",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM define 'impactos' de largo plazo (ej. 'desarrollo integral de la juventud', 'ruptura de ciclos de pobreza')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración'.",
+      "text": "¿El plan define impactos o transformaciones de largo plazo en el desarrollo de niños, adolescentes y jóvenes (cambios que trascienden el cuatrienio) como 'generación con desarrollo integral pleno', 'erradicación de vulneraciones a la infancia', 'adolescentes con autonomía y proyecto de vida sostenible', 'juventudes con ciudadanía activa y oportunidades', 'entornos familiares, escolares y comunitarios protectores consolidados', describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'generacional')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6498,7 +6498,7 @@
       "question_id": "Q172",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se utilizan 'índices' (ej. Índice de Pobreza Multidimensional para Niñez) o 'proxies' para medir los impactos en el desarrollo juvenil, justificando su validez?",
+      "text": "¿Se utilizan índices (ej. Índice de Infancia, Índice de Desarrollo Integral, Índice de Oportunidades Juveniles) o indicadores proxy para medir impactos en desarrollo humano por ciclo vital, justificando por qué son adecuados para capturar transformaciones en bienestar, protección y ejercicio de derechos? Cuando un impacto es difícil de medir directamente (ej. 'resiliencia desarrollada', 'habilidades socioemocionales consolidadas', 'entornos protectores interiorizados'), ¿se explica la validez y limitaciones del indicador proxy utilizado (ej. 'permanencia en el sistema educativo', 'participación en actividades prosociales', 'reducción sostenida de reincidencia en consumo de SPA')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6672,7 +6672,7 @@
       "question_id": "Q173",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "Cuando un impacto en la juventud es difícil de medir (ej. 'fortalecimiento de habilidades para la vida'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "text": "¿Los impactos en desarrollo de niñez, adolescencia y juventud se alinean con marcos nacionales o globales y consideran riesgos externos (crisis económicas que aumentan trabajo infantil, violencias intrafamiliares en contextos de estrés, acceso a drogas facilitado por economías ilegales, falta de oportunidades laborales para jóvenes, cambios en política de primera infancia) que podrían impedir o revertir los logros esperados?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6862,7 +6862,7 @@
       "question_id": "Q174",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los impactos en niñez y juventud se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. crisis del mercado laboral) que podrían romper el mecanismo causal?",
+      "text": "¿El plan evalúa si la ambición del impacto en desarrollo integral es realista, considerando posibles efectos no deseados (ej. estigmatización de familias intervenidas, sobrecarga en Comisarías sin recursos suficientes, institucionalización excesiva de niños sin fortalecer familias, programas juveniles que generan dependencia sin autonomía, intervenciones que no respetan diversidad cultural), o reconoce explícitamente los límites de las intervenciones municipales (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado sin ICBF', 'depende de oportunidades en el territorio')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7063,7 +7063,7 @@
       "question_id": "Q175",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición del impacto (ej. 'pleno desarrollo de todos los jóvenes') es realista? Se debe buscar si se analizan 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "text": "¿El plan describe cómo se sostendrán los impactos en protección integral más allá del periodo de gobierno, identificando mecanismos de institucionalización (Comisarías fortalecidas permanentemente, rutas de atención protocolizadas), apropiación comunitaria (redes de protección comunitaria, familias formadas en crianza positiva), fuentes de financiación continua (SGP primera infancia garantizado, articulación permanente con ICBF) o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación comunitaria', 'continuidad')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7252,7 +7252,7 @@
       "question_id": "Q176",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una 'teoría de cambio' explícita para la política de niñez y juventud, preferiblemente en un 'diagrama', que identifique causas, mediadores (ej. permanencia escolar) y 'supuestos verificables'?",
+      "text": "¿El plan presenta una descripción explícita de cómo se generan los cambios en protección de niños, niñas, adolescentes y jóvenes (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal', 'enfoque de ciclo vital'), preferiblemente en diagrama o matriz, que identifique vulneraciones y factores de riesgo por ciclo vital (primera infancia, niñez, adolescencia, juventud), intervenciones en múltiples entornos (familia, escuela, comunidad, institucional), supuestos verificables (ej. 'si adultos responsables protegen', 'si instituciones activan rutas') y la secuencia insumos→actividades→productos→resultados→impactos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7429,7 +7429,7 @@
       "question_id": "Q177",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los saltos en la cadena causal de juventud son proporcionales (ej. un festival de rock no garantiza por sí solo la 'prevención total del consumo de SPA')?",
+      "text": "¿El plan evita saltos desproporcionados en su lógica para los distintos ciclos vitales (por ejemplo, no atribuye 'pautas de crianza positiva interiorizadas' a un taller de escuela de padres sin acompañamiento sostenido; o 'eliminación de consumo de SPA' a una charla de prevención sin abordaje de factores de riesgo psicosociales, familiares y contextuales; o 'participación ciudadana efectiva' a la existencia de un Consejo de Juventud sin incidencia real en decisiones), reconociendo explícitamente cuando se requieren procesos sostenidos, múltiples condiciones o factores externos (se debe buscar expresiones de cautela como 'requiere acompañamiento familiar prolongado', 'depende de oportunidades en el territorio', 'necesita trabajo intersectorial')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7626,7 +7626,7 @@
       "question_id": "Q178",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan reconoce 'inconsistencias' en su lógica para la juventud y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "text": "¿El plan reconoce la complejidad del desarrollo integral (factores individuales, familiares, escolares, comunitarios, institucionales interactúan), identifica debilidades o incertidumbres en su estrategia intersectorial, y propone mecanismos para aprender y ajustar como enfoque de entornos protectores simultáneos, articulación entre Comisaría-ICBF-Educación-Salud, evaluaciones o pilotos de estrategias de prevención y protección (se debe buscar términos como 'pilotos', 'articulación intersectorial', 'coordinación', 'evaluación', 'ajustes', 'enfoque de entornos protectores')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7820,7 +7820,7 @@
       "question_id": "Q179",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se describe un sistema de monitoreo para la política de niñez y juventud que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia?",
+      "text": "¿Se describe un sistema de monitoreo que incluya indicadores de alerta temprana de vulneraciones (ej. ausentismo escolar, cambios de comportamiento, reportes de vecinos), protocolos de activación de rutas de atención, mecanismos de retroalimentación con ICBF y Defensoría de Familia, participación de niños, adolescentes y jóvenes en la evaluación, y capacidad de aprendizaje para adaptar estrategias de protección según contexto y hallazgos?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -8024,7 +8024,7 @@
       "question_id": "Q180",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La lógica causal para niñez y juventud considera el contexto, reconociendo 'grupos afectados' (jóvenes rurales, NNA migrantes) y 'restricciones' territoriales o culturales?",
+      "text": "¿El plan considera el contexto municipal específico (rural/urbano, presencia de economías ilegales, oferta educativa y laboral, patrones culturales de crianza, prevalencia de violencias), reconoce grupos con necesidades diferenciadas (primera infancia en pobreza extrema, adolescentes víctimas del conflicto, jóvenes rurales sin oportunidades, niños con discapacidad, adolescentes LGBTI, comunidades étnicas), y explicita restricciones (institucionales, culturales, de acceso, competencias del ICBF vs. municipio) que condicionan las intervenciones de protección integral?",
       "validations": {
         "completeness_check": {
           "type": "completeness",

@@ -560,7 +560,7 @@
       "question_id": "Q211",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El diagnóstico presenta datos numéricos (número de amenazas, homicidios de líderes, medidas de protección activas) sobre la situación de los defensores de DDHH que sirvan como línea base? Se debe verificar el año y fuentes (ej. Defensoría, UNP, Personería).",
+      "text": "¿El diagnóstico presenta datos cuantitativos sobre agresiones, amenazas o vulneraciones contra líderes y defensores/as de derechos humanos (número de casos, tipos de agresión, perfiles afectados), casos remitidos a la Unidad Nacional de Protección (UNP), alertas tempranas activas de la Defensoría del Pueblo, o caracterización de organizaciones sociales, ambientales y comunitarias del municipio, con año de referencia y fuente identificada (ej. Defensoría del Pueblo, Procuraduría, Personería Municipal, Secretaría de Gobierno, Sistema de Información sobre Agresiones contra Personas Defensoras de DDHH)?",
       "validations": {
         "buscar_indicadores_cuantitativos": {
           "minimum_required": 3,
@@ -858,7 +858,7 @@
       "question_id": "Q212",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El texto dimensiona la magnitud del riesgo para los líderes, cuantificando el número de casos o la población en riesgo? Se debe buscar si se mencionan explícitamente 'vacíos de información' o el 'subregistro por miedo a denunciar'.",
+      "text": "¿El diagnóstico dimensiona numéricamente la situación de riesgo de líderes y defensores/as (número de personas con medidas de protección, cobertura de rutas municipales de atención, tiempos promedio de respuesta a solicitudes de protección, sectores o territorios con mayor riesgo, tipos de liderazgo más vulnerados) y reconoce explícitamente limitaciones como 'subregistro por temor a denunciar', 'ausencia de caracterización actualizada de líderes sociales', 'información fragmentada entre entidades' o 'falta de seguimiento sistemático a casos'?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1124,7 +1124,7 @@
       "question_id": "Q213",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de protección, prevención de la estigmatización o fortalecimiento de observatorios de DDHH?",
+      "text": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a rutas de protección individual y colectiva, fortalecimiento del Comité Municipal de Garantías o espacios de interlocución con líderes sociales, implementación de protocolos de relacionamiento institucional, campañas de visibilización y reconocimiento del liderazgo social, articulación con la UNP o el Ministerio del Interior, o sistemas de información para registro de casos y seguimiento?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1393,7 +1393,7 @@
       "question_id": "Q214",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El PDM describe las capacidades para proteger a los líderes, mencionando entidades (Comité de Garantías, Personería) y sus necesidades? Se debe buscar términos como 'rutas de protección', 'sistema de alertas' y si se identifican 'limitaciones'.",
+      "text": "¿El plan identifica las entidades municipales responsables de la protección y garantías a líderes sociales (ej. Secretaría de Gobierno, Personería Municipal, Comité Municipal de Garantías para Líderes Sociales, Secretaría de Víctimas, Consejo Territorial de Paz), describe sus capacidades (protocolos de atención, canales de denuncia, equipos especializados, sistemas de alerta) y señala limitaciones o necesidades de articulación con la Defensoría del Pueblo, la UNP, la Fiscalía, el Ministerio del Interior o la Gobernación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1628,7 +1628,7 @@
       "question_id": "Q215",
       "scoring_definition_ref": "scoring_modalities.TYPE_E",
       "scoring_modality": "TYPE_E",
-      "text": "¿El plan justifica su alcance en la protección de líderes mencionando el marco legal (ej. Decretos de protección, Acuerdo de Paz) o reconociendo restricciones explícitas de tipo presupuestal o de articulación con la UNP?",
+      "text": "¿El plan justifica el alcance de sus intervenciones en protección de líderes y defensores/as reconociendo explícitamente qué competencias son municipales directas (articulación con sistemas de protección, garantías de espacios de participación, rutas locales de prevención y atención, visibilización) y cuáles requieren articulación con entidades nacionales (esquemas de protección individual de la UNP, investigación penal por parte de la Fiscalía, medidas cautelares judiciales), mencionando el marco normativo aplicable (Decreto 660 de 2018 sobre Programa Integral de Garantías, Acuerdo de Paz, Ley 1448 de Víctimas, Sistema de Alertas Tempranas)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1842,7 +1842,7 @@
       "question_id": "Q216",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las actividades para la protección de líderes se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "text": "¿Las actividades para la protección y garantías de líderes y defensores/as (rutas de atención a casos de amenaza o agresión, fortalecimiento de Comités Municipales de Garantías, protocolos de relacionamiento institucional con organizaciones sociales, campañas de pedagogía sobre labor defensorial, sistemas de registro y seguimiento de casos, articulación con UNP para valoración de riesgo, espacios de interlocución permanente) aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2089,7 +2089,7 @@
       "question_id": "Q217",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La descripción de las actividades de protección detalla el instrumento ('mediante esquemas de seguridad', 'a través de campañas de no estigmatización'), la población objetivo ('líderes sociales', 'defensores ambientales') y la lógica causal?",
+      "text": "¿La descripción de actividades especifica el instrumento ('mediante protocolos de atención inmediata', 'a través de Comités Municipales de Garantías', 'con campañas de visibilización del liderazgo social', 'mediante articulación con la UNP para análisis de riesgo', 'a través de rutas de protección colectiva'), la población objetivo ('líderes de restitución de tierras', 'defensores ambientales', 'líderes comunitarios en zonas de conflictividad', 'defensoras de derechos de mujeres', 'líderes de víctimas del conflicto') y explica cómo la actividad contribuye al resultado esperado ('para reducir tiempos de respuesta ante amenazas', 'porque genera interlocución directa con autoridades', 'con el fin de prevenir agresiones mediante reconocimiento público', 'para garantizar valoración oportuna de riesgo')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2306,7 +2306,7 @@
       "question_id": "Q218",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM vincula explícitamente las actividades (ej. consejos de seguridad) con las 'causas raíz' del riesgo (ej. estigmatización, presencia de actores armados) identificadas en el diagnóstico?",
+      "text": "¿Las actividades propuestas se vinculan explícitamente con las situaciones de riesgo, tipos de agresiones, sectores vulnerados o territorios priorizados identificados en el diagnóstico (ej. altos tiempos de respuesta a solicitudes de protección, ausencia de espacios de interlocución con autoridades, invisibilización del liderazgo social, conflictividad territorial por uso del suelo, amenazas a líderes de restitución de tierras)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2714,7 +2714,7 @@
       "question_id": "Q220",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El conjunto de actividades para proteger líderes demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. protección material + protección política) o 'secuencia' lógica.",
+      "text": "¿El plan describe explícitamente cómo las actividades de protección y garantías a defensores/as se complementan o siguen una secuencia lógica (ej. caracterización de líderes en riesgo → rutas de atención inmediata → articulación con UNP para valoración → seguimiento a implementación de medidas; o pedagogía social sobre labor defensorial → espacios de interlocución con autoridades → protocolos de relacionamiento institucional → visibilización pública del liderazgo), evidenciando una estrategia articulada (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación', 'enfoque integral de protección')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
