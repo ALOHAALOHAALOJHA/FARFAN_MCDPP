@@ -471,7 +471,7 @@ class ContractAssembler:
 
         return {
             "executor_class": f"{q_id}_{sector.sector_id}_Executor",
-            "executor_module": "farfan_pipeline. phases.Phase_two. executors",
+            "executor_module": "farfan_pipeline.phases.Phase_two.executors",
             "contract_number": contract_number,
         }
 

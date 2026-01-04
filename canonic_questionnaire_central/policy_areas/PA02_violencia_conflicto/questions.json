@@ -584,6 +584,20 @@
             "Ministerio"
           ],
           "specificity": "MEDIUM"
+        },
+        "enfoque_genero": {
+          "type": "cross_cutting_theme",
+          "theme_id": "CC_GENERO",
+          "minimum_required": 1,
+          "patterns": [
+            "violencia basada en género",
+            "VBG",
+            "feminicidio",
+            "mujeres víctimas",
+            "desagregados por sexo"
+          ],
+          "specificity": "HIGH",
+          "description": "Verifies that security diagnostics include gender-specific violence data"
         }
       },
       "children_questions": [

@@ -2060,6 +2060,27 @@
         "completeness_check": {
           "type": "completeness",
           "threshold": 0.8
+        },
+        "enfoque_genero": {
+          "type": "cross_cutting_theme",
+          "theme_id": "CC_GENERO",
+          "minimum_required": 1,
+          "patterns": [
+            "impacto diferencial en mujeres",
+            "mujeres rurales",
+            "rol de la mujer en la conservación",
+            "lideresas ambientales",
+            "afectación por desastres diferenciada"
+          ],
+          "specificity": "HIGH",
+          "description": "Verifies gender perspective in environmental activities"
+        },
+        "responsibility_assignment": {
+          "type": "responsibility_assignment",
+          "required": true,
+          "description": "Ensures responsible entity is identified",
+          "priority": 4,
+          "colombian_context": "Secretaría de Ambiente or CMGRD must be named"
         }
       },
       "children_questions": [
