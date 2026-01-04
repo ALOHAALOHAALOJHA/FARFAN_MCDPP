@@ -8,7 +8,7 @@ from typing import Any
 
 # Provide calibrated_method stub if not available
 try:
-    from cross_cutting_infrastructure.capaz_calibration_parmetrization.decorators import calibrated_method
+    from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.decorators import calibrated_method
 except ImportError:
     # Stub decorator that does nothing
     def calibrated_method(name: str):

@@ -181,7 +181,7 @@
   "policy_areas": [
     {
       "policy_area_id": "PA01",
-      "code": "INFANCIA",
+      "code": "MUJ",
       "legacy_code": "PA01",
       "name": "Derechos de las mujeres e igualdad de género",
       "name_en": "Early Childhood, Children, Adolescents and Family",
@@ -224,7 +224,7 @@
     },
     {
       "policy_area_id": "PA02",
-      "code": "SEGURIDAD",
+      "code": "VIO",
       "legacy_code": "PA02",
       "name": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
       "name_en": "Security and Citizen Coexistence",
@@ -266,7 +266,7 @@
     },
     {
       "policy_area_id": "PA03",
-      "code": "VICTIMAS",
+      "code": "AMB",
       "legacy_code": "PA03",
       "name": "Ambiente sano, cambio climático, prevención y atención a desastres",
       "name_en": "Victims of Armed Conflict",
@@ -308,7 +308,7 @@
     },
     {
       "policy_area_id": "PA04",
-      "code": "OT-RIESGO",
+      "code": "DESC",
       "legacy_code": "PA04",
       "name": "Derechos económicos, sociales y culturales",
       "name_en": "Territorial Planning and Risk Management",
@@ -350,7 +350,7 @@
     },
     {
       "policy_area_id": "PA05",
-      "code": "MUJER",
+      "code": "VIC",
       "legacy_code": "PA05",
       "name": "Derechos de las víctimas y construcción de paz",
       "name_en": "Women and Gender Equity",
@@ -392,7 +392,7 @@
     },
     {
       "policy_area_id": "PA06",
-      "code": "ETNIAS",
+      "code": "NIÑ",
       "legacy_code": "PA06",
       "name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
       "name_en": "Ethnic Groups",
@@ -435,7 +435,7 @@
     },
     {
       "policy_area_id": "PA07",
-      "code": "TRANSPARENCIA",
+      "code": "TIE",
       "legacy_code": "PA07",
       "name": "Tierras y territorios",
       "name_en": "Transparency, Access to Information and Anti-Corruption",
@@ -477,7 +477,7 @@
     },
     {
       "policy_area_id": "PA08",
-      "code": "AMBIENTE",
+      "code": "LID",
       "legacy_code": "PA08",
       "name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
       "name_en": "Environment and Sustainable Development",
@@ -519,7 +519,7 @@
     },
     {
       "policy_area_id": "PA09",
-      "code": "DESC",
+      "code": "PPL",
       "legacy_code": "PA09",
       "name": "Crisis de derechos de personas privadas de la libertad",
       "name_en": "Health, Education, Housing, Water and Sanitation",
@@ -561,7 +561,7 @@
     },
     {
       "policy_area_id": "PA10",
-      "code": "MIGRANTES",
+      "code": "MIG",
       "legacy_code": "PA10",
       "name": "Migración transfronteriza",
       "name_en": "Migrants and Humanitarian Crisis",

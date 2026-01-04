@@ -151,10 +151,10 @@ from dataclasses import dataclass, field
 from typing import Any, TYPE_CHECKING
 
 # Phase 2 orchestration components
-from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
+from farfan_pipeline.phases.Phase_two.arg_router import ExtendedArgRouter
 from orchestration.class_registry import build_class_registry, get_class_paths
-from canonic_phases.Phase_two.executors.executor_config import ExecutorConfig
-from canonic_phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
+from farfan_pipeline.phases.Phase_two.executors.executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
 
 # Core orchestration
 if TYPE_CHECKING:
@@ -165,17 +165,17 @@ from orchestration.method_registry import (
 )
 
 # Canonical method injection (direct method access, no class instantiation)
-from canonic_phases.Phase_two.methods_registry import (
+from farfan_pipeline.phases.Phase_two.methods_registry import (
     inject_canonical_methods,
     setup_registry_with_canonical_methods,
 )
 
 # SISAS - Signal Intelligence Layer (Nivel 2)
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
     EnrichedSignalPack,
     create_enriched_signal_pack,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
     create_signal_registry,
 )
@@ -204,15 +204,15 @@ from farfan_pipeline.validators.phase1_output_validator import Phase1OutputValid
 from farfan_pipeline.core.types import PreprocessedDocument
 
 # Phase 0 integration
-from canonic_phases.Phase_zero.phase0_10_01_runtime_config import (
+from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import (
     RuntimeConfig,
     RuntimeMode,
     get_runtime_config,
 )
-from canonic_phases.Phase_zero.phase0_90_01_verified_pipeline_runner import (
+from farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner import (
     VerifiedPipelineRunner,
 )
-from canonic_phases.Phase_zero.phase0_50_01_exit_gates import (
+from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import (
     check_all_gates,
 )
 
@@ -1588,7 +1588,7 @@ def check_legacy_signal_loader_deleted() -> dict[str, Any]:
         dict with check results.
     """
     try:
-        import cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_loader
+        import farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_loader
         return {
             "legacy_loader_deleted": False,
             "error": "signal_loader.py still exists - must be deleted per architecture requirements",

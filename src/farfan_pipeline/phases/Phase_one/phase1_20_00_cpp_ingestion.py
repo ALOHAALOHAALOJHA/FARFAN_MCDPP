@@ -75,7 +75,7 @@ except ImportError:
     # Fallback if farfan_pipeline is not in path directly but src is?
     # Or keep the old one just in case but it seems broken.
     # I'll try the absolute one first.
-    from canonic_phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput
+    from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput
 
 from .phase1_10_00_models import (
     LanguageData, PreprocessedDoc, StructureData, KnowledgeGraph, KGNode, KGEdge,
@@ -165,19 +165,19 @@ except ImportError:
 # SISAS Signal Infrastructure - REAL PATH (PRODUCTION)
 # This is the CANONICAL source for all signal extraction in the pipeline
 try:
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
         ChunkingSignalPack,
         MicroAnsweringSignalPack,
         create_signal_registry,
     )
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
         SignalPack,
         SignalRegistry,
         SignalClient,
         create_default_signal_pack,
     )
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_quality_metrics import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_quality_metrics import (
         SignalQualityMetrics,
         compute_signal_quality_metrics,
         analyze_coverage_gaps,

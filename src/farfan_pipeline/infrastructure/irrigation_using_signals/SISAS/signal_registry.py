@@ -78,9 +78,9 @@ except ImportError:
 stdlib_logger = logging.getLogger(__name__)
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
-from cross_cutting_infrastructure.irrigation_using_signals.ports import QuestionnairePort, SignalRegistryPort
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_enhancement_integrator import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.ports import QuestionnairePort, SignalRegistryPort
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_enhancement_integrator import (
     create_enhancement_integrator,
     SignalEnhancementIntegrator
 )

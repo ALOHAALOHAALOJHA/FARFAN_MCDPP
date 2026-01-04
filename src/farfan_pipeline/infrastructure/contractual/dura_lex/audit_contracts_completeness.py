@@ -2,7 +2,7 @@
 """
 Comprehensive audit of 300 executor contracts for completeness, alignment, and signal wiring.
 
-This script audits all contracts in src/canonic_phases/Phase_two/json_files_phase_two/executor_contracts/specialized/
+This script audits all contracts in src/farfan_pipeline.phases/Phase_two/json_files_phase_two/executor_contracts/specialized/
 to ensure:
 1. Completeness and disaggregation of all required fields per v3 schema
 2. Alignment with base_executor_with_contract.py requirements
@@ -584,7 +584,7 @@ def main():
     contracts_dir = (
         script_dir / 
         "src" / 
-        "canonic_phases" / 
+        "farfan_pipeline.phases" / 
         "Phase_two" / 
         "json_files_phase_two" / 
         "executor_contracts" / 

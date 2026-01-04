@@ -1,0 +1,155 @@
+{
+  "timestamp": "2026-01-04T14:04:49.814481",
+  "phantom_imports": {
+    "count": 28,
+    "files": [
+      "src/farfan_pipeline/phases/Phase_zero/phase0_40_00_input_validation.py",
+      "src/farfan_pipeline/phases/Phase_one/phase1_40_00_circuit_breaker.py",
+      "src/farfan_pipeline/phases/Phase_two/phase2_10_01_class_registry.py",
+      "src/farfan_pipeline/phases/Phase_two/phase2_60_00_base_executor_with_contract.py",
+      "src/farfan_pipeline/phases/Phase_two/phase2_50_00_task_executor.py",
+      "src/farfan_pipeline/phases/Phase_two/phase2_10_03_executor_config.py",
+      "src/farfan_pipeline/phases/Phase_two/phase2_40_03_irrigation_synchronizer.py",
+      "src/farfan_pipeline/infrastructure/contractual/dura_lex/audit_contracts_completeness.py",
+      "src/farfan_pipeline/infrastructure/contractual/dura_lex/tests/test_phase_zero_contracts.py",
+      "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_wiring_fixes.py"
+    ]
+  },
+  "schema_monolith": {
+    "provenance_in_monolith": 450,
+    "provenance_in_schema": 2,
+    "monolith_hash": "e338c7b085d2272ea873c57d898c92d7141a83c8af19b081162b88d3ffb4f0b1",
+    "schema_hash": "88828ed23dc18dfd776edc2c721fae2f019ab3fa7851360865cdae719245be7b"
+  },
+  "ports": {
+    "hash": "e522f0bbeba3a3e52c2987f6d6e3a91d6e3234a9322c5a0341b7c050d25b7657",
+    "method_signatures": {
+      "data": [],
+      "version": [],
+      "sha256": [],
+      "micro_questions": [],
+      "__iter__": [],
+      "get_chunking_signals": [],
+      "get_micro_answering_signals": [
+        "question_id: str"
+      ],
+      "get_validation_signals": [
+        "question_id: str"
+      ],
+      "get_assembly_signals": [
+        "level: str"
+      ],
+      "get_scoring_signals": [
+        "question_id: str"
+      ],
+      "get_source_hash": [],
+      "list_question_ids": []
+    }
+  },
+  "registry": {
+    "method_signatures": {
+      "set_attribute": [
+        "key: str",
+        "value: Any"
+      ],
+      "set_status": [
+        "status: Any"
+      ],
+      "record_exception": [
+        "exc: Exception"
+      ],
+      "__enter__": [],
+      "__exit__": [
+        "*args: Any"
+      ],
+      "start_as_current_span": [
+        "name: str",
+        "attributes: dict[str",
+        "Any] | None = None"
+      ],
+      "__init__": [
+        "questionnaire: QuestionnairePort"
+      ],
+      "question_id": [],
+      "policy_area_id": [],
+      "patterns": [],
+      "pattern_specs": [],
+      "indicators": [],
+      "entities": [],
+      "scoring_modality": [],
+      "hit_rate": [],
+      "total_requests": [],
+      "__post_init__": [],
+      "_load_state": [],
+      "_save_state": [],
+      "is_available": [],
+      "record_success": [],
+      "record_failure": [],
+      "get_status": [],
+      "_warmup_single_question": [
+        "q_id: str"
+      ],
+      "_compute_source_hash": [],
+      "_extract_valid_assembly_levels": [],
+      "get_all_policy_areas": [],
+      "get_signal_pack": [
+        "policy_area_id: PolicyArea"
+      ],
+      "get": [
+        "policy_area_id: str",
+        "default: SignalPack | None = None"
+      ],
+      "get_chunking_signals": [],
+      "get_micro_answering_signals": [
+        "question_id: str"
+      ],
+      "get_validation_signals": [
+        "question_id: str"
+      ],
+      "get_assembly_signals": [
+        "level: str"
+      ],
+      "get_scoring_signals": [
+        "question_id: str"
+      ],
+      "_build_chunking_signals": [],
+      "_build_micro_answering_signals": [
+        "question_id: str"
+      ],
+      "_build_validation_signals": [
+        "question_id: str"
+      ],
+      "_build_assembly_signals": [
+        "level: str"
+      ],
+      "_build_scoring_signals": [
+        "question_id: str"
+      ],
+      "_get_question": [
+        "question_id: str"
+      ],
+      "_extract_indicators_for_pa": [
+        "policy_area: str"
+      ],
+      "_extract_official_sources": [],
+      "_build_policy_area_signal_pack": [
+        "policy_area_id: str"
+      ],
+      "get_metrics": [],
+      "health_check": [],
+      "reset_circuit_breaker": [],
+      "validate_signals_for_questionnaire": [
+        "expected_question_count: int = 300",
+        "check_modalities: list[str] | None = None"
+      ],
+      "clear_cache": [],
+      "warmup": [
+        "question_ids: list[str] | None = None"
+      ],
+      "source_hash": [],
+      "valid_assembly_levels": [],
+      "verify_integrity": []
+    }
+  },
+  "signature_mismatches": []
+}

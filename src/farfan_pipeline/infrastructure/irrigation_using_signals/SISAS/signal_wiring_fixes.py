@@ -20,10 +20,10 @@ except ImportError:
     logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
     )
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
         create_document_context,
     )
 
@@ -55,7 +55,7 @@ def integrate_context_scoping_in_registry(
         >>> context = {"section": "budget", "chapter": 3}
         >>> filtered = integrate_context_scoping_in_registry(registry, context)
     """
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
         filter_patterns_by_context,
     )
     
@@ -89,7 +89,7 @@ def integrate_consumption_tracking_in_extraction(
         consumption_tracker: Consumption tracker instance
         source_text: Source text used for matching
     """
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
         track_pattern_match_from_evidence,
     )
     
@@ -138,7 +138,7 @@ def verify_pattern_scope_before_application(
         >>> is_valid, msg = verify_pattern_scope_before_application(pattern, context, "PA01", "Q001")
         >>> assert is_valid
     """
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
         verify_pattern_scope,
     )
     
@@ -174,7 +174,7 @@ def validate_access_level(
         True if access is valid, False otherwise
     
     Example:
-        >>> from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import AccessLevel
+        >>> from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import AccessLevel
         >>> is_valid = validate_access_level(
         ...     "orchestration.factory",
         ...     "AnalysisPipelineFactory",
@@ -184,7 +184,7 @@ def validate_access_level(
         ... )
         >>> assert is_valid
     """
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
         AccessLevel,
         get_access_audit,
     )
@@ -195,14 +195,14 @@ def validate_access_level(
     
     # Orchestrator-level accessors
     orchestrator_modules = [
-        "cross_cutting_infrastructure.irrigation_using_signals.SISAS",
+        "farfan_pipeline/infrastructure.irrigation_using_signals.SISAS",
         "orchestration.orchestrator",
     ]
     
     # Consumer-level accessors
     consumer_modules = [
-        "canonic_phases.Phase_two",
-        "canonic_phases.Phase_three",
+        "farfan_pipeline.phases.Phase_two",
+        "farfan_pipeline.phases.Phase_three",
     ]
     
     # Determine expected level from accessor

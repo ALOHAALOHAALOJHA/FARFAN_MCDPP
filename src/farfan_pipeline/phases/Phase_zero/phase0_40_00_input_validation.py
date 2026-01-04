@@ -83,7 +83,7 @@ try:
     # Import directly from module files, not through package __init__
     import sys
     from pathlib import Path
-    dura_lex_path = Path(__file__).parent.parent.parent / "cross_cutting_infrastructure" / "contractual" / "dura_lex"
+    dura_lex_path = Path(__file__).parent.parent.parent / "farfan_pipeline/infrastructure" / "contractual" / "dura_lex"
     sys.path.insert(0, str(dura_lex_path))
     
     from idempotency_dedup import IdempotencyContract, EvidenceStore

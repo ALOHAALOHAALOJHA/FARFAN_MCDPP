@@ -32,14 +32,14 @@ from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
 if TYPE_CHECKING:
     from orchestration.factory import CanonicalQuestionnaire
 
-from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
-from canonic_phases.Phase_zero.phase0_10_00_paths import safe_join
-from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-from canonic_phases.Phase_zero.phase0_50_01_exit_gates import GateResult
+from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import safe_join
+from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import GateResult
 
 # Define RULES_DIR locally (not exported from paths)
 RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"
-from canonic_phases.Phase_four_five_six_seven.aggregation import (
+from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
     AggregationSettings,
     AreaPolicyAggregator,
     AreaScore,
@@ -53,14 +53,14 @@ from canonic_phases.Phase_four_five_six_seven.aggregation import (
     group_by,
     validate_scored_results,
 )
-from canonic_phases.Phase_four_five_six_seven.aggregation_validation import (
+from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,
     validate_phase7_output,
     enforce_validation_or_fail,
 )
-from canonic_phases.Phase_four_five_six_seven.aggregation_enhancements import (
+from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_enhancements import (
     enhance_aggregator,
     EnhancedDimensionAggregator,
     EnhancedAreaAggregator,
@@ -68,19 +68,19 @@ from canonic_phases.Phase_four_five_six_seven.aggregation_enhancements import (
     EnhancedMacroAggregator,
 )
 from farfan_pipeline.phases.Phase_two.phase2_60_00_base_executor_with_contract import DynamicContractExecutor
-from canonic_phases.Phase_two.arg_router import (
+from farfan_pipeline.phases.Phase_two.arg_router import (
     ArgRouterError,
     ArgumentValidationError,
     ExtendedArgRouter,
 )
 from orchestration.class_registry import ClassRegistryError
-from canonic_phases.Phase_two.executor_config import ExecutorConfig
-from canonic_phases.Phase_two.irrigation_synchronizer import (
+from farfan_pipeline.phases.Phase_two.executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_two.irrigation_synchronizer import (
     IrrigationSynchronizer,
     ExecutionPlan,
 )
-from canonic_phases.Phase_three.signal_enriched_scoring import SignalEnrichedScorer
-from canonic_phases.Phase_three.validation import (
+from farfan_pipeline.phases.Phase_three.signal_enriched_scoring import SignalEnrichedScorer
+from farfan_pipeline.phases.Phase_three.validation import (
     ValidationCounters,
     validate_micro_results_input,
     validate_and_clamp_score,
@@ -123,7 +123,7 @@ class Phase0ValidationResult:
         validation_time: ISO 8601 timestamp of when validation occurred
     
     Example:
-        >>> from canonic_phases.Phase_zero.phase0_50_01_exit_gates import check_all_gates
+        >>> from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import check_all_gates
         >>> all_passed, gates = check_all_gates(runner)
         >>> validation = Phase0ValidationResult(
         ...     all_passed=all_passed,
@@ -2105,7 +2105,7 @@ class Orchestrator:
         document_id = os.path.splitext(os.path.basename(pdf_path))[0] or "doc_1"
         
         try:
-            from canonic_phases.Phase_one import (
+            from farfan_pipeline.phases.Phase_one import (
                 CanonicalInput,
                 execute_phase_1_with_full_contract,
                 CanonPolicyPackage,

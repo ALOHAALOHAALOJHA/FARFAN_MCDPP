@@ -57,7 +57,7 @@ from farfan_pipeline.processing.choquet_adapter import (
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import QuestionnaireSignalRegistry
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import QuestionnaireSignalRegistry
 
 T = TypeVar('T')
 

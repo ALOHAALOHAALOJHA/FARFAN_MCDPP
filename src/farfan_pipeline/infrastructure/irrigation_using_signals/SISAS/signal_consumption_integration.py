@@ -27,12 +27,12 @@ except ImportError:
     import logging
     logger = logging.getLogger(__name__)
 
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
     SignalConsumptionProof,
 )
 
 if TYPE_CHECKING:
-    from canonic_phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
+    from farfan_pipeline.phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
 
 
 @dataclass
@@ -285,7 +285,7 @@ def verify_pattern_scope(
     Returns:
         Tuple of (is_valid, violation_message)
     """
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
         context_matches,
         in_scope,
     )

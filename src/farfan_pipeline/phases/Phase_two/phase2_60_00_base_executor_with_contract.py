@@ -17,22 +17,22 @@ except Exception:  # pragma: no cover
     Draft7Validator = Any  # type: ignore[misc,assignment]
 
 try:
-    from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+    from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
 except ImportError:
     from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
 
 try:
-    from canonic_phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
+    from farfan_pipeline.phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
 except ImportError:
     from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import EvidenceNexus, process_evidence
 
 try:
-    from canonic_phases.Phase_two.carver import DoctoralCarverSynthesizer
+    from farfan_pipeline.phases.Phase_two.carver import DoctoralCarverSynthesizer
 except ImportError:
     from farfan_pipeline.phases.Phase_two.phase2_90_00_carver import DoctoralCarverSynthesizer
 
 try:
-    from canonic_phases.Phase_two.calibration_policy import CalibrationPolicy, create_default_policy
+    from farfan_pipeline.phases.Phase_two.calibration_policy import CalibrationPolicy, create_default_policy
 except ImportError:
     try:
         from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import CalibrationPolicy, create_default_policy
@@ -471,7 +471,7 @@ class BaseExecutorWithContract(ABC):
                 local_path = (
                     PROJECT_ROOT
                     / "src"
-                    / "canonic_phases"
+                    / "farfan_pipeline.phases"
                     / "Phase_two"
                     / "json_files_phase_two"
                     / f"executor_contract.{version}.schema.json"
@@ -930,7 +930,7 @@ class BaseExecutorWithContract(ABC):
             signal_pack = enriched_pack.base_pack  # Maintain compatibility
 
             # Create document context from available metadata
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
                 create_document_context,
             )
 
@@ -998,7 +998,7 @@ class BaseExecutorWithContract(ABC):
             
             if self.calibration_orchestrator:
                 try:
-                    from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
+                    from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
                         MethodBelowThresholdError,
                     )
                     
@@ -1169,7 +1169,7 @@ class BaseExecutorWithContract(ABC):
             }
 
             # Validate with contracts (REFACTORING #4: contract validation)
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
                 validate_result_with_orchestrator,
             )
 
@@ -1207,7 +1207,7 @@ class BaseExecutorWithContract(ABC):
                 }
         elif self._use_validation_orchestrator:
             # Even without enriched pack, use validation orchestrator with basic validation
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
                 validate_result_with_orchestrator,
             )
 
@@ -1340,7 +1340,7 @@ class BaseExecutorWithContract(ABC):
         # SISAS: Inject consumption tracking (utility + proof chain)
         consumption_tracker = None
         try:
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
                 inject_consumption_tracking,
             )
 
@@ -1357,7 +1357,7 @@ class BaseExecutorWithContract(ABC):
         # Build document context (for scope coherence + context-aware pattern filtering)
         document_context: dict[str, Any] = {}
         try:
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
                 create_document_context,
             )
 
@@ -1425,7 +1425,7 @@ class BaseExecutorWithContract(ABC):
                 
                 if self.calibration_orchestrator:
                     try:
-                        from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
+                        from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
                             MethodBelowThresholdError,
                         )
                         
@@ -1525,7 +1525,7 @@ class BaseExecutorWithContract(ABC):
             
             if self.calibration_orchestrator:
                 try:
-                    from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
+                    from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
                         MethodBelowThresholdError,
                     )
                     
@@ -1618,7 +1618,7 @@ class BaseExecutorWithContract(ABC):
         # CONTRACT VALIDATION with ValidationOrchestrator
         contract_validation = None
         if self._use_validation_orchestrator:
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
                 validate_result_with_orchestrator,
             )
 

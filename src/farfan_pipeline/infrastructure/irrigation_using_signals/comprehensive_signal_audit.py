@@ -34,28 +34,28 @@ except ImportError:
     logger = logging.getLogger(__name__)
 
 from orchestration.factory import load_questionnaire, create_signal_registry
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
     SignalConsumptionProof,
     QuestionnaireAccessAudit,
     AccessLevel,
     get_access_audit,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
     filter_patterns_by_context,
     create_document_context,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
     ConsumptionTracker,
     create_consumption_tracker,
     inject_consumption_tracking,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_evidence_extractor import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_evidence_extractor import (
     extract_structured_evidence,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.audit_signal_irrigation import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.audit_signal_irrigation import (
     WiringAuditor,
     ScopeCoherenceAuditor,
     SynchronizationAuditor,
@@ -191,7 +191,7 @@ class ComprehensiveSignalAuditor:
     def _initialize_components(self) -> None:
         """Initialize questionnaire and signal registry."""
         try:
-            from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+            from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
             
             if self.questionnaire_path is None:
                 # Default questionnaire path
@@ -405,7 +405,7 @@ class ComprehensiveSignalAuditor:
     
     def _generate_visualizations(self) -> None:
         """Generate all visualizations."""
-        from cross_cutting_infrastructure.irrigation_using_signals.visualization_generator import (
+        from farfan_pipeline.infrastructure.irrigation_using_signals.visualization_generator import (
             SankeyDiagramGenerator,
             StateMachineGenerator,
             HeatmapGenerator,
@@ -535,7 +535,7 @@ class ComprehensiveSignalAuditor:
 
 def main() -> None:
     """Main entry point for comprehensive audit."""
-    from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+    from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
     
     output_dir = PROJECT_ROOT / "artifacts" / "comprehensive_signal_audit"
     output_dir.mkdir(parents=True, exist_ok=True)
