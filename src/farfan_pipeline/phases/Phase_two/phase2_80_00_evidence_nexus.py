@@ -1080,17 +1080,17 @@ class ConfidenceThresholdRule:
 
 class GraphIntegrityRule:
     """Validate graph structural integrity."""
-    
+
     code = "INTEGRITY"
     severity = ValidationSeverity.CRITICAL
-    
+
     def validate(
-        self, 
-        graph: EvidenceGraph, 
+        self,
+        graph: EvidenceGraph,
         contract: dict[str, Any]
     ) -> list[ValidationFinding]:
         findings = []
-        
+
         # Verify hash chain
         if not graph.verify_hash_chain():
             findings.append(ValidationFinding(
@@ -1101,7 +1101,7 @@ class GraphIntegrityRule:
                 affected_nodes=[],
                 remediation="Evidence chain may be corrupted; rebuild from source",
             ))
-        
+
         # Check for orphan edges
         for edge in graph._edges.values():
             if edge.source_id not in graph._nodes or edge.target_id not in graph._nodes:
@@ -1113,23 +1113,273 @@ class GraphIntegrityRule:
                     affected_nodes=[],
                     remediation="Remove orphan edge or add missing nodes",
                 ))
-        
+
         return findings
+
+
+class ColombianContextRule:
+    """Validate Colombian-specific regulatory and policy context (R-B2).
+
+    Checks evidence for required Colombian regulatory references and
+    territorial coverage requirements defined in contract validations.
+    """
+
+    code = "COLOMBIAN_CONTEXT"
+    severity = ValidationSeverity.WARNING
+
+    def validate(
+        self,
+        graph: EvidenceGraph,
+        contract: dict[str, Any],
+    ) -> list[ValidationFinding]:
+        findings: list[ValidationFinding] = []
+
+        validation_rules = contract.get("validation_rules", {})
+        colombian_context = validation_rules.get("colombian_context", {})
+
+        if not colombian_context:
+            return findings
+
+        required_refs = colombian_context.get("required_regulatory_refs", [])
+        for ref in required_refs:
+            if not self._find_reference_in_graph(graph, ref):
+                findings.append(ValidationFinding(
+                    finding_id=f"MISSING_COL_REF_{ref[:20].replace(' ', '_')}",
+                    severity=ValidationSeverity.WARNING,
+                    code=self.code,
+                    message=f"Missing required Colombian reference: {ref}",
+                    affected_nodes=[],
+                    remediation=f"Evidence must include reference to: {ref}",
+                ))
+
+        territorial_req = colombian_context.get("territorial_coverage")
+        if territorial_req and not self._validate_territorial(graph, territorial_req):
+            findings.append(ValidationFinding(
+                finding_id="TERRITORIAL_COVERAGE_MISSING",
+                severity=ValidationSeverity.WARNING,
+                code=self.code,
+                message="Territorial coverage requirement not met",
+                affected_nodes=[],
+                remediation="Include departamental/municipal coverage data",
+            ))
+
+        return findings
+
+    def _find_reference_in_graph(self, graph: EvidenceGraph, ref: str) -> bool:
+        ref_lower = ref.lower()
+        for node in graph._nodes.values():
+            content_str = str(node.content).lower()
+            if ref_lower in content_str:
+                return True
+            if isinstance(node.content, dict):
+                for value in node.content.values():
+                    if isinstance(value, str) and ref_lower in value.lower():
+                        return True
+                    if isinstance(value, list):
+                        for item in value:
+                            if isinstance(item, str) and ref_lower in item.lower():
+                                return True
+        return False
+
+    def _validate_territorial(
+        self, graph: EvidenceGraph, requirement: dict[str, Any]
+    ) -> bool:
+        territorial_nodes = graph.get_nodes_by_type(EvidenceType.TERRITORIAL_COVERAGE)
+        if territorial_nodes:
+            return True
+
+        territorial_keywords = [
+            "departamento", "municipio", "municipal", "regional",
+            "territorial", "zona", "vereda", "corregimiento"
+        ]
+        for node in graph._nodes.values():
+            content_str = str(node.content).lower()
+            if any(kw in content_str for kw in territorial_keywords):
+                return True
+        return False
+
+
+@dataclass
+class BlockingRuleResult:
+    """Result of blocking rule evaluation (R-B5)."""
+    rule_id: str
+    triggered: bool
+    reason: str
+    veto_action: str
+    affected_elements: list[str]
+
+
+class BlockingRulesEngine:
+    """Evaluates blocking rules from contract and applies veto gates (R-B5).
+
+    Implements the veto-gate pattern for evidence validation. When a blocking
+    rule is triggered, it can:
+    - SCORE_ZERO: Set confidence to 0 and mark as insufficient
+    - SUPPRESS_OUTPUT: Replace output with suppression notice
+    - FLAG_REVIEW: Mark for human review
+    """
+
+    def __init__(self, contract: dict[str, Any]):
+        self.rules = self._extract_rules(contract)
+
+    def _extract_rules(self, contract: dict[str, Any]) -> list[dict[str, Any]]:
+        validation_rules = contract.get("validation_rules", {})
+        return validation_rules.get("blocking_rules", [])
+
+    def evaluate(
+        self,
+        graph: EvidenceGraph,
+        validation_report: ValidationReport,
+    ) -> list[BlockingRuleResult]:
+        results: list[BlockingRuleResult] = []
+
+        for rule in self.rules:
+            rule_id = rule.get("rule_id", "UNKNOWN")
+            condition = rule.get("condition", {})
+            action = rule.get("on_violation", "FLAG_REVIEW")
+
+            triggered = self._evaluate_condition(condition, graph, validation_report)
+
+            if triggered:
+                results.append(BlockingRuleResult(
+                    rule_id=rule_id,
+                    triggered=True,
+                    reason=rule.get("description", "Blocking rule triggered"),
+                    veto_action=action,
+                    affected_elements=self._identify_affected(condition, graph),
+                ))
+
+        return results
+
+    def _evaluate_condition(
+        self,
+        condition: dict[str, Any],
+        graph: EvidenceGraph,
+        validation_report: ValidationReport,
+    ) -> bool:
+        condition_type = condition.get("type")
+
+        if condition_type == "confidence_below":
+            threshold = condition.get("threshold", 0.3)
+            avg_confidence = self._compute_global_confidence(graph)
+            return avg_confidence < threshold
+
+        elif condition_type == "missing_required_element":
+            required = condition.get("element_type")
+            if required:
+                try:
+                    ev_type = EvidenceType(required)
+                    return len(graph.get_nodes_by_type(ev_type)) == 0
+                except ValueError:
+                    return False
+            return False
+
+        elif condition_type == "validation_error_count":
+            max_errors = condition.get("max_errors", 0)
+            error_count = sum(
+                1 for f in validation_report.findings
+                if f.severity == ValidationSeverity.ERROR
+            )
+            return error_count > max_errors
+
+        elif condition_type == "contradiction_detected":
+            return len(graph.get_edges_by_type(RelationType.CONTRADICTS)) > 0
+
+        elif condition_type == "node_count_below":
+            min_nodes = condition.get("minimum", 1)
+            return graph.node_count < min_nodes
+
+        return False
+
+    def _compute_global_confidence(self, graph: EvidenceGraph) -> float:
+        if graph.node_count == 0:
+            return 0.0
+        confidences = [n.confidence for n in graph._nodes.values()]
+        return sum(confidences) / len(confidences)
+
+    def _identify_affected(
+        self, condition: dict[str, Any], graph: EvidenceGraph
+    ) -> list[str]:
+        condition_type = condition.get("type")
+
+        if condition_type == "confidence_below":
+            threshold = condition.get("threshold", 0.3)
+            return [
+                n.node_id[:12] for n in graph._nodes.values()
+                if n.confidence < threshold
+            ][:10]
+
+        return []
+
+    def apply_veto(
+        self,
+        results: list[BlockingRuleResult],
+        synthesized_answer: SynthesizedAnswer,
+    ) -> SynthesizedAnswer:
+        if not results:
+            return synthesized_answer
+
+        veto_applied = False
+        veto_reason = ""
+        new_confidence = synthesized_answer.overall_confidence
+        new_completeness = synthesized_answer.completeness
+        new_direct_answer = synthesized_answer.direct_answer
+
+        for result in results:
+            if not result.triggered:
+                continue
+
+            if result.veto_action == "SCORE_ZERO":
+                new_confidence = 0.0
+                new_completeness = AnswerCompleteness.INSUFFICIENT
+                veto_applied = True
+                veto_reason = result.reason
+            elif result.veto_action == "SUPPRESS_OUTPUT":
+                new_direct_answer = f"[SUPRIMIDO: {result.reason}]"
+                veto_applied = True
+                veto_reason = result.reason
+            elif result.veto_action == "FLAG_REVIEW":
+                veto_applied = True
+                veto_reason = f"Requires review: {result.reason}"
+
+        if not veto_applied:
+            return synthesized_answer
+
+        return SynthesizedAnswer(
+            direct_answer=new_direct_answer,
+            narrative_blocks=synthesized_answer.narrative_blocks,
+            completeness=new_completeness,
+            overall_confidence=new_confidence,
+            calibrated_interval=synthesized_answer.calibrated_interval,
+            primary_citations=synthesized_answer.primary_citations,
+            supporting_citations=synthesized_answer.supporting_citations,
+            gaps=synthesized_answer.gaps + ([f"VETO: {veto_reason}"] if veto_reason else []),
+            unresolved_contradictions=synthesized_answer.unresolved_contradictions,
+            evidence_graph_hash=synthesized_answer.evidence_graph_hash,
+            synthesis_timestamp=synthesized_answer.synthesis_timestamp,
+            question_id=synthesized_answer.question_id,
+            synthesis_trace={
+                **synthesized_answer.synthesis_trace,
+                "veto_applied": veto_applied,
+                "veto_reason": veto_reason,
+            },
+        )
 
 
 class ValidationEngine:
     """
     Probabilistic validation engine for evidence graphs.
-    
+
     Replaces rule-based EvidenceValidator with graph-aware validation.
     """
-    
+
     def __init__(self, rules: list[ValidationRule] | None = None):
-        self.rules:  list[ValidationRule] = rules or [
+        self.rules: list[ValidationRule] = rules or [
             RequiredElementsRule(),
             ConsistencyRule(),
             ConfidenceThresholdRule(min_confidence=0.5),
             GraphIntegrityRule(),
+            ColombianContextRule(),
         ]
     
     def validate(
@@ -1802,11 +2052,18 @@ class EvidenceNexus:
         
         # 4. Validate graph
         validation_report = self.validation_engine.validate(graph, contract)
-        
+
+        # 4.5 Evaluate blocking rules (R-B5)
+        blocking_engine = BlockingRulesEngine(contract)
+        blocking_results = blocking_engine.evaluate(graph, validation_report)
+
         # 5. Synthesize narrative answer
         synthesized = self.narrative_synthesizer.synthesize(
             graph, question_context, validation_report, contract
         )
+
+        # 5.5 Apply veto gates (R-B5)
+        synthesized = blocking_engine.apply_veto(blocking_results, synthesized)
         
         # 6. Persist if enabled
         if self.enable_persistence:
