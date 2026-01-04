@@ -39,11 +39,13 @@ class StreamingPDFExtractor:
 
         try:
             doc = fitz.open(self.pdf_path)
-            for page in doc:
-                yield page.get_text()
-            doc.close()
+            try:
+                for page in doc:
+                    yield page.get_text()
+            finally:
+                doc.close()
         except Exception as e:
-            logger.error(f"Error during streaming PDF extraction: {e}")
+            logger.exception(f"Error during streaming PDF extraction: {e}")
             raise
 
     def extract_with_limit(self, char_limit: int = 1000000) -> Tuple[str, int, int]:
