@@ -1087,6 +1087,9 @@ class Phase1CPPIngestionFullContract:
                     limit=CHAR_LIMIT
                 )
                 truncation_audit.log_if_truncated()
+                # NOTE: subphase_results uses integer keys (0-15) for MANDATORY_SUBPHASES results.
+                # String keys like 'truncation_audit' are RESERVED for cross-cutting audit/metadata
+                # and are intentionally kept separate from the integer subphase key space.
                 self.subphase_results['truncation_audit'] = truncation_audit.to_dict()
 
                 logger.info(f"SP1: Extracted {len(raw_text)} characters from PDF (Total source: {total_chars})")
