@@ -373,7 +373,13 @@ class MicroAnsweringSignalPack(BaseModel):
         default_factory=dict,
         description="Semantic disambiguation rules and entity linking (Enhancement #4)"
     )
-    
+
+    # R-W1: Policy Area Keywords Irrigation
+    policy_area_keywords: list[str] = Field(
+        default_factory=list,
+        description="Keywords from policy_area_metadata for semantic matching (R-W1)"
+    )
+
     version: str = Field(default="2.0.0", pattern=r"^\d+\.\d+\.\d+$")
     source_hash: str = Field(..., min_length=32, max_length=64)
     metadata: dict[str, Any] = Field(
@@ -1306,6 +1312,9 @@ class QuestionnaireSignalRegistry:
             question_id, dict(question)
         )
 
+        # R-W1: Load policy area keywords for semantic matching
+        policy_area_keywords = self._load_policy_area_keywords(pa)
+
         # Extract core question metadata for Carver
         question_text = question.get("text")
         dimension_id = question.get("dimension_id")
@@ -1334,6 +1343,9 @@ class QuestionnaireSignalRegistry:
             validation_specifications=enhancements.get("validation_specifications", {}),
             scoring_modality_context=enhancements.get("scoring_modality_context", {}),
             semantic_disambiguation=enhancements.get("semantic_disambiguation", {}),
+
+            # R-W1: Policy Area Keywords
+            policy_area_keywords=policy_area_keywords,
 
             source_hash=self._source_hash,
             metadata={
@@ -1633,6 +1645,43 @@ class QuestionnaireSignalRegistry:
                     sources.extend(p.strip() for p in pattern.split("|") if p.strip())
 
         return sorted(set(sources))
+
+    def _load_policy_area_keywords(self, policy_area_id: str) -> list[str]:
+        """Load keywords from policy area metadata (R-W1).
+
+        Keywords are loaded from canonic_questionnaire_central/policy_areas/PA{XX}/questions.json
+        under the policy_area_metadata.keywords field.
+        """
+        import glob
+
+        base_path = Path(__file__).parent.parent.parent.parent.parent.parent
+        pa_pattern = str(base_path / "canonic_questionnaire_central" / "policy_areas" / f"{policy_area_id}_*")
+
+        matches = glob.glob(pa_pattern)
+        if not matches:
+            logger.debug("policy_area_keywords_no_match", policy_area_id=policy_area_id)
+            return []
+
+        questions_file = Path(matches[0]) / "questions.json"
+        if not questions_file.exists():
+            logger.debug("policy_area_keywords_file_missing", path=str(questions_file))
+            return []
+
+        try:
+            with open(questions_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+            metadata = data.get("policy_area_metadata", {})
+            keywords = metadata.get("keywords", [])
+
+            if not isinstance(keywords, list):
+                return []
+
+            return [str(kw) for kw in keywords if isinstance(kw, str)]
+
+        except Exception as e:
+            logger.error("policy_area_keywords_load_failed", error=str(e), policy_area_id=policy_area_id)
+            return []
 
     def _build_policy_area_signal_pack(self, policy_area_id: str) -> SignalPack:
         blocks = dict(self._questionnaire.data.get("blocks", {}))
