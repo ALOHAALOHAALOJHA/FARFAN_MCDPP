@@ -621,7 +621,7 @@
       "question_id": "Q271",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El diagnóstico del sector presenta datos cuantitativos (número de migrantes venezolanos o de otras nacionalidades, población retornada, refugiados, porcentaje con PPT o en irregularidad) con año de referencia y fuente identificada (Migración Colombia, RUMV, registros administrativos), desagregados por perfil demográfico o estatus migratorio?",
+      "text": "¿El diagnóstico presenta datos cuantitativos sobre población migrante en el territorio municipal (número de migrantes regulares e irregulares, estatus migratorio -PEP, PPT, visa, irregular-, población solicitante de refugio, retornados colombianos, nacionalidades, distribución territorial, acceso a servicios de salud y educación, inserción laboral, condiciones de vivienda), con año de referencia y fuente identificada (ej. Migración Colombia, Sisben, censo municipal, caracterizaciones de Secretaría de Gobierno, RAMV - Registro Administrativo de Migrantes Venezolanos, estadísticas de matrícula educativa, registros de atención en salud)?",
       "validations": {
         "buscar_indicadores_cuantitativos": {
           "minimum_required": 3,
@@ -932,7 +932,7 @@
       "question_id": "Q272",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El diagnóstico dimensiona numéricamente la magnitud de las barreras de integración (niños migrantes fuera del sistema escolar, población sin afiliación a salud, hogares en hacinamiento, desempleo en población migrante) y reconoce explícitamente limitaciones como 'subregistro de población irregular', 'población flotante no caracterizada' o 'vacíos de información post-pandemia'?",
+      "text": "¿El diagnóstico dimensiona numéricamente las barreras que enfrenta la población migrante (número de niños y niñas migrantes sin acceso a educación, migrantes sin afiliación a salud, trabajadores en informalidad, casos de xenofobia o discriminación reportados, víctimas de trata o explotación laboral identificadas, personas en situación de calle, familias en hacinamiento) y reconoce explícitamente limitaciones como 'subregistro de población irregular', 'ausencia de caracterización actualizada', 'información fragmentada entre entidades', 'datos insuficientes sobre trata de personas' o 'desconocimiento de población pendular transfronteriza'?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1198,7 +1198,7 @@
       "question_id": "Q273",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a programas de atención humanitaria, centros de integración, estrategias de regularización, inclusión socioeconómica o partidas de cooperación internacional para gestión migratoria?",
+      "text": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a caracterización de población migrante, rutas de orientación sobre trámites migratorios (articulación con Migración Colombia), acceso a servicios de salud y educación independiente de estatus migratorio, programas de empleabilidad e inclusión económica para migrantes, campañas de convivencia y prevención de xenofobia, atención a víctimas de trata de personas (articulación con Fiscalía), fortalecimiento de capacidades institucionales para gestión migratoria, o articulación con entidades nacionales para regularización?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1454,7 +1454,7 @@
       "question_id": "Q274",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El plan identifica las entidades responsables de la atención a población migrante (ej. Oficina de Asuntos Migratorios, enlace con Migración Colombia, Secretaría de Inclusión), describe sus capacidades (equipos interdisciplinarios, puntos de atención) y señala limitaciones institucionales o necesidades de articulación con Cancillería, Migración Colombia o agencias de cooperación (OIM, ACNUR)?",
+      "text": "¿El plan identifica las entidades municipales responsables de la gestión de población migrante (ej. Secretaría de Gobierno, Secretaría de Desarrollo Social, Secretaría de Educación, Secretaría de Salud, oficinas de atención a migrantes, Comités Municipales de Migración si existen, Comisarías de Familia para protección), describe sus capacidades (equipos de caracterización, protocolos de atención sin discriminación, rutas de orientación sobre trámites, articuladores con Migración Colombia, programas de formación para empleabilidad, estrategias de convivencia) y señala limitaciones o necesidades de articulación con Migración Colombia, el Ministerio de Relaciones Exteriores, el ICBF, la Fiscalía (trata de personas) o entidades departamentales?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1678,7 +1678,7 @@
       "question_id": "Q275",
       "scoring_definition_ref": "scoring_modalities.TYPE_E",
       "scoring_modality": "TYPE_E",
-      "text": "¿El plan justifica el alcance de sus intervenciones en movilidad humana mencionando el marco normativo (Estatuto Temporal de Protección - ETPV, Ley 2136) o reconociendo explícitamente qué competencias son municipales (acceso a servicios, convivencia, integración) y cuáles son del nivel nacional (control fronterizo, expedición de visas o PPT, deportación)?",
+      "text": "¿El plan justifica el alcance de sus intervenciones reconociendo explícitamente que la política migratoria, el control fronterizo, la expedición de visas y permisos, y los procedimientos de regularización o deportación son competencia nacional de Migración Colombia y el Ministerio de Relaciones Exteriores, mientras las competencias municipales se centran en garantizar acceso a servicios sociales básicos independiente de estatus migratorio (salud urgencias, educación preescolar, básica y media), caracterización territorial de población migrante, rutas de orientación y articulación con entidades nacionales, convivencia e integración local, empleabilidad e inclusión económica, y protección de víctimas de trata, mencionando el marco normativo aplicable (Ley 1465 de 2011, CONPES 3950 de 2018, resoluciones de Migración Colombia sobre PEP/PPT, sentencias de tutela sobre derechos fundamentales)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1881,7 +1881,7 @@
       "question_id": "Q276",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las actividades de atención e integración (jornadas de registro en Sisbén, matriculatón escolar, ferias de servicios, rutas de empleabilidad, campañas antixenofobia) aparecen en formato estructurado (tabla, matriz, Plan Indicativo) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
+      "text": "¿Las actividades para garantizar derechos e integración de población migrante (caracterización actualizada de población migrante en el territorio, rutas de orientación sobre trámites migratorios en articulación con Migración Colombia, garantía de acceso a salud urgencias y educación básica independiente de estatus migratorio, programas de formación para empleabilidad de migrantes, capital semilla para emprendimientos migrantes, campañas de convivencia y prevención de xenofobia, protocolos de atención a víctimas de trata en articulación con Fiscalía, mesas de trabajo con población migrante, articulación con Migración Colombia para jornadas de regularización) aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2141,7 +2141,7 @@
       "question_id": "Q277",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La descripción de actividades especifica el instrumento ('mediante Centros Intégrate', 'a través de focalización', 'con rutas de convalidación'), la población objetivo (población con vocación de permanencia, migrantes en tránsito, pendulares, retornados) y explica cómo la actividad contribuye a la integración ('para reducir barreras de acceso', 'porque facilita la regularización', 'con el fin de aprovechar el bono laboral')?",
+      "text": "¿La descripción de actividades especifica el instrumento ('mediante caracterización territorial de población migrante', 'a través de rutas de orientación sobre trámites migratorios', 'con garantía de matrícula educativa sin barreras documentales', 'mediante programas de formación y empleabilidad', 'a través de campañas de convivencia intercultural', 'con protocolos de identificación de víctimas de trata', 'mediante articulación con Migración Colombia para jornadas de regularización'), la población objetivo ('niños y niñas migrantes en edad escolar', 'migrantes en situación irregular con trámite pendiente', 'trabajadores migrantes en informalidad', 'comunidades receptoras con tensiones de convivencia', 'víctimas de trata o explotación', 'migrantes elegibles para regularización') y explica cómo la actividad contribuye al resultado esperado ('para garantizar derecho a la educación', 'porque facilita acceso a regularización migratoria', 'con el fin de mejorar condiciones de empleabilidad', 'para prevenir discriminación y xenofobia', 'porque permite identificación temprana de víctimas')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2358,7 +2358,7 @@
       "question_id": "Q278",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las actividades propuestas se vinculan explícitamente con los problemas, barreras o déficits identificados en el diagnóstico (ej. desconocimiento de rutas, falta de documentos para contratación, barreras culturales, xenofobia, convalidación de títulos) mediante nexos causales claros?",
+      "text": "¿Las actividades propuestas se vinculan explícitamente con las barreras de acceso y problemáticas identificadas en el diagnóstico (ej. niños migrantes sin acceso a educación por barreras documentales, alta informalidad laboral por falta de permisos de trabajo, casos de xenofobia o discriminación, desconocimiento de rutas de regularización, víctimas de trata sin identificación, ausencia de caracterización territorial, tensiones de convivencia con comunidades receptoras)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2582,7 +2582,7 @@
       "question_id": "Q279",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan identifica posibles obstáculos o riesgos en la implementación (ej. brotes de xenofobia en comunidades de acogida, saturación de servicios públicos, alta movilidad que dificulta seguimiento) y propone medidas explícitas de mitigación o estrategias de cohesión social para superarlos?",
+      "text": "¿El plan identifica posibles obstáculos en la implementación de actividades de integración migratoria (ej. resistencia institucional a atender población irregular, barreras culturales e idiomáticas, dependencia de decisiones de Migración Colombia sobre regularización, estigmatización y xenofobia en comunidades receptoras, recursos insuficientes frente a magnitud de población migrante, cambios en política migratoria nacional, dificultades en articulación interinstitucional, temor de migrantes irregulares a acercarse a instituciones) y propone medidas explícitas de mitigación como protocolos de atención sin discriminación, campañas de des-estigmatización, convenios con Migración Colombia, fortalecimiento de capacidades de funcionarios, o estrategias de confianza con población migrante?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2766,7 +2766,7 @@
       "question_id": "Q280",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan describe explícitamente cómo las actividades de gestión migratoria siguen una secuencia lógica o se complementan (ej. regularización → afiliación a salud/Sisbén → formación → empleo formal), evidenciando una estrategia articulada que transita de la asistencia humanitaria a la integración socioeconómica?",
+      "text": "¿El plan describe explícitamente cómo las actividades de integración de población migrante se complementan o siguen una secuencia lógica (ej. caracterización territorial → identificación de barreras de acceso → rutas de orientación sobre trámites → articulación con Migración Colombia para regularización; o garantía de acceso a educación y salud → programas de empleabilidad → inclusión económica → convivencia fortalecida; o campañas de convivencia → mediación comunitaria → prevención de xenofobia → integración local sostenible), evidenciando una estrategia articulada de integración (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación', 'enfoque integral de integración local')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3109,7 +3109,7 @@
       "question_id": "Q281",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de producto del sector (migrantes atendidos en centros de referencia, niños matriculados, población afiliada al sistema de salud, emprendimientos apoyados, funcionarios capacitados en normativa migratoria) incluyen línea base, meta cuantitativa y fuente de verificación?",
+      "text": "¿Los indicadores de producto para integración de población migrante (población migrante caracterizada en el territorio, niños y niñas migrantes matriculados en sistema educativo, migrantes atendidos en rutas de orientación sobre trámites, personas vinculadas a programas de empleabilidad, emprendimientos migrantes apoyados con capital semilla, campañas de convivencia realizadas, jornadas de regularización en articulación con Migración Colombia, víctimas de trata identificadas y atendidas, protocolos de atención implementados en entidades municipales) incluyen línea base, meta cuantitativa y fuente de verificación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3543,7 +3543,7 @@
       "question_id": "Q282",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las metas de productos guardan relación con la magnitud del flujo migratorio identificado en el diagnóstico, y se especifica la priorización (población regularizada con PPT, grupos vulnerables, mujeres gestantes) o la cobertura de la intervención frente a la demanda total?",
+      "text": "¿Las metas de productos (ej. 'caracterizar 5.000 migrantes en el territorio', 'garantizar matrícula al 100% de niños migrantes solicitantes', 'vincular 500 migrantes a programas de empleabilidad', 'realizar 4 jornadas de regularización con Migración Colombia', 'alcanzar 10.000 personas en campañas de convivencia') guardan relación con la magnitud de población migrante identificada en el diagnóstico, y se especifica la priorización (zonas con mayor concentración, población en situación irregular, sectores con mayores barreras de acceso, grupos vulnerables como niñez, mujeres, víctimas de trata), intensidad (periodicidad de jornadas, cobertura de campañas) o cobertura territorial?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3997,7 +3997,7 @@
       "question_id": "Q283",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los productos están vinculados a códigos presupuestales (SGP, recursos propios, gestión de cooperación) y a entidades responsables identificadas (Secretaría de Salud, Educación, Desarrollo Económico, Enlace de Migración)?",
+      "text": "¿Los productos de integración migratoria están vinculados a códigos presupuestales (recursos propios del municipio, SGP para educación y salud, recursos de cooperación internacional, articulación con presupuesto departamental o nacional, fondos específicos para migración si existen) y a entidades responsables específicas (Secretaría de Gobierno, Secretaría de Desarrollo Social, Secretaría de Educación, Secretaría de Salud, oficinas de atención a migrantes, enlaces con Migración Colombia)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4469,7 +4469,7 @@
       "question_id": "Q284",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'una feria de empleo puntual') y la magnitud de la meta del producto asociado (ej. 'integración laboral efectiva de migrantes'), considerando que procesos como la convalidación de títulos o la regularización administrativa requieren tiempos prolongados y gestión interinstitucional?",
+      "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'dos talleres de sensibilización sobre migración') y la magnitud de la meta del producto asociado (ej. 'eliminación de xenofobia en el municipio'), considerando plazos, recursos disponibles y profundidad de cambios culturales necesarios? Se debe evaluar si el plan reconoce que la integración efectiva de población migrante requiere procesos sostenidos de acceso a servicios, empleabilidad, convivencia y articulación interinstitucional, no eventos puntuales, y que el municipio tiene competencias limitadas sobre política migratoria y regularización (competencia de Migración Colombia).",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4931,7 +4931,7 @@
       "question_id": "Q285",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan describe cómo los productos (ej. 'migrantes regularizados y sisbenizados', 'rutas de empleo activadas', 'espacios de integración cultural') generan o contribuyen a los resultados esperados (ej. 'acceso efectivo a derechos', 'reducción de vulnerabilidad', 'cohesión social'), explicando esta conexión o ruta causal?",
+      "text": "¿El plan describe cómo los productos de integración migratoria (ej. 'población migrante caracterizada', 'niños migrantes matriculados', 'migrantes con orientación sobre trámites', 'personas vinculadas a empleabilidad', 'campañas de convivencia realizadas', 'jornadas de regularización ejecutadas') generan o contribuyen a los resultados esperados (ej. 'mejora en acceso a servicios sociales', 'aumento en regularización migratoria', 'reducción de xenofobia', 'mejora en condiciones de empleabilidad', 'integración local sostenible'), explicando esta conexión o ruta (se debe buscar descripciones del tipo 'al lograr X se genera Y porque facilita acceso a derechos', 'esto conduce a mayor empleabilidad formal', 'la caracterización permite focalizar políticas de integración', 'las campañas reducen estigmatización')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5287,7 +5287,7 @@
       "question_id": "Q286",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de resultado del sector (tasa de desempleo en población migrante, cobertura educativa de niños migrantes, índice de percepción de xenofobia, acceso efectivo a salud) están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
+      "text": "¿Los indicadores de resultado para integración de población migrante (ej. 'porcentaje de niños migrantes con acceso a educación', 'tasa de regularización migratoria de población en el municipio', 'porcentaje de migrantes con empleo formal o emprendimiento sostenible', 'reducción de casos de xenofobia o discriminación reportados', 'nivel de convivencia entre población migrante y comunidades receptoras', 'porcentaje de víctimas de trata identificadas con atención integral') están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5488,7 +5488,7 @@
       "question_id": "Q287",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan describe la ruta que lleva a la integración socioeconómica y cultural, mencionando condiciones necesarias o supuestos para que funcione (ej. 'si el Gobierno Nacional mantiene el ETPV', 'si los empresarios contratan personal con PPT', 'si la comunidad de acogida está abierta al diálogo')?",
+      "text": "¿El plan describe la ruta o secuencia que lleva a los resultados de integración migratoria, mencionando condiciones necesarias para que funcione (se debe buscar términos como 'supuestos', 'si Migración Colombia responde a articulaciones para regularización', 'si las comunidades receptoras participan en estrategias de convivencia', 'si se mantiene política migratoria nacional favorable a regularización', 'si los migrantes acceden a rutas de orientación sin temor', 'siempre que existan oportunidades laborales en el territorio', 'requiere que entidades nacionales garanticen expedición oportuna de permisos', reconociendo explícitamente que el municipio NO controla la política migratoria ni los procesos de regularización)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5676,7 +5676,7 @@
       "question_id": "Q288",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición de las metas de resultado se justifica en función de recursos asignados, capacidad de carga de servicios públicos, apoyo de cooperación internacional, o se compara con municipios receptores con dinámicas similares?",
+      "text": "¿La ambición de las metas de resultado en integración migratoria (ej. '100% de niños migrantes con acceso a educación', 'aumento del 50% en regularización migratoria', 'reducción del 70% en casos de xenofobia', 'integración laboral del 60% de migrantes en programas') se justifica en función de recursos asignados, capacidad institucional municipal, nivel de articulación con Migración Colombia y entidades nacionales, contexto de política migratoria nacional, o se compara con municipios receptores de categoría similar, reconociendo explícitamente que la regularización migratoria depende de decisiones de Migración Colombia?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5854,7 +5854,7 @@
       "question_id": "Q289",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los resultados propuestos (ej. 'inclusión productiva', 'acceso a derechos sin barreras', 'convivencia pacífica') atienden o abordan directamente las necesidades y barreras de la población migrante y retornada priorizadas en el diagnóstico?",
+      "text": "¿Los resultados propuestos (ej. 'mejora en acceso a servicios sociales para población migrante', 'aumento en regularización migratoria', 'reducción de xenofobia y mejora en convivencia', 'mejora en condiciones de empleabilidad e inclusión económica', 'protección efectiva de víctimas de trata') atienden o abordan directamente las barreras de acceso y problemáticas de población migrante priorizadas en el diagnóstico?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6015,7 +6015,7 @@
       "question_id": "Q290",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan declara la alineación de sus resultados con el Pacto Mundial para una Migración Segura, Ordenada y Regular, la Ley 2136 de 2021 (Política Integral Migratoria), los ODS (especialmente ODS 10 y 8) o lineamientos nacionales de integración?",
+      "text": "¿El plan declara la alineación de sus resultados de integración migratoria con la Ley 1465 de 2011 (Sistema Nacional de Migraciones), el CONPES 3950 de 2018 (estrategia para atención de migración venezolana), las resoluciones de Migración Colombia sobre PEP, PPT y otros permisos, el Pacto Mundial para la Migración Segura, Ordenada y Regular, los ODS (especialmente ODS 10.7 sobre migración ordenada y segura), reconociendo explícitamente que la política migratoria y los procesos de regularización son competencia de Migración Colombia y el Ministerio de Relaciones Exteriores?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6203,7 +6203,7 @@
       "question_id": "Q291",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan define impactos de largo plazo para la movilidad humana (ej. 'integración plena de nuevos residentes', 'aprovechamiento del bono demográfico', 'ciudadanía activa migrante', 'cohesión social consolidada'), describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado más allá del cuatrienio?",
+      "text": "¿El plan define impactos o transformaciones de largo plazo en integración de población migrante (cambios que trascienden el cuatrienio) como 'integración local sostenible de población migrante en tejido social y económico', 'cultura de convivencia intercultural consolidada', 'eliminación estructural de barreras de acceso a servicios', 'inclusión económica plena con empleabilidad formal', 'comunidad receptora con capacidad de integración sostenible', describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural', 'transformación cultural hacia interculturalidad')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6531,7 +6531,7 @@
       "question_id": "Q292",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se utilizan índices reconocidos (ej. Índice de Integración, mediciones de cohesión social) o indicadores proxy para medir impactos (ej. 'matrimonios mixtos', 'participación en JAC', 'reducción de denuncias por discriminación'), justificando por qué son adecuados para capturar la integración efectiva y la convivencia?",
+      "text": "¿Se utilizan índices o indicadores proxy para medir impactos en integración de población migrante (ej. Índice de Integración Local de Migrantes, Índice de Convivencia Intercultural, indicadores de cohesión social), justificando por qué son adecuados para capturar transformaciones estructurales? Cuando un impacto en integración migratoria es difícil de medir directamente (ej. 'cohesión social con población migrante', 'eliminación de estigmatización estructural', 'cultura de convivencia intercultural arraigada'), ¿se explica la validez y limitaciones del indicador proxy utilizado (ej. 'percepción de convivencia en encuestas', 'reducción sostenida de casos de discriminación', 'participación de migrantes en espacios comunitarios', 'emprendimientos mixtos migrantes-locales')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6705,7 +6705,7 @@
       "question_id": "Q293",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los impactos de integración se alinean con marcos globales y consideran riesgos externos (nuevos flujos masivos por crisis en origen, cambios restrictivos en política nacional, crisis económicas locales) que podrían impedir o revertir los logros de cohesión e inclusión?",
+      "text": "¿Los impactos en integración migratoria se alinean con marcos nacionales e internacionales de gestión migratoria y consideran riesgos externos (cambios en política migratoria nacional que restrinjan regularización, crisis económicas que reduzcan oportunidades laborales, aumentos abruptos de flujos migratorios que saturen capacidades locales, cambios en contexto de países de origen que modifiquen patrones migratorios, endurecimiento de discursos xenófobos a nivel nacional o regional) que podrían impedir o revertir los logros de integración esperados?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6895,7 +6895,7 @@
       "question_id": "Q294",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados (ej. desplazamiento de mano de obra local generando tensiones, percepción de preferencia institucional, segregación espacial), y propone un enfoque de 'acción sin daño' o beneficios compartidos?",
+      "text": "¿El plan evalúa si la ambición del impacto en integración migratoria es realista, considerando posibles efectos no deseados (ej. tensiones con población vulnerable local por percepción de competencia por servicios, dependencia de programas asistenciales sin transición a autonomía económica, concentración territorial que dificulta integración, estigmatización por visibilización, migración secundaria atraída por servicios municipales, burocratización de rutas que no se traduce en regularización efectiva por cuellos de botella en Migración Colombia), o reconoce explícitamente los límites de lo que el municipio puede lograr sin política migratoria nacional coherente, recursos suficientes y oportunidades económicas en el territorio (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado a integración local', 'depende de regularización por Migración Colombia', 'requiere política migratoria nacional favorable', 'necesita crecimiento económico local')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7096,7 +7096,7 @@
       "question_id": "Q295",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan describe cómo se sostendrán los procesos de integración más allá del periodo de gobierno, identificando mecanismos de institucionalización (ej. inclusión en política pública ordinaria), apropiación comunitaria, o condiciones para que la población migrante sea autónoma y no dependiente de asistencia?",
+      "text": "¿El plan describe cómo se sostendrá la integración de población migrante más allá del periodo de gobierno, identificando mecanismos de institucionalización (protocolos permanentes de atención sin discriminación, oficinas de atención a migrantes consolidadas, convenios estables con Migración Colombia), apropiación social (redes de apoyo entre migrantes y comunidades receptoras, organizaciones de migrantes fortalecidas, líderes comunitarios de convivencia), fuentes de financiación continua (recursos SGP para servicios sociales, cooperación internacional de largo plazo, articulación presupuestal departamental) o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación comunitaria', 'continuidad de políticas de integración', 'blindaje político de protocolos de atención')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7285,7 +7285,7 @@
       "question_id": "Q296",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan presenta una descripción explícita de cómo se genera la integración y gestión migratoria (ej. modelo de acogida e inclusión), preferiblemente en diagrama o matriz, que identifique retos, intervenciones, supuestos y la secuencia insumos→actividades→productos→resultados→impactos?",
+      "text": "¿El plan presenta una descripción explícita de cómo se genera la integración de población migrante en el territorio municipal (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal', 'lógica de intervención'), preferiblemente en diagrama o matriz, que identifique causas de barreras de acceso (irregularidad migratoria, desconocimiento de rutas, xenofobia, falta de reconocimiento de títulos, informalidad laboral), intervenciones municipales (caracterización, rutas de orientación, articulación con Migración Colombia, garantía de servicios, empleabilidad, convivencia), supuestos verificables (ej. 'si Migración Colombia responde a articulaciones', 'si las comunidades receptoras participan') y la secuencia insumos→actividades→productos→resultados→impactos, reconociendo explícitamente la separación entre competencias municipales de integración local y competencias nacionales de política migratoria?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7462,7 +7462,7 @@
       "question_id": "Q297",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan evita saltos desproporcionados en su lógica (ej. no asume que la 'ayuda humanitaria' genera 'integración económica'), reconociendo explícitamente que la integración es un proceso de largo aliento que requiere regularización, convalidación y cambio cultural sostenido?",
+      "text": "¿El plan evita saltos desproporcionados en su lógica de integración migratoria (por ejemplo, no atribuye 'regularización migratoria masiva' a rutas de orientación sin capacidad de respuesta de Migración Colombia; o 'eliminación de xenofobia' a campañas puntuales sin cambio cultural sostenido; o 'inclusión económica plena' a talleres de empleabilidad sin oportunidades laborales en el territorio; o 'integración local completa' a acceso a servicios sin convivencia y empleabilidad), reconociendo explícitamente cuando se requieren procesos sostenidos de articulación interinstitucional, cambios culturales en comunidades receptoras, política migratoria nacional favorable, oportunidades económicas territoriales o factores externos fuera del control municipal (se debe buscar expresiones de cautela como 'limitado a facilitación de acceso, la regularización depende de Migración Colombia', 'requiere cambio cultural sostenido', 'depende de oportunidades laborales en el territorio', 'necesita política migratoria nacional coherente')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7659,7 +7659,7 @@
       "question_id": "Q298",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan reconoce la complejidad y dinamismo del fenómeno migratorio (multicausalidad, flujos cambiantes), identifica incertidumbres, y propone mecanismos para aprender y ajustar (ej. observatorios de migración, monitoreo de flujos, mesas intersectoriales adaptativas)?",
+      "text": "¿El plan reconoce la complejidad de la integración de población migrante en contextos de flujos dinámicos y capacidades municipales limitadas, identifica incertidumbres en su estrategia (ej. evolución de flujos migratorios, cambios en política nacional, respuesta de Migración Colombia a articulaciones, receptividad de comunidades locales, sostenibilidad de empleabilidad, eficacia de estrategias de convivencia), y propone mecanismos para aprender y ajustar como pilotos de rutas de orientación en territorios con alta concentración migratoria, evaluaciones participativas con población migrante y comunidades receptoras, articulación con observatorios de migración o academia, o ajustes de protocolos de atención según necesidades emergentes de población migrante (se debe buscar términos como 'pilotos', 'fase de prueba', 'evaluación participativa', 'ajustes', 'articulación con observatorios', 'monitoreo adaptativo de flujos', 'aprendizaje desde la práctica')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7853,7 +7853,7 @@
       "question_id": "Q299",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se describe un sistema de monitoreo que incluya desagregación por estatus y nacionalidad, mecanismos de alerta ante cambios en flujos, retroalimentación con la Mesa de Migración o Consejos Consultivos, y capacidad de adaptar la oferta de servicios según el perfil cambiante de la población?",
+      "text": "¿Se describe un sistema de monitoreo para integración de población migrante que incluya indicadores de alerta temprana (aumentos abruptos de flujos migratorios, incremento de casos de xenofobia, saturación de servicios, caída en tasas de regularización, barreras emergentes de acceso), mecanismos de retroalimentación con Migración Colombia, el Ministerio de Relaciones Exteriores, organizaciones de migrantes, participación de población migrante en evaluación de programas, y capacidad de aprendizaje para adaptar rutas de orientación, estrategias de convivencia o programas de empleabilidad ante cambios en política migratoria nacional o patrones de migración?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -8057,7 +8057,7 @@
       "question_id": "Q300",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan considera el contexto municipal específico (frontera vs. interior, tránsito vs. vocación de permanencia), reconoce grupos con necesidades diferenciadas (caminantes, pendulares, residentes, retornados, mujeres, niños), y explicita restricciones territoriales o de capacidad que condicionan la atención?",
+      "text": "¿El plan considera el contexto municipal específico en migración (ubicación fronteriza o no, magnitud de población migrante, nacionalidades predominantes, patrones de asentamiento territorial, capacidad de servicios sociales, mercado laboral local, histórico de convivencia intercultural, presencia de organizaciones de migrantes), reconoce grupos con necesidades diferenciadas (niñez y adolescencia migrante, mujeres gestantes o cabeza de familia, adultos mayores, personas con discapacidad, población LGBTIQ+ migrante, víctimas de trata, solicitantes de refugio, migrantes indígenas, población pendular transfronteriza), y explicita restricciones (competencia limitada sobre política migratoria y regularización, capacidad presupuestal, saturación de servicios por magnitud de población, dependencia de decisiones de Migración Colombia, oportunidades laborales limitadas en economía local, tensiones con población vulnerable local) que condicionan las intervenciones de integración?",
       "validations": {
         "completeness_check": {
           "type": "completeness",

@@ -524,7 +524,7 @@
       "question_id": "Q001",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El diagnóstico de las inequidades y brechas de género presenta datos cuantitativos (tasas de violencia basada en género, porcentajes de participación política, cifras de desempleo femenino o brecha salarial) con año de referencia y fuente identificada (Medicina Legal, DANE, Observatorio de Género), desagregados por territorio (rural/urbano) o grupos poblacionales (mujeres diversas, étnicas)?",
+      "text": "¿El diagnóstico presenta datos cuantitativos sobre brechas de género y violencias contra las mujeres (casos de violencia intrafamiliar, violencia sexual, feminicidios, medidas de protección otorgadas, brecha salarial de género, participación de mujeres en espacios de decisión, tasa de desempleo femenino vs masculino, mujeres cabeza de familia en pobreza, acceso de mujeres a tierra o vivienda, cobertura de servicios de salud sexual y reproductiva, tiempo de cuidado no remunerado), desagregados por zona urbana/rural, edad, etnia, discapacidad, con año de referencia y fuente identificada (ej. Comisarías de Familia, Medicina Legal, Fiscalía, DANE, Sisben, Secretaría de la Mujer o Equidad de Género, encuestas de uso del tiempo)?",
       "validations": {
         "buscar_indicadores_cuantitativos": {
           "minimum_required": 3,
@@ -847,7 +847,7 @@
       "question_id": "Q002",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El diagnóstico dimensiona numéricamente la magnitud de las desigualdades o violencias contra las mujeres y reconoce explícitamente limitaciones en los datos como 'subregistro de denuncias', 'información insuficiente sobre economía del cuidado', 'falta de caracterización de violencias no físicas' o 'vacíos en cifras municipales'?",
+      "text": "¿El diagnóstico dimensiona numéricamente las violencias contra las mujeres y las brechas de género (número de mujeres víctimas de violencia sin acceso a rutas de atención, capacidad de casas de refugio, brecha en participación política, diferencial en tasa de informalidad laboral por sexo, hogares monoparentales femeninos en pobreza extrema, barreras de acceso a IVE, subregistro de violencia sexual) y reconoce explícitamente limitaciones como 'subregistro de violencias por temor a denunciar', 'ausencia de caracterización de brechas económicas', 'datos insuficientes sobre tiempo de cuidado no remunerado' o 'información fragmentada entre Comisarías y Fiscalía'?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1139,7 +1139,7 @@
       "question_id": "Q003",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a programas de prevención de violencias, funcionamiento de la Casa de la Mujer, estrategias de autonomía económica o transversalización del enfoque de género (Trazador Presupuestal de Género)?",
+      "text": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a fortalecimiento de Comisarías de Familia, casas de refugio para mujeres víctimas de violencia, rutas integrales de atención a VBG, campañas de prevención de violencias y promoción de masculinidades no violentas, programas de autonomía económica para mujeres (empleabilidad, emprendimiento, acceso a activos), servicios de cuidado (hogares comunitarios, centros de desarrollo infantil), transversalización del enfoque de género en políticas municipales, fortalecimiento de Consejos Municipales de Mujeres, o garantía de acceso a salud sexual y reproductiva (incluido IVE en el marco legal)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1431,7 +1431,7 @@
       "question_id": "Q004",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El plan identifica las entidades responsables de la política de mujer y equidad (ej. Secretaría de la Mujer, Comisaría de Familia, mecanismos de género), describe sus capacidades (equipos psicosociales y jurídicos, duplas de atención) y señala limitaciones institucionales o necesidades de articulación con Fiscalía, ICBF o Gobernación?",
+      "text": "¿El plan identifica las entidades responsables de los derechos de las mujeres e igualdad de género (ej. Secretaría de la Mujer o Equidad de Género, Comisarías de Familia, Secretaría de Desarrollo Social, Secretaría de Salud, Consejo Municipal de Mujeres, enlaces de género en secretarías), describe sus capacidades (equipos especializados en VBG, protocolos de atención con enfoque de género, casas de refugio, programas de empleabilidad para mujeres, sistemas de información sobre violencias, articulación con Fiscalía y Medicina Legal) y señala limitaciones o necesidades de articulación con la Fiscalía, comisarías de familia del ICBF, jueces para medidas de protección, IPS para salud sexual y reproductiva, o entidades departamentales y nacionales?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1674,7 +1674,7 @@
       "question_id": "Q005",
       "scoring_definition_ref": "scoring_modalities.TYPE_E",
       "scoring_modality": "TYPE_E",
-      "text": "¿El plan justifica el alcance de sus intervenciones en equidad de género mencionando el marco normativo (Ley 1257 de 2008, CONPES 4080) o reconociendo explícitamente qué competencias son municipales (prevención, atención inicial, rutas, empoderamiento) y cuáles dependen del nivel nacional (judicialización, protección material de alto riesgo)?",
+      "text": "¿El plan justifica el alcance de sus intervenciones reconociendo explícitamente que las competencias municipales directas incluyen prevención y atención de violencias basadas en género a través de Comisarías de Familia, casas de refugio, rutas de atención integral, promoción de autonomía económica de mujeres, transversalización del enfoque de género en políticas, fortalecimiento de participación política de mujeres, y articulación con entidades de salud para garantizar derechos sexuales y reproductivos, mientras la investigación penal de feminicidios y violencia sexual, las sentencias judiciales y medidas cautelares, y la legislación nacional son competencia de la Fiscalía, la Rama Judicial y el Congreso respectivamente, mencionando el marco normativo aplicable (Ley 1257 de 2008, Ley 1719 de 2014, Ley 1761 de 2015 sobre feminicidio, CONPES 161 de 2013, Convención de Belém do Pará, CEDAW)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1886,7 +1886,7 @@
       "question_id": "Q006",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las actividades para el cierre de brechas y atención a violencias (ej. operación de rutas de atención, escuelas de liderazgo político, formación en oficios no tradicionales, consejos de seguridad para mujeres) aparecen en formato estructurado (tabla, matriz, Plan Indicativo) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
+      "text": "¿Las actividades para garantizar derechos de las mujeres e igualdad de género (fortalecimiento de Comisarías de Familia con equipos especializados, casas de refugio para mujeres víctimas de violencia, rutas de atención integral a VBG en articulación con Fiscalía y salud, campañas de prevención de violencias y promoción de masculinidades no violentas, programas de empleabilidad y emprendimiento para mujeres, acceso de mujeres a tierra y vivienda, servicios de cuidado para corresponsabilidad, transversalización del enfoque de género en presupuestos y políticas, fortalecimiento de Consejos Municipales de Mujeres, garantía de acceso a IVE en marco legal, escuelas de liderazgo político para mujeres) aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2511,7 +2511,7 @@
       "question_id": "Q007",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La descripción de actividades especifica el instrumento ('mediante Casas de la Mujer', 'a través de la Patrulla Púrpura', 'con capital semilla'), la población objetivo (mujeres rurales, víctimas de violencia, jefas de hogar) y explica cómo la actividad contribuye a la equidad ('para romper ciclos de dependencia', 'porque previene la feminización de la pobreza', 'con el fin de garantizar una vida libre de violencias')?",
+      "text": "¿La descripción de actividades especifica el instrumento ('mediante fortalecimiento de Comisarías de Familia', 'a través de casas de refugio', 'con rutas integrales de atención a VBG', 'mediante programas de empleabilidad para mujeres', 'a través de servicios de cuidado', 'con transversalización del enfoque de género en presupuestos', 'mediante escuelas de liderazgo político', 'a través de protocolos de atención en salud sexual y reproductiva'), la población objetivo ('mujeres víctimas de violencia', 'mujeres cabeza de familia en pobreza', 'mujeres en informalidad laboral', 'niñas y adolescentes en prevención de violencias', 'mujeres rurales sin acceso a tierra', 'cuidadoras con sobrecarga', 'mujeres con liderazgo político potencial') y explica cómo la actividad contribuye al resultado esperado ('para garantizar atención oportuna a víctimas', 'porque reduce barreras económicas', 'con el fin de prevenir violencias mediante cambio cultural', 'para aumentar participación en espacios de decisión', 'porque redistribuye tareas de cuidado')?",
       "validations": {
         "buscar_instrumento": {
           "minimum_required": 1,
@@ -2802,7 +2802,7 @@
       "question_id": "Q008",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las actividades propuestas se vinculan explícitamente con las causas estructurales de la desigualdad identificadas en el diagnóstico, tales como la dependencia económica, los estereotipos de género, la sobrecarga de cuidado o la debilidad en la respuesta institucional ante violencias?",
+      "text": "¿Las actividades propuestas se vinculan explícitamente con las violencias contra las mujeres y brechas de género identificadas en el diagnóstico (ej. alta prevalencia de violencia intrafamiliar, capacidad insuficiente de Comisarías de Familia, brecha salarial y en participación laboral, ausencia de servicios de cuidado, subrepresentación de mujeres en espacios de decisión, barreras de acceso a salud sexual y reproductiva, feminicidios, violencia sexual, sobrecarga de trabajo de cuidado no remunerado)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3056,7 +3056,7 @@
       "question_id": "Q009",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan identifica posibles obstáculos o resistencias en la implementación de la política de género (ej. revictimización institucional, patrones culturales machistas arraigados, falta de denuncia por miedo) y propone medidas explícitas de mitigación o estrategias de cambio cultural para superarlos?",
+      "text": "¿El plan identifica posibles obstáculos en la implementación de políticas de igualdad de género (ej. resistencias culturales a cambios en roles de género, revictimización de mujeres en rutas de atención, dependencia económica de víctimas respecto a agresores, capacidad insuficiente de Comisarías de Familia frente a demanda, barreras de acceso a justicia, estigmatización de mujeres que denuncian, debilidad en articulación con Fiscalía o sector salud, limitaciones presupuestales, rotación de personal especializado) y propone medidas explícitas de mitigación como campañas de transformación cultural, protocolos de atención sin revictimización, programas de autonomía económica para víctimas, ampliación de capacidad de Comisarías, convenios de articulación interinstitucional, o fortalecimiento de sistemas de información?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3258,7 +3258,7 @@
       "question_id": "Q010",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan describe explícitamente cómo las actividades de empoderamiento y prevención se complementan o siguen una secuencia lógica (ej. formación en derechos → empoderamiento económico → participación política; o sensibilización → denuncia → atención integral), evidenciando una estrategia articulada de transversalización?",
+      "text": "¿El plan describe explícitamente cómo las actividades de igualdad de género se complementan o siguen una secuencia lógica (ej. prevención mediante educación y masculinidades no violentas → detección temprana → atención en Comisarías → casas de refugio → acompañamiento psicosocial → autonomía económica → no retorno a violencia; o servicios de cuidado → mayor tiempo disponible → empleabilidad → autonomía económica → empoderamiento; o escuelas de liderazgo → participación en Consejos → incidencia en políticas → transversalización de género), evidenciando una estrategia articulada de transformación de desigualdades de género (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación', 'enfoque integral de igualdad de género', 'continuo de prevención-atención-empoderamiento')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3606,7 +3606,7 @@
       "question_id": "Q011",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de producto (mujeres atendidas en rutas de violencia, funcionarias/os capacitados en género, emprendimientos femeninos fortalecidos, lideresas formadas) incluyen línea base, meta cuantitativa y fuente de verificación?",
+      "text": "¿Los indicadores de producto para igualdad de género (Comisarías de Familia fortalecidas con equipos especializados, cupos en casas de refugio disponibles, mujeres atendidas en rutas de VBG, campañas de prevención realizadas, mujeres vinculadas a programas de empleabilidad o emprendimiento, servicios de cuidado implementados, políticas con enfoque de género transversalizado, mujeres en escuelas de liderazgo político, mujeres con acceso garantizado a IVE en marco legal, sesiones de Consejos Municipales de Mujeres funcionando) incluyen línea base, meta cuantitativa y fuente de verificación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4084,7 +4084,7 @@
       "question_id": "Q012",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las metas de productos guardan relación con la magnitud de la brecha o violencia identificada en el diagnóstico, y se especifica la priorización (mujeres en riesgo de feminicidio, ruralidad dispersa) o la cobertura de la intervención frente a la demanda potencial?",
+      "text": "¿Las metas de productos (ej. 'atender 100% de casos de VBG reportados en menos de 24 horas', 'aumentar cupos en casas de refugio de 20 a 60', 'vincular 500 mujeres a programas de empleabilidad', 'crear 5 centros de cuidado en zonas rurales', 'alcanzar 50% de participación de mujeres en espacios de decisión municipal', 'transversalizar enfoque de género en 100% de políticas sectoriales') guardan relación con la magnitud de violencias y brechas de género identificadas en el diagnóstico, y se especifica la priorización (zonas con mayor prevalencia de violencias, mujeres en situaciones de mayor vulnerabilidad, sectores con brechas más amplias), intensidad (periodicidad de atención, duración de acompañamiento psicosocial) o cobertura territorial y poblacional?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4543,7 +4543,7 @@
       "question_id": "Q013",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los productos están vinculados a códigos presupuestales específicos (Trazador de Género, recursos propios, SGP) y a entidades responsables identificadas (Secretaría de la Mujer, Desarrollo Social, Gobierno, Comisaría)?",
+      "text": "¿Los productos de igualdad de género están vinculados a códigos presupuestales (recursos propios del municipio, SGP para primera infancia y atención a víctimas, recursos de cooperación internacional, articulación con presupuesto departamental, fondos específicos para mujer y género si existen) y a entidades responsables específicas (Secretaría de la Mujer o Equidad de Género, Comisarías de Familia, Secretaría de Desarrollo Social, Secretaría de Salud, Secretaría de Educación, enlaces de género en secretarías, Consejo Municipal de Mujeres)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5021,7 +5021,7 @@
       "question_id": "Q014",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'una charla de sensibilización') y la magnitud de la meta del producto asociado (ej. 'reducción de la tolerancia social a la violencia'), considerando que los cambios en equidad requieren procesos sostenidos y no solo eventos puntuales?",
+      "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'dos talleres de sensibilización sobre igualdad de género') y la magnitud de la meta del producto asociado (ej. 'eliminación de brechas salariales de género en el municipio'), considerando plazos, recursos disponibles y profundidad de cambios estructurales y culturales necesarios? Se debe evaluar si el plan reconoce que la transformación de desigualdades de género requiere intervenciones sostenidas y multidimensionales (prevención, atención, autonomía económica, participación política, corresponsabilidad en cuidado, transformación cultural), no eventos puntuales, y que el municipio tiene competencias limitadas sobre investigación penal y sentencias judiciales (competencia de Fiscalía y Rama Judicial).",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5488,7 +5488,7 @@
       "question_id": "Q015",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan describe cómo los productos (ej. 'mujeres con autonomía económica', 'rutas de atención activas', 'Consejos Consultivos operando') generan o contribuyen a los resultados esperados (ej. 'reducción de brechas', 'garantía de derechos', 'empoderamiento real'), explicando esta conexión o ruta causal?",
+      "text": "¿El plan describe cómo los productos de igualdad de género (ej. 'Comisarías fortalecidas', 'mujeres en casas de refugio', 'mujeres atendidas en rutas de VBG', 'mujeres con empleabilidad mejorada', 'servicios de cuidado funcionando', 'mujeres en espacios de liderazgo', 'acceso a salud sexual y reproductiva garantizado') generan o contribuyen a los resultados esperados (ej. 'reducción de violencias contra las mujeres', 'aumento de autonomía económica', 'disminución de brechas de género', 'mayor participación política de mujeres', 'redistribución de tareas de cuidado'), explicando esta conexión o ruta (se debe buscar descripciones del tipo 'al lograr X se genera Y porque permite salir de ciclos de violencia', 'esto conduce a mayor autonomía económica y empoderamiento', 'los servicios de cuidado liberan tiempo para empleabilidad', 'el liderazgo político permite incidir en políticas')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5823,7 +5823,7 @@
       "question_id": "Q016",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de resultado en materia de género (tasa de violencia intrafamiliar, brecha de desempleo por sexo, porcentaje de participación de mujeres en cargos directivos/elección, índice de desigualdad de género) están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
+      "text": "¿Los indicadores de resultado para igualdad de género (ej. 'reducción porcentual de violencias contra las mujeres', 'reducción de brecha de género en tasa de desempleo', 'aumento en participación de mujeres en espacios de decisión', 'reducción de tiempo de cuidado no remunerado asumido por mujeres', 'aumento en acceso de mujeres a tierra o vivienda', 'mejora en acceso a salud sexual y reproductiva', 'reducción de feminicidios') están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6029,7 +6029,7 @@
       "question_id": "Q017",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan describe la ruta que lleva a la igualdad y la garantía de derechos de las mujeres, mencionando condiciones necesarias o supuestos para que funcione (ej. 'si hay corresponsabilidad en el cuidado', 'si el mercado laboral absorbe la mano de obra femenina', 'si el sistema judicial no revictimiza')?",
+      "text": "¿El plan describe la ruta o secuencia que lleva a los resultados de igualdad de género, mencionando condiciones necesarias para que funcione (se debe buscar términos como 'supuestos', 'si las mujeres víctimas denuncian y acceden a rutas', 'si la Fiscalía investiga efectivamente los casos', 'si existen oportunidades laborales para mujeres en el territorio', 'si los hombres participan en procesos de masculinidades no violentas', 'si se sostiene voluntad política de transversalización de género', 'siempre que las IPS garanticen derechos sexuales y reproductivos', 'requiere que jueces otorguen medidas de protección oportunas', reconociendo explícitamente que el municipio NO controla la investigación penal ni las sentencias judiciales)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6235,7 +6235,7 @@
       "question_id": "Q018",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición de las metas de resultado (ej. reducción de la VBG, aumento de la participación) se justifica en función de recursos asignados, capacidad institucional instalada (Comisarías, equipos), articulación con otros niveles, o se compara con la media nacional o municipios similares?",
+      "text": "¿La ambición de las metas de resultado en igualdad de género (ej. 'cero feminicidios', 'reducir violencias contra mujeres en 50%', 'cerrar brecha salarial de género', 'alcanzar paridad en participación política', 'redistribuir equitativamente trabajo de cuidado') se justifica en función de recursos asignados, capacidad institucional de Comisarías y secretarías especializadas, nivel de articulación con Fiscalía, salud y justicia, contexto de transformación cultural del territorio, o se compara con municipios de categoría similar, reconociendo explícitamente que la eliminación de violencias y la igualdad de género requieren transformaciones estructurales que trascienden el cuatrienio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6436,7 +6436,7 @@
       "question_id": "Q019",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los resultados propuestos (ej. 'vida libre de violencias', 'autonomía económica', 'participación incidente') atienden o abordan directamente las brechas, desigualdades y violencias priorizadas en el diagnóstico situacional de las mujeres?",
+      "text": "¿Los resultados propuestos (ej. 'reducción de violencias basadas en género', 'aumento de autonomía económica de mujeres', 'mejora en participación política', 'redistribución de tareas de cuidado', 'acceso efectivo a salud sexual y reproductiva', 'reducción de brechas en educación y empleo') atienden o abordan directamente las violencias contra las mujeres y las brechas de género priorizadas en el diagnóstico?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6598,7 +6598,7 @@
       "question_id": "Q020",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan declara la alineación de sus resultados de género con la Política Pública Nacional de Equidad de Género, los Objetivos de Desarrollo Sostenible (especialmente ODS 5), o los lineamientos departamentales de mujer y género?",
+      "text": "¿El plan declara la alineación de sus resultados de igualdad de género con la Ley 1257 de 2008 (violencias contra las mujeres), la Ley 1719 de 2014 (violencia sexual), la Ley 1761 de 2015 (feminicidio), el CONPES 161 de 2013 (equidad de género), la CEDAW, la Convención de Belém do Pará, los ODS (especialmente ODS 5: Igualdad de Género), los Objetivos de Desarrollo Sostenible en materia de violencias, autonomía económica y participación política de las mujeres?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6804,7 +6804,7 @@
       "question_id": "Q021",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan define impactos o transformaciones estructurales de largo plazo para las mujeres (ej. 'transformación de roles de género', 'erradicación de la feminización de la pobreza', 'democracia paritaria consolidada'), describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado más allá del cuatrienio?",
+      "text": "¿El plan define impactos o transformaciones de largo plazo en igualdad de género (cambios que trascienden el cuatrienio) como 'eliminación estructural de violencias basadas en género', 'igualdad de género consolidada en todas las dimensiones (económica, política, social)', 'transformación cultural hacia equidad de género arraigada', 'corresponsabilidad en cuidado como norma social', 'participación paritaria de mujeres en espacios de decisión sostenible', describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural', 'transformación cultural profunda')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7124,7 +7124,7 @@
       "question_id": "Q022",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se utilizan índices reconocidos (ej. Índice de Paridad Política, Índice de Brecha Global de Género) o indicadores proxy para medir impactos en equidad, justificando por qué son adecuados para capturar las transformaciones culturales y estructurales esperadas?",
+      "text": "¿Se utilizan índices o indicadores proxy para medir impactos en igualdad de género (ej. Índice de Brecha de Género, Índice de Autonomía de las Mujeres, Índice de Empoderamiento de Género, indicadores de violencias de largo plazo), justificando por qué son adecuados para capturar transformaciones estructurales? Cuando un impacto en igualdad de género es difícil de medir directamente (ej. 'transformación cultural hacia equidad', 'eliminación de estereotipos de género', 'empoderamiento sostenible de mujeres'), ¿se explica la validez y limitaciones del indicador proxy utilizado (ej. 'percepción social sobre roles de género', 'prevalencia de violencias a largo plazo', 'participación sostenida de mujeres en liderazgo', 'distribución equitativa de tiempo de cuidado')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7340,7 +7340,7 @@
       "question_id": "Q023",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los impactos en equidad de género se alinean con marcos globales y consideran riesgos externos (retrocesos en derechos, crisis económicas que afectan desproporcionadamente a mujeres, aumento de violencias en contextos de inseguridad) que podrían impedir o revertir los logros esperados?",
+      "text": "¿Los impactos en igualdad de género se alinean con marcos nacionales e internacionales y consideran riesgos externos (backlash o retrocesos en derechos de las mujeres, crisis económicas que aumentan brechas de género, recortes presupuestales en políticas de igualdad, debilitamiento de marcos normativos de protección, aumento de discursos conservadores o fundamentalistas, crisis de cuidado por envejecimiento poblacional, impunidad en sistema de justicia que debilita protección) que podrían impedir o revertir los logros de igualdad de género esperados?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7522,7 +7522,7 @@
       "question_id": "Q024",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados (ej. doble jornada laboral sin redistribución del cuidado, violencia como reacción al empoderamiento) y propone un enfoque de \"acción sin daño\" o límites de la gestión municipal?",
+      "text": "¿El plan evalúa si la ambición del impacto en igualdad de género es realista, considerando posibles efectos no deseados (ej. estigmatización de mujeres que participan en programas, dependencia de subsidios sin autonomía económica sostenible, sobrecarga de mujeres que asumen doble rol (productivo y reproductivo) sin redistribución real de cuidado, tensiones familiares o comunitarias por cambios en roles de género, concentración de recursos en violencia sin prevención estructural, servicios de atención que no transforman causas de desigualdades), o reconoce explícitamente los límites de lo que el municipio puede lograr sin transformaciones estructurales en mercado laboral, sistema de justicia efectivo, y cambio cultural profundo que trasciende el cuatrienio (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado sin transformación cultural', 'depende de justicia efectiva', 'requiere cambios estructurales en economía del cuidado', 'necesita compromiso sostenido más allá del cuatrienio')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7728,7 +7728,7 @@
       "question_id": "Q025",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan describe cómo se sostendrán los logros en equidad de género más allá del periodo de gobierno, identificando mecanismos de institucionalización (ej. Política Pública Municipal por Acuerdo, transversalización presupuestal), apropiación por organizaciones de mujeres o fortalecimiento de la sociedad civil?",
+      "text": "¿El plan describe cómo se sostendrán los avances en igualdad de género más allá del periodo de gobierno, identificando mecanismos de institucionalización (transversalización del enfoque de género en todas las políticas y presupuestos, Comisarías de Familia fortalecidas de manera permanente, observatorios de género con seguimiento continuo, protocolos permanentes de atención a VBG), apropiación social (redes de mujeres empoderadas, organizaciones feministas fortalecidas, hombres como aliados en masculinidades no violentas, corresponsabilidad en cuidado como práctica social), fuentes de financiación continua (recursos SGP, recursos propios, cooperación de largo plazo, fondos de equidad de género) o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación social', 'continuidad de políticas de igualdad', 'blindaje político de presupuestos con enfoque de género', 'transformación cultural arraigada')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7947,7 +7947,7 @@
       "question_id": "Q026",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan presenta una descripción explícita de cómo se genera el cambio hacia la igualdad (ej. modelo ecológico para violencia, empoderamiento multidimensional), preferiblemente en diagrama o matriz, que identifique causas estructurales, intervenciones, supuestos y la secuencia insumos→actividades→productos→resultados→impactos?",
+      "text": "¿El plan presenta una descripción explícita de cómo se generan las transformaciones hacia la igualdad de género (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal', 'lógica de intervención'), preferiblemente en diagrama o matriz, que identifique causas estructurales de desigualdades (estereotipos de género, división sexual del trabajo, tolerancia social a violencias, barreras de acceso a recursos económicos y políticos, sobrecarga de trabajo de cuidado), intervenciones municipales (prevención y atención de VBG, autonomía económica, servicios de cuidado, participación política, transversalización de género), supuestos verificables (ej. 'si las mujeres acceden a rutas sin temor', 'si el sistema de justicia responde', 'si existen oportunidades laborales') y la secuencia insumos→actividades→productos→resultados→impactos, reconociendo explícitamente la separación entre competencias municipales (prevención, atención, empoderamiento) y competencias nacionales (investigación penal, sentencias)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -8119,7 +8119,7 @@
       "question_id": "Q027",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan evita saltos desproporcionados en su lógica (ej. no asume que un taller elimina el machismo), reconociendo explícitamente que la transformación de inequidades de género requiere procesos culturales y estructurales sostenidos en el tiempo y no solo acciones afirmativas puntuales?",
+      "text": "¿El plan evita saltos desproporcionados en su lógica de igualdad de género (por ejemplo, no atribuye 'eliminación de violencias contra las mujeres' a campañas de sensibilización sin transformación profunda de estructuras patriarcales; o 'igualdad salarial' a programas de empleabilidad sin cambios en mercado laboral y corresponsabilidad en cuidado; o 'empoderamiento sostenible' a talleres puntuales sin autonomía económica real; o 'paridad política' a escuelas de liderazgo sin transformación de barreras estructurales y culturales), reconociendo explícitamente cuando se requieren procesos sostenidos y multidimensionales, transformaciones culturales profundas, cambios en mercado laboral, sistema de justicia efectivo, o factores externos fuera del control municipal (se debe buscar expresiones de cautela como 'requiere transformación cultural de largo plazo', 'depende de justicia efectiva y oportuna', 'necesita cambios estructurales en economía del cuidado', 'limitado sin corresponsabilidad social en tareas de cuidado', 'trasciende el cuatrienio')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -8308,7 +8308,7 @@
       "question_id": "Q028",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan reconoce la complejidad de las relaciones de género, identifica incertidumbres en su estrategia de cambio cultural, y propone mecanismos para aprender y ajustar (ej. observatorios de género, consejos consultivos activos, evaluaciones cualitativas)?",
+      "text": "¿El plan reconoce la complejidad de transformar desigualdades de género estructurales e históricas, identifica incertidumbres en su estrategia (ej. efectividad de estrategias de prevención de violencias, sostenibilidad de autonomía económica en contextos de crisis, receptividad de comunidades a cambios en roles de género, respuesta del sistema de justicia, eficacia de servicios de cuidado en redistribuir trabajo no remunerado, resistencias culturales), y propone mecanismos para aprender y ajustar como pilotos de rutas de atención con enfoque diferencial, evaluaciones participativas con organizaciones de mujeres, articulación con observatorios de género o centros de investigación, seguimiento a reincidencia de violencias, o ajustes de programas de empleabilidad según barreras identificadas (se debe buscar términos como 'pilotos', 'fase de prueba', 'evaluación participativa con mujeres', 'ajustes', 'articulación con observatorios de género', 'monitoreo adaptativo', 'aprendizaje desde la práctica')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -8507,7 +8507,7 @@
       "question_id": "Q029",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se describe un sistema de monitoreo para la política de género que incluya indicadores desagregados, mecanismos de alerta temprana (ej. en violencias), retroalimentación con organizaciones de mujeres o Consejos Consultivos, y capacidad de adaptar la estrategia ante nuevas dinámicas de desigualdad?",
+      "text": "¿Se describe un sistema de monitoreo para igualdad de género que incluya indicadores de alerta temprana (aumento de violencias contra mujeres, incremento de feminicidios, retrocesos en participación política, ampliación de brechas económicas, saturación de Comisarías de Familia, reducción de acceso a salud sexual y reproductiva), mecanismos de retroalimentación con la Fiscalía, el sector salud, organizaciones de mujeres, participación de mujeres beneficiarias en evaluación de programas, y capacidad de aprendizaje para adaptar rutas de atención, estrategias de prevención, programas de autonomía económica o servicios de cuidado ante cambios en patrones de violencias, contexto económico o barreras emergentes?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -8717,7 +8717,7 @@
       "question_id": "Q030",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan considera el contexto municipal específico (ruralidad, presencia de conflicto, vocación económica), reconoce la diversidad de las mujeres (enfoque interseccional: campesinas, afro, indígenas, con discapacidad) y explicita restricciones que condicionan el cierre de brechas en el territorio?",
+      "text": "¿El plan considera el contexto municipal específico en igualdad de género (prevalencia y tipos de violencias, capacidad de Comisarías de Familia, brechas de género en empleo y educación, participación histórica de mujeres en política local, presencia de organizaciones de mujeres, contexto cultural sobre roles de género, oportunidades económicas para mujeres), reconoce grupos de mujeres con necesidades diferenciadas (mujeres rurales, mujeres indígenas y afrodescendientes, mujeres con discapacidad, mujeres LGBTIQ+, mujeres víctimas del conflicto armado, mujeres migrantes, mujeres en ejercicio de prostitución, adolescentes y jóvenes, adultas mayores, mujeres cabeza de familia), y explicita restricciones (competencia limitada sobre investigación penal y sentencias, capacidad presupuestal, oportunidades laborales en economía local, resistencias culturales a transformación de roles de género, dependencia de respuesta de Fiscalía y sistema de justicia) que condicionan las intervenciones de igualdad de género?",
       "validations": {
         "completeness_check": {
           "type": "completeness",

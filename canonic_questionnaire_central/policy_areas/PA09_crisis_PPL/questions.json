@@ -593,7 +593,7 @@
       "question_id": "Q241",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El diagnóstico presenta datos numéricos (tasa de hacinamiento en centros de detención transitoria, número de PPL sindicados, acceso a salud intramural) sobre la crisis carcelaria que sirvan como línea base? Se debe verificar el año y fuentes (ej. INPEC, Personería, Secretaría de Salud).",
+      "text": "¿El diagnóstico presenta datos cuantitativos sobre condiciones en calabozos de estaciones de policía municipal (número de personas retenidas, tiempos promedio de detención administrativa, capacidad instalada vs ocupación real), establecimientos penitenciarios del INPEC ubicados en el municipio (población reclusa, índice de hacinamiento, quejas recibidas por la Personería), casos de personas privadas de libertad con procesos de reintegración social en el municipio, o articulación del municipio con defensorías públicas para garantizar debido proceso, con año de referencia y fuente identificada (ej. Personería Municipal, Secretaría de Gobierno, informes del INPEC, Defensoría del Pueblo, Inspecciones de Policía)?",
       "validations": {
         "buscar_indicadores_cuantitativos": {
           "minimum_required": 3,
@@ -904,7 +904,7 @@
       "question_id": "Q242",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El texto dimensiona la magnitud de la crisis carcelaria, cuantificando el déficit de cupos o la población afectada por la vulneración de derechos (salud, alimentación)? Se debe buscar si se mencionan 'vacíos de información' o se cita el 'Estado de Cosas Inconstitucional'.",
+      "text": "¿El diagnóstico dimensiona numéricamente las vulneraciones en ámbitos de competencia municipal (número de quejas por condiciones en calabozos municipales, tiempos de detención administrativa que exceden límites legales, personas sin acceso a defensor público durante detención, casos de hacinamiento en estaciones de policía, quejas recibidas por Personería sobre establecimientos INPEC en el territorio) y reconoce explícitamente limitaciones como 'competencia del INPEC sobre régimen penitenciario', 'información limitada del municipio sobre interior de cárceles', 'ausencia de protocolos de articulación con defensorías' o 'subregistro de condiciones en calabozos municipales'?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1181,7 +1181,7 @@
       "question_id": "Q243",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a la construcción o mejora de centros de detención transitoria, o a programas de atención y resocialización para PPL bajo competencia municipal?",
+      "text": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a mejoramiento de condiciones en calabozos de estaciones de policía municipal (infraestructura, servicios básicos, alimentación), fortalecimiento de inspecciones de policía para garantizar debido proceso en detenciones administrativas, articulación con el INPEC y la Personería Municipal para seguimiento a derechos humanos en establecimientos penitenciarios del territorio, programas de reintegración social para personas post-privación de libertad (empleabilidad, apoyo psicosocial, acceso a servicios), o articulación con defensorías públicas?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1461,7 +1461,7 @@
       "question_id": "Q244",
       "scoring_definition_ref": "scoring_modalities.TYPE_B",
       "scoring_modality": "TYPE_B",
-      "text": "¿El PDM describe las capacidades para gestionar la crisis carcelaria municipal, mencionando entidades (Secretaría de Gobierno, Personería) y sus necesidades? Se debe buscar términos como 'convenios con INPEC', 'atención en salud intramural' y si se identifican 'limitaciones'.",
+      "text": "¿El plan identifica las entidades municipales responsables de la gestión de calabozos y articulación con sistema penitenciario (ej. Secretaría de Gobierno, Inspecciones de Policía, Personería Municipal, Comisarías de Familia para adolescentes en SRPA, Secretaría de Desarrollo Social para reintegración), describe sus capacidades (protocolos de detención administrativa, registros de personas retenidas, inspectores de policía capacitados en debido proceso, enlaces con defensorías públicas, programas de empleabilidad post-penitenciaria) y señala limitaciones o necesidades de articulación con el INPEC, la Defensoría del Pueblo, el Ministerio de Justicia o las defensorías públicas?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1698,7 +1698,7 @@
       "question_id": "Q245",
       "scoring_definition_ref": "scoring_modalities.TYPE_E",
       "scoring_modality": "TYPE_E",
-      "text": "¿El plan justifica su alcance en la crisis carcelaria mencionando el marco legal (ej. sentencias sobre ECI, Código Penitenciario) o reconociendo restricciones de competencias (sindicados vs. condenados), presupuestales o técnicas?",
+      "text": "¿El plan justifica el alcance de sus intervenciones reconociendo explícitamente que el régimen penitenciario y carcelario es competencia nacional del INPEC y el Ministerio de Justicia, mientras las competencias municipales directas se limitan a calabozos de estaciones de policía (bajo responsabilidad del alcalde como primera autoridad de policía), debido proceso en detenciones administrativas por inspecciones de policía, articulación y veeduría sobre derechos humanos en establecimientos INPEC del territorio (a través de la Personería), y programas de reintegración social post-privación de libertad, mencionando el marco normativo aplicable (Ley 65 de 1993 Código Penitenciario, Ley 1709 de 2014, Ley 1098 de 2006 para SRPA, sentencias de tutela sobre estado de cosas inconstitucional)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -1901,7 +1901,7 @@
       "question_id": "Q246",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las actividades para la población privada de la libertad se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "text": "¿Las actividades para mejorar condiciones en calabozos municipales y articular acciones con el sistema penitenciario (protocolos de detención administrativa con garantías de debido proceso, mejoramiento de infraestructura de calabozos en estaciones de policía, articulación de la Personería Municipal con el INPEC para recepción de quejas sobre derechos humanos en establecimientos del territorio, capacitación a inspectores de policía en derechos fundamentales durante detención, programas de empleabilidad y apoyo psicosocial para personas en reintegración post-penitenciaria, articulación con defensorías públicas para garantizar acceso a defensa) aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2148,7 +2148,7 @@
       "question_id": "Q247",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La descripción de las actividades para PPL detalla el instrumento ('mediante brigadas de salud', 'a través de convenios para formación'), la población objetivo ('sindicados', 'condenados', 'mujeres PPL') y la lógica causal?",
+      "text": "¿La descripción de actividades especifica el instrumento ('mediante protocolos de debido proceso en inspecciones de policía', 'a través de mejoramiento de condiciones en calabozos municipales', 'con articulación Personería-INPEC para seguimiento a quejas', 'mediante programas de empleabilidad para población post-penitenciaria', 'a través de capacitación a inspectores en derechos fundamentales durante detención'), la población objetivo ('personas en detención administrativa en calabozos municipales', 'población reclusa en establecimientos INPEC del territorio que presenta quejas', 'personas en proceso de reintegración social post-privación de libertad', 'adolescentes en SRPA') y explica cómo la actividad contribuye al resultado esperado ('para garantizar límites legales de detención', 'porque permite respuesta institucional a vulneraciones', 'con el fin de facilitar reintegración social', 'para prevenir detenciones arbitrarias')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2365,7 +2365,7 @@
       "question_id": "Q248",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM vincula explícitamente las actividades (ej. programas de resocialización) con las 'causas raíz' del problema (ej. reincidencia, falta de oportunidades) identificadas en el diagnóstico?",
+      "text": "¿Las actividades propuestas se vinculan explícitamente con las vulneraciones en ámbitos de competencia municipal identificadas en el diagnóstico (ej. condiciones inadecuadas en calabozos de policía, tiempos excesivos de detención administrativa, ausencia de acceso a defensor público durante detención, falta de seguimiento municipal a quejas sobre establecimientos INPEC en el territorio, barreras para reintegración social de población post-penitenciaria, ausencia de protocolos de debido proceso en inspecciones)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2589,7 +2589,7 @@
       "question_id": "Q249",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan identifica posibles riesgos en la implementación (ej. problemas de seguridad, falta de articulación con INPEC) y propone 'medidas de mitigación'?",
+      "text": "¿El plan identifica posibles obstáculos en la implementación de actividades en ámbitos de competencia municipal (ej. limitaciones presupuestales para mejoramiento de calabozos, resistencia institucional a reconocer vulneraciones en detención administrativa, dependencia de decisiones del INPEC sobre condiciones en establecimientos penitenciarios, estigmatización de población post-penitenciaria que dificulta reintegración, ausencia de articulación entre Personería e INPEC, rotación de personal en inspecciones de policía) y propone medidas explícitas de mitigación como convenios formales de articulación con INPEC, campañas de des-estigmatización, fortalecimiento presupuestal de inspecciones, o protocolos permanentes de seguimiento por Personería?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -2773,7 +2773,7 @@
       "question_id": "Q250",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El conjunto de actividades para PPL demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. salud + educación intramural) o 'secuencia' lógica.",
+      "text": "¿El plan describe explícitamente cómo las actividades municipales se complementan o siguen una secuencia lógica (ej. mejoramiento de calabozos municipales → protocolos de debido proceso en detención → capacitación a inspectores → articulación con defensorías; o articulación Personería-INPEC para recepción de quejas → seguimiento a respuestas institucionales → incidencia en mejoras; o identificación de población post-penitenciaria → programas de empleabilidad → apoyo psicosocial → seguimiento a reintegración), evidenciando una estrategia articulada dentro de las competencias municipales (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación', 'enfoque integral dentro de límites competenciales')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3103,7 +3103,7 @@
       "question_id": "Q251",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de producto para PPL (ej. PPL atendidos en salud, cupos carcelarios creados) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "text": "¿Los indicadores de producto en ámbitos de competencia municipal (número de calabozos municipales con condiciones mejoradas según estándares de derechos humanos, protocolos de debido proceso implementados en inspecciones de policía, inspectores capacitados en derechos fundamentales durante detención, convenios de articulación Personería-INPEC firmados y activos, quejas sobre establecimientos INPEC del territorio canalizadas y con seguimiento, personas post-penitenciarias vinculadas a programas de reintegración social, articulaciones con defensorías públicas funcionando) incluyen línea base, meta cuantitativa y fuente de verificación?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3520,7 +3520,7 @@
       "question_id": "Q252",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Las metas de los productos (ej. 'crear 100 nuevos cupos') son proporcionales a la magnitud del problema diagnosticado (ej. 'déficit de 200 cupos para sindicados')?",
+      "text": "¿Las metas de productos (ej. 'mejorar condiciones en 100% de calabozos municipales', 'garantizar acceso a defensor público en 100% de detenciones administrativas', 'canalizar 80% de quejas sobre establecimientos INPEC del territorio a través de Personería', 'vincular 200 personas post-penitenciarias a programas de reintegración') guardan relación con la magnitud de vulneraciones en ámbitos de competencia municipal identificadas en el diagnóstico, y se especifica la priorización (calabozos con mayores deficiencias, poblaciones más vulnerables en reintegración, tipos de detención administrativa más frecuentes), intensidad (periodicidad de inspecciones de Personería a establecimientos INPEC, frecuencia de capacitaciones) o cobertura?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -3974,7 +3974,7 @@
       "question_id": "Q253",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los productos para PPL tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Gobierno' o entidad responsable)?",
+      "text": "¿Los productos están vinculados a códigos presupuestales (recursos propios del municipio para calabozos e inspecciones, SGP para convivencia y paz, recursos de cooperación para reintegración, articulación presupuestal con Policía Nacional para mejoramiento de estaciones) y a entidades responsables específicas (Secretaría de Gobierno, Inspecciones de Policía, Personería Municipal, Secretaría de Desarrollo Social para reintegración, enlaces con INPEC y defensorías públicas)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4447,7 +4447,7 @@
       "question_id": "Q254",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una relación factible entre la actividad (ej. 'un convenio con el SENA') y la meta del producto asociado (ej. '1.000 PPL certificados en un oficio') para la política carcelaria? Se debe evaluar si los 'plazos' son realistas.",
+      "text": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'dos talleres de sensibilización a inspectores de policía') y la magnitud de la meta del producto asociado (ej. 'garantía plena de debido proceso en todas las detenciones administrativas del municipio'), considerando plazos, recursos disponibles y profundidad de cambios institucionales necesarios? Se debe evaluar si el plan reconoce que la garantía de derechos en detención y la reintegración social efectiva requieren procesos sostenidos de fortalecimiento institucional, seguimiento y articulación interinstitucional, no eventos puntuales, y que el municipio tiene competencias limitadas sobre el régimen penitenciario nacional.",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -4909,7 +4909,7 @@
       "question_id": "Q255",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM explica cómo los productos (ej. 'PPL en programas de trabajo') contribuyen a generar resultados (ej. 'reducción de la reincidencia')? Se debe buscar este 'mecanismo'.",
+      "text": "¿El plan describe cómo los productos en ámbitos de competencia municipal (ej. 'calabozos municipales con condiciones dignas', 'protocolos de debido proceso implementados', 'articulación Personería-INPEC funcionando', 'personas post-penitenciarias en programas de reintegración') generan o contribuyen a los resultados esperados (ej. 'reducción de vulneraciones en detención administrativa', 'mejora en garantías de debido proceso', 'canalización efectiva de quejas sobre establecimientos INPEC', 'disminución de reincidencia por reintegración social exitosa'), explicando esta conexión o ruta (se debe buscar descripciones del tipo 'al lograr X se genera Y porque garantiza límites legales de detención', 'esto conduce a respuesta institucional ante vulneraciones', 'la reintegración social reduce riesgo de reincidencia')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5252,7 +5252,7 @@
       "question_id": "Q256",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los indicadores de resultado para la crisis carcelaria (ej. 'tasa de hacinamiento', 'porcentaje de PPL con atención en salud') están definidos con línea base, meta y un horizonte temporal?",
+      "text": "¿Los indicadores de resultado en ámbitos de competencia municipal (ej. 'porcentaje de detenciones administrativas que respetan límites legales de tiempo', 'reducción de quejas sobre condiciones en calabozos municipales', 'porcentaje de personas detenidas con acceso efectivo a defensor público', 'quejas sobre establecimientos INPEC del territorio con respuesta institucional documentada', 'tasa de reintegración social exitosa de población post-penitenciaria', 'reducción de reincidencia en población apoyada por programas municipales') están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5453,7 +5453,7 @@
       "question_id": "Q257",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se explicita la cadena causal que lleva a la mejora de la situación carcelaria, mencionando 'supuestos' clave (ej. 'si los PPL participan en los programas') o 'condiciones habilitantes'?",
+      "text": "¿El plan describe la ruta o secuencia que lleva a los resultados en ámbitos de competencia municipal, mencionando condiciones necesarias para que funcione (se debe buscar términos como 'supuestos', 'si las inspecciones de policía aplican protocolos consistentemente', 'si el INPEC responde a articulaciones de la Personería', 'si existe voluntad institucional de garantizar debido proceso', 'si las defensorías públicas tienen capacidad suficiente', 'siempre que se mantenga financiación para reintegración', 'requiere que entidades nacionales cumplan sus competencias en régimen penitenciario', reconociendo explícitamente las limitaciones del municipio sobre establecimientos del INPEC)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5654,7 +5654,7 @@
       "question_id": "Q258",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición de las metas de resultado (ej. 'reducir el hacinamiento al 20%') se justifica en función de la inversión, la capacidad de construcción o se compara con estándares o 'casos' de otras ciudades?",
+      "text": "¿La ambición de las metas de resultado en ámbitos de competencia municipal (ej. '100% de detenciones administrativas con debido proceso garantizado', 'cero vulneraciones en calabozos municipales', 'reintegración social exitosa del 60% de población post-penitenciaria apoyada') se justifica en función de recursos asignados, capacidad institucional de inspecciones y Personería, nivel de articulación con INPEC y defensorías públicas, o se compara con municipios de categoría similar, reconociendo explícitamente que el municipio NO tiene competencia sobre condiciones dentro de establecimientos INPEC pero sí sobre articulación y veeduría?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5832,7 +5832,7 @@
       "question_id": "Q259",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los resultados propuestos (ej. 'mejora de las condiciones de reclusión') 'atienden' o 'abordan' directamente los problemas de derechos humanos de los PPL priorizados en el diagnóstico?",
+      "text": "¿Los resultados propuestos (ej. 'mejora en garantías de debido proceso en detención administrativa', 'reducción de vulneraciones en calabozos de policía municipal', 'canalización efectiva de quejas sobre establecimientos INPEC del territorio', 'reintegración social exitosa de población post-penitenciaria') atienden o abordan directamente las vulneraciones en ámbitos de competencia municipal priorizadas en el diagnóstico?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -5993,7 +5993,7 @@
       "question_id": "Q260",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan declara la alineación de sus resultados carcelarios con marcos superiores como el PND, los ODS o las Reglas Mandela?",
+      "text": "¿El plan declara la alineación de sus resultados con el Código Penitenciario y Carcelario (Ley 65 de 1993), la Ley 1709 de 2014 sobre reforma penitenciaria, las sentencias de la Corte Constitucional sobre estado de cosas inconstitucional en el sistema penitenciario (T-388/2013, T-762/2015), los estándares internacionales de derechos humanos en privación de libertad, los ODS (ODS 16: Paz, Justicia e Instituciones Sólidas), reconociendo explícitamente que la responsabilidad principal sobre el régimen penitenciario es del INPEC y el Ministerio de Justicia?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6181,7 +6181,7 @@
       "question_id": "Q261",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El PDM define 'impactos' de largo plazo (ej. 'sistema carcelario resocializador', 'reducción de la criminalidad')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "text": "¿El plan define impactos o transformaciones de largo plazo en ámbitos de competencia municipal (cambios que trascienden el cuatrienio) como 'cultura institucional de respeto al debido proceso en detención administrativa consolidada', 'calabozos municipales como referentes de garantía de derechos humanos', 'articulación municipal-INPEC sostenible para seguimiento a vulneraciones', 'ecosistema municipal de reintegración social efectivo que reduce reincidencia', describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural', 'transformación cultural institucional')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6509,7 +6509,7 @@
       "question_id": "Q262",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se utilizan 'índices' (ej. Tasa de Reincidencia a 5 años) o 'proxies' para medir los impactos en la resocialización, justificando su validez?",
+      "text": "¿Se utilizan índices o indicadores proxy para medir impactos en ámbitos de competencia municipal (ej. Índice de Garantía de Debido Proceso en Detención Administrativa, Índice de Condiciones en Calabozos Municipales, tasa de reintegración social sostenible), justificando por qué son adecuados para capturar transformaciones estructurales? Cuando un impacto en ámbitos municipales es difícil de medir directamente (ej. 'cultura institucional de respeto a derechos en detención', 'efectividad de articulación municipal con INPEC', 'sostenibilidad de reintegración social'), ¿se explica la validez y limitaciones del indicador proxy utilizado (ej. 'quejas sobre calabozos municipales', 'respuestas institucionales del INPEC a articulaciones de Personería', 'tasa de no reincidencia a tres años')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6683,7 +6683,7 @@
       "question_id": "Q263",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "Cuando un impacto carcelario es difícil de medir (ej. 'reintegración social exitosa'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "text": "¿Los impactos en ámbitos de competencia municipal se alinean con reformas del sistema penitenciario nacional y consideran riesgos externos (crisis de hacinamiento carcelario nacional que desborda calabozos municipales, cambios en política penitenciaria nacional, debilitamiento de defensorías públicas, crisis presupuestal del INPEC que limita articulaciones, aumento de capturas que satura calabozos municipales) que podrían impedir o revertir los logros esperados en gestión municipal?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -6873,7 +6873,7 @@
       "question_id": "Q264",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los impactos en la política carcelaria se alinean con marcos nacionales y consideran 'riesgos sistémicos' (ej. cambios en la política criminal) que podrían romper el mecanismo causal?",
+      "text": "¿El plan evalúa si la ambición del impacto en ámbitos de competencia municipal es realista, considerando posibles efectos no deseados (ej. mejoramiento de calabozos municipales que incentiva su uso prolongado más allá de detención transitoria legal, burocratización de articulación con INPEC que no se traduce en mejoras reales, programas de reintegración que no abordan estigmatización social, dependencia de recursos externos no sostenibles), o reconoce explícitamente los límites de lo que el municipio puede lograr sin reforma estructural del sistema penitenciario nacional y del INPEC (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado a competencias municipales sobre calabozos y articulación', 'depende de reforma penitenciaria nacional', 'requiere transformación del INPEC')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7074,7 +7074,7 @@
       "question_id": "Q265",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La ambición del impacto (ej. 'cárceles como verdaderos centros de resocialización') es realista? Se debe buscar si se analizan 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "text": "¿El plan describe cómo se sostendrán las mejoras en ámbitos de competencia municipal más allá del periodo de gobierno, identificando mecanismos de institucionalización (protocolos de debido proceso adoptados en manuales de inspecciones de policía, convenios permanentes Personería-INPEC, programas de reintegración con financiación continua), apropiación institucional (cultura de derechos humanos en estaciones de policía, capacitación recurrente a inspectores), fuentes de financiación continua (recursos SGP para convivencia, articulación presupuestal con Policía Nacional, recursos de cooperación) o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación', 'continuidad', 'blindaje político de protocolos de debido proceso')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7263,7 +7263,7 @@
       "question_id": "Q266",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Existe una 'teoría de cambio' explícita para la política carcelaria, preferiblemente en un 'diagrama', que identifique causas (ej. populismo punitivo), mediadores (ej. oportunidades de redención) y 'supuestos verificables'?",
+      "text": "¿El plan presenta una descripción explícita de cómo se generan los cambios en ámbitos de competencia municipal sobre personas privadas de libertad (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal', 'lógica de intervención'), preferiblemente en diagrama o matriz, que identifique causas de vulneraciones en calabozos y detención administrativa (infraestructura deficiente, ausencia de protocolos, desconocimiento de inspectores sobre límites legales), intervenciones municipales (mejoramiento de calabozos, protocolos de debido proceso, capacitación, articulación con defensorías), supuestos verificables (ej. 'si los inspectores aplican protocolos', 'si el INPEC responde a articulaciones') y la secuencia insumos→actividades→productos→resultados→impactos, reconociendo explícitamente la separación entre competencias municipales (calabozos, inspecciones, articulación) y competencias nacionales (régimen penitenciario del INPEC)?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7440,7 +7440,7 @@
       "question_id": "Q267",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Los saltos en la cadena causal de la política carcelaria son proporcionales (ej. un programa de lectura no elimina por sí solo la reincidencia)?",
+      "text": "¿El plan evita saltos desproporcionados en su lógica (por ejemplo, no atribuye 'solución de crisis penitenciaria nacional' a mejoras en calabozos municipales; o 'eliminación de hacinamiento en cárceles del INPEC' a articulación de la Personería; o 'reintegración social masiva' a programas puntuales sin seguimiento sostenido; o 'debido proceso pleno' a talleres de sensibilización sin transformación institucional de inspecciones), reconociendo explícitamente cuando se requieren procesos sostenidos de fortalecimiento institucional, articulación interinstitucional, reforma del sistema penitenciario nacional o factores externos fuera del control municipal (se debe buscar expresiones de cautela como 'limitado a competencias municipales sobre calabozos', 'requiere reforma del INPEC', 'depende de capacidad de defensorías públicas', 'necesita articulación sostenida con entidades nacionales', 'alcance limitado sin transformación del sistema penitenciario')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7637,7 +7637,7 @@
       "question_id": "Q268",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿El plan reconoce 'inconsistencias' en su lógica de resocialización y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "text": "¿El plan reconoce la complejidad de garantizar derechos en privación de libertad dentro de límites competenciales municipales, identifica incertidumbres en su estrategia (ej. respuesta del INPEC a articulaciones, aplicación consistente de protocolos por inspectores, sostenibilidad de reintegración social, efectividad de veedurías de Personería), y propone mecanismos para aprender y ajustar como pilotos de protocolos de debido proceso en inspecciones, evaluaciones de programas de reintegración con seguimiento a reincidencia, articulación con defensorías del pueblo para retroalimentación, o ajustes de convenios con INPEC según efectividad en canalización de quejas (se debe buscar términos como 'pilotos', 'fase de prueba', 'evaluación', 'ajustes', 'articulación con Defensoría', 'monitoreo adaptativo', 'aprendizaje institucional')?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
@@ -7831,7 +7831,7 @@
       "question_id": "Q269",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿Se describe un sistema de monitoreo para la política carcelaria que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia?",
+      "text": "¿Se describe un sistema de monitoreo para ámbitos de competencia municipal que incluya indicadores de alerta temprana (aumento de tiempos de detención administrativa, incremento de quejas sobre calabozos municipales, saturación de capacidad en estaciones de policía, caída en tasas de reintegración social), mecanismos de retroalimentación con el INPEC, la Defensoría del Pueblo, defensorías públicas, participación de población post-penitenciaria en evaluación de programas de reintegración, y capacidad de aprendizaje para adaptar protocolos de inspecciones, convenios de articulación o estrategias de reintegración ante cambios en políticas penitenciarias nacionales o crisis del sistema?",
       "validations": {
         "monitoring_keywords": {
           "minimum_required": 1,
@@ -8054,7 +8054,7 @@
       "question_id": "Q270",
       "scoring_definition_ref": "scoring_modalities.TYPE_A",
       "scoring_modality": "TYPE_A",
-      "text": "¿La lógica causal para la crisis carcelaria considera el contexto, reconociendo 'grupos afectados' (mujeres, población LGBTI, indígenas PPL) y 'restricciones' normativas?",
+      "text": "¿El plan considera el contexto municipal específico en ámbitos de competencia (número y capacidad de estaciones de policía con calabozos, presencia de establecimientos penitenciarios del INPEC en el territorio, volumen de detenciones administrativas, población post-penitenciaria residente en el municipio, capacidad de inspecciones de policía, articulación histórica con INPEC y defensorías), reconoce grupos con necesidades diferenciadas (mujeres privadas de libertad, adolescentes en SRPA, personas con discapacidad, población LGBTIQ+, adultos mayores, población migrante), y explicita restricciones (competencia limitada del municipio sobre régimen penitenciario del INPEC, dependencia de decisiones nacionales, capacidad presupuestal para mejoramiento de calabozos, disponibilidad de defensorías públicas, estigmatización social que dificulta reintegración) que condicionan las intervenciones municipales?",
       "validations": {
         "completeness_check": {
           "type": "completeness",
