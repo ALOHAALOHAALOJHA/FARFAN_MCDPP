@@ -899,18 +899,129 @@
   },
   "question_context": {
     "monolith_ref": "Q030",
-    "pregunta_completa": "¿El plan considera el contexto municipal específico del sector, reconoce grupos con necesidades diferenciadas, y explicita restricciones que condicionan las intervenciones?",
+    "pregunta_completa": "¿El plan considera el contexto municipal específico (municipio urbano vs. rural, presión migratoria, vocación productiva del suelo, presencia de actores armados que impiden formalización, patrones históricos de concentración o informalidad, topografía que dificulta catastro), reconoce actores con necesidades diferenciadas (pequeños campesinos sin tierra, población en asentamientos informales urbanos, empresarios agrícolas con predios sin clarificar, comunidades étnicas con territorios colectivos, desarrolladores urbanos, familias víctimas de despojo), y explicita restricciones (técnicas, presupuestales, normativas de la CAR, superposiciones con áreas protegidas, límites a licencias por capacidad de infraestructura) que condicionan las intervenciones?",
     "sector_id": "PA07",
     "sector_name": "Tierras y territorios",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q5-PA07-REQ"
-    }
+      "emit_code": "ABORT-Q240-REQ"
+    },
+    "patterns": [
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q240-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0059"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q240-001",
+        "match_type": "REGEX",
+        "pattern": "campesinos sin tierra|pequeños productores|mujeres rurales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q240-002",
+        "match_type": "REGEX",
+        "pattern": "comunidades indígenas y sus resguardos|territorios colectivos afrodescendientes|afrodescendiente|comunidad negra|palenquero|raizal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q240-003",
+        "match_type": "REGEX",
+        "pattern": "población víctima de despojo y abandono de tierras",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q240-004",
+        "match_type": "REGEX",
+        "pattern": "restricciones por zonas de reserva forestal|parques nacionales|determinantes ambientales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q240-005",
+        "match_type": "REGEX",
+        "pattern": "contexto de conflicto armado y presencia de economías ilegales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q240-006",
+        "match_type": "REGEX",
+        "pattern": "estrategias territorializadas|acciones adaptadas a la vocación del suelo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_contextual"
+      },
+      {
+        "required": true,
+        "type": "enfoque_diferencial"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q210",
+    "sync_timestamp": "2026-01-04T17:55:50.358135Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA07_tierras_territorios/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -830,18 +830,116 @@
   },
   "question_context": {
     "monolith_ref": "Q010",
-    "pregunta_completa": "¿El plan describe explícitamente cómo las actividades del sector se complementan, refuerzan mutuamente o siguen una secuencia lógica?",
+    "pregunta_completa": "¿El plan describe explícitamente cómo las actividades en derechos económicos, sociales y culturales se complementan entre subsectores (ej. PAE + transporte escolar + infraestructura = retención escolar; o formación técnica + capital semilla + comercialización = generación de ingresos; o vivienda digna + agua potable + saneamiento = hábitat saludable; o casas de cultura + escuelas artísticas + festivales = ecosistema cultural), evidenciando una estrategia articulada (se debe buscar términos como 'complementariedad', 'sinergia', 'articulación intersectorial', 'enfoque integral')?",
     "sector_id": "PA04",
     "sector_name": "Derechos económicos, sociales y culturales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q5-PA04-REQ"
-    }
+      "emit_code": "ABORT-Q130-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q130-000",
+        "match_type": "REGEX",
+        "pattern": "estrategia integral|de manera articulada|intersectorial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q130-001",
+        "match_type": "REGEX",
+        "pattern": "la mejora de la vivienda se complementa con el acceso a servicios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q130-002",
+        "match_type": "REGEX",
+        "pattern": "sinergia entre educación y cultura",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q130-003",
+        "match_type": "REGEX",
+        "pattern": "la atención en salud es un prerrequisito para la permanencia escolar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q130-004",
+        "match_type": "REGEX",
+        "pattern": "en una primera fase se construirá la infraestructura y luego la dotación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q130-005",
+        "match_type": "REGEX",
+        "pattern": "la estrategia combina acceso, calidad y permanencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "complementariedad_explicita"
+      },
+      {
+        "required": true,
+        "type": "secuenciacion_logica"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q100",
+    "sync_timestamp": "2026-01-04T17:55:49.462213Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

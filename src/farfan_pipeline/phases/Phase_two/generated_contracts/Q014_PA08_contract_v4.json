@@ -830,18 +830,264 @@
   },
   "question_context": {
     "monolith_ref": "Q014",
-    "pregunta_completa": "¿Existe correspondencia factible entre el tipo de actividad y la magnitud de la meta del producto asociado, considerando plazos y recursos disponibles?",
+    "pregunta_completa": "¿Existe una relación factible entre la actividad (ej. 'articulación con la UNP') y la meta del producto asociado (ej. 'reducción del tiempo de respuesta a 24 horas') para la protección de líderes? Se debe evaluar si los 'plazos' son realistas.",
     "sector_id": "PA08",
     "sector_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D3-Q4-PA08-REQ"
-    }
+      "emit_code": "ABORT-Q254-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q254-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0066"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q254-001",
+        "match_type": "REGEX",
+        "pattern": "la capacidad de gestión del municipio puede acelerar la respuesta de la UNP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q254-002",
+        "match_type": "REGEX",
+        "pattern": "el plazo para implementar una ruta de protección",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q254-003",
+        "match_type": "REGEX",
+        "pattern": "la meta de respuesta depende de la capacidad y voluntad de la UNP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q254-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0045"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q254-005",
+        "match_type": "REGEX",
+        "pattern": "con el personal asignado se puede lograr el seguimiento de casos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "id": "PAT-Q224-DNP-001",
+        "category": "PRODUCTO_TIPO",
+        "match_type": "REGEX",
+        "pattern": "producto|bien|servicio|documento|sede|infraestructura|asistencia técnica|capacitación|transferencia|subsidio",
+        "flags": "i",
+        "specificity": "HIGH",
+        "confidence_weight": 0.9,
+        "validation_rule": "dnp_product_type_validation",
+        "context_requirement": "must_have_product_definition",
+        "semantic_expansion": [
+          "Servicio de información del Sistema Nacional de Juventud.",
+          "Servicio de educación informal para la gestión administrativa",
+          "Obras de infraestructura social y comunitaria realizadas",
+          "Servicio de inspección a los prestadores de servicios públicos domiliarios",
+          "Sedes restauradas",
+          "Servicio de seguimiento",
+          "Servicio de apoyo para implementación de alternativas para la generación de ingresos",
+          "Documentos de Regulación",
+          "Servicio de investigación en el saber administrativo público",
+          "Servicios de apoyo técnico y financiero para la conservación de la biodiversidad y sus servicios ecosistémicos",
+          "Servicio de avalúos",
+          "Cuadros de resultados para la temática de industria",
+          "Servicio de apoyo financiero para la construcción de Infraestructura de pos cosecha",
+          "Servicios de Investigación, Desarrollo e Innovación geoespacial",
+          "Servicio de apoyo financiero para el acceso a la educación superior o terciaria",
+          "Servicios de implementación del plan de gestión del riesgo de desastres y estrategia para la respuesta a emergencias",
+          "Sevicio de control a proyectos del Sistema General de Participaciones - SGP",
+          "Cuadros de Resultados para la temática construcción",
+          "Servicio de articulación del Sistema Estadístico Nacional",
+          "Servicio de información geográfica, geodésica y cartográfica actualizado"
+        ],
+        "context_scope": "PARAGRAPH",
+        "provenance": {
+          "source": "CATALOGO_DE_PRODUCTOS.xlsx",
+          "extraction_date": "2025-12-30T21:37:07.525711",
+          "criteria": "DNP Product Typology Standard"
+        }
+      },
+      {
+        "id": "PAT-Q224-DNP-002",
+        "category": "MEDICION",
+        "match_type": "REGEX",
+        "pattern": "línea base|meta|indicador|cuantitativ|medición|fuente de verificación|unidad de medida|número de|porcentaje",
+        "flags": "i",
+        "specificity": "HIGH",
+        "confidence_weight": 0.88,
+        "validation_rule": "dnp_measurement_validation",
+        "context_requirement": "must_have_quantitative_target",
+        "context_scope": "PARAGRAPH",
+        "provenance": {
+          "source": "Guia_orientadora_definicion_de_productos-2.pdf:Pages_20-24",
+          "extraction_date": "2025-12-30T21:37:07.525715",
+          "criteria": "DNP Measurement Standards"
+        }
+      },
+      {
+        "id": "PAT-Q224-DNP-003",
+        "category": "DESCRIPCION",
+        "match_type": "REGEX",
+        "pattern": "corresponde a|incluye|características|componentes|especificaciones|alcance técnico",
+        "flags": "i",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85,
+        "validation_rule": "dnp_description_format_validation",
+        "context_requirement": "must_start_with_incluye_or_corresponde",
+        "context_scope": "SENTENCE",
+        "provenance": {
+          "source": "Guia_orientadora_definicion_de_productos-2.pdf:Pages_21-23",
+          "extraction_date": "2025-12-30T21:37:07.525718",
+          "criteria": "DNP Product Description Guidelines"
+        }
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "coherencia_recursos"
+      },
+      {
+        "required": true,
+        "type": "factibilidad_tecnica"
+      },
+      {
+        "required": true,
+        "type": "realismo_plazos"
+      },
+      {
+        "type": "producto_definicion",
+        "required": true,
+        "dnp_criteria": "bien_o_servicio_tangible",
+        "validation_pattern": "must_be_deliverable_not_process",
+        "provenance": {
+          "source": "Guia_orientadora_definicion_de_productos-2.pdf:Page_4",
+          "criteria": "DNP Core Product Definition"
+        }
+      },
+      {
+        "type": "descripcion_tecnica",
+        "required": true,
+        "dnp_criteria": "caracteristicas_especificaciones",
+        "validation_pattern": "must_describe_technical_scope",
+        "provenance": {
+          "source": "Guia_orientadora_definicion_de_productos-2.pdf:Pages_21-22",
+          "criteria": "DNP Technical Description Standard"
+        }
+      },
+      {
+        "type": "unidad_medida",
+        "required": true,
+        "dnp_criteria": "unidad_medida_cuantificable",
+        "validation_pattern": "must_have_measurement_unit",
+        "provenance": {
+          "source": "CATALOGO_DE_PRODUCTOS.xlsx:Column_Unidad_de_medida",
+          "criteria": "DNP Measurement Unit Standard"
+        }
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      },
+      "dnp_product_definition_check": {
+        "type": "dnp_compliance",
+        "threshold": 0.85,
+        "rules": [
+          "must_not_be_input_or_activity",
+          "must_not_be_beneficiary_count",
+          "must_be_tangible_or_intangible_deliverable"
+        ],
+        "provenance": {
+          "source": "Guia_orientadora_definicion_de_productos-2.pdf:Page_20",
+          "criteria": "DNP Product Definition Exclusions"
+        }
+      },
+      "dnp_measurement_completeness": {
+        "type": "measurement_validation",
+        "threshold": 0.8,
+        "required_elements": [
+          "baseline_value",
+          "quantitative_target",
+          "verification_source",
+          "measurement_unit"
+        ],
+        "provenance": {
+          "source": "Guia_orientadora_definicion_de_productos-2.pdf:Pages_22-24",
+          "criteria": "DNP Measurement Completeness Standard"
+        }
+      },
+      "dnp_description_format": {
+        "type": "format_validation",
+        "threshold": 0.75,
+        "rules": [
+          "must_start_with_incluye_or_corresponde",
+          "must_not_repeat_product_name",
+          "must_describe_technical_characteristics",
+          "must_not_include_results_or_impacts"
+        ],
+        "provenance": {
+          "source": "Guia_orientadora_definicion_de_productos-2.pdf:Pages_21-23",
+          "criteria": "DNP Product Description Format"
+        }
+      }
+    },
+    "source_question_id": "Q224",
+    "sync_timestamp": "2026-01-04T17:55:49.662761Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA08_lideres_defensores/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

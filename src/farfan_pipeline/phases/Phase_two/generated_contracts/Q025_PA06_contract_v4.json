@@ -954,18 +954,133 @@
   },
   "question_context": {
     "monolith_ref": "Q025",
-    "pregunta_completa": "¿El plan describe cómo se sostendrán los impactos del sector más allá del periodo de gobierno, identificando mecanismos de institucionalización, apropiación comunitaria o fuentes de financiación continua?",
+    "pregunta_completa": "¿El plan describe cómo se sostendrán los impactos en protección integral más allá del periodo de gobierno, identificando mecanismos de institucionalización (Comisarías fortalecidas permanentemente, rutas de atención protocolizadas), apropiación comunitaria (redes de protección comunitaria, familias formadas en crianza positiva), fuentes de financiación continua (SGP primera infancia garantizado, articulación permanente con ICBF) o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación comunitaria', 'continuidad')?",
     "sector_id": "PA06",
     "sector_name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q5-PA06-REQ"
-    }
+      "emit_code": "ABORT-Q205-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q205-000",
+        "match_type": "REGEX",
+        "pattern": "la ambición del impacto es realista si se mantiene la inversión social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q205-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0053"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q205-002",
+        "match_type": "REGEX",
+        "pattern": "riesgo de generar frustración si no hay oportunidades laborales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q205-003",
+        "match_type": "REGEX",
+        "pattern": "posible fuga de talentos si no hay arraigo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q205-004",
+        "match_type": "REGEX",
+        "pattern": "trade-off entre diferentes enfoques pedagógicos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q205-005",
+        "match_type": "REGEX",
+        "pattern": "hipótesis límite|el modelo funciona si la familia es un entorno protector",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q205-006",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0103"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_realismo"
+      },
+      {
+        "required": true,
+        "type": "efectos_no_deseados"
+      },
+      {
+        "required": true,
+        "type": "hipotesis_limite"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q175",
+    "sync_timestamp": "2026-01-04T17:55:50.097380Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA06_ninez_adolescencia_juventud/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

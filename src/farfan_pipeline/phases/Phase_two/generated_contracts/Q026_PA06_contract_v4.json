@@ -955,18 +955,121 @@
   },
   "question_context": {
     "monolith_ref": "Q026",
-    "pregunta_completa": "¿El plan presenta una descripción explícita de cómo se generan los cambios en el sector (teoría de cambio, modelo lógico, cadena causal)?",
+    "pregunta_completa": "¿El plan presenta una descripción explícita de cómo se generan los cambios en protección de niños, niñas, adolescentes y jóvenes (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal', 'enfoque de ciclo vital'), preferiblemente en diagrama o matriz, que identifique vulneraciones y factores de riesgo por ciclo vital (primera infancia, niñez, adolescencia, juventud), intervenciones en múltiples entornos (familia, escuela, comunidad, institucional), supuestos verificables (ej. 'si adultos responsables protegen', 'si instituciones activan rutas') y la secuencia insumos→actividades→productos→resultados→impactos?",
     "sector_id": "PA06",
     "sector_name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q1-PA06-REQ"
-    }
+      "emit_code": "ABORT-Q206-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q206-000",
+        "match_type": "REGEX",
+        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de desarrollo juvenil",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "CAUSAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q206-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q206-002",
+        "match_type": "REGEX",
+        "pattern": "causa raíz de la deserción|determinante del embarazo adolescente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q206-003",
+        "match_type": "REGEX",
+        "pattern": "mediador|variable intermedia|eslabón|permanencia escolar|proyecto de vida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q206-004",
+        "match_type": "REGEX",
+        "pattern": "moderador|factor contextual|apoyo familiar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q206-005",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0104"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "diagrama_causal"
+      },
+      {
+        "required": true,
+        "type": "supuestos_verificables"
+      },
+      {
+        "required": true,
+        "type": "teoria_cambio_explicita"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q176",
+    "sync_timestamp": "2026-01-04T17:55:50.168329Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA06_ninez_adolescencia_juventud/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

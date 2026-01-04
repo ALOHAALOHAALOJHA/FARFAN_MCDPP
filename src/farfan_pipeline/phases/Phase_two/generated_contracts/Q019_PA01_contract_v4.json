@@ -830,18 +830,135 @@
   },
   "question_context": {
     "monolith_ref": "Q019",
-    "pregunta_completa": "¿Los resultados propuestos para el sector atienden o abordan directamente los problemas, déficits o necesidades priorizadas en el diagnóstico?",
+    "pregunta_completa": "¿Los resultados propuestos (ej. 'reducción de violencias basadas en género', 'aumento de autonomía económica de mujeres', 'mejora en participación política', 'redistribución de tareas de cuidado', 'acceso efectivo a salud sexual y reproductiva', 'reducción de brechas en educación y empleo') atienden o abordan directamente las violencias contra las mujeres y las brechas de género priorizadas en el diagnóstico?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q4-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q019-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q019-000",
+        "match_type": "REGEX",
+        "pattern": "este resultado responde al problema de|para solucionar la brecha de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q019-001",
+        "match_type": "REGEX",
+        "pattern": "alineación causal|coherencia lógica|relación causa-efecto|solución orientada|mitigación de riesgos|impacto proyectado|cadena de resultados|vínculo problema-solución|teoría de cambio explícita|lógica de intervención|modelo causal integrado|arquitectura de causa-efecto|secuencia lógica de impacto|correspondencia problema-remedio|mecanismo de transformación|flujo causal verificable|racionalidad de la intervención|encadenamiento de efectos|vinculación causal explícita|trazabilidad causa-consecuencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": {
+          "solution_focused": [
+            "solución orientada",
+            "respuesta al problema",
+            "remedio estructurado",
+            "enfoque correctivo"
+          ],
+          "mitigation_focused": [
+            "mitigación de riesgos",
+            "prevención de daños",
+            "reducción de vulnerabilidad",
+            "control de amenazas"
+          ],
+          "impact_focused": [
+            "impacto proyectado",
+            "beneficio esperado",
+            "resultado anticipado",
+            "efecto previsto"
+          ],
+          "causal_chain": [
+            "cadena de resultados",
+            "secuencia de impacto",
+            "encadenamiento causal",
+            "trayectoria de efectos"
+          ],
+          "logical_coherence": [
+            "coherencia lógica",
+            "racionalidad interna",
+            "consistencia argumentativa",
+            "solidez del razonamiento"
+          ]
+        },
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q019-002",
+        "match_type": "REGEX",
+        "pattern": "criterio de éxito|se considerará un logro si",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q019-003",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0108"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q019-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "TABLE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0078"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "criterios_exito_definidos"
+      },
+      {
+        "required": true,
+        "type": "vinculo_resultado_problema"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q019",
+    "sync_timestamp": "2026-01-04T17:55:49.834283Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -965,18 +965,120 @@
   },
   "question_context": {
     "monolith_ref": "Q018",
-    "pregunta_completa": "¿La ambición de las metas de resultado se justifica en función de recursos asignados, capacidad institucional, articulación con otros niveles de gobierno?",
+    "pregunta_completa": "¿La ambición de las metas de resultado (ej. 'alcanzar 100% de cobertura en régimen subsidiado', 'reducir deserción escolar del 8% al 3%', 'disminuir déficit habitacional en 40%', 'aumentar formalización empresarial en 25%', 'reducir mortalidad infantil a menos de 10 por cada 1.000 nacidos vivos') se justifica en función de recursos asignados, competencias municipales, articulación con nivel nacional o se compara con municipios similares?",
     "sector_id": "PA04",
     "sector_name": "Derechos económicos, sociales y culturales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q3-PA04-REQ"
-    }
+      "emit_code": "ABORT-Q138-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q138-000",
+        "match_type": "REGEX",
+        "pattern": "meta ambiciosa pero factible|meta realista dado el presupuesto del SGP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q138-001",
+        "match_type": "REGEX",
+        "pattern": "la meta se justifica por la construcción de la nueva infraestructura",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q138-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0040"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q138-003",
+        "match_type": "REGEX",
+        "pattern": "la capacidad de la red hospitalaria permite aspirar a esta meta",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q138-004",
+        "match_type": "REGEX",
+        "pattern": "en experiencias similares de otros municipios con programas de APS",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q138-005",
+        "match_type": "REGEX",
+        "pattern": "benchmark|referente departamental|meta del PND en educación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "evidencia_comparada"
+      },
+      {
+        "required": true,
+        "type": "justificacion_capacidad"
+      },
+      {
+        "required": true,
+        "type": "justificacion_recursos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q108",
+    "sync_timestamp": "2026-01-04T17:55:49.805042Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

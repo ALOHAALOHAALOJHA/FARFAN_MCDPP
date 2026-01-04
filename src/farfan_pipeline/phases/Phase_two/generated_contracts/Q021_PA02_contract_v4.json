@@ -892,18 +892,133 @@
   },
   "question_context": {
     "monolith_ref": "Q021",
-    "pregunta_completa": "¿El plan define impactos o transformaciones de largo plazo para el sector, describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado?",
+    "pregunta_completa": "¿El plan define impactos estructurales de largo plazo en materia de seguridad (ej. 'consolidación de la cultura de la legalidad', 'territorios libres de miedo', 'desarticulación de economías ilícitas como motor económico'), describiendo cómo se llega a ellos y el horizonte temporal esperado?",
     "sector_id": "PA02",
     "sector_name": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q1-PA02-REQ"
-    }
+      "emit_code": "ABORT-Q081-REQ"
+    },
+    "patterns": [
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q081-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0070"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q081-001",
+        "match_type": "REGEX",
+        "pattern": "consolidación de la paz|paz estable y duradera|seguridad humana",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q081-002",
+        "match_type": "REGEX",
+        "pattern": "restablecimiento del tejido social|reconciliación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q081-003",
+        "match_type": "REGEX",
+        "pattern": "la suma de los resultados de seguridad y sociales generará",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q081-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q081-005",
+        "match_type": "REGEX",
+        "pattern": "tiempo de maduración|se espera observar en una década|más allá del cuatrienio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q081-006",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0091"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "impacto_definido"
+      },
+      {
+        "required": true,
+        "type": "rezago_temporal"
+      },
+      {
+        "required": true,
+        "type": "ruta_transmision"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q051",
+    "sync_timestamp": "2026-01-04T17:55:49.911839Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA02_violencia_conflicto/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -954,18 +954,133 @@
   },
   "question_context": {
     "monolith_ref": "Q025",
-    "pregunta_completa": "¿El plan describe cómo se sostendrán los impactos del sector más allá del periodo de gobierno, identificando mecanismos de institucionalización, apropiación comunitaria o fuentes de financiación continua?",
+    "pregunta_completa": "¿El plan describe cómo se sostendrán los impactos en DESC más allá del periodo de gobierno, identificando mecanismos diferenciados por subsector: institucionalización (protocolos de atención en salud permanentes, PAE incluido en presupuesto base), apropiación comunitaria (promotores culturales locales, veedurías escolares, organizaciones de vivienda), fuentes de financiación continua (SGP garantizado, recursos de cultura del nivel nacional, fondos rotatorios de emprendimiento) o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación', 'continuidad')?",
     "sector_id": "PA04",
     "sector_name": "Derechos económicos, sociales y culturales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q5-PA04-REQ"
-    }
+      "emit_code": "ABORT-Q145-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q145-000",
+        "match_type": "REGEX",
+        "pattern": "la ambición del impacto es realista si se mantiene el crecimiento económico",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q145-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0053"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q145-002",
+        "match_type": "REGEX",
+        "pattern": "riesgo de dependencia de los subsidios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q145-003",
+        "match_type": "REGEX",
+        "pattern": "posible congestión de los servicios de salud por mayor acceso",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q145-004",
+        "match_type": "REGEX",
+        "pattern": "trade-off entre cobertura y calidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q145-005",
+        "match_type": "REGEX",
+        "pattern": "hipótesis límite|el modelo funciona mientras haya recursos del SGP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q145-006",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0103"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_realismo"
+      },
+      {
+        "required": true,
+        "type": "efectos_no_deseados"
+      },
+      {
+        "required": true,
+        "type": "hipotesis_limite"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q115",
+    "sync_timestamp": "2026-01-04T17:55:50.084584Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

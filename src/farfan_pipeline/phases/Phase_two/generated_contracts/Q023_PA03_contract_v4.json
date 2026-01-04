@@ -829,18 +829,120 @@
   },
   "question_context": {
     "monolith_ref": "Q023",
-    "pregunta_completa": "¿Los impactos del sector se alinean con marcos nacionales o globales y consideran riesgos externos que podrían impedir o revertir los logros esperados?",
+    "pregunta_completa": "¿Los impactos ambientales se alinean con marcos nacionales o globales y consideran riesgos externos (eventos climáticos extremos fuera de proyecciones, cambios en política ambiental nacional, crisis económicas que reducen inversión en sostenibilidad) que podrían impedir o revertir los logros esperados?",
     "sector_id": "PA03",
     "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q3-PA03-REQ"
-    }
+      "emit_code": "ABORT-Q113-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q113-000",
+        "match_type": "REGEX",
+        "pattern": "dado que es difícil medir la cultura ambiental|para aproximar la medición",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q113-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0100"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q113-002",
+        "match_type": "REGEX",
+        "pattern": "el porcentaje de aprovechamiento de residuos como proxy de la conciencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q113-003",
+        "match_type": "REGEX",
+        "pattern": "este proxy es validado por estudios de comportamiento ambiental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q113-004",
+        "match_type": "REGEX",
+        "pattern": "una limitación es que no captura las motivaciones individuales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q113-005",
+        "match_type": "REGEX",
+        "pattern": "aunque imperfecto, este proxy nos da una señal de cambio cultural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "documenta_validez"
+      },
+      {
+        "required": true,
+        "type": "proxy_para_intangibles"
+      },
+      {
+        "required": true,
+        "type": "reconoce_limitaciones"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q083",
+    "sync_timestamp": "2026-01-04T17:55:49.987451Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA03_ambiente_cambio_climatico/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

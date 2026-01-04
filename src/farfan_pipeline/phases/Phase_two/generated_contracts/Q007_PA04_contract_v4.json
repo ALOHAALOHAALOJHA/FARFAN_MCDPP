@@ -897,18 +897,159 @@
   },
   "question_context": {
     "monolith_ref": "Q007",
-    "pregunta_completa": "¿La descripción de actividades especifica el instrumento, la población o zona objetivo, y explica cómo la actividad contribuye al resultado esperado?",
+    "pregunta_completa": "¿La descripción de actividades especifica el instrumento ('mediante mejoramiento de infraestructura escolar', 'a través de capital semilla para emprendedores', 'con comedores escolares', 'mediante subsidios de vivienda', 'a través de escuelas de formación artística', 'con dotación de IPS'), la población objetivo ('estudiantes de zona rural', 'adultos mayores sin afiliación a salud', 'familias en déficit habitacional', 'desempleados jóvenes', 'artistas locales') y explica cómo la actividad contribuye al resultado esperado ('para mejorar el acceso', 'porque reduce la deserción escolar', 'con el fin de generar ingresos', 'para fortalecer la identidad cultural', 'porque garantiza atención oportuna')?",
     "sector_id": "PA04",
     "sector_name": "Derechos económicos, sociales y culturales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q2-PA04-REQ"
-    }
+      "emit_code": "ABORT-Q127-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q127-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0081"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q127-001",
+        "match_type": "REGEX",
+        "pattern": "subsidios de vivienda|mejoramientos de vivienda",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q127-002",
+        "match_type": "REGEX",
+        "pattern": "construcción de aulas|dotación escolar|brigadas de salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q127-003",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0086"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q127-004",
+        "match_type": "REGEX",
+        "pattern": "hogares clasificados en SISBEN|población en pobreza extrema",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q127-005",
+        "match_type": "REGEX",
+        "pattern": "estudiantes de zonas rurales|primera infancia|adulto mayor",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q127-006",
+        "match_type": "REGEX",
+        "pattern": "población migrante|personas con discapacidad|diversamente hábil|capacidad diversa|movilidad reducida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q127-007",
+        "match_type": "REGEX",
+        "pattern": "con el fin de mejorar el acceso|para garantizar la permanencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q127-008",
+        "match_type": "REGEX",
+        "pattern": "lo cual reduce las barreras|porque mejora la calidad de vida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "instrumento_especificado"
+      },
+      {
+        "required": true,
+        "type": "logica_causal_explicita"
+      },
+      {
+        "required": true,
+        "type": "poblacion_objetivo_definida"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q097",
+    "sync_timestamp": "2026-01-04T17:55:49.347833Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

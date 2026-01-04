@@ -953,18 +953,159 @@
   },
   "question_context": {
     "monolith_ref": "Q002",
-    "pregunta_completa": "¿El diagnóstico dimensiona numéricamente la magnitud del problema o déficit del sector y reconoce explícitamente limitaciones en los datos?",
+    "pregunta_completa": "¿El diagnóstico dimensiona numéricamente las violencias contra las mujeres y las brechas de género (número de mujeres víctimas de violencia sin acceso a rutas de atención, capacidad de casas de refugio, brecha en participación política, diferencial en tasa de informalidad laboral por sexo, hogares monoparentales femeninos en pobreza extrema, barreras de acceso a IVE, subregistro de violencia sexual) y reconoce explícitamente limitaciones como 'subregistro de violencias por temor a denunciar', 'ausencia de caracterización de brechas económicas', 'datos insuficientes sobre tiempo de cuidado no remunerado' o 'información fragmentada entre Comisarías y Fiscalía'?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q2-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q002-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-000",
+        "match_type": "REGEX",
+        "pattern": "brecha de género|déficit en|rezago frente a los hombres",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-001",
+        "match_type": "REGEX",
+        "pattern": "subregistro de casos de VBG|cifra negra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-002",
+        "match_type": "REGEX",
+        "pattern": "barreras de acceso a la justicia|dificultades para denunciar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-003",
+        "match_type": "REGEX",
+        "pattern": "información insuficiente sobre|falta de datos desagregados por sexo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-004",
+        "match_type": "REGEX",
+        "pattern": "se desconoce la situación de las mujeres rurales|no hay caracterización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-005",
+        "match_type": "REGEX",
+        "pattern": "limitación en la medición de la economía del cuidado|trabajo no remunerado|labores domésticas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-006",
+        "match_type": "REGEX",
+        "pattern": "comparado con el promedio nacional de feminicidios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-007",
+        "match_type": "REGEX",
+        "pattern": "aumento preocupante de la violencia económica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q002-008",
+        "match_type": "REGEX",
+        "pattern": "población de mujeres sin acceso a",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "cuantificacion_brecha"
+      },
+      {
+        "required": true,
+        "type": "sesgos_reconocidos"
+      },
+      {
+        "required": true,
+        "type": "vacios_explicitos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q002",
+    "sync_timestamp": "2026-01-04T17:55:49.141951Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -1085,18 +1085,254 @@
   },
   "question_context": {
     "monolith_ref": "Q001",
-    "pregunta_completa": "¿El diagnóstico del sector presenta datos cuantitativos (tasas, porcentajes, cifras absolutas) con año de referencia y fuente identificada, desagregados por territorio o población?",
+    "pregunta_completa": "¿El diagnóstico presenta datos cuantitativos sobre víctimas del conflicto armado registradas en el RUV (Registro Único de Víctimas), hechos victimizantes por tipo (desplazamiento, despojo, homicidio, desaparición forzada, violencia sexual), excombatientes en proceso de reintegración, solicitudes de restitución de tierras, o avances en implementación del Acuerdo Final de Paz, con año de referencia y fuente identificada (ej. UARIV, Unidad de Restitución de Tierras, ARN, Red Nacional de Información)?",
     "sector_id": "PA05",
     "sector_name": "Derechos de las víctimas y construcción de paz",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q1-PA05-REQ"
-    }
+      "emit_code": "ABORT-Q151-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q151-000",
+        "match_type": "REGEX",
+        "pattern": "línea base|diagnóstico de víctimas|caracterización de la población víctima",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q151-001",
+        "match_type": "REGEX",
+        "pattern": "fuente:|según|reportado por|con datos de|corte a (fecha)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q151-002",
+        "match_type": "REGEX",
+        "pattern": "UARIV|Red Nacional de Información|RNI|Registro Único de Víctimas|RUV",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q151-003",
+        "match_type": "REGEX",
+        "pattern": "Personería Municipal|Defensoría del Pueblo|Observatorio de DDHH",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q151-004",
+        "match_type": "REGEX",
+        "pattern": "JEP|UBPD|CNMH|Centro Nacional de Memoria Histórica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q151-005",
+        "match_type": "REGEX",
+        "pattern": "número total de víctimas|personas incluidas en el RUV",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q151-006",
+        "match_type": "REGEX",
+        "pattern": "hecho victimizante|desplazamiento forzado|homicidio|desaparición forzada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q151-007",
+        "match_type": "REGEX",
+        "pattern": "víctimas de violencia sexual|minas antipersonal|reclutamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q151-008",
+        "match_type": "REGEX",
+        "pattern": "universo por indemnizar|víctimas por atender",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q151-009",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0021"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q151-010",
+        "match_type": "REGEX",
+        "pattern": "(?:19|20)\\\\d{2}|vigencia anterior|serie histórica de victimización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q151-011",
+        "match_type": "REGEX",
+        "pattern": "\\d+\\s*víctimas|\\d+\\s*hogares|\\d+\\s*personas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "minimum": 2,
+        "type": "fuentes_oficiales"
+      },
+      {
+        "minimum": 3,
+        "type": "indicadores_cuantitativos"
+      },
+      {
+        "minimum": 3,
+        "type": "series_temporales_años"
+      }
+    ],
+    "validations": {
+      "buscar_indicadores_cuantitativos": {
+        "minimum_required": 3,
+        "patterns": [
+          "\\d+%",
+          "\\d+\\s*por\\s*\\d+",
+          "tasa de",
+          "índice de",
+          "cobertura de"
+        ],
+        "specificity": "HIGH"
+      },
+      "cobertura": {
+        "minimum_required": 1,
+        "patterns": [
+          "departamental",
+          "municipal",
+          "urbano",
+          "rural",
+          "territorial",
+          "poblacional"
+        ],
+        "specificity": "HIGH"
+      },
+      "series_temporales": {
+        "minimum_years": 3,
+        "patterns": [
+          "20\\d{2}",
+          "año",
+          "periodo",
+          "histórico",
+          "serie"
+        ],
+        "specificity": "MEDIUM"
+      },
+      "unidades_medicion": {
+        "minimum_required": 2,
+        "patterns": [
+          "por 100.000",
+          "por 1.000",
+          "%",
+          "porcentaje",
+          "tasa",
+          "razón"
+        ],
+        "specificity": "MEDIUM"
+      },
+      "verificar_fuentes": {
+        "minimum_required": 2,
+        "patterns": [
+          "fuente:",
+          "según",
+          "datos de",
+          "DANE",
+          "DNP",
+          "SISPRO",
+          "SIVIGILA",
+          "Ministerio"
+        ],
+        "specificity": "MEDIUM"
+      }
+    },
+    "source_question_id": "Q121",
+    "sync_timestamp": "2026-01-04T17:55:49.114101Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA05_victimas_paz/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

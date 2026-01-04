@@ -836,18 +836,142 @@
   },
   "question_context": {
     "monolith_ref": "Q009",
-    "pregunta_completa": "¿El plan identifica posibles obstáculos, riesgos o barreras en la implementación de las actividades del sector y propone medidas explícitas de mitigación?",
+    "pregunta_completa": "¿El plan identifica posibles obstáculos en la implementación de actividades en ámbitos de competencia municipal (ej. limitaciones presupuestales para mejoramiento de calabozos, resistencia institucional a reconocer vulneraciones en detención administrativa, dependencia de decisiones del INPEC sobre condiciones en establecimientos penitenciarios, estigmatización de población post-penitenciaria que dificulta reintegración, ausencia de articulación entre Personería e INPEC, rotación de personal en inspecciones de policía) y propone medidas explícitas de mitigación como convenios formales de articulación con INPEC, campañas de des-estigmatización, fortalecimiento presupuestal de inspecciones, o protocolos permanentes de seguimiento por Personería?",
     "sector_id": "PA09",
     "sector_name": "Crisis de derechos de personas privadas de la libertad",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q4-PA09-REQ"
-    }
+      "emit_code": "ABORT-Q279-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q279-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0095"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q279-001",
+        "match_type": "REGEX",
+        "pattern": "riesgos de seguridad|motines|riñas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q279-002",
+        "match_type": "REGEX",
+        "pattern": "dificultades en la articulación con el INPEC y la USPEC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q279-003",
+        "match_type": "REGEX",
+        "pattern": "sostenibilidad de los programas de resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q279-004",
+        "match_type": "REGEX",
+        "pattern": "baja participación de los PPL en las actividades",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q279-005",
+        "match_type": "REGEX",
+        "pattern": "problemas de corrupción en la administración de los centros",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q279-006",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0082"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q279-007",
+        "match_type": "REGEX",
+        "pattern": "protocolos de seguridad|mesas de trabajo permanentes con INPEC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "mitigacion_propuesta"
+      },
+      {
+        "required": true,
+        "type": "riesgos_identificados"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q249",
+    "sync_timestamp": "2026-01-04T17:55:49.443611Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA09_crisis_PPL/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

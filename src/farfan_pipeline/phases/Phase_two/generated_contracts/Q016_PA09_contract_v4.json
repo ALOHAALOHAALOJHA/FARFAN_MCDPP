@@ -899,18 +899,163 @@
   },
   "question_context": {
     "monolith_ref": "Q016",
-    "pregunta_completa": "¿Los indicadores de resultado del sector están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
+    "pregunta_completa": "¿Los indicadores de resultado en ámbitos de competencia municipal (ej. 'porcentaje de detenciones administrativas que respetan límites legales de tiempo', 'reducción de quejas sobre condiciones en calabozos municipales', 'porcentaje de personas detenidas con acceso efectivo a defensor público', 'quejas sobre establecimientos INPEC del territorio con respuesta institucional documentada', 'tasa de reintegración social exitosa de población post-penitenciaria', 'reducción de reincidencia en población apoyada por programas municipales') están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
     "sector_id": "PA09",
     "sector_name": "Crisis de derechos de personas privadas de la libertad",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q1-PA09-REQ"
-    }
+      "emit_code": "ABORT-Q286-REQ"
+    },
+    "patterns": [
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q286-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0074"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q286-001",
+        "match_type": "REGEX",
+        "pattern": "tasa de hacinamiento en centros de detención transitoria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q286-002",
+        "match_type": "REGEX",
+        "pattern": "porcentaje de PPL (sindicados) con acceso efectivo a salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q286-003",
+        "match_type": "REGEX",
+        "pattern": "porcentaje de PPL participando en programas de resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q286-004",
+        "match_type": "REGEX",
+        "pattern": "tasa de reincidencia (si se proyecta)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q286-005",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0009"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q286-006",
+        "match_type": "REGEX",
+        "pattern": "Meta Cuatrienio:|Meta\\\\s+(?:19|20)\\\\d{2}:|se espera reducir a|llegar a un X%",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q286-007",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0006"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q286-008",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0004"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "horizonte_temporal"
+      },
+      {
+        "required": true,
+        "type": "linea_base_resultado"
+      },
+      {
+        "required": true,
+        "type": "meta_resultado"
+      },
+      {
+        "required": true,
+        "type": "metrica_outcome"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q256",
+    "sync_timestamp": "2026-01-04T17:55:49.740236Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA09_crisis_PPL/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

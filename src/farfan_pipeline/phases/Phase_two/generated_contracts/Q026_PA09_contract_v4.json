@@ -955,18 +955,121 @@
   },
   "question_context": {
     "monolith_ref": "Q026",
-    "pregunta_completa": "¿El plan presenta una descripción explícita de cómo se generan los cambios en el sector (teoría de cambio, modelo lógico, cadena causal)?",
+    "pregunta_completa": "¿El plan presenta una descripción explícita de cómo se generan los cambios en ámbitos de competencia municipal sobre personas privadas de libertad (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal', 'lógica de intervención'), preferiblemente en diagrama o matriz, que identifique causas de vulneraciones en calabozos y detención administrativa (infraestructura deficiente, ausencia de protocolos, desconocimiento de inspectores sobre límites legales), intervenciones municipales (mejoramiento de calabozos, protocolos de debido proceso, capacitación, articulación con defensorías), supuestos verificables (ej. 'si los inspectores aplican protocolos', 'si el INPEC responde a articulaciones') y la secuencia insumos→actividades→productos→resultados→impactos, reconociendo explícitamente la separación entre competencias municipales (calabozos, inspecciones, articulación) y competencias nacionales (régimen penitenciario del INPEC)?",
     "sector_id": "PA09",
     "sector_name": "Crisis de derechos de personas privadas de la libertad",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q1-PA09-REQ"
-    }
+      "emit_code": "ABORT-Q296-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q296-000",
+        "match_type": "REGEX",
+        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "CAUSAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q296-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q296-002",
+        "match_type": "REGEX",
+        "pattern": "causa raíz del hacinamiento|determinante estructural de la reincidencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q296-003",
+        "match_type": "REGEX",
+        "pattern": "mediador|variable intermedia|eslabón|habilidades para el trabajo|vínculos familiares",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q296-004",
+        "match_type": "REGEX",
+        "pattern": "moderador|factor contextual|tipo de delito",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q296-005",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0104"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "diagrama_causal"
+      },
+      {
+        "required": true,
+        "type": "supuestos_verificables"
+      },
+      {
+        "required": true,
+        "type": "teoria_cambio_explicita"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q266",
+    "sync_timestamp": "2026-01-04T17:55:50.183180Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA09_crisis_PPL/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

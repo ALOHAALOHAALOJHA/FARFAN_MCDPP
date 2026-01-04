@@ -1085,18 +1085,302 @@
   },
   "question_context": {
     "monolith_ref": "Q001",
-    "pregunta_completa": "¿El diagnóstico del sector presenta datos cuantitativos (tasas, porcentajes, cifras absolutas) con año de referencia y fuente identificada, desagregados por territorio o población?",
+    "pregunta_completa": "¿El diagnóstico presenta datos cuantitativos sobre desarrollo infantil temprano (desnutrición crónica, vacunación, estimulación), vulneraciones de derechos (maltrato infantil, abuso sexual, trabajo infantil, explotación), embarazo adolescente, consumo de sustancias psicoactivas en adolescentes, deserción escolar por factores de riesgo psicosocial, participación juvenil en espacios de decisión, con año de referencia y fuente identificada (ej. ICBF, Comisaría de Familia, Secretaría de Educación, DANE, Observatorio de Drogas)?",
     "sector_id": "PA06",
     "sector_name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q1-PA06-REQ"
-    }
+      "emit_code": "ABORT-Q181-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-000",
+        "match_type": "REGEX",
+        "pattern": "línea base|diagnóstico de infancia y adolescencia|situación inicial de la juventud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0067"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-002",
+        "match_type": "REGEX",
+        "pattern": "ICBF|SIMPÁTICO|SNBF|SIMAT|MinEducación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "FUENTE_OFICIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-003",
+        "match_type": "NER_OR_REGEX",
+        "pattern": "SISPRO|SIVIGILA|Estadísticas Vitales|DANE",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "FUENTE_OFICIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-004",
+        "match_type": "NER_OR_REGEX",
+        "pattern": "Comisaría de Familia|Personería Municipal|Policía de Infancia y Adolescencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-005",
+        "match_type": "REGEX",
+        "pattern": "tasa de deserción escolar|cobertura neta|repitencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-006",
+        "match_type": "REGEX",
+        "pattern": "tasa de fecundidad adolescente|embarazo en niñas de 10-14 años",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-007",
+        "match_type": "REGEX",
+        "pattern": "tasa de trabajo infantil|peores formas de trabajo infantil",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-008",
+        "match_type": "REGEX",
+        "pattern": "prevalencia de desnutrición crónica|aguda|global",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-009",
+        "match_type": "REGEX",
+        "pattern": "tasa de mortalidad en menores de 5 años|mortalidad infantil",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-010",
+        "match_type": "REGEX",
+        "pattern": "casos de violencia intrafamiliar|violencia sexual contra NNA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-011",
+        "match_type": "REGEX",
+        "pattern": "consumo de SPA|ideación suicida en jóvenes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-012",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0001"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q181-013",
+        "match_type": "REGEX",
+        "pattern": "porcentaje|tasa por 1.000|número de casos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "minimum": 2,
+        "type": "fuentes_oficiales"
+      },
+      {
+        "minimum": 3,
+        "type": "indicadores_cuantitativos"
+      },
+      {
+        "minimum": 3,
+        "type": "series_temporales_años"
+      }
+    ],
+    "validations": {
+      "buscar_indicadores_cuantitativos": {
+        "minimum_required": 3,
+        "patterns": [
+          "\\d+%",
+          "\\d+\\s*por\\s*\\d+",
+          "tasa de",
+          "índice de",
+          "cobertura de"
+        ],
+        "specificity": "HIGH"
+      },
+      "cobertura": {
+        "minimum_required": 1,
+        "patterns": [
+          "departamental",
+          "municipal",
+          "urbano",
+          "rural",
+          "territorial",
+          "poblacional"
+        ],
+        "specificity": "HIGH"
+      },
+      "series_temporales": {
+        "minimum_years": 3,
+        "patterns": [
+          "20\\d{2}",
+          "año",
+          "periodo",
+          "histórico",
+          "serie"
+        ],
+        "specificity": "MEDIUM"
+      },
+      "unidades_medicion": {
+        "minimum_required": 2,
+        "patterns": [
+          "por 100.000",
+          "por 1.000",
+          "%",
+          "porcentaje",
+          "tasa",
+          "razón"
+        ],
+        "specificity": "MEDIUM"
+      },
+      "verificar_fuentes": {
+        "minimum_required": 2,
+        "patterns": [
+          "fuente:",
+          "según",
+          "datos de",
+          "DANE",
+          "DNP",
+          "SISPRO",
+          "SIVIGILA",
+          "Ministerio"
+        ],
+        "specificity": "MEDIUM"
+      }
+    },
+    "source_question_id": "Q151",
+    "sync_timestamp": "2026-01-04T17:55:49.119638Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA06_ninez_adolescencia_juventud/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

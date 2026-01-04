@@ -965,18 +965,120 @@
   },
   "question_context": {
     "monolith_ref": "Q018",
-    "pregunta_completa": "¿La ambición de las metas de resultado se justifica en función de recursos asignados, capacidad institucional, articulación con otros niveles de gobierno?",
+    "pregunta_completa": "¿La ambición de las metas de resultado (ej. 'reducir embarazo adolescente en 40%', 'cero tolerancia al trabajo infantil', 'disminuir deserción escolar por violencias en 50%', 'aumentar participación juvenil en 30%') se justifica en función de recursos asignados, capacidad institucional, articulación con ICBF o nivel nacional, o se compara con municipios similares?",
     "sector_id": "PA06",
     "sector_name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q3-PA06-REQ"
-    }
+      "emit_code": "ABORT-Q198-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q198-000",
+        "match_type": "REGEX",
+        "pattern": "meta ambiciosa pero factible|meta realista dado el presupuesto de SGP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q198-001",
+        "match_type": "REGEX",
+        "pattern": "la meta se justifica por la ampliación de la cobertura del PAE",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q198-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0041"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q198-003",
+        "match_type": "REGEX",
+        "pattern": "la capacidad de los orientadores escolares permite esta meta",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q198-004",
+        "match_type": "REGEX",
+        "pattern": "en experiencias similares de otros municipios con programas de prevención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q198-005",
+        "match_type": "REGEX",
+        "pattern": "benchmark|referente departamental|meta del Plan Decenal de Educación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "evidencia_comparada"
+      },
+      {
+        "required": true,
+        "type": "justificacion_capacidad"
+      },
+      {
+        "required": true,
+        "type": "justificacion_recursos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q168",
+    "sync_timestamp": "2026-01-04T17:55:49.814338Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA06_ninez_adolescencia_juventud/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

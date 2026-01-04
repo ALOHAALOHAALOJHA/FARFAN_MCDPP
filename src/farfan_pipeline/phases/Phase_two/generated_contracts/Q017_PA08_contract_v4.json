@@ -878,18 +878,144 @@
   },
   "question_context": {
     "monolith_ref": "Q017",
-    "pregunta_completa": "¿El plan describe la ruta o secuencia que lleva a los resultados del sector, mencionando condiciones necesarias para que funcione?",
+    "pregunta_completa": "¿Se explicita la cadena causal que lleva a la mejora de la seguridad de los líderes, mencionando 'supuestos' clave (ej. 'si los esquemas de la UNP son efectivos') o 'condiciones habilitantes'?",
     "sector_id": "PA08",
     "sector_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q2-PA08-REQ"
-    }
+      "emit_code": "ABORT-Q257-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q257-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0028"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q257-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0057"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q257-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0101"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q257-003",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0043"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q257-004",
+        "match_type": "REGEX",
+        "pattern": "depende de la efectividad de los esquemas de la UNP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q257-005",
+        "match_type": "REGEX",
+        "pattern": "un supuesto es que la comunidad rechace la estigmatización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "FUENTE_OFICIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q257-006",
+        "match_type": "NER_OR_REGEX",
+        "pattern": "se requiere una acción efectiva de la Fiscalía para que haya impunidad cero",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "cadena_causal_explicita"
+      },
+      {
+        "required": true,
+        "type": "condiciones_habilitantes"
+      },
+      {
+        "required": true,
+        "type": "supuestos_identificados"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q227",
+    "sync_timestamp": "2026-01-04T17:55:49.778761Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA08_lideres_defensores/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -829,18 +829,107 @@
   },
   "question_context": {
     "monolith_ref": "Q020",
-    "pregunta_completa": "¿El plan declara la alineación de sus resultados del sector con el Plan Nacional de Desarrollo, los ODS, marcos normativos nacionales o políticas sectoriales relevantes?",
+    "pregunta_completa": "¿El plan declara la alineación de sus resultados en tierras y territorios con la Ley 388 de Ordenamiento Territorial, Ley 160 de reforma agraria, política de catastro multipropósito, PDET (en zonas aplicables), o los ODS (especialmente ODS 1: Fin de la Pobreza, ODS 2: Hambre Cero, ODS 11: Ciudades Sostenibles, ODS 15: Gestión Sostenible de la Tierra)?",
     "sector_id": "PA07",
     "sector_name": "Tierras y territorios",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q5-PA07-REQ"
-    }
+      "emit_code": "ABORT-Q230-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q230-000",
+        "match_type": "REGEX",
+        "pattern": "alineado con el Plan Nacional de Desarrollo|PND|transformación 1 y 4",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q230-001",
+        "match_type": "REGEX",
+        "pattern": "contribuye al Punto 1 del Acuerdo de Paz|Reforma Rural Integral|RRI",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q230-002",
+        "match_type": "REGEX",
+        "pattern": "implementación de iniciativas PDET|Planes Nacionales Sectoriales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q230-003",
+        "match_type": "REGEX",
+        "pattern": "aporta a los ODS 1, 2, 8, 11, 15|Objetivos de Desarrollo Sostenible",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q230-004",
+        "match_type": "REGEX",
+        "pattern": "en concordancia con la política de Catastro Multipropósito|CONPES 3958",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "alineacion_acuerdo_paz"
+      },
+      {
+        "required": true,
+        "type": "alineacion_ods"
+      },
+      {
+        "required": true,
+        "type": "alineacion_pnd"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q200",
+    "sync_timestamp": "2026-01-04T17:55:49.894211Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA07_tierras_territorios/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

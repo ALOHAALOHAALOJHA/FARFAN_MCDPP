@@ -897,18 +897,133 @@
   },
   "question_context": {
     "monolith_ref": "Q029",
-    "pregunta_completa": "¿Se describe un sistema de monitoreo para el sector que incluya mecanismos de alerta temprana, retroalimentación con entidades especializadas, participación de población beneficiaria?",
+    "pregunta_completa": "¿Se describe un sistema de monitoreo ambiental y de gestión del riesgo que incluya indicadores de alerta temprana (ej. niveles de ríos, calidad de aire en tiempo real, tendencias de emisiones), mecanismos de retroalimentación con CAR, IDEAM o UNGRD, participación comunitaria en veedurías ambientales, y capacidad de aprendizaje para adaptar estrategias ante cambios climáticos o eventos inesperados?",
     "sector_id": "PA03",
     "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q4-PA03-REQ"
-    }
+      "emit_code": "ABORT-Q119-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q119-000",
+        "match_type": "REGEX",
+        "pattern": "sistema de seguimiento y evaluación ambiental|M&E",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q119-001",
+        "match_type": "LITERAL",
+        "pattern": "monitoreo en tiempo real con imágenes satelitales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q119-002",
+        "match_type": "REGEX",
+        "pattern": "alerta temprana de deforestación|alerta por calidad del aire",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q119-003",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0079"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q119-004",
+        "match_type": "REGEX",
+        "pattern": "retroalimentación de las comunidades|guardabosques",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q119-005",
+        "match_type": "REGEX",
+        "pattern": "ciclos de aprendizaje|reuniones del CMGRD para revisar avances",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q119-006",
+        "match_type": "REGEX",
+        "pattern": "lecciones aprendidas en atención de emergencias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "ciclos_aprendizaje"
+      },
+      {
+        "required": true,
+        "type": "mecanismos_correccion"
+      },
+      {
+        "required": true,
+        "type": "sistema_monitoreo"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q089",
+    "sync_timestamp": "2026-01-04T17:55:50.298573Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA03_ambiente_cambio_climatico/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

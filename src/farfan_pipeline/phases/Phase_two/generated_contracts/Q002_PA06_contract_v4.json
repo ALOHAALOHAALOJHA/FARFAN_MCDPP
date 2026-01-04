@@ -953,18 +953,159 @@
   },
   "question_context": {
     "monolith_ref": "Q002",
-    "pregunta_completa": "¿El diagnóstico dimensiona numéricamente la magnitud del problema o déficit del sector y reconoce explícitamente limitaciones en los datos?",
+    "pregunta_completa": "¿El diagnóstico dimensiona numéricamente las afectaciones a niños, niñas, adolescentes y jóvenes (número de casos de maltrato reportados, tasa de embarazo adolescente, porcentaje de trabajo infantil, jóvenes sin oportunidades educativas o laborales, deserción escolar asociada a violencias) y reconoce explícitamente limitaciones como 'subregistro de abuso sexual', 'ausencia de caracterización de consumo de SPA', 'datos desactualizados de primera infancia' o 'información limitada sobre salud mental adolescente'?",
     "sector_id": "PA06",
     "sector_name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q2-PA06-REQ"
-    }
+      "emit_code": "ABORT-Q182-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q182-000",
+        "match_type": "REGEX",
+        "pattern": "déficit de cupos en primera infancia|población desescolarizada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q182-001",
+        "match_type": "REGEX",
+        "pattern": "magnitud del problema del consumo de SPA|población juvenil en riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q182-002",
+        "match_type": "REGEX",
+        "pattern": "el número de NNA sin esquema de vacunación completo es de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q182-003",
+        "match_type": "REGEX",
+        "pattern": "comparado con el promedio departamental de embarazo adolescente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q182-004",
+        "match_type": "REGEX",
+        "pattern": "aumento de los casos de violencia intrafamiliar reportados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q182-005",
+        "match_type": "REGEX",
+        "pattern": "información insuficiente sobre salud mental en adolescentes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q182-006",
+        "match_type": "REGEX",
+        "pattern": "subregistro de casos de violencia sexual|cifra negra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q182-007",
+        "match_type": "REGEX",
+        "pattern": "falta de caracterización de la población NINI",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q182-008",
+        "match_type": "REGEX",
+        "pattern": "causas de la deserción|factores de riesgo para el reclutamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_causal_problema"
+      },
+      {
+        "required": true,
+        "type": "cuantificacion_magnitud"
+      },
+      {
+        "required": true,
+        "type": "vacios_explicitos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q152",
+    "sync_timestamp": "2026-01-04T17:55:49.163606Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA06_ninez_adolescencia_juventud/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

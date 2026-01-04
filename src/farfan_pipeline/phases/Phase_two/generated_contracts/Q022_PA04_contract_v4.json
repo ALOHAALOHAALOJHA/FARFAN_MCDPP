@@ -893,18 +893,120 @@
   },
   "question_context": {
     "monolith_ref": "Q022",
-    "pregunta_completa": "¿Se utilizan índices reconocidos o indicadores proxy para medir impactos del sector, justificando por qué son adecuados?",
+    "pregunta_completa": "¿Se utilizan índices (ej. Índice de Pobreza Multidimensional, Índice de Desarrollo Humano, Índice de Calidad de Vida) o indicadores proxy para medir impactos en bienestar integral, justificando por qué son adecuados para capturar transformaciones en calidad de vida y ejercicio de derechos? Cuando un impacto es difícil de medir directamente (ej. 'desarrollo humano integral', 'capital cultural arraigado', 'movilidad social ascendente'), ¿se explica la validez y limitaciones del indicador proxy utilizado (ej. 'años promedio de escolaridad', 'participación en eventos culturales per cápita', 'transiciones de informalidad a formalidad')?",
     "sector_id": "PA04",
     "sector_name": "Derechos económicos, sociales y culturales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q2-PA04-REQ"
-    }
+      "emit_code": "ABORT-Q142-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q142-000",
+        "match_type": "REGEX",
+        "pattern": "Índice de Desarrollo Humano|IDH|Índice de Pobreza Multidimensional|IPM",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q142-001",
+        "match_type": "REGEX",
+        "pattern": "Coeficiente de Gini|indicador compuesto de calidad de vida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q142-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0099"
+      },
+      {
+        "category": "TEMPORAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q142-003",
+        "match_type": "REGEX",
+        "pattern": "los años promedio de escolaridad como proxy del capital humano",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q142-004",
+        "match_type": "REGEX",
+        "pattern": "la esperanza de vida al nacer como proxy del bienestar general",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q142-005",
+        "match_type": "REGEX",
+        "pattern": "este indicador es válido porque es un estándar internacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "justifica_validez"
+      },
+      {
+        "required": true,
+        "type": "usa_indices_compuestos"
+      },
+      {
+        "required": true,
+        "type": "usa_proxies"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q112",
+    "sync_timestamp": "2026-01-04T17:55:49.953897Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

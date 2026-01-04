@@ -953,18 +953,159 @@
   },
   "question_context": {
     "monolith_ref": "Q002",
-    "pregunta_completa": "¿El diagnóstico dimensiona numéricamente la magnitud del problema o déficit del sector y reconoce explícitamente limitaciones en los datos?",
+    "pregunta_completa": "¿El diagnóstico dimensiona numéricamente las vulneraciones en ámbitos de competencia municipal (número de quejas por condiciones en calabozos municipales, tiempos de detención administrativa que exceden límites legales, personas sin acceso a defensor público durante detención, casos de hacinamiento en estaciones de policía, quejas recibidas por Personería sobre establecimientos INPEC en el territorio) y reconoce explícitamente limitaciones como 'competencia del INPEC sobre régimen penitenciario', 'información limitada del municipio sobre interior de cárceles', 'ausencia de protocolos de articulación con defensorías' o 'subregistro de condiciones en calabozos municipales'?",
     "sector_id": "PA09",
     "sector_name": "Crisis de derechos de personas privadas de la libertad",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q2-PA09-REQ"
-    }
+      "emit_code": "ABORT-Q272-REQ"
+    },
+    "patterns": [
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q272-000",
+        "match_type": "REGEX",
+        "pattern": "déficit de X cupos|el hacinamiento supera el Y%",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q272-001",
+        "match_type": "REGEX",
+        "pattern": "magnitud de la crisis humanitaria|vulneración masiva de derechos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q272-002",
+        "match_type": "REGEX",
+        "pattern": "Estado de Cosas Inconstitucional|ECI|sentencia T-388 de 2013|SU-122 de 2022",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q272-003",
+        "match_type": "REGEX",
+        "pattern": "población sin acceso a servicios de salud|falta de atención médica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q272-004",
+        "match_type": "REGEX",
+        "pattern": "problemas con la calidad y oportunidad de la alimentación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q272-005",
+        "match_type": "REGEX",
+        "pattern": "información insuficiente sobre las condiciones sanitarias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q272-006",
+        "match_type": "REGEX",
+        "pattern": "subregistro de riñas o actos violentos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q272-007",
+        "match_type": "REGEX",
+        "pattern": "causas del hacinamiento|abuso de la detención preventiva",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q272-008",
+        "match_type": "REGEX",
+        "pattern": "falta de infraestructura adecuada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_causal_problema"
+      },
+      {
+        "required": true,
+        "type": "cuantificacion_magnitud"
+      },
+      {
+        "required": true,
+        "type": "vacios_explicitos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q242",
+    "sync_timestamp": "2026-01-04T17:55:49.176214Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA09_crisis_PPL/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

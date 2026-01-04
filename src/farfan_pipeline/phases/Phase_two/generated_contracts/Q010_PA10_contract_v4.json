@@ -830,18 +830,116 @@
   },
   "question_context": {
     "monolith_ref": "Q010",
-    "pregunta_completa": "¿El plan describe explícitamente cómo las actividades del sector se complementan, refuerzan mutuamente o siguen una secuencia lógica?",
+    "pregunta_completa": "¿El plan describe explícitamente cómo las actividades de integración de población migrante se complementan o siguen una secuencia lógica (ej. caracterización territorial → identificación de barreras de acceso → rutas de orientación sobre trámites → articulación con Migración Colombia para regularización; o garantía de acceso a educación y salud → programas de empleabilidad → inclusión económica → convivencia fortalecida; o campañas de convivencia → mediación comunitaria → prevención de xenofobia → integración local sostenible), evidenciando una estrategia articulada de integración (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación', 'enfoque integral de integración local')?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q5-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q040-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q040-000",
+        "match_type": "REGEX",
+        "pattern": "estrategia integral de atención e integración|de manera articulada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q040-001",
+        "match_type": "LITERAL",
+        "pattern": "la regularización se complementa con la inclusión laboral y el acceso a servicios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q040-002",
+        "match_type": "REGEX",
+        "pattern": "sinergia entre la atención humanitaria y las soluciones duraderas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q040-003",
+        "match_type": "REGEX",
+        "pattern": "la atención de emergencia es el primer paso, seguido por la estabilización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q040-004",
+        "match_type": "REGEX",
+        "pattern": "en una primera fase se dará respuesta humanitaria, luego se promoverá la integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q040-005",
+        "match_type": "LITERAL",
+        "pattern": "la estrategia combina asistencia, protección e integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "complementariedad_explicita"
+      },
+      {
+        "required": true,
+        "type": "secuenciacion_logica"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q280",
+    "sync_timestamp": "2026-01-04T17:55:49.490193Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

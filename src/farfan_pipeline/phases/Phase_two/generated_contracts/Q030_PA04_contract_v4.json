@@ -899,18 +899,143 @@
   },
   "question_context": {
     "monolith_ref": "Q030",
-    "pregunta_completa": "¿El plan considera el contexto municipal específico del sector, reconoce grupos con necesidades diferenciadas, y explicita restricciones que condicionan las intervenciones?",
+    "pregunta_completa": "¿El plan considera el contexto municipal específico de DESC (urbano/rural, vocación productiva, composición étnica, niveles de pobreza, infraestructura social disponible), reconoce grupos específicos con carencias diferenciadas en múltiples subsectores (niños en primera infancia sin atención integral, adultos mayores sin protección social, población rural dispersa sin servicios básicos, jóvenes sin oportunidades educativas o laborales, artistas locales sin espacios, familias víctimas del conflicto con necesidades múltiples), y explicita restricciones diferenciadas por subsector (límites del SGP en salud y educación, mayor autonomía municipal en cultura y fomento económico, dependencia de cofinanciación departamental en vivienda)?",
     "sector_id": "PA04",
     "sector_name": "Derechos económicos, sociales y culturales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q5-PA04-REQ"
-    }
+      "emit_code": "ABORT-Q150-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q150-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0058"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q150-001",
+        "match_type": "REGEX",
+        "pattern": "población rural dispersa|comunidades étnicas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q150-002",
+        "match_type": "REGEX",
+        "pattern": "personas con discapacidad|población migrante|víctimas del conflicto|diversamente hábil|capacidad diversa|movilidad reducida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q150-003",
+        "match_type": "REGEX",
+        "pattern": "primera infancia|adulto mayor|jóvenes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "CAUSAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q150-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q150-005",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0044"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q150-006",
+        "match_type": "REGEX",
+        "pattern": "restricciones normativas del SGP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q150-007",
+        "match_type": "REGEX",
+        "pattern": "estrategias territorializadas|modelos de salud y educación rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_contextual"
+      },
+      {
+        "required": true,
+        "type": "enfoque_diferencial"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q120",
+    "sync_timestamp": "2026-01-04T17:55:50.345235Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

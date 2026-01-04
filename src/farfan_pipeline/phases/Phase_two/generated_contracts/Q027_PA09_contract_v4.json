@@ -878,18 +878,116 @@
   },
   "question_context": {
     "monolith_ref": "Q027",
-    "pregunta_completa": "¿El plan evita saltos desproporcionados en su lógica, reconociendo explícitamente cuando se requieren procesos sostenidos, múltiples condiciones o factores externos?",
+    "pregunta_completa": "¿El plan evita saltos desproporcionados en su lógica (por ejemplo, no atribuye 'solución de crisis penitenciaria nacional' a mejoras en calabozos municipales; o 'eliminación de hacinamiento en cárceles del INPEC' a articulación de la Personería; o 'reintegración social masiva' a programas puntuales sin seguimiento sostenido; o 'debido proceso pleno' a talleres de sensibilización sin transformación institucional de inspecciones), reconociendo explícitamente cuando se requieren procesos sostenidos de fortalecimiento institucional, articulación interinstitucional, reforma del sistema penitenciario nacional o factores externos fuera del control municipal (se debe buscar expresiones de cautela como 'limitado a competencias municipales sobre calabozos', 'requiere reforma del INPEC', 'depende de capacidad de defensorías públicas', 'necesita articulación sostenida con entidades nacionales', 'alcance limitado sin transformación del sistema penitenciario')?",
     "sector_id": "PA09",
     "sector_name": "Crisis de derechos de personas privadas de la libertad",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q2-PA09-REQ"
-    }
+      "emit_code": "ABORT-Q297-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q297-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0088"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q297-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0097"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q297-002",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0060"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q297-003",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0076"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q297-004",
+        "match_type": "REGEX",
+        "pattern": "se requieren múltiples intervenciones para afectar la reincidencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q297-005",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0056"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "evita_saltos_logicos"
+      },
+      {
+        "required": true,
+        "type": "proporcionalidad_eslabones"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q267",
+    "sync_timestamp": "2026-01-04T17:55:50.236994Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA09_crisis_PPL/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

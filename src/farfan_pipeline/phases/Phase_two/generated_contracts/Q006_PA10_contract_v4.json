@@ -885,18 +885,142 @@
   },
   "question_context": {
     "monolith_ref": "Q006",
-    "pregunta_completa": "¿Las actividades del sector aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo?",
+    "pregunta_completa": "¿Las actividades para garantizar derechos e integración de población migrante (caracterización actualizada de población migrante en el territorio, rutas de orientación sobre trámites migratorios en articulación con Migración Colombia, garantía de acceso a salud urgencias y educación básica independiente de estatus migratorio, programas de formación para empleabilidad de migrantes, capital semilla para emprendimientos migrantes, campañas de convivencia y prevención de xenofobia, protocolos de atención a víctimas de trata en articulación con Fiscalía, mesas de trabajo con población migrante, articulación con Migración Colombia para jornadas de regularización) aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q1-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q036-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q036-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "TABLE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0105"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q036-001",
+        "match_type": "REGEX",
+        "pattern": "columna responsable|entidad a cargo|ejecutor|Cooperante",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q036-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0038"
+      },
+      {
+        "category": "TEMPORAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q036-003",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0037"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q036-004",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0036"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q036-005",
+        "match_type": "REGEX",
+        "pattern": "Secretaría de Gobierno|Desarrollo Social|Salud|Educación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q036-006",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0015"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "columna_costo"
+      },
+      {
+        "required": true,
+        "type": "columna_cronograma"
+      },
+      {
+        "required": true,
+        "type": "columna_producto"
+      },
+      {
+        "required": true,
+        "type": "columna_responsable"
+      },
+      {
+        "required": true,
+        "type": "formato_tabular"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q276",
+    "sync_timestamp": "2026-01-04T17:55:49.330497Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

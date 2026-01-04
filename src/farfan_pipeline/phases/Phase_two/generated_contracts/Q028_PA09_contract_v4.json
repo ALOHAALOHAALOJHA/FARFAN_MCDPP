@@ -830,18 +830,129 @@
   },
   "question_context": {
     "monolith_ref": "Q028",
-    "pregunta_completa": "¿El plan reconoce la complejidad del sector, identifica debilidades en su estrategia, y propone mecanismos para aprender y ajustar?",
+    "pregunta_completa": "¿El plan reconoce la complejidad de garantizar derechos en privación de libertad dentro de límites competenciales municipales, identifica incertidumbres en su estrategia (ej. respuesta del INPEC a articulaciones, aplicación consistente de protocolos por inspectores, sostenibilidad de reintegración social, efectividad de veedurías de Personería), y propone mecanismos para aprender y ajustar como pilotos de protocolos de debido proceso en inspecciones, evaluaciones de programas de reintegración con seguimiento a reincidencia, articulación con defensorías del pueblo para retroalimentación, o ajustes de convenios con INPEC según efectividad en canalización de quejas (se debe buscar términos como 'pilotos', 'fase de prueba', 'evaluación', 'ajustes', 'articulación con Defensoría', 'monitoreo adaptativo', 'aprendizaje institucional')?",
     "sector_id": "PA09",
     "sector_name": "Crisis de derechos de personas privadas de la libertad",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q3-PA09-REQ"
-    }
+      "emit_code": "ABORT-Q298-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q298-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0071"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q298-001",
+        "match_type": "REGEX",
+        "pattern": "se requiere validar si los programas de trabajo realmente mejoran la empleabilidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q298-002",
+        "match_type": "REGEX",
+        "pattern": "plan piloto de justicia restaurativa|fase experimental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q298-003",
+        "match_type": "REGEX",
+        "pattern": "testear el supuesto de que la educación reduce la reincidencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q298-004",
+        "match_type": "REGEX",
+        "pattern": "validar la hipótesis sobre la efectividad de la terapia psicosocial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q298-005",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0064"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q298-006",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0026"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "propone_pilotos_o_pruebas"
+      },
+      {
+        "required": true,
+        "type": "reconoce_inconsistencias"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q268",
+    "sync_timestamp": "2026-01-04T17:55:50.279599Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA09_crisis_PPL/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -965,18 +965,120 @@
   },
   "question_context": {
     "monolith_ref": "Q018",
-    "pregunta_completa": "¿La ambición de las metas de resultado se justifica en función de recursos asignados, capacidad institucional, articulación con otros niveles de gobierno?",
+    "pregunta_completa": "¿La ambición de las metas de resultado (ej. 'reparación integral al 80% de víctimas registradas', 'restitución del 50% de predios solicitados', 'cero reincidencia en ilegalidad de excombatientes') se justifica en función de recursos asignados, capacidad institucional municipal, articulación con nivel nacional (UARIV, Unidad de Restitución, ARN) o se compara con municipios PDET similares?",
     "sector_id": "PA05",
     "sector_name": "Derechos de las víctimas y construcción de paz",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q3-PA05-REQ"
-    }
+      "emit_code": "ABORT-Q168-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q168-000",
+        "match_type": "REGEX",
+        "pattern": "meta ambiciosa pero factible|meta realista dada la magnitud del universo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q168-001",
+        "match_type": "REGEX",
+        "pattern": "la meta se justifica por la concurrencia de recursos de la UARIV",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q168-002",
+        "match_type": "REGEX",
+        "pattern": "con la inversión de X se espera lograr la reparación de Y víctimas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q168-003",
+        "match_type": "REGEX",
+        "pattern": "la capacidad del Enlace de Víctimas permite gestionar este número de casos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q168-004",
+        "match_type": "REGEX",
+        "pattern": "en experiencias similares de otros municipios PDET",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q168-005",
+        "match_type": "REGEX",
+        "pattern": "benchmark|referente departamental|meta del PND para víctimas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "evidencia_comparada"
+      },
+      {
+        "required": true,
+        "type": "justificacion_capacidad"
+      },
+      {
+        "required": true,
+        "type": "justificacion_recursos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q138",
+    "sync_timestamp": "2026-01-04T17:55:49.810316Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA05_victimas_paz/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

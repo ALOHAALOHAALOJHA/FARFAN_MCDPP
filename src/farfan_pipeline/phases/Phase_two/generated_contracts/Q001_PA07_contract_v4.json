@@ -1085,18 +1085,280 @@
   },
   "question_context": {
     "monolith_ref": "Q001",
-    "pregunta_completa": "¿El diagnóstico del sector presenta datos cuantitativos (tasas, porcentajes, cifras absolutas) con año de referencia y fuente identificada, desagregados por territorio o población?",
+    "pregunta_completa": "¿El diagnóstico presenta datos cuantitativos sobre ordenamiento territorial vigente (POT/EOT/PBOT actualizado o desactualizado), catastro municipal (predios formalizados vs. informales, actualización catastral), tenencia de la tierra (porcentaje de predios con títulos, informalidad predial, solicitudes de titulación), conflictos de uso del suelo (áreas en usos no conformes al POT), concentración de la propiedad rural (Gini de tierras), déficit de Unidades Agrícolas Familiares (UAF), asentamientos informales urbanos, zonas de expansión urbana sin planificación, con año de referencia y fuente identificada (ej. IGAC, ANT, Catastro Municipal, Secretaría de Planeación, Oficina de Registro)?",
     "sector_id": "PA07",
     "sector_name": "Tierras y territorios",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q1-PA07-REQ"
-    }
+      "emit_code": "ABORT-Q211-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-000",
+        "match_type": "REGEX",
+        "pattern": "línea base|diagnóstico rural|caracterización predial|situación actual",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0067"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-002",
+        "match_type": "REGEX",
+        "pattern": "IGAC|Instituto Geográfico Agustín Codazzi|Catastro",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-003",
+        "match_type": "REGEX",
+        "pattern": "ANT|Agencia Nacional de Tierras|URT|Unidad de Restitución de Tierras",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-004",
+        "match_type": "REGEX",
+        "pattern": "ADR|Agencia de Desarrollo Rural|UPRA|INVIAS|MinAgricultura",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-005",
+        "match_type": "REGEX",
+        "pattern": "SNR|Superintendencia de Notariado y Registro",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-006",
+        "match_type": "REGEX",
+        "pattern": "Secretaría de Planeación|UMATA|Secretaría de Infraestructura",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-007",
+        "match_type": "REGEX",
+        "pattern": "informalidad predial|predios sin formalizar|tenencia de la tierra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-008",
+        "match_type": "REGEX",
+        "pattern": "porcentaje de desactualización catastral|catastro multipropósito",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-009",
+        "match_type": "REGEX",
+        "pattern": "kilómetros de vías terciarias en mal estado|estado de la red vial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-010",
+        "match_type": "REGEX",
+        "pattern": "hectáreas (Ha) en conflicto de uso del suelo|frontera agrícola",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-011",
+        "match_type": "REGEX",
+        "pattern": "déficit de infraestructura de riego|distritos de riego",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-012",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0001"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q211-013",
+        "match_type": "REGEX",
+        "pattern": "porcentaje|hectáreas|kilómetros|número de predios|familias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "minimum": 2,
+        "type": "fuentes_oficiales"
+      },
+      {
+        "minimum": 3,
+        "type": "indicadores_cuantitativos"
+      },
+      {
+        "minimum": 2,
+        "type": "series_temporales_años"
+      }
+    ],
+    "validations": {
+      "buscar_indicadores_cuantitativos": {
+        "minimum_required": 3,
+        "patterns": [
+          "\\d+%",
+          "\\d+\\s*por\\s*\\d+",
+          "tasa de",
+          "índice de",
+          "cobertura de"
+        ],
+        "specificity": "HIGH"
+      },
+      "cobertura": {
+        "minimum_required": 1,
+        "patterns": [
+          "departamental",
+          "municipal",
+          "urbano",
+          "rural",
+          "territorial",
+          "poblacional"
+        ],
+        "specificity": "HIGH"
+      },
+      "series_temporales": {
+        "minimum_years": 3,
+        "patterns": [
+          "20\\d{2}",
+          "año",
+          "periodo",
+          "histórico",
+          "serie"
+        ],
+        "specificity": "MEDIUM"
+      },
+      "unidades_medicion": {
+        "minimum_required": 2,
+        "patterns": [
+          "por 100.000",
+          "por 1.000",
+          "%",
+          "porcentaje",
+          "tasa",
+          "razón"
+        ],
+        "specificity": "MEDIUM"
+      },
+      "verificar_fuentes": {
+        "minimum_required": 2,
+        "patterns": [
+          "fuente:",
+          "según",
+          "datos de",
+          "DANE",
+          "DNP",
+          "SISPRO",
+          "SIVIGILA",
+          "Ministerio"
+        ],
+        "specificity": "MEDIUM"
+      }
+    },
+    "source_question_id": "Q181",
+    "sync_timestamp": "2026-01-04T17:55:49.124203Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA07_tierras_territorios/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

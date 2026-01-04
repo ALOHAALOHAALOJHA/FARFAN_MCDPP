@@ -893,18 +893,120 @@
   },
   "question_context": {
     "monolith_ref": "Q022",
-    "pregunta_completa": "¿Se utilizan índices reconocidos o indicadores proxy para medir impactos del sector, justificando por qué son adecuados?",
+    "pregunta_completa": "¿Se utilizan 'índices' (ej. Índice de Participación Ciudadana) o 'proxies' para medir los impactos en el espacio cívico, justificando su validez?",
     "sector_id": "PA08",
     "sector_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q2-PA08-REQ"
-    }
+      "emit_code": "ABORT-Q262-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q262-000",
+        "match_type": "REGEX",
+        "pattern": "Índice de Participación Ciudadana|Índice de Democracia Local|Índice de Estado de Derecho",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q262-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0072"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q262-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0099"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q262-003",
+        "match_type": "REGEX",
+        "pattern": "el número de organizaciones sociales activas como proxy de un espacio cívico vibrante",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q262-004",
+        "match_type": "REGEX",
+        "pattern": "la participación electoral como proxy de confianza democrática",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q262-005",
+        "match_type": "REGEX",
+        "pattern": "este indicador es válido porque refleja|captura la vitalidad de la sociedad civil",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "justifica_validez"
+      },
+      {
+        "required": true,
+        "type": "usa_indices_compuestos"
+      },
+      {
+        "required": true,
+        "type": "usa_proxies"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q232",
+    "sync_timestamp": "2026-01-04T17:55:49.967475Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA08_lideres_defensores/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -830,18 +830,129 @@
   },
   "question_context": {
     "monolith_ref": "Q010",
-    "pregunta_completa": "¿El plan describe explícitamente cómo las actividades del sector se complementan, refuerzan mutuamente o siguen una secuencia lógica?",
+    "pregunta_completa": "¿El plan describe explícitamente cómo las actividades de igualdad de género se complementan o siguen una secuencia lógica (ej. prevención mediante educación y masculinidades no violentas → detección temprana → atención en Comisarías → casas de refugio → acompañamiento psicosocial → autonomía económica → no retorno a violencia; o servicios de cuidado → mayor tiempo disponible → empleabilidad → autonomía económica → empoderamiento; o escuelas de liderazgo → participación en Consejos → incidencia en políticas → transversalización de género), evidenciando una estrategia articulada de transformación de desigualdades de género (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación', 'enfoque integral de igualdad de género', 'continuo de prevención-atención-empoderamiento')?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q5-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q010-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q010-000",
+        "match_type": "REGEX",
+        "pattern": "de manera articulada|en complemento a|integralmente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q010-001",
+        "match_type": "LITERAL",
+        "pattern": "sinergia entre|se refuerza con",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q010-002",
+        "match_type": "REGEX",
+        "pattern": "la actividad X es prerrequisito para la actividad Y",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q010-003",
+        "match_type": "REGEX",
+        "pattern": "en una primera fase se realizará... y luego...",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q010-004",
+        "match_type": "LITERAL",
+        "pattern": "la estrategia combina prevención, atención y acceso a la justicia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q010-005",
+        "match_type": "REGEX",
+        "pattern": "el programa de autonomía económica se complementa con el de prevención de VBG",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q010-006",
+        "match_type": "REGEX",
+        "pattern": "evitando duplicidad de esfuerzos|no redundancia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "complementariedad_explicita"
+      },
+      {
+        "required": true,
+        "type": "secuenciacion_logica"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q010",
+    "sync_timestamp": "2026-01-04T17:55:49.451286Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

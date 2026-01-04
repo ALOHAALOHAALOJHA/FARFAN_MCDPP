@@ -829,18 +829,107 @@
   },
   "question_context": {
     "monolith_ref": "Q020",
-    "pregunta_completa": "¿El plan declara la alineación de sus resultados del sector con el Plan Nacional de Desarrollo, los ODS, marcos normativos nacionales o políticas sectoriales relevantes?",
+    "pregunta_completa": "¿El plan declara la alineación de sus resultados ambientales con el Plan Nacional de Desarrollo, la Contribución Nacionalmente Determinada (NDC) de Colombia, los ODS (especialmente ODS 6: Agua Limpia, ODS 11: Ciudades Sostenibles, ODS 13: Acción Climática, ODS 15: Vida de Ecosistemas Terrestres)?",
     "sector_id": "PA03",
     "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q5-PA03-REQ"
-    }
+      "emit_code": "ABORT-Q110-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q110-000",
+        "match_type": "REGEX",
+        "pattern": "alineado con el Plan Nacional de Desarrollo|PND|transformación 3",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q110-001",
+        "match_type": "REGEX",
+        "pattern": "contribuye a los ODS 6, 11, 13, 15|Objetivos de Desarrollo Sostenible",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q110-002",
+        "match_type": "REGEX",
+        "pattern": "en concordancia con la Política Nacional de Cambio Climático",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q110-003",
+        "match_type": "REGEX",
+        "pattern": "articulado con las Contribuciones Nacionalmente Determinadas|NDC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q110-004",
+        "match_type": "REGEX",
+        "pattern": "Acuerdo de París|Convenio de Diversidad Biológica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "alineacion_ods"
+      },
+      {
+        "required": true,
+        "type": "alineacion_otros_marcos"
+      },
+      {
+        "required": true,
+        "type": "alineacion_pnd"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q080",
+    "sync_timestamp": "2026-01-04T17:55:49.880241Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA03_ambiente_cambio_climatico/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

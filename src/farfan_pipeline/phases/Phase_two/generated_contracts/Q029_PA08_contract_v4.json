@@ -897,18 +897,133 @@
   },
   "question_context": {
     "monolith_ref": "Q029",
-    "pregunta_completa": "¿Se describe un sistema de monitoreo para el sector que incluya mecanismos de alerta temprana, retroalimentación con entidades especializadas, participación de población beneficiaria?",
+    "pregunta_completa": "¿Se describe un sistema de monitoreo para la protección de líderes que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia de seguridad?",
     "sector_id": "PA08",
     "sector_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q4-PA08-REQ"
-    }
+      "emit_code": "ABORT-Q269-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q269-000",
+        "match_type": "REGEX",
+        "pattern": "sistema de seguimiento y evaluación|M&E de garantías",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q269-001",
+        "match_type": "REGEX",
+        "pattern": "monitoreo en tiempo real de las Alertas Tempranas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q269-002",
+        "match_type": "REGEX",
+        "pattern": "semáforo de riesgo|mapa de calor de amenazas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q269-003",
+        "match_type": "REGEX",
+        "pattern": "mecanismo de ajuste urgente de las medidas de protección",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q269-004",
+        "match_type": "REGEX",
+        "pattern": "retroalimentación desde la Mesa de Garantías|diálogo con líderes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q269-005",
+        "match_type": "REGEX",
+        "pattern": "ciclos de aprendizaje|reuniones del Consejo de Seguridad para revisar estrategia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q269-006",
+        "match_type": "REGEX",
+        "pattern": "lecciones aprendidas en la implementación de la ruta de protección",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "ciclos_aprendizaje"
+      },
+      {
+        "required": true,
+        "type": "mecanismos_correccion"
+      },
+      {
+        "required": true,
+        "type": "sistema_monitoreo"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q239",
+    "sync_timestamp": "2026-01-04T17:55:50.317342Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA08_lideres_defensores/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -899,18 +899,142 @@
   },
   "question_context": {
     "monolith_ref": "Q008",
-    "pregunta_completa": "¿Las actividades propuestas se vinculan explícitamente con los problemas, causas, brechas o déficits identificados en el diagnóstico del sector?",
+    "pregunta_completa": "¿Las actividades propuestas se vinculan explícitamente con las vulneraciones en ámbitos de competencia municipal identificadas en el diagnóstico (ej. condiciones inadecuadas en calabozos de policía, tiempos excesivos de detención administrativa, ausencia de acceso a defensor público durante detención, falta de seguimiento municipal a quejas sobre establecimientos INPEC en el territorio, barreras para reintegración social de población post-penitenciaria, ausencia de protocolos de debido proceso en inspecciones)?",
     "sector_id": "PA09",
     "sector_name": "Crisis de derechos de personas privadas de la libertad",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q3-PA09-REQ"
-    }
+      "emit_code": "ABORT-Q278-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q278-000",
+        "match_type": "REGEX",
+        "pattern": "para abordar la causa del hacinamiento|en respuesta al problema de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q278-001",
+        "match_type": "REGEX",
+        "pattern": "la actividad de resocialización ataca el factor de la reincidencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q278-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0031"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q278-003",
+        "match_type": "REGEX",
+        "pattern": "falta de oportunidades educativas y laborales intramurales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q278-004",
+        "match_type": "REGEX",
+        "pattern": "condiciones de reclusión indignas|violación de DDHH",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q278-005",
+        "match_type": "REGEX",
+        "pattern": "ocio y falta de actividades de redención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q278-006",
+        "match_type": "REGEX",
+        "pattern": "dificultades en el acceso a la justicia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q278-007",
+        "match_type": "REGEX",
+        "pattern": "árbol de problemas|diagnóstico causal de la crisis carcelaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "aborda_causa_raiz"
+      },
+      {
+        "required": true,
+        "type": "vinculo_diagnostico_actividad"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q248",
+    "sync_timestamp": "2026-01-04T17:55:49.408049Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA09_crisis_PPL/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

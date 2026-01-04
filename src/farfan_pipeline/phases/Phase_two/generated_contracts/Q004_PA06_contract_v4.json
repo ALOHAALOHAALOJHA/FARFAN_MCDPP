@@ -885,18 +885,180 @@
   },
   "question_context": {
     "monolith_ref": "Q004",
-    "pregunta_completa": "¿El plan identifica las entidades responsables del sector, describe sus capacidades y señala limitaciones institucionales o necesidades de articulación?",
+    "pregunta_completa": "¿El plan identifica las entidades responsables de la política de infancia, adolescencia y juventud (ej. Comisaría de Familia, enlace ICBF, Consejo de Política Social COMPOS, Secretaría de Desarrollo Social, Plataforma de Juventud, Consejo Municipal de Juventud), describe sus capacidades (psicólogos, trabajadores sociales, defensores de familia, protocolos de activación de rutas de atención) y señala limitaciones o necesidades de articulación con ICBF, Fiscalía, Policía de Infancia?",
     "sector_id": "PA06",
     "sector_name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q4-PA06-REQ"
-    }
+      "emit_code": "ABORT-Q184-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q184-000",
+        "match_type": "REGEX",
+        "pattern": "Comisaría de Familia|equipo psicosocial de la comisaría",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q184-001",
+        "match_type": "LITERAL",
+        "pattern": "ICBF Zonal|articulación con el ICBF",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q184-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0017"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q184-003",
+        "match_type": "REGEX",
+        "pattern": "Plataforma Municipal de Juventud|Consejo de Juventud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q184-004",
+        "match_type": "REGEX",
+        "pattern": "Consejo de Política Social|Mesa de Infancia y Adolescencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q184-005",
+        "match_type": "REGEX",
+        "pattern": "capacidad instalada de los CDI|infraestructura educativa",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q184-006",
+        "match_type": "REGEX",
+        "pattern": "ruta de atención a NNA con derechos vulnerados|protocolo SRPA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q184-007",
+        "match_type": "REGEX",
+        "pattern": "orientadores escolares|docentes de apoyo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q184-008",
+        "match_type": "REGEX",
+        "pattern": "falta de personal en comisarías|necesidad de fortalecer equipos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q184-009",
+        "match_type": "REGEX",
+        "pattern": "cuello de botella|limitación en la oferta de programas|barrera de acceso",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "cuellos_botella"
+      },
+      {
+        "required": true,
+        "type": "gobernanza"
+      },
+      {
+        "required": true,
+        "type": "infraestructura_fisica"
+      },
+      {
+        "required": true,
+        "type": "procesos"
+      },
+      {
+        "required": true,
+        "type": "talento_humano"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q154",
+    "sync_timestamp": "2026-01-04T17:55:49.244790Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA06_ninez_adolescencia_juventud/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

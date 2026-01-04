@@ -829,18 +829,103 @@
   },
   "question_context": {
     "monolith_ref": "Q020",
-    "pregunta_completa": "¿El plan declara la alineación de sus resultados del sector con el Plan Nacional de Desarrollo, los ODS, marcos normativos nacionales o políticas sectoriales relevantes?",
+    "pregunta_completa": "¿El plan declara la alineación de sus resultados de igualdad de género con la Ley 1257 de 2008 (violencias contra las mujeres), la Ley 1719 de 2014 (violencia sexual), la Ley 1761 de 2015 (feminicidio), el CONPES 161 de 2013 (equidad de género), la CEDAW, la Convención de Belém do Pará, los ODS (especialmente ODS 5: Igualdad de Género), los Objetivos de Desarrollo Sostenible en materia de violencias, autonomía económica y participación política de las mujeres?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q5-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q020-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q020-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0023"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q020-001",
+        "match_type": "REGEX",
+        "pattern": "contribuye al ODS 5|Objetivos de Desarrollo Sostenible",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q020-002",
+        "match_type": "REGEX",
+        "pattern": "en concordancia con la Política Pública de Equidad de Género|PPEG",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q020-003",
+        "match_type": "REGEX",
+        "pattern": "articulado con el CONPES de equidad de género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q020-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0107"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "alineacion_ods"
+      },
+      {
+        "required": true,
+        "type": "alineacion_pnd"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q020",
+    "sync_timestamp": "2026-01-04T17:55:49.872771Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

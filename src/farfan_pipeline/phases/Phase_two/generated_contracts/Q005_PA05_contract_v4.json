@@ -897,18 +897,163 @@
   },
   "question_context": {
     "monolith_ref": "Q005",
-    "pregunta_completa": "¿El plan justifica el alcance de sus intervenciones mencionando el marco normativo aplicable o reconociendo explícitamente qué competencias son municipales directas, cuáles son concurrentes y cuáles requieren articulación?",
+    "pregunta_completa": "¿El plan justifica el alcance de sus intervenciones en derechos de víctimas y construcción de paz mencionando el marco normativo (Ley 1448, Acuerdo Final de Paz, Decreto 1953 PDET, Auto 092 de enfoque diferencial) o reconociendo explícitamente que competencias como indemnización son nacionales pero el municipio acompaña en reparación simbólica, atención psicosocial y garantías de no repetición?",
     "sector_id": "PA05",
     "sector_name": "Derechos de las víctimas y construcción de paz",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q5-PA05-REQ"
-    }
+      "emit_code": "ABORT-Q155-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q155-000",
+        "match_type": "REGEX",
+        "pattern": "en el marco de la Ley 1448 de 2011|Ley de Víctimas y Restitución de Tierras",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q155-001",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0003"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q155-002",
+        "match_type": "REGEX",
+        "pattern": "Acuerdo de Paz|Punto 5 sobre Víctimas|PDET",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q155-003",
+        "match_type": "REGEX",
+        "pattern": "competencias del municipio en atención y asistencia|principio de subsidiariedad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q155-004",
+        "match_type": "REGEX",
+        "pattern": "la indemnización es competencia de la UARIV|la restitución es de la URT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q155-005",
+        "match_type": "LITERAL",
+        "pattern": "recursos insuficientes para la reparación integral",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q155-006",
+        "match_type": "REGEX",
+        "pattern": "limitaciones presupuestales del FONSET",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q155-007",
+        "match_type": "REGEX",
+        "pattern": "durante el cuatrienio|plazo de implementación del PAT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q155-008",
+        "match_type": "REGEX",
+        "pattern": "coherencia entre metas y recursos disponibles|factibilidad financiera",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "coherencia_demostrada"
+      },
+      {
+        "required": true,
+        "type": "restricciones_competencias"
+      },
+      {
+        "required": true,
+        "type": "restricciones_legales"
+      },
+      {
+        "required": true,
+        "type": "restricciones_presupuestales"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q125",
+    "sync_timestamp": "2026-01-04T17:55:49.278534Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA05_victimas_paz/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -893,18 +893,120 @@
   },
   "question_context": {
     "monolith_ref": "Q022",
-    "pregunta_completa": "¿Se utilizan índices reconocidos o indicadores proxy para medir impactos del sector, justificando por qué son adecuados?",
+    "pregunta_completa": "¿Se utilizan índices (ej. Índice de Infancia, Índice de Desarrollo Integral, Índice de Oportunidades Juveniles) o indicadores proxy para medir impactos en desarrollo humano por ciclo vital, justificando por qué son adecuados para capturar transformaciones en bienestar, protección y ejercicio de derechos? Cuando un impacto es difícil de medir directamente (ej. 'resiliencia desarrollada', 'habilidades socioemocionales consolidadas', 'entornos protectores interiorizados'), ¿se explica la validez y limitaciones del indicador proxy utilizado (ej. 'permanencia en el sistema educativo', 'participación en actividades prosociales', 'reducción sostenida de reincidencia en consumo de SPA')?",
     "sector_id": "PA06",
     "sector_name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q2-PA06-REQ"
-    }
+      "emit_code": "ABORT-Q202-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q202-000",
+        "match_type": "REGEX",
+        "pattern": "Índice de Pobreza Multidimensional para Niñez y Adolescencia|IPM-NNA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q202-001",
+        "match_type": "REGEX",
+        "pattern": "Índice de Desarrollo Juvenil|indicador compuesto de bienestar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q202-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0099"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q202-003",
+        "match_type": "REGEX",
+        "pattern": "la tasa de graduación de educación media como proxy de capital humano",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q202-004",
+        "match_type": "REGEX",
+        "pattern": "la tasa de homicidios juvenil como proxy inverso de cohesión social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q202-005",
+        "match_type": "REGEX",
+        "pattern": "este indicador es válido porque es una medición estandarizada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "justifica_validez"
+      },
+      {
+        "required": true,
+        "type": "usa_indices_compuestos"
+      },
+      {
+        "required": true,
+        "type": "usa_proxies"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q172",
+    "sync_timestamp": "2026-01-04T17:55:49.960547Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA06_ninez_adolescencia_juventud/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

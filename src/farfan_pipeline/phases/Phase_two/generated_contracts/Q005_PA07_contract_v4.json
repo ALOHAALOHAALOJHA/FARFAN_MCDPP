@@ -897,18 +897,163 @@
   },
   "question_context": {
     "monolith_ref": "Q005",
-    "pregunta_completa": "¿El plan justifica el alcance de sus intervenciones mencionando el marco normativo aplicable o reconociendo explícitamente qué competencias son municipales directas, cuáles son concurrentes y cuáles requieren articulación?",
+    "pregunta_completa": "¿El plan justifica el alcance de sus intervenciones en tierras y ordenamiento territorial mencionando el marco normativo (Ley 388 de Ordenamiento Territorial, Ley 1551, Decreto 1077 de 2015, Ley 160 de reforma agraria) o reconociendo explícitamente que competencias como adopción del POT son municipales directas, titulación de baldíos es de la ANT pero el municipio acompaña, y actualización catastral requiere articulación con el IGAC?",
     "sector_id": "PA07",
     "sector_name": "Tierras y territorios",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q5-PA07-REQ"
-    }
+      "emit_code": "ABORT-Q215-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q215-000",
+        "match_type": "REGEX",
+        "pattern": "en el marco de la Ley 160 de 1994|Ley 388 de 1997|Ley 1448 de 2011",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q215-001",
+        "match_type": "REGEX",
+        "pattern": "Acuerdo de Paz|Reforma Rural Integral|RRI|PDET",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q215-002",
+        "match_type": "REGEX",
+        "pattern": "Plan de Ordenamiento Territorial|POT|determinantes ambientales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q215-003",
+        "match_type": "REGEX",
+        "pattern": "competencia del municipio|responsabilidad de la ANT/IGAC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q215-004",
+        "match_type": "REGEX",
+        "pattern": "límite de recursos propios|dependencia de la cofinanciación nacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q215-005",
+        "match_type": "LITERAL",
+        "pattern": "restricción presupuestal para el mantenimiento vial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q215-006",
+        "match_type": "REGEX",
+        "pattern": "complejidad técnica del barrido predial|falta de cartografía base",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q215-007",
+        "match_type": "REGEX",
+        "pattern": "durante el cuatrienio|plazo para la actualización catastral",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q215-008",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0035"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "coherencia_demostrada"
+      },
+      {
+        "required": true,
+        "type": "restricciones_legales"
+      },
+      {
+        "required": true,
+        "type": "restricciones_presupuestales"
+      },
+      {
+        "required": true,
+        "type": "restricciones_tecnicas"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q185",
+    "sync_timestamp": "2026-01-04T17:55:49.285403Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA07_tierras_territorios/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

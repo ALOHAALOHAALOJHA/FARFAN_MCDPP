@@ -897,18 +897,174 @@
   },
   "question_context": {
     "monolith_ref": "Q005",
-    "pregunta_completa": "¿El plan justifica el alcance de sus intervenciones mencionando el marco normativo aplicable o reconociendo explícitamente qué competencias son municipales directas, cuáles son concurrentes y cuáles requieren articulación?",
+    "pregunta_completa": "¿El plan justifica el alcance de sus intervenciones en protección de líderes y defensores/as reconociendo explícitamente qué competencias son municipales directas (articulación con sistemas de protección, garantías de espacios de participación, rutas locales de prevención y atención, visibilización) y cuáles requieren articulación con entidades nacionales (esquemas de protección individual de la UNP, investigación penal por parte de la Fiscalía, medidas cautelares judiciales), mencionando el marco normativo aplicable (Decreto 660 de 2018 sobre Programa Integral de Garantías, Acuerdo de Paz, Ley 1448 de Víctimas, Sistema de Alertas Tempranas)?",
     "sector_id": "PA08",
     "sector_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q5-PA08-REQ"
-    }
+      "emit_code": "ABORT-Q245-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q245-000",
+        "match_type": "REGEX",
+        "pattern": "en el marco del Decreto 660 de 2018|Decreto 2137 de 2018",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q245-001",
+        "match_type": "REGEX",
+        "pattern": "Acuerdo de Paz|Punto 2.1 Garantías de seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q245-002",
+        "match_type": "REGEX",
+        "pattern": "Plan de Acción Oportuna|PAO|Alertas Tempranas de la Defensoría",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q245-003",
+        "match_type": "REGEX",
+        "pattern": "competencia del municipio en prevención|la protección material es de la UNP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "FUENTE_OFICIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q245-004",
+        "match_type": "NER_OR_REGEX",
+        "pattern": "responsabilidad del alcalde como primera autoridad de policía",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q245-005",
+        "match_type": "REGEX",
+        "pattern": "límite de recursos propios para medidas complementarias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q245-006",
+        "match_type": "LITERAL",
+        "pattern": "restricción presupuestal para fortalecer la Personería",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q245-007",
+        "match_type": "REGEX",
+        "pattern": "dependencia de la evaluación de riesgo de la UNP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q245-008",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0052"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "coherencia_demostrada"
+      },
+      {
+        "required": true,
+        "type": "restricciones_competencias"
+      },
+      {
+        "required": true,
+        "type": "restricciones_legales"
+      },
+      {
+        "required": true,
+        "type": "restricciones_presupuestales"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q215",
+    "sync_timestamp": "2026-01-04T17:55:49.288364Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA08_lideres_defensores/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -897,18 +897,133 @@
   },
   "question_context": {
     "monolith_ref": "Q029",
-    "pregunta_completa": "¿Se describe un sistema de monitoreo para el sector que incluya mecanismos de alerta temprana, retroalimentación con entidades especializadas, participación de población beneficiaria?",
+    "pregunta_completa": "¿Se describe un sistema de monitoreo que incluya participación activa de la Mesa Municipal de Víctimas, mecanismos de retroalimentación con UARIV o Unidad de Restitución, indicadores de satisfacción de víctimas con la atención recibida, alertas tempranas sobre revictimización o incumplimientos, y capacidad de aprendizaje para adaptar estrategias de reparación y reconciliación según contexto territorial y resultados observados?",
     "sector_id": "PA05",
     "sector_name": "Derechos de las víctimas y construcción de paz",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q4-PA05-REQ"
-    }
+      "emit_code": "ABORT-Q179-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q179-000",
+        "match_type": "REGEX",
+        "pattern": "sistema de seguimiento y evaluación|M&E del PAT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q179-001",
+        "match_type": "REGEX",
+        "pattern": "monitoreo a través del RUV y otros registros",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q179-002",
+        "match_type": "LITERAL",
+        "pattern": "alerta temprana sobre riesgos en retornos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q179-003",
+        "match_type": "REGEX",
+        "pattern": "mecanismo de ajuste del PIRC|medida correctiva",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q179-004",
+        "match_type": "REGEX",
+        "pattern": "retroalimentación desde la Mesa de Participación de Víctimas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q179-005",
+        "match_type": "REGEX",
+        "pattern": "ciclos de aprendizaje|sesiones del CTJT para revisar avances",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q179-006",
+        "match_type": "REGEX",
+        "pattern": "lecciones aprendidas en la implementación de la Ley 1448",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "ciclos_aprendizaje"
+      },
+      {
+        "required": true,
+        "type": "mecanismos_correccion"
+      },
+      {
+        "required": true,
+        "type": "sistema_monitoreo"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q149",
+    "sync_timestamp": "2026-01-04T17:55:50.306152Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA05_victimas_paz/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

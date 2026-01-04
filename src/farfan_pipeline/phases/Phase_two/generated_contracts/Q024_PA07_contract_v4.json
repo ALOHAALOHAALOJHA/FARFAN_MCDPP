@@ -885,18 +885,129 @@
   },
   "question_context": {
     "monolith_ref": "Q024",
-    "pregunta_completa": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados o reconociendo límites de lo que el municipio puede lograr?",
+    "pregunta_completa": "¿El plan evalúa si la ambición del impacto en ordenamiento y tierras es realista, considerando posibles efectos no deseados (ej. gentrificación por legalización de barrios con aumento de valorización, aumento de carga tributaria que afecta población vulnerable tras actualización catastral, especulación con baldíos adjudicados, resistencia social a restricciones de POT que limitan usos tradicionales), o reconoce explícitamente los límites de las intervenciones municipales (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado sin ANT', 'depende de articulación con IGAC')?",
     "sector_id": "PA07",
     "sector_name": "Tierras y territorios",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q4-PA07-REQ"
-    }
+      "emit_code": "ABORT-Q234-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q234-000",
+        "match_type": "REGEX",
+        "pattern": "visión de la Misión para la Transformación del Campo|Agenda\\\\s+2030",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q234-001",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0093"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q234-002",
+        "match_type": "REGEX",
+        "pattern": "cambios en los precios internacionales de los commodities agrícolas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q234-003",
+        "match_type": "REGEX",
+        "pattern": "expansión de economías ilegales o megaproyectos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q234-004",
+        "match_type": "REGEX",
+        "pattern": "estos factores podrían revertir los avances en desarrollo rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q234-005",
+        "match_type": "LITERAL",
+        "pattern": "el mecanismo causal es vulnerable a|sensible a las políticas macroeconómicas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q234-006",
+        "match_type": "REGEX",
+        "pattern": "estrategias de diversificación productiva|resiliencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "alineacion_marcos"
+      },
+      {
+        "required": true,
+        "type": "riesgos_sistemicos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q204",
+    "sync_timestamp": "2026-01-04T17:55:50.041975Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA07_tierras_territorios/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

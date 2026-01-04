@@ -899,18 +899,163 @@
   },
   "question_context": {
     "monolith_ref": "Q016",
-    "pregunta_completa": "¿Los indicadores de resultado del sector están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
+    "pregunta_completa": "¿Los indicadores de resultado incluyen métricas de múltiples subsectores (ej. 'tasa de deserción escolar', 'porcentaje de cobertura en régimen subsidiado de salud', 'tasa de desempleo municipal', 'déficit habitacional cuantitativo', 'tasa de mortalidad infantil', 'número de visitantes a espacios culturales', 'tasa de informalidad laboral') están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
     "sector_id": "PA04",
     "sector_name": "Derechos económicos, sociales y culturales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q1-PA04-REQ"
-    }
+      "emit_code": "ABORT-Q136-REQ"
+    },
+    "patterns": [
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q136-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0074"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q136-001",
+        "match_type": "REGEX",
+        "pattern": "tasa de cobertura neta|tasa de deserción escolar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q136-002",
+        "match_type": "REGEX",
+        "pattern": "tasa de mortalidad infantil|razón de mortalidad materna",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q136-003",
+        "match_type": "REGEX",
+        "pattern": "porcentaje de hogares con déficit habitacional|IPM",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q136-004",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0009"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q136-005",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0012"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q136-006",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0006"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q136-007",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0004"
+      },
+      {
+        "category": "TEMPORAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q136-008",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0068"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "horizonte_temporal"
+      },
+      {
+        "required": true,
+        "type": "linea_base_resultado"
+      },
+      {
+        "required": true,
+        "type": "meta_resultado"
+      },
+      {
+        "required": true,
+        "type": "metrica_outcome"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q106",
+    "sync_timestamp": "2026-01-04T17:55:49.721402Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

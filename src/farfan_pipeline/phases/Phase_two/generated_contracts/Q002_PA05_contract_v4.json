@@ -953,18 +953,146 @@
   },
   "question_context": {
     "monolith_ref": "Q002",
-    "pregunta_completa": "¿El diagnóstico dimensiona numéricamente la magnitud del problema o déficit del sector y reconoce explícitamente limitaciones en los datos?",
+    "pregunta_completa": "¿El diagnóstico dimensiona numéricamente la magnitud del daño causado por el conflicto (número de víctimas por hecho victimizante, hectáreas despojadas o abandonadas, familias sin reparación integral, excombatientes sin reintegración efectiva) y reconoce explícitamente limitaciones como 'subregistro de víctimas', 'ausencia de caracterización psicosocial', 'datos incompletos de restitución' o 'información desactualizada del RUV'?",
     "sector_id": "PA05",
     "sector_name": "Derechos de las víctimas y construcción de paz",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q2-PA05-REQ"
-    }
+      "emit_code": "ABORT-Q152-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q152-000",
+        "match_type": "REGEX",
+        "pattern": "brecha de reparación|déficit en la atención|rezago en la indemnización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q152-001",
+        "match_type": "REGEX",
+        "pattern": "universo de víctimas vs. víctimas atendidas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q152-002",
+        "match_type": "REGEX",
+        "pattern": "porcentaje de víctimas sin acceso a la oferta",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q152-003",
+        "match_type": "REGEX",
+        "pattern": "barreras de acceso a la declaración|dificultades para acceder al RUV",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q152-004",
+        "match_type": "REGEX",
+        "pattern": "subregistro de hechos como la violencia sexual|cifra negra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q152-005",
+        "match_type": "REGEX",
+        "pattern": "información desactualizada|falta de caracterización psicosocial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q152-006",
+        "match_type": "REGEX",
+        "pattern": "se desconoce el estado de los procesos de restitución de tierras",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q152-007",
+        "match_type": "REGEX",
+        "pattern": "limitaciones en la información sobre retornos no acompañados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_causal_problema"
+      },
+      {
+        "required": true,
+        "type": "cuantificacion_magnitud"
+      },
+      {
+        "required": true,
+        "type": "vacios_explicitos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q122",
+    "sync_timestamp": "2026-01-04T17:55:49.159950Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA05_victimas_paz/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

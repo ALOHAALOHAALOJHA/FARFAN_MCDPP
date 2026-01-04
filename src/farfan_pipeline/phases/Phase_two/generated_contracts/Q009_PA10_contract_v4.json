@@ -836,18 +836,142 @@
   },
   "question_context": {
     "monolith_ref": "Q009",
-    "pregunta_completa": "¿El plan identifica posibles obstáculos, riesgos o barreras en la implementación de las actividades del sector y propone medidas explícitas de mitigación?",
+    "pregunta_completa": "¿El plan identifica posibles obstáculos en la implementación de actividades de integración migratoria (ej. resistencia institucional a atender población irregular, barreras culturales e idiomáticas, dependencia de decisiones de Migración Colombia sobre regularización, estigmatización y xenofobia en comunidades receptoras, recursos insuficientes frente a magnitud de población migrante, cambios en política migratoria nacional, dificultades en articulación interinstitucional, temor de migrantes irregulares a acercarse a instituciones) y propone medidas explícitas de mitigación como protocolos de atención sin discriminación, campañas de des-estigmatización, convenios con Migración Colombia, fortalecimiento de capacidades de funcionarios, o estrategias de confianza con población migrante?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q4-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q039-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q039-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0095"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q039-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0027"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q039-002",
+        "match_type": "REGEX",
+        "pattern": "saturación de los servicios de salud y educación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q039-003",
+        "match_type": "REGEX",
+        "pattern": "sostenibilidad de la ayuda humanitaria|dependencia de la cooperación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q039-004",
+        "match_type": "REGEX",
+        "pattern": "riesgos de trata de personas y explotación en la población migrante",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q039-005",
+        "match_type": "REGEX",
+        "pattern": "cambios en la política migratoria nacional o del país vecino",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q039-006",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0082"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q039-007",
+        "match_type": "REGEX",
+        "pattern": "campañas de convivencia|estrategias de integración|fortalecimiento de servicios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "mitigacion_propuesta"
+      },
+      {
+        "required": true,
+        "type": "riesgos_identificados"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q279",
+    "sync_timestamp": "2026-01-04T17:55:49.448153Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

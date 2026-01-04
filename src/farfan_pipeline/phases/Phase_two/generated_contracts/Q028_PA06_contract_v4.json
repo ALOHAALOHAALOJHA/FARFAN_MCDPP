@@ -830,18 +830,129 @@
   },
   "question_context": {
     "monolith_ref": "Q028",
-    "pregunta_completa": "¿El plan reconoce la complejidad del sector, identifica debilidades en su estrategia, y propone mecanismos para aprender y ajustar?",
+    "pregunta_completa": "¿El plan reconoce la complejidad del desarrollo integral (factores individuales, familiares, escolares, comunitarios, institucionales interactúan), identifica debilidades o incertidumbres en su estrategia intersectorial, y propone mecanismos para aprender y ajustar como enfoque de entornos protectores simultáneos, articulación entre Comisaría-ICBF-Educación-Salud, evaluaciones o pilotos de estrategias de prevención y protección (se debe buscar términos como 'pilotos', 'articulación intersectorial', 'coordinación', 'evaluación', 'ajustes', 'enfoque de entornos protectores')?",
     "sector_id": "PA06",
     "sector_name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q3-PA06-REQ"
-    }
+      "emit_code": "ABORT-Q208-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q208-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0071"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q208-001",
+        "match_type": "REGEX",
+        "pattern": "se requiere validar si el programa de emprendimiento es pertinente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q208-002",
+        "match_type": "REGEX",
+        "pattern": "plan piloto de jornada única|fase experimental de un centro de escucha",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q208-003",
+        "match_type": "REGEX",
+        "pattern": "testear el supuesto de la participación juvenil",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q208-004",
+        "match_type": "REGEX",
+        "pattern": "validar la hipótesis sobre la efectividad del programa de prevención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q208-005",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0065"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q208-006",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0026"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "propone_pilotos_o_pruebas"
+      },
+      {
+        "required": true,
+        "type": "reconoce_inconsistencias"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q178",
+    "sync_timestamp": "2026-01-04T17:55:50.268315Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA06_ninez_adolescencia_juventud/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

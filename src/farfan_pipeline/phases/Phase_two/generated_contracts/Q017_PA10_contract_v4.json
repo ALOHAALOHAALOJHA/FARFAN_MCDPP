@@ -878,18 +878,133 @@
   },
   "question_context": {
     "monolith_ref": "Q017",
-    "pregunta_completa": "¿El plan describe la ruta o secuencia que lleva a los resultados del sector, mencionando condiciones necesarias para que funcione?",
+    "pregunta_completa": "¿El plan describe la ruta o secuencia que lleva a los resultados de integración migratoria, mencionando condiciones necesarias para que funcione (se debe buscar términos como 'supuestos', 'si Migración Colombia responde a articulaciones para regularización', 'si las comunidades receptoras participan en estrategias de convivencia', 'si se mantiene política migratoria nacional favorable a regularización', 'si los migrantes acceden a rutas de orientación sin temor', 'siempre que existan oportunidades laborales en el territorio', 'requiere que entidades nacionales garanticen expedición oportuna de permisos', reconociendo explícitamente que el municipio NO controla la política migratoria ni los procesos de regularización)?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q2-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q047-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q047-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0028"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q047-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0057"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q047-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0101"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q047-003",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0043"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q047-004",
+        "match_type": "REGEX",
+        "pattern": "depende de la voluntad del sector productivo para contratar migrantes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q047-005",
+        "match_type": "REGEX",
+        "pattern": "un supuesto es que la población de acogida esté dispuesta a la convivencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q047-006",
+        "match_type": "LITERAL",
+        "pattern": "se requiere que la política migratoria nacional se mantenga estable",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "cadena_causal_explicita"
+      },
+      {
+        "required": true,
+        "type": "condiciones_habilitantes"
+      },
+      {
+        "required": true,
+        "type": "supuestos_identificados"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q287",
+    "sync_timestamp": "2026-01-04T17:55:49.787899Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

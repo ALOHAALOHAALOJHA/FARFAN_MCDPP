@@ -893,18 +893,120 @@
   },
   "question_context": {
     "monolith_ref": "Q022",
-    "pregunta_completa": "¿Se utilizan índices reconocidos o indicadores proxy para medir impactos del sector, justificando por qué son adecuados?",
+    "pregunta_completa": "¿Se utilizan índices o indicadores proxy para medir impactos en integración de población migrante (ej. Índice de Integración Local de Migrantes, Índice de Convivencia Intercultural, indicadores de cohesión social), justificando por qué son adecuados para capturar transformaciones estructurales? Cuando un impacto en integración migratoria es difícil de medir directamente (ej. 'cohesión social con población migrante', 'eliminación de estigmatización estructural', 'cultura de convivencia intercultural arraigada'), ¿se explica la validez y limitaciones del indicador proxy utilizado (ej. 'percepción de convivencia en encuestas', 'reducción sostenida de casos de discriminación', 'participación de migrantes en espacios comunitarios', 'emprendimientos mixtos migrantes-locales')?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q2-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q052-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q052-000",
+        "match_type": "REGEX",
+        "pattern": "Índice de Integración Migrante|Índice de Cohesión Social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q052-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0072"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q052-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0099"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q052-003",
+        "match_type": "REGEX",
+        "pattern": "las tasas de matrimonios mixtos como proxy de integración cultural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q052-004",
+        "match_type": "REGEX",
+        "pattern": "la percepción de la comunidad de acogida sobre la migración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q052-005",
+        "match_type": "REGEX",
+        "pattern": "este indicador es válido porque refleja|captura las dinámicas de convivencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "justifica_validez"
+      },
+      {
+        "required": true,
+        "type": "usa_indices_compuestos"
+      },
+      {
+        "required": true,
+        "type": "usa_proxies"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q292",
+    "sync_timestamp": "2026-01-04T17:55:49.974703Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

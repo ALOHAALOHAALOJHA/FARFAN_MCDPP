@@ -892,18 +892,134 @@
   },
   "question_context": {
     "monolith_ref": "Q021",
-    "pregunta_completa": "¿El plan define impactos o transformaciones de largo plazo para el sector, describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado?",
+    "pregunta_completa": "¿El plan define impactos o transformaciones de largo plazo en el desarrollo de niños, adolescentes y jóvenes (cambios que trascienden el cuatrienio) como 'generación con desarrollo integral pleno', 'erradicación de vulneraciones a la infancia', 'adolescentes con autonomía y proyecto de vida sostenible', 'juventudes con ciudadanía activa y oportunidades', 'entornos familiares, escolares y comunitarios protectores consolidados', describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'generacional')?",
     "sector_id": "PA06",
     "sector_name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q1-PA06-REQ"
-    }
+      "emit_code": "ABORT-Q201-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q201-000",
+        "match_type": "REGEX",
+        "pattern": "impacto esperado|visión de largo plazo|transformación generacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q201-001",
+        "match_type": "REGEX",
+        "pattern": "desarrollo integral de la niñez y la juventud|bienestar generacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q201-002",
+        "match_type": "REGEX",
+        "pattern": "ruptura de ciclos intergeneracionales de pobreza",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q201-003",
+        "match_type": "REGEX",
+        "pattern": "formación de capital humano para el futuro del municipio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q201-004",
+        "match_type": "REGEX",
+        "pattern": "la suma de los resultados en educación y salud generará el impacto de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q201-005",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
+      },
+      {
+        "category": "TEMPORAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q201-006",
+        "match_type": "REGEX",
+        "pattern": "tiempo de maduración|efectos en el largo plazo|se espera observar en 15-20 años|el año pasado|desde \\d{4}|tendencia reciente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "dynamic_update": "CURRENT_YEAR_WINDOW",
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "impacto_definido"
+      },
+      {
+        "required": true,
+        "type": "rezago_temporal"
+      },
+      {
+        "required": true,
+        "type": "ruta_transmision"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q171",
+    "sync_timestamp": "2026-01-04T17:55:49.925705Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA06_ninez_adolescencia_juventud/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

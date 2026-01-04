@@ -897,18 +897,159 @@
   },
   "question_context": {
     "monolith_ref": "Q007",
-    "pregunta_completa": "¿La descripción de actividades especifica el instrumento, la población o zona objetivo, y explica cómo la actividad contribuye al resultado esperado?",
+    "pregunta_completa": "¿La descripción de actividades especifica el instrumento ('mediante protocolos de debido proceso en inspecciones de policía', 'a través de mejoramiento de condiciones en calabozos municipales', 'con articulación Personería-INPEC para seguimiento a quejas', 'mediante programas de empleabilidad para población post-penitenciaria', 'a través de capacitación a inspectores en derechos fundamentales durante detención'), la población objetivo ('personas en detención administrativa en calabozos municipales', 'población reclusa en establecimientos INPEC del territorio que presenta quejas', 'personas en proceso de reintegración social post-privación de libertad', 'adolescentes en SRPA') y explica cómo la actividad contribuye al resultado esperado ('para garantizar límites legales de detención', 'porque permite respuesta institucional a vulneraciones', 'con el fin de facilitar reintegración social', 'para prevenir detenciones arbitrarias')?",
     "sector_id": "PA09",
     "sector_name": "Crisis de derechos de personas privadas de la libertad",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q2-PA09-REQ"
-    }
+      "emit_code": "ABORT-Q277-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q277-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0081"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q277-001",
+        "match_type": "REGEX",
+        "pattern": "brigadas de salud intramural|jornadas de vacunación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q277-002",
+        "match_type": "REGEX",
+        "pattern": "convenios con el SENA|programas de validación del bachillerato",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q277-003",
+        "match_type": "REGEX",
+        "pattern": "talleres productivos|actividades de redención de pena",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q277-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0086"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q277-005",
+        "match_type": "REGEX",
+        "pattern": "población sindicada en centros transitorios|condenados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q277-006",
+        "match_type": "REGEX",
+        "pattern": "mujeres privadas de la libertad|PPL con enfoque de género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q277-007",
+        "match_type": "REGEX",
+        "pattern": "con el fin de garantizar el derecho a la salud|para promover la resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q277-008",
+        "match_type": "REGEX",
+        "pattern": "lo cual reduce las tensiones internas|porque ofrece herramientas para la vida en libertad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "instrumento_especificado"
+      },
+      {
+        "required": true,
+        "type": "logica_causal_explicita"
+      },
+      {
+        "required": true,
+        "type": "poblacion_objetivo_definida"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q247",
+    "sync_timestamp": "2026-01-04T17:55:49.369020Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA09_crisis_PPL/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -885,18 +885,174 @@
   },
   "question_context": {
     "monolith_ref": "Q003",
-    "pregunta_completa": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos a programas, proyectos o intervenciones específicas del sector?",
+    "pregunta_completa": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a mejoramiento de condiciones en calabozos de estaciones de policía municipal (infraestructura, servicios básicos, alimentación), fortalecimiento de inspecciones de policía para garantizar debido proceso en detenciones administrativas, articulación con el INPEC y la Personería Municipal para seguimiento a derechos humanos en establecimientos penitenciarios del territorio, programas de reintegración social para personas post-privación de libertad (empleabilidad, apoyo psicosocial, acceso a servicios), o articulación con defensorías públicas?",
     "sector_id": "PA09",
     "sector_name": "Crisis de derechos de personas privadas de la libertad",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q3-PA09-REQ"
-    }
+      "emit_code": "ABORT-Q273-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q273-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0016"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q273-001",
+        "match_type": "REGEX",
+        "pattern": "BPIN|Banco de Proyectos|proyecto de infraestructura carcelaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q273-002",
+        "match_type": "REGEX",
+        "pattern": "recursos para la construcción/adecuación de centro de detención transitoria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q273-003",
+        "match_type": "REGEX",
+        "pattern": "presupuesto para la atención en salud de la población sindicada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q273-004",
+        "match_type": "REGEX",
+        "pattern": "asignación para programas de resocialización (educación, trabajo)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "FUENTE_OFICIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q273-005",
+        "match_type": "NER_OR_REGEX",
+        "pattern": "inversión en alimentación para PPL en estaciones de policía",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q273-006",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "numeric_parsing": {
+          "written_numbers": true,
+          "currency_format": "COLOMBIAN"
+        },
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0022"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q273-007",
+        "match_type": "LITERAL",
+        "pattern": "fuentes: recursos propios, cofinanciación USPEC/MinJusticia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q273-008",
+        "match_type": "REGEX",
+        "pattern": "el presupuesto es suficiente para reducir el hacinamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "asignacion_explicita"
+      },
+      {
+        "required": true,
+        "type": "suficiencia_justificada"
+      },
+      {
+        "required": true,
+        "type": "trazabilidad_ppi_bpin"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q243",
+    "sync_timestamp": "2026-01-04T17:55:49.218183Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA09_crisis_PPL/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -965,18 +965,133 @@
   },
   "question_context": {
     "monolith_ref": "Q018",
-    "pregunta_completa": "¿La ambición de las metas de resultado se justifica en función de recursos asignados, capacidad institucional, articulación con otros niveles de gobierno?",
+    "pregunta_completa": "¿La ambición de las metas de resultado se justifica considerando que el municipio no tiene control directo sobre variables macrocriminales o el sistema judicial, pero sí sobre la gestión de la convivencia y la coordinación interinstitucional, o se compara con municipios de tipología similar?",
     "sector_id": "PA02",
     "sector_name": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q3-PA02-REQ"
-    }
+      "emit_code": "ABORT-Q078-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q078-000",
+        "match_type": "REGEX",
+        "pattern": "meta ambiciosa pero factible|meta realista dado el contexto de seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q078-001",
+        "match_type": "REGEX",
+        "pattern": "la meta se justifica por el aumento del pie de fuerza",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q078-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0041"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q078-003",
+        "match_type": "REGEX",
+        "pattern": "la capacidad de articulación del Consejo de Seguridad permite",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q078-004",
+        "match_type": "REGEX",
+        "pattern": "en experiencias similares de otros municipios en posconflicto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q078-005",
+        "match_type": "REGEX",
+        "pattern": "benchmark|referente nacional|meta del PND en seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q078-006",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0025"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "evidencia_comparada"
+      },
+      {
+        "required": true,
+        "type": "justificacion_capacidad"
+      },
+      {
+        "required": true,
+        "type": "justificacion_recursos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q048",
+    "sync_timestamp": "2026-01-04T17:55:49.796153Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA02_violencia_conflicto/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

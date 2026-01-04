@@ -899,18 +899,142 @@
   },
   "question_context": {
     "monolith_ref": "Q008",
-    "pregunta_completa": "¿Las actividades propuestas se vinculan explícitamente con los problemas, causas, brechas o déficits identificados en el diagnóstico del sector?",
+    "pregunta_completa": "¿Las actividades propuestas se vinculan explícitamente con las causas identificadas en el diagnóstico (ej. deforestación de cuencas, disposición inadecuada de residuos, asentamientos en zonas de amenaza, contaminación de fuentes hídricas, eventos climáticos extremos recurrentes, emisiones del transporte)?",
     "sector_id": "PA03",
     "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q3-PA03-REQ"
-    }
+      "emit_code": "ABORT-Q098-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q098-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0085"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q098-001",
+        "match_type": "REGEX",
+        "pattern": "la actividad de reforestación ataca la deforestación causada por",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q098-002",
+        "match_type": "REGEX",
+        "pattern": "causa estructural|factor determinante|presión sobre el ecosistema",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q098-003",
+        "match_type": "REGEX",
+        "pattern": "expansión de la frontera agrícola|ganadería extensiva",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q098-004",
+        "match_type": "REGEX",
+        "pattern": "falta de tratamiento de aguas residuales|vertimientos directos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q098-005",
+        "match_type": "REGEX",
+        "pattern": "inadecuada disposición de residuos sólidos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q098-006",
+        "match_type": "REGEX",
+        "pattern": "ocupación de zonas de alto riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q098-007",
+        "match_type": "REGEX",
+        "pattern": "árbol de problemas|diagnóstico causal ambiental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "aborda_causa_raiz"
+      },
+      {
+        "required": true,
+        "type": "vinculo_diagnostico_actividad"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q068",
+    "sync_timestamp": "2026-01-04T17:55:49.384011Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA03_ambiente_cambio_climatico/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

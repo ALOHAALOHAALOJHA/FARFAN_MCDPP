@@ -955,18 +955,121 @@
   },
   "question_context": {
     "monolith_ref": "Q026",
-    "pregunta_completa": "¿El plan presenta una descripción explícita de cómo se generan los cambios en el sector (teoría de cambio, modelo lógico, cadena causal)?",
+    "pregunta_completa": "¿El plan presenta una descripción explícita de cómo se generan los cambios en sostenibilidad ambiental y gestión del riesgo (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal'), preferiblemente en diagrama o matriz, que identifique causas (deforestación, contaminación, vulnerabilidad), intervenciones (educación ambiental, infraestructura verde, sistemas de monitoreo), supuestos verificables (ej. 'si la comunidad adopta prácticas', 'si la CAR aprueba') y la secuencia insumos→actividades→productos→resultados→impactos?",
     "sector_id": "PA03",
     "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q1-PA03-REQ"
-    }
+      "emit_code": "ABORT-Q116-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q116-000",
+        "match_type": "REGEX",
+        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico ambiental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "CAUSAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q116-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q116-002",
+        "match_type": "REGEX",
+        "pattern": "causa raíz de la deforestación|determinante estructural de la contaminación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q116-003",
+        "match_type": "REGEX",
+        "pattern": "mediador|variable intermedia|eslabón|conciencia ambiental|adopción de tecnología",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q116-004",
+        "match_type": "REGEX",
+        "pattern": "moderador|factor contextual|nivel de ingresos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q116-005",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0104"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "diagrama_causal"
+      },
+      {
+        "required": true,
+        "type": "supuestos_verificables"
+      },
+      {
+        "required": true,
+        "type": "teoria_cambio_explicita"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q086",
+    "sync_timestamp": "2026-01-04T17:55:50.143548Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA03_ambiente_cambio_climatico/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

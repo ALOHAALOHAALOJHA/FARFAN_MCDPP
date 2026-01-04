@@ -878,18 +878,133 @@
   },
   "question_context": {
     "monolith_ref": "Q017",
-    "pregunta_completa": "¿El plan describe la ruta o secuencia que lleva a los resultados del sector, mencionando condiciones necesarias para que funcione?",
+    "pregunta_completa": "¿El plan describe la ruta o secuencia que lleva a los resultados en ordenamiento y acceso a tierras, mencionando condiciones necesarias para que funcione (se debe buscar términos como 'supuestos', 'si propietarios valoran la seguridad jurídica sobre evasión tributaria', 'si la CAR aprueba determinantes ambientales del POT', 'si hay voluntad política para controlar urbanización ilegal', 'si la ANT agiliza trámites de baldíos', 'si hay oferta de notarios y registradores en zonas rurales', 'siempre que...', 'requiere que...')?",
     "sector_id": "PA07",
     "sector_name": "Tierras y territorios",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q2-PA07-REQ"
-    }
+      "emit_code": "ABORT-Q227-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q227-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0028"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q227-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0057"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q227-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0101"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q227-003",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0043"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q227-004",
+        "match_type": "REGEX",
+        "pattern": "depende de la capacidad de la Oficina de Registro de Instrumentos Públicos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q227-005",
+        "match_type": "REGEX",
+        "pattern": "un supuesto es que la formalización incentive la inversión en el predio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q227-006",
+        "match_type": "REGEX",
+        "pattern": "se requiere que el mercado responda a la mejora de la productividad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "cadena_causal_explicita"
+      },
+      {
+        "required": true,
+        "type": "condiciones_habilitantes"
+      },
+      {
+        "required": true,
+        "type": "supuestos_identificados"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q197",
+    "sync_timestamp": "2026-01-04T17:55:49.772903Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA07_tierras_territorios/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

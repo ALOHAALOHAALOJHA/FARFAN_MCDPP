@@ -878,18 +878,106 @@
   },
   "question_context": {
     "monolith_ref": "Q027",
-    "pregunta_completa": "¿El plan evita saltos desproporcionados en su lógica, reconociendo explícitamente cuando se requieren procesos sostenidos, múltiples condiciones o factores externos?",
+    "pregunta_completa": "¿El plan evita saltos desproporcionados en su lógica de igualdad de género (por ejemplo, no atribuye 'eliminación de violencias contra las mujeres' a campañas de sensibilización sin transformación profunda de estructuras patriarcales; o 'igualdad salarial' a programas de empleabilidad sin cambios en mercado laboral y corresponsabilidad en cuidado; o 'empoderamiento sostenible' a talleres puntuales sin autonomía económica real; o 'paridad política' a escuelas de liderazgo sin transformación de barreras estructurales y culturales), reconociendo explícitamente cuando se requieren procesos sostenidos y multidimensionales, transformaciones culturales profundas, cambios en mercado laboral, sistema de justicia efectivo, o factores externos fuera del control municipal (se debe buscar expresiones de cautela como 'requiere transformación cultural de largo plazo', 'depende de justicia efectiva y oportuna', 'necesita cambios estructurales en economía del cuidado', 'limitado sin corresponsabilidad social en tareas de cuidado', 'trasciende el cuatrienio')?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q2-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q027-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q027-000",
+        "match_type": "REGEX",
+        "pattern": "proporcionalidad entre|magnitud del efecto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q027-001",
+        "match_type": "REGEX",
+        "pattern": "salto lógico|falta de conexión|no se sigue que|vacío argumentativo|conexión débil|relación no justificada|inferencia inválida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "variants": [
+          "non_critical_phrases_included"
+        ],
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q027-002",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0060"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q027-003",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0076"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q027-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0098"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "evita_saltos_logicos"
+      },
+      {
+        "required": true,
+        "type": "proporcionalidad_eslabones"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q027",
+    "sync_timestamp": "2026-01-04T17:55:50.191960Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

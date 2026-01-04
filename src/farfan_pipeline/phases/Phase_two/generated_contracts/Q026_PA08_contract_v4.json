@@ -955,18 +955,121 @@
   },
   "question_context": {
     "monolith_ref": "Q026",
-    "pregunta_completa": "¿El plan presenta una descripción explícita de cómo se generan los cambios en el sector (teoría de cambio, modelo lógico, cadena causal)?",
+    "pregunta_completa": "¿Existe una 'teoría de cambio' explícita para la protección de líderes, preferiblemente en un 'diagrama', que identifique causas (ej. estigmatización), mediadores (ej. legitimidad) y 'supuestos verificables'?",
     "sector_id": "PA08",
     "sector_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q1-PA08-REQ"
-    }
+      "emit_code": "ABORT-Q266-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q266-000",
+        "match_type": "REGEX",
+        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico de protección",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "CAUSAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q266-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q266-002",
+        "match_type": "REGEX",
+        "pattern": "causa raíz de la violencia contra líderes|determinante estructural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q266-003",
+        "match_type": "REGEX",
+        "pattern": "mediador|variable intermedia|eslabón|disuasión|legitimidad|confianza",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q266-004",
+        "match_type": "REGEX",
+        "pattern": "moderador|factor contextual|presencia de actores armados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q266-005",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0104"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "diagrama_causal"
+      },
+      {
+        "required": true,
+        "type": "supuestos_verificables"
+      },
+      {
+        "required": true,
+        "type": "teoria_cambio_explicita"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q236",
+    "sync_timestamp": "2026-01-04T17:55:50.178852Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA08_lideres_defensores/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

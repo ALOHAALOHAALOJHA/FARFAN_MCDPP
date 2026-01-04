@@ -955,18 +955,146 @@
   },
   "question_context": {
     "monolith_ref": "Q026",
-    "pregunta_completa": "¿El plan presenta una descripción explícita de cómo se generan los cambios en el sector (teoría de cambio, modelo lógico, cadena causal)?",
+    "pregunta_completa": "¿El plan presenta una descripción explícita de cómo se generan las transformaciones hacia la igualdad de género (se debe buscar términos como 'teoría de cambio', 'modelo lógico', 'ruta de impacto', 'cadena causal', 'lógica de intervención'), preferiblemente en diagrama o matriz, que identifique causas estructurales de desigualdades (estereotipos de género, división sexual del trabajo, tolerancia social a violencias, barreras de acceso a recursos económicos y políticos, sobrecarga de trabajo de cuidado), intervenciones municipales (prevención y atención de VBG, autonomía económica, servicios de cuidado, participación política, transversalización de género), supuestos verificables (ej. 'si las mujeres acceden a rutas sin temor', 'si el sistema de justicia responde', 'si existen oportunidades laborales') y la secuencia insumos→actividades→productos→resultados→impactos, reconociendo explícitamente la separación entre competencias municipales (prevención, atención, empoderamiento) y competencias nacionales (investigación penal, sentencias)?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q1-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q026-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q026-000",
+        "match_type": "REGEX",
+        "pattern": "teoría de cambio|marco lógico|cadena causal|modelo lógico",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "CAUSAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q026-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q026-002",
+        "match_type": "REGEX",
+        "pattern": "causa raíz|determinante estructural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q026-003",
+        "match_type": "REGEX",
+        "pattern": "mediador|variable intermedia|eslabón|ruta de cambio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q026-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0084"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q026-005",
+        "match_type": "LITERAL",
+        "pattern": "supuesto comprobable|hipótesis de trabajo|asunción crítica|creencia fundamental|premisa operativa|condición necesaria|supuesto verificable|presunción testeable|axioma operacional|postulado validable|condición asumida|premisa subyacente|suposición explícita|conjetura de base|hipótesis fundacional|premisa de diseño",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": {
+          "testable_assumptions": [
+            "supuesto comprobable",
+            "supuesto verificable",
+            "presunción testeable",
+            "hipótesis validable"
+          ],
+          "foundational_beliefs": [
+            "creencia fundamental",
+            "premisa operativa",
+            "axioma operacional",
+            "hipótesis fundacional"
+          ],
+          "critical_conditions": [
+            "asunción crítica",
+            "condición necesaria",
+            "condición asumida",
+            "premisa de diseño"
+          ],
+          "working_hypotheses": [
+            "hipótesis de trabajo",
+            "postulado validable",
+            "conjetura de base",
+            "premisa subyacente"
+          ]
+        },
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "diagrama_causal"
+      },
+      {
+        "required": true,
+        "type": "supuestos_verificables"
+      },
+      {
+        "required": true,
+        "type": "teoria_cambio_explicita"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q026",
+    "sync_timestamp": "2026-01-04T17:55:50.132746Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

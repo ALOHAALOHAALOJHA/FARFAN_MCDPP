@@ -885,18 +885,180 @@
   },
   "question_context": {
     "monolith_ref": "Q004",
-    "pregunta_completa": "¿El plan identifica las entidades responsables del sector, describe sus capacidades y señala limitaciones institucionales o necesidades de articulación?",
+    "pregunta_completa": "¿El plan identifica las entidades municipales responsables de la protección y garantías a líderes sociales (ej. Secretaría de Gobierno, Personería Municipal, Comité Municipal de Garantías para Líderes Sociales, Secretaría de Víctimas, Consejo Territorial de Paz), describe sus capacidades (protocolos de atención, canales de denuncia, equipos especializados, sistemas de alerta) y señala limitaciones o necesidades de articulación con la Defensoría del Pueblo, la UNP, la Fiscalía, el Ministerio del Interior o la Gobernación?",
     "sector_id": "PA08",
     "sector_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q4-PA08-REQ"
-    }
+      "emit_code": "ABORT-Q244-REQ"
+    },
+    "patterns": [
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q244-000",
+        "match_type": "REGEX",
+        "pattern": "Mesa Territorial de Garantías|Comité de Evaluación de Riesgo y Recomendación de Medidas|CERREM",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q244-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0014"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q244-002",
+        "match_type": "REGEX",
+        "pattern": "Secretaría de Gobierno|Enlace de DDHH",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q244-003",
+        "match_type": "REGEX",
+        "pattern": "capacidad instalada para la respuesta rápida|personal capacitado",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q244-004",
+        "match_type": "REGEX",
+        "pattern": "ruta de protección municipal|protocolo de atención a amenazas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q244-005",
+        "match_type": "REGEX",
+        "pattern": "sistema de alertas tempranas local|flujo de información con el SAT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q244-006",
+        "match_type": "REGEX",
+        "pattern": "Observatorio Municipal de DDHH",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q244-007",
+        "match_type": "REGEX",
+        "pattern": "articulación con la UNP|coordinación con la Fuerza Pública",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q244-008",
+        "match_type": "REGEX",
+        "pattern": "falta de articulación con el nivel nacional|demoras en la respuesta de la UNP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q244-009",
+        "match_type": "REGEX",
+        "pattern": "cuello de botella|limitación presupuestal|barrera de confianza",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "cuellos_botella"
+      },
+      {
+        "required": true,
+        "type": "datos_sistemas"
+      },
+      {
+        "required": true,
+        "type": "gobernanza"
+      },
+      {
+        "required": true,
+        "type": "procesos"
+      },
+      {
+        "required": true,
+        "type": "talento_humano"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q214",
+    "sync_timestamp": "2026-01-04T17:55:49.253043Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA08_lideres_defensores/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

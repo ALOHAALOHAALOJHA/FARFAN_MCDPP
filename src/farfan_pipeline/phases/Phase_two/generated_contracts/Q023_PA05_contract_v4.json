@@ -829,18 +829,120 @@
   },
   "question_context": {
     "monolith_ref": "Q023",
-    "pregunta_completa": "¿Los impactos del sector se alinean con marcos nacionales o globales y consideran riesgos externos que podrían impedir o revertir los logros esperados?",
+    "pregunta_completa": "¿Los impactos en construcción de paz se alinean con marcos nacionales o globales y consideran riesgos externos (cambios en política nacional de paz, reconfiguración de grupos armados, reversión de restitución de tierras por violencia, crisis económica que afecta proyectos productivos, polarización política) que podrían impedir o revertir los logros esperados?",
     "sector_id": "PA05",
     "sector_name": "Derechos de las víctimas y construcción de paz",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q3-PA05-REQ"
-    }
+      "emit_code": "ABORT-Q173-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q173-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0050"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q173-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0100"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q173-002",
+        "match_type": "REGEX",
+        "pattern": "el número de iniciativas conjuntas entre grupos antes enfrentados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q173-003",
+        "match_type": "REGEX",
+        "pattern": "este proxy es validado por estudios de construcción de paz",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q173-004",
+        "match_type": "REGEX",
+        "pattern": "una limitación es que no captura las percepciones individuales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q173-005",
+        "match_type": "REGEX",
+        "pattern": "aunque imperfecto, este proxy nos da una señal de cohesión social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "documenta_validez"
+      },
+      {
+        "required": true,
+        "type": "proxy_para_intangibles"
+      },
+      {
+        "required": true,
+        "type": "reconoce_limitaciones"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q143",
+    "sync_timestamp": "2026-01-04T17:55:49.996390Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA05_victimas_paz/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

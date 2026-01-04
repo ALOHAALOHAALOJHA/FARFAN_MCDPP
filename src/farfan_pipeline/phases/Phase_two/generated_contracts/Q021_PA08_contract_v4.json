@@ -892,18 +892,120 @@
   },
   "question_context": {
     "monolith_ref": "Q021",
-    "pregunta_completa": "¿El plan define impactos o transformaciones de largo plazo para el sector, describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado?",
+    "pregunta_completa": "¿El PDM define 'impactos' de largo plazo (ej. 'fortalecimiento de la democracia local', 'espacio cívico abierto y seguro')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
     "sector_id": "PA08",
     "sector_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q1-PA08-REQ"
-    }
+      "emit_code": "ABORT-Q261-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q261-000",
+        "match_type": "REGEX",
+        "pattern": "impacto esperado|visión de largo plazo|transformación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q261-001",
+        "match_type": "REGEX",
+        "pattern": "fortalecimiento de la democracia local|gobernanza democrática",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q261-002",
+        "match_type": "REGEX",
+        "pattern": "un espacio cívico abierto y seguro|pleno ejercicio de la ciudadanía",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q261-003",
+        "match_type": "REGEX",
+        "pattern": "la suma de los resultados de protección y participación generará el impacto de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q261-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
+      },
+      {
+        "category": "TEMPORAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q261-005",
+        "match_type": "REGEX",
+        "pattern": "tiempo de maduración|efectos en el largo plazo|se espera observar en 8-10 años",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "impacto_definido"
+      },
+      {
+        "required": true,
+        "type": "rezago_temporal"
+      },
+      {
+        "required": true,
+        "type": "ruta_transmision"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q231",
+    "sync_timestamp": "2026-01-04T17:55:49.932724Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA08_lideres_defensores/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -897,18 +897,159 @@
   },
   "question_context": {
     "monolith_ref": "Q007",
-    "pregunta_completa": "¿La descripción de actividades especifica el instrumento, la población o zona objetivo, y explica cómo la actividad contribuye al resultado esperado?",
+    "pregunta_completa": "¿La descripción de actividades especifica el instrumento ('mediante atención integral en CDI', 'a través de escuelas de familia', 'con estrategias de prevención de SPA', 'mediante Consejos de Juventud', 'a través de rutas de atención a vulneraciones'), el ciclo vital objetivo ('primera infancia 0-5 años', 'adolescentes escolarizados', 'jóvenes rurales sin oportunidades', 'familias con factores de riesgo'), el entorno protector ('familia', 'escuela', 'comunidad', 'institucional') y explica cómo la actividad contribuye al resultado esperado ('para prevenir vulneraciones', 'porque fortalece vínculos familiares', 'con el fin de garantizar desarrollo integral', 'para reducir factores de riesgo')?",
     "sector_id": "PA06",
     "sector_name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q2-PA06-REQ"
-    }
+      "emit_code": "ABORT-Q187-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q187-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0081"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q187-001",
+        "match_type": "REGEX",
+        "pattern": "escuelas de formación deportiva/artística|jornada escolar complementaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q187-002",
+        "match_type": "REGEX",
+        "pattern": "centros de escucha|servicios amigables en salud sexual",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q187-003",
+        "match_type": "REGEX",
+        "pattern": "orientación socio-ocupacional|ferias de empleo juvenil",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q187-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0086"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q187-005",
+        "match_type": "REGEX",
+        "pattern": "niños y niñas de primera infancia|NNA desescolarizados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q187-006",
+        "match_type": "REGEX",
+        "pattern": "jóvenes en riesgo de consumo de SPA o reclutamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q187-007",
+        "match_type": "REGEX",
+        "pattern": "con el fin de promover el uso del tiempo libre|para prevenir",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q187-008",
+        "match_type": "REGEX",
+        "pattern": "lo cual fortalece su proyecto de vida|porque reduce los factores de riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "instrumento_especificado"
+      },
+      {
+        "required": true,
+        "type": "logica_causal_explicita"
+      },
+      {
+        "required": true,
+        "type": "poblacion_objetivo_definida"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q157",
+    "sync_timestamp": "2026-01-04T17:55:49.356844Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA06_ninez_adolescencia_juventud/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

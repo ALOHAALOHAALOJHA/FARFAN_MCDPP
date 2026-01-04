@@ -953,18 +953,159 @@
   },
   "question_context": {
     "monolith_ref": "Q002",
-    "pregunta_completa": "¿El diagnóstico dimensiona numéricamente la magnitud del problema o déficit del sector y reconoce explícitamente limitaciones en los datos?",
+    "pregunta_completa": "¿El diagnóstico dimensiona numéricamente las problemáticas ambientales y de riesgo (hectáreas de ecosistemas degradados, toneladas de residuos generados, número de familias en zonas de alto riesgo, porcentaje de cobertura de saneamiento básico) y reconoce explícitamente limitaciones como 'ausencia de estaciones de monitoreo', 'mapas de amenaza desactualizados' o 'información climática insuficiente'?",
     "sector_id": "PA03",
     "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q2-PA03-REQ"
-    }
+      "emit_code": "ABORT-Q092-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q092-000",
+        "match_type": "REGEX",
+        "pattern": "déficit de conservación|presión sobre el ecosistema",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q092-001",
+        "match_type": "LITERAL",
+        "pattern": "población expuesta a amenaza|familias en alto riesgo no mitigable",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q092-002",
+        "match_type": "REGEX",
+        "pattern": "el municipio presenta una vulnerabilidad alta ante|escenario de riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q092-003",
+        "match_type": "REGEX",
+        "pattern": "aumento de la temperatura|variabilidad climática",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q092-004",
+        "match_type": "REGEX",
+        "pattern": "contaminación del recurso hídrico|calidad del aire crítica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q092-005",
+        "match_type": "REGEX",
+        "pattern": "información desactualizada|falta de estudios de microzonificación sísmica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q092-006",
+        "match_type": "REGEX",
+        "pattern": "no se cuenta con un inventario de emisiones GEI",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q092-007",
+        "match_type": "REGEX",
+        "pattern": "vacío de información sobre biodiversidad|se requiere caracterizar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q092-008",
+        "match_type": "REGEX",
+        "pattern": "limitaciones en el monitoreo de|falta de estaciones",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_vulnerabilidad"
+      },
+      {
+        "required": true,
+        "type": "cuantificacion_magnitud"
+      },
+      {
+        "required": true,
+        "type": "vacios_explicitos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q062",
+    "sync_timestamp": "2026-01-04T17:55:49.150746Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA03_ambiente_cambio_climatico/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

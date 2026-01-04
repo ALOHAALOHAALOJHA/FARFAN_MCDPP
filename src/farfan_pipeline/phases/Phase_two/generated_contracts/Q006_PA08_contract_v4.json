@@ -885,18 +885,153 @@
   },
   "question_context": {
     "monolith_ref": "Q006",
-    "pregunta_completa": "¿Las actividades del sector aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo?",
+    "pregunta_completa": "¿Las actividades para la protección y garantías de líderes y defensores/as (rutas de atención a casos de amenaza o agresión, fortalecimiento de Comités Municipales de Garantías, protocolos de relacionamiento institucional con organizaciones sociales, campañas de pedagogía sobre labor defensorial, sistemas de registro y seguimiento de casos, articulación con UNP para valoración de riesgo, espacios de interlocución permanente) aparecen en formato estructurado (tabla, matriz, Plan Indicativo, PPI) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
     "sector_id": "PA08",
     "sector_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q1-PA08-REQ"
-    }
+      "emit_code": "ABORT-Q246-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q246-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "TABLE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0105"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q246-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0039"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q246-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0038"
+      },
+      {
+        "category": "TEMPORAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q246-003",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0037"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q246-004",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0036"
+      },
+      {
+        "category": "FUENTE_OFICIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q246-005",
+        "match_type": "NER_OR_REGEX",
+        "pattern": "Secretaría de Gobierno|Personería|Comando de Policía",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q246-006",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0015"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "columna_costo"
+      },
+      {
+        "required": true,
+        "type": "columna_cronograma"
+      },
+      {
+        "required": true,
+        "type": "columna_producto"
+      },
+      {
+        "required": true,
+        "type": "columna_responsable"
+      },
+      {
+        "required": true,
+        "type": "formato_tabular"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q216",
+    "sync_timestamp": "2026-01-04T17:55:49.323785Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA08_lideres_defensores/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -897,18 +897,177 @@
   },
   "question_context": {
     "monolith_ref": "Q005",
-    "pregunta_completa": "¿El plan justifica el alcance de sus intervenciones mencionando el marco normativo aplicable o reconociendo explícitamente qué competencias son municipales directas, cuáles son concurrentes y cuáles requieren articulación?",
+    "pregunta_completa": "¿El plan justifica el alcance de sus intervenciones reconociendo explícitamente que las competencias municipales directas incluyen prevención y atención de violencias basadas en género a través de Comisarías de Familia, casas de refugio, rutas de atención integral, promoción de autonomía económica de mujeres, transversalización del enfoque de género en políticas, fortalecimiento de participación política de mujeres, y articulación con entidades de salud para garantizar derechos sexuales y reproductivos, mientras la investigación penal de feminicidios y violencia sexual, las sentencias judiciales y medidas cautelares, y la legislación nacional son competencia de la Fiscalía, la Rama Judicial y el Congreso respectivamente, mencionando el marco normativo aplicable (Ley 1257 de 2008, Ley 1719 de 2014, Ley 1761 de 2015 sobre feminicidio, CONPES 161 de 2013, Convención de Belém do Pará, CEDAW)?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q5-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q005-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q005-000",
+        "match_type": "REGEX",
+        "pattern": "en el marco de la Ley 1257 de 2018|Decreto 1630",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q005-001",
+        "match_type": "REGEX",
+        "pattern": "Política Pública Nacional de Equidad de Género|PPEG",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q005-002",
+        "match_type": "REGEX",
+        "pattern": "CONPES de equidad de género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q005-003",
+        "match_type": "LITERAL",
+        "pattern": "sentencia T-|Corte Constitucional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q005-004",
+        "match_type": "REGEX",
+        "pattern": "Acuerdo Municipal|Decreto Municipal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q005-005",
+        "match_type": "REGEX",
+        "pattern": "competencias del municipio en VBG|responsabilidad subsidiaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q005-006",
+        "match_type": "REGEX",
+        "pattern": "límite fiscal|disponibilidad de recursos del SGP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q005-007",
+        "match_type": "LITERAL",
+        "pattern": "presupuesto insuficiente para|restricción presupuestal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TEMPORAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q005-008",
+        "match_type": "REGEX",
+        "pattern": "durante el cuatrienio|en el periodo (?:19|20)\\\\d{2}\\\\s*-\\\\s*(?:19|20)\\\\d{2}|plazo de implementación|el año pasado|desde \\\\d{4}|tendencia reciente",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "dynamic_update": "CURRENT_YEAR_WINDOW",
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q005-009",
+        "match_type": "REGEX",
+        "pattern": "coherencia entre metas y recursos|factibilidad financiera",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "coherencia_demostrada"
+      },
+      {
+        "required": true,
+        "type": "restricciones_legales"
+      },
+      {
+        "required": true,
+        "type": "restricciones_presupuestales"
+      },
+      {
+        "required": true,
+        "type": "restricciones_temporales"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q005",
+    "sync_timestamp": "2026-01-04T17:55:49.262502Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -885,18 +885,129 @@
   },
   "question_context": {
     "monolith_ref": "Q024",
-    "pregunta_completa": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados o reconociendo límites de lo que el municipio puede lograr?",
+    "pregunta_completa": "¿El plan evalúa si la ambición del impacto en DESC es realista, considerando posibles efectos no deseados diferenciados por subsector (ej. dependencia de subsidios sin generación de autonomía en programas de empleo, gentrificación por mejoras en vivienda que desplaza población vulnerable, sobrecarga en servicios de salud por afiliación masiva sin aumento de oferta, fuga de talento cultural hacia ciudades), o reconoce explícitamente los límites de las intervenciones municipales en cada subsector (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado en salud y educación', 'mayor autonomía en cultura y vivienda')?",
     "sector_id": "PA04",
     "sector_name": "Derechos económicos, sociales y culturales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q4-PA04-REQ"
-    }
+      "emit_code": "ABORT-Q144-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q144-000",
+        "match_type": "REGEX",
+        "pattern": "visión de largo plazo del país|Agenda\\\\s+2030",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q144-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0094"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q144-002",
+        "match_type": "REGEX",
+        "pattern": "pandemia|emergencia sanitaria|desastre natural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q144-003",
+        "match_type": "LITERAL",
+        "pattern": "una crisis fiscal que recorte el SGP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q144-004",
+        "match_type": "REGEX",
+        "pattern": "estos factores podrían revertir los avances en reducción de pobreza",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q144-005",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0054"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q144-006",
+        "match_type": "REGEX",
+        "pattern": "estrategias de resiliencia social|redes de apoyo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "alineacion_marcos"
+      },
+      {
+        "required": true,
+        "type": "riesgos_sistemicos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q114",
+    "sync_timestamp": "2026-01-04T17:55:50.026046Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

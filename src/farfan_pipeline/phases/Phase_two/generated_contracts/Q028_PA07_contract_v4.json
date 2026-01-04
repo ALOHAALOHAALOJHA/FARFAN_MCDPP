@@ -830,18 +830,129 @@
   },
   "question_context": {
     "monolith_ref": "Q028",
-    "pregunta_completa": "¿El plan reconoce la complejidad del sector, identifica debilidades en su estrategia, y propone mecanismos para aprender y ajustar?",
+    "pregunta_completa": "¿El plan reconoce la complejidad de la gestión territorial (intereses económicos, políticos, sociales en conflicto; diversidad de actores; multiplicidad de regulaciones), identifica debilidades o incertidumbres en su estrategia, y propone mecanismos para aprender y ajustar como estrategias graduales (pilotos de formalización en zonas priorizadas, actualización catastral por fases), articulación interinstitucional (IGAC, ANT, CAR, notarios) o mecanismos de participación ciudadana (se debe buscar términos como 'pilotos', 'fases', 'evaluación', 'ajustes', 'articulación interinstitucional', 'participación ciudadana')?",
     "sector_id": "PA07",
     "sector_name": "Tierras y territorios",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q3-PA07-REQ"
-    }
+      "emit_code": "ABORT-Q238-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q238-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0071"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q238-001",
+        "match_type": "REGEX",
+        "pattern": "se requiere validar si la titulación por sí sola aumenta la inversión",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q238-002",
+        "match_type": "REGEX",
+        "pattern": "plan piloto de catastro en una vereda|fase experimental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q238-003",
+        "match_type": "REGEX",
+        "pattern": "testear el supuesto de que las vías mejoradas aumentan la comercialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q238-004",
+        "match_type": "REGEX",
+        "pattern": "validar la hipótesis sobre la adopción de la asistencia técnica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q238-005",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0065"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q238-006",
+        "match_type": "REGEX",
+        "pattern": "aprendizaje adaptativo|gestión adaptativa del desarrollo rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "propone_pilotos_o_pruebas"
+      },
+      {
+        "required": true,
+        "type": "reconoce_inconsistencias"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q208",
+    "sync_timestamp": "2026-01-04T17:55:50.271955Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA07_tierras_territorios/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

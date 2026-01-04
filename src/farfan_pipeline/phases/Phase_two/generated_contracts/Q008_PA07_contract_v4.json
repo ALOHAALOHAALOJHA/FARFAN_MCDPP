@@ -899,18 +899,129 @@
   },
   "question_context": {
     "monolith_ref": "Q008",
-    "pregunta_completa": "¿Las actividades propuestas se vinculan explícitamente con los problemas, causas, brechas o déficits identificados en el diagnóstico del sector?",
+    "pregunta_completa": "¿Las actividades propuestas se vinculan explícitamente con las problemáticas identificadas en el diagnóstico (ej. POT desactualizado que no refleja dinámicas reales, informalidad predial que impide inversión, conflictos de uso del suelo que generan degradación, concentración de tierras que excluye a pequeños productores, catastro desactualizado que afecta recaudo, asentamientos sin servicios ni seguridad jurídica)?",
     "sector_id": "PA07",
     "sector_name": "Tierras y territorios",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q3-PA07-REQ"
-    }
+      "emit_code": "ABORT-Q218-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q218-000",
+        "match_type": "REGEX",
+        "pattern": "para abordar la causa de la informalidad|en respuesta al mal estado vial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q218-001",
+        "match_type": "REGEX",
+        "pattern": "la actualización catastral ataca el problema de la desfinanciación municipal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q218-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0031"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q218-003",
+        "match_type": "REGEX",
+        "pattern": "desactualización catastral|inseguridad jurídica en la tenencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q218-004",
+        "match_type": "REGEX",
+        "pattern": "falta de conectividad vial|aislamiento de las zonas rurales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q218-005",
+        "match_type": "REGEX",
+        "pattern": "baja productividad agropecuaria|conflictos de uso del suelo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q218-006",
+        "match_type": "REGEX",
+        "pattern": "árbol de problemas|diagnóstico causal del sector rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "aborda_causa_raiz"
+      },
+      {
+        "required": true,
+        "type": "vinculo_diagnostico_actividad"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q188",
+    "sync_timestamp": "2026-01-04T17:55:49.401010Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA07_tierras_territorios/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

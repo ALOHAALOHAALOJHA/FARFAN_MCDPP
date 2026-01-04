@@ -885,18 +885,163 @@
   },
   "question_context": {
     "monolith_ref": "Q003",
-    "pregunta_completa": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos a programas, proyectos o intervenciones específicas del sector?",
+    "pregunta_completa": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a actualización o revisión del POT/EOT/PBOT, actualización catastral, legalización de asentamientos urbanos informales, saneamiento de la propiedad rural, regularización de baldíos, gestión de bancos de tierras municipales, Planes Parciales, estudios de conflicto de uso del suelo?",
     "sector_id": "PA07",
     "sector_name": "Tierras y territorios",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q3-PA07-REQ"
-    }
+      "emit_code": "ABORT-Q213-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q213-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0016"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q213-001",
+        "match_type": "REGEX",
+        "pattern": "BPIN|Banco de Proyectos|proyecto de inversión para desarrollo rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q213-002",
+        "match_type": "LITERAL",
+        "pattern": "recursos para catastro multipropósito|convenio con IGAC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q213-003",
+        "match_type": "REGEX",
+        "pattern": "presupuesto para el mejoramiento de vías terciarias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q213-004",
+        "match_type": "REGEX",
+        "pattern": "asignación para formalización de la propiedad rural|convenio con la ANT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q213-005",
+        "match_type": "REGEX",
+        "pattern": "inversión en distritos de riego|proyectos productivos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q213-006",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "numeric_parsing": {
+          "written_numbers": true,
+          "currency_format": "COLOMBIAN"
+        },
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0022"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q213-007",
+        "match_type": "LITERAL",
+        "pattern": "fuentes: SGP, recursos propios, regalías, cofinanciación INVIAS/ADR",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q213-008",
+        "match_type": "REGEX",
+        "pattern": "el presupuesto es suficiente para la meta de Km/Ha",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "asignacion_explicita"
+      },
+      {
+        "required": true,
+        "type": "suficiencia_justificada"
+      },
+      {
+        "required": true,
+        "type": "trazabilidad_ppi_bpin"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q183",
+    "sync_timestamp": "2026-01-04T17:55:49.209097Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA07_tierras_territorios/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

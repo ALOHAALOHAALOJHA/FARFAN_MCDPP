@@ -829,18 +829,120 @@
   },
   "question_context": {
     "monolith_ref": "Q023",
-    "pregunta_completa": "¿Los impactos del sector se alinean con marcos nacionales o globales y consideran riesgos externos que podrían impedir o revertir los logros esperados?",
+    "pregunta_completa": "¿Los impactos en desarrollo de niñez, adolescencia y juventud se alinean con marcos nacionales o globales y consideran riesgos externos (crisis económicas que aumentan trabajo infantil, violencias intrafamiliares en contextos de estrés, acceso a drogas facilitado por economías ilegales, falta de oportunidades laborales para jóvenes, cambios en política de primera infancia) que podrían impedir o revertir los logros esperados?",
     "sector_id": "PA06",
     "sector_name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q3-PA06-REQ"
-    }
+      "emit_code": "ABORT-Q203-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q203-000",
+        "match_type": "REGEX",
+        "pattern": "dado que es difícil medir las habilidades para la vida|para aproximar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q203-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0100"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q203-002",
+        "match_type": "REGEX",
+        "pattern": "la tasa de participación en programas de voluntariado como proxy de ciudadanía activa",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q203-003",
+        "match_type": "REGEX",
+        "pattern": "este proxy es validado por estudios de juventud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q203-004",
+        "match_type": "REGEX",
+        "pattern": "una limitación es que no captura el desarrollo de habilidades blandas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q203-005",
+        "match_type": "REGEX",
+        "pattern": "aunque imperfecto, este proxy nos da una señal de desarrollo de capacidades",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "documenta_validez"
+      },
+      {
+        "required": true,
+        "type": "proxy_para_intangibles"
+      },
+      {
+        "required": true,
+        "type": "reconoce_limitaciones"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q173",
+    "sync_timestamp": "2026-01-04T17:55:49.999473Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA06_ninez_adolescencia_juventud/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -830,18 +830,129 @@
   },
   "question_context": {
     "monolith_ref": "Q028",
-    "pregunta_completa": "¿El plan reconoce la complejidad del sector, identifica debilidades en su estrategia, y propone mecanismos para aprender y ajustar?",
+    "pregunta_completa": "¿El plan reconoce la complejidad y adaptabilidad del crimen organizado, identifica incertidumbres, y propone mecanismos de inteligencia contextual o análisis del delito (observatorios del delito, consejos de seguridad analíticos) para ajustar las estrategias operativas y preventivas?",
     "sector_id": "PA02",
     "sector_name": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q3-PA02-REQ"
-    }
+      "emit_code": "ABORT-Q088-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q088-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0071"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q088-001",
+        "match_type": "REGEX",
+        "pattern": "se requiere validar|es necesario probar si la estrategia funciona",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q088-002",
+        "match_type": "REGEX",
+        "pattern": "plan piloto en una vereda|fase experimental|prueba de concepto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q088-003",
+        "match_type": "REGEX",
+        "pattern": "testear el supuesto de la colaboración ciudadana",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q088-004",
+        "match_type": "REGEX",
+        "pattern": "validar la hipótesis de disuasión",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q088-005",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0065"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q088-006",
+        "match_type": "REGEX",
+        "pattern": "aprendizaje adaptativo|gestión adaptativa de la seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "propone_pilotos_o_pruebas"
+      },
+      {
+        "required": true,
+        "type": "reconoce_inconsistencias"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q058",
+    "sync_timestamp": "2026-01-04T17:55:50.249738Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA02_violencia_conflicto/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

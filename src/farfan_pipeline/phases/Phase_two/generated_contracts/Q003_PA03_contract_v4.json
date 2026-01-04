@@ -885,18 +885,163 @@
   },
   "question_context": {
     "monolith_ref": "Q003",
-    "pregunta_completa": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos a programas, proyectos o intervenciones específicas del sector?",
+    "pregunta_completa": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a programas de gestión de residuos sólidos (PGIRS), agua potable y saneamiento básico (PSMV), restauración ecológica, adaptación al cambio climático, fortalecimiento del CMGRD, sistemas de alerta temprana o reubicación de familias en zonas de alto riesgo?",
     "sector_id": "PA03",
     "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q3-PA03-REQ"
-    }
+      "emit_code": "ABORT-Q093-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q093-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0016"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q093-001",
+        "match_type": "REGEX",
+        "pattern": "BPIN|Banco de Proyectos|proyecto de inversión ambiental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q093-002",
+        "match_type": "REGEX",
+        "pattern": "recursos para el Plan Municipal de Gestión del Riesgo|PMGRD",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q093-003",
+        "match_type": "REGEX",
+        "pattern": "presupuesto para el Consejo Municipal de Gestión del Riesgo|CMGRD",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q093-004",
+        "match_type": "REGEX",
+        "pattern": "asignación para obras de mitigación|compra de predios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q093-005",
+        "match_type": "REGEX",
+        "pattern": "inversión en saneamiento básico|construcción de PTAR|acueducto rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q093-006",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "numeric_parsing": {
+          "written_numbers": true,
+          "currency_format": "COLOMBIAN"
+        },
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0022"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q093-007",
+        "match_type": "LITERAL",
+        "pattern": "fuentes: SGP-APSB, recursos propios, cofinanciación CAR, regalías",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q093-008",
+        "match_type": "REGEX",
+        "pattern": "transferencias del sector eléctrico|Ley 99",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "asignacion_explicita"
+      },
+      {
+        "required": true,
+        "type": "suficiencia_justificada"
+      },
+      {
+        "required": true,
+        "type": "trazabilidad_ppi_bpin"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q063",
+    "sync_timestamp": "2026-01-04T17:55:49.192403Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA03_ambiente_cambio_climatico/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

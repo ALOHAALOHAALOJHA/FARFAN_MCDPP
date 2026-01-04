@@ -899,18 +899,129 @@
   },
   "question_context": {
     "monolith_ref": "Q030",
-    "pregunta_completa": "¿El plan considera el contexto municipal específico del sector, reconoce grupos con necesidades diferenciadas, y explicita restricciones que condicionan las intervenciones?",
+    "pregunta_completa": "¿El plan considera el contexto municipal específico en migración (ubicación fronteriza o no, magnitud de población migrante, nacionalidades predominantes, patrones de asentamiento territorial, capacidad de servicios sociales, mercado laboral local, histórico de convivencia intercultural, presencia de organizaciones de migrantes), reconoce grupos con necesidades diferenciadas (niñez y adolescencia migrante, mujeres gestantes o cabeza de familia, adultos mayores, personas con discapacidad, población LGBTIQ+ migrante, víctimas de trata, solicitantes de refugio, migrantes indígenas, población pendular transfronteriza), y explicita restricciones (competencia limitada sobre política migratoria y regularización, capacidad presupuestal, saturación de servicios por magnitud de población, dependencia de decisiones de Migración Colombia, oportunidades laborales limitadas en economía local, tensiones con población vulnerable local) que condicionan las intervenciones de integración?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q5-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q060-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q060-000",
+        "match_type": "REGEX",
+        "pattern": "enfoque diferencial|enfoque de género|enfoque etario",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q060-001",
+        "match_type": "REGEX",
+        "pattern": "Niños, Niñas y Adolescentes (NNA) no acompañados o separados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q060-002",
+        "match_type": "REGEX",
+        "pattern": "mujeres gestantes o lactantes|víctimas de VBG en la ruta migratoria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q060-003",
+        "match_type": "REGEX",
+        "pattern": "caminantes|población en tránsito con alta vulnerabilidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q060-004",
+        "match_type": "REGEX",
+        "pattern": "restricciones de seguridad en la ruta (ej. Darién)|presencia de grupos criminales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q060-005",
+        "match_type": "REGEX",
+        "pattern": "contexto de frontera|dinámicas de economía informal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q060-006",
+        "match_type": "REGEX",
+        "pattern": "estrategias territorializadas|acciones adaptadas al tipo de flujo (tránsito vs. permanencia)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_contextual"
+      },
+      {
+        "required": true,
+        "type": "enfoque_diferencial"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q300",
+    "sync_timestamp": "2026-01-04T17:55:50.369899Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

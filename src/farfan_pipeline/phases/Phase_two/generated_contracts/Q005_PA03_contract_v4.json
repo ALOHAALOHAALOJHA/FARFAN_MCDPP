@@ -897,18 +897,163 @@
   },
   "question_context": {
     "monolith_ref": "Q005",
-    "pregunta_completa": "¿El plan justifica el alcance de sus intervenciones mencionando el marco normativo aplicable o reconociendo explícitamente qué competencias son municipales directas, cuáles son concurrentes y cuáles requieren articulación?",
+    "pregunta_completa": "¿El plan justifica el alcance de sus intervenciones ambientales, climáticas y de gestión del riesgo mencionando el marco normativo (ej. Ley 99, Ley 1523 de Gestión del Riesgo, Acuerdo de París) o reconociendo explícitamente qué competencias son municipales directas (PGIRS, agua potable, CMGRD) y cuáles requieren articulación con la CAR, el departamento o el nivel nacional?",
     "sector_id": "PA03",
     "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q5-PA03-REQ"
-    }
+      "emit_code": "ABORT-Q095-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q095-000",
+        "match_type": "REGEX",
+        "pattern": "en el marco de la Ley 99 de 1993|Ley 1523 de 2012|Ley 388 de 1997",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q095-001",
+        "match_type": "REGEX",
+        "pattern": "Decreto 1076 de 2015|Decreto 1077 de 2015",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q095-002",
+        "match_type": "REGEX",
+        "pattern": "Política Nacional de Gestión del Riesgo de Desastres",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q095-003",
+        "match_type": "REGEX",
+        "pattern": "competencia de la CAR en|responsabilidad del municipio en",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q095-004",
+        "match_type": "REGEX",
+        "pattern": "conflictos por uso del suelo|determinantes ambientales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q095-005",
+        "match_type": "REGEX",
+        "pattern": "límite fiscal|disponibilidad de recursos para grandes obras",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q095-006",
+        "match_type": "REGEX",
+        "pattern": "restricción presupuestal para la compra de predios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q095-007",
+        "match_type": "REGEX",
+        "pattern": "complejidad técnica de los estudios de riesgo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q095-008",
+        "match_type": "REGEX",
+        "pattern": "durante el cuatrienio|plazo de ejecución del POT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "coherencia_demostrada"
+      },
+      {
+        "required": true,
+        "type": "restricciones_legales"
+      },
+      {
+        "required": true,
+        "type": "restricciones_presupuestales"
+      },
+      {
+        "required": true,
+        "type": "restricciones_tecnicas"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q065",
+    "sync_timestamp": "2026-01-04T17:55:49.270771Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA03_ambiente_cambio_climatico/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

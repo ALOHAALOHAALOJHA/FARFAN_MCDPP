@@ -885,18 +885,129 @@
   },
   "question_context": {
     "monolith_ref": "Q024",
-    "pregunta_completa": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados o reconociendo límites de lo que el municipio puede lograr?",
+    "pregunta_completa": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados (ej. gentrificación por mejoras ambientales, desplazamiento de comunidades en reubicaciones, dependencia de recursos externos no sostenibles, trade-offs entre desarrollo económico y protección ambiental), o reconoce explícitamente los límites (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado a...', 'depende de la CAR', 'requiere articulación nacional')?",
     "sector_id": "PA03",
     "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q4-PA03-REQ"
-    }
+      "emit_code": "ABORT-Q114-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q114-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0110"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q114-001",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0093"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q114-002",
+        "match_type": "REGEX",
+        "pattern": "cambios en los patrones de lluvia|Fenómeno de El Niño/La Niña",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q114-003",
+        "match_type": "REGEX",
+        "pattern": "crisis de biodiversidad a gran escala|cambios en el uso del suelo a nivel regional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q114-004",
+        "match_type": "REGEX",
+        "pattern": "estos factores podrían anular los esfuerzos de adaptación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q114-005",
+        "match_type": "LITERAL",
+        "pattern": "el mecanismo causal es vulnerable a|sensible a cambios macroclimáticos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q114-006",
+        "match_type": "REGEX",
+        "pattern": "estrategias de resiliencia territorial|plan de adaptación de largo plazo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "alineacion_marcos"
+      },
+      {
+        "required": true,
+        "type": "riesgos_sistemicos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q084",
+    "sync_timestamp": "2026-01-04T17:55:50.023285Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA03_ambiente_cambio_climatico/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

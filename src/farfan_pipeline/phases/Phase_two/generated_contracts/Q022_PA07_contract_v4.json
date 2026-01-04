@@ -893,18 +893,120 @@
   },
   "question_context": {
     "monolith_ref": "Q022",
-    "pregunta_completa": "¿Se utilizan índices reconocidos o indicadores proxy para medir impactos del sector, justificando por qué son adecuados?",
+    "pregunta_completa": "¿Se utilizan índices (ej. Índice de Ordenamiento Territorial, Índice de Gini de tierras, Índice de Formalidad Predial) o indicadores proxy para medir impactos en ordenamiento territorial y equidad en acceso a tierras, justificando por qué son adecuados para capturar transformaciones estructurales en organización espacial y distribución de la propiedad? Cuando un impacto es difícil de medir directamente (ej. 'apropiación social del ordenamiento', 'cultura de legalidad predial', 'seguridad jurídica percibida'), ¿se explica la validez y limitaciones del indicador proxy utilizado (ej. 'porcentaje de solicitudes de licencias urbanísticas conformes al POT', 'reducción de litigios por linderos', 'aumento de transacciones inmobiliarias formales')?",
     "sector_id": "PA07",
     "sector_name": "Tierras y territorios",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q2-PA07-REQ"
-    }
+      "emit_code": "ABORT-Q232-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q232-000",
+        "match_type": "REGEX",
+        "pattern": "Índice de Competitividad|Índice de Pobreza Multidimensional Rural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q232-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0072"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q232-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0099"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q232-003",
+        "match_type": "REGEX",
+        "pattern": "el valor agregado agropecuario como proxy de la competitividad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q232-004",
+        "match_type": "REGEX",
+        "pattern": "la tasa de migración neta rural como proxy del arraigo territorial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q232-005",
+        "match_type": "REGEX",
+        "pattern": "este indicador es válido porque refleja|captura las dinámicas de desarrollo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "justifica_validez"
+      },
+      {
+        "required": true,
+        "type": "usa_indices_compuestos"
+      },
+      {
+        "required": true,
+        "type": "usa_proxies"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q202",
+    "sync_timestamp": "2026-01-04T17:55:49.964654Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA07_tierras_territorios/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

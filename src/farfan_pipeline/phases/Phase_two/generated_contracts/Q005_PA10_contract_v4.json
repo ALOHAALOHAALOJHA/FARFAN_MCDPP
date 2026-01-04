@@ -897,18 +897,163 @@
   },
   "question_context": {
     "monolith_ref": "Q005",
-    "pregunta_completa": "¿El plan justifica el alcance de sus intervenciones mencionando el marco normativo aplicable o reconociendo explícitamente qué competencias son municipales directas, cuáles son concurrentes y cuáles requieren articulación?",
+    "pregunta_completa": "¿El plan justifica el alcance de sus intervenciones reconociendo explícitamente que la política migratoria, el control fronterizo, la expedición de visas y permisos, y los procedimientos de regularización o deportación son competencia nacional de Migración Colombia y el Ministerio de Relaciones Exteriores, mientras las competencias municipales se centran en garantizar acceso a servicios sociales básicos independiente de estatus migratorio (salud urgencias, educación preescolar, básica y media), caracterización territorial de población migrante, rutas de orientación y articulación con entidades nacionales, convivencia e integración local, empleabilidad e inclusión económica, y protección de víctimas de trata, mencionando el marco normativo aplicable (Ley 1465 de 2011, CONPES 3950 de 2018, resoluciones de Migración Colombia sobre PEP/PPT, sentencias de tutela sobre derechos fundamentales)?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q5-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q035-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q035-000",
+        "match_type": "REGEX",
+        "pattern": "en el marco del Estatuto Temporal de Protección para Migrantes Venezolanos|ETPV|PPT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q035-001",
+        "match_type": "REGEX",
+        "pattern": "Ley 2136 de 2021|Política Integral Migratoria|CONPES 3950",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q035-002",
+        "match_type": "REGEX",
+        "pattern": "competencia del municipio en asistencia humanitaria y complementaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q035-003",
+        "match_type": "REGEX",
+        "pattern": "la regularización migratoria es competencia de Migración Colombia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q035-004",
+        "match_type": "REGEX",
+        "pattern": "la determinación de la condición de refugiado es de la CONARE/Cancillería",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q035-005",
+        "match_type": "REGEX",
+        "pattern": "recursos propios insuficientes|alta dependencia de la cooperación internacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q035-006",
+        "match_type": "REGEX",
+        "pattern": "capacidad de los servicios sociales superada por la demanda",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q035-007",
+        "match_type": "REGEX",
+        "pattern": "durante el cuatrienio|plazo de la estrategia de integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q035-008",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0034"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "coherencia_demostrada"
+      },
+      {
+        "required": true,
+        "type": "restricciones_competencias"
+      },
+      {
+        "required": true,
+        "type": "restricciones_legales"
+      },
+      {
+        "required": true,
+        "type": "restricciones_presupuestales"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q275",
+    "sync_timestamp": "2026-01-04T17:55:49.295570Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -830,18 +830,116 @@
   },
   "question_context": {
     "monolith_ref": "Q010",
-    "pregunta_completa": "¿El plan describe explícitamente cómo las actividades del sector se complementan, refuerzan mutuamente o siguen una secuencia lógica?",
+    "pregunta_completa": "¿El plan describe explícitamente cómo las actividades de ordenamiento y tierras se complementan o siguen una secuencia lógica (ej. actualización catastral + actualización POT + licencias urbanísticas = ordenamiento efectivo; o identificación de baldíos + clarificación + adjudicación + UAF productivas = acceso a tierra; o delimitación de expansión + Planes Parciales + legalización = crecimiento urbano ordenado), evidenciando una estrategia articulada (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación')?",
     "sector_id": "PA07",
     "sector_name": "Tierras y territorios",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q5-PA07-REQ"
-    }
+      "emit_code": "ABORT-Q220-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q220-000",
+        "match_type": "REGEX",
+        "pattern": "estrategia integral de desarrollo rural|de manera articulada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q220-001",
+        "match_type": "REGEX",
+        "pattern": "la formalización se complementa con el acceso a crédito y asistencia técnica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q220-002",
+        "match_type": "REGEX",
+        "pattern": "sinergia entre la mejora de vías y la comercialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q220-003",
+        "match_type": "REGEX",
+        "pattern": "la actualización catastral es prerrequisito para fortalecer el impuesto predial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q220-004",
+        "match_type": "REGEX",
+        "pattern": "en una primera fase se formalizará, luego se entregarán proyectos productivos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q220-005",
+        "match_type": "REGEX",
+        "pattern": "la estrategia combina seguridad jurídica, infraestructura y productividad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "complementariedad_explicita"
+      },
+      {
+        "required": true,
+        "type": "secuenciacion_logica"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q190",
+    "sync_timestamp": "2026-01-04T17:55:49.475499Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA07_tierras_territorios/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

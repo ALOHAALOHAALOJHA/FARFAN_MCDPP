@@ -885,18 +885,129 @@
   },
   "question_context": {
     "monolith_ref": "Q024",
-    "pregunta_completa": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados o reconociendo límites de lo que el municipio puede lograr?",
+    "pregunta_completa": "¿El plan evalúa si la ambición del impacto en integración migratoria es realista, considerando posibles efectos no deseados (ej. tensiones con población vulnerable local por percepción de competencia por servicios, dependencia de programas asistenciales sin transición a autonomía económica, concentración territorial que dificulta integración, estigmatización por visibilización, migración secundaria atraída por servicios municipales, burocratización de rutas que no se traduce en regularización efectiva por cuellos de botella en Migración Colombia), o reconoce explícitamente los límites de lo que el municipio puede lograr sin política migratoria nacional coherente, recursos suficientes y oportunidades económicas en el territorio (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado a integración local', 'depende de regularización por Migración Colombia', 'requiere política migratoria nacional favorable', 'necesita crecimiento económico local')?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q4-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q054-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q054-000",
+        "match_type": "REGEX",
+        "pattern": "visión de largo plazo del Pacto Mundial sobre Migración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q054-001",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0092"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q054-002",
+        "match_type": "REGEX",
+        "pattern": "cambios abruptos en la política migratoria del país de origen o de Colombia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q054-003",
+        "match_type": "LITERAL",
+        "pattern": "crisis económica regional que intensifique los flujos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q054-004",
+        "match_type": "REGEX",
+        "pattern": "estos factores podrían revertir los avances en integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q054-005",
+        "match_type": "REGEX",
+        "pattern": "el mecanismo causal es vulnerable a|sensible a las decisiones de política exterior",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q054-006",
+        "match_type": "REGEX",
+        "pattern": "estrategias de resiliencia|flexibilidad en la respuesta humanitaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "alineacion_marcos"
+      },
+      {
+        "required": true,
+        "type": "riesgos_sistemicos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q294",
+    "sync_timestamp": "2026-01-04T17:55:50.056644Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

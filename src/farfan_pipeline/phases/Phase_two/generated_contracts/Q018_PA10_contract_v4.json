@@ -965,18 +965,120 @@
   },
   "question_context": {
     "monolith_ref": "Q018",
-    "pregunta_completa": "¿La ambición de las metas de resultado se justifica en función de recursos asignados, capacidad institucional, articulación con otros niveles de gobierno?",
+    "pregunta_completa": "¿La ambición de las metas de resultado en integración migratoria (ej. '100% de niños migrantes con acceso a educación', 'aumento del 50% en regularización migratoria', 'reducción del 70% en casos de xenofobia', 'integración laboral del 60% de migrantes en programas') se justifica en función de recursos asignados, capacidad institucional municipal, nivel de articulación con Migración Colombia y entidades nacionales, contexto de política migratoria nacional, o se compara con municipios receptores de categoría similar, reconociendo explícitamente que la regularización migratoria depende de decisiones de Migración Colombia?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q3-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q048-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q048-000",
+        "match_type": "REGEX",
+        "pattern": "meta ambiciosa pero factible|meta realista dado el flujo migratorio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q048-001",
+        "match_type": "REGEX",
+        "pattern": "la meta se justifica por los recursos de cooperación gestionados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q048-002",
+        "match_type": "REGEX",
+        "pattern": "con la inversión de X se espera lograr la afiliación de Y personas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q048-003",
+        "match_type": "REGEX",
+        "pattern": "la capacidad del sistema de salud local permite absorber esta nueva población",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q048-004",
+        "match_type": "REGEX",
+        "pattern": "en experiencias similares de Cúcuta|Maicao|otras ciudades fronterizas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q048-005",
+        "match_type": "REGEX",
+        "pattern": "benchmark|referente de ACNUR/OIM|meta del PND para migración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "evidencia_comparada"
+      },
+      {
+        "required": true,
+        "type": "justificacion_capacidad"
+      },
+      {
+        "required": true,
+        "type": "justificacion_recursos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q288",
+    "sync_timestamp": "2026-01-04T17:55:49.830222Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

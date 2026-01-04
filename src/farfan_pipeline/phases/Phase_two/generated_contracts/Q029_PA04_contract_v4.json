@@ -897,18 +897,144 @@
   },
   "question_context": {
     "monolith_ref": "Q029",
-    "pregunta_completa": "¿Se describe un sistema de monitoreo para el sector que incluya mecanismos de alerta temprana, retroalimentación con entidades especializadas, participación de población beneficiaria?",
+    "pregunta_completa": "¿Se describe un sistema de monitoreo que incluya indicadores transversales a múltiples subsectores (ej. Índice de Pobreza Multidimensional desagregado, indicadores del tablero de mando sectorial), mecanismos de coordinación intersectorial (comités técnicos que articulen salud-educación-cultura-empleo-vivienda), retroalimentación con nivel departamental o nacional (MSPS, MEN, MinCultura), participación de población beneficiaria, y capacidad de aprendizaje para adaptar estrategias ante cambios en determinantes sociales?",
     "sector_id": "PA04",
     "sector_name": "Derechos económicos, sociales y culturales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q4-PA04-REQ"
-    }
+      "emit_code": "ABORT-Q149-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q149-000",
+        "match_type": "REGEX",
+        "pattern": "sistema de seguimiento y evaluación|M&E social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "FUENTE_OFICIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q149-001",
+        "match_type": "NER_OR_REGEX",
+        "pattern": "monitoreo a través de los sistemas de información (SIMAT, SIVIGILA)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q149-002",
+        "match_type": "REGEX",
+        "pattern": "alerta temprana sobre deserción|alerta por brote epidemiológico",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q149-003",
+        "match_type": "REGEX",
+        "pattern": "mecanismo de ajuste del PAE|medida correctiva en la focalización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q149-004",
+        "match_type": "REGEX",
+        "pattern": "retroalimentación desde los usuarios|veedurías ciudadanas en salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q149-005",
+        "match_type": "REGEX",
+        "pattern": "ciclos de aprendizaje|reuniones del Consejo de Política Social para revisar avances",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q149-006",
+        "match_type": "REGEX",
+        "pattern": "lecciones aprendidas en la implementación de programas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "ciclos_aprendizaje"
+      },
+      {
+        "required": true,
+        "type": "mecanismos_correccion"
+      },
+      {
+        "required": true,
+        "type": "sistema_monitoreo"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q119",
+    "sync_timestamp": "2026-01-04T17:55:50.301918Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

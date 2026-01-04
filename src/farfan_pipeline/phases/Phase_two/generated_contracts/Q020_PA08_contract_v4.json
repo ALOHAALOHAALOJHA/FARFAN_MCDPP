@@ -829,18 +829,107 @@
   },
   "question_context": {
     "monolith_ref": "Q020",
-    "pregunta_completa": "¿El plan declara la alineación de sus resultados del sector con el Plan Nacional de Desarrollo, los ODS, marcos normativos nacionales o políticas sectoriales relevantes?",
+    "pregunta_completa": "¿El plan declara la alineación de sus resultados de protección de líderes con marcos superiores como el PND, los Acuerdos de Paz o sentencias de la Corte Constitucional?",
     "sector_id": "PA08",
     "sector_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q5-PA08-REQ"
-    }
+      "emit_code": "ABORT-Q260-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q260-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0023"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q260-001",
+        "match_type": "REGEX",
+        "pattern": "contribuye al Punto 2.1 del Acuerdo de Paz|Garantías de Seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q260-002",
+        "match_type": "REGEX",
+        "pattern": "en cumplimiento de las Alertas Tempranas de la Defensoría",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q260-003",
+        "match_type": "REGEX",
+        "pattern": "acata las órdenes de la Corte Constitucional en sentencias sobre líderes",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q260-004",
+        "match_type": "REGEX",
+        "pattern": "implementación del Plan de Acción Oportuna|PAO",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "alineacion_acuerdo_paz"
+      },
+      {
+        "required": true,
+        "type": "alineacion_jurisprudencia"
+      },
+      {
+        "required": true,
+        "type": "alineacion_pnd"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q230",
+    "sync_timestamp": "2026-01-04T17:55:49.897728Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA08_lideres_defensores/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

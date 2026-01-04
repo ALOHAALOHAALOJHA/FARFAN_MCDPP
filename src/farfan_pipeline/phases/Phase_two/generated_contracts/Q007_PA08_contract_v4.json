@@ -897,18 +897,159 @@
   },
   "question_context": {
     "monolith_ref": "Q007",
-    "pregunta_completa": "¿La descripción de actividades especifica el instrumento, la población o zona objetivo, y explica cómo la actividad contribuye al resultado esperado?",
+    "pregunta_completa": "¿La descripción de actividades especifica el instrumento ('mediante protocolos de atención inmediata', 'a través de Comités Municipales de Garantías', 'con campañas de visibilización del liderazgo social', 'mediante articulación con la UNP para análisis de riesgo', 'a través de rutas de protección colectiva'), la población objetivo ('líderes de restitución de tierras', 'defensores ambientales', 'líderes comunitarios en zonas de conflictividad', 'defensoras de derechos de mujeres', 'líderes de víctimas del conflicto') y explica cómo la actividad contribuye al resultado esperado ('para reducir tiempos de respuesta ante amenazas', 'porque genera interlocución directa con autoridades', 'con el fin de prevenir agresiones mediante reconocimiento público', 'para garantizar valoración oportuna de riesgo')?",
     "sector_id": "PA08",
     "sector_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q2-PA08-REQ"
-    }
+      "emit_code": "ABORT-Q247-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q247-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0080"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q247-001",
+        "match_type": "REGEX",
+        "pattern": "medidas de protección blandas|cursos de autoprotección|rondas policiales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q247-002",
+        "match_type": "REGEX",
+        "pattern": "gestión de medidas materiales ante la UNP|esquemas de seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q247-003",
+        "match_type": "REGEX",
+        "pattern": "campañas de no estigmatización|reconocimiento público",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q247-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0086"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q247-005",
+        "match_type": "REGEX",
+        "pattern": "líderes sociales|defensores ambientales|lideresas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q247-006",
+        "match_type": "REGEX",
+        "pattern": "firmantes del Acuerdo de Paz|líderes comunales (JAC)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q247-007",
+        "match_type": "REGEX",
+        "pattern": "con el fin de disuadir la amenaza|para reducir la vulnerabilidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q247-008",
+        "match_type": "LITERAL",
+        "pattern": "lo cual genera un entorno más seguro|porque cambia la narrativa estigmatizante",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "instrumento_especificado"
+      },
+      {
+        "required": true,
+        "type": "logica_causal_explicita"
+      },
+      {
+        "required": true,
+        "type": "poblacion_objetivo_definida"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q217",
+    "sync_timestamp": "2026-01-04T17:55:49.365032Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA08_lideres_defensores/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

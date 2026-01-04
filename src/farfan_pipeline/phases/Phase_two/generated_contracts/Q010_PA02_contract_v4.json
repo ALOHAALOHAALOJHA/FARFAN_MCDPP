@@ -830,18 +830,116 @@
   },
   "question_context": {
     "monolith_ref": "Q010",
-    "pregunta_completa": "¿El plan describe explícitamente cómo las actividades del sector se complementan, refuerzan mutuamente o siguen una secuencia lógica?",
+    "pregunta_completa": "¿El plan describe explícitamente cómo se articulan las medidas de control y coerción (Policía, justicia) con las estrategias de prevención social y situacional (iluminación, gestión de conflictos, oferta social), evidenciando una visión integral de la seguridad y la convivencia?",
     "sector_id": "PA02",
     "sector_name": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q5-PA02-REQ"
-    }
+      "emit_code": "ABORT-Q070-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q070-000",
+        "match_type": "REGEX",
+        "pattern": "estrategia integral de seguridad y protección|de manera articulada",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q070-001",
+        "match_type": "LITERAL",
+        "pattern": "la prevención se complementa con|sinergia entre",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q070-002",
+        "match_type": "REGEX",
+        "pattern": "la respuesta a las alertas tempranas activa las rutas de protección",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q070-003",
+        "match_type": "LITERAL",
+        "pattern": "la asistencia humanitaria es el primer paso para la estabilización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q070-004",
+        "match_type": "REGEX",
+        "pattern": "en una primera fase... y luego...",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q070-005",
+        "match_type": "REGEX",
+        "pattern": "la estrategia combina prevención, protección y garantías de no repetición",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "complementariedad_explicita"
+      },
+      {
+        "required": true,
+        "type": "secuenciacion_logica"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q040",
+    "sync_timestamp": "2026-01-04T17:55:49.454805Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA02_violencia_conflicto/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

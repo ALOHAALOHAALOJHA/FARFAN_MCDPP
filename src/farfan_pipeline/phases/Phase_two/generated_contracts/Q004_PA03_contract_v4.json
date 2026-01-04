@@ -885,18 +885,180 @@
   },
   "question_context": {
     "monolith_ref": "Q004",
-    "pregunta_completa": "¿El plan identifica las entidades responsables del sector, describe sus capacidades y señala limitaciones institucionales o necesidades de articulación?",
+    "pregunta_completa": "¿El plan identifica las entidades responsables (ej. Secretaría de Ambiente, Oficina de Gestión del Riesgo, CMGRD, empresas de servicios públicos), describe sus capacidades (equipos de monitoreo, personal especializado, maquinaria para emergencias, protocolos de respuesta) y señala limitaciones o necesidades de articulación con la CAR, el departamento o la UNGRD?",
     "sector_id": "PA03",
     "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q4-PA03-REQ"
-    }
+      "emit_code": "ABORT-Q094-REQ"
+    },
+    "patterns": [
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q094-000",
+        "match_type": "REGEX",
+        "pattern": "Consejo Municipal de Gestión del Riesgo de Desastres|CMGRD",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q094-001",
+        "match_type": "REGEX",
+        "pattern": "Secretaría de Ambiente|Oficina de Gestión del Riesgo|UMATA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q094-002",
+        "match_type": "REGEX",
+        "pattern": "Cuerpo de Bomberos|Defensa Civil|Cruz Roja",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q094-003",
+        "match_type": "REGEX",
+        "pattern": "capacidad técnica|personal idóneo para la gestión ambiental",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q094-004",
+        "match_type": "REGEX",
+        "pattern": "Plan de Ordenamiento Territorial|POT|EOT|PBOT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q094-005",
+        "match_type": "REGEX",
+        "pattern": "Plan Municipal de Gestión del Riesgo|PMGRD|Planes de Contingencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q094-006",
+        "match_type": "REGEX",
+        "pattern": "sistema de monitoreo de calidad del aire/agua|red hidrometeorológica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q094-007",
+        "match_type": "REGEX",
+        "pattern": "articulación con la CAR|coordinación con la UNGRD",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q094-008",
+        "match_type": "REGEX",
+        "pattern": "falta de equipos para atención de emergencias|necesidad de fortalecer",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q094-009",
+        "match_type": "REGEX",
+        "pattern": "cuello de botella|limitación en la capacidad de respuesta|barrera",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "cuellos_botella"
+      },
+      {
+        "required": true,
+        "type": "datos_sistemas"
+      },
+      {
+        "required": true,
+        "type": "gobernanza"
+      },
+      {
+        "required": true,
+        "type": "procesos"
+      },
+      {
+        "required": true,
+        "type": "talento_humano"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q064",
+    "sync_timestamp": "2026-01-04T17:55:49.231762Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA03_ambiente_cambio_climatico/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

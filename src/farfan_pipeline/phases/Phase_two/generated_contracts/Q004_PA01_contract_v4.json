@@ -885,18 +885,198 @@
   },
   "question_context": {
     "monolith_ref": "Q004",
-    "pregunta_completa": "¿El plan identifica las entidades responsables del sector, describe sus capacidades y señala limitaciones institucionales o necesidades de articulación?",
+    "pregunta_completa": "¿El plan identifica las entidades responsables de los derechos de las mujeres e igualdad de género (ej. Secretaría de la Mujer o Equidad de Género, Comisarías de Familia, Secretaría de Desarrollo Social, Secretaría de Salud, Consejo Municipal de Mujeres, enlaces de género en secretarías), describe sus capacidades (equipos especializados en VBG, protocolos de atención con enfoque de género, casas de refugio, programas de empleabilidad para mujeres, sistemas de información sobre violencias, articulación con Fiscalía y Medicina Legal) y señala limitaciones o necesidades de articulación con la Fiscalía, comisarías de familia del ICBF, jueces para medidas de protección, IPS para salud sexual y reproductiva, o entidades departamentales y nacionales?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q4-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q004-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q004-000",
+        "match_type": "REGEX",
+        "pattern": "Secretaría de la Mujer|Oficina de la Mujer|Enlace de Género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q004-001",
+        "match_type": "REGEX",
+        "pattern": "Comisaría de Familia|equipo psicosocial|abogado|trabajador social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "negative_filter": {
+          "required_co_occurrence": {
+            "terms": [
+              "víctima",
+              "reparación",
+              "derechos humanos",
+              "defensa"
+            ],
+            "proximity": 3
+          }
+        },
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q004-002",
+        "match_type": "REGEX",
+        "pattern": "capacidad instalada|talento humano|personal idóneo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "element_tags": [
+          "capacidad_institucional_realista"
+        ],
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q004-003",
+        "match_type": "REGEX",
+        "pattern": "ruta de atención a víctimas de VBG|protocolo de atención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q004-004",
+        "match_type": "REGEX",
+        "pattern": "sistema de información de casos de VBG|registro de feminicidios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q004-005",
+        "match_type": "REGEX",
+        "pattern": "Observatorio de Asuntos de Género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q004-006",
+        "match_type": "REGEX",
+        "pattern": "Mesa Municipal de Mujeres|Consejo Consultivo de Mujeres|Comité de seguimiento Ley 1257",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "FUENTE_OFICIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q004-007",
+        "match_type": "NER_OR_REGEX",
+        "pattern": "articulación interinstitucional|coordinación con Fiscalía y Policía",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "element_tags": [
+          "capacidad_institucional_realista"
+        ],
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q004-008",
+        "match_type": "REGEX",
+        "pattern": "cuello de botella|limitación institucional|barrera de acceso|falta de capacidad|necesidad de fortalecimiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "element_tags": [
+          "capacidad_institucional_realista"
+        ],
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "cuellos_botella"
+      },
+      {
+        "required": true,
+        "type": "datos_sistemas"
+      },
+      {
+        "required": true,
+        "type": "gobernanza"
+      },
+      {
+        "required": true,
+        "type": "procesos"
+      },
+      {
+        "required": true,
+        "type": "talento_humano"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q004",
+    "sync_timestamp": "2026-01-04T17:55:49.225096Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

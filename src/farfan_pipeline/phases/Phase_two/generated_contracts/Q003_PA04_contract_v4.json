@@ -885,18 +885,163 @@
   },
   "question_context": {
     "monolith_ref": "Q003",
-    "pregunta_completa": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos a programas, proyectos o intervenciones específicas del sector?",
+    "pregunta_completa": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a infraestructura educativa, Programa de Alimentación Escolar (PAE), transporte escolar, mejoramiento de IPS municipales, vivienda de interés social (VIS), mejoramiento de vivienda, fomento al empleo o emprendimiento, fortalecimiento de bibliotecas o casas de cultura, recuperación de patrimonio cultural?",
     "sector_id": "PA04",
     "sector_name": "Derechos económicos, sociales y culturales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q3-PA04-REQ"
-    }
+      "emit_code": "ABORT-Q123-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q123-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0016"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q123-001",
+        "match_type": "REGEX",
+        "pattern": "BPIN|Banco de Proyectos|proyecto de inversión social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q123-002",
+        "match_type": "REGEX",
+        "pattern": "recursos del Sistema General de Participaciones|SGP|destinación específica",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q123-003",
+        "match_type": "REGEX",
+        "pattern": "presupuesto para infraestructura educativa|mejoramiento de hospitales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q123-004",
+        "match_type": "REGEX",
+        "pattern": "asignación para subsidios de vivienda|proyectos VIS/VIP",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q123-005",
+        "match_type": "REGEX",
+        "pattern": "inversión en el Programa de Alimentación Escolar|PAE",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q123-006",
+        "match_type": "REGEX",
+        "pattern": "recursos de cofinanciación de los Ministerios",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q123-007",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "numeric_parsing": {
+          "written_numbers": true,
+          "currency_format": "COLOMBIAN"
+        },
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0022"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q123-008",
+        "match_type": "REGEX",
+        "pattern": "el presupuesto es suficiente para|análisis de suficiencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "asignacion_explicita"
+      },
+      {
+        "required": true,
+        "type": "suficiencia_justificada"
+      },
+      {
+        "required": true,
+        "type": "trazabilidad_ppi_bpin"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q093",
+    "sync_timestamp": "2026-01-04T17:55:49.195410Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

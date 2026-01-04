@@ -885,18 +885,191 @@
   },
   "question_context": {
     "monolith_ref": "Q004",
-    "pregunta_completa": "¿El plan identifica las entidades responsables del sector, describe sus capacidades y señala limitaciones institucionales o necesidades de articulación?",
+    "pregunta_completa": "¿El plan identifica las entidades municipales responsables de la gestión de calabozos y articulación con sistema penitenciario (ej. Secretaría de Gobierno, Inspecciones de Policía, Personería Municipal, Comisarías de Familia para adolescentes en SRPA, Secretaría de Desarrollo Social para reintegración), describe sus capacidades (protocolos de detención administrativa, registros de personas retenidas, inspectores de policía capacitados en debido proceso, enlaces con defensorías públicas, programas de empleabilidad post-penitenciaria) y señala limitaciones o necesidades de articulación con el INPEC, la Defensoría del Pueblo, el Ministerio de Justicia o las defensorías públicas?",
     "sector_id": "PA09",
     "sector_name": "Crisis de derechos de personas privadas de la libertad",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q4-PA09-REQ"
-    }
+      "emit_code": "ABORT-Q274-REQ"
+    },
+    "patterns": [
+      {
+        "category": "FUENTE_OFICIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q274-000",
+        "match_type": "NER_OR_REGEX",
+        "pattern": "Secretaría de Gobierno|Comando de Policía Municipal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "entity_type": "ORG",
+        "glossary_metadata": {
+          "full_name": "TBD",
+          "legal_mandate": "TBD",
+          "jurisdiction": "National",
+          "founding_year": "TBD"
+        },
+        "synonym_clusters": [
+          "functional_description",
+          "historical_name"
+        ],
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q274-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0014"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q274-002",
+        "match_type": "REGEX",
+        "pattern": "Secretaría de Salud|ESE Hospital",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q274-003",
+        "match_type": "REGEX",
+        "pattern": "capacidad instalada en centros de detención transitoria|cupos disponibles",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q274-004",
+        "match_type": "REGEX",
+        "pattern": "protocolo para el traslado de PPL|ruta de atención en salud",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q274-005",
+        "match_type": "REGEX",
+        "pattern": "sistema de información de la población reclusa local",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q274-006",
+        "match_type": "REGEX",
+        "pattern": "Comité de seguimiento al sistema penitenciario y carcelario",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q274-007",
+        "match_type": "REGEX",
+        "pattern": "articulación con el INPEC|convenio con la USPEC|coordinación con la rama judicial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q274-008",
+        "match_type": "REGEX",
+        "pattern": "falta de infraestructura|insuficiencia de cupos|limitada capacidad de la Personería",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q274-009",
+        "match_type": "REGEX",
+        "pattern": "cuello de botella|barrera de acceso a la justicia|limitaciones de competencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "cuellos_botella"
+      },
+      {
+        "required": true,
+        "type": "gobernanza"
+      },
+      {
+        "required": true,
+        "type": "infraestructura_fisica"
+      },
+      {
+        "required": true,
+        "type": "procesos"
+      },
+      {
+        "required": true,
+        "type": "talento_humano"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q244",
+    "sync_timestamp": "2026-01-04T17:55:49.256326Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA09_crisis_PPL/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

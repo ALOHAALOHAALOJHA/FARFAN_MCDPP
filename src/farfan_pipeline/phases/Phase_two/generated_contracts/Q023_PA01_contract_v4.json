@@ -829,18 +829,157 @@
   },
   "question_context": {
     "monolith_ref": "Q023",
-    "pregunta_completa": "¿Los impactos del sector se alinean con marcos nacionales o globales y consideran riesgos externos que podrían impedir o revertir los logros esperados?",
+    "pregunta_completa": "¿Los impactos en igualdad de género se alinean con marcos nacionales e internacionales y consideran riesgos externos (backlash o retrocesos en derechos de las mujeres, crisis económicas que aumentan brechas de género, recortes presupuestales en políticas de igualdad, debilitamiento de marcos normativos de protección, aumento de discursos conservadores o fundamentalistas, crisis de cuidado por envejecimiento poblacional, impunidad en sistema de justicia que debilita protección) que podrían impedir o revertir los logros de igualdad de género esperados?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q3-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q023-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q023-000",
+        "match_type": "REGEX",
+        "pattern": "dado que es difícil medir|para aproximar la medición de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q023-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0100"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q023-002",
+        "match_type": "REGEX",
+        "pattern": "encuestas de percepción sobre roles de género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q023-003",
+        "match_type": "REGEX",
+        "pattern": "este proxy es validado por estudios de|evidencia internacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q023-004",
+        "match_type": "REGEX",
+        "pattern": "una limitación de este indicador es que no captura|es sensible a",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q023-005",
+        "match_type": "REGEX",
+        "pattern": "aunque imperfecto, este proxy|reconociendo sus limitaciones|con las limitaciones propias|consciente de sus restricciones|no obstante su imprecisión|pese a ser aproximado|aun con sus deficiencias|reconociendo que es aproximado|si bien no es exacto|a pesar de sus limitaciones|asumiendo su carácter parcial|con reservas metodológicas|admitiendo su imperfección|siendo conscientes de que|entendiendo sus alcances limitados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": {
+          "hedging_phrases": [
+            "aunque imperfecto",
+            "pese a ser aproximado",
+            "si bien no es exacto",
+            "aun con sus deficiencias",
+            "admitiendo su imperfección"
+          ],
+          "limitation_recognition": [
+            "reconociendo sus limitaciones",
+            "con las limitaciones propias",
+            "consciente de sus restricciones",
+            "asumiendo su carácter parcial",
+            "entendiendo sus alcances limitados"
+          ],
+          "qualification_markers": [
+            "no obstante su imprecisión",
+            "a pesar de sus limitaciones",
+            "con reservas metodológicas",
+            "siendo conscientes de que",
+            "reconociendo que es aproximado"
+          ]
+        },
+        "semantic_analysis": {
+          "detect_hedging": true,
+          "uncertainty_markers": [
+            "posiblemente",
+            "se estima",
+            "podría",
+            "sugiere",
+            "presumiblemente",
+            "probablemente",
+            "aproximadamente",
+            "en principio",
+            "en teoría",
+            "potencialmente"
+          ]
+        },
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "documenta_validez"
+      },
+      {
+        "required": true,
+        "type": "proxy_para_intangibles"
+      },
+      {
+        "required": true,
+        "type": "reconoce_limitaciones"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q023",
+    "sync_timestamp": "2026-01-04T17:55:49.978577Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

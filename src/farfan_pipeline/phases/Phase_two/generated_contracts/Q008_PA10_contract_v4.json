@@ -899,18 +899,142 @@
   },
   "question_context": {
     "monolith_ref": "Q008",
-    "pregunta_completa": "¿Las actividades propuestas se vinculan explícitamente con los problemas, causas, brechas o déficits identificados en el diagnóstico del sector?",
+    "pregunta_completa": "¿Las actividades propuestas se vinculan explícitamente con las barreras de acceso y problemáticas identificadas en el diagnóstico (ej. niños migrantes sin acceso a educación por barreras documentales, alta informalidad laboral por falta de permisos de trabajo, casos de xenofobia o discriminación, desconocimiento de rutas de regularización, víctimas de trata sin identificación, ausencia de caracterización territorial, tensiones de convivencia con comunidades receptoras)?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q3-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q038-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-000",
+        "match_type": "REGEX",
+        "pattern": "para abordar las barreras de acceso|en respuesta a la xenofobia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-001",
+        "match_type": "REGEX",
+        "pattern": "la actividad de regularización ataca la causa de la informalidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-002",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0031"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-003",
+        "match_type": "REGEX",
+        "pattern": "estatus migratorio irregular|falta del PPT",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-004",
+        "match_type": "REGEX",
+        "pattern": "barreras de acceso a servicios básicos (salud, educación)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-005",
+        "match_type": "REGEX",
+        "pattern": "discriminación y xenofobia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-006",
+        "match_type": "REGEX",
+        "pattern": "desconocimiento de sus derechos y rutas de atención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q038-007",
+        "match_type": "REGEX",
+        "pattern": "árbol de problemas|diagnóstico causal de la crisis migratoria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "aborda_causa_raiz"
+      },
+      {
+        "required": true,
+        "type": "vinculo_diagnostico_actividad"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q278",
+    "sync_timestamp": "2026-01-04T17:55:49.412287Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

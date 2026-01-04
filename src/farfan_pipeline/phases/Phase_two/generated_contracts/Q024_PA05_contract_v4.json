@@ -885,18 +885,129 @@
   },
   "question_context": {
     "monolith_ref": "Q024",
-    "pregunta_completa": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados o reconociendo límites de lo que el municipio puede lograr?",
+    "pregunta_completa": "¿El plan evalúa si la ambición del impacto en paz territorial es realista, considerando posibles efectos no deseados (ej. estigmatización de población reincorporada generando exclusión, dependencia asistencial de víctimas sin autonomía económica, narrativas de memoria que reabren heridas sin sanación, competencia por recursos entre víctimas y comunidades receptoras), o reconoce explícitamente los límites de las intervenciones municipales (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado a...', 'depende de...')?",
     "sector_id": "PA05",
     "sector_name": "Derechos de las víctimas y construcción de paz",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q4-PA05-REQ"
-    }
+      "emit_code": "ABORT-Q174-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q174-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0111"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q174-001",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0092"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q174-002",
+        "match_type": "REGEX",
+        "pattern": "reconfiguración del conflicto armado|surgimiento de nuevos actores",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q174-003",
+        "match_type": "LITERAL",
+        "pattern": "crisis social o económica que exacerbe las tensiones",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q174-004",
+        "match_type": "REGEX",
+        "pattern": "estos factores podrían revertir los avances en la construcción de paz",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q174-005",
+        "match_type": "REGEX",
+        "pattern": "el mecanismo causal es vulnerable a|sensible a la voluntad política nacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q174-006",
+        "match_type": "REGEX",
+        "pattern": "estrategias de resiliencia comunitaria|diplomacia local",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "alineacion_marcos"
+      },
+      {
+        "required": true,
+        "type": "riesgos_sistemicos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q144",
+    "sync_timestamp": "2026-01-04T17:55:50.029277Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA05_victimas_paz/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

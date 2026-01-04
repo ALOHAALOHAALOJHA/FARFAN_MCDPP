@@ -897,18 +897,133 @@
   },
   "question_context": {
     "monolith_ref": "Q029",
-    "pregunta_completa": "¿Se describe un sistema de monitoreo para el sector que incluya mecanismos de alerta temprana, retroalimentación con entidades especializadas, participación de población beneficiaria?",
+    "pregunta_completa": "¿Se describe un sistema de seguimiento a la situación de orden público que incluya la revisión periódica de cifras del SIEDCO, seguimiento a Alertas Tempranas (CIPRAT), y retroalimentación con la comunidad para evaluar la efectividad y legitimidad de las medidas de seguridad adoptadas?",
     "sector_id": "PA02",
     "sector_name": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q4-PA02-REQ"
-    }
+      "emit_code": "ABORT-Q089-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q089-000",
+        "match_type": "REGEX",
+        "pattern": "sistema de seguimiento y evaluación|M&E de seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q089-001",
+        "match_type": "REGEX",
+        "pattern": "monitoreo en tiempo real|sala de crisis|PMU",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q089-002",
+        "match_type": "REGEX",
+        "pattern": "alerta temprana|indicadores de alerta|semáforo de seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q089-003",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0079"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q089-004",
+        "match_type": "REGEX",
+        "pattern": "retroalimentación desde la comunidad|Consejos de Seguridad periódicos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q089-005",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0033"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q089-006",
+        "match_type": "REGEX",
+        "pattern": "lecciones aprendidas|gestión del conocimiento en seguridad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "ciclos_aprendizaje"
+      },
+      {
+        "required": true,
+        "type": "mecanismos_correccion"
+      },
+      {
+        "required": true,
+        "type": "sistema_monitoreo"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q059",
+    "sync_timestamp": "2026-01-04T17:55:50.294551Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA02_violencia_conflicto/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

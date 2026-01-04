@@ -885,18 +885,129 @@
   },
   "question_context": {
     "monolith_ref": "Q024",
-    "pregunta_completa": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados o reconociendo límites de lo que el municipio puede lograr?",
+    "pregunta_completa": "¿El plan evalúa si la ambición del impacto en ámbitos de competencia municipal es realista, considerando posibles efectos no deseados (ej. mejoramiento de calabozos municipales que incentiva su uso prolongado más allá de detención transitoria legal, burocratización de articulación con INPEC que no se traduce en mejoras reales, programas de reintegración que no abordan estigmatización social, dependencia de recursos externos no sostenibles), o reconoce explícitamente los límites de lo que el municipio puede lograr sin reforma estructural del sistema penitenciario nacional y del INPEC (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado a competencias municipales sobre calabozos y articulación', 'depende de reforma penitenciaria nacional', 'requiere transformación del INPEC')?",
     "sector_id": "PA09",
     "sector_name": "Crisis de derechos de personas privadas de la libertad",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q4-PA09-REQ"
-    }
+      "emit_code": "ABORT-Q294-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q294-000",
+        "match_type": "REGEX",
+        "pattern": "visión de una política criminal restaurativa|humanización del sistema",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q294-001",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0092"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q294-002",
+        "match_type": "REGEX",
+        "pattern": "cambios en la política criminal|populismo punitivo|endurecimiento de penas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q294-003",
+        "match_type": "REGEX",
+        "pattern": "crisis fiscal que impida la inversión en infraestructura carcelaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q294-004",
+        "match_type": "REGEX",
+        "pattern": "estos factores podrían agravar el hacinamiento y anular los esfuerzos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q294-005",
+        "match_type": "REGEX",
+        "pattern": "el mecanismo causal es vulnerable a|sensible a las decisiones del Congreso",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q294-006",
+        "match_type": "REGEX",
+        "pattern": "estrategias de justicia restaurativa|medidas alternativas a la prisión",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "alineacion_marcos"
+      },
+      {
+        "required": true,
+        "type": "riesgos_sistemicos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q264",
+    "sync_timestamp": "2026-01-04T17:55:50.051422Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA09_crisis_PPL/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -829,18 +829,103 @@
   },
   "question_context": {
     "monolith_ref": "Q020",
-    "pregunta_completa": "¿El plan declara la alineación de sus resultados del sector con el Plan Nacional de Desarrollo, los ODS, marcos normativos nacionales o políticas sectoriales relevantes?",
+    "pregunta_completa": "¿El plan declara la alineación de sus resultados en DESC con el Plan Nacional de Desarrollo, el Pacto Internacional de Derechos Económicos, Sociales y Culturales, o los ODS (especialmente ODS 1: Fin de la Pobreza, ODS 2: Hambre Cero, ODS 3: Salud, ODS 4: Educación de Calidad, ODS 8: Trabajo Decente, ODS 11: Ciudades Sostenibles)?",
     "sector_id": "PA04",
     "sector_name": "Derechos económicos, sociales y culturales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q5-PA04-REQ"
-    }
+      "emit_code": "ABORT-Q140-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q140-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0024"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q140-001",
+        "match_type": "REGEX",
+        "pattern": "contribuye a los ODS 1, 2, 3, 4, 6, 11|Objetivos de Desarrollo Sostenible",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q140-002",
+        "match_type": "REGEX",
+        "pattern": "en concordancia con las políticas nacionales de salud y educación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q140-003",
+        "match_type": "REGEX",
+        "pattern": "articulado con el CONPES de Primera Infancia|Seguridad Alimentaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q140-004",
+        "match_type": "REGEX",
+        "pattern": "eje de convergencia social-regional|transformación productiva",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "alineacion_ods"
+      },
+      {
+        "required": true,
+        "type": "alineacion_pnd"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q110",
+    "sync_timestamp": "2026-01-04T17:55:49.884229Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

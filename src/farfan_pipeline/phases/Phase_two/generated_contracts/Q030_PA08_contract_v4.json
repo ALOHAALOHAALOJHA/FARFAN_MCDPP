@@ -899,18 +899,130 @@
   },
   "question_context": {
     "monolith_ref": "Q030",
-    "pregunta_completa": "¿El plan considera el contexto municipal específico del sector, reconoce grupos con necesidades diferenciadas, y explicita restricciones que condicionan las intervenciones?",
+    "pregunta_completa": "¿La lógica causal para la protección de líderes considera el contexto, reconociendo 'grupos afectados' (líderes ambientales, comunales, étnicos) y 'restricciones' territoriales o de seguridad?",
     "sector_id": "PA08",
     "sector_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q5-PA08-REQ"
-    }
+      "emit_code": "ABORT-Q270-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q270-000",
+        "match_type": "REGEX",
+        "pattern": "enfoque diferencial|Decreto 660 (mujeres defensoras)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q270-001",
+        "match_type": "REGEX",
+        "pattern": "líderes ambientales|líderes comunales (JAC)|líderes de restitución",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q270-002",
+        "match_type": "REGEX",
+        "pattern": "autoridades étnicas|guardia indígena|consejos comunitarios afro|afrodescendiente|comunidad negra|palenquero|raizal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q270-003",
+        "match_type": "REGEX",
+        "pattern": "firmantes del Acuerdo de Paz|población en reincorporación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "CAUSAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q270-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q270-005",
+        "match_type": "REGEX",
+        "pattern": "contexto de economías ilegales|disputas por la tierra",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q270-006",
+        "match_type": "REGEX",
+        "pattern": "estrategias territorializadas|medidas de protección colectiva adaptadas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_contextual"
+      },
+      {
+        "required": true,
+        "type": "enfoque_diferencial"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q240",
+    "sync_timestamp": "2026-01-04T17:55:50.362028Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA08_lideres_defensores/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

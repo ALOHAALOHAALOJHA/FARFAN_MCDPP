@@ -830,18 +830,117 @@
   },
   "question_context": {
     "monolith_ref": "Q019",
-    "pregunta_completa": "¿Los resultados propuestos para el sector atienden o abordan directamente los problemas, déficits o necesidades priorizadas en el diagnóstico?",
+    "pregunta_completa": "¿Los resultados propuestos (ej. 'ordenamiento territorial actualizado y efectivo', 'seguridad jurídica en tenencia de tierras', 'formalización de asentamientos urbanos', 'acceso a tierra para pequeños productores', 'uso sostenible del suelo rural', 'recaudo predial suficiente para inversión') atienden o abordan directamente las problemáticas de tierras, catastro y ordenamiento priorizadas en el diagnóstico?",
     "sector_id": "PA07",
     "sector_name": "Tierras y territorios",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q4-PA07-REQ"
-    }
+      "emit_code": "ABORT-Q229-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q229-000",
+        "match_type": "REGEX",
+        "pattern": "este resultado responde al problema de la informalidad predial",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q229-001",
+        "match_type": "REGEX",
+        "pattern": "para solucionar el aislamiento de las veredas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q229-002",
+        "match_type": "REGEX",
+        "pattern": "el resultado atiende directamente el conflicto de uso del suelo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q229-003",
+        "match_type": "REGEX",
+        "pattern": "criterio de éxito|se considerará un logro si la informalidad baja de X%",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q229-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0108"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q229-005",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "TABLE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0078"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "criterios_exito_definidos"
+      },
+      {
+        "required": true,
+        "type": "vinculo_resultado_problema"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q199",
+    "sync_timestamp": "2026-01-04T17:55:49.857371Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA07_tierras_territorios/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -830,18 +830,117 @@
   },
   "question_context": {
     "monolith_ref": "Q019",
-    "pregunta_completa": "¿Los resultados propuestos para el sector atienden o abordan directamente los problemas, déficits o necesidades priorizadas en el diagnóstico?",
+    "pregunta_completa": "¿Los resultados propuestos cubren equilibradamente los subsectores priorizados en el diagnóstico (ej. 'acceso universal a salud', 'permanencia escolar garantizada', 'vivienda digna para población vulnerable', 'generación de empleo e ingresos', 'fortalecimiento del sector cultural') sin sesgo hacia educación o salud, reconociendo que el municipio tiene mayor autonomía en cultura, vivienda y fomento económico?",
     "sector_id": "PA04",
     "sector_name": "Derechos económicos, sociales y culturales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q4-PA04-REQ"
-    }
+      "emit_code": "ABORT-Q139-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q139-000",
+        "match_type": "REGEX",
+        "pattern": "este resultado responde al problema del déficit habitacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q139-001",
+        "match_type": "REGEX",
+        "pattern": "para solucionar la baja cobertura educativa",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q139-002",
+        "match_type": "REGEX",
+        "pattern": "el resultado atiende directamente las causas de la mortalidad materna",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "INDICADOR",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q139-003",
+        "match_type": "REGEX",
+        "pattern": "criterio de éxito|se considerará un logro si la deserción baja de X%",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q139-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0108"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q139-005",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "TABLE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0078"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "criterios_exito_definidos"
+      },
+      {
+        "required": true,
+        "type": "vinculo_resultado_problema"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q109",
+    "sync_timestamp": "2026-01-04T17:55:49.845484Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

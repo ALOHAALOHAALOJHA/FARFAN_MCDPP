@@ -897,18 +897,146 @@
   },
   "question_context": {
     "monolith_ref": "Q007",
-    "pregunta_completa": "¿La descripción de actividades especifica el instrumento, la población o zona objetivo, y explica cómo la actividad contribuye al resultado esperado?",
+    "pregunta_completa": "¿La descripción de actividades especifica el instrumento ('mediante sistemas de videovigilancia', 'a través del pago de recompensas', 'con entornos escolares seguros'), la población o zona priorizada (puntos calientes, jóvenes en riesgo, comerciantes extorsionados) y explica cómo la actividad contribuye a la seguridad ('para disuadir el accionar delictivo', 'para desarticular rentas criminales')?",
     "sector_id": "PA02",
     "sector_name": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q2-PA02-REQ"
-    }
+      "emit_code": "ABORT-Q067-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q067-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0080"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q067-001",
+        "match_type": "REGEX",
+        "pattern": "rutas de protección|esquemas de seguridad|medidas de autoprotección",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q067-002",
+        "match_type": "REGEX",
+        "pattern": "albergues temporales|ayuda humanitaria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q067-003",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0086"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q067-004",
+        "match_type": "REGEX",
+        "pattern": "víctimas de desplazamiento|NNA en riesgo de reclutamiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q067-005",
+        "match_type": "REGEX",
+        "pattern": "comunidades en confinamiento|líderes amenazados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q067-006",
+        "match_type": "REGEX",
+        "pattern": "con el fin de mitigar el riesgo|para salvaguardar la vida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q067-007",
+        "match_type": "REGEX",
+        "pattern": "lo cual genera un entorno protector|porque reduce la vulnerabilidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "instrumento_especificado"
+      },
+      {
+        "required": true,
+        "type": "logica_causal_explicita"
+      },
+      {
+        "required": true,
+        "type": "poblacion_objetivo_definida"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q037",
+    "sync_timestamp": "2026-01-04T17:55:49.338845Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA02_violencia_conflicto/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

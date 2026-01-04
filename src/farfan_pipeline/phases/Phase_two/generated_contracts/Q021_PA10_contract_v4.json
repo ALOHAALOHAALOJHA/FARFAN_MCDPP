@@ -892,18 +892,120 @@
   },
   "question_context": {
     "monolith_ref": "Q021",
-    "pregunta_completa": "¿El plan define impactos o transformaciones de largo plazo para el sector, describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado?",
+    "pregunta_completa": "¿El plan define impactos o transformaciones de largo plazo en integración de población migrante (cambios que trascienden el cuatrienio) como 'integración local sostenible de población migrante en tejido social y económico', 'cultura de convivencia intercultural consolidada', 'eliminación estructural de barreras de acceso a servicios', 'inclusión económica plena con empleabilidad formal', 'comunidad receptora con capacidad de integración sostenible', describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural', 'transformación cultural hacia interculturalidad')?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q1-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q051-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q051-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0069"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q051-001",
+        "match_type": "LITERAL",
+        "pattern": "integración socioeconómica sostenible|cohesión social",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q051-002",
+        "match_type": "REGEX",
+        "pattern": "una sociedad intercultural y sin xenofobia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q051-003",
+        "match_type": "REGEX",
+        "pattern": "la suma de los resultados de regularización e inclusión generará el impacto de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q051-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
+      },
+      {
+        "category": "TEMPORAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q051-005",
+        "match_type": "REGEX",
+        "pattern": "tiempo de maduración|se espera observar en una generación|8-10 años",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "impacto_definido"
+      },
+      {
+        "required": true,
+        "type": "rezago_temporal"
+      },
+      {
+        "required": true,
+        "type": "ruta_transmision"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q291",
+    "sync_timestamp": "2026-01-04T17:55:49.939776Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

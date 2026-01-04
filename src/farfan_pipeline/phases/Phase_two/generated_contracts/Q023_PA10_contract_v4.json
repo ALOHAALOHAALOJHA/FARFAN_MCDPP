@@ -829,18 +829,120 @@
   },
   "question_context": {
     "monolith_ref": "Q023",
-    "pregunta_completa": "¿Los impactos del sector se alinean con marcos nacionales o globales y consideran riesgos externos que podrían impedir o revertir los logros esperados?",
+    "pregunta_completa": "¿Los impactos en integración migratoria se alinean con marcos nacionales e internacionales de gestión migratoria y consideran riesgos externos (cambios en política migratoria nacional que restrinjan regularización, crisis económicas que reduzcan oportunidades laborales, aumentos abruptos de flujos migratorios que saturen capacidades locales, cambios en contexto de países de origen que modifiquen patrones migratorios, endurecimiento de discursos xenófobos a nivel nacional o regional) que podrían impedir o revertir los logros de integración esperados?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q3-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q053-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q053-000",
+        "match_type": "REGEX",
+        "pattern": "dado que es difícil medir la integración cultural|para aproximar",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q053-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0100"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q053-002",
+        "match_type": "REGEX",
+        "pattern": "el número de emprendimientos mixtos (colombo-venezolanos)",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q053-003",
+        "match_type": "REGEX",
+        "pattern": "este proxy es validado por estudios de migración de la OIM",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q053-004",
+        "match_type": "REGEX",
+        "pattern": "una limitación es que solo captura la dimensión económica de la integración",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q053-005",
+        "match_type": "REGEX",
+        "pattern": "aunque imperfecto, este proxy nos da una señal de interacción positiva",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "documenta_validez"
+      },
+      {
+        "required": true,
+        "type": "proxy_para_intangibles"
+      },
+      {
+        "required": true,
+        "type": "reconoce_limitaciones"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q293",
+    "sync_timestamp": "2026-01-04T17:55:50.012109Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

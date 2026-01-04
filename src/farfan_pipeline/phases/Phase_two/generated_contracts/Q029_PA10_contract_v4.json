@@ -897,18 +897,133 @@
   },
   "question_context": {
     "monolith_ref": "Q029",
-    "pregunta_completa": "¿Se describe un sistema de monitoreo para el sector que incluya mecanismos de alerta temprana, retroalimentación con entidades especializadas, participación de población beneficiaria?",
+    "pregunta_completa": "¿Se describe un sistema de monitoreo para integración de población migrante que incluya indicadores de alerta temprana (aumentos abruptos de flujos migratorios, incremento de casos de xenofobia, saturación de servicios, caída en tasas de regularización, barreras emergentes de acceso), mecanismos de retroalimentación con Migración Colombia, el Ministerio de Relaciones Exteriores, organizaciones de migrantes, participación de población migrante en evaluación de programas, y capacidad de aprendizaje para adaptar rutas de orientación, estrategias de convivencia o programas de empleabilidad ante cambios en política migratoria nacional o patrones de migración?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q4-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q059-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q059-000",
+        "match_type": "REGEX",
+        "pattern": "sistema de seguimiento y evaluación|M&E de la respuesta migratoria",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q059-001",
+        "match_type": "REGEX",
+        "pattern": "monitoreo de flujos en tiempo real|monitoreo en frontera",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q059-002",
+        "match_type": "REGEX",
+        "pattern": "alerta temprana sobre aumento de flujos o brotes de xenofobia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q059-003",
+        "match_type": "REGEX",
+        "pattern": "mecanismo de ajuste de la respuesta humanitaria|escalamiento de la ayuda",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q059-004",
+        "match_type": "REGEX",
+        "pattern": "retroalimentación desde la población migrante y la comunidad de acogida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q059-005",
+        "match_type": "REGEX",
+        "pattern": "ciclos de aprendizaje|reuniones de la Mesa de Migración para revisar estrategia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q059-006",
+        "match_type": "REGEX",
+        "pattern": "lecciones aprendidas en la gestión de crisis migratorias",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "ciclos_aprendizaje"
+      },
+      {
+        "required": true,
+        "type": "mecanismos_correccion"
+      },
+      {
+        "required": true,
+        "type": "sistema_monitoreo"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q299",
+    "sync_timestamp": "2026-01-04T17:55:50.326842Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

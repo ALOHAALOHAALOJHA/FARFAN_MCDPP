@@ -829,18 +829,107 @@
   },
   "question_context": {
     "monolith_ref": "Q020",
-    "pregunta_completa": "¿El plan declara la alineación de sus resultados del sector con el Plan Nacional de Desarrollo, los ODS, marcos normativos nacionales o políticas sectoriales relevantes?",
+    "pregunta_completa": "¿El plan declara la alineación de sus resultados de integración migratoria con la Ley 1465 de 2011 (Sistema Nacional de Migraciones), el CONPES 3950 de 2018 (estrategia para atención de migración venezolana), las resoluciones de Migración Colombia sobre PEP, PPT y otros permisos, el Pacto Mundial para la Migración Segura, Ordenada y Regular, los ODS (especialmente ODS 10.7 sobre migración ordenada y segura), reconociendo explícitamente que la política migratoria y los procesos de regularización son competencia de Migración Colombia y el Ministerio de Relaciones Exteriores?",
     "sector_id": "PA10",
     "sector_name": "Migración transfronteriza",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D4-Q5-PA10-REQ"
-    }
+      "emit_code": "ABORT-Q050-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q050-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0024"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q050-001",
+        "match_type": "REGEX",
+        "pattern": "contribuye a los ODS 10, 11, 16|Objetivos de Desarrollo Sostenible",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q050-002",
+        "match_type": "REGEX",
+        "pattern": "en concordancia con la Política Integral Migratoria|PIM|Ley 2136",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q050-003",
+        "match_type": "REGEX",
+        "pattern": "articulado con el CONPES 3950",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q050-004",
+        "match_type": "REGEX",
+        "pattern": "Pacto Mundial para una Migración Segura, Ordenada y Regular",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "alineacion_ods"
+      },
+      {
+        "required": true,
+        "type": "alineacion_otros_marcos"
+      },
+      {
+        "required": true,
+        "type": "alineacion_pnd"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q290",
+    "sync_timestamp": "2026-01-04T17:55:49.904631Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA10_migracion/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -836,18 +836,167 @@
   },
   "question_context": {
     "monolith_ref": "Q009",
-    "pregunta_completa": "¿El plan identifica posibles obstáculos, riesgos o barreras en la implementación de las actividades del sector y propone medidas explícitas de mitigación?",
+    "pregunta_completa": "¿El plan identifica posibles obstáculos en la implementación de políticas de igualdad de género (ej. resistencias culturales a cambios en roles de género, revictimización de mujeres en rutas de atención, dependencia económica de víctimas respecto a agresores, capacidad insuficiente de Comisarías de Familia frente a demanda, barreras de acceso a justicia, estigmatización de mujeres que denuncian, debilidad en articulación con Fiscalía o sector salud, limitaciones presupuestales, rotación de personal especializado) y propone medidas explícitas de mitigación como campañas de transformación cultural, protocolos de atención sin revictimización, programas de autonomía económica para víctimas, ampliación de capacidad de Comisarías, convenios de articulación interinstitucional, o fortalecimiento de sistemas de información?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q4-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q009-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q009-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0095"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q009-001",
+        "match_type": "REGEX",
+        "pattern": "obstáculos|desafíos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q009-002",
+        "match_type": "REGEX",
+        "pattern": "baja participación de las mujeres|poca asistencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q009-003",
+        "match_type": "REGEX",
+        "pattern": "revictimización|riesgos de seguridad para las víctimas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q009-004",
+        "match_type": "LITERAL",
+        "pattern": "resistencia cultural|reacciones machistas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q009-005",
+        "match_type": "REGEX",
+        "pattern": "sostenibilidad de los emprendimientos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q009-006",
+        "match_type": "REGEX",
+        "pattern": "falta de articulación interinstitucional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q009-007",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "disambiguation_rules": {
+          "PA03": [
+            "desastre",
+            "emergencia natural",
+            "clima"
+          ],
+          "PA01": [
+            "protección",
+            "violencia",
+            "víctima"
+          ]
+        },
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0082"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q009-008",
+        "match_type": "REGEX",
+        "pattern": "se realizará seguimiento|estrategia de monitoreo de riesgos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "mitigacion_propuesta"
+      },
+      {
+        "required": true,
+        "type": "riesgos_identificados"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q009",
+    "sync_timestamp": "2026-01-04T17:55:49.415270Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

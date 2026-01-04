@@ -954,18 +954,133 @@
   },
   "question_context": {
     "monolith_ref": "Q025",
-    "pregunta_completa": "¿El plan describe cómo se sostendrán los impactos del sector más allá del periodo de gobierno, identificando mecanismos de institucionalización, apropiación comunitaria o fuentes de financiación continua?",
+    "pregunta_completa": "¿El plan describe cómo se sostendrán los avances en igualdad de género más allá del periodo de gobierno, identificando mecanismos de institucionalización (transversalización del enfoque de género en todas las políticas y presupuestos, Comisarías de Familia fortalecidas de manera permanente, observatorios de género con seguimiento continuo, protocolos permanentes de atención a VBG), apropiación social (redes de mujeres empoderadas, organizaciones feministas fortalecidas, hombres como aliados en masculinidades no violentas, corresponsabilidad en cuidado como práctica social), fuentes de financiación continua (recursos SGP, recursos propios, cooperación de largo plazo, fondos de equidad de género) o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación social', 'continuidad de políticas de igualdad', 'blindaje político de presupuestos con enfoque de género', 'transformación cultural arraigada')?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q5-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q025-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q025-000",
+        "match_type": "REGEX",
+        "pattern": "la ambición del impacto es realista si se mantienen las condiciones",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q025-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0053"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q025-002",
+        "match_type": "REGEX",
+        "pattern": "riesgo de sobrecargar a las mujeres con un doble rol",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q025-003",
+        "match_type": "LITERAL",
+        "pattern": "posible estigmatización o reacción violenta",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q025-004",
+        "match_type": "REGEX",
+        "pattern": "trade-off|costo de oportunidad",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q025-005",
+        "match_type": "REGEX",
+        "pattern": "hipótesis límite|el modelo funciona hasta el punto en que",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q025-006",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0102"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_realismo"
+      },
+      {
+        "required": true,
+        "type": "efectos_no_deseados"
+      },
+      {
+        "required": true,
+        "type": "hipotesis_limite"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q025",
+    "sync_timestamp": "2026-01-04T17:55:50.062717Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

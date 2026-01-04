@@ -885,18 +885,163 @@
   },
   "question_context": {
     "monolith_ref": "Q003",
-    "pregunta_completa": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos a programas, proyectos o intervenciones específicas del sector?",
+    "pregunta_completa": "¿El Plan Plurianual de Inversiones o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a fortalecimiento de Comisarías de Familia, casas de refugio para mujeres víctimas de violencia, rutas integrales de atención a VBG, campañas de prevención de violencias y promoción de masculinidades no violentas, programas de autonomía económica para mujeres (empleabilidad, emprendimiento, acceso a activos), servicios de cuidado (hogares comunitarios, centros de desarrollo infantil), transversalización del enfoque de género en políticas municipales, fortalecimiento de Consejos Municipales de Mujeres, o garantía de acceso a salud sexual y reproductiva (incluido IVE en el marco legal)?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D1-Q3-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q003-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q003-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0016"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q003-001",
+        "match_type": "REGEX",
+        "pattern": "BPIN|Banco de Proyectos|código del proyecto de género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q003-002",
+        "match_type": "REGEX",
+        "pattern": "presupuestos sensibles al género|trazador presupuestal de género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q003-003",
+        "match_type": "REGEX",
+        "pattern": "recursos para la Casa de la Mujer|fortalecimiento de la Comisaría",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q003-004",
+        "match_type": "REGEX",
+        "pattern": "asignación para la política pública de mujer y género",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q003-005",
+        "match_type": "REGEX",
+        "pattern": "inversión en autonomía económica de las mujeres",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q003-006",
+        "match_type": "REGEX",
+        "pattern": "\\$\\s*\\d{1,3}(\\.\\d{3})*(,\\d{1,2})?|COP\\s*\\d{1,3}(\\.\\d{3})*(,\\d{1,2})?|\\d{1,3}(\\.\\d{3})*(,\\d{1,2})?\\s+millones de pesos|entre \\d+ y \\d+|de \\d+ a \\d+",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "numeric_parsing": {
+          "written_numbers": true,
+          "currency_format": "COLOMBIAN"
+        },
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q003-007",
+        "match_type": "REGEX",
+        "pattern": "fuentes de financiación|recursos propios|SGP|recursos de cofinanciación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q003-008",
+        "match_type": "REGEX",
+        "pattern": "el presupuesto asignado permite cubrir|análisis de suficiencia",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "asignacion_explicita"
+      },
+      {
+        "required": true,
+        "type": "suficiencia_justificada"
+      },
+      {
+        "required": true,
+        "type": "trazabilidad_ppi_bpin"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q003",
+    "sync_timestamp": "2026-01-04T17:55:49.184453Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

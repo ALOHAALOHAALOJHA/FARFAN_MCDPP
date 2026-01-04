@@ -954,18 +954,133 @@
   },
   "question_context": {
     "monolith_ref": "Q025",
-    "pregunta_completa": "¿El plan describe cómo se sostendrán los impactos del sector más allá del periodo de gobierno, identificando mecanismos de institucionalización, apropiación comunitaria o fuentes de financiación continua?",
+    "pregunta_completa": "¿El plan describe cómo se sostendrán las mejoras en seguridad y convivencia más allá del gobierno actual, identificando mecanismos de fortalecimiento comunitario, cultura ciudadana o inversión social sostenida que reduzcan la dependencia exclusiva de la presencia policial permanente?",
     "sector_id": "PA02",
     "sector_name": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q5-PA02-REQ"
-    }
+      "emit_code": "ABORT-Q085-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q085-000",
+        "match_type": "REGEX",
+        "pattern": "la ambición del impacto es realista si se mantiene el compromiso del nivel nacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q085-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0053"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q085-002",
+        "match_type": "REGEX",
+        "pattern": "riesgo de estigmatizar a ciertas comunidades|efecto globo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q085-003",
+        "match_type": "REGEX",
+        "pattern": "posible reacomodo de actores armados en zonas intervenidas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q085-004",
+        "match_type": "REGEX",
+        "pattern": "trade-off entre seguridad y derechos humanos",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q085-005",
+        "match_type": "REGEX",
+        "pattern": "hipótesis límite|el modelo funciona mientras no haya una ruptura de diálogos de paz",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q085-006",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0102"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_realismo"
+      },
+      {
+        "required": true,
+        "type": "efectos_no_deseados"
+      },
+      {
+        "required": true,
+        "type": "hipotesis_limite"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q055",
+    "sync_timestamp": "2026-01-04T17:55:50.068104Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA02_violencia_conflicto/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

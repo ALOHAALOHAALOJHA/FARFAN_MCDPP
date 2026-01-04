@@ -897,18 +897,180 @@
   },
   "question_context": {
     "monolith_ref": "Q007",
-    "pregunta_completa": "¿La descripción de actividades especifica el instrumento, la población o zona objetivo, y explica cómo la actividad contribuye al resultado esperado?",
+    "pregunta_completa": "¿La descripción de actividades especifica el instrumento ('mediante Planes de Saneamiento y Manejo de Vertimientos', 'a través de sistemas de alerta temprana', 'con campañas de separación en la fuente', 'mediante reforestación de cuencas'), la población o zona objetivo ('familias en zonas de ladera', 'cuenca del río X', 'área urbana con déficit de alcantarillado', 'sectores productivos con altas emisiones') y explica cómo la actividad contribuye al resultado esperado ('para reducir la vulnerabilidad', 'porque protege fuentes hídricas', 'con el fin de disminuir emisiones de GEI')?",
     "sector_id": "PA03",
     "sector_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D2-Q2-PA03-REQ"
-    }
+      "emit_code": "ABORT-Q097-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q097-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0081"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q097-001",
+        "match_type": "REGEX",
+        "pattern": "construcción de obras de mitigación|jarillón|muro de contención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q097-002",
+        "match_type": "LITERAL",
+        "pattern": "incentivos a la conservación|Pagos por Servicios Ambientales|PSA",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q097-003",
+        "match_type": "REGEX",
+        "pattern": "programas de educación ambiental|comparendos ambientales",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q097-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0086"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q097-005",
+        "match_type": "REGEX",
+        "pattern": "familias en zonas de riesgo|comunidades ribereñas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q097-006",
+        "match_type": "REGEX",
+        "pattern": "propietarios de predios en cuencas|sector productivo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q097-007",
+        "match_type": "REGEX",
+        "pattern": "con el fin de reducir la vulnerabilidad|para proteger las fuentes hídricas",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q097-008",
+        "match_type": "REGEX",
+        "pattern": "lo cual genera resiliencia|porque reduce la contaminación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "instrumento_especificado"
+      },
+      {
+        "required": true,
+        "type": "logica_causal_explicita"
+      },
+      {
+        "required": true,
+        "type": "poblacion_objetivo_definida"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      },
+      "enfoque_genero": {
+        "type": "cross_cutting_theme",
+        "theme_id": "CC_GENERO",
+        "minimum_required": 1,
+        "patterns": [
+          "impacto diferencial en mujeres",
+          "mujeres rurales",
+          "rol de la mujer en la conservación",
+          "lideresas ambientales",
+          "afectación por desastres diferenciada"
+        ],
+        "specificity": "HIGH",
+        "description": "Verifies gender perspective in environmental activities"
+      },
+      "responsibility_assignment": {
+        "type": "responsibility_assignment",
+        "required": true,
+        "description": "Ensures responsible entity is identified",
+        "priority": 4,
+        "colombian_context": "Secretaría de Ambiente or CMGRD must be named"
+      }
+    },
+    "source_question_id": "Q067",
+    "sync_timestamp": "2026-01-04T17:55:49.343695Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA03_ambiente_cambio_climatico/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

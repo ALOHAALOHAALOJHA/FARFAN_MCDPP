@@ -892,18 +892,120 @@
   },
   "question_context": {
     "monolith_ref": "Q021",
-    "pregunta_completa": "¿El plan define impactos o transformaciones de largo plazo para el sector, describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado?",
+    "pregunta_completa": "¿El plan define impactos o transformaciones de largo plazo en construcción de paz (cambios que trascienden el cuatrienio) como 'paz territorial consolidada', 'tejido social reconstruido', 'garantías de no repetición efectivas', 'memoria histórica como pedagogía generacional', 'reconciliación comunitaria arraigada', describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural')?",
     "sector_id": "PA05",
     "sector_name": "Derechos de las víctimas y construcción de paz",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q1-PA05-REQ"
-    }
+      "emit_code": "ABORT-Q171-REQ"
+    },
+    "patterns": [
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q171-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0070"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q171-001",
+        "match_type": "REGEX",
+        "pattern": "reconciliación|paz estable y duradera|superación del conflicto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q171-002",
+        "match_type": "REGEX",
+        "pattern": "restablecimiento del tejido social|confianza ciudadana",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q171-003",
+        "match_type": "REGEX",
+        "pattern": "la suma de los resultados de reparación y seguridad generará el impacto de",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q171-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0096"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q171-005",
+        "match_type": "REGEX",
+        "pattern": "tiempo de maduración|efectos intergeneracionales|se espera observar en una década",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "impacto_definido"
+      },
+      {
+        "required": true,
+        "type": "rezago_temporal"
+      },
+      {
+        "required": true,
+        "type": "ruta_transmision"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q141",
+    "sync_timestamp": "2026-01-04T17:55:49.922760Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA05_victimas_paz/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

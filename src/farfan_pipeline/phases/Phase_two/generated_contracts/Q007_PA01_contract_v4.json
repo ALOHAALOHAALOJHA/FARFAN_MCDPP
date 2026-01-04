@@ -897,7 +897,7 @@
   },
   "question_context": {
     "monolith_ref": "Q007",
-    "pregunta_completa": "¿La descripción de actividades especifica el instrumento, la población o zona objetivo, y explica cómo la actividad contribuye al resultado esperado?",
+    "pregunta_completa": "¿La descripción de actividades especifica el instrumento ('mediante fortalecimiento de Comisarías de Familia', 'a través de casas de refugio', 'con rutas integrales de atención a VBG', 'mediante programas de empleabilidad para mujeres', 'a través de servicios de cuidado', 'con transversalización del enfoque de género en presupuestos', 'mediante escuelas de liderazgo político', 'a través de protocolos de atención en salud sexual y reproductiva'), la población objetivo ('mujeres víctimas de violencia', 'mujeres cabeza de familia en pobreza', 'mujeres en informalidad laboral', 'niñas y adolescentes en prevención de violencias', 'mujeres rurales sin acceso a tierra', 'cuidadoras con sobrecarga', 'mujeres con liderazgo político potencial') y explica cómo la actividad contribuye al resultado esperado ('para garantizar atención oportuna a víctimas', 'porque reduce barreras económicas', 'con el fin de prevenir violencias mediante cambio cultural', 'para aumentar participación en espacios de decisión', 'porque redistribuye tareas de cuidado')?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
@@ -905,10 +905,389 @@
       "abort_if": [
         "missing_required_element",
         "incomplete_text",
-        "no_quantitative_data"
+        "causal_logic_insufficient"
       ],
-      "emit_code": "ABORT-D2-Q2-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q007-REQ",
+      "fallback_strategy": "partial_analysis_with_warning"
+    },
+    "patterns": [
+      {
+        "category": "CAUSAL_CONNECTOR",
+        "confidence_weight": 0.9,
+        "flags": "i",
+        "id": "PAT-Q007-000",
+        "match_type": "REGEX",
+        "pattern": "mediante|a través de|con la implementación de|por medio de",
+        "specificity": "HIGH",
+        "validation_rule": "must_connect_instrument_outcome",
+        "context_requirement": "within_activity_description",
+        "semantic_expansion": {
+          "mediante": [
+            "por conducto de",
+            "valiéndose de"
+          ],
+          "a través de": [
+            "mediante",
+            "usando"
+          ],
+          "con la implementación de": [
+            "ejecutando",
+            "desarrollando"
+          ]
+        },
+        "context_scope": "SENTENCE",
+        "element_tags": [
+          "instrumento_especificado",
+          "logica_causal_explicita"
+        ]
+      },
+      {
+        "category": "INSTRUMENTO",
+        "confidence_weight": 0.88,
+        "flags": "i",
+        "id": "PAT-Q007-001",
+        "match_type": "REGEX",
+        "pattern": "talleres de|capacitaciones en|jornadas de|mesas de trabajo|formación en",
+        "specificity": "HIGH",
+        "validation_rule": "instrument_must_be_concrete",
+        "context_requirement": "within_activity_description",
+        "semantic_expansion": {
+          "talleres": [
+            "sesiones prácticas",
+            "encuentros formativos"
+          ],
+          "capacitaciones": [
+            "formaciones",
+            "entrenamientos"
+          ],
+          "jornadas": [
+            "eventos",
+            "encuentros"
+          ]
+        },
+        "context_scope": "SENTENCE",
+        "element_tags": [
+          "instrumento_especificado"
+        ]
+      },
+      {
+        "category": "INSTRUMENTO",
+        "confidence_weight": 0.88,
+        "flags": "i",
+        "id": "PAT-Q007-002",
+        "match_type": "REGEX",
+        "pattern": "capital semilla|incentivos económicos|apoyo a emprendimientos|subsidios|transferencias",
+        "specificity": "HIGH",
+        "validation_rule": "financial_instrument_validation",
+        "context_requirement": "within_activity_description",
+        "semantic_expansion": {
+          "capital semilla": [
+            "recursos de arranque",
+            "financiamiento inicial"
+          ],
+          "incentivos económicos": [
+            "estímulos financieros",
+            "bonificaciones"
+          ],
+          "apoyo a emprendimientos": [
+            "apoyo empresarial",
+            "fomento emprendedor"
+          ]
+        },
+        "context_scope": "SENTENCE",
+        "element_tags": [
+          "instrumento_especificado"
+        ]
+      },
+      {
+        "category": "POBLACION",
+        "confidence_weight": 0.9,
+        "flags": "i",
+        "id": "PAT-Q007-003",
+        "match_type": "REGEX",
+        "pattern": "población objetivo:|dirigido a|beneficiarias serán|destinatarios:|grupo meta:",
+        "specificity": "HIGH",
+        "validation_rule": "population_must_be_specified",
+        "context_requirement": "near_instrument",
+        "semantic_expansion": {
+          "población objetivo": [
+            "grupo beneficiario",
+            "población meta"
+          ],
+          "dirigido a": [
+            "orientado a",
+            "enfocado en"
+          ],
+          "beneficiarias": [
+            "receptoras",
+            "destinatarias"
+          ]
+        },
+        "context_scope": "SENTENCE",
+        "element_tags": [
+          "poblacion_objetivo_definida"
+        ],
+        "proximity_validation": {
+          "require_near": [
+            "mujeres",
+            "madres",
+            "víctimas"
+          ],
+          "max_distance": 15
+        }
+      },
+      {
+        "category": "POBLACION",
+        "confidence_weight": 0.92,
+        "flags": "i",
+        "id": "PAT-Q007-004",
+        "match_type": "REGEX",
+        "pattern": "mujeres rurales|madres cabeza de familia|mujeres víctimas de VBG|mujeres afrodescendientes",
+        "specificity": "HIGH",
+        "validation_rule": "population_demographic_specificity",
+        "context_requirement": "within_activity_description",
+        "semantic_expansion": {
+          "mujeres rurales": [
+            "mujeres campesinas",
+            "mujeres del campo"
+          ],
+          "madres cabeza de familia": [
+            "madres cabeza de hogar",
+            "jefas de hogar"
+          ],
+          "mujeres víctimas de VBG": [
+            "sobrevivientes de violencia de género",
+            "mujeres en situación de violencia"
+          ]
+        },
+        "context_scope": "SENTENCE",
+        "element_tags": [
+          "poblacion_objetivo_definida"
+        ]
+      },
+      {
+        "category": "POBLACION",
+        "confidence_weight": 0.92,
+        "flags": "i",
+        "id": "PAT-Q007-005",
+        "match_type": "REGEX",
+        "pattern": "mujeres cuidadoras|mujeres en extrema pobreza|mujeres LBT|mujeres indígenas|mujeres con discapacidad",
+        "specificity": "HIGH",
+        "validation_rule": "intersectional_population_recognition",
+        "context_requirement": "within_activity_description",
+        "semantic_expansion": {
+          "mujeres cuidadoras": [
+            "cuidadoras no remuneradas",
+            "mujeres en trabajo de cuidado"
+          ],
+          "mujeres LBT": [
+            "mujeres lesbianas, bisexuales y trans",
+            "mujeres diversas"
+          ],
+          "mujeres con discapacidad": [
+            "mujeres en situación de discapacidad"
+          ]
+        },
+        "context_scope": "SENTENCE",
+        "element_tags": [
+          "poblacion_objetivo_definida"
+        ]
+      },
+      {
+        "category": "CAUSAL_OUTCOME",
+        "confidence_weight": 0.87,
+        "flags": "i",
+        "id": "PAT-Q007-006",
+        "match_type": "REGEX",
+        "pattern": "con el fin de|para lograr que|lo cual genera|porque permite|esto permitirá",
+        "specificity": "MEDIUM",
+        "validation_rule": "outcome_must_follow_instrument",
+        "context_requirement": "within_activity_description",
+        "semantic_expansion": {
+          "con el fin de": [
+            "con el propósito de",
+            "con el objetivo de"
+          ],
+          "para lograr que": [
+            "para conseguir que",
+            "para alcanzar"
+          ],
+          "lo cual genera": [
+            "lo que produce",
+            "generando así"
+          ]
+        },
+        "context_scope": "SENTENCE",
+        "element_tags": [
+          "logica_causal_explicita"
+        ]
+      },
+      {
+        "category": "CAUSAL_OUTCOME",
+        "confidence_weight": 0.89,
+        "flags": "i",
+        "id": "PAT-Q007-007",
+        "match_type": "REGEX",
+        "pattern": "para fortalecer la autonomía económica|para reducir la dependencia|para promover la participación|para generar ingresos",
+        "specificity": "HIGH",
+        "validation_rule": "outcome_alignment_with_gender_policy",
+        "context_requirement": "after_instrument",
+        "semantic_expansion": {
+          "autonomía económica": [
+            "independencia económica",
+            "autogestión económica"
+          ],
+          "reducir la dependencia": [
+            "disminuir la subordinación",
+            "superar la dependencia"
+          ],
+          "participación": [
+            "participación activa",
+            "involucramiento"
+          ]
+        },
+        "context_scope": "SENTENCE",
+        "element_tags": [
+          "logica_causal_explicita"
+        ]
+      },
+      {
+        "category": "CAUSAL_OUTCOME",
+        "confidence_weight": 0.89,
+        "flags": "i",
+        "id": "PAT-Q007-008",
+        "match_type": "REGEX",
+        "pattern": "para prevenir la VBG|para promover la participación política|para garantizar derechos|para transformar patrones culturales",
+        "specificity": "HIGH",
+        "validation_rule": "structural_outcome_recognition",
+        "context_requirement": "after_instrument",
+        "semantic_expansion": {
+          "prevenir la VBG": [
+            "evitar violencia de género",
+            "reducir violencia basada en género"
+          ],
+          "participación política": [
+            "representación política",
+            "empoderamiento político"
+          ],
+          "transformar patrones culturales": [
+            "cambiar estereotipos",
+            "modificar roles de género"
+          ]
+        },
+        "context_scope": "SENTENCE",
+        "element_tags": [
+          "logica_causal_explicita"
+        ]
+      },
+      {
+        "category": "MECANISMO_COMPLETO",
+        "confidence_weight": 0.93,
+        "flags": "i",
+        "id": "PAT-Q007-009",
+        "match_type": "REGEX",
+        "pattern": "(?:mediante|a través de).{1,50}(?:población objetivo|dirigido a).{1,50}(?:para|con el fin de)",
+        "specificity": "HIGH",
+        "validation_rule": "complete_mechanism_chain",
+        "context_requirement": "within_activity_description",
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "element_tags": [
+          "mecanismo_causal_completo"
+        ]
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "instrumento_especificado",
+        "description": "Specific policy instrument clearly stated (workshops, seed capital, training programs)",
+        "sources": [
+          "bayesianmechanisminference.infer_mechanisms",
+          "causalextractor.extract_causal_hierarchy"
+        ]
+      },
+      {
+        "required": true,
+        "type": "logica_causal_explicita",
+        "description": "Explicit causal logic connecting intervention to outcome (para generar, porque reduce)",
+        "sources": [
+          "bayesianmechanisminference._test_sufficiency",
+          "bayesianmechanisminference._test_necessity",
+          "teoriacambio.construir_grafo_causal"
+        ]
+      },
+      {
+        "required": true,
+        "type": "poblacion_objetivo_definida",
+        "description": "Target population clearly defined with demographic specificity",
+        "sources": [
+          "industrialpolicyprocessor._analyze_causal_dimensions",
+          "causalextractor.extract_causal_hierarchy"
+        ]
+      },
+      {
+        "required": false,
+        "type": "mecanismo_causal_completo",
+        "description": "Complete causal mechanism from instrument to outcome via intermediates",
+        "sources": [
+          "bayesianmechanisminference.infer_mechanisms",
+          "pdetmunicipalplananalyzer.construct_causal_dag"
+        ]
+      }
+    ],
+    "validations": {
+      "buscar_instrumento": {
+        "minimum_required": 1,
+        "patterns": [
+          "PAT-Q007-001",
+          "PAT-Q007-002"
+        ],
+        "specificity": "HIGH",
+        "validation_type": "must_contain"
+      },
+      "buscar_poblacion": {
+        "minimum_required": 1,
+        "patterns": [
+          "PAT-Q007-003",
+          "PAT-Q007-004",
+          "PAT-Q007-005"
+        ],
+        "specificity": "HIGH",
+        "validation_type": "must_contain"
+      },
+      "buscar_logica_causal": {
+        "minimum_required": 1,
+        "patterns": [
+          "PAT-Q007-006",
+          "PAT-Q007-007",
+          "PAT-Q007-008"
+        ],
+        "specificity": "HIGH",
+        "validation_type": "must_contain"
+      },
+      "mecanismo_completo": {
+        "minimum_required": 1,
+        "patterns": [
+          "PAT-Q007-009"
+        ],
+        "specificity": "HIGH",
+        "validation_type": "should_contain",
+        "bonus_points": 0.15
+      },
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8,
+        "required_elements": [
+          "instrumento_especificado",
+          "poblacion_objetivo_definida",
+          "logica_causal_explicita"
+        ]
+      }
+    },
+    "source_question_id": "Q007",
+    "sync_timestamp": "2026-01-04T17:55:49.334098Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

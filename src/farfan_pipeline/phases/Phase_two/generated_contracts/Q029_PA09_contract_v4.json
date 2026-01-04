@@ -897,18 +897,139 @@
   },
   "question_context": {
     "monolith_ref": "Q029",
-    "pregunta_completa": "¿Se describe un sistema de monitoreo para el sector que incluya mecanismos de alerta temprana, retroalimentación con entidades especializadas, participación de población beneficiaria?",
+    "pregunta_completa": "¿Se describe un sistema de monitoreo para ámbitos de competencia municipal que incluya indicadores de alerta temprana (aumento de tiempos de detención administrativa, incremento de quejas sobre calabozos municipales, saturación de capacidad en estaciones de policía, caída en tasas de reintegración social), mecanismos de retroalimentación con el INPEC, la Defensoría del Pueblo, defensorías públicas, participación de población post-penitenciaria en evaluación de programas de reintegración, y capacidad de aprendizaje para adaptar protocolos de inspecciones, convenios de articulación o estrategias de reintegración ante cambios en políticas penitenciarias nacionales o crisis del sistema?",
     "sector_id": "PA09",
     "sector_name": "Crisis de derechos de personas privadas de la libertad",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q4-PA09-REQ"
-    }
+      "emit_code": "ABORT-Q299-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q299-000",
+        "match_type": "REGEX",
+        "pattern": "sistema de seguimiento y evaluación|M&E carcelario",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q299-001",
+        "match_type": "REGEX",
+        "pattern": "monitoreo a través de los reportes del INPEC y la Personería",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q299-002",
+        "match_type": "REGEX",
+        "pattern": "alerta temprana sobre brotes de enfermedades o motines",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q299-003",
+        "match_type": "REGEX",
+        "pattern": "mecanismo de ajuste de los programas de resocialización",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q299-004",
+        "match_type": "REGEX",
+        "pattern": "retroalimentación desde la población PPL|comités de DDHH",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q299-005",
+        "match_type": "REGEX",
+        "pattern": "ciclos de aprendizaje|reuniones del comité de seguimiento",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q299-006",
+        "match_type": "REGEX",
+        "pattern": "lecciones aprendidas en la gestión de centros de detención",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "ciclos_aprendizaje"
+      },
+      {
+        "required": true,
+        "type": "mecanismos_correccion"
+      },
+      {
+        "required": true,
+        "type": "sistema_monitoreo"
+      }
+    ],
+    "validations": {
+      "monitoring_keywords": {
+        "minimum_required": 1,
+        "patterns": [
+          "monitoreo",
+          "mecanismos de corrección",
+          "retroalimentación",
+          "aprendizaje"
+        ],
+        "specificity": "MEDIUM"
+      }
+    },
+    "source_question_id": "Q269",
+    "sync_timestamp": "2026-01-04T17:55:50.320682Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA09_crisis_PPL/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

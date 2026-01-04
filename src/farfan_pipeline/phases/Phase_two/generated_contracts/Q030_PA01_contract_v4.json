@@ -899,18 +899,130 @@
   },
   "question_context": {
     "monolith_ref": "Q030",
-    "pregunta_completa": "¿El plan considera el contexto municipal específico del sector, reconoce grupos con necesidades diferenciadas, y explicita restricciones que condicionan las intervenciones?",
+    "pregunta_completa": "¿El plan considera el contexto municipal específico en igualdad de género (prevalencia y tipos de violencias, capacidad de Comisarías de Familia, brechas de género en empleo y educación, participación histórica de mujeres en política local, presencia de organizaciones de mujeres, contexto cultural sobre roles de género, oportunidades económicas para mujeres), reconoce grupos de mujeres con necesidades diferenciadas (mujeres rurales, mujeres indígenas y afrodescendientes, mujeres con discapacidad, mujeres LGBTIQ+, mujeres víctimas del conflicto armado, mujeres migrantes, mujeres en ejercicio de prostitución, adolescentes y jóvenes, adultas mayores, mujeres cabeza de familia), y explicita restricciones (competencia limitada sobre investigación penal y sentencias, capacidad presupuestal, oportunidades laborales en economía local, resistencias culturales a transformación de roles de género, dependencia de respuesta de Fiscalía y sistema de justicia) que condicionan las intervenciones de igualdad de género?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q5-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q030-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q030-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0058"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q030-001",
+        "match_type": "REGEX",
+        "pattern": "mujeres rurales|mujeres indígenas|mujeres afrodescendientes|afrodescendiente|comunidad negra|palenquero|raizal",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q030-002",
+        "match_type": "REGEX",
+        "pattern": "mujeres con discapacidad|mujeres víctimas|mujeres LBT|diversamente hábil|capacidad diversa|movilidad reducida",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "CAUSAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q030-003",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "evidence_modality": "FIGURE",
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0051"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q030-004",
+        "match_type": "REGEX",
+        "pattern": "contexto cultural|patrones machistas arraigados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q030-005",
+        "match_type": "LITERAL",
+        "pattern": "restricciones normativas|marco legal limitante",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "TERRITORIAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q030-006",
+        "match_type": "REGEX",
+        "pattern": "estrategias territorializadas|acciones adaptadas al contexto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_contextual"
+      },
+      {
+        "required": true,
+        "type": "enfoque_diferencial"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q030",
+    "sync_timestamp": "2026-01-04T17:55:50.331715Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

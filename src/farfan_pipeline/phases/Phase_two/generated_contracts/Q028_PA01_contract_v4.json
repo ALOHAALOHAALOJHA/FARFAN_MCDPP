@@ -830,18 +830,116 @@
   },
   "question_context": {
     "monolith_ref": "Q028",
-    "pregunta_completa": "¿El plan reconoce la complejidad del sector, identifica debilidades en su estrategia, y propone mecanismos para aprender y ajustar?",
+    "pregunta_completa": "¿El plan reconoce la complejidad de transformar desigualdades de género estructurales e históricas, identifica incertidumbres en su estrategia (ej. efectividad de estrategias de prevención de violencias, sostenibilidad de autonomía económica en contextos de crisis, receptividad de comunidades a cambios en roles de género, respuesta del sistema de justicia, eficacia de servicios de cuidado en redistribuir trabajo no remunerado, resistencias culturales), y propone mecanismos para aprender y ajustar como pilotos de rutas de atención con enfoque diferencial, evaluaciones participativas con organizaciones de mujeres, articulación con observatorios de género o centros de investigación, seguimiento a reincidencia de violencias, o ajustes de programas de empleabilidad según barreras identificadas (se debe buscar términos como 'pilotos', 'fase de prueba', 'evaluación participativa con mujeres', 'ajustes', 'articulación con observatorios de género', 'monitoreo adaptativo', 'aprendizaje desde la práctica')?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D6-Q3-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q028-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q028-000",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0071"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q028-001",
+        "match_type": "REGEX",
+        "pattern": "se requiere validar|es necesario probar si",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q028-002",
+        "match_type": "REGEX",
+        "pattern": "plan piloto|fase experimental|prueba de concepto",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q028-003",
+        "match_type": "REGEX",
+        "pattern": "testear el supuesto|validar la hipótesis",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q028-004",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0065"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q028-005",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0026"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "propone_pilotos_o_pruebas"
+      },
+      {
+        "required": true,
+        "type": "reconoce_inconsistencias"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q028",
+    "sync_timestamp": "2026-01-04T17:55:50.245904Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

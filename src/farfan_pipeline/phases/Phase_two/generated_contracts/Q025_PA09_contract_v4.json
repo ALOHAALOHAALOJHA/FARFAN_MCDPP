@@ -954,18 +954,133 @@
   },
   "question_context": {
     "monolith_ref": "Q025",
-    "pregunta_completa": "¿El plan describe cómo se sostendrán los impactos del sector más allá del periodo de gobierno, identificando mecanismos de institucionalización, apropiación comunitaria o fuentes de financiación continua?",
+    "pregunta_completa": "¿El plan describe cómo se sostendrán las mejoras en ámbitos de competencia municipal más allá del periodo de gobierno, identificando mecanismos de institucionalización (protocolos de debido proceso adoptados en manuales de inspecciones de policía, convenios permanentes Personería-INPEC, programas de reintegración con financiación continua), apropiación institucional (cultura de derechos humanos en estaciones de policía, capacitación recurrente a inspectores), fuentes de financiación continua (recursos SGP para convivencia, articulación presupuestal con Policía Nacional, recursos de cooperación) o condiciones para que los cambios perduren (se debe buscar términos como 'sostenibilidad', 'permanencia', 'institucionalización', 'apropiación', 'continuidad', 'blindaje político de protocolos de debido proceso')?",
     "sector_id": "PA09",
     "sector_name": "Crisis de derechos de personas privadas de la libertad",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q5-PA09-REQ"
-    }
+      "emit_code": "ABORT-Q295-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q295-000",
+        "match_type": "REGEX",
+        "pattern": "la ambición del impacto es realista si se logra la cofinanciación de la USPEC",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q295-001",
+        "match_type": "REGEX",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0053"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q295-002",
+        "match_type": "REGEX",
+        "pattern": "riesgo de que mejores condiciones carcelarias reduzcan el efecto disuasorio",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q295-003",
+        "match_type": "REGEX",
+        "pattern": "posible estigmatización de la comunidad hacia los pospenados",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q295-004",
+        "match_type": "REGEX",
+        "pattern": "trade-off entre seguridad y derechos de los PPL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q295-005",
+        "match_type": "REGEX",
+        "pattern": "hipótesis límite|el modelo de resocialización funciona si el sector privado ofrece empleo",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q295-006",
+        "match_type": "LITERAL",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH",
+        "pattern_ref": "PAT-0103"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "analisis_realismo"
+      },
+      {
+        "required": true,
+        "type": "efectos_no_deseados"
+      },
+      {
+        "required": true,
+        "type": "hipotesis_limite"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q265",
+    "sync_timestamp": "2026-01-04T17:55:50.111124Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA09_crisis_PPL/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",

@@ -885,18 +885,116 @@
   },
   "question_context": {
     "monolith_ref": "Q024",
-    "pregunta_completa": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados o reconociendo límites de lo que el municipio puede lograr?",
+    "pregunta_completa": "¿El plan evalúa si la ambición del impacto en igualdad de género es realista, considerando posibles efectos no deseados (ej. estigmatización de mujeres que participan en programas, dependencia de subsidios sin autonomía económica sostenible, sobrecarga de mujeres que asumen doble rol (productivo y reproductivo) sin redistribución real de cuidado, tensiones familiares o comunitarias por cambios en roles de género, concentración de recursos en violencia sin prevención estructural, servicios de atención que no transforman causas de desigualdades), o reconoce explícitamente los límites de lo que el municipio puede lograr sin transformaciones estructurales en mercado laboral, sistema de justicia efectivo, y cambio cultural profundo que trasciende el cuatrienio (se debe buscar términos como 'efectos no deseados', 'limitaciones', 'alcance limitado sin transformación cultural', 'depende de justicia efectiva', 'requiere cambios estructurales en economía del cuidado', 'necesita compromiso sostenido más allá del cuatrienio')?",
     "sector_id": "PA01",
     "sector_name": "Derechos de las mujeres e igualdad de género",
     "overrides": null,
     "failure_contract": {
       "abort_if": [
         "missing_required_element",
-        "incomplete_text",
-        "no_quantitative_data"
+        "incomplete_text"
       ],
-      "emit_code": "ABORT-D5-Q4-PA01-REQ"
-    }
+      "emit_code": "ABORT-Q024-REQ"
+    },
+    "patterns": [
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q024-000",
+        "match_type": "REGEX",
+        "pattern": "visión\\\\s+(?:20\\\\d{2}|2050)|Agenda\\\\s+2030",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q024-001",
+        "match_type": "REGEX",
+        "pattern": "riesgo sistémico|choque externo|crisis económica|desastre natural",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q024-002",
+        "match_type": "REGEX",
+        "pattern": "agudización del conflicto armado|cambio en la política nacional",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q024-003",
+        "match_type": "REGEX",
+        "pattern": "estos factores podrían revertir los avances",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q024-004",
+        "match_type": "LITERAL",
+        "pattern": "el mecanismo causal es vulnerable a|sensible a",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      },
+      {
+        "category": "GENERAL",
+        "confidence_weight": 0.85,
+        "flags": "i",
+        "id": "PAT-Q024-005",
+        "match_type": "REGEX",
+        "pattern": "estrategias de resiliencia|plan de adaptación",
+        "specificity": "MEDIUM",
+        "validation_rule": null,
+        "context_requirement": null,
+        "semantic_expansion": null,
+        "context_scope": "PARAGRAPH"
+      }
+    ],
+    "expected_elements": [
+      {
+        "required": true,
+        "type": "alineacion_marcos"
+      },
+      {
+        "required": true,
+        "type": "riesgos_sistemicos"
+      }
+    ],
+    "validations": {
+      "completeness_check": {
+        "type": "completeness",
+        "threshold": 0.8
+      }
+    },
+    "source_question_id": "Q024",
+    "sync_timestamp": "2026-01-04T17:55:50.015723Z",
+    "sync_source": "canonic_questionnaire_central/policy_areas/PA01_mujeres_genero/questions.json"
   },
   "signal_requirements": {
     "derivation_source": "expected_elements",
