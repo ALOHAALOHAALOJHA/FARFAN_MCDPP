@@ -1039,18 +1039,102 @@ class InputLoader:
         """
         Construye diccionario de definiciones de sectores.
 
+        R-W4: Now loads dynamically from canonical questionnaire policy_areas
+        instead of using hardcoded SECTOR_DEFINITIONS.
+
         Returns:
             Diccionario {sector_id: SectorDefinition}
         """
-        result: dict[str, SectorDefinition] = {}
+        result = self._load_sectors_from_canonical()
 
+        if len(result) == EXPECTED_SECTORS:
+            logger.info(
+                "sector_definitions_loaded_from_canonical",
+                sector_count=len(result),
+            )
+            return result
+
+        logger.warning(
+            "sector_definitions_fallback_to_hardcoded",
+            canonical_count=len(result),
+            expected=EXPECTED_SECTORS,
+        )
+        fallback: dict[str, SectorDefinition] = {}
         for sector_id, sector_data in SECTOR_DEFINITIONS.items():
-            result[sector_id] = SectorDefinition(
+            fallback[sector_id] = SectorDefinition(
                 sector_id=sector_id,
                 canonical_name=sector_data["canonical_name"],
             )
+        return fallback
 
-        return result
+    def _load_sectors_from_canonical(self) -> dict[str, SectorDefinition]:
+        """
+        Load sector definitions from canonical questionnaire policy areas (R-W4).
+
+        Loads from canonic_questionnaire_central/policy_areas/PA{XX}_*/questions.json
+        extracting policy_area_metadata for sector definitions.
+
+        Returns:
+            Diccionario {sector_id: SectorDefinition}
+        """
+        import glob
+
+        sectors: dict[str, SectorDefinition] = {}
+
+        pa_base = (
+            Path(__file__).parent.parent.parent.parent.parent
+            / "canonic_questionnaire_central"
+            / "policy_areas"
+        )
+
+        if not pa_base.exists():
+            logger.warning("canonical_policy_areas_not_found", path=str(pa_base))
+            return sectors
+
+        for pa_dir in sorted(pa_base.iterdir()):
+            if not pa_dir.is_dir():
+                continue
+
+            questions_file = pa_dir / "questions.json"
+            if not questions_file.exists():
+                continue
+
+            try:
+                with open(questions_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+
+                sector_id = data.get("policy_area_id", "")
+                if not sector_id:
+                    continue
+
+                metadata = data.get("policy_area_metadata", {})
+                i18n = metadata.get("i18n", {})
+                keys = i18n.get("keys", {})
+
+                canonical_name = keys.get("label_es", "")
+                if not canonical_name:
+                    canonical_name = keys.get("label_en", sector_id)
+
+                sectors[sector_id] = SectorDefinition(
+                    sector_id=sector_id,
+                    canonical_name=canonical_name,
+                )
+
+                logger.debug(
+                    "sector_loaded_from_canonical",
+                    sector_id=sector_id,
+                    name=canonical_name[:50],
+                )
+
+            except Exception as e:
+                logger.warning(
+                    "sector_load_failed",
+                    path=str(questions_file),
+                    error=str(e),
+                )
+                continue
+
+        return sectors
 
     # ══════════════════════════════════════════════════════════════════════════
     # MÉTODOS PRIVADOS - CONSTRUCCIÓN DE ÍNDICES
