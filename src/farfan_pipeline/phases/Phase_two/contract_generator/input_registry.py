@@ -214,6 +214,9 @@ class InputLoader:
         contracts_by_id = self._build_contract_classifications(contratos_clasificados_raw)
         method_sets = self._build_method_sets(method_sets_raw)
         sectors_by_id, sectors_ordered = self._build_sectors(sectors_raw)
+        
+        # Extraer preguntas especializadas por sector
+        sector_questions = sectors_raw.get("sector_questions", {})
 
         # Paso 5: Construir índices secundarios
         methods_by_level = self._index_methods_by_level(methods_by_full_id)
@@ -239,6 +242,7 @@ class InputLoader:
             method_sets_by_question=method_sets,
             sectors_by_id=sectors_by_id,
             sectors_ordered=sectors_ordered,
+            sector_questions=sector_questions,
             total_methods=len(methods_by_full_id),
             total_contracts=len(contracts_by_id),
             total_sectors=len(sectors_by_id),
@@ -260,11 +264,7 @@ class InputLoader:
             return json.load(f)
 
     def _load_canonical_sectors(self) -> dict[str, Any]:
-        """Carga sectores desde la fuente canónica en canonic_questionnaire_central"""
-        # Ruta hardcoded a la fuente canónica relativa al root del proyecto
-        # Asumiendo que el script corre desde root o src/...
-        # Ajustar ruta base según necesidad. Aquí intentamos resolverla dinámicamente.
-        
+        """Carga sectores y preguntas especializadas desde canonic_questionnaire_central"""
         # Intentar localizar la carpeta canónica
         repo_root = Path(__file__).resolve().parent.parent.parent.parent.parent.parent
         canonical_dir = repo_root / "canonic_questionnaire_central" / "policy_areas"
@@ -277,6 +277,7 @@ class InputLoader:
             raise FileNotFoundError(f"CRITICAL: Canonical policy areas not found at {canonical_dir}")
 
         sectors_data = {}
+        sector_questions = {}  # {sector_id: {base_q_id: specialized_text}}
         
         # Listar carpetas PAxx
         sector_folders = sorted([f for f in canonical_dir.iterdir() if f.is_dir() and f.name.startswith("PA")])
@@ -304,17 +305,41 @@ class InputLoader:
                     kw = json.load(f)
                     keywords = kw.get("keywords", [])
             
+            # Leer preguntas especializadas del sector
+            questions_path = folder / "questions.json"
+            questions_map = {}
+            if questions_path.exists():
+                with open(questions_path, "r", encoding="utf-8") as f:
+                    q_data = json.load(f)
+                    # Mapear cada pregunta: Q001 -> texto especializado
+                    for q in q_data.get("questions", []):
+                        # El question_id en el archivo es global (Q001, Q031, Q061...)
+                        # Necesitamos mapear a base (Q001-Q030)
+                        q_id = q.get("question_id", "")
+                        text = q.get("text", "")
+                        if q_id and text:
+                            # Calcular base question ID (1-30 dentro del sector)
+                            # PA01: Q001-Q030, PA02: Q031-Q060, etc.
+                            sector_num = int(sector_id[2:])  # PA01 -> 1
+                            global_num = int(q_id[1:])  # Q045 -> 45
+                            base_num = global_num - (sector_num - 1) * 30
+                            base_q_id = f"Q{base_num:03d}"
+                            questions_map[base_q_id] = text
+            
+            sector_questions[sector_id] = questions_map
+            
             sectors_data[sector_id] = {
                 "sector_id": sector_id,
                 "canonical_name": meta["name"],
                 "description": f"Área canónica: {meta['name']}",
                 "keywords": keywords,
-                "regex_patterns": keywords[:5] # Fallback patterns
+                "regex_patterns": keywords[:5]
             }
             
         return {
             "metadata": {"source": "canonical_filesystem"},
-            "sectors": sectors_data
+            "sectors": sectors_data,
+            "sector_questions": sector_questions
         }
 
     def _compute_hash(self, data: dict[str, Any]) -> str:
