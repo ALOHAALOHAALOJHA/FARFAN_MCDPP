@@ -558,10 +558,23 @@ class ContractAssembler:
         classification: "ContractClassification",
         sector: "SectorDefinition",
     ) -> dict[str, Any]:
-        """Construye sección question_context."""
+        """Construye sección question_context con pregunta especializada del sector."""
+        # Buscar pregunta especializada en sector_questions
+        # classification.contract_id es "Q003", sector.sector_id es "PA01"
+        base_q_id = classification.contract_id  # Q001, Q002, etc.
+        sector_id = sector.sector_id  # PA01, PA02, etc.
+        
+        # Intentar obtener pregunta especializada, fallback a genérica
+        specialized_question = classification.pregunta  # Default: pregunta genérica
+        if hasattr(self.registry, 'sector_questions') and self.registry.sector_questions:
+            sector_qs = self.registry.sector_questions.get(sector_id, {})
+            if base_q_id in sector_qs:
+                specialized_question = sector_qs[base_q_id]
+        
         return {
             "monolith_ref": classification.contract_id,
-            "pregunta_completa": classification.pregunta,
+            "pregunta_completa": specialized_question,
+            "pregunta_generica": classification.pregunta,  # Preservar referencia
             "sector_id": sector.sector_id,
             "sector_name": sector.canonical_name,
             "overrides": None,
