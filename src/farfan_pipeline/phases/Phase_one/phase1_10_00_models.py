@@ -13,6 +13,13 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 from enum import Enum
 
+from .PHASE_1_CONSTANTS import (
+    VALID_ASSIGNMENT_METHODS,
+    ASSIGNMENT_METHOD_SEMANTIC,
+    ASSIGNMENT_METHOD_FALLBACK,
+    CHUNK_ID_PATTERN,
+)
+
 # CANONICAL TYPE IMPORTS from farfan_pipeline.core.types
 # These provide the authoritative PolicyArea and DimensionCausal enums
 try:
@@ -144,6 +151,18 @@ class Chunk:
     governance_threshold: float = 0.0
 
     def __post_init__(self) -> None:
+        # REMEDIATION: Validate SPEC-002 Traceability (parity with SmartChunk)
+        if self.assignment_method not in VALID_ASSIGNMENT_METHODS:
+            raise ValueError(
+                f"Invalid assignment_method: {self.assignment_method}. "
+                f"Must be one of {VALID_ASSIGNMENT_METHODS}"
+            )
+        if not (0.0 <= self.semantic_confidence <= 1.0):
+            raise ValueError(
+                f"Invalid semantic_confidence: {self.semantic_confidence}. "
+                f"Must be in range [0.0, 1.0]"
+            )
+        
         # Derive PA/DIM ids from chunk_id when not explicitly provided.
         if self.chunk_id and (not self.policy_area_id or not self.dimension_id):
             parts = self.chunk_id.split("-")
@@ -289,12 +308,11 @@ class SmartChunk:
     
     def __post_init__(self):
         # Validate SPEC-002 Traceability
-        if self.assignment_method not in ('semantic', 'fallback_sequential'):
+        if self.assignment_method not in VALID_ASSIGNMENT_METHODS:
             raise ValueError(f"Invalid assignment_method: {self.assignment_method}")
         if not (0.0 <= self.semantic_confidence <= 1.0):
             raise ValueError(f"Invalid semantic_confidence: {self.semantic_confidence}")
 
-        CHUNK_ID_PATTERN = r'^PA(0[1-9]|10)-DIM0[1-6]$'
         if not re.match(CHUNK_ID_PATTERN, self.chunk_id):
             raise ValueError(f"Invalid chunk_id format: {self.chunk_id}. Must match {CHUNK_ID_PATTERN}")
         

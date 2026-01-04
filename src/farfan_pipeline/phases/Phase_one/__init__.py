@@ -1,104 +1,99 @@
-"""Phase 1: CPP ingestion (CanonicalInput → CanonPolicyPackage).
+"""
+Phase One:  CPP Ingestion & Preprocessing.
 
-Canonical phase name: `phase_1_cpp_ingestion`.
-Constitutional invariant: exactly 60 chunks (10 policy areas × 6 dimensions).
+This module exports the public API for Phase 1 of the FARFAN pipeline. 
+
+Exports:
+    - Phase1Executor: Main execution class
+    - SmartChunk, Chunk:  Data models
+    - TruncationAudit:  Audit records
+    - StreamingPDFExtractor: PDF extraction
+    - Constants: All configuration values
+
+Owner: farfan_pipeline. phases.Phase_one
+Version: 1.0.0
 """
 
-from __future__ import annotations
+# Core executor
+from .phase1_20_00_cpp_ingestion import Phase1MissionContract as Phase1Executor
 
-from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput, Phase0Input
-from canonic_phases.phase_1_cpp_ingestion.cpp_models import (
-    CanonPolicyPackage,
-    CanonPolicyPackageValidator,
-    ChunkGraph,
-    ChunkResolution,
-    IntegrityIndex,
-    LegacyChunk,
-    PolicyManifest,
-    QualityMetrics,
-    TextSpan,
-)
-from canonic_phases.phase_1_cpp_ingestion.phase1_circuit_breaker import SubphaseCheckpoint
-from canonic_phases.phase_1_cpp_ingestion.phase1_cpp_ingestion_full import (
-    PADimGridSpecification,
-    Phase1CPPIngestionFullContract,
-    Phase1FatalError,
-    Phase1FailureHandler,
-    Phase1MissionContract,
-    execute_phase_1_with_full_contract,
-)
-from canonic_phases.phase_1_cpp_ingestion.phase1_dependency_validator import validate_phase1_dependencies
-from canonic_phases.phase_1_cpp_ingestion.phase1_models import (
-    Arguments,
-    CausalChains,
-    CausalGraph,
+# Data models
+from .phase1_10_00_models import (
+    SmartChunk,
     Chunk,
-    Discourse,
-    IntegratedCausal,
-    KGEdge,
-    KGNode,
-    KnowledgeGraph,
     LanguageData,
     PreprocessedDoc,
-    SmartChunk,
-    Strategic,
     StructureData,
+    KnowledgeGraph,
+    KGNode,
+    KGEdge,
+    CausalChains,
+    IntegratedCausal,
+    Arguments,
     Temporal,
+    Discourse,
+    Strategic,
     ValidationResult,
 )
-from canonic_phases.phase_1_cpp_ingestion.phase_protocol import (
-    ContractValidationResult,
-    PhaseContract,
-    PhaseInvariant,
-    PhaseMetadata,
+
+# Primitives
+from .primitives.truncation_audit import TruncationAudit
+from .primitives.streaming_extractor import StreamingPDFExtractor
+
+# Thread-safe utilities
+from .thread_safe_results import ThreadSafeResults
+
+# Constants
+from .PHASE_1_CONSTANTS import (
+    PDF_EXTRACTION_CHAR_LIMIT,
+    SEMANTIC_SCORE_MAX_EXPECTED,
+    ASSIGNMENT_METHOD_SEMANTIC,
+    ASSIGNMENT_METHOD_FALLBACK,
+    VALID_ASSIGNMENT_METHODS,
+    CHUNK_ID_PATTERN,
+    POLICY_AREA_COUNT,
+    DIMENSION_COUNT,
+    TOTAL_CHUNK_COMBINATIONS,
+    SUBPHASE_COUNT,
+    PHASE1_LOGGER_NAME,
+    RANDOM_SEED,
 )
 
 __all__ = [
-    # Phase 0 input
-    "CanonicalInput",
-    "Phase0Input",
-    # Protocol
-    "ContractValidationResult",
-    "PhaseContract",
-    "PhaseInvariant",
-    "PhaseMetadata",
-    # Phase 1 models
-    "Arguments",
-    "CausalChains",
-    "CausalGraph",
-    "Chunk",
-    "Discourse",
-    "IntegratedCausal",
-    "KGEdge",
-    "KGNode",
-    "KnowledgeGraph",
-    "LanguageData",
-    "PreprocessedDoc",
-    "SmartChunk",
-    "Strategic",
-    "StructureData",
-    "Temporal",
-    "ValidationResult",
-    # Circuit breaker
-    "SubphaseCheckpoint",
-    # CPP models
-    "CanonPolicyPackage",
-    "CanonPolicyPackageValidator",
-    "ChunkGraph",
-    "ChunkResolution",
-    "IntegrityIndex",
-    "LegacyChunk",
-    "PolicyManifest",
-    "QualityMetrics",
-    "TextSpan",
-    # Execution contract
-    "PADimGridSpecification",
-    "Phase1CPPIngestionFullContract",
-    "Phase1FatalError",
-    "Phase1FailureHandler",
-    "Phase1MissionContract",
-    "execute_phase_1_with_full_contract",
-    # Dependency validation
-    "validate_phase1_dependencies",
+    # Executor
+    'Phase1Executor',
+    # Models
+    'SmartChunk',
+    'Chunk',
+    'LanguageData',
+    'PreprocessedDoc',
+    'StructureData',
+    'KnowledgeGraph',
+    'KGNode',
+    'KGEdge',
+    'CausalChains',
+    'IntegratedCausal',
+    'Arguments',
+    'Temporal',
+    'Discourse',
+    'Strategic',
+    'ValidationResult',
+    # Primitives
+    'TruncationAudit',
+    'StreamingPDFExtractor',
+    # Utilities
+    'ThreadSafeResults',
+    # Constants
+    'PDF_EXTRACTION_CHAR_LIMIT',
+    'SEMANTIC_SCORE_MAX_EXPECTED',
+    'ASSIGNMENT_METHOD_SEMANTIC',
+    'ASSIGNMENT_METHOD_FALLBACK',
+    'VALID_ASSIGNMENT_METHODS',
+    'CHUNK_ID_PATTERN',
+    'POLICY_AREA_COUNT',
+    'DIMENSION_COUNT',
+    'TOTAL_CHUNK_COMBINATIONS',
+    'SUBPHASE_COUNT',
+    'PHASE1_LOGGER_NAME',
+    'RANDOM_SEED',
 ]
-

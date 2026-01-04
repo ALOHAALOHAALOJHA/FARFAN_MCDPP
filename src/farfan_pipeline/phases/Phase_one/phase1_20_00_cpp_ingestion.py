@@ -69,17 +69,32 @@ from enum import Enum
 
 # Core pipeline imports - REAL PATHS based on actual project structure
 # Phase 0/1 models from same directory
-from canonic_phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput
-from canonic_phases.phase_1_cpp_ingestion.phase1_models import (
+try:
+    from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput
+except ImportError:
+    # Fallback if farfan_pipeline is not in path directly but src is?
+    # Or keep the old one just in case but it seems broken.
+    # I'll try the absolute one first.
+    from canonic_phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput
+
+from .phase1_10_00_models import (
     LanguageData, PreprocessedDoc, StructureData, KnowledgeGraph, KGNode, KGEdge,
     Chunk, CausalChains, IntegratedCausal, Arguments, Temporal, Discourse, Strategic,
     SmartChunk, ValidationResult, CausalGraph, CANONICAL_TYPES_AVAILABLE
 )
 
 # Remediation Imports (SPEC-001, SPEC-003, SPEC-004)
-from canonic_phases.phase_1_cpp_ingestion.phase1_truncation_audit import TruncationAudit
-from canonic_phases.phase_1_cpp_ingestion.streaming_pdf_extractor import StreamingPDFExtractor
-from canonic_phases.phase_1_cpp_ingestion.thread_safe_results import ThreadSafeResults
+from .primitives.truncation_audit import TruncationAudit
+from .primitives.streaming_extractor import StreamingPDFExtractor
+from .thread_safe_results import ThreadSafeResults
+from .PHASE_1_CONSTANTS import (
+    PDF_EXTRACTION_CHAR_LIMIT,
+    SEMANTIC_SCORE_MAX_EXPECTED,
+    ASSIGNMENT_METHOD_SEMANTIC,
+    ASSIGNMENT_METHOD_FALLBACK,
+    VALID_ASSIGNMENT_METHODS,
+    PHASE1_LOGGER_NAME,
+)
 
 # PDT Section Types and Hierarchy Levels
 class HierarchyLevel(Enum):
@@ -100,7 +115,7 @@ class PDTSectionType(Enum):
 PDT_TYPES_AVAILABLE = True
 
 # CPP models - REAL PRODUCTION MODELS (no stubs)
-from canonic_phases.phase_1_cpp_ingestion.cpp_models import (
+from .cpp_models import (
     CanonPolicyPackage,
     CanonPolicyPackageValidator,
     ChunkGraph,
@@ -113,7 +128,7 @@ from canonic_phases.phase_1_cpp_ingestion.cpp_models import (
 )
 
 # Circuit Breaker for Aggressively Preventive Failure Protection
-from canonic_phases.phase_1_cpp_ingestion.phase1_circuit_breaker import (
+from .phase1_40_00_circuit_breaker import (
     get_circuit_breaker,
     run_preflight_check,
     ensure_can_execute,
@@ -185,7 +200,11 @@ except ImportError as e:
     SignalQualityMetrics = None
 
 # Methods Dispensary via factory/registry (no direct module imports)
-from orchestration.method_registry import MethodRegistry, MethodRegistryError
+try:
+    from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry import MethodRegistry, MethodRegistryError
+except ImportError:
+    # Fallback to old path if refactoring is in progress
+    from orchestration.method_registry import MethodRegistry, MethodRegistryError
 
 _METHOD_REGISTRY = MethodRegistry()
 
@@ -213,7 +232,7 @@ TEORIA_CAMBIO_AVAILABLE = TEORIA_CAMBIO_CLASS is not None
 
 # Signal Enrichment Module - PRODUCTION (same directory)
 try:
-    from canonic_phases.phase_1_cpp_ingestion.signal_enrichment import (
+    from .phase1_60_00_signal_enrichment import (
         SignalEnricher,
         create_signal_enricher,
     )
@@ -230,7 +249,7 @@ except ImportError as e:
 
 # Structural Normalizer - REAL PATH (same directory)
 try:
-    from canonic_phases.phase_1_cpp_ingestion.structural import StructuralNormalizer
+    from .phase1_70_00_structural import StructuralNormalizer
     STRUCTURAL_AVAILABLE = True
 except ImportError:
     STRUCTURAL_AVAILABLE = False
@@ -1075,27 +1094,28 @@ class Phase1CPPIngestionFullContract:
             try:
                 # SPEC-003: Streaming extraction with bounded memory
                 extractor = StreamingPDFExtractor(canonical_input.pdf_path)
-                # SPEC-001: Enforce limit and audit
-                CHAR_LIMIT = 1000000
-                extracted_text, processed_chars, total_chars = extractor.extract_with_limit(CHAR_LIMIT)
+                # SPEC-001: Use named constant, not magic number
+                extracted_text, processed_chars, total_chars = extractor.extract_with_limit(
+                    PDF_EXTRACTION_CHAR_LIMIT
+                )
                 raw_text = extracted_text
 
                 # SPEC-001: Create and store audit record
                 truncation_audit = TruncationAudit.create(
                     raw_text_len=total_chars,
                     processed_text_len=processed_chars,
-                    limit=CHAR_LIMIT
+                    limit=PDF_EXTRACTION_CHAR_LIMIT
                 )
-                truncation_audit.log_if_truncated()
-                # NOTE: subphase_results uses integer keys (0-15) for MANDATORY_SUBPHASES results.
-                # String keys like 'truncation_audit' are RESERVED for cross-cutting audit/metadata
-                # and are intentionally kept separate from the integer subphase key space.
+                
+                # SPEC-001: Store audit in metadata (string key, not integer subphase index)
                 self.subphase_results['truncation_audit'] = truncation_audit.to_dict()
+                truncation_audit.log_if_truncated()
 
                 logger.info(f"SP1: Extracted {len(raw_text)} characters from PDF (Total source: {total_chars})")
-            except Exception as e:
-                logger.error(f"SP1: Streaming PDF extraction failed: {e}")
-                raise Phase1FatalError(f"SP1: Cannot extract PDF text: {e}")
+            except Exception:
+                # REMEDIATION: Use logger.exception to capture full traceback
+                logger.exception("SP1: Streaming PDF extraction failed")
+                raise Phase1FatalError("SP1: Cannot extract PDF text")
         else:
             # Fallback for non-PDF or missing PyMuPDF
             if canonical_input.pdf_path.exists():
@@ -1484,10 +1504,10 @@ class Phase1CPPIngestionFullContract:
                     chunk_text = ' '.join(p[1][:500] for p in relevant_paragraphs[:3])
 
                     # Traceability (SPEC-002)
-                    assignment_method = "semantic"
-                    # Heuristic normalization: top_score can be > 2.0 with boosts. Cap at 1.0.
+                    assignment_method = ASSIGNMENT_METHOD_SEMANTIC
+                    # Normalize raw score to [0.0, 1.0] using documented max expected score
                     top_score = relevant_paragraphs[0][2]
-                    semantic_confidence = min(1.0, top_score / 3.0)
+                    semantic_confidence = min(1.0, top_score / SEMANTIC_SCORE_MAX_EXPECTED)
                 else:
                     # Fallback: distribute sequentially
                     start_idx = idx * paragraphs_per_chunk
@@ -1497,7 +1517,7 @@ class Phase1CPPIngestionFullContract:
                     chunk_text = ' '.join(preprocessed.paragraphs[start_idx:end_idx])[:1500]
 
                     # Traceability (SPEC-002)
-                    assignment_method = "fallback_sequential"
+                    assignment_method = ASSIGNMENT_METHOD_FALLBACK
                     semantic_confidence = 0.0
                 
                 # Convert string IDs to enum types for type-safe aggregation in CPP cycle
