@@ -1117,8 +1117,845 @@ def test_referential_integrity():
         for pa in meso. get("policy_areas", []):
             assert pa in valid_pas, f"Invalid PA in meso: {pa}"
 ```
-
 ### F.3 AUD-SIGNALS-001 — Cobertura de irrigación
+
+```python
+def test_signal_irrigation_complete():
+    """300/300 preguntas tienen señales extraíbles."""
+    registry = create_signal_registry()
+    
+    question_ids = [f"Q{i:03d}" for i in range(1, 301)]
+    
+    coverage_report = {
+        "total":  300,
+        "covered":  0,
+        "missing": [],
+        "degraded": [],  # Tienen pack pero faltan campos críticos
+        "errors": []
+    }
+    
+    for qid in question_ids:
+        try:
+            pack = registry.get_micro_answering_signals(qid)
+            
+            # Validar campos críticos presentes
+            critical_missing = []
+            if not pack.patterns: 
+                critical_missing.append("patterns")
+            if not pack.methods:
+                critical_missing.append("methods")
+            if not pack.scoring: 
+                critical_missing.append("scoring")
+            
+            if critical_missing: 
+                coverage_report["degraded"].append({
+                    "question_id": qid,
+                    "missing_fields": critical_missing
+                })
+            else:
+                coverage_report["covered"] += 1
+                
+        except SignalNotFoundError: 
+            coverage_report["missing"].append(qid)
+        except Exception as e:
+            coverage_report["errors"].append({
+                "question_id":  qid,
+                "error": str(e),
+                "type":  type(e).__name__
+            })
+    
+    # Assertions
+    assert coverage_report["covered"] == 300, (
+        f"Incomplete coverage: {coverage_report['covered']}/300\n"
+        f"Missing:  {coverage_report['missing']}\n"
+        f"Degraded: {coverage_report['degraded']}\n"
+        f"Errors: {coverage_report['errors']}"
+    )
+    assert len(coverage_report["missing"]) == 0, f"Missing signals for:  {coverage_report['missing']}"
+    assert len(coverage_report["errors"]) == 0, f"Errors during extraction: {coverage_report['errors']}"
+```
+
+### F.4 AUD-WIRING-001 — Imports resolubles
+
+```python
+# tests/audit/test_import_resolution.py
+
+import importlib
+import sys
+from pathlib import Path
+
+SISAS_MODULES = [
+    "farfan_pipeline.infrastructure.irrigation_using_signals. SISAS. signals",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.SISAS.signal_registry",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.SISAS.signal_resolution",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.SISAS.signal_loader",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.SISAS.signal_consumption",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.SISAS.signal_context_scoper",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.SISAS.signal_contract_validator",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.SISAS.signal_enhancement_integrator",
+    "farfan_pipeline.infrastructure.irrigation_using_signals. SISAS.signal_evidence_extractor",
+    "farfan_pipeline.infrastructure.irrigation_using_signals. SISAS.signal_intelligence_layer",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.SISAS.signal_method_metadata",
+    "farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_quality_metrics",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.SISAS.signal_scoring_context",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.SISAS.signal_semantic_context",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.SISAS.signal_semantic_expander",
+    "farfan_pipeline.infrastructure.irrigation_using_signals. SISAS.signal_validation_specs",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.SISAS.signal_wiring_fixes",
+    "farfan_pipeline. infrastructure.irrigation_using_signals.ports",
+]
+
+PHASE_MODULES = [
+    "farfan_pipeline.phases.Phase_one.signal_enrichment",
+    "farfan_pipeline.phases.Phase_two.phase2_40_00_synchronization",
+    "farfan_pipeline.phases.Phase_two.phase2_40_01_executor_chunk_synchronizer",
+    "farfan_pipeline. phases.Phase_two.phase2_40_03_irrigation_synchronizer",
+    "farfan_pipeline. phases.Phase_three.phase3_signal_enriched_scoring",
+]
+
+def test_sisas_modules_importable():
+    """Todos los módulos SISAS deben ser importables."""
+    failed_imports = []
+    
+    for module_path in SISAS_MODULES:
+        try:
+            importlib.import_module(module_path)
+        except ImportError as e: 
+            failed_imports. append({
+                "module":  module_path,
+                "error": str(e)
+            })
+    
+    assert len(failed_imports) == 0, (
+        f"Failed to import {len(failed_imports)} SISAS modules:\n" +
+        "\n". join(f"  - {f['module']}: {f['error']}" for f in failed_imports)
+    )
+
+def test_phase_modules_importable():
+    """Todos los módulos de fases con signals deben ser importables."""
+    failed_imports = []
+    
+    for module_path in PHASE_MODULES:
+        try:
+            importlib.import_module(module_path)
+        except ImportError as e:
+            failed_imports.append({
+                "module": module_path,
+                "error":  str(e)
+            })
+    
+    assert len(failed_imports) == 0, (
+        f"Failed to import {len(failed_imports)} phase modules:\n" +
+        "\n".join(f"  - {f['module']}:  {f['error']}" for f in failed_imports)
+    )
+
+def test_no_phantom_namespace_imports():
+    """No deben existir imports a namespaces fantasma."""
+    phantom_namespaces = [
+        "cross_cutting_infrastructure",
+        "canonic_phases",
+    ]
+    
+    src_path = Path("src/farfan_pipeline")
+    violations = []
+    
+    for py_file in src_path.rglob("*.py"):
+        content = py_file. read_text()
+        for phantom in phantom_namespaces:
+            if f"from {phantom}" in content or f"import {phantom}" in content: 
+                # Extraer líneas ofensivas
+                for i, line in enumerate(content.split("\n"), 1):
+                    if phantom in line and ("import" in line or "from" in line):
+                        violations. append({
+                            "file": str(py_file),
+                            "line":  i,
+                            "content": line. strip(),
+                            "phantom": phantom
+                        })
+    
+    assert len(violations) == 0, (
+        f"Found {len(violations)} phantom namespace imports:\n" +
+        "\n".join(
+            f"  {v['file']}:{v['line']} - {v['content']}"
+            for v in violations[: 20]  # Limitar output
+        ) +
+        (f"\n  ... and {len(violations) - 20} more" if len(violations) > 20 else "")
+    )
+```
+
+### F.5 AUD-DETERMINISM-001 — Verificación de determinismo
+
+```python
+# tests/audit/test_determinism.py
+
+import hashlib
+import json
+from typing import Any
+
+def canonical_json(obj: Any) -> str:
+    """Serialización canónica para comparación."""
+    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+def test_signal_pack_determinism():
+    """Mismo input → mismo SignalPack → mismo hash."""
+    registry1 = create_signal_registry()
+    registry2 = create_signal_registry()  # Nueva instancia, mismo monolito
+    
+    test_questions = ["Q001", "Q050", "Q100", "Q150", "Q200", "Q250", "Q300"]
+    
+    for qid in test_questions:
+        pack1 = registry1.get_micro_answering_signals(qid)
+        pack2 = registry2.get_micro_answering_signals(qid)
+        
+        # Excluir telemetría para comparación de identidad
+        identity1 = pack1.dict(exclude={"telemetry"})
+        identity2 = pack2.dict(exclude={"telemetry"})
+        
+        hash1 = hashlib.sha256(canonical_json(identity1).encode()).hexdigest()
+        hash2 = hashlib.sha256(canonical_json(identity2).encode()).hexdigest()
+        
+        assert hash1 == hash2, (
+            f"Non-deterministic SignalPack for {qid}:\n"
+            f"  Hash 1: {hash1}\n"
+            f"  Hash 2: {hash2}\n"
+            f"  Diff: {_compute_diff(identity1, identity2)}"
+        )
+
+def test_monolith_hash_stability():
+    """Hash del monolito es estable entre lecturas."""
+    hashes = []
+    
+    for _ in range(3):
+        with open("canonic_questionnaire_central/questionnaire_monolith.json", "rb") as f:
+            content = f. read()
+            hashes.append(hashlib.sha256(content).hexdigest())
+    
+    assert len(set(hashes)) == 1, f"Monolith hash unstable: {hashes}"
+
+def test_no_time_in_identity_fields():
+    """Campos de identidad no contienen timestamps."""
+    registry = create_signal_registry()
+    
+    for qid in ["Q001", "Q150", "Q300"]:
+        pack = registry.get_micro_answering_signals(qid)
+        identity = pack.dict(exclude={"telemetry"})
+        
+        # Buscar campos sospechosos
+        identity_str = json.dumps(identity)
+        
+        suspicious_patterns = [
+            "timestamp",
+            "created_at",
+            "generated_at",
+            "time. time",
+            "datetime. now",
+        ]
+        
+        for pattern in suspicious_patterns:
+            assert pattern not in identity_str. lower(), (
+                f"Suspicious time-related field in identity for {qid}: {pattern}"
+            )
+
+def _compute_diff(obj1: dict, obj2: dict, path: str = "") -> list[str]:
+    """Computa diferencias entre dos objetos."""
+    diffs = []
+    
+    all_keys = set(obj1.keys()) | set(obj2.keys())
+    
+    for key in all_keys: 
+        current_path = f"{path}. {key}" if path else key
+        
+        if key not in obj1:
+            diffs.append(f"Missing in obj1: {current_path}")
+        elif key not in obj2:
+            diffs.append(f"Missing in obj2: {current_path}")
+        elif obj1[key] != obj2[key]:
+            if isinstance(obj1[key], dict) and isinstance(obj2[key], dict):
+                diffs.extend(_compute_diff(obj1[key], obj2[key], current_path))
+            else:
+                diffs.append(f"Different at {current_path}:  {obj1[key]} vs {obj2[key]}")
+    
+    return diffs
+```
+
+### F.6 AUD-CONTRACT-001 — Verificación de contratos de interfaz
+
+```python
+# tests/audit/test_interface_contracts.py
+
+import inspect
+from typing import get_type_hints
+
+def test_signal_registry_implements_port():
+    """QuestionnaireSignalRegistry implementa SignalRegistryPort correctamente."""
+    from farfan_pipeline.infrastructure.irrigation_using_signals.ports import SignalRegistryPort
+    from farfan_pipeline.infrastructure.irrigation_using_signals. SISAS.signal_registry import (
+        QuestionnaireSignalRegistry
+    )
+    
+    port_methods = {
+        name: method for name, method in inspect.getmembers(SignalRegistryPort)
+        if not name.startswith("_") and callable(method)
+    }
+    
+    implementation_methods = {
+        name: method for name, method in inspect.getmembers(QuestionnaireSignalRegistry)
+        if not name. startswith("_") and callable(method)
+    }
+    
+    missing_methods = []
+    signature_mismatches = []
+    
+    for method_name in port_methods: 
+        if method_name not in implementation_methods:
+            missing_methods.append(method_name)
+            continue
+        
+        # Comparar firmas
+        port_sig = inspect.signature(getattr(SignalRegistryPort, method_name))
+        impl_sig = inspect. signature(getattr(QuestionnaireSignalRegistry, method_name))
+        
+        port_params = list(port_sig.parameters.keys())
+        impl_params = list(impl_sig. parameters.keys())
+        
+        # Ignorar 'self' en comparación
+        port_params = [p for p in port_params if p != "self"]
+        impl_params = [p for p in impl_params if p != "self"]
+        
+        if port_params != impl_params: 
+            signature_mismatches.append({
+                "method":  method_name,
+                "port_params": port_params,
+                "impl_params": impl_params
+            })
+    
+    assert len(missing_methods) == 0, f"Missing methods in implementation: {missing_methods}"
+    assert len(signature_mismatches) == 0, (
+        f"Signature mismatches:\n" +
+        "\n".join(
+            f"  {m['method']}: port={m['port_params']}, impl={m['impl_params']}"
+            for m in signature_mismatches
+        )
+    )
+
+def test_signal_pack_has_required_fields():
+    """SignalPack tiene todos los campos requeridos por contrato."""
+    required_fields = {
+        "question_id": str,
+        "dimension_id": str,
+        "policy_area_id": str,
+        "cluster_id": str,
+        "patterns": list,
+        "methods":  list,
+        "validations": list,
+        "scoring": object,
+        "semantic":  object,
+        "source_file": str,
+        "monolith_hash":  str,
+    }
+    
+    registry = create_signal_registry()
+    pack = registry.get_micro_answering_signals("Q001")
+    pack_dict = pack. dict() if hasattr(pack, "dict") else vars(pack)
+    
+    missing_fields = []
+    type_mismatches = []
+    
+    for field, expected_type in required_fields.items():
+        if field not in pack_dict: 
+            missing_fields.append(field)
+        elif not isinstance(pack_dict[field], expected_type):
+            type_mismatches. append({
+                "field":  field,
+                "expected":  expected_type.__name__,
+                "actual": type(pack_dict[field]).__name__
+            })
+    
+    assert len(missing_fields) == 0, f"Missing required fields: {missing_fields}"
+    assert len(type_mismatches) == 0, (
+        f"Type mismatches:\n" +
+        "\n". join(f"  {m['field']}: expected {m['expected']}, got {m['actual']}" for m in type_mismatches)
+    )
+```
+
+---
+
+## 9.  ORDEN DE EJECUCIÓN Y DEPENDENCIAS
+
+### 9.1 Grafo de dependencias
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        ORDEN DE EJECUCIÓN                                   │
+│                    (Top-down, izquierda-derecha)                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+NIVEL 0 (Fundacional - sin dependencias)
+├── CC-SCHEMA-001: Permitir provenance en PatternItem
+└── CC-ID-001: Normalizar IDs Meso a PA01.. PA10
+
+NIVEL 1 (Depende de Nivel 0)
+├── CC-V3-001: Definir semántica de V3 stub
+├── CC-SCORING-001: Materialización de scoring_system
+└── CC-SEMANTIC-001: Estructura de semantic_layers
+
+NIVEL 2 (Depende de Nivel 1)
+├── SIG-PACK-001: Estructura canónica de SignalPack
+├── SIG-PORTS-001: Interfaz SignalRegistryPort normalizada
+└── SIG-HASH-001: Algoritmo de hashing determinista
+
+NIVEL 3 (Depende de Nivel 2)
+├── SISAS-NAMESPACE-001: Resolver imports no resolubles
+├── SISAS-LOADER-001: Deprecar signal_loader. py
+└── SISAS-DETERMINISM-001: Separar identidad de telemetría
+
+NIVEL 4 (Depende de Nivel 3)
+├── SISAS-WIRING-001: Implementar placeholder en signal_wiring_fixes.py
+├── PH1-ENRICH-001: Phase One enrichment corregido
+├── PH2-SYNC-001: Phase Two sincronización con hashes
+└── PH3-SCORING-001: Phase Three scoring con materialización
+
+NIVEL 5 (Depende de Nivel 4)
+├── GOV-METHODS-001: Sincronizar 240 métodos
+└── AUD-*:  Todas las auditorías continuas
+```
+
+### 9.2 Matriz de dependencias
+
+| Operación | Depende de | Bloquea a | Criticidad | Esfuerzo |
+|-----------|-----------|-----------|------------|----------|
+| CC-SCHEMA-001 | - | SIG-PACK-001 | ALTA | BAJO |
+| CC-ID-001 | - | PH1-ENRICH-001, PH2-SYNC-001 | CRÍTICA | BAJO |
+| CC-V3-001 | CC-SCHEMA-001 | - | MEDIA | MEDIO |
+| CC-SCORING-001 | CC-SCHEMA-001 | PH3-SCORING-001 | ALTA | MEDIO |
+| CC-SEMANTIC-001 | CC-SCHEMA-001 | SIG-PACK-001 | MEDIA | BAJO |
+| SIG-PACK-001 | CC-SCHEMA-001, CC-SEMANTIC-001 | SISAS-* | CRÍTICA | ALTO |
+| SIG-PORTS-001 | - | SISAS-NAMESPACE-001 | CRÍTICA | MEDIO |
+| SIG-HASH-001 | SIG-PACK-001 | SISAS-DETERMINISM-001 | CRÍTICA | BAJO |
+| SISAS-NAMESPACE-001 | SIG-PORTS-001 | PH*-* | CRÍTICA | ALTO |
+| SISAS-LOADER-001 | SISAS-NAMESPACE-001 | - | MEDIA | BAJO |
+| SISAS-DETERMINISM-001 | SIG-HASH-001 | AUD-DETERMINISM-001 | ALTA | MEDIO |
+| SISAS-WIRING-001 | SISAS-NAMESPACE-001 | PH1-ENRICH-001 | ALTA | MEDIO |
+| PH1-ENRICH-001 | SISAS-*, CC-ID-001 | PH2-SYNC-001 | CRÍTICA | MEDIO |
+| PH2-SYNC-001 | PH1-ENRICH-001 | PH3-SCORING-001 | ALTA | MEDIO |
+| PH3-SCORING-001 | CC-SCORING-001, PH2-SYNC-001 | - | ALTA | MEDIO |
+| GOV-METHODS-001 | - | - | MEDIA | BAJO |
+
+### 9.3 Plan de ejecución por sprints
+
+**Sprint 1 (Fundacional): 3-5 días**
+```
+Día 1-2:
+  - CC-SCHEMA-001:  Patch questionnaire_schema.json
+  - CC-ID-001: Normalizar meso_questions.json + monolito
+  
+Día 3:
+  - Ejecutar AUD-SCHEMA-001, AUD-REFINT-001
+  - Verificar que monolito pasa validación
+  
+Día 4-5:
+  - SIG-PORTS-001: Unificar interfaz SignalRegistryPort
+  - SIG-HASH-001: Implementar canonical_json + compute_signal_pack_id
+```
+
+**Sprint 2 (Wiring): 5-7 días**
+```
+Día 1-3:
+  - SISAS-NAMESPACE-001: Refactor de imports (masivo)
+  - Ejecutar AUD-WIRING-001 continuamente
+  
+Día 4-5:
+  - SISAS-DETERMINISM-001: Separar telemetría
+  - SISAS-LOADER-001: Deprecar signal_loader. py
+  
+Día 6-7:
+  - SISAS-WIRING-001: Implementar context scoping
+  - Ejecutar AUD-DETERMINISM-001
+```
+
+**Sprint 3 (Fases): 5-7 días**
+```
+Día 1-2:
+  - PH1-ENRICH-001: Corregir Phase One
+  - Ejecutar AUD-SIGNALS-001
+  
+Día 3-4:
+  - PH2-SYNC-001: Añadir hashes de ruleset
+  - CC-SCORING-001 + PH3-SCORING-001: Materialización de scoring
+  
+Día 5-7:
+  - Integración end-to-end
+  - GOV-METHODS-001: Verificar sincronización de 240 métodos
+  - Ejecutar suite completa de auditorías
+```
+
+### 9.4 Rollback plan
+
+Cada operación debe tener un rollback definido: 
+
+| Operación | Rollback |
+|-----------|----------|
+| CC-SCHEMA-001 | `git checkout canonic_questionnaire_central/questionnaire_schema.json` |
+| CC-ID-001 | `git checkout canonic_questionnaire_central/meso_questions. json canonic_questionnaire_central/questionnaire_monolith.json` |
+| SISAS-NAMESPACE-001 | `git checkout src/farfan_pipeline/infrastructure/irrigation_using_signals/` |
+| PH*-* | `git checkout src/farfan_pipeline/phases/` |
+
+---
+
+## 10. APÉNDICES TÉCNICOS
+
+### Apéndice A: Patch para CC-SCHEMA-001
+
+```json
+// Añadir en questionnaire_schema.json → definitions → PatternItem → oneOf[0] → properties
+
+"provenance": {
+  "oneOf": [
+    { "type": "null" },
+    {
+      "type":  "object",
+      "properties": {
+        "source":  { "type": "string" },
+        "version": { "type":  "string" },
+        "extracted_from": { "type":  "string" },
+        "extraction_date": { 
+          "type":  "string", 
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "confidence": { 
+          "type":  "number", 
+          "minimum": 0, 
+          "maximum": 1 
+        },
+        "methodology": { "type": "string" },
+        "reviewer": { "type":  "string" }
+      },
+      "additionalProperties": true
+    }
+  ],
+  "description": "Metadata about the origin and extraction of this pattern"
+}
+```
+
+### Apéndice B:  Script de migración CC-ID-001
+
+```python
+#!/usr/bin/env python3
+"""
+migrate_meso_ids.py
+Migra IDs legacy (P1.. P10) a canónicos (PA01..PA10) en meso_questions. 
+"""
+import json
+import re
+from pathlib import Path
+
+LEGACY_TO_CANONICAL = {
+    f"P{i}": f"PA{i: 02d}" for i in range(1, 11)
+}
+
+def migrate_file(filepath:  Path) -> dict:
+    """Migra un archivo JSON."""
+    with open(filepath, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    
+    content_str = json.dumps(data, ensure_ascii=False)
+    
+    # Reemplazar en orden inverso para evitar P1 → PA01 antes de P10 → PA10
+    for legacy, canonical in sorted(LEGACY_TO_CANONICAL.items(), key=lambda x: -int(x[0][1:])):
+        # Solo reemplazar cuando está entre comillas (no en medio de otras palabras)
+        content_str = re. sub(
+            rf'"{legacy}"',
+            f'"{canonical}"',
+            content_str
+        )
+        # También en arrays inline como ['P2','P3','P7']
+        content_str = re.sub(
+            rf"'{legacy}'",
+            f"'{canonical}'",
+            content_str
+        )
+    
+    return json.loads(content_str)
+
+def main():
+    base_path = Path("canonic_questionnaire_central")
+    
+    files_to_migrate = [
+        base_path / "meso_questions.json",
+        base_path / "questionnaire_monolith. json",
+    ]
+    
+    for filepath in files_to_migrate:
+        if not filepath.exists():
+            print(f"SKIP:  {filepath} not found")
+            continue
+        
+        print(f"Migrating {filepath}...")
+        
+        # Backup
+        backup_path = filepath.with_suffix(".json.bak")
+        with open(filepath, "r") as f:
+            backup_path.write_text(f.read())
+        
+        # Migrate
+        migrated = migrate_file(filepath)
+        
+        # Write
+        with open(filepath, "w", encoding="utf-8") as f:
+            json.dump(migrated, f, indent=2, ensure_ascii=False)
+        
+        print(f"  ✓ Migrated, backup at {backup_path}")
+    
+    # Verify
+    print("\nVerifying...")
+    for filepath in files_to_migrate:
+        if not filepath.exists():
+            continue
+        content = filepath.read_text()
+        legacy_found = [p for p in LEGACY_TO_CANONICAL.keys() if f'"{p}"' in content]
+        if legacy_found: 
+            print(f"  ✗ {filepath}:  still has legacy IDs:  {legacy_found}")
+        else: 
+            print(f"  ✓ {filepath}: clean")
+
+if __name__ == "__main__":
+    main()
+```
+
+### Apéndice C: Script de refactor SISAS-NAMESPACE-001
+
+```bash
+#!/bin/bash
+# refactor_sisas_imports.sh
+# Refactoriza imports de namespaces fantasma a namespaces reales. 
+
+set -euo pipefail
+
+SRC_DIR="src/farfan_pipeline"
+
+echo "=== SISAS Namespace Refactor ==="
+echo "Source directory: $SRC_DIR"
+
+# Backup
+BACKUP_DIR="backups/sisas_refactor_$(date +%Y%m%d_%H%M%S)"
+mkdir -p "$BACKUP_DIR"
+cp -r "$SRC_DIR" "$BACKUP_DIR/"
+echo "Backup created at $BACKUP_DIR"
+
+# Contador
+TOTAL_REPLACEMENTS=0
+
+# Función de reemplazo
+replace_in_file() {
+    local file="$1"
+    local from="$2"
+    local to="$3"
+    
+    if grep -q "$from" "$file" 2>/dev/null; then
+        sed -i. tmp "s|$from|$to|g" "$file"
+        rm -f "${file}.tmp"
+        COUNT=$(grep -c "$to" "$file" 2>/dev/null || echo 0)
+        TOTAL_REPLACEMENTS=$((TOTAL_REPLACEMENTS + COUNT))
+        echo "  Replaced in:  $file"
+    fi
+}
+
+# Reemplazos principales
+echo ""
+echo "Replacing cross_cutting_infrastructure → farfan_pipeline..."
+find "$SRC_DIR" -name "*. py" | while read -r file; do
+    replace_in_file "$file" \
+        "from cross_cutting_infrastructure\." \
+        "from farfan_pipeline."
+    replace_in_file "$file" \
+        "import cross_cutting_infrastructure\." \
+        "import farfan_pipeline."
+done
+
+echo ""
+echo "Replacing canonic_phases → farfan_pipeline. phases..."
+find "$SRC_DIR" -name "*.py" | while read -r file; do
+    replace_in_file "$file" \
+        "from canonic_phases\." \
+        "from farfan_pipeline.phases."
+    replace_in_file "$file" \
+        "import canonic_phases\." \
+        "import farfan_pipeline. phases."
+done
+
+echo ""
+echo "=== Summary ==="
+echo "Total replacements: $TOTAL_REPLACEMENTS"
+
+# Verificación
+echo ""
+echo "=== Verification ==="
+REMAINING_CROSS=$(grep -r "cross_cutting_infrastructure" "$SRC_DIR" --include="*.py" | wc -l || echo 0)
+REMAINING_CANONIC=$(grep -r "canonic_phases" "$SRC_DIR" --include="*.py" | wc -l || echo 0)
+
+if [ "$REMAINING_CROSS" -gt 0 ] || [ "$REMAINING_CANONIC" -gt 0 ]; then
+    echo "WARNING: Some phantom imports remain:"
+    echo "  cross_cutting_infrastructure:  $REMAINING_CROSS occurrences"
+    echo "  canonic_phases: $REMAINING_CANONIC occurrences"
+    echo ""
+    echo "Review manually:"
+    grep -r "cross_cutting_infrastructure\|canonic_phases" "$SRC_DIR" --include="*.py" | head -20
+else
+    echo "✓ All phantom imports replaced successfully"
+fi
+
+echo ""
+echo "To rollback:  cp -r $BACKUP_DIR/farfan_pipeline/* $SRC_DIR/"
+```
+
+### Apéndice D:  Estructura de directorios objetivo
+
+```
+src/farfan_pipeline/
+├── __init__.py
+├── infrastructure/
+│   ├── __init__.py
+│   └── irrigation_using_signals/
+│       ├── __init__.py
+│       ├── ports. py                              # SIG-PORTS-001: Interfaz unificada
+│       └── SISAS/
+│           ├── __init__.py                       # Re-exports públicos
+│           ├── signals.py                        # SIG-PACK-001: SignalPack canónico
+│           ├── signal_registry.py                # Implementación de SignalRegistryPort
+│           ├── signal_resolution.py              # Resolución hard-fail
+│           ├── signal_consumption.py             # Proof chain + Merkle
+│           ├── signal_consumption_integration.py # Tracker
+│           ├── signal_context_scoper.py          # Filtrado por contexto
+│           ├── signal_contract_validator.py      # Validación de contratos
+│           ├── signal_enhancement_integrator.py  # Integrador de 4 enhancements
+│           ├── signal_evidence_extractor.py      # Extracción de evidencia
+│           ├── signal_intelligence_layer.py      # Capa de inteligencia
+│           ├── signal_method_metadata. py         # Metadata de métodos
+│           ├── signal_quality_metrics.py         # Métricas de cobertura
+│           ├── signal_scoring_context.py         # Contexto de scoring
+│           ├── signal_semantic_context.py        # Contexto semántico
+│           ├── signal_semantic_expander.py       # Expansión semántica
+│           ├── signal_validation_specs.py        # Especificaciones de validación
+│           ├── signal_wiring_fixes.py            # SISAS-WIRING-001: Integración real
+│           └── signal_loader.py                  # DEPRECATED (SISAS-LOADER-001)
+├── phases/
+│   ├── __init__.py
+│   ├── Phase_one/
+│   │   ├── __init__.py
+│   │   └── signal_enrichment.py                  # PH1-ENRICH-001
+│   ├── Phase_two/
+│   │   ├── __init__.py
+│   │   ├── phase2_40_00_synchronization.py       # PH2-SYNC-001
+│   │   ├── phase2_40_01_executor_chunk_synchronizer.py
+│   │   └── phase2_40_03_irrigation_synchronizer.py
+│   └── Phase_three/
+│       ├── __init__.py
+│       └── phase3_signal_enriched_scoring.py     # PH3-SCORING-001
+└── utils/
+    └── validation/
+        └── schema_validator.py
+
+canonic_questionnaire_central/
+├── questionnaire_monolith.json                   # CC-ID-001, CC-SCHEMA-001 applied
+├── questionnaire_schema.json                     # CC-SCHEMA-001: provenance added
+├── meso_questions.json                           # CC-ID-001: PA01..PA10
+├── questionnaire_monolith_v3.json                # CC-V3-001: manifest only
+├── canonical_notation.json
+├── pattern_registry.json
+├── modular_manifest.json
+├── questionnaire_index.json
+├── governance/
+│   ├── METHODS_TO_QUESTIONS_AND_FILES.json       # GOV-METHODS-001
+│   └── METHODS_OPERACIONALIZACION.json           # GOV-METHODS-001
+├── scoring/
+│   └── scoring_system.json                       # CC-SCORING-001
+├── semantic/
+│   └── semantic_embedding_strategy.json          # CC-SEMANTIC-001
+├── validations/
+│   ├── validation_rules.json
+│   └── referential_integrity.json
+├── policy_areas/
+│   └── PA01..PA10/
+├── dimensions/
+│   └── DIM01..DIM06/
+└── clusters/
+    └── CL01..CL04/
+
+tests/
+├── audit/
+│   ├── test_schema_validation.py                 # AUD-SCHEMA-001
+│   ├── test_referential_integrity.py             # AUD-REFINT-001
+│   ├── test_signal_irrigation.py                 # AUD-SIGNALS-001
+│   ├── test_import_resolution.py                 # AUD-WIRING-001
+│   ├── test_determinism.py                       # AUD-DETERMINISM-001
+│   └── test_interface_contracts.py               # AUD-CONTRACT-001
+└── signals/
+    └── test_signal_pack.py
+```
+
+### Apéndice E: Checklist de verificación final
+
+```markdown
+## Checklist de Verificación Post-Implementación
+
+### Bloque A: canonic_questionnaire_central
+- [ ] CC-SCHEMA-001:  `jsonschema.validate(monolith, schema)` pasa
+- [ ] CC-ID-001: `grep -E '"P[0-9]+"' meso_questions.json` = 0 matches
+- [ ] CC-ID-001: `grep -E '"P[0-9]+"' questionnaire_monolith.json | grep -v legacy` = 0 matches
+- [ ] CC-V3-001: V3 stub no se valida como V2 (intencionalmente)
+- [ ] CC-SCORING-001: 300/300 preguntas tienen scoring materializable
+- [ ] CC-SEMANTIC-001: semantic_layers accesible y estructurado
+
+### Bloque B:  Contratos de SIGNALS
+- [ ] SIG-PACK-001: SignalPack tiene todos los campos requeridos
+- [ ] SIG-PORTS-001: `mypy --strict src/farfan_pipeline/infrastructure/irrigation_using_signals/` pasa
+- [ ] SIG-HASH-001: Hash determinista verificado (test_determinism.py pasa)
+
+### Bloque C:  Wiring SISAS
+- [ ] SISAS-NAMESPACE-001: `grep -r "cross_cutting_infrastructure" src/` = 0 matches
+- [ ] SISAS-NAMESPACE-001: `grep -r "canonic_phases" src/` = 0 matches
+- [ ] SISAS-LOADER-001: signal_loader.py marcado deprecated
+- [ ] SISAS-DETERMINISM-001: telemetría separada de identidad
+- [ ] SISAS-WIRING-001: integrate_context_scoping_in_registry() implementado
+
+### Bloque D:  Fases canónicas
+- [ ] PH1-ENRICH-001: analyze_coverage_gaps recibe dict
+- [ ] PH1-ENRICH-001: 300/300 cobertura sin fallbacks silenciosos
+- [ ] PH2-SYNC-001: ruleset_hash en ChunkSyncState
+- [ ] PH3-SCORING-001: scoring sin modalidades default
+
+### Bloque E: Governance
+- [ ] GOV-METHODS-001: 240 métodos en ambos archivos
+- [ ] GOV-METHODS-001: sets de method IDs idénticos
+
+### Bloque F: Auditorías
+- [ ] AUD-SCHEMA-001: pasa
+- [ ] AUD-REFINT-001: pasa
+- [ ] AUD-SIGNALS-001: 300/300 cobertura
+- [ ] AUD-WIRING-001: 0 phantom imports
+- [ ] AUD-DETERMINISM-001: hashes reproducibles
+- [ ] AUD-CONTRACT-001: port == implementation
+
+### Integración
+- [ ] `pytest tests/` pasa (100%)
+- [ ] `mypy src/` pasa (0 errors)
+- [ ] Pipeline end-to-end ejecuta sin errores
+- [ ] Hashes de SignalPacks son estables entre ejecuciones
+```
+
+---
+
+## FIN DE ESPECIFICACIÓN
+
+**Próximos pasos recomendados**:
+1. Revisión técnica de esta especificación por el equipo
+2. Priorización de operaciones según impacto/esfuerzo
+3. Creación de issues/tickets por cada operación (CC-*, SIG-*, SISAS-*, PH*-*, GOV-*, AUD-*)
+4. Ejecución según plan de sprints (Sección 9.3)
+5. Verificación con checklist (Apéndice E)
+
+**Contacto para dudas técnicas**:  Referir a esta especificación como `SPEC_SIGNAL_NORMALIZATION_COMPREHENSIVE. md` v1.0.0
 
 ```python
 def test_signal_irrigation_complete():
