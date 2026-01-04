@@ -123,6 +123,10 @@ class Chunk:
     signal_tags: List[str] = field(default_factory=list)
     signal_scores: Dict[str, float] = field(default_factory=dict)
     
+    # Traceability fields (SPEC-002)
+    assignment_method: str = "semantic"
+    semantic_confidence: float = 0.0
+
     overlap_flag: bool = False
     segmentation_metadata: Dict[str, Any] = field(default_factory=dict)
     
@@ -276,10 +280,20 @@ class SmartChunk:
     signal_scores: Dict[str, float] = field(default_factory=dict)
     signal_version: str = "v1.0.0"
     
+    # Traceability fields (SPEC-002)
+    assignment_method: str = "semantic"
+    semantic_confidence: float = 0.0
+
     rank_score: float = 0.0
     signal_weighted_score: float = 0.0
     
     def __post_init__(self):
+        # Validate SPEC-002 Traceability
+        if self.assignment_method not in ('semantic', 'fallback_sequential'):
+            raise ValueError(f"Invalid assignment_method: {self.assignment_method}")
+        if not (0.0 <= self.semantic_confidence <= 1.0):
+            raise ValueError(f"Invalid semantic_confidence: {self.semantic_confidence}")
+
         CHUNK_ID_PATTERN = r'^PA(0[1-9]|10)-DIM0[1-6]$'
         if not re.match(CHUNK_ID_PATTERN, self.chunk_id):
             raise ValueError(f"Invalid chunk_id format: {self.chunk_id}. Must match {CHUNK_ID_PATTERN}")

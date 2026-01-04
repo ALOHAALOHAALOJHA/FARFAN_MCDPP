@@ -76,6 +76,11 @@ from canonic_phases.phase_1_cpp_ingestion.phase1_models import (
     SmartChunk, ValidationResult, CausalGraph, CANONICAL_TYPES_AVAILABLE
 )
 
+# Remediation Imports (SPEC-001, SPEC-003, SPEC-004)
+from canonic_phases.phase_1_cpp_ingestion.phase1_truncation_audit import TruncationAudit
+from canonic_phases.phase_1_cpp_ingestion.streaming_pdf_extractor import StreamingPDFExtractor
+from canonic_phases.phase_1_cpp_ingestion.thread_safe_results import ThreadSafeResults
+
 # PDT Section Types and Hierarchy Levels
 class HierarchyLevel(Enum):
     H1 = "H1"  # Título/Capítulo
@@ -541,7 +546,7 @@ class Phase1CPPIngestionFullContract:
         """
         self.MANDATORY_SUBPHASES = list(range(16))  # SP0 through SP15
         self.execution_trace: List[Tuple[str, str, str]] = []
-        self.subphase_results: Dict[int, Any] = {}
+        self.subphase_results: ThreadSafeResults = ThreadSafeResults()
         self.error_log: List[Dict[str, Any]] = []
         self.invariant_checks: Dict[str, bool] = {}
         self.document_id: str = ""  # Set from CanonicalInput
@@ -1068,13 +1073,28 @@ class Phase1CPPIngestionFullContract:
         raw_text = ""
         if PYMUPDF_AVAILABLE and canonical_input.pdf_path.exists():
             try:
-                doc = fitz.open(canonical_input.pdf_path)
-                for page in doc:
-                    raw_text += page.get_text() + "\n"
-                doc.close()
-                logger.info(f"SP1: Extracted {len(raw_text)} characters from PDF")
+                # SPEC-003: Streaming extraction with bounded memory
+                extractor = StreamingPDFExtractor(canonical_input.pdf_path)
+                # SPEC-001: Enforce limit and audit
+                CHAR_LIMIT = 1000000
+                extracted_text, processed_chars, total_chars = extractor.extract_with_limit(CHAR_LIMIT)
+                raw_text = extracted_text
+
+                # SPEC-001: Create and store audit record
+                truncation_audit = TruncationAudit.create(
+                    raw_text_len=total_chars,
+                    processed_text_len=processed_chars,
+                    limit=CHAR_LIMIT
+                )
+                truncation_audit.log_if_truncated()
+                # NOTE: subphase_results uses integer keys (0-15) for MANDATORY_SUBPHASES results.
+                # String keys like 'truncation_audit' are RESERVED for cross-cutting audit/metadata
+                # and are intentionally kept separate from the integer subphase key space.
+                self.subphase_results['truncation_audit'] = truncation_audit.to_dict()
+
+                logger.info(f"SP1: Extracted {len(raw_text)} characters from PDF (Total source: {total_chars})")
             except Exception as e:
-                logger.error(f"SP1: PDF extraction failed: {e}")
+                logger.error(f"SP1: Streaming PDF extraction failed: {e}")
                 raise Phase1FatalError(f"SP1: Cannot extract PDF text: {e}")
         else:
             # Fallback for non-PDF or missing PyMuPDF
@@ -1462,6 +1482,12 @@ class Phase1CPPIngestionFullContract:
                     text_spans = [(p[0], p[0] + len(p[1])) for p in relevant_paragraphs[:3]]
                     paragraph_ids = [p[0] for p in relevant_paragraphs[:3]]
                     chunk_text = ' '.join(p[1][:500] for p in relevant_paragraphs[:3])
+
+                    # Traceability (SPEC-002)
+                    assignment_method = "semantic"
+                    # Heuristic normalization: top_score can be > 2.0 with boosts. Cap at 1.0.
+                    top_score = relevant_paragraphs[0][2]
+                    semantic_confidence = min(1.0, top_score / 3.0)
                 else:
                     # Fallback: distribute sequentially
                     start_idx = idx * paragraphs_per_chunk
@@ -1469,6 +1495,10 @@ class Phase1CPPIngestionFullContract:
                     text_spans = [(start_idx, end_idx)]
                     paragraph_ids = list(range(start_idx, end_idx))
                     chunk_text = ' '.join(preprocessed.paragraphs[start_idx:end_idx])[:1500]
+
+                    # Traceability (SPEC-002)
+                    assignment_method = "fallback_sequential"
+                    semantic_confidence = 0.0
                 
                 # Convert string IDs to enum types for type-safe aggregation in CPP cycle
                 policy_area_enum = None
@@ -1509,6 +1539,8 @@ class Phase1CPPIngestionFullContract:
                     paragraph_ids=paragraph_ids,
                     signal_tags=[pa, dim],
                     signal_scores={pa: 0.5, dim: 0.5},
+                    assignment_method=assignment_method,
+                    semantic_confidence=semantic_confidence,
                 )
                 # Store text for later use with enum flag
                 chunk.segmentation_metadata = {
@@ -2122,6 +2154,14 @@ class Phase1CPPIngestionFullContract:
         
         return Strategic(priorities=priorities)
 
+    def _smartchunk_kwargs_filter(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Filter kwargs to match SmartChunk fields to avoid unexpected argument errors.
+        """
+        # Get valid field names from the SmartChunk dataclass fields
+        valid_fields = {f for f in SmartChunk.__dataclass_fields__}
+        return {k: v for k, v in kwargs.items() if k in valid_fields}
+
     def _execute_sp11_smart_chunks(self, chunks: List[Chunk], enrichments: Dict[int, Any]) -> List[SmartChunk]:
         """
         SP11: Smart Chunk Generation per FORCING ROUTE SECCIÓN 7.
@@ -2162,6 +2202,9 @@ class Phase1CPPIngestionFullContract:
                     "signal_tags": chunk.signal_tags if chunk.signal_tags else [],
                     "signal_scores": chunk.signal_scores if chunk.signal_scores else {},
                     "signal_version": "v1.0.0",
+                    # Traceability (SPEC-002)
+                    "assignment_method": chunk.assignment_method,
+                    "semantic_confidence": chunk.semantic_confidence,
                 }
                 smart_chunk = SmartChunk(**self._smartchunk_kwargs_filter(kwargs))
                 smart_chunks.append(smart_chunk)
