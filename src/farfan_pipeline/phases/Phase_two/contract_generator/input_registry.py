@@ -1077,12 +1077,10 @@ class InputLoader:
         Returns:
             Diccionario {sector_id: SectorDefinition}
         """
-        import glob
-
         sectors: dict[str, SectorDefinition] = {}
 
         pa_base = (
-            Path(__file__).parent.parent.parent.parent.parent
+            Path(__file__).parent.parent.parent.parent.parent.parent
             / "canonic_questionnaire_central"
             / "policy_areas"
         )
@@ -1126,11 +1124,12 @@ class InputLoader:
                     name=canonical_name[:50],
                 )
 
-            except Exception as e:
+            except (OSError, json.JSONDecodeError) as e:
                 logger.warning(
                     "sector_load_failed",
                     path=str(questions_file),
                     error=str(e),
+                    exc_info=True,
                 )
                 continue
 

@@ -1657,7 +1657,7 @@ class QuestionnaireSignalRegistry:
         base_path = Path(__file__).parent.parent.parent.parent.parent.parent
         pa_pattern = str(base_path / "canonic_questionnaire_central" / "policy_areas" / f"{policy_area_id}_*")
 
-        matches = glob.glob(pa_pattern)
+        matches = sorted(glob.glob(pa_pattern))
         if not matches:
             logger.debug("policy_area_keywords_no_match", policy_area_id=policy_area_id)
             return []
@@ -1679,8 +1679,13 @@ class QuestionnaireSignalRegistry:
 
             return [str(kw) for kw in keywords if isinstance(kw, str)]
 
-        except Exception as e:
-            logger.error("policy_area_keywords_load_failed", error=str(e), policy_area_id=policy_area_id)
+        except (OSError, json.JSONDecodeError) as e:
+            logger.error(
+                "policy_area_keywords_load_failed",
+                error=str(e),
+                policy_area_id=policy_area_id,
+                exc_info=True,
+            )
             return []
 
     def _build_policy_area_signal_pack(self, policy_area_id: str) -> SignalPack:

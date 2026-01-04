@@ -18,10 +18,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
-from unittest.mock import MagicMock, patch
-
-import pytest
+from unittest.mock import MagicMock
 
 
 class TestColombianContextRule:
@@ -66,13 +63,11 @@ class TestColombianContextRule:
             }
         }
         graph = EvidenceGraph()
-        node = EvidenceNode(
-            node_id="test-001",
-            evidence_type=EvidenceType.OFFICIAL_DOCUMENT,
-            content="Este programa implementa la Ley 1448 de 2011 sobre víctimas.",
-            source_method="test",
+        node = EvidenceNode.create(
+            evidence_type=EvidenceType.NORMATIVE_REFERENCE,
+            content={"text": "Este programa implementa la Ley 1448 de 2011 sobre víctimas."},
             confidence=0.9,
-            timestamp="2026-01-04T00:00:00Z",
+            source_method="test",
         )
         graph.add_node(node)
         rule = ColombianContextRule()
@@ -124,7 +119,7 @@ class TestBlockingRulesEngine:
         }
 
         graph = EvidenceGraph()
-        validation_report = ValidationReport(findings=[], graph_hash="test")
+        validation_report = ValidationReport.create(findings=[])
         engine = BlockingRulesEngine(contract)
 
         results = engine.evaluate(graph, validation_report)
@@ -143,7 +138,7 @@ class TestBlockingRulesEngine:
 
         contract = {"validation_rules": {}}
         graph = EvidenceGraph()
-        validation_report = ValidationReport(findings=[], graph_hash="test")
+        validation_report = ValidationReport.create(findings=[])
         engine = BlockingRulesEngine(contract)
 
         results = engine.evaluate(graph, validation_report)
@@ -176,36 +171,30 @@ class TestBlockingRulesEngine:
         }
 
         graph = EvidenceGraph()
-        node1 = EvidenceNode(
-            node_id="n1",
-            evidence_type=EvidenceType.CLAIM,
-            content="Claim A",
-            source_method="test",
+        node1 = EvidenceNode.create(
+            evidence_type=EvidenceType.METHOD_OUTPUT,
+            content={"text": "Claim A"},
             confidence=0.8,
-            timestamp="2026-01-04T00:00:00Z",
+            source_method="test",
         )
-        node2 = EvidenceNode(
-            node_id="n2",
-            evidence_type=EvidenceType.CLAIM,
-            content="Claim B",
-            source_method="test",
+        node2 = EvidenceNode.create(
+            evidence_type=EvidenceType.METHOD_OUTPUT,
+            content={"text": "Claim B"},
             confidence=0.8,
-            timestamp="2026-01-04T00:00:00Z",
+            source_method="test",
         )
         graph.add_node(node1)
         graph.add_node(node2)
 
-        edge = EvidenceEdge(
-            edge_id="e1",
-            source_id="n1",
-            target_id="n2",
+        edge = EvidenceEdge.create(
+            source_id=node1.node_id,
+            target_id=node2.node_id,
             relation_type=RelationType.CONTRADICTS,
             confidence=0.9,
-            evidence=["Test evidence"],
         )
         graph.add_edge(edge)
 
-        validation_report = ValidationReport(findings=[], graph_hash="test")
+        validation_report = ValidationReport.create(findings=[])
         engine = BlockingRulesEngine(contract)
 
         results = engine.evaluate(graph, validation_report)
