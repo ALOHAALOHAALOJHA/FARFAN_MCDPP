@@ -785,7 +785,7 @@ class CalibrationLayer:
         canonical_bytes = _canonical_json(self.to_canonical_dict())
         return _compute_sha256(canonical_bytes)
 
-    def sign(self, private_key: Ed25519PrivateKey, key_id: str) -> Self:
+    def sign(self, private_key: Ed25519PrivateKey, key_id: str) -> CalibrationLayer:
         """
         Create a signed copy of this calibration layer.
 

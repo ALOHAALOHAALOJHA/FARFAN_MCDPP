@@ -698,7 +698,9 @@ def get_type_defaults(contract_type_code: str) -> ContractTypeDefaults:
         raise UnknownContractTypeError(contract_type_code, VALID_CONTRACT_TYPES)
 
     # Construct and return defaults
-    return factory()  # type: ignore[operator]
+    if callable(factory):
+        return factory()  # type: ignore[no-any-return]
+    return factory  # type: ignore[no-any-return]
 
 
 def _validate_canonical_source_exists() -> None:

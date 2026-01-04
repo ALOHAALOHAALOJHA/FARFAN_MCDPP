@@ -106,7 +106,7 @@ class CalibrationManifest:
         """Serialize manifest to JSON for storage."""
         return json.dumps(self._to_dict(), indent=2, default=str)
     
-    def _to_dict(self) -> dict[str, Any]:
+    def _to_dict(self) -> dict[str, object]:
         """Convert to dictionary."""
         return {
             "manifest_id": self.manifest_id,

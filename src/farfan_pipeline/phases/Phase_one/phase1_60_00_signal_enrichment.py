@@ -170,10 +170,13 @@ class SignalEnricher:
                     logger.warning(f"Failed to load signal pack for {pa_id}: {e}")
             
             # Analyze coverage gaps
+            # NOTE: analyze_coverage_gaps expects dict[str, SignalQualityMetrics]
+            # FIX: Pass quality_metrics dict directly, not list of values
+            # Ref: SPEC_SIGNAL_NORMALIZATION_COMPREHENSIVE.md PH1-ENRICH-001
             if self.context.quality_metrics:
                 try:
                     self.context.coverage_analysis = analyze_coverage_gaps(
-                        list(self.context.quality_metrics.values())
+                        self.context.quality_metrics  # dict[str, SignalQualityMetrics]
                     )
                     logger.info(
                         f"Coverage analysis: {len(self.context.coverage_analysis.high_coverage_pas)} high, "

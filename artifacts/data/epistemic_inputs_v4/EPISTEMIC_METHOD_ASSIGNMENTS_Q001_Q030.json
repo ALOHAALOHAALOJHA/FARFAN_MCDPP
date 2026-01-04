@@ -12,7 +12,7 @@
       "question": "D1-Q1: ¿El plan incluye diagnóstico de situación sobre derechos de las mujeres e igualdad de género?",
       "type": "TYPE_A",
       "dimension": "D1-INSUMOS",
-      "policy_area": "PA01-Género",
+      "policy_area": "PA01",
       "epistemic_profile": {
         "semantic": 1.0,
         "financial": 0.0,
@@ -86,7 +86,7 @@
       "question": "D1-Q2: ¿El plan incluye metas cuantificadas de reducción de brechas de género?",
       "type": "TYPE_B",
       "dimension": "D1-INSUMOS",
-      "policy_area": "PA01-Género",
+      "policy_area": "PA01",
       "epistemic_profile": {
         "semantic": 0.4,
         "financial": 0.2,
@@ -168,7 +168,7 @@
       "question": "D1-Q3: ¿El plan identifica recursos financieros para la implementación de acciones de género?",
       "type": "TYPE_D",
       "dimension": "D1-INSUMOS",
-      "policy_area": "PA01-Género",
+      "policy_area": "PA01",
       "epistemic_profile": {
         "semantic": 0.0,
         "financial": 1.0,
@@ -234,7 +234,7 @@
       "question": "D2-Q1: ¿El plan describe actividades de capacitación en derechos de las mujeres?",
       "type": "TYPE_D",
       "dimension": "D2-ACTIVIDADES",
-      "policy_area": "PA01-Género",
+      "policy_area": "PA01",
       "epistemic_profile": {
         "semantic": 0.3,
         "financial": 1.0,
@@ -287,7 +287,7 @@
       "question": "D2-Q2: ¿El plan establece metas de cobertura de servicios para mujeres víctimas de violencia?",
       "type": "TYPE_B",
       "dimension": "D2-ACTIVIDADES",
-      "policy_area": "PA01-Género",
+      "policy_area": "PA01",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -330,7 +330,7 @@
       "question": "D3-Q1: ¿El plan define productos específicos: comisarías funcionales, casas de refugio?",
       "type": "TYPE_D",
       "dimension": "D3-PRODUCTOS",
-      "policy_area": "PA01-Género",
+      "policy_area": "PA01",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -373,7 +373,7 @@
       "question": "D3-Q2: ¿El plan establece metas de atención en comisarías funcionales?",
       "type": "TYPE_B",
       "dimension": "D3-PRODUCTOS",
-      "policy_area": "PA01-Género",
+      "policy_area": "PA01",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -416,7 +416,7 @@
       "question": "D6-Q1: ¿El plan articula una teoría de cambio para la igualdad de género?",
       "type": "TYPE_C",
       "dimension": "D6-CAUSALIDAD",
-      "policy_area": "PA01-Género",
+      "policy_area": "PA01",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -465,7 +465,7 @@
       "question": "D4-Q1: ¿El plan define indicadores de reducción de violencia de género?",
       "type": "TYPE_D",
       "dimension": "D4-RESULTADOS",
-      "policy_area": "PA01-Género",
+      "policy_area": "PA01",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -502,7 +502,7 @@
       "question": "D4-Q2: ¿Los indicadores son consistentes con las metas establecidas?",
       "type": "TYPE_E",
       "dimension": "D4-RESULTADOS",
-      "policy_area": "PA01-Género",
+      "policy_area": "PA01",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -539,7 +539,7 @@
       "question": "D5-Q1: ¿El plan proyecta impacto en la brecha salarial de género?",
       "type": "TYPE_B",
       "dimension": "D5-IMPACTOS",
-      "policy_area": "PA01-Género",
+      "policy_area": "PA01",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -582,7 +582,7 @@
       "question": "D5-Q2: ¿Las proyecciones de impacto consideran tendencias demográficas?",
       "type": "TYPE_D",
       "dimension": "D5-IMPACTOS",
-      "policy_area": "PA01-Género",
+      "policy_area": "PA01",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -619,7 +619,7 @@
       "question": "D1-Q4: ¿El plan incluye diagnóstico de seguridad y convivencia?",
       "type": "TYPE_A",
       "dimension": "D1-INSUMOS",
-      "policy_area": "PA02-Convivencia",
+      "policy_area": "PA02",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -662,7 +662,7 @@
       "question": "D2-Q3: ¿El plan describe actividades de prevención del reclutamiento?",
       "type": "TYPE_E",
       "dimension": "D2-ACTIVIDADES",
-      "policy_area": "PA02-Convivencia",
+      "policy_area": "PA02",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -699,7 +699,7 @@
       "question": "D3-Q3: ¿El plan define productos: rutas humanitarias, redes de apoyo?",
       "type": "TYPE_D",
       "dimension": "D3-PRODUCTOS",
-      "policy_area": "PA02-Convivencia",
+      "policy_area": "PA02",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -736,7 +736,7 @@
       "question": "D6-Q2: ¿El plan articula teoría de cambio para seguridad ciudadana?",
       "type": "TYPE_C",
       "dimension": "D6-CAUSALIDAD",
-      "policy_area": "PA02-Convivencia",
+      "policy_area": "PA02",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -779,7 +779,7 @@
       "question": "D4-Q3: ¿El plan define indicadores de reducción de homicidios?",
       "type": "TYPE_B",
       "dimension": "D4-RESULTADOS",
-      "policy_area": "PA02-Convivencia",
+      "policy_area": "PA02",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -822,7 +822,7 @@
       "question": "D4-Q4: ¿Los indicadores de violencia son consistentes con la victimización?",
       "type": "TYPE_B",
       "dimension": "D4-RESULTADOS",
-      "policy_area": "PA02-Convivencia",
+      "policy_area": "PA02",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -865,7 +865,7 @@
       "question": "D5-Q3: ¿El plan proyecta reducción de la violencia interpersonal?",
       "type": "TYPE_E",
       "dimension": "D5-IMPACTOS",
-      "policy_area": "PA02-Convivencia",
+      "policy_area": "PA02",
       "selected_methods": {
         "N1-EMP": [
           {
@@ -902,7 +902,7 @@
       "question": "D5-Q4: ¿Las proyecciones consideran factores de riesgo del conflicto?",
       "type": "TYPE_B",
       "dimension": "D5-IMPACTOS",
-      "policy_area": "PA02-Convivencia",
+      "policy_area": "PA02",
       "selected_methods": {
         "N1-EMP": [
           {

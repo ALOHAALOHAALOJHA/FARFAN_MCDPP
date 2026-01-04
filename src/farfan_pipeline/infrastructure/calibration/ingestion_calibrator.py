@@ -55,6 +55,7 @@ from .type_defaults import (
     VALID_CONTRACT_TYPES,
     UnknownContractTypeError,
     get_type_defaults,
+    ContractTypeDefaults,
 )
 from .unit_of_analysis import UnitOfAnalysis
 
@@ -459,7 +460,7 @@ class IngestionCalibrator:
 
     def _create_prior_strength_parameter(
         self,
-        type_defaults,  # ContractTypeDefaults
+        type_defaults: ContractTypeDefaults,
         contract_type_code: str,
         now: datetime,
         validity_days: int,
@@ -483,7 +484,7 @@ class IngestionCalibrator:
 
     def _create_veto_threshold_parameter(
         self,
-        type_defaults,  # ContractTypeDefaults
+        type_defaults: ContractTypeDefaults,
         contract_type_code: str,
         now: datetime,
         validity_days: int,
