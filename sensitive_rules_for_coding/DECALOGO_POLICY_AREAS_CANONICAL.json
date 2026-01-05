@@ -1,0 +1,84 @@
+{
+    "metadata": {
+        "title": "DECÁLOGO DE POLÍTICA - NOMBRES CANÓNICOS OFICIALES",
+        "version": "1.0.0",
+        "created_at": "2026-01-04",
+        "source": "Documento oficial de política territorial colombiana",
+        "note": "FUENTE ÚNICA DE VERDAD para nombres de áreas de política. USAR ESTE ARCHIVO COMO REFERENCIA CANÓNICA.",
+        "warning": "NO MODIFICAR sin autorización. Cualquier componente que requiera nombres de PA debe referenciar este archivo."
+    },
+    "policy_areas": {
+        "PA01": {
+            "id": "PA01",
+            "canonical_name": "Derechos de las mujeres e igualdad de género",
+            "short_code": "MUJERES",
+            "question_range": "Q001-Q030"
+        },
+        "PA02": {
+            "id": "PA02",
+            "canonical_name": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
+            "short_code": "VIOLENCIA",
+            "question_range": "Q031-Q060"
+        },
+        "PA03": {
+            "id": "PA03",
+            "canonical_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
+            "short_code": "AMBIENTE",
+            "question_range": "Q061-Q090"
+        },
+        "PA04": {
+            "id": "PA04",
+            "canonical_name": "Derechos económicos, sociales y culturales",
+            "short_code": "DESC",
+            "question_range": "Q091-Q120"
+        },
+        "PA05": {
+            "id": "PA05",
+            "canonical_name": "Derechos de las víctimas y construcción de paz",
+            "short_code": "VICTIMAS",
+            "question_range": "Q121-Q150"
+        },
+        "PA06": {
+            "id": "PA06",
+            "canonical_name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
+            "short_code": "NIÑEZ",
+            "question_range": "Q151-Q180"
+        },
+        "PA07": {
+            "id": "PA07",
+            "canonical_name": "Tierras y territorios",
+            "short_code": "TIERRAS",
+            "question_range": "Q181-Q210"
+        },
+        "PA08": {
+            "id": "PA08",
+            "canonical_name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
+            "short_code": "LIDERES",
+            "question_range": "Q211-Q240"
+        },
+        "PA09": {
+            "id": "PA09",
+            "canonical_name": "Crisis de derechos de personas privadas de la libertad",
+            "short_code": "PPL",
+            "question_range": "Q241-Q270"
+        },
+        "PA10": {
+            "id": "PA10",
+            "canonical_name": "Migración transfronteriza",
+            "short_code": "MIGRACION",
+            "question_range": "Q271-Q300"
+        }
+    },
+    "legacy_mapping": {
+        "P1": "PA01",
+        "P2": "PA02",
+        "P3": "PA03",
+        "P4": "PA04",
+        "P5": "PA05",
+        "P6": "PA06",
+        "P7": "PA07",
+        "P8": "PA08",
+        "P9": "PA09",
+        "P10": "PA10"
+    }
+}

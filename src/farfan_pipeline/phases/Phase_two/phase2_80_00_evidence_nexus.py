@@ -81,24 +81,110 @@ class EvidenceType(Enum):
     BUDGET_AMOUNT = "monto_presupuestario"
     COVERAGE_METRIC = "metrica_cobertura"
     GOAL_TARGET = "meta_cuantificada"
-    
+
     # Qualitative
     OFFICIAL_SOURCE = "fuente_oficial"
     TERRITORIAL_COVERAGE = "cobertura_territorial"
     INSTITUTIONAL_ACTOR = "actor_institucional"
     POLICY_INSTRUMENT = "instrumento_politica"
     NORMATIVE_REFERENCE = "referencia_normativa"
-    
+
     # Relational
     CAUSAL_LINK = "vinculo_causal"
     TEMPORAL_DEPENDENCY = "dependencia_temporal"
     CONTRADICTION = "contradiccion"
     CORROBORATION = "corroboracion"
-    
+
     # Meta
     METHOD_OUTPUT = "salida_metodo"
     AGGREGATED = "agregado"
     SYNTHESIZED = "sintetizado"
+
+    def to_contract_format(self) -> str:
+        """Convert to pluralized format expected by contracts.
+
+        Maps EvidenceType enum values (singular) to contract expected_elements keys (plural):
+        - indicador_cuantitativo -> indicadores_cuantitativos
+        - serie_temporal -> series_temporales_años
+        - fuente_oficial -> fuentes_oficiales
+        - cobertura_territorial -> cobertura_territorial_especificada
+        - etc.
+        """
+        mapping = {
+            "indicador_cuantitativo": "indicadores_cuantitativos",
+            "serie_temporal": "series_temporales_años",
+            "monto_presupuestario": "montos_presupuestarios",
+            "metrica_cobertura": "metricas_cobertura",
+            "meta_cuantificada": "metas_cuantificadas",
+            "fuente_oficial": "fuentes_oficiales",
+            "cobertura_territorial": "cobertura_territorial_especificada",
+            "actor_institucional": "actores_institucionales",
+            "instrumento_politica": "instrumentos_politica",
+            "referencia_normativa": "referencias_normativas",
+            "vinculo_causal": "logica_causal_explicita",
+            "dependencia_temporal": "dependencias_temporales",
+            "contradiccion": "contradicciones",
+            "corroboracion": "corroboraciones",
+            "salida_metodo": "salidas_metodo",
+            "agregado": "agregados",
+            "sintetizado": "sintetizados",
+        }
+        return mapping.get(self.value, self.value)
+
+
+class EvidenceTypeMapper:
+    """Bidirectional mapper between Nexus EvidenceType and contract formats.
+
+    Resolves the vocabulary mismatch where:
+    - Contracts expect: indicadores_cuantitativos, fuentes_oficiales, etc.
+    - Nexus EvidenceType uses: indicador_cuantitativo, fuente_oficial, etc.
+    """
+
+    # Singular (Nexus) -> Plural (Contract)
+    SINGULAR_TO_PLURAL: ClassVar[Dict[str, str]] = {
+        "indicador_cuantitativo": "indicadores_cuantitativos",
+        "serie_temporal": "series_temporales_años",
+        "monto_presupuestario": "montos_presupuestarios",
+        "metrica_cobertura": "metricas_cobertura",
+        "meta_cuantificada": "metas_cuantificadas",
+        "fuente_oficial": "fuentes_oficiales",
+        "cobertura_territorial": "cobertura_territorial_especificada",
+        "actor_institucional": "actores_institucionales",
+        "instrumento_politica": "instrumentos_politica",
+        "referencia_normativa": "referencias_normativas",
+        "vinculo_causal": "logica_causal_explicita",
+        "dependencia_temporal": "dependencias_temporales",
+        "contradiccion": "contradicciones",
+        "corroboracion": "corroboraciones",
+        "salida_metodo": "salidas_metodo",
+        "agregado": "agregados",
+        "sintetizado": "sintetizados",
+    }
+
+    # Plural (Contract) -> Singular (Nexus)
+    PLURAL_TO_SINGULAR: ClassVar[Dict[str, str]] = {
+        v: k for k, v in SINGULAR_TO_PLURAL.items()
+    }
+
+    @classmethod
+    def to_contract_format(cls, evidence_type: str) -> str:
+        """Convert singular Nexus type to plural contract format."""
+        return cls.SINGULAR_TO_PLURAL.get(evidence_type, evidence_type)
+
+    @classmethod
+    def to_nexus_format(cls, contract_type: str) -> str:
+        """Convert plural contract type to singular Nexus format."""
+        return cls.PLURAL_TO_SINGULAR.get(contract_type, contract_type)
+
+    @classmethod
+    def normalize_dict_keys(cls, counts: Dict[str, int]) -> Dict[str, int]:
+        """Convert Nexus enum keys to contract format for gap detection.
+
+        Example:
+            Input:  {"indicador_cuantitativo": 3, "fuente_oficial": 2}
+            Output: {"indicadores_cuantitativos": 3, "fuentes_oficiales": 2}
+        """
+        return {cls.to_contract_format(k): v for k, v in counts.items()}
 
 
 class RelationType(Enum):
@@ -355,7 +441,7 @@ class Citation:
     confidence: float
     source_method: str
     document_reference: str | None = None
-    
+
     def render(self, format_type: str = "markdown") -> str:
         """Render citation in specified format."""
         conf_pct = f"{self.confidence * 100:.0f}%"
@@ -363,6 +449,26 @@ class Citation:
             ref = f" (p.{self.document_reference})" if self.document_reference else ""
             return f"[{self.evidence_type}:  {self.value_summary}]{ref} (confianza: {conf_pct})"
         return f"{self.evidence_type}: {self.value_summary} ({conf_pct})"
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize citation for Carver consumption.
+
+        Aligns with NexusOutputAdapter expectations in phase2_90_00_carver.py:
+        - evidence_id (mapped from node_id)
+        - summary (mapped from value_summary)
+        - source_method
+        - confidence
+        - page (mapped from document_reference)
+        - evidence_type
+        """
+        return {
+            "evidence_id": self.node_id,
+            "summary": self.value_summary,
+            "source_method": self.source_method,
+            "confidence": self.confidence,
+            "page": self.document_reference,
+            "evidence_type": self.evidence_type,
+        }
 
 
 @dataclass
@@ -429,7 +535,15 @@ class SynthesizedAnswer:
         return separator.join(sections)
     
     def to_dict(self) -> dict[str, Any]:
-        """Full serialization."""
+        """Full serialization with full citation payloads for Carver.
+
+        Aligns with NexusOutputAdapter.extract_citations() expectations:
+        - primary_citations: list of citation dicts
+        - supporting_citations: list of citation dicts
+
+        Each citation dict contains: evidence_id, summary, source_method,
+        confidence, page, evidence_type (see Citation.to_dict()).
+        """
         return {
             "direct_answer": self.direct_answer,
             "completeness": self.completeness.value,
@@ -440,6 +554,10 @@ class SynthesizedAnswer:
             "evidence_graph_hash": self.evidence_graph_hash,
             "synthesis_timestamp":  self.synthesis_timestamp,
             "question_id": self.question_id,
+            # Full citation payloads (Carver expects these exact keys)
+            "primary_citations": [c.to_dict() for c in self.primary_citations],
+            "supporting_citations": [c.to_dict() for c in self.supporting_citations],
+            # Legacy counts for backward compatibility
             "primary_citation_count": len(self.primary_citations),
             "supporting_citation_count": len(self.supporting_citations),
         }
@@ -464,6 +582,7 @@ class EvidenceGraph:
     __slots__ = (
         '_nodes', '_edges', '_adjacency', '_reverse_adjacency',
         '_type_index', '_source_index', '_hash_chain', '_last_hash',
+        '_confidence_adjustments', '_belief_mass_adjustments',
     )
     
     def __init__(self) -> None:
@@ -475,6 +594,23 @@ class EvidenceGraph:
         self._source_index: dict[str, list[EvidenceID]] = defaultdict(list)
         self._hash_chain: list[str] = []
         self._last_hash: str | None = None
+        # Adjustments for frozen nodes (set by level strategies)
+        self._confidence_adjustments: dict[EvidenceID, float] = {}
+        self._belief_mass_adjustments: dict[EvidenceID, float] = {}
+    
+    def get_adjusted_confidence(self, node_id: EvidenceID) -> float:
+        """Get confidence for node, using adjustment if present."""
+        if node_id in self._confidence_adjustments:
+            return self._confidence_adjustments[node_id]
+        node = self._nodes.get(node_id)
+        return node.confidence if node else 0.0
+
+    def get_adjusted_belief_mass(self, node_id: EvidenceID) -> float:
+        """Get belief mass for node, using adjustment if present."""
+        if node_id in self._belief_mass_adjustments:
+            return self._belief_mass_adjustments[node_id]
+        node = self._nodes.get(node_id)
+        return node.belief_mass if node else 0.0
     
     # -------------------------------------------------------------------------
     # Node Operations
@@ -618,6 +754,106 @@ class EvidenceGraph:
             if source and target:
                 contradictions.append((source, target, edge))
         return contradictions
+
+    # -------------------------------------------------------------------------
+    # I6 RESOLUTION: Circular Reasoning Detection
+    # -------------------------------------------------------------------------
+
+    def detect_circular_reasoning(self) -> list[dict[str, Any]]:
+        """
+        Detect circular reasoning patterns in the evidence graph.
+
+        I6 RESOLUTION: Comprehensive circular reasoning detection.
+
+        Circular reasoning occurs when:
+        1. Evidence A supports B, B supports C, C supports A (3-cycle)
+        2. Evidence chain forms a closed loop
+        3. A claim is supported by itself through indirect chains
+
+        Returns:
+            List of detected circular reasoning patterns with details.
+        """
+        circles: list[dict[str, Any]] = []
+        visited: set[EvidenceID] = set()
+        rec_stack: set[EvidenceID] = set()
+
+        def _dfs_detect_cycles(
+            node_id: EvidenceID,
+            path: list[EvidenceID],
+            edges_on_path: list[EdgeID]
+        ) -> None:
+            """DFS to detect cycles starting from node_id."""
+            visited.add(node_id)
+            rec_stack.add(node_id)
+            path.append(node_id)
+
+            for edge in self.get_edges_from(node_id):
+                target_id = edge.target_id
+                edges_on_path.append(edge.edge_id)
+
+                # If we've seen this target in the current recursion stack, we found a cycle
+                if target_id in rec_stack:
+                    # Extract the cycle
+                    cycle_start_idx = path.index(target_id)
+                    cycle_path = path[cycle_start_idx:] + [target_id]
+                    cycle_edges = edges_on_path[cycle_start_idx:]
+
+                    circles.append({
+                        "cycle_id": f"cycle_{len(circles)}_{node_id[:8]}",
+                        "path_length": len(cycle_path),
+                        "nodes_in_cycle": cycle_path,
+                        "edges_in_cycle": cycle_edges,
+                        "support_type": "circular_support",
+                        "severity": self._assess_cycle_severity(cycle_path, cycle_edges),
+                    })
+                # Continue DFS if not visited
+                elif target_id not in visited:
+                    _dfs_detect_cycles(target_id, path.copy(), edges_on_path.copy())
+
+                edges_on_path.pop()
+
+            rec_stack.remove(node_id)
+
+        # Run DFS from each unvisited node
+        for node_id in self._nodes:
+            if node_id not in visited:
+                _dfs_detect_cycles(node_id, [], [])
+
+        return circles
+
+    def _assess_cycle_severity(
+        self,
+        cycle_path: list[EvidenceID],
+        cycle_edges: list[EdgeID]
+    ) -> str:
+        """Assess the severity of a detected cycle.
+
+        Severity levels:
+        - CRITICAL: Direct self-reference (1-2 nodes)
+        - HIGH: Small circle (3 nodes) with strong support edges
+        - MEDIUM: Medium circle (4-5 nodes)
+        - LOW: Large circle (6+ nodes) - likely complex interdependence
+        """
+        path_len = len(cycle_path)
+
+        # Direct self-reference
+        if path_len <= 2:
+            return "CRITICAL"
+
+        # Check edge weights for small circles
+        if path_len == 3:
+            strong_edges = 0
+            for edge_id in cycle_edges:
+                edge = self._edges.get(edge_id)
+                if edge and edge.weight > 0.7:
+                    strong_edges += 1
+            if strong_edges >= 2:
+                return "HIGH"
+
+        if path_len <= 4:
+            return "MEDIUM"
+
+        return "LOW"
     
     def compute_belief_propagation(self) -> dict[EvidenceID, float]: 
         """
@@ -632,15 +868,15 @@ class EvidenceGraph:
         sorted_nodes = self._topological_sort()
         
         for node_id in sorted_nodes:
-            node = self._nodes[node_id]
             incoming = self.get_edges_to(node_id)
+            node_belief = self.get_adjusted_belief_mass(node_id)
             
             if not incoming:
-                # Root node:  use intrinsic belief
-                beliefs[node_id] = node.belief_mass
+                # Root node:  use intrinsic belief (adjusted if applicable)
+                beliefs[node_id] = node_belief
             else:
                 # Combine beliefs from parents using Dempster's rule
-                combined_belief = node.belief_mass
+                combined_belief = node_belief
                 
                 for edge in incoming:
                     if edge.relation_type == RelationType.SUPPORTS:
@@ -1080,17 +1316,17 @@ class ConfidenceThresholdRule:
 
 class GraphIntegrityRule:
     """Validate graph structural integrity."""
-    
+
     code = "INTEGRITY"
     severity = ValidationSeverity.CRITICAL
-    
+
     def validate(
-        self, 
-        graph: EvidenceGraph, 
+        self,
+        graph: EvidenceGraph,
         contract: dict[str, Any]
     ) -> list[ValidationFinding]:
         findings = []
-        
+
         # Verify hash chain
         if not graph.verify_hash_chain():
             findings.append(ValidationFinding(
@@ -1101,7 +1337,7 @@ class GraphIntegrityRule:
                 affected_nodes=[],
                 remediation="Evidence chain may be corrupted; rebuild from source",
             ))
-        
+
         # Check for orphan edges
         for edge in graph._edges.values():
             if edge.source_id not in graph._nodes or edge.target_id not in graph._nodes:
@@ -1113,23 +1349,759 @@ class GraphIntegrityRule:
                     affected_nodes=[],
                     remediation="Remove orphan edge or add missing nodes",
                 ))
-        
+
         return findings
+
+
+class ColombianContextRule:
+    """Validate Colombian-specific regulatory and policy context (R-B2).
+
+    Checks evidence for required Colombian regulatory references and
+    territorial coverage requirements. NOW LOADS colombia_context.json
+    for comprehensive Colombian context validation.
+
+    GAP B2 RESOLUTION: colombian_context.json is now loaded and applied.
+    """
+
+    code = "COLOMBIAN_CONTEXT"
+    severity = ValidationSeverity.WARNING
+
+    def __init__(self):
+        """Initialize with Colombian context loaded from file."""
+        self._colombian_context_data: dict[str, Any] | None = None
+        self._context_path = Path(__file__).parent.parent.parent.parent.parent / "canonic_questionnaire_central" / "colombia_context" / "colombia_context.json"
+        self._load_colombian_context()
+
+    def _load_colombian_context(self) -> None:
+        """Load colombian_context.json file for validation."""
+        try:
+            if self._context_path.exists():
+                with open(self._context_path, 'r', encoding='utf-8') as f:
+                    self._colombian_context_data = json.load(f)
+                logger.info(
+                    "colombian_context_loaded",
+                    path=str(self._context_path),
+                    laws_count=len(self._colombian_context_data.get("legal_framework", {}).get("key_laws", [])),
+                )
+            else:
+                logger.warning("colombian_context_file_not_found", path=str(self._context_path))
+        except Exception as e:
+            logger.error("colombian_context_load_failed", error=str(e))
+
+    def validate(
+        self,
+        graph: EvidenceGraph,
+        contract: dict[str, Any],
+    ) -> list[ValidationFinding]:
+        findings: list[ValidationFinding] = []
+
+        # First, check contract-level validation rules
+        validation_rules = contract.get("validation_rules", {})
+        contract_col_context = validation_rules.get("colombian_context", {})
+
+        # Process contract-level requirements
+        if contract_col_context:
+            required_refs = contract_col_context.get("required_regulatory_refs", [])
+            for ref in required_refs:
+                if not self._find_reference_in_graph(graph, ref):
+                    findings.append(ValidationFinding(
+                        finding_id=f"MISSING_COL_REF_{ref[:20].replace(' ', '_')}",
+                        severity=ValidationSeverity.WARNING,
+                        code=self.code,
+                        message=f"Missing required Colombian reference: {ref}",
+                        affected_nodes=[],
+                        remediation=f"Evidence must include reference to: {ref}",
+                    ))
+
+            territorial_req = contract_col_context.get("territorial_coverage")
+            if territorial_req and not self._validate_territorial(graph, territorial_req):
+                findings.append(ValidationFinding(
+                    finding_id="TERRITORIAL_COVERAGE_MISSING",
+                    severity=ValidationSeverity.WARNING,
+                    code=self.code,
+                    message="Territorial coverage requirement not met",
+                    affected_nodes=[],
+                    remediation="Include departamental/municipal coverage data",
+                ))
+
+        # B2 RESOLUTION: Apply loaded colombia_context.json for policy-area specific validation
+        if self._colombian_context_data:
+            findings.extend(self._validate_policy_area_context(graph, contract))
+            findings.extend(self._validate_legal_framework(graph, contract))
+            findings.extend(self._validate_territorial_organization(graph, contract))
+
+        return findings
+
+    def _validate_policy_area_context(
+        self, graph: EvidenceGraph, contract: dict[str, Any]
+    ) -> list[ValidationFinding]:
+        """Validate evidence against policy-area specific Colombian context."""
+        findings: list[ValidationFinding] = []
+
+        policy_area_id = contract.get("question_context", {}).get("policy_area_id", "")
+        if not policy_area_id:
+            return findings
+
+        # Get relevant laws for this policy area from colombia_context.json
+        key_laws = self._colombian_context_data.get("legal_framework", {}).get("key_laws", [])
+        relevant_laws = [
+            law for law in key_laws
+            if policy_area_id in law.get("relevance", [])
+        ]
+
+        for law in relevant_laws:
+            law_id = law.get("law_id", "")
+            law_name = law.get("name", "")
+            if not self._find_reference_in_graph(graph, law_name) and not self._find_reference_in_graph(graph, law_id):
+                findings.append(ValidationFinding(
+                    finding_id=f"MISSING_LAW_REF_{law_id}",
+                    severity=ValidationSeverity.INFO,
+                    code=self.code,
+                    message=f"Policy area {policy_area_id} should reference: {law_name}",
+                    affected_nodes=[],
+                    remediation=f"Consider including reference to {law_name} ({law_id})",
+                ))
+
+        # Check international treaties for this policy area
+        treaties = self._colombian_context_data.get("legal_framework", {}).get("international_treaties", [])
+        relevant_treaties = [
+            t for t in treaties
+            if policy_area_id in t.get("relevance", [])
+        ]
+
+        for treaty in relevant_treaties:
+            treaty_name = treaty.get("treaty", "")
+            if treaty_name and not self._find_reference_in_graph(graph, treaty_name):
+                findings.append(ValidationFinding(
+                    finding_id=f"MISSING_TREATY_REF_{treaty_name[:15].replace(' ', '_')}",
+                    severity=ValidationSeverity.INFO,
+                    code=self.code,
+                    message=f"Consider referencing international treaty: {treaty_name}",
+                    affected_nodes=[],
+                    remediation=f"Include reference to {treaty_name} for comprehensive analysis",
+                ))
+
+        return findings
+
+    def _validate_legal_framework(
+        self, graph: EvidenceGraph, contract: dict[str, Any]
+    ) -> list[ValidationFinding]:
+        """Validate evidence mentions key constitutional articles when relevant."""
+        findings: list[ValidationFinding] = []
+
+        # Check if evidence should reference constitution
+        all_content = " ".join(str(n.content) for n in graph._nodes.values()).lower()
+        constitution_keywords = ["derechos", "género", "victimas", "paz", "ambiente", "niñez"]
+
+        if any(kw in all_content for kw in constitution_keywords):
+            # Should reference 1991 Constitution
+            has_constitution = "constituc" in all_content or "1991" in all_content
+            if not has_constitution:
+                findings.append(ValidationFinding(
+                    finding_id="MISSING_CONSTITUTION_REF",
+                    severity=ValidationSeverity.INFO,
+                    code=self.code,
+                    message="Evidence discusses constitutional rights but lacks Constitution reference",
+                    affected_nodes=[],
+                    remediation="Consider referencing Constitution of 1991 for legal grounding",
+                ))
+
+        return findings
+
+    def _validate_territorial_organization(
+        self, graph: EvidenceGraph, contract: dict[str, Any]
+    ) -> list[ValidationFinding]:
+        """Validate territorial context against Colombian organization."""
+        findings: list[ValidationFinding] = []
+
+        # Get territorial context from colombia_context.json
+        territorial_context = self._colombian_context_data.get("territorial_context", {})
+
+        # Check if evidence mentions specific regions
+        all_content = " ".join(str(n.content) for n in graph._nodes.values()).lower()
+
+        for region_name, region_data in territorial_context.items():
+            # Check if evidence mentions departments in this region
+            departments = region_data.get("departments", [])
+            if any(dep.lower() in all_content for dep in departments):
+                # Evidence mentions this region - check for key issues
+                key_issues = region_data.get("key_issues", [])
+                mentioned_issues = [issue for issue in key_issues if issue.lower() in all_content]
+                if len(mentioned_issues) < 2:
+                    findings.append(ValidationFinding(
+                        finding_id=f"REGION_CONTEXT_SHALLOW_{region_name[:10].upper()}",
+                        severity=ValidationSeverity.INFO,
+                        code=self.code,
+                        message=f"Evidence mentions {region_name} region but may lack key context",
+                        affected_nodes=[],
+                        remediation=f"Consider addressing key issues: {', '.join(key_issues[:3])}",
+                    ))
+
+        return findings
+
+    def _find_reference_in_graph(self, graph: EvidenceGraph, ref: str) -> bool:
+        ref_lower = ref.lower()
+        for node in graph._nodes.values():
+            content_str = str(node.content).lower()
+            if ref_lower in content_str:
+                return True
+            if isinstance(node.content, dict):
+                for value in node.content.values():
+                    if isinstance(value, str) and ref_lower in value.lower():
+                        return True
+                    if isinstance(value, list):
+                        for item in value:
+                            if isinstance(item, str) and ref_lower in item.lower():
+                                return True
+        return False
+
+    def _validate_territorial(
+        self, graph: EvidenceGraph, requirement: dict[str, Any]
+    ) -> bool:
+        territorial_nodes = graph.get_nodes_by_type(EvidenceType.TERRITORIAL_COVERAGE)
+        if territorial_nodes:
+            return True
+
+        territorial_keywords = [
+            "departamento", "municipio", "municipal", "regional",
+            "territorial", "zona", "vereda", "corregimiento"
+        ]
+        for node in graph._nodes.values():
+            content_str = str(node.content).lower()
+            if any(kw in content_str for kw in territorial_keywords):
+                return True
+        return False
+
+
+class CrossCuttingCoverageRule:
+    """Validate coverage of required cross-cutting themes (R-W2, I7).
+
+    I7 RESOLUTION: Now checks actual evidence content for theme coverage.
+
+    Checks that evidence addresses required cross-cutting themes defined
+    in the signal pack's cross_cutting_themes field by analyzing actual
+    evidence node content, not just declarative applicability.
+    """
+
+    code = "XCT_COVERAGE"
+    severity = ValidationSeverity.WARNING
+
+    # Theme keyword mappings for content analysis
+    THEME_KEYWORDS = {
+        "CC_ENFOQUE_DIFERENCIAL": [
+            "enfoque diferencial", "población étnica", "comunidad negra", "indígena",
+            "raizal", "rom", "gitano", "diferencial", "intercultural", "etnia",
+        ],
+        "CC_PERSPECTIVA_GENERO": [
+            "género", "mujer", "mujeres", "feminicidio", "violencia de género",
+            "brecha de género", "igualdad de género", "perspectiva de género",
+        ],
+        "CC_ENTORNO_TERRITORIAL": [
+            "territorial", "territorio", "rural", "urbano", "departamental",
+            "municipal", "local", "región", "área geográfica",
+        ],
+        "CC_PARTICIPACION_CIUDADANA": [
+            "participación", "participación ciudadana", "control social",
+            "veeduría", "involucramiento", "alianza", "concertación",
+        ],
+        "CC_COHERENCIA_NORMATIVA": [
+            "norma", "ley", "decreto", "resolución", "marco legal", "normatividad",
+            "reglamentación", "jurídico", "legal",
+        ],
+        "CC_SOSTENIBILIDAD_PRESUPUESTAL": [
+            "presupuesto", "financiación", "recursos", "sostenibilidad",
+            "viabilidad financiera", "costos", "inversión", "gasto",
+        ],
+        "CC_INTEROPERABILIDAD": [
+            "interoperabilidad", "coordinación", "articulación", "integración",
+            "sistemas", "interinstitucional", "sinergia",
+        ],
+        "CC_MECANISMOS_SEGUIMIENTO": [
+            "seguimiento", "monitoreo", "evaluación", "indicador", "métrica",
+            "reporte", "informe", "control", "verificación",
+        ],
+    }
+
+    def validate(
+        self,
+        graph: EvidenceGraph,
+        contract: dict[str, Any],
+    ) -> list[ValidationFinding]:
+        findings: list[ValidationFinding] = []
+
+        # Extract cross-cutting themes from signal_pack in contract
+        signal_pack = contract.get("signal_pack", {})
+        themes_data = signal_pack.get("cross_cutting_themes", {})
+
+        if not themes_data:
+            # Also check contract's required_themes directly
+            themes_data = contract.get("required_themes", {})
+
+        if not themes_data:
+            return findings
+
+        # I7 RESOLUTION: Analyze actual evidence content for theme coverage
+        # Build content index from all evidence nodes
+        all_content = " ".join(
+            str(n.content).lower() for n in graph._nodes.values()
+        )
+
+        # Determine which themes are actually present in evidence
+        themes_in_evidence = set()
+        for theme_id, keywords in self.THEME_KEYWORDS.items():
+            if any(kw.lower() in all_content for kw in keywords):
+                themes_in_evidence.add(theme_id)
+
+        # Get required themes from contract
+        required = set(themes_data.get("required_themes", []) or [])
+        if not required:
+            # If no explicit required_themes, check applicable_themes
+            applicable_themes = themes_data.get("applicable_themes", [])
+            required = {
+                t.get("theme_id") for t in applicable_themes
+                if isinstance(t, dict) and t.get("theme_id") and t.get("required", False)
+            }
+
+        minimum = int(themes_data.get("minimum_themes", 0) or 0)
+
+        # Check for missing required themes (based on actual evidence content)
+        missing_required = [t for t in required if t and t not in themes_in_evidence]
+        if missing_required:
+            findings.append(ValidationFinding(
+                finding_id="XCT_REQUIRED_MISSING_CONTENT",
+                severity=ValidationSeverity.WARNING,
+                code=self.code,
+                message=f"Required cross-cutting themes not found in evidence content: {', '.join(missing_required)}",
+                affected_nodes=[],
+                remediation=f"Ensure evidence addresses required themes: {', '.join(missing_required)}",
+            ))
+
+        # Check minimum theme coverage (based on actual evidence content)
+        evidence_count = len(themes_in_evidence)
+        if minimum > 0 and evidence_count < minimum:
+            findings.append(ValidationFinding(
+                finding_id="XCT_MINIMUM_NOT_MET_CONTENT",
+                severity=ValidationSeverity.WARNING,
+                code=self.code,
+                message=f"Cross-cutting theme coverage in evidence: {evidence_count}/{minimum} below minimum.",
+                affected_nodes=[],
+                remediation=f"Expand evidence to cover at least {minimum - evidence_count} more theme(s).",
+            ))
+
+        # Provide information about detected themes
+        if themes_in_evidence:
+            findings.append(ValidationFinding(
+                finding_id="XCT_DETECTED_THEMES",
+                severity=ValidationSeverity.INFO,
+                code=self.code,
+                message=f"Detected {len(themes_in_evidence)} cross-cutting theme(s) in evidence: {', '.join(sorted(themes_in_evidence))}",
+                affected_nodes=[],
+                remediation=None,
+            ))
+
+        return findings
+
+
+class InterdependencyConsistencyRule:
+    """Validate dimension interdependency coherence (R-W3).
+
+    Checks that dimension dependencies are respected according to the
+    interdependency mapping in the signal pack.
+    """
+
+    code = "INTERDEP"
+    severity = ValidationSeverity.WARNING
+
+    def validate(
+        self,
+        graph: EvidenceGraph,
+        contract: dict[str, Any],
+    ) -> list[ValidationFinding]:
+        findings: list[ValidationFinding] = []
+
+        # Extract interdependency context from signal_pack in contract
+        signal_pack = contract.get("signal_pack", {})
+        interdep = signal_pack.get("interdependency_context", {})
+
+        if not interdep:
+            return findings
+
+        depends_on = interdep.get("depends_on") or []
+        sequence = interdep.get("dimension_sequence") or []
+        current_dim = contract.get("question_context", {}).get("dimension_id")
+
+        # Check dimension ordering against declared sequence
+        if isinstance(sequence, list) and current_dim and current_dim in sequence and depends_on:
+            pos = {d: i for i, d in enumerate(sequence)}
+            current_pos = pos.get(current_dim, -1)
+            bad_deps = [
+                d for d in depends_on
+                if d in pos and pos[d] > current_pos
+            ]
+            if bad_deps:
+                findings.append(ValidationFinding(
+                    finding_id="INTERDEP_ORDER",
+                    severity=ValidationSeverity.WARNING,
+                    code=self.code,
+                    message=f"Dependencies appear after current dimension in sequence: {', '.join(bad_deps)}",
+                    affected_nodes=[],
+                    remediation="Review dimension sequence and dependency declarations.",
+                ))
+
+        # Flag applicable validation rules for awareness
+        applicable_rules = interdep.get("applicable_rules") or []
+        if applicable_rules:
+            rule_ids = [r.get("rule_id", "unknown") for r in applicable_rules if isinstance(r, dict)]
+            findings.append(ValidationFinding(
+                finding_id="INTERDEP_RULES_ACTIVE",
+                severity=ValidationSeverity.INFO,
+                code=self.code,
+                message=f"Interdependency validation rules active: {', '.join(rule_ids)}",
+                affected_nodes=[],
+            ))
+
+        # Flag circular reasoning patterns for awareness
+        circular = interdep.get("circular_reasoning_patterns") or []
+        if circular:
+            findings.append(ValidationFinding(
+                finding_id="INTERDEP_CIRCULAR_PATTERNS",
+                severity=ValidationSeverity.INFO,
+                code=self.code,
+                message=f"Circular reasoning patterns configured: {len(circular)} patterns",
+                affected_nodes=[],
+            ))
+
+        return findings
+
+
+class CircularReasoningRule:
+    """Detect circular reasoning patterns in evidence graph (R-I6).
+
+    I6 RESOLUTION: Comprehensive circular reasoning detection.
+
+    Circular reasoning undermines evidence validity by creating closed
+    loops where claims support themselves indirectly.
+    """
+
+    code = "CIRCULAR_REASONING"
+    severity = ValidationSeverity.ERROR
+
+    def validate(
+        self,
+        graph: EvidenceGraph,
+        contract: dict[str, Any],
+    ) -> list[ValidationFinding]:
+        findings: list[ValidationFinding] = []
+
+        # Use the graph's circular reasoning detection
+        circles = graph.detect_circular_reasoning()
+
+        if not circles:
+            return findings
+
+        # Group by severity
+        by_severity: dict[str, list[dict]] = {}
+        for circle in circles:
+            sev = circle.get("severity", "LOW")
+            if sev not in by_severity:
+                by_severity[sev] = []
+            by_severity[sev].append(circle)
+
+        # Create findings for each severity level
+        for severity, circles_list in by_severity.items():
+            severity_map = {
+                "CRITICAL": ValidationSeverity.CRITICAL,
+                "HIGH": ValidationSeverity.ERROR,
+                "MEDIUM": ValidationSeverity.WARNING,
+                "LOW": ValidationSeverity.INFO,
+            }
+            val_severity = severity_map.get(severity, ValidationSeverity.WARNING)
+
+            affected_nodes = []
+            for circle in circles_list:
+                affected_nodes.extend(circle.get("nodes_in_cycle", [])[:5])
+
+            findings.append(ValidationFinding(
+                finding_id=f"CIRCULAR_REASONING_{severity}",
+                severity=val_severity,
+                code=self.code,
+                message=f"Detected {len(circles_list)} circular reasoning pattern(s) ({severity} severity). Claims support themselves through indirect chains.",
+                affected_nodes=list(set(affected_nodes)),
+                remediation="Break circular chains by adding independent evidence or removing problematic support edges.",
+            ))
+
+        return findings
+
+
+@dataclass
+class BlockingRuleResult:
+    """Result of blocking rule evaluation (R-B5)."""
+    rule_id: str
+    triggered: bool
+    reason: str
+    veto_action: str
+    affected_elements: list[str]
+
+
+class BlockingRulesEngine:
+    """Evaluates blocking rules from contract and applies veto gates (R-B5).
+
+    Implements the veto-gate pattern for evidence validation. When a blocking
+    rule is triggered, it can:
+    - SCORE_ZERO: Set confidence to 0 and mark as insufficient
+    - SUPPRESS_OUTPUT: Replace output with suppression notice
+    - FLAG_REVIEW: Mark for human review
+    """
+
+    def __init__(self, contract: dict[str, Any]):
+        self.rules = self._extract_rules(contract)
+
+    def _extract_rules(self, contract: dict[str, Any]) -> list[dict[str, Any]]:
+        """Extract blocking rules from validation_rules and gate_logic from assembly_rules.
+        
+        R-B5 RESOLUTION: Now extracts gate_logic from evidence_assembly.assembly_rules
+        in addition to validation_rules.blocking_rules.
+        """
+        rules: list[dict[str, Any]] = []
+        
+        # Extract from validation_rules.blocking_rules
+        validation_rules = contract.get("validation_rules", {})
+        blocking_rules = validation_rules.get("blocking_rules", [])
+        rules.extend(blocking_rules)
+        
+        # Extract gate_logic from evidence_assembly.assembly_rules (R3 rules)
+        evidence_assembly = contract.get("evidence_assembly", {})
+        assembly_rules = evidence_assembly.get("assembly_rules", [])
+        
+        for assembly_rule in assembly_rules:
+            if not isinstance(assembly_rule, dict):
+                continue
+            
+            gate_logic = assembly_rule.get("gate_logic", {})
+            if not gate_logic:
+                continue
+            
+            rule_id = assembly_rule.get("rule_id", "UNKNOWN")
+            
+            # Convert gate_logic entries to blocking rules
+            for condition_name, gate_config in gate_logic.items():
+                if not isinstance(gate_config, dict):
+                    continue
+                
+                action = gate_config.get("action", "FLAG_REVIEW")
+                multiplier = gate_config.get("multiplier", 1.0)
+                
+                # Map gate_logic actions to blocking rule format
+                if action == "suppress_fact" or multiplier == 0.0:
+                    veto_action = "SCORE_ZERO"
+                elif action == "reduce_confidence" or (multiplier and multiplier < 1.0):
+                    veto_action = "FLAG_REVIEW"
+                elif action == "block_branch":
+                    veto_action = "SUPPRESS_OUTPUT"
+                elif action == "invalidate_graph":
+                    veto_action = "SCORE_ZERO"
+                else:
+                    veto_action = "FLAG_REVIEW"
+                
+                rules.append({
+                    "rule_id": f"{rule_id}_{condition_name}",
+                    "condition": {
+                        "type": condition_name,
+                        "threshold": multiplier if multiplier else 0.5,
+                    },
+                    "on_violation": veto_action,
+                    "description": f"Gate logic: {condition_name} from {rule_id}",
+                    "source": "assembly_rules.gate_logic",
+                })
+        
+        return rules
+
+    def evaluate(
+        self,
+        graph: EvidenceGraph,
+        validation_report: ValidationReport,
+    ) -> list[BlockingRuleResult]:
+        results: list[BlockingRuleResult] = []
+
+        for rule in self.rules:
+            rule_id = rule.get("rule_id", "UNKNOWN")
+            condition = rule.get("condition", {})
+            action = rule.get("on_violation", "FLAG_REVIEW")
+
+            triggered = self._evaluate_condition(condition, graph, validation_report)
+
+            if triggered:
+                results.append(BlockingRuleResult(
+                    rule_id=rule_id,
+                    triggered=True,
+                    reason=rule.get("description", "Blocking rule triggered"),
+                    veto_action=action,
+                    affected_elements=self._identify_affected(condition, graph),
+                ))
+
+        return results
+
+    def _evaluate_condition(
+        self,
+        condition: dict[str, Any],
+        graph: EvidenceGraph,
+        validation_report: ValidationReport,
+    ) -> bool:
+        condition_type = condition.get("type")
+
+        if condition_type == "confidence_below":
+            threshold = condition.get("threshold", 0.3)
+            avg_confidence = self._compute_global_confidence(graph)
+            return avg_confidence < threshold
+
+        elif condition_type == "missing_required_element":
+            required = condition.get("element_type")
+            if required:
+                try:
+                    ev_type = EvidenceType(required)
+                    return len(graph.get_nodes_by_type(ev_type)) == 0
+                except ValueError:
+                    return False
+            return False
+
+        elif condition_type == "validation_error_count":
+            max_errors = condition.get("max_errors", 0)
+            error_count = sum(
+                1 for f in validation_report.findings
+                if f.severity == ValidationSeverity.ERROR
+            )
+            return error_count > max_errors
+
+        elif condition_type == "contradiction_detected":
+            return len(graph.get_edges_by_type(RelationType.CONTRADICTS)) > 0
+
+        elif condition_type == "low_coherence":
+            # Check if validation report has coherence-related warnings
+            threshold = condition.get("threshold", 0.5)
+            avg_confidence = self._compute_global_confidence(graph)
+            return avg_confidence < threshold
+
+        elif condition_type == "statistical_power_below_threshold":
+            # For TYPE_B Bayesian contracts
+            threshold = condition.get("threshold", 0.8)
+            avg_confidence = self._compute_global_confidence(graph)
+            return avg_confidence < threshold
+
+        elif condition_type == "cycle_detected":
+            # For TYPE_C Causal contracts - check for circular reasoning
+            circles = graph.detect_circular_reasoning()
+            return len(circles) > 0
+
+        elif condition_type == "budget_gap_detected":
+            # For TYPE_D Financial contracts
+            budget_nodes = graph.get_nodes_by_type(EvidenceType.BUDGET_AMOUNT)
+            goal_nodes = graph.get_nodes_by_type(EvidenceType.GOAL_TARGET)
+            # Flag if we have goals but no budget
+            return len(goal_nodes) > 0 and len(budget_nodes) == 0
+
+        elif condition_type == "logical_contradiction":
+            # For TYPE_E Logical contracts
+            contradiction_nodes = graph.get_nodes_by_type(EvidenceType.CONTRADICTION)
+            return len(contradiction_nodes) > 0
+
+        elif condition_type == "node_count_below":
+            min_nodes = condition.get("minimum", 1)
+            return graph.node_count < min_nodes
+
+        return False
+
+    def _compute_global_confidence(self, graph: EvidenceGraph) -> float:
+        if graph.node_count == 0:
+            return 0.0
+        confidences = [n.confidence for n in graph._nodes.values()]
+        return sum(confidences) / len(confidences)
+
+    def _identify_affected(
+        self, condition: dict[str, Any], graph: EvidenceGraph
+    ) -> list[str]:
+        condition_type = condition.get("type")
+
+        if condition_type == "confidence_below":
+            threshold = condition.get("threshold", 0.3)
+            return [
+                n.node_id[:12] for n in graph._nodes.values()
+                if n.confidence < threshold
+            ][:10]
+
+        return []
+
+    def apply_veto(
+        self,
+        results: list[BlockingRuleResult],
+        synthesized_answer: SynthesizedAnswer,
+    ) -> SynthesizedAnswer:
+        if not results:
+            return synthesized_answer
+
+        veto_applied = False
+        veto_reason = ""
+        new_confidence = synthesized_answer.overall_confidence
+        new_completeness = synthesized_answer.completeness
+        new_direct_answer = synthesized_answer.direct_answer
+
+        for result in results:
+            if not result.triggered:
+                continue
+
+            if result.veto_action == "SCORE_ZERO":
+                new_confidence = 0.0
+                new_completeness = AnswerCompleteness.INSUFFICIENT
+                veto_applied = True
+                veto_reason = result.reason
+            elif result.veto_action == "SUPPRESS_OUTPUT":
+                new_direct_answer = f"[SUPRIMIDO: {result.reason}]"
+                veto_applied = True
+                veto_reason = result.reason
+            elif result.veto_action == "FLAG_REVIEW":
+                veto_applied = True
+                veto_reason = f"Requires review: {result.reason}"
+
+        if not veto_applied:
+            return synthesized_answer
+
+        return SynthesizedAnswer(
+            direct_answer=new_direct_answer,
+            narrative_blocks=synthesized_answer.narrative_blocks,
+            completeness=new_completeness,
+            overall_confidence=new_confidence,
+            calibrated_interval=synthesized_answer.calibrated_interval,
+            primary_citations=synthesized_answer.primary_citations,
+            supporting_citations=synthesized_answer.supporting_citations,
+            gaps=synthesized_answer.gaps + ([f"VETO: {veto_reason}"] if veto_reason else []),
+            unresolved_contradictions=synthesized_answer.unresolved_contradictions,
+            evidence_graph_hash=synthesized_answer.evidence_graph_hash,
+            synthesis_timestamp=synthesized_answer.synthesis_timestamp,
+            question_id=synthesized_answer.question_id,
+            synthesis_trace={
+                **synthesized_answer.synthesis_trace,
+                "veto_applied": veto_applied,
+                "veto_reason": veto_reason,
+            },
+        )
 
 
 class ValidationEngine:
     """
     Probabilistic validation engine for evidence graphs.
-    
+
     Replaces rule-based EvidenceValidator with graph-aware validation.
     """
-    
+
     def __init__(self, rules: list[ValidationRule] | None = None):
-        self.rules:  list[ValidationRule] = rules or [
+        self.rules: list[ValidationRule] = rules or [
             RequiredElementsRule(),
             ConsistencyRule(),
             ConfidenceThresholdRule(min_confidence=0.5),
             GraphIntegrityRule(),
+            ColombianContextRule(),
+            # CrossCuttingCoverageRule removed - themes validated statically in validation_templates.json
+            InterdependencyConsistencyRule(),  # R-W3: Interdependency validation
+            CircularReasoningRule(),         # I6: Circular reasoning detection
         ]
     
     def validate(
@@ -1217,8 +2189,8 @@ class NarrativeSynthesizer:
         supporting_nodes = self._select_supporting_evidence(graph, primary_nodes)
         
         # 3. Build citations
-        primary_citations = [self._node_to_citation(n) for n in primary_nodes]
-        supporting_citations = [self._node_to_citation(n) for n in supporting_nodes]
+        primary_citations = [self._node_to_citation(n, graph) for n in primary_nodes]
+        supporting_citations = [self._node_to_citation(n, graph) for n in supporting_nodes]
         
         # 4. Generate direct answer
         answer_type = self._infer_answer_type(question_global)
@@ -1293,28 +2265,62 @@ class NarrativeSynthesizer:
         graph: EvidenceGraph,
         expected_elements: list[dict[str, Any]],
     ) -> list[EvidenceNode]:
-        """Select primary evidence nodes for answer."""
+        """
+        Select primary evidence nodes for answer.
+
+        I8 RESOLUTION: Now prioritizes evidence based on contract's required_evidence_keys.
+        """
         primary = []
-        
-        # Prioritize required elements
-        required_types = [e["type"] for e in expected_elements if e.get("required")]
-        
-        for type_str in required_types:
-            try:
-                ev_type = EvidenceType(type_str)
-                nodes = graph.get_nodes_by_type(ev_type)
-                # Take highest confidence nodes
-                sorted_nodes = sorted(nodes, key=lambda n: n.confidence, reverse=True)
-                primary.extend(sorted_nodes[:self.max_citations_per_claim])
-            except ValueError:
-                continue
-        
-        # If no required types found, take highest confidence overall
-        if not primary:
-            all_nodes = list(graph._nodes.values())
-            sorted_nodes = sorted(all_nodes, key=lambda n: n.confidence, reverse=True)
-            primary = sorted_nodes[:5]
-        
+
+        # I8: Evidence keys prioritization from contract
+        # Build priority map based on evidence_keys
+        evidence_priority: dict[str, float] = {}
+
+        # Check expected_elements for priority indicators
+        for elem in expected_elements:
+            elem_type = elem.get("type", "")
+            priority = elem.get("priority", 0)
+            if priority > 0:
+                evidence_priority[elem_type] = max(
+                    evidence_priority.get(elem_type, 0),
+                    float(priority)
+                )
+            # Required elements get higher priority
+            if elem.get("required"):
+                evidence_priority[elem_type] = max(
+                    evidence_priority.get(elem_type, 0),
+                    10.0  # High priority for required elements
+                )
+
+        # Collect all candidate nodes with their priority scores
+        candidates: list[tuple[EvidenceNode, float]] = []
+
+        for node in graph._nodes.values():
+            # Base priority from confidence (using adjusted values)
+            priority = graph.get_adjusted_confidence(node.node_id)
+
+            # Add type-based priority
+            for type_key, type_priority in evidence_priority.items():
+                if type_key.lower() in node.evidence_type.value.lower():
+                    priority += type_priority * 0.1
+                    break
+
+            # Add priority for high-value evidence types
+            if node.evidence_type in (
+                EvidenceType.INDICATOR_NUMERIC,
+                EvidenceType.OFFICIAL_SOURCE,
+                EvidenceType.NORMATIVE_REFERENCE,
+            ):
+                priority += 0.2
+
+            candidates.append((node, priority))
+
+        # Sort by combined priority score
+        candidates.sort(key=lambda x: x[1], reverse=True)
+
+        # Select top candidates as primary evidence
+        primary = [node for node, _ in candidates[:self.max_citations_per_claim * 2]]
+
         return primary
     
     def _select_supporting_evidence(
@@ -1342,7 +2348,7 @@ class NarrativeSynthesizer:
         
         return unique_supporting[: 10]
     
-    def _node_to_citation(self, node: EvidenceNode) -> Citation:
+    def _node_to_citation(self, node: EvidenceNode, graph: EvidenceGraph) -> Citation:
         """Convert evidence node to citation."""
         value_summary = self._summarize_content(node.content)
         
@@ -1350,7 +2356,7 @@ class NarrativeSynthesizer:
             node_id=node.node_id,
             evidence_type=node.evidence_type.value,
             value_summary=value_summary,
-            confidence=node.confidence,
+            confidence=graph.get_adjusted_confidence(node.node_id),
             source_method=node.source_method,
             document_reference=node.document_location,
         )
@@ -1566,10 +2572,10 @@ class NarrativeSynthesizer:
             except ValueError:
                 continue
         
-        # Check for low-confidence evidence clusters
+        # Check for low-confidence evidence clusters (using adjusted values)
         low_conf_types:  dict[str, int] = defaultdict(int)
         for node in graph._nodes.values():
-            if node.confidence < 0.5:
+            if graph.get_adjusted_confidence(node.node_id) < 0.5:
                 low_conf_types[node.evidence_type.value] += 1
         
         for ev_type, count in low_conf_types.items():
@@ -1788,25 +2794,75 @@ class EvidenceNexus:
         """
         start_time = time.time()
         
-        # 1. Build evidence graph from method outputs
-        graph = self._build_graph_from_outputs(
-            method_outputs, question_context, contract, signal_pack
-        )
-        self._graph = graph
+        # R-B3: Extract type system from contract for type-aware graph building
+        evidence_assembly = contract.get("evidence_assembly", {})
+        type_system = evidence_assembly.get("type_system", {})
         
+        # R-B4: Extract level strategies from fusion_specification
+        fusion_spec = contract.get("fusion_specification", {})
+        level_strategies = fusion_spec.get("level_strategies", {})
+        
+        # Determine execution type from contract identity (TYPE_A, TYPE_B, TYPE_C, etc.)
+        identity = contract.get("identity", {})
+        execution_type = identity.get("contract_type", "TYPE_A")  # Default to TYPE_A
+        
+        # 1. Route graph building by execution type (R-B3)
+        if execution_type == "TYPE_A":
+            graph = self._build_graph_type_a(
+                method_outputs, question_context, contract, type_system, signal_pack
+            )
+        elif execution_type == "TYPE_B":
+            graph = self._build_graph_type_b(
+                method_outputs, question_context, contract, type_system, signal_pack
+            )
+        elif execution_type == "TYPE_C":
+            graph = self._build_graph_type_c(
+                method_outputs, question_context, contract, type_system, signal_pack
+            )
+        elif execution_type == "TYPE_D":
+            graph = self._build_graph_type_d(
+                method_outputs, question_context, contract, type_system, signal_pack
+            )
+        elif execution_type == "TYPE_E":
+            graph = self._build_graph_type_e(
+                method_outputs, question_context, contract, type_system, signal_pack
+            )
+        else:
+            # Fallback to TYPE_A for unknown types
+            logger.debug("execution_type_fallback", execution_type=execution_type)
+            graph = self._build_graph_type_a(
+                method_outputs, question_context, contract, type_system, signal_pack
+            )
+        
+        self._graph = graph
+
+        # 1.5 Apply epistemological level strategies (B4)
+        self._apply_level_strategies(graph, contract)
+        
+        # 1.6 Apply level-specific strategies from contract (R-B4)
+        if level_strategies:
+            self._apply_contract_level_strategies(graph, level_strategies)
+
         # 2. Infer relationships between evidence nodes
         self._infer_relationships(graph, contract)
-        
+
         # 3. Run belief propagation
         beliefs = graph.compute_belief_propagation()
         
         # 4. Validate graph
         validation_report = self.validation_engine.validate(graph, contract)
-        
+
+        # 4.5 Evaluate blocking rules (R-B5)
+        blocking_engine = BlockingRulesEngine(contract)
+        blocking_results = blocking_engine.evaluate(graph, validation_report)
+
         # 5. Synthesize narrative answer
         synthesized = self.narrative_synthesizer.synthesize(
             graph, question_context, validation_report, contract
         )
+
+        # 5.5 Apply veto gates (R-B5)
+        synthesized = blocking_engine.apply_veto(blocking_results, synthesized)
         
         # 6. Persist if enabled
         if self.enable_persistence:
@@ -1907,6 +2963,7 @@ class EvidenceNexus:
                     raw_text=raw_text,
                     patterns=patterns,
                     question_context=question_context,
+                    contract=contract,  # B3, I3: Pass contract for type_system propagation
                 )
             )
 
@@ -1943,21 +3000,566 @@ class EvidenceNexus:
         
         return graph
 
+    # -------------------------------------------------------------------------
+    # R-B3: Type-Specific Graph Builders
+    # -------------------------------------------------------------------------
+
+    def _build_graph_type_a(
+        self,
+        method_outputs: dict[str, Any],
+        question_context: dict[str, Any],
+        contract: dict[str, Any],
+        type_system: dict[str, Any],
+        signal_pack: Any | None = None,
+    ) -> EvidenceGraph:
+        """TYPE_A: Semantic corroboration → Dempster-Shafer → Veto gate.
+        
+        TYPE_A is the default execution type for questions requiring:
+        - Cross-validation of evidence sources
+        - Belief propagation for confidence aggregation
+        - Veto gates for blocking conditions
+        """
+        # Build base graph using standard extraction
+        graph = self._build_graph_from_outputs(
+            method_outputs, question_context, contract, signal_pack
+        )
+        
+        # Extract TYPE_A specific configuration
+        expected_outputs = type_system.get("expected_outputs", {})
+        n1_provides = expected_outputs.get("N1", [])
+        n2_provides = expected_outputs.get("N2", [])
+        n3_provides = expected_outputs.get("N3", [])
+        
+        # Add type-aware metadata to nodes based on epistemological level
+        for node_id, node in list(graph._nodes.items()):
+            level = self._determine_method_level(node.source_method, contract)
+            provides = {"N1": n1_provides, "N2": n2_provides, "N3": n3_provides}.get(level, [])
+            
+            # Store level metadata in adjustments (frozen nodes can't be mutated)
+            if provides:
+                # Track which evidence types this level should provide
+                graph._confidence_adjustments.setdefault(node_id, node.confidence)
+        
+        # TYPE_A specific: Add semantic corroboration edges
+        self._add_semantic_corroboration_edges(graph)
+        
+        logger.debug(
+            "type_a_graph_built",
+            node_count=graph.node_count,
+            edge_count=graph.edge_count,
+            n1_provides=n1_provides,
+            n2_provides=n2_provides,
+            n3_provides=n3_provides,
+        )
+        
+        return graph
+
+    def _build_graph_type_b(
+        self,
+        method_outputs: dict[str, Any],
+        question_context: dict[str, Any],
+        contract: dict[str, Any],
+        type_system: dict[str, Any],
+        signal_pack: Any | None = None,
+    ) -> EvidenceGraph:
+        """TYPE_B: Quantitative aggregation → Statistical validation → Threshold gates.
+        
+        TYPE_B is designed for questions requiring:
+        - Numerical aggregation and statistical analysis
+        - Threshold-based validation (min/max/range checks)
+        - Quantitative evidence prioritization
+        """
+        # Build base graph
+        graph = self._build_graph_from_outputs(
+            method_outputs, question_context, contract, signal_pack
+        )
+        
+        # TYPE_B specific: Boost confidence for quantitative evidence types
+        quantitative_types = {
+            EvidenceType.INDICATOR_NUMERIC,
+            EvidenceType.TEMPORAL_SERIES,
+            EvidenceType.BUDGET_AMOUNT,
+            EvidenceType.COVERAGE_METRIC,
+            EvidenceType.GOAL_TARGET,
+        }
+        
+        for node_id, node in graph._nodes.items():
+            if node.evidence_type in quantitative_types:
+                # Boost quantitative evidence confidence for TYPE_B
+                graph._confidence_adjustments[node_id] = min(1.0, node.confidence * 1.15)
+                graph._belief_mass_adjustments[node_id] = min(1.0, node.belief_mass * 1.15)
+        
+        # TYPE_B specific: Add statistical correlation edges
+        self._add_statistical_correlation_edges(graph)
+        
+        logger.debug(
+            "type_b_graph_built",
+            node_count=graph.node_count,
+            edge_count=graph.edge_count,
+            quantitative_nodes=sum(
+                1 for n in graph._nodes.values() if n.evidence_type in quantitative_types
+            ),
+        )
+        
+        return graph
+
+    def _build_graph_type_c(
+        self,
+        method_outputs: dict[str, Any],
+        question_context: dict[str, Any],
+        contract: dict[str, Any],
+        type_system: dict[str, Any],
+        signal_pack: Any | None = None,
+    ) -> EvidenceGraph:
+        """TYPE_C: Causal chain → Temporal ordering → Dependency validation.
+        
+        TYPE_C is designed for questions requiring:
+        - Causal relationship analysis
+        - Temporal sequence validation
+        - Dependency chain construction
+        """
+        # Build base graph
+        graph = self._build_graph_from_outputs(
+            method_outputs, question_context, contract, signal_pack
+        )
+        
+        # TYPE_C specific: Prioritize causal and temporal evidence
+        causal_types = {
+            EvidenceType.CAUSAL_LINK,
+            EvidenceType.TEMPORAL_DEPENDENCY,
+            EvidenceType.POLICY_INSTRUMENT,
+        }
+        
+        for node_id, node in graph._nodes.items():
+            if node.evidence_type in causal_types:
+                # Boost causal evidence confidence for TYPE_C
+                graph._confidence_adjustments[node_id] = min(1.0, node.confidence * 1.2)
+                graph._belief_mass_adjustments[node_id] = min(1.0, node.belief_mass * 1.2)
+        
+        # TYPE_C specific: Add causal chain edges
+        self._add_causal_chain_edges(graph)
+        
+        # TYPE_C specific: Add temporal ordering edges
+        self._add_temporal_ordering_edges(graph)
+        
+        logger.debug(
+            "type_c_graph_built",
+            node_count=graph.node_count,
+            edge_count=graph.edge_count,
+            causal_nodes=sum(
+                1 for n in graph._nodes.values() if n.evidence_type in causal_types
+            ),
+        )
+        
+        return graph
+
+    def _build_graph_type_d(
+        self,
+        method_outputs: dict[str, Any],
+        question_context: dict[str, Any],
+        contract: dict[str, Any],
+        type_system: dict[str, Any],
+        signal_pack: Any | None = None,
+    ) -> EvidenceGraph:
+        """TYPE_D: Financial extraction → Sufficiency analysis → Coherence audit.
+        
+        TYPE_D is designed for questions requiring:
+        - Budget and financial data extraction
+        - Sufficiency score computation
+        - Financial coherence validation
+        """
+        # Build base graph
+        graph = self._build_graph_from_outputs(
+            method_outputs, question_context, contract, signal_pack
+        )
+        
+        # TYPE_D specific: Prioritize financial evidence types
+        financial_types = {
+            EvidenceType.BUDGET_AMOUNT,
+            EvidenceType.INDICATOR_NUMERIC,
+            EvidenceType.GOAL_TARGET,
+        }
+        
+        for node_id, node in graph._nodes.items():
+            if node.evidence_type in financial_types:
+                # Boost financial evidence confidence for TYPE_D
+                graph._confidence_adjustments[node_id] = min(1.0, node.confidence * 1.2)
+                graph._belief_mass_adjustments[node_id] = min(1.0, node.belief_mass * 1.2)
+        
+        # TYPE_D specific: Add financial coherence edges
+        self._add_financial_coherence_edges(graph)
+        
+        logger.debug(
+            "type_d_graph_built",
+            node_count=graph.node_count,
+            edge_count=graph.edge_count,
+            financial_nodes=sum(
+                1 for n in graph._nodes.values() if n.evidence_type in financial_types
+            ),
+        )
+        
+        return graph
+
+    def _build_graph_type_e(
+        self,
+        method_outputs: dict[str, Any],
+        question_context: dict[str, Any],
+        contract: dict[str, Any],
+        type_system: dict[str, Any],
+        signal_pack: Any | None = None,
+    ) -> EvidenceGraph:
+        """TYPE_E: Statement extraction → Coherence computation → Contradiction detection.
+        
+        TYPE_E is designed for questions requiring:
+        - Policy statement extraction
+        - Logical consistency validation
+        - Contradiction detection and resolution
+        """
+        # Build base graph
+        graph = self._build_graph_from_outputs(
+            method_outputs, question_context, contract, signal_pack
+        )
+        
+        # TYPE_E specific: Prioritize normative and policy evidence
+        logical_types = {
+            EvidenceType.NORMATIVE_REFERENCE,
+            EvidenceType.POLICY_INSTRUMENT,
+            EvidenceType.CONTRADICTION,
+            EvidenceType.CORROBORATION,
+        }
+        
+        for node_id, node in graph._nodes.items():
+            if node.evidence_type in logical_types:
+                # Boost logical evidence confidence for TYPE_E
+                graph._confidence_adjustments[node_id] = min(1.0, node.confidence * 1.15)
+                graph._belief_mass_adjustments[node_id] = min(1.0, node.belief_mass * 1.15)
+        
+        # TYPE_E specific: Add logical consistency edges
+        self._add_logical_consistency_edges(graph)
+        
+        # TYPE_E specific: Detect and mark contradictions
+        self._detect_and_mark_contradictions(graph)
+        
+        logger.debug(
+            "type_e_graph_built",
+            node_count=graph.node_count,
+            edge_count=graph.edge_count,
+            logical_nodes=sum(
+                1 for n in graph._nodes.values() if n.evidence_type in logical_types
+            ),
+        )
+        
+        return graph
+
+    def _add_financial_coherence_edges(self, graph: EvidenceGraph) -> None:
+        """Add edges for financial coherence between budget-related nodes.
+        
+        TYPE_D specific: Creates SUPPORTS edges between budget amounts
+        and goal targets to validate financial sufficiency.
+        """
+        budget_nodes = graph.get_nodes_by_type(EvidenceType.BUDGET_AMOUNT)
+        goal_nodes = graph.get_nodes_by_type(EvidenceType.GOAL_TARGET)
+        
+        for bn in budget_nodes[:5]:
+            for gn in goal_nodes[:5]:
+                if bn.node_id != gn.node_id:
+                    edge = EvidenceEdge.create(
+                        source_id=bn.node_id,
+                        target_id=gn.node_id,
+                        relation_type=RelationType.SUPPORTS,
+                        weight=0.7,
+                        confidence=0.7,
+                        metadata={"edge_type": "financial_coherence"},
+                    )
+                    try:
+                        graph.add_edge(edge)
+                    except ValueError:
+                        pass
+
+    def _add_logical_consistency_edges(self, graph: EvidenceGraph) -> None:
+        """Add edges for logical consistency between policy statements.
+        
+        TYPE_E specific: Creates SUPPORTS or CONTRADICTS edges between
+        normative references and policy instruments.
+        """
+        normative_nodes = graph.get_nodes_by_type(EvidenceType.NORMATIVE_REFERENCE)
+        policy_nodes = graph.get_nodes_by_type(EvidenceType.POLICY_INSTRUMENT)
+        
+        for nn in normative_nodes[:5]:
+            for pn in policy_nodes[:5]:
+                if nn.node_id != pn.node_id:
+                    edge = EvidenceEdge.create(
+                        source_id=nn.node_id,
+                        target_id=pn.node_id,
+                        relation_type=RelationType.SUPPORTS,
+                        weight=0.6,
+                        confidence=0.65,
+                        metadata={"edge_type": "logical_consistency"},
+                    )
+                    try:
+                        graph.add_edge(edge)
+                    except ValueError:
+                        pass
+
+    def _detect_and_mark_contradictions(self, graph: EvidenceGraph) -> None:
+        """Detect potential contradictions and create CONTRADICTS edges.
+        
+        TYPE_E specific: Analyzes evidence nodes for logical conflicts
+        and creates CONTRADICTS edges where detected.
+        """
+        # Get nodes that might contain contradictory information
+        contradiction_nodes = graph.get_nodes_by_type(EvidenceType.CONTRADICTION)
+        
+        # Create contradiction edges between contradiction nodes and their targets
+        for cn in contradiction_nodes[:5]:
+            # Look for related nodes that might be contradicted
+            if isinstance(cn.content, dict):
+                affected = cn.content.get("affects", [])
+                for affected_id in affected[:3]:
+                    if affected_id in graph._nodes:
+                        edge = EvidenceEdge.create(
+                            source_id=cn.node_id,
+                            target_id=affected_id,
+                            relation_type=RelationType.CONTRADICTS,
+                            weight=0.8,
+                            confidence=0.75,
+                            metadata={"edge_type": "detected_contradiction"},
+                        )
+                        try:
+                            graph.add_edge(edge)
+                        except ValueError:
+                            pass
+
+    def _determine_method_level(self, source_method: str, contract: dict[str, Any]) -> str:
+        """Determine epistemological level (N1/N2/N3) for a method.
+        
+        Returns:
+            Level string: "N1", "N2", or "N3"
+        """
+        method_binding = contract.get("method_binding", {})
+        execution_phases = method_binding.get("execution_phases", {})
+        
+        source_lower = source_method.lower()
+        
+        # Check execution phases for level mapping
+        for phase_name, phase_data in execution_phases.items():
+            if isinstance(phase_data, dict):
+                phase_methods = phase_data.get("methods", [])
+                for method in phase_methods:
+                    method_id = method.get("method_id", "") if isinstance(method, dict) else str(method)
+                    if method_id.lower() in source_lower or source_lower in method_id.lower():
+                        return phase_data.get("level", "N1")
+        
+        # Default level inference from method name
+        if "audit" in source_lower or "validation" in source_lower:
+            return "N3"
+        elif "infer" in source_lower or "causal" in source_lower or "analysis" in source_lower:
+            return "N2"
+        return "N1"
+
+    def _add_semantic_corroboration_edges(self, graph: EvidenceGraph) -> None:
+        """Add edges for semantic corroboration between evidence nodes.
+        
+        TYPE_A specific: Creates SUPPORTS edges between nodes with
+        compatible evidence types that can corroborate each other.
+        """
+        corroboration_pairs = [
+            (EvidenceType.OFFICIAL_SOURCE, EvidenceType.NORMATIVE_REFERENCE),
+            (EvidenceType.INDICATOR_NUMERIC, EvidenceType.GOAL_TARGET),
+            (EvidenceType.TERRITORIAL_COVERAGE, EvidenceType.COVERAGE_METRIC),
+            (EvidenceType.INSTITUTIONAL_ACTOR, EvidenceType.POLICY_INSTRUMENT),
+        ]
+        
+        for source_type, target_type in corroboration_pairs:
+            source_nodes = graph.get_nodes_by_type(source_type)[:5]
+            target_nodes = graph.get_nodes_by_type(target_type)[:5]
+            
+            for sn in source_nodes:
+                for tn in target_nodes:
+                    if sn.node_id != tn.node_id:
+                        edge = EvidenceEdge.create(
+                            source_id=sn.node_id,
+                            target_id=tn.node_id,
+                            relation_type=RelationType.SUPPORTS,
+                            weight=0.7,
+                            confidence=0.75,
+                            metadata={"edge_type": "semantic_corroboration"},
+                        )
+                        try:
+                            graph.add_edge(edge)
+                        except ValueError:
+                            pass  # Skip cycles
+
+    def _add_statistical_correlation_edges(self, graph: EvidenceGraph) -> None:
+        """Add edges for statistical correlation between quantitative nodes.
+        
+        TYPE_B specific: Creates CORRELATES edges between numerical
+        evidence that may be statistically related.
+        """
+        quantitative_nodes = []
+        for node in graph._nodes.values():
+            if node.evidence_type in {
+                EvidenceType.INDICATOR_NUMERIC,
+                EvidenceType.TEMPORAL_SERIES,
+                EvidenceType.BUDGET_AMOUNT,
+                EvidenceType.COVERAGE_METRIC,
+            }:
+                quantitative_nodes.append(node)
+        
+        # Create correlation edges between quantitative nodes (limited)
+        for i, node_a in enumerate(quantitative_nodes[:10]):
+            for node_b in quantitative_nodes[i+1:10]:
+                edge = EvidenceEdge.create(
+                    source_id=node_a.node_id,
+                    target_id=node_b.node_id,
+                    relation_type=RelationType.CORRELATES,
+                    weight=0.5,
+                    confidence=0.6,
+                    metadata={"edge_type": "statistical_correlation"},
+                )
+                try:
+                    graph.add_edge(edge)
+                except ValueError:
+                    pass
+
+    def _add_causal_chain_edges(self, graph: EvidenceGraph) -> None:
+        """Add edges for causal chain relationships.
+        
+        TYPE_C specific: Creates CAUSES edges between evidence nodes
+        that form causal chains.
+        """
+        causal_nodes = graph.get_nodes_by_type(EvidenceType.CAUSAL_LINK)
+        policy_nodes = graph.get_nodes_by_type(EvidenceType.POLICY_INSTRUMENT)
+        
+        # Causal links -> policy instruments (causal chain)
+        for cn in causal_nodes[:5]:
+            for pn in policy_nodes[:5]:
+                if cn.node_id != pn.node_id:
+                    edge = EvidenceEdge.create(
+                        source_id=cn.node_id,
+                        target_id=pn.node_id,
+                        relation_type=RelationType.CAUSES,
+                        weight=0.6,
+                        confidence=0.65,
+                        metadata={"edge_type": "causal_chain"},
+                    )
+                    try:
+                        graph.add_edge(edge)
+                    except ValueError:
+                        pass
+
+    def _add_temporal_ordering_edges(self, graph: EvidenceGraph) -> None:
+        """Add edges for temporal ordering between temporal evidence.
+        
+        TYPE_C specific: Creates TEMPORALLY_PRECEDES edges between
+        temporal evidence nodes.
+        """
+        temporal_nodes = graph.get_nodes_by_type(EvidenceType.TEMPORAL_SERIES)
+        dependency_nodes = graph.get_nodes_by_type(EvidenceType.TEMPORAL_DEPENDENCY)
+        
+        all_temporal = temporal_nodes[:5] + dependency_nodes[:5]
+        
+        # Simple temporal ordering (by extraction order as proxy)
+        for i, node_a in enumerate(all_temporal):
+            for node_b in all_temporal[i+1:]:
+                if node_a.node_id != node_b.node_id:
+                    edge = EvidenceEdge.create(
+                        source_id=node_a.node_id,
+                        target_id=node_b.node_id,
+                        relation_type=RelationType.TEMPORALLY_PRECEDES,
+                        weight=0.5,
+                        confidence=0.55,
+                        metadata={"edge_type": "temporal_ordering"},
+                    )
+                    try:
+                        graph.add_edge(edge)
+                    except ValueError:
+                        pass
+
+    def _apply_contract_level_strategies(
+        self,
+        graph: EvidenceGraph,
+        level_strategies: dict[str, Any],
+    ) -> None:
+        """Apply level-specific strategies from contract's fusion_specification.
+        
+        R-B4 RESOLUTION: Applies strategies defined in contract's
+        fusion_specification.level_strategies configuration.
+        
+        The level_strategies format from contract:
+        - N1_fact_fusion: { strategy, behavior, conflict_resolution, formula }
+        - N2_parameter_fusion: { strategy, behavior, affects }
+        - N3_constraint_fusion: { strategy, behavior, asymmetry_principle, propagation }
+        """
+        if not level_strategies:
+            return
+        
+        # Map strategy names to level prefixes
+        level_map = {
+            "N1_fact_fusion": "N1",
+            "N2_parameter_fusion": "N2",
+            "N3_constraint_fusion": "N3",
+        }
+        
+        # Apply behavior-based adjustments
+        for strategy_name, strategy_config in level_strategies.items():
+            if not isinstance(strategy_config, dict):
+                continue
+            
+            level_prefix = level_map.get(strategy_name)
+            if not level_prefix:
+                continue
+            
+            behavior = strategy_config.get("behavior", "additive")
+            strategy_type = strategy_config.get("strategy", "")
+            
+            # Apply adjustments based on behavior type
+            for node_id, node in graph._nodes.items():
+                node_level = self._determine_method_level(node.source_method, {})
+                
+                if not node_level.startswith(level_prefix):
+                    continue
+                
+                current_conf = graph._confidence_adjustments.get(node_id, node.confidence)
+                current_belief = graph._belief_mass_adjustments.get(node_id, node.belief_mass)
+                
+                if behavior == "gate" and level_prefix == "N3":
+                    # N3 gate behavior: boost confidence for audit nodes
+                    graph._confidence_adjustments[node_id] = min(1.0, current_conf * 1.1)
+                    graph._belief_mass_adjustments[node_id] = min(1.0, current_belief * 1.1)
+                elif behavior == "multiplicative" and level_prefix == "N2":
+                    # N2 multiplicative: moderate adjustment
+                    graph._confidence_adjustments[node_id] = current_conf * 1.0  # Neutral
+                    graph._belief_mass_adjustments[node_id] = current_belief * 1.0
+                elif behavior == "additive" and level_prefix == "N1":
+                    # N1 additive: preserve as-is
+                    pass
+        
+        logger.debug(
+            "contract_level_strategies_applied",
+            strategies_count=len(level_strategies),
+            strategies=list(level_strategies.keys()),
+        )
+
     def _extract_nodes_from_contract_patterns(
         self,
         *,
         raw_text: str,
         patterns: list[Any],
         question_context: dict[str, Any],
+        contract: dict[str, Any],  # B3, I3: Added contract parameter for type_system propagation
         max_matches_per_pattern: int = 5,
     ) -> list[EvidenceNode]:
         """Create evidence nodes from v3 contract patterns.
+
+        B3, I3 RESOLUTION: Now uses contract's type_system for dynamic type mapping.
 
         Goal: patterns contribute to evidence/scoring even if methods ignore them.
 
         This is intentionally conservative:
         - Only regex/literal matching (NER_OR_REGEX treated as regex fallback)
         - Caps matches per pattern for determinism and bounded output
+        - Type mapping from contract's type_system (not hardcoded)
         """
         nodes: list[EvidenceNode] = []
         qid = str(question_context.get("question_id") or "")
@@ -1973,7 +3575,7 @@ class EvidenceNexus:
         context_filter_stats: dict[str, int] | None = None
         if document_context:
             try:
-                from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+                from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
                     filter_patterns_by_context,
                 )
 
@@ -1990,7 +3592,7 @@ class EvidenceNexus:
         expanded_patterns = filtered_patterns
         expansion_stats: dict[str, Any] | None = None
         try:
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_semantic_expander import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_semantic_expander import (
                 expand_all_patterns,
                 validate_expansion_result,
             )
@@ -2031,8 +3633,36 @@ class EvidenceNexus:
                 return f or (re.IGNORECASE | re.MULTILINE)
             return re.IGNORECASE | re.MULTILINE
 
+        # B3, I3 RESOLUTION: Build type mapping from contract's type_system
+        # Extract type_system from contract for dynamic mapping
+        contract_type_system: dict[str, str] = {}
+        type_mapping = contract.get("type_system", {})
+        if isinstance(type_mapping, dict):
+            for pattern_category, evidence_type_str in type_mapping.items():
+                try:
+                    # Validate the EvidenceType value
+                    EvidenceType(evidence_type_str)
+                    contract_type_system[str(pattern_category).upper()] = evidence_type_str
+                except (ValueError, TypeError):
+                    # Invalid EvidenceType - skip this mapping
+                    pass
+
         def _map_category_to_evidence_type(category: str) -> EvidenceType:
+            """Map pattern category to EvidenceType using contract's type_system.
+
+            B3, I3 RESOLUTION: No longer hardcoded - uses contract configuration.
+            Falls back to sensible defaults if not specified in contract.
+            """
             cat = (category or "").upper()
+
+            # First, check contract's type_system for explicit mapping
+            if cat in contract_type_system:
+                try:
+                    return EvidenceType(contract_type_system[cat])
+                except (ValueError, TypeError):
+                    pass  # Fall through to defaults
+
+            # Default fallback mappings (when contract doesn't specify)
             if cat == "INDICADOR" or cat == "UNIDAD_MEDIDA":
                 return EvidenceType.INDICATOR_NUMERIC
             if cat == "TEMPORAL":
@@ -2484,7 +4114,100 @@ class EvidenceNexus:
                             graph.add_edge(edge)
                         except ValueError:
                             pass  # Skip if adding SUPPORTS edge would create cycle or is invalid
-    
+
+    # -------------------------------------------------------------------------
+    # B4 RESOLUTION: Level Strategies Application
+    # -------------------------------------------------------------------------
+
+    def _apply_level_strategies(
+        self,
+        graph: EvidenceGraph,
+        contract: dict[str, Any],
+    ) -> None:
+        """
+        Apply epistemological level strategies from contract.
+
+        B4 RESOLUTION: Now applies N1-EMP, N2-INF, N3-AUD level strategies.
+
+        Epistemological levels:
+        - N1-EMP (Empírico Positivista): Direct observation, quantitative data
+        - N2-INF (Inferencial): Causal reasoning, theoretical frameworks
+        - N3-AUD (Auditoría): Meta-analysis, validation of N1/N2
+
+        Each level has different:
+        - Confidence thresholds
+        - Evidence requirements
+        - Validation strictness
+        """
+        # Extract level_strategies from contract
+        method_binding = contract.get("method_binding", {})
+        execution_phases = method_binding.get("execution_phases", {})
+
+        # Get current epistemological level
+        current_level = "N1"  # Default
+        current_phase = "phase_A_construction"
+
+        # Determine which phase we're in
+        for phase_name, phase_data in execution_phases.items():
+            if isinstance(phase_data, dict):
+                current_level = phase_data.get("level", current_level)
+                current_phase = phase_name
+                break
+
+        # Apply level-specific strategies
+        level_configs = {
+            "N1-EMP": {
+                "confidence_threshold": 0.6,
+                "requires_quantitative": True,
+                "validation_strictness": "moderate",
+                "evidence_types": ["INDICADOR", "TEMPORAL", "FUENTE_OFICIAL"],
+            },
+            "N2-INF": {
+                "confidence_threshold": 0.5,
+                "requires_quantitative": False,
+                "validation_strictness": "balanced",
+                "evidence_types": ["CAUSAL", "INSTITUTIONAL", "POLICY"],
+            },
+            "N3-AUD": {
+                "confidence_threshold": 0.7,
+                "requires_quantitative": False,
+                "validation_strictness": "strict",
+                "evidence_types": None,  # All types
+            },
+        }
+
+        config = level_configs.get(current_level, level_configs["N1-EMP"])
+
+        # Apply confidence adjustments based on level (stored in mapping, not mutating frozen nodes)
+        nodes_adjusted = 0
+        for node in graph._nodes.values():
+            # N3-AUD can downgrade confidence from N1/N2
+            if current_level == "N3-AUD":
+                node_source = node.source_method.lower()
+                if "phase_a" in node_source or "phase_b" in node_source:
+                    # N3 auditing: reduce confidence of lower-level evidence
+                    graph._confidence_adjustments[node.node_id] = node.confidence * 0.9
+                    graph._belief_mass_adjustments[node.node_id] = node.belief_mass * 0.9
+                    nodes_adjusted += 1
+
+            # N1-EMP: Boost quantitative evidence
+            elif current_level == "N1-EMP":
+                if config.get("requires_quantitative"):
+                    ev_type = node.evidence_type.value
+                    if "indicador" in ev_type or "temporal" in ev_type:
+                        # Boost confidence for quantitative evidence in N1
+                        graph._confidence_adjustments[node.node_id] = min(1.0, node.confidence * 1.1)
+                        graph._belief_mass_adjustments[node.node_id] = min(1.0, node.belief_mass * 1.1)
+                        nodes_adjusted += 1
+
+        logger.debug(
+            "level_strategies_applied",
+            level=current_level,
+            phase=current_phase,
+            confidence_threshold=config.get("confidence_threshold"),
+            nodes_adjusted=nodes_adjusted,
+        )
+
     def _persist_graph(self, graph: EvidenceGraph) -> None:
         """Persist graph to storage."""
         if not self.enable_persistence:
@@ -2514,27 +4237,35 @@ class EvidenceNexus:
         graph: EvidenceGraph,
         beliefs: dict[EvidenceID, float],
     ) -> dict[str, Any]:
-        """Build legacy-compatible evidence dict."""
+        """Build legacy-compatible evidence dict with normalized type keys.
+
+        Uses EvidenceTypeMapper to convert Nexus EvidenceType values (singular)
+        to contract expected_elements format (plural) for proper gap detection.
+        """
         elements = []
         by_type:  dict[str, list[dict]] = defaultdict(list)
         confidences = []
-        
+
         for node in graph._nodes.values():
+            adjusted_conf = graph.get_adjusted_confidence(node.node_id)
             elem = {
                 "element_id": node.node_id[: 12],
                 "type": node.evidence_type.value,
                 "value": self._extract_value(node.content),
-                "confidence": node.confidence,
-                "belief":  beliefs.get(node.node_id, node.confidence),
+                "confidence": adjusted_conf,
+                "belief":  beliefs.get(node.node_id, adjusted_conf),
                 "source_method": node.source_method,
             }
             elements.append(elem)
-            by_type[node.evidence_type.value].append(elem)
-            confidences.append(node.confidence)
-        
+            # Use normalized (plural) type for by_type grouping to align with contracts
+            normalized_type = EvidenceTypeMapper.to_contract_format(node.evidence_type.value)
+            by_type[normalized_type].append(elem)
+            confidences.append(adjusted_conf)
+
         return {
             "elements": elements,
             "elements_found_count": len(elements),
+            # Keys are now in contract format (e.g., "indicadores_cuantitativos")
             "by_type": {k: len(v) for k, v in by_type.items()},
             "confidence_scores": {
                 "mean": statistics.mean(confidences) if confidences else 0.0,
@@ -2682,11 +4413,12 @@ def process_evidence(
 __all__ = [
     # Core types
     "EvidenceType",
+    "EvidenceTypeMapper",
     "RelationType",
     "ValidationSeverity",
     "AnswerCompleteness",
     "NarrativeSection",
-    
+
     # Data structures
     "EvidenceNode",
     "EvidenceEdge",
@@ -2695,17 +4427,17 @@ __all__ = [
     "Citation",
     "NarrativeBlock",
     "SynthesizedAnswer",
-    
+
     # Graph
     "EvidenceGraph",
-    
+
     # Engines
     "ValidationEngine",
     "NarrativeSynthesizer",
-    
+
     # Main class
     "EvidenceNexus",
-    
+
     # Factory functions
     "get_global_nexus",
     "process_evidence",

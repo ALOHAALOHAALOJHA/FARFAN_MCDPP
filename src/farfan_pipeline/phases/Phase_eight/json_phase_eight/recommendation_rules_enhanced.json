@@ -13962,7 +13962,7 @@
         "weak_pa_id": "PA01"
       },
       "template": {
-        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda ALTO (≥75) con varianza ALTA; PA01 Equidad de género cae 30 puntos frente a los demás componentes, evidenciando déficits en implementación de rutas integrales y autonomía económica reflejados en PA01-DIM02 y PA01-DIM05.",
+        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda ALTO (≥75) con varianza ALTA; PA01 Derechos de las mujeres e igualdad de género cae 30 puntos frente a los demás componentes, evidenciando déficits en implementación de rutas integrales y autonomía económica reflejados en PA01-DIM02 y PA01-DIM05.",
         "intervention": "Activar plan integral de género con rutas VBG, autonomía económica y cierre de PA01-DIM02 y PA01-DIM05 mediante seguimiento SIG Mujer. Blindar la sostenibilidad del liderazgo temático manteniendo vigilancia de dispersión y auditorías trimestrales.",
         "indicator": {
           "name": "CL02-PA01 brecha corregida",
@@ -14145,7 +14145,7 @@
         "weak_pa_id": "PA01"
       },
       "template": {
-        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda BAJO (<55) con varianza ALTA; PA01 Equidad de género cae 30 puntos frente a los demás componentes, evidenciando déficits en implementación de rutas integrales y autonomía económica reflejados en PA01-DIM02 y PA01-DIM05.",
+        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda BAJO (<55) con varianza ALTA; PA01 Derechos de las mujeres e igualdad de género cae 30 puntos frente a los demás componentes, evidenciando déficits en implementación de rutas integrales y autonomía económica reflejados en PA01-DIM02 y PA01-DIM05.",
         "intervention": "Activar plan integral de género con rutas VBG, autonomía económica y cierre de PA01-DIM02 y PA01-DIM05 mediante seguimiento SIG Mujer. Ejecutar fases quincenales con redistribución de recursos y reporte obligatorio en el tablero MESO.",
         "indicator": {
           "name": "CL02-PA01 brecha corregida",
@@ -14336,7 +14336,7 @@
         "weak_pa_id": "PA01"
       },
       "template": {
-        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda MEDIO (55-74) con varianza ALTA; PA01 Equidad de género cae 30 puntos frente a los demás componentes, evidenciando déficits en implementación de rutas integrales y autonomía económica reflejados en PA01-DIM02 y PA01-DIM05.",
+        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda MEDIO (55-74) con varianza ALTA; PA01 Derechos de las mujeres e igualdad de género cae 30 puntos frente a los demás componentes, evidenciando déficits en implementación de rutas integrales y autonomía económica reflejados en PA01-DIM02 y PA01-DIM05.",
         "intervention": "Activar plan integral de género con rutas VBG, autonomía económica y cierre de PA01-DIM02 y PA01-DIM05 mediante seguimiento SIG Mujer. Ajustar programación mensual y redistribuir recursos hacia los componentes rezagados asegurando cierres en el tablero MESO.",
         "indicator": {
           "name": "CL02-PA01 brecha corregida",
@@ -14527,7 +14527,7 @@
         "weak_pa_id": "PA05"
       },
       "template": {
-        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda ALTO (≥75) con varianza ALTA; PA05 Atención a víctimas cae 30 puntos frente a los demás componentes, evidenciando déficits en implementación del PAPSIVI y reparación integral reflejados en PA05-DIM03 y PA05-DIM04.",
+        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda ALTO (≥75) con varianza ALTA; PA05 Derechos de las víctimas y construcción de paz cae 30 puntos frente a los demás componentes, evidenciando déficits en implementación del PAPSIVI y reparación integral reflejados en PA05-DIM03 y PA05-DIM04.",
         "intervention": "Reforzar PAPSIVI, reparación integral y generación de ingresos ajustando PA05-DIM03 y PA05-DIM04 con soporte presupuestal y trazabilidad RUV. Blindar la sostenibilidad del liderazgo temático manteniendo vigilancia de dispersión y auditorías trimestrales.",
         "indicator": {
           "name": "CL02-PA05 brecha corregida",
@@ -14710,7 +14710,7 @@
         "weak_pa_id": "PA05"
       },
       "template": {
-        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda BAJO (<55) con varianza ALTA; PA05 Atención a víctimas cae 30 puntos frente a los demás componentes, evidenciando déficits en implementación del PAPSIVI y reparación integral reflejados en PA05-DIM03 y PA05-DIM04.",
+        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda BAJO (<55) con varianza ALTA; PA05 Derechos de las víctimas y construcción de paz cae 30 puntos frente a los demás componentes, evidenciando déficits en implementación del PAPSIVI y reparación integral reflejados en PA05-DIM03 y PA05-DIM04.",
         "intervention": "Reforzar PAPSIVI, reparación integral y generación de ingresos ajustando PA05-DIM03 y PA05-DIM04 con soporte presupuestal y trazabilidad RUV. Ejecutar fases quincenales con redistribución de recursos y reporte obligatorio en el tablero MESO.",
         "indicator": {
           "name": "CL02-PA05 brecha corregida",
@@ -14901,7 +14901,7 @@
         "weak_pa_id": "PA05"
       },
       "template": {
-        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda MEDIO (55-74) con varianza ALTA; PA05 Atención a víctimas cae 30 puntos frente a los demás componentes, evidenciando déficits en implementación del PAPSIVI y reparación integral reflejados en PA05-DIM03 y PA05-DIM04.",
+        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda MEDIO (55-74) con varianza ALTA; PA05 Derechos de las víctimas y construcción de paz cae 30 puntos frente a los demás componentes, evidenciando déficits en implementación del PAPSIVI y reparación integral reflejados en PA05-DIM03 y PA05-DIM04.",
         "intervention": "Reforzar PAPSIVI, reparación integral y generación de ingresos ajustando PA05-DIM03 y PA05-DIM04 con soporte presupuestal y trazabilidad RUV. Ajustar programación mensual y redistribuir recursos hacia los componentes rezagados asegurando cierres en el tablero MESO.",
         "indicator": {
           "name": "CL02-PA05 brecha corregida",
@@ -15092,7 +15092,7 @@
         "weak_pa_id": "PA06"
       },
       "template": {
-        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda ALTO (≥75) con varianza ALTA; PA06 Niñez y juventud cae 30 puntos frente a los demás componentes, evidenciando déficits en coberturas de protección integral, salud y educación diferenciada reflejados en PA06-DIM02 y PA06-DIM05.",
+        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda ALTO (≥75) con varianza ALTA; PA06 Niñez, adolescencia y juventud cae 30 puntos frente a los demás componentes, evidenciando déficits en coberturas de protección integral, salud y educación diferenciada reflejados en PA06-DIM02 y PA06-DIM05.",
         "intervention": "Consolidar programas de protección integral, salud mental y permanencia escolar cerrando PA06-DIM02 y PA06-DIM05 con MEN y ICBF. Blindar la sostenibilidad del liderazgo temático manteniendo vigilancia de dispersión y auditorías trimestrales.",
         "indicator": {
           "name": "CL02-PA06 brecha corregida",
@@ -15275,7 +15275,7 @@
         "weak_pa_id": "PA06"
       },
       "template": {
-        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda BAJO (<55) con varianza ALTA; PA06 Niñez y juventud cae 30 puntos frente a los demás componentes, evidenciando déficits en coberturas de protección integral, salud y educación diferenciada reflejados en PA06-DIM02 y PA06-DIM05.",
+        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda BAJO (<55) con varianza ALTA; PA06 Niñez, adolescencia y juventud cae 30 puntos frente a los demás componentes, evidenciando déficits en coberturas de protección integral, salud y educación diferenciada reflejados en PA06-DIM02 y PA06-DIM05.",
         "intervention": "Consolidar programas de protección integral, salud mental y permanencia escolar cerrando PA06-DIM02 y PA06-DIM05 con MEN y ICBF. Ejecutar fases quincenales con redistribución de recursos y reporte obligatorio en el tablero MESO.",
         "indicator": {
           "name": "CL02-PA06 brecha corregida",
@@ -15466,7 +15466,7 @@
         "weak_pa_id": "PA06"
       },
       "template": {
-        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda MEDIO (55-74) con varianza ALTA; PA06 Niñez y juventud cae 30 puntos frente a los demás componentes, evidenciando déficits en coberturas de protección integral, salud y educación diferenciada reflejados en PA06-DIM02 y PA06-DIM05.",
+        "problem": "El cluster CL02 Grupos Poblacionales se ubica en banda MEDIO (55-74) con varianza ALTA; PA06 Niñez, adolescencia y juventud cae 30 puntos frente a los demás componentes, evidenciando déficits en coberturas de protección integral, salud y educación diferenciada reflejados en PA06-DIM02 y PA06-DIM05.",
         "intervention": "Consolidar programas de protección integral, salud mental y permanencia escolar cerrando PA06-DIM02 y PA06-DIM05 con MEN y ICBF. Ajustar programación mensual y redistribuir recursos hacia los componentes rezagados asegurando cierres en el tablero MESO.",
         "indicator": {
           "name": "CL02-PA06 brecha corregida",

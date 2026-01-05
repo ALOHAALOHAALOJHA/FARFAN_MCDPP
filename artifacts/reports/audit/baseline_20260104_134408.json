@@ -1,0 +1,180 @@
+{
+  "timestamp": "2026-01-04T13:44:08.517097",
+  "phantom_imports": {
+    "count": 175,
+    "files": [
+      "src/farfan_pipeline/methods/policy_processor.py",
+      "src/farfan_pipeline/orchestration/orchestrator.py",
+      "src/farfan_pipeline/dashboard_atroz_/signals_service.py",
+      "src/farfan_pipeline/phases/Phase_four_five_six_seven/aggregation_integration.py",
+      "src/farfan_pipeline/phases/Phase_four_five_six_seven/aggregation.py",
+      "src/farfan_pipeline/phases/Phase_four_five_six_seven/__init__.py",
+      "src/farfan_pipeline/phases/Phase_four_five_six_seven/aggregation_enhancements.py",
+      "src/farfan_pipeline/phases/Phase_four_five_six_seven/signal_enriched_aggregation.py",
+      "src/farfan_pipeline/phases/Phase_nine/signal_enriched_reporting.py",
+      "src/farfan_pipeline/phases/Phase_three/phase3_signal_enriched_scoring.py",
+      "src/farfan_pipeline/phases/Phase_zero/phase0_40_00_input_validation.py",
+      "src/farfan_pipeline/phases/Phase_one/phase1_40_00_circuit_breaker.py",
+      "src/farfan_pipeline/phases/Phase_one/cpp_models.py",
+      "src/farfan_pipeline/phases/Phase_one/phase1_60_00_signal_enrichment.py",
+      "src/farfan_pipeline/phases/Phase_one/phase1_20_00_cpp_ingestion.py",
+      "src/farfan_pipeline/phases/Phase_one/phase1_70_00_structural.py",
+      "src/farfan_pipeline/phases/Phase_eight/recommendation_engine.py",
+      "src/farfan_pipeline/phases/Phase_eight/signal_enriched_recommendations.py",
+      "src/farfan_pipeline/phases/Phase_two/phase2_10_01_class_registry.py",
+      "src/farfan_pipeline/phases/Phase_two/phase2_95_02_precision_tracking.py"
+    ]
+  },
+  "schema_monolith": {
+    "provenance_in_monolith": 450,
+    "provenance_in_schema": 0,
+    "monolith_hash": "e338c7b085d2272ea873c57d898c92d7141a83c8af19b081162b88d3ffb4f0b1",
+    "schema_hash": "f797a4ffb1431cea62918d8c028dbbff26744efc360d2a8f6655a5cdab893d4f"
+  },
+  "ports": {
+    "hash": "553534dd076c9c4f4a4c097d351b1678372e340e51322b0da57b6279d4f243d8",
+    "method_signatures": {
+      "data": [],
+      "version": [],
+      "sha256": [],
+      "micro_questions": [],
+      "__iter__": [],
+      "get_chunking_signals": [],
+      "get_micro_answering_signals": [
+        "question_id: str"
+      ],
+      "get_validation_signals": [
+        "level: str"
+      ],
+      "get_assembly_signals": [
+        "level: str"
+      ],
+      "get_scoring_signals": []
+    }
+  },
+  "registry": {
+    "method_signatures": {
+      "set_attribute": [
+        "key: str",
+        "value: Any"
+      ],
+      "set_status": [
+        "status: Any"
+      ],
+      "record_exception": [
+        "exc: Exception"
+      ],
+      "__enter__": [],
+      "__exit__": [
+        "*args: Any"
+      ],
+      "start_as_current_span": [
+        "name: str",
+        "attributes: dict[str",
+        "Any] | None = None"
+      ],
+      "__init__": [
+        "questionnaire: QuestionnairePort"
+      ],
+      "question_id": [],
+      "policy_area_id": [],
+      "patterns": [],
+      "pattern_specs": [],
+      "indicators": [],
+      "entities": [],
+      "scoring_modality": [],
+      "hit_rate": [],
+      "total_requests": [],
+      "__post_init__": [],
+      "_load_state": [],
+      "_save_state": [],
+      "is_available": [],
+      "record_success": [],
+      "record_failure": [],
+      "get_status": [],
+      "_warmup_single_question": [
+        "q_id: str"
+      ],
+      "_compute_source_hash": [],
+      "_extract_valid_assembly_levels": [],
+      "get_all_policy_areas": [],
+      "get_signal_pack": [
+        "policy_area_id: PolicyArea"
+      ],
+      "get": [
+        "policy_area_id: str",
+        "default: SignalPack | None = None"
+      ],
+      "get_chunking_signals": [],
+      "get_micro_answering_signals": [
+        "question_id: str"
+      ],
+      "get_validation_signals": [
+        "question_id: str"
+      ],
+      "get_assembly_signals": [
+        "level: str"
+      ],
+      "get_scoring_signals": [
+        "question_id: str"
+      ],
+      "_build_chunking_signals": [],
+      "_build_micro_answering_signals": [
+        "question_id: str"
+      ],
+      "_build_validation_signals": [
+        "question_id: str"
+      ],
+      "_build_assembly_signals": [
+        "level: str"
+      ],
+      "_build_scoring_signals": [
+        "question_id: str"
+      ],
+      "_get_question": [
+        "question_id: str"
+      ],
+      "_extract_indicators_for_pa": [
+        "policy_area: str"
+      ],
+      "_extract_official_sources": [],
+      "_build_policy_area_signal_pack": [
+        "policy_area_id: str"
+      ],
+      "get_metrics": [],
+      "health_check": [],
+      "reset_circuit_breaker": [],
+      "validate_signals_for_questionnaire": [
+        "expected_question_count: int = 300",
+        "check_modalities: list[str] | None = None"
+      ],
+      "clear_cache": [],
+      "warmup": [
+        "question_ids: list[str] | None = None"
+      ],
+      "source_hash": [],
+      "valid_assembly_levels": [],
+      "verify_integrity": []
+    }
+  },
+  "signature_mismatches": [
+    {
+      "method": "get_validation_signals",
+      "port_params": [
+        "level: str"
+      ],
+      "impl_params": [
+        "question_id: str"
+      ],
+      "status": "MISMATCH"
+    },
+    {
+      "method": "get_scoring_signals",
+      "port_params": [],
+      "impl_params": [
+        "question_id: str"
+      ],
+      "status": "MISMATCH"
+    }
+  ]
+}

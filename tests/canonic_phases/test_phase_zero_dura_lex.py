@@ -36,13 +36,13 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 # Phase 0 imports
-from canonic_phases.Phase_zero.phase0_20_02_determinism import (
+from farfan_pipeline.phases.Phase_zero.phase0_20_02_determinism import (
     apply_seeds_to_rngs,
     derive_seed_from_string,
 )
-from canonic_phases.Phase_zero.phase0_50_01_exit_gates import check_all_gates
-from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-from canonic_phases.Phase_zero.phase0_90_01_verified_pipeline_runner import VerifiedPipelineRunner
+from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import check_all_gates
+from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner import VerifiedPipelineRunner
 
 
 # ============================================================================
@@ -68,7 +68,7 @@ def test_dura_lex_01_all_operations_must_be_auditable():
         
         artifacts_dir = Path(tmpdir) / "artifacts"
         
-        with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+        with patch('farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner.RuntimeConfig') as mock_config:
             mock_config.from_env.return_value = MagicMock(mode=MagicMock(value="dev"))
             
             runner = VerifiedPipelineRunner(pdf_path, artifacts_dir, q_path)
@@ -189,7 +189,7 @@ def test_dura_lex_05_bootstrap_failure_must_have_defined_behavior():
         q_path = Path(tmpdir) / "q.json"
         
         # Force bootstrap failure
-        with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+        with patch('farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner.RuntimeConfig') as mock_config:
             mock_config.from_env.side_effect = Exception("Config load failed")
             
             runner = VerifiedPipelineRunner(pdf_path, artifacts_dir, q_path)
@@ -357,7 +357,7 @@ def test_dura_lex_11_file_loading_must_satisfy_contract():
         q_path = Path(tmpdir) / "q.json"
         q_path.write_text('{}')
         
-        with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+        with patch('farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner.RuntimeConfig') as mock_config:
             mock_config.from_env.return_value = MagicMock(mode=MagicMock(value="dev"))
             
             runner = VerifiedPipelineRunner(pdf_path, Path(tmpdir) / "artifacts", q_path)
@@ -386,7 +386,7 @@ def test_dura_lex_12_risks_must_be_documented():
         pdf_path = Path(tmpdir) / "test.pdf"
         pdf_path.write_bytes(b"PDF")
         
-        with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+        with patch('farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner.RuntimeConfig') as mock_config:
             mock_config.from_env.side_effect = Exception("Risk: Config missing")
             
             runner = VerifiedPipelineRunner(
@@ -460,7 +460,7 @@ def test_dura_lex_14_state_must_be_capturable():
         q_path = Path(tmpdir) / "q.json"
         q_path.write_text('{}')
         
-        with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+        with patch('farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner.RuntimeConfig') as mock_config:
             mock_config.from_env.return_value = MagicMock(mode=MagicMock(value="dev"))
             
             runner = VerifiedPipelineRunner(pdf_path, Path(tmpdir) / "artifacts", q_path)
@@ -499,7 +499,7 @@ def test_dura_lex_15_all_decisions_must_leave_trace():
         q_path = Path(tmpdir) / "q.json"
         q_path.write_text('{"test": "data"}')
         
-        with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+        with patch('farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner.RuntimeConfig') as mock_config:
             mock_config.from_env.return_value = MagicMock(mode=MagicMock(value="dev"))
             
             runner = VerifiedPipelineRunner(pdf_path, Path(tmpdir) / "artifacts", q_path)

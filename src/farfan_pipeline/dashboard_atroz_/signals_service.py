@@ -31,7 +31,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from sse_starlette.sse import EventSourceResponse
 
 from orchestration.factory import load_questionnaire
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
 from farfan_pipeline.dashboard_atroz_.api_v1_errors import AtrozAPIException, api_error_response
 from farfan_pipeline.dashboard_atroz_.api_v1_router import router as atroz_router
 from farfan_pipeline.dashboard_atroz_.auth_router import router as auth_router

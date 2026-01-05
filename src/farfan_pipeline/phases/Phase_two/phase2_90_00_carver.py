@@ -1,64 +1,176 @@
 """
-Doctoral-Carver Narrative Synthesizer v3.0 (FULL EXTRACTION Edition)
+╔══════════════════════════════════════════════════════════════════════════════╗
+║              DOCTORAL-CARVER NARRATIVE SYNTHESIZER v4.0                      ║
+║                    STATE-OF-THE-ART FRONTIER EDITION                         ║
+╚══════════════════════════════════════════════════════════════════════════════╝
 
 PHASE_LABEL: Phase 2
 PHASE_COMPONENT: Carver Synthesizer
-PHASE_ROLE: Generates PhD-level narrative responses with Raymond Carver minimalist style
+PHASE_ROLE: Generates PhD-level human answers for 300 questions
 
-=====================================================================
+═══════════════════════════════════════════════════════════════════════════════
+PURPOSE
+═══════════════════════════════════════════════════════════════════════════════
 
-Genera respuestas PhD-level con estilo minimalista Raymond Carver:
-- Precisión quirúrgica en cada afirmación
-- Sin adornos retóricos vacíos
-- Cada palabra respaldada por evidencia
-- Honestidad brutal sobre limitaciones
-- Razonamiento causal explícito
+Transforms EvidenceNexus output into doctoral-quality human-readable answers
+following Raymond Carver's minimalist prose style: 
+- Precision over verbosity
+- Every word carries weight
+- Evidence-backed assertions only
+- Brutal honesty about limitations
+- Causal reasoning made explicit
 
-CAMBIO MAYOR v3.0: Extracción COMPLETA del contrato v3
-------------------------------------------------------
-v2.1 extraía solo: dimension, expected_elements, question_text, method_count, top 5 methods
-v3.0 extrae TODO:
-- 17 métodos con epistemological_foundation completo
-- theoretical_framework con referencias académicas
-- technical_approach con algoritmos y limitaciones
-- output_interpretation con actionable_insights
-- assembly_flow de 5 pasos
-- concrete_example como benchmark
-- template_variable_bindings
-- validation_against_expected_elements
+═══════════════════════════════════════════════════════════════════════════════
+THEORETICAL FOUNDATIONS (SOTA)
+═══════════════════════════════════════════════════════════════════════════════
 
-Fundamentos Teóricos:
-- Rhetorical Structure Theory (Mann & Thompson, 1988)
-- Dempster-Shafer Evidence Theory (belief functions)
-- Causal Inference Framework (Pearl, 2009)
-- Argument Mining (Stab & Gurevych, 2017)
-- Calibrated Uncertainty Quantification (Gneiting & Raftery, 2007)
+1.  ARGUMENTATION THEORY
+   - Toulmin Model (1958): Claim → Ground → Warrant → Backing → Qualifier → Rebuttal
+   - RST (Mann & Thompson, 1988): Rhetorical Structure Theory for coherence
+   - Argument Mining (Stab & Gurevych, 2017): Automated claim-evidence linking
 
-Arquitectura v3.0:
-1. EnhancedContractInterpreter: Extrae TODA la semántica del contrato v3
-2. EvidenceAnalyzer: Construye grafo causal de evidencia
-3. GapAnalyzer: Análisis multi-dimensional de vacíos
-4. BayesianConfidenceEngine: Inferencia calibrada de confianza
-5. DimensionTheory: Estrategias teóricamente fundamentadas por D1-D6
-6. DoctoralRenderer: Prosa con fundamentos epistemológicos y citas
-7. MacroSynthesizer: Agregación holística con análisis PA-DIM
+2. UNCERTAINTY QUANTIFICATION
+   - Dempster-Shafer Theory:  Belief/Plausibility intervals for epistemic uncertainty
+   - Bayesian Calibration (Gneiting & Raftery, 2007): Calibrated confidence intervals
+   - Conformal Prediction:  Distribution-free uncertainty bounds
 
-Invariantes:
-[INV-001] Toda afirmación debe tener >=1 evidencia citada
-[INV-002] Gaps críticos siempre aparecen en respuesta
-[INV-003] Confianza debe ser calibrada (no optimista)
-[INV-004] Estilo Carver: oraciones cortas, verbos activos, sin adverbios
-[INV-005] Macro synthesis con divergencia PA-DIM explícita
-[INV-006] v3.0: Fundamentos epistemológicos explícitos en síntesis doctoral
-[INV-007] v3.0: Limitaciones metodológicas como caveats honestos
-[INV-008] v3.0: Referencias teóricas en formato académico
+3. CAUSAL INFERENCE
+   - Pearl's do-calculus (2009): Interventional reasoning
+   - SCM (Structural Causal Models): Counterfactual analysis
+   - Judea Pearl's Ladder of Causation:  Association → Intervention → Counterfactual
 
-Author: F.A.R.F.A.N Pipeline
-Version: 3.0.0-FULL-EXTRACTION
+4. NARRATIVE SYNTHESIS
+   - Raymond Carver's Minimalism: "No tricks.  What you see is what you get."
+   - Hemingway's Iceberg Theory: Show 10%, imply 90%
+   - Academic Prose Guidelines: Clear, precise, evidenced
+
+═══════════════════════════════════════════════════════════════════════════════
+ARCHITECTURE v4.0 (COMPLETE REMAKE)
+═══════════════════════════════════════════════════════════════════════════════
+
+                    ┌─────────────────────────────────────────────┐
+                    │           Contract v4 (1 of 300)            │
+                    │  identity. question_id, method_binding,      │
+                    │  human_answer_structure, question_context   │
+                    └─────────────────────────────────────────────┘
+                                        │
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        CONTRACT INTERPRETER                                  │
+│  • Extracts methodological depth (17 methods × epistemological foundations) │
+│  • Maps dimension → evaluation strategy                                     │
+│  • Resolves expected_elements for gap analysis                              │
+│  • Builds template variable bindings                                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        NEXUS OUTPUT ADAPTER                                  │
+│  Input: SynthesizedAnswer from EvidenceNexus                                │
+│  • Extracts evidence graph structure                                        │
+│  • Maps citations to Toulmin grounds                                        │
+│  • Computes completeness metrics                                            │
+│  • Identifies contradictions and corroborations                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        EVIDENCE ANALYZER                                     │
+│  • Counts elements by type (expected vs found)                              │
+│  • Builds causal dependency graph                                           │
+│  • Detects evidence strength distribution                                   │
+│  • Computes Dempster-Shafer belief masses                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        GAP ANALYZER                                          │
+│  • Multi-dimensional gap detection                                          │
+│  • Severity classification (CRITICAL/MAJOR/MINOR/COSMETIC)                  │
+│  • Causal implication analysis                                              │
+│  • Remediation suggestions                                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     BAYESIAN CONFIDENCE ENGINE                               │
+│  • Computes calibrated confidence intervals                                 │
+│  • Belief/Plausibility bounds (Dempster-Shafer)                            │
+│  • Wilson score intervals (95% CI)                                          │
+│  • Gap-adjusted pessimistic weighting                                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     TOULMIN ARGUMENT BUILDER                                 │
+│  • Structures arguments:  Claim → Data → Warrant → Qualifier                │
+│  • Links evidence to rhetorical roles                                       │
+│  • Generates rebuttals for counter-evidence                                 │
+│  • Computes argument strength scores                                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     CARVER PROSE RENDERER                                    │
+│  • Applies Carver minimalist style rules                                    │
+│  • Short sentences.  Active verbs. No adverbs.                                │
+│  • Every claim backed by evidence citation                                  │
+│  • Readability:  Flesch-Kincaid grade ≤ 12                                   │
+│  • Enforces INV-001 through INV-008                                         │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        DOCTORAL ANSWER                                       │
+│  Output: DoctoralHumanAnswer compatible with Phase 3                        │
+│  • score: float [0,1] calibrated                                            │
+│  • quality_level: QualityLevel enum                                         │
+│  • human_answer:  Markdown prose                                             │
+│  • evidence_citations: List[Citation]                                       │
+│  • gaps_identified: List[Gap]                                               │
+│  • confidence_interval:  Tuple[float, float]                                 │
+│  • synthesis_trace: Dict for debugging                                      │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════════
+INVARIANTS (HARD CONSTRAINTS)
+═══════════════════════════════════════════════════════════════════════════════
+
+[INV-001] Every assertion must have ≥1 evidence citation
+[INV-002] Critical gaps MUST appear in response (no hiding)
+[INV-003] Confidence must be calibrated (no optimistic bias)
+[INV-004] Carver style:  sentences ≤20 words avg, active voice, no adverbs
+[INV-005] Score must align with QualityLevel thresholds
+[INV-006] Epistemological foundations cited when relevant
+[INV-007] Methodological limitations as honest caveats
+[INV-008] Theoretical references in academic format
+[INV-009] Output compatible with Phase 3 ScoringModality
+[INV-010] Deterministic:  same input → same output (byte-identical)
+
+═══════════════════════════════════════════════════════════════════════════════
+ALIGNMENT WITH PIPELINE
+═══════════════════════════════════════════════════════════════════════════════
+
+INPUT (from EvidenceNexus):
+    - SynthesizedAnswer with evidence graph
+    - ValidationReport with completeness metrics
+    - Contract v4 with methodological_depth
+
+OUTPUT (to Phase 3):
+    - DoctoralHumanAnswer with: 
+        * score: float [0. 0, 1.0]
+        * quality_level: QualityLevel
+        * human_answer: str (Markdown)
+        * scoring_metadata: Dict
+
+Author: F. A. R.F.A.N Pipeline
+Version: 4.0.0-SOTA
+Date: 2026-01-05
 """
 
 from __future__ import annotations
 
+import hashlib
 import math
 import re
 import statistics
@@ -66,169 +178,289 @@ from abc import ABC, abstractmethod
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from enum import Enum
+from enum import Enum, auto
+from functools import cached_property, lru_cache
 from typing import (
     Any,
+    ClassVar,
     Dict,
+    Final,
+    FrozenSet,
+    Iterator,
     List,
+    Literal,
+    Mapping,
+    NamedTuple,
     Optional,
+    Protocol,
+    Sequence,
+    Set,
     Tuple,
     TypeAlias,
+    TypedDict,
+    Union,
+    cast,
+    runtime_checkable,
 )
 
-# Readability and style checking libraries
-try:
-    import textstat  # Flesch-Kincaid and readability metrics
-except ImportError:
-    textstat = None  # type: ignore
+# =============================================================================
+# OPTIONAL DEPENDENCIES (SOTA LIBRARIES)
+# =============================================================================
 
 try:
-    from proselint.tools import lint as proselint_check  # Style and clarity checking
+    import textstat  # Flesch-Kincaid readability
+    HAS_TEXTSTAT = True
 except ImportError:
-    proselint_check = None  # type: ignore
+    textstat = None  # type: ignore[assignment]
+    HAS_TEXTSTAT = False
+
+try:
+    import numpy as np
+    from numpy. typing import NDArray
+    HAS_NUMPY = True
+except ImportError:
+    np = None  # type: ignore[assignment]
+    HAS_NUMPY = False
+
+try:
+    import structlog
+    logger = structlog.get_logger(__name__)
+except ImportError:
+    import logging
+    logger = logging.getLogger(__name__)
 
 
 # =============================================================================
-# TYPE SYSTEM
+# TYPE ALIASES
 # =============================================================================
 
 Confidence: TypeAlias = float  # [0.0, 1.0]
-BeliefMass: TypeAlias = float  # Dempster-Shafer belief
+BeliefMass:  TypeAlias = float  # Dempster-Shafer belief
 PlausibilityMass: TypeAlias = float  # Dempster-Shafer plausibility
+Score: TypeAlias = float  # [0.0, 1.0]
+EvidenceID: TypeAlias = str
+QuestionID: TypeAlias = str
+PolicyAreaID: TypeAlias = str
+DimensionID: TypeAlias = str
+
+
+# =============================================================================
+# CONSTANTS
+# =============================================================================
+
+# Quality level thresholds (aligned with Phase 3)
+THRESHOLD_EXCELENTE: Final[float] = 0.85
+THRESHOLD_BUENO: Final[float] = 0.70
+THRESHOLD_ACEPTABLE: Final[float] = 0.55
+THRESHOLD_INSUFICIENTE:  Final[float] = 0.0
+
+# Carver style constraints
+MAX_SENTENCE_LENGTH: Final[int] = 20  # words
+MAX_FLESCH_KINCAID_GRADE: Final[float] = 12.0
+MIN_FLESCH_READING_EASE: Final[float] = 60.0
+
+# Evidence thresholds
+MIN_CITATIONS_PER_CLAIM: Final[int] = 1
+CRITICAL_GAP_THRESHOLD:  Final[float] = 0.5
+CORROBORATION_BOOST:  Final[float] = 0.05
+CONTRADICTION_PENALTY: Final[float] = 0.10
+
+# Confidence calibration
+PESSIMISM_WEIGHT: Final[float] = 0.6  # Conservative estimation
+WILSON_Z:  Final[float] = 1.96  # 95% CI
+
+
+# =============================================================================
+# ENUMS
+# =============================================================================
+
+class QualityLevel(Enum):
+    """Quality assessment levels aligned with Phase 3."""
+    EXCELENTE = "EXCELENTE"
+    BUENO = "BUENO"
+    ACEPTABLE = "ACEPTABLE"
+    INSUFICIENTE = "INSUFICIENTE"
+    NO_APLICABLE = "NO_APLICABLE"
+    
+    @classmethod
+    def from_score(cls, score:  float) -> "QualityLevel": 
+        """Determine quality level from score."""
+        if score >= THRESHOLD_EXCELENTE:
+            return cls.EXCELENTE
+        elif score >= THRESHOLD_BUENO:
+            return cls.BUENO
+        elif score >= THRESHOLD_ACEPTABLE: 
+            return cls. ACEPTABLE
+        else:
+            return cls.INSUFICIENTE
 
 
 class Dimension(Enum):
-    """Las 6 dimensiones causales del modelo lógico."""
-    D1_INSUMOS = "DIM01"      # Inputs: recursos, datos, diagnóstico
-    D2_ACTIVIDADES = "DIM02"  # Activities: acciones, instrumentos
-    D3_PRODUCTOS = "DIM03"    # Outputs: entregables, metas
-    D4_RESULTADOS = "DIM04"   # Outcomes: cambios inmediatos
-    D5_IMPACTOS = "DIM05"     # Impacts: cambios largo plazo
-    D6_CAUSALIDAD = "DIM06"   # Causality: lógica, M&E, adaptación
+    """The 6 causal dimensions of the logical model."""
+    D1_INSUMOS = "DIM01"      # Inputs:  resources, data, diagnosis
+    D2_ACTIVIDADES = "DIM02"  # Activities: actions, instruments
+    D3_PRODUCTOS = "DIM03"    # Outputs: deliverables, goals
+    D4_RESULTADOS = "DIM04"   # Outcomes: immediate changes
+    D5_IMPACTOS = "DIM05"     # Impacts: long-term changes
+    D6_CAUSALIDAD = "DIM06"   # Causality: logic, M&E, adaptation
+    
+    @classmethod
+    def from_id(cls, dim_id: str) -> "Dimension":
+        """Get dimension from ID string."""
+        for dim in cls:
+            if dim.value == dim_id: 
+                return dim
+        return cls.D1_INSUMOS  # Default fallback
 
 
 class EvidenceStrength(Enum):
-    """Fuerza de evidencia según jerarquía epistemológica."""
-    DEFINITIVE = "definitive"      # Dato oficial verificable
-    STRONG = "strong"              # Múltiples fuentes concordantes
-    MODERATE = "moderate"          # Fuente única confiable
-    WEAK = "weak"                  # Inferido o parcial
-    ABSENT = "absent"              # No encontrado
+    """Evidence strength according to epistemological hierarchy."""
+    DEFINITIVE = 5  # Verified official data
+    STRONG = 4      # Multiple concordant sources
+    MODERATE = 3    # Single reliable source
+    WEAK = 2        # Inferred or partial
+    ABSENT = 1      # Not found
+    
+    @classmethod
+    def from_confidence(cls, conf: float) -> "EvidenceStrength":
+        """Derive strength from confidence score."""
+        if conf >= 0.95:
+            return cls.DEFINITIVE
+        elif conf >= 0.80:
+            return cls.STRONG
+        elif conf >= 0.60:
+            return cls.MODERATE
+        elif conf >= 0.30:
+            return cls.WEAK
+        else:
+            return cls.ABSENT
 
 
 class GapSeverity(Enum):
-    """Severidad de gaps con implicaciones para scoring."""
-    CRITICAL = "critical"     # Bloquea evaluación positiva
-    MAJOR = "major"           # Reduce score significativamente
-    MINOR = "minor"           # Nota pero no bloquea
-    COSMETIC = "cosmetic"     # Mejora deseable
+    """Gap severity with implications for scoring."""
+    CRITICAL = "CRITICAL"   # Blocks positive evaluation
+    MAJOR = "MAJOR"         # Significantly reduces score
+    MINOR = "MINOR"         # Noted but doesn't block
+    COSMETIC = "COSMETIC"   # Desirable improvement
 
 
 class ArgumentRole(Enum):
-    """Roles argumentativos (RST-inspired)."""
-    CLAIM = "claim"           # Afirmación principal
-    EVIDENCE = "evidence"     # Soporte factual
-    WARRANT = "warrant"       # Justificación del vínculo
-    QUALIFIER = "qualifier"   # Limitación/condición
-    REBUTTAL = "rebuttal"     # Contraargumento reconocido
-    BACKING = "backing"       # Soporte del warrant
+    """Toulmin argument roles."""
+    CLAIM = "claim"           # Main assertion
+    DATA = "data"             # Factual support (Ground)
+    WARRANT = "warrant"       # Justification of link
+    BACKING = "backing"       # Support for warrant
+    QUALIFIER = "qualifier"   # Limitation/condition
+    REBUTTAL = "rebuttal"     # Recognized counter-argument
+
+
+class ScoringModality(Enum):
+    """Scoring modalities aligned with Phase 3."""
+    TYPE_A = "TYPE_A"  # Quantitative (semantic)
+    TYPE_B = "TYPE_B"  # Bayesian
+    TYPE_C = "TYPE_C"  # Causal
+    TYPE_D = "TYPE_D"  # Financial
+    TYPE_E = "TYPE_E"  # Logical
+    TYPE_F = "TYPE_F"  # Mixed
+
+
+class NarrativeSection(Enum):
+    """Sections in doctoral answer."""
+    VERDICT = "verdict"
+    EVIDENCE = "evidence"
+    GAPS = "gaps"
+    CONFIDENCE = "confidence"
+    EPISTEMOLOGY = "epistemology"
+    LIMITATIONS = "limitations"
+    RECOMMENDATIONS = "recommendations"
+    METHODOLOGY_NOTE = "methodology_note"
 
 
 # =============================================================================
-# DATA STRUCTURES
+# DATA STRUCTURES (IMMUTABLE)
 # =============================================================================
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class ExpectedElement:
-    """Elemento esperado con semántica completa."""
-    type: str
-    required: bool
-    minimum: int
-    category: str  # 'quantitative', 'qualitative', 'relational'
-    weight: float  # Importancia relativa [0, 1]
-
+    """Element expected by contract with semantic weight."""
+    element_type: str
+    required:  bool
+    minimum_count: int
+    category:  Literal["quantitative", "qualitative", "relational"]
+    weight: float  # [0, 1] relative importance
+    
     @classmethod
-    def from_contract(cls, elem: Dict[str, Any]) -> ExpectedElement:
-        """Factory desde contrato."""
-        elem_type = elem.get("type", "")
-
-        # Inferir categoría desde tipo
-        quantitative_types = {
-            "indicadores_cuantitativos", "series_temporales_años",
-            "monto_presupuestario", "meta_cuantificada", "linea_base",
-            "porcentaje", "tasa", "indice"
-        }
-        relational_types = {
-            "logica_causal_explicita", "ruta_transmision",
-            "vinculo_causal", "dependencia_temporal"
-        }
-
-        if any(t in elem_type for t in quantitative_types):
+    def from_contract(cls, elem: Dict[str, Any]) -> "ExpectedElement":
+        """Factory from contract expected_elements."""
+        elem_type = elem. get("type", "unknown")
+        required = elem.get("required", False)
+        minimum = elem.get("minimum", 1 if required else 0)
+        
+        # Infer category from type
+        if any(t in elem_type for t in (
+            "indicadores_cuantitativos", "series_temporales",
+            "monto_presupuestario", "meta_cuantificada", "porcentaje"
+        )):
             category = "quantitative"
-        elif any(t in elem_type for t in relational_types):
+        elif any(t in elem_type for t in (
+            "logica_causal", "ruta_transmision", "vinculo", "dependencia"
+        )):
             category = "relational"
         else:
             category = "qualitative"
-
-        # Peso basado en required y minimum
-        base_weight = 0.8 if elem.get("required", False) else 0.4
-        min_val = elem.get("minimum", 0)
-        weight = min(1.0, base_weight + (min_val * 0.05))
-
+        
+        # Compute weight
+        base_weight = 0.8 if required else 0.4
+        weight = min(1.0, base_weight + (minimum * 0.05))
+        
         return cls(
-            type=elem_type,
-            required=elem.get("required", False),
-            minimum=elem.get("minimum", 1 if elem.get("required") else 0),
+            element_type=elem_type,
+            required=required,
+            minimum_count=minimum,
             category=category,
             weight=weight,
         )
 
 
-@dataclass
+@dataclass(frozen=True, slots=True)
 class EvidenceItem:
-    """Item de evidencia con metadatos ricos."""
+    """Single evidence item with provenance."""
     element_type: str
     value: Any
     confidence: float
     source_method: str
+    source_level: str  # N1-EMP, N2-INF, N3-AUD
     document_location: Optional[str] = None
-
-    # Computed properties
-    strength: EvidenceStrength = EvidenceStrength.MODERATE
-    is_quantitative: bool = False
-
-    def __post_init__(self):
-        """Compute derived properties."""
-        # Determinar fuerza
-        if self.confidence >= 0.9:
-            self.strength = EvidenceStrength.STRONG
-        elif self.confidence >= 0.7:
-            self.strength = EvidenceStrength.MODERATE
-        else:
-            self.strength = EvidenceStrength.WEAK
-
-        # Detectar si es cuantitativo
+    
+    @cached_property
+    def strength(self) -> EvidenceStrength: 
+        """Compute evidence strength."""
+        return EvidenceStrength.from_confidence(self.confidence)
+    
+    @cached_property
+    def is_quantitative(self) -> bool:
+        """Check if evidence is quantitative."""
         if isinstance(self.value, (int, float)):
-            self.is_quantitative = True
-        elif isinstance(self.value, str):
-            # Check for numeric patterns
-            self.is_quantitative = bool(re.search(r'\d+[.,]?\d*\s*%?', self.value))
+            return True
+        if isinstance(self.value, str):
+            return bool(re.search(r'\d+[.,]?\d*\s*%? ', self.value))
+        return False
 
 
-@dataclass
+@dataclass(frozen=True, slots=True)
 class EvidenceGap:
-    """Gap con análisis causal de implicaciones."""
+    """Gap with causal implication analysis."""
     element_type: str
-    expected: int
+    expected:  int
     found: int
     severity: GapSeverity
-    implication: str  # Por qué importa este gap
-    remediation: str  # Qué haría falta
-
+    implication:  str  # Why this gap matters
+    remediation: str  # What would fix it
+    
     @property
     def deficit(self) -> int:
-        return max(0, self.expected - self.found)
-
+        return max(0, self. expected - self.found)
+    
     @property
     def fulfillment_ratio(self) -> float:
         if self.expected == 0:
@@ -236,645 +468,549 @@ class EvidenceGap:
         return min(1.0, self.found / self.expected)
 
 
-@dataclass
-class ArgumentUnit:
-    """Unidad argumentativa con rol retórico."""
-    role: ArgumentRole
-    content: str
-    evidence_refs: List[str]  # IDs de evidencia que soportan
-    confidence: float
-
+@dataclass(frozen=True, slots=True)
+class ToulminArgument:
+    """Structured Toulmin argument."""
+    claim: str
+    data:  Tuple[str, ...]  # Evidence grounds
+    warrant: str           # Why data supports claim
+    backing:  Optional[str] = None
+    qualifier: Optional[str] = None
+    rebuttal: Optional[str] = None
+    strength: float = 0.5
+    
     def render(self) -> str:
-        """Render según rol."""
-        if self.role == ArgumentRole.CLAIM:
-            return self.content
-        elif self.role == ArgumentRole.EVIDENCE:
-            return f"- {self.content}"
-        elif self.role == ArgumentRole.QUALIFIER:
-            return f"*{self.content}*"
-        elif self.role == ArgumentRole.REBUTTAL:
-            return f"Sin embargo: {self.content}"
-        return self.content
+        """Render as prose."""
+        parts = [self.claim]
+        if self.qualifier:
+            parts. append(f" ({self.qualifier})")
+        parts.append(".")
+        
+        for ground in self.data[: 3]:  # Max 3 grounds
+            parts.append(f" {ground}.")
+        
+        if self.rebuttal:
+            parts.append(f" Sin embargo, {self. rebuttal}.")
+        
+        return "".join(parts)
 
 
-@dataclass
-class BayesianConfidenceResult:
-    """Resultado de inferencia bayesiana de confianza."""
+class ConfidenceInterval(NamedTuple):
+    """Calibrated confidence interval."""
+    lower: float
+    point: float
+    upper: float
+    
+    @property
+    def width(self) -> float:
+        return self.upper - self.lower
+
+
+@dataclass(frozen=True, slots=True)
+class BayesianConfidence:
+    """Bayesian/Dempster-Shafer confidence result."""
     point_estimate: float
-    belief: BeliefMass  # Grado de creencia
-    plausibility: PlausibilityMass  # Límite superior de creencia
-    uncertainty: float  # Ignorancia epistémica
-    interval_95: Tuple[float, float]
-
+    belief:  BeliefMass
+    plausibility: PlausibilityMass
+    uncertainty: float  # Epistemic uncertainty
+    interval_95: ConfidenceInterval
+    
     @property
     def is_calibrated(self) -> bool:
-        """Check if interval is well-calibrated."""
-        width = self.interval_95[1] - self.interval_95[0]
-        return width >= 0.1  # No over-confident
-
+        """Check if interval width indicates proper calibration."""
+        return self.interval_95.width >= 0.1  # Not overconfident
+    
     def to_label(self) -> str:
         """Human-readable label."""
         if self.point_estimate >= 0.85:
             return "ALTA"
         elif self.point_estimate >= 0.70:
             return "MEDIA-ALTA"
-        elif self.point_estimate >= 0.50:
+        elif self.point_estimate >= 0.55:
             return "MEDIA"
-        elif self.point_estimate >= 0.30:
+        elif self. point_estimate >= 0.35:
             return "BAJA"
         else:
             return "MUY BAJA"
 
 
-@dataclass
-class MethodEpistemology:
-    """v3.0: Fundamentos epistemológicos de un método."""
-    method_name: str
-    class_name: str
-    priority: int
-    role: str
-    paradigm: str
-    ontological_basis: str
-    epistemological_stance: str
-    theoretical_framework: List[str]
-    justification: str
-    method_type: str
-    algorithm: str
-    steps: List[Dict[str, Any]]
-    assumptions: List[str]
-    limitations: List[str]
-    complexity: str
-    output_structure: Dict[str, Any]
-    interpretation_guide: Dict[str, str]
-    actionable_insights: List[str]
-
-
-@dataclass
-class MethodologicalDepth:
-    """v3.0: Profundidad metodológica completa extraída del contrato."""
-    methods: List[MethodEpistemology]
-    total_methods: int
-    paradigms_used: List[str]
-    theoretical_references: List[str]
-    all_limitations: List[str]
-    all_assumptions: List[str]
-    actionable_insights_by_method: Dict[str, List[str]]
-
-
-@dataclass
-class CarverAnswer:
-    """Respuesta estructurada estilo Carver."""
-    # Core components
-    verdict: str  # Una oración. Directa. Sin escape.
-    evidence_statements: List[str]  # Hechos. Verificables.
-    gap_statements: List[str]  # Vacíos. Sin disculpas.
-
-    # Confidence
-    confidence_result: BayesianConfidenceResult
-    confidence_statement: str
-
-    # Metadata
-    question_text: str
-    dimension: Dimension
-    method_note: str
-
-    # Argumentative structure
-    argument_units: List[ArgumentUnit] = field(default_factory=list)
-
-    # v3.0: Enhanced doctoral components
-    epistemology_section: str = ""
-    limitations_section: str = ""
-    benchmark_comparison: str = ""
-    theoretical_references: List[str] = field(default_factory=list)
-
-    # Trace
-    synthesis_trace: Dict[str, Any] = field(default_factory=dict)
+@dataclass(frozen=True, slots=True)
+class Citation:
+    """Evidence citation with provenance."""
+    evidence_id: str
+    summary: str
+    source_method: str
+    confidence: float
+    page_reference: Optional[str] = None
     
-    # v3.0 Extensions (optional, backward compatible)
-    methodological_depth: Optional["MethodologicalDepth"] = None
-    limitations_statement: Optional[str] = None
-    theoretical_references: Optional[List[str]] = None
-    assumptions_statement: Optional[str] = None
-    actionable_insights: Optional[List[str]] = None
+    def render_inline(self) -> str:
+        """Render as inline citation."""
+        return f"[{self.summary[: 50]}]"
 
 
-@dataclass(frozen=True)
-class MethodEpistemology:
+@dataclass(frozen=True, slots=True)
+class MethodEpistemology: 
     """Epistemological foundation of a method."""
-    paradigm: str
-    ontological_basis: str
-    epistemological_stance: str
-    theoretical_framework: List[str]
-    justification: str
-
-
-@dataclass(frozen=True)
-class TechnicalApproach:
-    """Technical approach and implementation details."""
-    method_type: str
-    algorithm: str
-    steps: List[Dict[str, Any]]
-    assumptions: List[str]
-    limitations: List[str]
-    complexity: str
-
-
-@dataclass(frozen=True)
-class OutputInterpretation:
-    """Output structure and interpretation guidance."""
-    output_structure: Dict[str, str]
-    interpretation_guide: Dict[str, str]
-    actionable_insights: List[str]
-
-
-@dataclass(frozen=True)
-class MethodDepthEntry:
-    """Full methodological depth for a single method."""
     method_name: str
     class_name: str
     priority: int
     role: str
-    epistemology: MethodEpistemology
-    technical_approach: TechnicalApproach
-    output_interpretation: OutputInterpretation
+    paradigm: str
+    theoretical_framework:  Tuple[str, ...]
+    justification: str
+    limitations:  Tuple[str, ...]
+    assumptions: Tuple[str, ...]
 
 
-@dataclass(frozen=True)
-class MethodCombinationLogic:
-    """Logic for combining multiple methods."""
-    dependency_graph: Dict[str, List[str]]
-    trade_offs: List[str]
-    evidence_fusion_approach: str
-
-
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class MethodologicalDepth:
-    """Complete methodological depth from contract v3."""
-    methods: List[MethodDepthEntry]
-    combination_logic: Optional[MethodCombinationLogic]
-    extraction_timestamp: str
+    """Complete methodological depth from contract v4."""
+    methods:  Tuple[MethodEpistemology, ...]
+    total_methods: int
+    paradigms_used: FrozenSet[str]
+    theoretical_references: FrozenSet[str]
+    all_limitations: FrozenSet[str]
+    all_assumptions: FrozenSet[str]
 
 
 # =============================================================================
-# ENHANCED CONTRACT INTERPRETER (v3.0 - FULL EXTRACTION)
+# PROTOCOL DEFINITIONS
 # =============================================================================
 
-class EnhancedContractInterpreter:
-    """
-    v3.0: Extrae TODA la semántica del contrato v3 para síntesis doctoral.
+@runtime_checkable
+class NexusOutputProtocol(Protocol):
+    """Protocol for EvidenceNexus output compatibility."""
+    direct_answer: str
+    overall_confidence: float
+    calibrated_interval:  Tuple[float, float]
+    gaps:  List[str]
+    primary_citations: List[Any]
+    supporting_citations: List[Any]
+    evidence_graph_hash: str
+    synthesis_trace: Dict[str, Any]
 
-    A diferencia del original que solo extraía metadata básica,
-    este intérprete captura:
-    - Fundamentos epistemológicos de cada método
-    - Frameworks teóricos y referencias académicas
-    - Interpretación de outputs con actionable insights
-    - Limitaciones metodológicas para caveats
-    - Ejemplos concretos como benchmarks
-    """
 
-    # Mapeo de dimensiones a requisitos epistemológicos
-    DIMENSION_REQUIREMENTS = {
+# =============================================================================
+# TYPED DICTS FOR OUTPUT CONTRACTS
+# =============================================================================
+
+class ScoringMetadata(TypedDict):
+    """Scoring metadata for Phase 3 compatibility."""
+    modality: str
+    threshold: float
+    confidence_interval: List[float]
+    evidence_count: int
+    gap_count: int
+    critical_gaps: int
+
+
+class DoctoralAnswerDict(TypedDict):
+    """Output contract for Phase 3."""
+    question_id: str
+    score: float
+    quality_level: str
+    human_answer: str
+    scoring_metadata: ScoringMetadata
+    evidence_summary: Dict[str, int]
+    gaps:  List[Dict[str, Any]]
+    synthesis_timestamp: str
+    carver_version: str
+
+
+# =============================================================================
+# CONTRACT INTERPRETER
+# =============================================================================
+
+class ContractInterpreter:
+    """
+    Extracts full semantic depth from v4 contracts. 
+    
+    Responsible for:
+    - Dimension identification
+    - Expected elements extraction
+    - Methodological depth parsing
+    - Human answer structure interpretation
+    """
+    
+    # Dimension-specific evaluation requirements
+    DIMENSION_REQUIREMENTS:  ClassVar[Dict[Dimension, Dict[str, Any]]] = {
         Dimension.D1_INSUMOS: {
             "primary_need": "datos cuantitativos verificables",
             "evidence_type": "quantitative",
             "minimum_sources": 2,
-            "temporal_requirement": True,
         },
         Dimension.D2_ACTIVIDADES: {
             "primary_need": "especificidad operativa",
             "evidence_type": "qualitative",
-            "minimum_sources": 1,
-            "temporal_requirement": False,
+            "minimum_sources":  1,
         },
         Dimension.D3_PRODUCTOS: {
-            "primary_need": "proporcionalidad meta-problema",
+            "primary_need":  "proporcionalidad meta-problema",
             "evidence_type": "mixed",
             "minimum_sources": 1,
-            "temporal_requirement": True,
         },
         Dimension.D4_RESULTADOS: {
             "primary_need": "indicadores medibles",
             "evidence_type": "quantitative",
-            "minimum_sources": 1,
-            "temporal_requirement": True,
+            "minimum_sources":  1,
         },
         Dimension.D5_IMPACTOS: {
             "primary_need": "teoría de cambio",
             "evidence_type": "relational",
             "minimum_sources": 1,
-            "temporal_requirement": True,
         },
-        Dimension.D6_CAUSALIDAD: {
+        Dimension. D6_CAUSALIDAD: {
             "primary_need": "lógica causal explícita",
-            "evidence_type": "relational",
+            "evidence_type":  "relational",
             "minimum_sources": 1,
-            "temporal_requirement": False,
         },
     }
-
-    @classmethod
-    def extract_dimension(cls, contract: Dict) -> Dimension:
-        """Extrae dimensión con fallback inteligente."""
-        identity = contract.get("identity", {})
-        dim_id = identity.get("dimension_id", "")
-
-        # Try direct match
-        for dim in Dimension:
-            if dim.value == dim_id:
-                return dim
-
-        # Fallback: infer from base_slot
-        base_slot = identity.get("base_slot", "")
-        if base_slot:
-            try:
-                dim_num = int(base_slot[1])  # "D1-Q1" -> 1
-                return list(Dimension)[dim_num - 1]
-            except (IndexError, ValueError):
-                pass
-
-        return Dimension.D1_INSUMOS  # Default
-
-    @classmethod
-    def extract_expected_elements(cls, contract: Dict) -> List[ExpectedElement]:
-        """Extrae elementos con semántica enriquecida."""
-        question_context = contract.get("question_context", {})
-        raw_elements = question_context.get("expected_elements", [])
-
-        return [ExpectedElement.from_contract(e) for e in raw_elements]
-
-    @classmethod
-    def extract_question_intent(cls, contract: Dict) -> Dict[str, Any]:
-        """Extrae intención profunda de la pregunta."""
-        question_context = contract.get("question_context", {})
-        question_text = question_context.get("question_text", "")
-
-        # Analizar tipo de pregunta
-        q_lower = question_text.lower()
-
-        if any(q in q_lower for q in ["¿cuánto", "¿cuántos", "qué porcentaje"]):
-            question_type = "quantitative"
-        elif any(q in q_lower for q in ["¿existe", "¿hay", "¿tiene", "¿incluye"]):
-            question_type = "existence"
-        elif any(q in q_lower for q in ["¿cómo", "¿de qué manera"]):
-            question_type = "process"
-        elif any(q in q_lower for q in ["¿por qué", "¿cuál es la razón"]):
-            question_type = "causal"
-        else:
-            question_type = "descriptive"
-
-        # Extraer tema principal (policy area hint)
-        policy_area = contract.get("identity", {}).get("policy_area_id", "")
-
-        return {
-            "question_text": question_text,
-            "question_type": question_type,
-            "policy_area": policy_area,
-            "requires_numeric": question_type == "quantitative",
-            "requires_causal_logic": question_type in ("causal", "process"),
-        }
-
-    @classmethod
-    def get_dimension_theory(cls, dimension: Dimension) -> Dict[str, Any]:
-        """Obtiene teoría epistemológica de la dimensión."""
-        return cls.DIMENSION_REQUIREMENTS.get(dimension, {})
-
-    @classmethod
-    def extract_method_metadata(cls, contract: Dict) -> Dict[str, Any]:
-        """Extrae metadata básica de métodos (legacy compatibility)."""
-        method_binding = contract.get("method_binding", {})
-
-        return {
-            "method_count": method_binding.get("method_count", 0),
-            "orchestration_mode": method_binding.get("orchestration_mode", "unknown"),
-            "methods": [
-                m.get("method_name", "unknown")
-                for m in method_binding.get("methods", [])
-            ],
-        }
     
     @classmethod
-    def extract_methodological_depth(cls, contract: Dict) -> Optional[MethodologicalDepth]:
-        """
-        Extrae profundidad metodológica completa del contrato v3.
+    def extract_dimension(cls, contract:  Dict[str, Any]) -> Dimension:
+        """Extract dimension from contract identity."""
+        identity = contract.get("identity", {})
+        dim_id = identity. get("dimension_id", "")
         
-        Extrae:
-        - Fundamentos epistemológicos de cada método
-        - Enfoque técnico y algoritmos
-        - Guías de interpretación de salidas
-        - Lógica de combinación de métodos
+        # Try direct match
+        try:
+            return Dimension. from_id(dim_id)
+        except (KeyError, ValueError):
+            pass
         
-        Returns:
-            MethodologicalDepth si el contrato v3 tiene methodological_depth,
-            None si es contrato v2 o falta el campo (backward compatible)
-        """
+        # Fallback:  infer from base_slot (e.g., "D1-Q1" -> D1)
+        base_slot = identity. get("base_slot", "")
+        if base_slot and "-" in base_slot:
+            dim_num = base_slot.split("-")[0].replace("D", "")
+            try:
+                dim_idx = int(dim_num) - 1
+                return list(Dimension)[dim_idx]
+            except (ValueError, IndexError):
+                pass
+        
+        return Dimension.D1_INSUMOS  # Default
+    
+    @classmethod
+    def extract_question_id(cls, contract: Dict[str, Any]) -> str:
+        """Extract question ID."""
+        identity = contract.get("identity", {})
+        return identity.get("question_id", identity.get("base_slot", "UNKNOWN"))
+    
+    @classmethod
+    def extract_policy_area(cls, contract: Dict[str, Any]) -> str:
+        """Extract policy area ID."""
+        identity = contract.get("identity", {})
+        return identity.get("policy_area_id", "PA00")
+    
+    @classmethod
+    def extract_contract_type(cls, contract: Dict[str, Any]) -> str:
+        """Extract contract type (TYPE_A through TYPE_E)."""
+        identity = contract.get("identity", {})
+        return identity.get("contract_type", "TYPE_A")
+    
+    @classmethod
+    def extract_expected_elements(
+        cls, contract:  Dict[str, Any]
+    ) -> Tuple[ExpectedElement, ...]: 
+        """Extract expected elements with semantic enrichment."""
+        question_context = contract.get("question_context", {})
+        raw_elements = question_context.get("expected_elements", [])
+        
+        return tuple(
+            ExpectedElement. from_contract(elem)
+            for elem in raw_elements
+        )
+    
+    @classmethod
+    def extract_question_text(cls, contract:  Dict[str, Any]) -> str:
+        """Extract question text."""
+        question_context = contract. get("question_context", {})
+        return question_context. get("question_text", "")
+    
+    @classmethod
+    def extract_scoring_modality(cls, contract: Dict[str, Any]) -> ScoringModality: 
+        """Extract scoring modality from contract type."""
+        contract_type = cls. extract_contract_type(contract)
+        try:
+            return ScoringModality[contract_type]
+        except KeyError: 
+            return ScoringModality.TYPE_A
+    
+    @classmethod
+    def extract_methodological_depth(
+        cls, contract:  Dict[str, Any]
+    ) -> Optional[MethodologicalDepth]:
+        """Extract full methodological depth from method_binding."""
         method_binding = contract.get("method_binding", {})
-        methodological_depth_raw = method_binding.get("methodological_depth")
+        depth_raw = method_binding. get("methodological_depth")
         
-        if not methodological_depth_raw:
+        if not depth_raw: 
+            # Try human_answer_structure fallback
+            human_answer = contract.get("human_answer_structure", {})
+            depth_raw = human_answer.get("methodological_depth")
+        
+        if not depth_raw: 
             return None
         
-        methods_list = []
-        methods_raw = methodological_depth_raw.get("methods", [])
+        methods_raw = depth_raw.get("methods", [])
+        methods:  List[MethodEpistemology] = []
+        all_paradigms:  Set[str] = set()
+        all_refs: Set[str] = set()
+        all_limitations: Set[str] = set()
+        all_assumptions: Set[str] = set()
         
-        for method_raw in methods_raw:
-            # Extract epistemology
-            epi_raw = method_raw.get("epistemological_foundation", {})
-            epistemology = MethodEpistemology(
-                paradigm=epi_raw.get("paradigm", ""),
-                ontological_basis=epi_raw.get("ontological_basis", ""),
-                epistemological_stance=epi_raw.get("epistemological_stance", ""),
-                theoretical_framework=epi_raw.get("theoretical_framework", []),
-                justification=epi_raw.get("justification", "")
-            )
+        for m in methods_raw: 
+            epi = m.get("epistemological_foundation", {})
+            tech = m.get("technical_approach", {})
             
-            # Extract technical approach
-            tech_raw = method_raw.get("technical_approach", {})
-            technical_approach = TechnicalApproach(
-                method_type=tech_raw.get("method_type", ""),
-                algorithm=tech_raw.get("algorithm", ""),
-                steps=tech_raw.get("steps", []),
-                assumptions=tech_raw.get("assumptions", []),
-                limitations=tech_raw.get("limitations", []),
-                complexity=tech_raw.get("complexity", "")
-            )
-            
-            # Extract output interpretation
-            out_raw = method_raw.get("output_interpretation", {})
-            output_interpretation = OutputInterpretation(
-                output_structure=out_raw.get("output_structure", {}),
-                interpretation_guide=out_raw.get("interpretation_guide", {}),
-                actionable_insights=out_raw.get("actionable_insights", [])
-            )
-            
-            # Create method depth entry
-            method_entry = MethodDepthEntry(
-                method_name=method_raw.get("method_name", ""),
-                class_name=method_raw.get("class_name", ""),
-                priority=method_raw.get("priority", 0),
-                role=method_raw.get("role", ""),
-                epistemology=epistemology,
-                technical_approach=technical_approach,
-                output_interpretation=output_interpretation
-            )
-            methods_list.append(method_entry)
-        
-        # Extract combination logic if present
-        combination_logic = None
-        combo_raw = methodological_depth_raw.get("method_combination_logic")
-        if combo_raw:
-            combination_logic = MethodCombinationLogic(
-                dependency_graph=combo_raw.get("dependency_graph", {}),
-                trade_offs=combo_raw.get("trade_offs", []),
-                evidence_fusion_approach=combo_raw.get("evidence_fusion_approach", "")
-            )
-        
-        # Create methodological depth
-        return MethodologicalDepth(
-            methods=methods_list,
-            combination_logic=combination_logic,
-            extraction_timestamp=datetime.now(timezone.utc).isoformat()
-        )
-
-    @classmethod
-    def extract_methodological_depth(cls, contract: Dict) -> MethodologicalDepth:
-        """
-        v3.0: Extrae la profundidad metodológica COMPLETA de human_answer_structure.
-
-        Returns:
-            MethodologicalDepth con todos los métodos y sus fundamentos
-        """
-        human_answer = contract.get("human_answer_structure", {})
-        method_binding = contract.get("method_binding", {})
-
-        # Buscar methodological_depth en diferentes lugares
-        methodological_depth = (
-            method_binding.get("methodological_depth", {}) or
-            human_answer.get("methodological_depth", {})
-        )
-
-        methods_data = methodological_depth.get("methods", [])
-
-        extracted_methods: List[MethodEpistemology] = []
-        all_paradigms: set[str] = set()
-        all_references: List[str] = []
-        all_limitations: List[str] = []
-        all_assumptions: List[str] = []
-        insights_by_method: Dict[str, List[str]] = {}
-
-        for method in methods_data:
-            epistemology = method.get("epistemological_foundation", {})
-            technical = method.get("technical_approach", {})
-            interpretation = method.get("output_interpretation", {})
-
-            # Collect paradigm
-            paradigm = epistemology.get("paradigm", "")
+            paradigm = epi. get("paradigm", "")
             if paradigm:
-                all_paradigms.add(paradigm)
-
-            # Collect theoretical references
-            frameworks = epistemology.get("theoretical_framework", [])
-            all_references.extend(frameworks)
-
-            # Collect limitations
-            limitations = technical.get("limitations", [])
-            all_limitations.extend(limitations)
-
-            # Collect assumptions
-            assumptions = technical.get("assumptions", [])
-            all_assumptions.extend(assumptions)
-
-            # Collect actionable insights
-            insights = interpretation.get("actionable_insights", [])
-            method_name = method.get("method_name", "unknown")
-            insights_by_method[method_name] = insights
-
-            # Build MethodEpistemology
-            extracted_methods.append(MethodEpistemology(
-                method_name=method_name,
-                class_name=method.get("class_name", ""),
-                priority=method.get("priority", 0),
-                role=method.get("role", ""),
+                all_paradigms. add(paradigm)
+            
+            frameworks = epi.get("theoretical_framework", [])
+            all_refs.update(frameworks)
+            
+            limitations = tech.get("limitations", [])
+            all_limitations.update(limitations)
+            
+            assumptions = tech. get("assumptions", [])
+            all_assumptions.update(assumptions)
+            
+            methods.append(MethodEpistemology(
+                method_name=m.get("method_name", ""),
+                class_name=m.get("class_name", ""),
+                priority=m.get("priority", 99),
+                role=m.get("role", ""),
                 paradigm=paradigm,
-                ontological_basis=epistemology.get("ontological_basis", ""),
-                epistemological_stance=epistemology.get("epistemological_stance", ""),
-                theoretical_framework=frameworks,
-                justification=epistemology.get("justification", ""),
-                method_type=technical.get("method_type", ""),
-                algorithm=technical.get("algorithm", ""),
-                steps=technical.get("steps", []),
-                assumptions=assumptions,
-                limitations=limitations,
-                complexity=technical.get("complexity", ""),
-                output_structure=interpretation.get("output_structure", {}),
-                interpretation_guide=interpretation.get("interpretation_guide", {}),
-                actionable_insights=insights,
+                theoretical_framework=tuple(frameworks),
+                justification=epi.get("justification", ""),
+                limitations=tuple(limitations),
+                assumptions=tuple(assumptions),
             ))
-
+        
         return MethodologicalDepth(
-            methods=extracted_methods,
-            total_methods=len(extracted_methods),
-            paradigms_used=list(all_paradigms),
-            theoretical_references=list(set(all_references)),
-            all_limitations=list(set(all_limitations)),
-            all_assumptions=list(set(all_assumptions)),
-            actionable_insights_by_method=insights_by_method,
+            methods=tuple(methods),
+            total_methods=len(methods),
+            paradigms_used=frozenset(all_paradigms),
+            theoretical_references=frozenset(all_refs),
+            all_limitations=frozenset(all_limitations),
+            all_assumptions=frozenset(all_assumptions),
         )
-
+    
     @classmethod
-    def extract_assembly_flow(cls, contract: Dict) -> Dict[str, str]:
-        """v3.0: Extrae el flujo de ensamblaje de 5 pasos."""
-        human_answer = contract.get("human_answer_structure", {})
-        return human_answer.get("assembly_flow", {})
-
+    def extract_human_answer_sections(
+        cls, contract: Dict[str, Any]
+    ) -> Dict[str, Any]: 
+        """Extract human answer structure sections."""
+        human_answer = contract. get("human_answer_structure", {})
+        return human_answer.get("sections", {})
+    
     @classmethod
-    def extract_evidence_schema(cls, contract: Dict) -> Dict[str, Any]:
-        """v3.0: Extrae el schema completo de estructura de evidencia."""
-        human_answer = contract.get("human_answer_structure", {})
-        return human_answer.get("evidence_structure_schema", {})
+    def get_dimension_requirements(cls, dimension: Dimension) -> Dict[str, Any]:
+        """Get evaluation requirements for dimension."""
+        return cls.DIMENSION_REQUIREMENTS. get(dimension, {})
 
-    @classmethod
-    def extract_concrete_example(cls, contract: Dict) -> Dict[str, Any]:
-        """v3.0: Extrae el ejemplo concreto como benchmark."""
-        human_answer = contract.get("human_answer_structure", {})
-        return human_answer.get("concrete_example", {})
 
-    @classmethod
-    def extract_template_variables(cls, contract: Dict) -> Dict[str, str]:
-        """v3.0: Extrae las variables disponibles para templates."""
-        human_answer = contract.get("human_answer_structure", {})
-        bindings = human_answer.get("template_variable_bindings", {})
-        return bindings.get("variables", {})
+# =============================================================================
+# NEXUS OUTPUT ADAPTER
+# =============================================================================
 
+class NexusOutputAdapter: 
+    """
+    Adapts EvidenceNexus output to Carver input format.
+    
+    Transforms: 
+    - SynthesizedAnswer → EvidenceItem list
+    - Citations → Toulmin grounds
+    - Validation → Gap analysis input
+    """
+    
     @classmethod
-    def extract_validation_mapping(cls, contract: Dict) -> Dict[str, Any]:
-        """v3.0: Extrae el mapping de validación esperado → encontrado."""
-        human_answer = contract.get("human_answer_structure", {})
-        return human_answer.get("validation_against_expected_elements", {})
-
+    def extract_evidence_items(
+        cls,
+        nexus_output: Dict[str, Any],
+    ) -> Tuple[EvidenceItem, ...]:
+        """Extract evidence items from Nexus output."""
+        items:  List[EvidenceItem] = []
+        
+        # Extract from evidence dict (legacy format)
+        evidence = nexus_output. get("evidence", {})
+        elements = evidence.get("elements", [])
+        
+        for elem in elements:
+            if isinstance(elem, dict):
+                items.append(EvidenceItem(
+                    element_type=elem.get("type", "unknown"),
+                    value=elem.get("value", elem.get("description", "")),
+                    confidence=float(elem.get("confidence", 0.5)),
+                    source_method=elem. get("source_method", "unknown"),
+                    source_level=elem. get("source_level", "N1-EMP"),
+                    document_location=elem.get("page", elem.get("location")),
+                ))
+        
+        # Extract from synthesized_answer if available
+        synth = nexus_output. get("synthesized_answer", {})
+        if isinstance(synth, dict):
+            for citation in synth.get("primary_citations", []):
+                if isinstance(citation, dict):
+                    items.append(EvidenceItem(
+                        element_type=citation.get("evidence_type", "citation"),
+                        value=citation.get("summary", ""),
+                        confidence=float(citation.get("confidence", 0.7)),
+                        source_method=citation. get("source_method", "nexus"),
+                        source_level="N1-EMP",
+                    ))
+        
+        return tuple(items)
+    
     @classmethod
-    def extract_usage_notes(cls, contract: Dict) -> Dict[str, str]:
-        """v3.0: Extrae notas de uso para diferentes roles."""
-        human_answer = contract.get("human_answer_structure", {})
-        return human_answer.get("usage_notes", {})
-
+    def extract_citations(
+        cls,
+        nexus_output: Dict[str, Any],
+    ) -> Tuple[Citation, ...]: 
+        """Extract citations from Nexus output."""
+        citations: List[Citation] = []
+        
+        synth = nexus_output.get("synthesized_answer", {})
+        if isinstance(synth, dict):
+            for cit in synth. get("primary_citations", []):
+                if isinstance(cit, dict):
+                    citations.append(Citation(
+                        evidence_id=cit.get("evidence_id", ""),
+                        summary=cit.get("summary", ""),
+                        source_method=cit.get("source_method", ""),
+                        confidence=float(cit. get("confidence", 0.5)),
+                        page_reference=cit.get("page", None),
+                    ))
+            
+            for cit in synth.get("supporting_citations", []):
+                if isinstance(cit, dict):
+                    citations.append(Citation(
+                        evidence_id=cit.get("evidence_id", ""),
+                        summary=cit.get("summary", ""),
+                        source_method=cit. get("source_method", ""),
+                        confidence=float(cit.get("confidence", 0.5)),
+                        page_reference=cit.get("page", None),
+                    ))
+        
+        return tuple(citations)
+    
     @classmethod
-    def extract_evidence_graph_structure(cls, contract: Dict) -> Dict[str, Any]:
-        """v3.0: Extrae la estructura del grafo de evidencia post-Nexus."""
-        human_answer = contract.get("human_answer_structure", {})
-        return human_answer.get("evidence_structure_post_nexus", {})
+    def extract_overall_confidence(cls, nexus_output: Dict[str, Any]) -> float:
+        """Extract overall confidence from Nexus output."""
+        synth = nexus_output. get("synthesized_answer", {})
+        if isinstance(synth, dict):
+            return float(synth.get("overall_confidence", 0.5))
+        
+        validation = nexus_output.get("validation", {})
+        if isinstance(validation, dict):
+            return float(validation.get("consistency_score", 0.5))
+        
+        return 0.5
+    
+    @classmethod
+    def extract_gaps_from_nexus(cls, nexus_output: Dict[str, Any]) -> List[str]:
+        """Extract gap descriptions from Nexus output."""
+        synth = nexus_output.get("synthesized_answer", {})
+        if isinstance(synth, dict):
+            return synth.get("gaps", [])
+        return []
 
 
 # =============================================================================
 # EVIDENCE ANALYZER
 # =============================================================================
 
-class EvidenceAnalyzer:
+class EvidenceAnalyzer: 
     """
-    Análisis profundo de evidencia con construcción de grafo causal.
+    Deep analysis of evidence with causal graph construction.
+    
+    Implements:
+    - Element counting by type
+    - Strength distribution analysis
+    - Corroboration detection
+    - Contradiction detection
     """
-
+    
     @staticmethod
-    def extract_items(evidence: Dict[str, Any]) -> List[EvidenceItem]:
-        """Extrae items de evidencia estructurados."""
-        items = []
-
-        for elem in evidence.get("elements", []):
-            if isinstance(elem, dict):
-                items.append(EvidenceItem(
-                    element_type=elem.get("type", "unknown"),
-                    value=elem.get("value", elem.get("description", "")),
-                    confidence=float(elem.get("confidence", 0.5)),
-                    source_method=elem.get("source_method", "unknown"),
-                    document_location=elem.get("page", elem.get("location")),
-                ))
-
-        return items
-
-    @staticmethod
-    def count_by_type(items: List[EvidenceItem]) -> Dict[str, int]:
-        """Cuenta items por tipo."""
+    def count_by_type(items: Sequence[EvidenceItem]) -> Dict[str, int]:
+        """Count items by element type."""
         counts: Dict[str, int] = defaultdict(int)
         for item in items:
             counts[item.element_type] += 1
         return dict(counts)
-
+    
     @staticmethod
-    def group_by_type(items: List[EvidenceItem]) -> Dict[str, List[EvidenceItem]]:
-        """Agrupa items por tipo."""
+    def group_by_type(
+        items: Sequence[EvidenceItem],
+    ) -> Dict[str, List[EvidenceItem]]: 
+        """Group items by element type."""
         groups: Dict[str, List[EvidenceItem]] = defaultdict(list)
         for item in items:
             groups[item.element_type].append(item)
         return dict(groups)
-
+    
     @staticmethod
-    def analyze_strength_distribution(items: List[EvidenceItem]) -> Dict[str, int]:
-        """Analiza distribución de fuerza de evidencia."""
+    def analyze_strength_distribution(
+        items: Sequence[EvidenceItem],
+    ) -> Dict[str, int]:
+        """Analyze distribution of evidence strength."""
         distribution: Dict[str, int] = defaultdict(int)
-        for item in items:
-            distribution[item.strength.value] += 1
+        for item in items: 
+            distribution[item.strength. name] += 1
         return dict(distribution)
-
+    
     @staticmethod
-    def find_corroborations(items: List[EvidenceItem]) -> List[Tuple[EvidenceItem, EvidenceItem]]:
-        """
-        Encuentra pares de evidencia que se corroboran.
-
-        Corroboración: mismo tipo, diferentes fuentes, valores consistentes.
-        """
-        corroborations = []
+    def find_corroborations(
+        items:  Sequence[EvidenceItem],
+    ) -> List[Tuple[EvidenceItem, EvidenceItem]]: 
+        """Find pairs of corroborating evidence."""
+        corroborations: List[Tuple[EvidenceItem, EvidenceItem]] = []
         groups = EvidenceAnalyzer.group_by_type(items)
-
+        
         for elem_type, group_items in groups.items():
             if len(group_items) < 2:
                 continue
-
-            # Check pairs
+            
             for i, item1 in enumerate(group_items):
                 for item2 in group_items[i+1:]:
                     if item1.source_method != item2.source_method:
-                        # Different sources = potential corroboration
-                        corroborations.append((item1, item2))
-
+                        corroborations. append((item1, item2))
+        
         return corroborations
-
+    
     @staticmethod
-    def find_contradictions(items: List[EvidenceItem]) -> List[Tuple[EvidenceItem, EvidenceItem, str]]:
-        """
-        Encuentra contradicciones en evidencia.
-
-        Returns: List of (item1, item2, explanation)
-        """
-        contradictions = []
+    def find_contradictions(
+        items: Sequence[EvidenceItem],
+    ) -> List[Tuple[EvidenceItem, EvidenceItem, str]]:
+        """Find contradicting evidence pairs."""
+        contradictions: List[Tuple[EvidenceItem, EvidenceItem, str]] = []
         groups = EvidenceAnalyzer.group_by_type(items)
-
+        
         for elem_type, group_items in groups.items():
             if len(group_items) < 2:
                 continue
-
-            # Check for numeric contradictions
+            
             numeric_items = [i for i in group_items if i.is_quantitative]
             if len(numeric_items) >= 2:
-                values = []
+                values:  List[Tuple[EvidenceItem, float]] = []
                 for item in numeric_items:
                     try:
-                        # Extract numeric value
-                        val_str = str(item.value)
+                        val_str = str(item. value)
                         nums = re.findall(r'[\d.]+', val_str)
                         if nums:
                             values.append((item, float(nums[0])))
                     except (ValueError, TypeError, IndexError):
-                        pass
-
-                if len(values) >= 2:
-                    # Check for significant divergence (>50% difference)
-                    for i, (item1, val1) in enumerate(values):
-                        for item2, val2 in values[i+1:]:
-                            if val1 > 0 and abs(val1 - val2) / val1 > 0.5:
-                                contradictions.append((
-                                    item1, item2,
-                                    f"Divergencia numérica: {val1} vs {val2}"
-                                ))
-
+                        continue
+                
+                for i, (item1, val1) in enumerate(values):
+                    for item2, val2 in values[i+1:]:
+                        if val1 > 0 and abs(val1 - val2) / val1 > 0.5:
+                            contradictions.append((
+                                item1, item2,
+                                f"Divergencia numérica: {val1} vs {val2}"
+                            ))
+        
         return contradictions
 
 
@@ -884,137 +1020,113 @@ class EvidenceAnalyzer:
 
 class GapAnalyzer:
     """
-    Análisis multi-dimensional de gaps con implicaciones causales.
+    Multi-dimensional gap analysis with causal implications.
     """
-
-    # Implicaciones por tipo de elemento faltante
-    GAP_IMPLICATIONS = {
+    
+    # Implications by element type
+    GAP_IMPLICATIONS:  ClassVar[Dict[str, Tuple[str, str]]] = {
         "fuentes_oficiales": (
-            "Sin fuentes oficiales, la credibilidad del diagnóstico es cuestionable.",
+            "Sin fuentes oficiales, la credibilidad es cuestionable.",
             "Citar fuentes como DANE, Medicina Legal, ICBF."
         ),
         "indicadores_cuantitativos": (
             "Sin indicadores numéricos, no hay línea base medible.",
             "Incluir tasas, porcentajes o valores absolutos con fuente."
         ),
-        "series_temporales_años": (
+        "series_temporales_años":  (
             "Sin series temporales, no se puede evaluar tendencia.",
             "Presentar datos de al menos 3 años consecutivos."
         ),
-        "cobertura_territorial_especificada": (
-            "Sin especificación territorial, el alcance es ambiguo.",
-            "Definir si es municipal, departamental o por zonas."
-        ),
         "logica_causal_explicita": (
             "Sin lógica causal, la teoría de cambio es invisible.",
-            "Explicitar cadena: insumo → actividad → producto → resultado."
+            "Explicitar cadena:  insumo → actividad → producto → resultado."
         ),
         "poblacion_objetivo_definida": (
             "Sin población objetivo, no hay focalización.",
             "Definir grupo beneficiario con características específicas."
         ),
-        "instrumento_especificado": (
-            "Sin instrumentos, las actividades son abstractas.",
-            "Nombrar programas, proyectos o mecanismos concretos."
-        ),
         "meta_cuantificada": (
             "Sin metas cuantificadas, no hay accountability.",
             "Establecer valores objetivo con plazo."
         ),
-        "linea_base_resultado": (
-            "Sin línea base, no se puede medir avance.",
-            "Documentar situación inicial con fecha."
-        ),
-        "impacto_definido": (
-            "Sin impactos definidos, el propósito final es difuso.",
-            "Describir cambios de largo plazo esperados."
-        ),
-        "sistema_monitoreo": (
+        "sistema_monitoreo":  (
             "Sin sistema de monitoreo, no hay seguimiento.",
             "Especificar indicadores, frecuencia y responsables."
         ),
     }
-
+    
     @classmethod
     def identify_gaps(
         cls,
-        expected: List[ExpectedElement],
+        expected:  Sequence[ExpectedElement],
         found_counts: Dict[str, int],
-        dimension: Dimension,
-    ) -> List[EvidenceGap]:
-        """
-        Identifica gaps con severidad calibrada por dimensión.
-        """
-        gaps = []
-        dim_theory = EnhancedContractInterpreter.get_dimension_theory(dimension)
-
+        dimension:  Dimension,
+    ) -> Tuple[EvidenceGap, ...]: 
+        """Identify gaps with severity calibrated by dimension."""
+        gaps: List[EvidenceGap] = []
+        dim_req = ContractInterpreter. get_dimension_requirements(dimension)
+        
         for elem in expected:
-            found = found_counts.get(elem.type, 0)
-
-            if found >= elem.minimum:
+            found = found_counts.get(elem.element_type, 0)
+            
+            if found >= elem.minimum_count:
                 continue  # No gap
-
-            # Determinar severidad
-            severity = cls._compute_severity(elem, found, dim_theory)
-
-            # Obtener implicación y remediación
-            implication, remediation = cls.GAP_IMPLICATIONS.get(
-                elem.type,
-                (f"Falta {elem.type}.", f"Agregar {elem.type}.")
+            
+            severity = cls._compute_severity(elem, found, dim_req)
+            implication, remediation = cls. GAP_IMPLICATIONS. get(
+                elem.element_type,
+                (f"Falta {elem.element_type}.", f"Agregar {elem.element_type}.")
             )
-
+            
             gaps.append(EvidenceGap(
-                element_type=elem.type,
-                expected=elem.minimum,
+                element_type=elem.element_type,
+                expected=elem. minimum_count,
                 found=found,
                 severity=severity,
                 implication=implication,
                 remediation=remediation,
             ))
-
+        
         # Sort by severity
         severity_order = {
-            GapSeverity.CRITICAL: 0,
-            GapSeverity.MAJOR: 1,
+            GapSeverity. CRITICAL: 0,
+            GapSeverity. MAJOR: 1,
             GapSeverity.MINOR: 2,
             GapSeverity.COSMETIC: 3,
         }
         gaps.sort(key=lambda g: severity_order[g.severity])
-
-        return gaps
-
+        
+        return tuple(gaps)
+    
     @classmethod
     def _compute_severity(
         cls,
         elem: ExpectedElement,
-        found: int,
-        dim_theory: Dict[str, Any],
+        found:  int,
+        dim_req: Dict[str, Any],
     ) -> GapSeverity:
-        """Computa severidad basada en contexto dimensional."""
-
+        """Compute gap severity based on context."""
         # Critical if required and completely missing
         if elem.required and found == 0:
             return GapSeverity.CRITICAL
-
-        # Check if matches dimension's primary need
-        evidence_type = dim_theory.get("evidence_type", "")
-
-        # Critical if element type matches dimension's evidence type and missing
+        
+        # Critical if matches dimension's evidence type and missing
+        evidence_type = dim_req.get("evidence_type", "")
         if elem.category == evidence_type and found == 0:
             return GapSeverity.CRITICAL
-
+        
         # Major if required but partial
-        if elem.required and found < elem.minimum:
-            return GapSeverity.MAJOR
-
+        if elem. required and found < elem.minimum_count:
+            return GapSeverity. MAJOR
+        
         # Major if high weight and missing
-        if elem.weight >= 0.7 and found == 0:
-            return GapSeverity.MAJOR
-
+        if elem. weight >= 0.7 and found == 0:
+            return GapSeverity. MAJOR
+        
         # Minor for optional but expected
-        if elem.minimum > 0 and found < elem.minimum:
-            return GapSeverity.MINOR
-
+        if elem. minimum_count > 0 and found < elem.minimum_count:
+            return GapSeverity. MINOR
+        
         return GapSeverity.COSMETIC
 
 
@@ -1024,238 +1136,244 @@ class GapAnalyzer:
 
 class BayesianConfidenceEngine:
     """
-    Inferencia bayesiana de confianza con calibración.
-
-    Usa Dempster-Shafer para manejar incertidumbre epistémica.
+    Bayesian confidence computation with Dempster-Shafer theory.
+    
+    Implements: 
+    - Belief/Plausibility interval computation
+    - Wilson score confidence intervals
+    - Gap-adjusted pessimistic weighting
     """
-
-    @staticmethod
+    
+    @classmethod
     def compute(
-        items: List[EvidenceItem],
-        gaps: List[EvidenceGap],
-        corroborations: List[Tuple[EvidenceItem, EvidenceItem]],
-        contradictions: List[Tuple[EvidenceItem, EvidenceItem, str]],
-    ) -> BayesianConfidenceResult:
-        """
-        Computa confianza calibrada usando Dempster-Shafer.
-        """
-        if not items:
-            return BayesianConfidenceResult(
+        cls,
+        items: Sequence[EvidenceItem],
+        gaps:  Sequence[EvidenceGap],
+        corroborations: Sequence[Tuple[EvidenceItem, EvidenceItem]],
+        contradictions: Sequence[Tuple[EvidenceItem, EvidenceItem, str]],
+    ) -> BayesianConfidence:
+        """Compute calibrated Bayesian confidence."""
+        if not items: 
+            return BayesianConfidence(
                 point_estimate=0.0,
                 belief=0.0,
                 plausibility=0.3,
                 uncertainty=1.0,
-                interval_95=(0.0, 0.3),
+                interval_95=ConfidenceInterval(0.0, 0.0, 0.3),
             )
-
-        # 1. Base: average confidence of evidence
+        
+        # 1. Base confidence from evidence
         confidences = [i.confidence for i in items]
         base_conf = statistics.mean(confidences)
-
-        # 2. Boost for corroborations
-        corroboration_boost = min(0.15, len(corroborations) * 0.05)
-
-        # 3. Penalty for contradictions
-        contradiction_penalty = min(0.25, len(contradictions) * 0.1)
-
-        # 4. Penalty for gaps
-        critical_gaps = sum(1 for g in gaps if g.severity == GapSeverity.CRITICAL)
+        
+        # 2. Corroboration boost
+        corroboration_boost = min(0.15, len(corroborations) * CORROBORATION_BOOST)
+        
+        # 3. Contradiction penalty
+        contradiction_penalty = min(0.25, len(contradictions) * CONTRADICTION_PENALTY)
+        
+        # 4. Gap penalty
+        critical_gaps = sum(1 for g in gaps if g. severity == GapSeverity.CRITICAL)
         major_gaps = sum(1 for g in gaps if g.severity == GapSeverity.MAJOR)
         gap_penalty = min(0.4, critical_gaps * 0.15 + major_gaps * 0.05)
-
-        # 5. Compute belief mass (lower bound of confidence)
+        
+        # 5. Belief mass (lower bound)
         belief = max(0.0, base_conf + corroboration_boost - contradiction_penalty - gap_penalty)
-        belief = belief * (1 - 0.1 * critical_gaps)  # Further reduce for critical gaps
-
-        # 6. Compute plausibility (upper bound)
+        belief *= (1 - 0.1 * critical_gaps)
+        belief = max(0.0, min(1.0, belief))
+        
+        # 6. Plausibility (upper bound)
         plausibility = min(1.0, belief + 0.2)
-
+        
         # 7. Epistemic uncertainty
         uncertainty = plausibility - belief
-
-        # 8. Point estimate (expected value under ignorance)
-        pessimism_weight = 0.6  # Be conservative
-        point_estimate = pessimism_weight * belief + (1 - pessimism_weight) * plausibility
-
-        # 9. Calibrated interval using Wilson score
+        
+        # 8. Point estimate (pessimistic weighting)
+        point_estimate = PESSIMISM_WEIGHT * belief + (1 - PESSIMISM_WEIGHT) * plausibility
+        
+        # 9. Wilson score interval
         n = len(items)
-        z = 1.96  # 95% CI
-
         p = point_estimate
-        denominator = 1 + z**2 / n
-        center = (p + z**2 / (2*n)) / denominator
-        margin = z * math.sqrt((p * (1 - p) + z**2 / (4*n)) / n) / denominator
-
+        denominator = 1 + WILSON_Z**2 / n
+        center = (p + WILSON_Z**2 / (2*n)) / denominator
+        margin = WILSON_Z * math.sqrt((p * (1 - p) + WILSON_Z**2 / (4*n)) / n) / denominator
+        
         lower = max(0.0, center - margin - gap_penalty)
         upper = min(1.0, center + margin)
-
-        return BayesianConfidenceResult(
+        
+        return BayesianConfidence(
             point_estimate=round(point_estimate, 3),
             belief=round(belief, 3),
             plausibility=round(plausibility, 3),
             uncertainty=round(uncertainty, 3),
-            interval_95=(round(lower, 3), round(upper, 3)),
+            interval_95=ConfidenceInterval(
+                round(lower, 3),
+                round(point_estimate, 3),
+                round(upper, 3),
+            ),
         )
 
 
 # =============================================================================
-# DIMENSION-SPECIFIC STRATEGIES
+# DIMENSION STRATEGIES (Strategy Pattern)
 # =============================================================================
 
 class DimensionStrategy(ABC):
-    """Base class for dimension-specific strategies."""
-
+    """Abstract base for dimension-specific evaluation strategies."""
+    
     @property
     @abstractmethod
     def dimension(self) -> Dimension:
+        """The dimension this strategy handles."""
         pass
-
+    
     @abstractmethod
     def verdict_prefix(self, has_critical_gaps: bool) -> str:
-        """Prefix for verdict based on dimension theory."""
+        """Generate verdict prefix based on gap analysis."""
         pass
-
+    
     @abstractmethod
     def key_requirement(self) -> str:
         """Key requirement for this dimension."""
         pass
-
+    
     @abstractmethod
-    def interpret_confidence(self, conf: BayesianConfidenceResult) -> str:
+    def interpret_confidence(self, conf: BayesianConfidence) -> str:
         """Dimension-specific confidence interpretation."""
         pass
 
 
 class D1InsumosStrategy(DimensionStrategy):
-    """D1: Insumos - Diagnóstico y datos cuantitativos."""
-
+    """D1: Insumos - Diagnosis and quantitative data."""
+    
     @property
     def dimension(self) -> Dimension:
         return Dimension.D1_INSUMOS
-
+    
     def verdict_prefix(self, has_critical_gaps: bool) -> str:
         if has_critical_gaps:
-            return "El diagnóstico carece de fundamento cuantitativo."
-        return "El diagnóstico tiene base cuantitativa."
-
+            return "El diagnóstico carece de fundamento cuantitativo"
+        return "El diagnóstico tiene base cuantitativa"
+    
     def key_requirement(self) -> str:
-        return "Datos numéricos de fuentes oficiales."
-
-    def interpret_confidence(self, conf: BayesianConfidenceResult) -> str:
+        return "Datos numéricos de fuentes oficiales"
+    
+    def interpret_confidence(self, conf: BayesianConfidence) -> str:
         if conf.point_estimate >= 0.7:
-            return "Los datos son verificables."
-        return "Faltan datos verificables."
+            return "Los datos son verificables"
+        return "Faltan datos verificables"
 
 
 class D2ActividadesStrategy(DimensionStrategy):
-    """D2: Actividades - Especificidad operativa."""
-
+    """D2: Actividades - Operational specificity."""
+    
     @property
     def dimension(self) -> Dimension:
         return Dimension.D2_ACTIVIDADES
-
+    
     def verdict_prefix(self, has_critical_gaps: bool) -> str:
         if has_critical_gaps:
-            return "Las actividades son vagas."
-        return "Las actividades están especificadas."
-
+            return "Las actividades son vagas"
+        return "Las actividades están especificadas"
+    
     def key_requirement(self) -> str:
-        return "Instrumento, población y lógica definidos."
-
-    def interpret_confidence(self, conf: BayesianConfidenceResult) -> str:
+        return "Instrumento, población y lógica definidos"
+    
+    def interpret_confidence(self, conf: BayesianConfidence) -> str:
         if conf.point_estimate >= 0.7:
-            return "La especificación es operativa."
-        return "Falta especificidad operativa."
+            return "La especificación es operativa"
+        return "Falta especificidad operativa"
 
 
 class D3ProductosStrategy(DimensionStrategy):
-    """D3: Productos - Proporcionalidad y metas."""
-
+    """D3: Productos - Proportionality and goals."""
+    
     @property
     def dimension(self) -> Dimension:
         return Dimension.D3_PRODUCTOS
-
+    
     def verdict_prefix(self, has_critical_gaps: bool) -> str:
-        if has_critical_gaps:
-            return "Los productos no son proporcionales al problema."
-        return "Los productos son proporcionales."
-
+        if has_critical_gaps: 
+            return "Los productos no son proporcionales al problema"
+        return "Los productos son proporcionales"
+    
     def key_requirement(self) -> str:
-        return "Metas cuantificadas y proporcionales."
-
-    def interpret_confidence(self, conf: BayesianConfidenceResult) -> str:
+        return "Metas cuantificadas y proporcionales"
+    
+    def interpret_confidence(self, conf: BayesianConfidence) -> str:
         if conf.point_estimate >= 0.7:
-            return "La proporcionalidad es clara."
-        return "La proporcionalidad es cuestionable."
+            return "La proporcionalidad es clara"
+        return "La proporcionalidad es cuestionable"
 
 
 class D4ResultadosStrategy(DimensionStrategy):
-    """D4: Resultados - Indicadores de outcome."""
-
+    """D4: Resultados - Outcome indicators."""
+    
     @property
     def dimension(self) -> Dimension:
         return Dimension.D4_RESULTADOS
-
+    
     def verdict_prefix(self, has_critical_gaps: bool) -> str:
         if has_critical_gaps:
-            return "Los resultados no son medibles."
-        return "Los resultados tienen indicadores."
-
+            return "Los resultados no son medibles"
+        return "Los resultados tienen indicadores"
+    
     def key_requirement(self) -> str:
-        return "Indicadores con línea base y meta."
-
-    def interpret_confidence(self, conf: BayesianConfidenceResult) -> str:
+        return "Indicadores con línea base y meta"
+    
+    def interpret_confidence(self, conf: BayesianConfidence) -> str:
         if conf.point_estimate >= 0.7:
-            return "Los indicadores permiten seguimiento."
-        return "El seguimiento no es posible."
+            return "Los indicadores permiten seguimiento"
+        return "El seguimiento no es posible"
 
 
 class D5ImpactosStrategy(DimensionStrategy):
-    """D5: Impactos - Cambios de largo plazo."""
-
+    """D5: Impactos - Long-term changes."""
+    
     @property
     def dimension(self) -> Dimension:
         return Dimension.D5_IMPACTOS
-
+    
     def verdict_prefix(self, has_critical_gaps: bool) -> str:
         if has_critical_gaps:
-            return "El impacto de largo plazo no está definido."
-        return "El impacto está conceptualizado."
-
+            return "El impacto de largo plazo no está definido"
+        return "El impacto está conceptualizado"
+    
     def key_requirement(self) -> str:
-        return "Teoría de cambio con horizonte temporal."
-
-    def interpret_confidence(self, conf: BayesianConfidenceResult) -> str:
+        return "Teoría de cambio con horizonte temporal"
+    
+    def interpret_confidence(self, conf: BayesianConfidence) -> str:
         if conf.point_estimate >= 0.7:
-            return "La teoría de cambio es plausible."
-        return "La teoría de cambio es débil."
+            return "La teoría de cambio es plausible"
+        return "La teoría de cambio es débil"
 
 
 class D6CausalidadStrategy(DimensionStrategy):
-    """D6: Causalidad - M&E y adaptación."""
-
+    """D6: Causalidad - M&E and adaptation."""
+    
     @property
     def dimension(self) -> Dimension:
         return Dimension.D6_CAUSALIDAD
-
+    
     def verdict_prefix(self, has_critical_gaps: bool) -> str:
         if has_critical_gaps:
-            return "La lógica causal no es explícita."
-        return "La cadena causal está documentada."
-
+            return "La lógica causal no es explícita"
+        return "La cadena causal está documentada"
+    
     def key_requirement(self) -> str:
-        return "Sistema de M&E con ciclos de aprendizaje."
-
-    def interpret_confidence(self, conf: BayesianConfidenceResult) -> str:
+        return "Sistema de M&E con ciclos de aprendizaje"
+    
+    def interpret_confidence(self, conf: BayesianConfidence) -> str:
         if conf.point_estimate >= 0.7:
-            return "El sistema permite adaptación."
-        return "No hay mecanismo de corrección."
+            return "El sistema permite adaptación"
+        return "No hay mecanismo de corrección"
 
 
+@lru_cache(maxsize=6)
 def get_dimension_strategy(dimension: Dimension) -> DimensionStrategy:
-    """Factory for dimension strategies."""
-    strategies = {
-        Dimension.D1_INSUMOS: D1InsumosStrategy(),
+    """Factory for dimension strategies (cached)."""
+    strategies:  Dict[Dimension, DimensionStrategy] = {
+        Dimension.D1_INSUMOS:  D1InsumosStrategy(),
         Dimension.D2_ACTIVIDADES: D2ActividadesStrategy(),
         Dimension.D3_PRODUCTOS: D3ProductosStrategy(),
         Dimension.D4_RESULTADOS: D4ResultadosStrategy(),
@@ -1266,114 +1384,196 @@ def get_dimension_strategy(dimension: Dimension) -> DimensionStrategy:
 
 
 # =============================================================================
-# READABILITY & STYLE CHECKER (Flesch-Kincaid + Proselint)
+# TOULMIN ARGUMENT BUILDER
+# =============================================================================
+
+class ToulminArgumentBuilder:
+    """
+    Builds Toulmin-structured arguments from evidence.
+    
+    Structures: 
+    - Claim: Main assertion
+    - Data: Evidence grounds
+    - Warrant: Why data supports claim
+    - Backing: Support for warrant
+    - Qualifier: Limitation
+    - Rebuttal: Counter-argument
+    """
+    
+    @classmethod
+    def build_verdict_argument(
+        cls,
+        strategy: DimensionStrategy,
+        gaps: Sequence[EvidenceGap],
+        items: Sequence[EvidenceItem],
+        confidence: BayesianConfidence,
+    ) -> ToulminArgument: 
+        """Build main verdict argument."""
+        critical_gaps = [g for g in gaps if g.severity == GapSeverity. CRITICAL]
+        has_critical = len(critical_gaps) > 0
+        
+        # Claim
+        claim = strategy.verdict_prefix(has_critical)
+        
+        # Data (evidence grounds)
+        data:  List[str] = []
+        if items:
+            count = len(items)
+            strong = sum(1 for i in items if i. strength. value >= 4)
+            data.append(f"{count} elementos de evidencia identificados")
+            if strong > 0:
+                data.append(f"{strong} con alta confianza")
+        
+        if has_critical:
+            for gap in critical_gaps[: 2]: 
+                data.append(f"Falta:  {gap.element_type. replace('_', ' ')}")
+        
+        # Warrant
+        key_req = strategy.key_requirement()
+        warrant = f"Criterio evaluado: {key_req}"
+        
+        # Qualifier
+        conf_interpretation = strategy.interpret_confidence(confidence)
+        qualifier = f"{conf_interpretation} (confianza {confidence.to_label()})"
+        
+        # Rebuttal (if contradictions or major gaps)
+        rebuttal = None
+        major_gaps = [g for g in gaps if g.severity == GapSeverity. MAJOR]
+        if major_gaps: 
+            rebuttal = f"existen {len(major_gaps)} vacíos significativos"
+        
+        # Compute strength
+        if has_critical:
+            strength = 0.3
+        elif major_gaps:
+            strength = 0.5
+        else: 
+            strength = min(0.9, confidence.point_estimate)
+        
+        return ToulminArgument(
+            claim=claim,
+            data=tuple(data),
+            warrant=warrant,
+            qualifier=qualifier,
+            rebuttal=rebuttal,
+            strength=strength,
+        )
+    
+    @classmethod
+    def build_evidence_arguments(
+        cls,
+        items: Sequence[EvidenceItem],
+        found_counts: Dict[str, int],
+    ) -> Tuple[ToulminArgument, ...]:
+        """Build evidence summary arguments."""
+        arguments:  List[ToulminArgument] = []
+        
+        # Sort by count (most common first)
+        sorted_types = sorted(found_counts.items(), key=lambda x: x[1], reverse=True)
+        
+        for elem_type, count in sorted_types[: 5]: 
+            label = elem_type. replace("_", " ")
+            claim = f"Se identificaron {count} {label}"
+            
+            # Find items of this type
+            type_items = [i for i in items if i.element_type == elem_type]
+            if type_items: 
+                sources = set(i.source_method for i in type_items)
+                avg_conf = statistics.mean(i.confidence for i in type_items)
+                
+                data = (
+                    f"Extraídos de {len(sources)} métodos",
+                    f"Confianza promedio: {avg_conf:.0%}",
+                )
+                
+                arguments.append(ToulminArgument(
+                    claim=claim,
+                    data=data,
+                    warrant="Evidencia documental verificada",
+                    strength=avg_conf,
+                ))
+        
+        return tuple(arguments)
+
+
+# =============================================================================
+# READABILITY CHECKER
 # =============================================================================
 
 @dataclass
 class ReadabilityMetrics:
-    """Métricas de legibilidad según Flesch-Kincaid y Proselint."""
+    """Readability metrics for Carver style enforcement."""
     flesch_reading_ease: Optional[float] = None
     flesch_kincaid_grade: Optional[float] = None
-    gunning_fog: Optional[float] = None
-    avg_sentence_length: Optional[float] = None
+    avg_sentence_length:  Optional[float] = None
     avg_word_length: Optional[float] = None
-    proselint_errors: List[Dict[str, Any]] = field(default_factory=list)
-    proselint_score: Optional[float] = None
-
-    def passes_carver_standards(self) -> bool:
-        """Verifica si el texto cumple estándares Carver."""
-        if self.flesch_reading_ease and self.flesch_reading_ease < 60:
-            return False
-        if self.flesch_kincaid_grade and self.flesch_kincaid_grade > 12:
-            return False
-        if self.avg_sentence_length and self.avg_sentence_length > 20:
-            return False
-        if self.proselint_score and self.proselint_score < 0.9:
-            return False
-        return True
+    passes_carver_standards: bool = True
+    issues: List[str] = field(default_factory=list)
 
 
 class ReadabilityChecker:
-    """Aplica Flesch-Kincaid y Proselint para garantizar claridad Carver."""
-
-    @staticmethod
-    def check_text(text: str) -> ReadabilityMetrics:
-        """Analiza texto con Flesch-Kincaid y Proselint."""
+    """Checks and enforces Carver minimalist style."""
+    
+    @classmethod
+    def check(cls, text: str) -> ReadabilityMetrics: 
+        """Check text readability."""
         metrics = ReadabilityMetrics()
-
-        if textstat:
+        
+        if not text:
+            return metrics
+        
+        if HAS_TEXTSTAT and textstat: 
             try:
                 metrics.flesch_reading_ease = textstat.flesch_reading_ease(text)
                 metrics.flesch_kincaid_grade = textstat.flesch_kincaid_grade(text)
-                metrics.gunning_fog = textstat.gunning_fog(text)
-
+                
                 sentences = textstat.sentence_count(text)
                 words = textstat.lexicon_count(text, removepunct=True)
                 if sentences > 0:
                     metrics.avg_sentence_length = words / sentences
-
-                chars = sum(len(word) for word in text.split())
-                if words > 0:
-                    metrics.avg_word_length = chars / words
-
-            except Exception:
-                pass
-
-        if proselint_check:
-            try:
-                errors = proselint_check(text)
-                if errors:
-                    metrics.proselint_errors = errors
-                    metrics.proselint_score = max(0.0, 1.0 - len(errors) / 100.0)
-                else:
-                    metrics.proselint_score = 1.0
-            except Exception:
-                metrics.proselint_score = 1.0
-
+                
+                # Check against Carver standards
+                if metrics.flesch_reading_ease and metrics.flesch_reading_ease < MIN_FLESCH_READING_EASE:
+                    metrics.passes_carver_standards = False
+                    metrics.issues.append(
+                        f"Readability too low: {metrics. flesch_reading_ease:.1f} < {MIN_FLESCH_READING_EASE}"
+                    )
+                
+                if metrics.flesch_kincaid_grade and metrics.flesch_kincaid_grade > MAX_FLESCH_KINCAID_GRADE: 
+                    metrics.passes_carver_standards = False
+                    metrics.issues.append(
+                        f"Grade level too high: {metrics.flesch_kincaid_grade:. 1f} > {MAX_FLESCH_KINCAID_GRADE}"
+                    )
+                
+                if metrics.avg_sentence_length and metrics. avg_sentence_length > MAX_SENTENCE_LENGTH:
+                    metrics.passes_carver_standards = False
+                    metrics. issues.append(
+                        f"Sentences too long: {metrics.avg_sentence_length:.1f} > {MAX_SENTENCE_LENGTH}"
+                    )
+            except Exception as e: 
+                logger.warning(f"Readability check failed:  {e}")
+        
         return metrics
 
-    @staticmethod
-    def enforce_carver_style(text: str) -> Tuple[str, ReadabilityMetrics]:
-        """Analiza y opcionalmente ajusta texto para cumplir estándares Carver."""
-        metrics = ReadabilityChecker.check_text(text)
-
-        if metrics.passes_carver_standards():
-            return text, metrics
-
-        adjusted_text = text
-
-        if metrics.avg_sentence_length and metrics.avg_sentence_length > 20:
-            adjusted_text = re.sub(r',\s+([a-záéíóúñ])', r'. \1', adjusted_text)
-            adjusted_text = re.sub(r'\s+y\s+([a-záéíóúñ])', r'. \1', adjusted_text)
-
-        metrics = ReadabilityChecker.check_text(adjusted_text)
-
-        return adjusted_text, metrics
-
 
 # =============================================================================
-# DOCTORAL RENDERER (v3.0 - Enhanced with Epistemology)
+# CARVER PROSE RENDERER (Continued)
 # =============================================================================
 
-class DoctoralRenderer:
+class CarverProseRenderer: 
     """
-    v3.0: Renderiza prosa estilo Raymond Carver con fundamentos doctorales.
-
-    Principios:
-    - Oraciones cortas. Sujeto-verbo-objeto.
-    - Verbos activos. Sin pasiva.
-    - Sin adverbios. Sin adjetivos innecesarios.
-    - Cada palabra cuenta. Si sobra, eliminar.
-    - La verdad es suficiente. Sin adornos.
-
-    Nuevos principios v3.0:
-    - Fundamentos epistemológicos explícitos cuando relevante
-    - Referencias teóricas en formato académico
-    - Limitaciones como caveats honestos
-    - Benchmark comparison cuando disponible
+    Renders doctoral answers in Raymond Carver minimalist style. 
+    
+    Principles:
+    - Short sentences.  Subject-verb-object. 
+    - Active verbs. No passive voice.
+    - No adverbs. No unnecessary adjectives.
+    - Every word counts.  If it can be removed, remove it. 
+    - The truth is enough. No embellishments.
     """
-
-    TYPE_LABELS = {
+    
+    # Type labels for human-readable element names
+    TYPE_LABELS:  ClassVar[Dict[str, str]] = {
         "fuentes_oficiales": "fuentes oficiales",
         "indicadores_cuantitativos": "indicadores numéricos",
         "series_temporales_años": "series temporales",
@@ -1384,963 +1584,961 @@ class DoctoralRenderer:
         "riesgos_identificados": "riesgos",
         "mitigacion_propuesta": "mitigación",
         "impacto_definido": "impactos",
-        "rezago_temporal": "horizonte temporal",
+        "rezago_temporal":  "horizonte temporal",
         "ruta_transmision": "ruta de transmisión",
         "proporcionalidad_meta_problema": "proporcionalidad",
         "linea_base_resultado": "línea base",
-        "meta_resultado": "metas",
+        "meta_resultado":  "metas",
         "meta_cuantificada": "metas cuantificadas",
         "metrica_outcome": "métricas",
-        "sistema_monitoreo": "sistema de monitoreo",
+        "sistema_monitoreo":  "sistema de monitoreo",
         "ciclos_aprendizaje": "ciclos de aprendizaje",
         "mecanismos_correccion": "mecanismos de corrección",
         "analisis_contextual": "análisis contextual",
         "enfoque_diferencial": "enfoque diferencial",
     }
-
+    
     @classmethod
     def humanize(cls, elem_type: str) -> str:
         """Convert technical type to plain Spanish."""
-        return cls.TYPE_LABELS.get(elem_type, elem_type.replace("_", " "))
-
+        return cls. TYPE_LABELS. get(elem_type, elem_type. replace("_", " "))
+    
     @classmethod
     def render_verdict(
         cls,
-        strategy: DimensionStrategy,
-        gaps: List[EvidenceGap],
-        items: List[EvidenceItem],
+        argument: ToulminArgument,
+        confidence: BayesianConfidence,
     ) -> str:
-        """Render verdict: una oración. Sin escape."""
-        critical_gaps = [g for g in gaps if g.severity == GapSeverity.CRITICAL]
-        has_critical = len(critical_gaps) > 0
-
-        prefix = strategy.verdict_prefix(has_critical)
-
-        if not items:
-            return f"{prefix} No hay evidencia."
-
-        if has_critical:
-            missing = [cls.humanize(g.element_type) for g in critical_gaps[:2]]
-            return f"{prefix} Falta: {', '.join(missing)}."
-
-        return prefix
-
+        """Render verdict section.  One paragraph.  Direct."""
+        lines = ["## Respuesta\n"]
+        
+        # Main claim with qualifier
+        verdict = argument.claim
+        if argument.qualifier:
+            verdict += f".  {argument.qualifier}"
+        verdict += "."
+        lines.append(verdict)
+        
+        # Supporting data (max 3)
+        for ground in argument.data[: 3]:
+            lines.append(f" {ground}.")
+        
+        # Rebuttal if present
+        if argument. rebuttal: 
+            lines.append(f"\n\n*Sin embargo, {argument.rebuttal}.*")
+        
+        return "\n".join(lines)
+    
     @classmethod
-    def render_evidence_statements(
+    def render_evidence_section(
         cls,
-        items: List[EvidenceItem],
+        items:  Sequence[EvidenceItem],
         found_counts: Dict[str, int],
-    ) -> List[str]:
-        """Render evidence as facts. Short. Verifiable."""
-        statements = []
-
-        total = len(items)
-        if total > 0:
-            statements.append(f"{total} elementos de evidencia.")
-
-        sorted_types = sorted(found_counts.items(), key=lambda x: x[1], reverse=True)[:3]
-        for elem_type, count in sorted_types:
-            label = cls.humanize(elem_type)
-            statements.append(f"{count} {label}.")
-
-        strong = sum(1 for i in items if i.strength == EvidenceStrength.STRONG)
-        if strong > 0:
-            statements.append(f"{strong} elementos con alta confianza.")
-
-        return statements
-
-    @classmethod
-    def render_gap_statements(cls, gaps: List[EvidenceGap]) -> List[str]:
-        """Render gaps. No excuses. Just facts."""
-        statements = []
-
-        for gap in gaps[:4]:
-            label = cls.humanize(gap.element_type)
-
-            if gap.found == 0:
-                statements.append(f"No hay {label}.")
-            else:
-                statements.append(f"{gap.found} {label}. Se necesitan {gap.expected}.")
-
-        return statements
-
-    @classmethod
-    def render_confidence_statement(
-        cls,
-        conf: BayesianConfidenceResult,
-        strategy: DimensionStrategy,
+        citations:  Sequence[Citation],
     ) -> str:
-        """Render confidence. Honest. Calibrated."""
-        label = conf.to_label()
-        pct = int(conf.point_estimate * 100)
-
-        interpretation = strategy.interpret_confidence(conf)
-
-        return f"Confianza {label} ({pct}%). {interpretation}"
-
-    @classmethod
-    def render_method_note(cls, method_meta: Dict[str, Any]) -> str:
-        """Render method note. Brief. At the end."""
-        count = method_meta.get("method_count", 0)
-        return f"Análisis con {count} métodos."
-
-    @classmethod
-    def render_limitations_section(cls, methodological_depth: MethodologicalDepth) -> str:
-        """
-        Render limitations section.Max 5.Carver style.
+        """Render evidence section.  Facts only."""
+        lines = ["## Evidencia\n"]
         
-        Extrae limitaciones de technical_approach de cada método,
-        deduplica y prioriza las más relevantes.
-        """
-        all_limitations = []
-        for method in methodological_depth.methods:
-            for limitation in method.technical_approach.limitations:
-                if limitation and limitation not in all_limitations:
-                    all_limitations.append(limitation)
+        # Total count
+        total = len(items)
+        if total == 0:
+            lines.append("No se identificó evidencia relevante.")
+            return "\n".join(lines)
         
-        if not all_limitations:
+        lines.append(f"Se identificaron **{total}** elementos de evidencia.\n")
+        
+        # Top types
+        sorted_types = sorted(found_counts.items(), key=lambda x: x[1], reverse=True)
+        for elem_type, count in sorted_types[:5]:
+            label = cls.humanize(elem_type)
+            lines.append(f"- {count} {label}")
+        
+        # Strength distribution
+        strong = sum(1 for i in items if i. strength. value >= 4)
+        moderate = sum(1 for i in items if i.strength.value == 3)
+        weak = sum(1 for i in items if i.strength. value <= 2)
+        
+        if strong > 0 or moderate > 0:
+            lines.append(f"\n**Calidad**:  {strong} alta, {moderate} moderada, {weak} baja.")
+        
+        # Top citations
+        if citations:
+            lines.append("\n**Fuentes principales**:")
+            for cit in citations[:3]:
+                summary = cit.summary[: 80] + ("..." if len(cit.summary) > 80 else "")
+                lines. append(f"- {summary} ({cit.source_method})")
+        
+        return "\n".join(lines)
+    
+    @classmethod
+    def render_gaps_section(cls, gaps:  Sequence[EvidenceGap]) -> str:
+        """Render gaps section. No excuses.  Just facts."""
+        if not gaps:
             return ""
         
-        # Max 5 limitations
-        selected = all_limitations[:5]
+        lines = ["## Vacíos Identificados\n"]
         
-        lines = ["## Limitaciones\n"]
-        for lim in selected:
+        critical = [g for g in gaps if g.severity == GapSeverity.CRITICAL]
+        major = [g for g in gaps if g. severity == GapSeverity.MAJOR]
+        minor = [g for g in gaps if g.severity == GapSeverity.MINOR]
+        
+        if critical:
+            lines.append("**Críticos** (bloquean evaluación positiva):\n")
+            for gap in critical: 
+                label = cls.humanize(gap.element_type)
+                lines.append(f"- ❌ {label}:  {gap.implication}")
+        
+        if major: 
+            lines.append("\n**Significativos**:\n")
+            for gap in major[: 3]:
+                label = cls.humanize(gap.element_type)
+                if gap.found > 0:
+                    lines.append(f"- ⚠️ {label}: {gap. found}/{gap.expected}")
+                else:
+                    lines.append(f"- ⚠️ {label}: no encontrado")
+        
+        if minor and not critical and not major:
+            lines.append("**Menores**:\n")
+            for gap in minor[: 2]:
+                label = cls.humanize(gap.element_type)
+                lines. append(f"- ℹ️ {label}")
+        
+        return "\n".join(lines)
+    
+    @classmethod
+    def render_confidence_section(
+        cls,
+        confidence: BayesianConfidence,
+        strategy: DimensionStrategy,
+    ) -> str:
+        """Render confidence section.  Honest.  Calibrated."""
+        lines = ["## Nivel de Confianza\n"]
+        
+        # Main confidence statement
+        label = confidence.to_label()
+        pct = int(confidence.point_estimate * 100)
+        interpretation = strategy.interpret_confidence(confidence)
+        
+        lines. append(f"**Confianza:  {label}** ({pct}%)\n")
+        lines.append(interpretation + ".")
+        
+        # Interval
+        lower = int(confidence.interval_95. lower * 100)
+        upper = int(confidence.interval_95.upper * 100)
+        lines.append(f"\nIntervalo 95%: [{lower}%, {upper}%]")
+        
+        # Calibration note
+        if confidence. uncertainty > 0.3:
+            lines. append("\n*Alta incertidumbre epistémica.  Interpretar con cautela.*")
+        
+        return "\n". join(lines)
+    
+    @classmethod
+    def render_limitations_section(
+        cls,
+        depth: Optional[MethodologicalDepth],
+    ) -> str:
+        """Render methodological limitations.  Max 5."""
+        if not depth or not depth.all_limitations:
+            return ""
+        
+        lines = ["## Limitaciones Metodológicas\n"]
+        
+        for lim in list(depth.all_limitations)[:5]:
             lines.append(f"- {lim}")
         
         return "\n".join(lines)
     
     @classmethod
-    def render_theoretical_references(cls, methodological_depth: MethodologicalDepth) -> str:
-        """
-        Render theoretical references.Deduplicated.Max 6.
-        
-        Extrae referencias del theoretical_framework de cada método.
-        """
-        all_refs = []
-        for method in methodological_depth.methods:
-            for ref in method.epistemology.theoretical_framework:
-                if ref and ref not in all_refs:
-                    all_refs.append(ref)
-        
-        if not all_refs:
+    def render_assumptions_section(
+        cls,
+        depth: Optional[MethodologicalDepth],
+    ) -> str:
+        """Render methodological assumptions. Max 4."""
+        if not depth or not depth. all_assumptions: 
             return ""
-        
-        # Max 6 references
-        selected = all_refs[:6]
-        
-        lines = ["## Referencias Teóricas\n"]
-        for i, ref in enumerate(selected, 1):
-            lines.append(f"{i}. {ref}")
-        
-        return "\n".join(lines)
-    
-    @classmethod
-    def render_actionable_insights(cls, methodological_depth: MethodologicalDepth) -> str:
-        """
-        Render actionable insights.Prioritized by relevance.
-        
-        Extrae insights de output_interpretation de cada método.
-        """
-        all_insights = []
-        for method in methodological_depth.methods:
-            for insight in method.output_interpretation.actionable_insights:
-                if insight and insight not in all_insights:
-                    all_insights.append(insight)
-        
-        if not all_insights:
-            return ""
-        
-        lines = ["## Insights Accionables\n"]
-        for insight in all_insights[:6]:  # Max 6
-            lines.append(f"- {insight}")
-        
-        return "\n".join(lines)
-    
-    @classmethod
-    def render_assumptions_section(cls, methodological_depth: MethodologicalDepth) -> str:
-        """
-        Render assumptions section.Deduplicated.Max 5.
-        
-        Extrae assumptions de technical_approach de cada método.
-        """
-        all_assumptions = []
-        for method in methodological_depth.methods:
-            for assumption in method.technical_approach.assumptions:
-                if assumption and assumption not in all_assumptions:
-                    all_assumptions.append(assumption)
-        
-        if not all_assumptions:
-            return ""
-        
-        # Max 5 assumptions
-        selected = all_assumptions[:5]
         
         lines = ["## Supuestos Metodológicos\n"]
-        for assum in selected:
-            lines.append(f"- {assum}")
+        
+        for assumption in list(depth. all_assumptions)[:4]:
+            lines.append(f"- {assumption}")
         
         return "\n".join(lines)
     
     @classmethod
-    def render_full_answer(cls, answer: CarverAnswer) -> str:
-        """
-        Render complete answer in Carver style with readability enforcement.
-        """
-        sections = []
-        
-        # Question context
-        sections.append(f"**Pregunta**: {answer.question_text}\n")
-        
-        # Verdict (the core)
-        sections.append(f"## Respuesta\n\n{answer.verdict}\n")
-        
-        # Evidence (facts only)
-        if answer.evidence_statements:
-            sections.append("## Evidencia\n")
-            for stmt in answer.evidence_statements:
-                sections.append(f"- {stmt}")
-        
-        # Gaps (if any)
-        if answer.gap_statements:
-            sections.append("\n## Vacíos\n")
-            for stmt in answer.gap_statements:
-                sections.append(f"- {stmt}")
-        
-        # Confidence
-        sections.append(f"\n## Confianza\n\n{answer.confidence_statement}")
-        
-        # v3.0 Extensions (only if present)
-        if answer.methodological_depth:
-            # Limitations
-            limitations_text = cls.render_limitations_section(answer.methodological_depth)
-            if limitations_text:
-                sections.append(f"\n{limitations_text}")
-            
-            # Assumptions
-            assumptions_text = cls.render_assumptions_section(answer.methodological_depth)
-            if assumptions_text:
-                sections.append(f"\n{assumptions_text}")
-            
-            # Actionable Insights
-            insights_text = cls.render_actionable_insights(answer.methodological_depth)
-            if insights_text:
-                sections.append(f"\n{insights_text}")
-            
-            # Theoretical References
-            refs_text = cls.render_theoretical_references(answer.methodological_depth)
-            if refs_text:
-                sections.append(f"\n{refs_text}")
-        
-        # Method note (discrete)
-        sections.append(f"\n---\n*{answer.method_note}*")
-        
-        # Join all sections
-        full_text = "\n".join(sections)
-        
-        # Apply Flesch-Kincaid and Proselint readability checking
-        adjusted_text, metrics = ReadabilityChecker.enforce_carver_style(full_text)
-        
-        # Add readability report if metrics available
-        if metrics.flesch_reading_ease or metrics.proselint_score:
-            readability_note = "\n\n---\n**Métricas de Legibilidad**:\n"
-            if metrics.flesch_reading_ease:
-                readability_note += f"- Flesch Reading Ease: {metrics.flesch_reading_ease:.1f} "
-                readability_note += ("(Fácil)" if metrics.flesch_reading_ease >= 60 else "(Difícil)")
-                readability_note += "\n"
-            if metrics.flesch_kincaid_grade:
-                readability_note += f"- Nivel Educativo: {metrics.flesch_kincaid_grade:.1f} grado\n"
-            if metrics.avg_sentence_length:
-                readability_note += f"- Longitud Promedio: {metrics.avg_sentence_length:.1f} palabras/oración\n"
-            if metrics.proselint_score is not None:
-                readability_note += f"- Calidad Proselint: {metrics.proselint_score:.0%}"
-                if metrics.proselint_errors:
-                    readability_note += f" ({len(metrics.proselint_errors)} sugerencias)"
-                readability_note += "\n"
-            
-            # Only add note if text meets Carver standards
-            if metrics.passes_carver_standards():
-                readability_note += "\n✓ Cumple estándares Carver de claridad y concisión."
-            
-            adjusted_text += readability_note
-        
-        return adjusted_text
-
-        lines = ["\n## Fundamentos Epistemológicos\n"]
-        lines.append(f"Este análisis emplea {len(methodological_depth.paradigms_used)} paradigmas:\n")
-
-        for p in methodological_depth.paradigms_used[:5]:
-            lines.append(f"- {p}")
-
-        # Agregar métodos clave con sus justificaciones
-        key_methods = [m for m in methodological_depth.methods if m.priority <= 3]
-        if key_methods:
-            lines.append("\n**Métodos primarios:**\n")
-            for method in key_methods[:3]:
-                if method.justification:
-                    lines.append(f"- *{method.method_name}*: {method.justification[:150]}...")
-
-        return "\n".join(lines)
-
-    @classmethod
-    def render_limitations_section(
+    def render_epistemology_section(
         cls,
-        methodological_depth: MethodologicalDepth,
+        depth: Optional[MethodologicalDepth],
     ) -> str:
-        """
-        Sintetiza respuesta doctoral-Carver.
-        
-        Args:
-            evidence:  Evidencia ensamblada (dict con "elements", etc.)
-            contract: Contrato v3 completo
-            
-        Returns: 
-            Respuesta en markdown, estilo Carver
-        """
-        # 1. Interpret contract
-        dimension = self.interpreter.extract_dimension(contract)
-        expected_elements = self.interpreter.extract_expected_elements(contract)
-        question_intent = self.interpreter.extract_question_intent(contract)
-        method_meta = self.interpreter.extract_method_metadata(contract)
-        methodological_depth = self.interpreter.extract_methodological_depth(contract)
-        
-        # 2. Get dimension strategy
-        strategy = get_dimension_strategy(dimension)
-        
-        # 3. Analyze evidence
-        items = self.analyzer.extract_items(evidence)
-        found_counts = self.analyzer.count_by_type(items)
-        corroborations = self.analyzer.find_corroborations(items)
-        contradictions = self.analyzer.find_contradictions(items)
-        
-        # 4. Identify gaps
-        gaps = self.gap_analyzer.identify_gaps(expected_elements, found_counts, dimension)
-        
-        # 5. Compute bayesian confidence
-        confidence = self.confidence_engine.compute(
-            items, gaps, corroborations, contradictions
-        )
-        
-        # 6. Render components
-        verdict = self.renderer.render_verdict(strategy, gaps, items)
-        evidence_stmts = self.renderer.render_evidence_statements(items, found_counts)
-        gap_stmts = self.renderer.render_gap_statements(gaps)
-        conf_stmt = self.renderer.render_confidence_statement(confidence, strategy)
-        method_note = self.renderer.render_method_note(method_meta)
-        
-        # 7. Compose answer
-        answer = CarverAnswer(
-            verdict=verdict,
-            evidence_statements=evidence_stmts,
-            gap_statements=gap_stmts,
-            confidence_result=confidence,
-            confidence_statement=conf_stmt,
-            question_text=question_intent["question_text"],
-            dimension=dimension,
-            method_note=method_note,
-            methodological_depth=methodological_depth,
-            synthesis_trace={
-                "dimension": dimension.value,
-                "items_count": len(items),
-                "gaps_count": len(gaps),
-                "critical_gaps":  sum(1 for g in gaps if g.severity == GapSeverity.CRITICAL),
-                "corroborations":  len(corroborations),
-                "contradictions": len(contradictions),
-                "confidence": confidence.point_estimate,
-            }
-        )
-        
-        # 8. Render final output
-        return self.renderer.render_full_answer(answer)
-    
-    def synthesize_structured(
-        self,
-        evidence: Dict[str, Any],
-        contract: Dict[str, Any],
-    ) -> CarverAnswer:
-        """
-        Returns structured CarverAnswer instead of string.
-        
-        Useful for further processing or integration.
-        """
-        # Same logic as synthesize but returns answer object
-        dimension = self.interpreter.extract_dimension(contract)
-        expected_elements = self.interpreter.extract_expected_elements(contract)
-        question_intent = self.interpreter.extract_question_intent(contract)
-        method_meta = self.interpreter.extract_method_metadata(contract)
-        methodological_depth = self.interpreter.extract_methodological_depth(contract)
-        
-        strategy = get_dimension_strategy(dimension)
-        
-        items = self.analyzer.extract_items(evidence)
-        found_counts = self.analyzer.count_by_type(items)
-        corroborations = self.analyzer.find_corroborations(items)
-        contradictions = self.analyzer.find_contradictions(items)
-        
-        gaps = self.gap_analyzer.identify_gaps(expected_elements, found_counts, dimension)
-        
-        confidence = self.confidence_engine.compute(
-            items, gaps, corroborations, contradictions
-        )
-        
-        verdict = self.renderer.render_verdict(strategy, gaps, items)
-        evidence_stmts = self.renderer.render_evidence_statements(items, found_counts)
-        gap_stmts = self.renderer.render_gap_statements(gaps)
-        conf_stmt = self.renderer.render_confidence_statement(confidence, strategy)
-        method_note = self.renderer.render_method_note(method_meta)
-        
-        return CarverAnswer(
-            verdict=verdict,
-            evidence_statements=evidence_stmts,
-            gap_statements=gap_stmts,
-            confidence_result=confidence,
-            confidence_statement=conf_stmt,
-            question_text=question_intent["question_text"],
-            dimension=dimension,
-            method_note=method_note,
-            methodological_depth=methodological_depth,
-            synthesis_trace={
-                "dimension": dimension.value,
-                "items_count":  len(items),
-                "gaps_count": len(gaps),
-                "critical_gaps": sum(1 for g in gaps if g.severity == GapSeverity.CRITICAL),
-                "corroborations": len(corroborations),
-                "contradictions": len(contradictions),
-                "confidence": confidence.point_estimate,
-            }
-        )
-    
-    def synthesize_macro(
-        self,
-        meso_results: List[Any],  # List[MesoQuestionResult]
-        coverage_matrix: Optional[Dict[Tuple[str, str], float]] = None,
-        macro_question_text: str = "¿El Plan de Desarrollo presenta una visión integral y coherente?",
-    ) -> Dict[str, Any]:
-        """
-        Sintetiza respuesta macro-level con análisis de divergencia PA-DIM.
-        
-        Agregación holística de múltiples meso-questions con:
-        - Análisis de cobertura PA-DIM (10 policy areas × 6 dimensions)
-        - Identificación de divergencias críticas
-        - Cálculo de score holístico calibrado
-        - Generación de hallazgos, fortalezas y debilidades
-        
-        Args:
-            meso_results: Lista de resultados de meso-questions
-            coverage_matrix: Matriz PA-DIM con scores {("PA01", "DIM01"): 0.85, ...}
-            macro_question_text: Texto de la pregunta macro
-            
-        Returns:
-            Dict con estructura de MacroQuestionResult:
-                - score: Score holístico 0-1
-                - scoring_level: Nivel (excelente/bueno/aceptable/insuficiente)
-                - hallazgos: Lista de hallazgos globales
-                - recomendaciones: Lista de recomendaciones priorizadas
-                - fortalezas: Fortalezas identificadas
-                - debilidades: Debilidades identificadas (gaps)
-                - divergence_analysis: Análisis PA-DIM detallado
-        """
-        # 1. Analizar cobertura PA-DIM si está disponible
-        divergence_analysis = {}
-        if coverage_matrix:
-            divergence_analysis = self._analyze_pa_dim_divergence(coverage_matrix)
-        
-        # 2. Agregar scores de meso-questions
-        meso_scores = [m.get("score", 0.0) if isinstance(m, dict) else getattr(m, "score", 0.0) 
-                       for m in meso_results]
-        
-        if not meso_scores:
-            base_score = 0.0
-        else:
-            # Promedio ponderado con penalización por varianza alta
-            base_score = statistics.mean(meso_scores)
-            if len(meso_scores) > 1:
-                variance = statistics.variance(meso_scores)
-                # Penalizar inconsistencia (varianza alta)
-                variance_penalty = min(0.15, variance * 0.3)
-                base_score = max(0.0, base_score - variance_penalty)
-        
-        # 3. Ajustar score con análisis de divergencia
-        if divergence_analysis:
-            coverage_score = divergence_analysis.get("overall_coverage", 1.0)
-            critical_gaps_count = divergence_analysis.get("critical_gaps_count", 0)
-            
-            # Penalizar gaps críticos en PA-DIM
-            gap_penalty = min(0.25, critical_gaps_count * 0.05)
-            
-            # Score final como promedio ponderado
-            final_score = (0.7 * base_score + 0.3 * coverage_score) - gap_penalty
-        else:
-            final_score = base_score
-        
-        final_score = max(0.0, min(1.0, final_score))
-        
-        # 4. Determinar nivel de scoring
-        if final_score >= 0.85:
-            scoring_level = "excelente"
-        elif final_score >= 0.70:
-            scoring_level = "bueno"
-        elif final_score >= 0.55:
-            scoring_level = "aceptable"
-        else:
-            scoring_level = "insuficiente"
-        
-        # 5. Generar hallazgos globales
-        hallazgos = self._generate_macro_hallazgos(
-            meso_results, divergence_analysis, final_score
-        )
-        
-        # 6. Generar fortalezas y debilidades
-        fortalezas, debilidades = self._identify_strengths_weaknesses(
-            meso_results, divergence_analysis
-        )
-        
-        # 7. Generar recomendaciones priorizadas
-        recomendaciones = self._generate_macro_recommendations(
-            debilidades, divergence_analysis
-        )
-        
-        # 8. Construir resultado macro
-        return {
-            "score": round(final_score, 3),
-            "scoring_level": scoring_level,
-            "aggregation_method": "holistic_assessment",
-            "meso_results": meso_results,
-            "n_meso_evaluated": len(meso_results),
-            "hallazgos": hallazgos,
-            "recomendaciones": recomendaciones,
-            "fortalezas": fortalezas,
-            "debilidades": debilidades,
-            "divergence_analysis": divergence_analysis,
-            "metadata": {
-                "question_text": macro_question_text,
-                "synthesis_method": "doctoral_carver_macro_v2",
-                "base_score": round(base_score, 3),
-                "coverage_adjusted": coverage_matrix is not None,
-            }
-        }
-    
-    def _analyze_pa_dim_divergence(
-        self, 
-        coverage_matrix: Dict[Tuple[str, str], float]
-    ) -> Dict[str, Any]:
-        """
-        Analiza divergencia en matriz PA-DIM (10×6 = 60 células).
-        
-        Identifica:
-        - Cobertura global (% de células con score >= threshold)
-        - Gaps críticos (células con score < 0.5)
-        - PAs y DIMs con baja cobertura
-        - Patrones de divergencia
-        """
-        if not coverage_matrix:
-            return {}
-        
-        # Definir umbrales
-        THRESHOLD_ACCEPTABLE = 0.55
-        THRESHOLD_CRITICAL = 0.50
-        
-        # 1. Análisis global
-        all_scores = list(coverage_matrix.values())
-        if not all_scores:
-            return {"overall_coverage": 0.0, "critical_gaps_count": 0}
-        
-        overall_coverage = statistics.mean(all_scores)
-        cells_above_threshold = sum(1 for s in all_scores if s >= THRESHOLD_ACCEPTABLE)
-        coverage_percentage = cells_above_threshold / len(all_scores) if all_scores else 0.0
-        
-        # 2. Identificar gaps críticos
-        critical_gaps = [
-            (pa, dim, score) 
-            for (pa, dim), score in coverage_matrix.items() 
-            if score < THRESHOLD_CRITICAL
-        ]
-        
-        # 3. Análisis por Policy Area
-        policy_areas = set(pa for (pa, dim) in coverage_matrix.keys())
-        pa_scores = {}
-        for pa in policy_areas:
-            pa_cells = [score for (p, d), score in coverage_matrix.items() if p == pa]
-            pa_scores[pa] = statistics.mean(pa_cells) if pa_cells else 0.0
-        
-        low_coverage_pas = [pa for pa, score in pa_scores.items() if score < THRESHOLD_ACCEPTABLE]
-        
-        # 4. Análisis por Dimension
-        dimensions = set(dim for (pa, dim) in coverage_matrix.keys())
-        dim_scores = {}
-        for dim in dimensions:
-            dim_cells = [score for (p, d), score in coverage_matrix.items() if d == dim]
-            dim_scores[dim] = statistics.mean(dim_cells) if dim_cells else 0.0
-        
-        low_coverage_dims = [dim for dim, score in dim_scores.items() if score < THRESHOLD_ACCEPTABLE]
-        
-        # 5. Identificar patrones de divergencia
-        divergence_patterns = []
-        
-        if low_coverage_pas:
-            divergence_patterns.append(
-                f"Áreas de política con baja cobertura: {', '.join(low_coverage_pas)}"
-            )
-        
-        if low_coverage_dims:
-            dim_names = {
-                "DIM01": "Insumos",
-                "DIM02": "Actividades", 
-                "DIM03": "Productos",
-                "DIM04": "Resultados",
-                "DIM05": "Impactos",
-                "DIM06": "Causalidad"
-            }
-            dim_labels = [dim_names.get(d, d) for d in low_coverage_dims]
-            divergence_patterns.append(
-                f"Dimensiones con baja cobertura: {', '.join(dim_labels)}"
-            )
-        
-        if critical_gaps:
-            # Agrupar por PA
-            gaps_by_pa = defaultdict(int)
-            for pa, dim, score in critical_gaps:
-                gaps_by_pa[pa] += 1
-            
-            top_gap_pas = sorted(gaps_by_pa.items(), key=lambda x: x[1], reverse=True)[:3]
-            if top_gap_pas:
-                pa_list = [f"{pa} ({count} gaps)" for pa, count in top_gap_pas]
-                divergence_patterns.append(
-                    f"PAs con más gaps críticos: {', '.join(pa_list)}"
-                )
-        
-        return {
-            "overall_coverage": round(overall_coverage, 3),
-            "coverage_percentage": round(coverage_percentage, 3),
-            "total_cells": len(coverage_matrix),
-            "cells_above_threshold": cells_above_threshold,
-            "critical_gaps_count": len(critical_gaps),
-            "critical_gaps": critical_gaps[:5],  # Top 5 para no sobrecargar
-            "low_coverage_pas": low_coverage_pas,
-            "low_coverage_dims": low_coverage_dims,
-            "pa_scores": {pa: round(score, 3) for pa, score in pa_scores.items()},
-            "dim_scores": {dim: round(score, 3) for dim, score in dim_scores.items()},
-            "divergence_patterns": divergence_patterns,
-        }
-    
-    def _generate_macro_hallazgos(
-        self,
-        meso_results: List[Any],
-        divergence_analysis: Dict[str, Any],
-        final_score: float,
-    ) -> List[str]:
-        """Genera hallazgos globales del análisis macro."""
-        hallazgos = []
-        
-        # 1. Hallazgo sobre score global
-        if final_score >= 0.85:
-            hallazgos.append(
-                "El plan presenta un nivel excelente de integración y coherencia global."
-            )
-        elif final_score >= 0.70:
-            hallazgos.append(
-                "El plan muestra un nivel bueno de articulación entre dimensiones."
-            )
-        elif final_score >= 0.55:
-            hallazgos.append(
-                "El plan alcanza un nivel aceptable de coherencia, con áreas de mejora."
-            )
-        else:
-            hallazgos.append(
-                "El plan presenta deficiencias significativas en integración y coherencia."
-            )
-        
-        # 2. Hallazgos de meso-questions
-        if meso_results:
-            high_scoring_mesos = [
-                m for m in meso_results 
-                if (isinstance(m, dict) and m.get("score", 0) >= 0.80) or
-                   (hasattr(m, "score") and m.score >= 0.80)
-            ]
-            low_scoring_mesos = [
-                m for m in meso_results 
-                if (isinstance(m, dict) and m.get("score", 0) < 0.55) or
-                   (hasattr(m, "score") and m.score < 0.55)
-            ]
-            
-            if high_scoring_mesos:
-                hallazgos.append(
-                    f"{len(high_scoring_mesos)} de {len(meso_results)} clusters muestran alto desempeño."
-                )
-            
-            if low_scoring_mesos:
-                hallazgos.append(
-                    f"{len(low_scoring_mesos)} clusters requieren atención prioritaria."
-                )
-        
-        # 3. Hallazgos de divergencia PA-DIM
-        if divergence_analysis:
-            coverage_pct = divergence_analysis.get("coverage_percentage", 0.0)
-            critical_gaps = divergence_analysis.get("critical_gaps_count", 0)
-            
-            if coverage_pct >= 0.80:
-                hallazgos.append(
-                    f"Cobertura PA-DIM: {coverage_pct:.0%} de células con nivel aceptable."
-                )
-            else:
-                status = "✗"
-                failed += 1
-            lines.append(f"- {label}: {actual}/{expected} {status}")
-
-        total = passed + failed
-        if total > 0:
-            pct = int(passed / total * 100)
-            lines.append(f"\n**Cumplimiento:** {pct}% ({passed}/{total})")
-
-        return "\n".join(lines)
-
-    @classmethod
-    def render_actionable_insights(
-        cls,
-        methodological_depth: MethodologicalDepth,
-        gaps: List[EvidenceGap],
-    ) -> str:
-        """v3.0: Render insights accionables basados en el contrato."""
-        lines = ["\n## Insights Accionables\n"]
-
-        # Mapear gaps a métodos relevantes
-        gap_types = {g.element_type for g in gaps if g.severity in (GapSeverity.CRITICAL, GapSeverity.MAJOR)}
-
-        relevant_insights = []
-        for method in methodological_depth.methods:
-            for insight in method.actionable_insights:
-                # Buscar insights relevantes a los gaps encontrados
-                insight_lower = insight.lower()
-                if any(gt.replace("_", " ") in insight_lower for gt in gap_types):
-                    relevant_insights.append((method.method_name, insight))
-                elif "few" in insight_lower or "no" in insight_lower or "missing" in insight_lower:
-                    relevant_insights.append((method.method_name, insight))
-
-        if relevant_insights:
-            for method_name, insight in relevant_insights[:5]:
-                lines.append(f"- **{method_name}**: {insight}")
-        else:
-            lines.append("- Sin insights específicos para los gaps detectados.")
-
-        return "\n".join(lines)
-
-    @classmethod
-    def render_theoretical_references(
-        cls,
-        references: List[str],
-    ) -> str:
-        """v3.0: Render referencias teóricas en formato académico."""
-        if not references:
+        """Render epistemological foundations."""
+        if not depth: 
             return ""
-
-        lines = ["\n## Referencias Teóricas\n"]
-        lines.append("Fundamentos citados en la metodología:\n")
-
-        unique_refs = list(set(references))[:10]
-        for ref in unique_refs:
-            lines.append(f"- {ref}")
-
+        
+        if not depth.paradigms_used and not depth.theoretical_references:
+            return ""
+        
+        lines = ["## Fundamentos Epistemológicos\n"]
+        
+        if depth.paradigms_used:
+            paradigms = ", ".join(list(depth.paradigms_used)[:3])
+            lines.append(f"**Paradigmas**:  {paradigms}\n")
+        
+        if depth.theoretical_references:
+            lines.append("**Referencias teóricas**:")
+            for ref in list(depth.theoretical_references)[:4]:
+                lines. append(f"- {ref}")
+        
         return "\n".join(lines)
-
+    
     @classmethod
-    def render_full_answer(cls, answer: CarverAnswer) -> str:
-        """v3.0: Render complete doctoral answer."""
-        sections = []
-
+    def render_methodology_note(
+        cls,
+        depth: Optional[MethodologicalDepth],
+        modality: ScoringModality,
+    ) -> str:
+        """Render discrete methodology note."""
+        method_count = depth.total_methods if depth else 0
+        return f"\n---\n*Análisis con {method_count} métodos.  Modalidad {modality.value}.*"
+    
+    @classmethod
+    def render_score_summary(
+        cls,
+        score: float,
+        quality_level: QualityLevel,
+    ) -> str:
+        """Render score summary box."""
+        pct = int(score * 100)
+        
+        emoji_map = {
+            QualityLevel. EXCELENTE: "🟢",
+            QualityLevel. BUENO: "🔵",
+            QualityLevel. ACEPTABLE: "🟡",
+            QualityLevel.INSUFICIENTE: "🔴",
+            QualityLevel. NO_APLICABLE: "⚪",
+        }
+        emoji = emoji_map. get(quality_level, "⚪")
+        
+        return f"\n---\n\n**Score**: {pct}/100 {emoji} **{quality_level.value}**"
+    
+    @classmethod
+    def render_full_answer(
+        cls,
+        verdict_argument: ToulminArgument,
+        confidence: BayesianConfidence,
+        strategy: DimensionStrategy,
+        items: Sequence[EvidenceItem],
+        found_counts: Dict[str, int],
+        citations: Sequence[Citation],
+        gaps: Sequence[EvidenceGap],
+        depth: Optional[MethodologicalDepth],
+        modality: ScoringModality,
+        score: float,
+        quality_level: QualityLevel,
+        question_text: str,
+    ) -> str:
+        """Render complete doctoral answer in Carver style."""
+        sections:  List[str] = []
+        
         # Question context
-        sections.append(f"**Pregunta**: {answer.question_text}\n")
-
-        # Verdict (the core)
-        sections.append(f"## Respuesta\n\n{answer.verdict}\n")
-
-        # Evidence (facts only)
-        if answer.evidence_statements:
-            sections.append("## Evidencia\n")
-            for stmt in answer.evidence_statements:
-                sections.append(f"- {stmt}")
-
+        sections.append(f"**Pregunta**: {question_text}\n")
+        
+        # Verdict (core)
+        sections.append(cls.render_verdict(verdict_argument, confidence))
+        
+        # Evidence
+        sections.append(cls.render_evidence_section(items, found_counts, citations))
+        
         # Gaps (if any)
-        if answer.gap_statements:
-            sections.append("\n## Vacíos\n")
-            for stmt in answer.gap_statements:
-                sections.append(f"- {stmt}")
-
+        gaps_section = cls.render_gaps_section(gaps)
+        if gaps_section:
+            sections.append(gaps_section)
+        
         # Confidence
-        sections.append(f"\n## Confianza\n\n{answer.confidence_statement}")
-
-        # v3.0: Doctoral sections
-        if answer.epistemology_section:
-            sections.append(answer.epistemology_section)
-
-        if answer.limitations_section:
-            sections.append(answer.limitations_section)
-
-        if answer.benchmark_comparison:
-            sections.append(answer.benchmark_comparison)
-
-        # Theoretical references
-        if answer.theoretical_references:
-            ref_section = cls.render_theoretical_references(answer.theoretical_references)
-            sections.append(ref_section)
-
-        # Method note (discrete)
-        sections.append(f"\n---\n*{answer.method_note}*")
-
-        # Join all sections
-        full_text = "\n".join(sections)
-
-        # Apply readability checking
-        adjusted_text, metrics = ReadabilityChecker.enforce_carver_style(full_text)
-
-        # Add readability report
-        if metrics.flesch_reading_ease or metrics.proselint_score:
-            readability_note = "\n\n---\n**Métricas de Legibilidad**:\n"
-            if metrics.flesch_reading_ease:
-                readability_note += f"- Flesch Reading Ease: {metrics.flesch_reading_ease:.1f} "
-                readability_note += ("(Fácil)" if metrics.flesch_reading_ease >= 60 else "(Difícil)")
-                readability_note += "\n"
-            if metrics.flesch_kincaid_grade:
-                readability_note += f"- Nivel Educativo: {metrics.flesch_kincaid_grade:.1f} grado\n"
-            if metrics.avg_sentence_length:
-                readability_note += f"- Longitud Promedio: {metrics.avg_sentence_length:.1f} palabras/oración\n"
-            if metrics.proselint_score is not None:
-                readability_note += f"- Calidad Proselint: {metrics.proselint_score:.0%}"
-                if metrics.proselint_errors:
-                    readability_note += f" ({len(metrics.proselint_errors)} sugerencias)"
-                readability_note += "\n"
-
-            if metrics.passes_carver_standards():
-                readability_note += "\n✓ Cumple estándares Carver de claridad y concisión."
-
-            adjusted_text += readability_note
-
-        return adjusted_text
+        sections.append(cls.render_confidence_section(confidence, strategy))
+        
+        # Limitations (if present)
+        limitations_section = cls.render_limitations_section(depth)
+        if limitations_section: 
+            sections.append(limitations_section)
+        
+        # Assumptions (if present, only if no major gaps)
+        critical_count = sum(1 for g in gaps if g.severity == GapSeverity. CRITICAL)
+        if critical_count == 0:
+            assumptions_section = cls. render_assumptions_section(depth)
+            if assumptions_section: 
+                sections.append(assumptions_section)
+        
+        # Epistemology (if strong evidence)
+        if confidence.point_estimate >= 0.6:
+            epistemology_section = cls.render_epistemology_section(depth)
+            if epistemology_section: 
+                sections.append(epistemology_section)
+        
+        # Score summary
+        sections. append(cls.render_score_summary(score, quality_level))
+        
+        # Methodology note
+        sections.append(cls. render_methodology_note(depth, modality))
+        
+        # Join sections
+        full_text = "\n\n".join(sections)
+        
+        # Check readability
+        metrics = ReadabilityChecker. check(full_text)
+        if not metrics.passes_carver_standards: 
+            logger.warning(
+                "carver_style_check_failed",
+                issues=metrics.issues,
+            )
+        
+        return full_text
 
 
 # =============================================================================
-# MAIN SYNTHESIZER v3.0 (FULL EXTRACTION)
+# DOCTORAL HUMAN ANSWER
+# =============================================================================
+
+@dataclass
+class DoctoralHumanAnswer: 
+    """
+    Complete doctoral answer output. 
+    
+    Compatible with Phase 3 scoring requirements: 
+    - score: float [0.0, 1.0]
+    - quality_level: QualityLevel
+    - human_answer: str (Markdown)
+    - scoring_metadata: ScoringMetadata
+    """
+    # Core output
+    question_id: str
+    score: float
+    quality_level: QualityLevel
+    human_answer: str
+    
+    # Scoring metadata
+    scoring_metadata: ScoringMetadata
+    
+    # Evidence summary
+    evidence_count: int
+    evidence_by_type: Dict[str, int]
+    citations:  Tuple[Citation, ...]
+    
+    # Gaps
+    gaps: Tuple[EvidenceGap, ...]
+    critical_gap_count: int
+    
+    # Confidence
+    confidence: BayesianConfidence
+    
+    # Methodology
+    dimension:  Dimension
+    modality: ScoringModality
+    methodological_depth: Optional[MethodologicalDepth]
+    
+    # Trace
+    synthesis_timestamp: str
+    synthesis_trace: Dict[str, Any]
+    carver_version: str = "4.0.0"
+    
+    def to_dict(self) -> DoctoralAnswerDict:
+        """Convert to Phase 3 compatible dict."""
+        return {
+            "question_id": self.question_id,
+            "score": round(self.score, 4),
+            "quality_level": self. quality_level.value,
+            "human_answer": self. human_answer,
+            "scoring_metadata": self.scoring_metadata,
+            "evidence_summary": self.evidence_by_type,
+            "gaps": [
+                {
+                    "type": g.element_type,
+                    "expected":  g.expected,
+                    "found":  g.found,
+                    "severity": g.severity. value,
+                }
+                for g in self.gaps
+            ],
+            "synthesis_timestamp": self. synthesis_timestamp,
+            "carver_version": self.carver_version,
+        }
+    
+    def to_phase3_output(self) -> Dict[str, Any]: 
+        """Convert to full Phase 3 output format."""
+        return {
+            "question_id": self. question_id,
+            "score": round(self.score, 4),
+            "normalized_score": int(self.score * 100),
+            "quality_level":  self.quality_level.value,
+            "passes_threshold": self.score >= THRESHOLD_ACEPTABLE,
+            "confidence_interval": [
+                self.confidence.interval_95.lower,
+                self.confidence. interval_95.upper,
+            ],
+            "human_answer": self.human_answer,
+            "scoring_metadata": self.scoring_metadata,
+            "evidence":  {
+                "count":  self.evidence_count,
+                "by_type": self. evidence_by_type,
+                "citation_count": len(self.citations),
+            },
+            "gaps": {
+                "total": len(self. gaps),
+                "critical": self.critical_gap_count,
+                "details": [g.element_type for g in self.gaps],
+            },
+            "methodology": {
+                "dimension": self.dimension.value,
+                "modality": self.modality.value,
+                "method_count": (
+                    self. methodological_depth. total_methods
+                    if self. methodological_depth else 0
+                ),
+            },
+            "provenance": {
+                "timestamp": self. synthesis_timestamp,
+                "version": self.carver_version,
+                "trace_hash": hashlib.sha256(
+                    str(self.synthesis_trace).encode()
+                ).hexdigest()[:16],
+            },
+        }
+
+
+# =============================================================================
+# DOCTORAL CARVER SYNTHESIZER (MAIN CLASS)
 # =============================================================================
 
 class DoctoralCarverSynthesizer:
     """
-    Sintetizador Doctoral-Carver v3.0 FULL EXTRACTION.
-
-    Combina rigor académico con prosa minimalista.
-    Cada afirmación respaldada. Cada gap reconocido.
-"""
-
-import math
-import re
-import statistics
-from abc import ABC, abstractmethod
-from collections import defaultdict
-from dataclasses import dataclass, field
-from enum import Enum
-from typing import (
-    Any,
-    Dict,
-    List,
-    Optional,
-    Tuple,
-    TypeAlias,
-)
-
-# Readability and style checking libraries
-try:
-    import textstat  # Flesch-Kincaid and readability metrics
-except ImportError:
-    textstat = None  # type: ignore
-
-try:
-    from proselint.tools import lint as proselint_check  # Style and clarity checking
-except ImportError:
-    proselint_check = None  # type: ignore
+    Main synthesizer class for doctoral-level Carver answers.
+    
+    Orchestrates: 
+    1. Contract interpretation
+    2. Nexus output adaptation
+    3. Evidence analysis
+    4. Gap identification
+    5. Confidence computation
+    6. Argument building
+    7. Prose rendering
+    8. Output generation
+    
+    Thread-safe and stateless (all state passed as arguments).
+    """
+    
+    def __init__(
+        self,
+        strict_mode: bool = True,
+        enable_readability_check: bool = True,
+    ):
+        """
+        Initialize synthesizer.
+        
+        Args:
+            strict_mode:  Fail on contract errors (vs. graceful degradation)
+            enable_readability_check: Run Flesch-Kincaid checks
+        """
+        self.strict_mode = strict_mode
+        self.enable_readability_check = enable_readability_check
+        
+        logger.info(
+            "doctoral_carver_synthesizer_initialized",
+            version="4.0.0",
+            strict_mode=strict_mode,
+        )
+    
+    def synthesize(
+        self,
+        nexus_output: Dict[str, Any],
+        contract:  Dict[str, Any],
+    ) -> DoctoralHumanAnswer: 
+        """
+        Synthesize doctoral answer from Nexus output and contract.
+        
+        Args:
+            nexus_output: Output from EvidenceNexus. process()
+            contract:  V4 contract for this question
+        
+        Returns: 
+            DoctoralHumanAnswer with score, quality_level, and human_answer
+        """
+        start_time = datetime.now(timezone.utc)
+        
+        # 1. Interpret contract
+        question_id = ContractInterpreter. extract_question_id(contract)
+        dimension = ContractInterpreter.extract_dimension(contract)
+        expected_elements = ContractInterpreter.extract_expected_elements(contract)
+        question_text = ContractInterpreter.extract_question_text(contract)
+        modality = ContractInterpreter.extract_scoring_modality(contract)
+        methodological_depth = ContractInterpreter. extract_methodological_depth(contract)
+        
+        # 2. Get dimension strategy
+        strategy = get_dimension_strategy(dimension)
+        
+        # 3. Adapt Nexus output
+        items = NexusOutputAdapter.extract_evidence_items(nexus_output)
+        citations = NexusOutputAdapter.extract_citations(nexus_output)
+        nexus_confidence = NexusOutputAdapter.extract_overall_confidence(nexus_output)
+        
+        # 4. Analyze evidence
+        found_counts = EvidenceAnalyzer.count_by_type(items)
+        corroborations = EvidenceAnalyzer.find_corroborations(items)
+        contradictions = EvidenceAnalyzer.find_contradictions(items)
+        
+        # 5. Identify gaps
+        gaps = GapAnalyzer.identify_gaps(expected_elements, found_counts, dimension)
+        critical_gap_count = sum(1 for g in gaps if g. severity == GapSeverity.CRITICAL)
+        
+        # 6. Compute Bayesian confidence
+        confidence = BayesianConfidenceEngine.compute(
+            items, gaps, corroborations, contradictions
+        )
+        
+        # 7. Compute final score
+        score = self._compute_final_score(
+            confidence=confidence,
+            gaps=gaps,
+            nexus_confidence=nexus_confidence,
+            items=items,
+        )
+        
+        # 8. Determine quality level
+        quality_level = QualityLevel. from_score(score)
+        
+        # 9. Build Toulmin arguments
+        verdict_argument = ToulminArgumentBuilder.build_verdict_argument(
+            strategy, gaps, items, confidence
+        )
+        
+        # 10. Render prose
+        human_answer = CarverProseRenderer. render_full_answer(
+            verdict_argument=verdict_argument,
+            confidence=confidence,
+            strategy=strategy,
+            items=items,
+            found_counts=found_counts,
+            citations=citations,
+            gaps=gaps,
+            depth=methodological_depth,
+            modality=modality,
+            score=score,
+            quality_level=quality_level,
+            question_text=question_text,
+        )
+        
+        # 11. Build scoring metadata
+        scoring_metadata:  ScoringMetadata = {
+            "modality": modality. value,
+            "threshold": THRESHOLD_ACEPTABLE,
+            "confidence_interval": [
+                confidence.interval_95.lower,
+                confidence.interval_95.upper,
+            ],
+            "evidence_count": len(items),
+            "gap_count": len(gaps),
+            "critical_gaps": critical_gap_count,
+        }
+        
+        # 12. Build synthesis trace
+        synthesis_trace = {
+            "dimension": dimension.value,
+            "items_count": len(items),
+            "gaps_count": len(gaps),
+            "critical_gaps": critical_gap_count,
+            "corroborations": len(corroborations),
+            "contradictions": len(contradictions),
+            "confidence_point": confidence.point_estimate,
+            "confidence_belief": confidence.belief,
+            "confidence_plausibility": confidence. plausibility,
+            "score_raw": score,
+            "quality_level": quality_level.value,
+            "nexus_confidence": nexus_confidence,
+        }
+        
+        end_time = datetime. now(timezone.utc)
+        synthesis_timestamp = end_time. isoformat()
+        
+        logger.info(
+            "doctoral_answer_synthesized",
+            question_id=question_id,
+            score=f"{score:.3f}",
+            quality_level=quality_level.value,
+            evidence_count=len(items),
+            gap_count=len(gaps),
+            synthesis_ms=int((end_time - start_time).total_seconds() * 1000),
+        )
+        
+        return DoctoralHumanAnswer(
+            question_id=question_id,
+            score=score,
+            quality_level=quality_level,
+            human_answer=human_answer,
+            scoring_metadata=scoring_metadata,
+            evidence_count=len(items),
+            evidence_by_type=found_counts,
+            citations=citations,
+            gaps=gaps,
+            critical_gap_count=critical_gap_count,
+            confidence=confidence,
+            dimension=dimension,
+            modality=modality,
+            methodological_depth=methodological_depth,
+            synthesis_timestamp=synthesis_timestamp,
+            synthesis_trace=synthesis_trace,
+        )
+    
+    def _compute_final_score(
+        self,
+        confidence: BayesianConfidence,
+        gaps: Sequence[EvidenceGap],
+        nexus_confidence: float,
+        items:  Sequence[EvidenceItem],
+    ) -> float:
+        """
+        Compute final calibrated score.
+        
+        Combines: 
+        - Bayesian confidence
+        - Gap penalties
+        - Nexus confidence
+        - Evidence strength distribution
+        """
+        if not items:
+            return 0.0
+        
+        # Base:  Bayesian point estimate
+        base_score = confidence. point_estimate
+        
+        # Weight with Nexus confidence
+        combined = 0.7 * base_score + 0.3 * nexus_confidence
+        
+        # Gap penalties (already factored in Bayesian, but add floor)
+        critical_count = sum(1 for g in gaps if g.severity == GapSeverity. CRITICAL)
+        if critical_count >= 3:
+            combined = min(combined, 0.3)  # Hard cap
+        elif critical_count >= 1:
+            combined = min(combined, 0.5)  # Soft cap
+        
+        # Evidence quality bonus
+        strong_count = sum(1 for i in items if i.strength.value >= 4)
+        if strong_count >= 5:
+            combined = min(1.0, combined + 0.05)
+        
+        # Clamp to valid range
+        return max(0.0, min(1.0, round(combined, 4)))
+    
+    def synthesize_batch(
+        self,
+        question_results: List[Tuple[Dict[str, Any], Dict[str, Any]]],
+    ) -> List[DoctoralHumanAnswer]:
+        """
+        Synthesize answers for multiple questions.
+        
+        Args:
+            question_results: List of (nexus_output, contract) tuples
+        
+        Returns: 
+            List of DoctoralHumanAnswer objects
+        """
+        answers:  List[DoctoralHumanAnswer] = []
+        
+        for nexus_output, contract in question_results: 
+            try: 
+                answer = self. synthesize(nexus_output, contract)
+                answers.append(answer)
+            except Exception as e: 
+                if self.strict_mode:
+                    raise
+                logger.error(
+                    "synthesis_failed",
+                    error=str(e),
+                    contract_id=contract.get("identity", {}).get("question_id", "UNKNOWN"),
+                )
+        
+        return answers
 
 
 # =============================================================================
-# TYPE SYSTEM
+# MESO/MACRO AGGREGATORS
 # =============================================================================
 
-Confidence: TypeAlias = float  # [0.0, 1.0]
-BeliefMass: TypeAlias = float  # Dempster-Shafer belief
-PlausibilityMass: TypeAlias = float  # Dempster-Shafer plausibility
+class MesoAggregator:
+    """
+    Aggregates micro question answers into meso cluster results.
+    
+    Meso clusters group related questions within a dimension-policy area.
+    """
+    
+    @classmethod
+    def aggregate_cluster(
+        cls,
+        micro_answers:  Sequence[DoctoralHumanAnswer],
+        cluster_id: str,
+    ) -> Dict[str, Any]: 
+        """Aggregate micro answers into meso cluster score."""
+        if not micro_answers: 
+            return {
+                "cluster_id": cluster_id,
+                "score": 0.0,
+                "quality_level": "INSUFICIENTE",
+                "micro_count": 0,
+                "coherence": 0.0,
+            }
+        
+        # Extract scores
+        scores = [a.score for a in micro_answers]
+        
+        # Mean score
+        mean_score = statistics.mean(scores)
+        
+        # Coherence (inverse of coefficient of variation)
+        if len(scores) > 1:
+            std_dev = statistics.stdev(scores)
+            coherence = max(0.0, 1.0 - (std_dev / max(mean_score, 0.01)))
+        else:
+            coherence = 1.0
+        
+        # Penalty for variance
+        if len(scores) > 1:
+            variance = statistics.variance(scores)
+            variance_penalty = min(0.15, variance * 0.3)
+            adjusted_score = max(0.0, mean_score - variance_penalty)
+        else:
+            adjusted_score = mean_score
+        
+        quality_level = QualityLevel.from_score(adjusted_score)
+        
+        return {
+            "cluster_id": cluster_id,
+            "score": round(adjusted_score, 4),
+            "quality_level": quality_level.value,
+            "micro_count": len(micro_answers),
+            "coherence": round(coherence, 3),
+            "mean_raw": round(mean_score, 4),
+            "min_score": round(min(scores), 4),
+            "max_score":  round(max(scores), 4),
+        }
 
 
-class Dimension(Enum):
-    """Las 6 dimensiones causales del modelo lógico."""
-    D1_INSUMOS = "DIM01"      # Inputs: recursos, datos, diagnóstico
-    D2_ACTIVIDADES = "DIM02"  # Activities: acciones, instrumentos
-    D3_PRODUCTOS = "DIM03"    # Outputs: entregables, metas
-    D4_RESULTADOS = "DIM04"   # Outcomes: cambios inmediatos
-    D5_IMPACTOS = "DIM05"     # Impacts: cambios largo plazo
-    D6_CAUSALIDAD = "DIM06"   # Causality: lógica, M&E, adaptación
-
-
-class EvidenceStrength(Enum):
-    """Fuerza de evidencia según jerarquía epistemológica."""
-    DEFINITIVE = "definitive"      # Dato oficial verificable
-    STRONG = "strong"              # Múltiples fuentes concordantes
-    MODERATE = "moderate"          # Fuente única confiable
-    WEAK = "weak"                  # Inferido o parcial
-    ABSENT = "absent"              # No encontrado
-
-
-class GapSeverity(Enum):
-    """Severidad de gaps con implicaciones para scoring."""
-    CRITICAL = "critical"     # Bloquea evaluación positiva
-    MAJOR = "major"           # Reduce score significativamente
-    MINOR = "minor"           # Nota pero no bloquea
-    COSMETIC = "cosmetic"     # Mejora deseable
-
-
-class ArgumentRole(Enum):
-    """Roles argumentativos (RST-inspired)."""
-    CLAIM = "claim"           # Afirmación principal
-    EVIDENCE = "evidence"     # Soporte factual
-    WARRANT = "warrant"       # Justificación del vínculo
-    QUALIFIER = "qualifier"   # Limitación/condición
-    REBUTTAL = "rebuttal"     # Contraargumento reconocido
-    BACKING = "backing"       # Soporte del warrant
+class MacroAggregator:
+    """
+    Aggregates meso clusters into macro holistic evaluation.
+    
+    Macro evaluation covers the entire PA×DIM matrix (10×6 = 60 cells).
+    """
+    
+    @classmethod
+    def aggregate_holistic(
+        cls,
+        meso_results:  Sequence[Dict[str, Any]],
+        pa_dim_matrix: Optional[Dict[Tuple[str, str], float]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Aggregate meso results into macro holistic score.
+        
+        Args:
+            meso_results: List of meso cluster results
+            pa_dim_matrix: Optional PA×DIM coverage matrix
+        
+        Returns:
+            Macro evaluation result
+        """
+        if not meso_results:
+            return {
+                "score": 0.0,
+                "quality_level": "INSUFICIENTE",
+                "meso_count": 0,
+                "cross_cutting_coherence": 0.0,
+                "systemic_gaps": [],
+            }
+        
+        # Extract meso scores
+        meso_scores = [m. get("score", 0.0) for m in meso_results]
+        
+        # Base score
+        base_score = statistics.mean(meso_scores)
+        
+        # Cross-cutting coherence
+        if len(meso_scores) > 1:
+            std_dev = statistics. stdev(meso_scores)
+            coherence = max(0.0, 1.0 - (std_dev / 0.3))  # Normalize by max expected std
+        else: 
+            coherence = 1.0
+        
+        # Identify systemic gaps (meso clusters with INSUFICIENTE)
+        systemic_gaps = [
+            m. get("cluster_id", "unknown")
+            for m in meso_results
+            if m. get("quality_level") == "INSUFICIENTE"
+        ]
+        
+        # Gap penalty
+        gap_penalty = min(0.2, len(systemic_gaps) * 0.03)
+        
+        # PA×DIM coverage adjustment
+        if pa_dim_matrix: 
+            coverage_scores = list(pa_dim_matrix.values())
+            coverage_mean = statistics. mean(coverage_scores) if coverage_scores else 0.5
+            final_score = 0.7 * base_score + 0.3 * coverage_mean - gap_penalty
+        else:
+            final_score = base_score - gap_penalty
+        
+        final_score = max(0.0, min(1.0, final_score))
+        quality_level = QualityLevel.from_score(final_score)
+        
+        return {
+            "score": round(final_score, 4),
+            "quality_level": quality_level.value,
+            "meso_count": len(meso_results),
+            "cross_cutting_coherence": round(coherence, 3),
+            "systemic_gaps":  systemic_gaps,
+            "base_score": round(base_score, 4),
+            "gap_penalty": round(gap_penalty, 4),
+            "coverage_adjusted":  pa_dim_matrix is not None,
+        }
 
 
 # =============================================================================
-# DATA STRUCTURES
+# FACTORY FUNCTION
+# =============================================================================
+
+def create_synthesizer(
+    strict_mode: bool = True,
+    enable_readability_check: bool = True,
+) -> DoctoralCarverSynthesizer:
+    """
+    Factory function to create a DoctoralCarverSynthesizer. 
+    
+    Args:
+        strict_mode: Fail on contract errors
+        enable_readability_check: Run Flesch-Kincaid checks
+    
+    Returns: 
+        Configured DoctoralCarverSynthesizer instance
+    """
+    return DoctoralCarverSynthesizer(
+        strict_mode=strict_mode,
+        enable_readability_check=enable_readability_check,
+    )
+
+
+# =============================================================================
+# CONVENIENCE FUNCTIONS
+# =============================================================================
+
+def synthesize_answer(
+    nexus_output: Dict[str, Any],
+    contract: Dict[str, Any],
+) -> DoctoralHumanAnswer: 
+    """
+    Convenience function for one-shot synthesis.
+    
+    Args:
+        nexus_output:  Output from EvidenceNexus. process()
+        contract: V4 contract for this question
+    
+    Returns: 
+        DoctoralHumanAnswer
+    """
+    synthesizer = create_synthesizer()
+    return synthesizer.synthesize(nexus_output, contract)
+
+
+def synthesize_to_markdown(
+    nexus_output: Dict[str, Any],
+    contract: Dict[str, Any],
+) -> str:
+    """
+    Convenience function to get just the markdown answer.
+    
+    Args:
+        nexus_output: Output from EvidenceNexus.process()
+        contract: V4 contract for this question
+    
+    Returns:
+        Markdown string
+    """
+    answer = synthesize_answer(nexus_output, contract)
+    return answer.human_answer
+
+
+def synthesize_to_phase3(
+    nexus_output: Dict[str, Any],
+    contract: Dict[str, Any],
+) -> Dict[str, Any]:
+    """
+    Convenience function to get Phase 3 compatible output.
+    
+    Args:
+        nexus_output: Output from EvidenceNexus.process()
+        contract: V4 contract for this question
+    
+    Returns:
+        Phase 3 compatible dict
+    """
+    answer = synthesize_answer(nexus_output, contract)
+    return answer.to_phase3_output()
+
+
+# =============================================================================
+# MODULE EXPORTS
 # =============================================================================
 
 __all__ = [
     # Enums
+    "QualityLevel",
     "Dimension",
     "EvidenceStrength",
     "GapSeverity",
     "ArgumentRole",
+    "ScoringModality",
+    "NarrativeSection",
     
     # Data structures
     "ExpectedElement",
     "EvidenceItem",
     "EvidenceGap",
-    "ArgumentUnit",
-    "BayesianConfidenceResult",
-    "CarverAnswer",
-    
-    # v3.0 Data structures
+    "ToulminArgument",
+    "ConfidenceInterval",
+    "BayesianConfidence",
+    "Citation",
     "MethodEpistemology",
-    "TechnicalApproach",
-    "OutputInterpretation",
-    "MethodDepthEntry",
-    "MethodCombinationLogic",
     "MethodologicalDepth",
+    
+    # Type aliases
+    "ScoringMetadata",
+    "DoctoralAnswerDict",
     
     # Components
     "ContractInterpreter",
+    "NexusOutputAdapter",
     "EvidenceAnalyzer",
     "GapAnalyzer",
     "BayesianConfidenceEngine",
-    "DimensionStrategy",
-    "CarverRenderer",
+    "ToulminArgumentBuilder",
+    "ReadabilityChecker",
+    "CarverProseRenderer",
     
-    # Main class
+    # Strategies
+    "DimensionStrategy",
+    "D1InsumosStrategy",
+    "D2ActividadesStrategy",
+    "D3ProductosStrategy",
+    "D4ResultadosStrategy",
+    "D5ImpactosStrategy",
+    "D6CausalidadStrategy",
+    "get_dimension_strategy",
+    
+    # Main classes
+    "DoctoralHumanAnswer",
     "DoctoralCarverSynthesizer",
     
-    # Factory
-    "get_dimension_strategy",
+    # Aggregators
+    "MesoAggregator",
+    "MacroAggregator",
+    
+    # Factory and convenience functions
+    "create_synthesizer",
+    "synthesize_answer",
+    "synthesize_to_markdown",
+    "synthesize_to_phase3",
 ]

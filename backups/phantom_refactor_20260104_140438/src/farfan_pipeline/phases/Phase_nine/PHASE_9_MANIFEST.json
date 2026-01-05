@@ -1,0 +1,94 @@
+{
+  "$schema": "phase_manifest_schema.json",
+  "manifest_version": "1.0.0",
+  "phase": {
+    "number": 9,
+    "name": "Report Generation",
+    "codename": "REPORTER",
+    "label": "Phase 9",
+    "description": "Final report generation phase that assembles all analysis results into comprehensive policy documents"
+  },
+  "metadata": {
+    "created": "2025-12-30",
+    "modified": "2025-12-30",
+    "version": "1.0.0",
+    "author": "F.A.R.F.A.N Core Architecture Team",
+    "status": "ACTIVE"
+  },
+  "statistics": {
+    "total_modules": 3,
+    "stages": 4
+  },
+  "stages": [
+    {
+      "code": 0,
+      "name": "Base",
+      "description": "Package init and types",
+      "execution_order": 1
+    },
+    {
+      "code": 10,
+      "name": "Init",
+      "description": "Report initialization",
+      "execution_order": 2
+    },
+    {
+      "code": 20,
+      "name": "Assembly",
+      "description": "Report assembly and composition",
+      "execution_order": 3,
+      "modules": [
+        {
+          "canonical_name": "report_assembly",
+          "type": "ASM",
+          "criticality": "CRITICAL",
+          "purpose": "Assemble report components"
+        },
+        {
+          "canonical_name": "report_generator",
+          "type": "GEN",
+          "criticality": "HIGH",
+          "purpose": "Generate final report documents"
+        }
+      ]
+    },
+    {
+      "code": 30,
+      "name": "Output",
+      "description": "Report output and formatting",
+      "execution_order": 4,
+      "modules": [
+        {
+          "canonical_name": "signal_enriched_reporting",
+          "type": "GEN",
+          "criticality": "HIGH",
+          "purpose": "Generate signal-enriched reports"
+        }
+      ]
+    }
+  ],
+  "contracts": {
+    "inputs": [
+      {"name": "recommendations", "type": "list[Recommendation]", "required": true},
+      {"name": "analysis_summary", "type": "AnalysisSummary", "required": true},
+      {"name": "template_config", "type": "TemplateConfig", "required": false}
+    ],
+    "outputs": [
+      {"name": "policy_report", "type": "PolicyReport"},
+      {"name": "executive_summary", "type": "ExecutiveSummary"},
+      {"name": "detailed_findings", "type": "DetailedFindings"}
+    ],
+    "invariants": [
+      {"id": "INV-P9-1", "name": "Completeness", "formula": "∀ section: is_populated(section)"},
+      {"id": "INV-P9-2", "name": "Traceability", "formula": "∀ finding: has_source_reference(finding)"}
+    ]
+  },
+  "determinism": {
+    "base_seed": 42,
+    "strategy": "FIXED"
+  },
+  "documentation": {
+    "constants": "PHASE_9_CONSTANTS.py",
+    "manifest": "PHASE_9_MANIFEST.json"
+  }
+}

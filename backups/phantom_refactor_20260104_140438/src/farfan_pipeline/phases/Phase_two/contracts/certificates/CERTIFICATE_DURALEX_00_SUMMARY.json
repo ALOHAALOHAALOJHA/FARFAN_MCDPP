@@ -1,0 +1,118 @@
+{
+  "summary_id": "CERT-P2-DURA-LEX-SUMMARY",
+  "phase": "Phase 2",
+  "total_tests": 15,
+  "passed": 15,
+  "failed": 0,
+  "date_issued": "2025-12-17T23:53:18.842927+00:00",
+  "lifecycle_state": "ACTIVE",
+  "certificates": [
+    "CERTIFICATE_DURALEX_01_BMC.json",
+    "CERTIFICATE_DURALEX_02_CDC.json",
+    "CERTIFICATE_DURALEX_03_CIC.json",
+    "CERTIFICATE_DURALEX_04_FFC.json",
+    "CERTIFICATE_DURALEX_05_IDC.json",
+    "CERTIFICATE_DURALEX_06_MCC.json",
+    "CERTIFICATE_DURALEX_07_OTA.json",
+    "CERTIFICATE_DURALEX_08_PIC.json",
+    "CERTIFICATE_DURALEX_09_RC.json",
+    "CERTIFICATE_DURALEX_10_RCC.json",
+    "CERTIFICATE_DURALEX_11_RFC.json",
+    "CERTIFICATE_DURALEX_12_RDC.json",
+    "CERTIFICATE_DURALEX_13_SIC.json",
+    "CERTIFICATE_DURALEX_14_SNC.json",
+    "CERTIFICATE_DURALEX_15_TOC.json"
+  ],
+  "results": [
+    {
+      "code": "BMC",
+      "name": "Budget Monotonicity Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_01_BMC.json"
+    },
+    {
+      "code": "CDC",
+      "name": "Concurrency Determinism Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_02_CDC.json"
+    },
+    {
+      "code": "CIC",
+      "name": "Context Immutability Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_03_CIC.json"
+    },
+    {
+      "code": "FFC",
+      "name": "Failure Fallback Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_04_FFC.json"
+    },
+    {
+      "code": "IDC",
+      "name": "Idempotency & Deduplication Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_05_IDC.json"
+    },
+    {
+      "code": "MCC",
+      "name": "Monotone Compliance Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_06_MCC.json"
+    },
+    {
+      "code": "OTA",
+      "name": "Output-Target Alignment Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_07_OTA.json"
+    },
+    {
+      "code": "PIC",
+      "name": "Permutation Invariance Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_08_PIC.json"
+    },
+    {
+      "code": "RC",
+      "name": "Routing Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_09_RC.json"
+    },
+    {
+      "code": "RCC",
+      "name": "Risk Certificate Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_10_RCC.json"
+    },
+    {
+      "code": "RFC",
+      "name": "Refusal Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_11_RFC.json"
+    },
+    {
+      "code": "RDC",
+      "name": "Retriever Determinism Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_12_RDC.json"
+    },
+    {
+      "code": "SIC",
+      "name": "Severe Interpreter Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_13_SIC.json"
+    },
+    {
+      "code": "SNC",
+      "name": "Snapshot Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_14_SNC.json"
+    },
+    {
+      "code": "TOC",
+      "name": "Total Ordering / Traceability Contract",
+      "passed": true,
+      "certificate": "CERTIFICATE_DURALEX_15_TOC.json"
+    }
+  ]
+}

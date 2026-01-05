@@ -4,7 +4,7 @@
     "cluster_id": "CL01",
     "patterns": [
       {
-        "description": "Verificar referencias cruzadas entre áreas ['P2', 'P3', 'P7']",
+        "description": "Verificar referencias cruzadas entre áreas ['PA02', 'PA05', 'PA07']",
         "type": "cross_reference"
       },
       {
@@ -13,9 +13,9 @@
       }
     ],
     "policy_areas": [
-      "P2",
-      "P3",
-      "P7"
+      "PA02",
+      "PA05",
+      "PA07"
     ],
     "question_global": 301,
     "question_id": "MESO_1",
@@ -28,7 +28,7 @@
     "cluster_id": "CL02",
     "patterns": [
       {
-        "description": "Verificar referencias cruzadas entre áreas ['P1', 'P5', 'P6']",
+        "description": "Verificar referencias cruzadas entre áreas ['PA01', 'PA06', 'PA08']",
         "type": "cross_reference"
       },
       {
@@ -37,9 +37,9 @@
       }
     ],
     "policy_areas": [
-      "P1",
-      "P5",
-      "P6"
+      "PA01",
+      "PA06",
+      "PA08"
     ],
     "question_global": 302,
     "question_id": "MESO_2",
@@ -52,7 +52,7 @@
     "cluster_id": "CL03",
     "patterns": [
       {
-        "description": "Verificar referencias cruzadas entre áreas ['P4', 'P8']",
+        "description": "Verificar referencias cruzadas entre áreas ['PA03', 'PA04']",
         "type": "cross_reference"
       },
       {
@@ -61,8 +61,8 @@
       }
     ],
     "policy_areas": [
-      "P4",
-      "P8"
+      "PA03",
+      "PA04"
     ],
     "question_global": 303,
     "question_id": "MESO_3",
@@ -75,7 +75,7 @@
     "cluster_id": "CL04",
     "patterns": [
       {
-        "description": "Verificar referencias cruzadas entre áreas ['P9', 'P10']",
+        "description": "Verificar referencias cruzadas entre áreas ['PA09', 'PA10']",
         "type": "cross_reference"
       },
       {
@@ -84,8 +84,8 @@
       }
     ],
     "policy_areas": [
-      "P9",
-      "P10"
+      "PA09",
+      "PA10"
     ],
     "question_global": 304,
     "question_id": "MESO_4",

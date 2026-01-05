@@ -17,22 +17,22 @@ except Exception:  # pragma: no cover
     Draft7Validator = Any  # type: ignore[misc,assignment]
 
 try:
-    from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+    from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
 except ImportError:
     from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
 
 try:
-    from canonic_phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
+    from farfan_pipeline.phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
 except ImportError:
     from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import EvidenceNexus, process_evidence
 
 try:
-    from canonic_phases.Phase_two.carver import DoctoralCarverSynthesizer
+    from farfan_pipeline.phases.Phase_two.carver import DoctoralCarverSynthesizer
 except ImportError:
     from farfan_pipeline.phases.Phase_two.phase2_90_00_carver import DoctoralCarverSynthesizer
 
 try:
-    from canonic_phases.Phase_two.calibration_policy import CalibrationPolicy, create_default_policy
+    from farfan_pipeline.phases.Phase_two.calibration_policy import CalibrationPolicy, create_default_policy
 except ImportError:
     try:
         from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import CalibrationPolicy, create_default_policy
@@ -405,6 +405,39 @@ class BaseExecutorWithContract(ABC):
                                     errors.append(
                                         f"methods[{idx}]: class '{class_name}' not found in class registry"
                                     )
+            elif orchestration_mode == "epistemological_pipeline":
+                # v4 epistemological pipeline uses execution_phases structure
+                if "execution_phases" not in method_binding:
+                    errors.append("method_binding missing 'execution_phases' for epistemological_pipeline mode")
+                elif not isinstance(method_binding["execution_phases"], dict):
+                    errors.append("method_binding.execution_phases must be a dict")
+                else:
+                    execution_phases = method_binding["execution_phases"]
+                    expected_phases = ["phase_A_construction", "phase_B_computation", "phase_C_litigation"]
+                    for phase_key in expected_phases:
+                        if phase_key in execution_phases:
+                            phase_spec = execution_phases[phase_key]
+                            if not isinstance(phase_spec, dict):
+                                errors.append(f"execution_phases.{phase_key} must be a dict")
+                                continue
+                            phase_methods = phase_spec.get("methods", [])
+                            if not isinstance(phase_methods, list):
+                                errors.append(f"execution_phases.{phase_key}.methods must be a list")
+                            else:
+                                for idx, method_spec in enumerate(phase_methods):
+                                    if not isinstance(method_spec, dict):
+                                        errors.append(f"{phase_key}.methods[{idx}] is not a dict")
+                                        continue
+                                    if "class_name" not in method_spec:
+                                        errors.append(f"{phase_key}.methods[{idx}] missing 'class_name'")
+                                    if "method_name" not in method_spec:
+                                        errors.append(f"{phase_key}.methods[{idx}] missing 'method_name'")
+                                    if class_registry is not None and "class_name" in method_spec:
+                                        class_name = method_spec["class_name"]
+                                        if class_name not in class_registry:
+                                            errors.append(
+                                                f"{phase_key}.methods[{idx}]: class '{class_name}' not in registry"
+                                            )
             elif "class_name" not in method_binding and "primary_method" not in method_binding:
                 errors.append(
                     "method_binding missing 'class_name' or 'primary_method' for single_method mode"
@@ -471,7 +504,7 @@ class BaseExecutorWithContract(ABC):
                 local_path = (
                     PROJECT_ROOT
                     / "src"
-                    / "canonic_phases"
+                    / "farfan_pipeline.phases"
                     / "Phase_two"
                     / "json_files_phase_two"
                     / f"executor_contract.{version}.schema.json"
@@ -497,12 +530,29 @@ class BaseExecutorWithContract(ABC):
     def _detect_contract_version(cls, contract: dict[str, Any]) -> str:
         """Detect contract version from structure.
 
+        v4 contracts have: identity with contract_version "4.0.0-*", signal_requirements, 
+                          question_context with patterns and monolith_ref
         v3 contracts have: identity, executor_binding, method_binding, question_context
         v2 contracts have: method_inputs, assembly_rules at top level
 
         Returns:
-            "v3" or "v2"
+            "v4", "v3" or "v2"
         """
+        # Check for v4 first (most complete)
+        identity = contract.get("identity", {})
+        contract_version = identity.get("contract_version", "")
+        question_context = contract.get("question_context", {})
+        
+        # v4 indicators: contract_version starts with 4, has signal_requirements,
+        # question_context has patterns and monolith_ref
+        if (
+            contract_version.startswith("4.") and
+            "signal_requirements" in contract and
+            "patterns" in question_context and
+            "monolith_ref" in question_context
+        ):
+            return "v4"
+        
         v3_indicators = [
             "identity",
             "executor_binding",
@@ -514,13 +564,38 @@ class BaseExecutorWithContract(ABC):
         return "v2"
 
     @classmethod
-    def _load_contract(cls, question_id: str | None = None) -> dict[str, Any]:
+    def _load_contract(
+        cls, 
+        question_id: str | None = None,
+        policy_area_id: str | None = None,
+    ) -> dict[str, Any]:
+        """Load contract with v4 (generated_contracts) priority.
+        
+        Search order:
+        1. generated_contracts/{q_id}_{pa_id}_contract_v4.json (v4 with signals)
+        2. Legacy paths (json_files_phase_two/executor_contracts/)
+        
+        Args:
+            question_id: Question ID (e.g., "Q001", "Q001_PA01")
+            policy_area_id: Policy area ID (e.g., "PA01"). If not provided,
+                           extracted from question_id if format is "Q001_PA01"
+        
+        Returns:
+            Contract dictionary with _contract_version tag
+        """
         base_slot = cls.get_base_slot()
 
         # Use specific question_id if provided, otherwise derive base Q-id from base_slot
         if question_id:
+            # Handle composite question_id like "Q001_PA01"
+            if "_PA" in question_id:
+                parts = question_id.split("_")
+                q_id = parts[0]  # "Q001"
+                if policy_area_id is None and len(parts) > 1:
+                    policy_area_id = parts[1]  # "PA01"
+            else:
+                q_id = question_id
             cache_key = f"{base_slot}:{question_id}"
-            q_id = question_id
         else:
             cache_key = base_slot
             dimension = int(base_slot[1])
@@ -528,32 +603,56 @@ class BaseExecutorWithContract(ABC):
             q_number = (dimension - 1) * 5 + question
             q_id = f"Q{q_number:03d}"
 
+        # Include policy_area in cache key if provided
+        if policy_area_id:
+            cache_key = f"{cache_key}:{policy_area_id}"
+
         if cache_key in cls._contract_cache:
             return cls._contract_cache[cache_key]
 
-        contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts"
+        # === V4 CONTRACTS (PRIORITY) - generated_contracts/ ===
+        # These are the 300 final contracts with full signal integration
+        v4_contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "generated_contracts"
+        
+        contract_path = None
+        expected_version = None
+        
+        # Try v4 contract with policy area
+        if policy_area_id:
+            v4_path = v4_contracts_dir / f"{q_id}_{policy_area_id}_contract_v4.json"
+            if v4_path.exists():
+                contract_path = v4_path
+                expected_version = "v4"
+        
+        # === LEGACY FALLBACK - json_files_phase_two/executor_contracts/ ===
+        if contract_path is None:
+            contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts"
 
-        v3_path = contracts_dir / f"{base_slot}.v3.json"
-        v2_path = contracts_dir / f"{base_slot}.json"
-        v3_specialized_path = contracts_dir / "specialized" / f"{q_id}.v3.json"
-        v2_specialized_path = contracts_dir / "specialized" / f"{q_id}.json"
+            v3_path = contracts_dir / f"{base_slot}.v3.json"
+            v2_path = contracts_dir / f"{base_slot}.json"
+            v3_specialized_path = contracts_dir / "specialized" / f"{q_id}.v3.json"
+            v2_specialized_path = contracts_dir / "specialized" / f"{q_id}.json"
 
-        if v3_specialized_path.exists():
-            contract_path = v3_specialized_path
-            expected_version = "v3"
-        elif v2_specialized_path.exists():
-            contract_path = v2_specialized_path
-            expected_version = "v2"
-        elif v3_path.exists():
-            contract_path = v3_path
-            expected_version = "v3"
-        elif v2_path.exists():
-            contract_path = v2_path
-            expected_version = "v2"
-        else:
+            if v3_specialized_path.exists():
+                contract_path = v3_specialized_path
+                expected_version = "v3"
+            elif v2_specialized_path.exists():
+                contract_path = v2_specialized_path
+                expected_version = "v2"
+            elif v3_path.exists():
+                contract_path = v3_path
+                expected_version = "v3"
+            elif v2_path.exists():
+                contract_path = v2_path
+                expected_version = "v2"
+        
+        if contract_path is None:
+            # Provide helpful error with all paths tried
+            tried_paths = [str(v4_contracts_dir / f"{q_id}_{policy_area_id or 'PA??'}_contract_v4.json")]
             raise FileNotFoundError(
-                f"Contract not found for {base_slot} / {q_id}. "
-                f"Tried: {v3_path}, {v2_path}, {v3_specialized_path}, {v2_specialized_path}"
+                f"Contract not found for {base_slot} / {q_id} / {policy_area_id}. "
+                f"Tried v4 path: {tried_paths[0]}. "
+                f"Ensure policy_area_id is provided for v4 contracts."
             )
 
         contract = json.loads(contract_path.read_text(encoding="utf-8"))
@@ -580,17 +679,36 @@ class BaseExecutorWithContract(ABC):
         # Tag contract with version for later use
         contract["_contract_version"] = detected_version
 
-        contract_version = contract.get("contract_version")
-        if contract_version and not str(contract_version).startswith("2"):
-            raise ValueError(
-                f"Unsupported contract_version {contract_version} for {base_slot}; expected v2.x"
-            )
+        # Validate contract_version field (if present)
+        identity = contract.get("identity", {})
+        identity_contract_version = identity.get("contract_version", "")
+        
+        # v4 contracts have version like "4.0.0-epistemological"
+        # v3 contracts may have version like "3.x.x"
+        # v2 contracts have version like "2.x.x" or contract_version at root
+        if detected_version == "v4":
+            # v4 contracts are valid - they have full signal integration
+            pass
+        elif detected_version == "v3":
+            # v3 contracts are valid
+            pass
+        else:
+            # v2 validation (legacy)
+            contract_version = contract.get("contract_version")
+            if contract_version and not str(contract_version).startswith("2"):
+                raise ValueError(
+                    f"Unsupported contract_version {contract_version} for {base_slot}; expected v2.x"
+                )
 
-        identity_base_slot = contract.get("identity", {}).get("base_slot")
+        # Validate base_slot (flexible for v4 which uses composite IDs)
+        identity_base_slot = identity.get("base_slot")
         if identity_base_slot and identity_base_slot != base_slot:
-            raise ValueError(
-                f"Contract base_slot mismatch: expected {base_slot}, found {identity_base_slot}"
-            )
+            # For v4 contracts, base_slot in identity may differ from executor base_slot
+            # because v4 uses Q001_PA01 format while executor uses D1-Q1 format
+            if detected_version != "v4":
+                raise ValueError(
+                    f"Contract base_slot mismatch: expected {base_slot}, found {identity_base_slot}"
+                )
 
         cls._contract_cache[cache_key] = contract
         return contract
@@ -671,6 +789,56 @@ class BaseExecutorWithContract(ABC):
 
         # Set the final key
         current[keys[-1]] = value
+
+    @staticmethod
+    def _evaluate_veto_condition(trigger: str, result: Any) -> bool:
+        """Evaluate a veto condition against method result.
+
+        Args:
+            trigger: Condition string (e.g., "coherence_score < 0.5")
+            result: Method execution result
+
+        Returns:
+            True if veto condition is met, False otherwise
+        """
+        if not trigger or result is None:
+            return False
+
+        # Handle result as dict with specific keys
+        if isinstance(result, dict):
+            # Common veto patterns from v4 contracts
+            if "coherence_score" in trigger and "coherence_score" in result:
+                try:
+                    score = float(result.get("coherence_score", 1.0))
+                    if "< 0.5" in trigger and score < 0.5:
+                        return True
+                except (ValueError, TypeError):
+                    pass
+
+            if "semantic_contradiction" in trigger:
+                if result.get("semantic_contradiction_detected") is True:
+                    return True
+                if result.get("contradiction_detected") is True:
+                    return True
+
+            if "critical_validation_failed" in trigger:
+                if result.get("critical_validation_failed") is True:
+                    return True
+                if result.get("validation_passed") is False:
+                    return True
+
+            # Generic boolean check
+            if "== True" in trigger:
+                key = trigger.split("==")[0].strip()
+                if result.get(key) is True:
+                    return True
+
+            if "== False" in trigger:
+                key = trigger.split("==")[0].strip()
+                if result.get(key) is False:
+                    return True
+
+        return False
 
     def _check_failure_contract(
         self, evidence: dict[str, Any], error_handling: dict[str, Any]
@@ -895,10 +1063,15 @@ class BaseExecutorWithContract(ABC):
             )
 
         question_id = question_context.get("question_id")
-        contract = self._load_contract(question_id=question_id)
+        policy_area_id = question_context.get("policy_area_id")
+        contract = self._load_contract(question_id=question_id, policy_area_id=policy_area_id)
         contract_version = contract.get("_contract_version", "v2")
 
-        if contract_version == "v3":
+        if contract_version == "v4":
+            # v4 contracts have full signal integration - use v3 execution path
+            # since v4 is a superset of v3 with additional signal fields
+            return self._execute_v3(document, question_context, contract)
+        elif contract_version == "v3":
             return self._execute_v3(document, question_context, contract)
         else:
             return self._execute_v2(document, question_context, contract)
@@ -930,7 +1103,7 @@ class BaseExecutorWithContract(ABC):
             signal_pack = enriched_pack.base_pack  # Maintain compatibility
 
             # Create document context from available metadata
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
                 create_document_context,
             )
 
@@ -998,7 +1171,7 @@ class BaseExecutorWithContract(ABC):
             
             if self.calibration_orchestrator:
                 try:
-                    from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
+                    from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
                         MethodBelowThresholdError,
                     )
                     
@@ -1169,7 +1342,7 @@ class BaseExecutorWithContract(ABC):
             }
 
             # Validate with contracts (REFACTORING #4: contract validation)
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
                 validate_result_with_orchestrator,
             )
 
@@ -1207,7 +1380,7 @@ class BaseExecutorWithContract(ABC):
                 }
         elif self._use_validation_orchestrator:
             # Even without enriched pack, use validation orchestrator with basic validation
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
                 validate_result_with_orchestrator,
             )
 
@@ -1340,7 +1513,7 @@ class BaseExecutorWithContract(ABC):
         # SISAS: Inject consumption tracking (utility + proof chain)
         consumption_tracker = None
         try:
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
                 inject_consumption_tracking,
             )
 
@@ -1357,7 +1530,7 @@ class BaseExecutorWithContract(ABC):
         # Build document context (for scope coherence + context-aware pattern filtering)
         document_context: dict[str, Any] = {}
         try:
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
                 create_document_context,
             )
 
@@ -1425,7 +1598,7 @@ class BaseExecutorWithContract(ABC):
                 
                 if self.calibration_orchestrator:
                     try:
-                        from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
+                        from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
                             MethodBelowThresholdError,
                         )
                         
@@ -1505,6 +1678,146 @@ class BaseExecutorWithContract(ABC):
                         raise
                     # Otherwise continue with other methods
 
+        elif orchestration_mode == "epistemological_pipeline":
+            # v4 Epistemological Pipeline: Phased execution with fusion semantics
+            # Phases: A (N1-EMP), B (N2-INF), C (N3-AUD)
+            # Each phase has its own methods and fusion behavior
+            execution_phases = method_binding.get("execution_phases", {})
+            if not execution_phases:
+                raise ValueError(
+                    f"orchestration_mode is 'epistemological_pipeline' but no execution_phases found in method_binding for {base_slot}"
+                )
+
+            # Phase execution order (deterministic)
+            phase_order = ["phase_A_construction", "phase_B_computation", "phase_C_litigation"]
+            phase_outputs: dict[str, dict[str, Any]] = {}
+            veto_triggered = False
+            veto_details: list[dict[str, Any]] = []
+
+            for phase_key in phase_order:
+                if phase_key not in execution_phases:
+                    continue
+
+                phase_spec = execution_phases[phase_key]
+                phase_level = phase_spec.get("level", "N1")
+                phase_methods = phase_spec.get("methods", [])
+                phase_dependencies = phase_spec.get("dependencies", [])
+                output_target = phase_spec.get("output_target", phase_key)
+                fusion_mode = phase_spec.get("fusion_mode", "standard")
+
+                # Build phase context with dependencies from previous phases
+                phase_context = dict(common_kwargs)
+                for dep_key in phase_dependencies:
+                    if dep_key in phase_outputs:
+                        phase_context[dep_key] = phase_outputs[dep_key]
+
+                # Execute methods in phase
+                phase_results: dict[str, Any] = {}
+                for method_spec in phase_methods:
+                    class_name = method_spec["class_name"]
+                    method_name = method_spec["method_name"]
+                    provides = method_spec.get("provides", f"{class_name}.{method_name}".lower())
+                    method_id = f"{class_name}.{method_name}"
+                    method_level = method_spec.get("level", phase_level)
+
+                    # Calibration check
+                    if self.calibration_orchestrator:
+                        try:
+                            from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
+                                MethodBelowThresholdError,
+                            )
+                            calibration_result = self.calibration_orchestrator.calibrate(
+                                method_id=method_id,
+                                context=phase_context,
+                                evidence=None
+                            )
+                            calibration_results[method_id] = calibration_result.to_dict()
+                        except MethodBelowThresholdError as e:
+                            import logging
+                            logger = logging.getLogger(__name__)
+                            logger.error(
+                                f"[{base_slot}][{phase_key}] Method {method_id} FAILED calibration"
+                            )
+                            raise RuntimeError(f"Method {method_id} failed calibration") from e
+                        except Exception as e:
+                            import logging
+                            logger = logging.getLogger(__name__)
+                            logger.warning(f"[{base_slot}] Calibration error for {method_id}: {e}")
+
+                    try:
+                        result = self.method_executor.execute(
+                            class_name=class_name,
+                            method_name=method_name,
+                            **phase_context,
+                        )
+
+                        # Store result with fusion metadata
+                        phase_results[provides] = {
+                            "result": result,
+                            "level": method_level,
+                            "fusion_behavior": method_spec.get("fusion_behavior", "additive"),
+                            "confidence": method_spec.get("confidence_score", 0.8),
+                        }
+
+                        # Track signal usage
+                        if signal_pack is not None:
+                            signal_usage_list.append({
+                                "method": method_id,
+                                "phase": phase_key,
+                                "level": method_level,
+                                "policy_area": signal_pack.policy_area,
+                                "version": signal_pack.version,
+                            })
+
+                        # N3-AUD: Check for veto conditions
+                        if method_level.startswith("N3"):
+                            veto_conditions = method_spec.get("veto_conditions", {})
+                            for veto_name, veto_spec in veto_conditions.items():
+                                trigger = veto_spec.get("trigger", "")
+                                # Evaluate veto condition against result
+                                if self._evaluate_veto_condition(trigger, result):
+                                    action = veto_spec.get("action", "reduce_confidence")
+                                    multiplier = veto_spec.get("confidence_multiplier", 0.5)
+                                    veto_triggered = True
+                                    veto_details.append({
+                                        "veto_name": veto_name,
+                                        "method": method_id,
+                                        "action": action,
+                                        "multiplier": multiplier,
+                                        "rationale": veto_spec.get("rationale", ""),
+                                    })
+                                    if action == "block_branch" or action == "invalidate_graph":
+                                        import logging
+                                        logging.warning(
+                                            f"[{base_slot}] VETO triggered by {method_id}: {veto_name}"
+                                        )
+
+                    except Exception as exc:
+                        import logging
+                        logging.error(
+                            f"[{base_slot}][{phase_key}] Method {method_id} failed: {exc}",
+                            exc_info=True,
+                        )
+                        phase_results[f"_error_{provides}"] = {
+                            "error": str(exc),
+                            "method": method_id,
+                        }
+                        error_handling = contract.get("error_handling", {})
+                        if error_handling.get("on_method_failure") == "raise":
+                            raise
+
+                # Store phase outputs for downstream phases
+                phase_outputs[output_target] = phase_results
+                method_outputs[phase_key] = phase_results
+
+            # Store epistemological execution metadata
+            method_outputs["_epistemological_metadata"] = {
+                "phases_executed": list(phase_outputs.keys()),
+                "veto_triggered": veto_triggered,
+                "veto_details": veto_details,
+                "fusion_specification": contract.get("fusion_specification", {}),
+            }
+
         else:
             # Single-method execution (backward compatible, default)
             class_name = method_binding.get("class_name")
@@ -1525,7 +1838,7 @@ class BaseExecutorWithContract(ABC):
             
             if self.calibration_orchestrator:
                 try:
-                    from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
+                    from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
                         MethodBelowThresholdError,
                     )
                     
@@ -1618,7 +1931,7 @@ class BaseExecutorWithContract(ABC):
         # CONTRACT VALIDATION with ValidationOrchestrator
         contract_validation = None
         if self._use_validation_orchestrator:
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
                 validate_result_with_orchestrator,
             )
 
@@ -2393,11 +2706,12 @@ class DynamicContractExecutor(BaseExecutorWithContract):
         return base_slot
     
     @classmethod
-    def _derive_base_slot_from_contract(cls, question_id: str) -> str:
+    def _derive_base_slot_from_contract(cls, question_id: str, policy_area_id: str | None = None) -> str:
         """Fallback: derive base_slot by loading the contract identity.base_slot.
         
         Args:
-            question_id: Question identifier
+            question_id: Question identifier (e.g., "Q001")
+            policy_area_id: Optional policy area (e.g., "PA01")
             
         Returns:
             Base slot from contract identity
@@ -2405,20 +2719,34 @@ class DynamicContractExecutor(BaseExecutorWithContract):
         Raises:
             FileNotFoundError: If contract not found
         """
-        contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts"
+        # Try v4 contracts first (generated_contracts/)
+        v4_contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "generated_contracts"
         
-        # Try specialized contract
-        v3_path = contracts_dir / "specialized" / f"{question_id}.v3.json"
-        v2_path = contracts_dir / "specialized" / f"{question_id}.json"
+        contract_path = None
         
-        contract_path = v3_path if v3_path.exists() else v2_path
-        if not contract_path.exists():
-            raise FileNotFoundError(f"Contract not found for {question_id}")
+        if policy_area_id:
+            v4_path = v4_contracts_dir / f"{question_id}_{policy_area_id}_contract_v4.json"
+            if v4_path.exists():
+                contract_path = v4_path
+        
+        # Fallback to legacy paths
+        if contract_path is None:
+            contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts"
+            
+            # Try specialized contract
+            v3_path = contracts_dir / "specialized" / f"{question_id}.v3.json"
+            v2_path = contracts_dir / "specialized" / f"{question_id}.json"
+            
+            contract_path = v3_path if v3_path.exists() else v2_path
+        
+        if contract_path is None or not contract_path.exists():
+            raise FileNotFoundError(f"Contract not found for {question_id} / {policy_area_id}")
         
         contract = json.loads(contract_path.read_text(encoding="utf-8"))
         base_slot = contract.get("identity", {}).get("base_slot", "D1-Q1")
         
-        cls._question_to_base_slot_cache[question_id] = base_slot
+        cache_key = f"{question_id}_{policy_area_id}" if policy_area_id else question_id
+        cls._question_to_base_slot_cache[cache_key] = base_slot
         return base_slot
     
     @classmethod
@@ -2460,11 +2788,18 @@ class DynamicContractExecutor(BaseExecutorWithContract):
                 f"differs from derived {base_slot}, using derived"
             )
 
-        # Load contract using instance's question_id
-        contract = self._load_contract(question_id=self._question_id)
+        # Load contract using instance's question_id and policy_area_id
+        policy_area_id = question_context.get("policy_area_id")
+        contract = self._load_contract(
+            question_id=self._question_id,
+            policy_area_id=policy_area_id,
+        )
         contract_version = contract.get("_contract_version", "v2")
 
-        if contract_version == "v3":
+        if contract_version == "v4":
+            # v4 contracts use v3 execution path (v4 is superset of v3)
+            return self._execute_v3(document, question_context, contract)
+        elif contract_version == "v3":
             return self._execute_v3(document, question_context, contract)
         else:
             return self._execute_v2(document, question_context, contract)

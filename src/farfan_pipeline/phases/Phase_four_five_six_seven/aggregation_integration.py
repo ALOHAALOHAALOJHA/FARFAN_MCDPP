@@ -18,7 +18,7 @@ from typing import Any, TYPE_CHECKING
 if TYPE_CHECKING:
     from orchestration.orchestrator import ScoredMicroQuestion, MacroEvaluation
 
-from canonic_phases.phase_4_7_aggregation_pipeline.aggregation import (
+from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
     DimensionAggregator,
     DimensionScore,
     AreaPolicyAggregator,

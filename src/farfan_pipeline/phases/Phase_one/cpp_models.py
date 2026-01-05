@@ -35,10 +35,10 @@ except ImportError:
 
 # REAL SISAS imports for quality metrics calculation
 try:
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
         SignalPack,
     )
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_quality_metrics import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_quality_metrics import (
         SignalQualityMetrics,
         compute_signal_quality_metrics,
         analyze_coverage_gaps,

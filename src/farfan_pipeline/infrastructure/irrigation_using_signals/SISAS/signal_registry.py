@@ -78,9 +78,9 @@ except ImportError:
 stdlib_logger = logging.getLogger(__name__)
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
-from cross_cutting_infrastructure.irrigation_using_signals.ports import QuestionnairePort, SignalRegistryPort
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_enhancement_integrator import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.ports import QuestionnairePort, SignalRegistryPort
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_enhancement_integrator import (
     create_enhancement_integrator,
     SignalEnhancementIntegrator
 )
@@ -373,7 +373,25 @@ class MicroAnsweringSignalPack(BaseModel):
         default_factory=dict,
         description="Semantic disambiguation rules and entity linking (Enhancement #4)"
     )
-    
+
+    # R-W1: Policy Area Keywords Irrigation
+    policy_area_keywords: list[str] = Field(
+        default_factory=list,
+        description="Keywords from policy_area_metadata for semantic matching (R-W1)"
+    )
+
+    # R-W2: Cross-Cutting Themes (Enhancement #5)
+    cross_cutting_themes: dict[str, Any] = Field(
+        default_factory=dict,
+        description="Applicable cross-cutting themes and requirements for validation (R-W2)"
+    )
+
+    # R-W3: Interdependency Context (Enhancement #6)
+    interdependency_context: dict[str, Any] = Field(
+        default_factory=dict,
+        description="Dimension interdependency mapping and validation rules (R-W3)"
+    )
+
     version: str = Field(default="2.0.0", pattern=r"^\d+\.\d+\.\d+$")
     source_hash: str = Field(..., min_length=32, max_length=64)
     metadata: dict[str, Any] = Field(
@@ -1306,6 +1324,9 @@ class QuestionnaireSignalRegistry:
             question_id, dict(question)
         )
 
+        # R-W1: Load policy area keywords for semantic matching
+        policy_area_keywords = self._load_policy_area_keywords(pa)
+
         # Extract core question metadata for Carver
         question_text = question.get("text")
         dimension_id = question.get("dimension_id")
@@ -1329,11 +1350,20 @@ class QuestionnaireSignalRegistry:
             context_requirements=context_requirements,
             evidence_boosts=evidence_boosts,
 
-            # Integrated Strategic Enhancements
+            # Integrated Strategic Enhancements (#1-#4)
             method_execution_metadata=enhancements.get("method_execution_metadata", {}),
             validation_specifications=enhancements.get("validation_specifications", {}),
             scoring_modality_context=enhancements.get("scoring_modality_context", {}),
             semantic_disambiguation=enhancements.get("semantic_disambiguation", {}),
+
+            # R-W1: Policy Area Keywords
+            policy_area_keywords=policy_area_keywords,
+
+            # R-W2: Cross-Cutting Themes (Enhancement #5)
+            cross_cutting_themes=enhancements.get("cross_cutting_themes", {}),
+
+            # R-W3: Interdependency Context (Enhancement #6)
+            interdependency_context=enhancements.get("interdependency_context", {}),
 
             source_hash=self._source_hash,
             metadata={
@@ -1633,6 +1663,48 @@ class QuestionnaireSignalRegistry:
                     sources.extend(p.strip() for p in pattern.split("|") if p.strip())
 
         return sorted(set(sources))
+
+    def _load_policy_area_keywords(self, policy_area_id: str) -> list[str]:
+        """Load keywords from policy area metadata (R-W1).
+
+        Keywords are loaded from canonic_questionnaire_central/policy_areas/PA{XX}/questions.json
+        under the policy_area_metadata.keywords field.
+        """
+        import glob
+
+        base_path = Path(__file__).parent.parent.parent.parent.parent.parent
+        pa_pattern = str(base_path / "canonic_questionnaire_central" / "policy_areas" / f"{policy_area_id}_*")
+
+        matches = sorted(glob.glob(pa_pattern))
+        if not matches:
+            logger.debug("policy_area_keywords_no_match", policy_area_id=policy_area_id)
+            return []
+
+        questions_file = Path(matches[0]) / "questions.json"
+        if not questions_file.exists():
+            logger.debug("policy_area_keywords_file_missing", path=str(questions_file))
+            return []
+
+        try:
+            with open(questions_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+            metadata = data.get("policy_area_metadata", {})
+            keywords = metadata.get("keywords", [])
+
+            if not isinstance(keywords, list):
+                return []
+
+            return [str(kw) for kw in keywords if isinstance(kw, str)]
+
+        except (OSError, json.JSONDecodeError) as e:
+            logger.error(
+                "policy_area_keywords_load_failed",
+                error=str(e),
+                policy_area_id=policy_area_id,
+                exc_info=True,
+            )
+            return []
 
     def _build_policy_area_signal_pack(self, policy_area_id: str) -> SignalPack:
         blocks = dict(self._questionnaire.data.get("blocks", {}))
@@ -2226,6 +2298,155 @@ def create_signal_registry(
 
 
 # ============================================================================
+# JOBFRONT #1: CROSS-CUTTING THEMES ENFORCEMENT
+# ============================================================================
+
+
+@dataclass
+class Theme:
+    """Cross-cutting theme definition with enforcement rules."""
+    theme_id: str
+    name: str
+    description: str = ""
+    applies_to_policy_areas: list[str] = field(default_factory=list)
+    required_for: list[str] = field(default_factory=list)
+    recommended_for: list[str] = field(default_factory=list)
+    validation_patterns: list[str] = field(default_factory=list)
+
+
+class CrossCuttingThemeRegistry:
+    """Registry for cross-cutting themes with adversarial enforcement.
+    
+    JOBFRONT #1: Enforces required theme coverage for each policy area.
+    Adversarial: Fails if any required theme is not found in available signals.
+    """
+    
+    CANONICAL_THEMES: list[dict[str, Any]] = [
+        {
+            "theme_id": "GENERO",
+            "name": "Enfoque de Género",
+            "description": "Transversalización del enfoque de género en políticas públicas",
+            "applies_to_policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "required_for": ["PA03"],
+            "recommended_for": ["PA01", "PA02", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "validation_patterns": ["género", "mujeres", "equidad", "diferencial de género"],
+        },
+        {
+            "theme_id": "AMBIENTAL",
+            "name": "Sostenibilidad Ambiental",
+            "description": "Transversalización ambiental y cambio climático",
+            "applies_to_policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "required_for": ["PA06"],
+            "recommended_for": ["PA01", "PA02", "PA04", "PA07", "PA08", "PA09", "PA10"],
+            "validation_patterns": ["ambiental", "sostenible", "cambio climático", "recursos naturales"],
+        },
+        {
+            "theme_id": "ETNICO",
+            "name": "Enfoque Étnico",
+            "description": "Transversalización del enfoque étnico y diferencial",
+            "applies_to_policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "required_for": ["PA04"],
+            "recommended_for": ["PA01", "PA02", "PA03", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "validation_patterns": ["étnico", "indígenas", "afrocolombianos", "comunidades negras", "raizales"],
+        },
+        {
+            "theme_id": "TERRITORIAL",
+            "name": "Enfoque Territorial",
+            "description": "Enfoque diferencial territorial urbano/rural",
+            "applies_to_policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "required_for": [],
+            "recommended_for": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "validation_patterns": ["territorial", "urbano", "rural", "municipal", "departamental"],
+        },
+    ]
+    
+    def __init__(self) -> None:
+        self._themes: list[Theme] = []
+        self._load_themes()
+    
+    def _load_themes(self) -> None:
+        """Load canonical cross-cutting themes."""
+        for theme_data in self.CANONICAL_THEMES:
+            self._themes.append(Theme(
+                theme_id=theme_data["theme_id"],
+                name=theme_data["name"],
+                description=theme_data.get("description", ""),
+                applies_to_policy_areas=theme_data.get("applies_to_policy_areas", []),
+                required_for=theme_data.get("required_for", []),
+                recommended_for=theme_data.get("recommended_for", []),
+                validation_patterns=theme_data.get("validation_patterns", []),
+            ))
+    
+    def get_cross_cutting_themes(self, policy_area_id: str) -> list[Theme]:
+        """Fetches all cross-cutting themes for a given policy area.
+        
+        ADVERSARIAL: Fails if any 'required_theme' is not found in available signals.
+        
+        Args:
+            policy_area_id: Policy area ID (PA01-PA10)
+            
+        Returns:
+            List of applicable Theme objects
+            
+        Raises:
+            RuntimeError: If required themes are missing for the policy area
+        """
+        applicable = [t for t in self._themes if policy_area_id in t.applies_to_policy_areas]
+        
+        # Get required themes for this policy area
+        required_theme_ids = [t.theme_id for t in self._themes if policy_area_id in t.required_for]
+        applicable_ids = [t.theme_id for t in applicable]
+        
+        missing = [rt for rt in required_theme_ids if rt not in applicable_ids]
+        
+        if missing:
+            raise RuntimeError(f"Missing required cross-cutting themes for {policy_area_id}: {missing}")
+        
+        logger.debug(
+            "cross_cutting_themes_fetched",
+            policy_area_id=policy_area_id,
+            applicable_count=len(applicable),
+            required_count=len(required_theme_ids),
+        )
+        
+        return applicable
+    
+    def get_required_themes(self, policy_area_id: str) -> list[str]:
+        """Get list of required theme IDs for a policy area."""
+        return [t.theme_id for t in self._themes if policy_area_id in t.required_for]
+    
+    def validate_theme_coverage(
+        self, 
+        policy_area_id: str, 
+        detected_themes: list[str]
+    ) -> tuple[bool, list[str]]:
+        """Validate that all required themes were detected.
+        
+        Args:
+            policy_area_id: Policy area ID
+            detected_themes: List of detected theme IDs from analysis
+            
+        Returns:
+            Tuple of (is_valid, missing_themes)
+        """
+        required = self.get_required_themes(policy_area_id)
+        missing = [r for r in required if r not in detected_themes]
+        return (len(missing) == 0, missing)
+
+
+# Global theme registry instance
+_GLOBAL_THEME_REGISTRY: CrossCuttingThemeRegistry | None = None
+
+
+def get_global_theme_registry() -> CrossCuttingThemeRegistry:
+    """Get or create the global cross-cutting theme registry."""
+    global _GLOBAL_THEME_REGISTRY
+    if _GLOBAL_THEME_REGISTRY is None:
+        _GLOBAL_THEME_REGISTRY = CrossCuttingThemeRegistry()
+    return _GLOBAL_THEME_REGISTRY
+
+
+# ============================================================================
 # EXPORTS
 # ============================================================================
 
@@ -2258,4 +2479,9 @@ __all__ = [
     
     # Metrics
     "RegistryMetrics",
+    
+    # JOBFRONT #1: Cross-Cutting Themes
+    "Theme",
+    "CrossCuttingThemeRegistry",
+    "get_global_theme_registry",
 ]
