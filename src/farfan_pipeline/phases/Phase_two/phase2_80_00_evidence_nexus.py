@@ -81,24 +81,110 @@ class EvidenceType(Enum):
     BUDGET_AMOUNT = "monto_presupuestario"
     COVERAGE_METRIC = "metrica_cobertura"
     GOAL_TARGET = "meta_cuantificada"
-    
+
     # Qualitative
     OFFICIAL_SOURCE = "fuente_oficial"
     TERRITORIAL_COVERAGE = "cobertura_territorial"
     INSTITUTIONAL_ACTOR = "actor_institucional"
     POLICY_INSTRUMENT = "instrumento_politica"
     NORMATIVE_REFERENCE = "referencia_normativa"
-    
+
     # Relational
     CAUSAL_LINK = "vinculo_causal"
     TEMPORAL_DEPENDENCY = "dependencia_temporal"
     CONTRADICTION = "contradiccion"
     CORROBORATION = "corroboracion"
-    
+
     # Meta
     METHOD_OUTPUT = "salida_metodo"
     AGGREGATED = "agregado"
     SYNTHESIZED = "sintetizado"
+
+    def to_contract_format(self) -> str:
+        """Convert to pluralized format expected by contracts.
+
+        Maps EvidenceType enum values (singular) to contract expected_elements keys (plural):
+        - indicador_cuantitativo -> indicadores_cuantitativos
+        - serie_temporal -> series_temporales_años
+        - fuente_oficial -> fuentes_oficiales
+        - cobertura_territorial -> cobertura_territorial_especificada
+        - etc.
+        """
+        mapping = {
+            "indicador_cuantitativo": "indicadores_cuantitativos",
+            "serie_temporal": "series_temporales_años",
+            "monto_presupuestario": "montos_presupuestarios",
+            "metrica_cobertura": "metricas_cobertura",
+            "meta_cuantificada": "metas_cuantificadas",
+            "fuente_oficial": "fuentes_oficiales",
+            "cobertura_territorial": "cobertura_territorial_especificada",
+            "actor_institucional": "actores_institucionales",
+            "instrumento_politica": "instrumentos_politica",
+            "referencia_normativa": "referencias_normativas",
+            "vinculo_causal": "logica_causal_explicita",
+            "dependencia_temporal": "dependencias_temporales",
+            "contradiccion": "contradicciones",
+            "corroboracion": "corroboraciones",
+            "salida_metodo": "salidas_metodo",
+            "agregado": "agregados",
+            "sintetizado": "sintetizados",
+        }
+        return mapping.get(self.value, self.value)
+
+
+class EvidenceTypeMapper:
+    """Bidirectional mapper between Nexus EvidenceType and contract formats.
+
+    Resolves the vocabulary mismatch where:
+    - Contracts expect: indicadores_cuantitativos, fuentes_oficiales, etc.
+    - Nexus EvidenceType uses: indicador_cuantitativo, fuente_oficial, etc.
+    """
+
+    # Singular (Nexus) -> Plural (Contract)
+    SINGULAR_TO_PLURAL: ClassVar[Dict[str, str]] = {
+        "indicador_cuantitativo": "indicadores_cuantitativos",
+        "serie_temporal": "series_temporales_años",
+        "monto_presupuestario": "montos_presupuestarios",
+        "metrica_cobertura": "metricas_cobertura",
+        "meta_cuantificada": "metas_cuantificadas",
+        "fuente_oficial": "fuentes_oficiales",
+        "cobertura_territorial": "cobertura_territorial_especificada",
+        "actor_institucional": "actores_institucionales",
+        "instrumento_politica": "instrumentos_politica",
+        "referencia_normativa": "referencias_normativas",
+        "vinculo_causal": "logica_causal_explicita",
+        "dependencia_temporal": "dependencias_temporales",
+        "contradiccion": "contradicciones",
+        "corroboracion": "corroboraciones",
+        "salida_metodo": "salidas_metodo",
+        "agregado": "agregados",
+        "sintetizado": "sintetizados",
+    }
+
+    # Plural (Contract) -> Singular (Nexus)
+    PLURAL_TO_SINGULAR: ClassVar[Dict[str, str]] = {
+        v: k for k, v in SINGULAR_TO_PLURAL.items()
+    }
+
+    @classmethod
+    def to_contract_format(cls, evidence_type: str) -> str:
+        """Convert singular Nexus type to plural contract format."""
+        return cls.SINGULAR_TO_PLURAL.get(evidence_type, evidence_type)
+
+    @classmethod
+    def to_nexus_format(cls, contract_type: str) -> str:
+        """Convert plural contract type to singular Nexus format."""
+        return cls.PLURAL_TO_SINGULAR.get(contract_type, contract_type)
+
+    @classmethod
+    def normalize_dict_keys(cls, counts: Dict[str, int]) -> Dict[str, int]:
+        """Convert Nexus enum keys to contract format for gap detection.
+
+        Example:
+            Input:  {"indicador_cuantitativo": 3, "fuente_oficial": 2}
+            Output: {"indicadores_cuantitativos": 3, "fuentes_oficiales": 2}
+        """
+        return {cls.to_contract_format(k): v for k, v in counts.items()}
 
 
 class RelationType(Enum):
@@ -355,7 +441,7 @@ class Citation:
     confidence: float
     source_method: str
     document_reference: str | None = None
-    
+
     def render(self, format_type: str = "markdown") -> str:
         """Render citation in specified format."""
         conf_pct = f"{self.confidence * 100:.0f}%"
@@ -363,6 +449,26 @@ class Citation:
             ref = f" (p.{self.document_reference})" if self.document_reference else ""
             return f"[{self.evidence_type}:  {self.value_summary}]{ref} (confianza: {conf_pct})"
         return f"{self.evidence_type}: {self.value_summary} ({conf_pct})"
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize citation for Carver consumption.
+
+        Aligns with NexusOutputAdapter expectations in phase2_90_00_carver.py:
+        - evidence_id (mapped from node_id)
+        - summary (mapped from value_summary)
+        - source_method
+        - confidence
+        - page (mapped from document_reference)
+        - evidence_type
+        """
+        return {
+            "evidence_id": self.node_id,
+            "summary": self.value_summary,
+            "source_method": self.source_method,
+            "confidence": self.confidence,
+            "page": self.document_reference,
+            "evidence_type": self.evidence_type,
+        }
 
 
 @dataclass
@@ -429,7 +535,15 @@ class SynthesizedAnswer:
         return separator.join(sections)
     
     def to_dict(self) -> dict[str, Any]:
-        """Full serialization."""
+        """Full serialization with full citation payloads for Carver.
+
+        Aligns with NexusOutputAdapter.extract_citations() expectations:
+        - primary_citations: list of citation dicts
+        - supporting_citations: list of citation dicts
+
+        Each citation dict contains: evidence_id, summary, source_method,
+        confidence, page, evidence_type (see Citation.to_dict()).
+        """
         return {
             "direct_answer": self.direct_answer,
             "completeness": self.completeness.value,
@@ -440,6 +554,10 @@ class SynthesizedAnswer:
             "evidence_graph_hash": self.evidence_graph_hash,
             "synthesis_timestamp":  self.synthesis_timestamp,
             "question_id": self.question_id,
+            # Full citation payloads (Carver expects these exact keys)
+            "primary_citations": [c.to_dict() for c in self.primary_citations],
+            "supporting_citations": [c.to_dict() for c in self.supporting_citations],
+            # Legacy counts for backward compatibility
             "primary_citation_count": len(self.primary_citations),
             "supporting_citation_count": len(self.supporting_citations),
         }
@@ -4119,11 +4237,15 @@ class EvidenceNexus:
         graph: EvidenceGraph,
         beliefs: dict[EvidenceID, float],
     ) -> dict[str, Any]:
-        """Build legacy-compatible evidence dict."""
+        """Build legacy-compatible evidence dict with normalized type keys.
+
+        Uses EvidenceTypeMapper to convert Nexus EvidenceType values (singular)
+        to contract expected_elements format (plural) for proper gap detection.
+        """
         elements = []
         by_type:  dict[str, list[dict]] = defaultdict(list)
         confidences = []
-        
+
         for node in graph._nodes.values():
             adjusted_conf = graph.get_adjusted_confidence(node.node_id)
             elem = {
@@ -4135,12 +4257,15 @@ class EvidenceNexus:
                 "source_method": node.source_method,
             }
             elements.append(elem)
-            by_type[node.evidence_type.value].append(elem)
+            # Use normalized (plural) type for by_type grouping to align with contracts
+            normalized_type = EvidenceTypeMapper.to_contract_format(node.evidence_type.value)
+            by_type[normalized_type].append(elem)
             confidences.append(adjusted_conf)
-        
+
         return {
             "elements": elements,
             "elements_found_count": len(elements),
+            # Keys are now in contract format (e.g., "indicadores_cuantitativos")
             "by_type": {k: len(v) for k, v in by_type.items()},
             "confidence_scores": {
                 "mean": statistics.mean(confidences) if confidences else 0.0,
@@ -4288,11 +4413,12 @@ def process_evidence(
 __all__ = [
     # Core types
     "EvidenceType",
+    "EvidenceTypeMapper",
     "RelationType",
     "ValidationSeverity",
     "AnswerCompleteness",
     "NarrativeSection",
-    
+
     # Data structures
     "EvidenceNode",
     "EvidenceEdge",
@@ -4301,17 +4427,17 @@ __all__ = [
     "Citation",
     "NarrativeBlock",
     "SynthesizedAnswer",
-    
+
     # Graph
     "EvidenceGraph",
-    
+
     # Engines
     "ValidationEngine",
     "NarrativeSynthesizer",
-    
+
     # Main class
     "EvidenceNexus",
-    
+
     # Factory functions
     "get_global_nexus",
     "process_evidence",
