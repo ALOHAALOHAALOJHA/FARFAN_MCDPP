@@ -471,6 +471,7 @@ def process_with_retry(
     raise last_error
 
 
+    raise last_error
 # === MODULE EXPORTS ===
 
 __all__ = [

@@ -296,11 +296,19 @@ class HotReloadableConfig:
         registration will fail silently and hot-reload will not be available.
         """
         try:
+            # Check if we're in the main thread
+            if threading.current_thread() != threading.main_thread():
+                logger.warning(
+                    "Cannot register signal handler from non-main thread. "
+                    "Signal-based config reload will be disabled."
+                )
+                return
+            
             signal.signal(signal.SIGHUP, self._reload_handler)
             logger.debug("Registered SIGHUP handler for config reload")
-        except (AttributeError, ValueError):
+        except (AttributeError, ValueError) as e:
             # SIGHUP not available on Windows or in some contexts
-            logger.debug("SIGHUP not available, skipping signal handler")
+            logger.debug(f"SIGHUP not available, skipping signal handler: {e}")
 
     def _reload_handler(self, signum: int, frame: Any) -> None:
         """Signal handler for reload."""

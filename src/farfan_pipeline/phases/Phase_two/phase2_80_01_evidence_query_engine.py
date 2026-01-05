@@ -192,19 +192,19 @@ class EvidenceNexusProtocol(Protocol):
 
     def get_node(self, node_id: str) -> Optional[EvidenceNode]:
         """Get a node by ID."""
-        ...
+        raise NotImplementedError()
 
     def get_all_nodes(self) -> List[EvidenceNode]:
         """Get all nodes in the nexus."""
-        ...
+        raise NotImplementedError()
 
     def has_contradiction(self, node_id_a: str, node_id_b: str) -> bool:
         """Check if two nodes contradict each other."""
-        ...
+        raise NotImplementedError()
 
     def has_support(self, node_id_a: str, node_id_b: str) -> bool:
         """Check if one node supports another."""
-        ...
+        raise NotImplementedError()
 
 
 # === SIMPLE IN-MEMORY NEXUS FOR STANDALONE USE ===
@@ -261,6 +261,18 @@ class EvidenceQueryEngine:
         - ORDER BY and LIMIT support
         - Causal chain traversal
         - Contradiction/support queries
+
+    Security Considerations:
+        This is an INTERNAL query engine designed for trusted code paths only.
+        Query parsing uses simple regex patterns and does NOT sanitize against
+        SQL injection or malicious input. DO NOT expose this interface to 
+        untrusted user input without adding proper input validation and sanitization.
+        
+        For production use with external input, implement:
+        - Whitelist validation for field names
+        - Type checking and bounds validation for values
+        - Query complexity limits (e.g., max nodes traversed)
+        - Rate limiting and resource quotas
 
     Usage:
         engine = EvidenceQueryEngine(nexus)

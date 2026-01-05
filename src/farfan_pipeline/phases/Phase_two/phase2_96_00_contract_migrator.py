@@ -394,6 +394,9 @@ class ContractMigrator:
 
 # === BUILT-IN MIGRATIONS ===
 
+import copy
+from datetime import datetime, timezone
+
 def migrate_v2_to_v3(contract: dict) -> dict:
     """
     Migrate contract from v2 to v3.
@@ -402,7 +405,7 @@ def migrate_v2_to_v3(contract: dict) -> dict:
     - Rename 'parameters' to 'params'
     - Add 'metadata' field with migration info
     """
-    result = contract.copy()
+    result = copy.deepcopy(contract)
 
     # Rename 'parameters' to 'params'
     if "parameters" in result:
@@ -424,7 +427,7 @@ def migrate_v3_to_v4(contract: dict) -> dict:
     - Restructure 'params' into 'configuration.parameters'
     - Add 'schema_version' field
     """
-    result = contract.copy()
+    result = copy.deepcopy(contract)
 
     # Restructure params
     if "params" in result:

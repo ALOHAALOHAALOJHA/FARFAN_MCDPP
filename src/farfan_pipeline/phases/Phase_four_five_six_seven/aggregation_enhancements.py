@@ -24,13 +24,8 @@ from typing import TYPE_CHECKING, Any
 
 from farfan_pipeline.infrastructure.contractual.dura_lex.aggregation_contract import (
     create_aggregation_contract,
-    AggregationContractViolation,
-)
 
 if TYPE_CHECKING:
-    from farfan_pipeline.processing.aggregation_provenance import ProvenanceNode
-
-logger = logging.getLogger(__name__)
 
 
 @dataclass

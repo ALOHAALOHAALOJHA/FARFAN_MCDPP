@@ -22,7 +22,7 @@ Requirements Implemented:
 Design Considerations:
 - Prometheus client library for metric types
 - Thread-safe metric operations
-- Configurable HTTP server port
+- Configurable HTTP server port (default: 8000)
 - Graceful degradation if prometheus_client unavailable
 """
 
