@@ -35,9 +35,7 @@ Version: 1.1.0
 
 from __future__ import annotations
 
-import hashlib
 import json
-import re
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -71,15 +69,25 @@ except ImportError:
 
 
 class SignalEnhancementIntegrator:
-    """Integrates all 4 signal enhancements into signal extraction.
-    
+    """Integrates all 6 signal enhancements into signal extraction.
+
     This class provides a unified interface for extracting enhanced strategic
     data from the questionnaire and integrating it into signal packs.
-    
+
+    Enhancements:
+        1. Method Execution Metadata (Subphase 2.3)
+        2. Structured Validation Specifications (Subphase 2.5)
+        3. Scoring Modality Context (Subphase 2.3)
+        4. Semantic Disambiguation Layer (Subphase 2.2)
+        5. Cross-Cutting Themes (R-W2)
+        6. Interdependency Validation (R-W3)
+
     Attributes:
         questionnaire: Canonical questionnaire instance
         semantic_context: Global semantic context (shared across questions)
         scoring_definitions: Global scoring modality definitions
+        cross_cutting_themes: Global cross-cutting themes data (R-W2)
+        interdependency_mapping: Dimension interdependency mapping (R-W3)
     """
     
     def __init__(self, questionnaire: QuestionnairePort) -> None:
@@ -367,8 +375,8 @@ class SignalEnhancementIntegrator:
         try:
             with open(themes_path, "r", encoding="utf-8") as f:
                 return json.load(f)
-        except Exception as e:
-            logger.error("cross_cutting_themes_load_failed", error=str(e))
+        except (OSError, json.JSONDecodeError) as e:
+            logger.error("cross_cutting_themes_load_failed", error=str(e), exc_info=True)
             return {"themes": [], "validation_rules": {}}
 
     def _load_interdependency_mapping(self) -> dict[str, Any]:
@@ -387,8 +395,8 @@ class SignalEnhancementIntegrator:
         try:
             with open(mapping_path, "r", encoding="utf-8") as f:
                 return json.load(f)
-        except Exception as e:
-            logger.error("interdependency_mapping_load_failed", error=str(e))
+        except (OSError, json.JSONDecodeError) as e:
+            logger.error("interdependency_mapping_load_failed", error=str(e), exc_info=True)
             return {"dimension_flow": {}, "cross_dimension_validation_rules": {}}
 
     def _extract_cross_cutting_themes(
@@ -461,11 +469,17 @@ class SignalEnhancementIntegrator:
 
         for rule_key, rule in cross_rules.items():
             desc = rule.get("description", "").lower()
-            dim_num = dimension_id.replace("DIM", "").replace("_", "").split("_")[0]
+            # Extract base dimension ID (e.g., "DIM04" from "DIM04_RESULTADOS")
+            base_dim_id = dimension_id.split("_")[0] if "_" in dimension_id else dimension_id
+            # Extract numeric part (e.g., "04" from "DIM04")
+            dim_num = base_dim_id.replace("DIM", "")
+            # Strip leading zeros for matching (e.g., "4" from "04")
+            dim_num_stripped = dim_num.lstrip("0") or "0"
 
             if (
                 f"dim{dim_num}" in desc
-                or f"dim0{dim_num}" in desc
+                or f"dim{dim_num_stripped}" in desc
+                or base_dim_id.lower() in desc
                 or dimension_id.lower() in desc
             ):
                 applicable_rules.append({
