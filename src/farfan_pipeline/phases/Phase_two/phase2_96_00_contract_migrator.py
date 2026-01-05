@@ -28,6 +28,7 @@ Design Principles:
 
 from __future__ import annotations
 
+import copy
 import json
 import logging
 from collections import deque
@@ -448,7 +449,7 @@ def migrate_v3_to_v2(contract: dict) -> dict:
     - Rename 'params' back to 'parameters'
     - Remove migration metadata
     """
-    result = contract.copy()
+    result = copy.deepcopy(contract)
 
     # Rename 'params' back to 'parameters'
     if "params" in result:
