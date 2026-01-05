@@ -1,0 +1,279 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "date": "2025-12-31",
+    "contract_id": "D04_CULTURA_Q021_CONTRACT",
+    "question_id": "Q111",
+    "original_question_id": "Q021",
+    "policy_area_number": 4,
+    "policy_area": "D04_CULTURA",
+    "protocol": "PROMPT_MAESTRO_V1",
+    "compliance": [
+      "GNEA_v2.0.0",
+      "EPISTEMOLOGICAL_GUIDE_V4"
+    ],
+    "schema_version": "v3"
+  },
+  "contract": {
+    "contract_id": "D04_CULTURA_Q021_CONTRACT",
+    "policy_area": "D04_CULTURA",
+    "dimension_code": "D5",
+    "question_id": "Q021",
+    "question_type": "TYPE_D",
+    "question_text": "¿El plan define impactos o transformaciones de largo plazo para el sector (cambios que trascienden el cuatrienio), describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado (se debe buscar términos como 'largo plazo', 'más allá del cuatrienio', 'sostenible', 'consolidado', 'estructural')?",
+    "question_title": "Impactos o transformaciones de largo plazo",
+    "method_binding": {
+      "orchestration_mode": "epistemological_pipeline",
+      "contract_type": "TYPE_D",
+      "method_count": 12,
+      "execution_phases": {
+        "phase_A_construction": {
+          "methods": [
+            {
+              "class_name": "PolicyAnalysisEmbedder",
+              "method_name": "_extract_numerical_values",
+              "mother_file": "src/methods_dispensary/embedding_policy.py",
+              "provides": [
+                "raw_facts"
+              ],
+              "requires": [],
+              "level": "N1-EMP",
+              "description": "PolicyAnalysisEmbedder._extract_numerical_values - Match score 0.53; provides ['raw_facts']"
+            },
+            {
+              "class_name": "PDETMunicipalPlanAnalyzer",
+              "method_name": "extract_tables",
+              "mother_file": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+              "provides": [
+                "raw_facts"
+              ],
+              "requires": [],
+              "level": "N1-EMP",
+              "description": "PDETMunicipalPlanAnalyzer.extract_tables - Match score 0.53; provides ['raw_facts']"
+            },
+            {
+              "class_name": "PDETMunicipalPlanAnalyzer",
+              "method_name": "_deduplicate_tables",
+              "mother_file": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+              "provides": [
+                "raw_facts"
+              ],
+              "requires": [],
+              "level": "N1-EMP",
+              "description": "PDETMunicipalPlanAnalyzer._deduplicate_tables - Match score 0.53; provides ['raw_facts']"
+            },
+            {
+              "class_name": "PDETMunicipalPlanAnalyzer",
+              "method_name": "_reconstruct_fragmented_tables",
+              "mother_file": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+              "provides": [
+                "raw_facts"
+              ],
+              "requires": [],
+              "level": "N1-EMP",
+              "description": "PDETMunicipalPlanAnalyzer._reconstruct_fragmented_tables - Match score 0.53; provides ['raw_facts']"
+            },
+            {
+              "class_name": "PDETMunicipalPlanAnalyzer",
+              "method_name": "_extract_financial_amounts",
+              "mother_file": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+              "provides": [
+                "raw_facts"
+              ],
+              "requires": [],
+              "level": "N1-EMP",
+              "description": "PDETMunicipalPlanAnalyzer._extract_financial_amounts - Match score 0.53; provides ['raw_facts']"
+            },
+            {
+              "class_name": "PDETMunicipalPlanAnalyzer",
+              "method_name": "_extract_from_budget_table",
+              "mother_file": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+              "provides": [
+                "raw_facts"
+              ],
+              "requires": [],
+              "level": "N1-EMP",
+              "description": "PDETMunicipalPlanAnalyzer._extract_from_budget_table - Match score 0.53; provides ['raw_facts']"
+            }
+          ],
+          "fusion_strategy": "financial_aggregation"
+        },
+        "phase_B_computation": {
+          "methods": [
+            {
+              "class_name": "PDETMunicipalPlanAnalyzer",
+              "method_name": "_classify_tables",
+              "mother_file": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+              "provides": [
+                "inferences"
+              ],
+              "requires": [
+                "raw_facts"
+              ],
+              "level": "N2-INF",
+              "description": "PDETMunicipalPlanAnalyzer._classify_tables - Match score 0.46; provides ['inferences']"
+            },
+            {
+              "class_name": "PDETMunicipalPlanAnalyzer",
+              "method_name": "analyze_financial_feasibility",
+              "mother_file": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+              "provides": [
+                "inferences"
+              ],
+              "requires": [
+                "raw_facts"
+              ],
+              "level": "N2-INF",
+              "description": "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility - Match score 0.46; provides ['inferences']"
+            },
+            {
+              "class_name": "PDETMunicipalPlanAnalyzer",
+              "method_name": "_identify_funding_source",
+              "mother_file": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+              "provides": [
+                "inferences"
+              ],
+              "requires": [
+                "raw_facts"
+              ],
+              "level": "N2-INF",
+              "description": "PDETMunicipalPlanAnalyzer._identify_funding_source - Match score 0.46; provides ['inferences']"
+            },
+            {
+              "class_name": "PDETMunicipalPlanAnalyzer",
+              "method_name": "_analyze_funding_sources",
+              "mother_file": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+              "provides": [
+                "inferences"
+              ],
+              "requires": [
+                "raw_facts"
+              ],
+              "level": "N2-INF",
+              "description": "PDETMunicipalPlanAnalyzer._analyze_funding_sources - Match score 0.46; provides ['inferences']"
+            }
+          ],
+          "fusion_strategy": "weighted_financial_mean"
+        },
+        "phase_C_litigation": {
+          "methods": [
+            {
+              "class_name": "PDETMunicipalPlanAnalyzer",
+              "method_name": "_is_likely_header",
+              "mother_file": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+              "provides": [
+                "validated_constraints"
+              ],
+              "requires": [
+                "inferences",
+                "raw_facts"
+              ],
+              "level": "N3-AUD",
+              "description": "PDETMunicipalPlanAnalyzer._is_likely_header - Match score 0.43; provides ['validated_constraints']"
+            },
+            {
+              "class_name": "BeachEvidentialTest",
+              "method_name": "classify_test",
+              "mother_file": "src/methods_dispensary/derek_beach.py",
+              "provides": [
+                "validated_constraints"
+              ],
+              "requires": [
+                "inferences",
+                "raw_facts"
+              ],
+              "level": "N3-AUD",
+              "description": "BeachEvidentialTest.classify_test - Match score 0.43; provides ['validated_constraints']"
+            }
+          ],
+          "fusion_strategy": "sufficiency_gate"
+        }
+      }
+    },
+    "evidence_assembly": {
+      "engine": "EVIDENCE_NEXUS",
+      "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
+      "class_name": "EvidenceNexus",
+      "method_name": "assemble",
+      "assembly_rules": [
+        {
+          "rule_id": "R1_financial_agg",
+          "rule_type": "empirical_basis",
+          "target": "normalized_financials",
+          "merge_strategy": "financial_aggregation",
+          "output_type": "FACT"
+        },
+        {
+          "rule_id": "R2_weighted_mean",
+          "rule_type": "computation",
+          "target": "sufficiency_index",
+          "merge_strategy": "weighted_financial_mean",
+          "output_type": "PARAMETER"
+        },
+        {
+          "rule_id": "R3_sufficiency_gate",
+          "rule_type": "financial_coherence_audit",
+          "target": "validated_viability",
+          "merge_strategy": "sufficiency_gate",
+          "output_type": "CONSTRAINT"
+        },
+        {
+          "rule_id": "R4_synthesis",
+          "rule_type": "synthesis",
+          "target": "human_answer",
+          "merge_strategy": "carver_doctoral_synthesis",
+          "output_type": "NARRATIVE"
+        }
+      ]
+    },
+    "epistemological_justification": "Agregación con pesos explícitos",
+    "fusion_strategies": {
+      "n1": "financial_aggregation",
+      "n2": "weighted_financial_mean",
+      "n3": "sufficiency_gate"
+    },
+    "n1_strategy_refined": {
+      "name": "financial_aggregation",
+      "operation": "Agrega datos financieros con metadata de unidades",
+      "differs_from_concat": "Preserva unidades y convierte a forma comparable",
+      "normalization": {
+        "COP": "Convertir a % del presupuesto total",
+        "personas": "Convertir a % de población objetivo",
+        "metas": "Convertir a % de magnitud del problema"
+      },
+      "output": {
+        "values": [],
+        "units_normalized": true,
+        "base_reference": "presupuesto_total"
+      }
+    },
+    "n2_strategy_refined": {
+      "name": "weighted_financial_mean",
+      "operation": "Promedio ponderado con pesos EXPLÍCITOS",
+      "differs_from_weighted_mean": "Pesos documentados y justificados",
+      "weight_schema": {
+        "magnitud_problema": 0.4,
+        "suficiencia_presupuestal": 0.4,
+        "cobertura_meta": 0.2
+      },
+      "formula": "Σ(wi * vi_normalized) donde Σwi = 1.0",
+      "transparency": "Pesos deben estar en contrato"
+    },
+    "n3_fusion_refined": {
+      "name": "sufficiency_gate",
+      "operation": "Veto si presupuesto < umbral de viabilidad",
+      "conditions": [
+        {
+          "trigger": "budget_gap > 50%",
+          "action": "block_branch",
+          "multiplier": 0.0
+        },
+        {
+          "trigger": "budget_gap > 30%",
+          "action": "reduce_confidence",
+          "multiplier": 0.3
+        }
+      ]
+    }
+  }
+}
