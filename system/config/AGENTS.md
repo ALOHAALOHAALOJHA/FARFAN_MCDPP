@@ -1,73 +1,227 @@
-# Agent Development Guide (Canonical, Non-Negotiable)
+# F.A.R.F.A.N AI Agent Instructions
 
-This guide binds all human/automated agents. Purpose: preserve deterministic pipeline, prevent parallel/competing structures, and enforce rigorous hygiene.
+**Document:** AGENTS.md  
+**Version:** 2.0.1  
+**Date:** 2026-01-05  
+**Status:** ADVISORY (Migration to MANDATORY in progress)  
+**Compliance:** GNEA (Global Nomenclature Enforcement Architecture)
 
 ---
 
-## 0) Read-First Gate (no refactors/PRs before reading)
-Agents MUST read these files in full before proposing or implementing changes:
-- `canonic_questionnaire_central/questionnaire_monolith.json`
-- `canonic_questionnaire_central/questionnaire_schema.json`
-- `canonic_questionnaire_central/pattern_registry.json`
-- `sensitive_rules_for_coding/policy_areas_and_dimensions.json`
-- `sensitive_rules_for_coding/canonical_notation/notation_metods`
-- `sensitive_rules_for_coding/canonical_notation/notation_questions`
-- `artifacts/manifests/manifest.json`
-- `artifacts/manifests/verification_manifest.json`
-- `artifacts/manifests/signal_audit_manifest.json`
-- `documentation/design/ORCHESTRATION_ARCHITECTURE.md`
-- `documentation/design/ARCHITECTURE.md`
-- `documentation/design/OPERATIONAL_GUIDE.md`
+## ⚠️ CRITICAL: READ BEFORE ANY FILE OPERATION
 
-No refactor, relocation, or pipeline change may proceed without explicit citations to the relevant sections of these files.
+This document establishes **ADVISORY** rules for AI agents working in this repository, with migration to MANDATORY enforcement in progress.
+**Violations should be avoided to maintain codebase quality.** Reference: `GLOBAL_NAMING_POLICY.md` (GNEA v2.0.0)
 
-## 1) Canonical Layout (must not drift)
-Allowed top-level entries:
-- `.github/`, `artifacts/`, `canonic_questionnaire_central/`, `data/`, `documentation/`, `sensitive_rules_for_coding/`, `src/`, `system/`, `requirements.txt`, `pyproject.toml`, `README*`, `install.sh` (if present), `Makefile` (if present).
-Everything else at root is forbidden. `.DS_Store` and any filename containing spaces are forbidden.
+---
 
-### Canonical subpaths (must stay here)
-- Manifests: `artifacts/manifests/manifest.json`, `signal_audit_manifest.json`, `verification_manifest.json`. No other manifest locations.
-- Questionnaire: `canonic_questionnaire_central/questionnaire_monolith.json`, `questionnaire_schema.json`, `pattern_registry.json`, `update_questionnaire_metadata.py`.
-- Canonical notation & taxonomy: `sensitive_rules_for_coding/` (all contents).
-- Pipeline/orchestration: `src/orchestration/`, `src/canonic_phases/`, `src/cross_cutting_infrastructure/` (renamed from the misspelled path), `src/methods_dispensary/`, `src/batch_concurrence/`, `src/dashboard_atroz_/`, `src/farfan_pipeline/utils/`.
-- Data inputs: `data/plans/`.
-- Docs: `documentation/design/*.md`.
+## 1. ABSOLUTE PROHIBITIONS
 
-## 2) Determinism and manifest truthfulness
-- `verification_manifest.json` may set `"success": true` only if all 11 phases ran, 300 micro-questions executed, zero failed phases, required artifacts present, hashes recorded, and `PIPELINE_VERIFIED=1` emitted.
-- SHA256 for input PDF and outputs must be written; integrity_hmac must never be placeholder.
-- If ingestion or dependency errors occur (e.g., Keras 3 vs transformers), the manifest must remain `"success": false`.
+### 🚫 NEVER CREATE FILES IN ROOT DIRECTORY
+The following file types are **FORBIDDEN** in the repository root:
+- Python scripts (`*.py`) except: `RUN_PIPELINE.py`, `setup.py`, `_install_deps.py`
+- JSON data files (`*.json`)
+- Shell scripts (`*.sh`) except: `install.sh`, `run_pipeline.sh`
+- Markdown files (`*.md`) except: `README.md`, `README.ES.md`, `CHANGELOG.md`, `AGENTS.md`, `DEPENDENCIES.md`, `GLOBAL_NAMING_POLICY.md`, `AUDIT_REPORT_V4.md`
 
-## 3) Canonical phases and taxonomy (immutable)
-- Phases: exactly 0–10 (11 phases). No new/renumbered phases.
-- Dimensions: D1–D6 only. Policy areas: PA01–PA10 only. Clusters per questionnaire JSON only.
-- Micro → meso → macro levels must be preserved; no bypass or shortcutting micro.
+### 🚫 FORBIDDEN DIRECTORY NAMES
+Never create directories named: `temp`, `tmp`, `backup`, `old`, `misc`, `other`, `stuff`, `things`, `new`, `test` (root level)
 
-## 4) Code hygiene
-- Type hints everywhere; mypy/pyright strict.
-- Line length 100; ruff + black --check enforced.
-- Deterministic seeding for all randomness; explicit error handling; no silent failures.
-- No new questionnaire control files; no alternative sources of truth.
+### 🚫 FORBIDDEN FILE PATTERNS
+- `*_backup.py`, `*_old.py`, `*_new.py`, `*_temp.py`
+- `copy_of_*`, `test_*` (outside `tests/` directories)
+- Numbered versions like `script_v2.py`, `module_2.py`
 
-## 5) Tests and coverage
-- Forbidden: weakening/removing assertions to get green. Property-based (hypothesis) failures are real defects.
-- Coverage must not regress for touched areas.
+---
 
-## 6) File/folder rules
-- No files at root beyond allowlist. No new folders without explicit approval and mapping to existing layers.
-- Remove `.DS_Store` and any file with spaces (e.g., rename/delete `financiero_viabilidad_tablas copy.py`).
+## 2. WHERE TO PUT FILES
 
-## 7) Hooks and CI (must be enforced)
-- Pre-commit: ruff, black --check, mypy.
-- Pre-push: pytest --cov, `scripts/check_layout.py`, manifest/hash verifier.
-- CI required checks: lint, format, mypy, pytest+cov, layout guard, manifest/hash verifier. Branch protection on main; CODEOWNERS on canonical paths (orchestration, canonic_phases, cross_cutting_infrastructure, methods_dispensary, questionnaire, sensitive_rules_for_coding, artifacts/manifests, AGENT_DEVELOPMENT.md, .github/workflows).
+### Scripts → `scripts/`
+```
+scripts/
+├── audit/          # audit_*.py
+├── validation/     # validate_*.py, check_*.py
+├── transformation/ # transform_*.py, convert_*.py
+├── evaluation/     # evaluate_*.py, assess_*.py
+├── generation/     # generate_*.py, create_*.py
+└── misc/           # Other utility scripts
+```
 
-## 8) Refactors and renames
-- The misspelled directory must be corrected to `src/cross_cutting_infrastructure/`; all imports/paths updated in the same change. Do not leave dual copies.
-- Dashboard code (`src/dashboard_atroz_/`) is canonical; guard accordingly.
+### Data/JSON → `artifacts/`
+```
+artifacts/
+├── data/           # JSON data files, mappings
+│   ├── contracts/  # Contract definitions
+│   └── methods/    # Method configurations
+└── reports/        # Generated reports
+    ├── audit/      # Audit reports
+    └── cqvr/       # CQVR evaluation reports
+```
 
-## 9) Behavioral maxims
-- Read-first gate is mandatory.
-- No shortcuts, no parallel layers, no shadow specs.
-- If a change feels like a bypass of these rules, it is a violation.
+### Documentation → `docs/`
+```
+docs/
+├── architecture/   # System design docs
+├── implementation/ # Implementation details
+├── phase_specs/    # Phase specifications
+└── reports/        # Analysis reports (markdown)
+```
+
+### Phase Code → `src/farfan_pipeline/phases/Phase_{name}/`
+Each phase MUST have:
+- `PHASE_{N}_MANIFEST.json` - Phase manifest
+- `PHASE_{N}_CONSTANTS.py` - Phase constants
+- `__init__.py` - Package init
+- `tests/` - Phase tests
+- `contracts/` - Phase contracts
+- `docs/` - Phase documentation
+
+---
+
+## 3. NAMING CONVENTIONS
+
+### Phase Modules (STRICT)
+Pattern: `phase{N}_{SS}_{OO}_{name}.py`
+- `{N}` = Phase number (0-9)
+- `{SS}` = Stage (00, 10, 20, ..., 90)
+- `{OO}` = Order within stage (00, 01, 02, ...)
+- `{name}` = lowercase_with_underscores
+
+✅ `phase2_10_00_factory.py`  
+✅ `phase0_40_01_schema_monitor.py`  
+❌ `factory.py`  
+❌ `Phase2Factory.py`
+
+### Contracts (STRICT)
+Pattern: `Q{NNN}_{policy_area}_executor_contract.json`
+- `{NNN}` = Zero-padded question number (001-300)
+- `{policy_area}` = lowercase policy area identifier
+
+✅ `Q001_fiscal_executor_contract.json`  
+❌ `contract_1.json`
+
+### Documentation
+Pattern: `{CATEGORY}_{TOPIC}.md` (uppercase for formal docs)
+
+✅ `PHASE_2_ARCHITECTURE.md`  
+✅ `CQVR_EVALUATION_REPORT.md`  
+❌ `notes.md`
+
+---
+
+## 4. PHASE STRUCTURE REQUIREMENTS
+
+Every phase directory MUST follow this structure:
+```
+src/farfan_pipeline/phases/Phase_{name}/
+├── PHASE_{N}_MANIFEST.json    # ✅ MANDATORY
+├── PHASE_{N}_CONSTANTS.py     # ✅ MANDATORY
+├── __init__.py                # ✅ MANDATORY
+├── tests/                     # ✅ MANDATORY
+├── contracts/                 # ✅ MANDATORY
+└── docs/                      # ✅ MANDATORY
+```
+
+### Existing Phases
+- `Phase_zero` - Validation & Bootstrap (Phase 0)
+- `Phase_two` - Executor Contract Factory (Phase 2)
+- `Phase_eight` - Recommendation Engine (Phase 8)
+- `Phase_nine` - Report Generation (Phase 9)
+
+---
+
+## 5. BEFORE CREATING ANY FILE
+
+**ASK YOURSELF:**
+1. Does this file already exist? → **Search first**
+2. Is this the correct directory? → **Check Section 2**
+3. Does the name follow conventions? → **Check Section 3**
+4. Am I polluting root? → **STOP if yes**
+
+**VALIDATION COMMAND:**
+```bash
+# Check root pollution
+ls *.py *.json *.sh *.md 2>/dev/null | wc -l
+# Should be ≤ 12 files
+```
+
+---
+
+## 6. DEVELOPER QUICK REFERENCE
+
+### Setup
+```bash
+python3.12 -m venv farfan-env
+source farfan-env/bin/activate
+pip install -e .
+```
+
+### Commands
+- **Lint**: `ruff check farfan_core/`
+- **Type Check**: `mypy farfan_core/farfan_core/core/`
+- **Test**: `pytest tests/` or `pytest -m "updated and not outdated" -v`
+- **Dev Server**: `python farfan_core/farfan_core/api/api_server.py`
+
+### Tech Stack
+- Python 3.12, FastAPI, Pydantic, transformers
+- PyMC (Bayesian), scikit-learn, NetworkX, spaCy
+- pytest, ruff, mypy, black
+
+### Code Style
+- Strict typing (mypy/Pyright strict mode)
+- No comments unless complex logic
+- 100-char line length
+- Deterministic execution (seed=42)
+
+---
+
+## 7. SYNCHRONIZATION RULES
+
+### Critical Files (MUST stay synchronized)
+- `METHODS_TO_QUESTIONS_AND_FILES.json` ↔ `METHODS_OPERACIONALIZACION.json`
+  - Both MUST have exactly **240 methods**
+  - Never create partial versions
+
+### Contract-Method Alignment
+- 30 base questions × 10 policy areas = **300 contracts**
+- 240 methods in dispensary
+- All contracts must reference valid methods
+
+---
+
+## 8. COMMIT MESSAGE FORMAT
+
+```
+{type}: {description}
+
+Types: feat, fix, refactor, docs, test, chore
+```
+
+Examples:
+- `feat: Add Phase 8 recommendation engine`
+- `fix: Correct contract binding for Q015`
+- `docs: Update GNEA compliance documentation`
+
+---
+
+## ENFORCEMENT
+
+This policy is currently enforced through:
+1. **AI Agent self-compliance** (ACTIVE) - AI agents follow these guidelines
+2. **Manual code review** (ACTIVE) - Human reviewers check compliance
+
+**Planned automated enforcement:**
+1. Pre-commit hooks - Will prevent commits violating naming conventions
+2. CI/CD validation - Will block PRs with policy violations
+3. `.gitignore` rules - Now active to prevent bytecode and temporary files
+
+**Migration timeline:**
+- Phase 1 (Current): Advisory compliance with .gitignore protection
+- Phase 2 (Planned): Pre-commit hooks implementation
+- Phase 3 (Planned): Full CI/CD enforcement and MANDATORY status
+
+**Reference:** `GLOBAL_NAMING_POLICY.md` for complete GNEA specification.
+
+---
+
+*Last updated: 2026-01-05 by compliance remediation and migration plan*

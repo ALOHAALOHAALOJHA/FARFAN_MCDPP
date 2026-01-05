@@ -51,7 +51,6 @@ from farfan_pipeline.processing.uncertainty_quantification import (
     aggregate_with_uncertainty,
 )
 from farfan_pipeline.processing.choquet_adapter import (
-    ChoquetProcessingAdapter,
     create_default_choquet_adapter,
 )
 
