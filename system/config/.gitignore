@@ -1,8 +1,18 @@
-# Python
+# Python virtual environments
+farfan-env/
+farfan-env-old/
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+
+# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -22,12 +32,6 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-
-# Virtual environments
-venv/
-env/
-ENV/
-.venv
 
 # IDE
 .vscode/
@@ -62,7 +66,7 @@ artifacts/test_runs/
 .mypy_cache/
 .dmypy.json
 dmypy.json
-farfan-env/
+
 data/questionnaire_monolith.json.backup
 
 # Environment variables
@@ -76,10 +80,8 @@ migrate_to_pep420.py
 
 # Build artifacts
 *.whl
-pip-wheel-metadata/
 
 # CI/CD Artifacts (GitHub Actions)
-test-results/
 *.xml
 coverage.xml
 mutation_report.txt
@@ -147,3 +149,45 @@ strongest_causal.json
 threshold_results.json
 cross_document_*.json
 index_summary.json
+
+# Sensitive calibration data (evidence traces contain production quality scores)
+# Note: Evidence traces are kept in repo for COHORT_2024 but may be moved to secure storage
+# src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/evidence_traces/*.json
+# !src/cross_cutting_infrastrucuture/capaz_calibration_parmetrization/evidence_traces/.gitkeep
+
+# Validation Suite (generated reports and artifacts)
+sensitive_rules_for_coding/validation_suite/reports/
+validation_suite_report.json
+example_validation_report.json
+
+# Calibration Inventory System (generated artifacts - keep source scripts)
+system/config/calibration/inventories/COHORT_2024_canonical_method_inventory.json
+system/config/calibration/inventories/COHORT_2024_method_signatures.json
+system/config/calibration/inventories/COHORT_2024_calibration_coverage_matrix.json
+system/config/calibration/inventories/COHORT_2024_consolidation_summary.md
+system/config/calibration/inventories/calibration_consolidation.log
+
+# Symbolic links in canonic_phases (actual files in farfan_pipeline/phases)
+src/canonic_phases/Phase_zero
+src/canonic_phases/Phase_one
+src/canonic_phases/Phase_two
+src/canonic_phases/Phase_three
+src/canonic_phases/Phase_four_five_six_seven
+src/canonic_phases/Phase_eight
+src/canonic_phases/Phase_nine
+
+# Symbolic links in cross_cutting_infrastructure
+src/cross_cutting_infrastructure/irrigation_using_signals
+
+# LOCAL DEVELOPMENT FILES (not tracked) - add specific patterns here
+# *.py  # REMOVED: Was blocking all Python files incorrectly
+
+
+# Deployment artifacts (keep reports but exclude runtime data)
+artifacts/remediation_results.json
+artifacts/deployment_*.json
+
+# Temporary backups created during deployment
+backups/pre_rollback_*
+backups/staging_*
+backups/production_*
