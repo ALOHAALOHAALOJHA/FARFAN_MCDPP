@@ -264,8 +264,12 @@ def build_signal_pack_from_monolith(
 
     if monolith is not None:
         monolith_data = monolith
+        # Compute monolith hash deterministically for identity
+        monolith_hash = compute_fingerprint(json.dumps(monolith, sort_keys=True))
     elif questionnaire is not None and hasattr(questionnaire, "data"):
         monolith_data = dict(questionnaire.data)
+        # Get monolith hash from questionnaire (deterministic source of truth)
+        monolith_hash = questionnaire.sha256 if hasattr(questionnaire, "sha256") else compute_fingerprint(json.dumps(monolith_data, sort_keys=True))
     else:
         raise ValueError("Questionnaire data is required to build signal packs")
 
