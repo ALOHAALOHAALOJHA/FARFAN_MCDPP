@@ -31,7 +31,7 @@ from __future__ import annotations
 import logging
 import threading
 from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -42,8 +42,6 @@ try:
         Gauge,
         Histogram,
         start_http_server,
-        REGISTRY,
-        CollectorRegistry,
     )
     PROMETHEUS_AVAILABLE = True
 except ImportError:

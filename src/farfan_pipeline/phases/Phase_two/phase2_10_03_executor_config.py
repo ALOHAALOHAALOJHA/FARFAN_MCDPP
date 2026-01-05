@@ -288,7 +288,13 @@ class HotReloadableConfig:
                 return self._config
 
     def _register_signal_handler(self) -> None:
-        """Register SIGHUP handler for reload."""
+        """
+        Register SIGHUP handler for reload.
+        
+        Note: Signal handlers must be registered from the main thread.
+        If this config is initialized in a non-main thread, signal
+        registration will fail silently and hot-reload will not be available.
+        """
         try:
             signal.signal(signal.SIGHUP, self._reload_handler)
             logger.debug("Registered SIGHUP handler for config reload")
