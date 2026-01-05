@@ -1,17 +1,17 @@
 # F.A.R.F.A.N AI Agent Instructions
 
 **Document:** AGENTS.md  
-**Version:** 2.0.0  
-**Date:** 2025-12-30  
-**Status:** MANDATORY  
+**Version:** 2.0.1  
+**Date:** 2026-01-05  
+**Status:** ADVISORY (Migration to MANDATORY in progress)  
 **Compliance:** GNEA (Global Nomenclature Enforcement Architecture)
 
 ---
 
 ## ⚠️ CRITICAL: READ BEFORE ANY FILE OPERATION
 
-This document establishes **MANDATORY** rules for AI agents working in this repository.
-**Violations will pollute the codebase.** Reference: `GLOBAL_NAMING_POLICY.md` (GNEA v2.0.0)
+This document establishes **ADVISORY** rules for AI agents working in this repository, with migration to MANDATORY enforcement in progress.
+**Violations should be avoided to maintain codebase quality.** Reference: `GLOBAL_NAMING_POLICY.md` (GNEA v2.0.0)
 
 ---
 
@@ -22,7 +22,7 @@ The following file types are **FORBIDDEN** in the repository root:
 - Python scripts (`*.py`) except: `RUN_PIPELINE.py`, `setup.py`, `_install_deps.py`
 - JSON data files (`*.json`)
 - Shell scripts (`*.sh`) except: `install.sh`, `run_pipeline.sh`
-- Markdown files (`*.md`) except: `README.md`, `README.ES.md`, `CHANGELOG.md`, `AGENTS.md`, `DEPENDENCIES.md`, `GLOBAL_NAMING_POLICY.md`
+- Markdown files (`*.md`) except: `README.md`, `README.ES.md`, `CHANGELOG.md`, `AGENTS.md`, `DEPENDENCIES.md`, `GLOBAL_NAMING_POLICY.md`, `AUDIT_REPORT_V4.md`
 
 ### 🚫 FORBIDDEN DIRECTORY NAMES
 Never create directories named: `temp`, `tmp`, `backup`, `old`, `misc`, `other`, `stuff`, `things`, `new`, `test` (root level)
@@ -206,13 +206,22 @@ Examples:
 
 ## ENFORCEMENT
 
-This policy is enforced by:
-1. Pre-commit hooks (planned)
-2. CI/CD validation (planned)
-3. **AI Agent self-compliance** (ACTIVE)
+This policy is currently enforced through:
+1. **AI Agent self-compliance** (ACTIVE) - AI agents follow these guidelines
+2. **Manual code review** (ACTIVE) - Human reviewers check compliance
+
+**Planned automated enforcement:**
+1. Pre-commit hooks - Will prevent commits violating naming conventions
+2. CI/CD validation - Will block PRs with policy violations
+3. `.gitignore` rules - Now active to prevent bytecode and temporary files
+
+**Migration timeline:**
+- Phase 1 (Current): Advisory compliance with .gitignore protection
+- Phase 2 (Planned): Pre-commit hooks implementation
+- Phase 3 (Planned): Full CI/CD enforcement and MANDATORY status
 
 **Reference:** `GLOBAL_NAMING_POLICY.md` for complete GNEA specification.
 
 ---
 
-*Last updated: 2025-12-30 by GNEA compliance restructuring*
+*Last updated: 2026-01-05 by compliance remediation and migration plan*
