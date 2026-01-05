@@ -886,7 +886,7 @@ def create_default_bounds() -> dict[str, tuple[ClosedInterval, str, float]]:
             0.3,
         ),
         "chunk_size": (
-            ClosedInterval(lower=100.0, upper=10000.0),
+            ClosedInterval(lower=256.0, upper=2048.0),
             "tokens",
             2000.0,
         ),

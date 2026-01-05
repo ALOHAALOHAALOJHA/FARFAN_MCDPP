@@ -1,5 +1,9 @@
 """Signal Loader Module - Extract patterns from questionnaire_monolith.json
 
+.. deprecated:: 2.0.0
+    This module is deprecated. Use QuestionnaireSignalRegistry from signal_registry.py instead.
+    See SPEC_SIGNAL_NORMALIZATION_COMPREHENSIVE.md §5.2: SISAS-LOADER-001
+
 This module implements Phase 1 of the Signal Integration Plan by extracting
 REAL patterns from the questionnaire_monolith.json file and building SignalPack
 objects for each of the 10 policy areas.
@@ -10,13 +14,26 @@ Key Features:
 - Categorizes patterns by type (TEMPORAL, INDICADOR, FUENTE_OFICIAL, etc.)
 - Builds versioned SignalPack objects with fingerprints
 - Computes source fingerprints using blake3/hashlib
+
+DEPRECATION NOTE:
+    get_git_sha() introduces non-determinism and should NOT be used in identity fields.
+    Use monolith_hash for deterministic identity instead.
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
+import warnings
 from typing import Any
+
+# Emit deprecation warning on import
+warnings.warn(
+    "signal_loader is deprecated. Use QuestionnaireSignalRegistry from signal_registry.py. "
+    "See SPEC_SIGNAL_NORMALIZATION_COMPREHENSIVE.md §5.2: SISAS-LOADER-001",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 try:
     import blake3
@@ -183,9 +200,23 @@ def get_git_sha() -> str:
     """
     Get current git commit SHA (short form).
 
+    .. deprecated:: 2.0.0
+        This function introduces non-determinism. Do NOT use in identity fields.
+        Use monolith_hash for deterministic signal pack identity.
+        See SPEC_SIGNAL_NORMALIZATION_COMPREHENSIVE.md §5.2: SISAS-LOADER-001
+
     Returns:
         Short SHA or 'unknown' if not in git repo
+
+    Warning:
+        This value varies between machines and commits. It should ONLY be used
+        in telemetry/metadata fields, NEVER in identity-affecting fields.
     """
+    warnings.warn(
+        "get_git_sha() is deprecated for identity fields. Use monolith_hash instead.",
+        DeprecationWarning,
+        stacklevel=2
+    )
     try:
         import subprocess
         result = subprocess.run(
@@ -233,8 +264,12 @@ def build_signal_pack_from_monolith(
 
     if monolith is not None:
         monolith_data = monolith
+        # Compute monolith hash deterministically
+        monolith_hash = compute_fingerprint(json.dumps(monolith, sort_keys=True))
     elif questionnaire is not None and hasattr(questionnaire, "data"):
         monolith_data = dict(questionnaire.data)
+        # Get monolith hash from questionnaire (deterministic source)
+        monolith_hash = questionnaire.sha256 if hasattr(questionnaire, "sha256") else compute_fingerprint(json.dumps(monolith_data, sort_keys=True))
     else:
         raise ValueError("Questionnaire data is required to build signal packs")
 
