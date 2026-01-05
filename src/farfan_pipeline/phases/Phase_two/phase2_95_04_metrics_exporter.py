@@ -22,7 +22,7 @@ Requirements Implemented:
 Design Considerations:
 - Prometheus client library for metric types
 - Thread-safe metric operations
-- Configurable HTTP server port
+- Configurable HTTP server port (default: 8000)
 - Graceful degradation if prometheus_client unavailable
 """
 
@@ -31,7 +31,7 @@ from __future__ import annotations
 import logging
 import threading
 from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -42,8 +42,6 @@ try:
         Gauge,
         Histogram,
         start_http_server,
-        REGISTRY,
-        CollectorRegistry,
     )
     PROMETHEUS_AVAILABLE = True
 except ImportError:
