@@ -33,7 +33,7 @@ import logging
 from collections import deque
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, ClassVar
+from typing import Callable, Dict, List, Optional, ClassVar
 
 logger = logging.getLogger(__name__)
 
