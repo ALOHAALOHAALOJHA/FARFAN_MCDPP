@@ -32,8 +32,8 @@ import hashlib
 import json
 import logging
 from collections import defaultdict
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from dataclasses import dataclass
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -338,7 +338,7 @@ class QuestionMethodSet:
     doctoral_justification: str
 
     @property
-    def all_methods_ordered(self) -> tuple[MethodAssignment, ...]: 
+    def all_methods_ordered(self) -> tuple[MethodAssignment, ...]:
         """Retorna todos los métodos en orden epistémico:  N1 → N2 → N3"""
         return self.phase_a_N1 + self.phase_b_N2 + self.phase_c_N3
 
@@ -372,7 +372,7 @@ class QuestionMethodSet:
         """Indica si hay métodos con baja confianza"""
         return any(m.is_low_confidence for m in self.all_methods_ordered)
 
-    def get_low_confidence_methods(self) -> tuple[MethodAssignment, ...]: 
+    def get_low_confidence_methods(self) -> tuple[MethodAssignment, ...]:
         """Retorna métodos con baja confianza"""
         return tuple(m for m in self.all_methods_ordered if m.is_low_confidence)
 
@@ -478,11 +478,11 @@ class InputRegistry:
         """Obtiene la definición de un sector."""
         return self.sectors.get(sector_id)
 
-    def get_methods_for_level(self, level: str) -> tuple[MethodDefinition, ... ]: 
+    def get_methods_for_level(self, level: str) -> tuple[MethodDefinition, ... ]:
         """Obtiene todos los métodos de un nivel específico."""
         return self.methods_by_level.get(level, ())
 
-    def get_contracts_for_type(self, type_code: str) -> tuple[ContractClassification, ...]: 
+    def get_contracts_for_type(self, type_code: str) -> tuple[ContractClassification, ...]:
         """Obtiene todos los contratos de un tipo específico."""
         return self.contracts_by_type. get(type_code, ())
 
@@ -645,7 +645,7 @@ class InputLoader:
             total_contracts=len(contracts_by_id),
             total_sectors=len(sectors),
             level_counts=level_counts,
-            load_timestamp=datetime.now(timezone.utc).isoformat(),
+            load_timestamp=datetime.now(UTC).isoformat(),
             loader_version=LOADER_VERSION,
         )
 
@@ -683,7 +683,7 @@ class InputLoader:
             )
 
         try:
-            with open(path, "r", encoding="utf-8") as f:
+            with open(path, encoding="utf-8") as f:
                 return json.load(f)
         except json.JSONDecodeError as e:
             raise json.JSONDecodeError(
@@ -729,7 +729,7 @@ class InputLoader:
         """
         required_keys = {"metadata", "statistics", "methods_by_level"}
         missing = required_keys - set(data. keys())
-        if missing: 
+        if missing:
             raise ValueError(
                 f"HARD FAILURE:  classified_methods.json missing required keys: {missing}\n"
                 f"Present keys: {set(data.keys())}"
@@ -737,7 +737,7 @@ class InputLoader:
 
         actual_levels = set(data["methods_by_level"].keys())
         missing_levels = VALID_EPISTEMOLOGICAL_LEVELS - actual_levels
-        if missing_levels: 
+        if missing_levels:
             raise ValueError(
                 f"HARD FAILURE: classified_methods.json missing epistemological levels: {missing_levels}\n"
                 f"Present levels: {actual_levels}"
@@ -767,7 +767,7 @@ class InputLoader:
             }
         }
         """
-        if "contratos" not in data: 
+        if "contratos" not in data:
             raise ValueError(
                 "HARD FAILURE:  contratos_clasificados.json missing 'contratos' key"
             )
@@ -846,7 +846,7 @@ class InputLoader:
                 )
 
             # Validar que las fases son listas
-            for phase in ["phase_a_N1", "phase_b_N2", "phase_c_N3"]: 
+            for phase in ["phase_a_N1", "phase_b_N2", "phase_c_N3"]:
                 if not isinstance(q_set[phase], list):
                     raise ValueError(
                         f"HARD FAILURE: method_sets_by_question.json['{q_id}']['{phase}'] "
@@ -1100,7 +1100,7 @@ class InputLoader:
                 continue
 
             try:
-                with open(questions_file, "r", encoding="utf-8") as f:
+                with open(questions_file, encoding="utf-8") as f:
                     data = json.load(f)
 
                 sector_id = data.get("policy_area_id", "")
@@ -1238,7 +1238,7 @@ class InputLoader:
         """
         # Validar niveles válidos para contratos
         for q_id, q_set in method_sets.items():
-            for method in q_set.all_methods_ordered: 
+            for method in q_set.all_methods_ordered:
                 if method.level not in VALID_CONTRACT_LEVELS:
                     raise ValueError(
                         f"HARD FAILURE: {q_id} has method {method.full_id} "

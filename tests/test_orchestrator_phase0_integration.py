@@ -14,23 +14,22 @@ Test Coverage:
 6. Phase0ValidationResult dataclass functionality
 """
 
-import pytest
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from unittest.mock import Mock, MagicMock, patch
-from dataclasses import asdict
+from unittest.mock import Mock, patch
+
+import pytest
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Phase 0 imports
-from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import GateResult
-
 # Orchestrator imports
 from orchestration.orchestrator import Orchestrator, Phase0ValidationResult
 
+from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import GateResult
 
 # ============================================================================
 # FIXTURES
@@ -80,7 +79,7 @@ def mock_phase0_validation_success():
     return Phase0ValidationResult(
         all_passed=True,
         gate_results=gate_results,
-        validation_time=datetime.now(timezone.utc).isoformat()
+        validation_time=datetime.now(UTC).isoformat()
     )
 
 
@@ -98,7 +97,7 @@ def mock_phase0_validation_failure():
     return Phase0ValidationResult(
         all_passed=False,
         gate_results=gate_results,
-        validation_time=datetime.now(timezone.utc).isoformat()
+        validation_time=datetime.now(UTC).isoformat()
     )
 
 
@@ -115,7 +114,7 @@ def mock_orchestrator_dependencies():
         }
     }
     executor_config = Mock()
-    
+
     return {
         "method_executor": method_executor,
         "questionnaire": questionnaire,
@@ -129,39 +128,39 @@ def mock_orchestrator_dependencies():
 
 class TestPhase0ValidationResult:
     """Test Phase0ValidationResult dataclass functionality."""
-    
+
     def test_phase0_validation_result_all_passed(self, mock_phase0_validation_success):
         """Test Phase0ValidationResult when all gates pass."""
         result = mock_phase0_validation_success
-        
+
         assert result.all_passed is True
         assert len(result.gate_results) == 4
         assert all(g.passed for g in result.gate_results)
         assert len(result.get_failed_gates()) == 0
-    
+
     def test_phase0_validation_result_failure(self, mock_phase0_validation_failure):
         """Test Phase0ValidationResult when gates fail."""
         result = mock_phase0_validation_failure
-        
+
         assert result.all_passed is False
         assert len(result.gate_results) == 1
         assert result.gate_results[0].passed is False
         assert len(result.get_failed_gates()) == 1
         assert result.get_failed_gates()[0].gate_name == "bootstrap"
-    
+
     def test_phase0_validation_get_summary_success(self, mock_phase0_validation_success):
         """Test get_summary() method for successful validation."""
         result = mock_phase0_validation_success
         summary = result.get_summary()
-        
+
         assert "4/4 gates passed" in summary
         assert "failed" not in summary
-    
+
     def test_phase0_validation_get_summary_failure(self, mock_phase0_validation_failure):
         """Test get_summary() method for failed validation."""
         result = mock_phase0_validation_failure
         summary = result.get_summary()
-        
+
         assert "0/1 gates passed" in summary
         assert "bootstrap failed" in summary
 
@@ -172,7 +171,7 @@ class TestPhase0ValidationResult:
 
 class TestOrchestratorRuntimeConfig:
     """Test Orchestrator integration with RuntimeConfig."""
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_orchestrator_accepts_runtime_config(
@@ -187,10 +186,10 @@ class TestOrchestratorRuntimeConfig:
             **mock_orchestrator_dependencies,
             runtime_config=mock_runtime_config_prod
         )
-        
+
         assert orchestrator.runtime_config is not None
         assert orchestrator.runtime_config.mode == RuntimeMode.PROD
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_orchestrator_runtime_config_none(
@@ -204,9 +203,9 @@ class TestOrchestratorRuntimeConfig:
             **mock_orchestrator_dependencies,
             runtime_config=None
         )
-        
+
         assert orchestrator.runtime_config is None
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     @patch('orchestration.orchestrator.logger')
@@ -223,7 +222,7 @@ class TestOrchestratorRuntimeConfig:
             **mock_orchestrator_dependencies,
             runtime_config=mock_runtime_config_prod
         )
-        
+
         # Check that info was logged
         assert mock_logger.info.called
         found = False
@@ -236,7 +235,7 @@ class TestOrchestratorRuntimeConfig:
                  found = True
                  break
         assert found, "orchestrator_runtime_mode not logged"
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     @patch('orchestration.orchestrator.logger')
@@ -253,10 +252,10 @@ class TestOrchestratorRuntimeConfig:
             **mock_orchestrator_dependencies,
             runtime_config=mock_runtime_config_dev
         )
-        
+
         assert mock_logger.info.called
         assert orchestrator.runtime_config.mode == RuntimeMode.DEV
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     @patch('orchestration.orchestrator.logger')
@@ -272,7 +271,7 @@ class TestOrchestratorRuntimeConfig:
             **mock_orchestrator_dependencies,
             runtime_config=None
         )
-        
+
         # Check that warning was logged
         assert mock_logger.warning.called
         found = False
@@ -292,7 +291,7 @@ class TestOrchestratorRuntimeConfig:
 
 class TestOrchestratorPhase0Validation:
     """Test Orchestrator integration with Phase 0 exit gate validation."""
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_orchestrator_accepts_phase0_validation(
@@ -307,10 +306,10 @@ class TestOrchestratorPhase0Validation:
             **mock_orchestrator_dependencies,
             phase0_validation=mock_phase0_validation_success
         )
-        
+
         assert orchestrator.phase0_validation is not None
         assert orchestrator.phase0_validation.all_passed is True
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_orchestrator_fails_if_phase0_gates_failed(
@@ -326,10 +325,10 @@ class TestOrchestratorPhase0Validation:
                 **mock_orchestrator_dependencies,
                 phase0_validation=mock_phase0_validation_failure
             )
-        
+
         assert "Phase 0 exit gates failed" in str(exc_info.value)
         assert "bootstrap" in str(exc_info.value)
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     @patch('orchestration.orchestrator.logger')
@@ -346,7 +345,7 @@ class TestOrchestratorPhase0Validation:
             **mock_orchestrator_dependencies,
             phase0_validation=mock_phase0_validation_success
         )
-        
+
         # Check that info was logged
         assert mock_logger.info.called
         found = False
@@ -366,7 +365,7 @@ class TestOrchestratorPhase0Validation:
 
 class TestOrchestratorLoadConfiguration:
     """Test _load_configuration method with Phase 0 integration."""
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_load_configuration_includes_runtime_mode(
@@ -382,14 +381,14 @@ class TestOrchestratorLoadConfiguration:
             runtime_config=mock_runtime_config_prod
         )
         orchestrator._phase_instrumentation[0] = Mock()
-        
+
         config = orchestrator._load_configuration()
-        
+
         assert "_runtime_mode" in config
         assert config["_runtime_mode"] == "prod"
         assert "_strict_mode" in config
         assert config["_strict_mode"] is True
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_load_configuration_without_runtime_config(
@@ -404,13 +403,13 @@ class TestOrchestratorLoadConfiguration:
             runtime_config=None
         )
         orchestrator._phase_instrumentation[0] = Mock()
-        
+
         config = orchestrator._load_configuration()
-        
+
         # Should not have runtime mode keys
         assert "_runtime_mode" not in config
         assert "_strict_mode" not in config
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_load_configuration_validates_phase0_success(
@@ -426,11 +425,11 @@ class TestOrchestratorLoadConfiguration:
             phase0_validation=mock_phase0_validation_success
         )
         orchestrator._phase_instrumentation[0] = Mock()
-        
+
         # Should not raise
         config = orchestrator._load_configuration()
         assert config is not None
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_load_configuration_fails_if_phase0_failed(
@@ -451,7 +450,7 @@ class TestOrchestratorLoadConfiguration:
                 **mock_orchestrator_dependencies,
                 phase0_validation=mock_phase0_validation_failure
             )
-        
+
         assert "Phase 0 exit gates failed" in str(exc_info.value)
 
 
@@ -461,7 +460,7 @@ class TestOrchestratorLoadConfiguration:
 
 class TestOrchestratorFullIntegration:
     """Test full integration of RuntimeConfig + Phase 0 validation."""
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_orchestrator_with_full_phase0_context(
@@ -479,17 +478,17 @@ class TestOrchestratorFullIntegration:
             phase0_validation=mock_phase0_validation_success
         )
         orchestrator._phase_instrumentation[0] = Mock()
-        
+
         # Verify both are stored
         assert orchestrator.runtime_config is not None
         assert orchestrator.runtime_config.mode == RuntimeMode.PROD
         assert orchestrator.phase0_validation is not None
         assert orchestrator.phase0_validation.all_passed is True
-        
+
         # Verify _load_configuration includes runtime mode
         config = orchestrator._load_configuration()
         assert config["_runtime_mode"] == "prod"
-    
+
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
     def test_orchestrator_backward_compatible_no_phase0(
@@ -504,10 +503,10 @@ class TestOrchestratorFullIntegration:
             # No runtime_config, no phase0_validation
         )
         orchestrator._phase_instrumentation[0] = Mock()
-        
+
         assert orchestrator.runtime_config is None
         assert orchestrator.phase0_validation is None
-        
+
         # Should still work
         config = orchestrator._load_configuration()
         assert config is not None

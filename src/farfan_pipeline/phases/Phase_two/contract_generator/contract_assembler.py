@@ -26,11 +26,10 @@ from __future__ import annotations
 import logging
 import re
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from . chain_composer import EpistemicChain
+    from .chain_composer import EpistemicChain
     from .input_registry import ContractClassification, InputRegistry, SectorDefinition
     from .method_expander import ExpandedMethodUnit
 
@@ -268,7 +267,7 @@ class ContractAssembler:
 
     def __init__(
         self,
-        registry: "InputRegistry",
+        registry: InputRegistry,
         generation_timestamp: str,
         generator_version: str,
     ):
@@ -289,9 +288,9 @@ class ContractAssembler:
 
     def assemble_contract(
         self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-        sector: "SectorDefinition",
+        chain: EpistemicChain,
+        classification: ContractClassification,
+        sector: SectorDefinition,
         contract_number: int,
     ) -> GeneratedContract:
         """
@@ -379,9 +378,9 @@ class ContractAssembler:
 
     def _build_identity(
         self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-        sector: "SectorDefinition",
+        chain: EpistemicChain,
+        classification: ContractClassification,
+        sector: SectorDefinition,
         contract_number: int,
     ) -> dict[str, Any]:
         """
@@ -464,8 +463,8 @@ class ContractAssembler:
 
     def _build_executor_binding(
         self,
-        chain: "EpistemicChain",
-        sector: "SectorDefinition",
+        chain: EpistemicChain,
+        sector: SectorDefinition,
         contract_number: int,
     ) -> dict[str, Any]:
         """Construye sección executor_binding."""
@@ -481,7 +480,7 @@ class ContractAssembler:
     # BUILDERS - METHOD BINDING (LA MÁS GRANULAR)
     # ══════════════════════════════════════════════════════════════════════════
 
-    def _build_method_binding(self, chain: "EpistemicChain") -> dict[str, Any]:
+    def _build_method_binding(self, chain: EpistemicChain) -> dict[str, Any]:
         """
         Construye sección method_binding.
 
@@ -514,7 +513,7 @@ class ContractAssembler:
 
     def _build_phase_section(
         self,
-        methods: tuple["ExpandedMethodUnit", ...],
+        methods: tuple[ExpandedMethodUnit, ...],
         metadata: Any,  # PhaseMetadata
     ) -> dict[str, Any]:
         """
@@ -557,22 +556,22 @@ class ContractAssembler:
 
     def _build_question_context(
         self,
-        classification: "ContractClassification",
-        sector: "SectorDefinition",
+        classification: ContractClassification,
+        sector: SectorDefinition,
     ) -> dict[str, Any]:
         """Construye sección question_context con pregunta especializada del sector."""
         # Buscar pregunta especializada en sector_questions
         # classification.contract_id es "Q003", sector.sector_id es "PA01"
         base_q_id = classification.contract_id  # Q001, Q002, etc.
         sector_id = sector.sector_id  # PA01, PA02, etc.
-        
+
         # Intentar obtener pregunta especializada, fallback a genérica
         specialized_question = classification.pregunta  # Default: pregunta genérica
         if hasattr(self.registry, 'sector_questions') and self.registry.sector_questions:
             sector_qs = self.registry.sector_questions.get(sector_id, {})
             if base_q_id in sector_qs:
                 specialized_question = sector_qs[base_q_id]
-        
+
         return {
             "monolith_ref": classification.contract_id,
             "question_text": specialized_question,  # Carver expects this key
@@ -600,9 +599,9 @@ class ContractAssembler:
 
     def _build_signal_requirements(
         self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-    ) -> dict[str, Any]: 
+        chain: EpistemicChain,
+        classification: ContractClassification,
+    ) -> dict[str, Any]:
         """Construye sección signal_requirements."""
         return {
             "derivation_source": "expected_elements",
@@ -620,9 +619,9 @@ class ContractAssembler:
 
     def _build_evidence_assembly(
         self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-    ) -> dict[str, Any]: 
+        chain: EpistemicChain,
+        classification: ContractClassification,
+    ) -> dict[str, Any]:
         """
         Construye sección evidence_assembly según operationalization_guide.json.
 
@@ -692,7 +691,7 @@ class ContractAssembler:
         n2_provides: list[str],
         n3_provides: list[str],
         strategies: dict[str, str],
-    ) -> list[dict[str, Any]]: 
+    ) -> list[dict[str, Any]]:
         """
         Construye reglas de ensamblaje específicas por TYPE. 
 
@@ -871,8 +870,8 @@ class ContractAssembler:
 
     def _build_fusion_specification(
         self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
+        chain: EpistemicChain,
+        classification: ContractClassification,
     ) -> dict[str, Any]:
         """Construye sección fusion_specification."""
         type_code = classification.tipo_contrato["codigo"]
@@ -918,8 +917,8 @@ class ContractAssembler:
 
     def _build_cross_layer_fusion(
         self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
+        chain: EpistemicChain,
+        classification: ContractClassification,
     ) -> dict[str, Any]:
         """Construye sección cross_layer_fusion."""
         type_code = classification.tipo_contrato["codigo"]
@@ -996,7 +995,7 @@ class ContractAssembler:
 
     def _build_human_answer_structure(
         self,
-        classification: "ContractClassification",
+        classification: ContractClassification,
     ) -> dict[str, Any]:
         """Construye sección human_answer_structure según PARTE VI."""
         type_code = classification.tipo_contrato["codigo"]
@@ -1077,9 +1076,9 @@ class ContractAssembler:
 
     def _build_traceability(
         self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-        sector: "SectorDefinition",
+        chain: EpistemicChain,
+        classification: ContractClassification,
+        sector: SectorDefinition,
     ) -> dict[str, Any]:
         """Construye sección traceability."""
         return {
@@ -1123,7 +1122,7 @@ class ContractAssembler:
 
     def _build_output_contract(
         self,
-        classification: "ContractClassification",
+        classification: ContractClassification,
     ) -> dict[str, Any]:
         """Construye sección output_contract (schema de salida)."""
         return {
@@ -1145,9 +1144,9 @@ class ContractAssembler:
 
     def _build_audit_annotations(
         self,
-        chain: "EpistemicChain",
-        classification: "ContractClassification",
-        sector: "SectorDefinition",
+        chain: EpistemicChain,
+        classification: ContractClassification,
+        sector: SectorDefinition,
     ) -> dict[str, Any]:
         """Construye sección audit_annotations."""
         # Detectar métodos de baja confianza

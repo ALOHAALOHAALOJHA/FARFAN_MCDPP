@@ -74,18 +74,18 @@ DEFAULT_OUTPUT_PATH = PHASE_TWO_DIR / "generated_contracts"
 def setup_logging(verbose: bool = False) -> None:
     """Configura logging con formato consistente."""
     level = logging.DEBUG if verbose else logging.INFO
-    
+
     # Formato con timestamp, nivel, y módulo
     formatter = logging.Formatter(
         fmt="%(asctime)s [%(levelname)-8s] %(name)s: %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
-    
+
     # Handler para stdout
     handler = logging.StreamHandler(sys.stdout)
     handler.setFormatter(formatter)
     handler.setLevel(level)
-    
+
     # Configurar root logger
     root_logger = logging.getLogger()
     root_logger.setLevel(level)
@@ -117,13 +117,13 @@ def load_generator_modules() -> dict:
     # Try package imports first (when running as module)
     try:
         from farfan_pipeline.phases.Phase_two.contract_generator import (
-            input_registry,
-            method_expander,
             chain_composer,
             contract_assembler,
-            contract_validator,
-            json_emitter,
             contract_generator,
+            contract_validator,
+            input_registry,
+            json_emitter,
+            method_expander,
         )
         logger.debug("Loaded modules via package imports")
         return {
@@ -137,10 +137,10 @@ def load_generator_modules() -> dict:
         }
     except ImportError:
         pass
-    
+
     # Fallback to dynamic loading for direct execution
     import importlib.util
-    
+
     modules_to_load = [
         "input_registry",
         "method_expander",
@@ -150,38 +150,38 @@ def load_generator_modules() -> dict:
         "json_emitter",
         "contract_generator",
     ]
-    
+
     loaded_modules = {}
-    
+
     for module_name in modules_to_load:
         module_path = SCRIPT_DIR / f"{module_name}.py"
-        
+
         if not module_path.exists():
             raise ImportError(
                 f"Module not found: {module_path}\n"
                 f"Ensure all contract_generator modules are present."
             )
-        
+
         try:
             spec = importlib. util.spec_from_file_location(
                 module_name,
                 module_path,
             )
             module = importlib. util.module_from_spec(spec)
-            
+
             # Registrar en sys.modules para que imports internos funcionen
             sys.modules[module_name] = module
-            
+
             spec.loader.exec_module(module)
             loaded_modules[module_name] = module
-            
+
             logger.debug(f"Loaded module: {module_name}")
-            
+
         except Exception as e:
             raise ImportError(
                 f"Failed to load module '{module_name}' from {module_path}:  {e}"
             ) from e
-    
+
     return loaded_modules
 
 
@@ -205,26 +205,26 @@ def validate_assets_directory(assets_path: Path) -> None:
             f"Assets directory not found:  {assets_path}\n"
             f"Create it and add the required JSON files."
         )
-    
+
     required_files = [
         "classified_methods.json",
         "contratos_clasificados.json",
         "method_sets_by_question.json",
         # sectors.json removed: loaded dynamically from canonic_questionnaire_central
     ]
-    
+
     missing = []
     for filename in required_files:
         filepath = assets_path / filename
         if not filepath.exists():
             missing.append(filename)
-    
+
     if missing:
         raise FileNotFoundError(
             f"Missing required files in {assets_path}:\n"
             + "\n".join(f"  - {f}" for f in missing)
         )
-    
+
     logger.info(f"✓ Assets directory validated: {assets_path}")
     for filename in required_files:
         filepath = assets_path / filename
@@ -240,11 +240,11 @@ def ensure_output_directory(output_path: Path) -> None:
         output_path: Path al directorio de salida
     """
     output_path.mkdir(parents=True, exist_ok=True)
-    
+
     # Crear subdirectorios
     (output_path / "contracts").mkdir(exist_ok=True)
     (output_path / "validation").mkdir(exist_ok=True)
-    
+
     logger.info(f"✓ Output directory ready: {output_path}")
 
 
@@ -272,7 +272,7 @@ def run_generation(
         0 si éxito total, 1 si hubo errores
     """
     start_time = time.time()
-    
+
     # Banner inicial
     print("=" * 70)
     print("F. A.R.F.A. N - GENERADOR DE CONTRATOS EPISTEMOLÓGICOS")
@@ -280,20 +280,20 @@ def run_generation(
     print(f"Objetivo: {EXPECTED_CONTRACTS} contratos (30 preguntas × 10 sectores)")
     print("=" * 70)
     print()
-    
+
     try:
         # 1. Validar prerequisites
         logger.info("PASO 0: Validando prerequisites...")
         validate_assets_directory(assets_path)
         ensure_output_directory(output_path)
-        
+
         # 2. Cargar módulos
         logger.info("PASO 1: Cargando módulos...")
         modules = load_generator_modules()
-        
+
         # 3. Obtener clase ContractGenerator
         ContractGenerator = modules["contract_generator"].ContractGenerator
-        
+
         # 4. Crear instancia
         logger.info("PASO 2: Inicializando generador...")
         generator = ContractGenerator(
@@ -301,14 +301,14 @@ def run_generation(
             output_path=output_path,
             strict_mode=strict_mode,
         )
-        
+
         # 5. Ejecutar generación
         logger.info("PASO 3: Ejecutando generación...")
         result = generator.generate()
-        
+
         # 6. Reportar resultado
         elapsed = time.time() - start_time
-        
+
         print()
         print("=" * 70)
         print("RESULTADO DE GENERACIÓN")
@@ -322,41 +322,41 @@ def run_generation(
         print(f"  Manifiesto:           {result['manifest_path']}")
         print(f"  Tiempo total:        {elapsed:.2f} segundos")
         print("=" * 70)
-        
+
         # Determinar código de salida
         if result["invalid_contracts"] > 0:
             print()
             print(f"⚠️  ADVERTENCIA:  {result['invalid_contracts']} contratos inválidos")
             print(f"   Revisar:  {output_path}/validation/invalid_contracts.json")
             return 1 if strict_mode else 0
-        
+
         if result["total_contracts"] != EXPECTED_CONTRACTS:
             print()
             print(f"⚠️  ADVERTENCIA: Se esperaban {EXPECTED_CONTRACTS} contratos, "
                   f"se generaron {result['total_contracts']}")
             return 1
-        
+
         print()
         print(f"✅ ÉXITO: {result['emitted_files']} contratos generados correctamente")
         return 0
-        
+
     except FileNotFoundError as e:
         logger.error(f"ARCHIVO NO ENCONTRADO: {e}")
         return 1
-        
+
     except ImportError as e:
         logger. error(f"ERROR DE IMPORTACIÓN: {e}")
         return 1
-        
+
     except ValueError as e:
         logger.error(f"ERROR DE VALIDACIÓN: {e}")
         return 1
-        
+
     except KeyboardInterrupt:
         print()
         logger.warning("Generación interrumpida por usuario (Ctrl+C)")
         return 130
-        
+
     except Exception as e:
         logger.exception(f"ERROR CRÍTICO: {e}")
         return 1
@@ -391,57 +391,57 @@ Estructura de assets esperada:
   └── sectors. json
         """,
     )
-    
+
     parser.add_argument(
         "--assets",
         type=Path,
         default=DEFAULT_ASSETS_PATH,
         help=f"Directorio con insumos epistemológicos (default: {DEFAULT_ASSETS_PATH})",
     )
-    
+
     parser.add_argument(
         "--output",
         type=Path,
         default=DEFAULT_OUTPUT_PATH,
         help=f"Directorio de salida para contratos (default: {DEFAULT_OUTPUT_PATH})",
     )
-    
+
     parser.add_argument(
         "--strict",
         action="store_true",
         default=True,
         help="Modo estricto: falla en cualquier error (default)",
     )
-    
+
     parser.add_argument(
         "--no-strict",
         action="store_false",
         dest="strict",
         help="Modo permisivo: continúa con warnings",
     )
-    
+
     parser.add_argument(
         "--verbose", "-v",
         action="store_true",
         help="Logging verbose (DEBUG level)",
     )
-    
+
     parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {SCRIPT_VERSION}",
     )
-    
+
     return parser.parse_args()
 
 
 def main() -> NoReturn:
     """Punto de entrada principal."""
     args = parse_arguments()
-    
+
     # Configurar logging
     setup_logging(verbose=args.verbose)
-    
+
     # Ejecutar generación
     exit_code = run_generation(
         assets_path=args.assets. resolve(),
@@ -449,7 +449,7 @@ def main() -> NoReturn:
         strict_mode=args.strict,
         verbose=args.verbose,
     )
-    
+
     sys.exit(exit_code)
 
 
