@@ -1488,10 +1488,24 @@ class ColombianContextRule:
     def _validate_policy_area_context(
         self, graph: EvidenceGraph, contract: dict[str, Any]
     ) -> list[ValidationFinding]:
-        """Validate evidence against policy-area specific Colombian context."""
+        """Validate evidence against policy-area specific Colombian context.
+
+        Handles field name differences between contract versions:
+        - v2/v3: question_context.policy_area_id
+        - v4: question_context.sector_id or identity.sector_id
+        """
         findings: list[ValidationFinding] = []
 
-        policy_area_id = contract.get("question_context", {}).get("policy_area_id", "")
+        question_context = contract.get("question_context", {})
+        identity = contract.get("identity", {})
+
+        # Try multiple field names with fallback
+        policy_area_id = (
+            question_context.get("policy_area_id")
+            or question_context.get("sector_id")
+            or identity.get("policy_area_id")
+            or identity.get("sector_id", "")
+        )
         if not policy_area_id:
             return findings
 

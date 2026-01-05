@@ -1520,7 +1520,26 @@ class BaseExecutorWithContract(ABC):
         base_slot = identity["base_slot"]
         question_id = identity["question_id"]
         dimension_id = identity["dimension_id"]
-        policy_area_id = identity["policy_area_id"]
+
+        # CRITICAL: Handle field name differences between contract versions
+        # v2/v3 contracts use: identity.policy_area_id
+        # v4 contracts use: identity.sector_id
+        # Fallback to question_context if not in identity
+        policy_area_id = (
+            identity.get("policy_area_id")
+            or identity.get("sector_id")
+            or contract.get("question_context", {}).get("policy_area_id")
+            or contract.get("question_context", {}).get("sector_id", "PA00")
+        )
+
+        # CRITICAL: Normalize dimension_id format
+        # v4 contracts use: "DIM 1" (with space)
+        # Internal code expects: "DIM01" (without space)
+        if dimension_id and " " in str(dimension_id):
+            # Convert "DIM 1" -> "DIM01"
+            parts = dimension_id.split()
+            if len(parts) == 2 and parts[0] == "DIM":
+                dimension_id = f"DIM{parts[1].zfill(1)}"
 
         # CALIBRATION ENFORCEMENT: Verify calibration status before execution
         calibration = contract.get("calibration", {})

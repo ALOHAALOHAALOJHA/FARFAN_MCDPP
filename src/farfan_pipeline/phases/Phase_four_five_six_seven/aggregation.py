@@ -45,12 +45,13 @@ from farfan_pipeline.processing.aggregation_provenance import (
     AggregationDAG,
     ProvenanceNode,
 )
-from farfan_pipeline.processing.uncertainty_quantification import (
+from farfan_pipeline.phases.Phase_four_five_six_seven.uncertainty_quantification import (
     BootstrapAggregator,
     UncertaintyMetrics,
     aggregate_with_uncertainty,
 )
-from farfan_pipeline.processing.choquet_adapter import (
+from farfan_pipeline.phases.Phase_four_five_six_seven.choquet_adapter import (
+    ChoquetProcessingAdapter,
     create_default_choquet_adapter,
 )
 

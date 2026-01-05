@@ -231,7 +231,7 @@ class TestQuestionAwareArchitecture:
             ("Q006", ("PA01", "DIM02", 1)),
             ("Q030", ("PA01", "DIM06", 5)),
             ("Q031", ("PA02", "DIM01", 1)),
-            ("Q150", ("PA05", "DIM03", 5)),
+            ("Q150", ("PA05", "DIM06", 5)),  # Q150 = PA05 (idx 4), DIM06 (idx 5), slot 5
             ("Q300", ("PA10", "DIM06", 5)),
         ]
 
