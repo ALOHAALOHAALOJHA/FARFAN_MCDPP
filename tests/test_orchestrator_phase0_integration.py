@@ -172,8 +172,8 @@ class TestPhase0ValidationResult:
 class TestOrchestratorRuntimeConfig:
     """Test Orchestrator integration with RuntimeConfig."""
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     def test_orchestrator_accepts_runtime_config(
         self,
         mock_validate_structure,
@@ -190,8 +190,8 @@ class TestOrchestratorRuntimeConfig:
         assert orchestrator.runtime_config is not None
         assert orchestrator.runtime_config.mode == RuntimeMode.PROD
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     def test_orchestrator_runtime_config_none(
         self,
         mock_validate_structure,
@@ -206,8 +206,8 @@ class TestOrchestratorRuntimeConfig:
 
         assert orchestrator.runtime_config is None
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     @patch('orchestration.orchestrator.logger')
     def test_orchestrator_logs_runtime_mode_prod(
         self,
@@ -236,8 +236,8 @@ class TestOrchestratorRuntimeConfig:
                  break
         assert found, "orchestrator_runtime_mode not logged"
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     @patch('orchestration.orchestrator.logger')
     def test_orchestrator_logs_runtime_mode_dev(
         self,
@@ -256,8 +256,8 @@ class TestOrchestratorRuntimeConfig:
         assert mock_logger.info.called
         assert orchestrator.runtime_config.mode == RuntimeMode.DEV
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     @patch('orchestration.orchestrator.logger')
     def test_orchestrator_warns_if_no_runtime_config(
         self,
@@ -292,8 +292,8 @@ class TestOrchestratorRuntimeConfig:
 class TestOrchestratorPhase0Validation:
     """Test Orchestrator integration with Phase 0 exit gate validation."""
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     def test_orchestrator_accepts_phase0_validation(
         self,
         mock_validate_structure,
@@ -310,8 +310,8 @@ class TestOrchestratorPhase0Validation:
         assert orchestrator.phase0_validation is not None
         assert orchestrator.phase0_validation.all_passed is True
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     def test_orchestrator_fails_if_phase0_gates_failed(
         self,
         mock_validate_structure,
@@ -329,8 +329,8 @@ class TestOrchestratorPhase0Validation:
         assert "Phase 0 exit gates failed" in str(exc_info.value)
         assert "bootstrap" in str(exc_info.value)
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     @patch('orchestration.orchestrator.logger')
     def test_orchestrator_logs_phase0_validation_success(
         self,
@@ -366,8 +366,8 @@ class TestOrchestratorPhase0Validation:
 class TestOrchestratorLoadConfiguration:
     """Test _load_configuration method with Phase 0 integration."""
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     def test_load_configuration_includes_runtime_mode(
         self,
         mock_validate_structure,
@@ -389,8 +389,8 @@ class TestOrchestratorLoadConfiguration:
         assert "_strict_mode" in config
         assert config["_strict_mode"] is True
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     def test_load_configuration_without_runtime_config(
         self,
         mock_validate_structure,
@@ -410,8 +410,8 @@ class TestOrchestratorLoadConfiguration:
         assert "_runtime_mode" not in config
         assert "_strict_mode" not in config
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     def test_load_configuration_validates_phase0_success(
         self,
         mock_validate_structure,
@@ -430,8 +430,8 @@ class TestOrchestratorLoadConfiguration:
         config = orchestrator._load_configuration()
         assert config is not None
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     def test_load_configuration_fails_if_phase0_failed(
         self,
         mock_validate_structure,
@@ -461,8 +461,8 @@ class TestOrchestratorLoadConfiguration:
 class TestOrchestratorFullIntegration:
     """Test full integration of RuntimeConfig + Phase 0 validation."""
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     def test_orchestrator_with_full_phase0_context(
         self,
         mock_validate_structure,
@@ -489,8 +489,8 @@ class TestOrchestratorFullIntegration:
         config = orchestrator._load_configuration()
         assert config["_runtime_mode"] == "prod"
 
-    @patch('orchestration.orchestrator.validate_phase_definitions')
-    @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
+    @patch('farfan_pipeline.orchestration.orchestrator.validate_phase_definitions')
+
     def test_orchestrator_backward_compatible_no_phase0(
         self,
         mock_validate_structure,
