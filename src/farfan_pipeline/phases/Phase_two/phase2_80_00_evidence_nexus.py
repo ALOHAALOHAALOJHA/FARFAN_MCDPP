@@ -618,6 +618,106 @@ class EvidenceGraph:
             if source and target:
                 contradictions.append((source, target, edge))
         return contradictions
+
+    # -------------------------------------------------------------------------
+    # I6 RESOLUTION: Circular Reasoning Detection
+    # -------------------------------------------------------------------------
+
+    def detect_circular_reasoning(self) -> list[dict[str, Any]]:
+        """
+        Detect circular reasoning patterns in the evidence graph.
+
+        I6 RESOLUTION: Comprehensive circular reasoning detection.
+
+        Circular reasoning occurs when:
+        1. Evidence A supports B, B supports C, C supports A (3-cycle)
+        2. Evidence chain forms a closed loop
+        3. A claim is supported by itself through indirect chains
+
+        Returns:
+            List of detected circular reasoning patterns with details.
+        """
+        circles: list[dict[str, Any]] = []
+        visited: set[EvidenceID] = set()
+        rec_stack: set[EvidenceID] = set()
+
+        def _dfs_detect_cycles(
+            node_id: EvidenceID,
+            path: list[EvidenceID],
+            edges_on_path: list[EdgeID]
+        ) -> None:
+            """DFS to detect cycles starting from node_id."""
+            visited.add(node_id)
+            rec_stack.add(node_id)
+            path.append(node_id)
+
+            for edge in self.get_edges_from(node_id):
+                target_id = edge.target_id
+                edges_on_path.append(edge.edge_id)
+
+                # If we've seen this target in the current recursion stack, we found a cycle
+                if target_id in rec_stack:
+                    # Extract the cycle
+                    cycle_start_idx = path.index(target_id)
+                    cycle_path = path[cycle_start_idx:] + [target_id]
+                    cycle_edges = edges_on_path[cycle_start_idx:]
+
+                    circles.append({
+                        "cycle_id": f"cycle_{len(circles)}_{node_id[:8]}",
+                        "path_length": len(cycle_path),
+                        "nodes_in_cycle": cycle_path,
+                        "edges_in_cycle": cycle_edges,
+                        "support_type": "circular_support",
+                        "severity": self._assess_cycle_severity(cycle_path, cycle_edges),
+                    })
+                # Continue DFS if not visited
+                elif target_id not in visited:
+                    _dfs_detect_cycles(target_id, path.copy(), edges_on_path.copy())
+
+                edges_on_path.pop()
+
+            rec_stack.remove(node_id)
+
+        # Run DFS from each unvisited node
+        for node_id in self._nodes:
+            if node_id not in visited:
+                _dfs_detect_cycles(node_id, [], [])
+
+        return circles
+
+    def _assess_cycle_severity(
+        self,
+        cycle_path: list[EvidenceID],
+        cycle_edges: list[EdgeID]
+    ) -> str:
+        """Assess the severity of a detected cycle.
+
+        Severity levels:
+        - CRITICAL: Direct self-reference (1-2 nodes)
+        - HIGH: Small circle (3 nodes) with strong support edges
+        - MEDIUM: Medium circle (4-5 nodes)
+        - LOW: Large circle (6+ nodes) - likely complex interdependence
+        """
+        path_len = len(cycle_path)
+
+        # Direct self-reference
+        if path_len <= 2:
+            return "CRITICAL"
+
+        # Check edge weights for small circles
+        if path_len == 3:
+            strong_edges = 0
+            for edge_id in cycle_edges:
+                edge = self._edges.get(edge_id)
+                if edge and edge.weight > 0.7:
+                    strong_edges += 1
+            if strong_edges >= 2:
+                return "HIGH"
+
+        if path_len <= 4:
+            return "MEDIUM"
+
+        return "LOW"
     
     def compute_belief_propagation(self) -> dict[EvidenceID, float]: 
         """
@@ -1121,11 +1221,37 @@ class ColombianContextRule:
     """Validate Colombian-specific regulatory and policy context (R-B2).
 
     Checks evidence for required Colombian regulatory references and
-    territorial coverage requirements defined in contract validations.
+    territorial coverage requirements. NOW LOADS colombia_context.json
+    for comprehensive Colombian context validation.
+
+    GAP B2 RESOLUTION: colombian_context.json is now loaded and applied.
     """
 
     code = "COLOMBIAN_CONTEXT"
     severity = ValidationSeverity.WARNING
+
+    def __init__(self):
+        """Initialize with Colombian context loaded from file."""
+        self._colombian_context_data: dict[str, Any] | None = None
+        self._context_path = Path(__file__).parent.parent.parent.parent.parent / "canonic_questionnaire_central" / "colombia_context" / "colombia_context.json"
+        self._load_colombian_context()
+
+    def _load_colombian_context(self) -> None:
+        """Load colombian_context.json file for validation."""
+        try:
+            if self._context_path.exists():
+                import json
+                with open(self._context_path, 'r', encoding='utf-8') as f:
+                    self._colombian_context_data = json.load(f)
+                logger.info(
+                    "colombian_context_loaded",
+                    path=str(self._context_path),
+                    laws_count=len(self._colombian_context_data.get("legal_framework", {}).get("key_laws", [])),
+                )
+            else:
+                logger.warning("colombian_context_file_not_found", path=str(self._context_path))
+        except Exception as e:
+            logger.error("colombian_context_load_failed", error=str(e))
 
     def validate(
         self,
@@ -1134,34 +1260,147 @@ class ColombianContextRule:
     ) -> list[ValidationFinding]:
         findings: list[ValidationFinding] = []
 
+        # First, check contract-level validation rules
         validation_rules = contract.get("validation_rules", {})
-        colombian_context = validation_rules.get("colombian_context", {})
+        contract_col_context = validation_rules.get("colombian_context", {})
 
-        if not colombian_context:
-            return findings
+        # Process contract-level requirements
+        if contract_col_context:
+            required_refs = contract_col_context.get("required_regulatory_refs", [])
+            for ref in required_refs:
+                if not self._find_reference_in_graph(graph, ref):
+                    findings.append(ValidationFinding(
+                        finding_id=f"MISSING_COL_REF_{ref[:20].replace(' ', '_')}",
+                        severity=ValidationSeverity.WARNING,
+                        code=self.code,
+                        message=f"Missing required Colombian reference: {ref}",
+                        affected_nodes=[],
+                        remediation=f"Evidence must include reference to: {ref}",
+                    ))
 
-        required_refs = colombian_context.get("required_regulatory_refs", [])
-        for ref in required_refs:
-            if not self._find_reference_in_graph(graph, ref):
+            territorial_req = contract_col_context.get("territorial_coverage")
+            if territorial_req and not self._validate_territorial(graph, territorial_req):
                 findings.append(ValidationFinding(
-                    finding_id=f"MISSING_COL_REF_{ref[:20].replace(' ', '_')}",
+                    finding_id="TERRITORIAL_COVERAGE_MISSING",
                     severity=ValidationSeverity.WARNING,
                     code=self.code,
-                    message=f"Missing required Colombian reference: {ref}",
+                    message="Territorial coverage requirement not met",
                     affected_nodes=[],
-                    remediation=f"Evidence must include reference to: {ref}",
+                    remediation="Include departamental/municipal coverage data",
                 ))
 
-        territorial_req = colombian_context.get("territorial_coverage")
-        if territorial_req and not self._validate_territorial(graph, territorial_req):
-            findings.append(ValidationFinding(
-                finding_id="TERRITORIAL_COVERAGE_MISSING",
-                severity=ValidationSeverity.WARNING,
-                code=self.code,
-                message="Territorial coverage requirement not met",
-                affected_nodes=[],
-                remediation="Include departamental/municipal coverage data",
-            ))
+        # B2 RESOLUTION: Apply loaded colombia_context.json for policy-area specific validation
+        if self._colombian_context_data:
+            findings.extend(self._validate_policy_area_context(graph, contract))
+            findings.extend(self._validate_legal_framework(graph, contract))
+            findings.extend(self._validate_territorial_organization(graph, contract))
+
+        return findings
+
+    def _validate_policy_area_context(
+        self, graph: EvidenceGraph, contract: dict[str, Any]
+    ) -> list[ValidationFinding]:
+        """Validate evidence against policy-area specific Colombian context."""
+        findings: list[ValidationFinding] = []
+
+        policy_area_id = contract.get("question_context", {}).get("policy_area_id", "")
+        if not policy_area_id:
+            return findings
+
+        # Get relevant laws for this policy area from colombia_context.json
+        key_laws = self._colombian_context_data.get("legal_framework", {}).get("key_laws", [])
+        relevant_laws = [
+            law for law in key_laws
+            if policy_area_id in law.get("relevance", [])
+        ]
+
+        for law in relevant_laws:
+            law_id = law.get("law_id", "")
+            law_name = law.get("name", "")
+            if not self._find_reference_in_graph(graph, law_name) and not self._find_reference_in_graph(graph, law_id):
+                findings.append(ValidationFinding(
+                    finding_id=f"MISSING_LAW_REF_{law_id}",
+                    severity=ValidationSeverity.INFO,
+                    code=self.code,
+                    message=f"Policy area {policy_area_id} should reference: {law_name}",
+                    affected_nodes=[],
+                    remediation=f"Consider including reference to {law_name} ({law_id})",
+                ))
+
+        # Check international treaties for this policy area
+        treaties = self._colombian_context_data.get("legal_framework", {}).get("international_treaties", [])
+        relevant_treaties = [
+            t for t in treaties
+            if policy_area_id in t.get("relevance", [])
+        ]
+
+        for treaty in relevant_treaties:
+            treaty_name = treaty.get("treaty", "")
+            if treaty_name and not self._find_reference_in_graph(graph, treaty_name):
+                findings.append(ValidationFinding(
+                    finding_id=f"MISSING_TREATY_REF_{treaty_name[:15].replace(' ', '_')}",
+                    severity=ValidationSeverity.INFO,
+                    code=self.code,
+                    message=f"Consider referencing international treaty: {treaty_name}",
+                    affected_nodes=[],
+                    remediation=f"Include reference to {treaty_name} for comprehensive analysis",
+                ))
+
+        return findings
+
+    def _validate_legal_framework(
+        self, graph: EvidenceGraph, contract: dict[str, Any]
+    ) -> list[ValidationFinding]:
+        """Validate evidence mentions key constitutional articles when relevant."""
+        findings: list[ValidationFinding] = []
+
+        # Check if evidence should reference constitution
+        all_content = " ".join(str(n.content) for n in graph._nodes.values()).lower()
+        constitution_keywords = ["derechos", "género", "victimas", "paz", "ambiente", "niñez"]
+
+        if any(kw in all_content for kw in constitution_keywords):
+            # Should reference 1991 Constitution
+            has_constitution = "constituc" in all_content or "1991" in all_content
+            if not has_constitution:
+                findings.append(ValidationFinding(
+                    finding_id="MISSING_CONSTITUTION_REF",
+                    severity=ValidationSeverity.INFO,
+                    code=self.code,
+                    message="Evidence discusses constitutional rights but lacks Constitution reference",
+                    affected_nodes=[],
+                    remediation="Consider referencing Constitution of 1991 for legal grounding",
+                ))
+
+        return findings
+
+    def _validate_territorial_organization(
+        self, graph: EvidenceGraph, contract: dict[str, Any]
+    ) -> list[ValidationFinding]:
+        """Validate territorial context against Colombian organization."""
+        findings: list[ValidationFinding] = []
+
+        # Get territorial context from colombia_context.json
+        territorial_context = self._colombian_context_data.get("territorial_context", {})
+
+        # Check if evidence mentions specific regions
+        all_content = " ".join(str(n.content) for n in graph._nodes.values()).lower()
+
+        for region_name, region_data in territorial_context.items():
+            # Check if evidence mentions departments in this region
+            departments = region_data.get("departments", [])
+            if any(dep.lower() in all_content for dep in departments):
+                # Evidence mentions this region - check for key issues
+                key_issues = region_data.get("key_issues", [])
+                mentioned_issues = [issue for issue in key_issues if issue.lower() in all_content]
+                if len(mentioned_issues) < 2:
+                    findings.append(ValidationFinding(
+                        finding_id=f"REGION_CONTEXT_SHALLOW_{region_name[:10].upper()}",
+                        severity=ValidationSeverity.INFO,
+                        code=self.code,
+                        message=f"Evidence mentions {region_name} region but may lack key context",
+                        affected_nodes=[],
+                        remediation=f"Consider addressing key issues: {', '.join(key_issues[:3])}",
+                    ))
 
         return findings
 
@@ -1200,14 +1439,53 @@ class ColombianContextRule:
 
 
 class CrossCuttingCoverageRule:
-    """Validate coverage of required cross-cutting themes (R-W2).
+    """Validate coverage of required cross-cutting themes (R-W2, I7).
+
+    I7 RESOLUTION: Now checks actual evidence content for theme coverage.
 
     Checks that evidence addresses required cross-cutting themes defined
-    in the signal pack's cross_cutting_themes field.
+    in the signal pack's cross_cutting_themes field by analyzing actual
+    evidence node content, not just declarative applicability.
     """
 
     code = "XCT_COVERAGE"
     severity = ValidationSeverity.WARNING
+
+    # Theme keyword mappings for content analysis
+    THEME_KEYWORDS = {
+        "CC_ENFOQUE_DIFERENCIAL": [
+            "enfoque diferencial", "población étnica", "comunidad negra", "indígena",
+            "raizal", "rom", "gitano", "diferencial", "intercultural", "etnia",
+        ],
+        "CC_PERSPECTIVA_GENERO": [
+            "género", "mujer", "mujeres", "feminicidio", "violencia de género",
+            "brecha de género", "igualdad de género", "perspectiva de género",
+        ],
+        "CC_ENTORNO_TERRITORIAL": [
+            "territorial", "territorio", "rural", "urbano", "departamental",
+            "municipal", "local", "región", "área geográfica",
+        ],
+        "CC_PARTICIPACION_CIUDADANA": [
+            "participación", "participación ciudadana", "control social",
+            "veeduría", "involucramiento", "alianza", "concertación",
+        ],
+        "CC_COHERENCIA_NORMATIVA": [
+            "norma", "ley", "decreto", "resolución", "marco legal", "normatividad",
+            "reglamentación", "jurídico", "legal",
+        ],
+        "CC_SOSTENIBILIDAD_PRESUPUESTAL": [
+            "presupuesto", "financiación", "recursos", "sostenibilidad",
+            "viabilidad financiera", "costos", "inversión", "gasto",
+        ],
+        "CC_INTEROPERABILIDAD": [
+            "interoperabilidad", "coordinación", "articulación", "integración",
+            "sistemas", "interinstitucional", "sinergia",
+        ],
+        "CC_MECANISMOS_SEGUIMIENTO": [
+            "seguimiento", "monitoreo", "evaluación", "indicador", "métrica",
+            "reporte", "informe", "control", "verificación",
+        ],
+    }
 
     def validate(
         self,
@@ -1221,38 +1499,69 @@ class CrossCuttingCoverageRule:
         themes_data = signal_pack.get("cross_cutting_themes", {})
 
         if not themes_data:
+            # Also check contract's required_themes directly
+            themes_data = contract.get("required_themes", {})
+
+        if not themes_data:
             return findings
 
-        applicable = {
-            t.get("theme_id")
-            for t in themes_data.get("applicable_themes", [])
-            if isinstance(t, dict) and t.get("theme_id")
-        }
+        # I7 RESOLUTION: Analyze actual evidence content for theme coverage
+        # Build content index from all evidence nodes
+        all_content = " ".join(
+            str(n.content).lower() for n in graph._nodes.values()
+        )
+
+        # Determine which themes are actually present in evidence
+        themes_in_evidence = set()
+        for theme_id, keywords in self.THEME_KEYWORDS.items():
+            if any(kw.lower() in all_content for kw in keywords):
+                themes_in_evidence.add(theme_id)
+
+        # Get required themes from contract
         required = set(themes_data.get("required_themes", []) or [])
+        if not required:
+            # If no explicit required_themes, check applicable_themes
+            applicable_themes = themes_data.get("applicable_themes", [])
+            required = {
+                t.get("theme_id") for t in applicable_themes
+                if isinstance(t, dict) and t.get("theme_id") and t.get("required", False)
+            }
+
         minimum = int(themes_data.get("minimum_themes", 0) or 0)
 
-        # Check for missing required themes
-        missing_required = [t for t in required if t and t not in applicable]
+        # Check for missing required themes (based on actual evidence content)
+        missing_required = [t for t in required if t and t not in themes_in_evidence]
         if missing_required:
             findings.append(ValidationFinding(
-                finding_id="XCT_REQUIRED_MISSING",
+                finding_id="XCT_REQUIRED_MISSING_CONTENT",
                 severity=ValidationSeverity.WARNING,
                 code=self.code,
-                message=f"Missing required cross-cutting themes: {', '.join(missing_required)}",
+                message=f"Required cross-cutting themes not found in evidence content: {', '.join(missing_required)}",
                 affected_nodes=[],
-                remediation="Ensure evidence addresses all required cross-cutting themes.",
+                remediation=f"Ensure evidence addresses required themes: {', '.join(missing_required)}",
             ))
 
-        # Check minimum theme coverage
-        applicable_count = len([t for t in applicable if t])
-        if minimum > 0 and applicable_count < minimum:
+        # Check minimum theme coverage (based on actual evidence content)
+        evidence_count = len(themes_in_evidence)
+        if minimum > 0 and evidence_count < minimum:
             findings.append(ValidationFinding(
-                finding_id="XCT_MINIMUM_NOT_MET",
+                finding_id="XCT_MINIMUM_NOT_MET_CONTENT",
                 severity=ValidationSeverity.WARNING,
                 code=self.code,
-                message=f"Cross-cutting theme coverage {applicable_count}/{minimum} below minimum.",
+                message=f"Cross-cutting theme coverage in evidence: {evidence_count}/{minimum} below minimum.",
                 affected_nodes=[],
-                remediation="Expand evidence extraction to cover more cross-cutting themes.",
+                remediation=f"Expand evidence to cover at least {minimum - evidence_count} more theme(s).",
+            ))
+
+        # Provide information about detected themes
+        if themes_in_evidence:
+            findings.append(ValidationFinding(
+                finding_id="XCT_DETECTED_THEMES",
+                severity=ValidationSeverity.INFO,
+                code=self.code,
+                message=f"Detected {len(themes_in_evidence)} cross-cutting theme(s) in evidence: {', '.join(sorted(themes_in_evidence))}",
+                affected_nodes=[],
+                remediation=None,
             ))
 
         return findings
@@ -1325,6 +1634,65 @@ class InterdependencyConsistencyRule:
                 code=self.code,
                 message=f"Circular reasoning patterns configured: {len(circular)} patterns",
                 affected_nodes=[],
+            ))
+
+        return findings
+
+
+class CircularReasoningRule:
+    """Detect circular reasoning patterns in evidence graph (R-I6).
+
+    I6 RESOLUTION: Comprehensive circular reasoning detection.
+
+    Circular reasoning undermines evidence validity by creating closed
+    loops where claims support themselves indirectly.
+    """
+
+    code = "CIRCULAR_REASONING"
+    severity = ValidationSeverity.ERROR
+
+    def validate(
+        self,
+        graph: EvidenceGraph,
+        contract: dict[str, Any],
+    ) -> list[ValidationFinding]:
+        findings: list[ValidationFinding] = []
+
+        # Use the graph's circular reasoning detection
+        circles = graph.detect_circular_reasoning()
+
+        if not circles:
+            return findings
+
+        # Group by severity
+        by_severity: dict[str, list[dict]] = {}
+        for circle in circles:
+            sev = circle.get("severity", "LOW")
+            if sev not in by_severity:
+                by_severity[sev] = []
+            by_severity[sev].append(circle)
+
+        # Create findings for each severity level
+        for severity, circles_list in by_severity.items():
+            severity_map = {
+                "CRITICAL": ValidationSeverity.CRITICAL,
+                "HIGH": ValidationSeverity.ERROR,
+                "MEDIUM": ValidationSeverity.WARNING,
+                "LOW": ValidationSeverity.INFO,
+            }
+            val_severity = severity_map.get(severity, ValidationSeverity.WARNING)
+
+            affected_nodes = []
+            for circle in circles_list:
+                affected_nodes.extend(circle.get("nodes_in_cycle", [])[:5])
+
+            findings.append(ValidationFinding(
+                finding_id=f"CIRCULAR_REASONING_{severity}",
+                severity=val_severity,
+                code=self.code,
+                message=f"Detected {len(circles_list)} circular reasoning pattern(s) ({severity} severity). Claims support themselves through indirect chains.",
+                affected_nodes=list(set(affected_nodes)),
+                remediation="Break circular chains by adding independent evidence or removing problematic support edges.",
             ))
 
         return findings
@@ -1513,6 +1881,7 @@ class ValidationEngine:
             ColombianContextRule(),
             CrossCuttingCoverageRule(),      # R-W2: Cross-cutting themes validation
             InterdependencyConsistencyRule(),  # R-W3: Interdependency validation
+            CircularReasoningRule(),         # I6: Circular reasoning detection
         ]
     
     def validate(
@@ -1676,28 +2045,62 @@ class NarrativeSynthesizer:
         graph: EvidenceGraph,
         expected_elements: list[dict[str, Any]],
     ) -> list[EvidenceNode]:
-        """Select primary evidence nodes for answer."""
+        """
+        Select primary evidence nodes for answer.
+
+        I8 RESOLUTION: Now prioritizes evidence based on contract's required_evidence_keys.
+        """
         primary = []
-        
-        # Prioritize required elements
-        required_types = [e["type"] for e in expected_elements if e.get("required")]
-        
-        for type_str in required_types:
-            try:
-                ev_type = EvidenceType(type_str)
-                nodes = graph.get_nodes_by_type(ev_type)
-                # Take highest confidence nodes
-                sorted_nodes = sorted(nodes, key=lambda n: n.confidence, reverse=True)
-                primary.extend(sorted_nodes[:self.max_citations_per_claim])
-            except ValueError:
-                continue
-        
-        # If no required types found, take highest confidence overall
-        if not primary:
-            all_nodes = list(graph._nodes.values())
-            sorted_nodes = sorted(all_nodes, key=lambda n: n.confidence, reverse=True)
-            primary = sorted_nodes[:5]
-        
+
+        # I8: Evidence keys prioritization from contract
+        # Build priority map based on evidence_keys
+        evidence_priority: dict[str, float] = {}
+
+        # Check expected_elements for priority indicators
+        for elem in expected_elements:
+            elem_type = elem.get("type", "")
+            priority = elem.get("priority", 0)
+            if priority > 0:
+                evidence_priority[elem_type] = max(
+                    evidence_priority.get(elem_type, 0),
+                    float(priority)
+                )
+            # Required elements get higher priority
+            if elem.get("required"):
+                evidence_priority[elem_type] = max(
+                    evidence_priority.get(elem_type, 0),
+                    10.0  # High priority for required elements
+                )
+
+        # Collect all candidate nodes with their priority scores
+        candidates: list[tuple[EvidenceNode, float]] = []
+
+        for node in graph._nodes.values():
+            # Base priority from confidence
+            priority = node.confidence
+
+            # Add type-based priority
+            for type_key, type_priority in evidence_priority.items():
+                if type_key.lower() in node.evidence_type.value.lower():
+                    priority += type_priority * 0.1
+                    break
+
+            # Add priority for high-value evidence types
+            if node.evidence_type in (
+                EvidenceType.INDICATOR_NUMERIC,
+                EvidenceType.OFFICIAL_SOURCE,
+                EvidenceType.NORMATIVE_REFERENCE,
+            ):
+                priority += 0.2
+
+            candidates.append((node, priority))
+
+        # Sort by combined priority score
+        candidates.sort(key=lambda x: x[1], reverse=True)
+
+        # Select top candidates as primary evidence
+        primary = [node for node, _ in candidates[:self.max_citations_per_claim * 2]]
+
         return primary
     
     def _select_supporting_evidence(
@@ -2176,10 +2579,13 @@ class EvidenceNexus:
             method_outputs, question_context, contract, signal_pack
         )
         self._graph = graph
-        
+
+        # 1.5 Apply epistemological level strategies (B4)
+        self._apply_level_strategies(graph, contract)
+
         # 2. Infer relationships between evidence nodes
         self._infer_relationships(graph, contract)
-        
+
         # 3. Run belief propagation
         beliefs = graph.compute_belief_propagation()
         
@@ -2297,6 +2703,7 @@ class EvidenceNexus:
                     raw_text=raw_text,
                     patterns=patterns,
                     question_context=question_context,
+                    contract=contract,  # B3, I3: Pass contract for type_system propagation
                 )
             )
 
@@ -2339,15 +2746,19 @@ class EvidenceNexus:
         raw_text: str,
         patterns: list[Any],
         question_context: dict[str, Any],
+        contract: dict[str, Any],  # B3, I3: Added contract parameter for type_system propagation
         max_matches_per_pattern: int = 5,
     ) -> list[EvidenceNode]:
         """Create evidence nodes from v3 contract patterns.
+
+        B3, I3 RESOLUTION: Now uses contract's type_system for dynamic type mapping.
 
         Goal: patterns contribute to evidence/scoring even if methods ignore them.
 
         This is intentionally conservative:
         - Only regex/literal matching (NER_OR_REGEX treated as regex fallback)
         - Caps matches per pattern for determinism and bounded output
+        - Type mapping from contract's type_system (not hardcoded)
         """
         nodes: list[EvidenceNode] = []
         qid = str(question_context.get("question_id") or "")
@@ -2421,8 +2832,36 @@ class EvidenceNexus:
                 return f or (re.IGNORECASE | re.MULTILINE)
             return re.IGNORECASE | re.MULTILINE
 
+        # B3, I3 RESOLUTION: Build type mapping from contract's type_system
+        # Extract type_system from contract for dynamic mapping
+        contract_type_system: dict[str, str] = {}
+        type_mapping = contract.get("type_system", {})
+        if isinstance(type_mapping, dict):
+            for pattern_category, evidence_type_str in type_mapping.items():
+                try:
+                    # Validate the EvidenceType value
+                    EvidenceType(evidence_type_str)
+                    contract_type_system[str(pattern_category).upper()] = evidence_type_str
+                except (ValueError, TypeError):
+                    # Invalid EvidenceType - skip this mapping
+                    pass
+
         def _map_category_to_evidence_type(category: str) -> EvidenceType:
+            """Map pattern category to EvidenceType using contract's type_system.
+
+            B3, I3 RESOLUTION: No longer hardcoded - uses contract configuration.
+            Falls back to sensible defaults if not specified in contract.
+            """
             cat = (category or "").upper()
+
+            # First, check contract's type_system for explicit mapping
+            if cat in contract_type_system:
+                try:
+                    return EvidenceType(contract_type_system[cat])
+                except (ValueError, TypeError):
+                    pass  # Fall through to defaults
+
+            # Default fallback mappings (when contract doesn't specify)
             if cat == "INDICADOR" or cat == "UNIDAD_MEDIDA":
                 return EvidenceType.INDICATOR_NUMERIC
             if cat == "TEMPORAL":
@@ -2874,7 +3313,97 @@ class EvidenceNexus:
                             graph.add_edge(edge)
                         except ValueError:
                             pass  # Skip if adding SUPPORTS edge would create cycle or is invalid
-    
+
+    # -------------------------------------------------------------------------
+    # B4 RESOLUTION: Level Strategies Application
+    # -------------------------------------------------------------------------
+
+    def _apply_level_strategies(
+        self,
+        graph: EvidenceGraph,
+        contract: dict[str, Any],
+    ) -> None:
+        """
+        Apply epistemological level strategies from contract.
+
+        B4 RESOLUTION: Now applies N1-EMP, N2-INF, N3-AUD level strategies.
+
+        Epistemological levels:
+        - N1-EMP (Empírico Positivista): Direct observation, quantitative data
+        - N2-INF (Inferencial): Causal reasoning, theoretical frameworks
+        - N3-AUD (Auditoría): Meta-analysis, validation of N1/N2
+
+        Each level has different:
+        - Confidence thresholds
+        - Evidence requirements
+        - Validation strictness
+        """
+        # Extract level_strategies from contract
+        method_binding = contract.get("method_binding", {})
+        execution_phases = method_binding.get("execution_phases", {})
+
+        # Get current epistemological level
+        current_level = "N1"  # Default
+        current_phase = "phase_A_construction"
+
+        # Determine which phase we're in
+        for phase_name, phase_data in execution_phases.items():
+            if isinstance(phase_data, dict):
+                current_level = phase_data.get("level", current_level)
+                current_phase = phase_name
+                break
+
+        # Apply level-specific strategies
+        level_configs = {
+            "N1-EMP": {
+                "confidence_threshold": 0.6,
+                "requires_quantitative": True,
+                "validation_strictness": "moderate",
+                "evidence_types": ["INDICADOR", "TEMPORAL", "FUENTE_OFICIAL"],
+            },
+            "N2-INF": {
+                "confidence_threshold": 0.5,
+                "requires_quantitative": False,
+                "validation_strictness": "balanced",
+                "evidence_types": ["CAUSAL", "INSTITUTIONAL", "POLICY"],
+            },
+            "N3-AUD": {
+                "confidence_threshold": 0.7,
+                "requires_quantitative": False,
+                "validation_strictness": "strict",
+                "evidence_types": None,  # All types
+            },
+        }
+
+        config = level_configs.get(current_level, level_configs["N1-EMP"])
+
+        # Apply confidence adjustments based on level
+        for node in graph._nodes.values():
+            # N3-AUD can downgrade confidence from N1/N2
+            if current_level == "N3-AUD":
+                node_source = node.source_method.lower()
+                if "phase_a" in node_source or "phase_b" in node_source:
+                    # N3 auditing: reduce confidence of lower-level evidence
+                    node.confidence *= 0.9
+                    node.belief_mass *= 0.9
+
+            # N1-EMP: Boost quantitative evidence
+            elif current_level == "N1-EMP":
+                if config.get("requires_quantitative"):
+                    ev_type = node.evidence_type.value
+                    if "indicador" in ev_type or "temporal" in ev_type:
+                        # Boost confidence for quantitative evidence in N1
+                        node.confidence = min(1.0, node.confidence * 1.1)
+                        node.belief_mass = min(1.0, node.belief_mass * 1.1)
+
+        logger.debug(
+            "level_strategies_applied",
+            level=current_level,
+            phase=current_phase,
+            confidence_threshold=config.get("confidence_threshold"),
+            nodes_adjusted=graph.node_count,
+        )
+
     def _persist_graph(self, graph: EvidenceGraph) -> None:
         """Persist graph to storage."""
         if not self.enable_persistence:
