@@ -545,10 +545,6 @@ class RealTimeCalibrationEngine:
         """
         if not baseline or baseline.sample_count < 5:
             return 0.5  # Low confidence with insufficient data
-        
-        # Guard against sample_count == 0 edge case
-        if baseline.sample_count == 0:
-            return 0.0
 
         # Higher sample count -> higher confidence (asymptotic to 1.0)
         # Uses 1 - e^(-n/50) so ~63% confidence at 50 samples, ~86% at 100

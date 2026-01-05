@@ -463,7 +463,10 @@ def process_with_retry(
 
     # This should not normally happen; indicates no attempts were made or no exception was captured
     if last_error is None:
-        raise RuntimeError("process_with_retry failed without capturing an error")
+        raise RuntimeError(
+            f"process_with_retry failed without capturing an error after {max_retries + 1} attempts. "
+            f"Function: {func}, base_delay: {base_delay}s"
+        )
     
     raise last_error
 
