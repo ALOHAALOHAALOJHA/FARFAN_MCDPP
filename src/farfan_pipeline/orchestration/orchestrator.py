@@ -1421,6 +1421,7 @@ class Orchestrator:
         
         try:
             # _validate_questionnaire_structure(self._monolith_data)
+            pass
         except (ValueError, TypeError) as e:
             raise RuntimeError(f"Questionnaire validation failed: {e}") from e
         
@@ -1874,7 +1875,7 @@ class Orchestrator:
             return None
         
         try:
-            # from orchestration.calibration_orchestrator import (
+            from farfan_pipeline.orchestration.calibration_orchestrator import (
                 CalibrationSubject,
                 EvidenceStore,
             )
