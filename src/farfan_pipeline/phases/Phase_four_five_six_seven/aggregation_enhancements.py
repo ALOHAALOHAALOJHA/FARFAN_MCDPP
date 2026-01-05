@@ -24,7 +24,6 @@ from typing import TYPE_CHECKING, Any
 
 from farfan_pipeline.infrastructure.contractual.dura_lex.aggregation_contract import (
     create_aggregation_contract,
-)
 
 if TYPE_CHECKING:
 

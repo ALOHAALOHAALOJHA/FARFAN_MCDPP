@@ -52,9 +52,14 @@ Phase 2.2 Process:
 """
 from __future__ import annotations
 
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
-from typing import Any, Final
+from pathlib import Path
+from typing import Any, Final, Callable
+import hashlib
+import json
 import logging
+import os
 import threading
 from datetime import datetime, timezone
 
@@ -131,6 +136,717 @@ class CalibrationError(Exception):
     error_code: str
     message: str
     method_name: str | None = None
+
+
+class CheckpointCorruptionError(Exception):
+    """Raised when checkpoint integrity validation fails."""
+    pass
+
+
+# === GAP 1: CHECKPOINT MANAGER ===
+
+class CheckpointManager:
+    """
+    Manages checkpointing for resumable task execution.
+
+    GAP 1 Implementation: Mid-Execution Recovery
+
+    Features:
+        - Persists progress after each task or configurable batch size
+        - SHA-256 hash validation for checkpoint integrity
+        - Automatic resumption from last successful checkpoint
+        - Thread-safe checkpoint operations
+
+    Requirements Implemented:
+        CP-01: Checkpoints persisted to disk after each task/batch
+        CP-02: Checkpoint contains plan_id, completed_tasks, timestamp, hash
+        CP-03: On startup, executor checks for existing checkpoint
+        CP-04: SHA-256 hash validation before resuming
+        CP-05: Stored in artifacts/checkpoints/{plan_id}.checkpoint.json
+    """
+
+    def __init__(self, checkpoint_dir: Path | str = Path("artifacts/checkpoints")):
+        """
+        Initialize CheckpointManager.
+
+        Args:
+            checkpoint_dir: Directory for storing checkpoint files.
+        """
+        self.checkpoint_dir = Path(checkpoint_dir)
+        self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
+        self._lock = threading.Lock()
+
+    def _compute_hash(self, data: dict) -> str:
+        """Compute SHA-256 hash of checkpoint data (excluding hash field)."""
+        payload = json.dumps(data, sort_keys=True).encode()
+        return hashlib.sha256(payload).hexdigest()
+
+    def save_checkpoint(
+        self,
+        plan_id: str,
+        completed_tasks: list[str],
+        metadata: dict | None = None
+    ) -> Path:
+        """
+        Persist a checkpoint to disk.
+
+        Args:
+            plan_id: Unique identifier for the execution plan.
+            completed_tasks: List of task IDs that have completed successfully.
+            metadata: Optional additional metadata to store.
+
+        Returns:
+            Path to the saved checkpoint file.
+        """
+        with self._lock:
+            checkpoint_path = self.checkpoint_dir / f"{plan_id}.checkpoint.json"
+            data = {
+                "plan_id": plan_id,
+                "completed_tasks": completed_tasks,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "metadata": metadata or {}
+            }
+            # Compute hash before adding the hash field itself
+            checkpoint_hash = self._compute_hash(data)
+            data["checkpoint_hash"] = checkpoint_hash
+
+            with open(checkpoint_path, "w") as f:
+                json.dump(data, f, indent=2)
+
+            logger.debug(
+                "Checkpoint saved",
+                extra={
+                    "plan_id": plan_id,
+                    "completed_count": len(completed_tasks),
+                    "path": str(checkpoint_path),
+                }
+            )
+            return checkpoint_path
+
+    def resume_from_checkpoint(self, plan_id: str) -> set[str] | None:
+        """
+        Load and validate a checkpoint, returning set of completed task IDs.
+
+        Args:
+            plan_id: Unique identifier for the execution plan.
+
+        Returns:
+            Set of completed task IDs if valid checkpoint exists, else None.
+
+        Raises:
+            CheckpointCorruptionError: If checkpoint hash validation fails.
+        """
+        with self._lock:
+            checkpoint_path = self.checkpoint_dir / f"{plan_id}.checkpoint.json"
+            if not checkpoint_path.exists():
+                return None
+
+            with open(checkpoint_path, "r") as f:
+                data = json.load(f)
+
+            stored_hash = data.pop("checkpoint_hash", None)
+            computed_hash = self._compute_hash(data)
+
+            if stored_hash != computed_hash:
+                raise CheckpointCorruptionError(
+                    f"Checkpoint integrity check failed for {plan_id}. "
+                    f"Expected hash {stored_hash[:16]}..., got {computed_hash[:16]}..."
+                )
+
+            logger.info(
+                "Checkpoint loaded for resumption",
+                extra={
+                    "plan_id": plan_id,
+                    "completed_count": len(data["completed_tasks"]),
+                    "checkpoint_timestamp": data["timestamp"],
+                }
+            )
+            return set(data["completed_tasks"])
+
+    def clear_checkpoint(self, plan_id: str) -> bool:
+        """
+        Remove checkpoint after successful plan completion.
+
+        Args:
+            plan_id: Unique identifier for the execution plan.
+
+        Returns:
+            True if checkpoint was removed, False if it didn't exist.
+        """
+        with self._lock:
+            checkpoint_path = self.checkpoint_dir / f"{plan_id}.checkpoint.json"
+            if checkpoint_path.exists():
+                checkpoint_path.unlink()
+                logger.info(
+                    "Checkpoint cleared after successful completion",
+                    extra={"plan_id": plan_id}
+                )
+                return True
+            return False
+
+    def get_checkpoint_info(self, plan_id: str) -> dict | None:
+        """
+        Get checkpoint information without validating hash.
+
+        Args:
+            plan_id: Unique identifier for the execution plan.
+
+        Returns:
+            Checkpoint data dict or None if no checkpoint exists.
+        """
+        checkpoint_path = self.checkpoint_dir / f"{plan_id}.checkpoint.json"
+        if not checkpoint_path.exists():
+            return None
+
+        with open(checkpoint_path, "r") as f:
+            return json.load(f)
+
+
+# === GAP 2: PARALLEL TASK EXECUTOR ===
+
+class ParallelTaskExecutor:
+    """
+    Executes tasks in parallel, respecting epistemic level dependencies.
+
+    GAP 2 Implementation: Parallel Task Execution (CRITICAL)
+
+    Features:
+        - Parallel execution within same epistemic level
+        - Sequential execution between levels (N1 → N2 → N3)
+        - Configurable worker count (default: CPU count)
+        - Integration with CheckpointManager
+        - Failed tasks don't block other tasks in same level
+
+    Requirements Implemented:
+        PE-01: Tasks within same epistemic level execute in parallel
+        PE-02: Tasks at level N+1 wait for all level N tasks to complete
+        PE-03: Max workers configurable (default: os.cpu_count())
+        PE-04: Failed tasks don't block other independent tasks
+        PE-05: Results aggregated in original task order
+    """
+
+    def __init__(
+        self,
+        questionnaire_monolith: dict[str, Any],
+        preprocessed_document: Any,
+        signal_registry: Any,
+        calibration_orchestrator: Any | None = None,
+        validation_orchestrator: Any | None = None,
+        max_workers: int | None = None,
+        checkpoint_manager: CheckpointManager | None = None,
+        checkpoint_batch_size: int = 10,
+        use_processes: bool = False,
+    ) -> None:
+        """
+        Initialize ParallelTaskExecutor.
+
+        Args:
+            questionnaire_monolith: 300 questions
+            preprocessed_document: 60 CPP chunks
+            signal_registry: REQUIRED SISAS signal resolution
+            calibration_orchestrator: Optional calibration
+            validation_orchestrator: Optional validation tracking
+            max_workers: Maximum parallel workers (default: CPU count)
+            checkpoint_manager: Optional checkpoint manager for recovery
+            checkpoint_batch_size: Tasks between checkpoints (default: 10)
+            use_processes: Use ProcessPoolExecutor instead of ThreadPoolExecutor
+        """
+        if signal_registry is None:
+            raise ValueError(
+                "SignalRegistry is required for Phase 2.2. "
+                "Must be initialized in Phase 0."
+            )
+
+        self.questionnaire_monolith = questionnaire_monolith
+        self.preprocessed_document = preprocessed_document
+        self.signal_registry = signal_registry
+        self.calibration_orchestrator = calibration_orchestrator
+        self.validation_orchestrator = validation_orchestrator
+        self.max_workers = max_workers or os.cpu_count() or 4
+        self.checkpoint_manager = checkpoint_manager
+        self.checkpoint_batch_size = checkpoint_batch_size
+        self.use_processes = use_processes
+
+        # Build question lookup index
+        self._question_index = self._build_question_index()
+
+        # Thread-safe executor cache
+        self._executor_cache: dict[str, DynamicContractExecutor] = {}
+        self._cache_lock = threading.Lock()
+
+    def _build_question_index(self) -> dict[str, dict[str, Any]]:
+        """Build index of questions by question_id."""
+        index: dict[str, dict[str, Any]] = {}
+        blocks = self.questionnaire_monolith.get("blocks", [])
+        for block in blocks:
+            if block.get("block_type") == "micro_questions":
+                for question in block.get("micro_questions", []):
+                    question_id = question.get("question_id")
+                    if question_id:
+                        index[question_id] = question
+        return index
+
+    def execute_plan_parallel(self, plan: ExecutionPlan) -> list[TaskResult]:
+        """
+        Execute an ExecutionPlan with parallelism within epistemic levels.
+
+        Args:
+            plan: The execution plan containing tasks grouped by level.
+
+        Returns:
+            List of TaskResult objects in original task order.
+        """
+        plan_id = plan.plan_id
+
+        # Resume from checkpoint if available
+        completed_ids: set[str] = set()
+        if self.checkpoint_manager:
+            try:
+                resumed = self.checkpoint_manager.resume_from_checkpoint(plan_id)
+                if resumed:
+                    completed_ids = resumed
+                    logger.info(
+                        f"Resuming from checkpoint with {len(completed_ids)} completed tasks"
+                    )
+            except CheckpointCorruptionError as e:
+                logger.warning(f"Checkpoint corrupted, starting fresh: {e}")
+
+        # Group tasks by epistemic level
+        levels = self._group_by_level(plan.tasks)
+        all_results: dict[str, TaskResult] = {}
+        tasks_since_checkpoint = 0
+
+        logger.info(
+            "Starting parallel task execution",
+            extra={
+                "plan_id": plan_id,
+                "task_count": len(plan.tasks),
+                "levels": sorted(levels.keys()),
+                "max_workers": self.max_workers,
+                "already_completed": len(completed_ids),
+            }
+        )
+
+        # Execute levels in order
+        for level in sorted(levels.keys()):
+            level_tasks = [
+                t for t in levels[level] if t.task_id not in completed_ids
+            ]
+
+            if not level_tasks:
+                logger.debug(f"Skipping level {level} - all tasks already completed")
+                continue
+
+            logger.info(
+                f"Executing level {level}",
+                extra={"task_count": len(level_tasks), "max_workers": self.max_workers}
+            )
+
+            level_results = self._execute_level(level_tasks)
+
+            for result in level_results:
+                all_results[result.task_id] = result
+                if result.success:
+                    completed_ids.add(result.task_id)
+                tasks_since_checkpoint += 1
+
+                # Checkpoint periodically
+                if (
+                    self.checkpoint_manager
+                    and tasks_since_checkpoint >= self.checkpoint_batch_size
+                ):
+                    self.checkpoint_manager.save_checkpoint(
+                        plan_id, list(completed_ids)
+                    )
+                    tasks_since_checkpoint = 0
+
+        # Final checkpoint and cleanup
+        if self.checkpoint_manager:
+            self.checkpoint_manager.save_checkpoint(plan_id, list(completed_ids))
+            self.checkpoint_manager.clear_checkpoint(plan_id)
+
+        # Return results in original task order
+        ordered_results = []
+        for task in plan.tasks:
+            if task.task_id in all_results:
+                ordered_results.append(all_results[task.task_id])
+
+        logger.info(
+            "Parallel task execution complete",
+            extra={
+                "plan_id": plan_id,
+                "total_tasks": len(ordered_results),
+                "successful": sum(1 for r in ordered_results if r.success),
+                "failed": sum(1 for r in ordered_results if not r.success),
+            }
+        )
+
+        return ordered_results
+
+    def _group_by_level(self, tasks: list[ExecutableTask]) -> dict[int, list[ExecutableTask]]:
+        """
+        Group tasks by their epistemic level (N1=1, N2=2, etc.).
+
+        Args:
+            tasks: List of tasks to group.
+
+        Returns:
+            Dict mapping level number to list of tasks.
+        """
+        levels: dict[int, list[ExecutableTask]] = {}
+        for task in tasks:
+            level = self._parse_level(task)
+            levels.setdefault(level, []).append(task)
+        return levels
+
+    def _parse_level(self, task: ExecutableTask) -> int:
+        """
+        Extract epistemic level from task.
+
+        Attempts to extract from:
+        1. task.level attribute (if exists)
+        2. task.metadata.get("epistemic_level")
+        3. Default to 1 if not found
+
+        Args:
+            task: The task to extract level from.
+
+        Returns:
+            Integer level number.
+        """
+        # Try task.level attribute
+        level_str = getattr(task, "level", None)
+        if level_str:
+            if isinstance(level_str, int):
+                return level_str
+            if isinstance(level_str, str) and level_str.startswith("N"):
+                return int(level_str.replace("N", ""))
+
+        # Try metadata
+        metadata_level = task.metadata.get("epistemic_level") if hasattr(task, "metadata") else None
+        if metadata_level:
+            if isinstance(metadata_level, int):
+                return metadata_level
+            if isinstance(metadata_level, str) and metadata_level.startswith("N"):
+                return int(metadata_level.replace("N", ""))
+
+        # Default to level 1
+        return 1
+
+    def _execute_level(self, tasks: list[ExecutableTask]) -> list[TaskResult]:
+        """
+        Execute all tasks in a level in parallel.
+
+        Args:
+            tasks: List of tasks at the same epistemic level.
+
+        Returns:
+            List of TaskResult objects (unordered).
+        """
+        results: list[TaskResult] = []
+
+        # Choose executor type
+        ExecutorClass = ProcessPoolExecutor if self.use_processes else ThreadPoolExecutor
+
+        with ExecutorClass(max_workers=self.max_workers) as executor:
+            future_to_task = {
+                executor.submit(self._execute_task_safe, task): task
+                for task in tasks
+            }
+
+            for future in as_completed(future_to_task):
+                task = future_to_task[future]
+                try:
+                    result = future.result()
+                    results.append(result)
+                except Exception as e:
+                    logger.error(
+                        f"Task {task.task_id} failed with unexpected error: {e}"
+                    )
+                    # Create failure result
+                    result = TaskResult(
+                        task_id=task.task_id,
+                        question_id=task.question_id,
+                        question_global=task.question_global,
+                        policy_area_id=task.policy_area_id,
+                        dimension_id=task.dimension_id,
+                        chunk_id=task.chunk_id,
+                        success=False,
+                        output={},
+                        error=str(e),
+                    )
+                    results.append(result)
+
+        return results
+
+    def _execute_task_safe(self, task: ExecutableTask) -> TaskResult:
+        """
+        Execute a single task with exception handling.
+
+        Args:
+            task: The task to execute.
+
+        Returns:
+            TaskResult with success or failure status.
+        """
+        start_time = datetime.now(timezone.utc)
+
+        try:
+            # Lookup question from monolith
+            question = self._question_index.get(task.question_id)
+            if not question:
+                raise ValueError(f"Question not found in monolith: {task.question_id}")
+
+            # Build question context
+            question_context = QuestionContext(
+                question_id=task.question_id,
+                question_global=task.question_global,
+                question_text=task.question_text,
+                policy_area_id=task.policy_area_id,
+                dimension_id=task.dimension_id,
+                chunk_id=task.chunk_id,
+                chunk_text=task.chunk_text,
+                patterns=task.patterns,
+                signals=task.signals,
+                expected_elements=task.expected_elements,
+                method_sets=question.get("method_sets", []),
+                correlation_id=task.correlation_id,
+                metadata=task.metadata,
+            )
+
+            # Get or create executor (thread-safe)
+            with self._cache_lock:
+                if task.question_id not in self._executor_cache:
+                    self._executor_cache[task.question_id] = DynamicContractExecutor(
+                        question_id=task.question_id,
+                        calibration_orchestrator=self.calibration_orchestrator,
+                        validation_orchestrator=self.validation_orchestrator,
+                    )
+                executor = self._executor_cache[task.question_id]
+
+            # Execute task
+            output = executor.execute(question_context)
+
+            # Calculate execution time
+            end_time = datetime.now(timezone.utc)
+            execution_time_ms = (end_time - start_time).total_seconds() * 1000
+
+            return TaskResult(
+                task_id=task.task_id,
+                question_id=task.question_id,
+                question_global=task.question_global,
+                policy_area_id=task.policy_area_id,
+                dimension_id=task.dimension_id,
+                chunk_id=task.chunk_id,
+                success=True,
+                output=output,
+                execution_time_ms=execution_time_ms,
+                metadata={
+                    "base_slot": output.get("base_slot"),
+                    "correlation_id": task.correlation_id,
+                }
+            )
+
+        except Exception as e:
+            end_time = datetime.now(timezone.utc)
+            execution_time_ms = (end_time - start_time).total_seconds() * 1000
+
+            logger.error(
+                "Task execution failed",
+                extra={
+                    "task_id": task.task_id,
+                    "question_id": task.question_id,
+                    "error": str(e),
+                }
+            )
+
+            return TaskResult(
+                task_id=task.task_id,
+                question_id=task.question_id,
+                question_global=task.question_global,
+                policy_area_id=task.policy_area_id,
+                dimension_id=task.dimension_id,
+                chunk_id=task.chunk_id,
+                success=False,
+                output={},
+                error=str(e),
+                execution_time_ms=execution_time_ms,
+            )
+
+
+# === MINOR IMPROVEMENT 5: DRY-RUN EXECUTOR ===
+
+class DryRunExecutor:
+    """
+    Executor that simulates task execution without performing actual work.
+
+    Minor Improvement 5: Dry-Run Mode
+
+    Features:
+        - Validates task inputs and dependencies
+        - Estimates execution time based on task characteristics
+        - Returns expected outputs without side effects
+        - Useful for testing and planning
+    """
+
+    def __init__(
+        self,
+        questionnaire_monolith: dict[str, Any],
+        preprocessed_document: Any,
+        signal_registry: Any | None = None,
+    ) -> None:
+        """
+        Initialize DryRunExecutor.
+
+        Args:
+            questionnaire_monolith: 300 questions
+            preprocessed_document: 60 CPP chunks
+            signal_registry: Optional signal resolution
+        """
+        self.questionnaire_monolith = questionnaire_monolith
+        self.preprocessed_document = preprocessed_document
+        self.signal_registry = signal_registry
+        self._question_index = self._build_question_index()
+
+    def _build_question_index(self) -> dict[str, dict[str, Any]]:
+        """Build index of questions by question_id."""
+        index: dict[str, dict[str, Any]] = {}
+        blocks = self.questionnaire_monolith.get("blocks", [])
+        for block in blocks:
+            if block.get("block_type") == "micro_questions":
+                for question in block.get("micro_questions", []):
+                    question_id = question.get("question_id")
+                    if question_id:
+                        index[question_id] = question
+        return index
+
+    def execute_plan_dry_run(self, plan: ExecutionPlan) -> list[TaskResult]:
+        """
+        Simulate execution of all tasks in ExecutionPlan.
+
+        Args:
+            plan: The execution plan to simulate.
+
+        Returns:
+            List of simulated TaskResult objects.
+        """
+        results: list[TaskResult] = []
+
+        logger.info(
+            "Starting dry-run execution",
+            extra={
+                "plan_id": plan.plan_id,
+                "task_count": len(plan.tasks),
+            }
+        )
+
+        for task in plan.tasks:
+            result = self._simulate_task(task)
+            results.append(result)
+
+        logger.info(
+            "Dry-run execution complete",
+            extra={
+                "plan_id": plan.plan_id,
+                "total_tasks": len(results),
+                "would_succeed": sum(1 for r in results if r.success),
+                "would_fail": sum(1 for r in results if not r.success),
+            }
+        )
+
+        return results
+
+    def _simulate_task(self, task: ExecutableTask) -> TaskResult:
+        """
+        Simulate execution of a single task.
+
+        Args:
+            task: The task to simulate.
+
+        Returns:
+            Simulated TaskResult.
+        """
+        # Check if question exists
+        question = self._question_index.get(task.question_id)
+        if not question:
+            return TaskResult(
+                task_id=task.task_id,
+                question_id=task.question_id,
+                question_global=task.question_global,
+                policy_area_id=task.policy_area_id,
+                dimension_id=task.dimension_id,
+                chunk_id=task.chunk_id,
+                success=False,
+                output={},
+                error=f"Question not found in monolith: {task.question_id}",
+                metadata={"dry_run": True},
+            )
+
+        # Estimate execution time based on task complexity
+        estimated_time_ms = self._estimate_execution_time(task, question)
+
+        # Build dry-run output
+        method_sets = question.get("method_sets", [])
+        base_slot = DynamicContractExecutor._derive_base_slot(task.question_id)
+
+        return TaskResult(
+            task_id=task.task_id,
+            question_id=task.question_id,
+            question_global=task.question_global,
+            policy_area_id=task.policy_area_id,
+            dimension_id=task.dimension_id,
+            chunk_id=task.chunk_id,
+            success=True,
+            output={
+                "dry_run": True,
+                "would_execute": {
+                    "method_sets": method_sets,
+                    "base_slot": base_slot,
+                    "patterns_count": len(task.patterns),
+                    "signals_count": len(task.signals),
+                    "expected_elements_count": len(task.expected_elements),
+                    "chunk_text_length": len(task.chunk_text) if task.chunk_text else 0,
+                },
+                "estimated_time_ms": estimated_time_ms,
+            },
+            execution_time_ms=0.0,
+            metadata={"dry_run": True, "estimated_time_ms": estimated_time_ms},
+        )
+
+    def _estimate_execution_time(
+        self, task: ExecutableTask, question: dict
+    ) -> float:
+        """
+        Estimate execution time based on task characteristics.
+
+        Args:
+            task: The task to estimate.
+            question: The question data.
+
+        Returns:
+            Estimated execution time in milliseconds.
+        """
+        # Base time
+        base_ms = 50.0
+
+        # Add time for patterns
+        base_ms += len(task.patterns) * 5.0
+
+        # Add time for signals
+        base_ms += len(task.signals) * 3.0
+
+        # Add time for expected elements
+        base_ms += len(task.expected_elements) * 2.0
+
+        # Add time for chunk text length
+        chunk_length = len(task.chunk_text) if task.chunk_text else 0
+        base_ms += chunk_length * 0.01
+
+        # Add time for method sets
+        method_sets = question.get("method_sets", [])
+        base_ms += len(method_sets) * 20.0
+
+        return base_ms
 
 
 # === DYNAMIC CONTRACT EXECUTOR ===
@@ -618,3 +1334,111 @@ def execute_tasks(
         validation_orchestrator=validation_orchestrator,
     )
     return executor.execute_plan(execution_plan)
+
+
+def execute_tasks_parallel(
+    execution_plan: ExecutionPlan,
+    questionnaire_monolith: dict[str, Any],
+    preprocessed_document: Any,
+    signal_registry: Any,
+    calibration_orchestrator: Any | None = None,
+    validation_orchestrator: Any | None = None,
+    max_workers: int | None = None,
+    checkpoint_dir: Path | str | None = None,
+    checkpoint_batch_size: int = 10,
+) -> list[TaskResult]:
+    """
+    Public API for executing tasks in parallel with checkpointing.
+
+    GAP 1 + GAP 2: Parallel execution with mid-execution recovery.
+
+    Args:
+        execution_plan: Plan with 300 tasks from Phase 2.1
+        questionnaire_monolith: 300 questions
+        preprocessed_document: 60 CPP chunks
+        signal_registry: SISAS signal resolution (REQUIRED)
+        calibration_orchestrator: Optional calibration
+        validation_orchestrator: Optional validation tracking
+        max_workers: Maximum parallel workers (default: CPU count)
+        checkpoint_dir: Directory for checkpoints (default: artifacts/checkpoints)
+        checkpoint_batch_size: Tasks between checkpoints (default: 10)
+
+    Returns:
+        List of TaskResult objects in original task order.
+
+    Raises:
+        ExecutionError: If execution fails
+        ValueError: If signal_registry is None
+    """
+    checkpoint_manager = None
+    if checkpoint_dir is not None:
+        checkpoint_manager = CheckpointManager(checkpoint_dir)
+    else:
+        # Default checkpoint directory
+        checkpoint_manager = CheckpointManager()
+
+    executor = ParallelTaskExecutor(
+        questionnaire_monolith=questionnaire_monolith,
+        preprocessed_document=preprocessed_document,
+        signal_registry=signal_registry,
+        calibration_orchestrator=calibration_orchestrator,
+        validation_orchestrator=validation_orchestrator,
+        max_workers=max_workers,
+        checkpoint_manager=checkpoint_manager,
+        checkpoint_batch_size=checkpoint_batch_size,
+    )
+    return executor.execute_plan_parallel(execution_plan)
+
+
+def execute_tasks_dry_run(
+    execution_plan: ExecutionPlan,
+    questionnaire_monolith: dict[str, Any],
+    preprocessed_document: Any,
+    signal_registry: Any | None = None,
+) -> list[TaskResult]:
+    """
+    Public API for simulating task execution without side effects.
+
+    Minor Improvement 5: Dry-run mode.
+
+    Args:
+        execution_plan: Plan to simulate
+        questionnaire_monolith: 300 questions
+        preprocessed_document: 60 CPP chunks
+        signal_registry: Optional signal resolution
+
+    Returns:
+        List of simulated TaskResult objects with dry_run=True.
+    """
+    executor = DryRunExecutor(
+        questionnaire_monolith=questionnaire_monolith,
+        preprocessed_document=preprocessed_document,
+        signal_registry=signal_registry,
+    )
+    return executor.execute_plan_dry_run(execution_plan)
+
+
+# === MODULE EXPORTS ===
+
+__all__ = [
+    # Data structures
+    "TaskResult",
+    "QuestionContext",
+    # Exceptions
+    "ExecutionError",
+    "CalibrationError",
+    "CheckpointCorruptionError",
+    # GAP 1: Checkpointing
+    "CheckpointManager",
+    # GAP 2: Parallel execution
+    "ParallelTaskExecutor",
+    # Minor improvement 5: Dry-run
+    "DryRunExecutor",
+    # Core executor
+    "DynamicContractExecutor",
+    "TaskExecutor",
+    # Public API functions
+    "execute_tasks",
+    "execute_tasks_parallel",
+    "execute_tasks_dry_run",
+]
