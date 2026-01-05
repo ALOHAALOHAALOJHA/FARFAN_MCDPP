@@ -176,7 +176,7 @@ Esto significa:
 | A1 | Contracts | cross-cutting genéricos |
 | A3 | Contracts | interdependency genérico |
 
-**Estimación Fase 2: 12-18 horas**
+### Estimación Fase 2: 12-18 horas
 
 ---
 
