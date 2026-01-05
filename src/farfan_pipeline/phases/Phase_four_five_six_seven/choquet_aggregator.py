@@ -30,7 +30,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, cast
 
 logger = logging.getLogger(__name__)
 
@@ -81,8 +81,8 @@ class ChoquetConfig:
                 raise CalibrationConfigError(f"Layer IDs must be strings: ({layer_i}, {layer_j})")
             if not isinstance(weight, (int, float)):
                 raise CalibrationConfigError(f"Interaction weight must be numeric: {weight}")
-            if weight < 0.0:
-                raise CalibrationConfigError(f"Negative interaction weight: ({layer_i},{layer_j})={weight}")
+            # Negative interaction weights ARE allowed (substitution), unlike linear weights.
+            # See README Section 10.4.
             if layer_i not in self.linear_weights:
                 raise CalibrationConfigError(f"Interaction layer {layer_i} not in linear_weights")
             if layer_j not in self.linear_weights:
@@ -128,9 +128,9 @@ class CalibrationResult:
     calibration_score: float
     breakdown: CalibrationBreakdown
     layer_scores: dict[str, float]
-    metadata: dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, object] = field(default_factory=dict)
     validation_passed: bool = True
-    validation_details: dict[str, Any] = field(default_factory=dict)
+    validation_details: dict[str, object] = field(default_factory=dict)
 
 
 class ChoquetAggregator:
@@ -218,17 +218,19 @@ class ChoquetAggregator:
         if not self.config.normalize_weights:
             return dict(self.config.interaction_weights)
         
-        total_interaction = sum(self.config.interaction_weights.values())
+        # Use sum of ABSOLUTE values for constraint check per README 10.3
+        total_interaction_magnitude = sum(abs(w) for w in self.config.interaction_weights.values())
         max_allowed = min(sum(self._normalized_linear_weights.values()), 1.0) * 0.5
         
-        if total_interaction > max_allowed:
-            scale_factor = max_allowed / total_interaction
+        if total_interaction_magnitude > max_allowed:
+            scale_factor = max_allowed / total_interaction_magnitude
             normalized = {
                 pair: weight * scale_factor
                 for pair, weight in self.config.interaction_weights.items()
             }
             logger.warning(
-                f"Interaction weights scaled by {scale_factor:.4f} to ensure boundedness"
+                f"Interaction weights scaled by {scale_factor:.4f} to ensure boundedness "
+                f"(magnitude {total_interaction_magnitude:.4f} > {max_allowed:.4f})"
             )
         else:
             normalized = dict(self.config.interaction_weights)
@@ -314,7 +316,7 @@ class ChoquetAggregator:
         logger.debug(f"Interaction sum computed: {interaction_sum:.4f}")
         return interaction_sum, per_interaction_contributions, per_interaction_rationales
     
-    def _validate_boundedness(self, calibration_score: float) -> tuple[bool, dict[str, Any]]:
+    def _validate_boundedness(self, calibration_score: float) -> tuple[bool, dict[str, object]]:
         """
         Validate that calibration score is bounded in [0,1].
         
@@ -327,7 +329,7 @@ class ChoquetAggregator:
         Raises:
             CalibrationConfigError: If boundedness is violated and validation enabled
         """
-        validation_details = {
+        validation_details: dict[str, object] = {
             "score": calibration_score,
             "lower_bound": 0.0,
             "upper_bound": 1.0,
@@ -355,7 +357,7 @@ class ChoquetAggregator:
         self,
         subject: str,
         layer_scores: dict[str, float],
-        metadata: dict[str, Any] | None = None
+        metadata: dict[str, object] | None = None
     ) -> CalibrationResult:
         """
         Aggregate layer scores using Choquet integral with interaction terms.
@@ -411,7 +413,7 @@ class ChoquetAggregator:
             per_interaction_rationales=per_interaction_rationale
         )
         
-        result_metadata = metadata or {}
+        result_metadata: dict[str, object] = metadata or {}
         result_metadata.update({
             "n_layers": len(layer_scores),
             "n_interactions": len(self._normalized_interaction_weights),

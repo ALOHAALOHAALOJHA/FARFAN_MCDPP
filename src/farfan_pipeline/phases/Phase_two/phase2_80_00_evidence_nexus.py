@@ -1098,7 +1098,14 @@ class RequiredElementsRule:
                 if isinstance(n.content, dict):
                     try:
                         mc = int(n.content.get("match_count", 0) or 0)
-                    except Exception:
+                    except (ValueError, TypeError) as e:
+                        # Log specific conversion error for debugging
+                        logger.warning(
+                            "match_count_conversion_failed",
+                            node_id=n.node_id,
+                            content_type=type(n.content.get("match_count")).__name__,
+                            error=str(e),
+                        )
                         mc = 0
                 if mc > 0:
                     total += mc
@@ -1181,7 +1188,13 @@ class RequiredElementsRule:
                 if matches and _contains_any(matches, budget_lexemes):
                     try:
                         supported_count += int(n.content.get("match_count", 0) or 0)  # type: ignore[union-attr]
-                    except Exception:
+                    except (ValueError, TypeError) as e:
+                        # Log conversion error and fall back to counting as 1 match
+                        logger.warning(
+                            "budget_lexeme_match_count_conversion_failed",
+                            node_id=n.node_id,
+                            error=str(e),
+                        )
                         supported_count += 1
                     supported_ids.append(n.node_id)
             return (supported_count or count), (supported_ids or ids)
@@ -1205,7 +1218,13 @@ class RequiredElementsRule:
                         supported_ids.append(n.node_id)
                         try:
                             supported_count += int(n.content.get("match_count", 0) or 0)  # type: ignore[union-attr]
-                        except Exception:
+                        except (ValueError, TypeError) as e:
+                            # Log conversion error and fall back to counting as 1 match
+                            logger.warning(
+                                "compar_lexeme_match_count_conversion_failed",
+                                node_id=n.node_id,
+                                error=str(e),
+                            )
                             supported_count += 1
                 return (supported_count or 0), supported_ids
             return count, ids
@@ -1236,7 +1255,13 @@ class RequiredElementsRule:
                     supported_ids.append(n.node_id)
                     try:
                         supported_count += int(n.content.get("match_count", 0) or 0)  # type: ignore[union-attr]
-                    except Exception:
+                    except (ValueError, TypeError) as e:
+                        # Log conversion error and fall back to counting as 1 match
+                        logger.warning(
+                            "anchor_lexeme_match_count_conversion_failed",
+                            node_id=n.node_id,
+                            error=str(e),
+                        )
                         supported_count += 1
             return supported_count, supported_ids
 
@@ -1370,6 +1395,7 @@ class ColombianContextRule:
         """Initialize with Colombian context loaded from file."""
         self._colombian_context_data: dict[str, Any] | None = None
         self._context_path = Path(__file__).parent.parent.parent.parent.parent / "canonic_questionnaire_central" / "colombia_context" / "colombia_context.json"
+        self._context_load_error: str | None = None
         self._load_colombian_context()
 
     def _load_colombian_context(self) -> None:
@@ -1384,9 +1410,22 @@ class ColombianContextRule:
                     laws_count=len(self._colombian_context_data.get("legal_framework", {}).get("key_laws", [])),
                 )
             else:
+                error_msg = f"Colombian context file not found at {self._context_path}"
                 logger.warning("colombian_context_file_not_found", path=str(self._context_path))
+                self._context_load_error = error_msg
+        except (json.JSONDecodeError, OSError) as e:
+            error_msg = f"Failed to load Colombian context: {e}"
+            logger.error("colombian_context_load_failed", error=str(e), error_type=type(e).__name__)
+            self._context_load_error = error_msg
         except Exception as e:
-            logger.error("colombian_context_load_failed", error=str(e))
+            # Catch any unexpected error and preserve it for validation reporting
+            error_msg = f"Unexpected error loading Colombian context: {e}"
+            logger.error(
+                "colombian_context_load_unexpected_error",
+                error=str(e),
+                error_type=type(e).__name__,
+            )
+            self._context_load_error = error_msg
 
     def validate(
         self,
@@ -1394,6 +1433,20 @@ class ColombianContextRule:
         contract: dict[str, Any],
     ) -> list[ValidationFinding]:
         findings: list[ValidationFinding] = []
+
+        # CRITICAL: Report context load failure as a validation finding
+        # This ensures that failure to load colombia_context.json is not silenced
+        if self._context_load_error:
+            findings.append(ValidationFinding(
+                finding_id="COLOMBIAN_CONTEXT_LOAD_FAILED",
+                severity=ValidationSeverity.ERROR,
+                code=self.code,
+                message=f"Colombian context validation is disabled: {self._context_load_error}",
+                affected_nodes=[],
+                remediation=f"Ensure colombia_context.json exists at {self._context_path} and is valid JSON",
+            ))
+            # Return early since we cannot validate without context
+            return findings
 
         # First, check contract-level validation rules
         validation_rules = contract.get("validation_rules", {})
@@ -2105,38 +2158,67 @@ class ValidationEngine:
         ]
     
     def validate(
-        self, 
-        graph:  EvidenceGraph, 
+        self,
+        graph:  EvidenceGraph,
         contract: dict[str, Any]
     ) -> ValidationReport:
-        """Run all validation rules and produce report."""
+        """Run all validation rules and produce report.
+
+        Stops processing on CRITICAL rule failures to prevent invalid data
+        from propagating downstream. Individual rule exceptions are converted
+        to ERROR findings with full stack traces for debugging.
+        """
         all_findings:  list[ValidationFinding] = []
-        
+        critical_failure_encountered = False
+
         for rule in self.rules:
             try:
                 findings = rule.validate(graph, contract)
                 all_findings.extend(findings)
+
+                # Check if this rule produced a CRITICAL finding
+                for finding in findings:
+                    if finding.severity == ValidationSeverity.CRITICAL:
+                        critical_failure_encountered = True
+                        logger.critical(
+                            "validation_rule_critical_failure",
+                            rule=rule.code,
+                            finding_id=finding.finding_id,
+                            message=finding.message,
+                        )
+
             except Exception as e:
-                logger.error("validation_rule_failed", rule=rule.code, error=str(e))
+                # Log full exception with stack trace for debugging
+                import traceback
+                stack_trace = traceback.format_exc()
+                logger.error(
+                    "validation_rule_exception",
+                    rule=rule.code,
+                    error=str(e),
+                    error_type=type(e).__name__,
+                    stack_trace=stack_trace,
+                )
                 all_findings.append(ValidationFinding(
-                    finding_id=f"RULE_ERROR_{rule.code}",
+                    finding_id=f"RULE_EXCEPTION_{rule.code}",
                     severity=ValidationSeverity.ERROR,
-                    code="VALIDATION_ERROR",
-                    message=f"Validation rule {rule.code} failed: {e}",
+                    code="VALIDATION_EXCEPTION",
+                    message=f"Validation rule {rule.code} raised exception: {e}",
                     affected_nodes=[],
+                    remediation=f"Check rule implementation. Stack trace: {stack_trace[:500]}",
                 ))
-        
+
         report = ValidationReport.create(all_findings)
         report.graph_integrity = graph.verify_hash_chain()
-        
+
         logger.info(
             "validation_complete",
             is_valid=report.is_valid,
             critical=report.critical_count,
             errors=report.error_count,
             warnings=report.warning_count,
+            critical_failure_encountered=critical_failure_encountered,
         )
-        
+
         return report
 
 

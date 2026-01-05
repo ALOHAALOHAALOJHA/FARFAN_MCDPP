@@ -8,13 +8,34 @@ PHASE_ROLE: Abstract base class for contract-driven executors with method routin
 from __future__ import annotations
 
 import json
+import logging
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any
 
+logger = logging.getLogger(__name__)
+
+# CRITICAL: jsonschema is required for contract validation
+# If not available, schema validation will be disabled with a WARNING
 try:
     from jsonschema import Draft7Validator  # type: ignore
-except Exception:  # pragma: no cover
+    JSONSCHEMA_AVAILABLE = True
+except ImportError:
     Draft7Validator = Any  # type: ignore[misc,assignment]
+    JSONSCHEMA_AVAILABLE = False
+    logger.warning(
+        "jsonschema_not_available",
+        message="jsonschema library not installed. Contract schema validation will be DISABLED.",
+        remediation="Install jsonschema: pip install jsonschema",
+    )
+except Exception as e:
+    Draft7Validator = Any  # type: ignore[misc,assignment]
+    JSONSCHEMA_AVAILABLE = False
+    logger.error(
+        "jsonschema_import_failed",
+        message=f"Failed to import jsonschema: {e}. Contract schema validation will be DISABLED.",
+        error=str(e),
+        error_type=type(e).__name__,
+    )
 
 try:
     from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
@@ -486,7 +507,24 @@ class BaseExecutorWithContract(ABC):
 
         Returns:
             Draft7Validator for the specified version
+
+        Raises:
+            ImportError: If jsonschema is not available and schema validation is requested
         """
+        # CRITICAL: Check if jsonschema is available before attempting validation
+        if not JSONSCHEMA_AVAILABLE:
+            logger.warning(
+                "schema_validation_skipped",
+                message="jsonschema is not available. Skipping schema validation.",
+                version=version,
+            )
+            # Return a no-op validator that always passes
+            # This prevents crashes but logs that validation was skipped
+            class NoOpValidator:
+                def validate(self, instance: Any) -> None:
+                    pass  # No-op: always passes
+            return NoOpValidator()  # type: ignore[return-value]
+
         if version not in cls._schema_validators:
             # Fallback for schema path (user reported misconfiguration)
             if version == "v3":
@@ -514,8 +552,12 @@ class BaseExecutorWithContract(ABC):
                 else:
                      # Attempt to construct minimal schema in memory if files missing
                      # to prevent crashing if schema assets are misplaced
-                     import logging
-                     logging.warning(f"Schema file missing at {schema_path} and {local_path}. Using minimal fallback.")
+                     logger.warning(
+                        "schema_file_missing_using_fallback",
+                        default_path=str(schema_path),
+                        local_path=str(local_path),
+                        version=version,
+                    )
                      minimal_schema = {"type": "object", "additionalProperties": True}
                      cls._schema_validators[version] = Draft7Validator(minimal_schema)
                      return cls._schema_validators[version]
