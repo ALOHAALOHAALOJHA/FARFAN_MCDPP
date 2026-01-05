@@ -1419,11 +1419,7 @@ class Orchestrator:
                 elapsed_seconds=signal_validation_result["elapsed_seconds"],
             )
         
-        try:
-            # _validate_questionnaire_structure(self._monolith_data)
-            pass
-        except (ValueError, TypeError) as e:
-            raise RuntimeError(f"Questionnaire validation failed: {e}") from e
+        # Validation removed - _validate_questionnaire_structure currently disabled
         
         if not self.executor.instances:
             raise RuntimeError("MethodExecutor.instances is empty")

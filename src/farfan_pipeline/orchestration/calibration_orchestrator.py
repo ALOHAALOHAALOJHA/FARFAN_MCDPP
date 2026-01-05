@@ -43,3 +43,10 @@ class EvidenceStore:
     question_id: str | None = None
     dimension_id: str | None = None
     policy_area_id: str | None = None
+    
+    def __post_init__(self):
+        """Validate document_quality is within valid range."""
+        if not (0.0 <= self.document_quality <= 1.0):
+            raise ValueError(
+                f"document_quality must be between 0.0 and 1.0, got {self.document_quality}"
+            )
