@@ -1,21 +1,28 @@
 """
-Phase One:  CPP Ingestion & Preprocessing.
+Phase One: CPP Ingestion & Preprocessing.
 
-This module exports the public API for Phase 1 of the FARFAN pipeline. 
+This module exports the public API for Phase 1 of the FARFAN pipeline.
 
 Exports:
     - Phase1Executor: Main execution class
-    - SmartChunk, Chunk:  Data models
-    - TruncationAudit:  Audit records
+    - SmartChunk, Chunk: Data models
+    - TruncationAudit: Audit records
     - StreamingPDFExtractor: PDF extraction
     - Constants: All configuration values
+    - QuestionnaireMap, load_questionnaire_map: Question-level mapping (v2.0)
+    - execute_sp4_question_aware: Question-aware segmentation (v2.0)
 
-Owner: farfan_pipeline. phases.Phase_one
-Version: 1.0.0
+Owner: farfan_pipeline.phases.Phase_one
+Version: 2.0.0 - Question-Aware Architecture
 """
 
-# Core executor
-from .phase1_20_00_cpp_ingestion import Phase1MissionContract as Phase1Executor
+# Core executor (may have optional dependencies)
+try:
+    from .phase1_20_00_cpp_ingestion import Phase1MissionContract as Phase1Executor
+    PHASE1_EXECUTOR_AVAILABLE = True
+except ImportError as e:
+    Phase1Executor = None
+    PHASE1_EXECUTOR_AVAILABLE = False
 
 # Data models
 from .phase1_10_00_models import (
@@ -59,6 +66,47 @@ from .PHASE_1_CONSTANTS import (
     RANDOM_SEED,
 )
 
+# Question-aware architecture (v2.0) - NEW
+try:
+    from .phase1_15_00_questionnaire_mapper import (
+        QuestionSpec,
+        QuestionnaireMap,
+        load_questionnaire_map,
+        invoke_method_set,
+        verify_expected_elements,
+        create_chunk_id_for_question,
+        parse_question_id,
+        TOTAL_QUESTIONS,
+        QUESTIONS_PER_DIMENSION,
+        NUM_POLICY_AREAS,
+        NUM_DIMENSIONS,
+    )
+    QUESTIONNAIRE_MAPPER_AVAILABLE = True
+except ImportError as e:
+    QuestionSpec = None
+    QuestionnaireMap = None
+    load_questionnaire_map = None
+    invoke_method_set = None
+    verify_expected_elements = None
+    create_chunk_id_for_question = None
+    parse_question_id = None
+    TOTAL_QUESTIONS = 300
+    QUESTIONS_PER_DIMENSION = 5
+    NUM_POLICY_AREAS = 10
+    NUM_DIMENSIONS = 6
+    QUESTIONNAIRE_MAPPER_AVAILABLE = False
+
+try:
+    from .phase1_25_00_sp4_question_aware import (
+        execute_sp4_question_aware,
+        TOTAL_CHUNK_COMBINATIONS as SP4_TOTAL_CHUNKS,
+    )
+    SP4_QUESTION_AWARE_AVAILABLE = True
+except ImportError as e:
+    execute_sp4_question_aware = None
+    SP4_TOTAL_CHUNKS = 300
+    SP4_QUESTION_AWARE_AVAILABLE = False
+
 __all__ = [
     # Executor
     'Phase1Executor',
@@ -96,4 +144,19 @@ __all__ = [
     'SUBPHASE_COUNT',
     'PHASE1_LOGGER_NAME',
     'RANDOM_SEED',
+    # Question-aware architecture (v2.0) - NEW
+    'QuestionSpec',
+    'QuestionnaireMap',
+    'load_questionnaire_map',
+    'invoke_method_set',
+    'verify_expected_elements',
+    'create_chunk_id_for_question',
+    'parse_question_id',
+    'TOTAL_QUESTIONS',
+    'QUESTIONS_PER_DIMENSION',
+    'NUM_POLICY_AREAS',
+    'NUM_DIMENSIONS',
+    'execute_sp4_question_aware',
+    'QUESTIONNAIRE_MAPPER_AVAILABLE',
+    'SP4_QUESTION_AWARE_AVAILABLE',
 ]

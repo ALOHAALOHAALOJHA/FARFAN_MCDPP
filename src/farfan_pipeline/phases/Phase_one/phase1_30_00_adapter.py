@@ -116,15 +116,15 @@ class CPPAdapter:
         
         if enable_runtime_validation:
             try:
-                from orchestration.wiring. validation import WiringValidator
+                from farfan_pipeline.phases.Phase_zero.phase0_90_03_wiring_validator import WiringValidator
 
                 self.wiring_validator = WiringValidator()
                 self.logger.info(
                     "WiringValidator enabled for runtime contract checking"
                 )
-            except ImportError: 
+            except ImportError:
                 self.logger.warning(
-                    "WiringValidator not available.  Runtime validation disabled."
+                    "WiringValidator not available. Runtime validation disabled."
                 )
 
         self.config: dict[str, Any] = self._build_config()

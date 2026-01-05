@@ -110,33 +110,43 @@ class Chunk:
     """
     Intermediate chunk representation (SP4-SP10).
     Type-safe enum fields added for proper value aggregation in CPP production cycle.
+
+    ARCHITECTURAL NOTE (v2.0):
+    Extended to support question-level granularity (300 questions = 10 PA × 6 DIM × 5 Q/slot).
+    This addresses the audit finding that Phase 1 must map to questionnaire questions,
+    not just PA×DIM combinations.
     """
     chunk_id: str = ""
     policy_area_id: str = ""
     dimension_id: str = ""
     chunk_index: int = -1
 
+    # Question-level mapping (NEW - addresses audit finding 2.2)
+    # question_id format: "Q001" to "Q300" mapping to questionnaire
+    question_id: str = ""
+    question_slot: int = 0  # 1-5, indicating which question within PA×DIM combination
+
     # Raw chunk text (optional, used by some verifiers/tests)
     text: str = ""
-    
+
     # Type-safe enum fields for value aggregation in CPP cycle
     policy_area: Optional[Any] = None  # PolicyArea enum when available
     dimension: Optional[Any] = None  # DimensionCausal enum when available
-    
+
     text_spans: List[Tuple[int, int]] = field(default_factory=list)
     sentence_ids: List[int] = field(default_factory=list)
     paragraph_ids: List[int] = field(default_factory=list)
-    
+
     signal_tags: List[str] = field(default_factory=list)
     signal_scores: Dict[str, float] = field(default_factory=dict)
-    
+
     # Traceability fields (SPEC-002)
     assignment_method: str = "semantic"
     semantic_confidence: float = 0.0
 
     overlap_flag: bool = False
     segmentation_metadata: Dict[str, Any] = field(default_factory=dict)
-    
+
     # Enrichment fields (populated in SP5-SP10)
     causal_graph: Optional[CausalGraph] = None
     arguments: Optional[Dict[str, Any]] = None
@@ -144,10 +154,22 @@ class Chunk:
     discourse_mode: str = ""
     rhetorical_strategies: List[str] = field(default_factory=list)
     signal_patterns: List[str] = field(default_factory=list)
-    
+
     signal_weighted_importance: float = 0.0
     policy_area_priority: float = 0.0
     risk_weight: float = 0.0
+
+    # Questionnaire-specific fields (NEW - addresses audit findings 2.3, 2.4)
+    # Stores patterns from questionnaire for this specific question
+    question_patterns: List[Dict[str, Any]] = field(default_factory=list)
+    # Stores method_sets from questionnaire for this specific question
+    question_method_sets: List[Dict[str, Any]] = field(default_factory=list)
+    # Stores expected_elements from questionnaire for verification
+    expected_elements: List[Dict[str, Any]] = field(default_factory=list)
+    # Verification result for expected_elements
+    elements_verification: Dict[str, bool] = field(default_factory=dict)
+    # Method invocation results (tracks which methods were called)
+    method_invocation_results: Dict[str, Any] = field(default_factory=dict)
     governance_threshold: float = 0.0
 
     def __post_init__(self) -> None:

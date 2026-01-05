@@ -55,6 +55,107 @@ BASE_TEMPORAL_PATTERNS = [
     (r'\bvigencia\s+(20\d{2})[-–](20\d{2})\b', 'PERIOD', 0.85),
 ]
 
+
+def load_questionnaire_patterns(questionnaire_path: Path) -> dict[str, list[tuple[str, str, float]]]:
+    """
+    Load question-specific patterns from questionnaire_monolith.json.
+
+    This addresses the audit finding that Phase 1 uses hardcoded patterns
+    instead of the specific patterns defined in the questionnaire.
+
+    Args:
+        questionnaire_path: Path to questionnaire_monolith.json
+
+    Returns:
+        Dict mapping question_id to list of (pattern, category, weight) tuples
+        Example: {"Q001": [(r'patron', 'CAUSAL', 0.85), ...], ...}
+
+    Raises:
+        FileNotFoundError: If questionnaire not found
+        json.JSONDecodeError: If questionnaire is invalid
+    """
+    import json
+
+    if not questionnaire_path.exists():
+        logger.warning(f"Questionnaire not found at {questionnaire_path}, using default patterns")
+        return {}
+
+    try:
+        with open(questionnaire_path) as f:
+            data = json.load(f)
+
+        # Extract patterns from micro_questions
+        micro_questions = data.get('blocks', {}).get('micro_questions', [])
+
+        patterns_by_question: dict[str, list[tuple[str, str, float]]] = {}
+
+        for q in micro_questions:
+            question_id = q.get('question_id')
+            if not question_id:
+                continue
+
+            # Extract patterns with their metadata
+            question_patterns = []
+            for pat in q.get('patterns', []):
+                pattern = pat.get('pattern')
+                category = pat.get('category', 'GENERAL')
+                weight = pat.get('confidence_weight', 0.7)
+
+                if pattern:
+                    # Convert to regex tuple format
+                    question_patterns.append((pattern, category, weight))
+
+            if question_patterns:
+                patterns_by_question[question_id] = question_patterns
+
+        logger.info(
+            f"Loaded {len(patterns_by_question)} questions with patterns from questionnaire"
+        )
+        return patterns_by_question
+
+    except json.JSONDecodeError as e:
+        logger.error(f"Invalid questionnaire JSON: {e}")
+        return {}
+    except Exception as e:
+        logger.error(f"Error loading questionnaire patterns: {e}")
+        return {}
+
+
+def load_causal_patterns_from_questionnaire(
+    questionnaire_path: Path,
+    category_filter: str = "CAUSAL"
+) -> list[tuple[str, str, float]]:
+    """
+    Load causal patterns from questionnaire for use in signal enrichment.
+
+    This replaces DEFAULT_CAUSAL_PATTERNS with question-specific patterns.
+
+    Args:
+        questionnaire_path: Path to questionnaire_monolith.json
+        category_filter: Pattern category to filter (default: CAUSAL)
+
+    Returns:
+        List of (pattern, label, weight) tuples
+    """
+    all_patterns = load_questionnaire_patterns(questionnaire_path)
+
+    # Filter and flatten patterns
+    causal_patterns = []
+    for q_patterns in all_patterns.values():
+        for pattern, category, weight in q_patterns:
+            if category_filter in category.upper():
+                # Convert questionnaire pattern format to regex tuple
+                causal_patterns.append((pattern, category, weight))
+
+    if not causal_patterns:
+        logger.warning(
+            f"No {category_filter} patterns found in questionnaire, using defaults"
+        )
+        return DEFAULT_CAUSAL_PATTERNS
+
+    logger.info(f"Loaded {len(causal_patterns)} {category_filter} patterns from questionnaire")
+    return causal_patterns
+
 try:
     import structlog
     logger = structlog.get_logger(__name__)
@@ -116,14 +217,31 @@ class SignalEnricher:
     def __init__(self, questionnaire_path: Optional[Path] = None):
         """
         Initialize signal enricher.
-        
+
         Args:
             questionnaire_path: Path to questionnaire JSON for signal extraction
         """
         self.context = SignalEnrichmentContext()
         self.questionnaire_path = questionnaire_path
         self._initialized = False
-        
+        # Load question-specific patterns from questionnaire
+        self._questionnaire_patterns: dict[str, list[tuple[str, str, float]]] = {}
+        self._causal_patterns: list[tuple[str, str, float]] = DEFAULT_CAUSAL_PATTERNS
+
+        if questionnaire_path and questionnaire_path.exists():
+            try:
+                # Load question-specific patterns from questionnaire
+                self._questionnaire_patterns = load_questionnaire_patterns(questionnaire_path)
+                self._causal_patterns = load_causal_patterns_from_questionnaire(
+                    questionnaire_path, category_filter="CAUSAL"
+                )
+                logger.info(
+                    f"Loaded {len(self._questionnaire_patterns)} question patterns, "
+                    f"{len(self._causal_patterns)} causal patterns from questionnaire"
+                )
+            except Exception as e:
+                logger.warning(f"Questionnaire pattern loading failed: {e}")
+
         if SISAS_AVAILABLE and questionnaire_path and questionnaire_path.exists():
             try:
                 self._initialize_signal_registry(questionnaire_path)
@@ -191,7 +309,37 @@ class SignalEnricher:
         except Exception as e:
             logger.error(f"Signal registry initialization error: {e}")
             self._initialized = False
-    
+
+    def get_question_patterns(self, question_id: str) -> list[tuple[str, str, float]]:
+        """
+        Get patterns for a specific question from the questionnaire.
+
+        This addresses the audit finding that Phase 1 should use question-specific
+        patterns instead of hardcoded generic patterns.
+
+        Args:
+            question_id: Question ID (e.g., "Q001", "Q056")
+
+        Returns:
+            List of (pattern, category, weight) tuples for the question.
+            Returns empty list if question not found or no patterns available.
+        """
+        return self._questionnaire_patterns.get(question_id, [])
+
+    def get_causal_patterns(self) -> list[tuple[str, str, float]]:
+        """
+        Get causal patterns loaded from the questionnaire.
+
+        Returns:
+            List of (pattern, category, weight) tuples for causal analysis.
+            Falls back to DEFAULT_CAUSAL_PATTERNS if questionnaire not loaded.
+        """
+        return self._causal_patterns
+
+    def is_questionnaire_loaded(self) -> bool:
+        """Check if questionnaire patterns were successfully loaded."""
+        return len(self._questionnaire_patterns) > 0
+
     def enrich_entity_with_signals(
         self,
         entity_text: str,
