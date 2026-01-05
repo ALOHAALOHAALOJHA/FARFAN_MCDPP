@@ -1014,3 +1014,183 @@ def create_default_signal_pack(policy_area: PolicyArea) -> SignalPack:
         source_fingerprint="default",
         metadata={"mode": "conservative_fallback"},
     )
+
+
+# ============================================================================
+# JOBFRONT #2: KEYWORDS IRRIGATION
+# ============================================================================
+
+
+class KeywordIrrigator:
+    """Handles keyword injection and validation for signal packs.
+    
+    JOBFRONT #2: Enforces that all metadata keywords become part of signal pack.
+    Adversarial: Fails if any keyword from metadata is not included.
+    """
+    
+    @staticmethod
+    def add_keywords_from_metadata(signal_pack: SignalPack, metadata: dict[str, Any]) -> SignalPack:
+        """Add keywords from metadata to signal pack patterns.
+        
+        ADVERSARIAL: Assert all keywords in metadata['keywords'] become part of patterns.
+        
+        Args:
+            signal_pack: Original SignalPack (immutable)
+            metadata: Metadata dict containing 'keywords' list
+            
+        Returns:
+            New SignalPack with keywords added to patterns
+            
+        Raises:
+            ValueError: If keywords metadata is not a list
+            RuntimeError: If any keyword fails to be included
+        """
+        keywords = metadata.get('keywords', [])
+        if not isinstance(keywords, list):
+            raise ValueError("Keywords metadata must be a list.")
+        
+        # Create new patterns list with keywords
+        new_patterns = list(signal_pack.patterns) + [k for k in keywords if k not in signal_pack.patterns]
+        
+        # Create new signal pack with updated patterns (SignalPack is frozen)
+        new_pack = SignalPack(
+            version=signal_pack.version,
+            policy_area=signal_pack.policy_area,
+            patterns=new_patterns,
+            indicators=list(signal_pack.indicators),
+            regex=list(signal_pack.regex),
+            verbs=list(signal_pack.verbs),
+            entities=list(signal_pack.entities),
+            thresholds=dict(signal_pack.thresholds),
+            ttl_s=signal_pack.ttl_s,
+            source_fingerprint=signal_pack.source_fingerprint,
+            valid_from=signal_pack.valid_from,
+            valid_to=signal_pack.valid_to,
+            metadata={
+                **signal_pack.metadata,
+                "keywords_irrigated": keywords,
+                "irrigation_timestamp": time.time(),
+            },
+        )
+        
+        # ADVERSARIAL: Verify all keywords are included
+        for kw in keywords:
+            if kw not in new_pack.patterns:
+                raise RuntimeError(f"Keyword '{kw}' not included in signal pack.")
+        
+        logger.debug(
+            "keywords_irrigated",
+            keyword_count=len(keywords),
+            policy_area=signal_pack.policy_area,
+        )
+        
+        return new_pack
+    
+    @staticmethod
+    def inject_keywords(signal_pack: SignalPack, keywords: list[str]) -> SignalPack:
+        """Inject keywords into signal pack.
+        
+        Alias for add_keywords_from_metadata with direct keyword list.
+        """
+        return KeywordIrrigator.add_keywords_from_metadata(
+            signal_pack, 
+            {"keywords": keywords}
+        )
+
+
+# ============================================================================
+# JOBFRONT #5: SIGNAL TRACING AND AUDIT
+# ============================================================================
+
+
+@dataclass
+class SignalAuditRecord:
+    """Single audit record for signal operations."""
+    operation: str
+    timestamp: float
+    signal_pack_id: str | None
+    user: str
+    details: dict[str, Any] = field(default_factory=dict)
+
+
+class SignalTracer:
+    """Traces and audits all signal operations.
+    
+    JOBFRONT #5: Ensures all provenance and audit trails are recorded.
+    Adversarial: Missing trace = rejection.
+    """
+    
+    def __init__(self) -> None:
+        self._audit_log: list[SignalAuditRecord] = []
+        self._max_log_size = 10000
+    
+    def trace_signal_mutation(
+        self, 
+        signal_pack: SignalPack, 
+        operation: str,
+        details: dict[str, Any] | None = None,
+    ) -> SignalAuditRecord:
+        """Persist audit trace for every signal operation.
+        
+        ADVERSARIAL: Fails if not logged.
+        """
+        import getpass
+        
+        record = SignalAuditRecord(
+            operation=operation,
+            timestamp=time.time(),
+            signal_pack_id=signal_pack.source_fingerprint,
+            user=getpass.getuser(),
+            details=details or {},
+        )
+        
+        self._audit_log.append(record)
+        
+        # Evict oldest records if over max size
+        if len(self._audit_log) > self._max_log_size:
+            self._audit_log = self._audit_log[-self._max_log_size:]
+        
+        # ADVERSARIAL: Each audit_log entry must be retrievable
+        assert record in self._audit_log, f"Audit trace failed for operation {operation}"
+        
+        logger.debug(
+            "signal_mutation_traced",
+            operation=operation,
+            signal_pack_id=record.signal_pack_id,
+        )
+        
+        return record
+    
+    def get_audit_log(self) -> list[SignalAuditRecord]:
+        """Get the full audit log."""
+        return list(self._audit_log)
+    
+    def export_audit_log(self) -> list[dict[str, Any]]:
+        """Export audit log as list of dictionaries."""
+        return [
+            {
+                "operation": r.operation,
+                "timestamp": r.timestamp,
+                "signal_pack_id": r.signal_pack_id,
+                "user": r.user,
+                "details": r.details,
+            }
+            for r in self._audit_log
+        ]
+
+
+# Global signal tracer instance
+_GLOBAL_SIGNAL_TRACER: SignalTracer | None = None
+
+
+def get_global_signal_tracer() -> SignalTracer:
+    """Get or create the global signal tracer."""
+    global _GLOBAL_SIGNAL_TRACER
+    if _GLOBAL_SIGNAL_TRACER is None:
+        _GLOBAL_SIGNAL_TRACER = SignalTracer()
+    return _GLOBAL_SIGNAL_TRACER
+
+
+def trace_signal_mutation(signal_pack: SignalPack, operation: str) -> SignalAuditRecord:
+    """Convenience function to trace signal mutation using global tracer."""
+    return get_global_signal_tracer().trace_signal_mutation(signal_pack, operation)

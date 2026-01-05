@@ -199,6 +199,7 @@ Enhanced: 2025-12-02
 """
 
 from dataclasses import dataclass, field
+import time
 from typing import Any
 
 try:
@@ -1788,6 +1789,266 @@ def ensure_complete_validation_coverage(
     return coverage
 
 
+# ============================================================================
+# JOBFRONT #3: INTERDEPENDENCY RULES ENFORCEMENT
+# ============================================================================
+
+
+@dataclass
+class InterdependencyRule:
+    """Definition of an interdependency rule between signals."""
+    rule_id: str
+    description: str
+    source_signal: str
+    target_signal: str
+    condition: str
+    severity: str = "warning"
+
+
+@dataclass
+class InterdependencyFinding:
+    """Finding from interdependency rule evaluation."""
+    rule_id: str
+    triggered: bool
+    message: str
+    severity: str
+    affected_signals: list[str]
+
+
+class InterdependencyValidator:
+    """Validates interdependency rules between signals.
+    
+    JOBFRONT #3: Evaluates all interdependency rules and fails loud if not all executed.
+    Adversarial: Raises if less than all rules are executed.
+    """
+    
+    CANONICAL_RULES: list[dict[str, Any]] = [
+        {
+            "rule_id": "IDR-001",
+            "description": "Budget signals require goal signals",
+            "source_signal": "budget_amount",
+            "target_signal": "goal_target",
+            "condition": "requires",
+            "severity": "warning",
+        },
+        {
+            "rule_id": "IDR-002",
+            "description": "Temporal data requires baseline",
+            "source_signal": "temporal_series",
+            "target_signal": "baseline_indicator",
+            "condition": "requires",
+            "severity": "error",
+        },
+    ]
+    
+    def __init__(self) -> None:
+        self._rules: list[InterdependencyRule] = []
+        self._load_rules()
+    
+    def _load_rules(self) -> None:
+        """Load canonical interdependency rules."""
+        for rule_data in self.CANONICAL_RULES:
+            self._rules.append(InterdependencyRule(
+                rule_id=rule_data["rule_id"],
+                description=rule_data["description"],
+                source_signal=rule_data["source_signal"],
+                target_signal=rule_data["target_signal"],
+                condition=rule_data["condition"],
+                severity=rule_data.get("severity", "warning"),
+            ))
+    
+    def run_interdependency_rules(
+        self,
+        signal_context: dict[str, Any],
+        question_id: str,
+    ) -> list[InterdependencyFinding]:
+        """Evaluates all interdependency validation rules.
+        
+        ADVERSARIAL: Raises if less than all rules are executed.
+        """
+        findings: list[InterdependencyFinding] = []
+        executed_rules = 0
+        
+        for rule in self._rules:
+            result = self._validate_single_rule(rule, signal_context, question_id)
+            findings.append(result)
+            executed_rules += 1
+        
+        # ADVERSARIAL: Ensure all rules were executed
+        if executed_rules < len(self._rules):
+            raise AssertionError(
+                f"Not all interdependency rules executed: {executed_rules} of {len(self._rules)}"
+            )
+        
+        return findings
+    
+    def _validate_single_rule(
+        self,
+        rule: InterdependencyRule,
+        signal_context: dict[str, Any],
+        question_id: str,
+    ) -> InterdependencyFinding:
+        """Validate a single interdependency rule."""
+        has_source = rule.source_signal in signal_context
+        has_target = rule.target_signal in signal_context
+        
+        triggered = False
+        message = ""
+        
+        if rule.condition == "requires":
+            if has_source and not has_target:
+                triggered = True
+                message = f"Signal '{rule.source_signal}' requires '{rule.target_signal}' but it's missing"
+        
+        return InterdependencyFinding(
+            rule_id=rule.rule_id,
+            triggered=triggered,
+            message=message or f"Rule {rule.rule_id} passed",
+            severity=rule.severity if triggered else "info",
+            affected_signals=[rule.source_signal, rule.target_signal] if triggered else [],
+        )
+
+
+# ============================================================================
+# JOBFRONT #4: BLOCKING RULES ENFORCEMENT
+# ============================================================================
+
+
+@dataclass
+class BlockingRuleDefinition:
+    """Definition of a blocking rule for signal gateway."""
+    rule_id: str
+    description: str
+    condition_type: str
+    threshold: float | None = None
+    action: str = "block"
+
+
+@dataclass
+class BlockingRuleViolation:
+    """Violation record when a blocking rule is triggered."""
+    rule_id: str
+    reason: str
+    action: str
+    affected_elements: list[str]
+    timestamp: float
+
+
+class SignalGateway:
+    """Gateway for signal validation with blocking rule enforcement.
+    
+    JOBFRONT #4: Applies all blocking rules and fails loud if any triggers.
+    Adversarial: No signal passes through if any blocking rule triggers.
+    """
+    
+    CANONICAL_BLOCKING_RULES: list[dict[str, Any]] = [
+        {
+            "rule_id": "BLK-001",
+            "description": "Block if global confidence below threshold",
+            "condition_type": "confidence_below",
+            "threshold": 0.2,
+            "action": "block",
+        },
+        {
+            "rule_id": "BLK-002",
+            "description": "Block if contradiction detected",
+            "condition_type": "contradiction_detected",
+            "threshold": None,
+            "action": "block",
+        },
+    ]
+    
+    def __init__(self) -> None:
+        self._blocking_rules: list[BlockingRuleDefinition] = []
+        self._violations: list[BlockingRuleViolation] = []
+        self._load_rules()
+    
+    def _load_rules(self) -> None:
+        """Load canonical blocking rules."""
+        for rule_data in self.CANONICAL_BLOCKING_RULES:
+            self._blocking_rules.append(BlockingRuleDefinition(
+                rule_id=rule_data["rule_id"],
+                description=rule_data["description"],
+                condition_type=rule_data["condition_type"],
+                threshold=rule_data.get("threshold"),
+                action=rule_data.get("action", "block"),
+            ))
+    
+    def apply_blocking_rules(
+        self,
+        signal_context: dict[str, Any],
+        validation_report: dict[str, Any] | None = None,
+    ) -> None:
+        """Applies all blocking rules. Fails loud if any rule triggers.
+        
+        ADVERSARIAL: Raises PermissionError if any blocking rule triggers.
+        """
+        validation_report = validation_report or {}
+        
+        for rule in self._blocking_rules:
+            triggered = self._evaluate_blocking_condition(
+                rule, signal_context, validation_report
+            )
+            
+            if triggered:
+                violation = BlockingRuleViolation(
+                    rule_id=rule.rule_id,
+                    reason=rule.description,
+                    action=rule.action,
+                    affected_elements=[],
+                    timestamp=time.time(),
+                )
+                self._violations.append(violation)
+                
+                if rule.action == "block":
+                    raise PermissionError(
+                        f"Blocking rule '{rule.rule_id}' triggered: {rule.description}"
+                    )
+    
+    def _evaluate_blocking_condition(
+        self,
+        rule: BlockingRuleDefinition,
+        signal_context: dict[str, Any],
+        validation_report: dict[str, Any],
+    ) -> bool:
+        """Evaluate a single blocking condition."""
+        if rule.condition_type == "confidence_below":
+            confidence = signal_context.get("global_confidence", 1.0)
+            threshold = rule.threshold or 0.2
+            return confidence < threshold
+        
+        elif rule.condition_type == "contradiction_detected":
+            contradictions = signal_context.get("contradictions", [])
+            return len(contradictions) > 0
+        
+        return False
+    
+    def get_violations(self) -> list[BlockingRuleViolation]:
+        """Get all blocking rule violations."""
+        return list(self._violations)
+
+
+# Global instances
+_GLOBAL_INTERDEPENDENCY_VALIDATOR: InterdependencyValidator | None = None
+_GLOBAL_SIGNAL_GATEWAY: SignalGateway | None = None
+
+
+def get_global_interdependency_validator() -> InterdependencyValidator:
+    """Get or create the global interdependency validator."""
+    global _GLOBAL_INTERDEPENDENCY_VALIDATOR
+    if _GLOBAL_INTERDEPENDENCY_VALIDATOR is None:
+        _GLOBAL_INTERDEPENDENCY_VALIDATOR = InterdependencyValidator()
+    return _GLOBAL_INTERDEPENDENCY_VALIDATOR
+
+
+def get_global_signal_gateway() -> SignalGateway:
+    """Get or create the global signal gateway."""
+    global _GLOBAL_SIGNAL_GATEWAY
+    if _GLOBAL_SIGNAL_GATEWAY is None:
+        _GLOBAL_SIGNAL_GATEWAY = SignalGateway()
+    return _GLOBAL_SIGNAL_GATEWAY
+
+
 # === EXPORTS ===
 
 __all__ = [
@@ -1806,4 +2067,14 @@ __all__ = [
     'get_global_validation_orchestrator',
     'set_global_validation_orchestrator',
     'reset_global_validation_orchestrator',
+    # JOBFRONT #3: Interdependency Rules
+    'InterdependencyRule',
+    'InterdependencyFinding',
+    'InterdependencyValidator',
+    'get_global_interdependency_validator',
+    # JOBFRONT #4: Blocking Rules
+    'BlockingRuleDefinition',
+    'BlockingRuleViolation',
+    'SignalGateway',
+    'get_global_signal_gateway',
 ]

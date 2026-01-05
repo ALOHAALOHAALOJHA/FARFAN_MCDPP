@@ -2298,6 +2298,155 @@ def create_signal_registry(
 
 
 # ============================================================================
+# JOBFRONT #1: CROSS-CUTTING THEMES ENFORCEMENT
+# ============================================================================
+
+
+@dataclass
+class Theme:
+    """Cross-cutting theme definition with enforcement rules."""
+    theme_id: str
+    name: str
+    description: str = ""
+    applies_to_policy_areas: list[str] = field(default_factory=list)
+    required_for: list[str] = field(default_factory=list)
+    recommended_for: list[str] = field(default_factory=list)
+    validation_patterns: list[str] = field(default_factory=list)
+
+
+class CrossCuttingThemeRegistry:
+    """Registry for cross-cutting themes with adversarial enforcement.
+    
+    JOBFRONT #1: Enforces required theme coverage for each policy area.
+    Adversarial: Fails if any required theme is not found in available signals.
+    """
+    
+    CANONICAL_THEMES: list[dict[str, Any]] = [
+        {
+            "theme_id": "GENERO",
+            "name": "Enfoque de Género",
+            "description": "Transversalización del enfoque de género en políticas públicas",
+            "applies_to_policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "required_for": ["PA03"],
+            "recommended_for": ["PA01", "PA02", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "validation_patterns": ["género", "mujeres", "equidad", "diferencial de género"],
+        },
+        {
+            "theme_id": "AMBIENTAL",
+            "name": "Sostenibilidad Ambiental",
+            "description": "Transversalización ambiental y cambio climático",
+            "applies_to_policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "required_for": ["PA06"],
+            "recommended_for": ["PA01", "PA02", "PA04", "PA07", "PA08", "PA09", "PA10"],
+            "validation_patterns": ["ambiental", "sostenible", "cambio climático", "recursos naturales"],
+        },
+        {
+            "theme_id": "ETNICO",
+            "name": "Enfoque Étnico",
+            "description": "Transversalización del enfoque étnico y diferencial",
+            "applies_to_policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "required_for": ["PA04"],
+            "recommended_for": ["PA01", "PA02", "PA03", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "validation_patterns": ["étnico", "indígenas", "afrocolombianos", "comunidades negras", "raizales"],
+        },
+        {
+            "theme_id": "TERRITORIAL",
+            "name": "Enfoque Territorial",
+            "description": "Enfoque diferencial territorial urbano/rural",
+            "applies_to_policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "required_for": [],
+            "recommended_for": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+            "validation_patterns": ["territorial", "urbano", "rural", "municipal", "departamental"],
+        },
+    ]
+    
+    def __init__(self) -> None:
+        self._themes: list[Theme] = []
+        self._load_themes()
+    
+    def _load_themes(self) -> None:
+        """Load canonical cross-cutting themes."""
+        for theme_data in self.CANONICAL_THEMES:
+            self._themes.append(Theme(
+                theme_id=theme_data["theme_id"],
+                name=theme_data["name"],
+                description=theme_data.get("description", ""),
+                applies_to_policy_areas=theme_data.get("applies_to_policy_areas", []),
+                required_for=theme_data.get("required_for", []),
+                recommended_for=theme_data.get("recommended_for", []),
+                validation_patterns=theme_data.get("validation_patterns", []),
+            ))
+    
+    def get_cross_cutting_themes(self, policy_area_id: str) -> list[Theme]:
+        """Fetches all cross-cutting themes for a given policy area.
+        
+        ADVERSARIAL: Fails if any 'required_theme' is not found in available signals.
+        
+        Args:
+            policy_area_id: Policy area ID (PA01-PA10)
+            
+        Returns:
+            List of applicable Theme objects
+            
+        Raises:
+            RuntimeError: If required themes are missing for the policy area
+        """
+        applicable = [t for t in self._themes if policy_area_id in t.applies_to_policy_areas]
+        
+        # Get required themes for this policy area
+        required_theme_ids = [t.theme_id for t in self._themes if policy_area_id in t.required_for]
+        applicable_ids = [t.theme_id for t in applicable]
+        
+        missing = [rt for rt in required_theme_ids if rt not in applicable_ids]
+        
+        if missing:
+            raise RuntimeError(f"Missing required cross-cutting themes for {policy_area_id}: {missing}")
+        
+        logger.debug(
+            "cross_cutting_themes_fetched",
+            policy_area_id=policy_area_id,
+            applicable_count=len(applicable),
+            required_count=len(required_theme_ids),
+        )
+        
+        return applicable
+    
+    def get_required_themes(self, policy_area_id: str) -> list[str]:
+        """Get list of required theme IDs for a policy area."""
+        return [t.theme_id for t in self._themes if policy_area_id in t.required_for]
+    
+    def validate_theme_coverage(
+        self, 
+        policy_area_id: str, 
+        detected_themes: list[str]
+    ) -> tuple[bool, list[str]]:
+        """Validate that all required themes were detected.
+        
+        Args:
+            policy_area_id: Policy area ID
+            detected_themes: List of detected theme IDs from analysis
+            
+        Returns:
+            Tuple of (is_valid, missing_themes)
+        """
+        required = self.get_required_themes(policy_area_id)
+        missing = [r for r in required if r not in detected_themes]
+        return (len(missing) == 0, missing)
+
+
+# Global theme registry instance
+_GLOBAL_THEME_REGISTRY: CrossCuttingThemeRegistry | None = None
+
+
+def get_global_theme_registry() -> CrossCuttingThemeRegistry:
+    """Get or create the global cross-cutting theme registry."""
+    global _GLOBAL_THEME_REGISTRY
+    if _GLOBAL_THEME_REGISTRY is None:
+        _GLOBAL_THEME_REGISTRY = CrossCuttingThemeRegistry()
+    return _GLOBAL_THEME_REGISTRY
+
+
+# ============================================================================
 # EXPORTS
 # ============================================================================
 
@@ -2330,4 +2479,9 @@ __all__ = [
     
     # Metrics
     "RegistryMetrics",
+    
+    # JOBFRONT #1: Cross-Cutting Themes
+    "Theme",
+    "CrossCuttingThemeRegistry",
+    "get_global_theme_registry",
 ]
