@@ -231,9 +231,33 @@ class PersistentCircuitBreaker(CircuitBreaker):
     Minor Improvement 1: Circuit Breaker State Persistence
 
     Extends CircuitBreaker with:
-    - State persistence to disk
+    - State persistence to disk via state_file
     - Recovery across process restarts
     - Automatic state loading on initialization
+
+    **IMPORTANT: Single-Process Safety Only**
+    
+    PersistentCircuitBreaker is designed for single-process deployments and does NOT
+    provide inter-process synchronization for state_file access. The methods _load_state
+    and _save_state lack file-level locking, which can lead to race conditions and JSON
+    corruption when multiple processes access the same state_file concurrently.
+
+    **Multi-Process Alternatives:**
+    
+    If you need circuit breaker functionality in a multi-process environment, consider:
+    
+    1. **Use non-persistent CircuitBreaker**: The base CircuitBreaker class provides
+       thread-safe operation within a single process without persistence. Each process
+       instance maintains its own independent state.
+    
+    2. **Implement file-level locking**: Add OS-specific file locks around state_file
+       reads/writes in _load_state and _save_state methods. For example:
+       - Unix/Linux: Use fcntl.flock() to acquire exclusive locks before file operations
+       - Windows: Use msvcrt.locking() to lock file regions during access
+    
+    3. **Use a shared state store**: Replace file-based persistence with a centralized
+       state management solution such as Redis, a database, or another distributed
+       coordination service that provides atomic operations and proper synchronization.
     """
 
     def __init__(
