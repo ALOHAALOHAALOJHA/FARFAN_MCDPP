@@ -21,7 +21,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
 
-from orchestration.method_registry import MethodRegistry, MethodRegistryError
+from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry import MethodRegistry, MethodRegistryError
 
 logger = logging.getLogger(__name__)
 

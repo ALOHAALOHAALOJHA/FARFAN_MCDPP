@@ -203,8 +203,11 @@ except ImportError as e:
 try:
     from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry import MethodRegistry, MethodRegistryError
 except ImportError:
-    # Fallback to old path if refactoring is in progress
-    from orchestration.method_registry import MethodRegistry, MethodRegistryError
+    # If import fails, raise with clear message
+    raise ImportError(
+        "Cannot import MethodRegistry from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry. "
+        "Ensure Phase_two module is properly installed and accessible."
+    )
 
 _METHOD_REGISTRY = MethodRegistry()
 
