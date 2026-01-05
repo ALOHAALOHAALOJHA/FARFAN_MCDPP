@@ -48,6 +48,7 @@ logger = logging.getLogger(__name__)
 
 
 # Fusion strategies by type (MUST match epistemic_minima_by_type.json)
+# Validated externally by scripts/validation/validate_fusion_strategies.py
 _TYPE_FUSION_STRATEGIES: Final[dict[str, str]] = {
     "TYPE_A": "semantic_triangulation",
     "TYPE_B": "bayesian_update",
@@ -112,6 +113,10 @@ class Phase2Calibrator:
         contract_type = binding_set.contract_type_code
 
         if contract_type not in VALID_CONTRACT_TYPES:
+            self._logger.error(
+                f"Unknown contract type '{contract_type}' for unit {unit_of_analysis_id}. "
+                f"Valid types: {sorted(VALID_CONTRACT_TYPES)}"
+            )
             raise UnknownContractTypeError(contract_type, VALID_CONTRACT_TYPES)
 
         self._logger.info(
@@ -167,6 +172,8 @@ class Phase2Calibrator:
         )
 
         # Placeholder params for ingestion-specific values (not used in Phase-2)
+        # Rationale: CalibrationLayer requires these parameters to be present 
+        # for schema consistency, even if Phase-2 logic ignores them.
         placeholder_bounds = ClosedInterval(lower=100.0, upper=10000.0)
         chunk_param = create_calibration_parameter(
             name="chunk_size",

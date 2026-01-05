@@ -49,7 +49,16 @@ class FactEntry:
     
     @staticmethod
     def compute_content_hash(content: str) -> str:
-        """Compute hash of normalized content."""
+        """
+        Compute hash of normalized content.
+        
+        Normalization pipeline:
+        1. strip(): Remove leading/trailing whitespace
+        2. lower(): Convert to lowercase (ignores Unicode normalization like NFC/NFD)
+        
+        Future-proofing: If stricter normalization is needed (e.g., NFC), 
+        add it here. This implementation relies on Python's default string handling.
+        """
         normalized = content.strip().lower()
         return hashlib.sha256(normalized.encode()).hexdigest()
 
@@ -214,11 +223,17 @@ class CanonicalFactRegistry:
         }
     
     def _default_duplicate_handler(self, record: DuplicateRecord) -> None:
-        """Default handler logs duplicates."""
-        self._logger.info(
-            f"DUPLICATE_FACT:  {record.duplicate_source_method} produced content "
-            f"identical to fact {record.original_fact_id}"
-        )
+        """Default handler logs duplicates (capped to prevent flooding)."""
+        # Simple cap: stop logging individually after 100 duplicates
+        if len(self._duplicates) <= 100:
+            self._logger.info(
+                f"DUPLICATE_FACT:  {record.duplicate_source_method} produced content "
+                f"identical to fact {record.original_fact_id}"
+            )
+        elif len(self._duplicates) == 101:
+             self._logger.warning(
+                 "Duplicate fact logging suppressed (count > 100) to prevent log flooding."
+             )
 
 
 class FactFactory:

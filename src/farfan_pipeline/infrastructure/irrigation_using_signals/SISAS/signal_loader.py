@@ -1,12 +1,15 @@
-"""Signal Loader Module - Extract patterns from questionnaire_monolith.json
+"""Signal Loader Module - DEPRECATED
 
 .. deprecated:: 2.0.0
-    This module is deprecated. Use QuestionnaireSignalRegistry from signal_registry.py instead.
+    This module is deprecated. Use QuestionnaireSignalRegistry from signal_registry.py
+    with create_signal_registry() or create_signal_registry_from_modular() instead.
+    The questionnaire is now modularized under canonic_questionnaire_central/;
+    use QuestionnaireModularResolver to load from the modular structure.
     See SPEC_SIGNAL_NORMALIZATION_COMPREHENSIVE.md §5.2: SISAS-LOADER-001
 
-This module implements Phase 1 of the Signal Integration Plan by extracting
-REAL patterns from the questionnaire_monolith.json file and building SignalPack
-objects for each of the 10 policy areas.
+This module was responsible for extracting patterns from questionnaire_monolith.json.
+It is now superseded by the modular questionnaire architecture.
+"""
 
 Key Features:
 - Extracts ~2200 patterns from 300 micro_questions

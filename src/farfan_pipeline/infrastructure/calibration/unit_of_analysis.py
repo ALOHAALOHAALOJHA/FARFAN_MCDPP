@@ -78,6 +78,7 @@ class FiscalContext(Enum):
 # =============================================================================
 
 # Normalization factors for complexity score computation
+# Based on log10 scaling to map domain range to [0, 1]
 _POPULATION_LOG_MAX: Final[float] = 6.0  # log10(1,000,000)
 _BUDGET_LOG_MAX: Final[float] = 12.0  # log10(10^12 COP)
 _POLICY_AREAS_MAX: Final[int] = 10
@@ -108,7 +109,7 @@ class UnitOfAnalysis:
         INV-UOA-002: total_budget_cop > 0
         INV-UOA-003: sgp_percentage ∈ [0, 100]
         INV-UOA-004: own_revenue_percentage ∈ [0, 100]
-        INV-UOA-005: len(municipality_code) == 5
+        INV-UOA-005: len(municipality_code) == 5 and numeric
 
     Attributes:
         municipality_code: DANE code (5 digits), e.g., "05001" for Medellín.
@@ -173,10 +174,14 @@ class UnitOfAnalysis:
                 f"Own revenue percentage must be 0-100, got {self.own_revenue_percentage}"
             )
 
-        # INV-UOA-005: DANE code must be 5 digits
+        # INV-UOA-005: DANE code must be 5 digits and numeric
         if len(self.municipality_code) != 5:
             raise ValueError(
                 f"DANE code must be 5 digits, got {self.municipality_code}"
+            )
+        if not self.municipality_code.isdigit():
+             raise ValueError(
+                f"DANE code must be numeric, got {self.municipality_code}"
             )
 
     def complexity_score(self) -> float:

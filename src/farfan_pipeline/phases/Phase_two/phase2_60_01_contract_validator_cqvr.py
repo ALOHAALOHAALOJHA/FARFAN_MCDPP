@@ -607,7 +607,8 @@ class CQVRValidator:
                 "priority": "HIGH",
                 "issue": "Missing source_hash",
                 "fix": (
-                    "Calculate SHA256 of questionnaire_monolith.json "
+                    "Calculate SHA256 of assembled modular questionnaire "
+                    "(via QuestionnaireModularResolver.build_monolith_payload()) "
                     "and update traceability.source_hash"
                 ),
                 "impact": "+3 pts"

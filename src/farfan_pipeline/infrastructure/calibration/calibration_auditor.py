@@ -19,7 +19,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Final, Protocol, Sequence
+from typing import Any, Final, Protocol, Sequence, cast
 
 from .calibration_manifest import CalibrationManifest, DriftIndicator, DriftReport
 from .type_defaults import (
@@ -132,7 +132,13 @@ class FusionStrategySpecification:
     
     def is_satisfied_by(self, manifest: CalibrationManifest) -> bool:
         contract_type = manifest.contract_type_code
-        prohibited = PROHIBITED_OPERATIONS.get(contract_type, frozenset())
+        try:
+            defaults = get_type_defaults(contract_type)
+            prohibited = defaults.prohibited_operations
+        except Exception:
+            # Fallback if defaults unavailable (should not happen if validated earlier)
+            from .type_defaults import PROHIBITED_OPERATIONS
+            prohibited = PROHIBITED_OPERATIONS.get(contract_type, frozenset())
         
         # Check all decisions for prohibited operations
         for decision in manifest.decisions:
@@ -209,7 +215,7 @@ class CalibrationAuditor:
     def audit_drift(
         self,
         manifest: CalibrationManifest,
-        runtime_observations: Sequence[dict],
+        runtime_observations: Sequence[dict[str, object]],
         expected_coverage: float,
         expected_credible_width: float | None,
     ) -> DriftReport:
@@ -219,8 +225,11 @@ class CalibrationAuditor:
         drift_indicators: list[DriftIndicator] = []
         
         # Coverage drift
-        actual_coverage = sum(1 for obs in runtime_observations if obs.get("covered")) / max(1, len(runtime_observations))
+        actual_coverage = sum(1 for obs in runtime_observations if cast(bool, obs.get("covered"))) / max(1, len(runtime_observations))
         deviation = abs(actual_coverage - expected_coverage)
+        # Thresholds justified by Audit Policy v2.1 (docs/audit/SPEC_SIGNAL_NORMALIZATION.md):
+        # > 0.1 (10%): Warning level drift, requires manual review.
+        # > 0.2 (20%): Fatal drift, indicates structural change in data or extraction failure.
         severity = "FATAL" if deviation > 0.2 else "WARNING" if deviation > 0.1 else "INFO"
         if severity != "INFO":
             drift_indicators.append(
@@ -236,8 +245,11 @@ class CalibrationAuditor:
         
         # Credible interval drift (Bayesian only)
         if expected_credible_width is not None:
-            actual_width = sum(obs.get("credible_interval_width", 0) for obs in runtime_observations if "credible_interval_width" in obs) / max(1, len(runtime_observations))
+            actual_width = sum(cast(float, obs.get("credible_interval_width", 0)) for obs in runtime_observations if "credible_interval_width" in obs) / max(1, len(runtime_observations))
             deviation = abs(actual_width - expected_credible_width)
+            # Thresholds:
+            # > 0.15: Warning (statistically significant shift)
+            # > 0.30: Fatal (model uncertainty mismatch, potential prior miscalibration)
             severity = "FATAL" if deviation > 0.3 else "WARNING" if deviation > 0.15 else "INFO"
             if severity != "INFO":
                 drift_indicators.append(

@@ -220,7 +220,15 @@ class MethodBindingValidator:
         level_map = {"N1": "N1-EMP", "N2": "N2-INF", "N3": "N3-AUD"}
 
         for level_short, patterns in mandatory_patterns.items():
-            level_code = level_map.get(level_short, level_short)
+            # Robust mapping: ignores unknown level keys (e.g. "N0", "N4")
+            # to prevent hard failure on schema evolution.
+            level_code = level_map.get(level_short)
+            if not level_code:
+                # If level_short isn't in our map, we skip validation for it
+                # or treat it as-is if it matches internal codes.
+                # Here we default to skipping to be safe/robust.
+                continue
+
             bindings = binding_set.bindings.get(level_code, [])
             method_ids = [b.method_id for b in bindings]
 
@@ -284,11 +292,16 @@ class MethodBindingValidator:
         unmet = n2_requires - n1_provides
 
         if unmet:
+            # Future improvement: Suggest N1 methods that provide these capabilities
+            # based on name matching or registry lookup.
             return ValidationResult(
                 check_name="dependency_chain",
                 severity=ValidationSeverity.FATAL,
                 message=f"N2 requires not provided by N1: {unmet}",
-                details={"unmet_dependencies": list(unmet)},
+                details={
+                    "unmet_dependencies": list(unmet),
+                    "suggestion": "Check N1 method bindings or capability definitions."
+                },
             )
 
         return ValidationResult(

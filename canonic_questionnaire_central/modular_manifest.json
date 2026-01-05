@@ -61,6 +61,17 @@
     "governance": "governance/governance.json",
     "validations": "validations/validation_templates.json",
     "index": "questionnaire_index.json",
-    "monolith": "questionnaire_monolith.json"
+    "monolith_backup": "questionnaire_monolith.json",
+    "canonical_notation": "canonical_notation.json",
+    "meso_questions": "meso_questions.json",
+    "macro_question": "macro_question.json"
+  },
+  
+  "loading_strategy": {
+    "primary": "modular",
+    "fallback": "monolith_backup",
+    "resolver_class": "farfan_pipeline.infrastructure.questionnaire.QuestionnaireModularResolver",
+    "env_flag": "USE_MODULAR_QUESTIONNAIRE",
+    "default_enabled": true
   }
 }

@@ -26,10 +26,16 @@ pip install -e .
 ### Run Analysis
 
 ```bash
-# Analyze a PDT document
+# Analyze a PDT document (modular questionnaire is default)
 python src/orchestration/orchestrator.py \
   --pdt data/pdt_municipality_X.pdf \
-  --questionnaire config/questionnaire_monolith.json \
+  --cohort COHORT_2024 \
+  --output output/municipality_X/
+
+# Optionally use legacy monolith mode (not recommended)
+USE_MODULAR_QUESTIONNAIRE=false python src/orchestration/orchestrator.py \
+  --pdt data/pdt_municipality_X.pdf \
+  --questionnaire canonic_questionnaire_central/questionnaire_monolith.json \
   --cohort COHORT_2024 \
   --output output/municipality_X/
 ```

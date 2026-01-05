@@ -17,7 +17,10 @@ V4 contracts eliminate redundancy by storing only:
 
 All other question_context fields (question_text, expected_elements,
 patterns, etc.) are derived at runtime from SignalRegistry, which
-extracts them from the single source of truth: questionnaire_monolith.json.
+extracts them from the modular questionnaire structure under
+`canonic_questionnaire_central/` (via `QuestionnaireModularResolver` when
+`USE_MODULAR_QUESTIONNAIRE=true`—the default). The legacy monolith file
+(`questionnaire_monolith.json`) is retained as a backup.
 
 This preserves:
   1. Single source of truth (no data duplication)

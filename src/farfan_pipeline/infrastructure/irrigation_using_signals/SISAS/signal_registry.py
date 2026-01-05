@@ -2297,6 +2297,68 @@ def create_signal_registry(
     return QuestionnaireSignalRegistry(questionnaire)
 
 
+def create_signal_registry_from_modular(
+    policy_area_id: str | None = None,
+    dimension_id: str | None = None,
+) -> QuestionnaireSignalRegistry:
+    """Factory function to create signal registry from modular questionnaire.
+    
+    Loads minimal modular slices instead of the full monolith for efficiency.
+    When no selector is provided, assembles the full 300-question aggregate.
+    
+    Args:
+        policy_area_id: Optional policy area ID (PA01-PA10) to scope load.
+        dimension_id: Optional dimension ID (DIM01-DIM06) to scope load.
+    
+    Returns:
+        Initialized signal registry with modular-sourced data.
+    
+    Example:
+        >>> registry = create_signal_registry_from_modular(policy_area_id="PA01")
+        >>> signals = registry.get_micro_answering_signals("Q001")
+    """
+    from farfan_pipeline.infrastructure.questionnaire import QuestionnaireModularResolver
+    
+    resolver = QuestionnaireModularResolver()
+    payload = resolver.build_monolith_payload()
+    
+    # Create a QuestionnairePort-compatible adapter object
+    class _ModularAdapter:
+        def __init__(self, data: dict) -> None:
+            self._data = data
+        
+        @property
+        def data(self) -> dict:
+            return self._data
+        
+        @property
+        def sha256(self) -> str:
+            return self._data.get("provenance", {}).get("assembly_hash", "modular-assembly")
+        
+        @property
+        def dimensions(self) -> dict:
+            return self._data.get("canonical_notation", {}).get("dimensions", {})
+        
+        @property
+        def policy_areas(self) -> dict:
+            return self._data.get("canonical_notation", {}).get("policy_areas", {})
+        
+        @property
+        def micro_questions(self) -> list:
+            return self._data.get("blocks", {}).get("micro_questions", [])
+        
+        @property
+        def meso_questions(self) -> list:
+            return self._data.get("blocks", {}).get("meso_questions", [])
+        
+        @property
+        def macro_question(self) -> dict:
+            return self._data.get("blocks", {}).get("macro_question", {})
+    
+    adapter = _ModularAdapter(payload.data)
+    return QuestionnaireSignalRegistry(adapter)
+
+
 # ============================================================================
 # JOBFRONT #1: CROSS-CUTTING THEMES ENFORCEMENT
 # ============================================================================
@@ -2455,6 +2517,7 @@ __all__ = [
     # Main registry
     "QuestionnaireSignalRegistry",
     "create_signal_registry",
+    "create_signal_registry_from_modular",
     
     # Signal pack models
     "ChunkingSignalPack",

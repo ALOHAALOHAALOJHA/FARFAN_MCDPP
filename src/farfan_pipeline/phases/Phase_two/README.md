@@ -34,8 +34,8 @@ Phase 2 constitutes the analytical core of the F.A.R.F.A.N deterministic policy 
 
 **Input** (from Phase 1):
 - `CanonPolicyPackage`: 60 preprocessed document chunks
-- `questionnaire_monolith.json`: 300 analytical questions
-- `SignalRegistry`: SISAS signal specifications
+- **Modular questionnaire structure** (`canonic_questionnaire_central/`): 300 analytical questions sourced from `modular_manifest.json`, `questionnaire_index.json`, and per-policy-area/dimension `questions.json` files. The legacy `questionnaire_monolith.json` is retained as a backup but no longer the primary source; use `QuestionnaireModularResolver` or set `USE_MODULAR_QUESTIONNAIRE=true` (default).
+- `SignalRegistry`: SISAS signal specifications (via `create_signal_registry` or `create_signal_registry_from_modular`)
 
 **Output** (to Phase 3):
 - `ExecutorResults`: 300 `Phase2QuestionResult` objects

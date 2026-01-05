@@ -60,7 +60,7 @@ import json
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
-from typing import Final, Mapping
+from typing import Final, Mapping, cast
 
 from .calibration_core import (
     ClosedInterval,
@@ -337,9 +337,10 @@ class ContractTypeDefaults:
         # Verify permitted and prohibited are disjoint
         overlap = self.permitted_operations & self.prohibited_operations
         if overlap:
+            example = next(iter(overlap))
             raise ConfigurationError(
                 f"Contract type {self.contract_type_code}:  operations cannot be both "
-                f"permitted and prohibited:  {sorted(overlap)}"
+                f"permitted and prohibited:  {sorted(overlap)}. Example: '{example}'"
             )
 
     def is_operation_permitted(self, operation: str) -> bool:
@@ -589,6 +590,9 @@ def _create_type_e_defaults() -> ContractTypeDefaults:
         ),
         permitted_operations=frozenset({
             "concat",
+            # POLICY RECONCILIATION: weighted_mean is permitted for TYPE_E despite logical nature.
+            # Rationale: Used in N1/N2 pre-audit for signal averaging before strict logical checks.
+            # Canonical source confirms this exception.
             "weighted_mean",  # Permitted per canonical source
             "logical_consistency_validation",
             "contradiction_detection",
@@ -699,8 +703,8 @@ def get_type_defaults(contract_type_code: str) -> ContractTypeDefaults:
 
     # Construct and return defaults
     if callable(factory):
-        return factory()  # type: ignore[no-any-return]
-    return factory  # type: ignore[no-any-return]
+        return cast(ContractTypeDefaults, factory())
+    return cast(ContractTypeDefaults, factory)
 
 
 def _validate_canonical_source_exists() -> None:
@@ -747,6 +751,8 @@ def _validate_contract_type_in_source(contract_type_code: str) -> None:
 
     if not source_types:
         # Fall back to our known types if not in file
+        # Rationale: Prevents hard crash if external JSON is partial/malformed but present.
+        # Strict validation should be enforced by the CanonicalSourceValidator separately.
         source_types = list(VALID_CONTRACT_TYPES)
 
     if contract_type_code not in source_types and contract_type_code not in VALID_CONTRACT_TYPES: 
@@ -830,9 +836,9 @@ def clear_defaults_cache() -> None:
     """
     Clear the cached type defaults.
 
-    This function should only be called in testing scenarios or when
-    the canonical source file has been updated and defaults need to
-    be recomputed.
+    This function should only be called in tests or explicit admin operations.
+    WARNING: Calling this in production must be accompanied by an audit recalculation,
+    as it may change the parameters for subsequent calls.
     """
     get_type_defaults.cache_clear()
 
@@ -877,6 +883,12 @@ PROHIBITED_OPERATIONS:  Final[dict[str, frozenset[str]]] = {
     }),
     CONTRACT_SUBTIPO_F: frozenset(),
 }
+"""
+Backward-compatibility map of prohibited operations.
+
+WARNING: Use `get_type_defaults(type_code).is_operation_prohibited(op)` 
+or `is_operation_prohibited(type_code, op)` instead of accessing this dict directly.
+"""
 
 
 # =============================================================================

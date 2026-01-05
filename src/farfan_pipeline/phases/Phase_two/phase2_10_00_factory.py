@@ -734,8 +734,22 @@ class AnalysisPipelineFactory:
         logger.info("questionnaire_loading_start path=%s", self._questionnaire_path or "default")
 
         try:
-            # Load questionnaire (this should be the ONLY call in the entire codebase)
-            questionnaire = load_questionnaire(self._questionnaire_path)
+            # Determine loading strategy based on runtime config
+            use_modular = (
+                self._runtime_config is not None
+                and getattr(self._runtime_config, "use_modular_questionnaire", True)
+            )
+
+            if use_modular and self._questionnaire_path is None:
+                # Load from modular structure (new path)
+                logger.info("questionnaire_loading_modular_mode enabled")
+                questionnaire = load_questionnaire_from_modular(
+                    expected_hash=self._expected_hash
+                )
+            else:
+                # Load from monolith file (legacy path or explicit path provided)
+                logger.info("questionnaire_loading_monolith_mode path=%s", self._questionnaire_path)
+                questionnaire = load_questionnaire(self._questionnaire_path)
 
             # Mark singleton as loaded
             AnalysisPipelineFactory._questionnaire_loaded = True

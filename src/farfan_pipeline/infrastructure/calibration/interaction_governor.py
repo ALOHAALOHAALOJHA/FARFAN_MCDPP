@@ -25,7 +25,11 @@ logger = logging.getLogger(__name__)
 
 
 # Bounds for multiplicative fusion
+
+
 _MIN_PRODUCT:  Final[float] = 0.01
+
+
 _MAX_PRODUCT:  Final[float] = 10.0
 
 
@@ -162,8 +166,13 @@ class LevelInversionDetector:
     Detects level inversions in dependency graph.
     
     INV-INT-004: Higher levels should not depend on lower levels.
-    N1 -> N2 -> N3 is valid
-    N3 -> N2 is invalid (inversion)
+    N1 -> N2 -> N3 is valid.
+    N3 -> N2 is invalid (inversion).
+    
+    Severity Rationale:
+    Inversions are flagged as WARNING (not FATAL) because some recursive 
+    auditing patterns (N3 informing N2 re-computation) are valid 
+    under controlled circumstances, though generally discouraged.
     """
     
     _LEVEL_ORDER: Final[dict[str, int]] = {

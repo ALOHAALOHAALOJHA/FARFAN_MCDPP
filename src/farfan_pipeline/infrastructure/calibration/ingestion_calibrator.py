@@ -160,6 +160,8 @@ class StandardCalibrationStrategy:
         scaled_size = int(
             _BASE_CHUNK_SIZE * (1 + self.complexity_scaling_factor * complexity)
         )
+        # INVARIANT: Result must be within documented bounds
+        # guarded by max/min clamping below.
         return max(_MIN_CHUNK_SIZE, min(_MAX_CHUNK_SIZE, scaled_size))
 
     def compute_coverage_target(self, unit: UnitOfAnalysis) -> float:
@@ -307,6 +309,13 @@ class IngestionCalibrator:
         self._strategy = strategy or StandardCalibrationStrategy()
         self._source_evidence_base = source_evidence_base
         self._evidence_commit = evidence_commit or _DEFAULT_EVIDENCE_COMMIT
+        
+        if self._evidence_commit == _DEFAULT_EVIDENCE_COMMIT:
+            logger.warning(
+                "IngestionCalibrator initialized with placeholder evidence_commit. "
+                "In PRODUCTION, a pinned commit SHA is required for provenance."
+            )
+
         self._logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
 
     def calibrate(

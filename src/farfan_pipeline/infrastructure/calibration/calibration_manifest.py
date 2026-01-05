@@ -22,7 +22,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Final
 
-from .calibration_core import CalibrationLayer, CalibrationPhase
+from .calibration_core import CalibrationLayer, CalibrationPhase, ValidationError
 from .unit_of_analysis import UnitOfAnalysis
 
 logger = logging.getLogger(__name__)
@@ -41,9 +41,9 @@ class CalibrationDecision:
     
     def __post_init__(self) -> None:
         if not self.rationale:
-            raise ValueError("Rationale cannot be empty")
+            raise ValidationError("Rationale cannot be empty")
         if not self.source_evidence:
-            raise ValueError("Source evidence cannot be empty")
+            raise ValidationError("Source evidence cannot be empty")
 
 
 @dataclass(frozen=True)
@@ -90,7 +90,14 @@ class CalibrationManifest:
     schema_version: Final[str] = "1.0.0"
     
     def compute_hash(self) -> str:
-        """Compute deterministic hash of manifest."""
+        """
+        Compute deterministic hash of manifest.
+        
+        Note: The ordering of components is stable. 
+        The 'manifest_id' is the only entropy input that varies between identical builds 
+        created at different times (by design). Identical manifests with different IDs 
+        will have different hashes.
+        """
         components = [
             self.manifest_id,
             self.contract_id,

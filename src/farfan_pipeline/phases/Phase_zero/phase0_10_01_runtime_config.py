@@ -186,6 +186,7 @@ class RuntimeConfig:
     # Category D - Operational
     allow_hash_fallback: bool
     allow_pdfplumber_fallback: bool
+    use_modular_questionnaire: bool
     
     # Model Configuration
     preferred_spacy_model: str
@@ -260,6 +261,7 @@ class RuntimeConfig:
             allow_missing_base_weights=data.get("allow_missing_base_weights", False),
             allow_hash_fallback=data.get("allow_hash_fallback", True),
             allow_pdfplumber_fallback=data.get("allow_pdfplumber_fallback", False),
+            use_modular_questionnaire=data.get("use_modular_questionnaire", True),
             preferred_spacy_model=data.get("preferred_spacy_model", "es_core_news_lg"),
             preferred_embedding_model=data.get("preferred_embedding_model", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"),
             project_root_override=data.get("project_root_override"),
@@ -318,6 +320,7 @@ class RuntimeConfig:
         # Parse Category D - Operational Fallbacks
         allow_hash_fallback = _parse_bool_env("ALLOW_HASH_FALLBACK", True)
         allow_pdfplumber_fallback = _parse_bool_env("ALLOW_PDFPLUMBER_FALLBACK", False)
+        use_modular_questionnaire = _parse_bool_env("USE_MODULAR_QUESTIONNAIRE", True)
         
         # Parse model configuration
         preferred_spacy_model = os.getenv("PREFERRED_SPACY_MODEL", "es_core_news_lg")
@@ -356,6 +359,7 @@ class RuntimeConfig:
             allow_missing_base_weights=allow_missing_base_weights,
             allow_hash_fallback=allow_hash_fallback,
             allow_pdfplumber_fallback=allow_pdfplumber_fallback,
+            use_modular_questionnaire=use_modular_questionnaire,
             preferred_spacy_model=preferred_spacy_model,
             preferred_embedding_model=preferred_embedding_model,
             project_root_override=project_root_override,
