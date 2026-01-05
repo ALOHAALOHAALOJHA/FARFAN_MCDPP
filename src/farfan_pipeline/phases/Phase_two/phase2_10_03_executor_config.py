@@ -204,4 +204,195 @@ class ExecutorConfig:
         }
 
 
-__all__ = ["ExecutorConfig"]
+# ============================================================================
+# Minor Improvement 3: Hot-Reloadable Configuration
+# ============================================================================
+
+import logging
+import signal
+import threading
+import time
+from typing import Callable
+
+logger = logging.getLogger(__name__)
+
+
+class HotReloadableConfig:
+    """
+    Configuration wrapper with hot-reload support.
+
+    Minor Improvement 3: ExecutorConfig Hot Reload
+
+    Features:
+        - Automatic configuration reload on SIGHUP signal
+        - File watching for automatic reload on change
+        - Thread-safe config access
+        - Reload callbacks for notification
+
+    Usage:
+        config = HotReloadableConfig(Path("config.json"))
+        config.start_watching()  # Optional: watch for file changes
+
+        # Access config
+        timeout = config.get("timeout_s", 300)
+
+        # Reload manually
+        config.reload()
+    """
+
+    def __init__(
+        self,
+        config_path: Path,
+        auto_reload_signal: bool = True,
+        reload_interval_seconds: float = 30.0
+    ):
+        """
+        Initialize hot-reloadable config.
+
+        Args:
+            config_path: Path to configuration file.
+            auto_reload_signal: Whether to reload on SIGHUP.
+            reload_interval_seconds: Interval for file change detection.
+        """
+        self.config_path = config_path
+        self.reload_interval_seconds = reload_interval_seconds
+        self._config: Dict[str, Any] = {}
+        self._lock = threading.RLock()
+        self._last_modified: float = 0.0
+        self._watching = False
+        self._watch_thread: Optional[threading.Thread] = None
+        self._reload_callbacks: list[Callable[[Dict[str, Any]], None]] = []
+
+        # Load initial config
+        self._load_config()
+
+        # Register signal handler
+        if auto_reload_signal:
+            self._register_signal_handler()
+
+    def _load_config(self) -> Dict[str, Any]:
+        """Load configuration from file."""
+        with self._lock:
+            if not self.config_path.exists():
+                logger.warning(f"Config file not found: {self.config_path}")
+                return self._config
+
+            try:
+                with open(self.config_path, "r") as f:
+                    self._config = json.load(f)
+                self._last_modified = self.config_path.stat().st_mtime
+                logger.info(f"Configuration loaded from {self.config_path}")
+                return self._config
+            except (json.JSONDecodeError, IOError) as e:
+                logger.error(f"Failed to load config: {e}")
+                return self._config
+
+    def _register_signal_handler(self) -> None:
+        """Register SIGHUP handler for reload."""
+        try:
+            signal.signal(signal.SIGHUP, self._reload_handler)
+            logger.debug("Registered SIGHUP handler for config reload")
+        except (AttributeError, ValueError):
+            # SIGHUP not available on Windows or in some contexts
+            logger.debug("SIGHUP not available, skipping signal handler")
+
+    def _reload_handler(self, signum: int, frame: Any) -> None:
+        """Signal handler for reload."""
+        logger.info("Received SIGHUP, reloading configuration")
+        self.reload()
+
+    def reload(self) -> Dict[str, Any]:
+        """
+        Reload configuration from file.
+
+        Returns:
+            Reloaded configuration dict.
+        """
+        old_config = dict(self._config)
+        new_config = self._load_config()
+
+        # Notify callbacks if config changed
+        if old_config != new_config:
+            for callback in self._reload_callbacks:
+                try:
+                    callback(new_config)
+                except Exception as e:
+                    logger.error(f"Reload callback failed: {e}")
+
+        return new_config
+
+    def get(self, key: str, default: Any = None) -> Any:
+        """
+        Get configuration value.
+
+        Args:
+            key: Configuration key.
+            default: Default value if key not found.
+
+        Returns:
+            Configuration value.
+        """
+        with self._lock:
+            return self._config.get(key, default)
+
+    def get_all(self) -> Dict[str, Any]:
+        """Get complete configuration."""
+        with self._lock:
+            return dict(self._config)
+
+    def on_reload(self, callback: Callable[[Dict[str, Any]], None]) -> None:
+        """
+        Register callback for configuration reload.
+
+        Args:
+            callback: Function to call with new config on reload.
+        """
+        self._reload_callbacks.append(callback)
+
+    def start_watching(self) -> None:
+        """Start background file watching for auto-reload."""
+        if self._watching:
+            return
+
+        self._watching = True
+        self._watch_thread = threading.Thread(
+            target=self._watch_loop,
+            daemon=True,
+            name="ConfigWatcher"
+        )
+        self._watch_thread.start()
+        logger.info(f"Started watching {self.config_path} for changes")
+
+    def stop_watching(self) -> None:
+        """Stop background file watching."""
+        self._watching = False
+        if self._watch_thread:
+            self._watch_thread.join(timeout=1.0)
+            self._watch_thread = None
+        logger.info("Stopped config file watching")
+
+    def _watch_loop(self) -> None:
+        """Background loop to detect file changes."""
+        while self._watching:
+            try:
+                if self.config_path.exists():
+                    current_mtime = self.config_path.stat().st_mtime
+                    if current_mtime > self._last_modified:
+                        logger.info("Config file changed, reloading")
+                        self.reload()
+            except Exception as e:
+                logger.debug(f"Error checking config file: {e}")
+
+            time.sleep(self.reload_interval_seconds)
+
+    def to_executor_config(self) -> ExecutorConfig:
+        """
+        Convert to ExecutorConfig instance.
+
+        Returns:
+            ExecutorConfig with current configuration.
+        """
+        return ExecutorConfig.from_dict(self.get_all())
+
+
+__all__ = ["ExecutorConfig", "HotReloadableConfig"]
