@@ -16,7 +16,7 @@ Test Coverage:
 
 import pytest
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import Mock, MagicMock, patch
 from dataclasses import asdict
@@ -80,7 +80,7 @@ def mock_phase0_validation_success():
     return Phase0ValidationResult(
         all_passed=True,
         gate_results=gate_results,
-        validation_time=datetime.utcnow().isoformat()
+        validation_time=datetime.now(timezone.utc).isoformat()
     )
 
 
@@ -98,7 +98,7 @@ def mock_phase0_validation_failure():
     return Phase0ValidationResult(
         all_passed=False,
         gate_results=gate_results,
-        validation_time=datetime.utcnow().isoformat()
+        validation_time=datetime.now(timezone.utc).isoformat()
     )
 
 
@@ -162,7 +162,7 @@ class TestPhase0ValidationResult:
         result = mock_phase0_validation_failure
         summary = result.get_summary()
         
-        assert "0/1 gates passed" in summary or "1 gates passed" in summary
+        assert "0/1 gates passed" in summary
         assert "bootstrap failed" in summary
 
 

@@ -60,8 +60,8 @@ SCRIPT_VERSION = "4.0.0-granular"
 EXPECTED_CONTRACTS = 300
 
 # Paths relativos desde este script
-SCRIPT_DIR = Path(__file__).parent. resolve()
-PHASE_TWO_DIR = SCRIPT_DIR. parent
+SCRIPT_DIR = Path(__file__).parent.resolve()
+PHASE_TWO_DIR = SCRIPT_DIR.parent
 DEFAULT_ASSETS_PATH = PHASE_TWO_DIR / "epistemological_assets"
 DEFAULT_OUTPUT_PATH = PHASE_TWO_DIR / "generated_contracts"
 
@@ -76,20 +76,20 @@ def setup_logging(verbose: bool = False) -> None:
     level = logging.DEBUG if verbose else logging.INFO
     
     # Formato con timestamp, nivel, y módulo
-    formatter = logging. Formatter(
+    formatter = logging.Formatter(
         fmt="%(asctime)s [%(levelname)-8s] %(name)s: %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
     
     # Handler para stdout
-    handler = logging.StreamHandler(sys. stdout)
+    handler = logging.StreamHandler(sys.stdout)
     handler.setFormatter(formatter)
     handler.setLevel(level)
     
     # Configurar root logger
     root_logger = logging.getLogger()
     root_logger.setLevel(level)
-    root_logger.handlers. clear()
+    root_logger.handlers.clear()
     root_logger.addHandler(handler)
 
 

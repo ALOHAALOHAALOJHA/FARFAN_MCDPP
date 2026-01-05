@@ -205,23 +205,23 @@ class GeneratedContract:
         """Serializa a diccionario ordenado para JSON."""
         return {
             "identity": self.identity,
-            "executor_binding": self. executor_binding,
+            "executor_binding": self.executor_binding,
             "method_binding": self.method_binding,
             "question_context":  self.question_context,
             "signal_requirements": self.signal_requirements,
             "evidence_assembly": self.evidence_assembly,
             "fusion_specification": self.fusion_specification,
-            "cross_layer_fusion": self. cross_layer_fusion,
+            "cross_layer_fusion": self.cross_layer_fusion,
             "human_answer_structure": self.human_answer_structure,
-            "traceability": self. traceability,
+            "traceability": self.traceability,
             "output_contract": self.output_contract,
-            "audit_annotations":  self.audit_annotations,
+            "audit_annotations": self.audit_annotations,
         }
 
     @property
     def contract_id(self) -> str:
         """ID del contrato desde identity."""
-        return self.identity. get("contract_id", "")
+        return self.identity.get("contract_id", "")
 
     @property
     def sector_id(self) -> str:
@@ -231,7 +231,7 @@ class GeneratedContract:
     @property
     def contract_type(self) -> str:
         """Tipo del contrato."""
-        return self. identity.get("contract_type", "")
+        return self.identity.get("contract_type", "")
 
     @property
     def total_methods(self) -> int:

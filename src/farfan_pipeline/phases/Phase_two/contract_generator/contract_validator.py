@@ -97,7 +97,7 @@ class ValidationResult:
         """Serializa a diccionario."""
         return {
             "check_id": self.check_id,
-            "passed": self. passed,
+            "passed": self.passed,
             "severity": self.severity.value,
             "message": self.message,
             "section": self.section,
@@ -358,7 +358,7 @@ class ContractValidator:
         # ══════════════════════════════════════════════════════════════════
         # LAYER 2: VALIDACIÓN EPISTÉMICA
         # ══════════════════════════════════════════════════════════════════
-        results. extend(self._validate_epistemic_coherence(contract))
+        results.extend(self._validate_epistemic_coherence(contract))
 
         # ══════════════════════════════════════════════════════════════════
         # LAYER 3: VALIDACIÓN TEMPORAL
@@ -396,7 +396,7 @@ class ContractValidator:
         )
         low = sum(
             1 for r in results
-            if not r.passed and r.severity == ValidationSeverity. LOW
+            if not r.passed and r.severity == ValidationSeverity.LOW
         )
 
         # Determinar validez
@@ -489,7 +489,7 @@ class ContractValidator:
         # ─────────────────────────────────────────────────────────────────
         # Verificar fases en method_binding
         # ─────────────────────────────────────────────────────────────────
-        phases = contract. method_binding.get("execution_phases", {})
+        phases = contract.method_binding.get("execution_phases", {})
 
         for phase_name in self.REQUIRED_PHASES: 
             check_id = f"STRUCT_phase_{phase_name}"

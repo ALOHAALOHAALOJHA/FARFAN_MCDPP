@@ -240,12 +240,12 @@ class ContractClassification:
     @property
     def type_code(self) -> str:
         """Código del tipo de contrato (TYPE_A, TYPE_B, etc.)"""
-        return self. tipo_contrato.get("codigo", "")
+        return self.tipo_contrato.get("codigo", "")
 
     @property
     def type_name(self) -> str:
         """Nombre del tipo de contrato (Semántico, Bayesiano, etc.)"""
-        return self.tipo_contrato. get("nombre", "")
+        return self.tipo_contrato.get("nombre", "")
 
     @property
     def type_focus(self) -> str:
@@ -257,7 +257,7 @@ class ContractClassification:
         """Número de dimensión extraído de dimension_key (D1_Q1 -> 1)"""
         if self.dimension_key and self.dimension_key.startswith("D"):
             try:
-                return int(self. dimension_key[1:2])
+                return int(self.dimension_key[1:2])
             except ValueError:
                 return 0
         return 0
@@ -267,7 +267,7 @@ class ContractClassification:
         """Número de pregunta extraído de dimension_key (D1_Q1 -> 1)"""
         if "_Q" in self.dimension_key:
             try:
-                return int(self. dimension_key.split("_Q")[1])
+                return int(self.dimension_key.split("_Q")[1])
             except (ValueError, IndexError):
                 return 0
         return 0
@@ -304,7 +304,7 @@ class MethodAssignment:
     @property
     def full_id(self) -> str:
         """Identificador único del método: ClassName.method_name"""
-        return f"{self. class_name}.{self.method_name}"
+        return f"{self.class_name}.{self.method_name}"
 
     @property
     def level_prefix(self) -> str:
