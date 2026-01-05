@@ -41,7 +41,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional, Protocol, Set
+from typing import Any, Dict, List, Optional, Protocol, Set, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -550,7 +550,7 @@ class EvidenceQueryEngine:
         except ValueError:
             return value_str
 
-    def _execute_query(self, ast: QueryAST) -> tuple[List[EvidenceNode], int]:
+    def _execute_query(self, ast: QueryAST) -> Tuple[List[EvidenceNode], int]:
         """
         Execute a parsed query against the nexus.
 
@@ -567,7 +567,7 @@ class EvidenceQueryEngine:
 
         # Filter by conditions (EQ-02)
         filtered = [n for n in all_nodes if self._matches_conditions(n, ast.conditions)]
-        
+
         # Store total count before pagination
         total_count = len(filtered)
 
