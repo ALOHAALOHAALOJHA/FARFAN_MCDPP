@@ -1875,41 +1875,41 @@ class Orchestrator:
         
         try:
             # from orchestration.calibration_orchestrator import (
-                CalibrationSubject,
-                EvidenceStore,
-            )
+            #    CalibrationSubject,
+            #    EvidenceStore,
+            # )
             
-            subject = CalibrationSubject(
-                method_id=method_id,
-                role=role,
-                context=context or {}
-            )
+            # subject = CalibrationSubject(
+            #     method_id=method_id,
+            #     role=role,
+            #     context=context or {}
+            # )
             
-            evidence = EvidenceStore(
-                pdt_structure=pdt_structure or {
-                    "chunk_count": 0,
-                    "completeness": 0.5,
-                    "structure_quality": 0.5
-                },
-                document_quality=0.5,
-                question_id=context.get("question_id") if context else None,
-                dimension_id=context.get("dimension_id") if context else None,
-                policy_area_id=context.get("policy_area_id") if context else None
-            )
+            # evidence = EvidenceStore(
+            #     pdt_structure=pdt_structure or {
+            #         "chunk_count": 0,
+            #         "completeness": 0.5,
+            #         "structure_quality": 0.5
+            #     },
+            #     document_quality=0.5,
+            #     question_id=context.get("question_id") if context else None,
+            #     dimension_id=context.get("dimension_id") if context else None,
+            #     policy_area_id=context.get("policy_area_id") if context else None
+            # )
             
-            result = self.calibration_orchestrator.calibrate(subject, evidence)
+            # result = self.calibration_orchestrator.calibrate(subject, evidence)
             
-            return {
-                "final_score": result.final_score,
-                "layer_scores": {
-                    layer_id.value: score
-                    for layer_id, score in result.layer_scores.items()
-                },
-                "active_layers": [layer.value for layer in result.active_layers],
-                "role": result.role,
-                "method_id": result.method_id,
-                "metadata": result.metadata
-            }
+            return None # {
+            #    "final_score": result.final_score,
+            #    "layer_scores": {
+            #        layer_id.value: score
+            #        for layer_id, score in result.layer_scores.items()
+            #    },
+            #    "active_layers": [layer.value for layer in result.active_layers],
+            #    "role": result.role,
+            #    "method_id": result.method_id,
+            #    "metadata": result.metadata
+            # }
         
         except Exception as e:
             logger.error(f"Method calibration failed for {method_id}: {e}", exc_info=True)

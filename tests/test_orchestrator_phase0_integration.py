@@ -29,7 +29,7 @@ from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig,
 from canonic_phases.Phase_zero.phase0_50_01_exit_gates import GateResult
 
 # Orchestrator imports
-from orchestration.orchestrator import Orchestrator, Phase0ValidationResult
+from farfan_pipeline.orchestration.orchestrator import Orchestrator, Phase0ValidationResult
 
 
 # ============================================================================
@@ -209,7 +209,7 @@ class TestOrchestratorRuntimeConfig:
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
-    @patch('orchestration.orchestrator.logger')
+    @patch('farfan_pipeline.orchestration.orchestrator.logger')
     def test_orchestrator_logs_runtime_mode_prod(
         self,
         mock_logger,
@@ -239,7 +239,7 @@ class TestOrchestratorRuntimeConfig:
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
-    @patch('orchestration.orchestrator.logger')
+    @patch('farfan_pipeline.orchestration.orchestrator.logger')
     def test_orchestrator_logs_runtime_mode_dev(
         self,
         mock_logger,
@@ -259,7 +259,7 @@ class TestOrchestratorRuntimeConfig:
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
-    @patch('orchestration.orchestrator.logger')
+    @patch('farfan_pipeline.orchestration.orchestrator.logger')
     def test_orchestrator_warns_if_no_runtime_config(
         self,
         mock_logger,
@@ -332,7 +332,7 @@ class TestOrchestratorPhase0Validation:
     
     @patch('orchestration.orchestrator.validate_phase_definitions')
     @patch('orchestration.questionnaire_validation._validate_questionnaire_structure')
-    @patch('orchestration.orchestrator.logger')
+    @patch('farfan_pipeline.orchestration.orchestrator.logger')
     def test_orchestrator_logs_phase0_validation_success(
         self,
         mock_logger,
