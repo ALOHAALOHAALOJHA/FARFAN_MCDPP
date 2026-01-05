@@ -265,7 +265,7 @@ def build_signal_pack_from_monolith(
     if monolith is not None:
         monolith_data = monolith
         # Compute monolith hash deterministically
-        monolith_hash = compute_fingerprint(json.dumps(monolith, sort_keys=True))
+        _ = compute_fingerprint(json.dumps(monolith, sort_keys=True))
     elif questionnaire is not None and hasattr(questionnaire, "data"):
         monolith_data = dict(questionnaire.data)
         # Get monolith hash from questionnaire (deterministic source)
