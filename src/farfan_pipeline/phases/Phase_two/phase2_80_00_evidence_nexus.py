@@ -1879,7 +1879,7 @@ class ValidationEngine:
             ConfidenceThresholdRule(min_confidence=0.5),
             GraphIntegrityRule(),
             ColombianContextRule(),
-            CrossCuttingCoverageRule(),      # R-W2: Cross-cutting themes validation
+            # CrossCuttingCoverageRule removed - themes validated statically in validation_templates.json
             InterdependencyConsistencyRule(),  # R-W3: Interdependency validation
             CircularReasoningRule(),         # I6: Circular reasoning detection
         ]
