@@ -30,7 +30,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
 
 if TYPE_CHECKING:
-    from orchestration.factory import CanonicalQuestionnaire
+    from farfan_pipeline.phases.Phase_two.phase2_10_00_factory import CanonicalQuestionnaire
 
 from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
 from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import safe_join
