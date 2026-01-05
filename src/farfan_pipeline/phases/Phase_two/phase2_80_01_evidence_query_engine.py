@@ -33,6 +33,13 @@ Query Language:
         field CONTAINS 'substring'
         contradicts(node_id='xyz')
         supports(node_id='xyz')
+
+**Security Constraints:**
+    This query engine is designed for INTERNAL USE ONLY. The query parser
+    uses basic regex patterns and does NOT sanitize or validate input against
+    SQL injection or malicious patterns. If exposing this interface to user
+    input, implement proper input validation, parameterized queries, or use
+    a dedicated query builder with sanitization.
 """
 
 from __future__ import annotations

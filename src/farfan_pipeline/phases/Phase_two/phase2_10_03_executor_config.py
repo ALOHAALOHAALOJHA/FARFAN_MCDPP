@@ -229,6 +229,13 @@ class HotReloadableConfig:
         - Thread-safe config access
         - Reload callbacks for notification
 
+    **Thread Safety Warning:**
+        Signal handlers must be registered from the main thread. If this class
+        is initialized in a non-main thread with `auto_reload_signal=True`,
+        signal registration will fail silently. Ensure initialization occurs
+        in the main thread or set `auto_reload_signal=False` if initializing
+        from other threads.
+
     Usage:
         config = HotReloadableConfig(Path("config.json"))
         config.start_watching()  # Optional: watch for file changes

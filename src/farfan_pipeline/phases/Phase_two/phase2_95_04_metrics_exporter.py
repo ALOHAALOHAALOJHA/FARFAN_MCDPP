@@ -42,8 +42,6 @@ try:
         Gauge,
         Histogram,
         start_http_server,
-        REGISTRY,
-        CollectorRegistry,
     )
     PROMETHEUS_AVAILABLE = True
 except ImportError:

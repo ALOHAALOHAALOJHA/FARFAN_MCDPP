@@ -203,9 +203,10 @@ class CheckpointManager:
             data = {
                 "plan_id": plan_id,
                 "completed_tasks": completed_tasks,
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "metadata": metadata or {}
             }
+            # Compute hash before adding the hash field to avoid circular dependency
             data["checkpoint_hash"] = self._compute_hash(data)
 
             with open(checkpoint_path, "w") as f:
