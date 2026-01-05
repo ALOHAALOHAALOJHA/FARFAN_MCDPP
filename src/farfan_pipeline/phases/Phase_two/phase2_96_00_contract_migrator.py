@@ -28,10 +28,12 @@ Design Principles:
 
 from __future__ import annotations
 
+import copy
 import json
 import logging
 from collections import deque
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, ClassVar
 
@@ -174,6 +176,7 @@ class ContractMigrator:
         """
         contract_path = Path(contract_path)
 
+        contract = None
         try:
             # Load contract
             with open(contract_path, "r") as f:
@@ -247,10 +250,10 @@ class ContractMigrator:
             )
 
         except Exception as e:
-            logger.error(f"Migration failed for {contract_path}: {e}")
+            logger.exception(f"Migration failed for {contract_path}: {e}")
             return MigrationResult(
                 success=False,
-                original_version=contract.get("version", "unknown") if "contract" in dir() else "unknown",
+                original_version=contract.get("version", "unknown") if contract else "unknown",
                 target_version=target_version,
                 original_path=contract_path,
                 new_path=None,
@@ -355,7 +358,7 @@ class ContractMigrator:
             jsonschema.validate(contract, schema)
             logger.debug(f"Contract validated against {version} schema")
         except jsonschema.ValidationError as e:
-            raise ValidationError(f"Schema validation failed for {version}: {e.message}")
+            raise ValidationError(f"Schema validation failed for {version}: {e.message}") from e
 
     def can_migrate(self, from_version: str, to_version: str) -> bool:
         """
@@ -400,7 +403,7 @@ def migrate_v2_to_v3(contract: dict) -> dict:
     - Rename 'parameters' to 'params'
     - Add 'metadata' field with migration info
     """
-    result = contract.copy()
+    result = copy.deepcopy(contract)
 
     # Rename 'parameters' to 'params'
     if "parameters" in result:
@@ -409,7 +412,7 @@ def migrate_v2_to_v3(contract: dict) -> dict:
     # Add metadata
     result.setdefault("metadata", {})
     result["metadata"]["migrated_from"] = "v2"
-    result["metadata"]["migration_date"] = str(Path(__file__).stat().st_mtime)
+    result["metadata"]["migration_date"] = datetime.now(timezone.utc).isoformat()
 
     return result
 
@@ -422,7 +425,7 @@ def migrate_v3_to_v4(contract: dict) -> dict:
     - Restructure 'params' into 'configuration.parameters'
     - Add 'schema_version' field
     """
-    result = contract.copy()
+    result = copy.deepcopy(contract)
 
     # Restructure params
     if "params" in result:
@@ -448,7 +451,7 @@ def migrate_v3_to_v2(contract: dict) -> dict:
     - Rename 'params' back to 'parameters'
     - Remove migration metadata
     """
-    result = contract.copy()
+    result = copy.deepcopy(contract)
 
     # Rename 'params' back to 'parameters'
     if "params" in result:
@@ -472,7 +475,7 @@ def migrate_v4_to_v3(contract: dict) -> dict:
     - Extract 'configuration.parameters' back to 'params'
     - Remove 'schema_version'
     """
-    result = contract.copy()
+    result = copy.deepcopy(contract)
 
     # Extract params from configuration
     if "configuration" in result and "parameters" in result["configuration"]:

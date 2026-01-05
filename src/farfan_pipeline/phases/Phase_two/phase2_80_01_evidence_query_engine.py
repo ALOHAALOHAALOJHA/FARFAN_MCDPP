@@ -168,8 +168,8 @@ class QueryResult:
     """Result of executing a query.
 
     Attributes:
-        nodes: Matching evidence nodes
-        total_count: Total matches before LIMIT
+        nodes: Matching evidence nodes (paginated by LIMIT/OFFSET)
+        total_count: Total matches before LIMIT/OFFSET applied
         query: Original query string
         execution_time_ms: Query execution time
     """
@@ -286,13 +286,13 @@ class EvidenceQueryEngine:
         start_time = time.perf_counter()
 
         ast = self._parse_query(query_string)
-        results = self._execute_query(ast)
+        results, total_count = self._execute_query(ast)
 
         execution_time_ms = (time.perf_counter() - start_time) * 1000
 
         return QueryResult(
             nodes=results,
-            total_count=len(results),
+            total_count=total_count,
             query=query_string,
             execution_time_ms=execution_time_ms,
         )
@@ -550,7 +550,7 @@ class EvidenceQueryEngine:
         except ValueError:
             return value_str
 
-    def _execute_query(self, ast: QueryAST) -> List[EvidenceNode]:
+    def _execute_query(self, ast: QueryAST) -> tuple[List[EvidenceNode], int]:
         """
         Execute a parsed query against the nexus.
 
@@ -560,31 +560,34 @@ class EvidenceQueryEngine:
             ast: Parsed query AST.
 
         Returns:
-            List of matching EvidenceNode objects.
+            Tuple of (paginated results, total count before LIMIT/OFFSET).
         """
         # Get all nodes (in production, use indices)
         all_nodes = self.nexus.get_all_nodes()
 
         # Filter by conditions (EQ-02)
-        results = [n for n in all_nodes if self._matches_conditions(n, ast.conditions)]
+        filtered = [n for n in all_nodes if self._matches_conditions(n, ast.conditions)]
+        
+        # Store total count before pagination
+        total_count = len(filtered)
 
         # Sort if ORDER BY specified (EQ-03)
         if ast.order_by:
             reverse = ast.order_direction == "DESC"
-            results.sort(
+            filtered.sort(
                 key=lambda n: self._get_field_value(n, ast.order_by) or "",
                 reverse=reverse
             )
 
         # Apply OFFSET
         if ast.offset > 0:
-            results = results[ast.offset:]
+            filtered = filtered[ast.offset:]
 
         # Apply LIMIT (EQ-03)
         if ast.limit is not None:
-            results = results[:ast.limit]
+            filtered = filtered[:ast.limit]
 
-        return results
+        return filtered, total_count
 
     def _matches_conditions(
         self,

@@ -126,6 +126,7 @@ class CircuitBreaker:
 
             if self.state == CircuitState.HALF_OPEN:
                 if self.half_open_calls < self.config.half_open_max_calls:
+                    self.half_open_calls += 1
                     return True, "Circuit half-open - limited calls allowed"
                 self._metrics.rejected_calls += 1
                 return False, "Circuit half-open - max calls reached"
@@ -140,7 +141,6 @@ class CircuitBreaker:
 
             if self.state == CircuitState.HALF_OPEN:
                 self.success_count += 1
-                self.half_open_calls += 1
 
                 if self.success_count >= self.config.success_threshold:
                     self._transition_to(CircuitState.CLOSED)
@@ -234,6 +234,18 @@ class PersistentCircuitBreaker(CircuitBreaker):
     - State persistence to disk
     - Recovery across process restarts
     - Automatic state loading on initialization
+
+    **IMPORTANT: Single-Process Only**
+    
+    This implementation is safe ONLY for single-process deployments.
+    The state_file persistence does not provide inter-process synchronization.
+    Methods _load_state and _save_state lack file-level locking mechanisms.
+    
+    For multi-process scenarios, consider these alternatives:
+    1. Use the non-persistent CircuitBreaker class
+    2. Implement OS file locks around state_file reads/writes in _load_state
+       and _save_state (e.g., fcntl.flock on Unix or msvcrt.locking on Windows)
+    3. Use a shared state store such as Redis or a database
     """
 
     def __init__(

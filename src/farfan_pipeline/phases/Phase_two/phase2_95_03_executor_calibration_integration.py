@@ -143,7 +143,7 @@ class BaselineStore:
         self.storage_dir = Path(storage_dir)
         self.storage_dir.mkdir(parents=True, exist_ok=True)
         self._cache: Dict[str, ProfileBaseline] = {}
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()
 
     def get_baseline(self, executor_id: str) -> Optional[ProfileBaseline]:
         """Retrieve baseline for an executor.
