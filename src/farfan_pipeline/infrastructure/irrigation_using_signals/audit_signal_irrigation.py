@@ -35,21 +35,21 @@ if TYPE_CHECKING:
     from orchestration.factory import CanonicalQuestionnaire
 
 from orchestration.factory import load_questionnaire
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
     create_signal_registry,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
     SignalConsumptionProof,
     QuestionnaireAccessAudit,
     AccessLevel,
     get_access_audit,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
     filter_patterns_by_context,
     create_document_context,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.ports import QuestionnairePort
+from farfan_pipeline.infrastructure.irrigation_using_signals.ports import QuestionnairePort
 
 
 # ============================================================================
@@ -220,7 +220,7 @@ class WiringAuditor:
         # Check if executors have signal_registry attribute
         # This is a structural check - actual usage is checked in utilization audit
         try:
-            from canonic_phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
+            from farfan_pipeline.phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
             
             # Check if BaseExecutorWithContract accepts signal_registry
             import inspect
@@ -250,7 +250,7 @@ class WiringAuditor:
         """Verify signal transformation pipeline completeness."""
         # Check if context scoping is integrated
         try:
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
                 filter_patterns_by_context,
             )
             # Function exists, but check if it's used in registry
@@ -267,7 +267,7 @@ class WiringAuditor:
         
         # Check if consumption tracking is integrated
         try:
-            from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
                 SignalConsumptionProof,
             )
         except ImportError:
@@ -805,7 +805,7 @@ class SignalIrrigationAuditor:
         
         # Generate visualizations
         try:
-            from cross_cutting_infrastructure.irrigation_using_signals.visualization_generator import (
+            from farfan_pipeline.infrastructure.irrigation_using_signals.visualization_generator import (
                 generate_visualizations,
             )
             viz_output_dir = output_path.parent / "visualizations"
@@ -824,7 +824,7 @@ class SignalIrrigationAuditor:
 
 def main() -> None:
     """Main entry point for audit execution."""
-    from canonic_phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+    from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
     
     output_dir = PROJECT_ROOT / "artifacts" / "audit_reports"
     output_dir.mkdir(parents=True, exist_ok=True)

@@ -94,9 +94,9 @@
         "PA07"
       ],
       "policy_area_names": [
-        "Seguridad y Convivencia Ciudadana",
-        "Víctimas del Conflicto Armado",
-        "Transparencia, Acceso a la Información y Lucha contra la Corrupción"
+        "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
+        "Derechos de las víctimas y construcción de paz",
+        "Tierras y territorios"
       ],
       "weight": 0.25,
       "strategic_priority": "high",
@@ -119,9 +119,9 @@
         "PA06"
       ],
       "policy_area_names": [
-        "Primera Infancia, Niñez, Adolescencia y Familia",
-        "Mujeres y Equidad de Género",
-        "Grupos Étnicos"
+        "Derechos de las mujeres e igualdad de género",
+        "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
+        "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza"
       ],
       "weight": 0.3,
       "strategic_priority": "critical",
@@ -143,8 +143,8 @@
         "PA08"
       ],
       "policy_area_names": [
-        "Ordenamiento Territorial y Gestión del Riesgo",
-        "Ambiente y Desarrollo Sostenible"
+        "Ambiente sano, cambio climático, prevención y atención a desastres",
+        "Derechos económicos, sociales y culturales"
       ],
       "weight": 0.22,
       "strategic_priority": "high",
@@ -166,8 +166,8 @@
         "PA10"
       ],
       "policy_area_names": [
-        "Salud, Educación, Vivienda, Agua Potable y Saneamiento Básico",
-        "Migrantes y Crisis Humanitaria"
+        "Crisis de derechos de personas privadas de la libertad",
+        "Migración transfronteriza"
       ],
       "weight": 0.23,
       "strategic_priority": "critical",
@@ -181,9 +181,9 @@
   "policy_areas": [
     {
       "policy_area_id": "PA01",
-      "code": "INFANCIA",
+      "code": "MUJ",
       "legacy_code": "PA01",
-      "name": "Primera Infancia, Niñez, Adolescencia y Familia",
+      "name": "Derechos de las mujeres e igualdad de género",
       "name_en": "Early Childhood, Children, Adolescents and Family",
       "cluster": "CL02",
       "description": "Garantía integral de derechos para primera infancia (0-5 años), niñez (6-11 años), adolescencia (12-17 años) y fortalecimiento familiar",
@@ -224,9 +224,9 @@
     },
     {
       "policy_area_id": "PA02",
-      "code": "SEGURIDAD",
+      "code": "VIO",
       "legacy_code": "PA02",
-      "name": "Seguridad y Convivencia Ciudadana",
+      "name": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
       "name_en": "Security and Citizen Coexistence",
       "cluster": "CL01",
       "description": "Prevención de violencias, seguridad ciudadana, justicia comunitaria y convivencia pacífica",
@@ -266,9 +266,9 @@
     },
     {
       "policy_area_id": "PA03",
-      "code": "VICTIMAS",
+      "code": "AMB",
       "legacy_code": "PA03",
-      "name": "Víctimas del Conflicto Armado",
+      "name": "Ambiente sano, cambio climático, prevención y atención a desastres",
       "name_en": "Victims of Armed Conflict",
       "cluster": "CL01",
       "description": "Atención, asistencia y reparación integral a víctimas del conflicto armado, restitución de tierras y garantías de no repetición",
@@ -308,9 +308,9 @@
     },
     {
       "policy_area_id": "PA04",
-      "code": "OT-RIESGO",
+      "code": "DESC",
       "legacy_code": "PA04",
-      "name": "Ordenamiento Territorial y Gestión del Riesgo",
+      "name": "Derechos económicos, sociales y culturales",
       "name_en": "Territorial Planning and Risk Management",
       "cluster": "CL03",
       "description": "Planificación del uso del suelo, gestión del riesgo de desastres, adaptación al cambio climático y ordenamiento territorial sostenible",
@@ -350,9 +350,9 @@
     },
     {
       "policy_area_id": "PA05",
-      "code": "MUJER",
+      "code": "VIC",
       "legacy_code": "PA05",
-      "name": "Mujeres y Equidad de Género",
+      "name": "Derechos de las víctimas y construcción de paz",
       "name_en": "Women and Gender Equity",
       "cluster": "CL02",
       "description": "Autonomía económica, prevención de violencias basadas en género, participación política y corresponsabilidad en el cuidado",
@@ -392,9 +392,9 @@
     },
     {
       "policy_area_id": "PA06",
-      "code": "ETNIAS",
+      "code": "NIÑ",
       "legacy_code": "PA06",
-      "name": "Grupos Étnicos",
+      "name": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
       "name_en": "Ethnic Groups",
       "cluster": "CL02",
       "description": "Consulta previa, autonomía territorial, derechos colectivos, gobiernos propios y protección de territorios ancestrales (indígenas, afrodescendientes, raizales, ROM)",
@@ -435,9 +435,9 @@
     },
     {
       "policy_area_id": "PA07",
-      "code": "TRANSPARENCIA",
+      "code": "TIE",
       "legacy_code": "PA07",
-      "name": "Transparencia, Acceso a la Información y Lucha contra la Corrupción",
+      "name": "Tierras y territorios",
       "name_en": "Transparency, Access to Information and Anti-Corruption",
       "cluster": "CL01",
       "description": "Gobierno abierto, rendición de cuentas, integridad pública, prevención y sanción de corrupción, control ciudadano",
@@ -477,9 +477,9 @@
     },
     {
       "policy_area_id": "PA08",
-      "code": "AMBIENTE",
+      "code": "LID",
       "legacy_code": "PA08",
-      "name": "Ambiente y Desarrollo Sostenible",
+      "name": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
       "name_en": "Environment and Sustainable Development",
       "cluster": "CL03",
       "description": "Conservación de ecosistemas, cambio climático, economía circular, gestión de residuos, biodiversidad y servicios ecosistémicos",
@@ -519,9 +519,9 @@
     },
     {
       "policy_area_id": "PA09",
-      "code": "DESC",
+      "code": "PPL",
       "legacy_code": "PA09",
-      "name": "Salud, Educación, Vivienda, Agua Potable y Saneamiento Básico",
+      "name": "Crisis de derechos de personas privadas de la libertad",
       "name_en": "Health, Education, Housing, Water and Sanitation",
       "cluster": "CL04",
       "description": "Derechos Económicos, Sociales y Culturales (DESC): acceso universal a servicios básicos de calidad",
@@ -561,9 +561,9 @@
     },
     {
       "policy_area_id": "PA10",
-      "code": "MIGRANTES",
+      "code": "MIG",
       "legacy_code": "PA10",
-      "name": "Migrantes y Crisis Humanitaria",
+      "name": "Migración transfronteriza",
       "name_en": "Migrants and Humanitarian Crisis",
       "cluster": "CL04",
       "description": "Atención humanitaria, integración socioeconómica, regularización migratoria y cohesión social en contextos de migración mixta",

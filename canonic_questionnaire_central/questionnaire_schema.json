@@ -419,6 +419,25 @@
             "variants": {
               "type": ["array", "null"],
               "items": { "type": "string" }
+            },
+            "provenance": {
+              "description": "Metadata about the origin and extraction of this pattern. SPEC: CC-SCHEMA-001",
+              "oneOf": [
+                { "type": "null" },
+                {
+                  "type": "object",
+                  "properties": {
+                    "source": { "type": "string" },
+                    "version": { "type": "string" },
+                    "extracted_from": { "type": "string" },
+                    "extraction_date": { "type": "string" },
+                    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+                    "methodology": { "type": "string" },
+                    "reviewer": { "type": "string" }
+                  },
+                  "additionalProperties": true
+                }
+              ]
             }
           },
           "additionalProperties": false
@@ -464,6 +483,25 @@
             "variants": {
               "type": ["array", "null"],
               "items": { "type": "string" }
+            },
+            "provenance": {
+              "description": "Metadata about the origin and extraction of this pattern. SPEC: CC-SCHEMA-001",
+              "oneOf": [
+                { "type": "null" },
+                {
+                  "type": "object",
+                  "properties": {
+                    "source": { "type": "string" },
+                    "version": { "type": "string" },
+                    "extracted_from": { "type": "string" },
+                    "extraction_date": { "type": "string" },
+                    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+                    "methodology": { "type": "string" },
+                    "reviewer": { "type": "string" }
+                  },
+                  "additionalProperties": true
+                }
+              ]
             }
           },
           "additionalProperties": false,

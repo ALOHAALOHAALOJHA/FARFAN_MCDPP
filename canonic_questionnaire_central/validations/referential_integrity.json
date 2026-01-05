@@ -1,0 +1,289 @@
+{
+  "_version": "1.0.0",
+  "_generated_at": "2026-01-03T00:00:00Z",
+  "_description": "Referential integrity validation system for canonic_questionnaire_central",
+
+  "integrity_rules": {
+    "dimension_references": {
+      "rule_id": "REF-INT-001",
+      "description": "All dimension_id references in questions must exist in niveles_abstraccion.json",
+      "source_files": [
+        "dimensions/*/questions.json",
+        "policy_areas/*/questions.json"
+      ],
+      "reference_file": "niveles_abstraccion.json",
+      "reference_path": "$.dimensions[*].dimension_id",
+      "enforcement": "error",
+      "validation_query": "Verify all dimension_id values in source_files exist in reference_path"
+    },
+    "policy_area_references": {
+      "rule_id": "REF-INT-002",
+      "description": "All policy_area_id references must exist in niveles_abstraccion.json",
+      "source_files": [
+        "dimensions/*/questions.json",
+        "policy_areas/*/questions.json",
+        "meso_questions.json"
+      ],
+      "reference_file": "niveles_abstraccion.json",
+      "reference_path": "$.policy_areas[*].policy_area_id",
+      "enforcement": "error",
+      "validation_query": "Verify all policy_area_id values match defined policy areas"
+    },
+    "cluster_references": {
+      "rule_id": "REF-INT-003",
+      "description": "All cluster_id references must exist in niveles_abstraccion.json",
+      "source_files": [
+        "dimensions/*/questions.json",
+        "policy_areas/*/questions.json",
+        "meso_questions.json",
+        "clusters/*/metadata.json"
+      ],
+      "reference_file": "niveles_abstraccion.json",
+      "reference_path": "$.clusters[*].cluster_id",
+      "enforcement": "error",
+      "validation_query": "Verify all cluster_id values match defined clusters"
+    },
+    "scoring_modality_references": {
+      "rule_id": "REF-INT-004",
+      "description": "All scoring_modality values must be defined in scoring/scoring_system.json",
+      "source_files": [
+        "dimensions/*/questions.json",
+        "policy_areas/*/questions.json",
+        "meso_questions.json",
+        "macro_question.json"
+      ],
+      "reference_file": "scoring/scoring_system.json",
+      "reference_path": "$.modalities.*",
+      "enforcement": "error",
+      "valid_modalities": [
+        "TYPE_A",
+        "TYPE_B",
+        "TYPE_C",
+        "TYPE_D",
+        "TYPE_E",
+        "TYPE_F",
+        "MESO_INTEGRATION",
+        "MACRO_HOLISTIC"
+      ]
+    },
+    "pattern_references": {
+      "rule_id": "REF-INT-005",
+      "description": "Pattern references (pattern_ref) must exist in pattern_registry.json",
+      "source_files": [
+        "dimensions/*/questions.json",
+        "policy_areas/*/questions.json"
+      ],
+      "reference_file": "pattern_registry.json",
+      "reference_path": "$.patterns[*].pattern_id",
+      "enforcement": "warning",
+      "validation_query": "Check pattern_ref values against pattern_registry pattern_ids"
+    },
+    "cross_cutting_theme_references": {
+      "rule_id": "REF-INT-006",
+      "description": "Cross-cutting theme IDs must exist in cross_cutting/cross_cutting_themes.json",
+      "source_files": [
+        "cross_cutting/theme_integration_framework.json"
+      ],
+      "reference_file": "cross_cutting/cross_cutting_themes.json",
+      "reference_path": "$.themes[*].theme_id",
+      "enforcement": "error",
+      "validation_query": "Verify theme_id references in integration framework match theme definitions"
+    },
+    "question_id_uniqueness": {
+      "rule_id": "REF-INT-007",
+      "description": "All question_id values must be unique across the entire questionnaire",
+      "source_files": [
+        "dimensions/*/questions.json",
+        "policy_areas/*/questions.json",
+        "meso_questions.json",
+        "macro_question.json"
+      ],
+      "enforcement": "error",
+      "validation_query": "Detect duplicate question_id values across all question files"
+    },
+    "question_global_uniqueness": {
+      "rule_id": "REF-INT-008",
+      "description": "All question_global values must be unique and sequential",
+      "source_files": [
+        "dimensions/*/questions.json",
+        "policy_areas/*/questions.json",
+        "meso_questions.json",
+        "macro_question.json"
+      ],
+      "enforcement": "error",
+      "expected_range": "1-305",
+      "validation_query": "Verify question_global values are unique and sequential from 1 to 305"
+    },
+    "method_set_class_validity": {
+      "rule_id": "REF-INT-009",
+      "description": "Method set class names must correspond to actual classes in the codebase",
+      "source_files": [
+        "dimensions/*/questions.json",
+        "policy_areas/*/questions.json"
+      ],
+      "reference_pattern": "src/farfan_pipeline/**/*.py",
+      "enforcement": "warning",
+      "validation_query": "Check if method_sets.class values exist as Python classes"
+    },
+    "colombia_context_references": {
+      "rule_id": "REF-INT-010",
+      "description": "References to Colombian institutions/laws must match colombia_context files",
+      "source_files": [
+        "patterns/pattern_registry_v3.json",
+        "policy_areas/*/keywords.json"
+      ],
+      "reference_files": [
+        "colombia_context/colombia_context.json",
+        "colombia_context/municipal_governance.json"
+      ],
+      "enforcement": "info",
+      "validation_query": "Cross-reference institutional mentions with official context data"
+    }
+  },
+
+  "consistency_checks": {
+    "dimension_policy_area_matrix": {
+      "check_id": "CONSISTENCY-001",
+      "description": "Verify matrix completeness: each policy area should have questions in all 6 dimensions",
+      "expected_matrix": {
+        "policy_areas": 10,
+        "dimensions": 6,
+        "total_cells": 60
+      },
+      "enforcement": "warning",
+      "validation_query": "Check for missing dimension-policy_area combinations"
+    },
+    "cluster_policy_area_alignment": {
+      "check_id": "CONSISTENCY-002",
+      "description": "Policy areas must only belong to their designated cluster",
+      "source": "niveles_abstraccion.json",
+      "enforcement": "error",
+      "validation_query": "Verify policy_area cluster assignments are consistent"
+    },
+    "scoring_alignment_with_phase_three": {
+      "check_id": "CONSISTENCY-003",
+      "description": "Scoring modalities must align with Phase Three primitives",
+      "reference": "src/farfan_pipeline/phases/Phase_three/primitives/",
+      "enforcement": "warning",
+      "validation_query": "Check scoring_system.json modality definitions match Phase Three implementations"
+    },
+    "validation_template_coverage": {
+      "check_id": "CONSISTENCY-004",
+      "description": "All dimensions must have validation templates",
+      "source": "validations/validation_templates.json",
+      "required_templates": [
+        "DIM01_INSUMOS",
+        "DIM02_ACTIVIDADES",
+        "DIM03_PRODUCTOS",
+        "DIM04_RESULTADOS",
+        "DIM05_IMPACTOS",
+        "DIM06_CAUSALIDAD"
+      ],
+      "enforcement": "error",
+      "validation_query": "Verify that every dimension listed in required_templates exists in validations/validation_templates.json"
+    }
+  },
+
+  "data_type_validations": {
+    "numeric_fields": {
+      "rule_id": "DTYPE-001",
+      "fields": [
+        "question_global",
+        "priority"
+      ],
+      "expected_type": "integer",
+      "enforcement": "error"
+    },
+    "string_fields": {
+      "rule_id": "DTYPE-002",
+      "fields": [
+        "question_id",
+        "dimension_id",
+        "policy_area_id",
+        "cluster_id",
+        "text"
+      ],
+      "expected_type": "string",
+      "min_length": {
+        "text": 10,
+        "question_id": 4
+      },
+      "enforcement": "error"
+    },
+    "array_fields": {
+      "rule_id": "DTYPE-003",
+      "fields": [
+        "expected_elements",
+        "patterns",
+        "method_sets"
+      ],
+      "expected_type": "array",
+      "min_items": {
+        "expected_elements": 1,
+        "method_sets": 1
+      },
+      "enforcement": "warning"
+    },
+    "enum_fields": {
+      "rule_id": "DTYPE-004",
+      "field": "match_type",
+      "allowed_values": [
+        "REGEX",
+        "LITERAL",
+        "NER_OR_REGEX"
+      ],
+      "enforcement": "error"
+    }
+  },
+
+  "schema_conformance": {
+    "json_schema_validation": {
+      "rule_id": "SCHEMA-001",
+      "description": "All JSON files must conform to questionnaire_schema.json",
+      "schema_file": "questionnaire_schema.json",
+      "files_to_validate": [
+        "questionnaire_monolith.json",
+        "questionnaire_monolith_v3.json"
+      ],
+      "enforcement": "error"
+    }
+  },
+
+  "validation_report_format": {
+    "report_structure": {
+      "timestamp": "ISO 8601 datetime",
+      "validation_version": "1.0.0",
+      "total_rules_checked": "integer",
+      "errors": [
+        {
+          "rule_id": "string",
+          "severity": "error|warning|info",
+          "description": "string",
+          "file": "string",
+          "location": "JSONPath or line number",
+          "expected": "string",
+          "actual": "string",
+          "remediation": "string"
+        }
+      ],
+      "summary": {
+        "total_errors": "integer",
+        "total_warnings": "integer",
+        "total_info": "integer",
+        "pass": "boolean"
+      }
+    }
+  },
+
+  "automated_validation_script": {
+    "script_name": "validate_referential_integrity.py",
+    "location": "canonic_questionnaire_central/validations/",
+    "usage": "python validate_referential_integrity.py --config referential_integrity.json --output report.json",
+    "exit_codes": {
+      "0": "All validations passed",
+      "1": "Errors found",
+      "2": "Warnings found",
+      "3": "Configuration error"
+    }
+  }
+}

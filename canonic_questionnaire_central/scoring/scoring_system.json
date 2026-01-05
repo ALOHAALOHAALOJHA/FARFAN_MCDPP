@@ -32,6 +32,44 @@
   ],
 
   "modalities": {
+    "MESO_INTEGRATION": {
+      "description": "Cluster-level integration scoring (evaluates policy coherence across policy areas within a cluster)",
+      "max_score": 3,
+      "aggregation": "weighted_average_with_coherence_bonus",
+      "threshold": 0.65,
+      "use_case": "meso questions evaluating cross-policy area integration",
+      "weights": {
+        "policy_area_coverage": 0.4,
+        "cross_references": 0.3,
+        "narrative_coherence": 0.3
+      },
+      "coherence_bonus": {
+        "enabled": true,
+        "max_bonus": 0.15,
+        "criteria": "Explicit cross-references between 2+ policy areas in cluster"
+      },
+      "_aligned_with": "Phase Three cluster aggregation logic"
+    },
+    "MACRO_HOLISTIC": {
+      "description": "Macro-level holistic assessment (evaluates overall plan coherence across all dimensions and clusters)",
+      "max_score": 3,
+      "aggregation": "holistic_weighted_synthesis",
+      "threshold": 0.70,
+      "use_case": "macro question evaluating entire plan vision and integration",
+      "weights": {
+        "cluster_integration": 0.35,
+        "dimension_completeness": 0.25,
+        "long_term_vision": 0.20,
+        "narrative_coherence": 0.20
+      },
+      "holistic_criteria": {
+        "minimum_cluster_scores": 4,
+        "minimum_dimension_scores": 5,
+        "cross_cluster_linkages": 3,
+        "strategic_vision_explicit": true
+      },
+      "_aligned_with": "Phase Three macro aggregation logic"
+    },
     "TYPE_A": {
       "description": "Quantitative indicators (high threshold, precise)",
       "max_score": 3,
@@ -85,6 +123,37 @@
   },
 
   "modality_definitions": {
+    "MESO_INTEGRATION": {
+      "aggregation": "weighted_average_with_coherence_bonus",
+      "description": "Cluster integration score = (weighted avg of policy area scores) + coherence bonus",
+      "failure_code": "F-MESO-MIN",
+      "threshold": 0.65,
+      "weights": {
+        "policy_area_coverage": 0.4,
+        "cross_references": 0.3,
+        "narrative_coherence": 0.3
+      },
+      "formula": "SCORE = (0.4 * coverage + 0.3 * cross_ref + 0.3 * coherence) + bonus",
+      "bonus_criteria": "bonus = 0.15 if cross_references >= 2, else 0"
+    },
+    "MACRO_HOLISTIC": {
+      "aggregation": "holistic_weighted_synthesis",
+      "description": "Macro holistic score = weighted synthesis of cluster, dimension, vision, and narrative scores",
+      "failure_code": "F-MACRO-MIN",
+      "threshold": 0.70,
+      "weights": {
+        "cluster_integration": 0.35,
+        "dimension_completeness": 0.25,
+        "long_term_vision": 0.20,
+        "narrative_coherence": 0.20
+      },
+      "formula": "SCORE = 0.35 * cluster_avg + 0.25 * dim_complete + 0.20 * vision + 0.20 * narrative",
+      "minimum_requirements": {
+        "min_clusters_passing": 4,
+        "min_dimensions_passing": 5,
+        "min_cross_linkages": 3
+      }
+    },
     "TYPE_A": {
       "aggregation": "presence_threshold",
       "description": "Count 4 elements and scale to 0-3",

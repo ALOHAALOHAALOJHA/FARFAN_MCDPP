@@ -85,7 +85,7 @@ def validate_phase1_output_contract(cpp: Any) -> bool:
         raise ValueError(f"POST-01 failed: Expected 60 chunks, got {chunk_count}")
     
     # POST-02: All chunks have valid PA and Dimension
-    from canonic_phases.phase_1_cpp_ingestion.phase1_models import SmartChunk
+    from farfan_pipeline.phases.Phase_one.phase1_models import SmartChunk
     for chunk in cpp.chunk_graph.chunks:
         if not isinstance(chunk, SmartChunk):
             raise ValueError(f"POST-02 failed: Chunk {chunk.chunk_id} is not a SmartChunk")

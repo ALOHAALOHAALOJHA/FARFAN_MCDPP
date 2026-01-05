@@ -1,0 +1,39 @@
+{
+  "$schema": "../../../schemas/phase_manifest_schema.json",
+  "phase_id": "phase_1",
+  "phase_name": "CPP Ingestion & Preprocessing",
+  "version": "1.0.0",
+  "status": "ACTIVE",
+  "created_at": "2026-01-04",
+  "updated_at": "2026-01-04",
+  "owner": "farfan_pipeline. phases.Phase_one",
+  "description": "Phase 1 performs PDF text extraction, preprocessing, structural analysis, semantic chunking, causal/temporal/discourse enrichment, and strategic ranking to produce SmartChunks for downstream phases.",
+  "subphases": [
+    {"id": "SP0", "name": "Language Detection", "module": "phase1_20_00_cpp_ingestion"},
+    {"id":  "SP1", "name": "Advanced Preprocessing", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP2", "name":  "Structural Analysis", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP3", "name": "Knowledge Graph Construction", "module":  "phase1_20_00_cpp_ingestion"},
+    {"id": "SP4", "name":  "Semantic Segmentation", "module":  "phase1_20_00_cpp_ingestion"},
+    {"id": "SP5", "name":  "Causal Chain Construction", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP6", "name": "Integrated Causal Graph", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP7", "name": "Argumentative Structure", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP8", "name": "Temporal Markers", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP9", "name": "Discourse Mode", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP10", "name": "Strategic Integration", "module": "phase1_20_00_cpp_ingestion"},
+    {"id":  "SP11", "name": "SmartChunk Assembly", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP12", "name": "Irrigation Linking", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP13", "name": "Integrity Validation", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP14", "name": "Ranking", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP15", "name": "Final Output", "module": "phase1_20_00_cpp_ingestion"}
+  ],
+  "dependencies":  {
+    "internal": ["farfan_pipeline. core.types"],
+    "external":  ["fitz", "spacy", "networkx"]
+  },
+  "outputs": {
+    "primary":  "List[SmartChunk]",
+    "secondary": ["TruncationAudit", "ValidationResult", "IrrigationMap"]
+  },
+  "constants_file": "PHASE_1_CONSTANTS.py",
+  "interfaces_module": "interfaces. phase1_protocols"
+}

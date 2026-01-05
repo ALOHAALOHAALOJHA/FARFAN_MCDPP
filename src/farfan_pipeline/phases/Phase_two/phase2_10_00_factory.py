@@ -151,31 +151,31 @@ from dataclasses import dataclass, field
 from typing import Any, TYPE_CHECKING
 
 # Phase 2 orchestration components
-from canonic_phases.Phase_two.arg_router import ExtendedArgRouter
-from orchestration.class_registry import build_class_registry, get_class_paths
-from canonic_phases.Phase_two.executors.executor_config import ExecutorConfig
-from canonic_phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
+from farfan_pipeline.phases.Phase_two.arg_router import ExtendedArgRouter
+from farfan_pipeline.phases.Phase_two.phase2_10_01_class_registry import build_class_registry, get_class_paths
+from farfan_pipeline.phases.Phase_two.executors.executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
 
 # Core orchestration
 if TYPE_CHECKING:
-    from orchestration.orchestrator import MethodExecutor, Orchestrator
-from orchestration.method_registry import (
+    from farfan_pipeline.orchestration.orchestrator import MethodExecutor, Orchestrator
+from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry import (
     MethodRegistry,
     setup_default_instantiation_rules,
 )
 
 # Canonical method injection (direct method access, no class instantiation)
-from canonic_phases.Phase_two.methods_registry import (
+from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry import (
     inject_canonical_methods,
     setup_registry_with_canonical_methods,
 )
 
 # SISAS - Signal Intelligence Layer (Nivel 2)
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
     EnrichedSignalPack,
     create_enriched_signal_pack,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
     create_signal_registry,
 )
@@ -204,15 +204,15 @@ from farfan_pipeline.validators.phase1_output_validator import Phase1OutputValid
 from farfan_pipeline.core.types import PreprocessedDocument
 
 # Phase 0 integration
-from canonic_phases.Phase_zero.phase0_10_01_runtime_config import (
+from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import (
     RuntimeConfig,
     RuntimeMode,
     get_runtime_config,
 )
-from canonic_phases.Phase_zero.phase0_90_01_verified_pipeline_runner import (
+from farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner import (
     VerifiedPipelineRunner,
 )
-from canonic_phases.Phase_zero.phase0_50_01_exit_gates import (
+from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import (
     check_all_gates,
 )
 
@@ -809,7 +809,7 @@ class AnalysisPipelineFactory:
         Raises:
             FactoryError: If Phase 0 validation fails and strict_validation=True
         """
-        from orchestration.orchestrator import Phase0ValidationResult
+        from farfan_pipeline.orchestration.orchestrator import Phase0ValidationResult
         from datetime import datetime, timezone
 
         logger.info("factory_phase0_validation_start")
@@ -1126,7 +1126,7 @@ class AnalysisPipelineFactory:
             # Step 4: Build method executor WITH signal registry injected
             # This is the CORE integration point - executors call methods through this
             # Local import to avoid circular dependency
-            from orchestration.orchestrator import MethodExecutor
+            from farfan_pipeline.orchestration.orchestrator import MethodExecutor
             method_executor = MethodExecutor(
                 method_registry=method_registry,
                 arg_router=arg_router,
@@ -1289,7 +1289,7 @@ class AnalysisPipelineFactory:
         try:
             # Build orchestrator with FULL dependency injection
             # Local import to avoid circular dependency
-            from orchestration.orchestrator import Orchestrator
+            from farfan_pipeline.orchestration.orchestrator import Orchestrator
             orchestrator = Orchestrator(
                 method_executor=self._method_executor,       # 1st parameter - correct order
                 questionnaire=self._canonical_questionnaire,  # 2nd parameter - correct order
@@ -1588,7 +1588,7 @@ def check_legacy_signal_loader_deleted() -> dict[str, Any]:
         dict with check results.
     """
     try:
-        import cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_loader
+        import farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_loader
         return {
             "legacy_loader_deleted": False,
             "error": "signal_loader.py still exists - must be deleted per architecture requirements",

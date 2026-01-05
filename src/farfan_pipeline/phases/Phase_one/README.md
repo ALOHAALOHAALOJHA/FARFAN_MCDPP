@@ -1,9 +1,9 @@
-# Phase 1: CPP Ingestion (`phase_1_cpp_ingestion`)
+# Phase 1: CPP Ingestion (`phase1_20_00_cpp_ingestion`)
 
-**Status**: ACTIVE  
-**Version**: CPP-2025.1  
-**Last Updated**: 2025-12-18  
-**Canonical Path**: `src/canonic_phases/phase_1_cpp_ingestion/`
+**Status**: ACTIVE
+**Version**: CPP-2025.1
+**Last Updated**: 2025-12-18
+**Canonical Path**: `src/farfan_pipeline/phases/Phase_one/`
 
 ---
 
@@ -37,7 +37,7 @@ This invariant is:
 
 ### 2.1 Primary Entry Point
 ```python
-from canonic_phases.phase_1_cpp_ingestion import execute_phase_1_with_full_contract
+from farfan_pipeline.phases.Phase_one.phase1_20_00_cpp_ingestion import execute_phase_1_with_full_contract
 
 cpp = execute_phase_1_with_full_contract(
     canonical_input: CanonicalInput,
@@ -201,7 +201,7 @@ SISAS provides signal-based semantic enrichment throughout Phase 1:
 
 ```bash
 # Import verification
-python -c "from canonic_phases.phase_1_cpp_ingestion import execute_phase_1_with_full_contract; print('OK')"
+python -c "from farfan_pipeline.phases.Phase_one.phase1_20_00_cpp_ingestion import execute_phase_1_with_full_contract; print('OK')"
 
 # Purge verification (should return empty)
 find . -name "*phase1*" -o -name "*Phase_one*" -o -name "*phase_one*" | grep -v "phase_1_cpp_ingestion"
@@ -214,7 +214,7 @@ pytest tests/test_phase1*.py -v
 
 ## 8. Success Criteria
 
-- [x] Canonical path enforced: `src/canonic_phases/phase_1_cpp_ingestion/`
+- [x] Canonical path enforced: `src/farfan_pipeline/phases/Phase_one/`
 - [x] Naming rules enforced: snake_case, phase1_ prefix, explicit extensions
 - [x] Legacy Phase_one folder deleted
 - [x] Root-level Phase 1 MDs and scripts deleted

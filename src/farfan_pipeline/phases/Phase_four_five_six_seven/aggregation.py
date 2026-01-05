@@ -51,13 +51,12 @@ from farfan_pipeline.processing.uncertainty_quantification import (
     aggregate_with_uncertainty,
 )
 from farfan_pipeline.processing.choquet_adapter import (
-    ChoquetProcessingAdapter,
     create_default_choquet_adapter,
 )
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import QuestionnaireSignalRegistry
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import QuestionnaireSignalRegistry
 
 T = TypeVar('T')
 

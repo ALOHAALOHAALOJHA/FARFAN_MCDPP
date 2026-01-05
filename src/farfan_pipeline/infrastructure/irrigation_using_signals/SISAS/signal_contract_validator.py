@@ -24,7 +24,7 @@ INTEGRATION GUIDE:
    Use global validation orchestrator with base executors:
 
    ```python
-   from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
+   from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
        get_global_validation_orchestrator,
        reset_global_validation_orchestrator
    )
@@ -51,7 +51,7 @@ INTEGRATION GUIDE:
    Use validate_result_with_orchestrator for explicit validation:
 
    ```python
-   from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
+   from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
        ValidationOrchestrator,
        validate_result_with_orchestrator
    )
@@ -85,10 +85,10 @@ INTEGRATION GUIDE:
    Pass validation orchestrator to executors:
 
    ```python
-   from canonic_phases.Phase_two.base_executor_with_contract import (
+   from farfan_pipeline.phases.Phase_two.base_executor_with_contract import (
        BaseExecutorWithContract
    )
-   from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
+   from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (
        ValidationOrchestrator
    )
 

@@ -24,20 +24,20 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from canonic_phases.Phase_zero.phase0_50_00_boot_checks import BootCheckError
-from canonic_phases.Phase_zero.phase0_20_02_determinism import (
+from farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks import BootCheckError
+from farfan_pipeline.phases.Phase_zero.phase0_20_02_determinism import (
     MANDATORY_SEEDS,
     apply_seeds_to_rngs,
     initialize_determinism_from_registry,
     validate_seed_application,
 )
-from canonic_phases.Phase_zero.phase0_50_01_exit_gates import (
+from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import (
     check_all_gates,
     check_bootstrap_gate,
     check_determinism_gate,
 )
-from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-from canonic_phases.Phase_zero.phase0_90_01_verified_pipeline_runner import VerifiedPipelineRunner
+from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner import VerifiedPipelineRunner
 
 
 # ============================================================================
@@ -77,7 +77,7 @@ def test_contract_02_artifacts_dir_must_be_created():
         assert not artifacts_dir.exists()
         
         # Bootstrap should create it
-        with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+        with patch('farfan_pipeline.phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
             mock_config.from_env.return_value = MagicMock(mode=MagicMock(value="dev"))
             
             runner = VerifiedPipelineRunner(
@@ -99,7 +99,7 @@ def test_contract_03_seed_registry_must_be_initialized():
     Postcondition: seed_registry attribute exists and is not None
     """
     with tempfile.TemporaryDirectory() as tmpdir:
-        with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+        with patch('farfan_pipeline.phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
             mock_config.from_env.return_value = MagicMock(mode=MagicMock(value="dev"))
             
             runner = VerifiedPipelineRunner(
@@ -131,7 +131,7 @@ def test_contract_04_pdf_must_be_hashed_with_sha256():
         q_path = Path(tmpdir) / "q.json"
         q_path.write_text('{"test": "data"}')
         
-        with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+        with patch('farfan_pipeline.phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
             mock_config.from_env.return_value = MagicMock(mode=MagicMock(value="dev"))
             
             runner = VerifiedPipelineRunner(pdf_path, Path(tmpdir) / "artifacts", q_path)
@@ -160,7 +160,7 @@ def test_contract_05_questionnaire_file_must_be_hashed():
         q_path = Path(tmpdir) / "q.json"
         q_path.write_text('{"large": "questionnaire"}')
         
-        with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+        with patch('farfan_pipeline.phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
             mock_config.from_env.return_value = MagicMock(mode=MagicMock(value="dev"))
             
             runner = VerifiedPipelineRunner(pdf_path, Path(tmpdir) / "artifacts", q_path)
@@ -189,7 +189,7 @@ def test_contract_06_hash_validation_must_detect_tampering():
         q_path = Path(tmpdir) / "q.json"
         q_path.write_text('{"test": "data"}')
         
-        with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+        with patch('farfan_pipeline.phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
             mock_config.from_env.return_value = MagicMock(mode=MagicMock(value="dev"))
             
             runner = VerifiedPipelineRunner(pdf_path, Path(tmpdir) / "artifacts", q_path)
@@ -217,7 +217,7 @@ def test_contract_07_boot_checks_must_validate_python_version():
     """
     import sys
     
-    with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+    with patch('farfan_pipeline.phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
         config = MagicMock(mode=MagicMock(value="dev"))
         mock_config.from_env.return_value = config
         
@@ -232,13 +232,13 @@ def test_contract_08_prod_mode_must_fail_on_boot_check_error():
     Precondition: runtime_config.mode = "prod"
     Postcondition: BootCheckError raised, error appended
     """
-    from canonic_phases.Phase_zero.phase0_50_00_boot_checks import run_boot_checks
+    from farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks import run_boot_checks
     
     config = MagicMock()
     config.mode.value = "prod"
     
     # Mock a failing dependency check
-    with patch('canonic_phases.Phase_zero.phase0_50_00_boot_checks._check_calibration_files') as mock_check:
+    with patch('farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks._check_calibration_files') as mock_check:
         mock_check.side_effect = BootCheckError("calibration", "Missing file", "CAL_MISSING")
         
         with pytest.raises(BootCheckError):
@@ -258,7 +258,7 @@ def test_contract_09_dev_mode_must_warn_on_boot_check_failure():
         q_path = Path(tmpdir) / "q.json"
         q_path.write_text('{}')
         
-        with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+        with patch('farfan_pipeline.phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
             config = MagicMock()
             config.mode.value = "dev"
             mock_config.from_env.return_value = config
@@ -266,7 +266,7 @@ def test_contract_09_dev_mode_must_warn_on_boot_check_failure():
             runner = VerifiedPipelineRunner(pdf_path, Path(tmpdir) / "artifacts", q_path)
             
             # Mock boot check failure
-            with patch('canonic_phases.Phase_zero.verified_pipeline_runner.run_boot_checks') as mock_boot:
+            with patch('farfan_pipeline.phases.Phase_zero.verified_pipeline_runner.run_boot_checks') as mock_boot:
                 mock_boot.side_effect = BootCheckError("test", "Test error", "TEST")
                 
                 # Contract: DEV mode should NOT append to errors (only warns)
@@ -443,13 +443,13 @@ async def test_all_15_contracts_in_phase0_execution():
         
         artifacts_dir = Path(tmpdir) / "artifacts"
         
-        with patch('canonic_phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
+        with patch('farfan_pipeline.phases.Phase_zero.verified_pipeline_runner.RuntimeConfig') as mock_config:
             config = MagicMock()
             config.mode = MagicMock(value="dev")
             config.is_strict_mode.return_value = False
             mock_config.from_env.return_value = config
             
-            with patch('canonic_phases.Phase_zero.verified_pipeline_runner.run_boot_checks') as mock_boot:
+            with patch('farfan_pipeline.phases.Phase_zero.verified_pipeline_runner.run_boot_checks') as mock_boot:
                 mock_boot.return_value = {"test": True}
                 
                 runner = VerifiedPipelineRunner(pdf_path, artifacts_dir, q_path)

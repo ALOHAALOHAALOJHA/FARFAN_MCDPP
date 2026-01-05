@@ -20,10 +20,10 @@ except ImportError:
     logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
     )
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
         create_document_context,
     )
 
@@ -35,39 +35,110 @@ if TYPE_CHECKING:
 def integrate_context_scoping_in_registry(
     signal_registry: QuestionnaireSignalRegistry,
     document_context: dict[str, Any],
-) -> list[dict[str, Any]]:
+    question_id: str | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, int]]:
     """Integrate context scoping into signal registry pattern retrieval.
     
     This fixes the missing connection between signal_context_scoper and
     signal_registry for context-aware pattern filtering.
     
+    Implements SISAS-WIRING-001 from SPEC_SIGNAL_NORMALIZATION_COMPREHENSIVE.md.
+    
     Args:
         signal_registry: Signal registry instance
-        document_context: Document context dict
+        document_context: Document context dict with keys like:
+            - section: str (e.g., "budget", "indicators")
+            - chapter: int (e.g., 3)
+            - page: int (e.g., 47)
+            - policy_area: str (e.g., "PA01")
+        question_id: Optional question ID to filter patterns for.
+            If None, returns patterns for all questions.
     
     Returns:
-        Filtered patterns that match document context
+        Tuple of (filtered_patterns, stats_dict) where:
+            - filtered_patterns: List of pattern specs that match context
+            - stats_dict: Statistics about filtering (total, filtered, passed)
     
     Example:
         >>> from orchestration.factory import load_questionnaire, create_signal_registry
         >>> q = load_questionnaire()
         >>> registry = create_signal_registry(q)
         >>> context = {"section": "budget", "chapter": 3}
-        >>> filtered = integrate_context_scoping_in_registry(registry, context)
+        >>> filtered, stats = integrate_context_scoping_in_registry(registry, context)
+        >>> print(f"Patterns: {len(filtered)}, Filtered out: {stats['context_filtered']}")
     """
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
         filter_patterns_by_context,
     )
     
-    # This would need to be integrated into signal_registry._build_micro_answering_signals
-    # For now, this is a helper function that can be called externally
+    all_patterns: list[dict[str, Any]] = []
+    
+    try:
+        if question_id is not None:
+            # Get patterns for specific question
+            try:
+                signal_pack = signal_registry.get_micro_answering_signals(question_id)
+                all_patterns.extend(signal_pack.pattern_specs)
+            except Exception as e:
+                logger.warning(
+                    "context_scoping_question_failed",
+                    question_id=question_id,
+                    error=str(e),
+                )
+        else:
+            # Get patterns for all questions in registry
+            try:
+                # Access questionnaire data to get all question IDs
+                blocks = dict(signal_registry._questionnaire.data.get("blocks", {}))
+                micro_questions = blocks.get("micro_questions", [])
+                
+                for q in micro_questions:
+                    if isinstance(q, dict):
+                        q_id = str(q.get("question_id", "")).strip()
+                    else:
+                        q_id = str(q).strip()
+                    
+                    if not q_id:
+                        continue
+                    
+                    try:
+                        signal_pack = signal_registry.get_micro_answering_signals(q_id)
+                        all_patterns.extend(signal_pack.pattern_specs)
+                    except Exception:
+                        # Skip questions without valid signal packs
+                        continue
+            except Exception as e:
+                logger.warning(
+                    "context_scoping_questionnaire_access_failed",
+                    error=str(e),
+                )
+    except Exception as e:
+        logger.error(
+            "context_scoping_pattern_collection_failed",
+            error=str(e),
+        )
+        return [], {
+            "total_patterns": 0,
+            "context_filtered": 0,
+            "scope_filtered": 0,
+            "passed": 0,
+            "error": str(e),
+        }
+    
+    # Apply context-aware filtering
+    filtered_patterns, stats = filter_patterns_by_context(all_patterns, document_context)
+    
     logger.info(
         "context_scoping_integration_applied",
         context_keys=list(document_context.keys()),
+        total_patterns=stats.get("total_patterns", 0),
+        context_filtered=stats.get("context_filtered", 0),
+        scope_filtered=stats.get("scope_filtered", 0),
+        passed=stats.get("passed", 0),
+        question_id=question_id,
     )
     
-    # Return empty list as placeholder - actual implementation would filter patterns
-    return []
+    return filtered_patterns, stats
 
 
 # ============================================================================
@@ -89,7 +160,7 @@ def integrate_consumption_tracking_in_extraction(
         consumption_tracker: Consumption tracker instance
         source_text: Source text used for matching
     """
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
         track_pattern_match_from_evidence,
     )
     
@@ -138,7 +209,7 @@ def verify_pattern_scope_before_application(
         >>> is_valid, msg = verify_pattern_scope_before_application(pattern, context, "PA01", "Q001")
         >>> assert is_valid
     """
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
         verify_pattern_scope,
     )
     
@@ -174,7 +245,7 @@ def validate_access_level(
         True if access is valid, False otherwise
     
     Example:
-        >>> from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import AccessLevel
+        >>> from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import AccessLevel
         >>> is_valid = validate_access_level(
         ...     "orchestration.factory",
         ...     "AnalysisPipelineFactory",
@@ -184,7 +255,7 @@ def validate_access_level(
         ... )
         >>> assert is_valid
     """
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
         AccessLevel,
         get_access_audit,
     )
@@ -195,14 +266,14 @@ def validate_access_level(
     
     # Orchestrator-level accessors
     orchestrator_modules = [
-        "cross_cutting_infrastructure.irrigation_using_signals.SISAS",
+        "farfan_pipeline/infrastructure.irrigation_using_signals.SISAS",
         "orchestration.orchestrator",
     ]
     
     # Consumer-level accessors
     consumer_modules = [
-        "canonic_phases.Phase_two",
-        "canonic_phases.Phase_three",
+        "farfan_pipeline.phases.Phase_two",
+        "farfan_pipeline.phases.Phase_three",
     ]
     
     # Determine expected level from accessor

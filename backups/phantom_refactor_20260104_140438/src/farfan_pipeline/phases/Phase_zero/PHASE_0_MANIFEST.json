@@ -1,0 +1,421 @@
+{
+  "$schema": "phase_manifest_schema.json",
+  "manifest_version": "1.0.0",
+  "phase": {
+    "number": 0,
+    "name": "Validation, Hardening & Bootstrap",
+    "codename": "FOUNDATION",
+    "label": "Phase 0",
+    "description": "Pre-analytical foundation layer establishing validation, resource enforcement, and bootstrap for the F.A.R.F.A.N pipeline"
+  },
+  "metadata": {
+    "created": "2025-12-29",
+    "modified": "2025-12-29",
+    "version": "1.0.0",
+    "author": "F.A.R.F.A.N Core Architecture Team",
+    "status": "ACTIVE"
+  },
+  "statistics": {
+    "total_modules": 21,
+    "total_lines_of_code": 9498,
+    "stages": 7,
+    "critical_modules": 11,
+    "high_modules": 7,
+    "medium_modules": 2,
+    "low_modules": 1
+  },
+  "stages": [
+    {
+      "code": 0,
+      "name": "Infrastructure",
+      "description": "Base errors, types, package initialization",
+      "execution_order": 1,
+      "module_count": 3,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase0_00_00_init",
+          "legacy_name": "__init__",
+          "type": "INFRA",
+          "criticality": "LOW",
+          "execution_pattern": "Boot-Once",
+          "lines_of_code": 38,
+          "purpose": "Package initialization and public API exports",
+          "dependencies": [],
+          "exports": ["ResourceController", "ResourceLimits", "ResourceExhausted", "MemoryWatchdog", "EnforcementMetrics", "PSUTIL_AVAILABLE"]
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase0_00_01_domain_errors",
+          "legacy_name": "domain_errors",
+          "type": "INFRA",
+          "criticality": "HIGH",
+          "execution_pattern": "On-Demand",
+          "lines_of_code": 137,
+          "purpose": "Domain-specific exception hierarchy for contract violations",
+          "dependencies": [],
+          "exports": ["ContractViolationError", "DataContractError", "SystemContractError"]
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase0_00_02_runtime_error_fixes",
+          "legacy_name": "runtime_error_fixes",
+          "type": "INFRA",
+          "criticality": "MEDIUM",
+          "execution_pattern": "On-Demand",
+          "lines_of_code": 135,
+          "purpose": "Utility functions for runtime error handling and type coercion",
+          "dependencies": [],
+          "exports": ["ensure_list_return"]
+        }
+      ]
+    },
+    {
+      "code": 10,
+      "name": "Environment Configuration",
+      "description": "Paths resolution, runtime config, structured logging",
+      "execution_order": 2,
+      "module_count": 3,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase0_10_00_paths",
+          "legacy_name": "paths",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "execution_pattern": "Singleton",
+          "lines_of_code": 480,
+          "purpose": "Central path resolution for all F.A.R.F.A.N directories",
+          "dependencies": ["phase0_00_01_domain_errors"],
+          "exports": ["PROJECT_ROOT", "DATA_DIR", "CONFIG_DIR", "OUTPUT_DIR", "CACHE_DIR", "PathError", "PathNotFoundError"]
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase0_10_01_runtime_config",
+          "legacy_name": "runtime_config",
+          "type": "CFG",
+          "criticality": "CRITICAL",
+          "execution_pattern": "Singleton",
+          "lines_of_code": 584,
+          "purpose": "Parse and validate runtime configuration from environment variables",
+          "dependencies": ["phase0_10_00_paths"],
+          "exports": ["RuntimeConfig", "RuntimeMode", "FallbackCategory", "ConfigurationError", "get_runtime_config"]
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase0_10_02_json_logger",
+          "legacy_name": "json_logger",
+          "type": "CFG",
+          "criticality": "HIGH",
+          "execution_pattern": "Singleton",
+          "lines_of_code": 259,
+          "purpose": "Initialize structured JSON logging with correlation IDs",
+          "dependencies": ["phase0_10_01_runtime_config"],
+          "exports": ["setup_logging", "get_logger", "CorrelationContext"]
+        }
+      ]
+    },
+    {
+      "code": 20,
+      "name": "Determinism Enforcement",
+      "description": "Seed management, hash computation, deterministic execution",
+      "execution_order": 3,
+      "module_count": 5,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase0_20_00_seed_factory",
+          "legacy_name": "seed_factory",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "execution_pattern": "Singleton",
+          "lines_of_code": 198,
+          "purpose": "Centralized seed management for deterministic operations",
+          "dependencies": ["phase0_10_01_runtime_config"],
+          "exports": ["SeedFactory", "get_seed_factory"]
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase0_20_01_hash_utils",
+          "legacy_name": "hash_utils",
+          "type": "UTIL",
+          "criticality": "HIGH",
+          "execution_pattern": "On-Demand",
+          "lines_of_code": 41,
+          "purpose": "Hash computation utilities using BLAKE3",
+          "dependencies": [],
+          "exports": ["compute_hash", "compute_file_hash"]
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase0_20_02_determinism",
+          "legacy_name": "determinism",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "execution_pattern": "Boot-Once",
+          "lines_of_code": 359,
+          "purpose": "Core determinism enforcement including seed configuration",
+          "dependencies": ["phase0_20_00_seed_factory", "phase0_20_01_hash_utils"],
+          "exports": ["enforce_determinism", "verify_determinism"]
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase0_20_03_determinism_helpers",
+          "legacy_name": "determinism_helpers",
+          "type": "UTIL",
+          "criticality": "HIGH",
+          "execution_pattern": "On-Demand",
+          "lines_of_code": 192,
+          "purpose": "Helper functions for deterministic operations",
+          "dependencies": ["phase0_20_02_determinism"],
+          "exports": ["sorted_dict", "stable_json_dumps", "deterministic_iteration"]
+        },
+        {
+          "order": 4,
+          "canonical_name": "phase0_20_04_deterministic_execution",
+          "legacy_name": "deterministic_execution",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "execution_pattern": "Boot-Once",
+          "lines_of_code": 445,
+          "purpose": "High-level deterministic execution context manager",
+          "dependencies": ["phase0_20_02_determinism", "phase0_20_03_determinism_helpers"],
+          "exports": ["DeterministicExecution", "deterministic_context"]
+        }
+      ]
+    },
+    {
+      "code": 30,
+      "name": "Resource Control",
+      "description": "Hard resource limits, memory watchdog, kernel enforcement",
+      "execution_order": 4,
+      "module_count": 1,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase0_30_00_resource_controller",
+          "legacy_name": "resource_controller",
+          "type": "ENF",
+          "criticality": "CRITICAL",
+          "execution_pattern": "Singleton",
+          "lines_of_code": 503,
+          "purpose": "Kernel-level resource enforcement using setrlimit()",
+          "dependencies": ["phase0_10_01_runtime_config", "phase0_10_02_json_logger"],
+          "exports": ["ResourceController", "ResourceLimits", "ResourceExhausted", "MemoryWatchdog", "EnforcementMetrics", "PSUTIL_AVAILABLE"]
+        }
+      ]
+    },
+    {
+      "code": 40,
+      "name": "Validation",
+      "description": "Input validation, schema monitoring, signature verification",
+      "execution_order": 5,
+      "module_count": 4,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase0_40_00_input_validation",
+          "legacy_name": "phase0_input_validation",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "execution_pattern": "Boot-Once",
+          "lines_of_code": 540,
+          "purpose": "Validate input documents, questionnaire, and configuration",
+          "dependencies": ["phase0_10_00_paths", "phase0_10_01_runtime_config", "phase0_00_01_domain_errors"],
+          "exports": ["validate_inputs", "InputValidator", "ValidationResult"]
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase0_40_01_schema_monitor",
+          "legacy_name": "schema_monitor",
+          "type": "VAL",
+          "criticality": "HIGH",
+          "execution_pattern": "Continuous",
+          "lines_of_code": 396,
+          "purpose": "Monitor schema shape evolution and detect drift",
+          "dependencies": ["phase0_20_01_hash_utils"],
+          "exports": ["SchemaMonitor", "SchemaShape", "SchemaDrift"]
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase0_40_02_signature_validator",
+          "legacy_name": "signature_validator",
+          "type": "VAL",
+          "criticality": "HIGH",
+          "execution_pattern": "Boot-Once",
+          "lines_of_code": 474,
+          "purpose": "Validate method signatures against contract specifications",
+          "dependencies": ["phase0_00_01_domain_errors"],
+          "exports": ["SignatureValidator", "validate_signature", "SignatureMismatch"]
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase0_40_03_coverage_gate",
+          "legacy_name": "coverage_gate",
+          "type": "VAL",
+          "criticality": "MEDIUM",
+          "execution_pattern": "Boot-Once",
+          "lines_of_code": 252,
+          "purpose": "Verify test coverage meets minimum thresholds",
+          "dependencies": ["phase0_10_01_runtime_config"],
+          "exports": ["CoverageGate", "check_coverage", "CoverageResult"]
+        }
+      ]
+    },
+    {
+      "code": 50,
+      "name": "Boot Sequence",
+      "description": "Boot checks, exit gates, wiring verification",
+      "execution_order": 6,
+      "module_count": 2,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase0_50_00_boot_checks",
+          "legacy_name": "boot_checks",
+          "type": "ORCH",
+          "criticality": "CRITICAL",
+          "execution_pattern": "Boot-Once",
+          "lines_of_code": 289,
+          "purpose": "Execute comprehensive boot-time checks",
+          "dependencies": ["phase0_10_01_runtime_config", "phase0_30_00_resource_controller", "phase0_40_00_input_validation"],
+          "exports": ["BootCheckError", "run_boot_checks", "BootCheckResult"]
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase0_50_01_exit_gates",
+          "legacy_name": "exit_gates",
+          "type": "ORCH",
+          "criticality": "HIGH",
+          "execution_pattern": "Boot-Once",
+          "lines_of_code": 668,
+          "purpose": "Define and verify exit conditions before Phase 1",
+          "dependencies": ["phase0_50_00_boot_checks", "phase0_40_00_input_validation"],
+          "exports": ["ExitGate", "ConfigurationGate", "DeterminismGate", "ResourceGate", "ValidationGate", "WiringGate"]
+        }
+      ]
+    },
+    {
+      "code": 90,
+      "name": "Integration",
+      "description": "Main entry point, pipeline runner, bootstrap orchestration",
+      "execution_order": 7,
+      "module_count": 3,
+      "modules": [
+        {
+          "order": 0,
+          "canonical_name": "phase0_90_00_main",
+          "legacy_name": "main",
+          "type": "ENTRY",
+          "criticality": "CRITICAL",
+          "execution_pattern": "Boot-Once",
+          "lines_of_code": 1829,
+          "purpose": "Main entry point for Phase 0 execution",
+          "dependencies": ["*"],
+          "exports": ["main", "Phase0Context", "run_phase0"]
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase0_90_01_verified_pipeline_runner",
+          "legacy_name": "verified_pipeline_runner",
+          "type": "ORCH",
+          "criticality": "CRITICAL",
+          "execution_pattern": "Boot-Once",
+          "lines_of_code": 516,
+          "purpose": "Verified execution wrapper with all Phase 0 guarantees",
+          "dependencies": ["phase0_90_00_main", "phase0_30_00_resource_controller"],
+          "exports": ["VerifiedPipelineRunner", "run_verified"]
+        },
+        {
+          "order": 2,
+          "canonical_name": "phase0_90_02_bootstrap",
+          "legacy_name": "bootstrap",
+          "type": "ORCH",
+          "criticality": "CRITICAL",
+          "execution_pattern": "Boot-Once",
+          "lines_of_code": 1163,
+          "purpose": "Complete wiring initialization and component assembly",
+          "dependencies": ["phase0_30_00_resource_controller", "phase0_50_01_exit_gates"],
+          "exports": ["WiringBootstrap", "EnforcedBootstrap", "WiringComponents", "QuestionnaireResourceProvider", "ENFORCEMENT_AVAILABLE"]
+        }
+      ]
+    }
+  ],
+  "execution_flow": {
+    "sequence": [
+      {"stage": 0, "description": "Load infrastructure: errors, types, init"},
+      {"stage": 10, "description": "Configure environment: paths, config, logging"},
+      {"stage": 20, "description": "Enforce determinism: seeds, hashing, context"},
+      {"stage": 30, "description": "Control resources: limits, watchdog, enforcement"},
+      {"stage": 40, "description": "Validate inputs: documents, schemas, signatures"},
+      {"stage": 50, "description": "Execute boot: checks, gates, verification"},
+      {"stage": 90, "description": "Integrate: main, runner, bootstrap, handoff to Phase 1"}
+    ],
+    "critical_path": [
+      "phase0_10_00_paths",
+      "phase0_10_01_runtime_config",
+      "phase0_20_02_determinism",
+      "phase0_30_00_resource_controller",
+      "phase0_40_00_input_validation",
+      "phase0_50_00_boot_checks",
+      "phase0_90_02_bootstrap"
+    ],
+    "parallelization_opportunities": [
+      {"modules": ["phase0_40_00_input_validation", "phase0_40_01_schema_monitor", "phase0_40_02_signature_validator"], "stage": 40},
+      {"modules": ["phase0_20_00_seed_factory", "phase0_20_01_hash_utils"], "stage": 20}
+    ]
+  },
+  "contracts": {
+    "inputs": [
+      {"name": "questionnaire_path", "type": "Path", "required": true, "description": "Path to questionnaire monolith JSON"},
+      {"name": "questionnaire_hash", "type": "str", "required": true, "description": "Expected SHA-256 hash"},
+      {"name": "executor_config_path", "type": "Path", "required": true, "description": "Path to executor configuration"},
+      {"name": "calibration_profile", "type": "str", "required": true, "description": "Calibration profile name"},
+      {"name": "abort_on_insufficient", "type": "bool", "required": true, "description": "Abort on insufficient data"},
+      {"name": "resource_limits", "type": "dict", "required": false, "description": "Resource limit overrides"}
+    ],
+    "outputs": [
+      {"name": "WiringComponents", "type": "dataclass", "description": "Container with all initialized components"},
+      {"name": "init_hashes", "type": "dict[str, str]", "description": "Hashes of initialized components"},
+      {"name": "enforcement_metrics", "type": "EnforcementMetrics", "description": "Resource usage during init"}
+    ],
+    "invariants": [
+      {"id": "INV-1", "name": "Determinism", "formula": "∀ identical_inputs: hash(phase0_output) = constant"},
+      {"id": "INV-2", "name": "Resource Bounds", "formula": "∀ execution: (memory ≤ RLIMIT_AS) ∧ (cpu ≤ RLIMIT_CPU)"},
+      {"id": "INV-3", "name": "Config Immutability", "formula": "∀ t > phase0_complete: RuntimeConfig.is_frozen() = True"},
+      {"id": "INV-4", "name": "Validation Completeness", "formula": "∀ input: validated(input) ∨ execution_blocked"}
+    ]
+  },
+  "resource_enforcement": {
+    "kernel_limits": [
+      {"limit": "RLIMIT_AS", "default_mb": 2048, "description": "Address space (memory)"},
+      {"limit": "RLIMIT_CPU", "default_seconds": 300, "description": "CPU time"},
+      {"limit": "RLIMIT_NOFILE", "default_count": 1024, "description": "File descriptors"}
+    ],
+    "watchdog": {
+      "threshold_percent": 90,
+      "check_interval_seconds": 1.0
+    },
+    "preflight_checks": [
+      {"check": "memory_available", "threshold": "50% of limit"},
+      {"check": "disk_available", "threshold": "100% of limit"},
+      {"check": "file_descriptors", "threshold": "current < limit"}
+    ]
+  },
+  "determinism": {
+    "base_seed": 42,
+    "strategy": "FIXED",
+    "hash_algorithm": "blake3",
+    "seed_derivation": "hierarchical"
+  },
+  "documentation": {
+    "readme": "README.md",
+    "constants": "PHASE_0_CONSTANTS.py",
+    "manifest": "PHASE_0_MANIFEST.json"
+  },
+  "validation": {
+    "naming_pattern": "^phase0_\\d{2}_\\d{2}_[a-z][a-z0-9_]+\\.py$",
+    "required_header_fields": ["PHASE_LABEL", "Module", "Purpose", "Type", "Criticality"],
+    "minimum_coverage_percent": 80
+  }
+}
