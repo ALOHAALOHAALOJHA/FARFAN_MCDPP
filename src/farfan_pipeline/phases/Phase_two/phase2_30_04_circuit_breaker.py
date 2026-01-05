@@ -120,12 +120,16 @@ class CircuitBreaker:
                 # Check if recovery timeout has passed
                 if self._recovery_timeout_elapsed():
                     self._transition_to(CircuitState.HALF_OPEN)
+                    # Increment counter for this first call in half-open state
+                    self.half_open_calls += 1
                     return True, "Circuit half-open - testing recovery"
                 self._metrics.rejected_calls += 1
                 return False, f"Circuit open - blocked until {self._time_until_recovery():.1f}s"
 
             if self.state == CircuitState.HALF_OPEN:
                 if self.half_open_calls < self.config.half_open_max_calls:
+                    # Atomically increment under lock to prevent race condition
+                    self.half_open_calls += 1
                     return True, "Circuit half-open - limited calls allowed"
                 self._metrics.rejected_calls += 1
                 return False, "Circuit half-open - max calls reached"
@@ -140,7 +144,6 @@ class CircuitBreaker:
 
             if self.state == CircuitState.HALF_OPEN:
                 self.success_count += 1
-                self.half_open_calls += 1
 
                 if self.success_count >= self.config.success_threshold:
                     self._transition_to(CircuitState.CLOSED)
