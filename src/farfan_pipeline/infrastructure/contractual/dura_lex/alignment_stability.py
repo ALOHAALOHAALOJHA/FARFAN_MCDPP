@@ -3,7 +3,7 @@ Alignment Stability Contract (ASC) - Implementation
 """
 import hashlib
 import json
-from typing import List, Dict, Any, Tuple
+from typing import List, Dict, Any
 
 class AlignmentStabilityContract:
     @staticmethod
