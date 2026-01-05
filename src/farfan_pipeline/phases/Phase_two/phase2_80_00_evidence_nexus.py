@@ -464,6 +464,7 @@ class EvidenceGraph:
     __slots__ = (
         '_nodes', '_edges', '_adjacency', '_reverse_adjacency',
         '_type_index', '_source_index', '_hash_chain', '_last_hash',
+        '_confidence_adjustments', '_belief_mass_adjustments',
     )
     
     def __init__(self) -> None:
@@ -475,6 +476,23 @@ class EvidenceGraph:
         self._source_index: dict[str, list[EvidenceID]] = defaultdict(list)
         self._hash_chain: list[str] = []
         self._last_hash: str | None = None
+        # Adjustments for frozen nodes (set by level strategies)
+        self._confidence_adjustments: dict[EvidenceID, float] = {}
+        self._belief_mass_adjustments: dict[EvidenceID, float] = {}
+    
+    def get_adjusted_confidence(self, node_id: EvidenceID) -> float:
+        """Get confidence for node, using adjustment if present."""
+        if node_id in self._confidence_adjustments:
+            return self._confidence_adjustments[node_id]
+        node = self._nodes.get(node_id)
+        return node.confidence if node else 0.0
+
+    def get_adjusted_belief_mass(self, node_id: EvidenceID) -> float:
+        """Get belief mass for node, using adjustment if present."""
+        if node_id in self._belief_mass_adjustments:
+            return self._belief_mass_adjustments[node_id]
+        node = self._nodes.get(node_id)
+        return node.belief_mass if node else 0.0
     
     # -------------------------------------------------------------------------
     # Node Operations
@@ -732,15 +750,15 @@ class EvidenceGraph:
         sorted_nodes = self._topological_sort()
         
         for node_id in sorted_nodes:
-            node = self._nodes[node_id]
             incoming = self.get_edges_to(node_id)
+            node_belief = self.get_adjusted_belief_mass(node_id)
             
             if not incoming:
-                # Root node:  use intrinsic belief
-                beliefs[node_id] = node.belief_mass
+                # Root node:  use intrinsic belief (adjusted if applicable)
+                beliefs[node_id] = node_belief
             else:
                 # Combine beliefs from parents using Dempster's rule
-                combined_belief = node.belief_mass
+                combined_belief = node_belief
                 
                 for edge in incoming:
                     if edge.relation_type == RelationType.SUPPORTS:
@@ -1722,8 +1740,64 @@ class BlockingRulesEngine:
         self.rules = self._extract_rules(contract)
 
     def _extract_rules(self, contract: dict[str, Any]) -> list[dict[str, Any]]:
+        """Extract blocking rules from validation_rules and gate_logic from assembly_rules.
+        
+        R-B5 RESOLUTION: Now extracts gate_logic from evidence_assembly.assembly_rules
+        in addition to validation_rules.blocking_rules.
+        """
+        rules: list[dict[str, Any]] = []
+        
+        # Extract from validation_rules.blocking_rules
         validation_rules = contract.get("validation_rules", {})
-        return validation_rules.get("blocking_rules", [])
+        blocking_rules = validation_rules.get("blocking_rules", [])
+        rules.extend(blocking_rules)
+        
+        # Extract gate_logic from evidence_assembly.assembly_rules (R3 rules)
+        evidence_assembly = contract.get("evidence_assembly", {})
+        assembly_rules = evidence_assembly.get("assembly_rules", [])
+        
+        for assembly_rule in assembly_rules:
+            if not isinstance(assembly_rule, dict):
+                continue
+            
+            gate_logic = assembly_rule.get("gate_logic", {})
+            if not gate_logic:
+                continue
+            
+            rule_id = assembly_rule.get("rule_id", "UNKNOWN")
+            
+            # Convert gate_logic entries to blocking rules
+            for condition_name, gate_config in gate_logic.items():
+                if not isinstance(gate_config, dict):
+                    continue
+                
+                action = gate_config.get("action", "FLAG_REVIEW")
+                multiplier = gate_config.get("multiplier", 1.0)
+                
+                # Map gate_logic actions to blocking rule format
+                if action == "suppress_fact" or multiplier == 0.0:
+                    veto_action = "SCORE_ZERO"
+                elif action == "reduce_confidence" or (multiplier and multiplier < 1.0):
+                    veto_action = "FLAG_REVIEW"
+                elif action == "block_branch":
+                    veto_action = "SUPPRESS_OUTPUT"
+                elif action == "invalidate_graph":
+                    veto_action = "SCORE_ZERO"
+                else:
+                    veto_action = "FLAG_REVIEW"
+                
+                rules.append({
+                    "rule_id": f"{rule_id}_{condition_name}",
+                    "condition": {
+                        "type": condition_name,
+                        "threshold": multiplier if multiplier else 0.5,
+                    },
+                    "on_violation": veto_action,
+                    "description": f"Gate logic: {condition_name} from {rule_id}",
+                    "source": "assembly_rules.gate_logic",
+                })
+        
+        return rules
 
     def evaluate(
         self,
@@ -1783,6 +1857,35 @@ class BlockingRulesEngine:
 
         elif condition_type == "contradiction_detected":
             return len(graph.get_edges_by_type(RelationType.CONTRADICTS)) > 0
+
+        elif condition_type == "low_coherence":
+            # Check if validation report has coherence-related warnings
+            threshold = condition.get("threshold", 0.5)
+            avg_confidence = self._compute_global_confidence(graph)
+            return avg_confidence < threshold
+
+        elif condition_type == "statistical_power_below_threshold":
+            # For TYPE_B Bayesian contracts
+            threshold = condition.get("threshold", 0.8)
+            avg_confidence = self._compute_global_confidence(graph)
+            return avg_confidence < threshold
+
+        elif condition_type == "cycle_detected":
+            # For TYPE_C Causal contracts - check for circular reasoning
+            circles = graph.detect_circular_reasoning()
+            return len(circles) > 0
+
+        elif condition_type == "budget_gap_detected":
+            # For TYPE_D Financial contracts
+            budget_nodes = graph.get_nodes_by_type(EvidenceType.BUDGET_AMOUNT)
+            goal_nodes = graph.get_nodes_by_type(EvidenceType.GOAL_TARGET)
+            # Flag if we have goals but no budget
+            return len(goal_nodes) > 0 and len(budget_nodes) == 0
+
+        elif condition_type == "logical_contradiction":
+            # For TYPE_E Logical contracts
+            contradiction_nodes = graph.get_nodes_by_type(EvidenceType.CONTRADICTION)
+            return len(contradiction_nodes) > 0
 
         elif condition_type == "node_count_below":
             min_nodes = condition.get("minimum", 1)
@@ -1969,8 +2072,8 @@ class NarrativeSynthesizer:
         supporting_nodes = self._select_supporting_evidence(graph, primary_nodes)
         
         # 3. Build citations
-        primary_citations = [self._node_to_citation(n) for n in primary_nodes]
-        supporting_citations = [self._node_to_citation(n) for n in supporting_nodes]
+        primary_citations = [self._node_to_citation(n, graph) for n in primary_nodes]
+        supporting_citations = [self._node_to_citation(n, graph) for n in supporting_nodes]
         
         # 4. Generate direct answer
         answer_type = self._infer_answer_type(question_global)
@@ -2076,8 +2179,8 @@ class NarrativeSynthesizer:
         candidates: list[tuple[EvidenceNode, float]] = []
 
         for node in graph._nodes.values():
-            # Base priority from confidence
-            priority = node.confidence
+            # Base priority from confidence (using adjusted values)
+            priority = graph.get_adjusted_confidence(node.node_id)
 
             # Add type-based priority
             for type_key, type_priority in evidence_priority.items():
@@ -2128,7 +2231,7 @@ class NarrativeSynthesizer:
         
         return unique_supporting[: 10]
     
-    def _node_to_citation(self, node: EvidenceNode) -> Citation:
+    def _node_to_citation(self, node: EvidenceNode, graph: EvidenceGraph) -> Citation:
         """Convert evidence node to citation."""
         value_summary = self._summarize_content(node.content)
         
@@ -2136,7 +2239,7 @@ class NarrativeSynthesizer:
             node_id=node.node_id,
             evidence_type=node.evidence_type.value,
             value_summary=value_summary,
-            confidence=node.confidence,
+            confidence=graph.get_adjusted_confidence(node.node_id),
             source_method=node.source_method,
             document_reference=node.document_location,
         )
@@ -2352,10 +2455,10 @@ class NarrativeSynthesizer:
             except ValueError:
                 continue
         
-        # Check for low-confidence evidence clusters
+        # Check for low-confidence evidence clusters (using adjusted values)
         low_conf_types:  dict[str, int] = defaultdict(int)
         for node in graph._nodes.values():
-            if node.confidence < 0.5:
+            if graph.get_adjusted_confidence(node.node_id) < 0.5:
                 low_conf_types[node.evidence_type.value] += 1
         
         for ev_type, count in low_conf_types.items():
@@ -2574,14 +2677,54 @@ class EvidenceNexus:
         """
         start_time = time.time()
         
-        # 1. Build evidence graph from method outputs
-        graph = self._build_graph_from_outputs(
-            method_outputs, question_context, contract, signal_pack
-        )
+        # R-B3: Extract type system from contract for type-aware graph building
+        evidence_assembly = contract.get("evidence_assembly", {})
+        type_system = evidence_assembly.get("type_system", {})
+        
+        # R-B4: Extract level strategies from fusion_specification
+        fusion_spec = contract.get("fusion_specification", {})
+        level_strategies = fusion_spec.get("level_strategies", {})
+        
+        # Determine execution type from contract identity (TYPE_A, TYPE_B, TYPE_C, etc.)
+        identity = contract.get("identity", {})
+        execution_type = identity.get("contract_type", "TYPE_A")  # Default to TYPE_A
+        
+        # 1. Route graph building by execution type (R-B3)
+        if execution_type == "TYPE_A":
+            graph = self._build_graph_type_a(
+                method_outputs, question_context, contract, type_system, signal_pack
+            )
+        elif execution_type == "TYPE_B":
+            graph = self._build_graph_type_b(
+                method_outputs, question_context, contract, type_system, signal_pack
+            )
+        elif execution_type == "TYPE_C":
+            graph = self._build_graph_type_c(
+                method_outputs, question_context, contract, type_system, signal_pack
+            )
+        elif execution_type == "TYPE_D":
+            graph = self._build_graph_type_d(
+                method_outputs, question_context, contract, type_system, signal_pack
+            )
+        elif execution_type == "TYPE_E":
+            graph = self._build_graph_type_e(
+                method_outputs, question_context, contract, type_system, signal_pack
+            )
+        else:
+            # Fallback to TYPE_A for unknown types
+            logger.debug("execution_type_fallback", execution_type=execution_type)
+            graph = self._build_graph_type_a(
+                method_outputs, question_context, contract, type_system, signal_pack
+            )
+        
         self._graph = graph
 
         # 1.5 Apply epistemological level strategies (B4)
         self._apply_level_strategies(graph, contract)
+        
+        # 1.6 Apply level-specific strategies from contract (R-B4)
+        if level_strategies:
+            self._apply_contract_level_strategies(graph, level_strategies)
 
         # 2. Infer relationships between evidence nodes
         self._infer_relationships(graph, contract)
@@ -2739,6 +2882,547 @@ class EvidenceNexus:
             graph.add_node(provenance_node)
         
         return graph
+
+    # -------------------------------------------------------------------------
+    # R-B3: Type-Specific Graph Builders
+    # -------------------------------------------------------------------------
+
+    def _build_graph_type_a(
+        self,
+        method_outputs: dict[str, Any],
+        question_context: dict[str, Any],
+        contract: dict[str, Any],
+        type_system: dict[str, Any],
+        signal_pack: Any | None = None,
+    ) -> EvidenceGraph:
+        """TYPE_A: Semantic corroboration → Dempster-Shafer → Veto gate.
+        
+        TYPE_A is the default execution type for questions requiring:
+        - Cross-validation of evidence sources
+        - Belief propagation for confidence aggregation
+        - Veto gates for blocking conditions
+        """
+        # Build base graph using standard extraction
+        graph = self._build_graph_from_outputs(
+            method_outputs, question_context, contract, signal_pack
+        )
+        
+        # Extract TYPE_A specific configuration
+        expected_outputs = type_system.get("expected_outputs", {})
+        n1_provides = expected_outputs.get("N1", [])
+        n2_provides = expected_outputs.get("N2", [])
+        n3_provides = expected_outputs.get("N3", [])
+        
+        # Add type-aware metadata to nodes based on epistemological level
+        for node_id, node in list(graph._nodes.items()):
+            level = self._determine_method_level(node.source_method, contract)
+            provides = {"N1": n1_provides, "N2": n2_provides, "N3": n3_provides}.get(level, [])
+            
+            # Store level metadata in adjustments (frozen nodes can't be mutated)
+            if provides:
+                # Track which evidence types this level should provide
+                graph._confidence_adjustments.setdefault(node_id, node.confidence)
+        
+        # TYPE_A specific: Add semantic corroboration edges
+        self._add_semantic_corroboration_edges(graph)
+        
+        logger.debug(
+            "type_a_graph_built",
+            node_count=graph.node_count,
+            edge_count=graph.edge_count,
+            n1_provides=n1_provides,
+            n2_provides=n2_provides,
+            n3_provides=n3_provides,
+        )
+        
+        return graph
+
+    def _build_graph_type_b(
+        self,
+        method_outputs: dict[str, Any],
+        question_context: dict[str, Any],
+        contract: dict[str, Any],
+        type_system: dict[str, Any],
+        signal_pack: Any | None = None,
+    ) -> EvidenceGraph:
+        """TYPE_B: Quantitative aggregation → Statistical validation → Threshold gates.
+        
+        TYPE_B is designed for questions requiring:
+        - Numerical aggregation and statistical analysis
+        - Threshold-based validation (min/max/range checks)
+        - Quantitative evidence prioritization
+        """
+        # Build base graph
+        graph = self._build_graph_from_outputs(
+            method_outputs, question_context, contract, signal_pack
+        )
+        
+        # TYPE_B specific: Boost confidence for quantitative evidence types
+        quantitative_types = {
+            EvidenceType.INDICATOR_NUMERIC,
+            EvidenceType.TEMPORAL_SERIES,
+            EvidenceType.BUDGET_AMOUNT,
+            EvidenceType.COVERAGE_METRIC,
+            EvidenceType.GOAL_TARGET,
+        }
+        
+        for node_id, node in graph._nodes.items():
+            if node.evidence_type in quantitative_types:
+                # Boost quantitative evidence confidence for TYPE_B
+                graph._confidence_adjustments[node_id] = min(1.0, node.confidence * 1.15)
+                graph._belief_mass_adjustments[node_id] = min(1.0, node.belief_mass * 1.15)
+        
+        # TYPE_B specific: Add statistical correlation edges
+        self._add_statistical_correlation_edges(graph)
+        
+        logger.debug(
+            "type_b_graph_built",
+            node_count=graph.node_count,
+            edge_count=graph.edge_count,
+            quantitative_nodes=sum(
+                1 for n in graph._nodes.values() if n.evidence_type in quantitative_types
+            ),
+        )
+        
+        return graph
+
+    def _build_graph_type_c(
+        self,
+        method_outputs: dict[str, Any],
+        question_context: dict[str, Any],
+        contract: dict[str, Any],
+        type_system: dict[str, Any],
+        signal_pack: Any | None = None,
+    ) -> EvidenceGraph:
+        """TYPE_C: Causal chain → Temporal ordering → Dependency validation.
+        
+        TYPE_C is designed for questions requiring:
+        - Causal relationship analysis
+        - Temporal sequence validation
+        - Dependency chain construction
+        """
+        # Build base graph
+        graph = self._build_graph_from_outputs(
+            method_outputs, question_context, contract, signal_pack
+        )
+        
+        # TYPE_C specific: Prioritize causal and temporal evidence
+        causal_types = {
+            EvidenceType.CAUSAL_LINK,
+            EvidenceType.TEMPORAL_DEPENDENCY,
+            EvidenceType.POLICY_INSTRUMENT,
+        }
+        
+        for node_id, node in graph._nodes.items():
+            if node.evidence_type in causal_types:
+                # Boost causal evidence confidence for TYPE_C
+                graph._confidence_adjustments[node_id] = min(1.0, node.confidence * 1.2)
+                graph._belief_mass_adjustments[node_id] = min(1.0, node.belief_mass * 1.2)
+        
+        # TYPE_C specific: Add causal chain edges
+        self._add_causal_chain_edges(graph)
+        
+        # TYPE_C specific: Add temporal ordering edges
+        self._add_temporal_ordering_edges(graph)
+        
+        logger.debug(
+            "type_c_graph_built",
+            node_count=graph.node_count,
+            edge_count=graph.edge_count,
+            causal_nodes=sum(
+                1 for n in graph._nodes.values() if n.evidence_type in causal_types
+            ),
+        )
+        
+        return graph
+
+    def _build_graph_type_d(
+        self,
+        method_outputs: dict[str, Any],
+        question_context: dict[str, Any],
+        contract: dict[str, Any],
+        type_system: dict[str, Any],
+        signal_pack: Any | None = None,
+    ) -> EvidenceGraph:
+        """TYPE_D: Financial extraction → Sufficiency analysis → Coherence audit.
+        
+        TYPE_D is designed for questions requiring:
+        - Budget and financial data extraction
+        - Sufficiency score computation
+        - Financial coherence validation
+        """
+        # Build base graph
+        graph = self._build_graph_from_outputs(
+            method_outputs, question_context, contract, signal_pack
+        )
+        
+        # TYPE_D specific: Prioritize financial evidence types
+        financial_types = {
+            EvidenceType.BUDGET_AMOUNT,
+            EvidenceType.INDICATOR_NUMERIC,
+            EvidenceType.GOAL_TARGET,
+        }
+        
+        for node_id, node in graph._nodes.items():
+            if node.evidence_type in financial_types:
+                # Boost financial evidence confidence for TYPE_D
+                graph._confidence_adjustments[node_id] = min(1.0, node.confidence * 1.2)
+                graph._belief_mass_adjustments[node_id] = min(1.0, node.belief_mass * 1.2)
+        
+        # TYPE_D specific: Add financial coherence edges
+        self._add_financial_coherence_edges(graph)
+        
+        logger.debug(
+            "type_d_graph_built",
+            node_count=graph.node_count,
+            edge_count=graph.edge_count,
+            financial_nodes=sum(
+                1 for n in graph._nodes.values() if n.evidence_type in financial_types
+            ),
+        )
+        
+        return graph
+
+    def _build_graph_type_e(
+        self,
+        method_outputs: dict[str, Any],
+        question_context: dict[str, Any],
+        contract: dict[str, Any],
+        type_system: dict[str, Any],
+        signal_pack: Any | None = None,
+    ) -> EvidenceGraph:
+        """TYPE_E: Statement extraction → Coherence computation → Contradiction detection.
+        
+        TYPE_E is designed for questions requiring:
+        - Policy statement extraction
+        - Logical consistency validation
+        - Contradiction detection and resolution
+        """
+        # Build base graph
+        graph = self._build_graph_from_outputs(
+            method_outputs, question_context, contract, signal_pack
+        )
+        
+        # TYPE_E specific: Prioritize normative and policy evidence
+        logical_types = {
+            EvidenceType.NORMATIVE_REFERENCE,
+            EvidenceType.POLICY_INSTRUMENT,
+            EvidenceType.CONTRADICTION,
+            EvidenceType.CORROBORATION,
+        }
+        
+        for node_id, node in graph._nodes.items():
+            if node.evidence_type in logical_types:
+                # Boost logical evidence confidence for TYPE_E
+                graph._confidence_adjustments[node_id] = min(1.0, node.confidence * 1.15)
+                graph._belief_mass_adjustments[node_id] = min(1.0, node.belief_mass * 1.15)
+        
+        # TYPE_E specific: Add logical consistency edges
+        self._add_logical_consistency_edges(graph)
+        
+        # TYPE_E specific: Detect and mark contradictions
+        self._detect_and_mark_contradictions(graph)
+        
+        logger.debug(
+            "type_e_graph_built",
+            node_count=graph.node_count,
+            edge_count=graph.edge_count,
+            logical_nodes=sum(
+                1 for n in graph._nodes.values() if n.evidence_type in logical_types
+            ),
+        )
+        
+        return graph
+
+    def _add_financial_coherence_edges(self, graph: EvidenceGraph) -> None:
+        """Add edges for financial coherence between budget-related nodes.
+        
+        TYPE_D specific: Creates SUPPORTS edges between budget amounts
+        and goal targets to validate financial sufficiency.
+        """
+        budget_nodes = graph.get_nodes_by_type(EvidenceType.BUDGET_AMOUNT)
+        goal_nodes = graph.get_nodes_by_type(EvidenceType.GOAL_TARGET)
+        
+        for bn in budget_nodes[:5]:
+            for gn in goal_nodes[:5]:
+                if bn.node_id != gn.node_id:
+                    edge = EvidenceEdge.create(
+                        source_id=bn.node_id,
+                        target_id=gn.node_id,
+                        relation_type=RelationType.SUPPORTS,
+                        weight=0.7,
+                        confidence=0.7,
+                        metadata={"edge_type": "financial_coherence"},
+                    )
+                    try:
+                        graph.add_edge(edge)
+                    except ValueError:
+                        pass
+
+    def _add_logical_consistency_edges(self, graph: EvidenceGraph) -> None:
+        """Add edges for logical consistency between policy statements.
+        
+        TYPE_E specific: Creates SUPPORTS or CONTRADICTS edges between
+        normative references and policy instruments.
+        """
+        normative_nodes = graph.get_nodes_by_type(EvidenceType.NORMATIVE_REFERENCE)
+        policy_nodes = graph.get_nodes_by_type(EvidenceType.POLICY_INSTRUMENT)
+        
+        for nn in normative_nodes[:5]:
+            for pn in policy_nodes[:5]:
+                if nn.node_id != pn.node_id:
+                    edge = EvidenceEdge.create(
+                        source_id=nn.node_id,
+                        target_id=pn.node_id,
+                        relation_type=RelationType.SUPPORTS,
+                        weight=0.6,
+                        confidence=0.65,
+                        metadata={"edge_type": "logical_consistency"},
+                    )
+                    try:
+                        graph.add_edge(edge)
+                    except ValueError:
+                        pass
+
+    def _detect_and_mark_contradictions(self, graph: EvidenceGraph) -> None:
+        """Detect potential contradictions and create CONTRADICTS edges.
+        
+        TYPE_E specific: Analyzes evidence nodes for logical conflicts
+        and creates CONTRADICTS edges where detected.
+        """
+        # Get nodes that might contain contradictory information
+        contradiction_nodes = graph.get_nodes_by_type(EvidenceType.CONTRADICTION)
+        
+        # Create contradiction edges between contradiction nodes and their targets
+        for cn in contradiction_nodes[:5]:
+            # Look for related nodes that might be contradicted
+            if isinstance(cn.content, dict):
+                affected = cn.content.get("affects", [])
+                for affected_id in affected[:3]:
+                    if affected_id in graph._nodes:
+                        edge = EvidenceEdge.create(
+                            source_id=cn.node_id,
+                            target_id=affected_id,
+                            relation_type=RelationType.CONTRADICTS,
+                            weight=0.8,
+                            confidence=0.75,
+                            metadata={"edge_type": "detected_contradiction"},
+                        )
+                        try:
+                            graph.add_edge(edge)
+                        except ValueError:
+                            pass
+
+    def _determine_method_level(self, source_method: str, contract: dict[str, Any]) -> str:
+        """Determine epistemological level (N1/N2/N3) for a method.
+        
+        Returns:
+            Level string: "N1", "N2", or "N3"
+        """
+        method_binding = contract.get("method_binding", {})
+        execution_phases = method_binding.get("execution_phases", {})
+        
+        source_lower = source_method.lower()
+        
+        # Check execution phases for level mapping
+        for phase_name, phase_data in execution_phases.items():
+            if isinstance(phase_data, dict):
+                phase_methods = phase_data.get("methods", [])
+                for method in phase_methods:
+                    method_id = method.get("method_id", "") if isinstance(method, dict) else str(method)
+                    if method_id.lower() in source_lower or source_lower in method_id.lower():
+                        return phase_data.get("level", "N1")
+        
+        # Default level inference from method name
+        if "audit" in source_lower or "validation" in source_lower:
+            return "N3"
+        elif "infer" in source_lower or "causal" in source_lower or "analysis" in source_lower:
+            return "N2"
+        return "N1"
+
+    def _add_semantic_corroboration_edges(self, graph: EvidenceGraph) -> None:
+        """Add edges for semantic corroboration between evidence nodes.
+        
+        TYPE_A specific: Creates SUPPORTS edges between nodes with
+        compatible evidence types that can corroborate each other.
+        """
+        corroboration_pairs = [
+            (EvidenceType.OFFICIAL_SOURCE, EvidenceType.NORMATIVE_REFERENCE),
+            (EvidenceType.INDICATOR_NUMERIC, EvidenceType.GOAL_TARGET),
+            (EvidenceType.TERRITORIAL_COVERAGE, EvidenceType.COVERAGE_METRIC),
+            (EvidenceType.INSTITUTIONAL_ACTOR, EvidenceType.POLICY_INSTRUMENT),
+        ]
+        
+        for source_type, target_type in corroboration_pairs:
+            source_nodes = graph.get_nodes_by_type(source_type)[:5]
+            target_nodes = graph.get_nodes_by_type(target_type)[:5]
+            
+            for sn in source_nodes:
+                for tn in target_nodes:
+                    if sn.node_id != tn.node_id:
+                        edge = EvidenceEdge.create(
+                            source_id=sn.node_id,
+                            target_id=tn.node_id,
+                            relation_type=RelationType.SUPPORTS,
+                            weight=0.7,
+                            confidence=0.75,
+                            metadata={"edge_type": "semantic_corroboration"},
+                        )
+                        try:
+                            graph.add_edge(edge)
+                        except ValueError:
+                            pass  # Skip cycles
+
+    def _add_statistical_correlation_edges(self, graph: EvidenceGraph) -> None:
+        """Add edges for statistical correlation between quantitative nodes.
+        
+        TYPE_B specific: Creates CORRELATES edges between numerical
+        evidence that may be statistically related.
+        """
+        quantitative_nodes = []
+        for node in graph._nodes.values():
+            if node.evidence_type in {
+                EvidenceType.INDICATOR_NUMERIC,
+                EvidenceType.TEMPORAL_SERIES,
+                EvidenceType.BUDGET_AMOUNT,
+                EvidenceType.COVERAGE_METRIC,
+            }:
+                quantitative_nodes.append(node)
+        
+        # Create correlation edges between quantitative nodes (limited)
+        for i, node_a in enumerate(quantitative_nodes[:10]):
+            for node_b in quantitative_nodes[i+1:10]:
+                edge = EvidenceEdge.create(
+                    source_id=node_a.node_id,
+                    target_id=node_b.node_id,
+                    relation_type=RelationType.CORRELATES,
+                    weight=0.5,
+                    confidence=0.6,
+                    metadata={"edge_type": "statistical_correlation"},
+                )
+                try:
+                    graph.add_edge(edge)
+                except ValueError:
+                    pass
+
+    def _add_causal_chain_edges(self, graph: EvidenceGraph) -> None:
+        """Add edges for causal chain relationships.
+        
+        TYPE_C specific: Creates CAUSES edges between evidence nodes
+        that form causal chains.
+        """
+        causal_nodes = graph.get_nodes_by_type(EvidenceType.CAUSAL_LINK)
+        policy_nodes = graph.get_nodes_by_type(EvidenceType.POLICY_INSTRUMENT)
+        
+        # Causal links -> policy instruments (causal chain)
+        for cn in causal_nodes[:5]:
+            for pn in policy_nodes[:5]:
+                if cn.node_id != pn.node_id:
+                    edge = EvidenceEdge.create(
+                        source_id=cn.node_id,
+                        target_id=pn.node_id,
+                        relation_type=RelationType.CAUSES,
+                        weight=0.6,
+                        confidence=0.65,
+                        metadata={"edge_type": "causal_chain"},
+                    )
+                    try:
+                        graph.add_edge(edge)
+                    except ValueError:
+                        pass
+
+    def _add_temporal_ordering_edges(self, graph: EvidenceGraph) -> None:
+        """Add edges for temporal ordering between temporal evidence.
+        
+        TYPE_C specific: Creates TEMPORALLY_PRECEDES edges between
+        temporal evidence nodes.
+        """
+        temporal_nodes = graph.get_nodes_by_type(EvidenceType.TEMPORAL_SERIES)
+        dependency_nodes = graph.get_nodes_by_type(EvidenceType.TEMPORAL_DEPENDENCY)
+        
+        all_temporal = temporal_nodes[:5] + dependency_nodes[:5]
+        
+        # Simple temporal ordering (by extraction order as proxy)
+        for i, node_a in enumerate(all_temporal):
+            for node_b in all_temporal[i+1:]:
+                if node_a.node_id != node_b.node_id:
+                    edge = EvidenceEdge.create(
+                        source_id=node_a.node_id,
+                        target_id=node_b.node_id,
+                        relation_type=RelationType.TEMPORALLY_PRECEDES,
+                        weight=0.5,
+                        confidence=0.55,
+                        metadata={"edge_type": "temporal_ordering"},
+                    )
+                    try:
+                        graph.add_edge(edge)
+                    except ValueError:
+                        pass
+
+    def _apply_contract_level_strategies(
+        self,
+        graph: EvidenceGraph,
+        level_strategies: dict[str, Any],
+    ) -> None:
+        """Apply level-specific strategies from contract's fusion_specification.
+        
+        R-B4 RESOLUTION: Applies strategies defined in contract's
+        fusion_specification.level_strategies configuration.
+        
+        The level_strategies format from contract:
+        - N1_fact_fusion: { strategy, behavior, conflict_resolution, formula }
+        - N2_parameter_fusion: { strategy, behavior, affects }
+        - N3_constraint_fusion: { strategy, behavior, asymmetry_principle, propagation }
+        """
+        if not level_strategies:
+            return
+        
+        # Map strategy names to level prefixes
+        level_map = {
+            "N1_fact_fusion": "N1",
+            "N2_parameter_fusion": "N2",
+            "N3_constraint_fusion": "N3",
+        }
+        
+        # Apply behavior-based adjustments
+        for strategy_name, strategy_config in level_strategies.items():
+            if not isinstance(strategy_config, dict):
+                continue
+            
+            level_prefix = level_map.get(strategy_name)
+            if not level_prefix:
+                continue
+            
+            behavior = strategy_config.get("behavior", "additive")
+            strategy_type = strategy_config.get("strategy", "")
+            
+            # Apply adjustments based on behavior type
+            for node_id, node in graph._nodes.items():
+                node_level = self._determine_method_level(node.source_method, {})
+                
+                if not node_level.startswith(level_prefix):
+                    continue
+                
+                current_conf = graph._confidence_adjustments.get(node_id, node.confidence)
+                current_belief = graph._belief_mass_adjustments.get(node_id, node.belief_mass)
+                
+                if behavior == "gate" and level_prefix == "N3":
+                    # N3 gate behavior: boost confidence for audit nodes
+                    graph._confidence_adjustments[node_id] = min(1.0, current_conf * 1.1)
+                    graph._belief_mass_adjustments[node_id] = min(1.0, current_belief * 1.1)
+                elif behavior == "multiplicative" and level_prefix == "N2":
+                    # N2 multiplicative: moderate adjustment
+                    graph._confidence_adjustments[node_id] = current_conf * 1.0  # Neutral
+                    graph._belief_mass_adjustments[node_id] = current_belief * 1.0
+                elif behavior == "additive" and level_prefix == "N1":
+                    # N1 additive: preserve as-is
+                    pass
+        
+        logger.debug(
+            "contract_level_strategies_applied",
+            strategies_count=len(level_strategies),
+            strategies=list(level_strategies.keys()),
+        )
 
     def _extract_nodes_from_contract_patterns(
         self,
@@ -3377,15 +4061,17 @@ class EvidenceNexus:
 
         config = level_configs.get(current_level, level_configs["N1-EMP"])
 
-        # Apply confidence adjustments based on level
+        # Apply confidence adjustments based on level (stored in mapping, not mutating frozen nodes)
+        nodes_adjusted = 0
         for node in graph._nodes.values():
             # N3-AUD can downgrade confidence from N1/N2
             if current_level == "N3-AUD":
                 node_source = node.source_method.lower()
                 if "phase_a" in node_source or "phase_b" in node_source:
                     # N3 auditing: reduce confidence of lower-level evidence
-                    node.confidence *= 0.9
-                    node.belief_mass *= 0.9
+                    graph._confidence_adjustments[node.node_id] = node.confidence * 0.9
+                    graph._belief_mass_adjustments[node.node_id] = node.belief_mass * 0.9
+                    nodes_adjusted += 1
 
             # N1-EMP: Boost quantitative evidence
             elif current_level == "N1-EMP":
@@ -3393,15 +4079,16 @@ class EvidenceNexus:
                     ev_type = node.evidence_type.value
                     if "indicador" in ev_type or "temporal" in ev_type:
                         # Boost confidence for quantitative evidence in N1
-                        node.confidence = min(1.0, node.confidence * 1.1)
-                        node.belief_mass = min(1.0, node.belief_mass * 1.1)
+                        graph._confidence_adjustments[node.node_id] = min(1.0, node.confidence * 1.1)
+                        graph._belief_mass_adjustments[node.node_id] = min(1.0, node.belief_mass * 1.1)
+                        nodes_adjusted += 1
 
         logger.debug(
             "level_strategies_applied",
             level=current_level,
             phase=current_phase,
             confidence_threshold=config.get("confidence_threshold"),
-            nodes_adjusted=graph.node_count,
+            nodes_adjusted=nodes_adjusted,
         )
 
     def _persist_graph(self, graph: EvidenceGraph) -> None:
@@ -3439,17 +4126,18 @@ class EvidenceNexus:
         confidences = []
         
         for node in graph._nodes.values():
+            adjusted_conf = graph.get_adjusted_confidence(node.node_id)
             elem = {
                 "element_id": node.node_id[: 12],
                 "type": node.evidence_type.value,
                 "value": self._extract_value(node.content),
-                "confidence": node.confidence,
-                "belief":  beliefs.get(node.node_id, node.confidence),
+                "confidence": adjusted_conf,
+                "belief":  beliefs.get(node.node_id, adjusted_conf),
                 "source_method": node.source_method,
             }
             elements.append(elem)
             by_type[node.evidence_type.value].append(elem)
-            confidences.append(node.confidence)
+            confidences.append(adjusted_conf)
         
         return {
             "elements": elements,
