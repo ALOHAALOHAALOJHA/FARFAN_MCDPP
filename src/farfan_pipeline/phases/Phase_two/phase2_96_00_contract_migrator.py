@@ -28,6 +28,7 @@ Design Principles:
 
 from __future__ import annotations
 
+import copy
 import json
 import logging
 from collections import deque
@@ -472,7 +473,7 @@ def migrate_v4_to_v3(contract: dict) -> dict:
     - Extract 'configuration.parameters' back to 'params'
     - Remove 'schema_version'
     """
-    result = contract.copy()
+    result = copy.deepcopy(contract)
 
     # Extract params from configuration
     if "configuration" in result and "parameters" in result["configuration"]:
