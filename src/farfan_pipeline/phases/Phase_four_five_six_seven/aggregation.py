@@ -41,7 +41,7 @@ def calibrated_method(method_path: str) -> Any:
 
 
 # SOTA imports
-from farfan_pipeline.processing.aggregation_provenance import (
+from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_provenance import (
     AggregationDAG,
     ProvenanceNode,
 )

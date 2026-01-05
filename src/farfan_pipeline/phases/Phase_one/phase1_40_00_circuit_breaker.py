@@ -507,6 +507,187 @@ class SubphaseCheckpoint:
         return len(errors) == 0, errors
 
 
+class CrystallizationCheckpoint:
+    """
+    Enhanced checkpoint with state crystallization for resumability.
+    
+    Crystallization = validate + serialize state to disk, enabling:
+    1. Fail-fast: Abort immediately on constitutional violation
+    2. Resumable: If SP8 crashes, resume from SP7 checkpoint
+    3. Auditable: Each checkpoint emits a hash for verification
+    
+    Critical subphases for crystallization:
+    - SP4: PA×DIM grid complete (60 chunks)
+    - SP7: Causal chains extracted
+    - SP11: Smart chunks formed (300 questions mappable)
+    """
+    
+    CRYSTALLIZATION_POINTS = {
+        4: "PA×DIM grid complete - 60 chunks exist",
+        7: "Causal chains extracted - each chunk has events/causes/effects",
+        11: "Smart chunks formed - all 300 questions mappable",
+    }
+    
+    def __init__(self, checkpoint_dir: Path | None = None):
+        """
+        Initialize crystallization checkpoint manager.
+        
+        Args:
+            checkpoint_dir: Directory to store checkpoint files.
+                            If None, uses temp directory.
+        """
+        self.checkpoint_dir = checkpoint_dir or Path("/tmp/farfan_checkpoints")
+        self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
+        self.crystals: Dict[int, Dict[str, Any]] = {}
+    
+    def crystallize(
+        self,
+        subphase_num: int,
+        state: Any,
+        validators: List[Callable[[Any], tuple[bool, str]]] | None = None,
+        document_hash: str = ""
+    ) -> tuple[bool, str, List[str]]:
+        """
+        Validate and crystallize state at checkpoint.
+        
+        Args:
+            subphase_num: Subphase number (0-15)
+            state: State to crystallize
+            validators: Optional additional validators
+            document_hash: Document identifier for checkpoint file naming
+        
+        Returns:
+            Tuple of (passed, crystal_hash, error_messages)
+        """
+        import json
+        import pickle
+        
+        errors = []
+        
+        # Run validators if provided
+        if validators:
+            for validator in validators:
+                try:
+                    passed, message = validator(state)
+                    if not passed:
+                        errors.append(f"SP{subphase_num}: {message}")
+                except Exception as e:
+                    errors.append(f"SP{subphase_num}: Validator exception: {e}")
+        
+        if errors:
+            logger.error(f"SP{subphase_num} crystallization FAILED: {errors}")
+            return False, "", errors
+        
+        # Compute state hash
+        try:
+            # Try JSON serialization first (more portable)
+            state_str = self._serialize_state(state)
+            crystal_hash = hashlib.sha256(state_str.encode()).hexdigest()[:24]
+        except Exception:
+            # Fallback to pickle hash
+            state_bytes = pickle.dumps(state)
+            crystal_hash = hashlib.sha256(state_bytes).hexdigest()[:24]
+        
+        # Store crystal metadata
+        self.crystals[subphase_num] = {
+            'timestamp': datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z'),
+            'crystal_hash': crystal_hash,
+            'description': self.CRYSTALLIZATION_POINTS.get(subphase_num, f"SP{subphase_num} checkpoint"),
+            'document_hash': document_hash,
+            'state_size': len(state) if hasattr(state, '__len__') else 0,
+        }
+        
+        # Serialize to disk for resumability (only for crystallization points)
+        if subphase_num in self.CRYSTALLIZATION_POINTS:
+            checkpoint_file = self.checkpoint_dir / f"crystal_sp{subphase_num}_{document_hash[:8]}_{crystal_hash[:8]}.pkl"
+            try:
+                with open(checkpoint_file, 'wb') as f:
+                    pickle.dump({
+                        'subphase': subphase_num,
+                        'state': state,
+                        'crystal_hash': crystal_hash,
+                        'timestamp': self.crystals[subphase_num]['timestamp'],
+                    }, f)
+                logger.info(f"SP{subphase_num} crystallized to {checkpoint_file.name}")
+            except Exception as e:
+                logger.warning(f"SP{subphase_num} crystallization to disk failed: {e}")
+        
+        logger.info(
+            f"✓ SP{subphase_num} CRYSTALLIZED: {self.crystals[subphase_num]['description']} "
+            f"[hash={crystal_hash}]"
+        )
+        
+        return True, crystal_hash, []
+    
+    def _serialize_state(self, state: Any) -> str:
+        """Serialize state to JSON-like string for hashing."""
+        if hasattr(state, 'to_dict'):
+            return json.dumps(state.to_dict(), sort_keys=True, default=str)
+        elif hasattr(state, '__dict__'):
+            return json.dumps(state.__dict__, sort_keys=True, default=str)
+        elif isinstance(state, (list, tuple)):
+            return json.dumps([self._item_to_dict(item) for item in state], sort_keys=True, default=str)
+        elif isinstance(state, dict):
+            return json.dumps(state, sort_keys=True, default=str)
+        else:
+            return str(state)
+    
+    def _item_to_dict(self, item: Any) -> dict:
+        """Convert item to dict for serialization."""
+        if hasattr(item, 'to_dict'):
+            return item.to_dict()
+        elif hasattr(item, '__dict__'):
+            return {k: str(v) for k, v in item.__dict__.items() if not k.startswith('_')}
+        else:
+            return {'value': str(item)}
+    
+    def load_checkpoint(
+        self,
+        subphase_num: int,
+        document_hash: str
+    ) -> tuple[Any | None, str]:
+        """
+        Load checkpoint state from disk for resumption.
+        
+        Args:
+            subphase_num: Subphase to resume from
+            document_hash: Document identifier
+        
+        Returns:
+            Tuple of (state, crystal_hash) or (None, "") if not found
+        """
+        import pickle
+        import glob
+        
+        pattern = str(self.checkpoint_dir / f"crystal_sp{subphase_num}_{document_hash[:8]}_*.pkl")
+        matches = glob.glob(pattern)
+        
+        if not matches:
+            return None, ""
+        
+        # Use most recent checkpoint
+        latest = max(matches, key=os.path.getmtime)
+        
+        try:
+            with open(latest, 'rb') as f:
+                data = pickle.load(f)
+            
+            logger.info(f"SP{subphase_num} checkpoint loaded from {Path(latest).name}")
+            return data.get('state'), data.get('crystal_hash', '')
+        
+        except Exception as e:
+            logger.warning(f"Failed to load checkpoint {latest}: {e}")
+            return None, ""
+    
+    def get_crystal_summary(self) -> Dict[str, Any]:
+        """Get summary of all crystallization points."""
+        return {
+            'crystals': self.crystals,
+            'total_checkpoints': len(self.crystals),
+            'all_passed': all(c.get('crystal_hash') for c in self.crystals.values()),
+        }
+
+
 # Global circuit breaker instance
 # WARNING: This singleton is not thread-safe. If concurrent Phase 1 execution
 # is required, create separate Phase1CircuitBreaker instances per execution
@@ -551,6 +732,7 @@ __all__ = [
     'ResourceCheck',
     'PreflightResult',
     'SubphaseCheckpoint',
+    'CrystallizationCheckpoint',
     'get_circuit_breaker',
     'run_preflight_check',
     'ensure_can_execute',

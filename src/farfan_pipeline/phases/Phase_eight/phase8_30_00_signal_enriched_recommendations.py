@@ -1,4 +1,13 @@
-"""Phase 8 Signal-Enriched Recommendation Module
+"""
+Module: src.farfan_pipeline.phases.Phase_eight.phase8_30_00_signal_enriched_recommendations
+Purpose: Signal-based enhancement for recommendation engine
+Owner: phase8_core
+Stage: 30 (Enrichment)
+Order: 00
+Type: ENR
+Lifecycle: ACTIVE
+Version: 1.0.0
+Effective-Date: 2026-01-05
 
 Extends Phase 8 recommendation engine with signal-based enhancements for
 context-aware, data-driven recommendations with enhanced precision and
@@ -14,7 +23,6 @@ Integration: Used by RecommendationEngine to enhance rule evaluation
 with signal intelligence.
 
 Author: F.A.R.F.A.N Pipeline Team
-Version: 1.0.0
 """
 
 from __future__ import annotations

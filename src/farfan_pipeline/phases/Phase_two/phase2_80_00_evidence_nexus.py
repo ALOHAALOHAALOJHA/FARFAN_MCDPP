@@ -3730,9 +3730,17 @@ class EvidenceNexus:
             return re.IGNORECASE | re.MULTILINE
 
         # B3, I3 RESOLUTION: Build type mapping from contract's type_system
-        # Extract type_system from contract for dynamic mapping
+        # CRITICAL: Handle different contract versions for type_system access:
+        # - v4: contract.evidence_assembly.type_system
+        # - v3: may not have type_system at all
+        # - v2: may have contract.type_system directly
         contract_type_system: dict[str, str] = {}
-        type_mapping = contract.get("type_system", {})
+
+        # Try multiple paths for type_system (v4, v3, v2 compatibility)
+        type_mapping = (
+            contract.get("evidence_assembly", {}).get("type_system", {})  # v4 path
+            or contract.get("type_system", {})  # v2/v3 fallback
+        )
         if isinstance(type_mapping, dict):
             for pattern_category, evidence_type_str in type_mapping.items():
                 try:

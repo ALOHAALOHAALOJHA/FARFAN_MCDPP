@@ -1,0 +1,124 @@
+"""
+Phase 8 Primitives Package
+===========================
+
+This package contains all primitive types, constants, and foundational
+definitions for Phase 8 - Recommendation Engine.
+
+Contents:
+- PHASE_8_CONSTANTS: All phase-level constants and configuration
+- PHASE_8_TYPES: Type definitions and data structures
+- PHASE_8_ENUMS: Enumeration types
+
+According to GNEA (Global Nomenclature Enforcement Architecture), all primitives
+and constants MUST be centralized in this package to ensure consistency and
+prevent duplication.
+"""
+
+from .PHASE_8_CONSTANTS import (
+    # Phase identification
+    PHASE_NUMBER,
+    PHASE_NAME,
+    PHASE_LABEL,
+    PHASE_CODENAME,
+    # Stage definitions
+    STAGE_BASE,
+    STAGE_INIT,
+    STAGE_ENGINE,
+    STAGE_ENRICHMENT,
+    VALID_STAGES,
+    STAGE_METADATA,
+    # Module types
+    TYPE_ENGINE,
+    TYPE_ADAPTER,
+    TYPE_ENRICHER,
+    TYPE_UTILITY,
+    VALID_MODULE_TYPES,
+    # Criticality levels
+    CRITICALITY_CRITICAL,
+    CRITICALITY_HIGH,
+    CRITICALITY_MEDIUM,
+    VALID_CRITICALITY_LEVELS,
+    # Execution patterns
+    PATTERN_ON_DEMAND,
+    PATTERN_STREAMING,
+    VALID_EXECUTION_PATTERNS,
+    # Recommendation constants
+    MAX_RECOMMENDATIONS_PER_AREA,
+    MIN_CONFIDENCE_THRESHOLD,
+    SIGNAL_WEIGHT_DEFAULT,
+    # Determinism
+    DEFAULT_SEED,
+    SEED_STRATEGY,
+)
+
+from .PHASE_8_TYPES import (
+    # Input types
+    AnalysisResultsInput,
+    PolicyContextInput,
+    SignalDataInput,
+    # Score types
+    MicroScoreKey,
+    ClusterKey,
+    # Threshold types
+    ScoreThreshold,
+    # Recommendation types
+    RecommendationLevel,
+    VerificationType,
+)
+
+from .PHASE_8_ENUMS import (
+    Level,
+    ScoreBand,
+    VarianceLevel,
+    QualityLevel,
+    HorizonType,
+    VerificationFormat,
+)
+
+__all__ = [
+    # Constants
+    "PHASE_NUMBER",
+    "PHASE_NAME",
+    "PHASE_LABEL",
+    "PHASE_CODENAME",
+    "STAGE_BASE",
+    "STAGE_INIT",
+    "STAGE_ENGINE",
+    "STAGE_ENRICHMENT",
+    "VALID_STAGES",
+    "STAGE_METADATA",
+    "TYPE_ENGINE",
+    "TYPE_ADAPTER",
+    "TYPE_ENRICHER",
+    "TYPE_UTILITY",
+    "VALID_MODULE_TYPES",
+    "CRITICALITY_CRITICAL",
+    "CRITICALITY_HIGH",
+    "CRITICALITY_MEDIUM",
+    "VALID_CRITICALITY_LEVELS",
+    "PATTERN_ON_DEMAND",
+    "PATTERN_STREAMING",
+    "VALID_EXECUTION_PATTERNS",
+    "MAX_RECOMMENDATIONS_PER_AREA",
+    "MIN_CONFIDENCE_THRESHOLD",
+    "SIGNAL_WEIGHT_DEFAULT",
+    "DEFAULT_SEED",
+    "SEED_STRATEGY",
+    # Types
+    "AnalysisResultsInput",
+    "PolicyContextInput",
+    "SignalDataInput",
+    "MicroScoreKey",
+    "ClusterKey",
+    "ScoreThreshold",
+    "RecommendationLevel",
+    "VerificationType",
+    # Enums
+    "Level",
+    "ScoreBand",
+    "VarianceLevel",
+    "QualityLevel",
+    "HorizonType",
+    "VerificationFormat",
+]

@@ -36,7 +36,7 @@ from __future__ import annotations
 import logging
 import math
 from dataclasses import dataclass, field
-from typing import Any, Sequence, Dict, Set, Tuple, List, Callable, Optional
+from typing import Any, Sequence, Dict, Set, Tuple, List, Callable, Optional, TYPE_CHECKING
 from itertools import combinations, chain
 from collections import defaultdict, Counter
 
@@ -46,7 +46,8 @@ from farfan_pipeline.phases.Phase_four_five_six_seven.uncertainty_quantification
     BootstrapAggregator
 )
 
-from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import AggregationSettings
+if TYPE_CHECKING:
+    from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import AggregationSettings
 
 logger = logging.getLogger(__name__)
 

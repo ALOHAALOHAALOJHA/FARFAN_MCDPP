@@ -569,61 +569,23 @@ class BaseExecutorWithContract(ABC):
         return cls._schema_validators[version]
 
     @classmethod
-    def _detect_contract_version(cls, contract: dict[str, Any]) -> str:
-        """Detect contract version from structure.
-
-        v4 contracts have: identity with contract_version "4.0.0-*", signal_requirements, 
-                          question_context with patterns and monolith_ref
-        v3 contracts have: identity, executor_binding, method_binding, question_context
-        v2 contracts have: method_inputs, assembly_rules at top level
-
-        Returns:
-            "v4", "v3" or "v2"
-        """
-        # Check for v4 first (most complete)
-        identity = contract.get("identity", {})
-        contract_version = identity.get("contract_version", "")
-        question_context = contract.get("question_context", {})
-        
-        # v4 indicators: contract_version starts with 4, has signal_requirements,
-        # question_context has patterns and monolith_ref
-        if (
-            contract_version.startswith("4.") and
-            "signal_requirements" in contract and
-            "patterns" in question_context and
-            "monolith_ref" in question_context
-        ):
-            return "v4"
-        
-        v3_indicators = [
-            "identity",
-            "executor_binding",
-            "method_binding",
-            "question_context",
-        ]
-        if all(key in contract for key in v3_indicators):
-            return "v3"
-        return "v2"
-
-    @classmethod
     def _load_contract(
-        cls, 
+        cls,
         question_id: str | None = None,
         policy_area_id: str | None = None,
     ) -> dict[str, Any]:
-        """Load contract with v4 (generated_contracts) priority.
-        
-        Search order:
-        1. generated_contracts/{q_id}_{pa_id}_contract_v4.json (v4 with signals)
-        2. Legacy paths (json_files_phase_two/executor_contracts/)
-        
+        """Load v4 contract from generated_contracts/ directory.
+
         Args:
             question_id: Question ID (e.g., "Q001", "Q001_PA01")
-            policy_area_id: Policy area ID (e.g., "PA01"). If not provided,
-                           extracted from question_id if format is "Q001_PA01"
-        
+            policy_area_id: Policy area ID (e.g., "PA01"). Required for v4 contracts.
+
         Returns:
             Contract dictionary with _contract_version tag
+
+        Raises:
+            ValueError: If policy_area_id is not provided
+            FileNotFoundError: If v4 contract file doesn't exist
         """
         base_slot = cls.get_base_slot()
 
@@ -652,95 +614,37 @@ class BaseExecutorWithContract(ABC):
         if cache_key in cls._contract_cache:
             return cls._contract_cache[cache_key]
 
-        # === V4 CONTRACTS (PRIORITY) - generated_contracts/ ===
-        # These are the 300 final contracts with full signal integration
+        # === V4 CONTRACTS ONLY - generated_contracts/ ===
+        # All contracts must be v4 format from this directory
         v4_contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "generated_contracts"
-        
-        contract_path = None
-        expected_version = None
-        
-        # Try v4 contract with policy area
-        if policy_area_id:
-            v4_path = v4_contracts_dir / f"{q_id}_{policy_area_id}_contract_v4.json"
-            if v4_path.exists():
-                contract_path = v4_path
-                expected_version = "v4"
-        
-        # === LEGACY FALLBACK - json_files_phase_two/executor_contracts/ ===
-        if contract_path is None:
-            contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts"
 
-            v3_path = contracts_dir / f"{base_slot}.v3.json"
-            v2_path = contracts_dir / f"{base_slot}.json"
-            v3_specialized_path = contracts_dir / "specialized" / f"{q_id}.v3.json"
-            v2_specialized_path = contracts_dir / "specialized" / f"{q_id}.json"
+        # v4 contract filename format: {q_id}_{policy_area_id}_contract_v4.json
+        if not policy_area_id:
+            raise ValueError(
+                f"Contract loading requires policy_area_id for v4 contracts. "
+                f"Question {q_id} must specify policy area (e.g., 'PA01')."
+            )
 
-            if v3_specialized_path.exists():
-                contract_path = v3_specialized_path
-                expected_version = "v3"
-            elif v2_specialized_path.exists():
-                contract_path = v2_specialized_path
-                expected_version = "v2"
-            elif v3_path.exists():
-                contract_path = v3_path
-                expected_version = "v3"
-            elif v2_path.exists():
-                contract_path = v2_path
-                expected_version = "v2"
-        
-        if contract_path is None:
-            # Provide helpful error with all paths tried
-            tried_paths = [str(v4_contracts_dir / f"{q_id}_{policy_area_id or 'PA??'}_contract_v4.json")]
+        contract_path = v4_contracts_dir / f"{q_id}_{policy_area_id}_contract_v4.json"
+
+        if not contract_path.exists():
             raise FileNotFoundError(
                 f"Contract not found for {base_slot} / {q_id} / {policy_area_id}. "
-                f"Tried v4 path: {tried_paths[0]}. "
-                f"Ensure policy_area_id is provided for v4 contracts."
+                f"Expected path: {contract_path}. "
+                f"Ensure v4 contract exists in generated_contracts/ directory."
             )
 
         contract = json.loads(contract_path.read_text(encoding="utf-8"))
 
-        # Detect actual version from structure
-        detected_version = cls._detect_contract_version(contract)
-        if detected_version != expected_version:
-            import logging
-
-            logging.warning(
-                f"Contract {contract_path.name} has structure of {detected_version} "
-                f"but file naming suggests {expected_version}"
-            )
-
-        # Validate with appropriate schema
-        validator = cls._get_schema_validator(detected_version)
-        errors = sorted(validator.iter_errors(contract), key=lambda e: e.path)
-        if errors:
-            messages = "; ".join(err.message for err in errors)
+        # Validate v4 structure
+        if "identity" not in contract:
             raise ValueError(
-                f"Contract validation failed for {base_slot} ({detected_version}): {messages}"
+                f"Contract {contract_path.name} is missing required 'identity' section. "
+                "Ensure this is a valid v4 contract."
             )
 
-        # Tag contract with version for later use
-        contract["_contract_version"] = detected_version
-
-        # Validate contract_version field (if present)
-        identity = contract.get("identity", {})
-        identity_contract_version = identity.get("contract_version", "")
-        
-        # v4 contracts have version like "4.0.0-epistemological"
-        # v3 contracts may have version like "3.x.x"
-        # v2 contracts have version like "2.x.x" or contract_version at root
-        if detected_version == "v4":
-            # v4 contracts are valid - they have full signal integration
-            pass
-        elif detected_version == "v3":
-            # v3 contracts are valid
-            pass
-        else:
-            # v2 validation (legacy)
-            contract_version = contract.get("contract_version")
-            if contract_version and not str(contract_version).startswith("2"):
-                raise ValueError(
-                    f"Unsupported contract_version {contract_version} for {base_slot}; expected v2.x"
-                )
+        # Tag contract as v4 for downstream processing
+        contract["_contract_version"] = "v4"
 
         # Validate base_slot (flexible for v4 which uses composite IDs)
         identity_base_slot = identity.get("base_slot")
@@ -761,44 +665,54 @@ class BaseExecutorWithContract(ABC):
         signal_requirements: dict[str, Any],
         base_slot: str,
     ) -> None:
-        """Validate that signal requirements from contract are met.
+        """Validate v4 signal requirements from contract.
+
+        v4 contracts use derivation_rules format:
+        - derivation_source: where signals come from (e.g., "expected_elements")
+        - derivation_rules: mapping rules for mandatory/optional derivation
+        - minimum_signal_threshold: minimum strength threshold
 
         Args:
-            signal_pack: Signal pack retrieved from registry (may be None)
-            signal_requirements: signal_requirements section from contract
+            signal_pack: Signal pack retrieved from registry (required)
+            signal_requirements: signal_requirements section from v4 contract
             base_slot: Base slot identifier for error messages
 
         Raises:
-            RuntimeError: If mandatory signal requirements are not met
+            RuntimeError: If signal requirements are not met
         """
-        mandatory_signals = signal_requirements.get("mandatory_signals", [])
         minimum_threshold = signal_requirements.get("minimum_signal_threshold", 0.0)
+        derivation_source = signal_requirements.get("derivation_source", "")
 
-        # Check if mandatory signals are required but no signal pack available
-        if mandatory_signals and signal_pack is None:
-            raise RuntimeError(
-                f"Contract {base_slot} requires mandatory signals {mandatory_signals}, "
-                "but no signal pack was retrieved from registry. "
-                "Ensure signal registry is properly configured and policy_area_id is valid."
-            )
-
-        # If signal pack exists, validate signal strength
-        if signal_pack is not None and minimum_threshold > 0:
-            # Check if signal pack has strength attribute
-            if hasattr(signal_pack, "strength") or (
+        # Validate signal pack strength against threshold
+        if minimum_threshold > 0:
+            if not hasattr(signal_pack, "strength") and not (
                 isinstance(signal_pack, dict) and "strength" in signal_pack
             ):
-                strength = (
-                    signal_pack.strength
-                    if hasattr(signal_pack, "strength")
-                    else signal_pack["strength"]
+                raise RuntimeError(
+                    f"Contract {base_slot} requires signal strength validation (threshold: {minimum_threshold}) "
+                    "but signal pack does not have 'strength' attribute."
                 )
-                if strength < minimum_threshold:
-                    raise RuntimeError(
-                        f"Contract {base_slot} requires minimum signal threshold {minimum_threshold}, "
-                        f"but signal pack has strength {strength}. "
-                        "Signal quality is insufficient for execution."
-                    )
+
+            strength = (
+                signal_pack.strength
+                if hasattr(signal_pack, "strength")
+                else signal_pack["strength"]
+            )
+            if strength < minimum_threshold:
+                raise RuntimeError(
+                    f"Contract {base_slot} requires minimum signal threshold {minimum_threshold}, "
+                    f"but signal pack has strength {strength}. "
+                    "Signal quality is insufficient for execution."
+                )
+
+        # Log derivation source for observability
+        if derivation_source:
+            logger.debug(
+                "signal_requirements_derivation",
+                base_slot=base_slot,
+                derivation_source=derivation_source,
+                signal_pack_type=type(signal_pack).__name__,
+            )
 
     @staticmethod
     def _set_nested_value(
@@ -1107,72 +1021,111 @@ class BaseExecutorWithContract(ABC):
         question_id = question_context.get("question_id")
         policy_area_id = question_context.get("policy_area_id")
         contract = self._load_contract(question_id=question_id, policy_area_id=policy_area_id)
-        contract_version = contract.get("_contract_version", "v2")
 
-        if contract_version == "v4":
-            # v4 contracts have full signal integration - use v3 execution path
-            # since v4 is a superset of v3 with additional signal fields
-            return self._execute_v3(document, question_context, contract)
-        elif contract_version == "v3":
-            return self._execute_v3(document, question_context, contract)
-        else:
-            return self._execute_v2(document, question_context, contract)
+        # All contracts are v4 format
+        contract_version = contract.get("_contract_version", "v4")
+        if contract_version != "v4":
+            raise ValueError(
+                f"Unsupported contract version: {contract_version}. "
+                "Only v4 contracts from generated_contracts/ are supported."
+            )
 
-    def _execute_v2(
+        # v4 contracts use the _execute_v3 path
+        return self._execute_v3(document, question_context, contract)
+
+    def _execute_v3(
         self,
         document: PreprocessedDocument,
         question_context: dict[str, Any],
         contract: dict[str, Any],
     ) -> dict[str, Any]:
-        """Execute using v2 contract format (legacy)."""
+        """Execute using v4 contract format.
+
+        v4 contracts have full signal integration and require:
+        - signal_registry for signal pack retrieval
+        - policy_area_id for signal routing
+        - signal_requirements validation
+        """
         base_slot = self.get_base_slot()
         question_id = question_context.get("question_id")
         question_global = question_context.get("question_global")
-        policy_area_id = question_context.get("policy_area_id")
         identity = question_context.get("identity", {})
         patterns = question_context.get("patterns", [])
         expected_elements = question_context.get("expected_elements", [])
 
-        # JOBFRONT 3: Use enriched signal packs if available
-        signal_pack = None
-        enriched_pack = None
-        applicable_patterns = patterns  # Default to contract patterns
-        document_context = {}
+        # CRITICAL: Signal irrigation is REQUIRED for proper execution
+        # The signal_registry must be provided and must contain the policy_area_id
+        if self.signal_registry is None:
+            raise RuntimeError(
+                f"Contract {base_slot} requires signal_registry for execution. "
+                "Signal registry was not provided to executor constructor."
+            )
 
-        if self._use_enriched_signals and policy_area_id in self.enriched_packs:
-            # Use enriched intelligence layer
-            enriched_pack = self.enriched_packs[policy_area_id]
-            signal_pack = enriched_pack.base_pack  # Maintain compatibility
+        if not policy_area_id or policy_area_id == "PA00":
+            raise ValueError(
+                f"Contract {base_slot} has invalid policy_area_id '{policy_area_id}'. "
+                "Ensure contract has valid identity.sector_id (v4) or identity.policy_area_id (v2/v3)."
+            )
 
-            # Create document context from available metadata
-            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
+        # Required: Retrieve signal pack from registry
+        signal_pack = self.signal_registry.get(policy_area_id)
+        if signal_pack is None:
+            available_areas = list(self.signal_registry.keys()) if hasattr(self.signal_registry, "keys") else []
+            raise RuntimeError(
+                f"Contract {base_slot} requires signal pack for policy_area '{policy_area_id}' "
+                f"but signal_registry does not contain this key. "
+                f"Available policy areas in registry: {available_areas}"
+            )
+
+        # SISAS: Inject consumption tracking (utility + proof chain)
+        consumption_tracker = None
+        try:
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+                inject_consumption_tracking,
+            )
+
+            consumption_tracker = inject_consumption_tracking(
+                executor=self,
+                question_id=question_id,
+                policy_area_id=policy_area_id,
+                # Deterministic: do not depend on wall clock time for proofs.
+                injection_time=0.0,
+            )
+        except Exception as e:
+            # Signal consumption tracking is required for proper provenance
+            raise RuntimeError(
+                f"Failed to inject signal consumption tracking for {base_slot}: {e}"
+            ) from e
+
+        # Build document context (for scope coherence + context-aware pattern filtering)
+        document_context: dict[str, Any] = {}
+        try:
+            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
                 create_document_context,
             )
 
-            doc_metadata = getattr(document, "metadata", {})
+            doc_metadata = getattr(document, "metadata", {}) or {}
             document_context = create_document_context(
                 section=doc_metadata.get("section"),
                 chapter=doc_metadata.get("chapter"),
                 page=doc_metadata.get("page"),
-                policy_area=policy_area_id
+                policy_area=policy_area_id,
+            )
+        except Exception:
+            document_context = {"policy_area": policy_area_id}
+
+        # SIGNAL REQUIREMENTS VALIDATION: Verify signal requirements from contract
+        signal_requirements = contract.get("signal_requirements", {})
+        if signal_requirements:
+            self._validate_signal_requirements(
+                signal_pack, signal_requirements, base_slot
             )
 
-            # Get context-filtered patterns (REFACTORING #6: context scoping)
-            applicable_patterns = enriched_pack.get_patterns_for_context(document_context)
+        # Extract method binding
+        method_binding = contract["method_binding"]
+        orchestration_mode = method_binding.get("orchestration_mode", "single_method")
 
-            # Expand patterns semantically (REFACTORING #2: semantic expansion)
-            if applicable_patterns and isinstance(applicable_patterns[0], dict):
-                pattern_strings = [p.get('pattern', p) if isinstance(p, dict) else p for p in applicable_patterns]
-            else:
-                pattern_strings = applicable_patterns
-
-            expanded_patterns = enriched_pack.expand_patterns(pattern_strings)
-            applicable_patterns = expanded_patterns
-
-        elif self.signal_registry is not None and hasattr(self.signal_registry, "get") and policy_area_id:
-            # Fallback to legacy signal registry
-            signal_pack = self.signal_registry.get(policy_area_id)
-
+        # Prepare common kwargs
         common_kwargs: dict[str, Any] = {
             "document": document,
             "base_slot": base_slot,
@@ -1184,10 +1137,11 @@ class BaseExecutorWithContract(ABC):
             "dimension_id": identity.get("dimension_id"),
             "cluster_id": identity.get("cluster_id"),
             "signal_pack": signal_pack,
-            "enriched_pack": enriched_pack,  # NEW: Pass enriched pack
-            "document_context": document_context,  # NEW: Pass document context
-            "question_patterns": applicable_patterns,  # Use filtered/expanded patterns
+            "question_patterns": patterns,
             "expected_elements": expected_elements,
+            "question_context": question_context,
+            "document_context": document_context,
+            "consumption_tracker": consumption_tracker,
         }
 
         method_outputs: dict[str, Any] = {}
@@ -1562,14 +1516,29 @@ class BaseExecutorWithContract(ABC):
         patterns = question_context.get("patterns", [])
         expected_elements = question_context.get("expected_elements", [])
 
-        # Signal pack
-        signal_pack = None
-        if (
-            self.signal_registry is not None
-            and hasattr(self.signal_registry, "get")
-            and policy_area_id
-        ):
-            signal_pack = self.signal_registry.get(policy_area_id)
+        # CRITICAL: Signal irrigation is REQUIRED for proper execution
+        # The signal_registry must be provided and must contain the policy_area_id
+        if self.signal_registry is None:
+            raise RuntimeError(
+                f"Contract {base_slot} requires signal_registry for execution. "
+                "Signal registry was not provided to executor constructor."
+            )
+
+        if not policy_area_id or policy_area_id == "PA00":
+            raise ValueError(
+                f"Contract {base_slot} has invalid policy_area_id '{policy_area_id}'. "
+                "Ensure contract has valid identity.sector_id (v4) or identity.policy_area_id (v2/v3)."
+            )
+
+        # Required: Retrieve signal pack from registry
+        signal_pack = self.signal_registry.get(policy_area_id)
+        if signal_pack is None:
+            available_areas = list(self.signal_registry.keys()) if hasattr(self.signal_registry, "keys") else []
+            raise RuntimeError(
+                f"Contract {base_slot} requires signal pack for policy_area '{policy_area_id}' "
+                f"but signal_registry does not contain this key. "
+                f"Available policy areas in registry: {available_areas}"
+            )
 
         # SISAS: Inject consumption tracking (utility + proof chain)
         consumption_tracker = None
@@ -1585,8 +1554,11 @@ class BaseExecutorWithContract(ABC):
                 # Deterministic: do not depend on wall clock time for proofs.
                 injection_time=0.0,
             )
-        except Exception:
-            consumption_tracker = None
+        except Exception as e:
+            # Signal consumption tracking is required for proper provenance
+            raise RuntimeError(
+                f"Failed to inject signal consumption tracking for {base_slot}: {e}"
+            ) from e
 
         # Build document context (for scope coherence + context-aware pattern filtering)
         document_context: dict[str, Any] = {}

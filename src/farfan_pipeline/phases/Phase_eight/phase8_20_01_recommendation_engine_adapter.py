@@ -1,11 +1,17 @@
 """
-Recommendation engine adapter for infrastructure layer.
+Module: src.farfan_pipeline.phases.Phase_eight.phase8_20_01_recommendation_engine_adapter
+Purpose: Ports and Adapters pattern adapter for RecommendationEngine
+Owner: phase8_core
+Stage: 20 (Engine)
+Order: 01
+Type: ADP
+Lifecycle: ACTIVE
+Version: 1.0.0
+Effective-Date: 2026-01-05
 
 Implements RecommendationEnginePort using the concrete RecommendationEngine
 from the analysis module. This adapter follows the Ports and Adapters pattern,
 allowing the orchestrator to depend on abstractions rather than concrete implementations.
-
-Version: 1.0.0
 """
 
 import logging

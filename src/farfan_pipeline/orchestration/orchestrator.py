@@ -68,7 +68,7 @@ from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_enhancements i
     EnhancedMacroAggregator,
 )
 from farfan_pipeline.phases.Phase_two.phase2_60_00_base_executor_with_contract import DynamicContractExecutor
-from farfan_pipeline.phases.Phase_two.arg_router import (
+from farfan_pipeline.phases.Phase_two.phase2_60_02_arg_router import (
     ArgRouterError,
     ArgumentValidationError,
     ExtendedArgRouter,
@@ -1421,6 +1421,7 @@ class Orchestrator:
         
         try:
             # _validate_questionnaire_structure(self._monolith_data)
+            pass
         except (ValueError, TypeError) as e:
             raise RuntimeError(f"Questionnaire validation failed: {e}") from e
         
@@ -1874,7 +1875,7 @@ class Orchestrator:
             return None
         
         try:
-            # from orchestration.calibration_orchestrator import (
+            from orchestration.calibration_orchestrator import (
                 CalibrationSubject,
                 EvidenceStore,
             )

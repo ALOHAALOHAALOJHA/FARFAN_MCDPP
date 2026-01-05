@@ -1,7 +1,14 @@
-# recommendation_engine.py - Rule-Based Recommendation Engine
+# phase8_20_00_recommendation_engine.py - Rule-Based Recommendation Engine
 """
-Recommendation Engine - Multi-Level Rule-Based Recommendations
-================================================================
+Module: src.farfan_pipeline.phases.Phase_eight.phase8_20_00_recommendation_engine
+Purpose: Multi-level rule-based recommendation generation (MICRO/MESO/MACRO)
+Owner: phase8_core
+Stage: 20 (Engine)
+Order: 00
+Type: ENG
+Lifecycle: ACTIVE
+Version: 2.0.0
+Effective-Date: 2026-01-05
 
 This module implements a rule-based recommendation engine that:
 1. Loads and validates recommendation rules from JSON files
@@ -15,7 +22,6 @@ Supports three levels of recommendations:
 - MACRO: Plan-level strategic recommendations
 
 Author: Integration Team
-Version: 2.0.0
 Python: 3.10+
 """
 
