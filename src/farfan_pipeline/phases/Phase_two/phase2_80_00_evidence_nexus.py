@@ -1199,6 +1199,137 @@ class ColombianContextRule:
         return False
 
 
+class CrossCuttingCoverageRule:
+    """Validate coverage of required cross-cutting themes (R-W2).
+
+    Checks that evidence addresses required cross-cutting themes defined
+    in the signal pack's cross_cutting_themes field.
+    """
+
+    code = "XCT_COVERAGE"
+    severity = ValidationSeverity.WARNING
+
+    def validate(
+        self,
+        graph: EvidenceGraph,
+        contract: dict[str, Any],
+    ) -> list[ValidationFinding]:
+        findings: list[ValidationFinding] = []
+
+        # Extract cross-cutting themes from signal_pack in contract
+        signal_pack = contract.get("signal_pack", {})
+        themes_data = signal_pack.get("cross_cutting_themes", {})
+
+        if not themes_data:
+            return findings
+
+        applicable = {
+            t.get("theme_id")
+            for t in themes_data.get("applicable_themes", [])
+            if isinstance(t, dict) and t.get("theme_id")
+        }
+        required = set(themes_data.get("required_themes", []) or [])
+        minimum = int(themes_data.get("minimum_themes", 0) or 0)
+
+        # Check for missing required themes
+        missing_required = [t for t in required if t and t not in applicable]
+        if missing_required:
+            findings.append(ValidationFinding(
+                finding_id="XCT_REQUIRED_MISSING",
+                severity=ValidationSeverity.WARNING,
+                code=self.code,
+                message=f"Missing required cross-cutting themes: {', '.join(missing_required)}",
+                affected_nodes=[],
+                remediation="Ensure evidence addresses all required cross-cutting themes.",
+            ))
+
+        # Check minimum theme coverage
+        applicable_count = len([t for t in applicable if t])
+        if minimum > 0 and applicable_count < minimum:
+            findings.append(ValidationFinding(
+                finding_id="XCT_MINIMUM_NOT_MET",
+                severity=ValidationSeverity.WARNING,
+                code=self.code,
+                message=f"Cross-cutting theme coverage {applicable_count}/{minimum} below minimum.",
+                affected_nodes=[],
+                remediation="Expand evidence extraction to cover more cross-cutting themes.",
+            ))
+
+        return findings
+
+
+class InterdependencyConsistencyRule:
+    """Validate dimension interdependency coherence (R-W3).
+
+    Checks that dimension dependencies are respected according to the
+    interdependency mapping in the signal pack.
+    """
+
+    code = "INTERDEP"
+    severity = ValidationSeverity.WARNING
+
+    def validate(
+        self,
+        graph: EvidenceGraph,
+        contract: dict[str, Any],
+    ) -> list[ValidationFinding]:
+        findings: list[ValidationFinding] = []
+
+        # Extract interdependency context from signal_pack in contract
+        signal_pack = contract.get("signal_pack", {})
+        interdep = signal_pack.get("interdependency_context", {})
+
+        if not interdep:
+            return findings
+
+        depends_on = interdep.get("depends_on") or []
+        sequence = interdep.get("dimension_sequence") or []
+        current_dim = contract.get("question_context", {}).get("dimension_id")
+
+        # Check dimension ordering against declared sequence
+        if isinstance(sequence, list) and current_dim and current_dim in sequence and depends_on:
+            pos = {d: i for i, d in enumerate(sequence)}
+            current_pos = pos.get(current_dim, -1)
+            bad_deps = [
+                d for d in depends_on
+                if d in pos and pos[d] > current_pos
+            ]
+            if bad_deps:
+                findings.append(ValidationFinding(
+                    finding_id="INTERDEP_ORDER",
+                    severity=ValidationSeverity.WARNING,
+                    code=self.code,
+                    message=f"Dependencies appear after current dimension in sequence: {', '.join(bad_deps)}",
+                    affected_nodes=[],
+                    remediation="Review dimension sequence and dependency declarations.",
+                ))
+
+        # Flag applicable validation rules for awareness
+        applicable_rules = interdep.get("applicable_rules") or []
+        if applicable_rules:
+            rule_ids = [r.get("rule_id", "unknown") for r in applicable_rules if isinstance(r, dict)]
+            findings.append(ValidationFinding(
+                finding_id="INTERDEP_RULES_ACTIVE",
+                severity=ValidationSeverity.INFO,
+                code=self.code,
+                message=f"Interdependency validation rules active: {', '.join(rule_ids)}",
+                affected_nodes=[],
+            ))
+
+        # Flag circular reasoning patterns for awareness
+        circular = interdep.get("circular_reasoning_patterns") or []
+        if circular:
+            findings.append(ValidationFinding(
+                finding_id="INTERDEP_CIRCULAR_PATTERNS",
+                severity=ValidationSeverity.INFO,
+                code=self.code,
+                message=f"Circular reasoning patterns configured: {len(circular)} patterns",
+                affected_nodes=[],
+            ))
+
+        return findings
+
+
 @dataclass
 class BlockingRuleResult:
     """Result of blocking rule evaluation (R-B5)."""
@@ -1380,6 +1511,8 @@ class ValidationEngine:
             ConfidenceThresholdRule(min_confidence=0.5),
             GraphIntegrityRule(),
             ColombianContextRule(),
+            CrossCuttingCoverageRule(),      # R-W2: Cross-cutting themes validation
+            InterdependencyConsistencyRule(),  # R-W3: Interdependency validation
         ]
     
     def validate(

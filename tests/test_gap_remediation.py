@@ -18,10 +18,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
-from unittest.mock import MagicMock, patch
-
-import pytest
+from unittest.mock import MagicMock
 
 
 class TestColombianContextRule:
@@ -66,13 +63,11 @@ class TestColombianContextRule:
             }
         }
         graph = EvidenceGraph()
-        node = EvidenceNode(
-            node_id="test-001",
-            evidence_type=EvidenceType.OFFICIAL_DOCUMENT,
-            content="Este programa implementa la Ley 1448 de 2011 sobre víctimas.",
-            source_method="test",
+        node = EvidenceNode.create(
+            evidence_type=EvidenceType.NORMATIVE_REFERENCE,
+            content={"text": "Este programa implementa la Ley 1448 de 2011 sobre víctimas."},
             confidence=0.9,
-            timestamp="2026-01-04T00:00:00Z",
+            source_method="test",
         )
         graph.add_node(node)
         rule = ColombianContextRule()
@@ -124,7 +119,7 @@ class TestBlockingRulesEngine:
         }
 
         graph = EvidenceGraph()
-        validation_report = ValidationReport(findings=[], graph_hash="test")
+        validation_report = ValidationReport.create(findings=[])
         engine = BlockingRulesEngine(contract)
 
         results = engine.evaluate(graph, validation_report)
@@ -143,7 +138,7 @@ class TestBlockingRulesEngine:
 
         contract = {"validation_rules": {}}
         graph = EvidenceGraph()
-        validation_report = ValidationReport(findings=[], graph_hash="test")
+        validation_report = ValidationReport.create(findings=[])
         engine = BlockingRulesEngine(contract)
 
         results = engine.evaluate(graph, validation_report)
@@ -176,36 +171,30 @@ class TestBlockingRulesEngine:
         }
 
         graph = EvidenceGraph()
-        node1 = EvidenceNode(
-            node_id="n1",
-            evidence_type=EvidenceType.CLAIM,
-            content="Claim A",
-            source_method="test",
+        node1 = EvidenceNode.create(
+            evidence_type=EvidenceType.METHOD_OUTPUT,
+            content={"text": "Claim A"},
             confidence=0.8,
-            timestamp="2026-01-04T00:00:00Z",
+            source_method="test",
         )
-        node2 = EvidenceNode(
-            node_id="n2",
-            evidence_type=EvidenceType.CLAIM,
-            content="Claim B",
-            source_method="test",
+        node2 = EvidenceNode.create(
+            evidence_type=EvidenceType.METHOD_OUTPUT,
+            content={"text": "Claim B"},
             confidence=0.8,
-            timestamp="2026-01-04T00:00:00Z",
+            source_method="test",
         )
         graph.add_node(node1)
         graph.add_node(node2)
 
-        edge = EvidenceEdge(
-            edge_id="e1",
-            source_id="n1",
-            target_id="n2",
+        edge = EvidenceEdge.create(
+            source_id=node1.node_id,
+            target_id=node2.node_id,
             relation_type=RelationType.CONTRADICTS,
             confidence=0.9,
-            evidence=["Test evidence"],
         )
         graph.add_edge(edge)
 
-        validation_report = ValidationReport(findings=[], graph_hash="test")
+        validation_report = ValidationReport.create(findings=[])
         engine = BlockingRulesEngine(contract)
 
         results = engine.evaluate(graph, validation_report)
@@ -360,3 +349,172 @@ class TestEnhancementStatistics:
 
         assert "cross_cutting_themes" in stats
         assert "interdependency_rules" in stats
+
+
+class TestCrossCuttingCoverageRule:
+    """Tests for R-W2: Cross-cutting coverage validation consumer."""
+
+    def test_cross_cutting_rule_detects_missing_required(self):
+        """Verify rule detects missing required cross-cutting themes."""
+        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+            CrossCuttingCoverageRule,
+            EvidenceGraph,
+        )
+
+        contract = {
+            "signal_pack": {
+                "cross_cutting_themes": {
+                    "applicable_themes": [{"theme_id": "XCT_GENERO"}],
+                    "required_themes": ["XCT_GENERO", "XCT_DERECHOS_HUMANOS"],
+                    "minimum_themes": 2,
+                }
+            }
+        }
+        graph = EvidenceGraph()
+        rule = CrossCuttingCoverageRule()
+
+        findings = rule.validate(graph, contract)
+
+        assert len(findings) == 2
+        codes = [f.finding_id for f in findings]
+        assert "XCT_REQUIRED_MISSING" in codes
+        assert "XCT_MINIMUM_NOT_MET" in codes
+
+    def test_cross_cutting_rule_passes_when_satisfied(self):
+        """Verify rule passes when all requirements are met."""
+        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+            CrossCuttingCoverageRule,
+            EvidenceGraph,
+        )
+
+        contract = {
+            "signal_pack": {
+                "cross_cutting_themes": {
+                    "applicable_themes": [
+                        {"theme_id": "XCT_GENERO"},
+                        {"theme_id": "XCT_DERECHOS_HUMANOS"},
+                    ],
+                    "required_themes": ["XCT_GENERO"],
+                    "minimum_themes": 2,
+                }
+            }
+        }
+        graph = EvidenceGraph()
+        rule = CrossCuttingCoverageRule()
+
+        findings = rule.validate(graph, contract)
+
+        assert len(findings) == 0
+
+    def test_cross_cutting_rule_empty_pack(self):
+        """Verify rule is bypassed when no cross_cutting_themes defined."""
+        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+            CrossCuttingCoverageRule,
+            EvidenceGraph,
+        )
+
+        contract = {"signal_pack": {}}
+        graph = EvidenceGraph()
+        rule = CrossCuttingCoverageRule()
+
+        findings = rule.validate(graph, contract)
+
+        assert len(findings) == 0
+
+
+class TestInterdependencyConsistencyRule:
+    """Tests for R-W3: Interdependency consistency validation consumer."""
+
+    def test_interdependency_rule_detects_order_violation(self):
+        """Verify rule detects when dependencies appear after current dimension."""
+        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+            InterdependencyConsistencyRule,
+            EvidenceGraph,
+        )
+
+        contract = {
+            "signal_pack": {
+                "interdependency_context": {
+                    "depends_on": ["DIM05_IMPACTOS"],
+                    "dimension_sequence": [
+                        "DIM01_INSUMOS",
+                        "DIM02_ACTIVIDADES",
+                        "DIM03_PRODUCTOS",
+                        "DIM04_RESULTADOS",
+                        "DIM05_IMPACTOS",
+                    ],
+                }
+            },
+            "question_context": {"dimension_id": "DIM04_RESULTADOS"},
+        }
+        graph = EvidenceGraph()
+        rule = InterdependencyConsistencyRule()
+
+        findings = rule.validate(graph, contract)
+
+        order_findings = [f for f in findings if f.finding_id == "INTERDEP_ORDER"]
+        assert len(order_findings) == 1
+        assert "DIM05_IMPACTOS" in order_findings[0].message
+
+    def test_interdependency_rule_reports_active_rules(self):
+        """Verify rule reports applicable validation rules as INFO."""
+        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+            InterdependencyConsistencyRule,
+            EvidenceGraph,
+        )
+
+        contract = {
+            "signal_pack": {
+                "interdependency_context": {
+                    "applicable_rules": [
+                        {"rule_id": "RULE_001", "description": "Test rule"},
+                    ],
+                    "circular_reasoning_patterns": ["pattern1", "pattern2"],
+                }
+            }
+        }
+        graph = EvidenceGraph()
+        rule = InterdependencyConsistencyRule()
+
+        findings = rule.validate(graph, contract)
+
+        finding_ids = [f.finding_id for f in findings]
+        assert "INTERDEP_RULES_ACTIVE" in finding_ids
+        assert "INTERDEP_CIRCULAR_PATTERNS" in finding_ids
+
+    def test_interdependency_rule_empty_pack(self):
+        """Verify rule is bypassed when no interdependency_context defined."""
+        from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
+            InterdependencyConsistencyRule,
+            EvidenceGraph,
+        )
+
+        contract = {"signal_pack": {}}
+        graph = EvidenceGraph()
+        rule = InterdependencyConsistencyRule()
+
+        findings = rule.validate(graph, contract)
+
+        assert len(findings) == 0
+
+
+class TestMicroAnsweringSignalPackFields:
+    """Tests for R-W2/R-W3 fields in MicroAnsweringSignalPack."""
+
+    def test_micro_pack_has_cross_cutting_themes_field(self):
+        """Verify MicroAnsweringSignalPack has cross_cutting_themes field."""
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+            MicroAnsweringSignalPack,
+        )
+
+        fields = MicroAnsweringSignalPack.model_fields
+        assert "cross_cutting_themes" in fields
+
+    def test_micro_pack_has_interdependency_context_field(self):
+        """Verify MicroAnsweringSignalPack has interdependency_context field."""
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+            MicroAnsweringSignalPack,
+        )
+
+        fields = MicroAnsweringSignalPack.model_fields
+        assert "interdependency_context" in fields
