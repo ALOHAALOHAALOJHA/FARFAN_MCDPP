@@ -1240,7 +1240,6 @@ class ColombianContextRule:
         """Load colombian_context.json file for validation."""
         try:
             if self._context_path.exists():
-                import json
                 with open(self._context_path, 'r', encoding='utf-8') as f:
                     self._colombian_context_data = json.load(f)
                 logger.info(
