@@ -103,10 +103,10 @@ logger = logging.getLogger("run")
 
 def load_generator_modules() -> dict:
     """
-    Carga todos los módulos del contract_generator dinámicamente.
+    Carga todos los módulos del contract_generator.
     
-    Esto evita problemas de imports relativos cuando el script
-    se ejecuta directamente.
+    Uses package imports when running as a module, falls back to
+    dynamic loading for direct script execution.
     
     Returns:
         Diccionario con módulos cargados
@@ -114,6 +114,31 @@ def load_generator_modules() -> dict:
     Raises:
         ImportError: Si algún módulo no puede cargarse
     """
+    # Try package imports first (when running as module)
+    try:
+        from farfan_pipeline.phases.Phase_two.contract_generator import (
+            input_registry,
+            method_expander,
+            chain_composer,
+            contract_assembler,
+            contract_validator,
+            json_emitter,
+            contract_generator,
+        )
+        logger.debug("Loaded modules via package imports")
+        return {
+            "input_registry": input_registry,
+            "method_expander": method_expander,
+            "chain_composer": chain_composer,
+            "contract_assembler": contract_assembler,
+            "contract_validator": contract_validator,
+            "json_emitter": json_emitter,
+            "contract_generator": contract_generator,
+        }
+    except ImportError:
+        pass
+    
+    # Fallback to dynamic loading for direct execution
     import importlib.util
     
     modules_to_load = [
@@ -185,7 +210,7 @@ def validate_assets_directory(assets_path: Path) -> None:
         "classified_methods.json",
         "contratos_clasificados.json",
         "method_sets_by_question.json",
-        "sectors.json",
+        # sectors.json removed: loaded dynamically from canonic_questionnaire_central
     ]
     
     missing = []

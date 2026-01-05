@@ -408,12 +408,14 @@ class ContractAssembler:
             "base_contract_id": base_contract_id,
             "base_slot":  q_id. replace("_", "-"),  # D1_Q1 → D1-Q1
 
-            # Sector
+            # Sector (policy_area_id alias for Carver/Executor compatibility)
             "sector_id": sector.sector_id,
+            "policy_area_id": sector.sector_id,  # Alias for chunk JOIN
             "sector_name": sector.canonical_name,
 
             # Dimensión
             "dimension_id": dimension_id,
+            "question_id": unique_contract_id,  # Alias for Carver extraction
 
             # Identificador representativo para validación
             "representative_question_id": unique_contract_id,
@@ -454,7 +456,7 @@ class ContractAssembler:
                 f"Expected:  1-6 (from question_id '{question_id}')"
             )
 
-        return f"DIM{dimension_num: 02d}"
+        return f"DIM{dimension_num:02d}"
 
     # ══════════════════════════════════════════════════════════════════════════
     # BUILDERS - EXECUTOR BINDING
@@ -573,6 +575,7 @@ class ContractAssembler:
         
         return {
             "monolith_ref": classification.contract_id,
+            "question_text": specialized_question,  # Carver expects this key
             "pregunta_completa": specialized_question,
             "pregunta_generica": classification.pregunta,  # Preservar referencia
             "sector_id": sector.sector_id,

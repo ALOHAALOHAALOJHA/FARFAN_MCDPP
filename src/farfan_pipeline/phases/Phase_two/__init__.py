@@ -62,7 +62,7 @@ from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import (
 # Narrative synthesis - Doctoral Carver for PhD-level responses
 from farfan_pipeline.phases.Phase_two.phase2_90_00_carver import (
     DoctoralCarverSynthesizer,
-    CarverAnswer,
+    DoctoralAnswerDict,
 )
 
 # Contract Hydrator - V4 to Carver-compatible adapter
@@ -86,7 +86,7 @@ __all__ = [
     "process_evidence",
     # Narrative synthesis (Carver)
     "DoctoralCarverSynthesizer",
-    "CarverAnswer",
+    "DoctoralAnswerDict",
     # Contract Hydrator (Phase 2 - Step 95)
     "ContractHydrator",
     "ContractHydrationError",

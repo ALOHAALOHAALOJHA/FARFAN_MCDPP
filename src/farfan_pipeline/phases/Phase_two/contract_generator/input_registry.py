@@ -501,6 +501,11 @@ class InputRegistry:
                 contract_number += 1
                 yield contract, sector, contract_number
 
+    @property
+    def sectors_by_id(self) -> dict[str, SectorDefinition]:
+        """Alias for sectors dict to maintain backward compatibility."""
+        return self.sectors
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # CLASE CARGADORA
@@ -566,7 +571,7 @@ class InputLoader:
         # PASO 1: Cargar JSONs
         # ══════════════════════════════════════════════════════════════════
         classified_methods_raw = self._load_json("classified_methods.json")
-        contratos_clasificados_raw = self._load_json("contratos_clasificados. json")
+        contratos_clasificados_raw = self._load_json("contratos_clasificados.json")
         method_sets_raw = self._load_json("method_sets_by_question.json")
 
         logger.debug("  All JSON files loaded successfully")
@@ -1049,15 +1054,12 @@ class InputLoader:
 
         if len(result) == EXPECTED_SECTORS:
             logger.info(
-                "sector_definitions_loaded_from_canonical",
-                sector_count=len(result),
+                f"sector_definitions_loaded_from_canonical: sector_count={len(result)}"
             )
             return result
 
         logger.warning(
-            "sector_definitions_fallback_to_hardcoded",
-            canonical_count=len(result),
-            expected=EXPECTED_SECTORS,
+            f"sector_definitions_fallback_to_hardcoded: canonical_count={len(result)}, expected={EXPECTED_SECTORS}"
         )
         fallback: dict[str, SectorDefinition] = {}
         for sector_id, sector_data in SECTOR_DEFINITIONS.items():
@@ -1086,7 +1088,7 @@ class InputLoader:
         )
 
         if not pa_base.exists():
-            logger.warning("canonical_policy_areas_not_found", path=str(pa_base))
+            logger.warning(f"canonical_policy_areas_not_found: path={pa_base}")
             return sectors
 
         for pa_dir in sorted(pa_base.iterdir()):
@@ -1119,16 +1121,12 @@ class InputLoader:
                 )
 
                 logger.debug(
-                    "sector_loaded_from_canonical",
-                    sector_id=sector_id,
-                    name=canonical_name[:50],
+                    f"sector_loaded_from_canonical: sector_id={sector_id}, name={canonical_name[:50]}"
                 )
 
             except (OSError, json.JSONDecodeError) as e:
                 logger.warning(
-                    "sector_load_failed",
-                    path=str(questions_file),
-                    error=str(e),
+                    f"sector_load_failed: path={questions_file}, error={e}",
                     exc_info=True,
                 )
                 continue

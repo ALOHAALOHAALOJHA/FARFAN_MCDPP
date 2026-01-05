@@ -262,7 +262,7 @@ class ContractValidator:
             "required_fields",
         ],
         "audit_annotations":  [
-            "generation_audit",
+            "generation_metadata",  # Was generation_audit - aligned with assembler output
             "quality_flags",
             "validation_status",
             "sector_specific",
