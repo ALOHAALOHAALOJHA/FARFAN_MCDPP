@@ -1,0 +1,3 @@
+[console_scripts]
+farfan-pipeline = farfan_pipeline.entrypoint.main:main
+farfan_core-api = farfan_pipeline.api.api_server:main
