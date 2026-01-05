@@ -422,7 +422,7 @@ def migrate_v3_to_v4(contract: dict) -> dict:
     - Restructure 'params' into 'configuration.parameters'
     - Add 'schema_version' field
     """
-    result = contract.copy()
+    result = copy.deepcopy(contract)
 
     # Restructure params
     if "params" in result:
