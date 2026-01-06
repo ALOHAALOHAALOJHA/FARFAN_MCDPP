@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "entity-schema-v2.0.0",
+  "title": "CQC Entity Schema",
+  "description": "Schema para entidades en CQC v2.0",
+  "type": "object",
+  "required": ["entity_id", "canonical_name", "category"],
+  "properties": {
+    "entity_id": {
+      "type": "string",
+      "pattern": "^ENT-(INST|NORM|POP|TERR|INT)-\\d{3}$",
+      "description": "Identificador único de la entidad"
+    },
+    "canonical_name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Nombre canónico de la entidad"
+    },
+    "acronym": {
+      "type": "string",
+      "description": "Sigla o acrónimo (opcional)"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["institution", "normative", "population", "territorial", "international"],
+      "description": "Categoría de la entidad"
+    },
+    "type": {
+      "type": "string",
+      "description": "Tipo específico dentro de la categoría"
+    },
+    "level": {
+      "type": "string",
+      "enum": ["NATIONAL", "DEPARTAMENTAL", "MUNICIPAL", "INTERNATIONAL"],
+      "description": "Nivel administrativo o geográfico"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Nombres alternativos para detección"
+    },
+    "description": {
+      "type": "string",
+      "description": "Descripción de la entidad"
+    },
+    "scoring_context": {
+      "type": "object",
+      "description": "Contexto de scoring cuando se detecta la entidad",
+      "properties": {
+        "boost_dimensions": {
+          "type": "object",
+          "patternProperties": {
+            "^DIM\\d{2}$": {"type": "number", "minimum": 0, "maximum": 1}
+          }
+        },
+        "boost_policy_areas": {
+          "type": "object",
+          "patternProperties": {
+            "^PA\\d{2}$": {"type": "number", "minimum": 0, "maximum": 1}
+          }
+        },
+        "required_for_compliance": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    }
+  }
+}

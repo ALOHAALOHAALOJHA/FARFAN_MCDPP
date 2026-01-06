@@ -1,0 +1,34 @@
+{
+  "$schema": "./schema.json",
+  "_schema_version": "2.0.0",
+
+  "entities": {
+    "ENT-INT-001": {
+      "entity_id": "ENT-INT-001",
+      "canonical_name": "Objetivos de Desarrollo Sostenible",
+      "acronym": "ODS",
+      "category": "international",
+      "type": "framework",
+      "aliases": ["ODS", "SDG", "Objetivos de Desarrollo Sostenible", "Agenda 2030"],
+      "scoring_context": {"boost_dimensions": {"DIM04": 0.20, "DIM05": 0.25}}
+    },
+    "ENT-INT-002": {
+      "entity_id": "ENT-INT-002",
+      "canonical_name": "Convención sobre los Derechos del Niño",
+      "acronym": "CDN",
+      "category": "international",
+      "type": "treaty",
+      "aliases": ["CDN", "Convención de los Derechos del Niño"],
+      "scoring_context": {"boost_policy_areas": {"PA06": 0.25}}
+    },
+    "ENT-INT-003": {
+      "entity_id": "ENT-INT-003",
+      "canonical_name": "CEDAW",
+      "acronym": "CEDAW",
+      "category": "international",
+      "type": "treaty",
+      "aliases": ["CEDAW", "Convención sobre la Eliminación de Todas las Formas de Discriminación contra la Mujer"],
+      "scoring_context": {"boost_policy_areas": {"PA01": 0.25}}
+    }
+  }
+}

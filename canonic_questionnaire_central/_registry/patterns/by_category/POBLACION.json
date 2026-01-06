@@ -1,0 +1,156 @@
+{
+  "category": "POBLACION",
+  "pattern_count": 3,
+  "patterns": {
+    "PAT-0165": {
+      "id": "PAT-0165",
+      "canonical_id": "PAT-0165",
+      "legacy_ids": [
+        "PAT-0165",
+        "PAT-Q007-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "población objetivo:|dirigido a|beneficiarias serán|destinatarios:|grupo meta:",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "POBLACION",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q007"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978192+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0166": {
+      "id": "PAT-0166",
+      "canonical_id": "PAT-0166",
+      "legacy_ids": [
+        "PAT-0166",
+        "PAT-Q007-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "mujeres rurales|madres cabeza de familia|mujeres víctimas de VBG|mujeres afrodescendientes",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "POBLACION",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q007"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978198+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0167": {
+      "id": "PAT-0167",
+      "canonical_id": "PAT-0167",
+      "legacy_ids": [
+        "PAT-0167",
+        "PAT-Q007-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "mujeres cuidadoras|mujeres en extrema pobreza|mujeres LBT|mujeres indígenas|mujeres con discapacidad",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "POBLACION",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q007"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978206+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    }
+  }
+}

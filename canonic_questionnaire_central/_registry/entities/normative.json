@@ -1,0 +1,170 @@
+{
+  "$schema": "./schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T19:57:00Z",
+
+  "entities": {
+    "ENT-NORM-001": {
+      "entity_id": "ENT-NORM-001",
+      "canonical_name": "Ley 1448 de 2011",
+      "acronym": "Ley 1448",
+      "category": "normative",
+      "type": "ley",
+      "aliases": ["Ley 1448", "Ley de Víctimas", "Ley 1448 de 2011"],
+      "description": "Ley de Víctimas y Restitución de Tierras",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.35,
+          "PA07": 0.20
+        },
+        "required_for_compliance": ["PA05"]
+      }
+    },
+
+    "ENT-NORM-002": {
+      "entity_id": "ENT-NORM-002",
+      "canonical_name": "Acuerdo Final de Paz",
+      "acronym": "Acuerdo de Paz",
+      "category": "normative",
+      "type": "acuerdo",
+      "aliases": ["Acuerdo Final", "Acuerdo de Paz", "Acuerdo de La Habana"],
+      "description": "Acuerdo Final para la Terminación del Conflicto y la Construcción de una Paz Estable y Duradera",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.40,
+          "PA02": 0.25,
+          "PA07": 0.20
+        },
+        "required_for_compliance": ["PA05"]
+      }
+    },
+
+    "ENT-NORM-003": {
+      "entity_id": "ENT-NORM-003",
+      "canonical_name": "Ley 1098 de 2006",
+      "acronym": "Código de Infancia",
+      "category": "normative",
+      "type": "ley",
+      "aliases": ["Ley 1098", "Código de Infancia y Adolescencia", "Ley 1098 de 2006"],
+      "description": "Código de la Infancia y la Adolescencia",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA06": 0.40
+        },
+        "required_for_compliance": ["PA06"]
+      }
+    },
+
+    "ENT-NORM-004": {
+      "entity_id": "ENT-NORM-004",
+      "canonical_name": "Ley 1257 de 2008",
+      "acronym": "Ley 1257",
+      "category": "normative",
+      "type": "ley",
+      "aliases": ["Ley 1257", "Ley contra violencias de género", "Ley 1257 de 2008"],
+      "description": "Ley de sensibilización, prevención y sanción de formas de violencia y discriminación contra las mujeres",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA01": 0.40
+        },
+        "required_for_compliance": ["PA01"]
+      }
+    },
+
+    "ENT-NORM-005": {
+      "entity_id": "ENT-NORM-005",
+      "canonical_name": "Ley 1382 de 2010",
+      "acronym": "Ley PDET",
+      "category": "normative",
+      "type": "ley",
+      "aliases": ["Programas de Desarrollo con Enfoque Territorial", "PDET"],
+      "description": "Programas de Desarrollo con Enfoque Territorial",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA07": 0.30,
+          "PA03": 0.15
+        }
+      }
+    },
+
+    "ENT-NORM-006": {
+      "entity_id": "ENT-NORM-006",
+      "canonical_name": "CONPES 3918",
+      "acronym": "CONPES 3918",
+      "category": "normative",
+      "type": "conpes",
+      "aliases": ["CONPES 3918", "Estrategia para la Implementación de los ODS"],
+      "description": "Estrategia para la Implementación de los Objetivos de Desarrollo Sostenible en Colombia",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM04": 0.15,
+          "DIM05": 0.20
+        }
+      }
+    },
+
+    "ENT-NORM-007": {
+      "entity_id": "ENT-NORM-007",
+      "canonical_name": "Decreto 1082 de 2015",
+      "acronym": "Decreto 1082",
+      "category": "normative",
+      "type": "decreto",
+      "aliases": ["Decreto 1082", "Decreto Único Reglamentario sector Planeación"],
+      "description": "Decreto Único Reglamentario del Sector Administrativo de Planeación Nacional",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.15,
+          "DIM02": 0.15
+        }
+      }
+    },
+
+    "ENT-NORM-008": {
+      "entity_id": "ENT-NORM-008",
+      "canonical_name": "Ley 152 de 1994",
+      "acronym": "Ley Orgánica del Plan",
+      "category": "normative",
+      "type": "ley",
+      "aliases": ["Ley 152", "Ley Orgánica del Plan de Desarrollo", "Ley 152 de 1994"],
+      "description": "Ley Orgánica del Plan de Desarrollo",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.20,
+          "DIM02": 0.20,
+          "DIM03": 0.15
+        },
+        "required_for_compliance": ["STRUCTURAL"]
+      }
+    },
+
+    "ENT-NORM-009": {
+      "entity_id": "ENT-NORM-009",
+      "canonical_name": "Ley 1753 de 2015",
+      "acronym": "Plan Nacional de Desarrollo 2014-2018",
+      "category": "normative",
+      "type": "pnd",
+      "aliases": ["PND 2014-2018", "Ley 1753"],
+      "description": "Plan Nacional de Desarrollo 2014-2018 'Todos por un nuevo país'",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM02": 0.15
+        }
+      }
+    },
+
+    "ENT-NORM-010": {
+      "entity_id": "ENT-NORM-010",
+      "canonical_name": "Ley 1955 de 2019",
+      "acronym": "Plan Nacional de Desarrollo 2018-2022",
+      "category": "normative",
+      "type": "pnd",
+      "aliases": ["PND 2018-2022", "Ley 1955", "Pacto por Colombia"],
+      "description": "Plan Nacional de Desarrollo 2018-2022 'Pacto por Colombia, Pacto por la Equidad'",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM02": 0.15
+        }
+      }
+    }
+  }
+}

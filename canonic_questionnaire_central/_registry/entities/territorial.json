@@ -1,0 +1,38 @@
+{
+  "$schema": "./schema.json",
+  "_schema_version": "2.0.0",
+
+  "entities": {
+    "ENT-TERR-001": {
+      "entity_id": "ENT-TERR-001",
+      "canonical_name": "Municipio",
+      "category": "territorial",
+      "type": "administrative_unit",
+      "aliases": ["municipio", "municipios", "nivel municipal"],
+      "description": "Unidad administrativa territorial básica"
+    },
+    "ENT-TERR-002": {
+      "entity_id": "ENT-TERR-002",
+      "canonical_name": "Departamento",
+      "category": "territorial",
+      "type": "administrative_unit",
+      "aliases": ["departamento", "departamentos", "nivel departamental"],
+      "description": "División político-administrativa de nivel intermedio"
+    },
+    "ENT-TERR-003": {
+      "entity_id": "ENT-TERR-003",
+      "canonical_name": "Zona Rural",
+      "category": "territorial",
+      "type": "geographic_classification",
+      "aliases": ["rural", "zona rural", "área rural"],
+      "scoring_context": {"boost_policy_areas": {"PA03": 0.15, "PA07": 0.20}}
+    },
+    "ENT-TERR-004": {
+      "entity_id": "ENT-TERR-004",
+      "canonical_name": "Zona Urbana",
+      "category": "territorial",
+      "type": "geographic_classification",
+      "aliases": ["urbano", "zona urbana", "área urbana"]
+    }
+  }
+}

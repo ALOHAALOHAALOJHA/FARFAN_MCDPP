@@ -1,0 +1,178 @@
+{
+  "$schema": "./schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T19:56:00Z",
+
+  "entities": {
+    "ENT-INST-001": {
+      "entity_id": "ENT-INST-001",
+      "canonical_name": "Departamento Nacional de Planeación",
+      "acronym": "DNP",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "planning",
+      "aliases": ["DNP", "Planeación Nacional", "Departamento de Planeación"],
+      "description": "Entidad técnica del Gobierno que impulsa la implementación de una visión estratégica del país",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.10,
+          "DIM02": 0.15
+        },
+        "boost_policy_areas": {
+          "PA04": 0.10
+        }
+      }
+    },
+
+    "ENT-INST-002": {
+      "entity_id": "ENT-INST-002",
+      "canonical_name": "Departamento Administrativo Nacional de Estadística",
+      "acronym": "DANE",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "statistics",
+      "aliases": ["DANE", "Estadística Nacional"],
+      "description": "Entidad responsable de la planeación, levantamiento, procesamiento, análisis y difusión de las estadísticas oficiales",
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.20,
+          "DIM03": 0.10,
+          "DIM04": 0.15
+        }
+      }
+    },
+
+    "ENT-INST-003": {
+      "entity_id": "ENT-INST-003",
+      "canonical_name": "Instituto Colombiano de Bienestar Familiar",
+      "acronym": "ICBF",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "social_protection",
+      "aliases": ["ICBF", "Bienestar Familiar"],
+      "description": "Entidad encargada de la protección integral de la primera infancia, niñez y adolescencia",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA06": 0.25,
+          "PA01": 0.10
+        }
+      }
+    },
+
+    "ENT-INST-004": {
+      "entity_id": "ENT-INST-004",
+      "canonical_name": "Unidad para las Víctimas",
+      "acronym": "UARIV",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "transitional_justice",
+      "aliases": ["UARIV", "Unidad de Víctimas", "Unidad para la Atención y Reparación Integral a las Víctimas"],
+      "description": "Entidad encargada de coordinar el Sistema Nacional de Atención y Reparación Integral a las Víctimas",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA05": 0.30,
+          "PA02": 0.15
+        }
+      }
+    },
+
+    "ENT-INST-005": {
+      "entity_id": "ENT-INST-005",
+      "canonical_name": "Agencia Nacional de Tierras",
+      "acronym": "ANT",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "land_management",
+      "aliases": ["ANT", "Agencia de Tierras"],
+      "description": "Entidad ejecutora de la política de ordenamiento social de la propiedad rural",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA07": 0.30,
+          "PA03": 0.10
+        }
+      }
+    },
+
+    "ENT-INST-006": {
+      "entity_id": "ENT-INST-006",
+      "canonical_name": "Ministerio del Interior",
+      "acronym": "MinInterior",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": ["Ministerio del Interior", "MinInterior"],
+      "description": "Ministerio responsable de la formulación de políticas de seguridad, convivencia y DDHH",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA02": 0.15,
+          "PA08": 0.20
+        }
+      }
+    },
+
+    "ENT-INST-007": {
+      "entity_id": "ENT-INST-007",
+      "canonical_name": "Migración Colombia",
+      "acronym": "MigraCol",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "migration",
+      "aliases": ["Migración Colombia", "MigraCol"],
+      "description": "Entidad encargada del control migratorio",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA10": 0.30
+        }
+      }
+    },
+
+    "ENT-INST-008": {
+      "entity_id": "ENT-INST-008",
+      "canonical_name": "Instituto Nacional Penitenciario y Carcelario",
+      "acronym": "INPEC",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "penitentiary",
+      "aliases": ["INPEC", "Instituto Penitenciario"],
+      "description": "Entidad encargada del sistema penitenciario y carcelario",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA09": 0.30
+        }
+      }
+    },
+
+    "ENT-INST-009": {
+      "entity_id": "ENT-INST-009",
+      "canonical_name": "Ministerio de Ambiente y Desarrollo Sostenible",
+      "acronym": "MinAmbiente",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": ["Ministerio de Ambiente", "MinAmbiente", "MADS"],
+      "description": "Ministerio encargado de la gestión ambiental y recursos naturales",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA03": 0.30
+        }
+      }
+    },
+
+    "ENT-INST-010": {
+      "entity_id": "ENT-INST-010",
+      "canonical_name": "Defensoría del Pueblo",
+      "acronym": "Defensoría",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ombudsman",
+      "aliases": ["Defensoría del Pueblo", "Defensoría"],
+      "description": "Entidad del Ministerio Público para la promoción y defensa de los DDHH",
+      "scoring_context": {
+        "boost_policy_areas": {
+          "PA08": 0.25,
+          "PA01": 0.15
+        }
+      }
+    }
+  }
+}

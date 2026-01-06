@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pattern-schema-v2.0.0",
+  "title": "CQC Pattern Schema",
+  "description": "Schema para patterns en CQC v2.0",
+  "type": "object",
+  "required": [
+    "canonical_id",
+    "pattern_spec",
+    "classification"
+  ],
+  "properties": {
+    "canonical_id": {
+      "type": "string",
+      "pattern": "^PAT-\\d{4}$"
+    },
+    "legacy_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pattern_spec": {
+      "type": "object",
+      "required": [
+        "type",
+        "pattern"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "REGEX",
+            "KEYWORD",
+            "SEMANTIC"
+          ]
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "captures": {
+          "type": "object"
+        }
+      }
+    },
+    "classification": {
+      "type": "object",
+      "required": [
+        "category",
+        "confidence_weight"
+      ],
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "subcategory": {
+          "type": "string"
+        },
+        "specificity": {
+          "type": "string",
+          "enum": [
+            "HIGH",
+            "MEDIUM",
+            "LOW"
+          ]
+        },
+        "confidence_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "bindings": {
+      "type": "object"
+    },
+    "scoring_impact": {
+      "type": "object"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "examples": {
+      "type": "object"
+    }
+  }
+}

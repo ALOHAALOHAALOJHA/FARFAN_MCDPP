@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "keyword-schema-v2.0.0",
+  "title": "CQC Keyword Schema",
+  "description": "Schema para keywords en CQC v2.0",
+  "type": "object",
+  "required": [
+    "policy_area_id",
+    "keywords"
+  ],
+  "properties": {
+    "policy_area_id": {
+      "type": "string",
+      "pattern": "^PA\\d{2}$"
+    },
+    "cluster_id": {
+      "type": "string",
+      "pattern": "^CL\\d{2}$"
+    },
+    "keyword_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "keywords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  }
+}

@@ -1,0 +1,2756 @@
+{
+  "category": "TERRITORIAL",
+  "pattern_count": 55,
+  "patterns": {
+    "PAT-0148": {
+      "id": "PAT-0148",
+      "canonical_id": "PAT-0148",
+      "legacy_ids": [
+        "PAT-0148",
+        "PAT-Q004-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Mesa Municipal de Mujeres|Consejo Consultivo de Mujeres|Comité de seguimiento Ley 1257",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q004"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978071+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0155": {
+      "id": "PAT-0155",
+      "canonical_id": "PAT-0155",
+      "legacy_ids": [
+        "PAT-0155",
+        "PAT-Q005-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Acuerdo Municipal|Decreto Municipal",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q005"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978118+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0274": {
+      "id": "PAT-0274",
+      "canonical_id": "PAT-0274",
+      "legacy_ids": [
+        "PAT-0274",
+        "PAT-Q030-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "estrategias territorializadas|acciones adaptadas al contexto",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q030"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.979384+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0278": {
+      "id": "PAT-0278",
+      "canonical_id": "PAT-0278",
+      "legacy_ids": [
+        "PAT-0278",
+        "PAT-Q031-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "ACNUR|OIM|Personería Municipal|Secretaría de Gobierno/Social",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q271"
+        ],
+        "applies_to_policy_areas": [
+          "PA10"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.979415+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0303": {
+      "id": "PAT-0303",
+      "canonical_id": "PAT-0303",
+      "legacy_ids": [
+        "PAT-0303",
+        "PAT-Q034-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Mesa Municipal de Migración|espacio de coordinación GIFMM local",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q274"
+        ],
+        "applies_to_policy_areas": [
+          "PA10"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.979633+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0441": {
+      "id": "PAT-0441",
+      "canonical_id": "PAT-0441",
+      "legacy_ids": [
+        "PAT-0441",
+        "PAT-Q060-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "estrategias territorializadas|acciones adaptadas al tipo de flujo (tránsito vs. permanencia)",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q300"
+        ],
+        "applies_to_policy_areas": [
+          "PA10"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980700+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0444": {
+      "id": "PAT-0444",
+      "canonical_id": "PAT-0444",
+      "legacy_ids": [
+        "PAT-0444",
+        "PAT-Q061-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Defensoría del Pueblo|Sistema de Alertas Tempranas|SAT|Personería Municipal",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q031"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980720+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0468": {
+      "id": "PAT-0468",
+      "canonical_id": "PAT-0468",
+      "legacy_ids": [
+        "PAT-0468",
+        "PAT-Q064-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Enlace Municipal de Víctimas|equipo del punto de atención (PAV)",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q034"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980895+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0492": {
+      "id": "PAT-0492",
+      "canonical_id": "PAT-0492",
+      "legacy_ids": [
+        "PAT-0492",
+        "PAT-Q068-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "disputas territoriales entre GAO|presencia de grupos armados",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q038"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981077+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0521": {
+      "id": "PAT-0521",
+      "canonical_id": "PAT-0521",
+      "legacy_ids": [
+        "PAT-0521",
+        "PAT-Q073-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Secretaría de Gobierno|Enlace de Víctimas|Personería Municipal",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q043"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981384+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0551": {
+      "id": "PAT-0551",
+      "canonical_id": "PAT-0551",
+      "legacy_ids": [
+        "PAT-0551",
+        "PAT-Q082-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Índice de Paz Territorial|Índice de Seguridad Humana|Índice de Gobernanza",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q052"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981604+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0571": {
+      "id": "PAT-0571",
+      "canonical_id": "PAT-0571",
+      "legacy_ids": [
+        "PAT-0571",
+        "PAT-Q086-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "mediador|variable intermedia|eslabón|control territorial|confianza institucional",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q056"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981760+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0587": {
+      "id": "PAT-0587",
+      "canonical_id": "PAT-0587",
+      "legacy_ids": [
+        "PAT-0587",
+        "PAT-Q090-007"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "estrategias territorializadas|acciones adaptadas a la vereda",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q060"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981895+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0610": {
+      "id": "PAT-0610",
+      "canonical_id": "PAT-0610",
+      "legacy_ids": [
+        "PAT-0610",
+        "PAT-Q093-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "recursos para el Plan Municipal de Gestión del Riesgo|PMGRD",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q063"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.982066+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0611": {
+      "id": "PAT-0611",
+      "canonical_id": "PAT-0611",
+      "legacy_ids": [
+        "PAT-0611",
+        "PAT-Q093-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "presupuesto para el Consejo Municipal de Gestión del Riesgo|CMGRD",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q063"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.982072+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0616": {
+      "id": "PAT-0616",
+      "canonical_id": "PAT-0616",
+      "legacy_ids": [
+        "PAT-0616",
+        "PAT-Q094-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Consejo Municipal de Gestión del Riesgo de Desastres|CMGRD",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q064"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.982106+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0620": {
+      "id": "PAT-0620",
+      "canonical_id": "PAT-0620",
+      "legacy_ids": [
+        "PAT-0620",
+        "PAT-Q094-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Plan de Ordenamiento Territorial|POT|EOT|PBOT",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q064"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.982133+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0621": {
+      "id": "PAT-0621",
+      "canonical_id": "PAT-0621",
+      "legacy_ids": [
+        "PAT-0621",
+        "PAT-Q094-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Plan Municipal de Gestión del Riesgo|PMGRD|Planes de Contingencia",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q064"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.982142+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0719": {
+      "id": "PAT-0719",
+      "canonical_id": "PAT-0719",
+      "legacy_ids": [
+        "PAT-0719",
+        "PAT-Q114-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "estrategias de resiliencia territorial|plan de adaptación de largo plazo",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q084"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.983362+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0745": {
+      "id": "PAT-0745",
+      "canonical_id": "PAT-0745",
+      "legacy_ids": [
+        "PAT-0745",
+        "PAT-Q120-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "estrategias territorializadas|acciones adaptadas a la cuenca",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q090"
+        ],
+        "applies_to_policy_areas": [
+          "PA03"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.983555+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0852": {
+      "id": "PAT-0852",
+      "canonical_id": "PAT-0852",
+      "legacy_ids": [
+        "PAT-0852",
+        "PAT-Q138-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "benchmark|referente departamental|meta del PND en educación",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q108"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.984376+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0907": {
+      "id": "PAT-0907",
+      "canonical_id": "PAT-0907",
+      "legacy_ids": [
+        "PAT-0907",
+        "PAT-Q150-007"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "estrategias territorializadas|modelos de salud y educación rural",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q120"
+        ],
+        "applies_to_policy_areas": [
+          "PA04"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.984772+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0911": {
+      "id": "PAT-0911",
+      "canonical_id": "PAT-0911",
+      "legacy_ids": [
+        "PAT-0911",
+        "PAT-Q151-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Personería Municipal|Defensoría del Pueblo|Observatorio de DDHH",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q121"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.984797+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0933": {
+      "id": "PAT-0933",
+      "canonical_id": "PAT-0933",
+      "legacy_ids": [
+        "PAT-0933",
+        "PAT-Q154-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Enlace Municipal de Víctimas|equipo del Enlace",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q124"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.985152+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0988": {
+      "id": "PAT-0988",
+      "canonical_id": "PAT-0988",
+      "legacy_ids": [
+        "PAT-0988",
+        "PAT-Q163-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Enlace Municipal de Víctimas|Secretaría de Gobierno",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q133"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.985538+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0989": {
+      "id": "PAT-0989",
+      "canonical_id": "PAT-0989",
+      "legacy_ids": [
+        "PAT-0989",
+        "PAT-Q163-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "articulado con la Personería|UARIV territorial",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q133"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.985544+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1010": {
+      "id": "PAT-1010",
+      "canonical_id": "PAT-1010",
+      "legacy_ids": [
+        "PAT-1010",
+        "PAT-Q168-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "benchmark|referente departamental|meta del PND para víctimas",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q138"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.985708+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1016": {
+      "id": "PAT-1016",
+      "canonical_id": "PAT-1016",
+      "legacy_ids": [
+        "PAT-1016",
+        "PAT-Q170-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "implementación de iniciativas PDET|Programas de Desarrollo con Enfoque Territorial",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q140"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.985749+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1023": {
+      "id": "PAT-1023",
+      "canonical_id": "PAT-1023",
+      "legacy_ids": [
+        "PAT-1023",
+        "PAT-Q172-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Índice de Paz Territorial|Índice de Reconciliación|Índice de Confianza Institucional",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q142"
+        ],
+        "applies_to_policy_areas": [
+          "PA05"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.985799+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1079": {
+      "id": "PAT-1079",
+      "canonical_id": "PAT-1079",
+      "legacy_ids": [
+        "PAT-1079",
+        "PAT-Q182-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "comparado con el promedio departamental de embarazo adolescente",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q152"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.986258+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1094": {
+      "id": "PAT-1094",
+      "canonical_id": "PAT-1094",
+      "legacy_ids": [
+        "PAT-1094",
+        "PAT-Q184-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Plataforma Municipal de Juventud|Consejo de Juventud",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q154"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.986359+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1171": {
+      "id": "PAT-1171",
+      "canonical_id": "PAT-1171",
+      "legacy_ids": [
+        "PAT-1171",
+        "PAT-Q198-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "benchmark|referente departamental|meta del Plan Decenal de Educación",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q168"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987349+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1225": {
+      "id": "PAT-1225",
+      "canonical_id": "PAT-1225",
+      "legacy_ids": [
+        "PAT-1225",
+        "PAT-Q210-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "estrategias territorializadas|acciones adaptadas a la comuna/corregimiento",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q180"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987752+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1254": {
+      "id": "PAT-1254",
+      "canonical_id": "PAT-1254",
+      "legacy_ids": [
+        "PAT-1254",
+        "PAT-Q214-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "UMATA|Unidad Municipal de Asistencia Técnica Agropecuaria",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q184"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.987974+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1259": {
+      "id": "PAT-1259",
+      "canonical_id": "PAT-1259",
+      "legacy_ids": [
+        "PAT-1259",
+        "PAT-Q214-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Consejo Municipal de Desarrollo Rural|CMDR",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q184"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.988011+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1265": {
+      "id": "PAT-1265",
+      "canonical_id": "PAT-1265",
+      "legacy_ids": [
+        "PAT-1265",
+        "PAT-Q215-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Plan de Ordenamiento Territorial|POT|determinantes ambientales",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q185"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.988049+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1280": {
+      "id": "PAT-1280",
+      "canonical_id": "PAT-1280",
+      "legacy_ids": [
+        "PAT-1280",
+        "PAT-Q218-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "la actualización catastral ataca el problema de la desfinanciación municipal",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q188"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.988166+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1317": {
+      "id": "PAT-1317",
+      "canonical_id": "PAT-1317",
+      "legacy_ids": [
+        "PAT-1317",
+        "PAT-Q225-003"
+      ],
+      "pattern_spec": {
+        "type": "LITERAL",
+        "pattern": "la actualización catastral fortalece las finanzas municipales, lo que permite mayor inversión",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q195"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.988445+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1341": {
+      "id": "PAT-1341",
+      "canonical_id": "PAT-1341",
+      "legacy_ids": [
+        "PAT-1341",
+        "PAT-Q231-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "ordenamiento territorial sostenible|desarrollo rural integral y competitivo",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q201"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.988812+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1349": {
+      "id": "PAT-1349",
+      "canonical_id": "PAT-1349",
+      "legacy_ids": [
+        "PAT-1349",
+        "PAT-Q233-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "dado que es difícil medir el arraigo territorial|para aproximar",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM05"
+        ],
+        "applies_to_questions": [
+          "Q203"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.988879+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1379": {
+      "id": "PAT-1379",
+      "canonical_id": "PAT-1379",
+      "legacy_ids": [
+        "PAT-1379",
+        "PAT-Q239-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "retroalimentación desde el Consejo Municipal de Desarrollo Rural (CMDR)",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q209"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989142+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1387": {
+      "id": "PAT-1387",
+      "canonical_id": "PAT-1387",
+      "legacy_ids": [
+        "PAT-1387",
+        "PAT-Q240-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "estrategias territorializadas|acciones adaptadas a la vocación del suelo",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q210"
+        ],
+        "applies_to_policy_areas": [
+          "PA07"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989215+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1390": {
+      "id": "PAT-1390",
+      "canonical_id": "PAT-1390",
+      "legacy_ids": [
+        "PAT-1390",
+        "PAT-Q241-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Personería Municipal|Procuraduría General de la Nación",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q211"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989237+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1410": {
+      "id": "PAT-1410",
+      "canonical_id": "PAT-1410",
+      "legacy_ids": [
+        "PAT-1410",
+        "PAT-Q243-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "presupuesto para el fortalecimiento de la Personería Municipal",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q213"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989401+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1415": {
+      "id": "PAT-1415",
+      "canonical_id": "PAT-1415",
+      "legacy_ids": [
+        "PAT-1415",
+        "PAT-Q244-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Mesa Territorial de Garantías|Comité de Evaluación de Riesgo y Recomendación de Medidas|CERREM",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q214"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989435+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1418": {
+      "id": "PAT-1418",
+      "canonical_id": "PAT-1418",
+      "legacy_ids": [
+        "PAT-1418",
+        "PAT-Q244-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "ruta de protección municipal|protocolo de atención a amenazas",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q214"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989455+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1420": {
+      "id": "PAT-1420",
+      "canonical_id": "PAT-1420",
+      "legacy_ids": [
+        "PAT-1420",
+        "PAT-Q244-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Observatorio Municipal de DDHH",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q214"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989470+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1443": {
+      "id": "PAT-1443",
+      "canonical_id": "PAT-1443",
+      "legacy_ids": [
+        "PAT-1443",
+        "PAT-Q248-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "presencia y control territorial de grupos armados",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q218"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989642+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1464": {
+      "id": "PAT-1464",
+      "canonical_id": "PAT-1464",
+      "legacy_ids": [
+        "PAT-1464",
+        "PAT-Q251-009"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "registros de la Personería Municipal",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q221"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989782+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1473": {
+      "id": "PAT-1473",
+      "canonical_id": "PAT-1473",
+      "legacy_ids": [
+        "PAT-1473",
+        "PAT-Q253-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Secretaría de Gobierno|Despacho del Alcalde|Personería Municipal",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q223"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989868+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1552": {
+      "id": "PAT-1552",
+      "canonical_id": "PAT-1552",
+      "legacy_ids": [
+        "PAT-1552",
+        "PAT-Q270-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "estrategias territorializadas|medidas de protección colectiva adaptadas",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q240"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.990860+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1555": {
+      "id": "PAT-1555",
+      "canonical_id": "PAT-1555",
+      "legacy_ids": [
+        "PAT-1555",
+        "PAT-Q271-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Personería Municipal|Defensoría del Pueblo|Procuraduría",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q241"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.990890+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1556": {
+      "id": "PAT-1556",
+      "canonical_id": "PAT-1556",
+      "legacy_ids": [
+        "PAT-1556",
+        "PAT-Q271-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Secretaría de Gobierno|Secretaría de Salud Municipal|ESE",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q241"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.990898+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1633": {
+      "id": "PAT-1633",
+      "canonical_id": "PAT-1633",
+      "legacy_ids": [
+        "PAT-1633",
+        "PAT-Q282-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "universo de atención|total de PPL bajo responsabilidad municipal",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q252"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991489+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1639": {
+      "id": "PAT-1639",
+      "canonical_id": "PAT-1639",
+      "legacy_ids": [
+        "PAT-1639",
+        "PAT-Q283-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "Secretaría de Gobierno|Secretaría de Salud|Personería Municipal",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q253"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991528+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    }
+  }
+}

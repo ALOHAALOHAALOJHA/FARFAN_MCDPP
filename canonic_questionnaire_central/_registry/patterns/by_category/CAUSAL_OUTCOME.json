@@ -1,0 +1,156 @@
+{
+  "category": "CAUSAL_OUTCOME",
+  "pattern_count": 3,
+  "patterns": {
+    "PAT-0168": {
+      "id": "PAT-0168",
+      "canonical_id": "PAT-0168",
+      "legacy_ids": [
+        "PAT-0168",
+        "PAT-Q007-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "con el fin de|para lograr que|lo cual genera|porque permite|esto permitirá",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "CAUSAL_OUTCOME",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q007"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978211+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0169": {
+      "id": "PAT-0169",
+      "canonical_id": "PAT-0169",
+      "legacy_ids": [
+        "PAT-0169",
+        "PAT-Q007-007"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "para fortalecer la autonomía económica|para reducir la dependencia|para promover la participación|para generar ingresos",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "CAUSAL_OUTCOME",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q007"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978218+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0170": {
+      "id": "PAT-0170",
+      "canonical_id": "PAT-0170",
+      "legacy_ids": [
+        "PAT-0170",
+        "PAT-Q007-008"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "para prevenir la VBG|para promover la participación política|para garantizar derechos|para transformar patrones culturales",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "CAUSAL_OUTCOME",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q007"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.978226+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    }
+  }
+}
