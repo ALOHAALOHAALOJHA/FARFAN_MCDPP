@@ -1,0 +1,193 @@
+{
+  "$schema": "../../detection_rules_schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T00:00:00Z",
+  "_author": "CQC Technical Excellence Framework v2.0.0",
+
+  "theme_id": "CC_PERSPECTIVA_GENERO",
+  "name": "Perspectiva de Género",
+  "description": "Análisis de impacto diferenciado por género y transversalización de la igualdad",
+
+  "detection_strategy": {
+    "primary_method": "MULTI_SIGNAL_FUSION",
+    "confidence_threshold": 0.60,
+
+    "signals": [
+      {
+        "signal_id": "SIG-PG-001",
+        "name": "explicit_gender_mention",
+        "type": "KEYWORD_MATCH",
+        "description": "Mención explícita de perspectiva de género",
+        "keywords": [
+          "perspectiva de género",
+          "enfoque de género",
+          "equidad de género",
+          "igualdad de género",
+          "transversalización de género",
+          "mainstreaming de género",
+          "análisis de género"
+        ],
+        "weight": 0.35,
+        "minimum_matches": 1,
+        "context_validation": {
+          "must_not_be_negated": true,
+          "window_size": 10
+        }
+      },
+      {
+        "signal_id": "SIG-PG-002",
+        "name": "women_specific_measures",
+        "type": "PATTERN_MATCH",
+        "description": "Medidas específicas para mujeres",
+        "patterns": [
+          "(?i)(?:programas?|medidas|acciones|estrategias)\\s+(?:para|dirigidas?\\s+a|focalizadas?\\s+en)\\s+(?:las\\s+)?mujeres",
+          "(?i)mujeres\\s+(?:víctimas|rurales|indígenas|afrodescendientes|cabeza\\s+de\\s+hogar)",
+          "(?i)prevención\\s+de\\s+(?:la\\s+)?violencia\\s+contra\\s+(?:las\\s+)?mujeres",
+          "(?i)participación\\s+(?:política|económica|social)\\s+de\\s+(?:las\\s+)?mujeres"
+        ],
+        "weight": 0.25,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PG-003",
+        "name": "gender_gap_analysis",
+        "type": "SEMANTIC_PATTERN",
+        "description": "Análisis de brechas de género",
+        "patterns": [
+          "(?i)brecha[s]?\\s+de\\s+género",
+          "(?i)brecha[s]?\\s+(?:salarial|laboral|educativa|política)",
+          "(?i)desigualdad[es]?\\s+entre\\s+(?:hombres\\s+y\\s+mujeres|mujeres\\s+y\\s+hombres)",
+          "(?i)disparidad[es]?\\s+de\\s+género"
+        ],
+        "weight": 0.20,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PG-004",
+        "name": "gender_disaggregated_indicators",
+        "type": "QUANTITATIVE_REFERENCE",
+        "description": "Indicadores desagregados por sexo",
+        "mc_reference": "MC02",
+        "patterns": [
+          "(?i)desagregad[oa][s]?\\s+por\\s+sexo",
+          "(?i)(?:hombres|mujeres)\\s*:\\s*\\d+",
+          "(?i)\\d+%\\s+(?:hombres|mujeres)",
+          "(?i)(?:masculino|femenino)\\s*:\\s*\\d+"
+        ],
+        "weight": 0.15,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PG-005",
+        "name": "gender_budgeting",
+        "type": "FINANCIAL_PATTERN",
+        "description": "Presupuesto sensible al género",
+        "mc_reference": "MC05",
+        "patterns": [
+          "(?i)presupuesto\\s+(?:sensible\\s+al\\s+género|con\\s+enfoque\\s+de\\s+género)",
+          "(?i)asignación\\s+presupuestal\\s+para\\s+(?:las\\s+)?mujeres",
+          "(?i)recursos\\s+(?:para|destinados\\s+a)\\s+(?:la\\s+)?equidad\\s+de\\s+género"
+        ],
+        "weight": 0.05,
+        "minimum_matches": 1,
+        "requires_amount": true
+      }
+    ],
+
+    "aggregation": {
+      "method": "WEIGHTED_SUM_WITH_THRESHOLD",
+      "threshold": 0.60,
+      "formula": "score = sum(signal.weight * signal.match_score) / sum(signal.weight)",
+      "minimum_signals_required": 2,
+      "bonus_for_explicit_mention": 0.15
+    }
+  },
+
+  "scoring_impact": {
+    "when_detected": {
+      "boost_questions": [
+        "Q001", "Q002", "Q003", "Q004", "Q005",
+        "Q006", "Q007", "Q008", "Q009", "Q010",
+        "Q031", "Q032", "Q033",
+        "Q061", "Q062"
+      ],
+      "boost_amount": 0.15,
+      "boost_type": "ADDITIVE",
+      "cap_at_max_score": true,
+      "cascade_to_dimensions": ["DIM01", "DIM02", "DIM03", "DIM04"]
+    },
+    "when_missing": {
+      "penalty_questions": ["Q001", "Q006"],
+      "penalty_amount": 0.15,
+      "penalty_type": "MULTIPLICATIVE",
+      "penalty_conditions": {
+        "only_if_policy_area_in": ["PA01"]
+      }
+    },
+    "confidence_modifiers": {
+      "explicit_mention_bonus": 0.20,
+      "only_implicit_penalty": -0.05,
+      "quantitative_evidence_bonus": 0.10
+    }
+  },
+
+  "validation": {
+    "required_in_dimensions": ["DIM01"],
+    "required_in_policy_areas": ["PA01"],
+    "recommended_in_policy_areas": ["PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+    "validation_rules": [
+      {
+        "rule_id": "INTERDEP-PG-001",
+        "description": "PA01 (Mujeres/Género) debe tener mención explícita",
+        "condition": "policy_area == 'PA01' AND signal_PG_001.matches == 0",
+        "severity": "ERROR",
+        "message": "PA01 sin mención explícita de perspectiva de género es un error crítico"
+      },
+      {
+        "rule_id": "INTERDEP-PG-002",
+        "description": "Presupuesto sensible al género requerido para PA01",
+        "condition": "policy_area == 'PA01' AND signal_PG_005.matches == 0",
+        "severity": "WARNING",
+        "message": "PA01 debe incluir presupuesto con enfoque de género"
+      }
+    ]
+  },
+
+  "required_capabilities": ["SEMANTIC_PROCESSING", "QUANTITATIVE_ANALYSIS"],
+  "empirical_calibration": {
+    "source": "corpus_empirico_calibracion_extractores.json",
+    "baseline_frequency": {
+      "mujeres_mentions_per_plan": {"mean": 89, "range": [42, 156]},
+      "explicit_gender_perspective_mentions": {"mean": 12, "range": [0, 28]},
+      "gender_disaggregated_indicators": {"mean": 15, "range": [3, 45]}
+    }
+  },
+
+  "testing": {
+    "test_file": "tests/cross_cutting/test_cc_perspectiva_genero.py",
+    "golden_examples": [
+      {
+        "input": "El plan adopta una perspectiva de género para reducir las brechas salariales entre hombres y mujeres",
+        "expected_detected": true,
+        "expected_confidence_min": 0.80,
+        "expected_signals": ["SIG-PG-001", "SIG-PG-003"]
+      },
+      {
+        "input": "Se implementarán programas para mujeres víctimas del conflicto armado con un presupuesto de $500 millones",
+        "expected_detected": true,
+        "expected_confidence_min": 0.70,
+        "expected_signals": ["SIG-PG-002", "SIG-PG-005"]
+      },
+      {
+        "input": "Indicadores desagregados por sexo: mujeres 52%, hombres 48%",
+        "expected_detected": true,
+        "expected_confidence_min": 0.60,
+        "expected_signals": ["SIG-PG-004"]
+      },
+      {
+        "input": "Atención general a la población sin distinción",
+        "expected_detected": false
+      }
+    ]
+  }
+}

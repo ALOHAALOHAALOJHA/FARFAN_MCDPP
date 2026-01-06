@@ -1,0 +1,195 @@
+{
+  "$schema": "../../detection_rules_schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T00:00:00Z",
+  "_author": "CQC Technical Excellence Framework v2.0.0",
+
+  "theme_id": "CC_INTEROPERABILIDAD",
+  "name": "Interoperabilidad Institucional",
+  "description": "Coordinación entre entidades y niveles de gobierno para la implementación coherente",
+
+  "detection_strategy": {
+    "primary_method": "MULTI_SIGNAL_FUSION",
+    "confidence_threshold": 0.55,
+
+    "signals": [
+      {
+        "signal_id": "SIG-INT-001",
+        "name": "institutional_coordination",
+        "type": "KEYWORD_MATCH",
+        "description": "Coordinación interinstitucional explícita",
+        "keywords": [
+          "coordinación interinstitucional",
+          "articulación institucional",
+          "trabajo interinstitucional",
+          "cooperación institucional",
+          "sinergia institucional",
+          "alianzas estratégicas",
+          "convenios interadministrativos"
+        ],
+        "weight": 0.30,
+        "minimum_matches": 1,
+        "context_validation": {
+          "must_not_be_negated": true,
+          "window_size": 10
+        }
+      },
+      {
+        "signal_id": "SIG-INT-002",
+        "name": "coordinating_entities",
+        "type": "INSTITUTIONAL_NETWORK",
+        "description": "Entes coordinadores identificados",
+        "mc_reference": "MC09",
+        "patterns": [
+          "(?i)(?:será|es)\\s+(?:la\\s+)?entidad\\s+(?:coordinadora|responsable)",
+          "(?i)liderazgo\\s+(?:de|por)\\s+(?:la\\s+)?(?:Alcaldía|Gobernación|DNP)",
+          "(?i)(?:coordinar[áé]|lidera[ráé])\\s+(?:la\\s+)?(?:Secretaría|Alcaldía)",
+          "(?i)mesa[s]?\\s+de\\s+coordinación"
+        ],
+        "weight": 0.25,
+        "minimum_matches": 1,
+        "requires_entity_mention": true
+      },
+      {
+        "signal_id": "SIG-INT-003",
+        "name": "interinstitutional_committees",
+        "type": "PATTERN_MATCH",
+        "description": "Comités interinstitucionales",
+        "patterns": [
+          "(?i)comité[s]?\\s+interinstitucional[es]?",
+          "(?i)comité[s]?\\s+de\\s+(?:coordinación|articulación)",
+          "(?i)mesa[s]?\\s+(?:interinstitucional[es]?|técnica[s]?|de\\s+trabajo)",
+          "(?i)instancia[s]?\\s+de\\s+coordinación",
+          "(?i)consejo[s]?\\s+(?:interinstitucional[es]?|territorial[es]?)"
+        ],
+        "weight": 0.20,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-INT-004",
+        "name": "information_flows",
+        "type": "SEMANTIC_PATTERN",
+        "description": "Flujos de información entre entidades",
+        "patterns": [
+          "(?i)intercambio\\s+de\\s+información",
+          "(?i)flujo[s]?\\s+de\\s+(?:información|datos)",
+          "(?i)compartir\\s+información",
+          "(?i)sistemas?\\s+de\\s+información\\s+(?:integrado[s]?|interoperable[s]?)",
+          "(?i)plataforma[s]?\\s+(?:interinstitucional[es]?|integrada[s]?)"
+        ],
+        "weight": 0.15,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-INT-005",
+        "name": "clear_responsibilities",
+        "type": "PATTERN_MATCH",
+        "description": "Responsabilidades claras asignadas",
+        "patterns": [
+          "(?i)responsabilidades\\s+(?:claras|definidas|asignadas)",
+          "(?i)matriz\\s+de\\s+responsabilidades",
+          "(?i)roles\\s+y\\s+responsabilidades",
+          "(?i)entidad\\s+responsable:\\s*\\w+",
+          "(?i)(?:DNP|DANE|ICBF|Alcaldía|Gobernación)\\s+(?:será|es)\\s+responsable"
+        ],
+        "weight": 0.10,
+        "minimum_matches": 1
+      }
+    ],
+
+    "aggregation": {
+      "method": "WEIGHTED_SUM_WITH_THRESHOLD",
+      "threshold": 0.55,
+      "formula": "score = sum(signal.weight * signal.match_score) / sum(signal.weight)",
+      "minimum_signals_required": 2,
+      "bonus_for_committees": 0.10
+    }
+  },
+
+  "scoring_impact": {
+    "when_detected": {
+      "boost_questions": [
+        "Q181", "Q182", "Q183",
+        "Q271", "Q272", "Q273", "Q274", "Q275",
+        "Q091", "Q092", "Q093"
+      ],
+      "boost_amount": 0.12,
+      "boost_type": "ADDITIVE",
+      "cap_at_max_score": true,
+      "cascade_to_dimensions": ["DIM02", "DIM03", "DIM04", "DIM06"]
+    },
+    "when_missing": {
+      "penalty_questions": ["Q271", "Q273"],
+      "penalty_amount": 0.08,
+      "penalty_type": "MULTIPLICATIVE",
+      "penalty_conditions": {
+        "only_if_dimension_in": ["DIM06"]
+      }
+    },
+    "confidence_modifiers": {
+      "committees_established_bonus": 0.15,
+      "information_systems_bonus": 0.10,
+      "clear_responsibilities_bonus": 0.10
+    }
+  },
+
+  "validation": {
+    "required_in_dimensions": ["DIM02", "DIM06"],
+    "recommended_in_policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"],
+    "validation_rules": [
+      {
+        "rule_id": "INTERDEP-INT-001",
+        "description": "DIM06 (Institucionalidad) debe tener coordinación interinstitucional",
+        "condition": "dimension == 'DIM06' AND signal_INT_001.matches == 0",
+        "severity": "WARNING",
+        "message": "DIM06 debe incluir mecanismos de coordinación interinstitucional"
+      },
+      {
+        "rule_id": "INTERDEP-INT-002",
+        "description": "Entidades coordinadoras deben estar identificadas",
+        "condition": "signal_INT_001.matches > 0 AND signal_INT_002.matches == 0",
+        "severity": "INFO",
+        "message": "Se recomienda identificar entidades coordinadoras específicas"
+      }
+    ]
+  },
+
+  "required_capabilities": ["SEMANTIC_PROCESSING", "ENTITY_EXTRACTION"],
+  "empirical_calibration": {
+    "source": "corpus_empirico_calibracion_extractores.json",
+    "baseline_frequency": {
+      "coordinacion_mentions_per_plan": {"mean": 45, "range": [18, 89]},
+      "articulacion_mentions_per_plan": {"mean": 31, "range": [14, 58]},
+      "comites_mentions_per_plan": {"mean": 12, "range": [4, 26]},
+      "convenios_mentions_per_plan": {"mean": 8, "range": [2, 18]}
+    }
+  },
+
+  "testing": {
+    "test_file": "tests/cross_cutting/test_cc_interoperabilidad.py",
+    "golden_examples": [
+      {
+        "input": "La Alcaldía coordinará con el DNP y el DANE mediante un comité interinstitucional con roles y responsabilidades claras",
+        "expected_detected": true,
+        "expected_confidence_min": 0.80,
+        "expected_signals": ["SIG-INT-001", "SIG-INT-002", "SIG-INT-003", "SIG-INT-005"]
+      },
+      {
+        "input": "Mesa de articulación institucional para el intercambio de información entre entidades",
+        "expected_detected": true,
+        "expected_confidence_min": 0.70,
+        "expected_signals": ["SIG-INT-003", "SIG-INT-004"]
+      },
+      {
+        "input": "Sistema de información integrado con flujos de datos interoperables entre la Gobernación y la Alcaldía",
+        "expected_detected": true,
+        "expected_confidence_min": 0.65,
+        "expected_signals": ["SIG-INT-004"]
+      },
+      {
+        "input": "Construcción de escuelas en zona rural del municipio",
+        "expected_detected": false
+      }
+    ]
+  }
+}
