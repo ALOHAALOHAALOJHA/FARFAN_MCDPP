@@ -256,6 +256,18 @@ class EvidenceQueryEngine:
         - Causal chain traversal
         - Contradiction/support queries
 
+    Security Considerations:
+        This is an INTERNAL query engine designed for trusted code paths only.
+        Query parsing uses simple regex patterns and does NOT sanitize against
+        SQL injection or malicious input. DO NOT expose this interface to 
+        untrusted user input without adding proper input validation and sanitization.
+        
+        For production use with external input, implement:
+        - Whitelist validation for field names
+        - Type checking and bounds validation for values
+        - Query complexity limits (e.g., max nodes traversed)
+        - Rate limiting and resource quotas
+
     Usage:
         engine = EvidenceQueryEngine(nexus)
         results = engine.query("SELECT * FROM evidence WHERE confidence > 0.8 LIMIT 10")

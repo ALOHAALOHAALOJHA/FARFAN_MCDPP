@@ -1,0 +1,267 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "date": "2025-12-31",
+    "contract_id": "D02_EDUCACION_Q010_CONTRACT",
+    "question_id": "Q040",
+    "original_question_id": "Q010",
+    "policy_area_number": 2,
+    "policy_area": "D02_EDUCACION",
+    "protocol": "PROMPT_MAESTRO_V1",
+    "compliance": [
+      "GNEA_v2.0.0",
+      "EPISTEMOLOGICAL_GUIDE_V4"
+    ],
+    "schema_version": "v3"
+  },
+  "contract": {
+    "contract_id": "D02_EDUCACION_Q010_CONTRACT",
+    "policy_area": "D02_EDUCACION",
+    "dimension_code": "D2",
+    "question_id": "Q010",
+    "question_type": "TYPE_E",
+    "question_text": "¿El plan describe explícitamente cómo las actividades del sector se complementan, refuerzan mutuamente o siguen una secuencia lógica, evidenciando una estrategia articulada (se debe buscar términos como 'complementariedad', 'sinergia', 'secuencia', 'articulación')?",
+    "question_title": "Coherencia estratégica entre actividades",
+    "method_binding": {
+      "orchestration_mode": "epistemological_pipeline",
+      "contract_type": "TYPE_E",
+      "method_count": 12,
+      "execution_phases": {
+        "phase_A_construction": {
+          "methods": [
+            {
+              "class_name": "_FallbackContradictionDetector",
+              "method_name": "_extract_policy_statements",
+              "mother_file": "src/methods_dispensary/policy_processor.py",
+              "provides": [
+                "raw_facts"
+              ],
+              "requires": [],
+              "level": "N1-EMP",
+              "description": "_FallbackContradictionDetector._extract_policy_statements - Match score 0.53; provides ['raw_facts']"
+            },
+            {
+              "class_name": "TemporalLogicVerifier",
+              "method_name": "_build_timeline",
+              "mother_file": "src/methods_dispensary/contradiction_deteccion.py",
+              "provides": [
+                "raw_facts"
+              ],
+              "requires": [],
+              "level": "N1-EMP",
+              "description": "TemporalLogicVerifier._build_timeline - Match score 0.53; provides ['raw_facts']"
+            },
+            {
+              "class_name": "TemporalLogicVerifier",
+              "method_name": "_extract_resources",
+              "mother_file": "src/methods_dispensary/contradiction_deteccion.py",
+              "provides": [
+                "raw_facts"
+              ],
+              "requires": [],
+              "level": "N1-EMP",
+              "description": "TemporalLogicVerifier._extract_resources - Match score 0.53; provides ['raw_facts']"
+            },
+            {
+              "class_name": "PolicyContradictionDetector",
+              "method_name": "_extract_policy_statements",
+              "mother_file": "src/methods_dispensary/contradiction_deteccion.py",
+              "provides": [
+                "raw_facts"
+              ],
+              "requires": [],
+              "level": "N1-EMP",
+              "description": "PolicyContradictionDetector._extract_policy_statements - Match score 0.53; provides ['raw_facts']"
+            },
+            {
+              "class_name": "PolicyContradictionDetector",
+              "method_name": "_extract_temporal_markers",
+              "mother_file": "src/methods_dispensary/contradiction_deteccion.py",
+              "provides": [
+                "raw_facts"
+              ],
+              "requires": [],
+              "level": "N1-EMP",
+              "description": "PolicyContradictionDetector._extract_temporal_markers - Match score 0.53; provides ['raw_facts']"
+            },
+            {
+              "class_name": "PolicyContradictionDetector",
+              "method_name": "_extract_quantitative_claims",
+              "mother_file": "src/methods_dispensary/contradiction_deteccion.py",
+              "provides": [
+                "raw_facts"
+              ],
+              "requires": [],
+              "level": "N1-EMP",
+              "description": "PolicyContradictionDetector._extract_quantitative_claims - Match score 0.53; provides ['raw_facts']"
+            }
+          ],
+          "fusion_strategy": "fact_collation"
+        },
+        "phase_B_computation": {
+          "methods": [
+            {
+              "class_name": "BayesianNumericalAnalyzer",
+              "method_name": "_compute_coherence",
+              "mother_file": "src/methods_dispensary/embedding_policy.py",
+              "provides": [
+                "inferences"
+              ],
+              "requires": [
+                "raw_facts"
+              ],
+              "level": "N2-INF",
+              "description": "BayesianNumericalAnalyzer._compute_coherence - Match score 0.46; provides ['inferences']"
+            },
+            {
+              "class_name": "PolicyAnalysisEmbedder",
+              "method_name": "evaluate_policy_numerical_consistency",
+              "mother_file": "src/methods_dispensary/embedding_policy.py",
+              "provides": [
+                "inferences"
+              ],
+              "requires": [
+                "raw_facts"
+              ],
+              "level": "N2-INF",
+              "description": "PolicyAnalysisEmbedder.evaluate_policy_numerical_consistency - Match score 0.46; provides ['inferences']"
+            },
+            {
+              "class_name": "EmbeddingPolicyProducer",
+              "method_name": "evaluate_numerical_consistency",
+              "mother_file": "src/methods_dispensary/embedding_policy.py",
+              "provides": [
+                "inferences"
+              ],
+              "requires": [
+                "raw_facts"
+              ],
+              "level": "N2-INF",
+              "description": "EmbeddingPolicyProducer.evaluate_numerical_consistency - Match score 0.46; provides ['inferences']"
+            },
+            {
+              "class_name": "PDETMunicipalPlanAnalyzer",
+              "method_name": "_score_temporal_consistency",
+              "mother_file": "src/methods_dispensary/financiero_viabilidad_tablas copy.py",
+              "provides": [
+                "inferences"
+              ],
+              "requires": [
+                "raw_facts"
+              ],
+              "level": "N2-INF",
+              "description": "PDETMunicipalPlanAnalyzer._score_temporal_consistency - Match score 0.46; provides ['inferences']"
+            }
+          ],
+          "fusion_strategy": "logical_consistency_check"
+        },
+        "phase_C_litigation": {
+          "methods": [
+            {
+              "class_name": "AdvancedSemanticChunker",
+              "method_name": "_contains_table",
+              "mother_file": "src/methods_dispensary/embedding_policy.py",
+              "provides": [
+                "validated_constraints"
+              ],
+              "requires": [
+                "inferences",
+                "raw_facts"
+              ],
+              "level": "N3-AUD",
+              "description": "AdvancedSemanticChunker._contains_table - Match score 0.43; provides ['validated_constraints']"
+            },
+            {
+              "class_name": "AdvancedSemanticChunker",
+              "method_name": "_contains_list",
+              "mother_file": "src/methods_dispensary/embedding_policy.py",
+              "provides": [
+                "validated_constraints"
+              ],
+              "requires": [
+                "inferences",
+                "raw_facts"
+              ],
+              "level": "N3-AUD",
+              "description": "AdvancedSemanticChunker._contains_list - Match score 0.43; provides ['validated_constraints']"
+            }
+          ],
+          "fusion_strategy": "contradiction_dominance"
+        }
+      }
+    },
+    "evidence_assembly": {
+      "engine": "EVIDENCE_NEXUS",
+      "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
+      "class_name": "EvidenceNexus",
+      "method_name": "assemble",
+      "assembly_rules": [
+        {
+          "rule_id": "R1_fact_collation",
+          "rule_type": "empirical_basis",
+          "target": "logical_facts",
+          "merge_strategy": "fact_collation",
+          "output_type": "FACT"
+        },
+        {
+          "rule_id": "R2_consistency_check",
+          "rule_type": "logical_validation",
+          "target": "consistency_score",
+          "merge_strategy": "logical_consistency_check",
+          "output_type": "PARAMETER"
+        },
+        {
+          "rule_id": "R3_contradiction_dominance",
+          "rule_type": "logical_veto",
+          "target": "validated_consistency",
+          "merge_strategy": "contradiction_dominance",
+          "output_type": "CONSTRAINT"
+        },
+        {
+          "rule_id": "R4_synthesis",
+          "rule_type": "synthesis",
+          "target": "human_answer",
+          "merge_strategy": "carver_doctoral_synthesis",
+          "output_type": "NARRATIVE"
+        }
+      ]
+    },
+    "epistemological_justification": "Colección para gate lógico",
+    "fusion_strategies": {
+      "n1": "fact_collation",
+      "n2": "logical_consistency_check",
+      "n3": "contradiction_dominance"
+    },
+    "n1_strategy_refined": {
+      "name": "fact_collation",
+      "operation": "Recolecta hechos para análisis de consistencia lógica",
+      "rationale": "Gate lógico necesita ver TODOS los hechos",
+      "preserve": "concat es correcto aquí (como audit dossier)"
+    },
+    "n2_strategy_refined": {
+      "name": "logical_consistency_check",
+      "operation": "Verifica consistencia lógica SIN promediar",
+      "differs_from_weighted_mean": "NO promedia contradicciones",
+      "logic": "AND-based: todas las condiciones deben pasar",
+      "formula": "consistency = min(c1, c2, ..., cn) NOT mean(c1, c2, ..., cn)",
+      "output": {
+        "is_consistent": "boolean",
+        "violations": [
+          "lista de contradicciones"
+        ],
+        "severity": "max(violation_severities)"
+      }
+    },
+    "n3_fusion_refined": {
+      "name": "contradiction_dominance",
+      "operation": "UNA contradicción domina TODO",
+      "principle": "Lógica de Popper: una falsación invalida la teoría",
+      "formula": "if any_contradiction: confidence = 0.0",
+      "rationale": "Contradicciones NO son aditivas ni promediables",
+      "examples": {
+        "Q014": "Desproporción actividad-meta → INVÁLIDO (no 'confianza media')",
+        "Q019": "Resultado no atiende problema → INVÁLIDO (no 'parcialmente válido')"
+      }
+    }
+  }
+}

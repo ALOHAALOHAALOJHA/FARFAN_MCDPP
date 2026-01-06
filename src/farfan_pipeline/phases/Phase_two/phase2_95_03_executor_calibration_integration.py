@@ -543,7 +543,10 @@ class RealTimeCalibrationEngine:
         Returns:
             Confidence score in [0.0, 1.0].
         """
-        if not baseline or baseline.sample_count < 5:
+        if not baseline or baseline.sample_count == 0:
+            return 0.5  # Low confidence with no data
+        
+        if baseline.sample_count < 5:
             return 0.5  # Low confidence with insufficient data
 
         # Higher sample count -> higher confidence (asymptotic to 1.0)

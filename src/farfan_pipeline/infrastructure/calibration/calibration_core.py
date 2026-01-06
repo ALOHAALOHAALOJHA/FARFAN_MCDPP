@@ -45,6 +45,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import math
 import re
 from dataclasses import dataclass, field
@@ -59,7 +60,7 @@ from typing import (
 )
 
 if TYPE_CHECKING:
-    from cryptography.hazmat.primitives. asymmetric. ed25519 import (
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import (
         Ed25519PrivateKey,
         Ed25519PublicKey,
     )
@@ -155,11 +156,11 @@ class ValidityStatus(Enum):
 # =============================================================================
 
 
-def _canonical_json(obj:  Mapping[str, object] | Sequence[object]) -> bytes:
+def _canonical_json(obj: Mapping[str, object] | Sequence[object]) -> bytes:
     """
     Produce canonical JSON bytes for deterministic hashing.
 
-    Specification: 
+    Specification:
         - Keys sorted lexicographically (recursive)
         - No whitespace between tokens
         - UTF-8 encoding
@@ -167,25 +168,30 @@ def _canonical_json(obj:  Mapping[str, object] | Sequence[object]) -> bytes:
         - No NaN or Infinity values permitted (raises ValueError)
 
     This function is the SINGLE SOURCE OF TRUTH for serialization
-    used in content hashing.  Any change here invalidates all existing hashes. 
+    used in content hashing.  Any change here invalidates all existing hashes.
 
     Args:
         obj:  Mapping or sequence to serialize.
 
     Returns:
-        UTF-8 encoded bytes of canonical JSON. 
+        UTF-8 encoded bytes of canonical JSON.
 
     Raises:
         ValueError:  If obj contains NaN or Infinity float values.
     """
-    return json.dumps(
-        obj,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=False,
-        allow_nan=False,
-        default=str,  # datetime.isoformat() fallback
-    ).encode("utf-8")
+    try:
+        return json.dumps(
+            obj,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+            allow_nan=False,
+            default=str,  # datetime.isoformat() fallback
+        ).encode("utf-8")
+    except ValueError as exc:
+        if "Out of range float values" in str(exc):
+            raise ValueError("NaN or Infinity float values are not permitted in canonical JSON") from exc
+        raise
 
 
 def _compute_sha256(data: bytes) -> str:
@@ -368,6 +374,13 @@ class EvidenceReference:
             raise ValidationError(
                 f"commit_sha must be 40-character lowercase hex; "
                 f"got: '{self.commit_sha}'"
+            )
+        
+        # INV-EV-002b: Forbid placeholder SHA
+        if self.commit_sha == "0" * 40:
+            raise ValidationError(
+                "Placeholder commit SHA ('000...000') is prohibited. "
+                "Evidence must be pinned to a specific commit for provenance."
             )
 
         # INV-EV-003: Non-empty description
@@ -800,7 +813,7 @@ class CalibrationLayer:
             ImportError: If cryptography package is not installed.
         """
         try:
-            from cryptography.hazmat.primitives.asymmetric. ed25519 import Ed25519PrivateKey
+            from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
         except ImportError as exc:
             raise ImportError(
                 "cryptography package required for signing. "
@@ -871,9 +884,18 @@ def create_default_bounds() -> dict[str, tuple[ClosedInterval, str, float]]:
     for the four required calibration parameters.  These bounds are derived
     from domain analysis and should only be modified with explicit evidence.
 
+    NOTE: These defaults are GENERIC and not TYPE-specific.
+    For type-specific defaults (e.g. priors for TYPE_B), use type_defaults.py.
+
     Returns:
         Dictionary mapping parameter names to (bounds, unit, default_value) tuples.
     """
+    # Warn if used in contexts where type-specific defaults are expected
+    logging.getLogger(__name__).warning(
+        "create_default_bounds() called. "
+        "These are GENERIC defaults. ensure this is intentional (e.g. Phase-1 Ingestion). "
+        "For Phase-2, prefer type_defaults."
+    )
     return {
         "prior_strength": (
             ClosedInterval(lower=0.0, upper=1.0),

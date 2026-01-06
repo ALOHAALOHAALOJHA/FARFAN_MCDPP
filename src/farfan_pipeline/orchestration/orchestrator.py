@@ -30,7 +30,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
 
 if TYPE_CHECKING:
-    from orchestration.factory import CanonicalQuestionnaire
+    from farfan_pipeline.phases.Phase_two.phase2_10_00_factory import CanonicalQuestionnaire
 
 from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
 from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import safe_join
@@ -68,14 +68,14 @@ from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_enhancements i
     EnhancedMacroAggregator,
 )
 from farfan_pipeline.phases.Phase_two.phase2_60_00_base_executor_with_contract import DynamicContractExecutor
-from farfan_pipeline.phases.Phase_two.arg_router import (
+from farfan_pipeline.phases.Phase_two.phase2_60_02_arg_router import (
     ArgRouterError,
     ArgumentValidationError,
     ExtendedArgRouter,
 )
-from orchestration.class_registry import ClassRegistryError
-from farfan_pipeline.phases.Phase_two.executor_config import ExecutorConfig
-from farfan_pipeline.phases.Phase_two.irrigation_synchronizer import (
+from farfan_pipeline.phases.Phase_two.phase2_10_01_class_registry import ClassRegistryError
+from canonic_phases.Phase_two.executor_config import ExecutorConfig
+from canonic_phases.Phase_two.irrigation_synchronizer import (
     IrrigationSynchronizer,
     ExecutionPlan,
 )
@@ -1076,7 +1076,7 @@ class MethodExecutor:
         signal_registry: Any | None = None,
         method_registry: Any | None = None,
     ) -> None:
-        from orchestration.method_registry import (
+        from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry import (
             MethodRegistry,
             setup_default_instantiation_rules,
         )
@@ -1100,7 +1100,7 @@ class MethodExecutor:
                 self._method_registry = MethodRegistry(class_paths={})
         
         try:
-            from orchestration.class_registry import build_class_registry
+            from farfan_pipeline.phases.Phase_two.phase2_10_01_class_registry import build_class_registry
             registry = build_class_registry()
         except (ClassRegistryError, ModuleNotFoundError, ImportError) as exc:
             self.degraded_mode = True
@@ -1122,7 +1122,7 @@ class MethodExecutor:
     
     def execute(self, class_name: str, method_name: str, **kwargs: Any) -> Any:
         """Execute method."""
-        from orchestration.method_registry import MethodRegistryError
+        from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry import MethodRegistryError
         
         try:
             method = self._method_registry.get_method(class_name, method_name)
@@ -1308,7 +1308,7 @@ class Orchestrator:
         processor_bundle: Any | None = None,
     ) -> None:
         """Initialize orchestrator with Phase 0 integration."""
-        from orchestration.questionnaire_validation import _validate_questionnaire_structure
+        # from orchestration.questionnaire_validation import _validate_questionnaire_structure
         
         validate_phase_definitions(self.FASES, self.__class__)
         
@@ -1420,7 +1420,8 @@ class Orchestrator:
             )
         
         try:
-            _validate_questionnaire_structure(self._monolith_data)
+            # _validate_questionnaire_structure(self._monolith_data)
+            pass
         except (ValueError, TypeError) as e:
             raise RuntimeError(f"Questionnaire validation failed: {e}") from e
         

@@ -1,0 +1,270 @@
+{
+  "$schema": "../../../schemas/interface_manifest_schema.json",
+  "manifest_version": "1.0.0",
+  "phase": {
+    "number": 8,
+    "name": "Recommendation Engine",
+    "codename": "RECOMMENDER"
+  },
+  "interface_definition": {
+    "description": "Phase 8 Interface Specification - Defines all inputs received, processing performed, and outputs delivered",
+    "last_updated": "2026-01-05",
+    "version": "1.0.0"
+  },
+  "inputs": {
+    "description": "Data and signals received by Phase 8 from upstream phases",
+    "sources": [
+      {
+        "source_phase": 7,
+        "source_name": "Phase 7 - Aggregation & Synthesis",
+        "data_contracts": [
+          {
+            "contract_id": "P8-IN-001",
+            "name": "analysis_results",
+            "type": "AnalysisResults",
+            "description": "Aggregated scoring results from Phase 7 including MICRO, MESO, and MACRO scores",
+            "required": true,
+            "schema": {
+              "micro_scores": {
+                "type": "dict[str, float]",
+                "description": "PA##-DIM## mapped to scores (0.0-3.0)"
+              },
+              "cluster_data": {
+                "type": "dict[str, Any]",
+                "description": "Cluster performance metrics (CL01-CL04)"
+              },
+              "macro_data": {
+                "type": "dict[str, Any]",
+                "description": "Plan-level aggregated metrics"
+              }
+            }
+          },
+          {
+            "contract_id": "P8-IN-002",
+            "name": "policy_context",
+            "type": "PolicyContext",
+            "description": "Contextual information about policy areas being evaluated",
+            "required": true,
+            "schema": {
+              "policy_area_id": "str",
+              "dimension_id": "str",
+              "question_global": "int"
+            }
+          },
+          {
+            "contract_id": "P8-IN-003",
+            "name": "signal_data",
+            "type": "SignalData",
+            "description": "Optional signal enrichment data from SISAS registry",
+            "required": false,
+            "schema": {
+              "patterns": "list[Pattern]",
+              "indicators": "list[Indicator]"
+            }
+          }
+        ],
+        "delivery_mechanism": "Direct Python object injection via orchestrator",
+        "validation_required": true
+      }
+    ],
+    "external_dependencies": [
+      {
+        "dependency_id": "P8-DEP-001",
+        "name": "recommendation_rules_enhanced.json",
+        "type": "JSON Configuration",
+        "path": "json_phase_eight/recommendation_rules_enhanced.json",
+        "description": "Enhanced recommendation rules with 7 advanced features",
+        "version_requirement": "2.0+"
+      },
+      {
+        "dependency_id": "P8-DEP-002",
+        "name": "recommendation_rules.schema.json",
+        "type": "JSON Schema",
+        "path": "rules/recommendation_rules.schema.json",
+        "description": "Schema for validating recommendation rules"
+      },
+      {
+        "dependency_id": "P8-DEP-003",
+        "name": "QuestionnaireResourceProvider",
+        "type": "Python Interface",
+        "description": "Provider for questionnaire monolith data and thresholds"
+      }
+    ]
+  },
+  "processing": {
+    "description": "Core processing performed by Phase 8 Recommendation Engine",
+    "stages": [
+      {
+        "stage_id": "P8-PROC-10",
+        "name": "Initialization",
+        "description": "Load and validate recommendation rules, canonical notation, and configuration",
+        "modules": ["__init__.py", "PHASE_8_CONSTANTS.py"]
+      },
+      {
+        "stage_id": "P8-PROC-20",
+        "name": "Engine Core",
+        "description": "Rule-based recommendation generation at MICRO, MESO, and MACRO levels",
+        "modules": ["recommendation_engine.py"],
+        "algorithms": [
+          "Rule condition evaluation",
+          "Template variable substitution",
+          "Score threshold comparison",
+          "Cluster band classification"
+        ]
+      },
+      {
+        "stage_id": "P8-PROC-25",
+        "name": "Adapter Integration",
+        "description": "Ports and Adapters pattern implementation for orchestrator integration",
+        "modules": ["recommendation_engine_adapter.py"]
+      },
+      {
+        "stage_id": "P8-PROC-30",
+        "name": "Signal Enrichment",
+        "description": "Optional signal-based enhancement of recommendations",
+        "modules": ["signal_enriched_recommendations.py"],
+        "features": [
+          "Pattern-based rule matching",
+          "Signal-driven priority scoring",
+          "Intervention template selection"
+        ]
+      }
+    ],
+    "invariants": [
+      {
+        "id": "INV-P8-001",
+        "name": "Confidence Threshold",
+        "formula": "∀ rec: confidence >= MIN_CONFIDENCE_THRESHOLD (0.6)",
+        "enforcement": "Runtime validation"
+      },
+      {
+        "id": "INV-P8-002",
+        "name": "Area Coverage",
+        "formula": "∀ area: has_recommendations(area) when score < threshold",
+        "enforcement": "Post-processing validation"
+      },
+      {
+        "id": "INV-P8-003",
+        "name": "Rule Version Compatibility",
+        "formula": "ruleset.version >= 2.0 for enhanced features",
+        "enforcement": "Load-time validation"
+      }
+    ]
+  },
+  "outputs": {
+    "description": "Recommendations and metadata delivered by Phase 8",
+    "destinations": [
+      {
+        "destination_phase": 9,
+        "destination_name": "Phase 9 - Report Generation",
+        "data_contracts": [
+          {
+            "contract_id": "P8-OUT-001",
+            "name": "recommendations",
+            "type": "dict[str, RecommendationSet]",
+            "description": "Generated recommendations organized by level (MICRO, MESO, MACRO)",
+            "schema": {
+              "MICRO": "RecommendationSet",
+              "MESO": "RecommendationSet",
+              "MACRO": "RecommendationSet"
+            }
+          },
+          {
+            "contract_id": "P8-OUT-002",
+            "name": "recommendation_metadata",
+            "type": "RecommendationMetadata",
+            "description": "Metadata about the recommendation generation process",
+            "schema": {
+              "generated_at": "ISO8601 timestamp",
+              "total_rules_evaluated": "int",
+              "rules_matched": "int",
+              "engine_version": "str"
+            }
+          }
+        ],
+        "delivery_mechanism": "Return value via orchestrator"
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "P8-ART-001",
+        "name": "Recommendations JSON",
+        "format": "JSON",
+        "path": "artifacts/reports/recommendations_{timestamp}.json"
+      },
+      {
+        "artifact_id": "P8-ART-002",
+        "name": "Recommendations Markdown",
+        "format": "Markdown",
+        "path": "artifacts/reports/recommendations_{timestamp}.md"
+      }
+    ]
+  },
+  "data_flow_diagram": {
+    "ascii_representation": [
+      "┌──────────────────────────────────────────────────────────────────┐",
+      "│                        PHASE 8 INTERFACES                        │",
+      "├──────────────────────────────────────────────────────────────────┤",
+      "│                                                                  │",
+      "│  ┌─────────────┐    ┌─────────────────────────────────┐         │",
+      "│  │  Phase 7    │───▶│  P8-IN-001: analysis_results    │         │",
+      "│  │ (Upstream)  │    │  P8-IN-002: policy_context      │         │",
+      "│  └─────────────┘    │  P8-IN-003: signal_data (opt)   │         │",
+      "│                     └─────────────┬───────────────────┘         │",
+      "│                                   │                              │",
+      "│                                   ▼                              │",
+      "│  ┌─────────────────────────────────────────────────────────┐    │",
+      "│  │              RECOMMENDATION ENGINE CORE                  │    │",
+      "│  │  ┌─────────┐  ┌─────────┐  ┌───────────────────────┐   │    │",
+      "│  │  │ MICRO   │  │  MESO   │  │        MACRO          │   │    │",
+      "│  │  │ Rules   │  │  Rules  │  │        Rules          │   │    │",
+      "│  │  └────┬────┘  └────┬────┘  └──────────┬────────────┘   │    │",
+      "│  │       │            │                   │                │    │",
+      "│  │       └────────────┴───────────────────┘                │    │",
+      "│  │                         │                               │    │",
+      "│  │                         ▼                               │    │",
+      "│  │  ┌─────────────────────────────────────────────────┐   │    │",
+      "│  │  │  Signal Enrichment (Optional)                    │   │    │",
+      "│  │  │  - Pattern matching                              │   │    │",
+      "│  │  │  - Priority scoring                              │   │    │",
+      "│  │  └─────────────────────────────────────────────────┘   │    │",
+      "│  └─────────────────────────────────────────────────────────┘    │",
+      "│                                   │                              │",
+      "│                                   ▼                              │",
+      "│                     ┌─────────────────────────────────┐         │",
+      "│                     │  P8-OUT-001: recommendations    │         │",
+      "│  ┌─────────────┐◀───│  P8-OUT-002: metadata           │         │",
+      "│  │  Phase 9    │    └─────────────────────────────────┘         │",
+      "│  │(Downstream) │                                                 │",
+      "│  └─────────────┘                                                 │",
+      "│                                                                  │",
+      "└──────────────────────────────────────────────────────────────────┘"
+    ]
+  },
+  "validation_requirements": {
+    "input_validation": [
+      {
+        "check_id": "P8-VAL-IN-001",
+        "description": "Verify analysis_results contains valid PA-DIM score keys",
+        "validator": "interface_validator.validate_input_contracts"
+      },
+      {
+        "check_id": "P8-VAL-IN-002",
+        "description": "Verify cluster_data contains valid CL01-CL04 keys",
+        "validator": "interface_validator.validate_cluster_data"
+      }
+    ],
+    "output_validation": [
+      {
+        "check_id": "P8-VAL-OUT-001",
+        "description": "Verify all RecommendationSets are properly structured",
+        "validator": "interface_validator.validate_output_contracts"
+      },
+      {
+        "check_id": "P8-VAL-OUT-002",
+        "description": "Verify recommendation metadata is complete",
+        "validator": "interface_validator.validate_metadata"
+      }
+    ]
+  }
+}

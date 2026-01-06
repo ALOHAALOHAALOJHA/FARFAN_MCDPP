@@ -203,10 +203,12 @@ class CheckpointManager:
             data = {
                 "plan_id": plan_id,
                 "completed_tasks": completed_tasks,
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "metadata": metadata or {}
             }
-            data["checkpoint_hash"] = self._compute_hash(data)
+            # Compute hash before adding the hash field itself
+            checkpoint_hash = self._compute_hash(data)
+            data["checkpoint_hash"] = checkpoint_hash
 
             with open(checkpoint_path, "w") as f:
                 json.dump(data, f, indent=2)

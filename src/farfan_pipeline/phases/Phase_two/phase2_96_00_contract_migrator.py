@@ -32,6 +32,7 @@ import json
 import logging
 from collections import deque
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, ClassVar
 
@@ -173,6 +174,7 @@ class ContractMigrator:
             MigrationResult indicating success or failure.
         """
         contract_path = Path(contract_path)
+        contract = None
 
         try:
             # Load contract
@@ -250,7 +252,7 @@ class ContractMigrator:
             logger.error(f"Migration failed for {contract_path}: {e}")
             return MigrationResult(
                 success=False,
-                original_version=contract.get("version", "unknown") if "contract" in dir() else "unknown",
+                original_version=contract.get("version", "unknown") if contract else "unknown",
                 target_version=target_version,
                 original_path=contract_path,
                 new_path=None,
