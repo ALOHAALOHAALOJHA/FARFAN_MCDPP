@@ -12,8 +12,6 @@ from farfan_pipeline.phases.Phase_two.phase2_80_01_evidence_query_engine import 
     SecureQueryParser,
     create_query_engine,
 )
-
-
 class TestSQLInjectionProtection:
     """Security tests for SQL injection prevention."""
 
