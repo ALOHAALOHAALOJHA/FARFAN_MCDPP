@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "empirical-corpus-index-v2.0.0",
+  "_meta": {
+    "schema_version": "2.0.0",
+    "generated_at": "2026-01-06T20:00:00Z",
+    "generator": "CQC Empirical Corpus Integration System",
+    "purpose": "Master index for empirical calibration data from 14 real PDT plans"
+  },
+
+  "corpus_metadata": {
+    "corpus_id": "PDT_COLOMBIA_2024_2027_EMPIRICAL_BASELINE",
+    "version": "4.0.0",
+    "creation_date": "2026-01-06",
+    "source": "Google Notebook LM Batch Analysis + Expert Enhancement",
+    "plans_analyzed": 14,
+    "total_pages": 2956,
+    "geographic_coverage": ["Cauca", "Caquetá", "Chocó", "Cesar"],
+    "statistical_power": {
+      "sample_size": 14,
+      "confidence_level": 0.90,
+      "representative_of": "Small municipalities (<100k) in conflict-affected regions"
+    }
+  },
+
+  "empirical_files": {
+    "extractor_calibration": {
+      "file": "_registry/membership_criteria/_calibration/extractor_calibration.json",
+      "original_source": "corpus_empirico_calibracion_extractores.json",
+      "size_kb": 25,
+      "purpose": "Calibration data for signal extractors (MC01-MC10)",
+      "contains": [
+        "Empirical frequencies of 10 signal types across 14 plans",
+        "Regex patterns calibrated with real data",
+        "Confidence thresholds validated empirically",
+        "Gold standard examples for each signal type",
+        "Library specifications (pdfplumber, spaCy, etc.)"
+      ],
+      "used_by": [
+        "StructuralMarkerExtractor (Phase 1-SP2)",
+        "QuantitativeTripletExtractor (Phase 1-SP6)",
+        "NormativeReferenceExtractor (Phase 1-SP5)",
+        "FinancialChainExtractor (Phase 1-SP7)",
+        "CausalVerbExtractor (Phase 1-SP10)",
+        "InstitutionalNER (Phase 1-SP11)"
+      ],
+      "critical_for": "Extractor accuracy and confidence scoring"
+    },
+
+    "integration_map": {
+      "file": "_registry/questions/integration_map.json",
+      "original_source": "corpus_empirico_integrado.json",
+      "size_kb": 47,
+      "purpose": "Complete mapping Q001-Q305 → Signal Types",
+      "contains": [
+        "300 micro questions mapped to signal types",
+        "30 generic slots (D1-Q1 to D6-Q5) × 10 Policy Areas",
+        "Scoring modalities per question",
+        "Expected signal counts per question",
+        "MESO/MACRO aggregation rules",
+        "Interdependencies between questions"
+      ],
+      "used_by": [
+        "QuestionnaireSignalRegistry (Phase 2)",
+        "IrrigationSynchronizer (Phase 2)",
+        "EvidenceNexus (Phase 2)",
+        "DimensionAggregator (Phase 4)",
+        "PolicyAreaAggregator (Phase 5)",
+        "ClusterAggregator (Phase 6)"
+      ],
+      "critical_for": "Signal routing and irrigation to correct consumers"
+    },
+
+    "normative_compliance": {
+      "file": "_registry/entities/normative_compliance.json",
+      "original_source": "corpus_empirico_normatividad.json",
+      "size_kb": 8.5,
+      "purpose": "Mandatory normative requirements per Policy Area",
+      "contains": [
+        "Obligatory norms per PA (Ley 1448, Acuerdo de Paz, etc.)",
+        "Penalties for missing norms",
+        "Validation rules for normative compliance",
+        "Empirical norm citation frequencies",
+        "Compliance thresholds per PA"
+      ],
+      "used_by": [
+        "NormativeReferenceExtractor (Phase 1-SP5)",
+        "@p PolicyAreaScorer (Phase 3)",
+        "CrossCuttingScorer (Phase 3)",
+        "PolicyAreaAggregator (Phase 5)"
+      ],
+      "critical_for": "Normative compliance validation and PA scoring"
+    },
+
+    "empirical_weights": {
+      "file": "scoring/calibration/empirical_weights.json",
+      "original_source": "corpus_thresholds_weights.json",
+      "size_kb": 11,
+      "purpose": "Empirically calibrated thresholds and aggregation weights",
+      "contains": [
+        "Confidence thresholds per signal type",
+        "Aggregation weights Phases 3-7",
+        "Capability requirements per signal",
+        "Scoring modality formulas (TYPE_A, B, C, D)",
+        "Dimension/PA/Cluster weights",
+        "Cross-cutting boost factors"
+      ],
+      "used_by": [
+        "All Phase 3 Scorers (@b, @p, @q, @d, @u, @chain)",
+        "DimensionAggregator (Phase 4)",
+        "PolicyAreaAggregator (Phase 5)",
+        "ClusterAggregator (Phase 6)",
+        "MacroAggregator (Phase 7)"
+      ],
+      "critical_for": "Accurate scoring and aggregation with empirical validation"
+    }
+  },
+
+  "usage_workflow": {
+    "step1_extractor_initialization": {
+      "action": "Load extractor_calibration.json",
+      "extractors_configure": [
+        "CPPStructuralParser → table/section detection patterns",
+        "QuantitativeTripletExtractor → LB/Meta/Año patterns",
+        "NormativeReferenceExtractor → norm citation patterns",
+        "FinancialChainExtractor → budget chain patterns",
+        "CausalVerbExtractor → causal verb patterns",
+        "InstitutionalNER → entity recognition patterns"
+      ],
+      "output": "Extractors ready with empirically validated patterns"
+    },
+
+    "step2_question_signal_mapping": {
+      "action": "Load integration_map.json",
+      "system_configures": [
+        "QuestionnaireSignalRegistry with Q→Signal mappings",
+        "IrrigationSynchronizer with routing rules",
+        "Expected signal counts per question"
+      ],
+      "output": "Signal routing configured for 300 questions"
+    },
+
+    "step3_normative_compliance_setup": {
+      "action": "Load normative_compliance.json",
+      "validators_configure": [
+        "NormativeComplianceValidator",
+        "@p PolicyAreaScorer with required norms",
+        "Penalty calculators for missing norms"
+      ],
+      "output": "Normative compliance system ready"
+    },
+
+    "step4_scoring_calibration": {
+      "action": "Load empirical_weights.json",
+      "scorers_configure": [
+        "All Phase 3 scorers with empirical weights",
+        "Aggregators Phases 4-7 with calibrated formulas",
+        "Threshold validators with confidence levels"
+      ],
+      "output": "Scoring system calibrated with empirical data"
+    }
+  },
+
+  "empirical_baseline_metrics": {
+    "current_alignment_score": 0.029,
+    "target_alignment_phase1": 0.50,
+    "target_alignment_phase2": 0.70,
+    "target_alignment_phase3": 0.85,
+    "bottleneck": "Only 992 expected_elements used vs 10,563 available resources",
+    "solution": "Full signal type integration + pattern enrichment enabled by these files"
+  },
+
+  "integration_status": {
+    "extractor_calibration": {
+      "integrated": true,
+      "location": "_registry/membership_criteria/_calibration/",
+      "linked_to": ["MC01-MC10 definitions", "Phase 1 extractors"]
+    },
+    "integration_map": {
+      "integrated": true,
+      "location": "_registry/questions/",
+      "linked_to": ["QuestionnaireSignalRegistry", "IrrigationSynchronizer"]
+    },
+    "normative_compliance": {
+      "integrated": true,
+      "location": "_registry/entities/",
+      "linked_to": ["normative.json entities", "@p scorer"]
+    },
+    "empirical_weights": {
+      "integrated": true,
+      "location": "scoring/calibration/",
+      "linked_to": ["All scorers", "Aggregators Phases 4-7"]
+    }
+  },
+
+  "next_steps": [
+    "Update Membership Criteria MC01-MC10 to reference extractor_calibration.json",
+    "Update QuestionnaireSignalRegistry to load integration_map.json",
+    "Update PolicyAreaScorer to load normative_compliance.json",
+    "Update scoring/scoring_system.json to reference empirical_weights.json",
+    "Create validators that use these empirical thresholds",
+    "Document usage patterns in extractor implementations"
+  ]
+}
