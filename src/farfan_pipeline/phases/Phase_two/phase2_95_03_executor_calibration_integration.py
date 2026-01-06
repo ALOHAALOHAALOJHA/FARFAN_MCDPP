@@ -766,16 +766,15 @@ def get_executor_config(
 
     # Import ExecutorConfig (local import to avoid circular dependency issues)
     # Module-level caching to avoid repeated imports
-    global _executor_config_module
     if "_executor_config_module" not in globals():
-        _executor_config_module = None
+        globals()["_executor_config_module"] = None
     
-    if _executor_config_module is None:
+    if globals()["_executor_config_module"] is None:
         try:
             from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import (
                 ExecutorConfig,
             )
-            _executor_config_module = {"ExecutorConfig": ExecutorConfig}
+            globals()["_executor_config_module"] = {"ExecutorConfig": ExecutorConfig}
         except ModuleNotFoundError:
             # Fallback for when module is imported directly without package context
             import sys
@@ -789,12 +788,13 @@ def get_executor_config(
             if spec is None or spec.loader is None:
                 raise ImportError(f"Cannot load ExecutorConfig from {config_module_path}")
             executor_config_module = importlib.util.module_from_spec(spec)
-            # Register in sys.modules before exec to support dataclasses
+            # Register in sys.modules to support dataclass introspection
+            # Dataclasses use sys.modules.get(cls.__module__) for type checking
             sys.modules["phase2_10_03_executor_config"] = executor_config_module
             spec.loader.exec_module(executor_config_module)
-            _executor_config_module = {"ExecutorConfig": executor_config_module.ExecutorConfig}
+            globals()["_executor_config_module"] = {"ExecutorConfig": executor_config_module.ExecutorConfig}
     
-    ExecutorConfig = _executor_config_module["ExecutorConfig"]
+    ExecutorConfig = globals()["_executor_config_module"]["ExecutorConfig"]
 
     # Load configuration from canonical source
     executor_config = ExecutorConfig.load_from_sources(
@@ -803,14 +803,18 @@ def get_executor_config(
         cli_overrides=cli_overrides,
     )
 
+    # Helper to get value or default
+    def get_or_default(value, default):
+        return value if value is not None else default
+
     # Map ExecutorConfig fields to legacy return schema
     config = {
-        "timeout_seconds": executor_config.timeout_s if executor_config.timeout_s is not None else 300,
-        "max_retries": executor_config.retry if executor_config.retry is not None else 3,
+        "timeout_seconds": get_or_default(executor_config.timeout_s, 300),
+        "max_retries": get_or_default(executor_config.retry, 3),
         "retry_delay_seconds": 1.0,  # Not in ExecutorConfig, keep as constant
-        "memory_limit_mb": executor_config.memory_limit_mb if executor_config.memory_limit_mb is not None else 512,
+        "memory_limit_mb": get_or_default(executor_config.memory_limit_mb, 512),
         "enable_caching": True,  # Not in ExecutorConfig, keep as constant
-        "enable_profiling": executor_config.enable_profiling if executor_config.enable_profiling is not None else True,
+        "enable_profiling": get_or_default(executor_config.enable_profiling, True),
     }
 
     logger.debug(
