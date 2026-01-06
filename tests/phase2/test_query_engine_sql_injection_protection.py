@@ -151,16 +151,24 @@ class TestSQLInjectionProtection:
                 "timestamp": "2026-01-06T00:00:00Z",
             }
         ]
-        engine = create_query_engine(nodes=nodes)
 
-        # Manually disable security
+        # First verify the query is rejected with security enabled (default)
+        engine = create_query_engine(nodes=nodes)
+        with pytest.raises(QueryValidationError):
+            # Query a non-allowlisted field that would be rejected
+            engine.query("SELECT * FROM evidence WHERE password = 'secret'")
+
+        # Now disable security and verify the query is allowed
+        engine = create_query_engine(nodes=nodes)
         engine.enable_security = False
 
-        # Query a non-allowlisted field or an injection - would be rejected with security on
-        # but should pass when security is disabled (if the field exists or is ignored)
-        # We use a non-allowlisted field like 'password'
+        # Query that would be rejected with security on should now pass
         result = engine.query("SELECT * FROM evidence WHERE password = 'secret'")
         assert isinstance(result.nodes, list)
+
+        # Also verify an SQL injection pattern is allowed when security is off
+        injection_result = engine.query("SELECT * FROM evidence; DROP TABLE evidence")
+        assert isinstance(injection_result.nodes, list)
 
     def test_legitimate_complex_query(self, engine):
         """Verify complex but legitimate queries work."""

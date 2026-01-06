@@ -23,22 +23,22 @@ Determinism:
     State-Management: Executor caches base_slot derivations, otherwise stateless
 
 Inputs:
-    - execution_plan: ExecutionPlan — 300 tasks from Phase 2.1
-    - preprocessed_document: PreprocessedDocument — 60 CPP chunks
-    - questionnaire_monolith: dict — 300 questions for context
-    - signal_registry: SignalRegistry — REQUIRED SISAS signal resolution
-    - calibration_orchestrator: Optional — Method calibration
-    - validation_orchestrator: Optional — Validation tracking
+    - execution_plan: ExecutionPlan - 300 tasks from Phase 2.1
+    - preprocessed_document: PreprocessedDocument - 60 CPP chunks
+    - questionnaire_monolith: dict - 300 questions for context
+    - signal_registry: SignalRegistry - REQUIRED SISAS signal resolution
+    - calibration_orchestrator: Optional - Method calibration
+    - validation_orchestrator: Optional - Validation tracking
 
 Outputs:
-    - task_results: list[TaskResult] — 300 task execution results
+    - task_results: list[TaskResult] - 300 task execution results
     - OR raises ExecutionError
 
 Failure-Modes:
-    - TaskExecutionFailure: ExecutionError — Task execution failed
-    - QuestionLookupFailure: ValueError — Cannot find question for task
-    - ExecutorInstantiationFailure: ExecutionError — Cannot create executor
-    - CalibrationFailure: CalibrationError — Method calibration failed
+    - TaskExecutionFailure: ExecutionError - Task execution failed
+    - QuestionLookupFailure: ValueError - Cannot find question for task
+    - ExecutorInstantiationFailure: ExecutionError - Cannot create executor
+    - CalibrationFailure: CalibrationError - Method calibration failed
 
 Phase 2.2 Process:
     1. Iterate over ExecutionPlan.tasks (300 tasks)

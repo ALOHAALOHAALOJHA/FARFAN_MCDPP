@@ -178,7 +178,7 @@ class TestRetryExponentialBackoff:
     def test_retry_policy_imperative_api(self):
         """Verify RetryPolicy imperative API works correctly."""
         call_count = 0
-        result = None
+        result = None  # Initialize before loop to avoid UnboundLocalError
         policy = RetryPolicy(max_retries=3, base_delay_seconds=0.01)
 
         for attempt in policy.attempts():
@@ -282,9 +282,12 @@ class TestRetryExponentialBackoff:
         # Delays should vary (not all identical)
         assert len(set(delays)) > 1
         # All delays should be within [base_delay, base_delay * (1 + jitter) + tolerance]
+        # Use 20% of base_delay as tolerance for execution overhead
+        max_delay = base_delay * (1 + jitter) + 0.02  # 0.02s tolerance
         for delay in delays:
-            # 0.02s tolerance for execution overhead
-            assert base_delay <= delay <= base_delay * (1 + jitter) + 0.05
+            assert base_delay <= delay <= max_delay, (
+                f"Delay {delay:.4f}s outside expected range [{base_delay}s, {max_delay:.4f}s]"
+            )
 
     def test_metrics_tracking(self):
         """Verify metrics are correctly tracked in RetryConfig."""

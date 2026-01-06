@@ -467,7 +467,7 @@ class EvidenceQueryEngine:
                 for field in ast.select_fields:
                     if field != "*":
                         self.security_parser.validate_field(field)
-            
+
             # Validate ORDER BY field against the allowlist
             if ast.order_by is not None:
                 # order_by is a string, possibly with direction (e.g. "confidence DESC")
