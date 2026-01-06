@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 Module: phase2_30_00_resource_manager
 PHASE_LABEL: Phase 2
