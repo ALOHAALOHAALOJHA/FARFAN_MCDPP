@@ -18,6 +18,7 @@ from .PHASE_1_CONSTANTS import (
     ASSIGNMENT_METHOD_SEMANTIC,
     ASSIGNMENT_METHOD_FALLBACK,
     CHUNK_ID_PATTERN,
+    CHUNK_ID_PATTERN_LEGACY,
 )
 
 # CANONICAL TYPE IMPORTS from farfan_pipeline.core.types
@@ -335,14 +336,28 @@ class SmartChunk:
         if not (0.0 <= self.semantic_confidence <= 1.0):
             raise ValueError(f"Invalid semantic_confidence: {self.semantic_confidence}")
 
-        if not re.match(CHUNK_ID_PATTERN, self.chunk_id):
-            raise ValueError(f"Invalid chunk_id format: {self.chunk_id}. Must match {CHUNK_ID_PATTERN}")
+        # Support both legacy (PA##-DIM##) and new (CHUNK-PA##-DIM##-Q#) formats
+        is_new_format = re.match(CHUNK_ID_PATTERN, self.chunk_id)
+        is_legacy_format = re.match(CHUNK_ID_PATTERN_LEGACY, self.chunk_id)
         
-        parts = self.chunk_id.split('-')
-        if len(parts) != 2:
-            raise ValueError(f"Invalid chunk_id structure: {self.chunk_id}")
+        if not is_new_format and not is_legacy_format:
+            raise ValueError(
+                f"Invalid chunk_id format: {self.chunk_id}. "
+                f"Must match {CHUNK_ID_PATTERN} or {CHUNK_ID_PATTERN_LEGACY}"
+            )
         
-        pa_part, dim_part = parts
+        # Parse PA and DIM from chunk_id
+        if is_new_format:
+            # Format: CHUNK-PA##-DIM##-Q#
+            parts = self.chunk_id.split('-')
+            pa_part = parts[1]  # PA##
+            dim_part = parts[2]  # DIM##
+        else:
+            # Legacy format: PA##-DIM##
+            parts = self.chunk_id.split('-')
+            if len(parts) != 2:
+                raise ValueError(f"Invalid chunk_id structure: {self.chunk_id}")
+            pa_part, dim_part = parts
         # Only auto-derive if not explicitly provided (tests may inject mismatches).
         if not self.policy_area_id:
             object.__setattr__(self, 'policy_area_id', pa_part)

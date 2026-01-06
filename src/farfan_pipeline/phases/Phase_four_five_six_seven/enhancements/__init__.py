@@ -21,14 +21,15 @@ from .enhanced_aggregators import (
     enhance_aggregator,
 )
 from .adaptive_meso_scoring import (
-    AdaptivePenaltyConfig,
-    DispersionScenario,
-    compute_adaptive_penalty,
-    classify_dispersion_scenario,
+    AdaptiveScoringConfig,
+    ScoringMetrics,
+    AdaptiveMesoScoring,
+    create_adaptive_scorer,
 )
 from .signal_enriched_aggregation import (
     SignalEnrichedAggregator,
-    SignalWeightAdjustment,
+    adjust_weights,
+    interpret_dispersion,
 )
 
 __all__ = [
@@ -40,10 +41,11 @@ __all__ = [
     "EnhancedClusterAggregator",
     "EnhancedMacroAggregator",
     "enhance_aggregator",
-    "AdaptivePenaltyConfig",
-    "DispersionScenario",
-    "compute_adaptive_penalty",
-    "classify_dispersion_scenario",
+    "AdaptiveScoringConfig",
+    "ScoringMetrics",
+    "AdaptiveMesoScoring",
+    "create_adaptive_scorer",
     "SignalEnrichedAggregator",
-    "SignalWeightAdjustment",
+    "adjust_weights",
+    "interpret_dispersion",
 ]

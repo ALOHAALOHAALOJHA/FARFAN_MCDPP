@@ -958,3 +958,137 @@ class ExtendedArgRouter(ArgRouter):
                 "description": spec["description"],
             })
         return routes
+
+
+# ============================================================================
+# Minor Improvement 2: Versioned ArgRouter with Schema Evolution
+# ============================================================================
+
+@dataclass
+class ArgSchemaV1:
+    """Schema definition for argument validation v1."""
+
+    @staticmethod
+    def validate_and_transform(method_name: str, args: dict[str, Any]) -> dict[str, Any]:
+        """Validate and transform args using v1 schema."""
+        # V1: Basic validation, no transformation
+        return dict(args)
+
+
+@dataclass
+class ArgSchemaV2:
+    """Schema definition for argument validation v2.
+
+    V2 Changes from V1:
+    - Adds 'context' field support
+    - Renames 'text' to 'content' in compatible methods
+    - Adds metadata wrapping
+    """
+
+    # Methods that support text->content rename
+    TEXT_TO_CONTENT_METHODS = {
+        "_parse_number",
+        "_parse_citation",
+        "_parse_temporal_reference",
+        "_parse_budget_allocation",
+        "_parse_implementation_timeline",
+    }
+
+    @classmethod
+    def validate_and_transform(cls, method_name: str, args: dict[str, Any]) -> dict[str, Any]:
+        """Validate and transform args using v2 schema."""
+        transformed = dict(args)
+
+        # Transform text -> content for compatible methods
+        if method_name in cls.TEXT_TO_CONTENT_METHODS:
+            if "text" in transformed and "content" not in transformed:
+                transformed["content"] = transformed.pop("text")
+
+        # Add empty context if not present and method expects it
+        if method_name.startswith("_analyze_") or method_name.startswith("_validate_"):
+            transformed.setdefault("context", {})
+
+        return transformed
+
+
+class VersionedArgRouter(ExtendedArgRouter):
+    """
+    ArgRouter with schema versioning support.
+
+    Minor Improvement 2: ArgRouter Schema Evolution
+
+    Features:
+        - Multiple schema versions (v1, v2)
+        - Automatic argument transformation between versions
+        - Backward compatibility support
+
+    Usage:
+        router = VersionedArgRouter(class_registry)
+        args, kwargs = router.route_with_schema("ClassName", "method", payload, schema_version="v2")
+    """
+
+    SCHEMA_VERSIONS: dict[str, type] = {
+        "v1": ArgSchemaV1,
+        "v2": ArgSchemaV2,
+    }
+
+    def __init__(self, class_registry: Mapping[str, type], default_schema: str = "v2") -> None:
+        """
+        Initialize versioned router.
+
+        Args:
+            class_registry: Mapping of class names to class types.
+            default_schema: Default schema version to use.
+        """
+        super().__init__(class_registry)
+        self.default_schema = default_schema
+
+        if default_schema not in self.SCHEMA_VERSIONS:
+            raise ValueError(f"Unknown schema version: {default_schema}")
+
+    def route_with_schema(
+        self,
+        class_name: str,
+        method_name: str,
+        payload: MutableMapping[str, Any],
+        schema_version: str | None = None,
+    ) -> tuple[tuple[Any, ...], dict[str, Any]]:
+        """
+        Route arguments with schema-specific transformation.
+
+        Args:
+            class_name: Target class name.
+            method_name: Target method name.
+            payload: Method parameters.
+            schema_version: Schema version to use (default: self.default_schema).
+
+        Returns:
+            Tuple of (args, kwargs) for method invocation.
+        """
+        version = schema_version or self.default_schema
+        schema = self.SCHEMA_VERSIONS.get(version)
+
+        if not schema:
+            raise ValueError(f"Unknown schema version: {version}")
+
+        # Transform payload using schema
+        transformed_payload = schema.validate_and_transform(method_name, dict(payload))
+
+        # Route using standard logic
+        return self.route(class_name, method_name, transformed_payload)
+
+    @classmethod
+    def register_schema(cls, version: str, schema_class: type) -> None:
+        """
+        Register a new schema version.
+
+        Args:
+            version: Schema version identifier.
+            schema_class: Schema class with validate_and_transform method.
+        """
+        cls.SCHEMA_VERSIONS[version] = schema_class
+        logger.info(f"Registered schema version: {version}")
+
+    def get_supported_versions(self) -> list[str]:
+        """Get list of supported schema versions."""
+        return list(self.SCHEMA_VERSIONS.keys())
