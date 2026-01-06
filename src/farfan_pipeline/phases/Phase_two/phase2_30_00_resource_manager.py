@@ -24,7 +24,7 @@ import logging
 import time
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import TYPE_CHECKING, Any, Callable
 
@@ -108,7 +108,7 @@ class CircuitBreaker:
         
         if self.state == CircuitState.OPEN:
             if self.last_state_change:
-                elapsed = (datetime.utcnow() - self.last_state_change).total_seconds()
+                elapsed = (datetime.now(timezone.utc) - self.last_state_change).total_seconds()
                 if elapsed >= self.config.timeout_seconds:
                     self.state = CircuitState.HALF_OPEN
                     self.success_count = 0
@@ -128,7 +128,7 @@ class CircuitBreaker:
             self.success_count += 1
             if self.success_count >= self.config.success_threshold:
                 self.state = CircuitState.CLOSED
-                self.last_state_change = datetime.utcnow()
+                self.last_state_change = datetime.now(timezone.utc)
                 logger.info(
                     f"Circuit breaker for {self.executor_id} closed after "
                     f"{self.success_count} successes"
@@ -137,7 +137,7 @@ class CircuitBreaker:
     def record_failure(self, memory_mb: float | None = None) -> None:
         """Record failed execution."""
         self.failure_count += 1
-        self.last_failure_time = datetime.utcnow()
+        self.last_failure_time = datetime.now(timezone.utc)
         
         exceeded_memory = (
             memory_mb is not None and memory_mb > self.config.memory_threshold_mb
@@ -145,7 +145,7 @@ class CircuitBreaker:
         
         if self.state == CircuitState.HALF_OPEN:
             self.state = CircuitState.OPEN
-            self.last_state_change = datetime.utcnow()
+            self.last_state_change = datetime.now(timezone.utc)
             logger.warning(
                 f"Circuit breaker for {self.executor_id} opened from HALF_OPEN "
                 f"(memory: {memory_mb}MB)"
@@ -154,7 +154,7 @@ class CircuitBreaker:
             self.failure_count >= self.config.failure_threshold or exceeded_memory
         ):
             self.state = CircuitState.OPEN
-            self.last_state_change = datetime.utcnow()
+            self.last_state_change = datetime.now(timezone.utc)
             logger.warning(
                 f"Circuit breaker for {self.executor_id} opened "
                 f"(failures: {self.failure_count}, memory: {memory_mb}MB)"
@@ -415,7 +415,7 @@ class AdaptiveResourceManager:
         ]
         
         event = ResourcePressureEvent(
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             pressure_level=new_pressure,
             cpu_percent=usage.get("cpu_percent", 0.0),
             memory_mb=usage.get("rss_mb", 0.0),
@@ -560,7 +560,7 @@ class AdaptiveResourceManager:
             return
         
         metrics.total_executions += 1
-        metrics.last_execution_time = datetime.utcnow()
+        metrics.last_execution_time = datetime.now(timezone.utc)
         
         if success:
             metrics.successful_executions += 1
@@ -666,7 +666,7 @@ class AdaptiveResourceManager:
         recent_pressure = list(self.pressure_history)[-10:]
         
         return {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "current_pressure": self.current_pressure.value,
             "resource_usage": usage,
             "active_executors": list(self._active_executors),
@@ -704,7 +704,7 @@ class AdaptiveResourceManager:
         breaker.state = CircuitState.CLOSED
         breaker.failure_count = 0
         breaker.success_count = 0
-        breaker.last_state_change = datetime.utcnow()
+        breaker.last_state_change = datetime.now(timezone.utc)
         
         logger.info(f"Circuit breaker reset for {executor_id}")
         return True

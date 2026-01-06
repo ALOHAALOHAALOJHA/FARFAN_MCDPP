@@ -24,9 +24,14 @@ from __future__ import annotations
 
 import json
 import os
+import threading
+import logging
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Callable
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -258,7 +263,11 @@ class HotReloadableConfig:
         self.reload_interval_seconds = reload_interval_seconds
         self._config: Dict[str, Any] = {}
         self._lock = threading.RLock()
-        self._last_modified: float = 0.0
+
+        # Track both execution time and file modification time
+        self._loaded_at: datetime | None = None  # When config was loaded (execution time)
+        self._file_modified_at: datetime | None = None  # File modification time (timezone-aware)
+
         self._watching = False
         self._watch_thread: Optional[threading.Thread] = None
         self._reload_callbacks: list[Callable[[Dict[str, Any]], None]] = []
@@ -280,7 +289,16 @@ class HotReloadableConfig:
             try:
                 with open(self.config_path, "r") as f:
                     self._config = json.load(f)
-                self._last_modified = self.config_path.stat().st_mtime
+
+                # Track when config was loaded (execution time)
+                self._loaded_at = datetime.now(timezone.utc)
+
+                # Track file modification time (convert to timezone-aware)
+                self._file_modified_at = datetime.fromtimestamp(
+                    self.config_path.stat().st_mtime,
+                    tz=timezone.utc
+                )
+
                 logger.info(f"Configuration loaded from {self.config_path}")
                 return self._config
             except (json.JSONDecodeError, IOError) as e:
@@ -390,8 +408,14 @@ class HotReloadableConfig:
         while self._watching:
             try:
                 if self.config_path.exists():
-                    current_mtime = self.config_path.stat().st_mtime
-                    if current_mtime > self._last_modified:
+                    # Convert file mtime to timezone-aware datetime
+                    current_file_modified = datetime.fromtimestamp(
+                        self.config_path.stat().st_mtime,
+                        tz=timezone.utc
+                    )
+
+                    # Compare with last known file modification time
+                    if self._file_modified_at is None or current_file_modified > self._file_modified_at:
                         logger.info("Config file changed, reloading")
                         self.reload()
             except Exception as e:

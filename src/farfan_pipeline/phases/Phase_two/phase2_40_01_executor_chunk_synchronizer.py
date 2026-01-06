@@ -17,7 +17,7 @@ from __future__ import annotations
 import json
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Literal
 
@@ -393,7 +393,7 @@ def generate_verification_manifest(
     manifest: dict[str, Any] = {
         "version": "1.0.0",
         "success": len(all_errors) == 0,
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
         "total_contracts": len(bindings),
         # Count unique PA×DIM chunks (not per-binding chunk_id).
         "total_chunks": len({(b.policy_area_id, b.dimension_id) for b in bindings if b.chunk_id}),

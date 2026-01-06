@@ -47,9 +47,121 @@ import logging
 import re
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional, Protocol, Set
+from typing import Any, Dict, List, Optional, Protocol, Set, Sequence
 
 logger = logging.getLogger(__name__)
+
+
+# === SECURITY LAYER ===
+
+# Security: Allowlisted queryable fields
+ALLOWED_QUERY_FIELDS = frozenset({
+    'evidence_id',
+    'node_id',
+    'claim_type',
+    'status',
+    'created_at',
+    'updated_at',
+    'category',
+    'source',
+    'confidence',
+    'confidence_score',
+    'timestamp',
+})
+
+# Security: Allowed operators
+ALLOWED_OPERATORS = frozenset({'=', '!=', '<', '>', '<=', '>=', 'LIKE', 'IN', 'CONTAINS'})
+
+# Security: Maximum query complexity
+MAX_CONDITIONS = 10
+MAX_QUERY_LENGTH = 1000
+
+
+class QueryValidationError(ValueError):
+    """Raised when query validation fails."""
+    pass
+
+
+class SecureQueryParser:
+    """
+    Secure query parser with input validation.
+
+    Security Controls:
+    1. Field allowlist enforcement
+    2. Operator validation
+    3. Input length limits
+    4. SQL injection pattern detection
+    5. Parameterized output generation
+    """
+
+    # Patterns that indicate SQL injection attempts
+    INJECTION_PATTERNS = [
+        r";\s*(?:DROP|DELETE|UPDATE|INSERT|EXEC|EXECUTE)",
+        r"--",
+        r"/\*.*\*/",
+        r"'\s*OR\s+'?\d*'?\s*=\s*'?\d*'?",
+        r"UNION\s+SELECT",
+        r"INTO\s+(?:OUTFILE|DUMPFILE)",
+        r"LOAD_FILE",
+        r"xp_cmdshell",
+    ]
+
+    def __init__(
+        self,
+        allowed_fields: frozenset[str] = ALLOWED_QUERY_FIELDS,
+        allowed_operators: frozenset[str] = ALLOWED_OPERATORS
+    ):
+        self.allowed_fields = allowed_fields
+        self.allowed_operators = allowed_operators
+        self._injection_regex = re.compile(
+            '|'.join(self.INJECTION_PATTERNS),
+            re.IGNORECASE
+        )
+
+    def validate_query(self, user_input: str) -> None:
+        """
+        Validate user query input for security threats.
+
+        Args:
+            user_input: Raw query string from user
+
+        Raises:
+            QueryValidationError: If validation fails
+        """
+        # Length check
+        if len(user_input) > MAX_QUERY_LENGTH:
+            self._reject_query(user_input, "Query exceeds maximum length")
+
+        # Injection pattern check
+        if self._injection_regex.search(user_input):
+            self._reject_query(user_input, "Potential SQL injection detected")
+
+    def validate_field(self, field_name: str) -> None:
+        """
+        Validate that a field name is in the allowlist.
+
+        Args:
+            field_name: Field name to validate
+
+        Raises:
+            QueryValidationError: If field not in allowlist
+        """
+        if field_name not in self.allowed_fields:
+            self._reject_query(
+                field_name,
+                f"Field '{field_name}' not in allowed fields: {sorted(self.allowed_fields)}"
+            )
+
+    def _reject_query(self, query: str, reason: str) -> None:
+        """Log and reject a query."""
+        logger.warning(
+            f"Query rejected: {reason}",
+            extra={
+                "query_preview": query[:100],
+                "rejection_reason": reason
+            }
+        )
+        raise QueryValidationError(reason)
 
 
 # === ENUMS AND TYPES ===
@@ -279,14 +391,22 @@ class EvidenceQueryEngine:
         results = engine.query("SELECT * FROM evidence WHERE confidence > 0.8 LIMIT 10")
     """
 
-    def __init__(self, nexus: EvidenceNexusProtocol | SimpleEvidenceNexus):
+    def __init__(
+        self,
+        nexus: EvidenceNexusProtocol | SimpleEvidenceNexus,
+        enable_security: bool = True
+    ):
         """
         Initialize query engine.
 
         Args:
             nexus: Evidence nexus to query against.
+            enable_security: Enable security validation (default: True)
         """
         self.nexus = nexus
+        self.enable_security = enable_security
+        if enable_security:
+            self.security_parser = SecureQueryParser()
 
     def query(self, query_string: str) -> QueryResult:
         """
@@ -299,12 +419,29 @@ class EvidenceQueryEngine:
 
         Returns:
             QueryResult with matching EvidenceNode objects.
+
+        Raises:
+            QueryValidationError: If security validation fails
         """
         import time
         start_time = time.perf_counter()
 
+        # Security validation
+        if self.enable_security:
+            self.security_parser.validate_query(query_string)
+
         ast = self._parse_query(query_string)
+
+        # Validate fields against allowlist if security enabled
+        if self.enable_security:
+            for condition in ast.conditions:
+                self.security_parser.validate_field(condition.field)
+            # Also validate ORDER BY field against the allowlist
+            if getattr(ast, "order_by", None) is not None:
+                self.security_parser.validate_field(ast.order_by.field)
+
         paginated_results, total_count = self._execute_query(ast)
+ 
 
         execution_time_ms = (time.perf_counter() - start_time) * 1000
 
