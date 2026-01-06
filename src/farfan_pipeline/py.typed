@@ -1,0 +1,2 @@
+# PEP 561 marker file indicating this package supports type checking
+# This file must be present for mypy and other type checkers to use inline type hints

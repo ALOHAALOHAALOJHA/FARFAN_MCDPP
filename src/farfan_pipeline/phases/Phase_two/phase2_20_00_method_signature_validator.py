@@ -18,7 +18,7 @@ This module provides signature governance for the analysis pipeline.
 """
 
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, TypedDict
 
@@ -297,7 +297,7 @@ class MethodSignatureValidator:
         }
 
         return ValidationReport(
-            validation_timestamp=datetime.utcnow().isoformat() + "Z",
+            validation_timestamp=datetime.now(timezone.utc).isoformat() + "Z",
             signatures_version=self.signatures_data.get(
                 "signatures_version", "unknown"
             ),

@@ -18,7 +18,7 @@ from __future__ import annotations
 import json
 import logging
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Callable
 
@@ -64,7 +64,7 @@ class ResourceAlert:
         self.message = message
         self.event = event
         self.metadata = metadata or {}
-        self.timestamp = datetime.utcnow()
+        self.timestamp = datetime.now(timezone.utc)
         self.alert_id = f"alert_{self.timestamp.isoformat()}_{id(self)}"
     
     def to_dict(self) -> dict[str, Any]:
@@ -315,7 +315,7 @@ class ResourceAlertManager:
     
     def _should_alert(self, alert_type: str, minutes: int = 5) -> bool:
         """Check if alert should be sent (with rate limiting)."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         last_time = self.last_alert_times.get(alert_type)
         
         if not last_time:
@@ -409,7 +409,7 @@ class ResourceAlertManager:
     
     def get_alert_summary(self) -> dict[str, Any]:
         """Get summary of alert history."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         hour_ago = now - timedelta(hours=1)
         day_ago = now - timedelta(days=1)
         
