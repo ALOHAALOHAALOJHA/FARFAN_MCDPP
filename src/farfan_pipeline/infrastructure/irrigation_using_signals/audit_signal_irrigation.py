@@ -41,7 +41,6 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_regist
 )
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
     SignalConsumptionProof,
-    QuestionnaireAccessAudit,
     AccessLevel,
     get_access_audit,
 )
