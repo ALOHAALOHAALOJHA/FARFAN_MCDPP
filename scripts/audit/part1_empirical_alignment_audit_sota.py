@@ -63,7 +63,7 @@ try:
     HAS_ST = True
 except ImportError:
     HAS_ST = False
-    logger.warning("sentence-transformers or torch not found. SOTA features disabled.")
+    logger.error("sentence-transformers or torch not found. SOTA features disabled.")
 
 try:
     import spacy
@@ -305,7 +305,7 @@ class NERAnalyzer:
         if "entity_ruler" in self.nlp.pipe_names:
             return
 
-        ruler = self.nlp.add_pipe("entity_ruler", before="ner")
+        ruler = EntityRuler(self.nlp, overwrite_ents=True, before_ner=True) # Before default NER
         
         patterns = [
             {"label": "ORG", "pattern": [{"LOWER": "dnp"}]},
@@ -316,13 +316,15 @@ class NERAnalyzer:
             {"label": "ORG", "pattern": [{"LOWER": "minambiente"}]},
             {"label": "ORG", "pattern": [{"LOWER": "mincultura"}]},
             {"label": "ORG", "pattern": [{"LOWER": "icbf"}]},
-            {"label": "ORG", "pattern": [{"LOWER": "colciencias"}]},
-            {"label": "ORG", "pattern": [{"LOWER": "minciencias"}]},
+            {"label": "ORG", "pattern": [{"LOWER": "colciencias"}, {"LOWER": "minciencias"}]},
             {"label": "ORG", "pattern": [{"LOWER": "sgp"}]}, # Sistema General de Participaciones
             {"label": "GPE", "pattern": [{"LOWER": "norte"}, {"LOWER": "de"}, {"LOWER": "santander"}]},
+            # Add generic fund patterns
+            {"label": "ORG", "pattern": [{"LOWER": "fondo"}, {"LOWER": "de"}, {"POS": "NOUN"}]},
         ]
         
         ruler.add_patterns(patterns)
+        self.nlp.add_pipe(ruler)
         logger.info("Injected domain patterns into NER pipeline.")
 
     def extract_entities(self, text: str) -> Dict[str, List[str]]:
@@ -558,27 +560,23 @@ def load_plans() -> Dict[str, str]:
     if not PLANS_ROOT.exists():
         raise FileNotFoundError(f"Plans directory not found: {PLANS_ROOT}")
     
-    # Try .txt first, then .pdf
+    # Try TXT files first (extracted from PDFs)
     txt_files = list(PLANS_ROOT.glob("*.txt"))
     if txt_files:
         for f in sorted(txt_files):
             plans[f.stem] = f.read_text(encoding="utf-8", errors="replace")
             logger.info(f"Loaded {f.stem}: {len(plans[f.stem]):,} chars")
     else:
-        # Try to load from artifacts if PDFs were extracted
-        artifacts_txt = ROOT / "artifacts" / "plans_text"
-        if artifacts_txt.exists():
-            for f in sorted(artifacts_txt.glob("*.txt")):
+        # Fallback: check artifacts for extracted plans
+        artifacts_plans = ROOT / "artifacts" / "plans_text"
+        if artifacts_plans.exists():
+            for f in sorted(artifacts_plans.glob("*.txt")):
                 if not f.name.endswith(".meta.txt"):
                     plans[f.stem] = f.read_text(encoding="utf-8", errors="replace")
                     logger.info(f"Loaded {f.stem} from artifacts: {len(plans[f.stem]):,} chars")
     
     if not plans:
-        logger.warning("No plan text files found. Checking for PDFs...")
-        pdf_files = list(PLANS_ROOT.glob("*.pdf"))
-        if pdf_files:
-            logger.error("PDF files found but not extracted. Run PDF extraction first.")
-        raise FileNotFoundError("No readable plan files found.")
+        raise FileNotFoundError(f"No plan text files found in {PLANS_ROOT} or artifacts/plans_text")
     
     return plans
 
