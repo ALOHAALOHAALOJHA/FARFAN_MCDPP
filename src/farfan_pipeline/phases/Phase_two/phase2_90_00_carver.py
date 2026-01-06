@@ -667,19 +667,32 @@ class ContractInterpreter:
     }
     
     @classmethod
-    def extract_dimension(cls, contract:  Dict[str, Any]) -> Dimension:
-        """Extract dimension from contract identity."""
+    def extract_dimension(cls, contract: Dict[str, Any]) -> Dimension:
+        """Extract dimension from contract identity.
+
+        Handles v4 format with space ("DIM 1") by normalizing to "DIM01".
+        """
         identity = contract.get("identity", {})
-        dim_id = identity. get("dimension_id", "")
-        
+        dim_id_raw = identity.get("dimension_id", "")
+
+        # Normalize dimension_id format
+        # v4 contracts use: "DIM 1" (with space)
+        # Internal code expects: "DIM01" (without space)
+        dim_id = dim_id_raw
+        if dim_id_raw and " " in str(dim_id_raw):
+            parts = dim_id_raw.split()
+            if len(parts) == 2 and parts[0] == "DIM":
+                # Pad single digit to match expected format: "DIM01"
+                dim_id = f"DIM{parts[1].zfill(2) if len(parts[1]) == 1 else parts[1]}"
+
         # Try direct match
         try:
-            return Dimension. from_id(dim_id)
+            return Dimension.from_id(dim_id)
         except (KeyError, ValueError):
             pass
-        
-        # Fallback:  infer from base_slot (e.g., "D1-Q1" -> D1)
-        base_slot = identity. get("base_slot", "")
+
+        # Fallback: infer from base_slot (e.g., "D1-Q1" -> D1)
+        base_slot = identity.get("base_slot", "")
         if base_slot and "-" in base_slot:
             dim_num = base_slot.split("-")[0].replace("D", "")
             try:
@@ -687,30 +700,43 @@ class ContractInterpreter:
                 return list(Dimension)[dim_idx]
             except (ValueError, IndexError):
                 pass
-        
+
         return Dimension.D1_INSUMOS  # Default
-    
+
     @classmethod
     def extract_question_id(cls, contract: Dict[str, Any]) -> str:
         """Extract question ID."""
         identity = contract.get("identity", {})
         return identity.get("question_id", identity.get("base_slot", "UNKNOWN"))
-    
+
     @classmethod
     def extract_policy_area(cls, contract: Dict[str, Any]) -> str:
-        """Extract policy area ID."""
+        """Extract policy area ID.
+
+        Handles field name differences between contract versions:
+        - v2/v3: identity.policy_area_id
+        - v4: identity.sector_id
+        """
         identity = contract.get("identity", {})
-        return identity.get("policy_area_id", "PA00")
-    
+        question_context = contract.get("question_context", {})
+
+        # Try multiple field names with fallback
+        return (
+            identity.get("policy_area_id")
+            or identity.get("sector_id")
+            or question_context.get("policy_area_id")
+            or question_context.get("sector_id", "PA00")
+        )
+
     @classmethod
     def extract_contract_type(cls, contract: Dict[str, Any]) -> str:
         """Extract contract type (TYPE_A through TYPE_E)."""
         identity = contract.get("identity", {})
         return identity.get("contract_type", "TYPE_A")
-    
+
     @classmethod
     def extract_expected_elements(
-        cls, contract:  Dict[str, Any]
+        cls, contract: Dict[str, Any]
     ) -> Tuple[ExpectedElement, ...]: 
         """Extract expected elements with semantic enrichment."""
         question_context = contract.get("question_context", {})
@@ -722,10 +748,19 @@ class ContractInterpreter:
         )
     
     @classmethod
-    def extract_question_text(cls, contract:  Dict[str, Any]) -> str:
-        """Extract question text."""
-        question_context = contract. get("question_context", {})
-        return question_context. get("question_text", "")
+    def extract_question_text(cls, contract: Dict[str, Any]) -> str:
+        """Extract question text.
+
+        Handles field name differences between contract versions:
+        - v2/v3: question_context.question_text
+        - v4: question_context.pregunta_completa
+        """
+        question_context = contract.get("question_context", {})
+        return (
+            question_context.get("question_text")
+            or question_context.get("pregunta_completa")
+            or ""
+        )
     
     @classmethod
     def extract_scoring_modality(cls, contract: Dict[str, Any]) -> ScoringModality: 
@@ -2541,4 +2576,4 @@ __all__ = [
     "synthesize_answer",
     "synthesize_to_markdown",
     "synthesize_to_phase3",
-]
+ ]

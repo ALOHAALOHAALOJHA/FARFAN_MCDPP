@@ -60,6 +60,7 @@ import logging
 import re
 import unicodedata
 import warnings
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from functools import lru_cache
 import inspect
@@ -257,6 +258,28 @@ try:
 except ImportError:
     STRUCTURAL_AVAILABLE = False
 
+# Question Anchoring - SISAS enhancement for pre-scan answer probability
+try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
+        scan_document_for_question_anchors,
+        enrich_chunk_with_question_anchors,
+        weight_signal_irrigation_by_anchors,
+        QuestionAnchorMap,
+    )
+    QUESTION_ANCHORING_AVAILABLE = True
+except ImportError as e:
+    import warnings
+    warnings.warn(
+        f"Question anchoring not available: {e}. "
+        "Question-aware chunking will be disabled.",
+        ImportWarning
+    )
+    QUESTION_ANCHORING_AVAILABLE = False
+    scan_document_for_question_anchors = None
+    enrich_chunk_with_question_anchors = None
+    weight_signal_irrigation_by_anchors = None
+    QuestionAnchorMap = None
+
 logger = logging.getLogger(__name__)
 
 # Signal enrichment constants
@@ -279,6 +302,606 @@ SIGNAL_QUALITY_TIER_BOOSTS = {
     'ADEQUATE': 0.05,
     'SPARSE': 0.0
 }
+
+
+# ============================================================================
+# TABLE ISLAND EXTRACTION - Factory Injection Pattern
+# ============================================================================
+# Tables are first-class citizens for quantitative evidence extraction.
+# Uses method-level imports to avoid module-level dependency on heavy libs.
+# ============================================================================
+
+def _get_table_extractor():
+    """
+    Factory to get table extraction capability via method-level import.
+    
+    Returns PDETMunicipalPlanAnalyzer.extract_tables method if available,
+    else a lightweight fallback using PyMuPDF's find_tables.
+    """
+    try:
+        from farfan_pipeline.methods.financiero_viabilidad_tablas import (
+            PDETMunicipalPlanAnalyzer
+        )
+        # Return a configured instance method
+        analyzer = PDETMunicipalPlanAnalyzer(use_gpu=False, confidence_threshold=0.6)
+        return analyzer.extract_tables
+    except ImportError:
+        logger.warning("Full table extractor not available, using lightweight fallback")
+        return _extract_tables_lightweight
+
+
+def _extract_tables_lightweight(pdf_path: str) -> list[dict]:
+    """
+    Lightweight table extraction fallback using PyMuPDF.
+    
+    Returns list of table dicts with:
+        - df_rows: list of row lists
+        - page_number: int
+        - table_type: str (auto-classified)
+        - confidence_score: float
+    """
+    if not PYMUPDF_AVAILABLE:
+        logger.warning("PyMuPDF not available for table extraction")
+        return []
+    
+    import fitz
+    tables = []
+    
+    try:
+        doc = fitz.open(pdf_path)
+        
+        for page_num, page in enumerate(doc):
+            # PyMuPDF 1.23+ has find_tables()
+            if hasattr(page, 'find_tables'):
+                page_tables = page.find_tables()
+                for tbl in page_tables:
+                    rows = tbl.extract()
+                    if rows and len(rows) > 1:
+                        table_type = _classify_table_type_lightweight(rows)
+                        tables.append({
+                            'df_rows': rows,
+                            'headers': rows[0] if rows else [],
+                            'page_number': page_num + 1,
+                            'table_type': table_type,
+                            'confidence_score': 0.7,
+                            'extraction_method': 'pymupdf_find_tables',
+                        })
+        
+        doc.close()
+        logger.info(f"Extracted {len(tables)} tables via lightweight extractor")
+        
+    except Exception as e:
+        logger.error(f"Lightweight table extraction failed: {e}")
+    
+    return tables
+
+
+def _classify_table_type_lightweight(rows: list[list[str]]) -> str:
+    """Classify table type based on header keywords."""
+    if not rows:
+        return 'unknown'
+    
+    header_text = ' '.join(str(cell).lower() for cell in rows[0] if cell)
+    
+    if any(kw in header_text for kw in ['presupuesto', 'recurso', 'monto', 'sgp', 'sgr', 'financ']):
+        return 'presupuesto'
+    if any(kw in header_text for kw in ['indicador', 'meta', 'línea base', 'linea base', 'producto']):
+        return 'indicadores'
+    if any(kw in header_text for kw in ['responsable', 'secretaría', 'entidad', 'dependencia']):
+        return 'responsables'
+    if any(kw in header_text for kw in ['cronograma', 'fecha', 'año', 'trimestre', 'periodo']):
+        return 'cronograma'
+    if any(kw in header_text for kw in ['diagnóstico', 'situación', 'problema', 'brecha']):
+        return 'diagnostico'
+    
+    return 'general'
+
+
+def extract_table_islands(pdf_path: str) -> list[dict]:
+    """
+    Extract tables as first-class "islands" for evidence attachment.
+    
+    This is the main entry point for Table Island Extraction.
+    Tables are NOT flattened to text - they retain their columnar structure
+    and are attached WHOLE to chunks based on page location.
+    
+    Args:
+        pdf_path: Path to PDF document
+    
+    Returns:
+        List of table island dicts ready for chunk attachment
+    """
+    extract_fn = _get_table_extractor()
+    
+    try:
+        # Check if async (PDETMunicipalPlanAnalyzer.extract_tables is async)
+        import asyncio
+        if asyncio.iscoroutinefunction(extract_fn):
+            # Run in event loop
+            loop = asyncio.new_event_loop()
+            try:
+                raw_tables = loop.run_until_complete(extract_fn(pdf_path))
+            finally:
+                loop.close()
+        else:
+            raw_tables = extract_fn(pdf_path)
+        
+        # Normalize to common format
+        islands = []
+        for tbl in raw_tables:
+            if hasattr(tbl, 'df'):
+                # ExtractedTable dataclass from financiero_viabilidad_tablas
+                islands.append({
+                    'df_rows': tbl.df.values.tolist() if hasattr(tbl.df, 'values') else [],
+                    'headers': list(tbl.df.columns) if hasattr(tbl.df, 'columns') else [],
+                    'page_number': tbl.page_number,
+                    'table_type': tbl.table_type,
+                    'confidence_score': tbl.confidence_score,
+                    'extraction_method': tbl.extraction_method,
+                    'is_fragmented': getattr(tbl, 'is_fragmented', False),
+                })
+            elif isinstance(tbl, dict):
+                # Already a dict (from lightweight extractor)
+                islands.append(tbl)
+        
+        logger.info(f"Extracted {len(islands)} table islands from {pdf_path}")
+        return islands
+        
+    except Exception as e:
+        logger.error(f"Table island extraction failed: {e}")
+        return []
+
+
+def attach_tables_to_chunk(
+    chunk_page_range: tuple[int, int],
+    table_islands: list[dict]
+) -> list[dict]:
+    """
+    Attach relevant table islands to a chunk based on page overlap.
+    
+    Args:
+        chunk_page_range: (start_page, end_page) for the chunk
+        table_islands: All extracted table islands
+    
+    Returns:
+        List of table islands that overlap with chunk's page range
+    """
+    start_page, end_page = chunk_page_range
+    attached = []
+    
+    for island in table_islands:
+        table_page = island.get('page_number', 0)
+        if start_page <= table_page <= end_page:
+            attached.append(island)
+    
+    return attached
+
+
+# ============================================================================
+# HEADER EXORCISM - Remove repetitive headers/footers
+# ============================================================================
+# PDT documents have identical headers on every page that pollute text
+# extraction and degrade embeddings. This fingerprints the first few pages
+# to detect and remove repetitive content.
+# ============================================================================
+
+def exorcise_headers_footers(
+    page_texts: list[str],
+    sample_pages: int = 5,
+    min_occurrences: int = 3,
+    header_chars: int = 300,
+    footer_chars: int = 200
+) -> tuple[list[str], dict[str, Any]]:
+    """
+    Remove repetitive headers and footers from page texts.
+    
+    This function fingerprints the first N pages to detect common prefixes
+    and suffixes, then removes them from ALL pages.
+    
+    Args:
+        page_texts: List of text content per page
+        sample_pages: Number of pages to sample for fingerprinting
+        min_occurrences: Minimum occurrences to consider as header/footer
+        header_chars: Max chars to check at start of each page
+        footer_chars: Max chars to check at end of each page
+    
+    Returns:
+        Tuple of (cleaned_pages, stats_dict)
+    
+    Example:
+        >>> pages = ["MUNICIPIO X\\nContent A", "MUNICIPIO X\\nContent B"]
+        >>> cleaned, stats = exorcise_headers_footers(pages)
+        >>> cleaned[0]  # Header removed
+        'Content A'
+    """
+    if len(page_texts) < min_occurrences:
+        return page_texts, {'headers_removed': 0, 'footers_removed': 0}
+    
+    # Sample pages for fingerprinting
+    sample_size = min(sample_pages, len(page_texts))
+    sample = page_texts[:sample_size]
+    
+    # Find common header pattern
+    header_pattern = _find_common_prefix(
+        [p[:header_chars] for p in sample],
+        min_occurrences
+    )
+    
+    # Find common footer pattern
+    footer_pattern = _find_common_suffix(
+        [p[-footer_chars:] if len(p) > footer_chars else p for p in sample],
+        min_occurrences
+    )
+    
+    # Apply exorcism to all pages
+    cleaned = []
+    headers_removed = 0
+    footers_removed = 0
+    
+    for page in page_texts:
+        clean_page = page
+        
+        # Remove header
+        if header_pattern and clean_page.startswith(header_pattern):
+            clean_page = clean_page[len(header_pattern):].lstrip()
+            headers_removed += 1
+        
+        # Remove footer
+        if footer_pattern and clean_page.endswith(footer_pattern):
+            clean_page = clean_page[:-len(footer_pattern)].rstrip()
+            footers_removed += 1
+        
+        cleaned.append(clean_page)
+    
+    stats = {
+        'headers_removed': headers_removed,
+        'footers_removed': footers_removed,
+        'header_pattern_len': len(header_pattern) if header_pattern else 0,
+        'footer_pattern_len': len(footer_pattern) if footer_pattern else 0,
+        'header_preview': header_pattern[:50] if header_pattern else None,
+        'footer_preview': footer_pattern[:50] if footer_pattern else None,
+    }
+    
+    if headers_removed > 0 or footers_removed > 0:
+        logger.info(
+            f"Header exorcism: removed {headers_removed} headers, {footers_removed} footers"
+        )
+    
+    return cleaned, stats
+
+
+def _find_common_prefix(texts: list[str], min_occurrences: int) -> str | None:
+    """Find the longest common prefix across texts."""
+    if not texts or len(texts) < min_occurrences:
+        return None
+    
+    # Start with first text as candidate
+    prefix = texts[0]
+    
+    for text in texts[1:]:
+        # Reduce prefix until it matches
+        while prefix and not text.startswith(prefix):
+            prefix = prefix[:-1]
+        
+        if not prefix:
+            return None
+    
+    # Must be meaningful (at least 20 chars, ends at whitespace/newline)
+    if len(prefix) < 20:
+        return None
+    
+    # Trim to last complete line
+    last_newline = prefix.rfind('\n')
+    if last_newline > 20:
+        prefix = prefix[:last_newline + 1]
+    
+    return prefix
+
+
+def _find_common_suffix(texts: list[str], min_occurrences: int) -> str | None:
+    """Find the longest common suffix across texts."""
+    if not texts or len(texts) < min_occurrences:
+        return None
+    
+    # Start with first text as candidate
+    suffix = texts[0]
+    
+    for text in texts[1:]:
+        # Reduce suffix until it matches
+        while suffix and not text.endswith(suffix):
+            suffix = suffix[1:]
+        
+        if not suffix:
+            return None
+    
+    # Must be meaningful (at least 10 chars)
+    if len(suffix) < 10:
+        return None
+    
+    # Trim to first complete line
+    first_newline = suffix.find('\n')
+    if first_newline > 0:
+        suffix = suffix[first_newline:]
+    
+    return suffix
+
+
+def exorcise_from_text(
+    full_text: str,
+    pdf_path: str | None = None
+) -> tuple[str, dict[str, Any]]:
+    """
+    Convenience function to exorcise headers from full text.
+    
+    If pdf_path is provided and PyMuPDF is available, extracts pages
+    first for accurate fingerprinting. Otherwise, splits on form feeds.
+    
+    Args:
+        full_text: Full document text
+        pdf_path: Optional path to PDF for page-level extraction
+    
+    Returns:
+        Tuple of (cleaned_text, stats)
+    """
+    # Try to split into pages
+    if '\f' in full_text:
+        # Form feed separated
+        pages = full_text.split('\f')
+    elif pdf_path and PYMUPDF_AVAILABLE:
+        # Extract pages from PDF
+        import fitz
+        try:
+            doc = fitz.open(pdf_path)
+            pages = [doc[i].get_text() for i in range(len(doc))]
+            doc.close()
+        except Exception:
+            pages = [full_text]
+    else:
+        # Can't determine pages, skip exorcism
+        return full_text, {'skipped': True, 'reason': 'cannot_determine_pages'}
+    
+    cleaned_pages, stats = exorcise_headers_footers(pages)
+    
+    # Rejoin with form feeds or newlines
+    if '\f' in full_text:
+        cleaned_text = '\f'.join(cleaned_pages)
+    else:
+        cleaned_text = '\n\n'.join(cleaned_pages)
+    
+    stats['original_len'] = len(full_text)
+    stats['cleaned_len'] = len(cleaned_text)
+    stats['reduction_pct'] = (1 - len(cleaned_text) / len(full_text)) * 100 if full_text else 0
+    
+    return cleaned_text, stats
+
+
+# ============================================================================
+# DNA FINGERPRINTING - Document Genome Extraction
+# ============================================================================
+# Different PDTs have vastly different structures (Timbiquí 2012 vs Florencia 2024).
+# This pre-pass extracts a "genome" that parameterizes downstream processing.
+# ============================================================================
+
+@dataclass
+class DocumentGenome:
+    """
+    Document DNA fingerprint for adaptive processing.
+    
+    Extracted in <30 seconds before SP0 to configure all downstream subphases.
+    """
+    # Identity
+    document_hash: str = ""
+    page_count: int = 0
+    year_period: tuple[int, int] = (0, 0)  # e.g., (2024, 2027)
+    
+    # Structure patterns
+    section_numbering_style: str = "unknown"  # "decimal" (4.1.2), "roman", "alpha", "none"
+    strategic_line_term: str = "unknown"  # "eje", "línea", "pilar", "programa"
+    has_table_of_contents: bool = False
+    
+    # Content distribution
+    table_density: float = 0.0  # tables per page
+    table_pages: list[int] = field(default_factory=list)  # pages with high table density
+    narrative_pages: list[int] = field(default_factory=list)  # pages with mostly prose
+    
+    # Structural markers
+    budget_section_range: tuple[int, int] = (0, 0)
+    indicator_section_range: tuple[int, int] = (0, 0)
+    diagnostic_section_range: tuple[int, int] = (0, 0)
+    
+    # Processing hints
+    header_fingerprint: str = ""  # For exorcism
+    recommended_chunk_size: int = 2000  # chars
+    complexity_score: float = 0.5  # 0=simple, 1=complex
+    
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize to dict for CPP metadata."""
+        return {
+            'document_hash': self.document_hash,
+            'page_count': self.page_count,
+            'year_period': list(self.year_period),
+            'section_numbering_style': self.section_numbering_style,
+            'strategic_line_term': self.strategic_line_term,
+            'has_table_of_contents': self.has_table_of_contents,
+            'table_density': self.table_density,
+            'table_pages': self.table_pages[:20],  # Limit for serialization
+            'budget_section_range': list(self.budget_section_range),
+            'indicator_section_range': list(self.indicator_section_range),
+            'complexity_score': self.complexity_score,
+        }
+
+
+def extract_document_genome(
+    pdf_path: str,
+    sample_pages: list[int] | None = None
+) -> DocumentGenome:
+    """
+    Extract document genome in <30 seconds.
+    
+    Samples strategic pages (20%, 40%, 60%, 80%, 90% of document) to detect
+    structural patterns that inform downstream processing.
+    
+    Args:
+        pdf_path: Path to PDF document
+        sample_pages: Optional specific pages to sample (default: strategic sampling)
+    
+    Returns:
+        DocumentGenome with adaptive processing hints
+    """
+    import hashlib
+    
+    genome = DocumentGenome()
+    
+    if not PYMUPDF_AVAILABLE:
+        logger.warning("PyMuPDF not available for genome extraction")
+        return genome
+    
+    import fitz
+    
+    try:
+        doc = fitz.open(pdf_path)
+        genome.page_count = len(doc)
+        
+        # Compute document hash
+        genome.document_hash = hashlib.sha256(pdf_path.encode()).hexdigest()[:16]
+        
+        # Strategic sampling: 20%, 40%, 60%, 80%, 90% of document
+        if sample_pages is None:
+            percentiles = [0.05, 0.2, 0.4, 0.6, 0.8, 0.95]
+            sample_pages = [int(p * genome.page_count) for p in percentiles]
+            sample_pages = [p for p in sample_pages if 0 <= p < genome.page_count]
+        
+        # Extract sample texts
+        sample_texts = {}
+        for page_idx in sample_pages:
+            if 0 <= page_idx < len(doc):
+                sample_texts[page_idx] = doc[page_idx].get_text()
+        
+        # Detect year period
+        all_sample_text = ' '.join(sample_texts.values())
+        year_matches = re.findall(r'20[2-3]\d', all_sample_text)
+        if year_matches:
+            years = sorted(set(int(y) for y in year_matches))
+            if len(years) >= 2:
+                genome.year_period = (years[0], years[-1])
+            elif len(years) == 1:
+                genome.year_period = (years[0], years[0] + 3)  # Assume 4-year period
+        
+        # Detect section numbering style
+        if re.search(r'\b\d+\.\d+\.?\d*\.?\s+[A-ZÁÉÍÓÚ]', all_sample_text):
+            genome.section_numbering_style = "decimal"
+        elif re.search(r'\b[IVX]+\.\s+[A-ZÁÉÍÓÚ]', all_sample_text):
+            genome.section_numbering_style = "roman"
+        elif re.search(r'\b[A-Z]\.\s+[A-ZÁÉÍÓÚ]', all_sample_text):
+            genome.section_numbering_style = "alpha"
+        
+        # Detect strategic line terminology
+        term_counts = {
+            'eje': len(re.findall(r'\beje\s+estratégico', all_sample_text, re.I)),
+            'línea': len(re.findall(r'\blínea\s+estratégica', all_sample_text, re.I)),
+            'pilar': len(re.findall(r'\bpilar\b', all_sample_text, re.I)),
+            'programa': len(re.findall(r'\bprograma\s+\d+', all_sample_text, re.I)),
+        }
+        if max(term_counts.values()) > 0:
+            genome.strategic_line_term = max(term_counts, key=term_counts.get)
+        
+        # Detect table of contents
+        first_pages_text = ' '.join(
+            doc[i].get_text() for i in range(min(10, len(doc)))
+        ).lower()
+        if 'contenido' in first_pages_text or 'índice' in first_pages_text:
+            genome.has_table_of_contents = True
+        
+        # Detect table density per page
+        table_counts = []
+        for page_idx in range(len(doc)):
+            page = doc[page_idx]
+            if hasattr(page, 'find_tables'):
+                try:
+                    tables = page.find_tables()
+                    # TableFinder may not support len() directly, use .tables attribute
+                    if hasattr(tables, 'tables'):
+                        count = len(tables.tables)
+                    elif hasattr(tables, '__iter__'):
+                        count = sum(1 for _ in tables)
+                    else:
+                        count = 0
+                except Exception:
+                    count = 0
+            else:
+                # Fallback: detect table-like patterns in text
+                text = page.get_text()
+                count = len(re.findall(r'\|.*\|', text))
+            table_counts.append((page_idx, count))
+        
+        total_tables = sum(c for _, c in table_counts)
+        genome.table_density = total_tables / max(len(doc), 1)
+        
+        # Identify high-table pages (>2 tables)
+        genome.table_pages = [p for p, c in table_counts if c >= 2][:50]
+        
+        # Identify narrative pages (long paragraphs, few tables)
+        for page_idx in range(len(doc)):
+            text = doc[page_idx].get_text()
+            para_count = len(re.findall(r'\n\s*\n', text))
+            table_count = table_counts[page_idx][1] if page_idx < len(table_counts) else 0
+            if para_count > 5 and table_count < 2:
+                genome.narrative_pages.append(page_idx)
+        genome.narrative_pages = genome.narrative_pages[:50]
+        
+        # Detect budget section (PPI, presupuesto keywords)
+        budget_pages = []
+        for page_idx in range(len(doc)):
+            text = doc[page_idx].get_text().lower()
+            if 'plan plurianual' in text or 'ppi' in text or 'presupuesto' in text:
+                budget_pages.append(page_idx)
+        if budget_pages:
+            genome.budget_section_range = (min(budget_pages), max(budget_pages))
+        
+        # Detect indicator section
+        indicator_pages = []
+        for page_idx in range(len(doc)):
+            text = doc[page_idx].get_text().lower()
+            if 'indicador' in text and ('meta' in text or 'línea base' in text):
+                indicator_pages.append(page_idx)
+        if indicator_pages:
+            genome.indicator_section_range = (min(indicator_pages), max(indicator_pages))
+        
+        # Header fingerprint (for exorcism)
+        if len(doc) > 3:
+            first_page_start = doc[1].get_text()[:200]  # Skip cover page
+            genome.header_fingerprint = first_page_start[:100]
+        
+        # Complexity score
+        complexity_factors = [
+            genome.table_density > 1.0,
+            genome.page_count > 200,
+            len(genome.table_pages) > 30,
+            genome.section_numbering_style == "decimal",
+            genome.has_table_of_contents,
+        ]
+        genome.complexity_score = sum(complexity_factors) / len(complexity_factors)
+        
+        # Recommended chunk size based on complexity
+        if genome.complexity_score > 0.7:
+            genome.recommended_chunk_size = 1500
+        elif genome.complexity_score < 0.3:
+            genome.recommended_chunk_size = 2500
+        else:
+            genome.recommended_chunk_size = 2000
+        
+        doc.close()
+        
+        logger.info(
+            f"Document genome extracted: {genome.page_count} pages, "
+            f"period={genome.year_period}, style={genome.section_numbering_style}, "
+            f"table_density={genome.table_density:.2f}, complexity={genome.complexity_score:.2f}"
+        )
+        
+    except Exception as e:
+        logger.error(f"Genome extraction failed: {e}")
+    
+    return genome
 
 class Phase1FatalError(Exception):
     """Fatal error in Phase 1 execution."""

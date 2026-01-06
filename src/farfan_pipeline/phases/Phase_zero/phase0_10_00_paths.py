@@ -105,6 +105,12 @@ DATA_DIR: Final[Path] = PROJECT_ROOT / "data"
 TESTS_DIR: Final[Path] = PROJECT_ROOT / "tests"
 CONFIG_DIR: Final[Path] = PROJECT_ROOT / "canonic_questionnaire_central"
 QUESTIONNAIRE_FILE: Final[Path] = CONFIG_DIR / "questionnaire_monolith.json"
+QUESTIONNAIRE_MODULAR_ROOT: Final[Path] = CONFIG_DIR
+QUESTIONNAIRE_MANIFEST_FILE: Final[Path] = CONFIG_DIR / "modular_manifest.json"
+QUESTIONNAIRE_INDEX_FILE: Final[Path] = CONFIG_DIR / "questionnaire_index.json"
+QUESTIONNAIRE_CANONICAL_NOTATION_FILE: Final[Path] = CONFIG_DIR / "canonical_notation.json"
+QUESTIONNAIRE_MESO_FILE: Final[Path] = CONFIG_DIR / "meso_questions.json"
+QUESTIONNAIRE_MACRO_FILE: Final[Path] = CONFIG_DIR / "macro_question.json"
 
 
 def proj_root() -> Path:
