@@ -131,8 +131,13 @@ def with_exponential_backoff(
 
                     time.sleep(delay)
 
-            # Should not reach here, but for type safety
-            raise last_exception  # type: ignore
+            # Should not reach here, but add a safe fallback for robustness
+            if last_exception is not None:
+                raise last_exception
+            raise RuntimeError(
+                f"with_exponential_backoff wrapper for {func.__name__} "
+                "reached an unexpected state with no recorded exception."
+            )
 
         return wrapper
     return decorator
