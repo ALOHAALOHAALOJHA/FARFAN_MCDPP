@@ -467,9 +467,6 @@ def process_with_retry(
             f"process_with_retry failed without capturing an error after {max_retries + 1} attempts. "
             f"Function: {func}, base_delay: {base_delay}s"
         )
-    
-    raise last_error
-
 
     raise last_error
 # === MODULE EXPORTS ===
