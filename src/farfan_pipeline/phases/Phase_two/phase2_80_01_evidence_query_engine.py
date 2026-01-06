@@ -436,6 +436,9 @@ class EvidenceQueryEngine:
         if self.enable_security:
             for condition in ast.conditions:
                 self.security_parser.validate_field(condition.field)
+            # Also validate ORDER BY field against the allowlist
+            if getattr(ast, "order_by", None) is not None:
+                self.security_parser.validate_field(ast.order_by.field)
 
         results = self._execute_query(ast)
 
