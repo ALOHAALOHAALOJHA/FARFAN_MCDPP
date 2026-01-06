@@ -766,10 +766,7 @@ def get_executor_config(
 
     # Import ExecutorConfig (local import to avoid circular dependency issues)
     # Module-level caching to avoid repeated imports
-    if "_executor_config_module" not in globals():
-        globals()["_executor_config_module"] = None
-    
-    if globals()["_executor_config_module"] is None:
+    if globals().get("_executor_config_module") is None:
         try:
             from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import (
                 ExecutorConfig,
