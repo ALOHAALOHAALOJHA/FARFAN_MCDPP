@@ -1,0 +1,665 @@
+{
+  "corpus_metadata": {
+    "corpus_id": "PDT_COLOMBIA_2024_2027_EMPIRICAL_BASELINE",
+    "version": "1.0.0",
+    "creation_date": "2026-01-06",
+    "source": "Google Notebook LM Batch Analysis",
+    "plans_analyzed": 14,
+    "total_pages": 2956,
+    "geographic_coverage": ["Cauca", "Caquetá", "Chocó", "Cesar"],
+    "purpose": "Calibration corpus for FARFAN Pipeline extractors and validators"
+  },
+
+  "signal_type_catalog": {
+    "STRUCTURAL_MARKER": {
+      "empirical_frequency": {
+        "tables_per_plan": {"mean": 62, "min": 20, "max": 128, "std": 28},
+        "graphs_per_plan": {"mean": 52, "min": 11, "max": 104, "std": 24},
+        "sections_per_plan": {"mean": 7, "min": 4, "max": 12, "std": 2}
+      },
+      "extraction_patterns": {
+        "table_detection": {
+          "regex": "Tabla\\s+(\\d+)[:\\s.-]+(.*?)(?=\\n|$)",
+          "confidence": 0.95,
+          "library": "pdfplumber",
+          "validation": "headers_detected >= 2 AND row_count >= 3"
+        },
+        "section_detection": {
+          "patterns": [
+            {"name": "DIAGNOSTICO", "regex": "(?:Diagnóstico|DIAGNÓSTICO|Capítulo\\s+1)", "weight": 1.0},
+            {"name": "ESTRATEGICA", "regex": "(?:Parte\\s+Estratégica|Componente\\s+Estratégico)", "weight": 1.0},
+            {"name": "PPI", "regex": "(?:Plan\\s+Plurianual|Plurianual\\s+de\\s+Inversiones|PPI)", "weight": 1.0},
+            {"name": "SEGUIMIENTO", "regex": "(?:Seguimiento|Evaluación|Monitoreo)", "weight": 0.9}
+          ],
+          "confidence": 0.90
+        }
+      },
+      "header_templates": {
+        "ppi_table": ["Programa", "Meta", "Presupuesto", "Fuente"],
+        "indicator_table": ["Indicador", "Línea Base", "Meta 2027", "Responsable"],
+        "budget_table": ["Fuente", "Monto", "Porcentaje"]
+      },
+      "gold_standard_examples": [
+        {
+          "plan": "Caldono",
+          "table_id": "TBL-045",
+          "headers": ["Indicador de Resultado", "Línea Base 2023", "Meta 2027", "Unidad"],
+          "row_count": 15,
+          "confidence": 0.98
+        },
+        {
+          "plan": "Bosconia",
+          "table_id": "TBL-PPI-001",
+          "headers": ["Eje", "Programa", "Presupuesto 2024-2027", "Fuente"],
+          "row_count": 57,
+          "confidence": 0.97
+        }
+      ]
+    },
+
+    "NORMATIVE_REFERENCE": {
+      "empirical_frequency": {
+        "leyes_per_plan": {"mean": 14, "min": 2, "max": 46, "std": 11},
+        "decretos_per_plan": {"mean": 3, "min": 1, "max": 12, "std": 3},
+        "articulos_per_plan": {"mean": 6, "min": 0, "max": 25, "std": 7},
+        "conpes_per_plan": {"mean": 2, "min": 0, "max": 13, "std": 3}
+      },
+      "extraction_patterns": {
+        "ley": {
+          "regex": "Ley\\s+(\\d+)\\s+de\\s+(\\d{4})",
+          "confidence": 0.92,
+          "examples": ["Ley 2294 de 2023", "Ley 152 de 1994", "Ley 1448 de 2011"]
+        },
+        "decreto": {
+          "regex": "Decreto\\s+(\\d+)\\s+de\\s+(\\d{4})",
+          "confidence": 0.90,
+          "examples": ["Decreto 893 de 2017", "Decreto 1865 de 1994"]
+        },
+        "articulo": {
+          "regex": "Art(?:ículo|\\.)?\\s+(\\d+)",
+          "confidence": 0.85,
+          "examples": ["Artículo 339", "Art. 342"]
+        },
+        "conpes": {
+          "regex": "CONPES\\s+(\\d+)(?:\\s+de\\s+(\\d{4}))?",
+          "confidence": 0.93,
+          "examples": ["CONPES 3932 de 2018", "CONPES 4080"]
+        }
+      },
+      "normative_mapping": {
+        "high_frequency_norms": [
+          {
+            "norm_id": "Ley 2294 de 2023",
+            "name": "Plan Nacional de Desarrollo 2022-2026",
+            "frequency": 13,
+            "mandatory_for": ["ALL"],
+            "policy_areas": ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
+          },
+          {
+            "norm_id": "Ley 152 de 1994",
+            "name": "Ley Orgánica del Plan de Desarrollo",
+            "frequency": 11,
+            "mandatory_for": ["ALL"],
+            "policy_areas": ["ALL"]
+          },
+          {
+            "norm_id": "Ley 388 de 1997",
+            "name": "Ordenamiento Territorial",
+            "frequency": 8,
+            "mandatory_for": ["PA07"],
+            "policy_areas": ["PA07"]
+          },
+          {
+            "norm_id": "Ley 2056 de 2020",
+            "name": "Sistema General de Regalías",
+            "frequency": 8,
+            "mandatory_for": [],
+            "policy_areas": ["PA04", "PA07"]
+          },
+          {
+            "norm_id": "Ley 1448 de 2011",
+            "name": "Ley de Víctimas",
+            "frequency": 5,
+            "mandatory_for": ["PA05"],
+            "policy_areas": ["PA05"]
+          },
+          {
+            "norm_id": "Ley 1257 de 2008",
+            "name": "Violencia contra las Mujeres",
+            "frequency": 4,
+            "mandatory_for": ["PA01"],
+            "policy_areas": ["PA01", "PA02"]
+          }
+        ]
+      },
+      "ner_enhancement": {
+        "entity_patterns": [
+          {"label": "LEY", "pattern": [{"LOWER": "ley"}, {"IS_DIGIT": true}]},
+          {"label": "DECRETO", "pattern": [{"LOWER": "decreto"}, {"IS_DIGIT": true}]},
+          {"label": "CONPES", "pattern": [{"UPPER": "CONPES"}, {"IS_DIGIT": true}]}
+        ],
+        "context_window": 50,
+        "validation": "year >= 1991 AND year <= 2026"
+      }
+    },
+
+    "PROGRAMMATIC_HIERARCHY": {
+      "empirical_frequency": {
+        "ejes_per_plan": {"mean": 5, "min": 3, "max": 7, "std": 1},
+        "programas_per_plan": {"mean": 28, "min": 14, "max": 57, "std": 12},
+        "metas_per_plan": {"mean": 145, "min": 100, "max": 352, "std": 65}
+      },
+      "extraction_patterns": {
+        "eje": {
+          "regex": "Eje\\s+(?:Estratégico\\s+)?(\\d+|[IVX]+)[:\\s.-]+(.*?)(?=\\n|Eje|Programa|$)",
+          "confidence": 0.91,
+          "examples": [
+            "Eje 1: Desarrollo Social",
+            "Eje Estratégico II: Infraestructura",
+            "Eje III: Sostenibilidad Ambiental"
+          ]
+        },
+        "programa": {
+          "regex": "Programa\\s+(\\d+)[:\\s.-]+(.*?)(?=\\n|Programa|Subprograma|$)",
+          "confidence": 0.89,
+          "examples": [
+            "Programa 1: Educación de Calidad",
+            "Programa 03: Salud para Todos"
+          ]
+        },
+        "subprograma": {
+          "regex": "Subprograma\\s+(\\d+(?:\\.\\d+)?)[:\\s.-]+(.*?)(?=\\n|$)",
+          "confidence": 0.85,
+          "examples": [
+            "Subprograma 1.1: Primera Infancia",
+            "Subprograma 3.2: Atención Primaria"
+          ]
+        },
+        "meta": {
+          "regex": "Meta\\s+(\\d+(?:\\.\\d+)?)[:\\s.-]+(.*?)(?=\\n|$)",
+          "confidence": 0.87,
+          "examples": [
+            "Meta 1.1.1: Aumentar cobertura a 85%",
+            "Meta 03: Reducir mortalidad infantil"
+          ]
+        }
+      },
+      "hierarchy_templates": [
+        {
+          "plan": "Bosconia",
+          "structure": "7 Ejes → 57 Programas → 352 Metas",
+          "depth": 3,
+          "coding": "Numeric (1, 2, 3...)"
+        },
+        {
+          "plan": "Corinto",
+          "structure": "4 Títulos → 37 Programas → 184 Metas",
+          "depth": 3,
+          "coding": "Mixed (T1, P1, M1.1)"
+        },
+        {
+          "plan": "Caldono",
+          "structure": "4 Líneas → 14 Programas → 200 Indicadores",
+          "depth": 3,
+          "coding": "Alphanumeric (L1-P01-I001)"
+        }
+      ],
+      "dimension_mapping": {
+        "DIM02_ACTIVIDADES": "PROGRAMA",
+        "DIM03_PRODUCTOS": "SUBPROGRAMA",
+        "DIM04_RESULTADOS": "META"
+      },
+      "consistency_rules": {
+        "parent_child": "Every PROGRAMA must have parent EJE",
+        "naming": "No duplicate names at same level",
+        "depth": "Max depth = 5 levels",
+        "orphans": "Zero orphan nodes allowed"
+      }
+    },
+
+    "QUANTITATIVE_TRIPLET": {
+      "empirical_frequency": {
+        "porcentajes_per_plan": {"mean": 485, "min": 201, "max": 890, "std": 195},
+        "montos_per_plan": {"mean": 285, "min": 20, "max": 377, "std": 98},
+        "triplets_completos": {"mean": 78, "min": 25, "max": 155, "std": 35}
+      },
+      "extraction_patterns": {
+        "baseline_text": {
+          "regex": "l[íi]nea\\s+base[:\\s]+(\\d+[.,]?\\d*)\\s*%?\\s*\\((\\d{4})\\)",
+          "confidence": 0.75,
+          "examples": [
+            "línea base: 45.2% (2023)",
+            "Línea Base 2023: 38.5"
+          ]
+        },
+        "target_text": {
+          "regex": "meta\\s+(\\d{4})[:\\s]+(\\d+[.,]?\\d*)\\s*%?",
+          "confidence": 0.78,
+          "examples": [
+            "meta 2027: 65.0%",
+            "Meta cuatrienio: 80"
+          ]
+        },
+        "table_extraction": {
+          "required_headers": ["Indicador", "Línea Base", "Meta"],
+          "optional_headers": ["Año", "Fuente", "Fórmula", "Responsable"],
+          "confidence": 0.95,
+          "row_parser": {
+            "indicator": "column[0]",
+            "baseline_value": "extract_number(column[1])",
+            "baseline_year": "extract_year(column[1] or context)",
+            "target_value": "extract_number(column[2])",
+            "target_year": "2027 or extract_year(column[2])",
+            "unit": "detect_unit(column[1], column[2])"
+          }
+        }
+      },
+      "unit_detection": {
+        "PORCENTAJE": ["%, porcentaje, tasa"],
+        "CANTIDAD": ["personas, habitantes, beneficiarios, estudiantes"],
+        "MONTO": ["$, pesos, millones, COP"],
+        "TASA": ["por mil, por 100.000, tasa de"],
+        "INDICE": ["índice, índice de, puntos"]
+      },
+      "completeness_scoring": {
+        "COMPLETO": {
+          "value": 1.0,
+          "requires": ["indicator", "baseline_value", "baseline_year", "target_value", "target_year", "source"]
+        },
+        "ALTO": {
+          "value": 0.85,
+          "requires": ["indicator", "baseline_value", "baseline_year", "target_value", "target_year"]
+        },
+        "MEDIO": {
+          "value": 0.66,
+          "requires": ["indicator", "baseline_value", "target_value"]
+        },
+        "BAJO": {
+          "value": 0.33,
+          "requires": ["indicator", "target_value"]
+        }
+      },
+      "gold_standard_examples": [
+        {
+          "plan": "Corinto",
+          "indicator_name": "Tasa de cobertura educativa neta",
+          "baseline": {"value": 45.2, "year": 2023, "source": "DANE"},
+          "target": {"value": 65.0, "year": 2027},
+          "unit": "PORCENTAJE",
+          "formula": "(Matriculados / Población edad escolar) * 100",
+          "responsible": "Secretaría de Educación",
+          "completeness": 1.0,
+          "confidence": 0.98
+        },
+        {
+          "plan": "Bosconia",
+          "indicator_name": "Niños con esquema completo de vacunación",
+          "baseline": {"value": 5420, "year": 2023, "source": "Secretaría de Salud"},
+          "target": {"value": 7800, "year": 2027},
+          "unit": "CANTIDAD",
+          "completeness": 0.85,
+          "confidence": 0.95
+        }
+      ],
+      "validation_rules": {
+        "temporal_consistency": "target_year > baseline_year",
+        "logical_direction": "IF 'aumentar' in indicator THEN target > baseline",
+        "reasonable_change": "ABS(target - baseline) / baseline <= 3.0",
+        "unit_consistency": "baseline_unit == target_unit"
+      }
+    },
+
+    "FINANCIAL_CHAIN": {
+      "empirical_frequency": {
+        "montos_per_plan": {"mean": 285, "min": 20, "max": 377, "std": 98},
+        "fuentes_per_plan": {"mean": 7, "min": 5, "max": 13, "std": 2},
+        "ppi_total_avg": 324000000000,
+        "ppi_total_range": [16624484812, 1625386763479]
+      },
+      "extraction_patterns": {
+        "monto": {
+          "regex": "\\$\\s*([0-9.,]+)\\s*(millones?|mil\\s+millones?|billones?)?",
+          "confidence": 0.90,
+          "normalization": {
+            "millones": "* 1000000",
+            "mil millones": "* 1000000000",
+            "billones": "* 1000000000000"
+          },
+          "examples": [
+            "$288,087 millones",
+            "$1.625 billones",
+            "$16,624,484,812"
+          ]
+        },
+        "fuente": {
+          "regex": "(?:SGP|recursos\\s+propios|SGR|crédito|cofinanciación|regalías|cooperación|ADRES)",
+          "confidence": 0.92,
+          "normalization": {
+            "SGP": "Sistema General de Participaciones",
+            "SGR": "Sistema General de Regalías",
+            "ADRES": "Administradora de los Recursos del Sistema General de Seguridad Social en Salud"
+          }
+        }
+      },
+      "ppi_table_detection": {
+        "required_headers": ["Fuente", "Monto"],
+        "optional_headers": ["Programa", "Sector", "Eje", "Porcentaje", "2024", "2025", "2026", "2027"],
+        "confidence": 0.95,
+        "validation": "sum(fuentes) == PPI_TOTAL within 1% tolerance"
+      },
+      "fuente_distribution_baseline": {
+        "SGP": {"mean_pct": 0.73, "std": 0.12, "note": "Dominado por Salud (60-70%)"},
+        "Propios": {"mean_pct": 0.04, "std": 0.02, "note": "Baja capacidad fiscal"},
+        "SGR": {"mean_pct": 0.12, "std": 0.08, "note": "Variable por municipio"},
+        "Crédito": {"mean_pct": 0.02, "std": 0.04, "note": "Bajo uso en muestra"},
+        "Otros": {"mean_pct": 0.09, "std": 0.06}
+      },
+      "sectoral_distribution_baseline": {
+        "Salud": {"mean_pct": 0.73, "range": [0.63, 0.80]},
+        "Educación": {"mean_pct": 0.054, "range": [0.044, 0.068]},
+        "Agua Potable": {"mean_pct": 0.059, "range": [0.054, 0.072]},
+        "Infraestructura": {"mean_pct": 0.08, "range": [0.04, 0.15]},
+        "Otros": {"mean_pct": 0.077, "range": [0.05, 0.12]}
+      },
+      "risk_thresholds": {
+        "credito_max_pct": 0.20,
+        "propios_min_pct": 0.03,
+        "sgp_dependencia_max": 0.85,
+        "salud_dominancia_max": 0.80
+      },
+      "gold_standard_examples": [
+        {
+          "plan": "Cajibío",
+          "ppi_total": 288087496180,
+          "per_capita": 6227110,
+          "distribution": {
+            "SGP": {"monto": 43263476000, "pct": 0.15},
+            "ADRES": {"monto": 181675692000, "pct": 0.63},
+            "Propios": {"monto": 18098820000, "pct": 0.0628},
+            "SGR": {"monto": 35000000000, "pct": 0.12},
+            "Otros": {"monto": 10049508180, "pct": 0.035}
+          },
+          "consistency_check": "PASS",
+          "confidence": 0.97
+        }
+      ]
+    },
+
+    "POPULATION_DISAGGREGATION": {
+      "empirical_frequency": {
+        "grupos_etarios": {
+          "niñez": {"mean": 67, "range": [29, 134]},
+          "juventud": {"mean": 42, "range": [15, 78]},
+          "adultos_mayores": {"mean": 48, "range": [22, 91]}
+        },
+        "grupos_etnicos": {
+          "indígenas": {"mean": 38, "range": [0, 96], "note": "11/14 planes"},
+          "afrodescendientes": {"mean": 24, "range": [0, 68], "note": "8/14 planes"}
+        },
+        "grupos_vulnerables": {
+          "víctimas": {"mean": 52, "range": [16, 94]},
+          "discapacidad": {"mean": 31, "range": [12, 67]},
+          "LGBTI": {"mean": 18, "range": [3, 44]}
+        }
+      },
+      "extraction_patterns": {
+        "keywords_by_group": {
+          "NINEZ": ["niñez", "niños", "niñas", "primera infancia", "infancia", "menores"],
+          "JUVENTUD": ["juventud", "jóvenes", "adolescentes", "adolescencia"],
+          "ADULTO_MAYOR": ["adulto mayor", "adultos mayores", "vejez", "tercera edad", "envejecimiento"],
+          "MUJERES": ["mujeres", "mujer", "femenino", "equidad de género"],
+          "INDIGENAS": ["indígena", "indígenas", "resguardo", "cabildo", "pueblos originarios"],
+          "AFRO": ["afrodescendiente", "afro", "afrocolombiano", "comunidades negras"],
+          "VICTIMAS": ["víctimas", "víctima", "conflicto armado", "desplazados", "restitución"],
+          "DISCAPACIDAD": ["discapacidad", "discapacitados", "inclusión", "accesibilidad"],
+          "LGBTI": ["LGBTI", "LGBT", "diversidad sexual", "orientación sexual"],
+          "CAMPESINOS": ["campesino", "campesinos", "rural", "ruralidad", "agropecuario"]
+        },
+        "context_validation": {
+          "window_size": 100,
+          "co_occurrence_boost": 1.3,
+          "negation_penalty": 0.5
+        }
+      },
+      "disaggregation_indicators": {
+        "by_sex": {
+          "keywords": ["desagregado por sexo", "hombres y mujeres", "mujeres/hombres"],
+          "frequency": "HIGH",
+          "plans_with": 12
+        },
+        "by_age": {
+          "keywords": ["grupos etarios", "primera infancia", "juventud", "adulto mayor"],
+          "frequency": "UNIVERSAL",
+          "plans_with": 14
+        },
+        "by_ethnicity": {
+          "keywords": ["grupo étnico", "indígenas", "afrodescendientes"],
+          "frequency": "HIGH",
+          "plans_with": 11
+        }
+      },
+      "enfoque_diferencial_validation": {
+        "required_elements": {
+          "dedicated_chapter": "12/14 plans",
+          "disaggregated_indicators": ">20% indicators",
+          "specific_targets": "5+ per group"
+        }
+      }
+    },
+
+    "CAUSAL_VERBS": {
+      "empirical_frequency": {
+        "top_10_verbs": [
+          {"verb": "fortalecer", "mean": 52, "range": [28, 89]},
+          {"verb": "implementar", "mean": 51, "range": [24, 87]},
+          {"verb": "garantizar", "mean": 55, "range": [31, 91]},
+          {"verb": "promover", "mean": 48, "range": [22, 78]},
+          {"verb": "mejorar", "mean": 49, "range": [25, 84]},
+          {"verb": "gestionar", "mean": 38, "range": [15, 67]},
+          {"verb": "asegurar", "mean": 28, "range": [12, 52]},
+          {"verb": "impulsar", "mean": 35, "range": [18, 64]},
+          {"verb": "articular", "mean": 31, "range": [14, 58]},
+          {"verb": "capacitar", "mean": 24, "range": [10, 45]}
+        ],
+        "conectores_causales": {
+          "con_el_fin_de": {"mean": 18, "frequency": "ALTA"},
+          "para_lograr": {"mean": 15, "frequency": "ALTA"},
+          "mediante": {"mean": 22, "frequency": "MUY_ALTA"},
+          "a_traves_de": {"mean": 35, "frequency": "MUY_ALTA"}
+        }
+      },
+      "extraction_patterns": {
+        "causal_verbs": {
+          "regex": "\\b(fortalecer|implementar|garantizar|promover|mejorar|reducir|aumentar|desarrollar|construir|capacitar)\\w*\\b",
+          "confidence": 0.82,
+          "context_required": true,
+          "validation": "Must be in strategic/programmatic section"
+        },
+        "causal_connectors": {
+          "patterns": [
+            {"phrase": "con el fin de", "type": "PURPOSE", "weight": 1.0},
+            {"phrase": "para lograr", "type": "PURPOSE", "weight": 1.0},
+            {"phrase": "mediante", "type": "MEANS", "weight": 0.9},
+            {"phrase": "a través de", "type": "MEANS", "weight": 0.9},
+            {"phrase": "debido a", "type": "CAUSE", "weight": 0.85},
+            {"phrase": "como resultado de", "type": "EFFECT", "weight": 0.85}
+          ]
+        }
+      },
+      "causal_chain_detection": {
+        "pattern": "VERB + PRODUCT + CONNECTOR + RESULT",
+        "example": "Implementar [programa de vacunación] con el fin de [reducir mortalidad infantil]",
+        "confidence": 0.78,
+        "validation": "Must link to PROGRAMMATIC_HIERARCHY and QUANTITATIVE_TRIPLET"
+      },
+      "teoria_del_cambio_markers": {
+        "explicit_phrases": [
+          "teoría del cambio",
+          "cadena de valor",
+          "marco lógico",
+          "encadenamiento lógico"
+        ],
+        "frequency": "BAJA (explicit), ALTA (implicit)",
+        "plans_with_explicit": 0,
+        "plans_with_implicit": 14
+      }
+    },
+
+    "TEMPORAL_CONSISTENCY": {
+      "empirical_frequency": {
+        "periodos_cuatrienales": {"mean": 320, "range": [116, 541]},
+        "vigencias_anuales": {"mean": 8, "range": [0, 11]},
+        "años_unicos_referenciados": {"mean": 18, "range": [10, 29]},
+        "series_historicas": "6-10 años atrás typical"
+      },
+      "extraction_patterns": {
+        "year": {
+          "regex": "\\b(19\\d{2}|20[0-2]\\d)\\b",
+          "confidence": 0.95,
+          "validation": "year >= 1990 AND year <= 2050"
+        },
+        "period": {
+          "regex": "(\\d{4})\\s*[-–—]\\s*(\\d{4})",
+          "confidence": 0.93,
+          "examples": ["2024-2027", "2020–2023", "2018—2022"]
+        },
+        "vigencia": {
+          "regex": "vigencia\\s+(\\d{4})",
+          "confidence": 0.91,
+          "examples": ["vigencia 2024", "Vigencia 2025"]
+        }
+      },
+      "temporal_heuristics": {
+        "plan_period": "2024-2027 (universal)",
+        "baseline_typical": "2020-2023",
+        "historical_series": "2015-2023",
+        "projection": "2027-2035 (some plans)"
+      },
+      "consistency_validation": {
+        "baseline_before_target": "baseline_year < target_year",
+        "baseline_recent": "target_year - baseline_year <= 5",
+        "no_future_baseline": "baseline_year <= current_year",
+        "sequential_series": "años en serie histórica son consecutivos o tienen gaps explicados"
+      }
+    },
+
+    "INSTITUTIONAL_NETWORK": {
+      "empirical_frequency": {
+        "entidades_nacionales": {
+          "DNP": {"mean": 15, "range": [5, 24]},
+          "DANE": {"mean": 10, "range": [3, 13]},
+          "ICBF": {"mean": 11, "range": [4, 14]},
+          "Ministerios": {"mean": 12, "range": [6, 17]},
+          "SENA": {"mean": 8, "range": [2, 15]}
+        },
+        "entidades_territoriales": {
+          "Alcaldía": {"mean": 420, "range": [116, 660], "note": "Muy alta frecuencia"},
+          "Gobernación": {"mean": 28, "range": [9, 87]},
+          "Secretarías": {"mean": 9, "range": [4, 15]}
+        }
+      },
+      "extraction_patterns": {
+        "national_entities": {
+          "regex": "\\b(DNP|DANE|ICBF|SENA|MinSalud|MinEducación|MinHacienda|MinInterior|MinAmbiente)\\b",
+          "confidence": 0.94,
+          "ner_enhancement": true
+        },
+        "territorial_entities": {
+          "regex": "\\b(Alcaldía|Gobernación|Secretaría\\s+de\\s+\\w+)\\b",
+          "confidence": 0.89,
+          "context_validation": true
+        }
+      },
+      "entity_roles": {
+        "RESPONSABLE": "Primary executor of program/indicator",
+        "COORDINADOR": "Coordination role",
+        "APOYO": "Support/technical assistance",
+        "FINANCIADOR": "Funding source"
+      },
+      "articulation_patterns": {
+        "convenio": "\\b(?:convenio|acuerdo)\\s+interadministrativo\\b",
+        "mesa": "\\bmesa\\s+de\\s+(?:coordinación|articulación)\\b",
+        "comite": "\\bcomité\\s+de\\s+\\w+\\b"
+      }
+    },
+
+    "SEMANTIC_RELATIONSHIPS": {
+      "co_occurrence_patterns": {
+        "high_value_triplets": [
+          {
+            "terms": ["indicador", "meta", "línea base"],
+            "frequency": "MUY_ALTA",
+            "context": "Tabla de indicadores",
+            "confidence": 0.95
+          },
+          {
+            "terms": ["programa", "presupuesto", "responsable"],
+            "frequency": "ALTA",
+            "context": "PPI",
+            "confidence": 0.92
+          },
+          {
+            "terms": ["problema", "objetivo", "estrategia"],
+            "frequency": "ALTA",
+            "context": "Marco lógico",
+            "confidence": 0.88
+          }
+        ]
+      },
+      "embedding_clusters": {
+        "method": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+        "threshold": 0.75,
+        "typical_clusters": [
+          "Educación → calidad → cobertura → matrícula",
+          "Salud → atención → hospital → médico",
+          "Infraestructura → vías → pavimentación → movilidad"
+        ]
+      }
+    }
+  },
+
+  "calibration_guidelines": {
+    "confidence_thresholds": {
+      "HIGH": {"min": 0.90, "use": "Direct extraction from tables"},
+      "MEDIUM": {"min": 0.75, "max": 0.89, "use": "Regex with context validation"},
+      "LOW": {"min": 0.60, "max": 0.74, "use": "NLP/semantic extraction"},
+      "REJECT": {"max": 0.59, "use": "Discard signal"}
+    },
+    "priority_signals": [
+      "QUANTITATIVE_TRIPLET (DIM01, DIM03, DIM04 critical)",
+      "FINANCIAL_CHAIN (CC_SOSTENIBILIDAD critical)",
+      "NORMATIVE_REFERENCE (CC_COHERENCIA_NORMATIVA)",
+      "STRUCTURAL_MARKER (SMIP validation)",
+      "PROGRAMMATIC_HIERARCHY (DIM02-DIM03 mapping)"
+    ],
+    "validation_strategy": {
+      "phase1": "Extract with high-confidence patterns only",
+      "phase2": "Validate against gold standard examples",
+      "phase3": "Refine with NER/ML for medium-confidence cases",
+      "phase4": "Cross-validate with multiple signal types"
+    }
+  },
+
+  "gold_standard_validation_set": [
+    {
+      "plan": "Caldono",
+      "reason": "Best structural completeness (128 tablas, 104 gráficos, 46 leyes)",
+      "use_for": ["STRUCTURAL_MARKER", "NORMATIVE_REFERENCE", "QUANTITATIVE_TRIPLET"]
+    },
+    {
+      "plan": "Bosconia",
+      "reason": "Highest programmatic depth (57 programas, 352 metas)",
+      "use_for": ["PROGRAMMATIC_HIERARCHY", "QUANTITATIVE_TRIPLET"]
+    },
+    {
+      "plan": "Corinto",
+      "reason": "Best PPI structure (52 fuentes, consistencia 100%)",
+      "use_for": ["FINANCIAL_CHAIN", "QUANTITATIVE_TRIPLET"]
+    },
+    {
+      "plan": "Quibdó",
+      "reason": "Highest ethnic focus (indígenas, afro), best institutional network",
+      "use_for": ["POPULATION_DISAGGREGATION", "INSTITUTIONAL_NETWORK"]
+    }
+  ]
+}
