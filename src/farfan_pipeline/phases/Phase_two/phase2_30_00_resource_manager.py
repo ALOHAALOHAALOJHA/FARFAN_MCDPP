@@ -19,8 +19,6 @@ This module integrates with ResourceLimits to provide:
 - Comprehensive observability with alerts
 """
 
-from __future__ import annotations
-
 import asyncio
 import logging
 import time
