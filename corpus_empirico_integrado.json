@@ -1,0 +1,1236 @@
+{
+  "corpus_metadata": {
+    "corpus_id": "PDT_COLOMBIA_2024_2027_FARFAN_INTEGRATED_CORPUS",
+    "version": "4.0.0",
+    "farfan_notation_version": "4.0.0",
+    "creation_date": "2026-01-06",
+    "last_update": "2026-01-06",
+    "source": "Google Notebook LM Batch Analysis + Expert Enhancement + FARFAN 4.0 Integration",
+    "plans_analyzed": 14,
+    "total_pages": 2956,
+    "geographic_coverage": ["Cauca", "Caquetá", "Chocó", "Cesar"],
+    "purpose": "Production-ready calibration corpus for FARFAN Pipeline with full Q001-Q305 mapping",
+    
+    "statistical_power": {
+      "sample_size": 14,
+      "confidence_level": 0.90,
+      "representative_of": "Small municipalities (<100k population) in conflict-affected regions",
+      "limitations": "No major cities, limited coastal representation, Andean bias",
+      "coverage_matrix": {
+        "PA01_coverage": 1.0,
+        "PA02_coverage": 1.0,
+        "PA03_coverage": 1.0,
+        "PA04_coverage": 1.0,
+        "PA05_coverage": 1.0,
+        "PA06_coverage": 1.0,
+        "PA07_coverage": 0.93,
+        "PA08_coverage": 0.86,
+        "PA09_coverage": 0.43,
+        "PA10_coverage": 0.36
+      }
+    },
+    
+    "farfan_integration": {
+      "notation_version": "4.0.0",
+      "micro_questions": 300,
+      "meso_questions": 4,
+      "macro_questions": 1,
+      "total_evaluation_points": 305,
+      "signal_types_mapped": 10,
+      "extraction_pipeline_stages": 4,
+      "scoring_modalities": 6
+    },
+
+    "empirical_alignment_baseline": {
+      "current_alignment_score": 0.029,
+      "target_alignment_phase1": 0.50,
+      "target_alignment_phase2": 0.70,
+      "target_alignment_phase3": 0.85,
+      "bottleneck_identified": "Only 992 expected_elements used vs 10,563 available resources",
+      "solution": "Full signal type integration + pattern enrichment + capability system"
+    }
+  },
+
+  "farfan_question_mapping": {
+    "description": "Direct mapping from 10 signal types to 305 FARFAN questions",
+    "mapping_completeness": {
+      "STRUCTURAL_MARKER": {"questions_mapped": 87, "coverage": 0.29},
+      "NORMATIVE_REFERENCE": {"questions_mapped": 62, "coverage": 0.20},
+      "PROGRAMMATIC_HIERARCHY": {"questions_mapped": 78, "coverage": 0.26},
+      "QUANTITATIVE_TRIPLET": {"questions_mapped": 94, "coverage": 0.31},
+      "FINANCIAL_CHAIN": {"questions_mapped": 52, "coverage": 0.17},
+      "POPULATION_DISAGGREGATION": {"questions_mapped": 45, "coverage": 0.15},
+      "CAUSAL_VERBS": {"questions_mapped": 68, "coverage": 0.23},
+      "TEMPORAL_CONSISTENCY": {"questions_mapped": 41, "coverage": 0.14},
+      "INSTITUTIONAL_NETWORK": {"questions_mapped": 39, "coverage": 0.13},
+      "SEMANTIC_RELATIONSHIP": {"questions_mapped": 58, "coverage": 0.19}
+    },
+
+    "slot_to_signal_mapping": {
+      "D1-Q1_LB-FUENTE": {
+        "slot": "D1-Q1",
+        "generic_abbrev": "LB-FUENTE",
+        "generic_question": "¿El diagnóstico del sector presenta datos cuantitativos con año de referencia y fuente identificada?",
+        "children_questions": ["Q001", "Q031", "Q061", "Q091", "Q121", "Q151", "Q181", "Q211", "Q241", "Q271"],
+        "primary_signals": ["QUANTITATIVE_TRIPLET", "NORMATIVE_REFERENCE"],
+        "secondary_signals": ["STRUCTURAL_MARKER", "TEMPORAL_CONSISTENCY"],
+        "expected_patterns": ["baseline_value", "baseline_year", "source_citation"],
+        "farfan_dimensions": ["DIM01_INS"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.25,
+        "empirical_availability": 0.78
+      },
+
+      "D1-Q2_BRECHA-VACIO": {
+        "slot": "D1-Q2",
+        "generic_abbrev": "BRECHA-VACIO",
+        "generic_question": "¿El diagnóstico dimensiona numéricamente la magnitud del problema?",
+        "children_questions": ["Q002", "Q032", "Q062", "Q092", "Q122", "Q152", "Q182", "Q212", "Q242", "Q272"],
+        "primary_signals": ["QUANTITATIVE_TRIPLET"],
+        "secondary_signals": ["POPULATION_DISAGGREGATION"],
+        "expected_patterns": ["gap_quantification", "deficit_measurement"],
+        "farfan_dimensions": ["DIM01_INS"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.20,
+        "empirical_availability": 0.65
+      },
+
+      "D1-Q3_RECUR-ASIG": {
+        "slot": "D1-Q3",
+        "generic_abbrev": "RECUR-ASIG",
+        "generic_question": "¿El PPI asigna recursos monetarios explícitos a programas del sector?",
+        "children_questions": ["Q003", "Q033", "Q063", "Q093", "Q123", "Q153", "Q183", "Q213", "Q243", "Q273"],
+        "primary_signals": ["FINANCIAL_CHAIN", "STRUCTURAL_MARKER"],
+        "secondary_signals": ["PROGRAMMATIC_HIERARCHY"],
+        "expected_patterns": ["budget_allocation", "funding_source", "ppi_table"],
+        "farfan_dimensions": ["DIM01_INS"],
+        "scoring_modality": "TYPE_D",
+        "weight": 0.30,
+        "empirical_availability": 0.92
+      },
+
+      "D1-Q4_CAP-INST": {
+        "slot": "D1-Q4",
+        "generic_abbrev": "CAP-INST",
+        "generic_question": "¿El plan identifica entidades responsables y describe capacidades institucionales?",
+        "children_questions": ["Q004", "Q034", "Q064", "Q094", "Q124", "Q154", "Q184", "Q214", "Q244", "Q274"],
+        "primary_signals": ["INSTITUTIONAL_NETWORK"],
+        "secondary_signals": ["PROGRAMMATIC_HIERARCHY"],
+        "expected_patterns": ["responsible_entity", "institutional_capacity", "limitations"],
+        "farfan_dimensions": ["DIM01_INS"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.15,
+        "empirical_availability": 0.71
+      },
+
+      "D1-Q5_ALCANCE-COMP": {
+        "slot": "D1-Q5",
+        "generic_abbrev": "ALCANCE-COMP",
+        "generic_question": "¿El plan justifica alcance mencionando marco normativo y competencias?",
+        "children_questions": ["Q005", "Q035", "Q065", "Q095", "Q125", "Q155", "Q185", "Q215", "Q245", "Q275"],
+        "primary_signals": ["NORMATIVE_REFERENCE"],
+        "secondary_signals": ["INSTITUTIONAL_NETWORK"],
+        "expected_patterns": ["legal_framework", "competence_justification"],
+        "farfan_dimensions": ["DIM01_INS"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.10,
+        "empirical_availability": 0.89
+      },
+
+      "D2-Q1_ACT-OPER": {
+        "slot": "D2-Q1",
+        "generic_abbrev": "ACT-OPER",
+        "generic_question": "¿Las actividades aparecen con atributos verificables (responsable, producto, costo)?",
+        "children_questions": ["Q006", "Q036", "Q066", "Q096", "Q126", "Q156", "Q186", "Q216", "Q246", "Q276"],
+        "primary_signals": ["PROGRAMMATIC_HIERARCHY", "STRUCTURAL_MARKER"],
+        "secondary_signals": ["FINANCIAL_CHAIN", "INSTITUTIONAL_NETWORK"],
+        "expected_patterns": ["activity_specification", "responsible_entity", "budget_linkage"],
+        "farfan_dimensions": ["DIM02_ACT"],
+        "scoring_modality": "TYPE_B",
+        "weight": 0.25,
+        "empirical_availability": 0.82
+      },
+
+      "D2-Q2_DET-INSTR": {
+        "slot": "D2-Q2",
+        "generic_abbrev": "DET-INSTR",
+        "generic_question": "¿Se especifica el instrumento, población objetivo y contribución al resultado?",
+        "children_questions": ["Q007", "Q037", "Q067", "Q097", "Q127", "Q157", "Q187", "Q217", "Q247", "Q277"],
+        "primary_signals": ["PROGRAMMATIC_HIERARCHY"],
+        "secondary_signals": ["POPULATION_DISAGGREGATION", "CAUSAL_VERBS"],
+        "expected_patterns": ["policy_instrument", "target_population", "result_contribution"],
+        "farfan_dimensions": ["DIM02_ACT"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.20,
+        "empirical_availability": 0.68
+      },
+
+      "D2-Q3_VINC-CAUSA": {
+        "slot": "D2-Q3",
+        "generic_abbrev": "VINC-CAUSA",
+        "generic_question": "¿Las actividades se vinculan con problemas del diagnóstico?",
+        "children_questions": ["Q008", "Q038", "Q068", "Q098", "Q128", "Q158", "Q188", "Q218", "Q248", "Q278"],
+        "primary_signals": ["CAUSAL_VERBS", "SEMANTIC_RELATIONSHIP"],
+        "secondary_signals": ["PROGRAMMATIC_HIERARCHY"],
+        "expected_patterns": ["causal_link", "problem_activity_match"],
+        "farfan_dimensions": ["DIM02_ACT", "DIM06_COH"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.25,
+        "empirical_availability": 0.74
+      },
+
+      "D2-Q4_RIESG-MITIG": {
+        "slot": "D2-Q4",
+        "generic_abbrev": "RIESG-MITIG",
+        "generic_question": "¿El plan identifica riesgos y propone medidas de mitigación?",
+        "children_questions": ["Q009", "Q039", "Q069", "Q099", "Q129", "Q159", "Q189", "Q219", "Q249", "Q279"],
+        "primary_signals": ["SEMANTIC_RELATIONSHIP"],
+        "secondary_signals": ["PROGRAMMATIC_HIERARCHY"],
+        "expected_patterns": ["risk_identification", "mitigation_measure"],
+        "farfan_dimensions": ["DIM02_ACT"],
+        "scoring_modality": "TYPE_C",
+        "weight": 0.15,
+        "empirical_availability": 0.42
+      },
+
+      "D2-Q5_COH-ESTRAT": {
+        "slot": "D2-Q5",
+        "generic_abbrev": "COH-ESTRAT",
+        "generic_question": "¿El plan describe cómo las actividades se complementan o siguen secuencia?",
+        "children_questions": ["Q010", "Q040", "Q070", "Q100", "Q130", "Q160", "Q190", "Q220", "Q250", "Q280"],
+        "primary_signals": ["CAUSAL_VERBS", "PROGRAMMATIC_HIERARCHY"],
+        "secondary_signals": ["SEMANTIC_RELATIONSHIP"],
+        "expected_patterns": ["strategic_coherence", "sequencing", "complementarity"],
+        "farfan_dimensions": ["DIM02_ACT", "DIM06_COH"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.15,
+        "empirical_availability": 0.59
+      },
+
+      "D3-Q1_IND-PROD": {
+        "slot": "D3-Q1",
+        "generic_abbrev": "IND-PROD",
+        "generic_question": "¿Los indicadores de producto incluyen línea base, meta cuantitativa y fuente?",
+        "children_questions": ["Q011", "Q041", "Q071", "Q101", "Q131", "Q161", "Q191", "Q221", "Q251", "Q281"],
+        "primary_signals": ["QUANTITATIVE_TRIPLET", "STRUCTURAL_MARKER"],
+        "secondary_signals": ["NORMATIVE_REFERENCE"],
+        "expected_patterns": ["product_indicator", "baseline", "target", "verification_source"],
+        "farfan_dimensions": ["DIM03_PRO"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.30,
+        "empirical_availability": 0.88
+      },
+
+      "D3-Q2_PROP-META": {
+        "slot": "D3-Q2",
+        "generic_abbrev": "PROP-META",
+        "generic_question": "¿Las metas guardan relación con la magnitud del problema?",
+        "children_questions": ["Q012", "Q042", "Q072", "Q102", "Q132", "Q162", "Q192", "Q222", "Q252", "Q282"],
+        "primary_signals": ["QUANTITATIVE_TRIPLET"],
+        "secondary_signals": ["SEMANTIC_RELATIONSHIP"],
+        "expected_patterns": ["target_proportionality", "gap_coverage"],
+        "farfan_dimensions": ["DIM03_PRO"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.20,
+        "empirical_availability": 0.72
+      },
+
+      "D3-Q3_TRAZ-PRES": {
+        "slot": "D3-Q3",
+        "generic_abbrev": "TRAZ-PRES",
+        "generic_question": "¿Los productos están vinculados a códigos presupuestales?",
+        "children_questions": ["Q013", "Q043", "Q073", "Q103", "Q133", "Q163", "Q193", "Q223", "Q253", "Q283"],
+        "primary_signals": ["FINANCIAL_CHAIN", "PROGRAMMATIC_HIERARCHY"],
+        "secondary_signals": ["STRUCTURAL_MARKER"],
+        "expected_patterns": ["budget_code", "bpin", "ppi_linkage"],
+        "farfan_dimensions": ["DIM03_PRO"],
+        "scoring_modality": "TYPE_D",
+        "weight": 0.25,
+        "empirical_availability": 0.67
+      },
+
+      "D3-Q4_FACT-ACT": {
+        "slot": "D3-Q4",
+        "generic_abbrev": "FACT-ACT",
+        "generic_question": "¿Existe correspondencia factible entre actividad y meta?",
+        "children_questions": ["Q014", "Q044", "Q074", "Q104", "Q134", "Q164", "Q194", "Q224", "Q254", "Q284"],
+        "primary_signals": ["CAUSAL_VERBS", "QUANTITATIVE_TRIPLET"],
+        "secondary_signals": ["PROGRAMMATIC_HIERARCHY"],
+        "expected_patterns": ["activity_target_feasibility"],
+        "farfan_dimensions": ["DIM03_PRO"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.15,
+        "empirical_availability": 0.61
+      },
+
+      "D3-Q5_MEC-PROD-RES": {
+        "slot": "D3-Q5",
+        "generic_abbrev": "MEC-PROD-RES",
+        "generic_question": "¿El plan describe cómo productos contribuyen a resultados?",
+        "children_questions": ["Q015", "Q045", "Q075", "Q105", "Q135", "Q165", "Q195", "Q225", "Q255", "Q285"],
+        "primary_signals": ["CAUSAL_VERBS", "SEMANTIC_RELATIONSHIP"],
+        "secondary_signals": ["PROGRAMMATIC_HIERARCHY"],
+        "expected_patterns": ["product_outcome_mechanism", "theory_of_change_fragment"],
+        "farfan_dimensions": ["DIM03_PRO", "DIM06_COH"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.10,
+        "empirical_availability": 0.54
+      },
+
+      "D4-Q1_IND-RES": {
+        "slot": "D4-Q1",
+        "generic_abbrev": "IND-RES",
+        "generic_question": "¿Los indicadores de resultado están definidos con línea base, meta y horizonte?",
+        "children_questions": ["Q016", "Q046", "Q076", "Q106", "Q136", "Q166", "Q196", "Q226", "Q256", "Q286"],
+        "primary_signals": ["QUANTITATIVE_TRIPLET", "TEMPORAL_CONSISTENCY"],
+        "secondary_signals": ["STRUCTURAL_MARKER"],
+        "expected_patterns": ["outcome_indicator", "baseline", "target", "time_horizon"],
+        "farfan_dimensions": ["DIM04_RES"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.30,
+        "empirical_availability": 0.84
+      },
+
+      "D4-Q2_RUTA-CAUS": {
+        "slot": "D4-Q2",
+        "generic_abbrev": "RUTA-CAUS",
+        "generic_question": "¿El plan describe ruta causal con supuestos y condiciones?",
+        "children_questions": ["Q017", "Q047", "Q077", "Q107", "Q137", "Q167", "Q197", "Q227", "Q257", "Q287"],
+        "primary_signals": ["CAUSAL_VERBS", "SEMANTIC_RELATIONSHIP"],
+        "secondary_signals": ["PROGRAMMATIC_HIERARCHY"],
+        "expected_patterns": ["causal_pathway", "assumptions", "conditions"],
+        "farfan_dimensions": ["DIM04_RES", "DIM06_COH"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.25,
+        "empirical_availability": 0.48
+      },
+
+      "D4-Q3_JUST-AMB": {
+        "slot": "D4-Q3",
+        "generic_abbrev": "JUST-AMB",
+        "generic_question": "¿La ambición de las metas se justifica en función de recursos?",
+        "children_questions": ["Q018", "Q048", "Q078", "Q108", "Q138", "Q168", "Q198", "Q228", "Q258", "Q288"],
+        "primary_signals": ["QUANTITATIVE_TRIPLET", "FINANCIAL_CHAIN"],
+        "secondary_signals": ["SEMANTIC_RELATIONSHIP"],
+        "expected_patterns": ["target_justification", "resource_capacity_match"],
+        "farfan_dimensions": ["DIM04_RES"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.20,
+        "empirical_availability": 0.39
+      },
+
+      "D4-Q4_ATEN-PRIOR": {
+        "slot": "D4-Q4",
+        "generic_abbrev": "ATEN-PRIOR",
+        "generic_question": "¿Los resultados atienden los problemas priorizados?",
+        "children_questions": ["Q019", "Q049", "Q079", "Q109", "Q139", "Q169", "Q199", "Q229", "Q259", "Q289"],
+        "primary_signals": ["SEMANTIC_RELATIONSHIP", "PROGRAMMATIC_HIERARCHY"],
+        "secondary_signals": ["QUANTITATIVE_TRIPLET"],
+        "expected_patterns": ["priority_alignment", "problem_result_match"],
+        "farfan_dimensions": ["DIM04_RES"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.15,
+        "empirical_availability": 0.71
+      },
+
+      "D4-Q5_ALIN-MARC": {
+        "slot": "D4-Q5",
+        "generic_abbrev": "ALIN-MARC",
+        "generic_question": "¿El plan declara alineación con PND, ODS, marcos normativos?",
+        "children_questions": ["Q020", "Q050", "Q080", "Q110", "Q140", "Q170", "Q200", "Q230", "Q260", "Q290"],
+        "primary_signals": ["NORMATIVE_REFERENCE"],
+        "secondary_signals": ["SEMANTIC_RELATIONSHIP"],
+        "expected_patterns": ["pnd_reference", "ods_reference", "legal_alignment"],
+        "farfan_dimensions": ["DIM04_RES", "DIM06_COH"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.10,
+        "empirical_availability": 0.96
+      },
+
+      "D5-Q1_IMP-LP": {
+        "slot": "D5-Q1",
+        "generic_abbrev": "IMP-LP",
+        "generic_question": "¿El plan define transformaciones de largo plazo?",
+        "children_questions": ["Q021", "Q051", "Q081", "Q111", "Q141", "Q171", "Q201", "Q231", "Q261", "Q291"],
+        "primary_signals": ["SEMANTIC_RELATIONSHIP", "TEMPORAL_CONSISTENCY"],
+        "secondary_signals": ["PROGRAMMATIC_HIERARCHY"],
+        "expected_patterns": ["long_term_vision", "structural_transformation"],
+        "farfan_dimensions": ["DIM05_IMP"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.20,
+        "empirical_availability": 0.45
+      },
+
+      "D5-Q2_IND-PROXY": {
+        "slot": "D5-Q2",
+        "generic_abbrev": "IND-PROXY",
+        "generic_question": "¿Se utilizan índices reconocidos para medir impactos?",
+        "children_questions": ["Q022", "Q052", "Q082", "Q112", "Q142", "Q172", "Q202", "Q232", "Q262", "Q292"],
+        "primary_signals": ["QUANTITATIVE_TRIPLET"],
+        "secondary_signals": ["NORMATIVE_REFERENCE"],
+        "expected_patterns": ["recognized_index", "proxy_indicator"],
+        "farfan_dimensions": ["DIM05_IMP"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.25,
+        "empirical_availability": 0.52
+      },
+
+      "D5-Q3_RIESG-SIST": {
+        "slot": "D5-Q3",
+        "generic_abbrev": "RIESG-SIST",
+        "generic_question": "¿Los impactos consideran riesgos externos que podrían revertir logros?",
+        "children_questions": ["Q023", "Q053", "Q083", "Q113", "Q143", "Q173", "Q203", "Q233", "Q263", "Q293"],
+        "primary_signals": ["SEMANTIC_RELATIONSHIP"],
+        "secondary_signals": ["CAUSAL_VERBS"],
+        "expected_patterns": ["systemic_risk", "reversal_threat"],
+        "farfan_dimensions": ["DIM05_IMP"],
+        "scoring_modality": "TYPE_C",
+        "weight": 0.20,
+        "empirical_availability": 0.31
+      },
+
+      "D5-Q4_REAL-EFECT": {
+        "slot": "D5-Q4",
+        "generic_abbrev": "REAL-EFECT",
+        "generic_question": "¿El plan evalúa si la ambición es realista y considera efectos no deseados?",
+        "children_questions": ["Q024", "Q054", "Q084", "Q114", "Q144", "Q174", "Q204", "Q234", "Q264", "Q294"],
+        "primary_signals": ["SEMANTIC_RELATIONSHIP"],
+        "secondary_signals": ["QUANTITATIVE_TRIPLET"],
+        "expected_patterns": ["realism_check", "unintended_effects"],
+        "farfan_dimensions": ["DIM05_IMP"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.15,
+        "empirical_availability": 0.28
+      },
+
+      "D5-Q5_SOST-IMP": {
+        "slot": "D5-Q5",
+        "generic_abbrev": "SOST-IMP",
+        "generic_question": "¿El plan describe cómo se sostendrán los impactos más allá del periodo?",
+        "children_questions": ["Q025", "Q055", "Q085", "Q115", "Q145", "Q175", "Q205", "Q235", "Q265", "Q295"],
+        "primary_signals": ["SEMANTIC_RELATIONSHIP", "FINANCIAL_CHAIN"],
+        "secondary_signals": ["INSTITUTIONAL_NETWORK"],
+        "expected_patterns": ["sustainability_mechanism", "post_term_continuity"],
+        "farfan_dimensions": ["DIM05_IMP"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.20,
+        "empirical_availability": 0.36
+      },
+
+      "D6-Q1_TdC-EXPL": {
+        "slot": "D6-Q1",
+        "generic_abbrev": "TdC-EXPL",
+        "generic_question": "¿El plan presenta teoría de cambio explícita?",
+        "children_questions": ["Q026", "Q056", "Q086", "Q116", "Q146", "Q176", "Q206", "Q236", "Q266", "Q296"],
+        "primary_signals": ["CAUSAL_VERBS", "SEMANTIC_RELATIONSHIP"],
+        "secondary_signals": ["STRUCTURAL_MARKER", "PROGRAMMATIC_HIERARCHY"],
+        "expected_patterns": ["explicit_theory_of_change", "logical_framework", "causal_chain"],
+        "farfan_dimensions": ["DIM06_COH"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.25,
+        "empirical_availability": 0.14
+      },
+
+      "D6-Q2_PROP-REAL": {
+        "slot": "D6-Q2",
+        "generic_abbrev": "PROP-REAL",
+        "generic_question": "¿El plan evita saltos desproporcionados en su lógica causal?",
+        "children_questions": ["Q027", "Q057", "Q087", "Q117", "Q147", "Q177", "Q207", "Q237", "Q267", "Q297"],
+        "primary_signals": ["CAUSAL_VERBS", "QUANTITATIVE_TRIPLET"],
+        "secondary_signals": ["SEMANTIC_RELATIONSHIP"],
+        "expected_patterns": ["proportionality_check", "causal_coherence"],
+        "farfan_dimensions": ["DIM06_COH"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.20,
+        "empirical_availability": 0.57
+      },
+
+      "D6-Q3_COMPLEJ-APREND": {
+        "slot": "D6-Q3",
+        "generic_abbrev": "COMPLEJ-APREND",
+        "generic_question": "¿El plan reconoce complejidad y propone mecanismos para ajustar?",
+        "children_questions": ["Q028", "Q058", "Q088", "Q118", "Q148", "Q178", "Q208", "Q238", "Q268", "Q298"],
+        "primary_signals": ["SEMANTIC_RELATIONSHIP"],
+        "secondary_signals": ["INSTITUTIONAL_NETWORK"],
+        "expected_patterns": ["complexity_acknowledgment", "adaptive_mechanism"],
+        "farfan_dimensions": ["DIM06_COH"],
+        "scoring_modality": "TYPE_C",
+        "weight": 0.15,
+        "empirical_availability": 0.24
+      },
+
+      "D6-Q4_MONIT-RETRO": {
+        "slot": "D6-Q4",
+        "generic_abbrev": "MONIT-RETRO",
+        "generic_question": "¿Se describe sistema de monitoreo con retroalimentación?",
+        "children_questions": ["Q029", "Q059", "Q089", "Q119", "Q149", "Q179", "Q209", "Q239", "Q269", "Q299"],
+        "primary_signals": ["STRUCTURAL_MARKER", "INSTITUTIONAL_NETWORK"],
+        "secondary_signals": ["QUANTITATIVE_TRIPLET"],
+        "expected_patterns": ["monitoring_system", "feedback_mechanism"],
+        "farfan_dimensions": ["DIM06_COH"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.25,
+        "empirical_availability": 0.86
+      },
+
+      "D6-Q5_CONTEXT-TERR": {
+        "slot": "D6-Q5",
+        "generic_abbrev": "CONTEXT-TERR",
+        "generic_question": "¿El plan considera contexto territorial específico y grupos diferenciados?",
+        "children_questions": ["Q030", "Q060", "Q090", "Q120", "Q150", "Q180", "Q210", "Q240", "Q270", "Q300"],
+        "primary_signals": ["POPULATION_DISAGGREGATION", "SEMANTIC_RELATIONSHIP"],
+        "secondary_signals": ["STRUCTURAL_MARKER"],
+        "expected_patterns": ["territorial_context", "differential_approach"],
+        "farfan_dimensions": ["DIM06_COH"],
+        "scoring_modality": "TYPE_A",
+        "weight": 0.15,
+        "empirical_availability": 1.0
+      }
+    }
+  },
+
+  "signal_type_catalog": {
+    "STRUCTURAL_MARKER": {
+      "farfan_integration": {
+        "dimensions_primary": ["DIM01_INS", "DIM02_ACT", "DIM03_PRO"],
+        "dimensions_secondary": ["DIM06_COH"],
+        "questions_mapped_total": 87,
+        "questions_mapped_list": {
+          "DIM01": ["D1-Q1", "D1-Q3"],
+          "DIM02": ["D2-Q1"],
+          "DIM03": ["D3-Q1", "D3-Q3"],
+          "DIM06": ["D6-Q1", "D6-Q4"]
+        },
+        "pattern_contribution": {
+          "ppi_tables": {
+            "maps_to_questions": ["Q003", "Q033", "Q063", "Q093", "Q123", "Q153", "Q183", "Q213", "Q243", "Q273"],
+            "value_add": 0.92,
+            "confidence": 0.95
+          },
+          "indicator_tables": {
+            "maps_to_questions": ["Q011", "Q041", "Q071", "Q101", "Q131", "Q161", "Q191", "Q221", "Q251", "Q281"],
+            "value_add": 0.88,
+            "confidence": 0.95
+          },
+          "section_markers": {
+            "maps_to_questions": ["Q029", "Q059", "Q089", "Q119", "Q149", "Q179", "Q209", "Q239", "Q269", "Q299"],
+            "value_add": 0.75,
+            "confidence": 0.90
+          }
+        }
+      },
+      
+      "priority_level": 1,
+      "extraction_complexity": "LOW",
+      
+      "empirical_frequency": {
+        "tables_per_plan": {
+          "mean": 62,
+          "median": 58,
+          "std": 28,
+          "min": 20,
+          "max": 128,
+          "mode": 45,
+          "percentiles": {"p25": 45, "p75": 78, "p90": 98}
+        },
+        "graphs_per_plan": {
+          "mean": 52,
+          "median": 48,
+          "std": 24,
+          "min": 11,
+          "max": 104,
+          "mode": 42,
+          "percentiles": {"p25": 38, "p75": 64, "p90": 82}
+        },
+        "sections_per_plan": {
+          "mean": 7,
+          "median": 7,
+          "std": 2,
+          "min": 4,
+          "max": 12,
+          "mode": 6
+        }
+      },
+
+      "extraction_pipeline": {
+        "stage1_detection": {
+          "method": "hybrid_multi_library",
+          "primary_detector": {
+            "library": "pdfplumber",
+            "version": ">=0.10.0",
+            "confidence_threshold": 0.85
+          },
+          "fallback_detector": {
+            "library": "tabula-py",
+            "trigger_condition": "pdfplumber_confidence < 0.7"
+          },
+          "ocr_fallback": {
+            "library": "pytesseract",
+            "trigger_condition": "pdfplumber_confidence < 0.5"
+          }
+        },
+
+        "stage2_classification": {
+          "table_types": {
+            "ppi_table": {
+              "required_headers": ["Programa", "Presupuesto"],
+              "optional_headers": ["Meta", "Fuente"],
+              "farfan_slot_mapping": ["D1-Q3", "D3-Q3"],
+              "confidence_boost": 0.15
+            },
+            "indicator_table": {
+              "required_headers": ["Indicador", "Meta"],
+              "optional_headers": ["Línea Base", "Fuente"],
+              "farfan_slot_mapping": ["D1-Q1", "D3-Q1", "D4-Q1"],
+              "confidence_boost": 0.12
+            },
+            "budget_table": {
+              "required_headers": ["Fuente", "Monto"],
+              "farfan_slot_mapping": ["D1-Q3"],
+              "total_row_detection": ["Total", "Subtotal"]
+            },
+            "population_table": {
+              "required_headers": ["Población", "Cantidad"],
+              "farfan_slot_mapping": ["D1-Q1", "D1-Q2", "D6-Q5"],
+              "disaggregation_indicators": ["Hombres", "Mujeres", "Indígenas"]
+            }
+          }
+        },
+
+        "stage3_extraction": {
+          "header_detection": {
+            "method": "multi_pass",
+            "passes": [
+              {"name": "literal_match", "weight": 1.0},
+              {"name": "fuzzy_match", "weight": 0.85, "threshold": 0.9},
+              {"name": "semantic_match", "weight": 0.75, "threshold": 0.80}
+            ]
+          }
+        },
+
+        "stage4_validation": {
+          "completeness_check": {
+            "min_rows": 3,
+            "min_cols": 2,
+            "max_cell_sparsity": 0.4
+          },
+          "quality_metrics": {
+            "extraction_confidence": {"threshold": 0.75, "weight": 0.3},
+            "structural_integrity": {"threshold": 0.80, "weight": 0.3},
+            "content_validity": {"threshold": 0.70, "weight": 0.4}
+          }
+        }
+      },
+
+      "section_detection": {
+        "patterns": [
+          {
+            "name": "DIAGNOSTICO",
+            "regex": "(?i)(?:diagnóstico|Capítulo\\s+1|Parte\\s+I)",
+            "farfan_dimensions": ["DIM01_INS"],
+            "expected_signals": ["QUANTITATIVE_TRIPLET", "POPULATION_DISAGGREGATION"],
+            "typical_location": {"page_range": [10, 80], "position": "early"}
+          },
+          {
+            "name": "ESTRATEGICA",
+            "regex": "(?i)(?:Parte\\s+Estratégica|Marco\\s+Estratégico|Ejes?\\s+Estratégicos?)",
+            "farfan_dimensions": ["DIM02_ACT", "DIM06_COH"],
+            "expected_signals": ["PROGRAMMATIC_HIERARCHY", "CAUSAL_VERBS"],
+            "typical_location": {"page_range": [60, 140], "position": "middle"}
+          },
+          {
+            "name": "PPI",
+            "regex": "(?i)(?:Plan\\s+Plurianual|PPI|Plan\\s+de\\s+Inversiones)",
+            "farfan_dimensions": ["DIM01_INS", "DIM03_PRO"],
+            "expected_signals": ["FINANCIAL_CHAIN", "STRUCTURAL_MARKER"],
+            "typical_location": {"page_range": [120, 180], "position": "late"}
+          },
+          {
+            "name": "SEGUIMIENTO",
+            "regex": "(?i)(?:Seguimiento|Evaluación|Monitoreo)",
+            "farfan_dimensions": ["DIM04_RES", "DIM05_IMP"],
+            "expected_signals": ["QUANTITATIVE_TRIPLET", "TEMPORAL_CONSISTENCY"],
+            "typical_location": {"page_range": [150, 210], "position": "late"}
+          }
+        ]
+      },
+
+      "gold_standard_examples": [
+        {
+          "plan": "Caldono",
+          "table_id": "TBL-045",
+          "type": "indicator_table",
+          "location": {"page": 142, "section": "SEGUIMIENTO"},
+          "headers": ["Indicador de Resultado", "Línea Base 2023", "Meta 2027", "Unidad"],
+          "row_count": 15,
+          "farfan_questions_answered": ["Q106", "Q107", "Q108"],
+          "confidence": 0.98
+        }
+      ]
+    },
+
+    "NORMATIVE_REFERENCE": {
+      "farfan_integration": {
+        "dimensions_primary": ["DIM01_INS", "DIM04_RES", "DIM06_COH"],
+        "dimensions_secondary": ["DIM02_ACT"],
+        "questions_mapped_total": 62,
+        "questions_mapped_list": {
+          "DIM01": ["D1-Q5"],
+          "DIM03": ["D3-Q1"],
+          "DIM04": ["D4-Q5"],
+          "DIM05": ["D5-Q2"]
+        },
+        "pattern_contribution": {
+          "mandatory_norms": {
+            "maps_to_questions": ["Q005", "Q035", "Q065", "Q095", "Q125", "Q155", "Q185", "Q215", "Q245", "Q275"],
+            "value_add": 0.89,
+            "confidence": 0.92,
+            "validation": "CC_COHERENCIA_NORMATIVA"
+          },
+          "ods_references": {
+            "maps_to_questions": ["Q020", "Q050", "Q080", "Q110", "Q140", "Q170", "Q200", "Q230", "Q260", "Q290"],
+            "value_add": 0.96,
+            "confidence": 0.90
+          }
+        }
+      },
+
+      "priority_level": 2,
+      "extraction_complexity": "MEDIUM",
+
+      "empirical_frequency": {
+        "leyes_per_plan": {
+          "mean": 14,
+          "median": 12,
+          "std": 11,
+          "min": 2,
+          "max": 46
+        },
+        "decretos_per_plan": {"mean": 3, "std": 3},
+        "articulos_per_plan": {"mean": 6, "std": 7},
+        "conpes_per_plan": {"mean": 2, "std": 3}
+      },
+
+      "extraction_pipeline": {
+        "stage1_ner": {
+          "method": "hybrid_ner",
+          "primary_model": {"type": "spacy", "model": "es_core_news_lg"},
+          "regex_fallback": {
+            "ley": {"regex": "(?i)Ley\\s+(\\d{1,4})(?:\\s+de\\s+(\\d{4}))?"},
+            "decreto": {"regex": "(?i)Decreto\\s+(\\d{1,4})(?:\\s+de\\s+(\\d{4}))?"},
+            "conpes": {"regex": "(?i)CONPES\\s+(\\d{4})(?:\\s+de\\s+(\\d{4}))?"}
+          }
+        },
+
+        "stage2_validation": {
+          "temporal_validation": {"year_range": {"min": 1991, "max": 2026}},
+          "context_validation": {
+            "window_size": 50,
+            "boost_keywords": ["según", "conforme", "en cumplimiento"]
+          }
+        }
+      },
+
+      "normative_mapping": {
+        "universal_mandatory": [
+          {
+            "norm_id": "Ley 152 de 1994",
+            "frequency": 11,
+            "farfan_questions": ["Q005", "Q035", "Q065", "Q095", "Q125", "Q155", "Q185", "Q215", "Q245", "Q275"],
+            "validation_rule": "Must appear at least once"
+          },
+          {
+            "norm_id": "Ley 2294 de 2023",
+            "frequency": 13,
+            "farfan_questions": ["Q020", "Q050", "Q080", "Q110", "Q140", "Q170", "Q200", "Q230", "Q260", "Q290"]
+          }
+        ],
+
+        "policy_area_specific": {
+          "PA01": {
+            "mandatory": [
+              {
+                "norm_id": "Ley 1257 de 2008",
+                "farfan_questions": ["Q001", "Q002", "Q005"],
+                "penalty_if_missing": 0.3
+              }
+            ]
+          },
+          "PA05": {
+            "mandatory": [
+              {
+                "norm_id": "Ley 1448 de 2011",
+                "farfan_questions": ["Q121", "Q122", "Q123", "Q124", "Q125"],
+                "penalty_if_missing": 0.4
+              }
+            ]
+          },
+          "PA06": {
+            "mandatory": [
+              {
+                "norm_id": "Ley 1098 de 2006",
+                "farfan_questions": ["Q151", "Q152", "Q153", "Q154", "Q155"],
+                "penalty_if_missing": 0.35
+              }
+            ]
+          }
+        }
+      }
+    },
+
+    "PROGRAMMATIC_HIERARCHY": {
+      "farfan_integration": {
+        "dimensions_primary": ["DIM02_ACT", "DIM03_PRO"],
+        "dimensions_secondary": ["DIM01_INS", "DIM06_COH"],
+        "questions_mapped_total": 78,
+        "questions_mapped_list": {
+          "DIM01": ["D1-Q4"],
+          "DIM02": ["D2-Q1", "D2-Q3", "D2-Q5"],
+          "DIM03": ["D3-Q3", "D3-Q4", "D3-Q5"],
+          "DIM04": ["D4-Q2", "D4-Q4"],
+          "DIM05": ["D5-Q1"],
+          "DIM06": ["D6-Q1", "D6-Q2"]
+        },
+        "pattern_contribution": {
+          "hierarchy_structure": {
+            "maps_to_questions": ["Q006", "Q036", "Q066", "Q096", "Q126", "Q156", "Q186", "Q216", "Q246", "Q276"],
+            "value_add": 0.82,
+            "confidence": 0.89
+          }
+        }
+      },
+
+      "priority_level": 1,
+      "extraction_complexity": "MEDIUM",
+
+      "empirical_frequency": {
+        "ejes_per_plan": {"mean": 5, "min": 3, "max": 7},
+        "programas_per_plan": {"mean": 28, "min": 14, "max": 57},
+        "metas_per_plan": {"mean": 145, "min": 100, "max": 352}
+      },
+
+      "extraction_patterns": {
+        "eje": {
+          "regex": "Eje\\s+(?:Estratégico\\s+)?(\\d+|[IVX]+)[:\\s.-]+(.*?)(?=\\n|Eje|$)",
+          "confidence": 0.91,
+          "farfan_mapping": "DIM02_ACT"
+        },
+        "programa": {
+          "regex": "Programa\\s+(\\d+)[:\\s.-]+(.*?)(?=\\n|Programa|$)",
+          "confidence": 0.89,
+          "farfan_mapping": "DIM02_ACT"
+        },
+        "meta": {
+          "regex": "Meta\\s+(\\d+(?:\\.\\d+)?)[:\\s.-]+(.*?)(?=\\n|$)",
+          "confidence": 0.87,
+          "farfan_mapping": "DIM03_PRO"
+        }
+      },
+
+      "dimension_mapping": {
+        "DIM02_ACTIVIDADES": "PROGRAMA",
+        "DIM03_PRODUCTOS": "SUBPROGRAMA",
+        "DIM04_RESULTADOS": "META"
+      }
+    },
+
+    "QUANTITATIVE_TRIPLET": {
+      "farfan_integration": {
+        "dimensions_primary": ["DIM01_INS", "DIM03_PRO", "DIM04_RES"],
+        "dimensions_secondary": ["DIM02_ACT", "DIM05_IMP", "DIM06_COH"],
+        "questions_mapped_total": 94,
+        "questions_mapped_list": {
+          "DIM01": ["D1-Q1", "D1-Q2"],
+          "DIM03": ["D3-Q1", "D3-Q2"],
+          "DIM04": ["D4-Q1", "D4-Q3"],
+          "DIM05": ["D5-Q2"],
+          "DIM06": ["D6-Q2"]
+        },
+        "pattern_contribution": {
+          "complete_triplets": {
+            "maps_to_questions": ["Q001", "Q011", "Q016", "Q031", "Q041", "Q046"],
+            "value_add": 0.88,
+            "confidence": 0.95,
+            "completeness_threshold": 0.8
+          }
+        }
+      },
+
+      "priority_level": 1,
+      "extraction_complexity": "MEDIUM",
+
+      "empirical_frequency": {
+        "porcentajes_per_plan": {"mean": 485, "std": 195},
+        "montos_per_plan": {"mean": 285, "std": 98},
+        "triplets_completos": {"mean": 78, "min": 25, "max": 155}
+      },
+
+      "extraction_patterns": {
+        "from_table": {
+          "required_headers": ["Indicador", "Línea Base", "Meta"],
+          "confidence": 0.95,
+          "farfan_slots": ["D1-Q1", "D3-Q1", "D4-Q1"]
+        },
+        "from_text": {
+          "baseline_regex": "l[íi]nea\\s+base[:\\s]+(\\d+[.,]?\\d*)\\s*%?\\s*\\((\\d{4})\\)",
+          "target_regex": "meta\\s+(\\d{4})[:\\s]+(\\d+[.,]?\\d*)\\s*%?",
+          "confidence": 0.75
+        }
+      },
+
+      "completeness_scoring": {
+        "COMPLETO": {"value": 1.0, "requires": ["indicator", "baseline_value", "baseline_year", "target_value", "target_year", "source"]},
+        "ALTO": {"value": 0.85, "requires": ["indicator", "baseline_value", "baseline_year", "target_value", "target_year"]},
+        "MEDIO": {"value": 0.66, "requires": ["indicator", "baseline_value", "target_value"]},
+        "BAJO": {"value": 0.33, "requires": ["indicator", "target_value"]}
+      }
+    },
+
+    "FINANCIAL_CHAIN": {
+      "farfan_integration": {
+        "dimensions_primary": ["DIM01_INS", "DIM03_PRO"],
+        "dimensions_secondary": ["DIM04_RES", "DIM05_IMP"],
+        "questions_mapped_total": 52,
+        "questions_mapped_list": {
+          "DIM01": ["D1-Q3"],
+          "DIM03": ["D3-Q3"],
+          "DIM04": ["D4-Q3"],
+          "DIM05": ["D5-Q5"]
+        },
+        "pattern_contribution": {
+          "ppi_allocations": {
+            "maps_to_questions": ["Q003", "Q033", "Q063", "Q093", "Q123", "Q153", "Q183", "Q213", "Q243", "Q273"],
+            "value_add": 0.92,
+            "confidence": 0.95,
+            "validation": "CC_SOSTENIBILIDAD_PRESUPUESTAL"
+          }
+        }
+      },
+
+      "priority_level": 2,
+      "extraction_complexity": "MEDIUM",
+
+      "empirical_frequency": {
+        "montos_per_plan": {"mean": 285, "std": 98},
+        "fuentes_per_plan": {"mean": 7, "std": 2},
+        "ppi_total_avg": 324000000000
+      },
+
+      "extraction_patterns": {
+        "monto": {
+          "regex": "\\$\\s*([0-9.,]+)\\s*(millones?|billones?)?",
+          "confidence": 0.90,
+          "farfan_mapping": ["D1-Q3", "D3-Q3"]
+        },
+        "fuente": {
+          "regex": "(?:SGP|recursos\\s+propios|SGR|crédito)",
+          "confidence": 0.92
+        }
+      },
+
+      "risk_thresholds": {
+        "credito_max_pct": 0.20,
+        "propios_min_pct": 0.03,
+        "sgp_dependencia_max": 0.85
+      }
+    },
+
+    "POPULATION_DISAGGREGATION": {
+      "farfan_integration": {
+        "dimensions_primary": ["DIM01_INS", "DIM06_COH"],
+        "dimensions_secondary": ["DIM02_ACT"],
+        "questions_mapped_total": 45,
+        "questions_mapped_list": {
+          "DIM01": ["D1-Q1", "D1-Q2"],
+          "DIM02": ["D2-Q2"],
+          "DIM06": ["D6-Q5"]
+        },
+        "pattern_contribution": {
+          "differential_approach": {
+            "maps_to_questions": ["Q030", "Q060", "Q090", "Q120", "Q150", "Q180", "Q210", "Q240", "Q270", "Q300"],
+            "value_add": 1.0,
+            "confidence": 0.80,
+            "validation": "CC_ENFOQUE_DIFERENCIAL"
+          }
+        }
+      },
+
+      "priority_level": 2,
+      "extraction_complexity": "LOW",
+
+      "empirical_frequency": {
+        "grupos_etarios": {
+          "niñez": {"mean": 67},
+          "juventud": {"mean": 42},
+          "adultos_mayores": {"mean": 48}
+        },
+        "grupos_etnicos": {
+          "indígenas": {"mean": 38},
+          "afrodescendientes": {"mean": 24}
+        }
+      },
+
+      "extraction_patterns": {
+        "keywords_by_group": {
+          "NINEZ": ["niñez", "niños", "primera infancia"],
+          "JUVENTUD": ["juventud", "jóvenes", "adolescentes"],
+          "MUJERES": ["mujeres", "equidad de género"],
+          "INDIGENAS": ["indígena", "resguardo", "cabildo"],
+          "VICTIMAS": ["víctimas", "conflicto armado"]
+        }
+      }
+    },
+
+    "CAUSAL_VERBS": {
+      "farfan_integration": {
+        "dimensions_primary": ["DIM02_ACT", "DIM03_PRO", "DIM04_RES", "DIM06_COH"],
+        "dimensions_secondary": ["DIM05_IMP"],
+        "questions_mapped_total": 68,
+        "questions_mapped_list": {
+          "DIM02": ["D2-Q3", "D2-Q5"],
+          "DIM03": ["D3-Q4", "D3-Q5"],
+          "DIM04": ["D4-Q2"],
+          "DIM06": ["D6-Q1", "D6-Q2"]
+        },
+        "pattern_contribution": {
+          "theory_of_change": {
+            "maps_to_questions": ["Q026", "Q056", "Q086", "Q116", "Q146", "Q176", "Q206", "Q236", "Q266", "Q296"],
+            "value_add": 0.14,
+            "confidence": 0.82,
+            "note": "Low availability but critical for DIM06"
+          }
+        }
+      },
+
+      "priority_level": 3,
+      "extraction_complexity": "MEDIUM",
+
+      "empirical_frequency": {
+        "top_verbs": [
+          {"verb": "fortalecer", "mean": 52},
+          {"verb": "implementar", "mean": 51},
+          {"verb": "garantizar", "mean": 55}
+        ],
+        "conectores": {
+          "con_el_fin_de": {"mean": 18},
+          "mediante": {"mean": 22}
+        }
+      },
+
+      "extraction_patterns": {
+        "causal_verbs": {
+          "regex": "\\b(fortalecer|implementar|garantizar|promover|mejorar)\\w*\\b",
+          "confidence": 0.82
+        },
+        "connectors": [
+          {"phrase": "con el fin de", "type": "PURPOSE"},
+          {"phrase": "mediante", "type": "MEANS"}
+        ]
+      }
+    },
+
+    "TEMPORAL_CONSISTENCY": {
+      "farfan_integration": {
+        "dimensions_primary": ["DIM01_INS", "DIM04_RES", "DIM05_IMP"],
+        "dimensions_secondary": ["DIM03_PRO"],
+        "questions_mapped_total": 41,
+        "questions_mapped_list": {
+          "DIM01": ["D1-Q1"],
+          "DIM04": ["D4-Q1"],
+          "DIM05": ["D5-Q1"]
+        }
+      },
+
+      "priority_level": 3,
+      "extraction_complexity": "LOW",
+
+      "empirical_frequency": {
+        "años_unicos": {"mean": 18, "range": [10, 29]},
+        "series_historicas": "6-10 años typical"
+      },
+
+      "extraction_patterns": {
+        "year": {"regex": "\\b(19|20)\\d{2}\\b", "confidence": 0.95},
+        "period": {"regex": "(\\d{4})\\s*[-–]\\s*(\\d{4})", "confidence": 0.93}
+      }
+    },
+
+    "INSTITUTIONAL_NETWORK": {
+      "farfan_integration": {
+        "dimensions_primary": ["DIM01_INS", "DIM02_ACT", "DIM06_COH"],
+        "dimensions_secondary": ["DIM05_IMP"],
+        "questions_mapped_total": 39,
+        "questions_mapped_list": {
+          "DIM01": ["D1-Q4"],
+          "DIM02": ["D2-Q1"],
+          "DIM05": ["D5-Q5"],
+          "DIM06": ["D6-Q4"]
+        }
+      },
+
+      "priority_level": 3,
+      "extraction_complexity": "LOW",
+
+      "empirical_frequency": {
+        "entidades_nacionales": {
+          "DNP": {"mean": 15},
+          "DANE": {"mean": 10},
+          "ICBF": {"mean": 11}
+        },
+        "entidades_territoriales": {
+          "Alcaldía": {"mean": 420}
+        }
+      }
+    },
+
+    "SEMANTIC_RELATIONSHIP": {
+      "farfan_integration": {
+        "dimensions_primary": ["DIM02_ACT", "DIM04_RES", "DIM05_IMP", "DIM06_COH"],
+        "dimensions_secondary": ["DIM03_PRO"],
+        "questions_mapped_total": 58,
+        "questions_mapped_list": {
+          "DIM02": ["D2-Q3", "D2-Q4"],
+          "DIM04": ["D4-Q2", "D4-Q4"],
+          "DIM05": ["D5-Q1", "D5-Q3", "D5-Q4", "D5-Q5"],
+          "DIM06": ["D6-Q3", "D6-Q5"]
+        }
+      },
+
+      "priority_level": 3,
+      "extraction_complexity": "HIGH",
+
+      "co_occurrence_patterns": {
+        "high_value_triplets": [
+          {
+            "terms": ["indicador", "meta", "línea base"],
+            "farfan_slots": ["D1-Q1", "D3-Q1", "D4-Q1"],
+            "confidence": 0.95
+          },
+          {
+            "terms": ["problema", "objetivo", "estrategia"],
+            "farfan_slots": ["D2-Q3", "D4-Q4"],
+            "confidence": 0.88
+          }
+        ]
+      }
+    }
+  },
+
+  "farfan_meso_macro_integration": {
+    "meso_questions": {
+      "MESO_1": {
+        "question_id": "Q301",
+        "question_global": 301,
+        "cluster": "CL01_SEC-PAZ",
+        "policy_areas": ["PA02", "PA05", "PA07"],
+        "micro_dependencies": ["Q031-Q060", "Q121-Q150", "Q181-Q210"],
+        "required_signals": ["NORMATIVE_REFERENCE", "FINANCIAL_CHAIN", "POPULATION_DISAGGREGATION"],
+        "integration_patterns": ["cross_reference", "coherence", "resource_allocation"],
+        "scoring_modality": "MESO_INTEGRATION"
+      },
+      "MESO_2": {
+        "question_id": "Q302",
+        "question_global": 302,
+        "cluster": "CL02_GP",
+        "policy_areas": ["PA01", "PA06", "PA08"],
+        "micro_dependencies": ["Q001-Q030", "Q151-Q180", "Q211-Q240"],
+        "required_signals": ["POPULATION_DISAGGREGATION", "QUANTITATIVE_TRIPLET", "INSTITUTIONAL_NETWORK"],
+        "scoring_modality": "MESO_INTEGRATION"
+      },
+      "MESO_3": {
+        "question_id": "Q303",
+        "question_global": 303,
+        "cluster": "CL03_TERR-AMB",
+        "policy_areas": ["PA03", "PA04"],
+        "micro_dependencies": ["Q061-Q090", "Q091-Q120"],
+        "required_signals": ["STRUCTURAL_MARKER", "QUANTITATIVE_TRIPLET", "FINANCIAL_CHAIN"],
+        "scoring_modality": "MESO_INTEGRATION"
+      },
+      "MESO_4": {
+        "question_id": "Q304",
+        "question_global": 304,
+        "cluster": "CL04_DESC-CRISIS",
+        "policy_areas": ["PA09", "PA10"],
+        "micro_dependencies": ["Q241-Q270", "Q271-Q300"],
+        "required_signals": ["POPULATION_DISAGGREGATION", "INSTITUTIONAL_NETWORK"],
+        "scoring_modality": "MESO_INTEGRATION"
+      }
+    },
+
+    "macro_question": {
+      "question_id": "Q305",
+      "question_global": 305,
+      "code": "MACRO-1",
+      "abbrev": "PDM-GLOBAL",
+      "question": "¿El Plan presenta visión integral y coherente que articula todos los clusters?",
+      "meso_dependencies": ["Q301", "Q302", "Q303", "Q304"],
+      "required_signals": ["ALL"],
+      "evaluation_components": {
+        "narrative_coherence": {"weight": 0.30, "signals": ["SEMANTIC_RELATIONSHIP", "CAUSAL_VERBS"]},
+        "cross_cluster_integration": {"weight": 0.40, "signals": ["PROGRAMMATIC_HIERARCHY", "FINANCIAL_CHAIN"]},
+        "long_term_vision": {"weight": 0.30, "signals": ["TEMPORAL_CONSISTENCY", "QUANTITATIVE_TRIPLET"]}
+      },
+      "scoring_modality": "MACRO_HOLISTIC",
+      "fallback": "MACRO_AMBIGUO"
+    }
+  },
+
+  "calibration_thresholds": {
+    "signal_confidence_thresholds": {
+      "STRUCTURAL_MARKER": {"table": 0.90, "section": 0.85},
+      "NORMATIVE_REFERENCE": {"ley": 0.92, "decreto": 0.90},
+      "PROGRAMMATIC_HIERARCHY": {"eje": 0.91, "programa": 0.89},
+      "QUANTITATIVE_TRIPLET": {"from_table": 0.95, "from_text": 0.75},
+      "FINANCIAL_CHAIN": {"from_ppi": 0.92, "from_text": 0.75}
+    },
+
+    "phase3_scoring_weights": {
+      "layer_b_baseline": {
+        "QUANTITATIVE_TRIPLET_present": 0.70,
+        "QUANTITATIVE_TRIPLET_complete": 0.20,
+        "QUANTITATIVE_TRIPLET_recent": 0.10
+      },
+      "layer_u_smip": {
+        "STRUCTURAL_MARKER_sections": 0.60,
+        "STRUCTURAL_MARKER_tables": 0.25,
+        "PROGRAMMATIC_HIERARCHY_depth": 0.15
+      },
+      "layer_q_quality": {
+        "NORMATIVE_REFERENCE_cited": 0.40,
+        "QUANTITATIVE_TRIPLET_formula": 0.30,
+        "TEMPORAL_CONSISTENCY": 0.20,
+        "INSTITUTIONAL_NETWORK_clear": 0.10
+      }
+    }
+  },
+
+  "implementation_roadmap": {
+    "phase1_critical_gaps": {
+      "timeline": "Weeks 1-2",
+      "deliverables": [
+        "Implement FINANCIAL_CHAIN extractor",
+        "Implement Capability System (Regla 3)",
+        "Create Cross-Cutting Validators (CC_SOSTENIBILIDAD, CC_COHERENCIA_NORMATIVA)"
+      ],
+      "farfan_impact": "Enable 52+ additional questions (Q003, Q033, etc.)"
+    },
+    "phase2_value_add": {
+      "timeline": "Weeks 3-4",
+      "deliverables": [
+        "ValueAddScorer + tracking",
+        "Signal Deduplicator",
+        "Refine partial extractors"
+      ],
+      "farfan_impact": "Improve precision 15-25% across all 300 micro questions"
+    },
+    "phase3_empirical_alignment": {
+      "timeline": "Weeks 5-6",
+      "deliverables": [
+        "Implement remaining extractors (CAUSAL_VERBS, INSTITUTIONAL_NETWORK)",
+        "Integration testing on 14 plans",
+        "Pattern enrichment (1000+ patterns)"
+      ],
+      "farfan_impact": "Target alignment 2.90% → 75%+"
+    }
+  }
+}
