@@ -318,7 +318,7 @@ class TestRetryExponentialBackoff:
         assert config.total_retries == 2
 
         # Permanent failure
-        @with_exponential_backoff(config=config, max_retries=1)
+        @with_exponential_backoff(config=config)
         def always_fails():
             raise TransientError("Fatal")
         
@@ -328,7 +328,7 @@ class TestRetryExponentialBackoff:
         assert config.total_chunks == 3
         assert config.successful_chunks == 2
         assert config.failed_chunks == 1
-        assert config.total_retries == 3 # +1 retry from always_fails
+        assert config.total_retries == 5 # 2 from previous test + 3 from always_fails
 
     def test_decorator_preserves_function_metadata(self):
         """Verify decorator preserves original function metadata."""

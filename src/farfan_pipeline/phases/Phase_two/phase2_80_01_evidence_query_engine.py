@@ -99,7 +99,7 @@ class SecureQueryParser:
         r";\s*(?:DROP|DELETE|UPDATE|INSERT|EXEC|EXECUTE)",
         r"--",
         r"/\*.*\*/",
-        r"'\s*OR\s+'?\d*'?\s*=\s*'?\d*'?",
+        r"(?:'|\b)OR\s+'?\d*'?\s*=\s*'?\d*'?",
         r"UNION\s+SELECT",
         r"INTO\s+(?:OUTFILE|DUMPFILE)",
         r"LOAD_FILE",
@@ -177,7 +177,7 @@ class SecureQueryParser:
                 "rejection_reason": reason
             }
         )
-        raise QueryValidationError(reason)
+        raise QueryValidationError(f"Query rejected: {reason}")
 
 
 # === ENUMS AND TYPES ===
