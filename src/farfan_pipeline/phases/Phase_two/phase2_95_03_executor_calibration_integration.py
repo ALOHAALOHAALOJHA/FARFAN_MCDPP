@@ -765,28 +765,36 @@ def get_executor_config(
     )
 
     # Import ExecutorConfig (local import to avoid circular dependency issues)
-    # Try both absolute and relative imports to handle different import contexts
-    try:
-        from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import (
-            ExecutorConfig,
-        )
-    except ModuleNotFoundError:
-        # Fallback for when module is imported directly without package context
-        import sys
-        from pathlib import Path as ImportPath
-        
-        config_module_path = ImportPath(__file__).parent / "phase2_10_03_executor_config.py"
-        import importlib.util
-        spec = importlib.util.spec_from_file_location(
-            "phase2_10_03_executor_config", config_module_path
-        )
-        if spec is None or spec.loader is None:
-            raise ImportError(f"Cannot load ExecutorConfig from {config_module_path}")
-        executor_config_module = importlib.util.module_from_spec(spec)
-        # Register in sys.modules before exec to support dataclasses
-        sys.modules["phase2_10_03_executor_config"] = executor_config_module
-        spec.loader.exec_module(executor_config_module)
-        ExecutorConfig = executor_config_module.ExecutorConfig
+    # Module-level caching to avoid repeated imports
+    global _executor_config_module
+    if "_executor_config_module" not in globals():
+        _executor_config_module = None
+    
+    if _executor_config_module is None:
+        try:
+            from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import (
+                ExecutorConfig,
+            )
+            _executor_config_module = {"ExecutorConfig": ExecutorConfig}
+        except ModuleNotFoundError:
+            # Fallback for when module is imported directly without package context
+            import sys
+            from pathlib import Path as ImportPath
+            
+            config_module_path = ImportPath(__file__).parent / "phase2_10_03_executor_config.py"
+            import importlib.util
+            spec = importlib.util.spec_from_file_location(
+                "phase2_10_03_executor_config", config_module_path
+            )
+            if spec is None or spec.loader is None:
+                raise ImportError(f"Cannot load ExecutorConfig from {config_module_path}")
+            executor_config_module = importlib.util.module_from_spec(spec)
+            # Register in sys.modules before exec to support dataclasses
+            sys.modules["phase2_10_03_executor_config"] = executor_config_module
+            spec.loader.exec_module(executor_config_module)
+            _executor_config_module = {"ExecutorConfig": executor_config_module.ExecutorConfig}
+    
+    ExecutorConfig = _executor_config_module["ExecutorConfig"]
 
     # Load configuration from canonical source
     executor_config = ExecutorConfig.load_from_sources(
@@ -800,9 +808,9 @@ def get_executor_config(
         "timeout_seconds": executor_config.timeout_s if executor_config.timeout_s is not None else 300,
         "max_retries": executor_config.retry if executor_config.retry is not None else 3,
         "retry_delay_seconds": 1.0,  # Not in ExecutorConfig, keep as constant
-        "memory_limit_mb": executor_config.memory_limit_mb if executor_config.memory_limit_mb is not None else 1024,
+        "memory_limit_mb": executor_config.memory_limit_mb if executor_config.memory_limit_mb is not None else 512,
         "enable_caching": True,  # Not in ExecutorConfig, keep as constant
-        "enable_profiling": executor_config.enable_profiling,
+        "enable_profiling": executor_config.enable_profiling if executor_config.enable_profiling is not None else True,
     }
 
     logger.debug(
