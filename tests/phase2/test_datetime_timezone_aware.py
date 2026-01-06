@@ -10,7 +10,6 @@ import warnings
 from datetime import datetime, timezone
 
 from farfan_pipeline.phases.Phase_two.phase2_30_00_resource_manager import (
-    AdaptiveResourceManager,
     CircuitBreaker,
     CircuitBreakerConfig,
 )
