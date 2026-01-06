@@ -1,229 +1,176 @@
 {
+  "$schema": "./schema.json",
   "_schema_version": "2.0.0",
-  "_generated_at": "2026-01-06T17:32:12.058949+00:00",
-  "entity_count": 10,
+  "_generated_at": "2026-01-06T19:56:00Z",
+
   "entities": {
     "ENT-INST-001": {
       "entity_id": "ENT-INST-001",
-      "canonical_name": "DANE",
-      "full_name": "Departamento Administrativo Nacional de Estadística",
-      "category": "INSTITUTIONAL",
-      "subcategory": "NATIONAL",
+      "canonical_name": "Departamento Nacional de Planeación",
+      "acronym": "DNP",
+      "category": "institution",
       "level": "NATIONAL",
-      "aliases": [
-        "Departamento de Estadística",
-        "estadísticas oficiales"
-      ],
-      "detection_patterns": [
-        "DANE",
-        "Departamento\\s+Administrativo\\s+Nacional\\s+de\\s+Estadística"
-      ],
+      "type": "planning",
+      "aliases": ["DNP", "Planeación Nacional", "Departamento de Planeación"],
+      "description": "Entidad técnica del Gobierno que impulsa la implementación de una visión estratégica del país",
       "scoring_context": {
         "boost_dimensions": {
-          "DIM01": 0.15
+          "DIM01": 0.10,
+          "DIM02": 0.15
         },
-        "indicates_quality_source": true
+        "boost_policy_areas": {
+          "PA04": 0.10
+        }
       }
     },
+
     "ENT-INST-002": {
       "entity_id": "ENT-INST-002",
-      "canonical_name": "DNP",
-      "full_name": "Departamento Nacional de Planeación",
-      "category": "INSTITUTIONAL",
-      "subcategory": "NATIONAL",
+      "canonical_name": "Departamento Administrativo Nacional de Estadística",
+      "acronym": "DANE",
+      "category": "institution",
       "level": "NATIONAL",
-      "aliases": [
-        "Planeación Nacional"
-      ],
-      "detection_patterns": [
-        "DNP",
-        "Departamento\\s+Nacional\\s+de\\s+Planeación"
-      ],
+      "type": "statistics",
+      "aliases": ["DANE", "Estadística Nacional"],
+      "description": "Entidad responsable de la planeación, levantamiento, procesamiento, análisis y difusión de las estadísticas oficiales",
       "scoring_context": {
         "boost_dimensions": {
-          "DIM01": 0.1,
-          "DIM02": 0.05
-        },
-        "indicates_quality_source": true
+          "DIM01": 0.20,
+          "DIM03": 0.10,
+          "DIM04": 0.15
+        }
       }
     },
+
     "ENT-INST-003": {
       "entity_id": "ENT-INST-003",
-      "canonical_name": "ICBF",
-      "full_name": "Instituto Colombiano de Bienestar Familiar",
-      "category": "INSTITUTIONAL",
-      "subcategory": "NATIONAL",
+      "canonical_name": "Instituto Colombiano de Bienestar Familiar",
+      "acronym": "ICBF",
+      "category": "institution",
       "level": "NATIONAL",
-      "aliases": [
-        "Bienestar Familiar"
-      ],
-      "detection_patterns": [
-        "ICBF",
-        "Instituto\\s+Colombiano\\s+de\\s+Bienestar\\s+Familiar"
-      ],
+      "type": "social_protection",
+      "aliases": ["ICBF", "Bienestar Familiar"],
+      "description": "Entidad encargada de la protección integral de la primera infancia, niñez y adolescencia",
       "scoring_context": {
-        "boost_dimensions": {
-          "DIM01": 0.08
-        },
-        "policy_areas": [
-          "PA03",
-          "PA06"
-        ]
+        "boost_policy_areas": {
+          "PA06": 0.25,
+          "PA01": 0.10
+        }
       }
     },
+
     "ENT-INST-004": {
       "entity_id": "ENT-INST-004",
-      "canonical_name": "MinSalud",
-      "full_name": "Ministerio de Salud y Protección Social",
-      "category": "INSTITUTIONAL",
-      "subcategory": "NATIONAL",
+      "canonical_name": "Unidad para las Víctimas",
+      "acronym": "UARIV",
+      "category": "institution",
       "level": "NATIONAL",
-      "aliases": [
-        "Ministerio de Salud",
-        "MSPS"
-      ],
-      "detection_patterns": [
-        "MinSalud",
-        "Ministerio\\s+de\\s+Salud"
-      ],
+      "type": "transitional_justice",
+      "aliases": ["UARIV", "Unidad de Víctimas", "Unidad para la Atención y Reparación Integral a las Víctimas"],
+      "description": "Entidad encargada de coordinar el Sistema Nacional de Atención y Reparación Integral a las Víctimas",
       "scoring_context": {
-        "boost_dimensions": {
-          "DIM01": 0.05
+        "boost_policy_areas": {
+          "PA05": 0.30,
+          "PA02": 0.15
         }
       }
     },
+
     "ENT-INST-005": {
       "entity_id": "ENT-INST-005",
-      "canonical_name": "MinEducación",
-      "full_name": "Ministerio de Educación Nacional",
-      "category": "INSTITUTIONAL",
-      "subcategory": "NATIONAL",
+      "canonical_name": "Agencia Nacional de Tierras",
+      "acronym": "ANT",
+      "category": "institution",
       "level": "NATIONAL",
-      "aliases": [
-        "MEN",
-        "Ministerio de Educación"
-      ],
-      "detection_patterns": [
-        "MinEducación",
-        "MEN",
-        "Ministerio\\s+de\\s+Educación"
-      ],
+      "type": "land_management",
+      "aliases": ["ANT", "Agencia de Tierras"],
+      "description": "Entidad ejecutora de la política de ordenamiento social de la propiedad rural",
       "scoring_context": {
-        "boost_dimensions": {
-          "DIM01": 0.05
+        "boost_policy_areas": {
+          "PA07": 0.30,
+          "PA03": 0.10
         }
       }
     },
+
     "ENT-INST-006": {
       "entity_id": "ENT-INST-006",
-      "canonical_name": "UARIV",
-      "full_name": "Unidad para la Atención y Reparación Integral a las Víctimas",
-      "category": "INSTITUTIONAL",
-      "subcategory": "NATIONAL",
+      "canonical_name": "Ministerio del Interior",
+      "acronym": "MinInterior",
+      "category": "institution",
       "level": "NATIONAL",
-      "aliases": [
-        "Unidad de Víctimas"
-      ],
-      "detection_patterns": [
-        "UARIV",
-        "Unidad\\s+para\\s+la\\s+Atención.*Víctimas",
-        "Unidad\\s+de\\s+Víctimas"
-      ],
+      "type": "ministry",
+      "aliases": ["Ministerio del Interior", "MinInterior"],
+      "description": "Ministerio responsable de la formulación de políticas de seguridad, convivencia y DDHH",
       "scoring_context": {
-        "boost_dimensions": {
-          "DIM01": 0.1,
-          "DIM02": 0.1
-        },
-        "policy_areas": [
-          "PA05"
-        ]
+        "boost_policy_areas": {
+          "PA02": 0.15,
+          "PA08": 0.20
+        }
       }
     },
+
     "ENT-INST-007": {
       "entity_id": "ENT-INST-007",
       "canonical_name": "Migración Colombia",
-      "full_name": "Unidad Administrativa Especial Migración Colombia",
-      "category": "INSTITUTIONAL",
-      "subcategory": "NATIONAL",
+      "acronym": "MigraCol",
+      "category": "institution",
       "level": "NATIONAL",
-      "aliases": [
-        "UAE Migración"
-      ],
-      "detection_patterns": [
-        "Migración\\s+Colombia"
-      ],
+      "type": "migration",
+      "aliases": ["Migración Colombia", "MigraCol"],
+      "description": "Entidad encargada del control migratorio",
       "scoring_context": {
-        "boost_dimensions": {
-          "DIM01": 0.1
-        },
-        "policy_areas": [
-          "PA10"
-        ]
+        "boost_policy_areas": {
+          "PA10": 0.30
+        }
       }
     },
+
     "ENT-INST-008": {
       "entity_id": "ENT-INST-008",
-      "canonical_name": "UNP",
-      "full_name": "Unidad Nacional de Protección",
-      "category": "INSTITUTIONAL",
-      "subcategory": "NATIONAL",
+      "canonical_name": "Instituto Nacional Penitenciario y Carcelario",
+      "acronym": "INPEC",
+      "category": "institution",
       "level": "NATIONAL",
-      "aliases": [
-        "Unidad de Protección"
-      ],
-      "detection_patterns": [
-        "UNP",
-        "Unidad\\s+Nacional\\s+de\\s+Protección"
-      ],
+      "type": "penitentiary",
+      "aliases": ["INPEC", "Instituto Penitenciario"],
+      "description": "Entidad encargada del sistema penitenciario y carcelario",
       "scoring_context": {
-        "boost_dimensions": {
-          "DIM02": 0.15
-        },
-        "policy_areas": [
-          "PA08"
-        ]
+        "boost_policy_areas": {
+          "PA09": 0.30
+        }
       }
     },
+
     "ENT-INST-009": {
       "entity_id": "ENT-INST-009",
-      "canonical_name": "INPEC",
-      "full_name": "Instituto Nacional Penitenciario y Carcelario",
-      "category": "INSTITUTIONAL",
-      "subcategory": "NATIONAL",
+      "canonical_name": "Ministerio de Ambiente y Desarrollo Sostenible",
+      "acronym": "MinAmbiente",
+      "category": "institution",
       "level": "NATIONAL",
-      "aliases": [
-        "Penitenciario"
-      ],
-      "detection_patterns": [
-        "INPEC",
-        "Instituto\\s+Nacional\\s+Penitenciario"
-      ],
+      "type": "ministry",
+      "aliases": ["Ministerio de Ambiente", "MinAmbiente", "MADS"],
+      "description": "Ministerio encargado de la gestión ambiental y recursos naturales",
       "scoring_context": {
-        "boost_dimensions": {
-          "DIM01": 0.08
-        },
-        "policy_areas": [
-          "PA09"
-        ]
+        "boost_policy_areas": {
+          "PA03": 0.30
+        }
       }
     },
+
     "ENT-INST-010": {
       "entity_id": "ENT-INST-010",
-      "canonical_name": "Secretaría de Planeación",
-      "full_name": "Secretaría de Planeación Municipal/Departamental",
-      "category": "INSTITUTIONAL",
-      "subcategory": "LOCAL",
-      "level": "LOCAL",
-      "aliases": [
-        "Oficina de Planeación"
-      ],
-      "detection_patterns": [
-        "Secretaría\\s+de\\s+Planeación",
-        "Oficina\\s+de\\s+Planeación"
-      ],
+      "canonical_name": "Defensoría del Pueblo",
+      "acronym": "Defensoría",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ombudsman",
+      "aliases": ["Defensoría del Pueblo", "Defensoría"],
+      "description": "Entidad del Ministerio Público para la promoción y defensa de los DDHH",
       "scoring_context": {
-        "boost_dimensions": {
-          "DIM02": 0.05
+        "boost_policy_areas": {
+          "PA08": 0.25,
+          "PA01": 0.15
         }
       }
     }

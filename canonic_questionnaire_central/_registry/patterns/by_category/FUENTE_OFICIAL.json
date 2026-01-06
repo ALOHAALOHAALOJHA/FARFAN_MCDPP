@@ -1,17 +1,17 @@
 {
-  "category": "TEMPORAL",
-  "pattern_count": 14,
+  "category": "FUENTE_OFICIAL",
+  "pattern_count": 19,
   "patterns": {
-    "PAT-0112": {
-      "id": "PAT-0112",
-      "canonical_id": "PAT-0112",
+    "PAT-0113": {
+      "id": "PAT-0113",
+      "canonical_id": "PAT-0113",
       "legacy_ids": [
-        "PAT-0112",
-        "PAT-Q001-000"
+        "PAT-0113",
+        "PAT-Q001-002"
       ],
       "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "línea base|año base|situación inicial|diagnóstico de género",
+        "type": "NER_OR_REGEX",
+        "pattern": "DANE|Medicina Legal|Fiscalía|Policía Nacional|SIVIGILA|SISPRO",
         "flags": [
           "IGNORECASE",
           "MULTILINE"
@@ -19,7 +19,7 @@
         "captures": {}
       },
       "classification": {
-        "category": "TEMPORAL",
+        "category": "FUENTE_OFICIAL",
         "subcategory": "",
         "specificity": "MEDIUM",
         "confidence_weight": 0.85
@@ -43,7 +43,7 @@
       },
       "provenance": {
         "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.977790+00:00",
+        "created_at": "2026-01-06T19:55:24.977800+00:00",
         "validated": false,
         "validation_tests": []
       },
@@ -52,16 +52,16 @@
         "negative": []
       }
     },
-    "PAT-0124": {
-      "id": "PAT-0124",
-      "canonical_id": "PAT-0124",
+    "PAT-0149": {
+      "id": "PAT-0149",
+      "canonical_id": "PAT-0149",
       "legacy_ids": [
-        "PAT-0124",
-        "PAT-Q001-013"
+        "PAT-0149",
+        "PAT-Q004-007"
       ],
       "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "serie histórica|evolución 20\\d{2}-20\\d{2}|tendencia de los últimos|el año pasado|desde \\d{4}|tendencia reciente",
+        "type": "NER_OR_REGEX",
+        "pattern": "articulación interinstitucional|coordinación con Fiscalía y Policía",
         "flags": [
           "IGNORECASE",
           "MULTILINE"
@@ -69,7 +69,7 @@
         "captures": {}
       },
       "classification": {
-        "category": "TEMPORAL",
+        "category": "FUENTE_OFICIAL",
         "subcategory": "",
         "specificity": "MEDIUM",
         "confidence_weight": 0.85
@@ -79,7 +79,7 @@
           "DIM01"
         ],
         "applies_to_questions": [
-          "Q001"
+          "Q004"
         ],
         "applies_to_policy_areas": [
           "PA01"
@@ -93,7 +93,7 @@
       },
       "provenance": {
         "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.977888+00:00",
+        "created_at": "2026-01-06T19:55:24.978077+00:00",
         "validated": false,
         "validation_tests": []
       },
@@ -102,16 +102,16 @@
         "negative": []
       }
     },
-    "PAT-0159": {
-      "id": "PAT-0159",
-      "canonical_id": "PAT-0159",
+    "PAT-0277": {
+      "id": "PAT-0277",
+      "canonical_id": "PAT-0277",
       "legacy_ids": [
-        "PAT-0159",
-        "PAT-Q005-008"
+        "PAT-0277",
+        "PAT-Q031-003"
       ],
       "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "durante el cuatrienio|en el periodo (?:19|20)\\\\d{2}\\\\s*-\\\\s*(?:19|20)\\\\d{2}|plazo de implementación|el año pasado|desde \\\\d{4}|tendencia reciente",
+        "type": "NER_OR_REGEX",
+        "pattern": "DANE|Encuesta Pulso de la Migración|Censo",
         "flags": [
           "IGNORECASE",
           "MULTILINE"
@@ -119,7 +119,7 @@
         "captures": {}
       },
       "classification": {
-        "category": "TEMPORAL",
+        "category": "FUENTE_OFICIAL",
         "subcategory": "",
         "specificity": "MEDIUM",
         "confidence_weight": 0.85
@@ -129,107 +129,7 @@
           "DIM01"
         ],
         "applies_to_questions": [
-          "Q005"
-        ],
-        "applies_to_policy_areas": [
-          "PA01"
-        ],
-        "applies_to_membership_criteria": []
-      },
-      "scoring_impact": {
-        "weight_in_scoring": 0.15,
-        "boost_conditions": [],
-        "penalty_conditions": []
-      },
-      "provenance": {
-        "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.978144+00:00",
-        "validated": false,
-        "validation_tests": []
-      },
-      "examples": {
-        "positive": [],
-        "negative": []
-      }
-    },
-    "PAT-0234": {
-      "id": "PAT-0234",
-      "canonical_id": "PAT-0234",
-      "legacy_ids": [
-        "PAT-0234",
-        "PAT-Q021-005"
-      ],
-      "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "tiempo de maduración|se espera observar en 8 años|más allá del cuatrienio",
-        "flags": [
-          "IGNORECASE",
-          "MULTILINE"
-        ],
-        "captures": {}
-      },
-      "classification": {
-        "category": "TEMPORAL",
-        "subcategory": "",
-        "specificity": "MEDIUM",
-        "confidence_weight": 0.85
-      },
-      "bindings": {
-        "applies_to_dimensions": [
-          "DIM05"
-        ],
-        "applies_to_questions": [
-          "Q021"
-        ],
-        "applies_to_policy_areas": [
-          "PA01"
-        ],
-        "applies_to_membership_criteria": []
-      },
-      "scoring_impact": {
-        "weight_in_scoring": 0.15,
-        "boost_conditions": [],
-        "penalty_conditions": []
-      },
-      "provenance": {
-        "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.979073+00:00",
-        "validated": false,
-        "validation_tests": []
-      },
-      "examples": {
-        "positive": [],
-        "negative": []
-      }
-    },
-    "PAT-0397": {
-      "id": "PAT-0397",
-      "canonical_id": "PAT-0397",
-      "legacy_ids": [
-        "PAT-0397",
-        "PAT-Q051-005"
-      ],
-      "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "tiempo de maduración|se espera observar en una generación|8-10 años",
-        "flags": [
-          "IGNORECASE",
-          "MULTILINE"
-        ],
-        "captures": {}
-      },
-      "classification": {
-        "category": "TEMPORAL",
-        "subcategory": "",
-        "specificity": "MEDIUM",
-        "confidence_weight": 0.85
-      },
-      "bindings": {
-        "applies_to_dimensions": [
-          "DIM05"
-        ],
-        "applies_to_questions": [
-          "Q291"
+          "Q271"
         ],
         "applies_to_policy_areas": [
           "PA10"
@@ -243,7 +143,7 @@
       },
       "provenance": {
         "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.980348+00:00",
+        "created_at": "2026-01-06T19:55:24.979407+00:00",
         "validated": false,
         "validation_tests": []
       },
@@ -252,16 +152,16 @@
         "negative": []
       }
     },
-    "PAT-0865": {
-      "id": "PAT-0865",
-      "canonical_id": "PAT-0865",
+    "PAT-0443": {
+      "id": "PAT-0443",
+      "canonical_id": "PAT-0443",
       "legacy_ids": [
-        "PAT-0865",
-        "PAT-Q141-006"
+        "PAT-0443",
+        "PAT-Q061-002"
       ],
       "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "tiempo de maduración|efectos intergeneracionales|se espera observar en 10 años",
+        "type": "NER_OR_REGEX",
+        "pattern": "UARIV|RUV|Registro Único de Víctimas|Policía Nacional|SIEDCO|Medicina Legal",
         "flags": [
           "IGNORECASE",
           "MULTILINE"
@@ -269,17 +169,167 @@
         "captures": {}
       },
       "classification": {
-        "category": "TEMPORAL",
+        "category": "FUENTE_OFICIAL",
         "subcategory": "",
         "specificity": "MEDIUM",
         "confidence_weight": 0.85
       },
       "bindings": {
         "applies_to_dimensions": [
-          "DIM05"
+          "DIM01"
         ],
         "applies_to_questions": [
-          "Q111"
+          "Q031"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980711+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0445": {
+      "id": "PAT-0445",
+      "canonical_id": "PAT-0445",
+      "legacy_ids": [
+        "PAT-0445",
+        "PAT-Q061-004"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "Fiscalía|SPOA|Observatorio de DDHH|Somos Defensores|INDEPAZ",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "FUENTE_OFICIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q031"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.980725+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0522": {
+      "id": "PAT-0522",
+      "canonical_id": "PAT-0522",
+      "legacy_ids": [
+        "PAT-0522",
+        "PAT-Q073-005"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "articulado con la Defensoría del Pueblo|Policía Nacional",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "FUENTE_OFICIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q043"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.981392+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0747": {
+      "id": "PAT-0747",
+      "canonical_id": "PAT-0747",
+      "legacy_ids": [
+        "PAT-0747",
+        "PAT-Q121-002"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "DANE|Censo Nacional|Encuesta de Calidad de Vida|ECV",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "FUENTE_OFICIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q091"
         ],
         "applies_to_policy_areas": [
           "PA04"
@@ -293,7 +343,7 @@
       },
       "provenance": {
         "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.984463+00:00",
+        "created_at": "2026-01-06T19:55:24.983566+00:00",
         "validated": false,
         "validation_tests": []
       },
@@ -302,16 +352,16 @@
         "negative": []
       }
     },
-    "PAT-0868": {
-      "id": "PAT-0868",
-      "canonical_id": "PAT-0868",
+    "PAT-0749": {
+      "id": "PAT-0749",
+      "canonical_id": "PAT-0749",
       "legacy_ids": [
-        "PAT-0868",
-        "PAT-Q142-003"
+        "PAT-0749",
+        "PAT-Q121-004"
       ],
       "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "los años promedio de escolaridad como proxy del capital humano",
+        "type": "NER_OR_REGEX",
+        "pattern": "SISPRO|MinSalud|RUAF|BDUA|SIVIGILA|ADRES",
         "flags": [
           "IGNORECASE",
           "MULTILINE"
@@ -319,17 +369,17 @@
         "captures": {}
       },
       "classification": {
-        "category": "TEMPORAL",
+        "category": "FUENTE_OFICIAL",
         "subcategory": "",
         "specificity": "MEDIUM",
         "confidence_weight": 0.85
       },
       "bindings": {
         "applies_to_dimensions": [
-          "DIM05"
+          "DIM01"
         ],
         "applies_to_questions": [
-          "Q112"
+          "Q091"
         ],
         "applies_to_policy_areas": [
           "PA04"
@@ -343,7 +393,7 @@
       },
       "provenance": {
         "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.984481+00:00",
+        "created_at": "2026-01-06T19:55:24.983581+00:00",
         "validated": false,
         "validation_tests": []
       },
@@ -352,16 +402,16 @@
         "negative": []
       }
     },
-    "PAT-0957": {
-      "id": "PAT-0957",
-      "canonical_id": "PAT-0957",
+    "PAT-0897": {
+      "id": "PAT-0897",
+      "canonical_id": "PAT-0897",
       "legacy_ids": [
-        "PAT-0957",
-        "PAT-Q158-000"
+        "PAT-0897",
+        "PAT-Q149-001"
       ],
       "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "para abordar el daño causado|en respuesta a la necesidad de",
+        "type": "NER_OR_REGEX",
+        "pattern": "monitoreo a través de los sistemas de información (SIMAT, SIVIGILA)",
         "flags": [
           "IGNORECASE",
           "MULTILINE"
@@ -369,157 +419,7 @@
         "captures": {}
       },
       "classification": {
-        "category": "TEMPORAL",
-        "subcategory": "",
-        "specificity": "MEDIUM",
-        "confidence_weight": 0.85
-      },
-      "bindings": {
-        "applies_to_dimensions": [
-          "DIM02"
-        ],
-        "applies_to_questions": [
-          "Q128"
-        ],
-        "applies_to_policy_areas": [
-          "PA05"
-        ],
-        "applies_to_membership_criteria": []
-      },
-      "scoring_impact": {
-        "weight_in_scoring": 0.15,
-        "boost_conditions": [],
-        "penalty_conditions": []
-      },
-      "provenance": {
-        "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.985328+00:00",
-        "validated": false,
-        "validation_tests": []
-      },
-      "examples": {
-        "positive": [],
-        "negative": []
-      }
-    },
-    "PAT-0962": {
-      "id": "PAT-0962",
-      "canonical_id": "PAT-0962",
-      "legacy_ids": [
-        "PAT-0962",
-        "PAT-Q158-005"
-      ],
-      "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "árbol de problemas|diagnóstico del daño",
-        "flags": [
-          "IGNORECASE",
-          "MULTILINE"
-        ],
-        "captures": {}
-      },
-      "classification": {
-        "category": "TEMPORAL",
-        "subcategory": "",
-        "specificity": "MEDIUM",
-        "confidence_weight": 0.85
-      },
-      "bindings": {
-        "applies_to_dimensions": [
-          "DIM02"
-        ],
-        "applies_to_questions": [
-          "Q128"
-        ],
-        "applies_to_policy_areas": [
-          "PA05"
-        ],
-        "applies_to_membership_criteria": []
-      },
-      "scoring_impact": {
-        "weight_in_scoring": 0.15,
-        "boost_conditions": [],
-        "penalty_conditions": []
-      },
-      "provenance": {
-        "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.985362+00:00",
-        "validated": false,
-        "validation_tests": []
-      },
-      "examples": {
-        "positive": [],
-        "negative": []
-      }
-    },
-    "PAT-1013": {
-      "id": "PAT-1013",
-      "canonical_id": "PAT-1013",
-      "legacy_ids": [
-        "PAT-1013",
-        "PAT-Q169-002"
-      ],
-      "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "el resultado atiende directamente el daño colectivo",
-        "flags": [
-          "IGNORECASE",
-          "MULTILINE"
-        ],
-        "captures": {}
-      },
-      "classification": {
-        "category": "TEMPORAL",
-        "subcategory": "",
-        "specificity": "MEDIUM",
-        "confidence_weight": 0.85
-      },
-      "bindings": {
-        "applies_to_dimensions": [
-          "DIM04"
-        ],
-        "applies_to_questions": [
-          "Q139"
-        ],
-        "applies_to_policy_areas": [
-          "PA05"
-        ],
-        "applies_to_membership_criteria": []
-      },
-      "scoring_impact": {
-        "weight_in_scoring": 0.15,
-        "boost_conditions": [],
-        "penalty_conditions": []
-      },
-      "provenance": {
-        "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.985729+00:00",
-        "validated": false,
-        "validation_tests": []
-      },
-      "examples": {
-        "positive": [],
-        "negative": []
-      }
-    },
-    "PAT-1063": {
-      "id": "PAT-1063",
-      "canonical_id": "PAT-1063",
-      "legacy_ids": [
-        "PAT-1063",
-        "PAT-Q180-006"
-      ],
-      "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "estrategias territorializadas|medidas adaptadas al daño",
-        "flags": [
-          "IGNORECASE",
-          "MULTILINE"
-        ],
-        "captures": {}
-      },
-      "classification": {
-        "category": "TEMPORAL",
+        "category": "FUENTE_OFICIAL",
         "subcategory": "",
         "specificity": "MEDIUM",
         "confidence_weight": 0.85
@@ -529,10 +429,10 @@
           "DIM06"
         ],
         "applies_to_questions": [
-          "Q150"
+          "Q119"
         ],
         "applies_to_policy_areas": [
-          "PA05"
+          "PA04"
         ],
         "applies_to_membership_criteria": []
       },
@@ -543,7 +443,7 @@
       },
       "provenance": {
         "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.986130+00:00",
+        "created_at": "2026-01-06T19:55:24.984692+00:00",
         "validated": false,
         "validation_tests": []
       },
@@ -552,16 +452,16 @@
         "negative": []
       }
     },
-    "PAT-1184": {
-      "id": "PAT-1184",
-      "canonical_id": "PAT-1184",
+    "PAT-1066": {
+      "id": "PAT-1066",
+      "canonical_id": "PAT-1066",
       "legacy_ids": [
-        "PAT-1184",
-        "PAT-Q201-006"
+        "PAT-1066",
+        "PAT-Q181-003"
       ],
       "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "tiempo de maduración|efectos en el largo plazo|se espera observar en 15-20 años|el año pasado|desde \\d{4}|tendencia reciente",
+        "type": "NER_OR_REGEX",
+        "pattern": "SISPRO|SIVIGILA|Estadísticas Vitales|DANE",
         "flags": [
           "IGNORECASE",
           "MULTILINE"
@@ -569,17 +469,17 @@
         "captures": {}
       },
       "classification": {
-        "category": "TEMPORAL",
+        "category": "FUENTE_OFICIAL",
         "subcategory": "",
         "specificity": "MEDIUM",
         "confidence_weight": 0.85
       },
       "bindings": {
         "applies_to_dimensions": [
-          "DIM05"
+          "DIM01"
         ],
         "applies_to_questions": [
-          "Q171"
+          "Q151"
         ],
         "applies_to_policy_areas": [
           "PA06"
@@ -593,7 +493,7 @@
       },
       "provenance": {
         "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.987453+00:00",
+        "created_at": "2026-01-06T19:55:24.986167+00:00",
         "validated": false,
         "validation_tests": []
       },
@@ -602,16 +502,16 @@
         "negative": []
       }
     },
-    "PAT-1510": {
-      "id": "PAT-1510",
-      "canonical_id": "PAT-1510",
+    "PAT-1067": {
+      "id": "PAT-1067",
+      "canonical_id": "PAT-1067",
       "legacy_ids": [
-        "PAT-1510",
-        "PAT-Q261-005"
+        "PAT-1067",
+        "PAT-Q181-004"
       ],
       "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "tiempo de maduración|efectos en el largo plazo|se espera observar en 8-10 años",
+        "type": "NER_OR_REGEX",
+        "pattern": "Comisaría de Familia|Personería Municipal|Policía de Infancia y Adolescencia",
         "flags": [
           "IGNORECASE",
           "MULTILINE"
@@ -619,17 +519,67 @@
         "captures": {}
       },
       "classification": {
-        "category": "TEMPORAL",
+        "category": "FUENTE_OFICIAL",
         "subcategory": "",
         "specificity": "MEDIUM",
         "confidence_weight": 0.85
       },
       "bindings": {
         "applies_to_dimensions": [
-          "DIM05"
+          "DIM01"
         ],
         "applies_to_questions": [
-          "Q231"
+          "Q151"
+        ],
+        "applies_to_policy_areas": [
+          "PA06"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.986175+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1391": {
+      "id": "PAT-1391",
+      "canonical_id": "PAT-1391",
+      "legacy_ids": [
+        "PAT-1391",
+        "PAT-Q241-004"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "UNP|Unidad Nacional de Protección|Fiscalía|Policía Nacional|SIEDCO",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "FUENTE_OFICIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q211"
         ],
         "applies_to_policy_areas": [
           "PA08"
@@ -643,7 +593,7 @@
       },
       "provenance": {
         "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.990153+00:00",
+        "created_at": "2026-01-06T19:55:24.989246+00:00",
         "validated": false,
         "validation_tests": []
       },
@@ -652,16 +602,16 @@
         "negative": []
       }
     },
-    "PAT-1676": {
-      "id": "PAT-1676",
-      "canonical_id": "PAT-1676",
+    "PAT-1428": {
+      "id": "PAT-1428",
+      "canonical_id": "PAT-1428",
       "legacy_ids": [
-        "PAT-1676",
-        "PAT-Q291-005"
+        "PAT-1428",
+        "PAT-Q245-004"
       ],
       "pattern_spec": {
-        "type": "REGEX",
-        "pattern": "tiempo de maduración|se espera observar en 5-10 años|efectos post-penitenciarios",
+        "type": "NER_OR_REGEX",
+        "pattern": "responsabilidad del alcalde como primera autoridad de policía",
         "flags": [
           "IGNORECASE",
           "MULTILINE"
@@ -669,17 +619,217 @@
         "captures": {}
       },
       "classification": {
-        "category": "TEMPORAL",
+        "category": "FUENTE_OFICIAL",
         "subcategory": "",
         "specificity": "MEDIUM",
         "confidence_weight": 0.85
       },
       "bindings": {
         "applies_to_dimensions": [
-          "DIM05"
+          "DIM01"
         ],
         "applies_to_questions": [
-          "Q261"
+          "Q215"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989522+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1432": {
+      "id": "PAT-1432",
+      "canonical_id": "PAT-1432",
+      "legacy_ids": [
+        "PAT-1432",
+        "PAT-Q246-005"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "Secretaría de Gobierno|Personería|Comando de Policía",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "FUENTE_OFICIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q216"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989551+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1462": {
+      "id": "PAT-1462",
+      "canonical_id": "PAT-1462",
+      "legacy_ids": [
+        "PAT-1462",
+        "PAT-Q251-004"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "casos de amenaza tramitados ante la Personería/Fiscalía",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "FUENTE_OFICIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM03"
+        ],
+        "applies_to_questions": [
+          "Q221"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989769+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1491": {
+      "id": "PAT-1491",
+      "canonical_id": "PAT-1491",
+      "legacy_ids": [
+        "PAT-1491",
+        "PAT-Q257-006"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "se requiere una acción efectiva de la Fiscalía para que haya impunidad cero",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "FUENTE_OFICIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM04"
+        ],
+        "applies_to_questions": [
+          "Q227"
+        ],
+        "applies_to_policy_areas": [
+          "PA08"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.989996+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1558": {
+      "id": "PAT-1558",
+      "canonical_id": "PAT-1558",
+      "legacy_ids": [
+        "PAT-1558",
+        "PAT-Q271-006"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "centros de detención transitoria|estaciones de policía|URI",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "FUENTE_OFICIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q241"
         ],
         "applies_to_policy_areas": [
           "PA09"
@@ -693,7 +843,107 @@
       },
       "provenance": {
         "source_file": "pattern_registry.json",
-        "created_at": "2026-01-06T19:55:24.991795+00:00",
+        "created_at": "2026-01-06T19:55:24.990912+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1578": {
+      "id": "PAT-1578",
+      "canonical_id": "PAT-1578",
+      "legacy_ids": [
+        "PAT-1578",
+        "PAT-Q273-005"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "inversión en alimentación para PPL en estaciones de policía",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "FUENTE_OFICIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q243"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991054+00:00",
+        "validated": false,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1581": {
+      "id": "PAT-1581",
+      "canonical_id": "PAT-1581",
+      "legacy_ids": [
+        "PAT-1581",
+        "PAT-Q274-000"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "Secretaría de Gobierno|Comando de Policía Municipal",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "FUENTE_OFICIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q244"
+        ],
+        "applies_to_policy_areas": [
+          "PA09"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "created_at": "2026-01-06T19:55:24.991072+00:00",
         "validated": false,
         "validation_tests": []
       },

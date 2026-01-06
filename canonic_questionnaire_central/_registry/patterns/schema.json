@@ -1,21 +1,18 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "pattern-schema-v2.0.0",
+  "title": "CQC Pattern Schema",
+  "description": "Schema para patterns en CQC v2.0",
   "type": "object",
   "required": [
-    "id",
     "canonical_id",
     "pattern_spec",
-    "classification",
-    "bindings"
+    "classification"
   ],
   "properties": {
-    "id": {
-      "type": "string",
-      "pattern": "^PAT-"
-    },
     "canonical_id": {
-      "type": "string"
+      "type": "string",
+      "pattern": "^PAT-\\d{4}$"
     },
     "legacy_ids": {
       "type": "array",
@@ -31,11 +28,11 @@
       ],
       "properties": {
         "type": {
+          "type": "string",
           "enum": [
             "REGEX",
-            "LITERAL",
-            "NER_OR_REGEX",
-            "COMPOUND"
+            "KEYWORD",
+            "SEMANTIC"
           ]
         },
         "pattern": {
@@ -63,16 +60,14 @@
           "type": "string"
         },
         "subcategory": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string"
         },
         "specificity": {
+          "type": "string",
           "enum": [
-            "LOW",
+            "HIGH",
             "MEDIUM",
-            "HIGH"
+            "LOW"
           ]
         },
         "confidence_weight": {
@@ -83,33 +78,16 @@
       }
     },
     "bindings": {
-      "type": "object",
-      "properties": {
-        "applies_to_dimensions": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "applies_to_questions": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "applies_to_policy_areas": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "applies_to_membership_criteria": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
+      "type": "object"
+    },
+    "scoring_impact": {
+      "type": "object"
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "examples": {
+      "type": "object"
     }
   }
 }

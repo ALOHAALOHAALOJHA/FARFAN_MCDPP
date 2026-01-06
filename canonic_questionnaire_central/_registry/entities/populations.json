@@ -1,215 +1,63 @@
 {
+  "$schema": "./schema.json",
   "_schema_version": "2.0.0",
-  "_generated_at": "2026-01-06T17:32:12.059336+00:00",
-  "entity_count": 10,
+
   "entities": {
     "ENT-POP-001": {
       "entity_id": "ENT-POP-001",
       "canonical_name": "Mujeres",
-      "category": "POPULATION",
-      "subcategory": "GENDER",
-      "aliases": [
-        "mujer",
-        "femenino",
-        "género femenino"
-      ],
-      "detection_patterns": [
-        "mujeres?",
-        "género\\s+femenino",
-        "población\\s+femenina"
-      ],
-      "cross_cutting_theme": "CC_PERSPECTIVA_GENERO",
-      "policy_areas": [
-        "PA01"
-      ]
+      "category": "population",
+      "type": "gender",
+      "aliases": ["mujeres", "población femenina"],
+      "scoring_context": {"boost_policy_areas": {"PA01": 0.30}}
     },
     "ENT-POP-002": {
       "entity_id": "ENT-POP-002",
-      "canonical_name": "Víctimas del conflicto",
-      "category": "POPULATION",
-      "subcategory": "VULNERABLE",
-      "aliases": [
-        "víctimas",
-        "población víctima",
-        "personas víctimas"
-      ],
-      "detection_patterns": [
-        "víctimas?\\s+(del\\s+)?conflicto",
-        "población\\s+víctima",
-        "personas\\s+víctimas"
-      ],
-      "cross_cutting_theme": "CC_ENFOQUE_DIFERENCIAL",
-      "policy_areas": [
-        "PA05"
-      ]
+      "canonical_name": "Pueblos Indígenas",
+      "category": "population",
+      "type": "ethnic",
+      "aliases": ["indígenas", "pueblos indígenas", "comunidades indígenas"],
+      "scoring_context": {"boost_policy_areas": {"PA07": 0.25, "PA04": 0.15}}
     },
     "ENT-POP-003": {
       "entity_id": "ENT-POP-003",
-      "canonical_name": "Población migrante",
-      "category": "POPULATION",
-      "subcategory": "VULNERABLE",
-      "aliases": [
-        "migrantes",
-        "venezolanos",
-        "población de origen venezolano"
-      ],
-      "detection_patterns": [
-        "migrantes?",
-        "población\\s+migrante",
-        "venezolan[oa]s?"
-      ],
-      "cross_cutting_theme": "CC_ENFOQUE_DIFERENCIAL",
-      "policy_areas": [
-        "PA10"
-      ]
+      "canonical_name": "Comunidades Afrodescendientes",
+      "category": "population",
+      "type": "ethnic",
+      "aliases": ["afrodescendientes", "comunidades negras", "afrocolombianos"],
+      "scoring_context": {"boost_policy_areas": {"PA07": 0.25, "PA04": 0.15}}
     },
     "ENT-POP-004": {
       "entity_id": "ENT-POP-004",
-      "canonical_name": "Niños, niñas y adolescentes",
-      "category": "POPULATION",
-      "subcategory": "AGE_GROUP",
-      "aliases": [
-        "NNA",
-        "infancia",
-        "adolescencia",
-        "menores de edad"
-      ],
-      "detection_patterns": [
-        "niñ[oa]s?",
-        "adolescentes?",
-        "NNA",
-        "infancia",
-        "menores\\s+de\\s+edad"
-      ],
-      "cross_cutting_theme": "CC_ENFOQUE_DIFERENCIAL",
-      "policy_areas": [
-        "PA03",
-        "PA06"
-      ]
+      "canonical_name": "Víctimas del Conflicto Armado",
+      "category": "population",
+      "type": "victims",
+      "aliases": ["víctimas", "víctimas del conflicto"],
+      "scoring_context": {"boost_policy_areas": {"PA05": 0.35, "PA02": 0.20}}
     },
     "ENT-POP-005": {
       "entity_id": "ENT-POP-005",
-      "canonical_name": "Personas con discapacidad",
-      "category": "POPULATION",
-      "subcategory": "VULNERABLE",
-      "aliases": [
-        "discapacidad",
-        "PcD",
-        "diversamente hábil"
-      ],
-      "detection_patterns": [
-        "personas?\\s+con\\s+discapacidad",
-        "PcD",
-        "discapacidad"
-      ],
-      "cross_cutting_theme": "CC_ENFOQUE_DIFERENCIAL",
-      "policy_areas": [
-        "PA04"
-      ]
+      "canonical_name": "Niños, Niñas y Adolescentes",
+      "category": "population",
+      "type": "age_group",
+      "aliases": ["NNA", "niñez", "adolescencia", "menores de edad"],
+      "scoring_context": {"boost_policy_areas": {"PA06": 0.40}}
     },
     "ENT-POP-006": {
       "entity_id": "ENT-POP-006",
-      "canonical_name": "Pueblos indígenas",
-      "category": "POPULATION",
-      "subcategory": "ETHNIC",
-      "aliases": [
-        "indígenas",
-        "comunidades indígenas",
-        "pueblos originarios"
-      ],
-      "detection_patterns": [
-        "indígenas?",
-        "pueblos?\\s+indígenas?",
-        "comunidad(es)?\\s+indígena"
-      ],
-      "cross_cutting_theme": "CC_ENFOQUE_DIFERENCIAL",
-      "policy_areas": [
-        "PA07"
-      ]
+      "canonical_name": "Migrantes",
+      "category": "population",
+      "type": "migration",
+      "aliases": ["migrantes", "población migrante", "venezolanos"],
+      "scoring_context": {"boost_policy_areas": {"PA10": 0.35}}
     },
     "ENT-POP-007": {
       "entity_id": "ENT-POP-007",
-      "canonical_name": "Comunidades afrocolombianas",
-      "category": "POPULATION",
-      "subcategory": "ETHNIC",
-      "aliases": [
-        "afrodescendientes",
-        "NARP",
-        "negros",
-        "raizales",
-        "palenqueros"
-      ],
-      "detection_patterns": [
-        "afro(colombian[oa]s?|descendientes?)?",
-        "NARP",
-        "comunidad(es)?\\s+negr[oa]s?"
-      ],
-      "cross_cutting_theme": "CC_ENFOQUE_DIFERENCIAL",
-      "policy_areas": [
-        "PA07"
-      ]
-    },
-    "ENT-POP-008": {
-      "entity_id": "ENT-POP-008",
-      "canonical_name": "Adultos mayores",
-      "category": "POPULATION",
-      "subcategory": "AGE_GROUP",
-      "aliases": [
-        "tercera edad",
-        "personas mayores",
-        "vejez"
-      ],
-      "detection_patterns": [
-        "adultos?\\s+mayor(es)?",
-        "tercera\\s+edad",
-        "personas?\\s+mayor(es)?"
-      ],
-      "cross_cutting_theme": "CC_ENFOQUE_DIFERENCIAL",
-      "policy_areas": [
-        "PA04"
-      ]
-    },
-    "ENT-POP-009": {
-      "entity_id": "ENT-POP-009",
-      "canonical_name": "Líderes sociales",
-      "category": "POPULATION",
-      "subcategory": "VULNERABLE",
-      "aliases": [
-        "líderes",
-        "defensores de DDHH",
-        "lideresas"
-      ],
-      "detection_patterns": [
-        "líderes?\\s+social(es)?",
-        "defensor(es|as)?\\s+de\\s+DDHH",
-        "lideresas?"
-      ],
-      "cross_cutting_theme": null,
-      "policy_areas": [
-        "PA08"
-      ]
-    },
-    "ENT-POP-010": {
-      "entity_id": "ENT-POP-010",
-      "canonical_name": "Personas privadas de libertad",
-      "category": "POPULATION",
-      "subcategory": "VULNERABLE",
-      "aliases": [
-        "PPL",
-        "internos",
-        "reclusos",
-        "población carcelaria"
-      ],
-      "detection_patterns": [
-        "personas?\\s+privad[oa]s?\\s+de\\s+libertad",
-        "PPL",
-        "intern[oa]s?",
-        "reclus[oa]s?"
-      ],
-      "cross_cutting_theme": null,
-      "policy_areas": [
-        "PA09"
-      ]
+      "canonical_name": "Personas Privadas de la Libertad",
+      "category": "population",
+      "type": "penitentiary",
+      "aliases": ["PPL", "personas privadas de la libertad", "reclusos"],
+      "scoring_context": {"boost_policy_areas": {"PA09": 0.40}}
     }
   }
 }

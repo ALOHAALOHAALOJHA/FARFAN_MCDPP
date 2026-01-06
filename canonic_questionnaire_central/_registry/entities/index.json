@@ -1,19 +1,43 @@
 {
-  "_schema_version": "2.0.0",
-  "_generated_at": "2026-01-06T17:32:12.059857+00:00",
+  "$schema": "./schema.json",
+  "$id": "entities-index-v2.0.0",
+  "_meta": {
+    "schema_version": "2.0.0",
+    "generated_at": "2026-01-06T19:57:00Z",
+    "generator": "CQC Migration System"
+  },
+
   "statistics": {
-    "total_entities": 55,
+    "total_entities": 28,
     "by_category": {
-      "NORMATIVE": 30,
-      "INSTITUTIONAL": 10,
-      "POPULATION": 10,
-      "TERRITORIAL": 5
+      "institution": 10,
+      "normative": 10,
+      "population": 7,
+      "territorial": 4,
+      "international": 3
+    },
+    "by_level": {
+      "NATIONAL": 10,
+      "DEPARTAMENTAL": 0,
+      "MUNICIPAL": 0,
+      "INTERNATIONAL": 3
     }
   },
-  "entity_files": [
-    "normative.json",
-    "institutions.json",
-    "populations.json",
-    "territorial.json"
+
+  "sources": {
+    "institutions": "institutions.json",
+    "normative": "normative.json",
+    "populations": "populations.json",
+    "territorial": "territorial.json",
+    "international": "international.json"
+  },
+
+  "usage_notes": [
+    "Este registro contiene entidades clave del contexto colombiano",
+    "Las entidades se usan para:",
+    "  1. NER Enhancement (MC09)",
+    "  2. Scoring boost cuando se detectan",
+    "  3. Validation de compliance normativo",
+    "Para agregar nuevas entidades, editar los archivos correspondientes y regenerar este índice"
   ]
 }
