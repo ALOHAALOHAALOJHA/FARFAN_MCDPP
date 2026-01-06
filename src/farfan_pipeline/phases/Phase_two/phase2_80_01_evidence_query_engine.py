@@ -463,15 +463,16 @@ class EvidenceQueryEngine:
                 self.security_parser.validate_operator(condition.operator.value)
             
             # Validate SELECT clause fields (except wildcard '*')
-            select_fields = getattr(ast, "select_fields", None)
-            if select_fields:
-                for field in select_fields:
+            if ast.select_fields:
+                for field in ast.select_fields:
                     if field != "*":
                         self.security_parser.validate_field(field)
             
             # Validate ORDER BY field against the allowlist
-            if getattr(ast, "order_by", None) is not None:
-                self.security_parser.validate_field(ast.order_by.field)
+            if ast.order_by is not None:
+                # order_by is a string, possibly with direction (e.g. "confidence DESC")
+                order_field = ast.order_by.split()[0]
+                self.security_parser.validate_field(order_field)
 
         paginated_results, total_count = self._execute_query(ast)
  

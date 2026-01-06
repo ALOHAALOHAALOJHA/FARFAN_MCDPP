@@ -156,9 +156,10 @@ class TestSQLInjectionProtection:
         # Manually disable security
         engine.enable_security = False
 
-        # Query a non-allowlisted field - would be rejected with security on
-        # Note: The query still needs to be parseable by the engine
-        result = engine.query("SELECT * FROM evidence WHERE node_id = 'test'")
+        # Query a non-allowlisted field or an injection - would be rejected with security on
+        # but should pass when security is disabled (if the field exists or is ignored)
+        # We use a non-allowlisted field like 'password'
+        result = engine.query("SELECT * FROM evidence WHERE password = 'secret'")
         assert isinstance(result.nodes, list)
 
     def test_legitimate_complex_query(self, engine):
