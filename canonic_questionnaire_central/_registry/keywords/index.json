@@ -1,0 +1,31 @@
+{
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T17:35:06.164043+00:00",
+  "statistics": {
+    "total_keywords": 1916,
+    "by_policy_area": {
+      "PA10": 251,
+      "PA06": 183,
+      "PA08": 190,
+      "PA07": 204,
+      "PA05": 194,
+      "PA02": 125,
+      "PA03": 176,
+      "PA01": 112,
+      "PA04": 258,
+      "PA09": 223
+    }
+  },
+  "keyword_files": [
+    "by_policy_area/PA01.json",
+    "by_policy_area/PA02.json",
+    "by_policy_area/PA03.json",
+    "by_policy_area/PA04.json",
+    "by_policy_area/PA05.json",
+    "by_policy_area/PA06.json",
+    "by_policy_area/PA07.json",
+    "by_policy_area/PA08.json",
+    "by_policy_area/PA09.json",
+    "by_policy_area/PA10.json"
+  ]
+}

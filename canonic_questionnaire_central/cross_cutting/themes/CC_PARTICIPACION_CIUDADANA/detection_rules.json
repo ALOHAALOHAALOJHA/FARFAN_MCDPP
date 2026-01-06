@@ -1,0 +1,102 @@
+{
+  "$schema": "../../detection_rules_schema.json",
+  "_schema_version": "2.0.0",
+  
+  "theme_id": "CC_PARTICIPACION_CIUDADANA",
+  "name": "Participación Ciudadana",
+  "description": "Detecta mecanismos de participación ciudadana y comunitaria en la formulación e implementación",
+  
+  "detection_strategy": {
+    "primary_method": "MULTI_SIGNAL_FUSION",
+    
+    "signals": [
+      {
+        "signal_id": "SIG-PC-001",
+        "name": "explicit_participation",
+        "type": "KEYWORD_MATCH",
+        "keywords": [
+          "participación ciudadana",
+          "participación comunitaria",
+          "consulta ciudadana",
+          "mesas de participación",
+          "veeduría ciudadana",
+          "control social"
+        ],
+        "weight": 0.40,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PC-002",
+        "name": "consultation_mechanisms",
+        "type": "KEYWORD_MATCH",
+        "keywords": [
+          "consulta previa",
+          "audiencia pública",
+          "cabildo abierto",
+          "presupuesto participativo",
+          "rendición de cuentas",
+          "mesas de concertación"
+        ],
+        "weight": 0.30,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PC-003",
+        "name": "community_actors",
+        "type": "PATTERN_MATCH",
+        "patterns": [
+          "organizaciones?\\s+(sociales?|comunitarias?|de\\s+base)",
+          "líderes?\\s+(sociales?|comunitari[oa]s?)",
+          "JAC|Juntas?\\s+de\\s+Acción\\s+Comunal",
+          "consejos?\\s+comunitari[oa]s?"
+        ],
+        "weight": 0.20,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PC-004",
+        "name": "feedback_mechanisms",
+        "type": "KEYWORD_MATCH",
+        "keywords": [
+          "retroalimentación",
+          "evaluación participativa",
+          "diagnóstico participativo",
+          "construcción colectiva"
+        ],
+        "weight": 0.10,
+        "minimum_matches": 1
+      }
+    ],
+    
+    "aggregation": {
+      "method": "WEIGHTED_SUM_WITH_THRESHOLD",
+      "threshold": 0.40,
+      "minimum_signals_required": 2
+    }
+  },
+  
+  "scoring_impact": {
+    "when_detected": {
+      "boost_dimensions": ["DIM02", "DIM04"],
+      "boost_amount": 0.10
+    }
+  },
+  
+  "validation": {
+    "recommended_in_all_policy_areas": true,
+    "special_requirements": {
+      "PA07": "Consulta previa obligatoria para comunidades étnicas"
+    }
+  },
+  
+  "required_capabilities": [],
+  
+  "testing": {
+    "golden_examples": [
+      {
+        "input": "Se realizaron mesas de participación con líderes comunitarios y JAC para la construcción del diagnóstico...",
+        "expected_detected": true
+      }
+    ]
+  }
+}

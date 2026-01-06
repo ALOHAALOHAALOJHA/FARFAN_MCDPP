@@ -1,0 +1,82 @@
+{
+  "_policy_area": "PA02",
+  "_count": 1,
+  "patterns": {
+    "PAT-Q063-002": {
+      "id": "PAT-Q063-002",
+      "canonical_id": "PAT-Q063-002",
+      "legacy_ids": [
+        "PAT-Q064-001",
+        "PAT-Q153-002",
+        "PAT-Q154-003",
+        "PAT-Q244-001",
+        "PAT-Q274-001",
+        "PAT-Q275-009",
+        "PAT-Q035-008",
+        "PAT-Q081-000",
+        "PAT-Q111-000",
+        "PAT-Q171-000",
+        "PAT-Q231-000",
+        "PAT-Q090-000",
+        "PAT-Q120-000",
+        "PAT-Q240-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {},
+        "context_scope": "PARAGRAPH"
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM01"
+        ],
+        "applies_to_questions": [
+          "Q033",
+          "Q034",
+          "Q123",
+          "Q124",
+          "Q214",
+          "Q244",
+          "Q245",
+          "Q275",
+          "Q051",
+          "Q081",
+          "Q141",
+          "Q201",
+          "Q060",
+          "Q090",
+          "Q210"
+        ],
+        "applies_to_policy_areas": [
+          "PA02"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "patterns/pattern_registry_v3.json",
+        "source_version": "v3",
+        "created_at": "2026-01-06T17:29:59.910673+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    }
+  }
+}

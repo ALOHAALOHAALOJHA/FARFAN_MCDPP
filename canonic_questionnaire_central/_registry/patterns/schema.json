@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pattern-schema-v2.0.0",
+  "type": "object",
+  "required": [
+    "id",
+    "canonical_id",
+    "pattern_spec",
+    "classification",
+    "bindings"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^PAT-"
+    },
+    "canonical_id": {
+      "type": "string"
+    },
+    "legacy_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pattern_spec": {
+      "type": "object",
+      "required": [
+        "type",
+        "pattern"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "REGEX",
+            "LITERAL",
+            "NER_OR_REGEX",
+            "COMPOUND"
+          ]
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "captures": {
+          "type": "object"
+        }
+      }
+    },
+    "classification": {
+      "type": "object",
+      "required": [
+        "category",
+        "confidence_weight"
+      ],
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "subcategory": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "specificity": {
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH"
+          ]
+        },
+        "confidence_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "bindings": {
+      "type": "object",
+      "properties": {
+        "applies_to_dimensions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "applies_to_questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "applies_to_policy_areas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "applies_to_membership_criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

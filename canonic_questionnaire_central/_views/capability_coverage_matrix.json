@@ -1,6 +1,6 @@
 {
   "_schema_version": "2.0.0",
-  "_generated_at": "2026-01-06T17:11:44.182464+00:00",
+  "_generated_at": "2026-01-06T17:40:07.603688+00:00",
   "capabilities": {
     "NUMERIC_PARSING": {
       "capability_id": "NUMERIC_PARSING",
@@ -267,8 +267,8 @@
     },
     "FINANCIAL_CHAIN": {
       "required": [
-        "FINANCIAL_ANALYSIS",
-        "NUMERIC_PARSING"
+        "NUMERIC_PARSING",
+        "FINANCIAL_ANALYSIS"
       ],
       "optional": [
         "TABLE_PARSING"
@@ -314,8 +314,8 @@
     },
     "SEMANTIC_RELATIONSHIP": {
       "required": [
-        "SEMANTIC_PROCESSING",
-        "GRAPH_CONSTRUCTION"
+        "GRAPH_CONSTRUCTION",
+        "SEMANTIC_PROCESSING"
       ],
       "optional": [],
       "all_required_defined": true,

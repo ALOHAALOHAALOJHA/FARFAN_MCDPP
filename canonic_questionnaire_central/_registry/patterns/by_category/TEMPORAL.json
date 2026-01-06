@@ -1,0 +1,708 @@
+{
+  "_category": "TEMPORAL",
+  "_count": 15,
+  "patterns": {
+    "PAT-0112": {
+      "id": "PAT-0112",
+      "canonical_id": "PAT-0112",
+      "legacy_ids": [
+        "PAT-Q001-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "línea base|año base|situación inicial|diagnóstico de género",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q001"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.874592+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0124": {
+      "id": "PAT-0124",
+      "canonical_id": "PAT-0124",
+      "legacy_ids": [
+        "PAT-Q001-013"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "serie histórica|evolución 20\\d{2}-20\\d{2}|tendencia de los últimos|el año pasado|desde \\d{4}|tendencia reciente",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q001"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.874667+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0159": {
+      "id": "PAT-0159",
+      "canonical_id": "PAT-0159",
+      "legacy_ids": [
+        "PAT-Q005-008"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "durante el cuatrienio|en el periodo (?:19|20)\\\\d{2}\\\\s*-\\\\s*(?:19|20)\\\\d{2}|plazo de implementación|el año pasado|desde \\\\d{4}|tendencia reciente",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q005"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.874905+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0234": {
+      "id": "PAT-0234",
+      "canonical_id": "PAT-0234",
+      "legacy_ids": [
+        "PAT-Q021-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tiempo de maduración|se espera observar en 8 años|más allá del cuatrienio",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q021"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.875413+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0397": {
+      "id": "PAT-0397",
+      "canonical_id": "PAT-0397",
+      "legacy_ids": [
+        "PAT-Q051-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tiempo de maduración|se espera observar en una generación|8-10 años",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q291"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.876846+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0865": {
+      "id": "PAT-0865",
+      "canonical_id": "PAT-0865",
+      "legacy_ids": [
+        "PAT-Q141-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tiempo de maduración|efectos intergeneracionales|se espera observar en 10 años",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q111"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.880223+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0868": {
+      "id": "PAT-0868",
+      "canonical_id": "PAT-0868",
+      "legacy_ids": [
+        "PAT-Q142-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "los años promedio de escolaridad como proxy del capital humano",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q112"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.880241+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0957": {
+      "id": "PAT-0957",
+      "canonical_id": "PAT-0957",
+      "legacy_ids": [
+        "PAT-Q158-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "para abordar el daño causado|en respuesta a la necesidad de",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q128"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.880836+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0962": {
+      "id": "PAT-0962",
+      "canonical_id": "PAT-0962",
+      "legacy_ids": [
+        "PAT-Q158-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "árbol de problemas|diagnóstico del daño",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q128"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.880868+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1013": {
+      "id": "PAT-1013",
+      "canonical_id": "PAT-1013",
+      "legacy_ids": [
+        "PAT-Q169-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "el resultado atiende directamente el daño colectivo",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q139"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.881198+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1063": {
+      "id": "PAT-1063",
+      "canonical_id": "PAT-1063",
+      "legacy_ids": [
+        "PAT-Q180-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "estrategias territorializadas|medidas adaptadas al daño",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q150"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.881519+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1184": {
+      "id": "PAT-1184",
+      "canonical_id": "PAT-1184",
+      "legacy_ids": [
+        "PAT-Q201-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tiempo de maduración|efectos en el largo plazo|se espera observar en 15-20 años|el año pasado|desde \\d{4}|tendencia reciente",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q171"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.882306+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1510": {
+      "id": "PAT-1510",
+      "canonical_id": "PAT-1510",
+      "legacy_ids": [
+        "PAT-Q261-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tiempo de maduración|efectos en el largo plazo|se espera observar en 8-10 años",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q231"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.884756+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1676": {
+      "id": "PAT-1676",
+      "canonical_id": "PAT-1676",
+      "legacy_ids": [
+        "PAT-Q291-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "tiempo de maduración|se espera observar en 5-10 años|efectos post-penitenciarios",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q261"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.885835+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-Q006-003": {
+      "id": "PAT-Q006-003",
+      "canonical_id": "PAT-Q006-003",
+      "legacy_ids": [
+        "PAT-Q066-003",
+        "PAT-Q096-003",
+        "PAT-Q126-003",
+        "PAT-Q156-003",
+        "PAT-Q186-003",
+        "PAT-Q216-003",
+        "PAT-Q246-003",
+        "PAT-Q276-003",
+        "PAT-Q036-003",
+        "PAT-Q016-007",
+        "PAT-Q076-007",
+        "PAT-Q106-008",
+        "PAT-Q136-008",
+        "PAT-Q166-008",
+        "PAT-Q196-008",
+        "PAT-Q226-009",
+        "PAT-Q046-009",
+        "PAT-Q111-005",
+        "PAT-Q231-005"
+      ],
+      "pattern_spec": {
+        "type": "LITERAL",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {},
+        "context_scope": "PARAGRAPH"
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q006",
+          "Q036",
+          "Q066",
+          "Q096",
+          "Q126",
+          "Q156",
+          "Q186",
+          "Q216",
+          "Q246",
+          "Q276",
+          "Q016",
+          "Q046",
+          "Q076",
+          "Q106",
+          "Q136",
+          "Q166",
+          "Q196",
+          "Q286",
+          "Q081",
+          "Q201"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "patterns/pattern_registry_v3.json",
+        "source_version": "v3",
+        "created_at": "2026-01-06T17:29:59.912190+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    }
+  }
+}

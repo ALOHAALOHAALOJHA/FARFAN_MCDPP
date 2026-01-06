@@ -1,0 +1,238 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q061",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA03",
+  "cluster_id": "CL01",
+  "identifiers": {
+    "base_slot": "D1-Q1",
+    "legacy_id": "Q061",
+    "canonical_notation": "DIM01.PA03.Q061"
+  },
+  "text": {
+    "es": "¿El diagnóstico presenta datos numéricos (hectáreas deforestadas, nivel de IRCA, familias en riesgo) para el área de Ambiente sano, cambio climático y gestión de desastres que sirvan como línea base? Se debe verificar el año y fuentes (ej. IDEAM, CAR, CMGRD).",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "minimum": 2,
+      "type": "fuentes_oficiales"
+    },
+    {
+      "minimum": 3,
+      "type": "indicadores_cuantitativos"
+    },
+    {
+      "minimum": 3,
+      "type": "series_temporales_años"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0588",
+      "PAT-0589",
+      "PAT-0590",
+      "PAT-0591",
+      "PAT-0592",
+      "PAT-0593",
+      "PAT-0594",
+      "PAT-0595",
+      "PAT-0596",
+      "PAT-0597",
+      "PAT-0598",
+      "PAT-0599",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02",
+      "MC03"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q061.v4.json",
+    "methods": [
+      {
+        "class": "TextMiningEngine",
+        "function": "diagnose_critical_links",
+        "method_type": "analysis",
+        "priority": 1,
+        "description": "TextMiningEngine.diagnose_critical_links"
+      },
+      {
+        "class": "TextMiningEngine",
+        "function": "_analyze_link_text",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "TextMiningEngine._analyze_link_text"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "process",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "IndustrialPolicyProcessor.process"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_match_patterns_in_sentences",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "IndustrialPolicyProcessor._match_patterns_in_sentences"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_extract_point_evidence",
+        "method_type": "extraction",
+        "priority": 5,
+        "description": "IndustrialPolicyProcessor._extract_point_evidence"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_extract_goals",
+        "method_type": "extraction",
+        "priority": 6,
+        "description": "CausalExtractor._extract_goals"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_parse_goal_context",
+        "method_type": "extraction",
+        "priority": 7,
+        "description": "CausalExtractor._parse_goal_context"
+      },
+      {
+        "class": "FinancialAuditor",
+        "function": "_parse_amount",
+        "method_type": "extraction",
+        "priority": 8,
+        "description": "FinancialAuditor._parse_amount"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_extract_financial_amounts",
+        "method_type": "extraction",
+        "priority": 9,
+        "description": "PDETMunicipalPlanAnalyzer._extract_financial_amounts"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_extract_from_budget_table",
+        "method_type": "extraction",
+        "priority": 10,
+        "description": "PDETMunicipalPlanAnalyzer._extract_from_budget_table"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_extract_quantitative_claims",
+        "method_type": "extraction",
+        "priority": 11,
+        "description": "PolicyContradictionDetector._extract_quantitative_claims"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_parse_number",
+        "method_type": "extraction",
+        "priority": 12,
+        "description": "PolicyContradictionDetector._parse_number"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_statistical_significance_test",
+        "method_type": "analysis",
+        "priority": 13,
+        "description": "PolicyContradictionDetector._statistical_significance_test"
+      },
+      {
+        "class": "BayesianNumericalAnalyzer",
+        "function": "evaluate_policy_metric",
+        "method_type": "analysis",
+        "priority": 14,
+        "description": "BayesianNumericalAnalyzer.evaluate_policy_metric",
+        "produces_elements": [
+          "posterior_confidence_metric"
+        ]
+      },
+      {
+        "class": "BayesianNumericalAnalyzer",
+        "function": "compare_policies",
+        "method_type": "analysis",
+        "priority": 15,
+        "description": "BayesianNumericalAnalyzer.compare_policies",
+        "produces_elements": [
+          "posterior_confidence_metric"
+        ]
+      },
+      {
+        "class": "SemanticProcessor",
+        "function": "chunk_text",
+        "method_type": "analysis",
+        "priority": 16,
+        "description": "SemanticProcessor.chunk_text"
+      },
+      {
+        "class": "SemanticProcessor",
+        "function": "embed_single",
+        "method_type": "analysis",
+        "priority": 17,
+        "description": "SemanticProcessor.embed_single"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q091-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "DIAGNOSTICO",
+      "LINEA_BASE"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.794945+00:00",
+    "updated_at": "2026-01-06T17:38:07.794947+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

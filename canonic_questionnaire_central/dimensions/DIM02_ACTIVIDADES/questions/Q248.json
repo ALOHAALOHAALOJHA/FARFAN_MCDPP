@@ -1,0 +1,166 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q248",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA09",
+  "cluster_id": "CL04",
+  "identifiers": {
+    "base_slot": "D2-Q3",
+    "legacy_id": "Q248",
+    "canonical_notation": "DIM02.PA09.Q248"
+  },
+  "text": {
+    "es": "¿El PDM vincula explícitamente las actividades (ej. programas de resocialización) con las 'causas raíz' del problema (ej. reincidencia, falta de oportunidades) identificadas en el diagnóstico?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "aborda_causa_raiz"
+    },
+    {
+      "required": true,
+      "type": "vinculo_diagnostico_actividad"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-1607",
+      "PAT-1608",
+      "PAT-1609",
+      "PAT-1610",
+      "PAT-1611",
+      "PAT-1612",
+      "PAT-1613",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC04",
+      "MC05"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q248.v4.json",
+    "methods": [
+      {
+        "class": "CausalExtractor",
+        "function": "_extract_causal_links",
+        "method_type": "extraction",
+        "priority": 1,
+        "description": "CausalExtractor._extract_causal_links"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_calculate_composite_likelihood",
+        "method_type": "scoring",
+        "priority": 2,
+        "description": "CausalExtractor._calculate_composite_likelihood"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_initialize_prior",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "CausalExtractor._initialize_prior"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_calculate_type_transition_prior",
+        "method_type": "scoring",
+        "priority": 4,
+        "description": "CausalExtractor._calculate_type_transition_prior"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_identify_causal_edges",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "PDETMunicipalPlanAnalyzer._identify_causal_edges"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_refine_edge_probabilities",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "PDETMunicipalPlanAnalyzer._refine_edge_probabilities"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "construct_scm",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "BayesianCounterfactualAuditor.construct_scm"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "_create_default_equations",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "BayesianCounterfactualAuditor._create_default_equations"
+      },
+      {
+        "class": "SemanticAnalyzer",
+        "function": "extract_semantic_cube",
+        "method_type": "extraction",
+        "priority": 9,
+        "description": "SemanticAnalyzer.extract_semantic_cube"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q278-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "ESTRATEGICO",
+      "PROGRAMAS"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.909016+00:00",
+    "updated_at": "2026-01-06T17:38:07.909018+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

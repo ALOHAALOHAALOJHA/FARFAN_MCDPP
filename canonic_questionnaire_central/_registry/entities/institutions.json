@@ -1,0 +1,231 @@
+{
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T17:32:12.058949+00:00",
+  "entity_count": 10,
+  "entities": {
+    "ENT-INST-001": {
+      "entity_id": "ENT-INST-001",
+      "canonical_name": "DANE",
+      "full_name": "Departamento Administrativo Nacional de Estadística",
+      "category": "INSTITUTIONAL",
+      "subcategory": "NATIONAL",
+      "level": "NATIONAL",
+      "aliases": [
+        "Departamento de Estadística",
+        "estadísticas oficiales"
+      ],
+      "detection_patterns": [
+        "DANE",
+        "Departamento\\s+Administrativo\\s+Nacional\\s+de\\s+Estadística"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.15
+        },
+        "indicates_quality_source": true
+      }
+    },
+    "ENT-INST-002": {
+      "entity_id": "ENT-INST-002",
+      "canonical_name": "DNP",
+      "full_name": "Departamento Nacional de Planeación",
+      "category": "INSTITUTIONAL",
+      "subcategory": "NATIONAL",
+      "level": "NATIONAL",
+      "aliases": [
+        "Planeación Nacional"
+      ],
+      "detection_patterns": [
+        "DNP",
+        "Departamento\\s+Nacional\\s+de\\s+Planeación"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.1,
+          "DIM02": 0.05
+        },
+        "indicates_quality_source": true
+      }
+    },
+    "ENT-INST-003": {
+      "entity_id": "ENT-INST-003",
+      "canonical_name": "ICBF",
+      "full_name": "Instituto Colombiano de Bienestar Familiar",
+      "category": "INSTITUTIONAL",
+      "subcategory": "NATIONAL",
+      "level": "NATIONAL",
+      "aliases": [
+        "Bienestar Familiar"
+      ],
+      "detection_patterns": [
+        "ICBF",
+        "Instituto\\s+Colombiano\\s+de\\s+Bienestar\\s+Familiar"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.08
+        },
+        "policy_areas": [
+          "PA03",
+          "PA06"
+        ]
+      }
+    },
+    "ENT-INST-004": {
+      "entity_id": "ENT-INST-004",
+      "canonical_name": "MinSalud",
+      "full_name": "Ministerio de Salud y Protección Social",
+      "category": "INSTITUTIONAL",
+      "subcategory": "NATIONAL",
+      "level": "NATIONAL",
+      "aliases": [
+        "Ministerio de Salud",
+        "MSPS"
+      ],
+      "detection_patterns": [
+        "MinSalud",
+        "Ministerio\\s+de\\s+Salud"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05
+        }
+      }
+    },
+    "ENT-INST-005": {
+      "entity_id": "ENT-INST-005",
+      "canonical_name": "MinEducación",
+      "full_name": "Ministerio de Educación Nacional",
+      "category": "INSTITUTIONAL",
+      "subcategory": "NATIONAL",
+      "level": "NATIONAL",
+      "aliases": [
+        "MEN",
+        "Ministerio de Educación"
+      ],
+      "detection_patterns": [
+        "MinEducación",
+        "MEN",
+        "Ministerio\\s+de\\s+Educación"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05
+        }
+      }
+    },
+    "ENT-INST-006": {
+      "entity_id": "ENT-INST-006",
+      "canonical_name": "UARIV",
+      "full_name": "Unidad para la Atención y Reparación Integral a las Víctimas",
+      "category": "INSTITUTIONAL",
+      "subcategory": "NATIONAL",
+      "level": "NATIONAL",
+      "aliases": [
+        "Unidad de Víctimas"
+      ],
+      "detection_patterns": [
+        "UARIV",
+        "Unidad\\s+para\\s+la\\s+Atención.*Víctimas",
+        "Unidad\\s+de\\s+Víctimas"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.1,
+          "DIM02": 0.1
+        },
+        "policy_areas": [
+          "PA05"
+        ]
+      }
+    },
+    "ENT-INST-007": {
+      "entity_id": "ENT-INST-007",
+      "canonical_name": "Migración Colombia",
+      "full_name": "Unidad Administrativa Especial Migración Colombia",
+      "category": "INSTITUTIONAL",
+      "subcategory": "NATIONAL",
+      "level": "NATIONAL",
+      "aliases": [
+        "UAE Migración"
+      ],
+      "detection_patterns": [
+        "Migración\\s+Colombia"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.1
+        },
+        "policy_areas": [
+          "PA10"
+        ]
+      }
+    },
+    "ENT-INST-008": {
+      "entity_id": "ENT-INST-008",
+      "canonical_name": "UNP",
+      "full_name": "Unidad Nacional de Protección",
+      "category": "INSTITUTIONAL",
+      "subcategory": "NATIONAL",
+      "level": "NATIONAL",
+      "aliases": [
+        "Unidad de Protección"
+      ],
+      "detection_patterns": [
+        "UNP",
+        "Unidad\\s+Nacional\\s+de\\s+Protección"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM02": 0.15
+        },
+        "policy_areas": [
+          "PA08"
+        ]
+      }
+    },
+    "ENT-INST-009": {
+      "entity_id": "ENT-INST-009",
+      "canonical_name": "INPEC",
+      "full_name": "Instituto Nacional Penitenciario y Carcelario",
+      "category": "INSTITUTIONAL",
+      "subcategory": "NATIONAL",
+      "level": "NATIONAL",
+      "aliases": [
+        "Penitenciario"
+      ],
+      "detection_patterns": [
+        "INPEC",
+        "Instituto\\s+Nacional\\s+Penitenciario"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.08
+        },
+        "policy_areas": [
+          "PA09"
+        ]
+      }
+    },
+    "ENT-INST-010": {
+      "entity_id": "ENT-INST-010",
+      "canonical_name": "Secretaría de Planeación",
+      "full_name": "Secretaría de Planeación Municipal/Departamental",
+      "category": "INSTITUTIONAL",
+      "subcategory": "LOCAL",
+      "level": "LOCAL",
+      "aliases": [
+        "Oficina de Planeación"
+      ],
+      "detection_patterns": [
+        "Secretaría\\s+de\\s+Planeación",
+        "Oficina\\s+de\\s+Planeación"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM02": 0.05
+        }
+      }
+    }
+  }
+}

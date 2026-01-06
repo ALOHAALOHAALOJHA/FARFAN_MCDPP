@@ -1,0 +1,100 @@
+{
+  "$schema": "../../detection_rules_schema.json",
+  "_schema_version": "2.0.0",
+  
+  "theme_id": "CC_INTEROPERABILIDAD",
+  "name": "Interoperabilidad",
+  "description": "Detecta articulación interinstitucional y con sistemas de información",
+  
+  "detection_strategy": {
+    "primary_method": "MULTI_SIGNAL_FUSION",
+    
+    "signals": [
+      {
+        "signal_id": "SIG-IO-001",
+        "name": "interinstitutional_coordination",
+        "type": "KEYWORD_MATCH",
+        "keywords": [
+          "articulación interinstitucional",
+          "coordinación interinstitucional",
+          "coordinación intersectorial",
+          "mesa interinstitucional",
+          "comité interinstitucional"
+        ],
+        "weight": 0.35,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-IO-002",
+        "name": "information_systems",
+        "type": "KEYWORD_MATCH",
+        "keywords": [
+          "sistema de información",
+          "interoperabilidad",
+          "intercambio de datos",
+          "registro único",
+          "plataforma integrada",
+          "tablero de control"
+        ],
+        "weight": 0.30,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-IO-003",
+        "name": "national_systems_reference",
+        "type": "ENTITY_REFERENCE",
+        "entity_patterns": [
+          "SISBEN",
+          "RUV",
+          "SIVICAP",
+          "SISPRO",
+          "SIMAT",
+          "SIRBE",
+          "RUSICST"
+        ],
+        "weight": 0.25,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-IO-004",
+        "name": "alignment_mention",
+        "type": "PATTERN_MATCH",
+        "patterns": [
+          "articulad[oa]\\s+con\\s+(el\\s+)?PND",
+          "alinead[oa]\\s+con\\s+(políticas?|planes?)\\s+nacional(es)?",
+          "en\\s+concordancia\\s+con"
+        ],
+        "weight": 0.10,
+        "minimum_matches": 1
+      }
+    ],
+    
+    "aggregation": {
+      "method": "WEIGHTED_SUM_WITH_THRESHOLD",
+      "threshold": 0.40,
+      "minimum_signals_required": 2
+    }
+  },
+  
+  "scoring_impact": {
+    "when_detected": {
+      "boost_dimensions": ["DIM02", "DIM03"],
+      "boost_amount": 0.08
+    }
+  },
+  
+  "validation": {
+    "recommended_in_all_policy_areas": true
+  },
+  
+  "required_capabilities": ["NER_EXTRACTION"],
+  
+  "testing": {
+    "golden_examples": [
+      {
+        "input": "El programa se articulará con el SISBEN y el sistema de información de víctimas RUV...",
+        "expected_detected": true
+      }
+    ]
+  }
+}

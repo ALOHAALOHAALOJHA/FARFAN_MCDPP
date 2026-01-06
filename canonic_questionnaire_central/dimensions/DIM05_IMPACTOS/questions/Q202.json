@@ -1,0 +1,302 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q202",
+  "dimension_id": "DIM05",
+  "policy_area_id": "PA07",
+  "cluster_id": "CL01",
+  "identifiers": {
+    "base_slot": "D5-Q2",
+    "legacy_id": "Q202",
+    "canonical_notation": "DIM05.PA07.Q202"
+  },
+  "text": {
+    "es": "¿Se utilizan 'índices' (ej. Índice de Competitividad Rural) o 'proxies' para medir los impactos en el desarrollo territorial, justificando su validez?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "justifica_validez"
+    },
+    {
+      "required": true,
+      "type": "usa_indices_compuestos"
+    },
+    {
+      "required": true,
+      "type": "usa_proxies"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-1345",
+      "PAT-1346",
+      "PAT-1347",
+      "PAT-1348",
+      "PAT-Q011-000"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC02",
+      "MC08"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL",
+      "CC_PARTICIPACION_CIUDADANA",
+      "CC_ENTORNO_TERRITORIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q202.v4.json",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "calculate_quality_score",
+        "method_type": "scoring",
+        "priority": 1,
+        "description": "PDETMunicipalPlanAnalyzer.calculate_quality_score"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_estimate_score_confidence",
+        "method_type": "scoring",
+        "priority": 2,
+        "description": "PDETMunicipalPlanAnalyzer._estimate_score_confidence"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_compute_e_value",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "PDETMunicipalPlanAnalyzer._compute_e_value"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_compute_robustness_value",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "PDETMunicipalPlanAnalyzer._compute_robustness_value"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_interpret_sensitivity",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "PDETMunicipalPlanAnalyzer._interpret_sensitivity"
+      },
+      {
+        "class": "ReportingEngine",
+        "function": "_calculate_quality_score",
+        "method_type": "scoring",
+        "priority": 6,
+        "description": "ReportingEngine._calculate_quality_score"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_aggregate_bayesian_confidence",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "BayesianMechanismInference._aggregate_bayesian_confidence"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "evaluate_policy_numerical_consistency",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "PolicyAnalysisEmbedder.evaluate_policy_numerical_consistency"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "get_diagnostics",
+        "method_type": "analysis",
+        "priority": 9,
+        "description": "PolicyAnalysisEmbedder.get_diagnostics"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "process_document",
+        "method_type": "analysis",
+        "priority": 10,
+        "description": "PolicyAnalysisEmbedder.process_document"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "_generate_query_from_pdq",
+        "method_type": "analysis",
+        "priority": 11,
+        "description": "PolicyAnalysisEmbedder._generate_query_from_pdq"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "_filter_by_pdq",
+        "method_type": "analysis",
+        "priority": 12,
+        "description": "PolicyAnalysisEmbedder._filter_by_pdq"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "_extract_numerical_values",
+        "method_type": "extraction",
+        "priority": 13,
+        "description": "PolicyAnalysisEmbedder._extract_numerical_values"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "_embed_texts",
+        "method_type": "analysis",
+        "priority": 14,
+        "description": "PolicyAnalysisEmbedder._embed_texts"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "_compute_overall_confidence",
+        "method_type": "analysis",
+        "priority": 15,
+        "description": "PolicyAnalysisEmbedder._compute_overall_confidence"
+      },
+      {
+        "class": "FinancialAuditor",
+        "function": "_calculate_sufficiency",
+        "method_type": "scoring",
+        "priority": 16,
+        "description": "FinancialAuditor._calculate_sufficiency"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_interpret_overall_quality",
+        "method_type": "analysis",
+        "priority": 17,
+        "description": "PDETMunicipalPlanAnalyzer._interpret_overall_quality"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "aggregate_risk_and_prioritize",
+        "method_type": "analysis",
+        "priority": 18,
+        "description": "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize"
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "function": "normalize_unicode",
+        "method_type": "analysis",
+        "priority": 19,
+        "description": "PolicyTextProcessor.normalize_unicode"
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "function": "segment_into_sentences",
+        "method_type": "analysis",
+        "priority": 20,
+        "description": "PolicyTextProcessor.segment_into_sentences"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_compute_evidence_confidence",
+        "method_type": "analysis",
+        "priority": 21,
+        "description": "IndustrialPolicyProcessor._compute_evidence_confidence"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_compute_avg_confidence",
+        "method_type": "analysis",
+        "priority": 22,
+        "description": "IndustrialPolicyProcessor._compute_avg_confidence"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_quality_to_dict",
+        "method_type": "analysis",
+        "priority": 23,
+        "description": "PDETMunicipalPlanAnalyzer._quality_to_dict"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_construct_evidence_bundle",
+        "method_type": "analysis",
+        "priority": 24,
+        "description": "IndustrialPolicyProcessor._construct_evidence_bundle"
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "function": "compile_pattern",
+        "method_type": "analysis",
+        "priority": 25,
+        "description": "PolicyTextProcessor.compile_pattern"
+      },
+      {
+        "class": "PolicyTextProcessor",
+        "function": "extract_contextual_window",
+        "method_type": "extraction",
+        "priority": 26,
+        "description": "PolicyTextProcessor.extract_contextual_window"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "generate_executive_report",
+        "method_type": "analysis",
+        "priority": 27,
+        "description": "PDETMunicipalPlanAnalyzer.generate_executive_report"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "export_results",
+        "method_type": "analysis",
+        "priority": 28,
+        "description": "IndustrialPolicyProcessor.export_results"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q232-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "IMPACTOS",
+      "OBJETIVOS"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.881309+00:00",
+    "updated_at": "2026-01-06T17:38:07.881311+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

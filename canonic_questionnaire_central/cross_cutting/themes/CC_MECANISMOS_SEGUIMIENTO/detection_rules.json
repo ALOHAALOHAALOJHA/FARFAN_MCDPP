@@ -1,0 +1,110 @@
+{
+  "$schema": "../../detection_rules_schema.json",
+  "_schema_version": "2.0.0",
+  
+  "theme_id": "CC_MECANISMOS_SEGUIMIENTO",
+  "name": "Mecanismos de Seguimiento",
+  "description": "Detecta sistemas de monitoreo, evaluación y seguimiento de políticas",
+  
+  "detection_strategy": {
+    "primary_method": "MULTI_SIGNAL_FUSION",
+    
+    "signals": [
+      {
+        "signal_id": "SIG-MS-001",
+        "name": "monitoring_explicit",
+        "type": "KEYWORD_MATCH",
+        "keywords": [
+          "sistema de seguimiento",
+          "mecanismo de monitoreo",
+          "tablero de indicadores",
+          "observatorio",
+          "sala situacional"
+        ],
+        "weight": 0.35,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-MS-002",
+        "name": "evaluation_mechanisms",
+        "type": "KEYWORD_MATCH",
+        "keywords": [
+          "evaluación de impacto",
+          "evaluación de resultados",
+          "línea de cierre",
+          "medición de avance",
+          "indicadores de gestión",
+          "indicadores de resultado"
+        ],
+        "weight": 0.30,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-MS-003",
+        "name": "reporting_frequency",
+        "type": "PATTERN_MATCH",
+        "patterns": [
+          "informes?\\s+(trimestral(es)?|semestral(es)?|anual(es)?)",
+          "reporte\\s+periódico",
+          "seguimiento\\s+(mensual|trimestral|anual)",
+          "rendición\\s+de\\s+cuentas"
+        ],
+        "weight": 0.20,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-MS-004",
+        "name": "accountability_bodies",
+        "type": "PATTERN_MATCH",
+        "patterns": [
+          "Consejo\\s+de\\s+Política\\s+Social",
+          "Comité\\s+de\\s+Seguimiento",
+          "instancia\\s+de\\s+seguimiento",
+          "secretaría\\s+técnica"
+        ],
+        "weight": 0.15,
+        "minimum_matches": 1
+      }
+    ],
+    
+    "aggregation": {
+      "method": "WEIGHTED_SUM_WITH_THRESHOLD",
+      "threshold": 0.40,
+      "minimum_signals_required": 2
+    }
+  },
+  
+  "scoring_impact": {
+    "when_detected": {
+      "boost_dimensions": ["DIM03", "DIM04", "DIM05"],
+      "boost_amount": 0.12
+    },
+    "when_missing": {
+      "penalty_dimensions": ["DIM04", "DIM05"],
+      "penalty_amount": 0.08
+    }
+  },
+  
+  "validation": {
+    "required_in_all_policy_areas": true,
+    "validation_rules": [
+      {
+        "rule_id": "MS-VAL-001",
+        "condition": "No mechanism detected AND dimension in [DIM04, DIM05]",
+        "severity": "WARNING",
+        "message": "Resultados e impactos sin mecanismo de seguimiento definido"
+      }
+    ]
+  },
+  
+  "required_capabilities": [],
+  
+  "testing": {
+    "golden_examples": [
+      {
+        "input": "Se establecerá un tablero de indicadores con informes trimestrales al Consejo de Política Social...",
+        "expected_detected": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q229",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA08",
+  "cluster_id": "CL03",
+  "identifiers": {
+    "base_slot": "D4-Q4",
+    "legacy_id": "Q229",
+    "canonical_notation": "DIM04.PA08.Q229"
+  },
+  "text": {
+    "es": "¿Los resultados propuestos (ej. 'creación de un entorno seguro para la defensa de los DDHH') 'atienden' o 'abordan' directamente los riesgos y amenazas priorizados en el diagnóstico?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "criterios_exito_definidos"
+    },
+    {
+      "required": true,
+      "type": "vinculo_resultado_problema"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-1498",
+      "PAT-1499",
+      "PAT-1500",
+      "PAT-1501",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC02",
+      "MC07"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_COHERENCIA_NORMATIVA"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q229.v4.json",
+    "methods": [
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_calculate_objective_alignment",
+        "method_type": "scoring",
+        "priority": 1,
+        "description": "PolicyContradictionDetector._calculate_objective_alignment"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_identify_affected_sections",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "PolicyContradictionDetector._identify_affected_sections"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_generate_resolution_recommendations",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "PolicyContradictionDetector._generate_resolution_recommendations"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "function": "_generate_optimal_remediations",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "OperationalizationAuditor._generate_optimal_remediations"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "function": "_get_remediation_text",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "OperationalizationAuditor._get_remediation_text"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "aggregate_risk_and_prioritize",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize"
+      },
+      {
+        "class": "FinancialAuditor",
+        "function": "_detect_allocation_gaps",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "FinancialAuditor._detect_allocation_gaps"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q259-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "RESULTADOS",
+      "INDICADORES"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.897686+00:00",
+    "updated_at": "2026-01-06T17:38:07.897688+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

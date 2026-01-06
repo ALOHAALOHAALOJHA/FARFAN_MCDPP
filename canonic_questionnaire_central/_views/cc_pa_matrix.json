@@ -1,10 +1,45 @@
 {
   "_schema_version": "2.0.0",
-  "_generated_at": "2026-01-06T17:11:44.181727+00:00",
+  "_generated_at": "2026-01-06T17:40:07.602865+00:00",
   "matrix": {
     "CC_ENFOQUE_DIFERENCIAL": {
       "theme_id": "CC_ENFOQUE_DIFERENCIAL",
       "name": "Enfoque Diferencial",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    },
+    "CC_PERSPECTIVA_GENERO": {
+      "theme_id": "CC_PERSPECTIVA_GENERO",
+      "name": "Perspectiva de Género",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    },
+    "CC_MECANISMOS_SEGUIMIENTO": {
+      "theme_id": "CC_MECANISMOS_SEGUIMIENTO",
+      "name": "Mecanismos de Seguimiento",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    },
+    "CC_PARTICIPACION_CIUDADANA": {
+      "theme_id": "CC_PARTICIPACION_CIUDADANA",
+      "name": "Participación Ciudadana",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    },
+    "CC_ENTORNO_TERRITORIAL": {
+      "theme_id": "CC_ENTORNO_TERRITORIAL",
+      "name": "Entorno Territorial",
+      "policy_areas": [],
+      "dimensions": [],
+      "has_detection_rules": true
+    },
+    "CC_INTEROPERABILIDAD": {
+      "theme_id": "CC_INTEROPERABILIDAD",
+      "name": "Interoperabilidad",
       "policy_areas": [],
       "dimensions": [],
       "has_detection_rules": true
@@ -22,118 +57,6 @@
       "policy_areas": [],
       "dimensions": [],
       "has_detection_rules": true
-    },
-    "CC_PERSPECTIVA_GENERO": {
-      "theme_id": "CC_PERSPECTIVA_GENERO",
-      "name": "Perspectiva de Género",
-      "policy_areas": [
-        "PA01",
-        "PA02",
-        "PA03",
-        "PA04",
-        "PA05",
-        "PA06",
-        "PA07",
-        "PA08",
-        "PA09",
-        "PA10"
-      ],
-      "dimensions": [
-        "DIM01",
-        "DIM02",
-        "DIM03",
-        "DIM04",
-        "DIM05",
-        "DIM06"
-      ],
-      "has_detection_rules": false
-    },
-    "CC_ENTORNO_TERRITORIAL": {
-      "theme_id": "CC_ENTORNO_TERRITORIAL",
-      "name": "Entorno Territorial",
-      "policy_areas": [
-        "PA03",
-        "PA04",
-        "PA07",
-        "PA08",
-        "PA10"
-      ],
-      "dimensions": [
-        "DIM01",
-        "DIM02",
-        "DIM03",
-        "DIM04",
-        "DIM05"
-      ],
-      "has_detection_rules": false
-    },
-    "CC_PARTICIPACION_CIUDADANA": {
-      "theme_id": "CC_PARTICIPACION_CIUDADANA",
-      "name": "Participación Ciudadana",
-      "policy_areas": [
-        "PA01",
-        "PA02",
-        "PA03",
-        "PA04",
-        "PA05",
-        "PA06",
-        "PA07",
-        "PA08",
-        "PA09",
-        "PA10"
-      ],
-      "dimensions": [
-        "DIM02",
-        "DIM03",
-        "DIM04",
-        "DIM06"
-      ],
-      "has_detection_rules": false
-    },
-    "CC_INTEROPERABILIDAD": {
-      "theme_id": "CC_INTEROPERABILIDAD",
-      "name": "Interoperabilidad Institucional",
-      "policy_areas": [
-        "PA01",
-        "PA02",
-        "PA03",
-        "PA04",
-        "PA05",
-        "PA06",
-        "PA07",
-        "PA08",
-        "PA09",
-        "PA10"
-      ],
-      "dimensions": [
-        "DIM02",
-        "DIM03",
-        "DIM04",
-        "DIM06"
-      ],
-      "has_detection_rules": false
-    },
-    "CC_MECANISMOS_SEGUIMIENTO": {
-      "theme_id": "CC_MECANISMOS_SEGUIMIENTO",
-      "name": "Mecanismos de Seguimiento y Evaluación",
-      "policy_areas": [
-        "PA01",
-        "PA02",
-        "PA03",
-        "PA04",
-        "PA05",
-        "PA06",
-        "PA07",
-        "PA08",
-        "PA09",
-        "PA10"
-      ],
-      "dimensions": [
-        "DIM03",
-        "DIM04",
-        "DIM05"
-      ],
-      "has_detection_rules": false
     }
   }
 }

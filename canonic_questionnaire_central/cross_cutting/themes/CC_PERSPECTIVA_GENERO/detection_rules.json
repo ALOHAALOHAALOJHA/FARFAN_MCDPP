@@ -1,0 +1,109 @@
+{
+  "$schema": "../../detection_rules_schema.json",
+  "_schema_version": "2.0.0",
+  
+  "theme_id": "CC_PERSPECTIVA_GENERO",
+  "name": "Perspectiva de Género",
+  "description": "Detecta incorporación de perspectiva de género en políticas públicas",
+  
+  "detection_strategy": {
+    "primary_method": "MULTI_SIGNAL_FUSION",
+    
+    "signals": [
+      {
+        "signal_id": "SIG-PG-001",
+        "name": "explicit_mention",
+        "type": "KEYWORD_MATCH",
+        "keywords": [
+          "perspectiva de género",
+          "enfoque de género",
+          "equidad de género",
+          "igualdad de género",
+          "transversalización de género"
+        ],
+        "weight": 0.40,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PG-002",
+        "name": "gender_disaggregation",
+        "type": "PATTERN_MATCH",
+        "patterns": [
+          "desagregad[oa]s?\\s+por\\s+(sexo|género)",
+          "datos\\s+diferenciados\\s+por\\s+género",
+          "hombres\\s+y\\s+mujeres",
+          "\\d+%?\\s+(hombres|mujeres)\\s+y\\s+\\d+%?\\s+(mujeres|hombres)"
+        ],
+        "weight": 0.30,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PG-003",
+        "name": "women_focused_actions",
+        "type": "KEYWORD_MATCH",
+        "keywords": [
+          "mujeres víctimas",
+          "violencia contra las mujeres",
+          "empoderamiento de las mujeres",
+          "autonomía económica de las mujeres",
+          "lideresas",
+          "mujeres rurales",
+          "mujeres cabeza de familia"
+        ],
+        "weight": 0.20,
+        "minimum_matches": 2
+      },
+      {
+        "signal_id": "SIG-PG-004",
+        "name": "normative_gender",
+        "type": "ENTITY_REFERENCE",
+        "entity_refs": [
+          "Ley 1257 de 2008",
+          "CONPES 4080",
+          "Ley 1761 de 2015",
+          "Ley 1496 de 2011"
+        ],
+        "weight": 0.10,
+        "minimum_matches": 1
+      }
+    ],
+    
+    "aggregation": {
+      "method": "WEIGHTED_SUM_WITH_THRESHOLD",
+      "threshold": 0.45,
+      "minimum_signals_required": 2
+    }
+  },
+  
+  "scoring_impact": {
+    "when_detected": {
+      "boost_questions": ["Q001", "Q002", "Q003", "Q004", "Q005", "Q031", "Q061"],
+      "boost_amount": 0.15,
+      "boost_type": "ADDITIVE"
+    },
+    "when_missing": {
+      "penalty_questions": ["Q001", "Q002"],
+      "penalty_amount": 0.10,
+      "penalty_conditions": {
+        "only_if_policy_area_in": ["PA01"]
+      }
+    }
+  },
+  
+  "validation": {
+    "required_in_policy_areas": ["PA01"],
+    "recommended_in_policy_areas": ["PA02", "PA03", "PA05", "PA06"]
+  },
+  
+  "required_capabilities": ["SEMANTIC_PROCESSING"],
+  
+  "testing": {
+    "golden_examples": [
+      {
+        "input": "El plan adopta una perspectiva de género transversal, con datos desagregados por sexo...",
+        "expected_detected": true,
+        "expected_confidence_min": 0.70
+      }
+    ]
+  }
+}

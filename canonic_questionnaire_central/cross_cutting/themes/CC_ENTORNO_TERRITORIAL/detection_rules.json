@@ -1,0 +1,97 @@
+{
+  "$schema": "../../detection_rules_schema.json",
+  "_schema_version": "2.0.0",
+  
+  "theme_id": "CC_ENTORNO_TERRITORIAL",
+  "name": "Entorno Territorial",
+  "description": "Detecta consideración de particularidades territoriales (rural/urbano, PDET, etc.)",
+  
+  "detection_strategy": {
+    "primary_method": "MULTI_SIGNAL_FUSION",
+    
+    "signals": [
+      {
+        "signal_id": "SIG-ET-001",
+        "name": "territorial_differentiation",
+        "type": "KEYWORD_MATCH",
+        "keywords": [
+          "enfoque territorial",
+          "particularidades territoriales",
+          "contexto territorial",
+          "vocación territorial",
+          "ordenamiento territorial"
+        ],
+        "weight": 0.35,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-ET-002",
+        "name": "rural_urban_distinction",
+        "type": "PATTERN_MATCH",
+        "patterns": [
+          "zona\\s+(rural|urbana)",
+          "área\\s+(rural|urbana)",
+          "cabecera\\s+municipal",
+          "resto\\s+municipal",
+          "veredas?",
+          "corregimientos?"
+        ],
+        "weight": 0.25,
+        "minimum_matches": 2
+      },
+      {
+        "signal_id": "SIG-ET-003",
+        "name": "pdet_mention",
+        "type": "KEYWORD_MATCH",
+        "keywords": [
+          "PDET",
+          "Programas de Desarrollo con Enfoque Territorial",
+          "municipio PDET",
+          "subregión PDET"
+        ],
+        "weight": 0.25,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-ET-004",
+        "name": "territorial_data",
+        "type": "PATTERN_MATCH",
+        "patterns": [
+          "desagregad[oa]\\s+por\\s+(municipio|vereda|corregimiento)",
+          "cobertura\\s+territorial",
+          "brechas?\\s+territorial(es)?"
+        ],
+        "weight": 0.15,
+        "minimum_matches": 1
+      }
+    ],
+    
+    "aggregation": {
+      "method": "WEIGHTED_SUM_WITH_THRESHOLD",
+      "threshold": 0.40,
+      "minimum_signals_required": 2
+    }
+  },
+  
+  "scoring_impact": {
+    "when_detected": {
+      "boost_dimensions": ["DIM01", "DIM02"],
+      "boost_amount": 0.10
+    }
+  },
+  
+  "validation": {
+    "recommended_in_all_policy_areas": true
+  },
+  
+  "required_capabilities": [],
+  
+  "testing": {
+    "golden_examples": [
+      {
+        "input": "El diagnóstico distingue la situación en zona rural y urbana, con énfasis en veredas priorizadas...",
+        "expected_detected": true
+      }
+    ]
+  }
+}

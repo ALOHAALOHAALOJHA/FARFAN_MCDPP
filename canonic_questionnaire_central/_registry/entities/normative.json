@@ -1,0 +1,814 @@
+{
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T17:32:12.057386+00:00",
+  "_source": "corpus_empirico_normatividad.json",
+  "entity_count": 30,
+  "entities": {
+    "ENT-NORM-001": {
+      "entity_id": "ENT-NORM-001",
+      "canonical_name": "Ley 1257 de 2008",
+      "full_name": "Normas de sensibilización, prevención y sanción de formas de violencia y discriminación contra las mujeres",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1257,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1257\\s+de\\s+2008",
+        "Ley\\s*1257\\s*de\\s*2008"
+      ],
+      "policy_areas": [
+        "PA01"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.056654+00:00"
+      }
+    },
+    "ENT-NORM-002": {
+      "entity_id": "ENT-NORM-002",
+      "canonical_name": "CONPES 4080 de 2022",
+      "full_name": "Política Pública Nacional de Equidad de Género para las Mujeres",
+      "category": "NORMATIVE",
+      "subcategory": "CONPES",
+      "year": 4080,
+      "aliases": [],
+      "detection_patterns": [
+        "CONPES 4080\\s+de\\s+2022",
+        "CONPES\\s*4080\\s*de\\s*2022"
+      ],
+      "policy_areas": [
+        "PA01"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057038+00:00"
+      }
+    },
+    "ENT-NORM-003": {
+      "entity_id": "ENT-NORM-003",
+      "canonical_name": "Ley 1496 de 2011",
+      "full_name": "Igualdad salarial",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1496,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1496\\s+de\\s+2011",
+        "Ley\\s*1496\\s*de\\s*2011"
+      ],
+      "policy_areas": [
+        "PA01"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057046+00:00"
+      }
+    },
+    "ENT-NORM-004": {
+      "entity_id": "ENT-NORM-004",
+      "canonical_name": "Ley 1761 de 2015",
+      "full_name": "Feminicidio",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1761,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1761\\s+de\\s+2015",
+        "Ley\\s*1761\\s*de\\s*2015"
+      ],
+      "policy_areas": [
+        "PA01"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057054+00:00"
+      }
+    },
+    "ENT-NORM-005": {
+      "entity_id": "ENT-NORM-005",
+      "canonical_name": "Ley 1719 de 2014",
+      "full_name": "Violencia sexual en conflicto armado",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1719,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1719\\s+de\\s+2014",
+        "Ley\\s*1719\\s*de\\s*2014"
+      ],
+      "policy_areas": [
+        "PA02"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057065+00:00"
+      }
+    },
+    "ENT-NORM-006": {
+      "entity_id": "ENT-NORM-006",
+      "canonical_name": "Ley 99 de 1993",
+      "full_name": "Sistema Nacional Ambiental",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1993,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 99\\s+de\\s+1993",
+        "Ley\\s*99\\s*de\\s*1993"
+      ],
+      "policy_areas": [
+        "PA03"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057083+00:00"
+      }
+    },
+    "ENT-NORM-007": {
+      "entity_id": "ENT-NORM-007",
+      "canonical_name": "Ley 1931 de 2018",
+      "full_name": "Gestión del Cambio Climático",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1931,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1931\\s+de\\s+2018",
+        "Ley\\s*1931\\s*de\\s*2018"
+      ],
+      "policy_areas": [
+        "PA03"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057091+00:00"
+      }
+    },
+    "ENT-NORM-008": {
+      "entity_id": "ENT-NORM-008",
+      "canonical_name": "CONPES 3918 de 2018",
+      "full_name": "ODS en Colombia",
+      "category": "NORMATIVE",
+      "subcategory": "CONPES",
+      "year": 3918,
+      "aliases": [],
+      "detection_patterns": [
+        "CONPES 3918\\s+de\\s+2018",
+        "CONPES\\s*3918\\s*de\\s*2018"
+      ],
+      "policy_areas": [
+        "PA03"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057098+00:00"
+      }
+    },
+    "ENT-NORM-009": {
+      "entity_id": "ENT-NORM-009",
+      "canonical_name": "Ley 1098 de 2006",
+      "full_name": "Código de la Infancia y la Adolescencia",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1098,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1098\\s+de\\s+2006",
+        "Ley\\s*1098\\s*de\\s*2006"
+      ],
+      "policy_areas": [
+        "PA04"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057105+00:00"
+      }
+    },
+    "ENT-NORM-010": {
+      "entity_id": "ENT-NORM-010",
+      "canonical_name": "Ley 100 de 1993",
+      "full_name": "Sistema General de Seguridad Social en Salud",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1993,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 100\\s+de\\s+1993",
+        "Ley\\s*100\\s*de\\s*1993"
+      ],
+      "policy_areas": [
+        "PA04"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057111+00:00"
+      }
+    },
+    "ENT-NORM-011": {
+      "entity_id": "ENT-NORM-011",
+      "canonical_name": "Ley 115 de 1994",
+      "full_name": "Ley General de Educación",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1994,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 115\\s+de\\s+1994",
+        "Ley\\s*115\\s*de\\s*1994"
+      ],
+      "policy_areas": [
+        "PA04"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057117+00:00"
+      }
+    },
+    "ENT-NORM-012": {
+      "entity_id": "ENT-NORM-012",
+      "canonical_name": "Ley 1753 de 2015",
+      "full_name": "PND 2014-2018",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1753,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1753\\s+de\\s+2015",
+        "Ley\\s*1753\\s*de\\s*2015"
+      ],
+      "policy_areas": [
+        "PA04"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057124+00:00"
+      }
+    },
+    "ENT-NORM-013": {
+      "entity_id": "ENT-NORM-013",
+      "canonical_name": "Ley 1448 de 2011",
+      "full_name": "Ley de Víctimas y Restitución de Tierras",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1448,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1448\\s+de\\s+2011",
+        "Ley\\s*1448\\s*de\\s*2011"
+      ],
+      "policy_areas": [
+        "PA05"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057130+00:00"
+      }
+    },
+    "ENT-NORM-014": {
+      "entity_id": "ENT-NORM-014",
+      "canonical_name": "Decreto 893 de 2017",
+      "full_name": "Programas de Desarrollo con Enfoque Territorial (PDET)",
+      "category": "NORMATIVE",
+      "subcategory": "DECRETO",
+      "year": 2017,
+      "aliases": [],
+      "detection_patterns": [
+        "Decreto 893\\s+de\\s+2017",
+        "Decreto\\s*893\\s*de\\s*2017"
+      ],
+      "policy_areas": [
+        "PA05"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057137+00:00"
+      }
+    },
+    "ENT-NORM-015": {
+      "entity_id": "ENT-NORM-015",
+      "canonical_name": "Acuerdo Final de Paz 2016",
+      "full_name": "Acuerdo de Paz",
+      "category": "NORMATIVE",
+      "subcategory": "ACUERDO",
+      "year": 2016,
+      "aliases": [],
+      "detection_patterns": [
+        "Acuerdo Final\\s+de\\s+Paz 2016",
+        "Acuerdo\\s*Final\\s*de\\s*Paz\\s*2016"
+      ],
+      "policy_areas": [
+        "PA05"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057148+00:00"
+      }
+    },
+    "ENT-NORM-016": {
+      "entity_id": "ENT-NORM-016",
+      "canonical_name": "Ley 1975 de 2019",
+      "full_name": "Justicia Transicional",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1975,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1975\\s+de\\s+2019",
+        "Ley\\s*1975\\s*de\\s*2019"
+      ],
+      "policy_areas": [
+        "PA05"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057155+00:00"
+      }
+    },
+    "ENT-NORM-017": {
+      "entity_id": "ENT-NORM-017",
+      "canonical_name": "Ley 1622 de 2013",
+      "full_name": "Estatuto de Ciudadanía Juvenil",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1622,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1622\\s+de\\s+2013",
+        "Ley\\s*1622\\s*de\\s*2013"
+      ],
+      "policy_areas": [
+        "PA06"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057167+00:00"
+      }
+    },
+    "ENT-NORM-018": {
+      "entity_id": "ENT-NORM-018",
+      "canonical_name": "Ley 1804 de 2016",
+      "full_name": "Política de Estado para Primera Infancia",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1804,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1804\\s+de\\s+2016",
+        "Ley\\s*1804\\s*de\\s*2016"
+      ],
+      "policy_areas": [
+        "PA06"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057174+00:00"
+      }
+    },
+    "ENT-NORM-019": {
+      "entity_id": "ENT-NORM-019",
+      "canonical_name": "Ley 388 de 1997",
+      "full_name": "Desarrollo Territorial - POT",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1997,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 388\\s+de\\s+1997",
+        "Ley\\s*388\\s*de\\s*1997"
+      ],
+      "policy_areas": [
+        "PA07"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057181+00:00"
+      }
+    },
+    "ENT-NORM-020": {
+      "entity_id": "ENT-NORM-020",
+      "canonical_name": "Ley 160 de 1994",
+      "full_name": "Sistema Nacional de Reforma Agraria",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1994,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 160\\s+de\\s+1994",
+        "Ley\\s*160\\s*de\\s*1994"
+      ],
+      "policy_areas": [
+        "PA07"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057190+00:00"
+      }
+    },
+    "ENT-NORM-021": {
+      "entity_id": "ENT-NORM-021",
+      "canonical_name": "Decreto 660 de 2018",
+      "full_name": "Programa Integral de Garantías para Líderes Sociales",
+      "category": "NORMATIVE",
+      "subcategory": "DECRETO",
+      "year": 2018,
+      "aliases": [],
+      "detection_patterns": [
+        "Decreto 660\\s+de\\s+2018",
+        "Decreto\\s*660\\s*de\\s*2018"
+      ],
+      "policy_areas": [
+        "PA08"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057198+00:00"
+      }
+    },
+    "ENT-NORM-022": {
+      "entity_id": "ENT-NORM-022",
+      "canonical_name": "Ley 1712 de 2014",
+      "full_name": "Transparencia y Acceso a Información",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1712,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1712\\s+de\\s+2014",
+        "Ley\\s*1712\\s*de\\s*2014"
+      ],
+      "policy_areas": [
+        "PA08"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057204+00:00"
+      }
+    },
+    "ENT-NORM-023": {
+      "entity_id": "ENT-NORM-023",
+      "canonical_name": "Ley 65 de 1993",
+      "full_name": "Código Penitenciario y Carcelario",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1993,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 65\\s+de\\s+1993",
+        "Ley\\s*65\\s*de\\s*1993"
+      ],
+      "policy_areas": [
+        "PA09"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057211+00:00"
+      }
+    },
+    "ENT-NORM-024": {
+      "entity_id": "ENT-NORM-024",
+      "canonical_name": "Ley 1709 de 2014",
+      "full_name": "Reforma al Código Penitenciario",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1709,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1709\\s+de\\s+2014",
+        "Ley\\s*1709\\s*de\\s*2014"
+      ],
+      "policy_areas": [
+        "PA09"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057218+00:00"
+      }
+    },
+    "ENT-NORM-025": {
+      "entity_id": "ENT-NORM-025",
+      "canonical_name": "Ley 1565 de 2012",
+      "full_name": "Sistema Nacional de Migraciones",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": 1565,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1565\\s+de\\s+2012",
+        "Ley\\s*1565\\s*de\\s*2012"
+      ],
+      "policy_areas": [
+        "PA10"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057225+00:00"
+      }
+    },
+    "ENT-NORM-026": {
+      "entity_id": "ENT-NORM-026",
+      "canonical_name": "CONPES 3950 de 2018",
+      "full_name": "Migración desde Venezuela",
+      "category": "NORMATIVE",
+      "subcategory": "CONPES",
+      "year": 3950,
+      "aliases": [],
+      "detection_patterns": [
+        "CONPES 3950\\s+de\\s+2018",
+        "CONPES\\s*3950\\s*de\\s*2018"
+      ],
+      "policy_areas": [
+        "PA10"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.05,
+          "DIM02": 0.05
+        },
+        "required_for_compliance": false
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057231+00:00"
+      }
+    },
+    "ENT-NORM-027": {
+      "entity_id": "ENT-NORM-027",
+      "canonical_name": "Constitución Política 1991",
+      "full_name": "",
+      "category": "NORMATIVE",
+      "subcategory": "OTRO",
+      "year": null,
+      "aliases": [],
+      "detection_patterns": [
+        "Constitución Política 1991"
+      ],
+      "policy_areas": [
+        "UNIVERSAL"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.1,
+          "DIM02": 0.1
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057236+00:00"
+      }
+    },
+    "ENT-NORM-028": {
+      "entity_id": "ENT-NORM-028",
+      "canonical_name": "Ley 152 de 1994",
+      "full_name": "Ley Orgánica del Plan de Desarrollo",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": null,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 152 de 1994"
+      ],
+      "policy_areas": [
+        "UNIVERSAL"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.1,
+          "DIM02": 0.1
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057239+00:00"
+      }
+    },
+    "ENT-NORM-029": {
+      "entity_id": "ENT-NORM-029",
+      "canonical_name": "Ley 2294 de 2023",
+      "full_name": "Plan Nacional de Desarrollo 2022-2026",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": null,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 2294 de 2023"
+      ],
+      "policy_areas": [
+        "UNIVERSAL"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.1,
+          "DIM02": 0.1
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057243+00:00"
+      }
+    },
+    "ENT-NORM-030": {
+      "entity_id": "ENT-NORM-030",
+      "canonical_name": "Ley 1551 de 2012",
+      "full_name": "Normas para modernizar la organización y el funcionamiento de los municipios",
+      "category": "NORMATIVE",
+      "subcategory": "LEY",
+      "year": null,
+      "aliases": [],
+      "detection_patterns": [
+        "Ley 1551 de 2012"
+      ],
+      "policy_areas": [
+        "UNIVERSAL"
+      ],
+      "scoring_context": {
+        "boost_dimensions": {
+          "DIM01": 0.1,
+          "DIM02": 0.1
+        },
+        "required_for_compliance": true
+      },
+      "provenance": {
+        "source": "corpus_empirico_normatividad.json",
+        "created_at": "2026-01-06T17:32:12.057246+00:00"
+      }
+    }
+  }
+}

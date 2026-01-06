@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "entity-schema-v2.0.0",
+  "type": "object",
+  "required": [
+    "entity_id",
+    "canonical_name",
+    "category"
+  ],
+  "properties": {
+    "entity_id": {
+      "type": "string",
+      "pattern": "^ENT-"
+    },
+    "canonical_name": {
+      "type": "string"
+    },
+    "full_name": {
+      "type": "string"
+    },
+    "category": {
+      "enum": [
+        "NORMATIVE",
+        "INSTITUTIONAL",
+        "POPULATION",
+        "TERRITORIAL",
+        "INTERNATIONAL"
+      ]
+    },
+    "subcategory": {
+      "type": "string"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "detection_patterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "policy_areas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "scoring_context": {
+      "type": "object"
+    },
+    "cross_cutting_theme": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}
