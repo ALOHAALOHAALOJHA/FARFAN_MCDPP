@@ -1,0 +1,131 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  
+  "criterion_id": "MC02",
+  "name": "Quantitative Triplets",
+  "description_es": "Detecta triplets cuantitativos: Indicador + Línea Base + Meta con años",
+  "description_en": "Detects quantitative triplets: Indicator + Baseline + Target with years",
+  
+  "signal_type": "QUANTITATIVE_TRIPLET",
+  "implementation_status": "IMPLEMENTED",
+  "extractor_class": "QuantitativeTripletExtractor",
+  
+  "detection": {
+    "primary_method": "COMPOUND_PATTERN",
+    "_source": "corpus_empirico_calibracion_extractores.json",
+    
+    "components": [
+      {
+        "component_id": "QT-BASELINE",
+        "name": "baseline_value",
+        "detection": {
+          "type": "REGEX",
+          "patterns": [
+            "l[íi]nea\\s+base[:\\s]+(\\d+[.,]?\\d*)\\s*%?\\s*\\((\\d{4})\\)",
+            "Línea\\s+Base\\s+(\\d{4})[:\\s]+(\\d+[.,]?\\d*)"
+          ],
+          "confidence": 0.75
+        },
+        "required": false
+      },
+      {
+        "component_id": "QT-TARGET",
+        "name": "target_value",
+        "detection": {
+          "type": "REGEX",
+          "patterns": [
+            "meta\\s+(\\d{4})[:\\s]+(\\d+[.,]?\\d*)\\s*%?",
+            "Meta\\s+cuatrienio[:\\s]+(\\d+[.,]?\\d*)"
+          ],
+          "confidence": 0.78
+        },
+        "required": true
+      },
+      {
+        "component_id": "QT-TABLE",
+        "name": "table_extraction",
+        "detection": {
+          "type": "TABLE_EXTRACTION",
+          "required_headers": ["Indicador", "Línea Base", "Meta"],
+          "optional_headers": ["Año", "Fuente", "Fórmula", "Responsable"],
+          "confidence": 0.95
+        },
+        "required": false
+      }
+    ],
+    
+    "completeness_scoring": {
+      "COMPLETO": {
+        "value": 1.0,
+        "requires": ["indicator", "baseline_value", "baseline_year", "target_value", "target_year", "source"]
+      },
+      "ALTO": {
+        "value": 0.85,
+        "requires": ["indicator", "baseline_value", "baseline_year", "target_value", "target_year"]
+      },
+      "MEDIO": {
+        "value": 0.66,
+        "requires": ["indicator", "baseline_value", "target_value"]
+      },
+      "BAJO": {
+        "value": 0.33,
+        "requires": ["indicator", "target_value"]
+      }
+    }
+  },
+  
+  "validation": {
+    "rules": [
+      {
+        "rule_id": "QT-VAL-001",
+        "condition": "baseline_value >= 0",
+        "severity": "ERROR"
+      },
+      {
+        "rule_id": "QT-VAL-002",
+        "condition": "baseline_year >= 2020 AND baseline_year <= 2024",
+        "severity": "WARNING"
+      },
+      {
+        "rule_id": "QT-VAL-003",
+        "condition": "target_year >= 2024 AND target_year <= 2027",
+        "severity": "WARNING"
+      }
+    ]
+  },
+  
+  "scoring_impact": {
+    "dimension_boost": {
+      "DIM01": 0.15,
+      "DIM03": 0.15,
+      "DIM04": 0.20
+    },
+    "cross_cutting_boost": {
+      "CC_MECANISMOS_SEGUIMIENTO": 0.15
+    }
+  },
+  
+  "unit_detection": {
+    "PORCENTAJE": ["%, porcentaje, tasa"],
+    "CANTIDAD": ["personas, habitantes, beneficiarios, estudiantes"],
+    "MONTO": ["$, pesos, millones, COP"],
+    "TASA": ["por mil, por 100.000, tasa de"],
+    "INDICE": ["índice, índice de, puntos"]
+  },
+  
+  "required_capabilities": ["NUMERIC_PARSING"],
+  
+  "testing": {
+    "test_file": "tests/membership_criteria/test_mc02_quantitative.py",
+    "expected_precision": 0.91,
+    "expected_recall": 0.88,
+    "source": "corpus_thresholds_weights.json"
+  },
+  
+  "empirical_data": {
+    "source": "corpus_empirico_calibracion_extractores.json",
+    "porcentajes_per_plan": {"mean": 485, "min": 201, "max": 890},
+    "triplets_completos": {"mean": 78, "min": 25, "max": 155}
+  }
+}

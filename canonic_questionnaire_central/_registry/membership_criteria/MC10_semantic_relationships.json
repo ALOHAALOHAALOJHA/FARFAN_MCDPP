@@ -1,0 +1,63 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  
+  "criterion_id": "MC10",
+  "name": "Semantic Relationships",
+  "description_es": "Detecta relaciones semánticas entre conceptos usando embeddings",
+  "description_en": "Detects semantic relationships between concepts using embeddings",
+  
+  "signal_type": "SEMANTIC_RELATIONSHIP",
+  "implementation_status": "PARTIAL",
+  "extractor_class": "SemanticRelationshipExtractor",
+  
+  "detection": {
+    "primary_method": "EMBEDDING_SIMILARITY",
+    "_source": "corpus_thresholds_weights.json",
+    
+    "embedding_config": {
+      "model": "paraphrase-multilingual-MiniLM-L12-v2",
+      "dimension": 384,
+      "similarity_threshold": 0.75
+    },
+    
+    "relationship_types": {
+      "QUESTION_CONTENT": {
+        "description": "Similitud entre pregunta y contenido del plan",
+        "threshold": 0.75,
+        "weight": 1.0
+      },
+      "KEYWORD_CONTENT": {
+        "description": "Similitud entre keywords de PA y contenido",
+        "threshold": 0.70,
+        "weight": 0.8
+      },
+      "PATTERN_CONTENT": {
+        "description": "Match de patterns en contenido",
+        "threshold": 0.80,
+        "weight": 0.9
+      }
+    },
+    
+    "co_occurrence": {
+      "min_confidence": 0.70,
+      "conditions": "within_paragraph AND relevant_to_question"
+    }
+  },
+  
+  "scoring_impact": {
+    "dimension_boost": {
+      "DIM01": 0.05,
+      "DIM02": 0.05
+    },
+    "cross_cutting_boost": {}
+  },
+  
+  "required_capabilities": ["SEMANTIC_PROCESSING", "GRAPH_CONSTRUCTION"],
+  
+  "testing": {
+    "test_file": "tests/membership_criteria/test_mc10_semantic.py",
+    "expected_precision": 0.80,
+    "expected_recall": 0.75
+  }
+}

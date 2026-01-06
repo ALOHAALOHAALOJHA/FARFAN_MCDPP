@@ -1,0 +1,116 @@
+{
+  "$schema": "./schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T16:49:00Z",
+  "_description": "Capability definitions for SISAS signal processing (Rule 3 compliance)",
+  
+  "capabilities": {
+    "NUMERIC_PARSING": {
+      "capability_id": "NUMERIC_PARSING",
+      "name": "Numeric Parsing",
+      "description": "Capacidad de parsear, validar y normalizar valores numéricos incluyendo montos, porcentajes y tasas",
+      "required_for": ["QUANTITATIVE_TRIPLET", "FINANCIAL_CHAIN"],
+      "implementation_hints": [
+        "Regex para formatos numéricos colombianos (1.234,56)",
+        "Normalización de moneda (millones, miles de millones, COP)",
+        "Validación de rangos razonables",
+        "Detección de unidades (%, tasa por mil, etc.)"
+      ]
+    },
+    
+    "SEMANTIC_PROCESSING": {
+      "capability_id": "SEMANTIC_PROCESSING",
+      "name": "Semantic Processing",
+      "description": "Procesamiento semántico con embeddings para similaridad y clustering de contenido",
+      "required_for": ["SEMANTIC_RELATIONSHIP", "POPULATION_DISAGGREGATION"],
+      "dependencies": ["sentence-transformers", "numpy", "scikit-learn"],
+      "implementation_hints": [
+        "Embeddings de oraciones con modelo paraphrase-multilingual",
+        "Cosine similarity computation",
+        "Clustering semántico con K-means o HDBSCAN",
+        "Threshold de similaridad >= 0.75"
+      ]
+    },
+    
+    "GRAPH_CONSTRUCTION": {
+      "capability_id": "GRAPH_CONSTRUCTION",
+      "name": "Graph Construction",
+      "description": "Construcción y análisis de grafos de dependencias, jerarquías y relaciones causales",
+      "required_for": ["CAUSAL_LINK", "SEMANTIC_RELATIONSHIP", "PROGRAMMATIC_HIERARCHY"],
+      "dependencies": ["networkx"],
+      "implementation_hints": [
+        "Nodos y aristas tipados",
+        "Traversal algorithms (BFS, DFS)",
+        "Cycle detection para validación",
+        "Topological sort para cadenas causales"
+      ]
+    },
+    
+    "TABLE_PARSING": {
+      "capability_id": "TABLE_PARSING",
+      "name": "Table Parsing",
+      "description": "Extracción estructurada de datos desde tablas en PDF y documentos",
+      "required_for": ["STRUCTURAL_MARKER"],
+      "dependencies": ["pdfplumber", "pandas", "tabula-py"],
+      "implementation_hints": [
+        "Header detection con heurísticas",
+        "Row extraction con alineación de celdas",
+        "Cell type inference (numérico, texto, fecha)",
+        "Merge detection para celdas combinadas"
+      ]
+    },
+    
+    "TEMPORAL_REASONING": {
+      "capability_id": "TEMPORAL_REASONING",
+      "name": "Temporal Reasoning",
+      "description": "Razonamiento sobre períodos, vigencias, fechas y secuencias temporales",
+      "required_for": ["TEMPORAL_MARKER"],
+      "implementation_hints": [
+        "Date parsing con múltiples formatos",
+        "Period validation (inicio < fin)",
+        "Temporal ordering y secuenciamiento",
+        "Detección de vigencias (2024-2027)"
+      ]
+    },
+    
+    "CAUSAL_INFERENCE": {
+      "capability_id": "CAUSAL_INFERENCE",
+      "name": "Causal Inference",
+      "description": "Inferencia de relaciones causales a partir de verbos de acción y conectores",
+      "required_for": ["CAUSAL_LINK"],
+      "implementation_hints": [
+        "Verb detection (contribuir, generar, producir, etc.)",
+        "Argument extraction (sujeto, objeto)",
+        "Causal chain construction",
+        "Validación de coherencia lógica"
+      ]
+    },
+    
+    "FINANCIAL_ANALYSIS": {
+      "capability_id": "FINANCIAL_ANALYSIS",
+      "name": "Financial Analysis",
+      "description": "Análisis de cadenas presupuestales y validación de coherencia financiera",
+      "required_for": ["FINANCIAL_CHAIN"],
+      "implementation_hints": [
+        "Currency normalization (COP, millones, etc.)",
+        "Source categorization (SGP, SGR, propios, crédito)",
+        "PPI validation (suma de fuentes = total)",
+        "Detección de vigencias presupuestales"
+      ]
+    },
+    
+    "NER_EXTRACTION": {
+      "capability_id": "NER_EXTRACTION",
+      "name": "Named Entity Recognition",
+      "description": "Extracción de entidades nombradas específicas del contexto colombiano",
+      "required_for": ["NORMATIVE_REFERENCE", "INSTITUTIONAL_ENTITY"],
+      "dependencies": ["spacy"],
+      "implementation_hints": [
+        "Colombian legal entities (Ley, Decreto, CONPES)",
+        "Institution patterns (DNP, DANE, Ministerio)",
+        "Normative reference parsing",
+        "Validation de años (1991-2026)"
+      ]
+    }
+  }
+}

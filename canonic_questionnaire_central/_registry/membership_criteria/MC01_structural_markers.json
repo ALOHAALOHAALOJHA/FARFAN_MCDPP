@@ -1,0 +1,70 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  
+  "criterion_id": "MC01",
+  "name": "Structural Markers",
+  "description_es": "Detecta marcadores estructurales del documento: secciones, tablas, figuras, encabezados",
+  "description_en": "Detects document structural markers: sections, tables, figures, headers",
+  
+  "signal_type": "STRUCTURAL_MARKER",
+  "implementation_status": "IMPLEMENTED",
+  "extractor_class": "CPPStructuralParser",
+  
+  "detection": {
+    "primary_method": "COMPOUND_PATTERN",
+    
+    "components": [
+      {
+        "component_id": "SM-SECTION",
+        "name": "section_header",
+        "description": "Encabezados de sección principales",
+        "detection": {
+          "type": "REGEX",
+          "patterns": [
+            "(?:Diagnóstico|DIAGNÓSTICO|Capítulo\\s+1)",
+            "(?:Parte\\s+Estratégica|Componente\\s+Estratégico)",
+            "(?:Plan\\s+Plurianual|Plurianual\\s+de\\s+Inversiones|PPI)",
+            "(?:Seguimiento|Evaluación|Monitoreo)"
+          ]
+        },
+        "confidence_base": 0.90,
+        "source": "corpus_empirico_calibracion_extractores.json"
+      },
+      {
+        "component_id": "SM-TABLE",
+        "name": "table_structure",
+        "description": "Tablas con encabezados estructurados",
+        "detection": {
+          "type": "TABLE_EXTRACTION",
+          "header_templates": [
+            ["Programa", "Meta", "Presupuesto", "Fuente"],
+            ["Indicador", "Línea Base", "Meta 2027", "Responsable"],
+            ["Fuente", "Monto", "Porcentaje"]
+          ]
+        },
+        "confidence_base": 0.95
+      }
+    ]
+  },
+  
+  "scoring_impact": {
+    "dimension_boost": {
+      "DIM01": 0.05,
+      "DIM02": 0.05,
+      "DIM03": 0.10
+    },
+    "cross_cutting_boost": {
+      "CC_MECANISMOS_SEGUIMIENTO": 0.10
+    }
+  },
+  
+  "required_capabilities": ["TABLE_PARSING"],
+  
+  "testing": {
+    "test_file": "tests/membership_criteria/test_mc01_structural.py",
+    "expected_precision": 0.95,
+    "expected_recall": 0.92,
+    "source": "corpus_thresholds_weights.json"
+  }
+}

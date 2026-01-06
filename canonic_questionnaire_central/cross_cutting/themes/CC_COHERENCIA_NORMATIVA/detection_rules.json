@@ -1,0 +1,105 @@
+{
+  "$schema": "../../detection_rules_schema.json",
+  "_schema_version": "2.0.0",
+  
+  "theme_id": "CC_COHERENCIA_NORMATIVA",
+  "name": "Coherencia Normativa",
+  
+  "detection_strategy": {
+    "primary_method": "NORMATIVE_COMPLIANCE",
+    "_source": "corpus_empirico_normatividad.json",
+    
+    "signals": [
+      {
+        "signal_id": "SIG-CN-001",
+        "name": "universal_mandatory",
+        "type": "NORMATIVE_REFERENCE",
+        "description": "Normas universales obligatorias",
+        "mc_reference": "MC03",
+        "required_norms": [
+          {
+            "norm_id": "Constitución Política 1991",
+            "articles_key": ["Art. 339", "Art. 342"],
+            "penalty_if_missing": 0.5
+          },
+          {
+            "norm_id": "Ley 152 de 1994",
+            "penalty_if_missing": 0.4
+          },
+          {
+            "norm_id": "Ley 2294 de 2023",
+            "penalty_if_missing": 0.35
+          }
+        ],
+        "weight": 0.50
+      },
+      {
+        "signal_id": "SIG-CN-002",
+        "name": "policy_area_specific",
+        "type": "CONDITIONAL_NORMATIVE",
+        "description": "Normas específicas por Policy Area",
+        "rules": {
+          "PA01": [
+            {"norm_id": "Ley 1257 de 2008", "penalty": 0.3},
+            {"norm_id": "CONPES 4080 de 2022", "penalty": 0.2}
+          ],
+          "PA05": [
+            {"norm_id": "Ley 1448 de 2011", "penalty": 0.4},
+            {"norm_id": "Decreto 893 de 2017", "penalty": 0.3}
+          ],
+          "PA06": [
+            {"norm_id": "Ley 1098 de 2006", "penalty": 0.35}
+          ],
+          "PA07": [
+            {"norm_id": "Ley 388 de 1997", "penalty": 0.3}
+          ]
+        },
+        "weight": 0.35
+      },
+      {
+        "signal_id": "SIG-CN-003",
+        "name": "contextual_norms",
+        "type": "CONTEXTUAL_NORMATIVE",
+        "description": "Normas contextuales (PDET, étnico, etc.)",
+        "context_rules": {
+          "pdet_municipalities": {
+            "condition": "Municipality is in PDET list",
+            "additional_mandatory": [
+              {"norm_id": "Decreto 893 de 2017", "penalty": 0.4}
+            ]
+          },
+          "ethnic_territories": {
+            "condition": "Population > 10% indigenous or afro",
+            "additional_mandatory": [
+              {"norm_id": "Ley 70 de 1993", "penalty": 0.25},
+              {"norm_id": "Decreto 1953 de 2014", "penalty": 0.20}
+            ]
+          }
+        },
+        "weight": 0.15
+      }
+    ],
+    
+    "aggregation": {
+      "method": "PENALTY_SUBTRACTION",
+      "formula": "score = 1.0 - SUM(penalties) for missing mandatory norms",
+      "floor": 0.0
+    }
+  },
+  
+  "scoring_impact": {
+    "interpretation": {
+      "EXCELENTE": ">= 0.90 (all mandatory norms cited)",
+      "BUENO": "0.75 - 0.89 (minor gaps)",
+      "ACEPTABLE": "0.60 - 0.74 (significant gaps)",
+      "DEFICIENTE": "< 0.60 (critical gaps)"
+    },
+    "gap_report_generation": true
+  },
+  
+  "required_capabilities": ["NER_EXTRACTION"],
+  
+  "testing": {
+    "test_file": "tests/cross_cutting/test_cc_coherencia_normativa.py"
+  }
+}

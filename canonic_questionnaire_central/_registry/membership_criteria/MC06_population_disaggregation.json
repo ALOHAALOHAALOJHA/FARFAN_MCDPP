@@ -1,0 +1,77 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  
+  "criterion_id": "MC06",
+  "name": "Population Disaggregation",
+  "description_es": "Detecta menciones de poblaciones específicas y análisis interseccional",
+  "description_en": "Detects mentions of specific populations and intersectional analysis",
+  
+  "signal_type": "POPULATION_DISAGGREGATION",
+  "implementation_status": "PARTIAL",
+  "extractor_class": "PopulationDisaggregationExtractor",
+  
+  "detection": {
+    "primary_method": "KEYWORD_SET",
+    "_source": "corpus_empirico_integrado.json + policy_areas keywords",
+    
+    "population_categories": {
+      "GENERO": [
+        "mujeres", "hombres", "género", "mujer",
+        "mujeres cabeza de familia", "mujeres rurales"
+      ],
+      "ETNICO": [
+        "indígenas", "afrodescendientes", "afrocolombianos",
+        "raizales", "palenqueros", "rom", "gitanos",
+        "comunidades negras", "pueblos indígenas"
+      ],
+      "ETARIO": [
+        "niños", "niñas", "adolescentes", "jóvenes",
+        "adultos mayores", "primera infancia",
+        "infancia", "juventud", "tercera edad"
+      ],
+      "VULNERABILIDAD": [
+        "víctimas", "desplazados", "discapacidad",
+        "personas con discapacidad", "LGBTI",
+        "campesinos", "población vulnerable"
+      ],
+      "TERRITORIAL": [
+        "rural", "urbano", "veredas", "corregimientos",
+        "zona rural", "zona urbana", "cabecera municipal"
+      ]
+    },
+    
+    "intersectional_detection": {
+      "term_pairs": [
+        ["mujeres", "indígenas"],
+        ["jóvenes", "rurales"],
+        ["víctimas", "discapacidad"],
+        ["niños", "afrodescendientes"],
+        ["adultos mayores", "mujeres"],
+        ["migrantes", "mujeres"]
+      ],
+      "window_size": 50,
+      "co_occurrence_boost": 1.30
+    }
+  },
+  
+  "scoring_impact": {
+    "dimension_boost": {
+      "DIM01": 0.10,
+      "DIM02": 0.05
+    },
+    "cross_cutting_boost": {
+      "CC_ENFOQUE_DIFERENCIAL": 0.25,
+      "CC_PERSPECTIVA_GENERO": 0.20
+    }
+  },
+  
+  "required_capabilities": [],
+  "optional_capabilities": ["NER_EXTRACTION", "SEMANTIC_PROCESSING"],
+  
+  "testing": {
+    "test_file": "tests/membership_criteria/test_mc06_population.py",
+    "expected_precision": 0.85,
+    "expected_recall": 0.80
+  }
+}

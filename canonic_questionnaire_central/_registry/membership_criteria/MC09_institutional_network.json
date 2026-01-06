@@ -1,0 +1,95 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  
+  "criterion_id": "MC09",
+  "name": "Institutional Network",
+  "description_es": "Detecta entidades institucionales colombianas y relaciones interinstitucionales",
+  "description_en": "Detects Colombian institutional entities and inter-institutional relationships",
+  
+  "signal_type": "INSTITUTIONAL_ENTITY",
+  "implementation_status": "MISSING",
+  "extractor_class": "InstitutionalNER",
+  "_priority": "MEDIUM",
+  
+  "detection": {
+    "primary_method": "NER",
+    
+    "entity_categories": {
+      "NATIONAL": {
+        "description": "Entidades del orden nacional",
+        "examples": [
+          "DNP", "DANE", "Ministerio de Hacienda",
+          "Ministerio del Interior", "ICBF", "SENA"
+        ],
+        "confidence_base": 0.94
+      },
+      "DEPARTMENTAL": {
+        "description": "Entidades del orden departamental",
+        "examples": [
+          "Gobernación", "Secretaría Departamental",
+          "Asamblea Departamental"
+        ],
+        "confidence_base": 0.90
+      },
+      "MUNICIPAL": {
+        "description": "Entidades del orden municipal",
+        "examples": [
+          "Alcaldía", "Secretaría de Planeación",
+          "Secretaría de Hacienda", "Concejo Municipal",
+          "Personería", "Contraloría Municipal"
+        ],
+        "confidence_base": 0.89
+      },
+      "CONTROL": {
+        "description": "Entidades de control",
+        "examples": [
+          "Contraloría", "Procuraduría", "Defensoría del Pueblo",
+          "Personería", "Veeduría Ciudadana"
+        ],
+        "confidence_base": 0.91
+      },
+      "INTERNATIONAL": {
+        "description": "Organismos internacionales",
+        "examples": [
+          "ONU", "PNUD", "UNICEF", "ACNUR",
+          "OIM", "Banco Mundial", "BID"
+        ],
+        "confidence_base": 0.92
+      }
+    },
+    
+    "relationship_patterns": [
+      {
+        "pattern": "(?:en articulación con|en coordinación con|junto con)\\s+(.+)",
+        "relationship_type": "COORDINATION"
+      },
+      {
+        "pattern": "(?:bajo la dirección de|liderado por)\\s+(.+)",
+        "relationship_type": "LEADERSHIP"
+      },
+      {
+        "pattern": "(?:con apoyo de|con recursos de)\\s+(.+)",
+        "relationship_type": "SUPPORT"
+      }
+    ]
+  },
+  
+  "scoring_impact": {
+    "dimension_boost": {
+      "DIM02": 0.10,
+      "DIM03": 0.05
+    },
+    "cross_cutting_boost": {
+      "CC_INTEROPERABILIDAD": 0.25
+    }
+  },
+  
+  "required_capabilities": ["NER_EXTRACTION"],
+  
+  "testing": {
+    "test_file": "tests/membership_criteria/test_mc09_institutional.py",
+    "expected_precision": 0.90,
+    "expected_recall": 0.85
+  }
+}

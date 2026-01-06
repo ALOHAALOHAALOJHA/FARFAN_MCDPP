@@ -1,0 +1,79 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  
+  "criterion_id": "MC08",
+  "name": "Causal Verbs",
+  "description_es": "Detecta verbos causales y enlaces lógicos entre componentes del plan",
+  "description_en": "Detects causal verbs and logical links between plan components",
+  
+  "signal_type": "CAUSAL_LINK",
+  "implementation_status": "MISSING",
+  "extractor_class": "CausalVerbExtractor",
+  "_priority": "HIGH",
+  
+  "detection": {
+    "primary_method": "COMPOUND_PATTERN",
+    
+    "causal_verb_categories": {
+      "GENERATION": [
+        "generar", "producir", "crear", "desarrollar",
+        "construir", "establecer", "implementar"
+      ],
+      "CONTRIBUTION": [
+        "contribuir", "aportar", "apoyar", "fortalecer",
+        "mejorar", "incrementar", "potenciar"
+      ],
+      "CAUSATION": [
+        "causar", "provocar", "ocasionar", "originar",
+        "derivar", "resultar", "conducir"
+      ],
+      "ACHIEVEMENT": [
+        "lograr", "alcanzar", "obtener", "conseguir",
+        "cumplir", "materializar", "concretar"
+      ],
+      "REDUCTION": [
+        "reducir", "disminuir", "mitigar", "minimizar",
+        "prevenir", "evitar", "eliminar"
+      ]
+    },
+    
+    "causal_connectors": [
+      "para", "con el fin de", "a través de",
+      "mediante", "por medio de", "lo que permite",
+      "lo cual genera", "contribuyendo a", "que resulta en"
+    ],
+    
+    "chain_patterns": {
+      "producto_resultado": {
+        "pattern": "(?:producto|actividad).*?(?:→|genera|produce|permite).*?(?:resultado|outcome)",
+        "confidence": 0.85
+      },
+      "resultado_impacto": {
+        "pattern": "(?:resultado).*?(?:→|contribuye|conduce).*?(?:impacto|efecto)",
+        "confidence": 0.82
+      },
+      "explicit_chain": {
+        "pattern": "(?:si|cuando).*?(?:entonces|se logrará|permitirá)",
+        "confidence": 0.90
+      }
+    }
+  },
+  
+  "scoring_impact": {
+    "dimension_boost": {
+      "DIM04": 0.15,
+      "DIM05": 0.20,
+      "DIM06": 0.25
+    },
+    "cross_cutting_boost": {}
+  },
+  
+  "required_capabilities": ["CAUSAL_INFERENCE", "GRAPH_CONSTRUCTION"],
+  
+  "testing": {
+    "test_file": "tests/membership_criteria/test_mc08_causal.py",
+    "expected_precision": 0.85,
+    "expected_recall": 0.80
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "$schema": "../../detection_rules_schema.json",
+  "_schema_version": "2.0.0",
+  
+  "theme_id": "CC_SOSTENIBILIDAD_PRESUPUESTAL",
+  "name": "Sostenibilidad Presupuestal",
+  
+  "detection_strategy": {
+    "primary_method": "FINANCIAL_ANALYSIS",
+    
+    "signals": [
+      {
+        "signal_id": "SIG-SP-001",
+        "name": "financial_chain_present",
+        "type": "FINANCIAL_CHAIN",
+        "description": "Presencia de cadenas presupuestales completas",
+        "mc_reference": "MC05",
+        "weight": 0.40,
+        "required_components": ["monto", "fuente", "programa"]
+      },
+      {
+        "signal_id": "SIG-SP-002",
+        "name": "ppi_table_present",
+        "type": "STRUCTURAL_MARKER",
+        "description": "Plan Plurianual de Inversiones estructurado",
+        "mc_reference": "MC01",
+        "detection": {
+          "table_type": "PPI",
+          "required_columns": ["Fuente", "Monto", "Programa"]
+        },
+        "weight": 0.30
+      },
+      {
+        "signal_id": "SIG-SP-003",
+        "name": "source_diversification",
+        "type": "KEYWORD_ANALYSIS",
+        "description": "Diversificación de fuentes de financiación",
+        "keywords": {
+          "SGP": ["SGP", "participaciones"],
+          "SGR": ["regalías", "SGR"],
+          "PROPIOS": ["recursos propios", "tributarios"],
+          "CREDITO": ["crédito", "endeudamiento"],
+          "COFINANCIACION": ["cofinanciación", "nación"]
+        },
+        "min_sources": 3,
+        "weight": 0.20
+      },
+      {
+        "signal_id": "SIG-SP-004",
+        "name": "temporal_projection",
+        "type": "TEMPORAL_ANALYSIS",
+        "description": "Proyección multianual (4 años)",
+        "mc_reference": "MC07",
+        "required_years": ["2024", "2025", "2026", "2027"],
+        "weight": 0.10
+      }
+    ],
+    
+    "aggregation": {
+      "method": "WEIGHTED_SUM",
+      "threshold": 0.60
+    }
+  },
+  
+  "scoring_impact": {
+    "when_detected": {
+      "boost_questions": [
+        "Q003", "Q033", "Q063", "Q093", "Q123", "Q153", "Q183", "Q213", "Q243", "Q273"
+      ],
+      "boost_amount": 0.15
+    },
+    "validated_closure_bonus": {
+      "condition": "sum(fuentes) == PPI_total within 1%",
+      "bonus": 0.20
+    }
+  },
+  
+  "required_capabilities": ["NUMERIC_PARSING", "FINANCIAL_ANALYSIS"],
+  
+  "testing": {
+    "test_file": "tests/cross_cutting/test_cc_sostenibilidad.py"
+  }
+}

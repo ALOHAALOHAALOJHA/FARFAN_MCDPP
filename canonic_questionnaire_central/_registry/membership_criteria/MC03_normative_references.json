@@ -1,0 +1,117 @@
+{
+  "$schema": "../schema.json",
+  "_schema_version": "2.0.0",
+  
+  "criterion_id": "MC03",
+  "name": "Normative References",
+  "description_es": "Detecta referencias normativas: Leyes, Decretos, CONPES, Artículos",
+  "description_en": "Detects normative references: Laws, Decrees, CONPES, Articles",
+  
+  "signal_type": "NORMATIVE_REFERENCE",
+  "implementation_status": "PARTIAL",
+  "extractor_class": "NormativeReferenceExtractor",
+  
+  "detection": {
+    "primary_method": "COMPOUND_PATTERN",
+    "_source": "corpus_empirico_calibracion_extractores.json + corpus_empirico_normatividad.json",
+    
+    "components": [
+      {
+        "component_id": "NR-LEY",
+        "name": "ley_pattern",
+        "detection": {
+          "type": "REGEX",
+          "pattern": "Ley\\s+(\\d+)\\s+de\\s+(\\d{4})",
+          "examples": ["Ley 2294 de 2023", "Ley 152 de 1994", "Ley 1448 de 2011"]
+        },
+        "confidence_base": 0.92,
+        "validation": "year >= 1991 AND year <= 2026"
+      },
+      {
+        "component_id": "NR-DECRETO",
+        "name": "decreto_pattern",
+        "detection": {
+          "type": "REGEX",
+          "pattern": "Decreto\\s+(\\d+)\\s+de\\s+(\\d{4})",
+          "examples": ["Decreto 893 de 2017", "Decreto 1865 de 1994"]
+        },
+        "confidence_base": 0.90
+      },
+      {
+        "component_id": "NR-CONPES",
+        "name": "conpes_pattern",
+        "detection": {
+          "type": "REGEX",
+          "pattern": "CONPES\\s+(\\d+)(?:\\s+de\\s+(\\d{4}))?",
+          "examples": ["CONPES 3932 de 2018", "CONPES 4080"]
+        },
+        "confidence_base": 0.93,
+        "validation": "number >= 3000"
+      },
+      {
+        "component_id": "NR-ARTICULO",
+        "name": "articulo_pattern",
+        "detection": {
+          "type": "REGEX",
+          "pattern": "Art(?:ículo|\\.)?\\s+(\\d+)",
+          "examples": ["Artículo 339", "Art. 342"]
+        },
+        "confidence_base": 0.70,
+        "note": "Lower confidence for standalone articles"
+      }
+    ],
+    
+    "ner_enhancement": {
+      "entity_patterns": [
+        {"label": "LEY", "pattern": [{"LOWER": "ley"}, {"IS_DIGIT": true}]},
+        {"label": "DECRETO", "pattern": [{"LOWER": "decreto"}, {"IS_DIGIT": true}]},
+        {"label": "CONPES", "pattern": [{"UPPER": "CONPES"}, {"IS_DIGIT": true}]}
+      ],
+      "context_window": 50
+    }
+  },
+  
+  "validation": {
+    "rules": [
+      {
+        "rule_id": "NR-VAL-001",
+        "name": "valid_year",
+        "condition": "year >= 1991 AND year <= 2026",
+        "severity": "ERROR"
+      }
+    ]
+  },
+  
+  "scoring_impact": {
+    "dimension_boost": {
+      "DIM01": 0.10,
+      "DIM02": 0.15
+    },
+    "cross_cutting_boost": {
+      "CC_COHERENCIA_NORMATIVA": 0.30
+    }
+  },
+  
+  "mandatory_norms_reference": "corpus_empirico_normatividad.json",
+  
+  "required_capabilities": ["NER_EXTRACTION"],
+  
+  "testing": {
+    "test_file": "tests/membership_criteria/test_mc03_normative.py",
+    "expected_precision": 0.93,
+    "expected_recall": 0.85,
+    "source": "corpus_thresholds_weights.json"
+  },
+  
+  "empirical_data": {
+    "source": "corpus_empirico_calibracion_extractores.json",
+    "leyes_per_plan": {"mean": 14, "min": 2, "max": 46},
+    "decretos_per_plan": {"mean": 3, "min": 1, "max": 12},
+    "high_frequency_norms": [
+      "Ley 2294 de 2023",
+      "Ley 152 de 1994",
+      "Ley 388 de 1997",
+      "Ley 1448 de 2011"
+    ]
+  }
+}

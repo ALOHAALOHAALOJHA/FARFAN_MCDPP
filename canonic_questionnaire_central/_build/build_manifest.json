@@ -1,0 +1,25 @@
+{
+  "_generated_at": "2026-01-06T17:11:44.244609+00:00",
+  "build_duration_seconds": 0.0,
+  "metrics": {
+    "patterns_processed": 1720,
+    "questions_processed": 300,
+    "keywords_processed": 1916,
+    "views_generated": 7,
+    "integrity_errors": 0,
+    "warnings": 0
+  },
+  "views_generated": [
+    "pattern_question_matrix.json",
+    "keyword_pa_matrix.json",
+    "mc_question_matrix.json",
+    "cc_pa_matrix.json",
+    "capability_coverage_matrix.json",
+    "questionnaire_flat.json",
+    "signal_flow_graph.json"
+  ],
+  "legacy_artifacts": [
+    "questionnaire_monolith.json"
+  ],
+  "success": true
+}

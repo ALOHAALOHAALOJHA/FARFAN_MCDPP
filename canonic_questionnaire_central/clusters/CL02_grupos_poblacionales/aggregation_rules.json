@@ -1,0 +1,85 @@
+{
+  "$schema": "../aggregation_schema.json",
+  "_schema_version": "2.0.0",
+  
+  "cluster_id": "CL02",
+  "cluster_name": "Grupos Poblacionales",
+  "cluster_description": "Agrupa políticas de atención a poblaciones específicas",
+  
+  "composition": {
+    "policy_areas": ["PA01", "PA05", "PA06"],
+    "policy_area_names": {
+      "PA01": "Mujeres y Género",
+      "PA05": "Víctimas y Paz",
+      "PA06": "Niñez, Adolescencia y Juventud"
+    }
+  },
+  
+  "aggregation": {
+    "method": "WEIGHTED_AVERAGE_WITH_COHERENCE_BONUS",
+    
+    "policy_area_weights": {
+      "PA01": 0.30,
+      "PA05": 0.40,
+      "PA06": 0.30
+    },
+    
+    "weight_rationale": {
+      "PA01": "Peso medio por transversalidad de género",
+      "PA05": "Mayor peso por obligatoriedad en municipios PDET",
+      "PA06": "Peso medio por prioridad de protección"
+    },
+    
+    "coherence_bonus": {
+      "enabled": true,
+      "max_bonus": 0.15,
+      
+      "criteria": {
+        "enfoque_diferencial": {
+          "description": "Presencia de enfoque diferencial explícito",
+          "detection": {
+            "cc_theme": "CC_ENFOQUE_DIFERENCIAL",
+            "min_score": 0.60
+          },
+          "weight": 0.50
+        },
+        
+        "intersectional_approach": {
+          "description": "Análisis interseccional (género + víctimas + niñez)",
+          "detection": {
+            "type": "CO_OCCURRENCE_ACROSS_PA",
+            "terms": ["mujeres víctimas", "niños víctimas", "enfoque de género"]
+          },
+          "weight": 0.30
+        },
+        
+        "normative_alignment": {
+          "required_norms": ["Ley 1257 de 2008", "Ley 1448 de 2011", "Ley 1098 de 2006"],
+          "weight": 0.20
+        }
+      }
+    },
+    
+    "final_formula": "MESO_SCORE = (PA01_score * 0.30 + PA05_score * 0.40 + PA06_score * 0.30) + coherence_bonus"
+  },
+  
+  "meso_question": {
+    "question_id": "MESO-CL02",
+    "text": {
+      "es": "¿El plan integra coherentemente la atención a mujeres, víctimas, y niñez/juventud con enfoque diferencial?",
+      "en": "Does the plan coherently integrate attention to women, victims, and children/youth with a differential approach?"
+    }
+  },
+  
+  "thresholds": {
+    "EXCELENTE": {"min": 0.85, "color": "#22c55e"},
+    "BUENO": {"min": 0.70, "color": "#3b82f6"},
+    "ACEPTABLE": {"min": 0.55, "color": "#eab308"},
+    "INSUFICIENTE": {"min": 0.0, "color": "#ef4444"}
+  },
+  
+  "signal_preservation": {
+    "preserve_top_signals": 5,
+    "preserve_types": ["NORMATIVE_REFERENCE", "POPULATION_DISAGGREGATION", "QUANTITATIVE_TRIPLET"]
+  }
+}

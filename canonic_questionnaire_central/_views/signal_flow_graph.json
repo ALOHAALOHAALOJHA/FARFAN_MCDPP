@@ -1,0 +1,138 @@
+{
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T17:11:44.187068+00:00",
+  "nodes": [
+    {
+      "id": "MC01",
+      "type": "MEMBERSHIP_CRITERIA",
+      "signal_type": "STRUCTURAL_MARKER",
+      "implementation_status": "IMPLEMENTED"
+    },
+    {
+      "id": "MC10",
+      "type": "MEMBERSHIP_CRITERIA",
+      "signal_type": "SEMANTIC_RELATIONSHIP",
+      "implementation_status": "PARTIAL"
+    },
+    {
+      "id": "MC06",
+      "type": "MEMBERSHIP_CRITERIA",
+      "signal_type": "POPULATION_DISAGGREGATION",
+      "implementation_status": "PARTIAL"
+    },
+    {
+      "id": "MC07",
+      "type": "MEMBERSHIP_CRITERIA",
+      "signal_type": "TEMPORAL_MARKER",
+      "implementation_status": "PARTIAL"
+    },
+    {
+      "id": "MC02",
+      "type": "MEMBERSHIP_CRITERIA",
+      "signal_type": "QUANTITATIVE_TRIPLET",
+      "implementation_status": "IMPLEMENTED"
+    },
+    {
+      "id": "MC04",
+      "type": "MEMBERSHIP_CRITERIA",
+      "signal_type": "PROGRAMMATIC_HIERARCHY",
+      "implementation_status": "PARTIAL"
+    },
+    {
+      "id": "MC09",
+      "type": "MEMBERSHIP_CRITERIA",
+      "signal_type": "INSTITUTIONAL_ENTITY",
+      "implementation_status": "MISSING"
+    },
+    {
+      "id": "MC05",
+      "type": "MEMBERSHIP_CRITERIA",
+      "signal_type": "FINANCIAL_CHAIN",
+      "implementation_status": "MISSING"
+    },
+    {
+      "id": "MC03",
+      "type": "MEMBERSHIP_CRITERIA",
+      "signal_type": "NORMATIVE_REFERENCE",
+      "implementation_status": "PARTIAL"
+    },
+    {
+      "id": "MC08",
+      "type": "MEMBERSHIP_CRITERIA",
+      "signal_type": "CAUSAL_LINK",
+      "implementation_status": "MISSING"
+    },
+    {
+      "id": "PHASE_1",
+      "type": "PHASE",
+      "name": "Extraction"
+    },
+    {
+      "id": "PHASE_2",
+      "type": "PHASE",
+      "name": "Routing"
+    },
+    {
+      "id": "PHASE_3",
+      "type": "PHASE",
+      "name": "Scoring"
+    },
+    {
+      "id": "PHASE_4_7",
+      "type": "PHASE",
+      "name": "Aggregation"
+    }
+  ],
+  "edges": [
+    {
+      "source": "MC01",
+      "target": "PHASE_1",
+      "type": "PRODUCES"
+    },
+    {
+      "source": "MC10",
+      "target": "PHASE_1",
+      "type": "PRODUCES"
+    },
+    {
+      "source": "MC06",
+      "target": "PHASE_1",
+      "type": "PRODUCES"
+    },
+    {
+      "source": "MC07",
+      "target": "PHASE_1",
+      "type": "PRODUCES"
+    },
+    {
+      "source": "MC02",
+      "target": "PHASE_1",
+      "type": "PRODUCES"
+    },
+    {
+      "source": "MC04",
+      "target": "PHASE_1",
+      "type": "PRODUCES"
+    },
+    {
+      "source": "MC09",
+      "target": "PHASE_1",
+      "type": "PRODUCES"
+    },
+    {
+      "source": "MC05",
+      "target": "PHASE_1",
+      "type": "PRODUCES"
+    },
+    {
+      "source": "MC03",
+      "target": "PHASE_1",
+      "type": "PRODUCES"
+    },
+    {
+      "source": "MC08",
+      "target": "PHASE_1",
+      "type": "PRODUCES"
+    }
+  ]
+}

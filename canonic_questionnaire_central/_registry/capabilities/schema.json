@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://farfan.pipeline/schemas/capability-schema-v2.0.0",
+  "_schema_version": "2.0.0",
+  "_description": "JSON Schema for capability definitions and signal-capability mappings",
+  
+  "definitions": {
+    "capability_id": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]+$",
+      "description": "Unique identifier for a capability (e.g., NUMERIC_PARSING)"
+    },
+    "capability_definition": {
+      "type": "object",
+      "required": ["capability_id", "name", "description", "required_for"],
+      "properties": {
+        "capability_id": {"$ref": "#/definitions/capability_id"},
+        "name": {"type": "string", "minLength": 3},
+        "description": {"type": "string", "minLength": 10},
+        "required_for": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Signal types that require this capability"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Python packages or libraries required"
+        },
+        "implementation_hints": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Guidance for implementers"
+        }
+      }
+    },
+    "signal_capability_requirement": {
+      "type": "object",
+      "required": ["required"],
+      "properties": {
+        "required": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/capability_id"},
+          "description": "Capabilities required to process this signal type"
+        },
+        "optional": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/capability_id"},
+          "description": "Optional capabilities that enhance processing"
+        }
+      }
+    }
+  }
+}

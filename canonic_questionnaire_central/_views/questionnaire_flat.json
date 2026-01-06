@@ -1,0 +1,3007 @@
+{
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-06T17:11:44.183421+00:00",
+  "total_questions": 300,
+  "questions": [
+    {
+      "question_id": "Q001",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q1",
+      "text_es": "¿El diagnóstico de las inequidades y brechas de género presenta datos cuantitativos (tasas de violencia basada en género, porcentajes de participación política, cifras de desempleo femenino o brecha salarial) con año de referencia y fuente identificada (Medicina Legal, DANE, Observatorio de Género), desagregados por territorio (rural/urbano) o grupos poblacionales (mujeres diversas, étnicas)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q002",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q2",
+      "text_es": "¿El diagnóstico dimensiona numéricamente la magnitud de las desigualdades o violencias contra las mujeres y reconoce explícitamente limitaciones en los datos como 'subregistro de denuncias', 'información insuficiente sobre economía del cuidado', 'falta de caracterización de violencias no físicas' o 'vacíos en cifras municipales'?",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q003",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q3",
+      "text_es": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a programas de prevención de violencias, funcionamiento de la Casa de la Mujer, estrategias de autonomía económica o transversalización del enfoque de género (Trazador Presupuestal de Género)?",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q004",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q4",
+      "text_es": "¿El plan identifica las entidades responsables de la política de mujer y equidad (ej. Secretaría de la Mujer, Comisaría de Familia, mecanismos de género), describe sus capacidades (equipos psicosociales y jurídicos, duplas de atención) y señala limitaciones institucionales o necesidades de articulación con Fiscalía, ICBF o Gobernación?",
+      "modality": "TYPE_B",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q005",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q5",
+      "text_es": "¿El plan justifica el alcance de sus intervenciones en equidad de género mencionando el marco normativo (Ley 1257 de 2008, CONPES 4080) o reconociendo explícitamente qué competencias son municipales (prevención, atención inicial, rutas, empoderamiento) y cuáles dependen del nivel nacional (judicialización, protección material de alto riesgo)?",
+      "modality": "TYPE_E",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q006",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q1",
+      "text_es": "¿Las actividades para el cierre de brechas y atención a violencias (ej. operación de rutas de atención, escuelas de liderazgo político, formación en oficios no tradicionales, consejos de seguridad para mujeres) aparecen en formato estructurado (tabla, matriz, Plan Indicativo) con atributos verificables como responsable, producto esperado, cronograma y costo o presupuesto?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q007",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q2",
+      "text_es": "¿La descripción de actividades especifica el instrumento ('mediante Casas de la Mujer', 'a través de la Patrulla Púrpura', 'con capital semilla'), la población objetivo (mujeres rurales, víctimas de violencia, jefas de hogar) y explica cómo la actividad contribuye a la equidad ('para romper ciclos de dependencia', 'porque previene la feminización de la pobreza', 'con el fin de garantizar una vida libre de violencias')?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q008",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q3",
+      "text_es": "¿Las actividades propuestas se vinculan explícitamente con las causas estructurales de la desigualdad identificadas en el diagnóstico, tales como la dependencia económica, los estereotipos de género, la sobrecarga de cuidado o la debilidad en la respuesta institucional ante violencias?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q009",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q4",
+      "text_es": "¿El plan identifica posibles obstáculos o resistencias en la implementación de la política de género (ej. revictimización institucional, patrones culturales machistas arraigados, falta de denuncia por miedo) y propone medidas explícitas de mitigación o estrategias de cambio cultural para superarlos?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q010",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q5",
+      "text_es": "¿El plan describe explícitamente cómo las actividades de empoderamiento y prevención se complementan o siguen una secuencia lógica (ej. formación en derechos → empoderamiento económico → participación política; o sensibilización → denuncia → atención integral), evidenciando una estrategia articulada de transversalización?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q011",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q1",
+      "text_es": "¿Los indicadores de producto (mujeres atendidas en rutas de violencia, funcionarias/os capacitados en género, emprendimientos femeninos fortalecidos, lideresas formadas) incluyen línea base, meta cuantitativa y fuente de verificación?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q012",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q2",
+      "text_es": "¿Las metas de productos guardan relación con la magnitud de la brecha o violencia identificada en el diagnóstico, y se especifica la priorización (mujeres en riesgo de feminicidio, ruralidad dispersa) o la cobertura de la intervención frente a la demanda potencial?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q013",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q3",
+      "text_es": "¿Los productos están vinculados a códigos presupuestales específicos (Trazador de Género, recursos propios, SGP) y a entidades responsables identificadas (Secretaría de la Mujer, Desarrollo Social, Gobierno, Comisaría)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q014",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q4",
+      "text_es": "¿Existe correspondencia factible entre el tipo de actividad (ej. 'una charla de sensibilización') y la magnitud de la meta del producto asociado (ej. 'reducción de la tolerancia social a la violencia'), considerando que los cambios en equidad requieren procesos sostenidos y no solo eventos puntuales?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q015",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q5",
+      "text_es": "¿El plan describe cómo los productos (ej. 'mujeres con autonomía económica', 'rutas de atención activas', 'Consejos Consultivos operando') generan o contribuyen a los resultados esperados (ej. 'reducción de brechas', 'garantía de derechos', 'empoderamiento real'), explicando esta conexión o ruta causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q016",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q1",
+      "text_es": "¿Los indicadores de resultado en materia de género (tasa de violencia intrafamiliar, brecha de desempleo por sexo, porcentaje de participación de mujeres en cargos directivos/elección, índice de desigualdad de género) están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q017",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q2",
+      "text_es": "¿El plan describe la ruta que lleva a la igualdad y la garantía de derechos de las mujeres, mencionando condiciones necesarias o supuestos para que funcione (ej. 'si hay corresponsabilidad en el cuidado', 'si el mercado laboral absorbe la mano de obra femenina', 'si el sistema judicial no revictimiza')?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q018",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q3",
+      "text_es": "¿La ambición de las metas de resultado (ej. reducción de la VBG, aumento de la participación) se justifica en función de recursos asignados, capacidad institucional instalada (Comisarías, equipos), articulación con otros niveles, o se compara con la media nacional o municipios similares?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q019",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q4",
+      "text_es": "¿Los resultados propuestos (ej. 'vida libre de violencias', 'autonomía económica', 'participación incidente') atienden o abordan directamente las brechas, desigualdades y violencias priorizadas en el diagnóstico situacional de las mujeres?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q020",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q5",
+      "text_es": "¿El plan declara la alineación de sus resultados de género con la Política Pública Nacional de Equidad de Género, los Objetivos de Desarrollo Sostenible (especialmente ODS 5), o los lineamientos departamentales de mujer y género?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q021",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q1",
+      "text_es": "¿El plan define impactos o transformaciones estructurales de largo plazo para las mujeres (ej. 'transformación de roles de género', 'erradicación de la feminización de la pobreza', 'democracia paritaria consolidada'), describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado más allá del cuatrienio?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q022",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q2",
+      "text_es": "¿Se utilizan índices reconocidos (ej. Índice de Paridad Política, Índice de Brecha Global de Género) o indicadores proxy para medir impactos en equidad, justificando por qué son adecuados para capturar las transformaciones culturales y estructurales esperadas?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q023",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q3",
+      "text_es": "¿Los impactos en equidad de género se alinean con marcos globales y consideran riesgos externos (retrocesos en derechos, crisis económicas que afectan desproporcionadamente a mujeres, aumento de violencias en contextos de inseguridad) que podrían impedir o revertir los logros esperados?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q024",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q4",
+      "text_es": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados (ej. doble jornada laboral sin redistribución del cuidado, violencia como reacción al empoderamiento) y propone un enfoque de \"acción sin daño\" o límites de la gestión municipal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q025",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q5",
+      "text_es": "¿El plan describe cómo se sostendrán los logros en equidad de género más allá del periodo de gobierno, identificando mecanismos de institucionalización (ej. Política Pública Municipal por Acuerdo, transversalización presupuestal), apropiación por organizaciones de mujeres o fortalecimiento de la sociedad civil?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q026",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q1",
+      "text_es": "¿El plan presenta una descripción explícitamente de cómo se genera el cambio hacia la igualdad (ej. modelo ecológico para violencia, empoderamiento multidimensional), preferiblemente en diagrama o matriz, que identifique causas estructurales, intervenciones, supuestos y la secuencia insumos→actividades→productos→resultados→impactos?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q027",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q2",
+      "text_es": "¿El plan evita saltos desproporcionados en su lógica (ej. no asume que un taller elimina el machismo), reconociendo explícitamente que la transformación de inequidades de género requiere procesos culturales y estructurales sostenidos en el tiempo y no solo acciones afirmativas puntuales?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q028",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q3",
+      "text_es": "¿El plan reconoce la complejidad de las relaciones de género, identifica incertidumbres en su estrategia de cambio cultural, y propone mecanismos para aprender y ajustar (ej. observatorios de género, consejos consultivos activos, evaluaciones cualitativas)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q029",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q4",
+      "text_es": "¿Se describe un sistema de monitoreo para la política de género que incluya indicadores desagregados, mecanismos de alerta temprana (ej. en violencias), retroalimentación con organizaciones de mujeres o Consejos Consultivos, y capacidad de adaptar la estrategia ante nuevas dinámicas de desigualdad?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q030",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA01",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q5",
+      "text_es": "¿El plan considera el contexto municipal específico (ruralidad, presencia de conflicto, vocación económica), reconoce la diversidad de las mujeres (enfoque interseccional: campesinas, afro, indígenas, con discapacidad) y explicita restricciones que condicionan el cierre de brechas en el territorio?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q031",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q1",
+      "text_es": "¿El diagnóstico presenta datos numéricos (tasas de homicidio, cifras de desplazamiento, casos de reclutamiento) para el área de Prevención de la violencia y protección frente al conflicto que sirvan como línea base? Se debe verificar el año de referencia y fuentes (ej. Policía Nacional, UARIV, Defensoría del Pueblo).",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q032",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q2",
+      "text_es": "¿El texto dimensiona el problema de la violencia y el conflicto cuantificando la brecha o el aumento de casos? Se debe buscar si se mencionan explícitamente limitaciones en los datos, como 'subregistro', 'cifra negra' o 'vacíos de información'.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q033",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q3",
+      "text_es": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de prevención, protección, atención a víctimas o funcionamiento del Sistema de Alertas Tempranas (SAT)?",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q034",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q4",
+      "text_es": "¿El PDM describe las capacidades para gestionar la protección y atención a víctimas, mencionando entidades (Comité de Justicia Transicional, Enlace de Víctimas) y sus necesidades? Se debe buscar términos como 'rutas de protección', 'sistemas de información' y si se identifican 'limitaciones' o 'barreras'.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q035",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q5",
+      "text_es": "¿El plan justifica su alcance en prevención de violencia mencionando el marco legal (ej. Ley 1448) o reconociendo restricciones explícitas de tipo presupuestal o de coordinación interinstitucional?",
+      "modality": "TYPE_E",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q036",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q1",
+      "text_es": "¿Las actividades de prevención y protección se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q037",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q2",
+      "text_es": "¿La descripción de las actividades de protección detalla el instrumento ('mediante la activación de rutas', 'a través de albergues temporales'), la población objetivo ('víctimas de desplazamiento', 'NNA en riesgo') y la lógica causal ('para mitigar el riesgo')?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q038",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q3",
+      "text_es": "¿El PDM vincula explícitamente las actividades (ej. patrullajes) con las 'causas raíz' de la violencia (ej. economías ilegales, disputas territoriales) identificadas en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q039",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q4",
+      "text_es": "¿El plan identifica posibles riesgos en la implementación de las medidas de protección (ej. agudización del conflicto, estigmatización de comunidades) y propone 'medidas de mitigación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q040",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q5",
+      "text_es": "¿El conjunto de actividades de prevención y protección demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. alertas tempranas + respuesta institucional) o 'secuencia' lógica.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q041",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q1",
+      "text_es": "¿Los indicadores de producto para prevención (ej. alertas gestionadas, personas en rutas de protección) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q042",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q2",
+      "text_es": "¿Las metas de los productos (ej. 'cobertura del 80% de las alertas tempranas') son proporcionales a la magnitud del riesgo diagnosticado? Se debe buscar si se define la 'frecuencia' de la respuesta.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q043",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q3",
+      "text_es": "¿Los productos de protección tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Gobierno' o entidad responsable)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q044",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q4",
+      "text_es": "¿Existe una relación factible entre la actividad (ej. 'conformar un comité') y la meta del producto asociado (ej. '100% de alertas respondidas') para el área de Prevención de la violencia? Se debe evaluar si los 'plazos' y recursos son realistas.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q045",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q5",
+      "text_es": "¿El PDM explica cómo los productos de protección (ej. 'personas atendidas en albergues') contribuyen a generar resultados (ej. 'reducción de la vulnerabilidad')? Se debe buscar la descripción de este 'mecanismo' causal.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q046",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q1",
+      "text_es": "¿Los indicadores de resultado para la prevención de la violencia (ej. 'tasa de homicidios', 'reducción de eventos de desplazamiento') están definidos con línea base, meta y un horizonte temporal ('cuatrienio')?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q047",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q2",
+      "text_es": "¿Se explicita la cadena causal que lleva a la reducción de la violencia, mencionando los 'supuestos' clave (ej. 'si la comunidad confía en las instituciones') o las 'condiciones habilitantes'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q048",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q3",
+      "text_es": "¿La ambición de las metas de resultado (ej. 'reducir la tasa de homicidios en 15%') se justifica en función de los recursos, la capacidad policial o se compara con 'casos' similares?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q049",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q4",
+      "text_es": "¿Los resultados propuestos (ej. 'mejora de la percepción de seguridad') 'atienden' o 'abordan' directamente los problemas de violencia (homicidio, confinamiento) priorizados en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q050",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q5",
+      "text_es": "¿El plan declara la alineación de sus resultados de prevención y protección con marcos superiores como el PND o los ODS (especialmente el ODS 16)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q051",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q1",
+      "text_es": "¿El PDM define 'impactos' o 'transformaciones estructurales' de largo plazo (ej. 'consolidación de la paz territorial')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q052",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q2",
+      "text_es": "¿Se utilizan 'índices' (ej. Índice de Seguridad Humana) o 'proxies' (ej. inversión privada en la zona) para medir los impactos en la estabilización, justificando su validez?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q053",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q3",
+      "text_es": "Cuando un impacto en la paz es difícil de medir (ej. 'restablecimiento del tejido social'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q054",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q4",
+      "text_es": "¿Los impactos en la paz se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. resurgimiento de actores armados) que podrían romper el mecanismo causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q055",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q5",
+      "text_es": "¿La ambición del impacto (ej. 'erradicación total de la violencia') es realista? Se debe buscar si se analizan 'efectos no deseados' (ej. estigmatización) o se declaran 'hipótesis límite'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q056",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q1",
+      "text_es": "¿Existe una 'teoría de cambio' explícita para la prevención de la violencia, preferiblemente en un 'diagrama', que identifique causas, mediadores (ej. control territorial) y 'supuestos verificables'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q057",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q2",
+      "text_es": "¿Los saltos en la cadena causal de la seguridad son proporcionales (ej. la instalación de 10 cámaras no garantiza una reducción del 50% en homicidios)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q058",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q3",
+      "text_es": "¿El plan reconoce 'inconsistencias' en su lógica de seguridad y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q059",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q4",
+      "text_es": "¿Se describe un sistema de monitoreo para la seguridad que incluya 'mecanismos de corrección' o 'aprendizaje' para adaptar la estrategia policial o de prevención?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q060",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA02",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q5",
+      "text_es": "¿La lógica causal para la prevención de la violencia considera el contexto, reconociendo 'grupos afectados' (ej. jóvenes, firmantes de paz) y 'restricciones' territoriales o de acceso?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q061",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q1",
+      "text_es": "¿El diagnóstico presenta datos numéricos (hectáreas deforestadas, nivel de IRCA, familias en riesgo) para el área de Ambiente sano, cambio climático y gestión de desastres que sirvan como línea base? Se debe verificar el año y fuentes (ej. IDEAM, CAR, CMGRD).",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q062",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q2",
+      "text_es": "¿El texto dimensiona la magnitud de los problemas ambientales o la vulnerabilidad ante desastres, cuantificando el déficit de conservación o el alcance del riesgo? Se debe buscar si se mencionan 'vacíos de información' (ej. falta de estudios de riesgo detallados).",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q063",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q3",
+      "text_es": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de reforestación, saneamiento básico (PTAR), gestión del riesgo o adaptación al cambio climático?",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q064",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q4",
+      "text_es": "¿El PDM describe las capacidades para la gestión ambiental y del riesgo, mencionando entidades (CMGRD, Secretaría de Ambiente) y sus necesidades? Se debe buscar términos como 'sistemas de monitoreo ambiental' e 'instrumentos de ordenamiento'.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q065",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q5",
+      "text_es": "¿El plan justifica su alcance en materia ambiental mencionando el marco legal (ej. Ley 1523) o reconociendo restricciones explícitas de tipo presupuestal, técnico o de competencias (ej. con la CAR)?",
+      "modality": "TYPE_E",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q066",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q1",
+      "text_es": "¿Las actividades ambientales y de gestión del riesgo se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q067",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q2",
+      "text_es": "¿La descripción de las actividades ambientales detalla el instrumento ('mediante la construcción de un jarillón', 'a través de incentivos a la conservación'), la población objetivo ('familias en zonas de riesgo', 'propietarios de predios en cuencas') y la lógica causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q068",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q3",
+      "text_es": "¿El PDM vincula explícitamente las actividades (ej. reforestación) con las 'causas raíz' de los problemas ambientales (ej. expansión de la frontera agrícola) identificadas en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q069",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q4",
+      "text_es": "¿El plan identifica posibles riesgos en la implementación (ej. baja adopción de prácticas sostenibles, eventos climáticos extremos) y propone 'medidas de mitigación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q070",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q5",
+      "text_es": "¿El conjunto de actividades ambientales demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. protección de cuencas + optimización del acueducto) o 'secuencia' lógica.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q071",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q1",
+      "text_es": "¿Los indicadores de producto para ambiente (ej. hectáreas reforestadas, metros de jarillón construidos) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q072",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q2",
+      "text_es": "¿Las metas de los productos ambientales (ej. 'reforestar 100 hectáreas') son proporcionales a la magnitud del problema diagnosticado (ej. 'se deforestan 500 hectáreas/año')?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q073",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q3",
+      "text_es": "¿Los productos ambientales tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Ambiente' o entidad responsable)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q074",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q4",
+      "text_es": "¿Existe una relación factible entre la actividad (ej. 'un programa de educación ambiental') y la meta del producto asociado (ej. 'reducción del 50% de residuos sólidos') para el área ambiental? Se debe evaluar si los 'plazos' son realistas.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q075",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q5",
+      "text_es": "¿El PDM explica cómo los productos (ej. 'construcción de una PTAR') contribuyen a generar resultados (ej. 'mejora de la calidad del agua del río')? Se debe buscar la descripción de este 'mecanismo' causal.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q076",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q1",
+      "text_es": "¿Los indicadores de resultado ambiental (ej. 'Índice de Riesgo de la Calidad del Agua - IRCA', 'reducción de emisiones GEI') están definidos con línea base, meta y un horizonte temporal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q077",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q2",
+      "text_es": "¿Se explicita la cadena causal que lleva a la mejora ambiental, mencionando 'supuestos' (ej. 'si la comunidad adopta la separación de residuos') o 'condiciones habilitantes'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q078",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q3",
+      "text_es": "¿La ambición de las metas de resultado ambiental (ej. 'alcanzar un IRCA por debajo del 5%') se justifica en función de la inversión, la tecnología disponible o se compara con 'casos' de otros municipios?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q079",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q4",
+      "text_es": "¿Los resultados propuestos (ej. 'reducción de la vulnerabilidad ante inundaciones') 'atienden' o 'abordan' directamente los problemas de riesgo o ambientales priorizados en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q080",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q5",
+      "text_es": "¿El plan declara la alineación de sus resultados ambientales con marcos superiores como el PND, los ODS (6, 11, 13) o el Acuerdo de París?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q081",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q1",
+      "text_es": "¿El PDM define 'impactos' de largo plazo (ej. 'sostenibilidad hídrica del territorio')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q082",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q2",
+      "text_es": "¿Se utilizan 'índices' (ej. Índice de Sostenibilidad Ambiental) o 'proxies' para medir los impactos en el área ambiental, justificando por qué son válidos para 'capturar el mecanismo' de resiliencia?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q083",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q3",
+      "text_es": "Cuando un impacto ambiental es difícil de medir (ej. 'aumento de la conciencia ambiental'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q084",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q4",
+      "text_es": "¿Los impactos ambientales se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. cambio en los patrones de lluvia a nivel regional) que podrían romper el mecanismo causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q085",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q5",
+      "text_es": "¿La ambición del impacto ambiental (ej. 'territorio carbono neutro') es realista? Se debe buscar si se analizan posibles 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q086",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q1",
+      "text_es": "¿Existe una 'teoría de cambio' explícita para la gestión ambiental, preferiblemente en un 'diagrama', que identifique causas (ej. falta de POT), mediadores y 'supuestos verificables'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q087",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q2",
+      "text_es": "¿Los saltos en la cadena causal ambiental son proporcionales (ej. un programa de reciclaje no genera por sí solo 'sostenibilidad ambiental total')?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q088",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q3",
+      "text_es": "¿El plan reconoce 'inconsistencias' en su lógica ambiental y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q089",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q4",
+      "text_es": "¿Se describe un sistema de monitoreo para la gestión ambiental que incluya 'mecanismos de corrección' o 'aprendizaje' para adaptar la estrategia (ej. ante una nueva mancha de deforestación)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q090",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA03",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q5",
+      "text_es": "¿La lógica causal ambiental considera el contexto, reconociendo 'grupos afectados' (ej. comunidades ribereñas) y 'restricciones' territoriales (zonas de reserva) o regulatorias?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q091",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D1-Q1",
+      "text_es": "¿El diagnóstico presenta datos numéricos (cobertura educativa, tasa de mortalidad infantil, déficit de vivienda) para el área de Derechos económicos, sociales y culturales (DESC) que sirvan como línea base? Se debe verificar el año de referencia y fuentes (ej. DANE, SIMAT, SISPRO).",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q092",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D1-Q2",
+      "text_es": "¿El texto dimensiona la magnitud de los problemas sociales (ej. desnutrición, analfabetismo) cuantificando el déficit o la población desatendida? Se debe buscar si se mencionan 'vacíos de información' (ej. falta de caracterización de la informalidad).",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q093",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D1-Q3",
+      "text_es": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de educación, salud, vivienda, agua potable o seguridad alimentaria?",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q094",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D1-Q4",
+      "text_es": "¿El PDM describe las capacidades para la gestión social, mencionando entidades (Secretarías de Educación, Salud, ESE) y sus necesidades? Se debe buscar términos como 'infraestructura educativa', 'red de prestadores de salud' y si se identifican 'limitaciones'.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q095",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D1-Q5",
+      "text_es": "¿El plan justifica su alcance en DESC mencionando el marco legal (ej. leyes de salud/educación, SGP) o reconociendo restricciones explícitas de tipo presupuestal, de competencias o de capacidad instalada?",
+      "modality": "TYPE_E",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q096",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D2-Q1",
+      "text_es": "¿Las actividades para garantizar los DESC se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q097",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D2-Q2",
+      "text_es": "¿La descripción de las actividades sociales detalla el instrumento ('mediante subsidios', 'a través de la construcción de aulas'), la población objetivo ('hogares con IPM alto', 'estudiantes de zonas rurales') y la lógica causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q098",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D2-Q3",
+      "text_es": "¿El PDM vincula explícitamente las actividades (ej. programa de alimentación escolar) con las 'causas raíz' de los problemas sociales (ej. desnutrición crónica) identificadas en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q099",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D2-Q4",
+      "text_es": "¿El plan identifica posibles riesgos en la implementación de los programas sociales (ej. focalización inadecuada, baja calidad de los servicios) y propone 'medidas de mitigación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q100",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D2-Q5",
+      "text_es": "¿El conjunto de actividades sociales demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. mejora de vías + transporte escolar) o 'secuencia' lógica.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q101",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D3-Q1",
+      "text_es": "¿Los indicadores de producto social (ej. cupos escolares creados, familias con subsidio de vivienda) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q102",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D3-Q2",
+      "text_es": "¿Las metas de los productos sociales (ej. 'construir 200 viviendas') son proporcionales a la magnitud del problema diagnosticado (ej. 'déficit de 1.000 viviendas')?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q103",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D3-Q3",
+      "text_es": "¿Los productos sociales tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Desarrollo Social' o entidad responsable)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q104",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D3-Q4",
+      "text_es": "¿Existe una relación factible entre la actividad (ej. 'jornadas de afiliación') y la meta del producto asociado (ej. '10.000 nuevos afiliados a salud') para el área de DESC? Se debe evaluar si los 'plazos' y recursos son realistas.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q105",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D3-Q5",
+      "text_es": "¿El PDM explica cómo los productos sociales (ej. 'estudiantes beneficiados con PAE') contribuyen a generar resultados (ej. 'reducción de la deserción escolar')? Se debe buscar la descripción de este 'mecanismo'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q106",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D4-Q1",
+      "text_es": "¿Los indicadores de resultado social (ej. 'tasa de cobertura neta en educación', 'reducción del IPM') están definidos con línea base, meta y un horizonte temporal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q107",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D4-Q2",
+      "text_es": "¿Se explicita la cadena causal que lleva a la mejora social, mencionando 'supuestos' (ej. 'si los padres llevan a sus hijos a la escuela') o 'condiciones habilitantes'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q108",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D4-Q3",
+      "text_es": "¿La ambición de las metas de resultado social (ej. 'aumentar la cobertura educativa en 5 puntos') se justifica en función de la inversión, la capacidad instalada o se compara con 'casos' similares?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q109",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D4-Q4",
+      "text_es": "¿Los resultados propuestos (ej. 'mejora en las condiciones de habitabilidad') 'atienden' o 'abordan' directamente los problemas de déficit de vivienda o salud priorizados en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q110",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D4-Q5",
+      "text_es": "¿El plan declara la alineación de sus resultados sociales con marcos superiores como el PND o los ODS (1, 2, 3, 4)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q111",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D5-Q1",
+      "text_es": "¿El PDM define 'impactos' de largo plazo para los DESC (ej. 'mejora del capital humano', 'reducción de la pobreza multidimensional')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q112",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D5-Q2",
+      "text_es": "¿Se utilizan 'índices' (ej. Índice de Desarrollo Humano, IPM) o 'proxies' para medir los impactos en el bienestar, justificando su validez?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q113",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D5-Q3",
+      "text_es": "Cuando un impacto social es difícil de medir (ej. 'fortalecimiento del tejido social'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q114",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D5-Q4",
+      "text_es": "¿Los impactos sociales se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. crisis económica, pandemia) que podrían romper el mecanismo causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q115",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D5-Q5",
+      "text_es": "¿La ambición del impacto social (ej. 'pobreza cero') es realista? Se debe buscar si se analizan posibles 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q116",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D6-Q1",
+      "text_es": "¿Existe una 'teoría de cambio' explícita para la política social, preferiblemente en un 'diagrama', que identifique causas (ej. bajo logro educativo), mediadores y 'supuestos verificables'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q117",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D6-Q2",
+      "text_es": "¿Los saltos en la cadena causal social son proporcionales (ej. la entrega de un kit escolar no garantiza por sí sola la calidad educativa)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q118",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D6-Q3",
+      "text_es": "¿El plan reconoce 'inconsistencias' en su lógica social y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q119",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D6-Q4",
+      "text_es": "¿Se describe un sistema de monitoreo para la política social que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q120",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA04",
+      "cluster_id": "CL03",
+      "base_slot": "D6-Q5",
+      "text_es": "¿La lógica causal de la política social considera el contexto, reconociendo 'grupos afectados' (población rural, migrantes, discapacitados) y 'restricciones' territoriales o culturales?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q121",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q1",
+      "text_es": "¿El diagnóstico presenta datos numéricos del Registro Único de Víctimas (RUV) para el área de Derechos de las víctimas y construcción de paz, como número de personas a reparar o solicitudes de retorno, que sirvan como línea base? Se debe verificar el año y fuentes (ej. UARIV, personería).",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q122",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q2",
+      "text_es": "¿El texto dimensiona la magnitud del problema de la atención a víctimas cuantificando la brecha de reparación (ej. porcentaje de víctimas sin reparar)? Se debe buscar si se mencionan 'vacíos de información' o 'subregistro' en el RUV.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q123",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q3",
+      "text_es": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de reparación integral, asistencia humanitaria, retornos, o medidas de satisfacción y memoria?",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q124",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q4",
+      "text_es": "¿El PDM describe las capacidades para la atención a víctimas, mencionando entidades (Enlace de Víctimas, Mesa de Participación) y sus necesidades? Se debe buscar términos como 'centro de atención', 'equipo psicosocial' y si se identifican 'limitaciones'.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q125",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q5",
+      "text_es": "¿El plan justifica su alcance en la política de víctimas mencionando el marco legal (Ley 1448, Decretos Ley) o reconociendo restricciones explícitas de tipo presupuestal o de competencias (UARIV vs. municipio)?",
+      "modality": "TYPE_E",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q126",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q1",
+      "text_es": "¿Las actividades para las víctimas y la paz se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q127",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q2",
+      "text_es": "¿La descripción de las actividades para víctimas detalla el instrumento ('mediante indemnización administrativa', 'a través de proyectos productivos'), la población objetivo ('víctimas de desplazamiento forzado', 'sujetos de reparación colectiva') y la lógica causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q128",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q3",
+      "text_es": "¿El PDM vincula explícitamente las actividades (ej. actos de memoria) con las 'causas raíz' del conflicto y las necesidades de las víctimas (ej. dignificación) identificadas en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q129",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q4",
+      "text_es": "¿El plan identifica posibles riesgos en la implementación de la política de víctimas (ej. revictimización, riesgos de seguridad en retornos) y propone 'medidas de mitigación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q130",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q5",
+      "text_es": "¿El conjunto de actividades para las víctimas demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. reparación individual + reparación colectiva) o una 'secuencia' lógica.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q131",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q1",
+      "text_es": "¿Los indicadores de producto para víctimas (ej. indemnizaciones pagadas, familias retornadas) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación' (ej. RUV)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q132",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q2",
+      "text_es": "¿Las metas de los productos (ej. 'reparar a 1.000 víctimas') son proporcionales a la magnitud del universo de víctimas diagnosticado?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q133",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q3",
+      "text_es": "¿Los productos para víctimas tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados al 'Enlace de Víctimas' o entidad responsable)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q134",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q4",
+      "text_es": "¿Existe una relación factible entre la actividad (ej. 'acompañamiento a retornos') y la meta del producto asociado (ej. '500 familias retornadas con sostenibilidad') para la política de víctimas? Se debe evaluar si los 'plazos' son realistas.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q135",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q5",
+      "text_es": "¿El PDM explica cómo los productos (ej. 'medidas de satisfacción') contribuyen a generar resultados (ej. 'restablecimiento de la confianza')? Se debe buscar la descripción de este 'mecanismo'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q136",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q1",
+      "text_es": "¿Los indicadores de resultado para víctimas (ej. 'porcentaje de víctimas con reparación integral', 'tasa de retornos sostenibles') están definidos con línea base, meta y un horizonte temporal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q137",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q2",
+      "text_es": "¿Se explicita la cadena causal que lleva a la reparación y reconciliación, mencionando 'supuestos' clave (ej. 'si las condiciones de seguridad lo permiten') o 'condiciones habilitantes'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q138",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q3",
+      "text_es": "¿La ambición de las metas de resultado (ej. 'lograr la reparación del 60% del universo de víctimas') se justifica en función de los recursos, la capacidad de la UARIV o se compara con 'casos' de otros municipios?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q139",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q4",
+      "text_es": "¿Los resultados propuestos (ej. 'avance en la reconciliación comunitaria') 'atienden' o 'abordan' directamente las necesidades de reparación y no repetición identificadas en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q140",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q5",
+      "text_es": "¿El plan declara la alineación de sus resultados de paz y víctimas con marcos superiores como el PND, los Acuerdos de Paz o los ODS?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q141",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q1",
+      "text_es": "¿El PDM define 'impactos' de largo plazo para la construcción de paz (ej. 'reconciliación territorial', 'garantías de no repetición')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q142",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q2",
+      "text_es": "¿Se utilizan 'índices' o 'proxies' (ej. encuestas de confianza interpersonal) para medir los impactos en la reconciliación, justificando su validez?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q143",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q3",
+      "text_es": "Cuando un impacto en la paz es difícil de medir (ej. 'sanación del tejido social'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q144",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q4",
+      "text_es": "¿Los impactos en la paz se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. reconfiguración del conflicto) que podrían romper el mecanismo causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q145",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q5",
+      "text_es": "¿La ambición del impacto de la construcción de paz (ej. 'paz total y duradera') es realista? Se debe buscar si se analizan 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q146",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q1",
+      "text_es": "¿Existe una 'teoría de cambio' explícita para la política de víctimas y construcción de paz, preferiblemente en un 'diagrama', que identifique causas, mediadores (ej. confianza) y 'supuestos verificables'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q147",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q2",
+      "text_es": "¿Los saltos en la cadena causal de la paz son proporcionales (ej. un acto de memoria no genera por sí solo 'reconciliación total')?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q148",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q3",
+      "text_es": "¿El plan reconoce 'inconsistencias' en su lógica de reparación y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q149",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q4",
+      "text_es": "¿Se describe un sistema de monitoreo para la política de víctimas que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q150",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA05",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q5",
+      "text_es": "¿La lógica causal para la reparación considera el contexto, reconociendo 'grupos afectados' (sujetos de reparación colectiva, víctimas en el exterior) y 'restricciones' territoriales o de seguridad?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q151",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q1",
+      "text_es": "¿El diagnóstico presenta datos numéricos (tasa de deserción escolar, embarazo adolescente, trabajo infantil) para el área de Derechos de la niñez, adolescencia y juventud que sirvan como línea base? Se debe verificar el año y fuentes (ej. SIMAT, SISPRO, ICBF).",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q152",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q2",
+      "text_es": "¿El texto dimensiona la magnitud de los problemas de la niñez y juventud (ej. consumo de SPA, violencia intrafamiliar) cuantificando el déficit de atención o la población en riesgo? Se debe buscar si se mencionan 'vacíos de información'.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q153",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q3",
+      "text_es": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de primera infancia, alimentación escolar (PAE), prevención del reclutamiento o empleo juvenil?",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q154",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q4",
+      "text_es": "¿El PDM describe las capacidades para la gestión de políticas de niñez y juventud, mencionando entidades (Comisarías, ICBF, Plataformas Juveniles) y sus necesidades? Se debe buscar términos como 'orientación escolar', 'programas de prevención' y si se identifican 'limitaciones'.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q155",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D1-Q5",
+      "text_es": "¿El plan justifica su alcance en niñez y juventud mencionando el marco legal (Código de Infancia y Adolescencia, Ley de Juventud) o reconociendo restricciones explícitas de tipo presupuestal o de competencias?",
+      "modality": "TYPE_E",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q156",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q1",
+      "text_es": "¿Las actividades para niñez y juventud se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q157",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q2",
+      "text_es": "¿La descripción de las actividades para jóvenes detalla el instrumento ('mediante escuelas de formación deportiva', 'a través de centros de escucha'), la población objetivo ('jóvenes en riesgo', 'NNA desescolarizados') y la lógica causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q158",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q3",
+      "text_es": "¿El PDM vincula explícitamente las actividades (ej. transporte escolar) con las 'causas raíz' de los problemas (ej. deserción escolar por barreras de acceso) identificadas en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q159",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q4",
+      "text_es": "¿El plan identifica posibles riesgos en la implementación de los programas para niñez y juventud (ej. baja participación, estigmatización) y propone 'medidas de mitigación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q160",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D2-Q5",
+      "text_es": "¿El conjunto de actividades para niñez y juventud demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. jornada escolar complementaria + prevención de SPA) o 'secuencia' lógica.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q161",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q1",
+      "text_es": "¿Los indicadores de producto para niñez y juventud (ej. cupos en CDI, raciones de PAE entregadas) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q162",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q2",
+      "text_es": "¿Las metas de los productos para niñez y juventud (ej. 'cobertura del PAE al 90% de la matrícula') son proporcionales a la magnitud de la población objetivo diagnosticada?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q163",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q3",
+      "text_es": "¿Los productos para niñez y juventud tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Desarrollo Social' o entidad responsable)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q164",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q4",
+      "text_es": "¿Existe una relación factible entre la actividad (ej. 'un taller vocacional') y la meta del producto asociado (ej. '500 jóvenes con proyecto de vida estructurado') para el área de niñez y juventud? Se debe evaluar si los 'plazos' son realistas.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q165",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D3-Q5",
+      "text_es": "¿El PDM explica cómo los productos (ej. 'jóvenes formados en habilidades para el empleo') contribuyen a generar resultados (ej. 'aumento de la tasa de ocupación juvenil')? Se debe buscar este 'mecanismo'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q166",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q1",
+      "text_es": "¿Los indicadores de resultado para niñez y juventud (ej. 'tasa de deserción escolar', 'tasa de fecundidad adolescente') están definidos con línea base, meta y un horizonte temporal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q167",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q2",
+      "text_es": "¿Se explicita la cadena causal que lleva a la mejora del bienestar juvenil, mencionando 'supuestos' clave (ej. 'si los jóvenes aplican a las ofertas laborales') o 'condiciones habilitantes'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q168",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q3",
+      "text_es": "¿La ambición de las metas de resultado (ej. 'reducir la deserción en 3 puntos porcentuales') se justifica en función de la inversión, la capacidad de las instituciones educativas o se compara con 'casos' similares?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q169",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q4",
+      "text_es": "¿Los resultados propuestos (ej. 'reducción del trabajo infantil') 'atienden' o 'abordan' directamente los problemas de vulneración de derechos priorizados en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q170",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D4-Q5",
+      "text_es": "¿El plan declara la alineación de sus resultados de niñez y juventud con marcos superiores como el PND o los ODS (4, 5, 8)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q171",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q1",
+      "text_es": "¿El PDM define 'impactos' de largo plazo (ej. 'desarrollo integral de la juventud', 'ruptura de ciclos de pobreza')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q172",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q2",
+      "text_es": "¿Se utilizan 'índices' (ej. Índice de Pobreza Multidimensional para Niñez) o 'proxies' para medir los impactos en el desarrollo juvenil, justificando su validez?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q173",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q3",
+      "text_es": "Cuando un impacto en la juventud es difícil de medir (ej. 'fortalecimiento de habilidades para la vida'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q174",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q4",
+      "text_es": "¿Los impactos en niñez y juventud se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. crisis del mercado laboral) que podrían romper el mecanismo causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q175",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D5-Q5",
+      "text_es": "¿La ambición del impacto (ej. 'pleno desarrollo de todos los jóvenes') es realista? Se debe buscar si se analizan 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q176",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q1",
+      "text_es": "¿Existe una 'teoría de cambio' explícita para la política de niñez y juventud, preferiblemente en un 'diagrama', que identifique causas, mediadores (ej. permanencia escolar) y 'supuestos verificables'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q177",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q2",
+      "text_es": "¿Los saltos en la cadena causal de juventud son proporcionales (ej. un festival de rock no garantiza por sí solo la 'prevención total del consumo de SPA')?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q178",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q3",
+      "text_es": "¿El plan reconoce 'inconsistencias' en su lógica para la juventud y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q179",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q4",
+      "text_es": "¿Se describe un sistema de monitoreo para la política de niñez y juventud que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q180",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA06",
+      "cluster_id": "CL02",
+      "base_slot": "D6-Q5",
+      "text_es": "¿La lógica causal para niñez y juventud considera el contexto, reconociendo 'grupos afectados' (jóvenes rurales, NNA migrantes) y 'restricciones' territoriales o culturales?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q181",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q1",
+      "text_es": "¿El diagnóstico presenta datos numéricos (porcentaje de predios sin formalizar, km de vías terciarias en mal estado, avance del catastro multipropósito) sobre el área de Tierras y territorios que sirvan como línea base? Se debe verificar el año y fuentes (ej. IGAC, ANT, INVIAS).",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q182",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q2",
+      "text_es": "¿El texto dimensiona la magnitud de los problemas de tierras y desarrollo rural, cuantificando el déficit (ej. de formalización, de infraestructura vial) o la población afectada? Se debe buscar si se mencionan 'vacíos de información' (ej. desactualización catastral).",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q183",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q3",
+      "text_es": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de formalización, catastro multipropósito, mejora de vías terciarias o distritos de riego?",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q184",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q4",
+      "text_es": "¿El PDM describe las capacidades para la gestión de tierras, mencionando entidades (Oficina de Catastro, UMATA) y sus necesidades? Se debe buscar términos como 'gestión predial', 'sistemas de información geográfica' y si se identifican 'limitaciones'.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q185",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D1-Q5",
+      "text_es": "¿El plan justifica su alcance en tierras mencionando el marco legal (ej. Ley 388, Acuerdo de Paz) o reconociendo restricciones explícitas de tipo presupuestal, técnico o de competencias?",
+      "modality": "TYPE_E",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q186",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q1",
+      "text_es": "¿Las actividades de tierras y territorios se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q187",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q2",
+      "text_es": "¿La descripción de las actividades de tierras detalla el instrumento ('mediante barrido predial', 'a través de convenios con INVIAS'), la población objetivo ('pequeños propietarios', 'comunidades rurales') y la lógica causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q188",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q3",
+      "text_es": "¿El PDM vincula explícitamente las actividades (ej. actualización catastral) con las 'causas raíz' de los problemas (ej. baja tributación predial, conflictos por linderos) identificadas en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q189",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q4",
+      "text_es": "¿El plan identifica posibles riesgos en la implementación de la política de tierras (ej. conflictos por la tierra, demoras en trámites registrales) y propone 'medidas de mitigación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q190",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D2-Q5",
+      "text_es": "¿El conjunto de actividades de tierras demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. formalización + asistencia técnica agropecuaria) o una 'secuencia' lógica.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q191",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q1",
+      "text_es": "¿Los indicadores de producto para tierras (ej. predios formalizados, km de vía mejorados) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q192",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q2",
+      "text_es": "¿Las metas de los productos de tierras (ej. 'formalizar 500 predios') son proporcionales a la magnitud del problema diagnosticado (ej. 'existen 5.000 predios informales')?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q193",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q3",
+      "text_es": "¿Los productos de tierras tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Planeación' o entidad responsable)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q194",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q4",
+      "text_es": "¿Existe una relación factible entre la actividad (ej. 'un convenio con la ANT') y la meta del producto asociado (ej. '2.000 títulos entregados') para el área de tierras? Se debe evaluar si los 'plazos' son realistas.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q195",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D3-Q5",
+      "text_es": "¿El PDM explica cómo los productos (ej. 'vías terciarias mejoradas') contribuyen a generar resultados (ej. 'reducción de costos de transporte para campesinos')? Se debe buscar este 'mecanismo'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q196",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q1",
+      "text_es": "¿Los indicadores de resultado para tierras (ej. 'porcentaje de actualización catastral', 'reducción del tiempo de viaje en zonas rurales') están definidos con línea base, meta y un horizonte temporal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q197",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q2",
+      "text_es": "¿Se explicita la cadena causal que lleva a la mejora territorial, mencionando 'supuestos' clave (ej. 'si los propietarios registran los títulos') o 'condiciones habilitantes'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q198",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q3",
+      "text_es": "¿La ambición de las metas de resultado (ej. 'actualizar el 100% del catastro') se justifica en función de los recursos, la capacidad técnica o se compara con 'casos' de otros municipios?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q199",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q4",
+      "text_es": "¿Los resultados propuestos (ej. 'aumento de la seguridad jurídica de la tenencia') 'atienden' o 'abordan' directamente los problemas de informalidad y conflicto por la tierra priorizados en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q200",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D4-Q5",
+      "text_es": "¿El plan declara la alineación de sus resultados de tierras con marcos superiores como el PND, los ODS o la Reforma Rural Integral?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q201",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q1",
+      "text_es": "¿El PDM define 'impactos' de largo plazo (ej. 'ordenamiento sostenible del territorio', 'desarrollo rural competitivo')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q202",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q2",
+      "text_es": "¿Se utilizan 'índices' (ej. Índice de Competitividad Rural) o 'proxies' para medir los impactos en el desarrollo territorial, justificando su validez?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q203",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q3",
+      "text_es": "Cuando un impacto territorial es difícil de medir (ej. 'arraigo de la población al campo'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q204",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q4",
+      "text_es": "¿Los impactos territoriales se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. cambios en el uso del suelo a gran escala) que podrían romper el mecanismo causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q205",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D5-Q5",
+      "text_es": "¿La ambición del impacto (ej. 'cierre total de la brecha rural-urbana') es realista? Se debe buscar si se analizan posibles 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q206",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q1",
+      "text_es": "¿Existe una 'teoría de cambio' explícita para la política de tierras, preferiblemente en un 'diagrama', que identifique causas (ej. catastro desactualizado), mediadores y 'supuestos verificables'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q207",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q2",
+      "text_es": "¿Los saltos en la cadena causal de tierras son proporcionales (ej. la formalización de un predio no genera por sí sola 'desarrollo rural integral')?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q208",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q3",
+      "text_es": "¿El plan reconoce 'inconsistencias' en su lógica de tierras y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q209",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q4",
+      "text_es": "¿Se describe un sistema de monitoreo para la política de tierras que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q210",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA07",
+      "cluster_id": "CL01",
+      "base_slot": "D6-Q5",
+      "text_es": "¿La lógica causal para tierras considera el contexto, reconociendo 'grupos afectados' (comunidades étnicas, campesinos sin tierra) y 'restricciones' territoriales o ambientales?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q211",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D1-Q1",
+      "text_es": "¿El diagnóstico presenta datos numéricos (número de amenazas, homicidios de líderes, medidas de protección activas) sobre la situación de los defensores de DDHH que sirvan como línea base? Se debe verificar el año y fuentes (ej. Defensoría, UNP, Personería).",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q212",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D1-Q2",
+      "text_es": "¿El texto dimensiona la magnitud del riesgo para los líderes, cuantificando el número de casos o la población en riesgo? Se debe buscar si se mencionan explícitamente 'vacíos de información' o el 'subregistro por miedo a denunciar'.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q213",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D1-Q3",
+      "text_es": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de protección, prevención de la estigmatización o fortalecimiento de observatorios de DDHH?",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q214",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D1-Q4",
+      "text_es": "¿El PDM describe las capacidades para proteger a los líderes, mencionando entidades (Comité de Garantías, Personería) y sus necesidades? Se debe buscar términos como 'rutas de protección', 'sistema de alertas' y si se identifican 'limitaciones'.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q215",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D1-Q5",
+      "text_es": "¿El plan justifica su alcance en la protección de líderes mencionando el marco legal (ej. Decretos de protección, Acuerdo de Paz) o reconociendo restricciones explícitas de tipo presupuestal o de articulación con la UNP?",
+      "modality": "TYPE_E",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q216",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D2-Q1",
+      "text_es": "¿Las actividades para la protección de líderes se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q217",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D2-Q2",
+      "text_es": "¿La descripción de las actividades de protección detalla el instrumento ('mediante esquemas de seguridad', 'a través de campañas de no estigmatización'), la población objetivo ('líderes sociales', 'defensores ambientales') y la lógica causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q218",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D2-Q3",
+      "text_es": "¿El PDM vincula explícitamente las actividades (ej. consejos de seguridad) con las 'causas raíz' del riesgo (ej. estigmatización, presencia de actores armados) identificadas en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q219",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D2-Q4",
+      "text_es": "¿El plan identifica posibles riesgos en la implementación de las medidas de protección (ej. fallas en los esquemas, filtración de información) y propone 'medidas de mitigación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q220",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D2-Q5",
+      "text_es": "¿El conjunto de actividades para proteger líderes demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. protección material + protección política) o 'secuencia' lógica.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q221",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D3-Q1",
+      "text_es": "¿Los indicadores de producto para protección de líderes (ej. líderes con medidas de protección, campañas realizadas) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q222",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D3-Q2",
+      "text_es": "¿Las metas de los productos (ej. 'otorgar protección al 100% de los casos con nivel de riesgo extraordinario') son proporcionales al universo de líderes en riesgo?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q223",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D3-Q3",
+      "text_es": "¿Los productos de protección de líderes tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Gobierno' o entidad responsable)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q224",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D3-Q4",
+      "text_es": "¿Existe una relación factible entre la actividad (ej. 'articulación con la UNP') y la meta del producto asociado (ej. 'reducción del tiempo de respuesta a 24 horas') para la protección de líderes? Se debe evaluar si los 'plazos' son realistas.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q225",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D3-Q5",
+      "text_es": "¿El PDM explica cómo los productos (ej. 'líderes con esquema de protección') contribuyen a generar resultados (ej. 'reducción del número de agresiones')? Se debe buscar este 'mecanismo'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q226",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D4-Q1",
+      "text_es": "¿Los indicadores de resultado para la protección de líderes (ej. 'reducción del número de amenazas', 'tasa de homicidios de defensores') están definidos con línea base, meta y un horizonte temporal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q227",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D4-Q2",
+      "text_es": "¿Se explicita la cadena causal que lleva a la mejora de la seguridad de los líderes, mencionando 'supuestos' clave (ej. 'si los esquemas de la UNP son efectivos') o 'condiciones habilitantes'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q228",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D4-Q3",
+      "text_es": "¿La ambición de las metas de resultado (ej. 'cero homicidios de líderes') se justifica en función de la inversión, la capacidad de respuesta del Estado o se compara con 'casos' similares?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q229",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D4-Q4",
+      "text_es": "¿Los resultados propuestos (ej. 'creación de un entorno seguro para la defensa de los DDHH') 'atienden' o 'abordan' directamente los riesgos y amenazas priorizados en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q230",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D4-Q5",
+      "text_es": "¿El plan declara la alineación de sus resultados de protección de líderes con marcos superiores como el PND, los Acuerdos de Paz o sentencias de la Corte Constitucional?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q231",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D5-Q1",
+      "text_es": "¿El PDM define 'impactos' de largo plazo (ej. 'fortalecimiento de la democracia local', 'espacio cívico abierto y seguro')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q232",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D5-Q2",
+      "text_es": "¿Se utilizan 'índices' (ej. Índice de Participación Ciudadana) o 'proxies' para medir los impactos en el espacio cívico, justificando su validez?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q233",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D5-Q3",
+      "text_es": "Cuando un impacto en el liderazgo social es difícil de medir (ej. 'legitimidad del liderazgo'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q234",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D5-Q4",
+      "text_es": "¿Los impactos en el liderazgo social se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. cambios en las dinámicas del conflicto) que podrían romper el mecanismo causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q235",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D5-Q5",
+      "text_es": "¿La ambición del impacto de garantizar un espacio cívico seguro es realista? Se debe buscar si se analizan 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q236",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D6-Q1",
+      "text_es": "¿Existe una 'teoría de cambio' explícita para la protección de líderes, preferiblemente en un 'diagrama', que identifique causas (ej. estigmatización), mediadores (ej. legitimidad) y 'supuestos verificables'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q237",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D6-Q2",
+      "text_es": "¿Los saltos en la cadena causal de protección son proporcionales (ej. una campaña de comunicación no elimina por sí sola las amenazas)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q238",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D6-Q3",
+      "text_es": "¿El plan reconoce 'inconsistencias' en su lógica de protección y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q239",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D6-Q4",
+      "text_es": "¿Se describe un sistema de monitoreo para la protección de líderes que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia de seguridad?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q240",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA08",
+      "cluster_id": "CL03",
+      "base_slot": "D6-Q5",
+      "text_es": "¿La lógica causal para la protección de líderes considera el contexto, reconociendo 'grupos afectados' (líderes ambientales, comunales, étnicos) y 'restricciones' territoriales o de seguridad?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q241",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D1-Q1",
+      "text_es": "¿El diagnóstico presenta datos numéricos (tasa de hacinamiento en centros de detención transitoria, número de PPL sindicados, acceso a salud intramural) sobre la crisis carcelaria que sirvan como línea base? Se debe verificar el año y fuentes (ej. INPEC, Personería, Secretaría de Salud).",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q242",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D1-Q2",
+      "text_es": "¿El texto dimensiona la magnitud de la crisis carcelaria, cuantificando el déficit de cupos o la población afectada por la vulneración de derechos (salud, alimentación)? Se debe buscar si se mencionan 'vacíos de información' o se cita el 'Estado de Cosas Inconstitucional'.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q243",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D1-Q3",
+      "text_es": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a la construcción o mejora de centros de detención transitoria, o a programas de atención y resocialización para PPL bajo competencia municipal?",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q244",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D1-Q4",
+      "text_es": "¿El PDM describe las capacidades para gestionar la crisis carcelaria municipal, mencionando entidades (Secretaría de Gobierno, Personería) y sus necesidades? Se debe buscar términos como 'convenios con INPEC', 'atención en salud intramural' y si se identifican 'limitaciones'.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q245",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D1-Q5",
+      "text_es": "¿El plan justifica su alcance en la crisis carcelaria mencionando el marco legal (ej. sentencias sobre ECI, Código Penitenciario) o reconociendo restricciones de competencias (sindicados vs. condenados), presupuestales o técnicas?",
+      "modality": "TYPE_E",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q246",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D2-Q1",
+      "text_es": "¿Las actividades para la población privada de la libertad se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q247",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D2-Q2",
+      "text_es": "¿La descripción de las actividades para PPL detalla el instrumento ('mediante brigadas de salud', 'a través de convenios para formación'), la población objetivo ('sindicados', 'condenados', 'mujeres PPL') y la lógica causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q248",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D2-Q3",
+      "text_es": "¿El PDM vincula explícitamente las actividades (ej. programas de resocialización) con las 'causas raíz' del problema (ej. reincidencia, falta de oportunidades) identificadas en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q249",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D2-Q4",
+      "text_es": "¿El plan identifica posibles riesgos en la implementación (ej. problemas de seguridad, falta de articulación con INPEC) y propone 'medidas de mitigación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q250",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D2-Q5",
+      "text_es": "¿El conjunto de actividades para PPL demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. salud + educación intramural) o 'secuencia' lógica.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q251",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D3-Q1",
+      "text_es": "¿Los indicadores de producto para PPL (ej. PPL atendidos en salud, cupos carcelarios creados) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q252",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D3-Q2",
+      "text_es": "¿Las metas de los productos (ej. 'crear 100 nuevos cupos') son proporcionales a la magnitud del problema diagnosticado (ej. 'déficit de 200 cupos para sindicados')?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q253",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D3-Q3",
+      "text_es": "¿Los productos para PPL tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Gobierno' o entidad responsable)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q254",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D3-Q4",
+      "text_es": "¿Existe una relación factible entre la actividad (ej. 'un convenio con el SENA') y la meta del producto asociado (ej. '1.000 PPL certificados en un oficio') para la política carcelaria? Se debe evaluar si los 'plazos' son realistas.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q255",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D3-Q5",
+      "text_es": "¿El PDM explica cómo los productos (ej. 'PPL en programas de trabajo') contribuyen a generar resultados (ej. 'reducción de la reincidencia')? Se debe buscar este 'mecanismo'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q256",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D4-Q1",
+      "text_es": "¿Los indicadores de resultado para la crisis carcelaria (ej. 'tasa de hacinamiento', 'porcentaje de PPL con atención en salud') están definidos con línea base, meta y un horizonte temporal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q257",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D4-Q2",
+      "text_es": "¿Se explicita la cadena causal que lleva a la mejora de la situación carcelaria, mencionando 'supuestos' clave (ej. 'si los PPL participan en los programas') o 'condiciones habilitantes'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q258",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D4-Q3",
+      "text_es": "¿La ambición de las metas de resultado (ej. 'reducir el hacinamiento al 20%') se justifica en función de la inversión, la capacidad de construcción o se compara con estándares o 'casos' de otras ciudades?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q259",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D4-Q4",
+      "text_es": "¿Los resultados propuestos (ej. 'mejora de las condiciones de reclusión') 'atienden' o 'abordan' directamente los problemas de derechos humanos de los PPL priorizados en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q260",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D4-Q5",
+      "text_es": "¿El plan declara la alineación de sus resultados carcelarios con marcos superiores como el PND, los ODS o las Reglas Mandela?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q261",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D5-Q1",
+      "text_es": "¿El PDM define 'impactos' de largo plazo (ej. 'sistema carcelario resocializador', 'reducción de la criminalidad')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q262",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D5-Q2",
+      "text_es": "¿Se utilizan 'índices' (ej. Tasa de Reincidencia a 5 años) o 'proxies' para medir los impactos en la resocialización, justificando su validez?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q263",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D5-Q3",
+      "text_es": "Cuando un impacto carcelario es difícil de medir (ej. 'reintegración social exitosa'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q264",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D5-Q4",
+      "text_es": "¿Los impactos en la política carcelaria se alinean con marcos nacionales y consideran 'riesgos sistémicos' (ej. cambios en la política criminal) que podrían romper el mecanismo causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q265",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D5-Q5",
+      "text_es": "¿La ambición del impacto (ej. 'cárceles como verdaderos centros de resocialización') es realista? Se debe buscar si se analizan 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q266",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D6-Q1",
+      "text_es": "¿Existe una 'teoría de cambio' explícita para la política carcelaria, preferiblemente en un 'diagrama', que identifique causas (ej. populismo punitivo), mediadores (ej. oportunidades de redención) y 'supuestos verificables'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q267",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D6-Q2",
+      "text_es": "¿Los saltos en la cadena causal de la política carcelaria son proporcionales (ej. un programa de lectura no elimina por sí solo la reincidencia)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q268",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D6-Q3",
+      "text_es": "¿El plan reconoce 'inconsistencias' en su lógica de resocialización y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q269",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D6-Q4",
+      "text_es": "¿Se describe un sistema de monitoreo para la política carcelaria que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q270",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA09",
+      "cluster_id": "CL04",
+      "base_slot": "D6-Q5",
+      "text_es": "¿La lógica causal para la crisis carcelaria considera el contexto, reconociendo 'grupos afectados' (mujeres, población LGBTI, indígenas PPL) y 'restricciones' normativas?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q271",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D1-Q1",
+      "text_es": "¿El diagnóstico presenta datos numéricos (flujo de migrantes, número de PPT expedidos, NNA migrantes en el sistema escolar) sobre el área de Migración transfronteriza que sirvan como línea base? Se debe verificar el año y fuentes (ej. Migración Colombia, DANE, Personería).",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q272",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D1-Q2",
+      "text_es": "¿El texto dimensiona la magnitud del fenómeno migratorio, cuantificando la presión sobre los servicios públicos o la población con necesidades humanitarias? Se debe buscar si se mencionan 'vacíos de información' (ej. sobre población irregular en tránsito).",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q273",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D1-Q3",
+      "text_es": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de atención humanitaria, integración socioeconómica o fortalecimiento de la respuesta institucional a la migración?",
+      "modality": "TYPE_B",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q274",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D1-Q4",
+      "text_es": "¿El PDM describe las capacidades para la gestión migratoria, mencionando entidades (Secretaría de Gobierno, enlace de migrantes) y sus necesidades? Se debe buscar términos como 'centros de atención al migrante', 'rutas de integración' y si se identifican 'limitaciones' en la articulación.",
+      "modality": "TYPE_B",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q275",
+      "dimension_id": "DIM01",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D1-Q5",
+      "text_es": "¿El plan justifica su alcance en la política migratoria mencionando el marco legal (Estatuto Temporal de Protección) o reconociendo restricciones de competencias (Migración Colombia vs. municipio), presupuestales o de capacidad de respuesta?",
+      "modality": "TYPE_E",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q276",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D2-Q1",
+      "text_es": "¿Las actividades para la población migrante se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q277",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D2-Q2",
+      "text_es": "¿La descripción de las actividades para migrantes detalla el instrumento ('mediante jornadas de regularización', 'a través de asistencia humanitaria'), la población objetivo ('migrantes pendulares', 'población de acogida', 'retornados') y la lógica causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q278",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D2-Q3",
+      "text_es": "¿El PDM vincula explícitamente las actividades (ej. ferias de empleo) con las 'causas raíz' de los problemas de la población migrante (ej. barreras de acceso al mercado laboral) identificadas en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q279",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D2-Q4",
+      "text_es": "¿El plan identifica posibles riesgos en la implementación de la respuesta migratoria (ej. brotes de xenofobia, saturación de servicios sociales) y propone 'medidas de mitigación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q280",
+      "dimension_id": "DIM02",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D2-Q5",
+      "text_es": "¿El conjunto de actividades para la migración demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. regularización + acceso a servicios) o una 'secuencia' lógica.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q281",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D3-Q1",
+      "text_es": "¿Los indicadores de producto para migración (ej. migrantes regularizados, kits de ayuda entregados) incluyen 'línea base', 'meta' cuantitativa y 'fuente de verificación'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 6
+    },
+    {
+      "question_id": "Q282",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D3-Q2",
+      "text_es": "¿Las metas de los productos (ej. 'atender a 5.000 migrantes en albergues') son proporcionales a la magnitud del flujo migratorio diagnosticado?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q283",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D3-Q3",
+      "text_es": "¿Los productos para migración tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Gobierno' o entidad responsable)?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q284",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D3-Q4",
+      "text_es": "¿Existe una relación factible entre la actividad (ej. 'una jornada de atención') y la meta del producto asociado (ej. '10.000 migrantes con acceso a salud') para la política migratoria? Se debe evaluar si los 'plazos' son realistas.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q285",
+      "dimension_id": "DIM03",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D3-Q5",
+      "text_es": "¿El PDM explica cómo los productos (ej. 'migrantes con estatus regularizado') contribuyen a generar resultados (ej. 'aumento de la integración socioeconómica')? Se debe buscar este 'mecanismo'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 5
+    },
+    {
+      "question_id": "Q286",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D4-Q1",
+      "text_es": "¿Los indicadores de resultado para migración (ej. 'porcentaje de migrantes afiliados a salud', 'tasa de ocupación de la población migrante') están definidos con línea base, meta y un horizonte temporal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 4
+    },
+    {
+      "question_id": "Q287",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D4-Q2",
+      "text_es": "¿Se explicita la cadena causal que lleva a la integración de la población migrante, mencionando 'supuestos' clave (ej. 'si el sector privado contrata a migrantes regularizados') o 'condiciones habilitantes'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q288",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D4-Q3",
+      "text_es": "¿La ambición de las metas de resultado (ej. 'lograr la afiliación a salud del 80% de los migrantes') se justifica en función de los recursos, la capacidad del sistema o se compara con 'casos' de otras ciudades fronterizas?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q289",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D4-Q4",
+      "text_es": "¿Los resultados propuestos (ej. 'mejora de la convivencia entre migrantes y comunidad de acogida') 'atienden' o 'abordan' directamente los problemas de integración y xenofobia priorizados en el diagnóstico?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q290",
+      "dimension_id": "DIM04",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D4-Q5",
+      "text_es": "¿El plan declara la alineación de sus resultados de migración con marcos superiores como el PND, los ODS (10, 11) o los pactos globales sobre migración?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q291",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D5-Q1",
+      "text_es": "¿El PDM define 'impactos' de largo plazo (ej. 'integración social y económica sostenible de la población migrante', 'cohesión social')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q292",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D5-Q2",
+      "text_es": "¿Se utilizan 'índices' o 'proxies' (ej. encuestas de percepción sobre la migración) para medir los impactos en la integración, justificando su validez?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q293",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D5-Q3",
+      "text_es": "Cuando un impacto migratorio es difícil de medir (ej. 'integración cultural'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q294",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D5-Q4",
+      "text_es": "¿Los impactos en la integración se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. cambios en la política migratoria del país vecino) que podrían romper el mecanismo causal?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q295",
+      "dimension_id": "DIM05",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D5-Q5",
+      "text_es": "¿La ambición del impacto (ej. 'plena integración de toda la población migrante') es realista? Se debe buscar si se analizan 'efectos no deseados' o se declaran 'hipótesis límite'.",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q296",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D6-Q1",
+      "text_es": "¿Existe una 'teoría de cambio' explícita para la política migratoria, preferiblemente en un 'diagrama', que identifique causas, mediadores (ej. regularización) y 'supuestos verificables'?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q297",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D6-Q2",
+      "text_es": "¿Los saltos en la cadena causal de la migración son proporcionales (ej. una jornada de orientación no genera por sí sola 'integración socioeconómica total')?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q298",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D6-Q3",
+      "text_es": "¿El plan reconoce 'inconsistencias' en su lógica de integración y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    },
+    {
+      "question_id": "Q299",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D6-Q4",
+      "text_es": "¿Se describe un sistema de monitoreo para la política migratoria que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia ante cambios en los flujos?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 3
+    },
+    {
+      "question_id": "Q300",
+      "dimension_id": "DIM06",
+      "policy_area_id": "PA10",
+      "cluster_id": "CL04",
+      "base_slot": "D6-Q5",
+      "text_es": "¿La lógica causal para la migración considera el contexto, reconociendo 'grupos afectados' (NNA no acompañados, mujeres migrantes, caminantes) y 'restricciones' territoriales o de seguridad?",
+      "modality": "TYPE_A",
+      "expected_elements_count": 2
+    }
+  ]
+}
