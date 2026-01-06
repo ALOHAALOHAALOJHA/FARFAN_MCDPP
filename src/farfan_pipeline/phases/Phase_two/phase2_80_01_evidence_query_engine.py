@@ -52,6 +52,134 @@ from typing import Any, Dict, List, Optional, Protocol, Set
 logger = logging.getLogger(__name__)
 
 
+# === SECURITY LAYER ===
+
+# Security: Allowlisted queryable fields
+ALLOWED_QUERY_FIELDS = frozenset({
+    'evidence_id',
+    'node_id',
+    'claim_type',
+    'status',
+    'created_at',
+    'updated_at',
+    'category',
+    'source',
+    'confidence',
+    'confidence_score',
+    'timestamp',
+})
+
+# Security: Allowed operators
+ALLOWED_OPERATORS = frozenset({'=', '!=', '<', '>', '<=', '>=', 'LIKE', 'IN', 'CONTAINS'})
+
+# Security: Maximum query complexity
+MAX_CONDITIONS = 10
+MAX_QUERY_LENGTH = 1000
+
+
+class QueryValidationError(ValueError):
+    """Raised when query validation fails."""
+    pass
+
+
+class SecureQueryParser:
+    """
+    Secure query parser with input validation.
+
+    Security Controls:
+    1. Field allowlist enforcement
+    2. Operator validation
+    3. Input length limits
+    4. SQL injection pattern detection
+    5. Parameterized output generation
+    """
+
+    # Patterns that indicate SQL injection attempts
+    INJECTION_PATTERNS = [
+        r";\s*(?:DROP|DELETE|UPDATE|INSERT|EXEC|EXECUTE)",
+        r"--",
+        r"/\*.*\*/",
+        r"'\s*OR\s+'?\d*'?\s*=\s*'?\d*'?",
+        r"UNION\s+SELECT",
+        r"INTO\s+(?:OUTFILE|DUMPFILE)",
+        r"LOAD_FILE",
+        r"xp_cmdshell",
+    ]
+
+    def __init__(
+        self,
+        allowed_fields: frozenset[str] = ALLOWED_QUERY_FIELDS,
+        allowed_operators: frozenset[str] = ALLOWED_OPERATORS
+    ):
+        self.allowed_fields = allowed_fields
+        self.allowed_operators = allowed_operators
+        self._injection_regex = re.compile(
+            '|'.join(self.INJECTION_PATTERNS),
+            re.IGNORECASE
+        )
+
+    def validate_query(self, user_input: str) -> None:
+        """
+        Validate user query input for security threats.
+
+        Args:
+            user_input: Raw query string from user
+
+        Raises:
+            QueryValidationError: If validation fails
+        """
+        # Length check
+        if len(user_input) > MAX_QUERY_LENGTH:
+            self._reject_query(user_input, "Query exceeds maximum length")
+
+        # Injection pattern check
+        if self._injection_regex.search(user_input):
+            self._reject_query(user_input, "Potential SQL injection detected")
+
+    def validate_field(self, field_name: str) -> None:
+        """
+        Validate that a field name is in the allowlist.
+
+        Args:
+            field_name: Field name to validate
+
+        Raises:
+            QueryValidationError: If field not in allowlist
+        """
+        if field_name not in self.allowed_fields:
+            self._reject_query(
+                field_name,
+                f"Field '{field_name}' not in allowed fields: {sorted(self.allowed_fields)}"
+            )
+
+    def validate_operator(self, operator: str) -> None:
+        """
+        Validate that an operator is in the allowlist.
+
+        Args:
+            operator: Operator to validate
+
+        Raises:
+            QueryValidationError: If operator not in allowlist
+        """
+        if operator not in self.allowed_operators:
+            self._reject_query(
+                operator,
+                f"Operator '{operator}' not in allowed operators: {sorted(self.allowed_operators)}"
+            )
+
+    def _reject_query(self, query: str, reason: str) -> None:
+        """Log and reject a query."""
+        logger.warning(
+            f"Query rejected: {reason}",
+            extra={
+                "query_preview": query[:100],
+                "rejection_reason": reason
+            }
+        )
+        raise QueryValidationError(reason)
+
+
 # === ENUMS AND TYPES ===
 
 class QueryOperator(Enum):
@@ -279,14 +407,22 @@ class EvidenceQueryEngine:
         results = engine.query("SELECT * FROM evidence WHERE confidence > 0.8 LIMIT 10")
     """
 
-    def __init__(self, nexus: EvidenceNexusProtocol | SimpleEvidenceNexus):
+    def __init__(
+        self,
+        nexus: EvidenceNexusProtocol | SimpleEvidenceNexus,
+        enable_security: bool = True
+    ):
         """
         Initialize query engine.
 
         Args:
             nexus: Evidence nexus to query against.
+            enable_security: Enable security validation (default: True)
         """
         self.nexus = nexus
+        self.enable_security = enable_security
+        if enable_security:
+            self.security_parser = SecureQueryParser()
 
     def query(self, query_string: str) -> QueryResult:
         """
@@ -299,18 +435,52 @@ class EvidenceQueryEngine:
 
         Returns:
             QueryResult with matching EvidenceNode objects.
+
+        Raises:
+            QueryValidationError: If security validation fails
         """
         import time
         start_time = time.perf_counter()
 
+        # Security validation
+        if self.enable_security:
+            self.security_parser.validate_query(query_string)
+
         ast = self._parse_query(query_string)
-        results = self._execute_query(ast)
+
+        # Validate fields, operators, and complexity if security enabled
+        if self.enable_security:
+            # Enforce maximum query complexity
+            if len(ast.conditions) > MAX_CONDITIONS:
+                raise QueryValidationError(
+                    f"Query exceeds maximum conditions limit ({MAX_CONDITIONS}). "
+                    f"Got {len(ast.conditions)} conditions."
+                )
+            
+            # Validate WHERE clause fields and operators
+            for condition in ast.conditions:
+                self.security_parser.validate_field(condition.field)
+                self.security_parser.validate_operator(condition.operator.value)
+            
+            # Validate SELECT clause fields (except wildcard '*')
+            select_fields = getattr(ast, "select_fields", None)
+            if select_fields:
+                for field in select_fields:
+                    if field != "*":
+                        self.security_parser.validate_field(field)
+            
+            # Validate ORDER BY field against the allowlist
+            if getattr(ast, "order_by", None) is not None:
+                self.security_parser.validate_field(ast.order_by.field)
+
+        paginated_results, total_count = self._execute_query(ast)
+ 
 
         execution_time_ms = (time.perf_counter() - start_time) * 1000
 
         return QueryResult(
-            nodes=results,
-            total_count=len(results),
+            nodes=paginated_results,
+            total_count=total_count,
             query=query_string,
             execution_time_ms=execution_time_ms,
         )
@@ -568,7 +738,7 @@ class EvidenceQueryEngine:
         except ValueError:
             return value_str
 
-    def _execute_query(self, ast: QueryAST) -> List[EvidenceNode]:
+    def _execute_query(self, ast: QueryAST) -> tuple[List[EvidenceNode], int]:
         """
         Execute a parsed query against the nexus.
 
@@ -578,31 +748,35 @@ class EvidenceQueryEngine:
             ast: Parsed query AST.
 
         Returns:
-            List of matching EvidenceNode objects.
+            Tuple of (paginated results, total count before LIMIT/OFFSET).
         """
         # Get all nodes (in production, use indices)
         all_nodes = self.nexus.get_all_nodes()
 
         # Filter by conditions (EQ-02)
-        results = [n for n in all_nodes if self._matches_conditions(n, ast.conditions)]
+        filtered_results = [n for n in all_nodes if self._matches_conditions(n, ast.conditions)]
 
         # Sort if ORDER BY specified (EQ-03)
         if ast.order_by:
             reverse = ast.order_direction == "DESC"
-            results.sort(
+            filtered_results.sort(
                 key=lambda n: self._get_field_value(n, ast.order_by) or "",
                 reverse=reverse
             )
 
+        # Store total count before pagination
+        total_count = len(filtered_results)
+
         # Apply OFFSET
+        paginated_results = filtered_results
         if ast.offset > 0:
-            results = results[ast.offset:]
+            paginated_results = paginated_results[ast.offset:]
 
         # Apply LIMIT (EQ-03)
         if ast.limit is not None:
-            results = results[:ast.limit]
+            paginated_results = paginated_results[:ast.limit]
 
-        return results
+        return paginated_results, total_count
 
     def _matches_conditions(
         self,
