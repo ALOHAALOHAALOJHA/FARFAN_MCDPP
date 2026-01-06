@@ -33,6 +33,12 @@ Query Language:
         field CONTAINS 'substring'
         contradicts(node_id='xyz')
         supports(node_id='xyz')
+
+Security Constraints:
+    INTERNAL USE ONLY - This query engine is designed for internal use within
+    the pipeline. Query strings are parsed using simple regex patterns without
+    SQL injection protection. DO NOT expose this interface to untrusted user input.
+    If external query access is needed, add input sanitization and validation.
 """
 
 from __future__ import annotations

@@ -174,7 +174,7 @@ class ContractMigrator:
             MigrationResult indicating success or failure.
         """
         contract_path = Path(contract_path)
-        contract = None
+        contract = None  # Initialize to avoid reference errors in exception handler
 
         try:
             # Load contract

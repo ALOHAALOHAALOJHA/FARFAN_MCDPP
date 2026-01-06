@@ -461,11 +461,12 @@ def process_with_retry(
                 )
                 time.sleep(delay)
 
+    # This should not normally happen; indicates no attempts were made or no exception was captured
     if last_error is None:
-        # This should not normally happen; indicates no attempts were made or no exception was captured.
-        raise RuntimeError("process_with_retry failed without capturing an error")
-
-    raise last_error
+        raise RuntimeError(
+            f"process_with_retry failed without capturing an error after {max_retries + 1} attempts. "
+            f"Function: {func}, base_delay: {base_delay}s"
+        )
 # === MODULE EXPORTS ===
 
 __all__ = [

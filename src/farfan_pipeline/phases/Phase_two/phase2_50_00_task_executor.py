@@ -206,7 +206,7 @@ class CheckpointManager:
                 "timestamp": datetime.now(timezone.utc).isoformat(),
                 "metadata": metadata or {}
             }
-            # Compute hash before adding the hash field itself
+            # Compute hash before adding it to the data (avoiding circular dependency)
             checkpoint_hash = self._compute_hash(data)
             data["checkpoint_hash"] = checkpoint_hash
 
