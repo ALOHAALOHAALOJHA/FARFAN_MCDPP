@@ -8,14 +8,10 @@ attempts while allowing legitimate queries.
 import pytest
 
 from farfan_pipeline.phases.Phase_two.phase2_80_01_evidence_query_engine import (
-    EvidenceQueryEngine,
     QueryValidationError,
     SecureQueryParser,
     create_query_engine,
-    EvidenceNode,
 )
-
-
 class TestSQLInjectionProtection:
     """Security tests for SQL injection prevention."""
 
