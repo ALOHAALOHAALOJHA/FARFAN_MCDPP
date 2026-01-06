@@ -4,7 +4,6 @@ from src.farfan_pipeline.phases.Phase_two.phase2_80_01_evidence_query_engine imp
     EvidenceQueryEngine,
     SimpleEvidenceNexus,
     EvidenceNode,
-    QueryResult,
 )
 
 
