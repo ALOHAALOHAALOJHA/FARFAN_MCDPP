@@ -47,7 +47,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional, Protocol, Set, Sequence
+from typing import Any, Dict, List, Optional, Protocol, Set
 
 logger = logging.getLogger(__name__)
 
@@ -150,6 +150,22 @@ class SecureQueryParser:
             self._reject_query(
                 field_name,
                 f"Field '{field_name}' not in allowed fields: {sorted(self.allowed_fields)}"
+            )
+
+    def validate_operator(self, operator: str) -> None:
+        """
+        Validate that an operator is in the allowlist.
+
+        Args:
+            operator: Operator to validate
+
+        Raises:
+            QueryValidationError: If operator not in allowlist
+        """
+        if operator not in self.allowed_operators:
+            self._reject_query(
+                operator,
+                f"Operator '{operator}' not in allowed operators: {sorted(self.allowed_operators)}"
             )
 
     def _reject_query(self, query: str, reason: str) -> None:
@@ -432,11 +448,28 @@ class EvidenceQueryEngine:
 
         ast = self._parse_query(query_string)
 
-        # Validate fields against allowlist if security enabled
+        # Validate fields, operators, and complexity if security enabled
         if self.enable_security:
+            # Enforce maximum query complexity
+            if len(ast.conditions) > MAX_CONDITIONS:
+                raise QueryValidationError(
+                    f"Query exceeds maximum conditions limit ({MAX_CONDITIONS}). "
+                    f"Got {len(ast.conditions)} conditions."
+                )
+            
+            # Validate WHERE clause fields and operators
             for condition in ast.conditions:
                 self.security_parser.validate_field(condition.field)
-            # Also validate ORDER BY field against the allowlist
+                self.security_parser.validate_operator(condition.operator.value)
+            
+            # Validate SELECT clause fields (except wildcard '*')
+            select_fields = getattr(ast, "select_fields", None)
+            if select_fields:
+                for field in select_fields:
+                    if field != "*":
+                        self.security_parser.validate_field(field)
+            
+            # Validate ORDER BY field against the allowlist
             if getattr(ast, "order_by", None) is not None:
                 self.security_parser.validate_field(ast.order_by.field)
 

@@ -7,7 +7,6 @@ and both decorator and imperative APIs.
 
 import pytest
 import time
-from unittest.mock import Mock, patch
 
 from farfan_pipeline.utils.retry import (
     RetryConfig,
@@ -186,6 +185,7 @@ class TestRetryExponentialBackoff:
     def test_retry_policy_imperative_api(self):
         """Verify RetryPolicy imperative API works correctly."""
         call_count = 0
+        result = None  # Initialize to avoid UnboundLocalError
         policy = RetryPolicy(max_retries=3, base_delay=0.01)
 
         for attempt in policy.attempts():
@@ -211,7 +211,12 @@ class TestRetryExponentialBackoff:
 
         with pytest.raises(TransientError):
             for attempt in policy.attempts():
-                raise TransientError("Always fails")
+                try:
+                    # Simulate an operation that always fails with a retryable error
+                    raise TransientError("Always fails")
+                except TransientError as e:
+                    # Delegate to the retry policy; after max_retries this should re-raise
+                    attempt.retry_on(e)
 
     def test_retry_config_object(self):
         """Verify RetryConfig can be used to configure policies."""

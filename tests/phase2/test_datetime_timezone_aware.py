@@ -5,7 +5,6 @@ Verifies all generated timestamps are timezone-aware and use UTC timezone,
 preventing DeprecationWarning in Python 3.12+.
 """
 
-import pytest
 import warnings
 from datetime import datetime, timezone
 
