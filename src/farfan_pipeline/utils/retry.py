@@ -54,6 +54,18 @@ class RetryConfig:
         retryable_exceptions: Sequence[Type[Exception]] = (Exception,),
         on_retry: Callable[[Exception, int], None] | None = None
     ):
+        # Validate parameters
+        if max_retries < 0:
+            raise ValueError(f"max_retries must be non-negative, got {max_retries}")
+        if base_delay < 0:
+            raise ValueError(f"base_delay must be non-negative, got {base_delay}")
+        if multiplier < 0:
+            raise ValueError(f"multiplier must be non-negative, got {multiplier}")
+        if max_delay < 0:
+            raise ValueError(f"max_delay must be non-negative, got {max_delay}")
+        if not (0.0 <= jitter <= 1.0):
+            raise ValueError(f"jitter must be between 0.0 and 1.0, got {jitter}")
+        
         self.max_retries = max_retries
         self.base_delay = base_delay
         self.multiplier = multiplier
