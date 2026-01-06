@@ -78,7 +78,7 @@ from farfan_pipeline.phases.Phase_four_five_six_seven.enhancements.signal_enrich
 
 # Adaptive Meso Scoring
 from farfan_pipeline.phases.Phase_four_five_six_seven.enhancements.adaptive_meso_scoring import (
-    AdaptiveMesoScoringEngine,
+    AdaptiveMesoScoring,
 )
 
 # ==============================================================================

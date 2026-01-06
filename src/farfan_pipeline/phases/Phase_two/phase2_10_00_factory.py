@@ -179,6 +179,7 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_regist
     QuestionnaireSignalRegistry,
     create_signal_registry,
 )
+from farfan_pipeline.infrastructure.questionnaire import QuestionnaireModularResolver
 
 # Phase 1 validation constants module
 # NOTE: validation_constants module does not exist in current architecture
@@ -333,6 +334,47 @@ def load_questionnaire(
         version=version,
         load_timestamp=datetime.now(timezone.utc).isoformat(),
         source_path=str(questionnaire_path.resolve()),
+    )
+
+
+def load_questionnaire_from_modular(
+    resolver: QuestionnaireModularResolver | None = None,
+    *,
+    expected_hash: str | None = None,
+) -> CanonicalQuestionnaire:
+    """Assemble a monolith-equivalent payload from modular sources.
+
+    This keeps monolith consumers intact while sourcing data from the modular
+    structure defined in modular_manifest.json and questionnaire_index.json.
+
+    Args:
+        resolver: Optional pre-configured resolver (useful for testing).
+        expected_hash: Optional SHA256 to enforce deterministic assembly.
+
+    Returns:
+        CanonicalQuestionnaire built from modular assets.
+
+    Raises:
+        QuestionnaireIntegrityError: If the assembled hash does not match
+            expected_hash.
+        ModularQuestionnaireError: For any resolver-level inconsistency.
+    """
+
+    resolver = resolver or QuestionnaireModularResolver(root=_REPO_ROOT / "canonic_questionnaire_central")
+    aggregate = resolver.build_monolith_payload()
+
+    if expected_hash and aggregate.sha256.lower() != expected_hash.lower():
+        raise QuestionnaireIntegrityError(
+            f"Hash mismatch (modular assembly): expected {expected_hash[:16]}..., "
+            f"got {aggregate.sha256[:16]}..."
+        )
+
+    return CanonicalQuestionnaire(
+        data=aggregate.data,
+        sha256=aggregate.sha256,
+        version=aggregate.version,
+        load_timestamp=aggregate.load_timestamp,
+        source_path="modular-assembly",
     )
 
 

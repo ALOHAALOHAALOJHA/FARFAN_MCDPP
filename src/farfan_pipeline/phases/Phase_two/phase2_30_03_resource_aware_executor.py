@@ -25,8 +25,22 @@ from functools import wraps
 from typing import TYPE_CHECKING, Any, Callable, List, Optional
 
 if TYPE_CHECKING:
-    from orchestration.orchestrator import MethodExecutor
-    from orchestration.resource_manager import AdaptiveResourceManager
+    from farfan_pipeline.orchestration.orchestrator import MethodExecutor
+    from farfan_pipeline.phases.Phase_two.phase2_30_00_resource_manager import (
+        AdaptiveResourceManager,
+    )
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+        QuestionnaireSignalRegistry,
+    )
+    from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import (
+        ExecutorConfig,
+    )
+    from farfan_pipeline.phases.Phase_zero.phase0_10_00_canonical_questionnaire import (
+        CanonicalQuestionnaire,
+    )
+    from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import (
+        CalibrationPolicy,
+    )
 
 logger = logging.getLogger(__name__)
 
@@ -516,15 +530,117 @@ class InterruptibleResourceManager:
 
 
 class ResourceAwareExecutor:
-    """Wraps MethodExecutor with adaptive resource management."""
+    """Wraps MethodExecutor with adaptive resource management.
+    
+    This executor provides the bridge between:
+    - Resource management layer (circuit breakers, degradation, metrics)
+    - Contract-based execution layer (BaseExecutorWithContract, DynamicContractExecutor)
+    
+    All dependencies required by BaseExecutorWithContract must be injected at construction
+    time to enable instantiation of DynamicContractExecutor during execution.
+    
+    Dependency Injection Contract:
+        - method_executor: REQUIRED - Routes method calls to registered classes
+        - resource_manager: REQUIRED - Manages resource allocation and circuit breakers
+        - signal_registry: REQUIRED - Provides SISAS signal packs for contract execution
+        - config: REQUIRED - Runtime execution parameters (timeouts, retries, etc.)
+        - questionnaire_provider: REQUIRED - Canonical questionnaire for signal extraction
+        - calibration_orchestrator: OPTIONAL - For calibration-aware execution
+        - enriched_packs: OPTIONAL - Pre-enriched signal packs by policy area
+        - validation_orchestrator: OPTIONAL - For validation tracking
+        - calibration_policy: OPTIONAL - Method selection based on calibration
+    
+    Thread Safety:
+        This class is NOT thread-safe for concurrent mutations. Each execution context
+        should use its own instance or external synchronization.
+    """
+    
+    __slots__ = (
+        "method_executor",
+        "resource_manager",
+        "signal_registry",
+        "config",
+        "questionnaire_provider",
+        "calibration_orchestrator",
+        "enriched_packs",
+        "validation_orchestrator",
+        "calibration_policy",
+        "_executor_cache",
+    )
     
     def __init__(
         self,
         method_executor: MethodExecutor,
         resource_manager: AdaptiveResourceManager,
+        signal_registry: QuestionnaireSignalRegistry,
+        config: ExecutorConfig,
+        questionnaire_provider: CanonicalQuestionnaire,
+        calibration_orchestrator: Any | None = None,
+        enriched_packs: dict[str, Any] | None = None,
+        validation_orchestrator: Any | None = None,
+        calibration_policy: CalibrationPolicy | None = None,
     ) -> None:
+        """Initialize ResourceAwareExecutor with all required dependencies.
+        
+        Args:
+            method_executor: MethodExecutor instance for method routing.
+            resource_manager: AdaptiveResourceManager for resource allocation.
+            signal_registry: QuestionnaireSignalRegistry for signal access.
+            config: ExecutorConfig for runtime parameters.
+            questionnaire_provider: CanonicalQuestionnaire for questionnaire access.
+            calibration_orchestrator: Optional calibration orchestrator.
+            enriched_packs: Optional dict of EnrichedSignalPack by policy_area_id.
+            validation_orchestrator: Optional validation orchestrator.
+            calibration_policy: Optional CalibrationPolicy for method selection.
+            
+        Raises:
+            ValueError: If any required dependency is None.
+            TypeError: If dependency types do not match expected interfaces.
+        """
+        # Precondition validation: required dependencies
+        if method_executor is None:
+            raise ValueError("method_executor is required and cannot be None")
+        if resource_manager is None:
+            raise ValueError("resource_manager is required and cannot be None")
+        if signal_registry is None:
+            raise ValueError("signal_registry is required and cannot be None")
+        if config is None:
+            raise ValueError("config is required and cannot be None")
+        if questionnaire_provider is None:
+            raise ValueError("questionnaire_provider is required and cannot be None")
+        
+        # Runtime interface validation (defensive programming)
+        if not hasattr(resource_manager, "can_execute"):
+            raise TypeError(
+                "resource_manager must implement can_execute(executor_id: str) -> tuple[bool, str]"
+            )
+        if not hasattr(resource_manager, "start_executor_execution"):
+            raise TypeError(
+                "resource_manager must implement start_executor_execution(executor_id: str) -> Awaitable"
+            )
+        
         self.method_executor = method_executor
         self.resource_manager = resource_manager
+        self.signal_registry = signal_registry
+        self.config = config
+        self.questionnaire_provider = questionnaire_provider
+        self.calibration_orchestrator = calibration_orchestrator
+        self.enriched_packs = enriched_packs or {}
+        self.validation_orchestrator = validation_orchestrator
+        self.calibration_policy = calibration_policy
+        
+        # Per-instance executor cache (keyed by question_id)
+        self._executor_cache: dict[str, Any] = {}
+        
+        logger.debug(
+            "ResourceAwareExecutor initialized",
+            extra={
+                "has_calibration_orchestrator": calibration_orchestrator is not None,
+                "enriched_pack_count": len(self.enriched_packs),
+                "has_validation_orchestrator": validation_orchestrator is not None,
+                "has_calibration_policy": calibration_policy is not None,
+            },
+        )
     
     async def execute_with_resource_management(
         self,
@@ -653,36 +769,121 @@ class ResourceAwareExecutor:
         context: dict[str, Any],
         kwargs: dict[str, Any],
     ) -> dict[str, Any]:
-        """Synchronous execution wrapper."""
-        try:
-            from farfan_pipeline.phases.Phase_two.phase2_60_00_base_executor_with_contract import DynamicContractExecutor
+        """Synchronous execution wrapper that instantiates DynamicContractExecutor.
+        
+        Args:
+            executor_id: Executor identifier (e.g., "D3-Q3" or "Q013").
+            context: Execution context containing document and question data.
+            kwargs: Additional keyword arguments for execution.
             
-            # Extract question_id from context or executor_id
-            # executor_id format could be "D3-Q3" but we need question_id like "Q013"
-            question_id = context.get("question_id")
-            if not question_id:
-                # Try to derive from executor_id if it's in base_slot format
-                if executor_id and "-" in executor_id:
-                    # D3-Q3 → dimension 3, question 3 → Q013
-                    parts = executor_id.split("-")
-                    if len(parts) == 2 and parts[0].startswith("D") and parts[1].startswith("Q"):
-                        dim = int(parts[0][1:])
-                        q = int(parts[1][1:])
-                        q_number = (dim - 1) * 5 + q
-                        question_id = f"Q{q_number:03d}"
+        Returns:
+            Execution result dictionary from contract executor.
             
-            if not question_id:
-                raise ValueError(f"Cannot determine question_id from executor_id: {executor_id}")
+        Raises:
+            ValueError: If question_id cannot be determined.
+            RuntimeError: If contract execution fails.
+        """
+        from farfan_pipeline.phases.Phase_two.phase2_60_00_base_executor_with_contract import (
+            DynamicContractExecutor,
+        )
+        
+        # Derive question_id from context or executor_id
+        question_id = self._resolve_question_id(executor_id, context)
+        
+        # Derive policy_area_id for enriched pack lookup
+        policy_area_id = context.get("policy_area_id")
+        enriched_pack = self.enriched_packs.get(policy_area_id) if policy_area_id else None
+        
+        # Check executor cache for existing instance
+        cache_key = f"{question_id}:{policy_area_id}" if policy_area_id else question_id
+        if cache_key in self._executor_cache:
+            executor_instance = self._executor_cache[cache_key]
+            logger.debug(f"Reusing cached executor for {cache_key}")
+        else:
+            # Instantiate DynamicContractExecutor with full dependency injection
+            executor_instance = DynamicContractExecutor(
+                method_executor=self.method_executor,
+                signal_registry=self.signal_registry,
+                config=self.config,
+                questionnaire_provider=self.questionnaire_provider,
+                question_id=question_id,
+                calibration_orchestrator=self.calibration_orchestrator,
+                enriched_packs={policy_area_id: enriched_pack} if enriched_pack else None,
+                validation_orchestrator=self.validation_orchestrator,
+                calibration_policy=self.calibration_policy,
+            )
+            self._executor_cache[cache_key] = executor_instance
+            logger.debug(f"Created new executor for {cache_key}")
+        
+        # Execute the contract
+        document = context.get("document")
+        question_context = context.get("question_context", {})
+        
+        result = executor_instance.execute(
+            document=document,
+            method_executor=self.method_executor,
+            question_context=question_context,
+            **kwargs,
+        )
+        
+        return result
+    
+    @staticmethod
+    def _resolve_question_id(executor_id: str, context: dict[str, Any]) -> str:
+        """Resolve question_id from executor_id or context.
+        
+        Resolution priority:
+        1. Explicit question_id in context
+        2. Direct question_id format in executor_id (e.g., "Q001")
+        3. Derived from base_slot format (e.g., "D3-Q3" -> "Q013")
+        
+        Args:
+            executor_id: Executor identifier.
+            context: Execution context.
             
-            # Create GenericContractExecutor with question_id
-            # TODO: ResourceAwareExecutor needs update to support BaseExecutorWithContract dependencies.
-            # Currently missing signal_registry, config, questionnaire_provider.
-            # Bypassing execution for now to maintain structure integrity.
-            raise NotImplementedError("ResourceAwareExecutor update pending for Contract-Based Executors")
+        Returns:
+            Resolved question_id (e.g., "Q013").
             
-        except Exception as exc:
-            logger.error(f"Sync execution failed: {exc}")
-            raise
+        Raises:
+            ValueError: If question_id cannot be determined.
+        """
+        # Priority 1: Explicit in context
+        question_id = context.get("question_id")
+        if question_id:
+            return str(question_id)
+        
+        # Priority 2: Direct format (Q001, Q150, etc.)
+        if executor_id.startswith("Q") and len(executor_id) >= 2:
+            return executor_id
+        
+        # Priority 3: Derive from base_slot format (D3-Q3 -> Q013)
+        if "-" in executor_id:
+            parts = executor_id.split("-")
+            if len(parts) == 2 and parts[0].startswith("D") and parts[1].startswith("Q"):
+                try:
+                    dim = int(parts[0][1:])
+                    q = int(parts[1][1:])
+                    # Formula: (dimension - 1) * 5 + question_in_dimension
+                    q_number = (dim - 1) * 5 + q
+                    return f"Q{q_number:03d}"
+                except ValueError:
+                    pass
+        
+        raise ValueError(
+            f"Cannot determine question_id from executor_id='{executor_id}' "
+            f"and context keys={list(context.keys())}"
+        )
+    
+    def clear_executor_cache(self) -> int:
+        """Clear the internal executor instance cache.
+        
+        Returns:
+            Number of entries cleared.
+        """
+        count = len(self._executor_cache)
+        self._executor_cache.clear()
+        logger.info(f"Cleared {count} cached executor instances")
+        return count
     
     def _apply_degradation(
         self,

@@ -29,11 +29,12 @@ from __future__ import annotations
 import logging
 import re
 from dataclasses import dataclass, field
+from datetime import UTC
 from enum import Enum
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from . contract_assembler import GeneratedContract
+    from .contract_assembler import GeneratedContract
 
 logger = logging.getLogger(__name__)
 
@@ -97,7 +98,7 @@ class ValidationResult:
         """Serializa a diccionario."""
         return {
             "check_id": self.check_id,
-            "passed": self. passed,
+            "passed": self.passed,
             "severity": self.severity.value,
             "message": self.message,
             "section": self.section,
@@ -328,7 +329,7 @@ class ContractValidator:
     # MÉTODO PRINCIPAL
     # ══════════════════════════════════════════════════════════════════════════
 
-    def validate_contract(self, contract: "GeneratedContract") -> ValidationReport: 
+    def validate_contract(self, contract: GeneratedContract) -> ValidationReport:
         """
         Valida un contrato generado.
 
@@ -346,7 +347,7 @@ class ContractValidator:
         Returns:
             ValidationReport con resultados detallados
         """
-        from datetime import datetime, timezone
+        from datetime import datetime
 
         results:  list[ValidationResult] = []
 
@@ -358,7 +359,7 @@ class ContractValidator:
         # ══════════════════════════════════════════════════════════════════
         # LAYER 2: VALIDACIÓN EPISTÉMICA
         # ══════════════════════════════════════════════════════════════════
-        results. extend(self._validate_epistemic_coherence(contract))
+        results.extend(self._validate_epistemic_coherence(contract))
 
         # ══════════════════════════════════════════════════════════════════
         # LAYER 3: VALIDACIÓN TEMPORAL
@@ -396,7 +397,7 @@ class ContractValidator:
         )
         low = sum(
             1 for r in results
-            if not r.passed and r.severity == ValidationSeverity. LOW
+            if not r.passed and r.severity == ValidationSeverity.LOW
         )
 
         # Determinar validez
@@ -427,7 +428,7 @@ class ContractValidator:
             low_failures=low,
             results=results,
             is_valid=is_valid,
-            validation_timestamp=datetime.now(timezone.utc).isoformat(),
+            validation_timestamp=datetime.now(UTC).isoformat(),
             validator_version=VALIDATOR_VERSION,
         )
 
@@ -436,7 +437,7 @@ class ContractValidator:
     # ══════════════════════════════════════════════════════════════════════════
 
     def _validate_structure(
-        self, contract: "GeneratedContract"
+        self, contract: GeneratedContract
     ) -> list[ValidationResult]:
         """
         Validación estructural:  campos requeridos. 
@@ -489,9 +490,9 @@ class ContractValidator:
         # ─────────────────────────────────────────────────────────────────
         # Verificar fases en method_binding
         # ─────────────────────────────────────────────────────────────────
-        phases = contract. method_binding.get("execution_phases", {})
+        phases = contract.method_binding.get("execution_phases", {})
 
-        for phase_name in self.REQUIRED_PHASES: 
+        for phase_name in self.REQUIRED_PHASES:
             check_id = f"STRUCT_phase_{phase_name}"
             passed = phase_name in phases and isinstance(phases. get(phase_name), dict)
 
@@ -532,7 +533,7 @@ class ContractValidator:
         rules = contract. evidence_assembly.get("assembly_rules", [])
         rule_ids = {r. get("rule_id") for r in rules if isinstance(r, dict)}
 
-        for rule_id in self.REQUIRED_RULES: 
+        for rule_id in self.REQUIRED_RULES:
             check_id = f"STRUCT_rule_{rule_id}"
             passed = rule_id in rule_ids
 
@@ -553,8 +554,8 @@ class ContractValidator:
     # ══════════════════════════════════════════════════════════════════════════
 
     def _validate_epistemic_coherence(
-        self, contract: "GeneratedContract"
-    ) -> list[ValidationResult]: 
+        self, contract: GeneratedContract
+    ) -> list[ValidationResult]:
         """
         Validación epistémica: coherencia entre niveles.
 
@@ -607,7 +608,7 @@ class ContractValidator:
                 ))
 
             # Check:  métodos N3 tienen veto_conditions
-            if expected_level == "N3": 
+            if expected_level == "N3":
                 for i, method in enumerate(methods):
                     method_id = method.get("method_id", f"method_{i}")
                     veto_conditions = method.get("veto_conditions", {})
@@ -694,7 +695,7 @@ class ContractValidator:
     # ══════════════════════════════════════════════════════════════════════════
 
     def _validate_temporal(
-        self, contract: "GeneratedContract"
+        self, contract: GeneratedContract
     ) -> list[ValidationResult]:
         """
         Validación temporal: timestamps y validez.
@@ -764,7 +765,7 @@ class ContractValidator:
     # ══════════════════════════════════════════════════════════════════════════
 
     def _validate_cross_references(
-        self, contract: "GeneratedContract"
+        self, contract: GeneratedContract
     ) -> list[ValidationResult]:
         """
         Validación referencial:  cross-references válidas.
@@ -868,7 +869,7 @@ class ContractValidator:
     # ══════════════════════════════════════════════════════════════════════════
 
     def _validate_sector(
-        self, contract: "GeneratedContract"
+        self, contract: GeneratedContract
     ) -> list[ValidationResult]:
         """
         Validación de sector: sector embebido correctamente.

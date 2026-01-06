@@ -203,10 +203,12 @@ class CheckpointManager:
             data = {
                 "plan_id": plan_id,
                 "completed_tasks": completed_tasks,
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
                 "metadata": metadata or {}
             }
-            data["checkpoint_hash"] = self._compute_hash(data)
+            # Compute hash before adding it to the data (avoiding circular dependency)
+            checkpoint_hash = self._compute_hash(data)
+            data["checkpoint_hash"] = checkpoint_hash
 
             with open(checkpoint_path, "w") as f:
                 json.dump(data, f, indent=2)
@@ -232,15 +234,20 @@ class CheckpointManager:
             Set of completed task IDs if valid checkpoint exists, else None.
 
         Raises:
-            CheckpointCorruptionError: If checkpoint hash validation fails.
+            CheckpointCorruptionError: If checkpoint hash validation fails or file is unreadable.
         """
         with self._lock:
             checkpoint_path = self.checkpoint_dir / f"{plan_id}.checkpoint.json"
             if not checkpoint_path.exists():
                 return None
 
-            with open(checkpoint_path, "r") as f:
-                data = json.load(f)
+            try:
+                with open(checkpoint_path, "r") as f:
+                    data = json.load(f)
+            except (json.JSONDecodeError, OSError) as exc:
+                raise CheckpointCorruptionError(
+                    f"Checkpoint file unreadable for {plan_id}: {exc}"
+                ) from exc
 
             stored_hash = data.pop("checkpoint_hash", None)
             computed_hash = self._compute_hash(data)

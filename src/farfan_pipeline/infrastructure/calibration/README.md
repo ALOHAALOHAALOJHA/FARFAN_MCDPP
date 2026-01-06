@@ -2,11 +2,14 @@
 
 ## Overview
 
-This document describes the calibration layer infrastructure implemented as part of JOB FRONT 1 (JF1-CAL-ARCH-2026-01-02).
+This document describes the calibration layer infrastructure implementing the F.A.R.F.A.N epistemic calibration system.
+
+**Schema Version:** 2.0.0  
+**Last Updated:** 2026-01-05
 
 ## Purpose
 
-The calibration layer provides foundational types and data structures for calibration within the F.A.R.F.A.N epistemic regime. It operates **within** the existing epistemic framework, not parallel to it.
+The calibration layer provides foundational types and data structures for calibration within the F.A.R.F.A.N epistemic regime. It operates **within** the existing epistemic framework (N1-EMP, N2-INF, N3-AUD), not parallel to it.
 
 ## Architecture
 
@@ -14,301 +17,290 @@ The calibration layer provides foundational types and data structures for calibr
 
 ```
 src/farfan_pipeline/infrastructure/calibration/
-├── __init__.py                  # Public API (Facade pattern)
-├── calibration_core.py          # Core types and dataclasses
-└── type_defaults.py             # Type-specific calibration defaults
+├── __init__.py                    # Public API (Facade pattern)
+├── calibration_core.py            # Frozen core types with invariants
+├── type_defaults.py               # TYPE-specific defaults (Flyweight cached)
+├── unit_of_analysis.py            # Municipal unit characterization
+├── ingestion_calibrator.py        # N1-EMP calibration (Strategy pattern)
+├── phase2_calibrator.py           # N2-INF calibration (TYPE constraints)
+├── method_binding_validator.py    # Chain of Responsibility validation
+├── calibration_manifest.py        # Audit trail (Memento pattern)
+├── calibration_auditor.py         # N3-AUD veto gate (Specification pattern)
+├── interaction_governor.py        # Bounded fusion, veto cascades
+├── fact_registry.py               # Deduplication with verbosity control
+└── README.md                      # This documentation
 
-tests/calibration/
-├── test_calibration_core_adversarial.py     # Core invariant tests
-├── test_calibration_integration.py          # Integration workflows
-└── test_type_defaults_adversarial.py        # Type defaults tests
+src/farfan_pipeline/phases/Phase_two/
+└── phase2_60_04_calibration_policy.py  # Policy facade (wired to infrastructure)
 ```
 
-### Core Types
+### Wiring Diagram
 
-#### CalibrationPhase (Enum)
-Defines the phase in which calibration applies:
-- `INGESTION` - Data ingestion phase
-- `PHASE_2_COMPUTATION` - Phase 2 computation
-
-#### CalibrationBounds (frozen dataclass)
-Immutable bounds for a calibration parameter:
-- `min_value: float` - Minimum allowed value
-- `max_value: float` - Maximum allowed value
-- `default_value: float` - Default value (must be within bounds)
-- `unit: str` - Unit of measurement
-
-**Validation:** `__post_init__` enforces default ∈ [min, max]
-
-#### CalibrationParameter (frozen dataclass)
-Single calibration parameter with full provenance:
-- `name: str` - Parameter name
-- `value: float` - Parameter value
-- `bounds: CalibrationBounds` - Value bounds
-- `rationale: str` - Justification (non-empty)
-- `source_evidence: str` - Source file path (must start with `src/` or `artifacts/`)
-- `calibration_date: datetime` - When parameter was calibrated
-- `validity_days: int` - How long parameter is valid
-
-**Methods:**
-- `is_valid_at(check_date: datetime) -> bool` - Check if parameter is still valid
-- `content_hash() -> str` - SHA-256 hash for integrity verification
-
-**Validation:** 
-- Value must be within bounds
-- Rationale cannot be empty
-- Source evidence must reference repo paths
-
-#### CalibrationLayer (frozen dataclass)
-Complete calibration configuration for a contract:
-- `unit_of_analysis_id: str` - Municipality or entity ID
-- `phase: CalibrationPhase` - Which phase this applies to
-- `contract_type_code: str` - TYPE_A, TYPE_B, etc.
-- `prior_strength: CalibrationParameter`
-- `veto_threshold: CalibrationParameter`
-- `chunk_size: CalibrationParameter`
-- `extraction_coverage_target: CalibrationParameter`
-- `created_at: datetime` - When layer was created
-- `schema_version: str` - Schema version (1.0.0)
-
-**Methods:**
-- `manifest_hash() -> str` - SHA-256 hash of entire layer
-
-### Type-Specific Defaults
-
-The `type_defaults.py` module provides type-specific calibration defaults derived from `src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json` (canonical source).
-
-#### get_type_defaults(contract_type_code: str) -> dict[str, CalibrationBounds]
-
-Loads calibration defaults for a contract type. Uses **flyweight pattern** with LRU cache.
-
-Returns dictionary with keys:
-- `n1_ratio` - N1 (empirical) layer ratio bounds
-- `n2_ratio` - N2 (inferential) layer ratio bounds
-- `n3_ratio` - N3 (audit) layer ratio bounds
-- `veto_threshold` - Veto threshold bounds
-- `prior_strength` - Prior strength bounds
-
-**Type-Specific Behavior:**
-- **TYPE_A (Semantic)**: Balanced ratios, N2 dominates
-- **TYPE_B (Bayesian)**: Stronger priors (2.0 vs 1.0)
-- **TYPE_C (Causal)**: Strong N3 for graph validation
-- **TYPE_D (Financial)**: Most lenient veto (0.10 max)
-- **TYPE_E (Logical)**: Strictest veto (0.01 min), NO averaging
-
-#### Prohibited Operations
-
-```python
-PROHIBITED_OPERATIONS: dict[str, frozenset[str]] = {
-    "TYPE_A": frozenset({"weighted_mean", "concat_only"}),
-    "TYPE_B": frozenset({"weighted_mean", "simple_concat"}),
-    "TYPE_C": frozenset({"concat_only", "weighted_mean"}),
-    "TYPE_D": frozenset({"concat_only", "simple_concat"}),
-    "TYPE_E": frozenset({"weighted_mean", "average", "mean", "avg"}),
-}
+```
+infrastructure/calibration/calibration_core.py     ← Frozen types (CalibrationParameter, CalibrationLayer)
+infrastructure/calibration/type_defaults.py        ← TYPE-specific bounds (Flyweight)
+infrastructure/calibration/ingestion_calibrator.py ← N1-EMP calibration
+infrastructure/calibration/phase2_calibrator.py    ← N2-INF calibration, TYPE constraints
+infrastructure/calibration/calibration_manifest.py ← Audit trail
+infrastructure/calibration/calibration_auditor.py  ← N3-AUD veto gate
+infrastructure/calibration/interaction_governor.py ← Bounded fusion
+infrastructure/calibration/fact_registry.py        ← Deduplication
+            ↓
+phases/Phase_two/phase2_60_04_calibration_policy.py ← Policy facade (CalibrationOrchestrator)
 ```
 
-**CRITICAL:** TYPE_E prohibits ALL forms of averaging because it uses AND logic (minimum confidence, not averaging).
+## System Capabilities
 
-#### is_operation_prohibited(contract_type_code: str, operation: str) -> bool
+### 1. Calibration Within Epistemic Regime
+- Calibration is executed **within** the epistemic regime, not as a parallel system
+- Frozen, immutable dataclasses with explicit invariants
+- All parameters subject to N3-AUD verification
 
-Checks if an operation is prohibited for a contract type. Case-insensitive and checks substrings.
+### 2. TYPE-Specific Defaults and Prohibitions
+- Centralized via `type_defaults.py`, cached via Flyweight pattern
+- Read from canonical source: `contratos_clasificados.json`
+- Explicit ratio bounds, prior strength ranges, veto thresholds per TYPE
 
-## Design Patterns
+### 3. Ingestion and Phase-2 Calibration
+- **Ingestion (N1-EMP):** Derives parameters from unit-of-analysis via bounded strategies
+- **Phase-2 (N2-INF):** Enforces TYPE fusion strategy alignment and validator gating
 
-### 1. Flyweight Pattern
-Type defaults are cached via `@lru_cache(maxsize=5)` to prevent redundant file I/O and object creation.
+### 4. Manifest Hashing and Cryptographic Attestation
+- Deterministic SHA-256 hashing of calibration layers
+- Optional Ed25519 signatures for cryptographic attestation
+- Drift auditing detects design-runtime misalignment
 
-### 2. Facade Pattern
-`__init__.py` provides a single entry point that hides internal complexity:
-```python
-from .calibration_core import (
-    CalibrationBounds,
-    CalibrationLayer,
-    CalibrationParameter,
-    CalibrationPhase,
-)
-from .type_defaults import (
-    PROHIBITED_OPERATIONS,
-    get_type_defaults,
-    is_operation_prohibited,
-)
-```
+### 5. Interaction Governance
+- Acyclicity checks for dependency graphs (INV-INT-001)
+- Bounded multiplicative fusion [0.01, 10.0] (INV-INT-002)
+- Specificity-ordered veto cascades (INV-INT-003)
+- Level inversion detection (INV-INT-004)
 
-### 3. Immutability
-All dataclasses use `frozen=True` and `slots=True` for:
-- Thread safety
-- Prevention of accidental modification
-- Memory efficiency
-- Hash consistency
-
-### 4. Provenance Tracking
-Every `CalibrationParameter` requires:
-- `rationale` - Why this value was chosen
-- `source_evidence` - Where this came from
-- `calibration_date` - When it was established
-- `validity_days` - How long it's valid
-
-### 5. Integrity Verification
-SHA-256 hashing ensures calibration layers haven't been tampered with:
-```python
-hash1 = layer.manifest_hash()
-# ... later ...
-hash2 = layer.manifest_hash()
-assert hash1 == hash2  # Deterministic
-```
-
-## Usage Examples
-
-### Basic Usage
-
-```python
-from datetime import datetime, timezone
-from src.farfan_pipeline.infrastructure.calibration import (
-    CalibrationLayer,
-    CalibrationParameter,
-    CalibrationPhase,
-    get_type_defaults,
-    is_operation_prohibited,
-)
-
-# Load type-specific defaults
-defaults = get_type_defaults("TYPE_A")
-
-# Create a parameter
-now = datetime.now(timezone.utc)
-prior_strength = CalibrationParameter(
-    name="prior_strength",
-    value=defaults["prior_strength"].default_value,
-    bounds=defaults["prior_strength"],
-    rationale="Default prior for TYPE_A",
-    source_evidence="src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json",
-    calibration_date=now,
-    validity_days=90,
-)
-
-# Create a calibration layer
-layer = CalibrationLayer(
-    unit_of_analysis_id="MUNI_11001",
-    phase=CalibrationPhase.PHASE_2_COMPUTATION,
-    contract_type_code="TYPE_A",
-    prior_strength=prior_strength,
-    veto_threshold=veto_threshold,
-    chunk_size=chunk_size,
-    extraction_coverage_target=extraction_coverage,
-)
-
-# Verify integrity
-hash_value = layer.manifest_hash()
-print(f"Layer hash: {hash_value}")
-
-# Check prohibited operations
-if is_operation_prohibited("TYPE_E", "weighted_mean"):
-    raise RuntimeError("Cannot use weighted_mean with TYPE_E!")
-```
-
-### Type-Specific Validation
-
-```python
-# TYPE_E: Logical Consistency - strictest constraints
-defaults_e = get_type_defaults("TYPE_E")
-assert defaults_e["veto_threshold"].min_value == 0.01
-
-# Verify no averaging is allowed
-prohibited_ops = ["weighted_mean", "average", "mean", "avg"]
-for op in prohibited_ops:
-    assert is_operation_prohibited("TYPE_E", op)
-```
+### 6. Fact Registry
+- Canonical fact representation with hash-based deduplication
+- Verbosity threshold >= 0.90 enforced
+- Full provenance preservation
 
 ## Invariants Enforced
 
-### INV-CAL-FREEZE-001: Immutability
-All calibration parameters are immutable post-construction. Enforced via `frozen=True`.
+| Invariant ID | Description | Enforcement |
+|--------------|-------------|-------------|
+| INV-CAL-FREEZE-001 | All calibration parameters immutable post-construction | `frozen=True` dataclasses |
+| INV-CAL-REGIME-001 | Calibration operates within epistemic regime | Architecture design |
+| INV-CAL-AUDIT-001 | All parameters subject to N3-AUD verification | CalibrationAuditor |
+| INV-CAL-HASH-001 | Canonical JSON serialization for deterministic hashing | `_canonical_json()` |
+| INV-CAL-TZ-001 | All timestamps timezone-aware UTC | `__post_init__` validation |
+| INV-CAL-SIG-001 | Optional Ed25519 signatures for attestation | `CalibrationLayer.sign()` |
+| INV-INT-001 | Dependency graph must be acyclic (DAG) | CycleDetector |
+| INV-INT-002 | Multiplicative fusion bounded [0.01, 10.0] | `bounded_multiplicative_fusion()` |
+| INV-INT-003 | Veto cascade respects specificity ordering | VetoCoordinator |
+| INV-INT-004 | No level inversions (N3 cannot depend on N2) | LevelInversionDetector |
+| INV-FACT-001 | Every fact has exactly one canonical representation | CanonicalFactRegistry |
+| INV-FACT-002 | Duplicate content triggers provenance logging | DuplicateRecord |
+| INV-FACT-003 | Verbosity ratio >= 0.90 | `validate_verbosity()` |
 
-### INV-CAL-REGIME-001: Epistemic Regime Compliance
-Calibration operates within the existing epistemic regime (N1-EMP, N2-INF, N3-AUD), not parallel to it.
+## Success Criteria
 
-### INV-CAL-AUDIT-001: Auditability
-All parameters subject to N3-AUD verification. Full provenance tracked.
+1. **Calibration layers build successfully** with all required parameters, invariants pass, manifest hashing deterministic
+2. **TYPE validator passes:** layer ratios, mandatory patterns, prohibited operations, dependency chains satisfied
+3. **Auditor passes:** prior strength and veto thresholds within bounds; prohibited operations absent
+4. **Interaction governor reports no fatal cycles;** fusion outputs within bounds; veto cascade effective
+5. **Fact registry maintains verbosity ≥ 0.90** with correct deduplication
 
-### INV-CAL-BOUNDS-001: Bounds Validation
-All parameter values must be within their defined bounds. Validated in `__post_init__`.
+## Failure Modes
 
-### INV-CAL-PROVENANCE-001: Provenance Requirements
-- Rationale cannot be empty
-- Source evidence must reference repo paths (`src/` or `artifacts/`)
+| Mode | Description | Detection |
+|------|-------------|-----------|
+| FM-001 | Out-of-bounds parameter values | `__post_init__` ValidationError |
+| FM-002 | Missing rationale or evidence | `__post_init__` ValidationError |
+| FM-003 | Timezone-naive datetime | `__post_init__` ValidationError |
+| FM-004 | TYPE ratio/fusion strategy mismatch | MethodBindingValidator FATAL |
+| FM-005 | Prohibited operations detected | CalibrationAuditor veto |
+| FM-006 | Dependency cycles in graph | InteractionGovernor FATAL |
+| FM-007 | Level inversions | InteractionGovernor WARNING |
+| FM-008 | Multiplicative overflow/underflow | bounded_multiplicative_fusion clamping |
+| FM-009 | Manifest non-determinism | Hash mismatch detection |
+| FM-010 | Signature verification failure | IntegrityError |
 
-### INV-CAL-VALIDITY-001: Validity Window
-Parameters have expiration dates. Check via `is_valid_at()`.
+## Core Types
 
-## Test Coverage
+### CalibrationPhase (Enum)
+Defines the phase in which calibration applies:
+- `INGESTION` - Data ingestion phase (N1-EMP)
+- `PHASE_2_COMPUTATION` - Phase 2 computation (N2-INF)
+- `PHASE_3_AGGREGATION` - Phase 3 aggregation
 
-### Test Statistics
-- **Total Tests:** 28
-- **Core Adversarial:** 9 tests
-- **Type Defaults:** 14 tests
-- **Integration:** 5 tests
-- **Pass Rate:** 100%
+### ClosedInterval (frozen dataclass)
+Closed interval [lower, upper] with algebraic operations:
+- `contains(value)` - Check membership
+- `intersect(other)` - Compute intersection
+- `width()` / `midpoint()` - Interval metrics
 
-### Adversarial Test Philosophy
-Tests are designed to **break** the implementation, not confirm it works:
-- Attempt to create invalid bounds
-- Try to violate immutability
-- Test expired parameters
-- Verify hash determinism
-- Ensure prohibited operations are blocked
+### CalibrationParameter (frozen dataclass)
+Single calibration parameter with full provenance:
+- `name`, `value`, `unit`, `bounds`
+- `rationale` - Non-empty justification
+- `evidence` - EvidenceReference with path, commit SHA, description
+- `calibrated_at`, `expires_at` - Timezone-aware UTC timestamps
+- `validity_status_at(check_time)` - Returns ValidityStatus enum
 
-## Type Checking
+### CalibrationLayer (frozen dataclass)
+Complete calibration configuration:
+- `unit_of_analysis_id` - Pattern: [A-Z]{2,6}-[0-9]{4,12}
+- `phase`, `contract_type_code`
+- `parameters` - Immutable tuple of CalibrationParameter
+- `manifest_hash()` - SHA-256 of canonical representation
+- `sign(private_key, key_id)` - Ed25519 signature
+- `verify_signature(public_key)` - Verification
 
-All code passes `mypy --strict` with 0 errors:
-```bash
-mypy --strict src/farfan_pipeline/infrastructure/calibration/
-# Success: no issues found in 3 source files
+### ContractTypeDefaults (frozen dataclass)
+TYPE-specific calibration bounds:
+- `epistemic_ratios` - EpistemicLayerRatios (N1/N2/N3)
+- `veto_threshold`, `prior_strength` - ClosedInterval bounds
+- `permitted_operations`, `prohibited_operations` - frozenset
+
+## Design Patterns
+
+| Pattern | Implementation | Purpose |
+|---------|---------------|---------|
+| Flyweight | `@lru_cache` on `get_type_defaults()` | Prevent redundant configuration objects |
+| Facade | `__init__.py` public API | Single entry point |
+| Strategy | CalibrationStrategy protocol | Pluggable calibration algorithms |
+| Builder | ManifestBuilder | Incremental manifest construction |
+| Memento | CalibrationManifest | Immutable audit trail |
+| Specification | CalibrationSpecification protocol | Composable audit rules |
+| Chain of Responsibility | MethodBindingValidator | Sequential validation |
+| Mediator | InteractionGovernor | Coordinate method interactions |
+
+## Usage Examples
+
+### Full Pipeline Calibration
+
+```python
+from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import (
+    CalibrationOrchestrator,
+)
+from farfan_pipeline.infrastructure.calibration import (
+    UnitOfAnalysis, MunicipalityCategory, FiscalContext,
+    MethodBindingSet, MethodBinding,
+)
+
+# Create unit of analysis
+unit = UnitOfAnalysis(
+    municipality_code="05001",
+    municipality_name="Medellín",
+    department_code="05",
+    population=2_500_000,
+    total_budget_cop=10_000_000_000_000,
+    category=MunicipalityCategory.CATEGORIA_ESPECIAL,
+    sgp_percentage=30.0,
+    own_revenue_percentage=70.0,
+    fiscal_context=FiscalContext.HIGH_CAPACITY,
+    plan_period_start=2024,
+    plan_period_end=2027,
+    policy_area_codes=frozenset({"PA01", "PA02", "PA03"}),
+)
+
+# Create method bindings
+binding_set = MethodBindingSet(
+    contract_id="Q001",
+    contract_type_code="TYPE_A",
+    bindings={
+        "N1-EMP": [MethodBinding(...)],
+        "N2-INF": [MethodBinding(...)],
+        "N3-AUD": [MethodBinding(...)],
+    }
+)
+
+# Orchestrate full calibration
+orchestrator = CalibrationOrchestrator(evidence_commit="abc123...")
+manifest, audit_result = orchestrator.calibrate_full_pipeline(
+    unit=unit,
+    contract_type_code="TYPE_A",
+    binding_set=binding_set,
+)
+
+if audit_result.passed:
+    print(f"Calibration successful: {manifest.compute_hash()[:12]}...")
+else:
+    print(f"Calibration vetoed: {audit_result.violations}")
 ```
 
-## Performance Characteristics
+### Check Prohibited Operations
 
-- **Type Defaults Loading:** O(1) after first load (LRU cache)
-- **Parameter Validation:** O(1) at construction time
-- **Hash Computation:** O(n) where n = number of parameters
-- **Prohibited Operation Check:** O(k) where k = number of prohibited ops for type
+```python
+from farfan_pipeline.infrastructure.calibration import is_operation_prohibited
 
-## Future Extensions
+# TYPE_E prohibits all forms of averaging
+assert is_operation_prohibited("TYPE_E", "weighted_mean") == True
+assert is_operation_prohibited("TYPE_E", "average") == True
 
-This implementation is complete for JOB FRONT 1 but designed for extension:
+# TYPE_D permits weighted_mean for financial aggregation
+assert is_operation_prohibited("TYPE_D", "weighted_mean") == False
+```
 
-### JF2: Calibration Integration
-- Integrate calibration layer with executor contracts
-- Apply calibration during Phase 2 computation
+### Bounded Multiplicative Fusion
 
-### JF3: Runtime Enforcement
-- Add runtime checks for prohibited operations
-- Integrate with Phase 2 executor factory
+```python
+from farfan_pipeline.infrastructure.calibration import bounded_multiplicative_fusion
 
-### JF4: Calibration Persistence
-- Serialize/deserialize calibration layers
-- Version control for calibration parameters
+# Prevents numerical explosion
+result = bounded_multiplicative_fusion([2.0, 3.0, 4.0])  # 24.0 -> clamped to 10.0
+assert result == 10.0
 
-### JF5: Calibration Audit Trail
-- Track all calibration changes
-- Generate audit reports
+# Prevents numerical collapse
+result = bounded_multiplicative_fusion([0.001, 0.002, 0.003])  # -> clamped to 0.01
+assert result == 0.01
+```
 
-### JF6: Calibration Optimization
-- Auto-tune parameters based on results
-- A/B testing framework for calibrations
+## Verification Strategy
+
+### Static Analysis
+- `mypy --strict` typing verification
+- `py_compile` parser checks
+- Explicit invariant assertions in `__post_init__`
+
+### Dynamic Validation
+- Validator chains (MethodBindingValidator)
+- Auditor specifications (CalibrationAuditor)
+- Interaction governor tests
+- Manifest hash checks
+- Optional signature verification
+
+### Provenance
+- Evidence paths pinned to specific commits
+- Logs carry contract and unit identifiers
+- Full audit trail in CalibrationManifest
+
+### Sensitivity
+- Ingestion strategies clamp within declared bounds
+- Phase-2 uses TYPE midpoints as defaults
+- Drift audit monitors coverage and credible interval width
+
+## What This System Accomplishes
+
+1. **Converts calibration from ad hoc to rigorously governed** - Provenance-pinned, auditable contracts
+2. **Eliminates ambiguity and runtime drift** - Frozen decisions with explicit invariants
+3. **Aligns with epistemic roles and TYPE constraints** - Prevents category errors and interaction pathologies
+4. **Ensures reproducibility, integrity, and defensibility** - Hashing, signatures, validator chains, specification-driven audits
 
 ## References
 
 - **Specification:** JF1-CAL-ARCH-2026-01-02
 - **Epistemic Foundation:** `src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json`
 - **Phase 2 Architecture:** `src/farfan_pipeline/phases/Phase_two/`
-- **Test Suite:** `tests/calibration/`
+- **Policy Facade:** `src/farfan_pipeline/phases/Phase_two/phase2_60_04_calibration_policy.py`
 
 ## Version History
 
+- **2.0.0** (2026-01-05): Full system integration
+  - CalibrationOrchestrator facade
+  - Complete wiring to Phase 2 policy layer
+  - Interaction governor integration
+  - Fact registry integration
+  - Comprehensive documentation
+  
 - **1.0.0** (2026-01-02): Initial implementation
   - Core types (CalibrationBounds, CalibrationParameter, CalibrationLayer)
   - Type-specific defaults
   - Prohibited operations enforcement
-  - Comprehensive test suite (28 tests)
-  - Full mypy strict compliance

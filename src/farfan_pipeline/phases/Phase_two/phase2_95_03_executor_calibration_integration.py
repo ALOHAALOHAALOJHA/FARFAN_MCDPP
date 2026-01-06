@@ -543,7 +543,10 @@ class RealTimeCalibrationEngine:
         Returns:
             Confidence score in [0.0, 1.0].
         """
-        if not baseline or baseline.sample_count < 5:
+        if not baseline or baseline.sample_count == 0:
+            return 0.5  # Low confidence with no data
+        
+        if baseline.sample_count < 5:
             return 0.5  # Low confidence with insufficient data
 
         # Higher sample count -> higher confidence (asymptotic to 1.0)
@@ -704,16 +707,25 @@ def get_executor_config(
     executor_id: str,
     dimension: str,
     question: str,
+    environment: str = "production",
+    cli_overrides: Optional[Dict[str, Any]] = None,
 ) -> dict[str, Any]:
     """Get runtime configuration for executor.
 
-    Returns configuration with conservative defaults.
-    Can be extended to load from configuration files.
+    Loads configuration from the canonical ExecutorConfig system using the
+    established loading hierarchy:
+    1. CLI arguments (highest priority)
+    2. Environment variables (FARFAN_TIMEOUT_S, FARFAN_RETRY, etc.)
+    3. Environment file (system/config/environments/{env}.json)
+    4. Executor config file (executor_configs/{executor_id}.json)
+    5. Conservative defaults (lowest priority)
 
     Args:
         executor_id: Unique executor identifier
         dimension: Dimension identifier (e.g., "D1")
         question: Question identifier (e.g., "Q1")
+        environment: Environment name (development, staging, production)
+        cli_overrides: Optional CLI argument overrides
 
     Returns:
         Runtime configuration dictionary with HOW parameters
@@ -726,6 +738,19 @@ def get_executor_config(
     Postconditions:
         - Returns valid configuration dict
         - All required keys present
+        
+    Success Criteria:
+        - Configuration loaded successfully from appropriate sources
+        - All values within valid ranges
+        
+    Failure Modes:
+        - ValueError if preconditions violated
+        - ExecutorConfig validation errors if invalid config values
+        
+    Verification Strategy:
+        - Precondition checks enforce non-empty strings
+        - ExecutorConfig.__post_init__ validates value ranges
+        - Debug logging shows loaded configuration source and values
     """
     if not executor_id:
         raise ValueError("executor_id cannot be empty")
@@ -736,18 +761,68 @@ def get_executor_config(
 
     logger.debug(
         f"Config requested for {executor_id} "
-        f"(dimension={dimension}, question={question})"
+        f"(dimension={dimension}, question={question}, environment={environment})"
     )
 
-    # Return configuration with defaults
-    return {
-        "timeout_seconds": 300,
-        "max_retries": 3,
-        "retry_delay_seconds": 1.0,
-        "memory_limit_mb": 1024,
-        "enable_caching": True,
-        "enable_profiling": True,
+    # Import ExecutorConfig (local import to avoid circular dependency issues)
+    # Module-level caching to avoid repeated imports
+    if globals().get("_executor_config_module") is None:
+        try:
+            from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import (
+                ExecutorConfig,
+            )
+            globals()["_executor_config_module"] = {"ExecutorConfig": ExecutorConfig}
+        except ModuleNotFoundError:
+            # Fallback for when module is imported directly without package context
+            import sys
+            from pathlib import Path as ImportPath
+            
+            config_module_path = ImportPath(__file__).parent / "phase2_10_03_executor_config.py"
+            import importlib.util
+            spec = importlib.util.spec_from_file_location(
+                "phase2_10_03_executor_config", config_module_path
+            )
+            if spec is None or spec.loader is None:
+                raise ImportError(f"Cannot load ExecutorConfig from {config_module_path}")
+            executor_config_module = importlib.util.module_from_spec(spec)
+            # Register in sys.modules to support dataclass introspection
+            # Dataclasses use sys.modules.get(cls.__module__) for type checking
+            sys.modules["phase2_10_03_executor_config"] = executor_config_module
+            spec.loader.exec_module(executor_config_module)
+            globals()["_executor_config_module"] = {"ExecutorConfig": executor_config_module.ExecutorConfig}
+    
+    ExecutorConfig = globals()["_executor_config_module"]["ExecutorConfig"]
+
+    # Load configuration from canonical source
+    executor_config = ExecutorConfig.load_from_sources(
+        executor_id=executor_id,
+        environment=environment,
+        cli_overrides=cli_overrides,
+    )
+
+    # Helper to get value or default
+    def get_or_default(value, default):
+        return value if value is not None else default
+
+    # Map ExecutorConfig fields to legacy return schema
+    config = {
+        "timeout_seconds": get_or_default(executor_config.timeout_s, 300),
+        "max_retries": get_or_default(executor_config.retry, 3),
+        "retry_delay_seconds": 1.0,  # Not in ExecutorConfig, keep as constant
+        "memory_limit_mb": get_or_default(executor_config.memory_limit_mb, 512),
+        "enable_caching": True,  # Not in ExecutorConfig, keep as constant
+        "enable_profiling": get_or_default(executor_config.enable_profiling, True),
     }
+
+    logger.debug(
+        f"Loaded config for {executor_id}: "
+        f"timeout={config['timeout_seconds']}s, "
+        f"retries={config['max_retries']}, "
+        f"memory={config['memory_limit_mb']}MB, "
+        f"profiling={config['enable_profiling']}"
+    )
+
+    return config
 
 
 __all__ = [

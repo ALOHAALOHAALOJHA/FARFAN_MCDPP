@@ -186,19 +186,41 @@ def register_default_policies(
 def wrap_method_executor(
     method_executor: MethodExecutor,
     resource_manager: AdaptiveResourceManager,
+    signal_registry: Any,
+    config: Any,
+    questionnaire_provider: Any,
+    calibration_orchestrator: Any | None = None,
+    enriched_packs: dict[str, Any] | None = None,
+    validation_orchestrator: Any | None = None,
+    calibration_policy: Any | None = None,
 ) -> ResourceAwareExecutor:
-    """Wrap MethodExecutor with resource management.
+    """Wrap MethodExecutor with resource management and contract support.
     
     Args:
-        method_executor: Existing MethodExecutor instance
-        resource_manager: Configured AdaptiveResourceManager
+        method_executor: Existing MethodExecutor instance.
+        resource_manager: Configured AdaptiveResourceManager.
+        signal_registry: QuestionnaireSignalRegistry for signal access.
+        config: ExecutorConfig for runtime parameters.
+        questionnaire_provider: CanonicalQuestionnaire for questionnaire access.
+        calibration_orchestrator: Optional calibration orchestrator.
+        enriched_packs: Optional enriched signal packs by policy_area_id.
+        validation_orchestrator: Optional validation orchestrator.
+        calibration_policy: Optional calibration policy.
         
     Returns:
-        ResourceAwareExecutor wrapping the method executor
+        ResourceAwareExecutor wrapping the method executor with full
+        contract execution capability.
     """
     return ResourceAwareExecutor(
         method_executor=method_executor,
         resource_manager=resource_manager,
+        signal_registry=signal_registry,
+        config=config,
+        questionnaire_provider=questionnaire_provider,
+        calibration_orchestrator=calibration_orchestrator,
+        enriched_packs=enriched_packs,
+        validation_orchestrator=validation_orchestrator,
+        calibration_policy=calibration_policy,
     )
 
 

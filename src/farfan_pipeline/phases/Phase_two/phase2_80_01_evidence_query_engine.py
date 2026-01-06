@@ -33,6 +33,12 @@ Query Language:
         field CONTAINS 'substring'
         contradicts(node_id='xyz')
         supports(node_id='xyz')
+
+Security Constraints:
+    INTERNAL USE ONLY - This query engine is designed for internal use within
+    the pipeline. Query strings are parsed using simple regex patterns without
+    SQL injection protection. DO NOT expose this interface to untrusted user input.
+    If external query access is needed, add input sanitization and validation.
 """
 
 from __future__ import annotations
@@ -255,6 +261,18 @@ class EvidenceQueryEngine:
         - ORDER BY and LIMIT support
         - Causal chain traversal
         - Contradiction/support queries
+
+    Security Considerations:
+        This is an INTERNAL query engine designed for trusted code paths only.
+        Query parsing uses simple regex patterns and does NOT sanitize against
+        SQL injection or malicious input. DO NOT expose this interface to 
+        untrusted user input without adding proper input validation and sanitization.
+        
+        For production use with external input, implement:
+        - Whitelist validation for field names
+        - Type checking and bounds validation for values
+        - Query complexity limits (e.g., max nodes traversed)
+        - Rate limiting and resource quotas
 
     Usage:
         engine = EvidenceQueryEngine(nexus)

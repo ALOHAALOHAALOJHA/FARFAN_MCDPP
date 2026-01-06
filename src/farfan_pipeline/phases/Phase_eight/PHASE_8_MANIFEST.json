@@ -1,36 +1,103 @@
 {
   "$schema": "phase_manifest_schema.json",
-  "manifest_version": "1.0.0",
+  "manifest_version": "2.0.0",
   "phase": {
     "number": 8,
     "name": "Recommendation Engine",
     "codename": "RECOMMENDER",
     "label": "Phase 8",
-    "description": "Recommendation engine that synthesizes analysis results into actionable policy recommendations"
+    "description": "Recommendation engine that synthesizes analysis results into actionable policy recommendations using enhanced rule templates with 7 key features"
   },
   "metadata": {
     "created": "2025-12-30",
-    "modified": "2025-12-30",
-    "version": "1.0.0",
+    "modified": "2026-01-05",
+    "version": "2.0.0",
     "author": "F.A.R.F.A.N Core Architecture Team",
-    "status": "ACTIVE"
+    "status": "ACTIVE",
+    "gnea_compliant": true
   },
   "statistics": {
-    "total_modules": 3,
-    "stages": 4
+    "total_modules": 6,
+    "stages": 4,
+    "subfolders": 3
+  },
+  "directory_structure": {
+    "root_modules": [
+      "phase8_20_00_recommendation_engine.py",
+      "phase8_20_01_recommendation_engine_adapter.py",
+      "phase8_30_00_signal_enriched_recommendations.py"
+    ],
+    "subfolders": {
+      "interfaces": {
+        "purpose": "Interface contracts and validation",
+        "modules": [
+          "interface_validator.py"
+        ],
+        "documentation": [
+          "README.md",
+          "INTERFACE_MANIFEST.json"
+        ]
+      },
+      "primitives": {
+        "purpose": "Constants, types, and enums",
+        "modules": [
+          "PHASE_8_CONSTANTS.py",
+          "PHASE_8_TYPES.py",
+          "PHASE_8_ENUMS.py"
+        ],
+        "documentation": [
+          "README.md"
+        ]
+      },
+      "json_phase_eight": {
+        "purpose": "Rule definitions",
+        "files": [
+          "recommendation_rules.json",
+          "recommendation_rules_enhanced.json"
+        ]
+      }
+    }
   },
   "stages": [
     {
       "code": 0,
       "name": "Base",
-      "description": "Package init and types",
-      "execution_order": 1
+      "description": "Package init and primitives",
+      "execution_order": 1,
+      "modules": [
+        {
+          "location": "primitives/PHASE_8_CONSTANTS.py",
+          "type": "CONST",
+          "criticality": "CRITICAL",
+          "purpose": "Global constants"
+        },
+        {
+          "location": "primitives/PHASE_8_TYPES.py",
+          "type": "TYPE",
+          "criticality": "CRITICAL",
+          "purpose": "Type definitions"
+        },
+        {
+          "location": "primitives/PHASE_8_ENUMS.py",
+          "type": "ENUM",
+          "criticality": "CRITICAL",
+          "purpose": "Enumeration types"
+        }
+      ]
     },
     {
       "code": 10,
       "name": "Init",
-      "description": "Initialization and configuration",
-      "execution_order": 2
+      "description": "Interfaces and validation",
+      "execution_order": 2,
+      "modules": [
+        {
+          "location": "interfaces/interface_validator.py",
+          "type": "VAL",
+          "criticality": "HIGH",
+          "purpose": "Input/output validation"
+        }
+      ]
     },
     {
       "code": 20,
@@ -39,13 +106,15 @@
       "execution_order": 3,
       "modules": [
         {
-          "canonical_name": "recommendation_engine",
+          "canonical_name": "phase8_20_00_recommendation_engine",
+          "location": "phase8_20_00_recommendation_engine.py",
           "type": "ENG",
           "criticality": "CRITICAL",
           "purpose": "Core recommendation generation engine"
         },
         {
-          "canonical_name": "recommendation_engine_adapter",
+          "canonical_name": "phase8_20_01_recommendation_engine_adapter",
+          "location": "phase8_20_01_recommendation_engine_adapter.py",
           "type": "ADP",
           "criticality": "HIGH",
           "purpose": "Adapter for pipeline integration"
@@ -59,7 +128,8 @@
       "execution_order": 4,
       "modules": [
         {
-          "canonical_name": "signal_enriched_recommendations",
+          "canonical_name": "phase8_30_00_signal_enriched_recommendations",
+          "location": "phase8_30_00_signal_enriched_recommendations.py",
           "type": "ENR",
           "criticality": "HIGH",
           "purpose": "Enrich recommendations with signal data"
@@ -69,25 +139,87 @@
   ],
   "contracts": {
     "inputs": [
-      {"name": "analysis_results", "type": "AnalysisResults", "required": true},
-      {"name": "policy_context", "type": "PolicyContext", "required": true},
-      {"name": "signal_data", "type": "SignalData", "required": false}
+      {
+        "id": "P8-IN-001",
+        "name": "analysis_results",
+        "type": "AnalysisResultsInput",
+        "source": "Phase 7",
+        "required": true,
+        "schema_ref": "interfaces/INTERFACE_MANIFEST.json#/inputs/P8-IN-001"
+      },
+      {
+        "id": "P8-IN-002",
+        "name": "policy_context",
+        "type": "PolicyContextInput",
+        "source": "Orchestrator",
+        "required": true,
+        "schema_ref": "interfaces/INTERFACE_MANIFEST.json#/inputs/P8-IN-002"
+      },
+      {
+        "id": "P8-IN-003",
+        "name": "signal_data",
+        "type": "SignalDataInput",
+        "source": "SISAS Signal Registry",
+        "required": false,
+        "schema_ref": "interfaces/INTERFACE_MANIFEST.json#/inputs/P8-IN-003"
+      }
     ],
     "outputs": [
-      {"name": "recommendations", "type": "list[Recommendation]"},
-      {"name": "recommendation_metadata", "type": "RecommendationMetadata"}
+      {
+        "id": "P8-OUT-001",
+        "name": "recommendations",
+        "type": "list[RecommendationOutput]",
+        "destination": ["Phase 9", "Orchestrator"],
+        "schema_ref": "interfaces/INTERFACE_MANIFEST.json#/outputs/P8-OUT-001"
+      },
+      {
+        "id": "P8-OUT-002",
+        "name": "recommendation_metadata",
+        "type": "RecommendationMetadata",
+        "destination": ["Orchestrator", "Audit Log"],
+        "schema_ref": "interfaces/INTERFACE_MANIFEST.json#/outputs/P8-OUT-002"
+      }
     ],
     "invariants": [
-      {"id": "INV-P8-1", "name": "Confidence Threshold", "formula": "∀ rec: confidence >= MIN_THRESHOLD"},
-      {"id": "INV-P8-2", "name": "Area Coverage", "formula": "∀ area: has_recommendations(area)"}
+      {"id": "INV-P8-001", "name": "Confidence Threshold", "formula": "∀ rec: confidence >= 0.6"},
+      {"id": "INV-P8-002", "name": "Area Coverage", "formula": "∀ area ∈ PA01..PA10: has_recommendations(area)"},
+      {"id": "INV-P8-003", "name": "Level Hierarchy", "formula": "MICRO ⊆ MESO ⊆ MACRO"},
+      {"id": "INV-P8-004", "name": "Score Bounds", "formula": "MICRO: [0,3], MESO/MACRO: [0,100]"}
+    ]
+  },
+  "enhanced_features": {
+    "version": "2.0",
+    "features": [
+      "template_parameterization",
+      "execution_logic",
+      "measurable_indicators",
+      "unambiguous_time_horizons",
+      "testable_verification",
+      "cost_tracking",
+      "authority_mapping"
     ]
   },
   "determinism": {
     "base_seed": 42,
-    "strategy": "FIXED"
+    "strategy": "FIXED",
+    "note": "All random operations use fixed seed for reproducibility"
   },
   "documentation": {
-    "constants": "PHASE_8_CONSTANTS.py",
+    "constants": "primitives/PHASE_8_CONSTANTS.py",
+    "types": "primitives/PHASE_8_TYPES.py",
+    "enums": "primitives/PHASE_8_ENUMS.py",
+    "interfaces": "interfaces/README.md",
+    "interface_spec": "interfaces/INTERFACE_MANIFEST.json",
+    "primitives": "primitives/README.md",
     "manifest": "PHASE_8_MANIFEST.json"
+  },
+  "cross_references": {
+    "upstream": {
+      "Phase 7": "Provides AnalysisResultsInput with micro_scores, cluster_data, macro_data"
+    },
+    "downstream": {
+      "Phase 9": "Consumes recommendations for report generation",
+      "Orchestrator": "Receives metadata for pipeline state"
+    }
   }
 }
