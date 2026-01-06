@@ -12,7 +12,6 @@ from unittest.mock import Mock, patch
 from farfan_pipeline.utils.retry import (
     RetryConfig,
     RetryPolicy,
-    RetryAttempt,
     with_exponential_backoff,
 )
 
