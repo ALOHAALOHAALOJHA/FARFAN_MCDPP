@@ -33,6 +33,9 @@ pymc>=5.16.0
 pytensor>=2.25.1
 arviz>=0.17.0
 
+# Causal Inference and Process Tracing (Phase 1 Enhancement)
+dowhy>=0.11.1
+
 # Machine Learning and Scientific Computing
 scikit-learn>=1.6.0
 numpy>=1.26.4,<2.0.0

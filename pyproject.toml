@@ -42,6 +42,7 @@ dependencies = [
     "pandas>=2.1.0",
     "scipy>=1.11.0",
     "networkx>=3.2.0",
+    "dowhy>=0.11.1",
     "spacy>=3.7.0",
     "jsonschema>=4.20.0",
     "python-dotenv>=1.0.0",

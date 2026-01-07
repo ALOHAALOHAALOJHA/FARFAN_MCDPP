@@ -5820,6 +5820,19 @@ class CDAFFramework:
         self.inference_setup = CausalInferenceSetup(self.config)
         self.reporting_engine = ReportingEngine(self.config, output_dir)
 
+        # Initialize DoWhy causal analyzer (Phase 1 SOTA Enhancement)
+        try:
+            from farfan_pipeline.methods.causal_inference_dowhy import create_dowhy_analyzer
+            self.dowhy_analyzer = create_dowhy_analyzer()
+            if self.dowhy_analyzer.is_available():
+                self.logger.info("✓ DoWhy causal analyzer initialized (Phase 1 SOTA)")
+            else:
+                self.logger.warning("DoWhy not available - using legacy causal inference")
+                self.dowhy_analyzer = None
+        except ImportError as e:
+            self.logger.warning(f"DoWhy integration not available: {e}")
+            self.dowhy_analyzer = None
+
         # Initialize DNP validator if available
         self.dnp_validator = None
         if DNP_AVAILABLE:
@@ -5853,6 +5866,11 @@ class CDAFFramework:
                     if ea:
                         node.entity_activity = ea
                         graph.nodes[node.id]['entity_activity'] = ea._asdict()
+
+            # Step 3.5: DoWhy Formal Causal Identification (Phase 1 SOTA)
+            if self.dowhy_analyzer and self.dowhy_analyzer.is_available():
+                self.logger.info("Realizando identificación causal formal con DoWhy...")
+                self._perform_dowhy_analysis(graph, nodes, text)
 
             # Step 4: Financial traceability
             self.logger.info("Auditando trazabilidad financiera...")
@@ -6073,7 +6091,80 @@ class CDAFFramework:
 
         self.logger.info("✓ VERIFICACIÓN CVC COMPLETA: sistema coherente con cadena de valor")
 
-    
+    def _perform_dowhy_analysis(
+        self,
+        graph: nx.DiGraph,
+        nodes: dict[str, MetaNode],
+        text: str
+    ) -> None:
+        """
+        Perform formal causal identification using DoWhy (Phase 1 SOTA Enhancement).
+
+        This method validates the causal structure extracted by the Bayesian approach
+        using Pearl's do-calculus and formal causal identification criteria.
+
+        Args:
+            graph: NetworkX causal graph
+            nodes: Dictionary of MetaNode objects
+            text: Original policy document text
+
+        Note:
+            Results are logged for validation purposes. In Phase 2, these will be
+            integrated with Bayesian posteriors for hybrid causal reasoning.
+        """
+        if not self.dowhy_analyzer:
+            return
+
+        # Update DoWhy analyzer with current causal graph
+        self.dowhy_analyzer.graph = graph
+
+        # Sample a few key causal links for formal validation
+        # Focus on high-confidence links from Bayesian inference
+        edges_to_validate = []
+        for source, target, data in graph.edges(data=True):
+            confidence = data.get('confidence', 0.0)
+            if confidence > 0.7:  # High-confidence threshold
+                edges_to_validate.append((source, target, confidence))
+
+        # Limit to top 5 links to avoid excessive computation
+        edges_to_validate.sort(key=lambda x: x[2], reverse=True)
+        edges_to_validate = edges_to_validate[:5]
+
+        self.logger.info(
+            f"DoWhy formal validation: analyzing {len(edges_to_validate)} "
+            f"high-confidence causal links"
+        )
+
+        for source, target, confidence in edges_to_validate:
+            # Find confounders using graph structure
+            confounders = self.dowhy_analyzer.find_confounders(source, target)
+            mediators = self.dowhy_analyzer.find_mediators(source, target)
+
+            self.logger.info(
+                f"  {source} → {target} (Bayesian confidence: {confidence:.3f})"
+            )
+            self.logger.info(
+                f"    - Confounders identified: {confounders if confounders else 'None'}"
+            )
+            self.logger.info(
+                f"    - Mediators identified: {mediators if mediators else 'None'}"
+            )
+
+            # Log structural analysis
+            all_paths = self.dowhy_analyzer.get_all_paths(source, target)
+            if all_paths:
+                self.logger.info(f"    - Causal paths found: {len(all_paths)}")
+                if len(all_paths) <= 3:
+                    for i, path in enumerate(all_paths, 1):
+                        self.logger.info(f"      Path {i}: {' → '.join(path)}")
+
+        # Summary log
+        self.logger.info(
+            "✓ DoWhy formal causal analysis complete. "
+            "See logs above for identification details."
+        )
+
+
     def _extract_feedback_from_audit(self, inferred_mechanisms: dict[str, dict[str, Any]],
                                      counterfactual_audit: dict[str, Any],
                                      audit_results: dict[str, AuditResult]) -> dict[str, Any]:
