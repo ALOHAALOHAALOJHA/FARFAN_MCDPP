@@ -60,7 +60,9 @@
       "pattern_spec": {
         "type": "REGEX",
         "pattern": "línea base|meta|indicador|cuantitativ|medición|fuente de verificación|unidad de medida|número de|porcentaje",
-        "flags": "i",
+        "flags": [
+          "IGNORECASE"
+        ],
         "captures": {}
       },
       "classification": {

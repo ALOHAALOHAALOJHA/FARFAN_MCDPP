@@ -151,6 +151,7 @@ class KeywordExtractor:
         output_file = OUTPUT_DIR / "index.json"
         logger.info(f"Saving index to {output_file}...")
 
+        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(index, f, indent=2, ensure_ascii=False)
 
@@ -161,6 +162,7 @@ class KeywordExtractor:
         output_dir = OUTPUT_DIR / "by_policy_area"
         logger.info(f"Saving keywords by policy area to {output_dir}...")
 
+        output_dir.mkdir(parents=True, exist_ok=True)
         for pa_id, keywords in self.keywords_by_pa.items():
             output_file = output_dir / f"{pa_id}.json"
 
@@ -184,6 +186,7 @@ class KeywordExtractor:
         output_dir = OUTPUT_DIR / "by_cluster"
         logger.info(f"Saving keywords by cluster to {output_dir}...")
 
+        output_dir.mkdir(parents=True, exist_ok=True)
         for cluster_id, keywords in self.keywords_by_cluster.items():
             output_file = output_dir / f"{cluster_id}.json"
 
@@ -204,10 +207,13 @@ class KeywordExtractor:
             "title": "CQC Keyword Schema",
             "description": "Schema para keywords en CQC v2.0",
             "type": "object",
-            "required": ["policy_area_id", "keywords"],
+            "oneOf": [
+                {"required": ["policy_area_id", "keywords"]},
+                {"required": ["cluster_id", "keywords"]}
+            ],
             "properties": {
-                "policy_area_id": {"type": "string", "pattern": "^PA\\d{2}$"},
-                "cluster_id": {"type": "string", "pattern": "^CL\\d{2}$"},
+                "policy_area_id": {"type": "string", "pattern": "^PA\\d{2}"},
+                "cluster_id": {"type": "string", "pattern": "^CL\\d{2}"},
                 "keyword_count": {"type": "integer", "minimum": 0},
                 "keywords": {
                     "type": "array",
@@ -218,6 +224,7 @@ class KeywordExtractor:
         }
 
         output_file = OUTPUT_DIR / "schema.json"
+        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
         with open(output_file, "w", encoding="utf-8") as f:
             json.dump(schema, f, indent=2)
 

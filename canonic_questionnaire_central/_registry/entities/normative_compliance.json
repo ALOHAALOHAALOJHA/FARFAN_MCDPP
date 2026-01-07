@@ -185,6 +185,7 @@
   "universal_mandatory_norms": [
     {
       "norm_id": "Constitución Política 1991",
+      "name": "Constitución Política de Colombia",
       "articles_key": ["Art. 339", "Art. 342"],
       "reason": "Base constitucional del Plan de Desarrollo",
       "empirical_frequency": 14,
@@ -237,7 +238,7 @@
 
   "scoring_algorithm": {
     "description": "CC_COHERENCIA_NORMATIVA score calculation",
-    "formula": "score = 1.0 - SUM(penalties) for missing mandatory norms",
+    "formula": "score = max(0.0, 1.0 - SUM(penalties)) for missing mandatory norms",
     "interpretation": {
       "EXCELENTE": ">= 0.90 (all mandatory norms cited)",
       "BUENO": "0.75 - 0.89 (minor gaps)",

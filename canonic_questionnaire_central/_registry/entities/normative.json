@@ -73,16 +73,16 @@
 
     "ENT-NORM-005": {
       "entity_id": "ENT-NORM-005",
-      "canonical_name": "Ley 1382 de 2010",
-      "acronym": "Ley PDET",
+      "canonical_name": "Decreto 893 de 2017",
+      "acronym": "Decreto PDET",
       "category": "normative",
-      "type": "ley",
-      "aliases": ["Programas de Desarrollo con Enfoque Territorial", "PDET"],
-      "description": "Programas de Desarrollo con Enfoque Territorial",
+      "type": "decreto",
+      "aliases": ["Programas de Desarrollo con Enfoque Territorial", "PDET", "Decreto 893"],
+      "description": "Programas de Desarrollo con Enfoque Territorial (PDET)",
       "scoring_context": {
         "boost_policy_areas": {
-          "PA07": 0.30,
-          "PA03": 0.15
+          "PA05": 0.30,
+          "PA07": 0.25
         }
       }
     },

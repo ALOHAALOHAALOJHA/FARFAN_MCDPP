@@ -60,7 +60,9 @@
       "pattern_spec": {
         "type": "REGEX",
         "pattern": "corresponde a|incluye|características|componentes|especificaciones|alcance técnico",
-        "flags": "i",
+        "flags": [
+          "IGNORECASE"
+        ],
         "captures": {}
       },
       "classification": {
