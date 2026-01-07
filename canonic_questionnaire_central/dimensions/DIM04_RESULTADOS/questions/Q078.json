@@ -1,0 +1,77 @@
+{
+  "question_id": "Q078",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA03",
+  "cluster_id": "CL01",
+  "base_slot": "D4-Q3",
+  "text": {
+    "es": "¿La ambición de las metas de resultado ambiental (ej. 'alcanzar un IRCA por debajo del 5%') se justifica en función de la inversión, la tecnología disponible o se compara con 'casos' de otros municipios?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "evidencia_comparada"
+    },
+    {
+      "required": true,
+      "type": "justificacion_recursos"
+    },
+    {
+      "required": true,
+      "type": "justificacion_tecnica"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0025",
+      "PAT-0040",
+      "PAT-0083",
+      "PAT-Q108-001",
+      "PAT-Q108-003",
+      "PAT-Q108-004",
+      "PAT-Q108-005"
+    ],
+    "keyword_refs": [
+      "KW-PA03-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q018",
+      "Q048",
+      "Q078",
+      "Q108",
+      "Q138"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q108",
+      "Q138",
+      "Q168",
+      "Q198"
+    ]
+  }
+}

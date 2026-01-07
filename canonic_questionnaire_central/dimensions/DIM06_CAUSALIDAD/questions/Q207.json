@@ -1,0 +1,72 @@
+{
+  "question_id": "Q207",
+  "dimension_id": "DIM06",
+  "policy_area_id": "PA07",
+  "cluster_id": "CL01",
+  "base_slot": "D6-Q2",
+  "text": {
+    "es": "¿Los saltos en la cadena causal de tierras son proporcionales (ej. la formalización de un predio no genera por sí sola 'desarrollo rural integral')?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "evita_saltos_logicos"
+    },
+    {
+      "required": true,
+      "type": "proporcionalidad_eslabones"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0056",
+      "PAT-0060",
+      "PAT-0076",
+      "PAT-0088",
+      "PAT-0097",
+      "PAT-Q237-004"
+    ],
+    "keyword_refs": [
+      "KW-PA07-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q027",
+      "Q057",
+      "Q087",
+      "Q117",
+      "Q147"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q237",
+      "Q267",
+      "Q297",
+      "Q327"
+    ]
+  }
+}

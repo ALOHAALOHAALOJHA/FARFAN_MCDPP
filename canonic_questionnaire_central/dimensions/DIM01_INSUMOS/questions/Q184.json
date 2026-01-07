@@ -1,0 +1,88 @@
+{
+  "question_id": "Q184",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA07",
+  "cluster_id": "CL01",
+  "base_slot": "D1-Q4",
+  "text": {
+    "es": "¿El PDM describe las capacidades para la gestión de tierras, mencionando entidades (Oficina de Catastro, UMATA) y sus necesidades? Se debe buscar términos como 'gestión predial', 'sistemas de información geográfica' y si se identifican 'limitaciones'.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "cuellos_botella"
+    },
+    {
+      "required": true,
+      "type": "gobernanza"
+    },
+    {
+      "required": true,
+      "type": "infraestructura_tecnologica"
+    },
+    {
+      "required": true,
+      "type": "procesos"
+    },
+    {
+      "required": true,
+      "type": "talento_humano"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q214-000",
+      "PAT-Q214-001",
+      "PAT-Q214-002",
+      "PAT-Q214-003",
+      "PAT-Q214-004",
+      "PAT-Q214-005",
+      "PAT-Q214-006",
+      "PAT-Q214-007",
+      "PAT-Q214-008",
+      "PAT-Q214-009"
+    ],
+    "keyword_refs": [
+      "KW-PA07-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 5,
+    "threshold": 0.6,
+    "weights": {
+      "expected_elements": 0.35,
+      "pattern_matches": 0.2,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q004",
+      "Q034",
+      "Q064",
+      "Q094",
+      "Q124"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q214",
+      "Q244",
+      "Q274",
+      "Q304"
+    ]
+  }
+}

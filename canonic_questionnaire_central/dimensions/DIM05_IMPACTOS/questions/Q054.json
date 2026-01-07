@@ -1,0 +1,73 @@
+{
+  "question_id": "Q054",
+  "dimension_id": "DIM05",
+  "policy_area_id": "PA02",
+  "cluster_id": "CL01",
+  "base_slot": "D5-Q4",
+  "text": {
+    "es": "¿Los impactos en la paz se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. resurgimiento de actores armados) que podrían romper el mecanismo causal?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "alineacion_marcos"
+    },
+    {
+      "required": true,
+      "type": "riesgos_sistemicos"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0092",
+      "PAT-0111",
+      "PAT-Q084-002",
+      "PAT-Q084-003",
+      "PAT-Q084-004",
+      "PAT-Q084-005",
+      "PAT-Q084-006"
+    ],
+    "keyword_refs": [
+      "KW-PA02-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q024",
+      "Q054",
+      "Q084",
+      "Q114",
+      "Q144"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q084",
+      "Q114",
+      "Q144",
+      "Q174"
+    ]
+  }
+}

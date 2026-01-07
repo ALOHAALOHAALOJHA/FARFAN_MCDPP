@@ -1,0 +1,75 @@
+{
+  "question_id": "Q230",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA08",
+  "cluster_id": "CL03",
+  "base_slot": "D4-Q5",
+  "text": {
+    "es": "¿El plan declara la alineación de sus resultados de protección de líderes con marcos superiores como el PND, los Acuerdos de Paz o sentencias de la Corte Constitucional?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "alineacion_acuerdo_paz"
+    },
+    {
+      "required": true,
+      "type": "alineacion_jurisprudencia"
+    },
+    {
+      "required": true,
+      "type": "alineacion_pnd"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0023",
+      "PAT-Q260-001",
+      "PAT-Q260-002",
+      "PAT-Q260-003",
+      "PAT-Q260-004"
+    ],
+    "keyword_refs": [
+      "KW-PA08-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q020",
+      "Q050",
+      "Q080",
+      "Q110",
+      "Q140"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q260",
+      "Q290",
+      "Q320",
+      "Q350"
+    ]
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "question_id": "Q032",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA02",
+  "cluster_id": "CL01",
+  "base_slot": "D1-Q2",
+  "text": {
+    "es": "¿El texto dimensiona el problema de la violencia y el conflicto cuantificando la brecha o el aumento de casos? Se debe buscar si se mencionan explícitamente limitaciones en los datos, como 'subregistro', 'cifra negra' o 'vacíos de información'.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "cuantificacion_brecha"
+    },
+    {
+      "required": true,
+      "type": "sesgos_reconocidos"
+    },
+    {
+      "required": true,
+      "type": "vacios_explicitos"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q062-000",
+      "PAT-Q062-001",
+      "PAT-Q062-002",
+      "PAT-Q062-003",
+      "PAT-Q062-004",
+      "PAT-Q062-005",
+      "PAT-Q062-006",
+      "PAT-Q062-007"
+    ],
+    "keyword_refs": [
+      "KW-PA02-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 5,
+    "threshold": 0.6,
+    "weights": {
+      "expected_elements": 0.35,
+      "pattern_matches": 0.2,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q002",
+      "Q032",
+      "Q062",
+      "Q092",
+      "Q122"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q062",
+      "Q092",
+      "Q122",
+      "Q152"
+    ]
+  }
+}

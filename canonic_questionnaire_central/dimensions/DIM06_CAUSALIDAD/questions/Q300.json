@@ -1,0 +1,73 @@
+{
+  "question_id": "Q300",
+  "dimension_id": "DIM06",
+  "policy_area_id": "PA10",
+  "cluster_id": "CL04",
+  "base_slot": "D6-Q5",
+  "text": {
+    "es": "¿La lógica causal para la migración considera el contexto, reconociendo 'grupos afectados' (NNA no acompañados, mujeres migrantes, caminantes) y 'restricciones' territoriales o de seguridad?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "analisis_contextual"
+    },
+    {
+      "required": true,
+      "type": "enfoque_diferencial"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q060-000",
+      "PAT-Q060-001",
+      "PAT-Q060-002",
+      "PAT-Q060-003",
+      "PAT-Q060-004",
+      "PAT-Q060-005",
+      "PAT-Q060-006"
+    ],
+    "keyword_refs": [
+      "KW-PA10-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q030",
+      "Q060",
+      "Q090",
+      "Q120",
+      "Q150"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q330",
+      "Q360",
+      "Q390",
+      "Q420"
+    ]
+  }
+}

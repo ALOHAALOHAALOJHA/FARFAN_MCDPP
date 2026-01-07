@@ -1,0 +1,77 @@
+{
+  "question_id": "Q239",
+  "dimension_id": "DIM06",
+  "policy_area_id": "PA08",
+  "cluster_id": "CL03",
+  "base_slot": "D6-Q4",
+  "text": {
+    "es": "¿Se describe un sistema de monitoreo para la protección de líderes que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia de seguridad?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "ciclos_aprendizaje"
+    },
+    {
+      "required": true,
+      "type": "mecanismos_correccion"
+    },
+    {
+      "required": true,
+      "type": "sistema_monitoreo"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q269-000",
+      "PAT-Q269-001",
+      "PAT-Q269-002",
+      "PAT-Q269-003",
+      "PAT-Q269-004",
+      "PAT-Q269-005",
+      "PAT-Q269-006"
+    ],
+    "keyword_refs": [
+      "KW-PA08-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q029",
+      "Q059",
+      "Q089",
+      "Q119",
+      "Q149"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q269",
+      "Q299",
+      "Q329",
+      "Q359"
+    ]
+  }
+}

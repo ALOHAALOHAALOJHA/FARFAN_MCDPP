@@ -1,0 +1,72 @@
+{
+  "question_id": "Q289",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA10",
+  "cluster_id": "CL04",
+  "base_slot": "D4-Q4",
+  "text": {
+    "es": "¿Los resultados propuestos (ej. 'mejora de la convivencia entre migrantes y comunidad de acogida') 'atienden' o 'abordan' directamente los problemas de integración y xenofobia priorizados en el diagnóstico?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "criterios_exito_definidos"
+    },
+    {
+      "required": true,
+      "type": "vinculo_resultado_problema"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0078",
+      "PAT-0108",
+      "PAT-Q049-000",
+      "PAT-Q049-001",
+      "PAT-Q049-002",
+      "PAT-Q049-003"
+    ],
+    "keyword_refs": [
+      "KW-PA10-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q019",
+      "Q049",
+      "Q079",
+      "Q109",
+      "Q139"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q319",
+      "Q349",
+      "Q379",
+      "Q409"
+    ]
+  }
+}

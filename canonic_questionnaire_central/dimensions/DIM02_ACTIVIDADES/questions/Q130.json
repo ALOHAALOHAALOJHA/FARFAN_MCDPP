@@ -1,0 +1,72 @@
+{
+  "question_id": "Q130",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA05",
+  "cluster_id": "CL02",
+  "base_slot": "D2-Q5",
+  "text": {
+    "es": "¿El conjunto de actividades para las víctimas demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. reparación individual + reparación colectiva) o una 'secuencia' lógica.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "complementariedad_explicita"
+    },
+    {
+      "required": true,
+      "type": "secuenciacion_logica"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q160-000",
+      "PAT-Q160-001",
+      "PAT-Q160-002",
+      "PAT-Q160-003",
+      "PAT-Q160-004",
+      "PAT-Q160-005"
+    ],
+    "keyword_refs": [
+      "KW-PA05-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q010",
+      "Q040",
+      "Q070",
+      "Q100",
+      "Q130"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q160",
+      "Q190",
+      "Q220",
+      "Q250"
+    ]
+  }
+}

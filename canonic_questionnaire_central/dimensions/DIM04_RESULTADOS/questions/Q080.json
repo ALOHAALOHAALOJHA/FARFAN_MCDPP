@@ -1,0 +1,75 @@
+{
+  "question_id": "Q080",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA03",
+  "cluster_id": "CL01",
+  "base_slot": "D4-Q5",
+  "text": {
+    "es": "¿El plan declara la alineación de sus resultados ambientales con marcos superiores como el PND, los ODS (6, 11, 13) o el Acuerdo de París?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "alineacion_ods"
+    },
+    {
+      "required": true,
+      "type": "alineacion_otros_marcos"
+    },
+    {
+      "required": true,
+      "type": "alineacion_pnd"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q110-000",
+      "PAT-Q110-001",
+      "PAT-Q110-002",
+      "PAT-Q110-003",
+      "PAT-Q110-004"
+    ],
+    "keyword_refs": [
+      "KW-PA03-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q020",
+      "Q050",
+      "Q080",
+      "Q110",
+      "Q140"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q110",
+      "Q140",
+      "Q170",
+      "Q200"
+    ]
+  }
+}

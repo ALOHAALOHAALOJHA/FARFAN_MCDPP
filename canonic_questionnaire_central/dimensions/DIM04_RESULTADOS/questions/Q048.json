@@ -1,0 +1,77 @@
+{
+  "question_id": "Q048",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA02",
+  "cluster_id": "CL01",
+  "base_slot": "D4-Q3",
+  "text": {
+    "es": "¿La ambición de las metas de resultado (ej. 'reducir la tasa de homicidios en 15%') se justifica en función de los recursos, la capacidad policial o se compara con 'casos' similares?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "evidencia_comparada"
+    },
+    {
+      "required": true,
+      "type": "justificacion_capacidad"
+    },
+    {
+      "required": true,
+      "type": "justificacion_recursos"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0025",
+      "PAT-0041",
+      "PAT-Q078-000",
+      "PAT-Q078-001",
+      "PAT-Q078-003",
+      "PAT-Q078-004",
+      "PAT-Q078-005"
+    ],
+    "keyword_refs": [
+      "KW-PA02-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q018",
+      "Q048",
+      "Q078",
+      "Q108",
+      "Q138"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q078",
+      "Q108",
+      "Q138",
+      "Q168"
+    ]
+  }
+}

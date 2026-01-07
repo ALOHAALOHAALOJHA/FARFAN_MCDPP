@@ -1,0 +1,79 @@
+{
+  "question_id": "Q242",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA09",
+  "cluster_id": "CL04",
+  "base_slot": "D1-Q2",
+  "text": {
+    "es": "¿El texto dimensiona la magnitud de la crisis carcelaria, cuantificando el déficit de cupos o la población afectada por la vulneración de derechos (salud, alimentación)? Se debe buscar si se mencionan 'vacíos de información' o se cita el 'Estado de Cosas Inconstitucional'.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "analisis_causal_problema"
+    },
+    {
+      "required": true,
+      "type": "cuantificacion_magnitud"
+    },
+    {
+      "required": true,
+      "type": "vacios_explicitos"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q272-000",
+      "PAT-Q272-001",
+      "PAT-Q272-002",
+      "PAT-Q272-003",
+      "PAT-Q272-004",
+      "PAT-Q272-005",
+      "PAT-Q272-006",
+      "PAT-Q272-007",
+      "PAT-Q272-008"
+    ],
+    "keyword_refs": [
+      "KW-PA09-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 5,
+    "threshold": 0.6,
+    "weights": {
+      "expected_elements": 0.35,
+      "pattern_matches": 0.2,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q002",
+      "Q032",
+      "Q062",
+      "Q092",
+      "Q122"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q272",
+      "Q302",
+      "Q332",
+      "Q362"
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "question_id": "Q038",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA02",
+  "cluster_id": "CL01",
+  "base_slot": "D2-Q3",
+  "text": {
+    "es": "¿El PDM vincula explícitamente las actividades (ej. patrullajes) con las 'causas raíz' de la violencia (ej. economías ilegales, disputas territoriales) identificadas en el diagnóstico?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "aborda_causa_raiz"
+    },
+    {
+      "required": true,
+      "type": "vinculo_diagnostico_actividad"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0061",
+      "PAT-0085",
+      "PAT-Q068-002",
+      "PAT-Q068-003",
+      "PAT-Q068-004",
+      "PAT-Q068-005",
+      "PAT-Q068-006"
+    ],
+    "keyword_refs": [
+      "KW-PA02-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q008",
+      "Q038",
+      "Q068",
+      "Q098",
+      "Q128"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q068",
+      "Q098",
+      "Q128",
+      "Q158"
+    ]
+  }
+}

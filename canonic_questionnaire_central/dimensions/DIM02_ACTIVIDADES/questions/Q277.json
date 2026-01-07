@@ -1,0 +1,80 @@
+{
+  "question_id": "Q277",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA10",
+  "cluster_id": "CL04",
+  "base_slot": "D2-Q2",
+  "text": {
+    "es": "¿La descripción de las actividades para migrantes detalla el instrumento ('mediante jornadas de regularización', 'a través de asistencia humanitaria'), la población objetivo ('migrantes pendulares', 'población de acogida', 'retornados') y la lógica causal?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "instrumento_especificado"
+    },
+    {
+      "required": true,
+      "type": "logica_causal_explicita"
+    },
+    {
+      "required": true,
+      "type": "poblacion_objetivo_definida"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0081",
+      "PAT-0086",
+      "PAT-Q037-001",
+      "PAT-Q037-002",
+      "PAT-Q037-003",
+      "PAT-Q037-005",
+      "PAT-Q037-006",
+      "PAT-Q037-007",
+      "PAT-Q037-008",
+      "PAT-Q037-009"
+    ],
+    "keyword_refs": [
+      "KW-PA10-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q007",
+      "Q037",
+      "Q067",
+      "Q097",
+      "Q127"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q307",
+      "Q337",
+      "Q367",
+      "Q397"
+    ]
+  }
+}

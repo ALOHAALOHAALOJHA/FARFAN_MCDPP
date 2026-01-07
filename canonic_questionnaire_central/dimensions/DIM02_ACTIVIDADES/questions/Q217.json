@@ -1,0 +1,79 @@
+{
+  "question_id": "Q217",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA08",
+  "cluster_id": "CL03",
+  "base_slot": "D2-Q2",
+  "text": {
+    "es": "¿La descripción de las actividades de protección detalla el instrumento ('mediante esquemas de seguridad', 'a través de campañas de no estigmatización'), la población objetivo ('líderes sociales', 'defensores ambientales') y la lógica causal?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "instrumento_especificado"
+    },
+    {
+      "required": true,
+      "type": "logica_causal_explicita"
+    },
+    {
+      "required": true,
+      "type": "poblacion_objetivo_definida"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0080",
+      "PAT-0086",
+      "PAT-Q247-001",
+      "PAT-Q247-002",
+      "PAT-Q247-003",
+      "PAT-Q247-005",
+      "PAT-Q247-006",
+      "PAT-Q247-007",
+      "PAT-Q247-008"
+    ],
+    "keyword_refs": [
+      "KW-PA08-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q007",
+      "Q037",
+      "Q067",
+      "Q097",
+      "Q127"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q247",
+      "Q277",
+      "Q307",
+      "Q337"
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "question_id": "Q129",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA05",
+  "cluster_id": "CL02",
+  "base_slot": "D2-Q4",
+  "text": {
+    "es": "¿El plan identifica posibles riesgos en la implementación de la política de víctimas (ej. revictimización, riesgos de seguridad en retornos) y propone 'medidas de mitigación'?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "mitigacion_propuesta"
+    },
+    {
+      "required": true,
+      "type": "riesgos_identificados"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0082",
+      "PAT-0095",
+      "PAT-Q159-001",
+      "PAT-Q159-002",
+      "PAT-Q159-003",
+      "PAT-Q159-004",
+      "PAT-Q159-005",
+      "PAT-Q159-007"
+    ],
+    "keyword_refs": [
+      "KW-PA05-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q009",
+      "Q039",
+      "Q069",
+      "Q099",
+      "Q129"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q159",
+      "Q189",
+      "Q219",
+      "Q249"
+    ]
+  }
+}

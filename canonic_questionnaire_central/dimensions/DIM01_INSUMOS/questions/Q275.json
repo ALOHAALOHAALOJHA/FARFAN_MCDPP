@@ -1,0 +1,83 @@
+{
+  "question_id": "Q275",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA10",
+  "cluster_id": "CL04",
+  "base_slot": "D1-Q5",
+  "text": {
+    "es": "¿El plan justifica su alcance en la política migratoria mencionando el marco legal (Estatuto Temporal de Protección) o reconociendo restricciones de competencias (Migración Colombia vs. municipio), presupuestales o de capacidad de respuesta?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "coherencia_demostrada"
+    },
+    {
+      "required": true,
+      "type": "restricciones_competencias"
+    },
+    {
+      "required": true,
+      "type": "restricciones_legales"
+    },
+    {
+      "required": true,
+      "type": "restricciones_presupuestales"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0034",
+      "PAT-Q035-000",
+      "PAT-Q035-001",
+      "PAT-Q035-002",
+      "PAT-Q035-003",
+      "PAT-Q035-004",
+      "PAT-Q035-005",
+      "PAT-Q035-006",
+      "PAT-Q035-007"
+    ],
+    "keyword_refs": [
+      "KW-PA10-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_E",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q005",
+      "Q035",
+      "Q065",
+      "Q095",
+      "Q125"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q305",
+      "Q335",
+      "Q365",
+      "Q395"
+    ]
+  }
+}

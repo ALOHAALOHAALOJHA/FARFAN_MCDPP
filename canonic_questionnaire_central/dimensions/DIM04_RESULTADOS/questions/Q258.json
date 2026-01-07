@@ -1,0 +1,77 @@
+{
+  "question_id": "Q258",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA09",
+  "cluster_id": "CL04",
+  "base_slot": "D4-Q3",
+  "text": {
+    "es": "¿La ambición de las metas de resultado (ej. 'reducir el hacinamiento al 20%') se justifica en función de la inversión, la capacidad de construcción o se compara con estándares o 'casos' de otras ciudades?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "evidencia_comparada"
+    },
+    {
+      "required": true,
+      "type": "justificacion_capacidad"
+    },
+    {
+      "required": true,
+      "type": "justificacion_recursos"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0025",
+      "PAT-0083",
+      "PAT-Q288-001",
+      "PAT-Q288-002",
+      "PAT-Q288-003",
+      "PAT-Q288-004",
+      "PAT-Q288-005"
+    ],
+    "keyword_refs": [
+      "KW-PA09-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q018",
+      "Q048",
+      "Q078",
+      "Q108",
+      "Q138"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q288",
+      "Q318",
+      "Q348",
+      "Q378"
+    ]
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "question_id": "Q094",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA04",
+  "cluster_id": "CL03",
+  "base_slot": "D1-Q4",
+  "text": {
+    "es": "¿El PDM describe las capacidades para la gestión social, mencionando entidades (Secretarías de Educación, Salud, ESE) y sus necesidades? Se debe buscar términos como 'infraestructura educativa', 'red de prestadores de salud' y si se identifican 'limitaciones'.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "cuellos_botella"
+    },
+    {
+      "required": true,
+      "type": "gobernanza"
+    },
+    {
+      "required": true,
+      "type": "infraestructura_fisica"
+    },
+    {
+      "required": true,
+      "type": "procesos"
+    },
+    {
+      "required": true,
+      "type": "talento_humano"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q124-000",
+      "PAT-Q124-001",
+      "PAT-Q124-002",
+      "PAT-Q124-003",
+      "PAT-Q124-004",
+      "PAT-Q124-005",
+      "PAT-Q124-006",
+      "PAT-Q124-007",
+      "PAT-Q124-008",
+      "PAT-Q124-009"
+    ],
+    "keyword_refs": [
+      "KW-PA04-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 5,
+    "threshold": 0.6,
+    "weights": {
+      "expected_elements": 0.35,
+      "pattern_matches": 0.2,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q004",
+      "Q034",
+      "Q064",
+      "Q094",
+      "Q124"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q124",
+      "Q154",
+      "Q184",
+      "Q214"
+    ]
+  }
+}

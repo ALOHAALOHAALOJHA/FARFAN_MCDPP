@@ -1,0 +1,79 @@
+{
+  "question_id": "Q062",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA03",
+  "cluster_id": "CL01",
+  "base_slot": "D1-Q2",
+  "text": {
+    "es": "¿El texto dimensiona la magnitud de los problemas ambientales o la vulnerabilidad ante desastres, cuantificando el déficit de conservación o el alcance del riesgo? Se debe buscar si se mencionan 'vacíos de información' (ej. falta de estudios de riesgo detallados).",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "analisis_vulnerabilidad"
+    },
+    {
+      "required": true,
+      "type": "cuantificacion_magnitud"
+    },
+    {
+      "required": true,
+      "type": "vacios_explicitos"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q092-000",
+      "PAT-Q092-001",
+      "PAT-Q092-002",
+      "PAT-Q092-003",
+      "PAT-Q092-004",
+      "PAT-Q092-005",
+      "PAT-Q092-006",
+      "PAT-Q092-007",
+      "PAT-Q092-008"
+    ],
+    "keyword_refs": [
+      "KW-PA03-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 5,
+    "threshold": 0.6,
+    "weights": {
+      "expected_elements": 0.35,
+      "pattern_matches": 0.2,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q002",
+      "Q032",
+      "Q062",
+      "Q092",
+      "Q122"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q092",
+      "Q122",
+      "Q152",
+      "Q182"
+    ]
+  }
+}

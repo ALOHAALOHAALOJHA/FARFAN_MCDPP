@@ -1,0 +1,74 @@
+{
+  "question_id": "Q219",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA08",
+  "cluster_id": "CL03",
+  "base_slot": "D2-Q4",
+  "text": {
+    "es": "¿El plan identifica posibles riesgos en la implementación de las medidas de protección (ej. fallas en los esquemas, filtración de información) y propone 'medidas de mitigación'?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "mitigacion_propuesta"
+    },
+    {
+      "required": true,
+      "type": "riesgos_identificados"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0082",
+      "PAT-0095",
+      "PAT-Q249-001",
+      "PAT-Q249-002",
+      "PAT-Q249-003",
+      "PAT-Q249-004",
+      "PAT-Q249-005",
+      "PAT-Q249-007"
+    ],
+    "keyword_refs": [
+      "KW-PA08-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q009",
+      "Q039",
+      "Q069",
+      "Q099",
+      "Q129"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q249",
+      "Q279",
+      "Q309",
+      "Q339"
+    ]
+  }
+}

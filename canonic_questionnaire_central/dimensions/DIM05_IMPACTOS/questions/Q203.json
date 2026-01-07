@@ -1,0 +1,76 @@
+{
+  "question_id": "Q203",
+  "dimension_id": "DIM05",
+  "policy_area_id": "PA07",
+  "cluster_id": "CL01",
+  "base_slot": "D5-Q3",
+  "text": {
+    "es": "Cuando un impacto territorial es difícil de medir (ej. 'arraigo de la población al campo'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "documenta_validez"
+    },
+    {
+      "required": true,
+      "type": "proxy_para_intangibles"
+    },
+    {
+      "required": true,
+      "type": "reconoce_limitaciones"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0100",
+      "PAT-Q233-000",
+      "PAT-Q233-002",
+      "PAT-Q233-003",
+      "PAT-Q233-004",
+      "PAT-Q233-005"
+    ],
+    "keyword_refs": [
+      "KW-PA07-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q023",
+      "Q053",
+      "Q083",
+      "Q113",
+      "Q143"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q233",
+      "Q263",
+      "Q293",
+      "Q323"
+    ]
+  }
+}

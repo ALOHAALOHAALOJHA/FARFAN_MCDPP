@@ -1,0 +1,77 @@
+{
+  "question_id": "Q089",
+  "dimension_id": "DIM06",
+  "policy_area_id": "PA03",
+  "cluster_id": "CL01",
+  "base_slot": "D6-Q4",
+  "text": {
+    "es": "¿Se describe un sistema de monitoreo para la gestión ambiental que incluya 'mecanismos de corrección' o 'aprendizaje' para adaptar la estrategia (ej. ante una nueva mancha de deforestación)?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "ciclos_aprendizaje"
+    },
+    {
+      "required": true,
+      "type": "mecanismos_correccion"
+    },
+    {
+      "required": true,
+      "type": "sistema_monitoreo"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0079",
+      "PAT-Q119-000",
+      "PAT-Q119-001",
+      "PAT-Q119-002",
+      "PAT-Q119-004",
+      "PAT-Q119-005",
+      "PAT-Q119-006"
+    ],
+    "keyword_refs": [
+      "KW-PA03-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q029",
+      "Q059",
+      "Q089",
+      "Q119",
+      "Q149"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q119",
+      "Q149",
+      "Q179",
+      "Q209"
+    ]
+  }
+}

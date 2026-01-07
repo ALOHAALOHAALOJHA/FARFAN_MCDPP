@@ -1,0 +1,82 @@
+{
+  "question_id": "Q016",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA01",
+  "cluster_id": "CL02",
+  "base_slot": "D4-Q1",
+  "text": {
+    "es": "¿Los indicadores de resultado en materia de género (tasa de violencia intrafamiliar, brecha de desempleo por sexo, porcentaje de participación de mujeres en cargos directivos/elección, índice de desigualdad de género) están definidos con línea base, meta para 2027 y horizonte temporal del cuatrienio?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "horizonte_temporal"
+    },
+    {
+      "required": true,
+      "type": "linea_base_resultado"
+    },
+    {
+      "required": true,
+      "type": "meta_resultado"
+    },
+    {
+      "required": true,
+      "type": "metrica_outcome"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0005",
+      "PAT-0006",
+      "PAT-0009",
+      "PAT-0012",
+      "PAT-0068",
+      "PAT-0074",
+      "PAT-Q016-001",
+      "PAT-Q016-002"
+    ],
+    "keyword_refs": [
+      "KW-PA01-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q016",
+      "Q046",
+      "Q076",
+      "Q106",
+      "Q136"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q046",
+      "Q076",
+      "Q106",
+      "Q136"
+    ]
+  }
+}

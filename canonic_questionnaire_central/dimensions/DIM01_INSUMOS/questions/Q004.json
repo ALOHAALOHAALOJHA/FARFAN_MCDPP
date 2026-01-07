@@ -1,0 +1,87 @@
+{
+  "question_id": "Q004",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA01",
+  "cluster_id": "CL02",
+  "base_slot": "D1-Q4",
+  "text": {
+    "es": "¿El plan identifica las entidades responsables de la política de mujer y equidad (ej. Secretaría de la Mujer, Comisaría de Familia, mecanismos de género), describe sus capacidades (equipos psicosociales y jurídicos, duplas de atención) y señala limitaciones institucionales o necesidades de articulación con Fiscalía, ICBF o Gobernación?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "cuellos_botella"
+    },
+    {
+      "required": true,
+      "type": "datos_sistemas"
+    },
+    {
+      "required": true,
+      "type": "gobernanza"
+    },
+    {
+      "required": true,
+      "type": "procesos"
+    },
+    {
+      "required": true,
+      "type": "talento_humano"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q004-000",
+      "PAT-Q004-001",
+      "PAT-Q004-002",
+      "PAT-Q004-003",
+      "PAT-Q004-004",
+      "PAT-Q004-005",
+      "PAT-Q004-006",
+      "PAT-Q004-007",
+      "PAT-Q004-008"
+    ],
+    "keyword_refs": [
+      "KW-PA01-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 5,
+    "threshold": 0.6,
+    "weights": {
+      "expected_elements": 0.35,
+      "pattern_matches": 0.2,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q004",
+      "Q034",
+      "Q064",
+      "Q094",
+      "Q124"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q034",
+      "Q064",
+      "Q094",
+      "Q124"
+    ]
+  }
+}

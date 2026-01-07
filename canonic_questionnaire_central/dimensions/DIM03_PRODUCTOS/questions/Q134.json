@@ -1,0 +1,109 @@
+{
+  "question_id": "Q134",
+  "dimension_id": "DIM03",
+  "policy_area_id": "PA05",
+  "cluster_id": "CL02",
+  "base_slot": "D3-Q4",
+  "text": {
+    "es": "¿Existe una relación factible entre la actividad (ej. 'acompañamiento a retornos') y la meta del producto asociado (ej. '500 familias retornadas con sostenibilidad') para la política de víctimas? Se debe evaluar si los 'plazos' son realistas.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "coherencia_recursos"
+    },
+    {
+      "required": true,
+      "type": "factibilidad_tecnica"
+    },
+    {
+      "required": true,
+      "type": "realismo_plazos"
+    },
+    {
+      "type": "producto_definicion",
+      "required": true,
+      "dnp_criteria": "bien_o_servicio_tangible",
+      "validation_pattern": "must_be_deliverable_not_process",
+      "provenance": {
+        "source": "Guia_orientadora_definicion_de_productos-2.pdf:Page_4",
+        "criteria": "DNP Core Product Definition"
+      }
+    },
+    {
+      "type": "descripcion_tecnica",
+      "required": true,
+      "dnp_criteria": "caracteristicas_especificaciones",
+      "validation_pattern": "must_describe_technical_scope",
+      "provenance": {
+        "source": "Guia_orientadora_definicion_de_productos-2.pdf:Pages_21-22",
+        "criteria": "DNP Technical Description Standard"
+      }
+    },
+    {
+      "type": "unidad_medida",
+      "required": true,
+      "dnp_criteria": "unidad_medida_cuantificable",
+      "validation_pattern": "must_have_measurement_unit",
+      "provenance": {
+        "source": "CATALOGO_DE_PRODUCTOS.xlsx:Column_Unidad_de_medida",
+        "criteria": "DNP Measurement Unit Standard"
+      }
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0045",
+      "PAT-0066",
+      "PAT-Q134-DNP-001",
+      "PAT-Q134-DNP-002",
+      "PAT-Q134-DNP-003",
+      "PAT-Q164-001",
+      "PAT-Q164-002",
+      "PAT-Q164-003",
+      "PAT-Q164-005"
+    ],
+    "keyword_refs": [
+      "KW-PA05-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q014",
+      "Q044",
+      "Q074",
+      "Q104",
+      "Q134"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q164",
+      "Q194",
+      "Q224",
+      "Q254"
+    ]
+  }
+}

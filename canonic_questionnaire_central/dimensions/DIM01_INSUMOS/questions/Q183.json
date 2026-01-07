@@ -1,0 +1,79 @@
+{
+  "question_id": "Q183",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA07",
+  "cluster_id": "CL01",
+  "base_slot": "D1-Q3",
+  "text": {
+    "es": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de formalización, catastro multipropósito, mejora de vías terciarias o distritos de riego?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "asignacion_explicita"
+    },
+    {
+      "required": true,
+      "type": "suficiencia_justificada"
+    },
+    {
+      "required": true,
+      "type": "trazabilidad_ppi_bpin"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0016",
+      "PAT-0022",
+      "PAT-Q213-001",
+      "PAT-Q213-002",
+      "PAT-Q213-003",
+      "PAT-Q213-004",
+      "PAT-Q213-005",
+      "PAT-Q213-007",
+      "PAT-Q213-008"
+    ],
+    "keyword_refs": [
+      "KW-PA07-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 5,
+    "threshold": 0.6,
+    "weights": {
+      "expected_elements": 0.35,
+      "pattern_matches": 0.2,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q003",
+      "Q033",
+      "Q063",
+      "Q093",
+      "Q123"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q213",
+      "Q243",
+      "Q273",
+      "Q303"
+    ]
+  }
+}

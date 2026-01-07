@@ -1,0 +1,72 @@
+{
+  "question_id": "Q024",
+  "dimension_id": "DIM05",
+  "policy_area_id": "PA01",
+  "cluster_id": "CL02",
+  "base_slot": "D5-Q4",
+  "text": {
+    "es": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados (ej. doble jornada laboral sin redistribución del cuidado, violencia como reacción al empoderamiento) y propone un enfoque de \"acción sin daño\" o límites de la gestión municipal?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "alineacion_marcos"
+    },
+    {
+      "required": true,
+      "type": "riesgos_sistemicos"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q024-000",
+      "PAT-Q024-001",
+      "PAT-Q024-002",
+      "PAT-Q024-003",
+      "PAT-Q024-004",
+      "PAT-Q024-005"
+    ],
+    "keyword_refs": [
+      "KW-PA01-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q024",
+      "Q054",
+      "Q084",
+      "Q114",
+      "Q144"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q054",
+      "Q084",
+      "Q114",
+      "Q144"
+    ]
+  }
+}

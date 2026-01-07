@@ -1,0 +1,76 @@
+{
+  "question_id": "Q291",
+  "dimension_id": "DIM05",
+  "policy_area_id": "PA10",
+  "cluster_id": "CL04",
+  "base_slot": "D5-Q1",
+  "text": {
+    "es": "¿El PDM define 'impactos' de largo plazo (ej. 'integración social y económica sostenible de la población migrante', 'cohesión social')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración' esperado.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "impacto_definido"
+    },
+    {
+      "required": true,
+      "type": "rezago_temporal"
+    },
+    {
+      "required": true,
+      "type": "ruta_transmision"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0069",
+      "PAT-0096",
+      "PAT-Q051-001",
+      "PAT-Q051-002",
+      "PAT-Q051-003",
+      "PAT-Q051-005"
+    ],
+    "keyword_refs": [
+      "KW-PA10-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q021",
+      "Q051",
+      "Q081",
+      "Q111",
+      "Q141"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q321",
+      "Q351",
+      "Q381",
+      "Q411"
+    ]
+  }
+}

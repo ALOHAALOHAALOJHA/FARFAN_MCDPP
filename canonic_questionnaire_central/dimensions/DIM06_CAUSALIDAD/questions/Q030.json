@@ -1,0 +1,73 @@
+{
+  "question_id": "Q030",
+  "dimension_id": "DIM06",
+  "policy_area_id": "PA01",
+  "cluster_id": "CL02",
+  "base_slot": "D6-Q5",
+  "text": {
+    "es": "¿El plan considera el contexto municipal específico (ruralidad, presencia de conflicto, vocación económica), reconoce la diversidad de las mujeres (enfoque interseccional: campesinas, afro, indígenas, con discapacidad) y explicita restricciones que condicionan el cierre de brechas en el territorio?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "analisis_contextual"
+    },
+    {
+      "required": true,
+      "type": "enfoque_diferencial"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0051",
+      "PAT-0058",
+      "PAT-Q030-001",
+      "PAT-Q030-002",
+      "PAT-Q030-004",
+      "PAT-Q030-005",
+      "PAT-Q030-006"
+    ],
+    "keyword_refs": [
+      "KW-PA01-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q030",
+      "Q060",
+      "Q090",
+      "Q120",
+      "Q150"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q060",
+      "Q090",
+      "Q120",
+      "Q150"
+    ]
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "question_id": "Q154",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA06",
+  "cluster_id": "CL02",
+  "base_slot": "D1-Q4",
+  "text": {
+    "es": "¿El PDM describe las capacidades para la gestión de políticas de niñez y juventud, mencionando entidades (Comisarías, ICBF, Plataformas Juveniles) y sus necesidades? Se debe buscar términos como 'orientación escolar', 'programas de prevención' y si se identifican 'limitaciones'.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "cuellos_botella"
+    },
+    {
+      "required": true,
+      "type": "gobernanza"
+    },
+    {
+      "required": true,
+      "type": "infraestructura_fisica"
+    },
+    {
+      "required": true,
+      "type": "procesos"
+    },
+    {
+      "required": true,
+      "type": "talento_humano"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0017",
+      "PAT-Q184-000",
+      "PAT-Q184-001",
+      "PAT-Q184-003",
+      "PAT-Q184-004",
+      "PAT-Q184-005",
+      "PAT-Q184-006",
+      "PAT-Q184-007",
+      "PAT-Q184-008",
+      "PAT-Q184-009"
+    ],
+    "keyword_refs": [
+      "KW-PA06-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 5,
+    "threshold": 0.6,
+    "weights": {
+      "expected_elements": 0.35,
+      "pattern_matches": 0.2,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q004",
+      "Q034",
+      "Q064",
+      "Q094",
+      "Q124"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q184",
+      "Q214",
+      "Q244",
+      "Q274"
+    ]
+  }
+}

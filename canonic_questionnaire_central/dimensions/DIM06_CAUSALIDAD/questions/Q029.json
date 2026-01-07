@@ -1,0 +1,77 @@
+{
+  "question_id": "Q029",
+  "dimension_id": "DIM06",
+  "policy_area_id": "PA01",
+  "cluster_id": "CL02",
+  "base_slot": "D6-Q4",
+  "text": {
+    "es": "¿Se describe un sistema de monitoreo para la política de género que incluya indicadores desagregados, mecanismos de alerta temprana (ej. en violencias), retroalimentación con organizaciones de mujeres o Consejos Consultivos, y capacidad de adaptar la estrategia ante nuevas dinámicas de desigualdad?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "ciclos_aprendizaje"
+    },
+    {
+      "required": true,
+      "type": "mecanismos_correccion"
+    },
+    {
+      "required": true,
+      "type": "sistema_monitoreo"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0033",
+      "PAT-Q029-000",
+      "PAT-Q029-001",
+      "PAT-Q029-002",
+      "PAT-Q029-003",
+      "PAT-Q029-004",
+      "PAT-Q029-006"
+    ],
+    "keyword_refs": [
+      "KW-PA01-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q029",
+      "Q059",
+      "Q089",
+      "Q119",
+      "Q149"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q059",
+      "Q089",
+      "Q119",
+      "Q149"
+    ]
+  }
+}

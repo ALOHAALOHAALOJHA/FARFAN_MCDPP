@@ -1,0 +1,73 @@
+{
+  "question_id": "Q264",
+  "dimension_id": "DIM05",
+  "policy_area_id": "PA09",
+  "cluster_id": "CL04",
+  "base_slot": "D5-Q4",
+  "text": {
+    "es": "¿Los impactos en la política carcelaria se alinean con marcos nacionales y consideran 'riesgos sistémicos' (ej. cambios en la política criminal) que podrían romper el mecanismo causal?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "alineacion_marcos"
+    },
+    {
+      "required": true,
+      "type": "riesgos_sistemicos"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0092",
+      "PAT-Q294-000",
+      "PAT-Q294-002",
+      "PAT-Q294-003",
+      "PAT-Q294-004",
+      "PAT-Q294-005",
+      "PAT-Q294-006"
+    ],
+    "keyword_refs": [
+      "KW-PA09-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q024",
+      "Q054",
+      "Q084",
+      "Q114",
+      "Q144"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q294",
+      "Q324",
+      "Q354",
+      "Q384"
+    ]
+  }
+}

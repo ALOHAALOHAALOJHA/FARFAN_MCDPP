@@ -1,0 +1,77 @@
+{
+  "question_id": "Q119",
+  "dimension_id": "DIM06",
+  "policy_area_id": "PA04",
+  "cluster_id": "CL03",
+  "base_slot": "D6-Q4",
+  "text": {
+    "es": "¿Se describe un sistema de monitoreo para la política social que incluya 'mecanismos de corrección', 'retroalimentación' o 'aprendizaje' para adaptar la estrategia?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "ciclos_aprendizaje"
+    },
+    {
+      "required": true,
+      "type": "mecanismos_correccion"
+    },
+    {
+      "required": true,
+      "type": "sistema_monitoreo"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q149-000",
+      "PAT-Q149-001",
+      "PAT-Q149-002",
+      "PAT-Q149-003",
+      "PAT-Q149-004",
+      "PAT-Q149-005",
+      "PAT-Q149-006"
+    ],
+    "keyword_refs": [
+      "KW-PA04-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q029",
+      "Q059",
+      "Q089",
+      "Q119",
+      "Q149"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q149",
+      "Q179",
+      "Q209",
+      "Q239"
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "question_id": "Q125",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA05",
+  "cluster_id": "CL02",
+  "base_slot": "D1-Q5",
+  "text": {
+    "es": "¿El plan justifica su alcance en la política de víctimas mencionando el marco legal (Ley 1448, Decretos Ley) o reconociendo restricciones explícitas de tipo presupuestal o de competencias (UARIV vs. municipio)?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "coherencia_demostrada"
+    },
+    {
+      "required": true,
+      "type": "restricciones_competencias"
+    },
+    {
+      "required": true,
+      "type": "restricciones_legales"
+    },
+    {
+      "required": true,
+      "type": "restricciones_presupuestales"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0003",
+      "PAT-Q155-000",
+      "PAT-Q155-002",
+      "PAT-Q155-003",
+      "PAT-Q155-004",
+      "PAT-Q155-005",
+      "PAT-Q155-006",
+      "PAT-Q155-007",
+      "PAT-Q155-008"
+    ],
+    "keyword_refs": [
+      "KW-PA05-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_E",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q005",
+      "Q035",
+      "Q065",
+      "Q095",
+      "Q125"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q155",
+      "Q185",
+      "Q215",
+      "Q245"
+    ]
+  }
+}

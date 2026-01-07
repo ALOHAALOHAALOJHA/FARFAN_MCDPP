@@ -1,0 +1,76 @@
+{
+  "question_id": "Q172",
+  "dimension_id": "DIM05",
+  "policy_area_id": "PA06",
+  "cluster_id": "CL02",
+  "base_slot": "D5-Q2",
+  "text": {
+    "es": "¿Se utilizan 'índices' (ej. Índice de Pobreza Multidimensional para Niñez) o 'proxies' para medir los impactos en el desarrollo juvenil, justificando su validez?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "justifica_validez"
+    },
+    {
+      "required": true,
+      "type": "usa_indices_compuestos"
+    },
+    {
+      "required": true,
+      "type": "usa_proxies"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0099",
+      "PAT-Q202-000",
+      "PAT-Q202-001",
+      "PAT-Q202-003",
+      "PAT-Q202-004",
+      "PAT-Q202-005"
+    ],
+    "keyword_refs": [
+      "KW-PA06-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q022",
+      "Q052",
+      "Q082",
+      "Q112",
+      "Q142"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q202",
+      "Q232",
+      "Q262",
+      "Q292"
+    ]
+  }
+}

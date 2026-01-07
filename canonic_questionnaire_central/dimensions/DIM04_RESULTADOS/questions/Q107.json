@@ -1,0 +1,77 @@
+{
+  "question_id": "Q107",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA04",
+  "cluster_id": "CL03",
+  "base_slot": "D4-Q2",
+  "text": {
+    "es": "¿Se explicita la cadena causal que lleva a la mejora social, mencionando 'supuestos' (ej. 'si los padres llevan a sus hijos a la escuela') o 'condiciones habilitantes'?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "cadena_causal_explicita"
+    },
+    {
+      "required": true,
+      "type": "condiciones_habilitantes"
+    },
+    {
+      "required": true,
+      "type": "supuestos_identificados"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0028",
+      "PAT-0043",
+      "PAT-0057",
+      "PAT-0101",
+      "PAT-Q137-004",
+      "PAT-Q137-005",
+      "PAT-Q137-006"
+    ],
+    "keyword_refs": [
+      "KW-PA04-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q017",
+      "Q047",
+      "Q077",
+      "Q107",
+      "Q137"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q137",
+      "Q167",
+      "Q197",
+      "Q227"
+    ]
+  }
+}

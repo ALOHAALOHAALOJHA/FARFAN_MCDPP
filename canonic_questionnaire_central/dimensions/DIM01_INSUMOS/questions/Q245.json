@@ -1,0 +1,84 @@
+{
+  "question_id": "Q245",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA09",
+  "cluster_id": "CL04",
+  "base_slot": "D1-Q5",
+  "text": {
+    "es": "¿El plan justifica su alcance en la crisis carcelaria mencionando el marco legal (ej. sentencias sobre ECI, Código Penitenciario) o reconociendo restricciones de competencias (sindicados vs. condenados), presupuestales o técnicas?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "coherencia_demostrada"
+    },
+    {
+      "required": true,
+      "type": "restricciones_competencias"
+    },
+    {
+      "required": true,
+      "type": "restricciones_legales"
+    },
+    {
+      "required": true,
+      "type": "restricciones_presupuestales"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0034",
+      "PAT-Q275-000",
+      "PAT-Q275-001",
+      "PAT-Q275-002",
+      "PAT-Q275-003",
+      "PAT-Q275-004",
+      "PAT-Q275-005",
+      "PAT-Q275-006",
+      "PAT-Q275-007",
+      "PAT-Q275-008"
+    ],
+    "keyword_refs": [
+      "KW-PA09-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_E",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q005",
+      "Q035",
+      "Q065",
+      "Q095",
+      "Q125"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q275",
+      "Q305",
+      "Q335",
+      "Q365"
+    ]
+  }
+}

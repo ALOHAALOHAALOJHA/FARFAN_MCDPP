@@ -1,0 +1,83 @@
+{
+  "question_id": "Q211",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA08",
+  "cluster_id": "CL03",
+  "base_slot": "D1-Q1",
+  "text": {
+    "es": "¿El diagnóstico presenta datos numéricos (número de amenazas, homicidios de líderes, medidas de protección activas) sobre la situación de los defensores de DDHH que sirvan como línea base? Se debe verificar el año y fuentes (ej. Defensoría, UNP, Personería).",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "minimum": 2,
+      "type": "fuentes_oficiales"
+    },
+    {
+      "minimum": 3,
+      "type": "indicadores_cuantitativos"
+    },
+    {
+      "minimum": 2,
+      "type": "series_temporales_años"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0067",
+      "PAT-Q241-000",
+      "PAT-Q241-002",
+      "PAT-Q241-003",
+      "PAT-Q241-004",
+      "PAT-Q241-005",
+      "PAT-Q241-006",
+      "PAT-Q241-007",
+      "PAT-Q241-008",
+      "PAT-Q241-009",
+      "PAT-Q241-010",
+      "PAT-Q241-011",
+      "PAT-Q241-012"
+    ],
+    "keyword_refs": [
+      "KW-PA08-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q001",
+      "Q031",
+      "Q061",
+      "Q091",
+      "Q121"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q241",
+      "Q271",
+      "Q301",
+      "Q331"
+    ]
+  }
+}

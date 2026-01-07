@@ -1,0 +1,88 @@
+{
+  "question_id": "Q124",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA05",
+  "cluster_id": "CL02",
+  "base_slot": "D1-Q4",
+  "text": {
+    "es": "¿El PDM describe las capacidades para la atención a víctimas, mencionando entidades (Enlace de Víctimas, Mesa de Participación) y sus necesidades? Se debe buscar términos como 'centro de atención', 'equipo psicosocial' y si se identifican 'limitaciones'.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "cuellos_botella"
+    },
+    {
+      "required": true,
+      "type": "gobernanza"
+    },
+    {
+      "required": true,
+      "type": "infraestructura_fisica"
+    },
+    {
+      "required": true,
+      "type": "procesos"
+    },
+    {
+      "required": true,
+      "type": "talento_humano"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0002",
+      "PAT-0010",
+      "PAT-Q154-000",
+      "PAT-Q154-001",
+      "PAT-Q154-004",
+      "PAT-Q154-005",
+      "PAT-Q154-006",
+      "PAT-Q154-007",
+      "PAT-Q154-008",
+      "PAT-Q154-009"
+    ],
+    "keyword_refs": [
+      "KW-PA05-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 5,
+    "threshold": 0.6,
+    "weights": {
+      "expected_elements": 0.35,
+      "pattern_matches": 0.2,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q004",
+      "Q034",
+      "Q064",
+      "Q094",
+      "Q124"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q154",
+      "Q184",
+      "Q214",
+      "Q244"
+    ]
+  }
+}

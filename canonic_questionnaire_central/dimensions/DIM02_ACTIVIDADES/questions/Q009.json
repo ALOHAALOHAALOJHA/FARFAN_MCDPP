@@ -1,0 +1,75 @@
+{
+  "question_id": "Q009",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA01",
+  "cluster_id": "CL02",
+  "base_slot": "D2-Q4",
+  "text": {
+    "es": "¿El plan identifica posibles obstáculos o resistencias en la implementación de la política de género (ej. revictimización institucional, patrones culturales machistas arraigados, falta de denuncia por miedo) y propone medidas explícitas de mitigación o estrategias de cambio cultural para superarlos?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "mitigacion_propuesta"
+    },
+    {
+      "required": true,
+      "type": "riesgos_identificados"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0082",
+      "PAT-0095",
+      "PAT-Q009-001",
+      "PAT-Q009-002",
+      "PAT-Q009-003",
+      "PAT-Q009-004",
+      "PAT-Q009-005",
+      "PAT-Q009-006",
+      "PAT-Q009-008"
+    ],
+    "keyword_refs": [
+      "KW-PA01-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q009",
+      "Q039",
+      "Q069",
+      "Q099",
+      "Q129"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q039",
+      "Q069",
+      "Q099",
+      "Q129"
+    ]
+  }
+}

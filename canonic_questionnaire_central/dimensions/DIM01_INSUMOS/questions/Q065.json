@@ -1,0 +1,83 @@
+{
+  "question_id": "Q065",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA03",
+  "cluster_id": "CL01",
+  "base_slot": "D1-Q5",
+  "text": {
+    "es": "¿El plan justifica su alcance en materia ambiental mencionando el marco legal (ej. Ley 1523) o reconociendo restricciones explícitas de tipo presupuestal, técnico o de competencias (ej. con la CAR)?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "coherencia_demostrada"
+    },
+    {
+      "required": true,
+      "type": "restricciones_legales"
+    },
+    {
+      "required": true,
+      "type": "restricciones_presupuestales"
+    },
+    {
+      "required": true,
+      "type": "restricciones_tecnicas"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q095-000",
+      "PAT-Q095-001",
+      "PAT-Q095-002",
+      "PAT-Q095-003",
+      "PAT-Q095-004",
+      "PAT-Q095-005",
+      "PAT-Q095-006",
+      "PAT-Q095-007",
+      "PAT-Q095-008"
+    ],
+    "keyword_refs": [
+      "KW-PA03-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_E",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q005",
+      "Q035",
+      "Q065",
+      "Q095",
+      "Q125"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q095",
+      "Q125",
+      "Q155",
+      "Q185"
+    ]
+  }
+}

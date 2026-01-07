@@ -1,0 +1,73 @@
+{
+  "question_id": "Q010",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA01",
+  "cluster_id": "CL02",
+  "base_slot": "D2-Q5",
+  "text": {
+    "es": "¿El plan describe explícitamente cómo las actividades de empoderamiento y prevención se complementan o siguen una secuencia lógica (ej. formación en derechos → empoderamiento económico → participación política; o sensibilización → denuncia → atención integral), evidenciando una estrategia articulada de transversalización?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "complementariedad_explicita"
+    },
+    {
+      "required": true,
+      "type": "secuenciacion_logica"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q010-000",
+      "PAT-Q010-001",
+      "PAT-Q010-002",
+      "PAT-Q010-003",
+      "PAT-Q010-004",
+      "PAT-Q010-005",
+      "PAT-Q010-006"
+    ],
+    "keyword_refs": [
+      "KW-PA01-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q010",
+      "Q040",
+      "Q070",
+      "Q100",
+      "Q130"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q040",
+      "Q070",
+      "Q100",
+      "Q130"
+    ]
+  }
+}

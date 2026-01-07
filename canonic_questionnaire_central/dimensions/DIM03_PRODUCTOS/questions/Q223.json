@@ -1,0 +1,106 @@
+{
+  "question_id": "Q223",
+  "dimension_id": "DIM03",
+  "policy_area_id": "PA08",
+  "cluster_id": "CL03",
+  "base_slot": "D3-Q3",
+  "text": {
+    "es": "¿Los productos de protección de líderes tienen trazabilidad presupuestal (vinculados a códigos BPIN, PPI) y organizacional (asociados a una 'Secretaría de Gobierno' o entidad responsable)?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "trazabilidad_organizacional"
+    },
+    {
+      "required": true,
+      "type": "trazabilidad_presupuestal"
+    },
+    {
+      "type": "producto_definicion",
+      "required": true,
+      "dnp_criteria": "bien_o_servicio_tangible",
+      "validation_pattern": "must_be_deliverable_not_process",
+      "provenance": {
+        "source": "Guia_orientadora_definicion_de_productos-2.pdf:Page_4",
+        "criteria": "DNP Core Product Definition"
+      }
+    },
+    {
+      "type": "descripcion_tecnica",
+      "required": true,
+      "dnp_criteria": "caracteristicas_especificaciones",
+      "validation_pattern": "must_describe_technical_scope",
+      "provenance": {
+        "source": "Guia_orientadora_definicion_de_productos-2.pdf:Pages_21-22",
+        "criteria": "DNP Technical Description Standard"
+      }
+    },
+    {
+      "type": "unidad_medida",
+      "required": true,
+      "dnp_criteria": "unidad_medida_cuantificable",
+      "validation_pattern": "must_have_measurement_unit",
+      "provenance": {
+        "source": "CATALOGO_DE_PRODUCTOS.xlsx:Column_Unidad_de_medida",
+        "criteria": "DNP Measurement Unit Standard"
+      }
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0048",
+      "PAT-0090",
+      "PAT-Q223-DNP-001",
+      "PAT-Q223-DNP-002",
+      "PAT-Q223-DNP-003",
+      "PAT-Q253-000",
+      "PAT-Q253-001",
+      "PAT-Q253-002",
+      "PAT-Q253-004",
+      "PAT-Q253-005"
+    ],
+    "keyword_refs": [
+      "KW-PA08-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q013",
+      "Q043",
+      "Q073",
+      "Q103",
+      "Q133"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q253",
+      "Q283",
+      "Q313",
+      "Q343"
+    ]
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "question_id": "Q187",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA07",
+  "cluster_id": "CL01",
+  "base_slot": "D2-Q2",
+  "text": {
+    "es": "¿La descripción de las actividades de tierras detalla el instrumento ('mediante barrido predial', 'a través de convenios con INVIAS'), la población objetivo ('pequeños propietarios', 'comunidades rurales') y la lógica causal?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "instrumento_especificado"
+    },
+    {
+      "required": true,
+      "type": "logica_causal_explicita"
+    },
+    {
+      "required": true,
+      "type": "poblacion_objetivo_definida"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0081",
+      "PAT-0086",
+      "PAT-Q217-001",
+      "PAT-Q217-002",
+      "PAT-Q217-003",
+      "PAT-Q217-005",
+      "PAT-Q217-006",
+      "PAT-Q217-007",
+      "PAT-Q217-008"
+    ],
+    "keyword_refs": [
+      "KW-PA07-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q007",
+      "Q037",
+      "Q067",
+      "Q097",
+      "Q127"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q217",
+      "Q247",
+      "Q277",
+      "Q307"
+    ]
+  }
+}

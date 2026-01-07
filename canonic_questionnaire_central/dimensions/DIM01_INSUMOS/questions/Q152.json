@@ -1,0 +1,79 @@
+{
+  "question_id": "Q152",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA06",
+  "cluster_id": "CL02",
+  "base_slot": "D1-Q2",
+  "text": {
+    "es": "¿El texto dimensiona la magnitud de los problemas de la niñez y juventud (ej. consumo de SPA, violencia intrafamiliar) cuantificando el déficit de atención o la población en riesgo? Se debe buscar si se mencionan 'vacíos de información'.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "analisis_causal_problema"
+    },
+    {
+      "required": true,
+      "type": "cuantificacion_magnitud"
+    },
+    {
+      "required": true,
+      "type": "vacios_explicitos"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q182-000",
+      "PAT-Q182-001",
+      "PAT-Q182-002",
+      "PAT-Q182-003",
+      "PAT-Q182-004",
+      "PAT-Q182-005",
+      "PAT-Q182-006",
+      "PAT-Q182-007",
+      "PAT-Q182-008"
+    ],
+    "keyword_refs": [
+      "KW-PA06-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 5,
+    "threshold": 0.6,
+    "weights": {
+      "expected_elements": 0.35,
+      "pattern_matches": 0.2,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q002",
+      "Q032",
+      "Q062",
+      "Q092",
+      "Q122"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q182",
+      "Q212",
+      "Q242",
+      "Q272"
+    ]
+  }
+}

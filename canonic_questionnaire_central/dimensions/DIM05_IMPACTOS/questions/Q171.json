@@ -1,0 +1,77 @@
+{
+  "question_id": "Q171",
+  "dimension_id": "DIM05",
+  "policy_area_id": "PA06",
+  "cluster_id": "CL02",
+  "base_slot": "D5-Q1",
+  "text": {
+    "es": "¿El PDM define 'impactos' de largo plazo (ej. 'desarrollo integral de la juventud', 'ruptura de ciclos de pobreza')? Se debe verificar si se menciona la ruta desde los resultados y el 'tiempo de maduración'.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "impacto_definido"
+    },
+    {
+      "required": true,
+      "type": "rezago_temporal"
+    },
+    {
+      "required": true,
+      "type": "ruta_transmision"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0096",
+      "PAT-Q201-000",
+      "PAT-Q201-001",
+      "PAT-Q201-002",
+      "PAT-Q201-003",
+      "PAT-Q201-004",
+      "PAT-Q201-006"
+    ],
+    "keyword_refs": [
+      "KW-PA06-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q021",
+      "Q051",
+      "Q081",
+      "Q111",
+      "Q141"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q201",
+      "Q231",
+      "Q261",
+      "Q291"
+    ]
+  }
+}

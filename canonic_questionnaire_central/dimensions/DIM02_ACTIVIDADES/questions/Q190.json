@@ -1,0 +1,72 @@
+{
+  "question_id": "Q190",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA07",
+  "cluster_id": "CL01",
+  "base_slot": "D2-Q5",
+  "text": {
+    "es": "¿El conjunto de actividades de tierras demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. formalización + asistencia técnica agropecuaria) o una 'secuencia' lógica.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "complementariedad_explicita"
+    },
+    {
+      "required": true,
+      "type": "secuenciacion_logica"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q220-000",
+      "PAT-Q220-001",
+      "PAT-Q220-002",
+      "PAT-Q220-003",
+      "PAT-Q220-004",
+      "PAT-Q220-005"
+    ],
+    "keyword_refs": [
+      "KW-PA07-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q010",
+      "Q040",
+      "Q070",
+      "Q100",
+      "Q130"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q220",
+      "Q250",
+      "Q280",
+      "Q310"
+    ]
+  }
+}

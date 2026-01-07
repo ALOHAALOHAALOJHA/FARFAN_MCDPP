@@ -1,0 +1,79 @@
+{
+  "question_id": "Q033",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA02",
+  "cluster_id": "CL01",
+  "base_slot": "D1-Q3",
+  "text": {
+    "es": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de prevención, protección, atención a víctimas o funcionamiento del Sistema de Alertas Tempranas (SAT)?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "asignacion_explicita"
+    },
+    {
+      "required": true,
+      "type": "suficiencia_justificada"
+    },
+    {
+      "required": true,
+      "type": "trazabilidad_ppi_bpin"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0016",
+      "PAT-0022",
+      "PAT-0089",
+      "PAT-Q063-001",
+      "PAT-Q063-003",
+      "PAT-Q063-004",
+      "PAT-Q063-005",
+      "PAT-Q063-006",
+      "PAT-Q063-008"
+    ],
+    "keyword_refs": [
+      "KW-PA02-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 5,
+    "threshold": 0.6,
+    "weights": {
+      "expected_elements": 0.35,
+      "pattern_matches": 0.2,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q003",
+      "Q033",
+      "Q063",
+      "Q093",
+      "Q123"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q063",
+      "Q093",
+      "Q123",
+      "Q153"
+    ]
+  }
+}

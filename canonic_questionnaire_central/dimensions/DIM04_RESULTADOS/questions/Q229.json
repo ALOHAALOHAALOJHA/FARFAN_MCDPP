@@ -1,0 +1,72 @@
+{
+  "question_id": "Q229",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA08",
+  "cluster_id": "CL03",
+  "base_slot": "D4-Q4",
+  "text": {
+    "es": "¿Los resultados propuestos (ej. 'creación de un entorno seguro para la defensa de los DDHH') 'atienden' o 'abordan' directamente los riesgos y amenazas priorizados en el diagnóstico?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "criterios_exito_definidos"
+    },
+    {
+      "required": true,
+      "type": "vinculo_resultado_problema"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0078",
+      "PAT-0108",
+      "PAT-Q259-000",
+      "PAT-Q259-001",
+      "PAT-Q259-002",
+      "PAT-Q259-003"
+    ],
+    "keyword_refs": [
+      "KW-PA08-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q019",
+      "Q049",
+      "Q079",
+      "Q109",
+      "Q139"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q259",
+      "Q289",
+      "Q319",
+      "Q349"
+    ]
+  }
+}

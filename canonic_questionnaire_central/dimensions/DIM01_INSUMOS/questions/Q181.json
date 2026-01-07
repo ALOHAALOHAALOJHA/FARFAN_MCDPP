@@ -1,0 +1,84 @@
+{
+  "question_id": "Q181",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA07",
+  "cluster_id": "CL01",
+  "base_slot": "D1-Q1",
+  "text": {
+    "es": "¿El diagnóstico presenta datos numéricos (porcentaje de predios sin formalizar, km de vías terciarias en mal estado, avance del catastro multipropósito) sobre el área de Tierras y territorios que sirvan como línea base? Se debe verificar el año y fuentes (ej. IGAC, ANT, INVIAS).",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "minimum": 2,
+      "type": "fuentes_oficiales"
+    },
+    {
+      "minimum": 3,
+      "type": "indicadores_cuantitativos"
+    },
+    {
+      "minimum": 2,
+      "type": "series_temporales_años"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0001",
+      "PAT-0067",
+      "PAT-Q211-000",
+      "PAT-Q211-002",
+      "PAT-Q211-003",
+      "PAT-Q211-004",
+      "PAT-Q211-005",
+      "PAT-Q211-006",
+      "PAT-Q211-007",
+      "PAT-Q211-008",
+      "PAT-Q211-009",
+      "PAT-Q211-010",
+      "PAT-Q211-011",
+      "PAT-Q211-013"
+    ],
+    "keyword_refs": [
+      "KW-PA07-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q001",
+      "Q031",
+      "Q061",
+      "Q091",
+      "Q121"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q211",
+      "Q241",
+      "Q271",
+      "Q301"
+    ]
+  }
+}

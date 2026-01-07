@@ -1,0 +1,73 @@
+{
+  "question_id": "Q238",
+  "dimension_id": "DIM06",
+  "policy_area_id": "PA08",
+  "cluster_id": "CL03",
+  "base_slot": "D6-Q3",
+  "text": {
+    "es": "¿El plan reconoce 'inconsistencias' en su lógica de protección y propone 'pilotos' o 'pruebas' para 'testear los supuestos' de sus intervenciones?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "propone_pilotos_o_pruebas"
+    },
+    {
+      "required": true,
+      "type": "reconoce_inconsistencias"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0065",
+      "PAT-0071",
+      "PAT-Q268-001",
+      "PAT-Q268-002",
+      "PAT-Q268-003",
+      "PAT-Q268-004",
+      "PAT-Q268-006"
+    ],
+    "keyword_refs": [
+      "KW-PA08-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q028",
+      "Q058",
+      "Q088",
+      "Q118",
+      "Q148"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q268",
+      "Q298",
+      "Q328",
+      "Q358"
+    ]
+  }
+}

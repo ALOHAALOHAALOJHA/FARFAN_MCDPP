@@ -1,0 +1,77 @@
+{
+  "question_id": "Q017",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA01",
+  "cluster_id": "CL02",
+  "base_slot": "D4-Q2",
+  "text": {
+    "es": "¿El plan describe la ruta que lleva a la igualdad y la garantía de derechos de las mujeres, mencionando condiciones necesarias o supuestos para que funcione (ej. 'si hay corresponsabilidad en el cuidado', 'si el mercado laboral absorbe la mano de obra femenina', 'si el sistema judicial no revictimiza')?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "cadena_causal_explicita"
+    },
+    {
+      "required": true,
+      "type": "condiciones_habilitantes"
+    },
+    {
+      "required": true,
+      "type": "supuestos_identificados"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0028",
+      "PAT-0043",
+      "PAT-0057",
+      "PAT-0101",
+      "PAT-Q017-004",
+      "PAT-Q017-005",
+      "PAT-Q017-006"
+    ],
+    "keyword_refs": [
+      "KW-PA01-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q017",
+      "Q047",
+      "Q077",
+      "Q107",
+      "Q137"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q047",
+      "Q077",
+      "Q107",
+      "Q137"
+    ]
+  }
+}

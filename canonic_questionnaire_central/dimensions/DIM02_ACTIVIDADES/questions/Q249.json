@@ -1,0 +1,74 @@
+{
+  "question_id": "Q249",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA09",
+  "cluster_id": "CL04",
+  "base_slot": "D2-Q4",
+  "text": {
+    "es": "¿El plan identifica posibles riesgos en la implementación (ej. problemas de seguridad, falta de articulación con INPEC) y propone 'medidas de mitigación'?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "mitigacion_propuesta"
+    },
+    {
+      "required": true,
+      "type": "riesgos_identificados"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0082",
+      "PAT-0095",
+      "PAT-Q279-001",
+      "PAT-Q279-002",
+      "PAT-Q279-003",
+      "PAT-Q279-004",
+      "PAT-Q279-005",
+      "PAT-Q279-007"
+    ],
+    "keyword_refs": [
+      "KW-PA09-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q009",
+      "Q039",
+      "Q069",
+      "Q099",
+      "Q129"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q279",
+      "Q309",
+      "Q339",
+      "Q369"
+    ]
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "question_id": "Q213",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA08",
+  "cluster_id": "CL03",
+  "base_slot": "D1-Q3",
+  "text": {
+    "es": "¿Se identifican en el PPI recursos monetarios (con cifras en $, COP o millones) explícitamente asignados a programas de protección, prevención de la estigmatización o fortalecimiento de observatorios de DDHH?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "asignacion_explicita"
+    },
+    {
+      "required": true,
+      "type": "suficiencia_justificada"
+    },
+    {
+      "required": true,
+      "type": "trazabilidad_ppi_bpin"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0016",
+      "PAT-0022",
+      "PAT-Q243-001",
+      "PAT-Q243-002",
+      "PAT-Q243-003",
+      "PAT-Q243-004",
+      "PAT-Q243-005",
+      "PAT-Q243-006",
+      "PAT-Q243-008"
+    ],
+    "keyword_refs": [
+      "KW-PA08-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 5,
+    "threshold": 0.6,
+    "weights": {
+      "expected_elements": 0.35,
+      "pattern_matches": 0.2,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q003",
+      "Q033",
+      "Q063",
+      "Q093",
+      "Q123"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q243",
+      "Q273",
+      "Q303",
+      "Q333"
+    ]
+  }
+}

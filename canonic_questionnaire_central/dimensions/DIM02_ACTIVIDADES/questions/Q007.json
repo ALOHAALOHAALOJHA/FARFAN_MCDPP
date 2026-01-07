@@ -1,0 +1,105 @@
+{
+  "question_id": "Q007",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA01",
+  "cluster_id": "CL02",
+  "base_slot": "D2-Q2",
+  "text": {
+    "es": "¿La descripción de actividades especifica el instrumento ('mediante Casas de la Mujer', 'a través de la Patrulla Púrpura', 'con capital semilla'), la población objetivo (mujeres rurales, víctimas de violencia, jefas de hogar) y explica cómo la actividad contribuye a la equidad ('para romper ciclos de dependencia', 'porque previene la feminización de la pobreza', 'con el fin de garantizar una vida libre de violencias')?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "instrumento_especificado",
+      "description": "Specific policy instrument clearly stated (workshops, seed capital, training programs)",
+      "sources": [
+        "bayesianmechanisminference.infer_mechanisms",
+        "causalextractor.extract_causal_hierarchy"
+      ]
+    },
+    {
+      "required": true,
+      "type": "logica_causal_explicita",
+      "description": "Explicit causal logic connecting intervention to outcome (para generar, porque reduce)",
+      "sources": [
+        "bayesianmechanisminference._test_sufficiency",
+        "bayesianmechanisminference._test_necessity",
+        "teoriacambio.construir_grafo_causal"
+      ]
+    },
+    {
+      "required": true,
+      "type": "poblacion_objetivo_definida",
+      "description": "Target population clearly defined with demographic specificity",
+      "sources": [
+        "industrialpolicyprocessor._analyze_causal_dimensions",
+        "causalextractor.extract_causal_hierarchy"
+      ]
+    },
+    {
+      "required": false,
+      "type": "mecanismo_causal_completo",
+      "description": "Complete causal mechanism from instrument to outcome via intermediates",
+      "sources": [
+        "bayesianmechanisminference.infer_mechanisms",
+        "pdetmunicipalplananalyzer.construct_causal_dag"
+      ]
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q007-000",
+      "PAT-Q007-001",
+      "PAT-Q007-002",
+      "PAT-Q007-003",
+      "PAT-Q007-004",
+      "PAT-Q007-005",
+      "PAT-Q007-006",
+      "PAT-Q007-007",
+      "PAT-Q007-008",
+      "PAT-Q007-009"
+    ],
+    "keyword_refs": [
+      "KW-PA01-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q007",
+      "Q037",
+      "Q067",
+      "Q097",
+      "Q127"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q037",
+      "Q067",
+      "Q097",
+      "Q127"
+    ]
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "question_id": "Q122",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA05",
+  "cluster_id": "CL02",
+  "base_slot": "D1-Q2",
+  "text": {
+    "es": "¿El texto dimensiona la magnitud del problema de la atención a víctimas cuantificando la brecha de reparación (ej. porcentaje de víctimas sin reparar)? Se debe buscar si se mencionan 'vacíos de información' o 'subregistro' en el RUV.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "analisis_causal_problema"
+    },
+    {
+      "required": true,
+      "type": "cuantificacion_magnitud"
+    },
+    {
+      "required": true,
+      "type": "vacios_explicitos"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-Q152-000",
+      "PAT-Q152-001",
+      "PAT-Q152-002",
+      "PAT-Q152-003",
+      "PAT-Q152-004",
+      "PAT-Q152-005",
+      "PAT-Q152-006",
+      "PAT-Q152-007"
+    ],
+    "keyword_refs": [
+      "KW-PA05-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 5,
+    "threshold": 0.6,
+    "weights": {
+      "expected_elements": 0.35,
+      "pattern_matches": 0.2,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q002",
+      "Q032",
+      "Q062",
+      "Q092",
+      "Q122"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q152",
+      "Q182",
+      "Q212",
+      "Q242"
+    ]
+  }
+}

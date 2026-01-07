@@ -1,0 +1,77 @@
+{
+  "question_id": "Q115",
+  "dimension_id": "DIM05",
+  "policy_area_id": "PA04",
+  "cluster_id": "CL03",
+  "base_slot": "D5-Q5",
+  "text": {
+    "es": "¿La ambición del impacto social (ej. 'pobreza cero') es realista? Se debe buscar si se analizan posibles 'efectos no deseados' o se declaran 'hipótesis límite'.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "analisis_realismo"
+    },
+    {
+      "required": true,
+      "type": "efectos_no_deseados"
+    },
+    {
+      "required": true,
+      "type": "hipotesis_limite"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0053",
+      "PAT-0103",
+      "PAT-Q145-000",
+      "PAT-Q145-002",
+      "PAT-Q145-003",
+      "PAT-Q145-004",
+      "PAT-Q145-005"
+    ],
+    "keyword_refs": [
+      "KW-PA04-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q025",
+      "Q055",
+      "Q085",
+      "Q115",
+      "Q145"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q145",
+      "Q175",
+      "Q205",
+      "Q235"
+    ]
+  }
+}

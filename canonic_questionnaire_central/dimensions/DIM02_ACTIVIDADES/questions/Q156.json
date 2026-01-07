@@ -1,0 +1,85 @@
+{
+  "question_id": "Q156",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA06",
+  "cluster_id": "CL02",
+  "base_slot": "D2-Q1",
+  "text": {
+    "es": "¿Las actividades para niñez y juventud se presentan en un formato estructurado (tabla, cuadro) que incluya columnas para 'responsable', 'producto', 'cronograma' y 'presupuesto'?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "columna_costo"
+    },
+    {
+      "required": true,
+      "type": "columna_cronograma"
+    },
+    {
+      "required": true,
+      "type": "columna_producto"
+    },
+    {
+      "required": true,
+      "type": "columna_responsable"
+    },
+    {
+      "required": true,
+      "type": "formato_tabular"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0015",
+      "PAT-0036",
+      "PAT-0037",
+      "PAT-0038",
+      "PAT-0105",
+      "PAT-Q186-001",
+      "PAT-Q186-005"
+    ],
+    "keyword_refs": [
+      "KW-PA06-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q006",
+      "Q036",
+      "Q066",
+      "Q096",
+      "Q126"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q186",
+      "Q216",
+      "Q246",
+      "Q276"
+    ]
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "question_id": "Q143",
+  "dimension_id": "DIM05",
+  "policy_area_id": "PA05",
+  "cluster_id": "CL02",
+  "base_slot": "D5-Q3",
+  "text": {
+    "es": "Cuando un impacto en la paz es difícil de medir (ej. 'sanación del tejido social'), ¿se recurre a un 'proxy'? Se valora si el texto documenta su 'validez' y reconoce sus 'limitaciones'.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "documenta_validez"
+    },
+    {
+      "required": true,
+      "type": "proxy_para_intangibles"
+    },
+    {
+      "required": true,
+      "type": "reconoce_limitaciones"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0050",
+      "PAT-0100",
+      "PAT-Q173-002",
+      "PAT-Q173-003",
+      "PAT-Q173-004",
+      "PAT-Q173-005"
+    ],
+    "keyword_refs": [
+      "KW-PA05-001"
+    ],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02"
+    ],
+    "entity_refs": [
+      "ENT-INST-002"
+    ],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.15,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.1
+    }
+  },
+  "interdependencies": {
+    "informs": [
+      "Q023",
+      "Q053",
+      "Q083",
+      "Q113",
+      "Q143"
+    ],
+    "informed_by": [],
+    "coherence_check_with": [
+      "Q173",
+      "Q203",
+      "Q233",
+      "Q263"
+    ]
+  }
+}
