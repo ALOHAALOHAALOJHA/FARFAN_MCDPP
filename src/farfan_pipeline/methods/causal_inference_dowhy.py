@@ -410,7 +410,7 @@ class DoWhyCausalAnalyzer:
                 passed = True
                 if method == "placebo_treatment_refuter":
                     # For placebo, we want new_effect ≈ 0
-                    passed = abs(new_effect) < abs(estimate.value) * 0.5 if new_effect else True
+                    passed = abs(new_effect) < abs(estimate.value) * 0.5 if new_effect is not None else True
                 elif p_value is not None:
                     # For other tests, high p-value = no refutation = passed
                     passed = p_value > 0.05
