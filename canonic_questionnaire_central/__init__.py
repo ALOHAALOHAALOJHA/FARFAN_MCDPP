@@ -184,6 +184,8 @@ class CQCLoader:
         Raises:
             ValueError: If not all requested questions could be loaded
         """
+        requested_count = len(question_ids)
+        
         if self._registry_type == "lazy":
             result = self.registry.get_batch(question_ids)
         else:
@@ -420,8 +422,8 @@ class CQCLoader:
 
 # Convenience exports
 __all__ = [
-    "CQCLoader",
-    "CQCConfig"
+    "CQCConfig",
+    "CQCLoader"
 ]
 
 __version__ = "2.0.0"

@@ -15,7 +15,6 @@ import json
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
-from functools import lru_cache
 from collections import ChainMap
 
 
@@ -101,6 +100,9 @@ class PatternResolver:
         self.policy_areas = self._load_policy_areas()
         self.dimensions = self._load_dimensions()
         self.slots = self._load_slots()
+        
+        # Instance-level cache to avoid memory leaks from @lru_cache on methods
+        self._resolution_cache: Dict[str, List[str]] = {}
 
         # Instance-level cache for pattern resolution
         self._resolve_cache: Dict[str, List[str]] = {}
@@ -405,7 +407,20 @@ class PatternResolver:
         - ...
         - Position in 30-block determines slot (Q001, Q031, Q061 → D1-Q1)
         """
-        q_num = int(question_id[1:])  # Q001 → 1
+        # Validate input format
+        if not question_id or not isinstance(question_id, str):
+            raise ValueError(f"Invalid question_id: {question_id!r}. Expected non-empty string.")
+        
+        if not question_id.startswith('Q') or len(question_id) < 2:
+            raise ValueError(f"Invalid question_id format: {question_id!r}. Expected format: Q### (e.g., Q001)")
+        
+        try:
+            q_num = int(question_id[1:])  # Q001 → 1
+        except ValueError:
+            raise ValueError(f"Invalid question_id format: {question_id!r}. Expected numeric portion after 'Q'.")
+        
+        if q_num < 1:
+            raise ValueError(f"Invalid question number: {q_num}. Must be positive.")
 
         # Determine PA (each PA has 30 questions)
         pa_num = ((q_num - 1) // 30) + 1

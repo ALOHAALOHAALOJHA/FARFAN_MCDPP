@@ -491,14 +491,14 @@ if __name__ == "__main__":
     # Load single question
     print("📖 Loading Q001 (first time)...")
     start = time.time()
-    q001 = registry.get("Q001")
+    registry.get("Q001")  # Load without assignment since value is unused
     load_time1 = (time.time() - start) * 1000
     print(f"  Load time: {load_time1:.2f} ms")
 
     # Load again (cached)
     print("\n📖 Loading Q001 (cached)...")
     start = time.time()
-    q001_cached = registry.get("Q001")
+    registry.get("Q001")  # Load without assignment since value is unused
     load_time2 = (time.time() - start) * 1000
     print(f"  Load time: {load_time2:.2f} ms")
     print(f"  Speedup: {load_time1/load_time2:.0f}x\n")

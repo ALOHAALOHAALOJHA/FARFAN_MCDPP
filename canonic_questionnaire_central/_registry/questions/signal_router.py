@@ -13,9 +13,9 @@ Date: 2026-01-06
 
 import json
 from pathlib import Path
-from typing import Dict, Set, List, Optional
+from typing import Dict, Set, List, Optional, Any
 from collections import defaultdict
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 import pandas as pd
 
 
@@ -296,8 +296,8 @@ class SignalQuestionIndex:
         """
         # Find max and min
         questions_per_signal = {sig: len(qids) for sig, qids in self.index.items()}
-        max_signal = max(questions_per_signal.items(), key=lambda x: x[1])
-        min_signal = min(questions_per_signal.items(), key=lambda x: x[1])
+        max_signal = max(questions_per_signal.items(), key=lambda x: x[1]) if questions_per_signal else (None, 0)
+        min_signal = min(questions_per_signal.items(), key=lambda x: x[1]) if questions_per_signal else (None, 0)
 
         # Find orphans by comparing against full sets
         questions_with_no_signals = [
