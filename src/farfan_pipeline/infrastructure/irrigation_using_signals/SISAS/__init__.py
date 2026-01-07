@@ -8,6 +8,7 @@ F.A.R.F.A.N pipeline.
 Main Components:
 - signal_registry: Central registry for signal packs and questionnaire signals
 - signals: Core signal abstractions and client
+- signal_irrigator: Signal delivery system (extractor → question routing) **NEW**
 - signal_quality_metrics: Quality assessment for signal coverage
 - signal_intelligence_layer: Advanced signal processing
 - signal_contract_validator: Contract enforcement for signals
@@ -76,6 +77,19 @@ except ImportError as e:
 
 # Strategic Enhancements - NEW 2025-12-11
 try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_irrigator import (
+        SignalIrrigator,
+        SignalDelivery,
+        IrrigationStats,
+        irrigate_extraction_result,
+    )
+except ImportError as e:
+    raise ImportError(
+        "SISAS signal_irrigator module failed to import. "
+        f"Ensure signal_irrigator.py is present. Original error: {e}"
+    ) from e
+
+try:
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_method_metadata import (
         MethodMetadata,
         MethodExecutionMetadata,
@@ -117,6 +131,11 @@ __all__ = [
     "ChunkingSignalPack",
     "MicroAnsweringSignalPack",
     "create_signal_registry",
+    # Signal Irrigation - NEW
+    "SignalIrrigator",
+    "SignalDelivery",
+    "IrrigationStats",
+    "irrigate_extraction_result",
     # Quality
     "SignalQualityMetrics",
     "compute_signal_quality_metrics",
