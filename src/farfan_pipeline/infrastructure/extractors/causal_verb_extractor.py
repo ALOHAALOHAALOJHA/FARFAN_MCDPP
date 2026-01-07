@@ -88,7 +88,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
 
     def __init__(self, calibration_file: Optional[Path] = None):
         super().__init__(
-            signal_type="CAUSAL_LINK",
+            signal_type="CAUSAL_VERBS",  # Aligned with integration_map key
             calibration_file=calibration_file,
             auto_validate=True
         )
@@ -259,7 +259,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
 
         result = ExtractionResult(
             extractor_id="CausalVerbExtractor",
-            signal_type="CAUSAL_LINK",
+            signal_type="CAUSAL_VERBS",  # Aligned with integration_map key
             matches=matches,
             confidence=avg_confidence,
             metadata={
