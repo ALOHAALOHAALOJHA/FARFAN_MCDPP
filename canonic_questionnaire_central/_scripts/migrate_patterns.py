@@ -111,7 +111,7 @@ class PatternMigrator:
                     existing.legacy_ids.append(str(raw_id))
 
                 # Merge bindings
-                for key in ["applies_to_questions", "applies_to_dimensions", "applies_to_policy_areas"]:
+                for key in ["applies_to_questions", "applies_to_dimensions", "applies_to_policy_areas", "applies_to_membership_criteria"]:
                     if key in raw_pattern:
                         existing.bindings[key] = list(set(
                             existing.bindings.get(key, []) + raw_pattern[key]
@@ -168,7 +168,7 @@ class PatternMigrator:
             return pattern
 
         except Exception as e:
-            logger.error(f"Error normalizing pattern from {source}: {e}")
+            logger.exception(f"Error normalizing pattern from {source}: {e}")
             return None
 
     def load_pattern_registry_v1(self) -> None:
@@ -401,9 +401,7 @@ class PatternMigrator:
             return True
 
         except Exception as e:
-            logger.error(f"❌ Migration failed: {e}")
-            import traceback
-            traceback.print_exc()
+            logger.exception(f"❌ Migration failed: {e}")
             return False
 
 

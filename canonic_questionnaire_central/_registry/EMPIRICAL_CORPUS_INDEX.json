@@ -194,11 +194,11 @@
   },
 
   "next_steps": [
-    "Update Membership Criteria MC01-MC10 to reference extractor_calibration.json",
-    "Update QuestionnaireSignalRegistry to load integration_map.json",
-    "Update PolicyAreaScorer to load normative_compliance.json",
-    "Update scoring/scoring_system.json to reference empirical_weights.json",
-    "Create validators that use these empirical thresholds",
-    "Document usage patterns in extractor implementations"
+    "Wire Membership Criteria MC01-MC10 to consume extractor_calibration.json (file present, consumers need implementation)",
+    "Wire QuestionnaireSignalRegistry to consume integration_map.json (file present, consumers need implementation)",
+    "Wire PolicyAreaScorer to consume normative_compliance.json (file present, consumers need implementation)",
+    "Wire scoring/scoring_system.json to consume empirical_weights.json (file present, consumers need implementation)",
+    "Implement validators that consume these empirical thresholds",
+    "Document consumption patterns in extractor implementations"
   ]
 }
