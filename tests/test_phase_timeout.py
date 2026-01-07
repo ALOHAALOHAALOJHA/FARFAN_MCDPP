@@ -358,7 +358,8 @@ async def test_integration_hanging_handler_timeout():
             phase_id=2,
             phase_name="Hanging Phase",
             handler=hanging_handler,
-            timeout_s=1.0
+            timeout_s=1.0,
+            retry_category="integrity_check"
         )
     
     elapsed_time = time.time() - start_time

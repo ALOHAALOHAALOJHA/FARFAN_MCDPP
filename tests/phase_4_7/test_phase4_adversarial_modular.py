@@ -151,7 +151,7 @@ class TestAreaAggregatorWithRealStructure:
 
         area_score = aggregator.aggregate_area(
             dimension_scores,
-            {"policy_area": pa_id}
+            {"area_id": pa_id}  # Code expects area_id, not policy_area
         )
 
         # MEANINGFUL ASSERTION: Verify cluster_id matches modular metadata
@@ -532,7 +532,7 @@ class TestIntermodularWiring:
         # Phase 5: Aggregate to area
         area_score = aggregator.aggregate_area(
             dimension_scores,
-            {"policy_area": pa_id}
+            {"area_id": pa_id}  # Code expects area_id, not policy_area
         )
 
         # MEANINGFUL ASSERTION: cluster_id from modular metadata propagates

@@ -1713,7 +1713,9 @@ class AreaPolicyAggregator:
             score=avg_score,
             quality_level=quality_level,
             dimension_scores=area_dim_scores,
-            validation_passed=True,
+            # MEANINGFUL CONNECTION: validation_passed reflects actual hermeticity state
+            # This ensures AreaScore.validation_passed matches the real structural validation
+            validation_passed=validation_details.get("hermeticity", {}).get("valid", True),
             validation_details=validation_details,
             cluster_id=cluster_id  # Populate from modular metadata
         )
