@@ -798,6 +798,27 @@ __all__ = [
 - `EnforcedBootstrap` - Bootstrap with resource enforcement
 - `WiringComponents` - Container for all wired components
 
+#### 3.7.4 phase0_90_03_wiring_validator.py
+
+| Attribute | Value |
+|-----------|-------|
+| **Legacy Name** | N/A (new module) |
+| **Type** | VAL |
+| **Criticality** | CRITICAL |
+| **Execution Pattern** | Boot-Once |
+| **Lines of Code** | ~848 |
+
+**Responsibility:** Implements a 7-tier structural integrity validation gate for the wiring system. Validates component initialization, dependency injection integrity, signal system connectivity, and contract bindings. Ensures that all wired components are correctly assembled before Phase 1 handoff.
+
+**Validation Tiers:**
+1. **Component Presence** - All required components instantiated
+2. **Type Conformance** - Components match expected types
+3. **Dependency Resolution** - All dependencies resolvable
+4. **Signal Connectivity** - Signal paths verified
+5. **Contract Binding** - Executor contracts bound
+6. **Route Coverage** - All routes registered
+7. **Hash Integrity** - Initialization hashes computed
+
 ---
 
 ## 4. Execution Narrative
@@ -1290,9 +1311,10 @@ Legacy files should be renamed according to the manifest in `PHASE_0_CONSTANTS.p
 
 | Stage | Order | Canonical Name | Legacy Name | Type | Criticality | LOC |
 |-------|-------|----------------|-------------|------|-------------|-----|
-| 00 | 00 | phase0_00_00_init.py | \_\_init\_\_.py | INFRA | LOW | 38 |
+| 00 | 00 | \_\_init\_\_.py | \_\_init\_\_.py | INFRA | LOW | 78 |
 | 00 | 01 | phase0_00_01_domain_errors.py | domain_errors.py | INFRA | HIGH | 137 |
 | 00 | 02 | phase0_00_02_runtime_error_fixes.py | runtime_error_fixes.py | INFRA | MEDIUM | 135 |
+| 00 | 03 | phase0_00_03_protocols.py | N/A (new) | INFRA | CRITICAL | 350 |
 | 10 | 00 | phase0_10_00_paths.py | paths.py | CFG | CRITICAL | 480 |
 | 10 | 01 | phase0_10_01_runtime_config.py | runtime_config.py | CFG | CRITICAL | 584 |
 | 10 | 02 | phase0_10_02_json_logger.py | json_logger.py | CFG | HIGH | 259 |
@@ -1301,8 +1323,9 @@ Legacy files should be renamed according to the manifest in `PHASE_0_CONSTANTS.p
 | 20 | 02 | phase0_20_02_determinism.py | determinism.py | ENF | CRITICAL | 359 |
 | 20 | 03 | phase0_20_03_determinism_helpers.py | determinism_helpers.py | UTIL | HIGH | 192 |
 | 20 | 04 | phase0_20_04_deterministic_execution.py | deterministic_execution.py | ENF | CRITICAL | 445 |
-| 30 | 00 | phase0_30_00_resource_controller.py | resource_controller.py | ENF | CRITICAL | 503 |
-| 40 | 00 | phase0_40_00_input_validation.py | phase0_input_validation.py | VAL | CRITICAL | 540 |
+| 30 | 00 | phase0_30_00_resource_controller.py | resource_controller.py | ENF | CRITICAL | 529 |
+| 30 | 01 | phase0_30_01_performance_metrics.py | N/A (new) | UTIL | MEDIUM | 47 |
+| 40 | 00 | phase0_40_00_input_validation.py | phase0_input_validation.py | VAL | CRITICAL | 580 |
 | 40 | 01 | phase0_40_01_schema_monitor.py | schema_monitor.py | VAL | HIGH | 396 |
 | 40 | 02 | phase0_40_02_signature_validator.py | signature_validator.py | VAL | HIGH | 474 |
 | 40 | 03 | phase0_40_03_coverage_gate.py | coverage_gate.py | VAL | MEDIUM | 252 |
@@ -1313,7 +1336,12 @@ Legacy files should be renamed according to the manifest in `PHASE_0_CONSTANTS.p
 | 90 | 02 | phase0_90_02_bootstrap.py | bootstrap.py | ORCH | CRITICAL | 1163 |
 | 90 | 03 | phase0_90_03_wiring_validator.py | N/A (new) | VAL | CRITICAL | 848 |
 
-**Total:** 22 modules, 8702 lines of code
+**Additional Files:**
+| File | Purpose | LOC |
+|------|---------|-----|
+| PHASE_0_CONSTANTS.py | Canonical constants and naming mappings | 340 |
+
+**Total:** 24 modules + 2 support files, ~9,600 lines of code
 
 ### Appendix C: Error Code Reference
 
@@ -1327,6 +1355,10 @@ Legacy files should be renamed according to the manifest in `PHASE_0_CONSTANTS.p
 | `P0-RES-002` | `ResourceExhausted` | Insufficient disk space |
 | `P0-VAL-001` | `DataContractError` | Input validation failed |
 | `P0-VAL-002` | `SystemContractError` | Schema mismatch |
+| `P0-VAL-003` | `ValidationError` | Path traversal attempt detected |
+| `P0-VAL-004` | `ValidationError` | Null byte injection detected |
+| `P0-VAL-005` | `ValidationError` | SQL injection pattern detected |
+| `P0-VAL-006` | `ValidationError` | Size/count exceeds maximum bounds |
 | `P0-BOOT-001` | `BootCheckError` | Boot check failed |
 | `P0-GATE-001` | `GateError` | Exit gate verification failed |
 
@@ -1338,6 +1370,8 @@ Legacy files should be renamed according to the manifest in `PHASE_0_CONSTANTS.p
 |---------|------|--------|---------|
 | 1.0.0 | 2025-12-29 | F.A.R.F.A.N Core Team | Initial version with complete stage taxonomy |
 | 1.1.0 | 2025-12-31 | F.A.R.F.A.N Core Team | Added phase0_90_03_wiring_validator.py (7-tier structural integrity gate); Refactored phase0_90_00_main.py to thin CLI wrapper (1829→157 LOC); Updated module count (21→22) and total LOC (9498→8702) |
+| 1.2.0 | 2026-01-01 | F.A.R.F.A.N Core Team | Documentation refinements; Added phase0_00_03_protocols.py and phase0_30_01_performance_metrics.py to inventory |
+| 1.3.0 | 2026-01-07 | F.A.R.F.A.N Core Team | **Security Hardening Release**: Remediated 6 adversarial vulnerabilities (path traversal, null byte injection, SQL injection, size validation, type validation, thread interference); Updated module count to 24; All 115 unit tests and 33 adversarial tests passing |
 
 ---
 

@@ -449,14 +449,25 @@ class SignalEnricher:
                 - enriched_pack: Combined data for downstream phases
                 - metrics: Extraction and routing metrics
         """
-        from farfan_pipeline.infrastructure.extractors import (
-            QuantitativeTripletExtractor,
-            NormativeReferenceExtractor,
-            StructuralMarkerExtractor,
-            FinancialChainExtractor,
-            CausalVerbExtractor,
-            InstitutionalNERExtractor,
-        )
+        # Import extractors with fallback for different environments
+        try:
+            from farfan_pipeline.infrastructure.extractors import (
+                QuantitativeTripletExtractor,
+                NormativeReferenceExtractor,
+                StructuralMarkerExtractor,
+                FinancialChainExtractor,
+                CausalVerbExtractor,
+                InstitutionalNERExtractor,
+            )
+        except ImportError:
+            from src.farfan_pipeline.infrastructure.extractors import (
+                QuantitativeTripletExtractor,
+                NormativeReferenceExtractor,
+                StructuralMarkerExtractor,
+                FinancialChainExtractor,
+                CausalVerbExtractor,
+                InstitutionalNERExtractor,
+            )
         
         extraction_results = {}
         all_signal_types = []

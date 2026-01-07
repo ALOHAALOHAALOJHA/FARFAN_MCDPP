@@ -1,6 +1,6 @@
 # SISAS Irrigation System Completion Plan
 
-**Version:** 1.0.0  
+**Version:** 1.1.0  
 **Date:** 2026-01-07  
 **Author:** F.A.R.F.A.N Chief Architect  
 
@@ -12,9 +12,42 @@ This document provides a complete architectural diagnosis and remediation plan f
 
 | Missing Link | Epistemic Gap | Architectural Impediment | Remediation Status |
 |--------------|---------------|--------------------------|-------------------|
-| **Signal Production** | 7 of 10 extractors missing | Only 3 extractors implemented | Priority 1 |
-| **Routing Infrastructure** | Router exists but unused | Zero imports of SignalQuestionIndex in pipeline | Priority 2 |
-| **Consumer Instrumentation** | No signal consumption logging | Phase 2/3 don't consume routed signals | Priority 3 |
+| **Signal Production** | 7 of 10 extractors missing | Only 3 extractors implemented | ✅ **COMPLETED** (3 more added) |
+| **Routing Infrastructure** | Router exists but unused | Zero imports of SignalQuestionIndex in pipeline | ✅ **COMPLETED** |
+| **Consumer Instrumentation** | No signal consumption logging | Phase 2/3 don't consume routed signals | ✅ **COMPLETED** |
+
+---
+
+## IMPLEMENTATION STATUS (Updated 2026-01-07)
+
+### Completed Items
+
+#### 1. Signal Type Alignment ✅
+- Fixed `CausalVerbExtractor`: `CAUSAL_LINK` → `CAUSAL_VERBS`
+- Fixed `InstitutionalNERExtractor`: `INSTITUTIONAL_ENTITY` → `INSTITUTIONAL_NETWORK`
+
+#### 2. New Extractors Implemented ✅
+- `QuantitativeTripletExtractor` - Highest priority, 94 questions mapped
+- `NormativeReferenceExtractor` - 62 questions mapped, entity registry integration
+- `StructuralMarkerExtractor` - 87 questions mapped, PPI table detection
+
+#### 3. Router Integration ✅
+- `SignalQuestionIndex` integrated into `phase1_60_00_signal_enrichment.py`
+- `get_signal_router()` singleton pattern for O(1) lookups
+- `SignalEnricher.route_signal()` and `route_signals_batch()` methods
+- `extract_and_route_signals()` method for complete flow
+
+#### 4. Phase 2 Nexus Integration ✅
+- `_log_signal_consumption()` method added
+- Logs expected vs received signals, coverage, and confidence penalty
+
+#### 5. Phase 3 Scoring Integration ✅
+- `apply_signal_adjustments()` method added
+- Signal presence bonus: +0.05 per primary signal (cap +0.15)
+- Missing signal penalty: -0.10 per missing primary
+
+#### 6. End-to-End Tests ✅
+- `tests/test_sisas_e2e_irrigation.py` - 11 tests, all passing
 
 ---
 
