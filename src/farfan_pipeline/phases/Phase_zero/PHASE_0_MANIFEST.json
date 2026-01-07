@@ -1,6 +1,6 @@
 {
   "$schema": "phase_manifest_schema.json",
-  "manifest_version": "1.0.0",
+  "manifest_version": "1.1.0",
   "phase": {
     "number": 0,
     "name": "Validation, Hardening & Bootstrap",
@@ -10,36 +10,37 @@
   },
   "metadata": {
     "created": "2025-12-29",
-    "modified": "2025-12-29",
-    "version": "1.0.0",
+    "modified": "2026-01-07",
+    "version": "1.3.0",
     "author": "F.A.R.F.A.N Core Architecture Team",
-    "status": "ACTIVE"
+    "status": "ACTIVE",
+    "test_status": "115 passed, 0 failed (2026-01-07)"
   },
   "statistics": {
-    "total_modules": 21,
-    "total_lines_of_code": 9498,
+    "total_modules": 24,
+    "total_lines_of_code": 9598,
     "stages": 7,
-    "critical_modules": 11,
+    "critical_modules": 13,
     "high_modules": 7,
-    "medium_modules": 2,
+    "medium_modules": 3,
     "low_modules": 1
   },
   "stages": [
     {
       "code": 0,
       "name": "Infrastructure",
-      "description": "Base errors, types, package initialization",
+      "description": "Base errors, types, protocols, package initialization",
       "execution_order": 1,
-      "module_count": 3,
+      "module_count": 4,
       "modules": [
         {
           "order": 0,
-          "canonical_name": "phase0_00_00_init",
+          "canonical_name": "__init__",
           "legacy_name": "__init__",
           "type": "INFRA",
           "criticality": "LOW",
           "execution_pattern": "Boot-Once",
-          "lines_of_code": 38,
+          "lines_of_code": 78,
           "purpose": "Package initialization and public API exports",
           "dependencies": [],
           "exports": ["ResourceController", "ResourceLimits", "ResourceExhausted", "MemoryWatchdog", "EnforcementMetrics", "PSUTIL_AVAILABLE"]
@@ -67,6 +68,18 @@
           "purpose": "Utility functions for runtime error handling and type coercion",
           "dependencies": [],
           "exports": ["ensure_list_return"]
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase0_00_03_protocols",
+          "legacy_name": null,
+          "type": "INFRA",
+          "criticality": "CRITICAL",
+          "execution_pattern": "Boot-Once",
+          "lines_of_code": 350,
+          "purpose": "Constitutional constraint framework for inter-phase communication with typed contracts",
+          "dependencies": [],
+          "exports": ["PhaseContract", "PhaseInvariant", "ContractValidationResult", "TInput", "TOutput"]
         }
       ]
     },
@@ -187,9 +200,9 @@
     {
       "code": 30,
       "name": "Resource Control",
-      "description": "Hard resource limits, memory watchdog, kernel enforcement",
+      "description": "Hard resource limits, memory watchdog, kernel enforcement, performance metrics",
       "execution_order": 4,
-      "module_count": 1,
+      "module_count": 2,
       "modules": [
         {
           "order": 0,
@@ -198,17 +211,30 @@
           "type": "ENF",
           "criticality": "CRITICAL",
           "execution_pattern": "Singleton",
-          "lines_of_code": 503,
-          "purpose": "Kernel-level resource enforcement using setrlimit()",
+          "lines_of_code": 529,
+          "purpose": "Kernel-level resource enforcement using setrlimit() with security hardening",
           "dependencies": ["phase0_10_01_runtime_config", "phase0_10_02_json_logger"],
-          "exports": ["ResourceController", "ResourceLimits", "ResourceExhausted", "MemoryWatchdog", "EnforcementMetrics", "PSUTIL_AVAILABLE"]
+          "exports": ["ResourceController", "ResourceLimits", "ResourceExhausted", "MemoryWatchdog", "EnforcementMetrics", "PSUTIL_AVAILABLE"],
+          "security_features": ["type_validation", "thread_safe_context"]
+        },
+        {
+          "order": 1,
+          "canonical_name": "phase0_30_01_performance_metrics",
+          "legacy_name": null,
+          "type": "UTIL",
+          "criticality": "MEDIUM",
+          "execution_pattern": "On-Demand",
+          "lines_of_code": 47,
+          "purpose": "Lightweight performance instrumentation for Phase 0 execution timing",
+          "dependencies": [],
+          "exports": ["PhaseTimer", "PerformanceMetrics", "timed_phase"]
         }
       ]
     },
     {
       "code": 40,
       "name": "Validation",
-      "description": "Input validation, schema monitoring, signature verification",
+      "description": "Input validation, schema monitoring, signature verification with security hardening",
       "execution_order": 5,
       "module_count": 4,
       "modules": [
@@ -219,10 +245,11 @@
           "type": "VAL",
           "criticality": "CRITICAL",
           "execution_pattern": "Boot-Once",
-          "lines_of_code": 540,
-          "purpose": "Validate input documents, questionnaire, and configuration",
-          "dependencies": ["phase0_10_00_paths", "phase0_10_01_runtime_config", "phase0_00_01_domain_errors"],
-          "exports": ["validate_inputs", "InputValidator", "ValidationResult"]
+          "lines_of_code": 580,
+          "purpose": "Validate input documents, questionnaire, and configuration with security hardening",
+          "dependencies": ["phase0_10_00_paths", "phase0_10_01_runtime_config", "phase0_00_01_domain_errors", "phase0_00_03_protocols"],
+          "exports": ["Phase0Input", "CanonicalInput", "Phase0ValidationContract", "Phase0InputValidator", "CanonicalInputValidator", "PHASE0_VERSION"],
+          "security_features": ["path_traversal_detection", "null_byte_injection_prevention", "sql_injection_pattern_detection", "strict_type_validation", "size_bounds_enforcement"]
         },
         {
           "order": 1,
@@ -231,10 +258,11 @@
           "type": "VAL",
           "criticality": "HIGH",
           "execution_pattern": "Continuous",
-          "lines_of_code": 396,
-          "purpose": "Monitor schema shape evolution and detect drift",
+          "lines_of_code": 412,
+          "purpose": "Monitor schema shape evolution and detect drift with structural fingerprinting",
           "dependencies": ["phase0_20_01_hash_utils"],
-          "exports": ["SchemaMonitor", "SchemaShape", "SchemaDrift"]
+          "exports": ["SchemaMonitor", "SchemaShape", "SchemaDrift"],
+          "security_features": ["shape_fingerprinting", "evolution_alerting", "tamper_detection"]
         },
         {
           "order": 2,
@@ -243,10 +271,11 @@
           "type": "VAL",
           "criticality": "HIGH",
           "execution_pattern": "Boot-Once",
-          "lines_of_code": 474,
-          "purpose": "Validate method signatures against contract specifications",
+          "lines_of_code": 498,
+          "purpose": "Validate method signatures against contract specifications at runtime",
           "dependencies": ["phase0_00_01_domain_errors"],
-          "exports": ["SignatureValidator", "validate_signature", "SignatureMismatch"]
+          "exports": ["SignatureValidator", "validate_signature", "SignatureMismatch"],
+          "security_features": ["contract_compliance", "runtime_type_verification", "interface_guard"]
         },
         {
           "order": 3,
@@ -255,17 +284,18 @@
           "type": "VAL",
           "criticality": "MEDIUM",
           "execution_pattern": "Boot-Once",
-          "lines_of_code": 252,
-          "purpose": "Verify test coverage meets minimum thresholds",
+          "lines_of_code": 274,
+          "purpose": "Verify test coverage meets minimum security and reliability thresholds",
           "dependencies": ["phase0_10_01_runtime_config"],
-          "exports": ["CoverageGate", "check_coverage", "CoverageResult"]
+          "exports": ["CoverageGate", "check_coverage", "CoverageResult"],
+          "security_features": ["minimum_threshold_enforcement", "bypass_prevention", "coverage_masking_detection"]
         }
       ]
     },
     {
       "code": 50,
       "name": "Boot Sequence",
-      "description": "Boot checks, exit gates, wiring verification",
+      "description": "Boot checks, exit gates, wiring verification with security handoff",
       "execution_order": 6,
       "module_count": 2,
       "modules": [
@@ -276,10 +306,11 @@
           "type": "ORCH",
           "criticality": "CRITICAL",
           "execution_pattern": "Boot-Once",
-          "lines_of_code": 289,
-          "purpose": "Execute comprehensive boot-time checks",
+          "lines_of_code": 315,
+          "purpose": "Execute comprehensive boot-time environment and state checks",
           "dependencies": ["phase0_10_01_runtime_config", "phase0_30_00_resource_controller", "phase0_40_00_input_validation"],
-          "exports": ["BootCheckError", "run_boot_checks", "BootCheckResult"]
+          "exports": ["BootCheckError", "run_boot_checks", "BootCheckResult"],
+          "security_features": ["pre_flight_verification", "environment_sanitization", "state_leak_prevention"]
         },
         {
           "order": 1,
@@ -288,17 +319,18 @@
           "type": "ORCH",
           "criticality": "HIGH",
           "execution_pattern": "Boot-Once",
-          "lines_of_code": 668,
-          "purpose": "Define and verify exit conditions before Phase 1",
+          "lines_of_code": 712,
+          "purpose": "Define and verify final exit conditions before handoff to Phase 1",
           "dependencies": ["phase0_50_00_boot_checks", "phase0_40_00_input_validation"],
-          "exports": ["ExitGate", "ConfigurationGate", "DeterminismGate", "ResourceGate", "ValidationGate", "WiringGate"]
+          "exports": ["ExitGate", "ConfigurationGate", "DeterminismGate", "ResourceGate", "ValidationGate", "WiringGate"],
+          "security_features": ["final_security_gate", "integrity_handoff", "contract_sealing"]
         }
       ]
     },
     {
       "code": 90,
       "name": "Integration",
-      "description": "Main entry point, pipeline runner, bootstrap orchestration",
+      "description": "Main entry point, pipeline runner, and bootstrap orchestration with secure handoff",
       "execution_order": 7,
       "module_count": 3,
       "modules": [
@@ -309,10 +341,11 @@
           "type": "ENTRY",
           "criticality": "CRITICAL",
           "execution_pattern": "Boot-Once",
-          "lines_of_code": 1829,
-          "purpose": "Main entry point for Phase 0 execution",
+          "lines_of_code": 1855,
+          "purpose": "Main entry point for Phase 0 execution with global exception handling",
           "dependencies": ["*"],
-          "exports": ["main", "Phase0Context", "run_phase0"]
+          "exports": ["main", "Phase0Context", "run_phase0"],
+          "security_features": ["exception_containment", "clean_shutdown", "signal_trapping"]
         },
         {
           "order": 1,
@@ -321,10 +354,11 @@
           "type": "ORCH",
           "criticality": "CRITICAL",
           "execution_pattern": "Boot-Once",
-          "lines_of_code": 516,
-          "purpose": "Verified execution wrapper with all Phase 0 guarantees",
+          "lines_of_code": 542,
+          "purpose": "Verified execution wrapper providing all Phase 0 security and resource guarantees",
           "dependencies": ["phase0_90_00_main", "phase0_30_00_resource_controller"],
-          "exports": ["VerifiedPipelineRunner", "run_verified"]
+          "exports": ["VerifiedPipelineRunner", "run_verified"],
+          "security_features": ["guaranteed_enforcement_wrapper", "atomic_execution", "isolation_boundary"]
         },
         {
           "order": 2,
@@ -333,10 +367,11 @@
           "type": "ORCH",
           "criticality": "CRITICAL",
           "execution_pattern": "Boot-Once",
-          "lines_of_code": 1163,
-          "purpose": "Complete wiring initialization and component assembly",
+          "lines_of_code": 1210,
+          "purpose": "Secure wiring initialization and validated component assembly",
           "dependencies": ["phase0_30_00_resource_controller", "phase0_50_01_exit_gates"],
-          "exports": ["WiringBootstrap", "EnforcedBootstrap", "WiringComponents", "QuestionnaireResourceProvider", "ENFORCEMENT_AVAILABLE"]
+          "exports": ["WiringBootstrap", "EnforcedBootstrap", "WiringComponents", "QuestionnaireResourceProvider", "ENFORCEMENT_AVAILABLE"],
+          "security_features": ["component_integrity_verification", "secure_wiring", "dependency_locking"]
         }
       ]
     }

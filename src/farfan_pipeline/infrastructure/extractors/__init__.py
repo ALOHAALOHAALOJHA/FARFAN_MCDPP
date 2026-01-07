@@ -90,6 +90,17 @@ from .extractor_validator import (
     ValidationMetrics
 )
 
+from .programmatic_hierarchy_extractor import (
+    ProgrammaticHierarchyExtractor,
+    HierarchySourceAdapter,
+    DictSourceAdapter,
+    JSONFileSourceAdapter,
+    CSVSourceAdapter,
+    HierarchyNode,
+    HierarchyError,
+    HierarchyErrorType,
+)
+
 __version__ = "2.0.0"
 
 __all__ = [
@@ -126,7 +137,17 @@ __all__ = [
 
     # Utilities
     'load_all_extractors_from_calibration',
-    'generate_test_suite'
+    'generate_test_suite',
+
+    # Hierarchy Extractor
+    'ProgrammaticHierarchyExtractor',
+    'HierarchySourceAdapter',
+    'DictSourceAdapter',
+    'JSONFileSourceAdapter',
+    'CSVSourceAdapter',
+    'HierarchyNode',
+    'HierarchyError',
+    'HierarchyErrorType',
 ]
 
 

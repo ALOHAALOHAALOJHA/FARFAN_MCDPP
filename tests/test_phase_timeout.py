@@ -299,7 +299,7 @@ def test_get_phase_timeout_exploratory_mode(runtime_config_exploratory):
     orchestrator.runtime_config = runtime_config_exploratory
     orchestrator.PHASE_TIMEOUTS = {2: 600.0}
     
-    from orchestration.orchestrator import Orchestrator
+    from farfan_pipeline.orchestration.orchestrator import Orchestrator
     timeout = Orchestrator._get_phase_timeout(orchestrator, 2)
     
     assert timeout == 2400.0  # 4x multiplier in EXPLORATORY
@@ -313,7 +313,7 @@ def test_get_phase_timeout_no_runtime_config():
     orchestrator.runtime_config = None
     orchestrator.PHASE_TIMEOUTS = {7: 60.0}
     
-    from orchestration.orchestrator import Orchestrator
+    from farfan_pipeline.orchestration.orchestrator import Orchestrator
     timeout = Orchestrator._get_phase_timeout(orchestrator, 7)
     
     assert timeout == 60.0
@@ -415,7 +415,7 @@ def test_build_execution_manifest_success(runtime_config_prod):
     orchestrator.abort_signal.get_reason = Mock(return_value=None)
     orchestrator.FASES = [(i, "async", f"_handler_{i}", f"Phase {i}") for i in range(11)]
     
-    from orchestration.orchestrator import Orchestrator
+    from farfan_pipeline.orchestration.orchestrator import Orchestrator
     manifest = Orchestrator._build_execution_manifest(orchestrator)
     
     assert manifest["success"] is True
@@ -427,14 +427,7 @@ def test_build_execution_manifest_success(runtime_config_prod):
 @pytest.mark.integration
 def test_build_execution_manifest_timeout_prod_mode(runtime_config_prod):
     """Test _build_execution_manifest reports success=false on timeout in PROD."""
-    from orchestration.orchestrator import PhaseResult
-    
-    timeout_error = PhaseTimeoutError(
-        phase_id=2,
-        phase_name="FASE 2 - Micro Preguntas",
-        timeout_s=600.0,
-        elapsed_s=600.5
-    )
+    from farfan_pipeline.orchestration.orchestrator import PhaseResult
     
     orchestrator = Mock()
     orchestrator.runtime_config = runtime_config_prod
@@ -460,7 +453,7 @@ def test_build_execution_manifest_timeout_prod_mode(runtime_config_prod):
     orchestrator.abort_signal.get_reason = Mock(return_value="Phase 2 timed out")
     orchestrator.FASES = [(i, "async", f"_handler_{i}", f"Phase {i}") for i in range(11)]
     
-    from orchestration.orchestrator import Orchestrator
+    from farfan_pipeline.orchestration.orchestrator import Orchestrator
     manifest = Orchestrator._build_execution_manifest(orchestrator)
     
     # In PROD mode, timeout should cause success=false
@@ -475,15 +468,8 @@ def test_build_execution_manifest_timeout_prod_mode(runtime_config_prod):
 @pytest.mark.updated
 @pytest.mark.integration
 def test_build_execution_manifest_timeout_dev_mode(runtime_config_dev):
-    """Test _build_execution_manifest in DEV mode with timeout."""
-    from orchestration.orchestrator import PhaseResult
-    
-    timeout_error = PhaseTimeoutError(
-        phase_id=2,
-        phase_name="FASE 2 - Micro Preguntas",
-        timeout_s=1200.0,  # 2x in DEV
-        elapsed_s=1200.5
-    )
+    """Test _build_execution_manifest allows partial success on timeout in DEV."""
+    from farfan_pipeline.orchestration.orchestrator import PhaseResult
     
     orchestrator = Mock()
     orchestrator.runtime_config = runtime_config_dev
