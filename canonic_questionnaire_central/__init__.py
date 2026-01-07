@@ -420,8 +420,8 @@ class CQCLoader:
 
 # Convenience exports
 __all__ = [
-    "CQCLoader",
-    "CQCConfig"
+    "CQCConfig",
+    "CQCLoader"
 ]
 
 __version__ = "2.0.0"
