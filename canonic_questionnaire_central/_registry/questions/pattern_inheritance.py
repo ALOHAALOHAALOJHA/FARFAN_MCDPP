@@ -15,7 +15,6 @@ import json
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
-from functools import lru_cache
 from collections import ChainMap
 
 
@@ -101,6 +100,9 @@ class PatternResolver:
         self.policy_areas = self._load_policy_areas()
         self.dimensions = self._load_dimensions()
         self.slots = self._load_slots()
+        
+        # Instance-level cache to avoid memory leaks from @lru_cache on methods
+        self._resolution_cache: Dict[str, List[str]] = {}
 
     def _load_empirical_base(self) -> PatternLevel:
         """
@@ -280,7 +282,6 @@ class PatternResolver:
 
         return slots
 
-    @lru_cache(maxsize=300)
     def resolve(self, question_id: str) -> List[str]:
         """
         Resolve patterns for question through inheritance chain.
@@ -315,6 +316,10 @@ class PatternResolver:
         # ]
         ```
         """
+        # Check instance-level cache
+        if question_id in self._resolution_cache:
+            return self._resolution_cache[question_id]
+        
         chain = self._build_chain(question_id)
 
         # Collect patterns from chain (base to specific)
@@ -333,6 +338,8 @@ class PatternResolver:
                     flattened.append(pattern)
                     seen.add(pattern)
 
+        # Store in cache
+        self._resolution_cache[question_id] = flattened
         return flattened
 
     def _build_chain(self, question_id: str) -> List[PatternLevel]:
