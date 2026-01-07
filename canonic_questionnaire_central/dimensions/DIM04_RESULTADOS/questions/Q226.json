@@ -1,0 +1,222 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q226",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA08",
+  "cluster_id": "CL03",
+  "identifiers": {
+    "base_slot": "D4-Q1",
+    "legacy_id": "Q226",
+    "canonical_notation": "DIM04.PA08.Q226"
+  },
+  "text": {
+    "es": "¿Los indicadores de resultado para la protección de líderes (ej. 'reducción del número de amenazas', 'tasa de homicidios de defensores') están definidos con línea base, meta y un horizonte temporal?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "horizonte_temporal"
+    },
+    {
+      "required": true,
+      "type": "linea_base_resultado"
+    },
+    {
+      "required": true,
+      "type": "meta_resultado"
+    },
+    {
+      "required": true,
+      "type": "metrica_outcome"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-1484",
+      "PAT-1485",
+      "PAT-1486",
+      "PAT-1487",
+      "PAT-1488",
+      "PAT-Q001-001",
+      "PAT-Q011-000"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC02",
+      "MC07"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_COHERENCIA_NORMATIVA"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q226.v4.json",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_extract_entities_syntax",
+        "method_type": "extraction",
+        "priority": 1,
+        "description": "PDETMunicipalPlanAnalyzer._extract_entities_syntax"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_extract_entities_ner",
+        "method_type": "extraction",
+        "priority": 2,
+        "description": "PDETMunicipalPlanAnalyzer._extract_entities_ner"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_calculate_language_specificity",
+        "method_type": "scoring",
+        "priority": 3,
+        "description": "CausalExtractor._calculate_language_specificity"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_calculate_composite_likelihood",
+        "method_type": "scoring",
+        "priority": 4,
+        "description": "CausalExtractor._calculate_composite_likelihood"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_calculate_semantic_distance",
+        "method_type": "scoring",
+        "priority": 5,
+        "description": "CausalExtractor._calculate_semantic_distance"
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "function": "_classify_temporal_type",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "TemporalLogicVerifier._classify_temporal_type"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_score_indicators",
+        "method_type": "scoring",
+        "priority": 7,
+        "description": "PDETMunicipalPlanAnalyzer._score_indicators"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_find_outcome_mentions",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "PDETMunicipalPlanAnalyzer._find_outcome_mentions"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_score_temporal_consistency",
+        "method_type": "scoring",
+        "priority": 9,
+        "description": "PDETMunicipalPlanAnalyzer._score_temporal_consistency"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_extract_goals",
+        "method_type": "extraction",
+        "priority": 10,
+        "description": "CausalExtractor._extract_goals"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_parse_goal_context",
+        "method_type": "extraction",
+        "priority": 11,
+        "description": "CausalExtractor._parse_goal_context"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_classify_goal_type",
+        "method_type": "analysis",
+        "priority": 12,
+        "description": "CausalExtractor._classify_goal_type"
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "function": "_parse_temporal_marker",
+        "method_type": "extraction",
+        "priority": 13,
+        "description": "TemporalLogicVerifier._parse_temporal_marker"
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "function": "_extract_resources",
+        "method_type": "extraction",
+        "priority": 14,
+        "description": "TemporalLogicVerifier._extract_resources"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "function": "analyze_performance",
+        "method_type": "analysis",
+        "priority": 15,
+        "description": "PerformanceAnalyzer.analyze_performance"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "function": "_generate_recommendations",
+        "method_type": "analysis",
+        "priority": 16,
+        "description": "PerformanceAnalyzer._generate_recommendations"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q256-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "RESULTADOS",
+      "INDICADORES"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.895898+00:00",
+    "updated_at": "2026-01-06T17:38:07.895900+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

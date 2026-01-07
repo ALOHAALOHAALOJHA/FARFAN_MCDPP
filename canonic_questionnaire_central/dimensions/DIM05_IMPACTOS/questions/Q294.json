@@ -1,0 +1,152 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q294",
+  "dimension_id": "DIM05",
+  "policy_area_id": "PA10",
+  "cluster_id": "CL04",
+  "identifiers": {
+    "base_slot": "D5-Q4",
+    "legacy_id": "Q294",
+    "canonical_notation": "DIM05.PA10.Q294"
+  },
+  "text": {
+    "es": "¿Los impactos en la integración se alinean con marcos nacionales/globales y consideran 'riesgos sistémicos' (ej. cambios en la política migratoria del país vecino) que podrían romper el mecanismo causal?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "alineacion_marcos"
+    },
+    {
+      "required": true,
+      "type": "riesgos_sistemicos"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0407",
+      "PAT-0408",
+      "PAT-0409",
+      "PAT-0410",
+      "PAT-0411",
+      "PAT-0412",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC02",
+      "MC08"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL",
+      "CC_INTEROPERABILIDAD"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q294.v4.json",
+    "methods": [
+      {
+        "class": "OperationalizationAuditor",
+        "function": "_audit_systemic_risk",
+        "method_type": "validation",
+        "priority": 1,
+        "description": "OperationalizationAuditor._audit_systemic_risk"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "refutation_and_sanity_checks",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "BayesianCounterfactualAuditor.refutation_and_sanity_checks"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "_test_effect_stability",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "BayesianCounterfactualAuditor._test_effect_stability"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_interpret_risk",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "PDETMunicipalPlanAnalyzer._interpret_risk"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_interpret_sensitivity",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "PDETMunicipalPlanAnalyzer._interpret_sensitivity"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_break_cycles",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "PDETMunicipalPlanAnalyzer._break_cycles"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "function": "sensitivity_analysis",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "AdaptivePriorCalculator.sensitivity_analysis"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q054-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "IMPACTOS",
+      "OBJETIVOS"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.938869+00:00",
+    "updated_at": "2026-01-06T17:38:07.938871+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

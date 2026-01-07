@@ -180,26 +180,28 @@ class CQCLoader:
 
         Returns:
             Dict mapping question_id → Question
+
+        Raises:
+            ValueError: If not all requested questions could be loaded
         """
         requested_count = len(question_ids)
         
         if self._registry_type == "lazy":
-            results = self.registry.get_batch(question_ids)
+            result = self.registry.get_batch(question_ids)
         else:
             # Fallback
-            results = {qid: self.get_question(qid) for qid in question_ids}
-        
-        # Verify entry counts per coding guidelines
-        loaded_count = len(results)
-        if loaded_count < requested_count:
-            missing = set(question_ids) - set(results.keys())
-            import logging
-            logging.warning(
-                f"get_batch: requested {requested_count} questions, loaded {loaded_count}. "
-                f"Missing: {missing}"
+            result = {qid: q for qid in question_ids if (q := self.get_question(qid)) is not None}
+
+        # Validate that all requested questions were returned
+        if len(result) != len(question_ids):
+            missing = set(question_ids) - set(result.keys())
+            raise ValueError(
+                f"Failed to load {len(missing)} question(s): {sorted(missing)}. "
+                f"Requested {len(question_ids)}, got {len(result)}. "
+                f"Registry type: {self._registry_type}"
             )
-        
-        return results
+
+        return result
 
     # ========================================================================
     # SIGNAL ROUTING (Acupuncture Point 2)
@@ -236,20 +238,20 @@ class CQCLoader:
         Returns:
             Dict mapping signal_type → question_ids
         """
-        requested_count = len(signal_types)
+        import logging
         
         if self._router_type == "indexed":
             results = self.router.route_batch(signal_types)
         else:
             results = {sig: self.route_signal(sig) for sig in signal_types}
         
-        # Verify entry counts per coding guidelines
-        processed_count = len(results)
-        if processed_count < requested_count:
+        # Verify counts per coding guidelines
+        requested = len(signal_types)
+        processed = len(results)
+        if processed < requested:
             missing = set(signal_types) - set(results.keys())
-            import logging
             logging.warning(
-                f"route_batch: requested {requested_count} signals, processed {processed_count}. "
+                f"route_batch: requested {requested} signals, processed {processed}. "
                 f"Missing: {missing}"
             )
         

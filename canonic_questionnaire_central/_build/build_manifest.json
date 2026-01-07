@@ -1,8 +1,8 @@
 {
-  "_generated_at": "2026-01-06T17:11:44.244609+00:00",
+  "_generated_at": "2026-01-06T17:40:07.671369+00:00",
   "build_duration_seconds": 0.0,
   "metrics": {
-    "patterns_processed": 1720,
+    "patterns_processed": 1728,
     "questions_processed": 300,
     "keywords_processed": 1916,
     "views_generated": 7,

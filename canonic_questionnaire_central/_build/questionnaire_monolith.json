@@ -1,6 +1,6 @@
 {
   "_schema_version": "2.0.0",
-  "_generated_at": "2026-01-06T17:11:44.187649+00:00",
+  "_generated_at": "2026-01-06T17:40:07.610180+00:00",
   "_generator": "build_cqc_views.py",
   "_deprecated": true,
   "_deprecation_notice": "This file is auto-generated. Do not edit manually.",
@@ -35520,5 +35520,5 @@
       }
     ]
   },
-  "sha256": "f63a1ccbdffb8af9f17aace0d10f2d69853097788bbc8e7ac303075b5d0495f4"
+  "sha256": "26cb9accc14f0dd7c5c8dff946e67a9effc3043d2a282773df9de1a9c646128e"
 }

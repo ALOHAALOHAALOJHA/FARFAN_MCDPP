@@ -1,0 +1,149 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q019",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA01",
+  "cluster_id": "CL02",
+  "identifiers": {
+    "base_slot": "D4-Q4",
+    "legacy_id": "Q019",
+    "canonical_notation": "DIM04.PA01.Q019"
+  },
+  "text": {
+    "es": "¿Los resultados propuestos (ej. 'vida libre de violencias', 'autonomía económica', 'participación incidente') atienden o abordan directamente las brechas, desigualdades y violencias priorizadas en el diagnóstico situacional de las mujeres?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "criterios_exito_definidos"
+    },
+    {
+      "required": true,
+      "type": "vinculo_resultado_problema"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0225",
+      "PAT-0226",
+      "PAT-0227",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC02",
+      "MC07"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_PERSPECTIVA_GENERO",
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q019.v4.json",
+    "methods": [
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_calculate_objective_alignment",
+        "method_type": "scoring",
+        "priority": 1,
+        "description": "PolicyContradictionDetector._calculate_objective_alignment"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_identify_affected_sections",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "PolicyContradictionDetector._identify_affected_sections"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_generate_resolution_recommendations",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "PolicyContradictionDetector._generate_resolution_recommendations"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "function": "_generate_optimal_remediations",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "OperationalizationAuditor._generate_optimal_remediations"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "function": "_get_remediation_text",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "OperationalizationAuditor._get_remediation_text"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "aggregate_risk_and_prioritize",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize"
+      },
+      {
+        "class": "FinancialAuditor",
+        "function": "_detect_allocation_gaps",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "FinancialAuditor._detect_allocation_gaps"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q019-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "RESULTADOS",
+      "INDICADORES"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.768980+00:00",
+    "updated_at": "2026-01-06T17:38:07.768982+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

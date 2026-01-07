@@ -1,0 +1,159 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q167",
+  "dimension_id": "DIM04",
+  "policy_area_id": "PA06",
+  "cluster_id": "CL02",
+  "identifiers": {
+    "base_slot": "D4-Q2",
+    "legacy_id": "Q167",
+    "canonical_notation": "DIM04.PA06.Q167"
+  },
+  "text": {
+    "es": "¿Se explicita la cadena causal que lleva a la mejora del bienestar juvenil, mencionando 'supuestos' clave (ej. 'si los jóvenes aplican a las ofertas laborales') o 'condiciones habilitantes'?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "cadena_causal_explicita"
+    },
+    {
+      "required": true,
+      "type": "condiciones_habilitantes"
+    },
+    {
+      "required": true,
+      "type": "supuestos_identificados"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-1164",
+      "PAT-1165",
+      "PAT-1166",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC02",
+      "MC07"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q167.v4.json",
+    "methods": [
+      {
+        "class": "TeoriaCambio",
+        "function": "_encontrar_caminos_completos",
+        "method_type": "analysis",
+        "priority": 1,
+        "description": "TeoriaCambio._encontrar_caminos_completos"
+      },
+      {
+        "class": "TeoriaCambio",
+        "function": "validacion_completa",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "TeoriaCambio.validacion_completa"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "extract_causal_hierarchy",
+        "method_type": "extraction",
+        "priority": 3,
+        "description": "CausalExtractor.extract_causal_hierarchy"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "function": "verify_conditional_independence",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "HierarchicalGenerativeModel.verify_conditional_independence"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "function": "_generate_independence_tests",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "HierarchicalGenerativeModel._generate_independence_tests"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "construct_scm",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "BayesianCounterfactualAuditor.construct_scm"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "_perform_sensitivity_analysis_internal",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "AdvancedDAGValidator._perform_sensitivity_analysis_internal"
+      },
+      {
+        "class": "BayesFactorTable",
+        "function": "get_bayes_factor",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "BayesFactorTable.get_bayes_factor"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q197-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "RESULTADOS",
+      "INDICADORES"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.859964+00:00",
+    "updated_at": "2026-01-06T17:38:07.859966+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

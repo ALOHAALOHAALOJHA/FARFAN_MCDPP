@@ -1,0 +1,194 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q272",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA10",
+  "cluster_id": "CL04",
+  "identifiers": {
+    "base_slot": "D1-Q2",
+    "legacy_id": "Q272",
+    "canonical_notation": "DIM01.PA10.Q272"
+  },
+  "text": {
+    "es": "¿El texto dimensiona la magnitud del fenómeno migratorio, cuantificando la presión sobre los servicios públicos o la población con necesidades humanitarias? Se debe buscar si se mencionan 'vacíos de información' (ej. sobre población irregular en tránsito).",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "analisis_causal_problema"
+    },
+    {
+      "required": true,
+      "type": "cuantificacion_magnitud"
+    },
+    {
+      "required": true,
+      "type": "vacios_explicitos"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0287",
+      "PAT-0288",
+      "PAT-0289",
+      "PAT-0290",
+      "PAT-0291",
+      "PAT-0292",
+      "PAT-0293",
+      "PAT-0294",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02",
+      "MC03"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL",
+      "CC_INTEROPERABILIDAD"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q272.v4.json",
+    "methods": [
+      {
+        "class": "OperationalizationAuditor",
+        "function": "_audit_direct_evidence",
+        "method_type": "validation",
+        "priority": 1,
+        "description": "OperationalizationAuditor._audit_direct_evidence"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "function": "_audit_systemic_risk",
+        "method_type": "validation",
+        "priority": 2,
+        "description": "OperationalizationAuditor._audit_systemic_risk"
+      },
+      {
+        "class": "FinancialAuditor",
+        "function": "_detect_allocation_gaps",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "FinancialAuditor._detect_allocation_gaps"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_detect_gaps",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "BayesianMechanismInference._detect_gaps"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_generate_optimal_remediations",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "PDETMunicipalPlanAnalyzer._generate_optimal_remediations"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_simulate_intervention",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "PDETMunicipalPlanAnalyzer._simulate_intervention"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "counterfactual_query",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "BayesianCounterfactualAuditor.counterfactual_query"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "_test_effect_stability",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "BayesianCounterfactualAuditor._test_effect_stability"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_detect_numerical_inconsistencies",
+        "method_type": "analysis",
+        "priority": 9,
+        "description": "PolicyContradictionDetector._detect_numerical_inconsistencies"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_calculate_numerical_divergence",
+        "method_type": "scoring",
+        "priority": 10,
+        "description": "PolicyContradictionDetector._calculate_numerical_divergence"
+      },
+      {
+        "class": "BayesianConfidenceCalculator",
+        "function": "calculate_posterior",
+        "method_type": "scoring",
+        "priority": 11,
+        "description": "BayesianConfidenceCalculator.calculate_posterior"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "function": "analyze_performance",
+        "method_type": "analysis",
+        "priority": 12,
+        "description": "PerformanceAnalyzer.analyze_performance"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q032-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "DIAGNOSTICO",
+      "LINEA_BASE"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.924826+00:00",
+    "updated_at": "2026-01-06T17:38:07.924828+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

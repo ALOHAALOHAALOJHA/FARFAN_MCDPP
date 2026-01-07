@@ -1,6 +1,6 @@
 {
   "_schema_version": "2.0.0",
-  "_generated_at": "2026-01-06T17:11:44.153385+00:00",
+  "_generated_at": "2026-01-06T17:40:07.568275+00:00",
   "_generator": "build_cqc_views.py",
   "matrix": {
     "PAT-0001": {
@@ -782,14 +782,14 @@
     },
     "PAT-0112": {
       "pattern_id": "PAT-0112",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0113": {
       "pattern_id": "PAT-0113",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -817,7 +817,7 @@
     },
     "PAT-0117": {
       "pattern_id": "PAT-0117",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -831,7 +831,7 @@
     },
     "PAT-0119": {
       "pattern_id": "PAT-0119",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -852,21 +852,21 @@
     },
     "PAT-0122": {
       "pattern_id": "PAT-0122",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0123": {
       "pattern_id": "PAT-0123",
-      "category": "UNIDAD_MEDIDA",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0124": {
       "pattern_id": "PAT-0124",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -880,7 +880,7 @@
     },
     "PAT-0126": {
       "pattern_id": "PAT-0126",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -1034,14 +1034,14 @@
     },
     "PAT-0148": {
       "pattern_id": "PAT-0148",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0149": {
       "pattern_id": "PAT-0149",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -1083,7 +1083,7 @@
     },
     "PAT-0155": {
       "pattern_id": "PAT-0155",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -1111,7 +1111,7 @@
     },
     "PAT-0159": {
       "pattern_id": "PAT-0159",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -1132,70 +1132,70 @@
     },
     "PAT-0162": {
       "pattern_id": "PAT-0162",
-      "category": "CAUSAL_CONNECTOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0163": {
       "pattern_id": "PAT-0163",
-      "category": "INSTRUMENTO",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0164": {
       "pattern_id": "PAT-0164",
-      "category": "INSTRUMENTO",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0165": {
       "pattern_id": "PAT-0165",
-      "category": "POBLACION",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0166": {
       "pattern_id": "PAT-0166",
-      "category": "POBLACION",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0167": {
       "pattern_id": "PAT-0167",
-      "category": "POBLACION",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0168": {
       "pattern_id": "PAT-0168",
-      "category": "CAUSAL_OUTCOME",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0169": {
       "pattern_id": "PAT-0169",
-      "category": "CAUSAL_OUTCOME",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0170": {
       "pattern_id": "PAT-0170",
-      "category": "CAUSAL_OUTCOME",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0171": {
       "pattern_id": "PAT-0171",
-      "category": "MECANISMO_COMPLETO",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -1370,21 +1370,21 @@
     },
     "PAT-0196": {
       "pattern_id": "PAT-0196",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0197": {
       "pattern_id": "PAT-0197",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0198": {
       "pattern_id": "PAT-0198",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -1510,14 +1510,14 @@
     },
     "PAT-0216": {
       "pattern_id": "PAT-0216",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0217": {
       "pattern_id": "PAT-0217",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -1636,7 +1636,7 @@
     },
     "PAT-0234": {
       "pattern_id": "PAT-0234",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -1657,14 +1657,14 @@
     },
     "PAT-0237": {
       "pattern_id": "PAT-0237",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0238": {
       "pattern_id": "PAT-0238",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -1692,7 +1692,7 @@
     },
     "PAT-0242": {
       "pattern_id": "PAT-0242",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -1853,14 +1853,14 @@
     },
     "PAT-0265": {
       "pattern_id": "PAT-0265",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0266": {
       "pattern_id": "PAT-0266",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -1916,7 +1916,7 @@
     },
     "PAT-0274": {
       "pattern_id": "PAT-0274",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -1937,14 +1937,14 @@
     },
     "PAT-0277": {
       "pattern_id": "PAT-0277",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0278": {
       "pattern_id": "PAT-0278",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -2000,7 +2000,7 @@
     },
     "PAT-0286": {
       "pattern_id": "PAT-0286",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -2119,7 +2119,7 @@
     },
     "PAT-0303": {
       "pattern_id": "PAT-0303",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -2462,14 +2462,14 @@
     },
     "PAT-0352": {
       "pattern_id": "PAT-0352",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0353": {
       "pattern_id": "PAT-0353",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -2609,21 +2609,21 @@
     },
     "PAT-0373": {
       "pattern_id": "PAT-0373",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0374": {
       "pattern_id": "PAT-0374",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0375": {
       "pattern_id": "PAT-0375",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -2777,7 +2777,7 @@
     },
     "PAT-0397": {
       "pattern_id": "PAT-0397",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -2791,7 +2791,7 @@
     },
     "PAT-0399": {
       "pattern_id": "PAT-0399",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -2805,7 +2805,7 @@
     },
     "PAT-0401": {
       "pattern_id": "PAT-0401",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3085,7 +3085,7 @@
     },
     "PAT-0441": {
       "pattern_id": "PAT-0441",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3099,28 +3099,28 @@
     },
     "PAT-0443": {
       "pattern_id": "PAT-0443",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0444": {
       "pattern_id": "PAT-0444",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0445": {
       "pattern_id": "PAT-0445",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0446": {
       "pattern_id": "PAT-0446",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3169,7 +3169,7 @@
     },
     "PAT-0453": {
       "pattern_id": "PAT-0453",
-      "category": "UNIDAD_MEDIDA",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3197,7 +3197,7 @@
     },
     "PAT-0457": {
       "pattern_id": "PAT-0457",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3225,7 +3225,7 @@
     },
     "PAT-0461": {
       "pattern_id": "PAT-0461",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3274,7 +3274,7 @@
     },
     "PAT-0468": {
       "pattern_id": "PAT-0468",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3442,7 +3442,7 @@
     },
     "PAT-0492": {
       "pattern_id": "PAT-0492",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3589,7 +3589,7 @@
     },
     "PAT-0513": {
       "pattern_id": "PAT-0513",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3645,14 +3645,14 @@
     },
     "PAT-0521": {
       "pattern_id": "PAT-0521",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0522": {
       "pattern_id": "PAT-0522",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3701,7 +3701,7 @@
     },
     "PAT-0529": {
       "pattern_id": "PAT-0529",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3715,7 +3715,7 @@
     },
     "PAT-0531": {
       "pattern_id": "PAT-0531",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3792,7 +3792,7 @@
     },
     "PAT-0542": {
       "pattern_id": "PAT-0542",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3855,14 +3855,14 @@
     },
     "PAT-0551": {
       "pattern_id": "PAT-0551",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0552": {
       "pattern_id": "PAT-0552",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3883,7 +3883,7 @@
     },
     "PAT-0555": {
       "pattern_id": "PAT-0555",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -3995,7 +3995,7 @@
     },
     "PAT-0571": {
       "pattern_id": "PAT-0571",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -4051,7 +4051,7 @@
     },
     "PAT-0579": {
       "pattern_id": "PAT-0579",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -4107,7 +4107,7 @@
     },
     "PAT-0587": {
       "pattern_id": "PAT-0587",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -4149,7 +4149,7 @@
     },
     "PAT-0593": {
       "pattern_id": "PAT-0593",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -4268,14 +4268,14 @@
     },
     "PAT-0610": {
       "pattern_id": "PAT-0610",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0611": {
       "pattern_id": "PAT-0611",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -4310,7 +4310,7 @@
     },
     "PAT-0616": {
       "pattern_id": "PAT-0616",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -4338,14 +4338,14 @@
     },
     "PAT-0620": {
       "pattern_id": "PAT-0620",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0621": {
       "pattern_id": "PAT-0621",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -4667,14 +4667,14 @@
     },
     "PAT-0667": {
       "pattern_id": "PAT-0667",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0668": {
       "pattern_id": "PAT-0668",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -4772,7 +4772,7 @@
     },
     "PAT-0682": {
       "pattern_id": "PAT-0682",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -4800,14 +4800,14 @@
     },
     "PAT-0686": {
       "pattern_id": "PAT-0686",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0687": {
       "pattern_id": "PAT-0687",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -4961,7 +4961,7 @@
     },
     "PAT-0709": {
       "pattern_id": "PAT-0709",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -4975,7 +4975,7 @@
     },
     "PAT-0711": {
       "pattern_id": "PAT-0711",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -5031,7 +5031,7 @@
     },
     "PAT-0719": {
       "pattern_id": "PAT-0719",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -5213,7 +5213,7 @@
     },
     "PAT-0745": {
       "pattern_id": "PAT-0745",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -5227,7 +5227,7 @@
     },
     "PAT-0747": {
       "pattern_id": "PAT-0747",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -5241,7 +5241,7 @@
     },
     "PAT-0749": {
       "pattern_id": "PAT-0749",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -5262,14 +5262,14 @@
     },
     "PAT-0752": {
       "pattern_id": "PAT-0752",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0753": {
       "pattern_id": "PAT-0753",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -5297,7 +5297,7 @@
     },
     "PAT-0757": {
       "pattern_id": "PAT-0757",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -5318,7 +5318,7 @@
     },
     "PAT-0760": {
       "pattern_id": "PAT-0760",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -5766,14 +5766,14 @@
     },
     "PAT-0824": {
       "pattern_id": "PAT-0824",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0825": {
       "pattern_id": "PAT-0825",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -5892,21 +5892,21 @@
     },
     "PAT-0842": {
       "pattern_id": "PAT-0842",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0843": {
       "pattern_id": "PAT-0843",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0844": {
       "pattern_id": "PAT-0844",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -5962,7 +5962,7 @@
     },
     "PAT-0852": {
       "pattern_id": "PAT-0852",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -5990,7 +5990,7 @@
     },
     "PAT-0856": {
       "pattern_id": "PAT-0856",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6053,7 +6053,7 @@
     },
     "PAT-0865": {
       "pattern_id": "PAT-0865",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6067,14 +6067,14 @@
     },
     "PAT-0867": {
       "pattern_id": "PAT-0867",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0868": {
       "pattern_id": "PAT-0868",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6088,7 +6088,7 @@
     },
     "PAT-0870": {
       "pattern_id": "PAT-0870",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6277,7 +6277,7 @@
     },
     "PAT-0897": {
       "pattern_id": "PAT-0897",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6347,7 +6347,7 @@
     },
     "PAT-0907": {
       "pattern_id": "PAT-0907",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6375,7 +6375,7 @@
     },
     "PAT-0911": {
       "pattern_id": "PAT-0911",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6445,7 +6445,7 @@
     },
     "PAT-0921": {
       "pattern_id": "PAT-0921",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6459,7 +6459,7 @@
     },
     "PAT-0923": {
       "pattern_id": "PAT-0923",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6529,7 +6529,7 @@
     },
     "PAT-0933": {
       "pattern_id": "PAT-0933",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6697,7 +6697,7 @@
     },
     "PAT-0957": {
       "pattern_id": "PAT-0957",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6732,7 +6732,7 @@
     },
     "PAT-0962": {
       "pattern_id": "PAT-0962",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6865,14 +6865,14 @@
     },
     "PAT-0981": {
       "pattern_id": "PAT-0981",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0982": {
       "pattern_id": "PAT-0982",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6914,14 +6914,14 @@
     },
     "PAT-0988": {
       "pattern_id": "PAT-0988",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0989": {
       "pattern_id": "PAT-0989",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -6984,14 +6984,14 @@
     },
     "PAT-0998": {
       "pattern_id": "PAT-0998",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-0999": {
       "pattern_id": "PAT-0999",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7005,7 +7005,7 @@
     },
     "PAT-1001": {
       "pattern_id": "PAT-1001",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7068,7 +7068,7 @@
     },
     "PAT-1010": {
       "pattern_id": "PAT-1010",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7089,7 +7089,7 @@
     },
     "PAT-1013": {
       "pattern_id": "PAT-1013",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7110,7 +7110,7 @@
     },
     "PAT-1016": {
       "pattern_id": "PAT-1016",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7159,7 +7159,7 @@
     },
     "PAT-1023": {
       "pattern_id": "PAT-1023",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7180,7 +7180,7 @@
     },
     "PAT-1026": {
       "pattern_id": "PAT-1026",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7439,7 +7439,7 @@
     },
     "PAT-1063": {
       "pattern_id": "PAT-1063",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7460,35 +7460,35 @@
     },
     "PAT-1066": {
       "pattern_id": "PAT-1066",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1067": {
       "pattern_id": "PAT-1067",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1068": {
       "pattern_id": "PAT-1068",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1069": {
       "pattern_id": "PAT-1069",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1070": {
       "pattern_id": "PAT-1070",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7502,7 +7502,7 @@
     },
     "PAT-1072": {
       "pattern_id": "PAT-1072",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7523,7 +7523,7 @@
     },
     "PAT-1075": {
       "pattern_id": "PAT-1075",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7551,7 +7551,7 @@
     },
     "PAT-1079": {
       "pattern_id": "PAT-1079",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7572,7 +7572,7 @@
     },
     "PAT-1082": {
       "pattern_id": "PAT-1082",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7656,7 +7656,7 @@
     },
     "PAT-1094": {
       "pattern_id": "PAT-1094",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -7999,14 +7999,14 @@
     },
     "PAT-1143": {
       "pattern_id": "PAT-1143",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1144": {
       "pattern_id": "PAT-1144",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8125,21 +8125,21 @@
     },
     "PAT-1161": {
       "pattern_id": "PAT-1161",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1162": {
       "pattern_id": "PAT-1162",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1163": {
       "pattern_id": "PAT-1163",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8195,7 +8195,7 @@
     },
     "PAT-1171": {
       "pattern_id": "PAT-1171",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8209,7 +8209,7 @@
     },
     "PAT-1173": {
       "pattern_id": "PAT-1173",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8223,7 +8223,7 @@
     },
     "PAT-1175": {
       "pattern_id": "PAT-1175",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8286,7 +8286,7 @@
     },
     "PAT-1184": {
       "pattern_id": "PAT-1184",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8300,28 +8300,28 @@
     },
     "PAT-1186": {
       "pattern_id": "PAT-1186",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1187": {
       "pattern_id": "PAT-1187",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1188": {
       "pattern_id": "PAT-1188",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1189": {
       "pattern_id": "PAT-1189",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8335,7 +8335,7 @@
     },
     "PAT-1191": {
       "pattern_id": "PAT-1191",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8573,7 +8573,7 @@
     },
     "PAT-1225": {
       "pattern_id": "PAT-1225",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8629,7 +8629,7 @@
     },
     "PAT-1233": {
       "pattern_id": "PAT-1233",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8657,7 +8657,7 @@
     },
     "PAT-1237": {
       "pattern_id": "PAT-1237",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8671,7 +8671,7 @@
     },
     "PAT-1239": {
       "pattern_id": "PAT-1239",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8776,7 +8776,7 @@
     },
     "PAT-1254": {
       "pattern_id": "PAT-1254",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8811,7 +8811,7 @@
     },
     "PAT-1259": {
       "pattern_id": "PAT-1259",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8853,7 +8853,7 @@
     },
     "PAT-1265": {
       "pattern_id": "PAT-1265",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -8958,7 +8958,7 @@
     },
     "PAT-1280": {
       "pattern_id": "PAT-1280",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9112,14 +9112,14 @@
     },
     "PAT-1302": {
       "pattern_id": "PAT-1302",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1303": {
       "pattern_id": "PAT-1303",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9217,7 +9217,7 @@
     },
     "PAT-1317": {
       "pattern_id": "PAT-1317",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9231,14 +9231,14 @@
     },
     "PAT-1319": {
       "pattern_id": "PAT-1319",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1320": {
       "pattern_id": "PAT-1320",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9343,7 +9343,7 @@
     },
     "PAT-1335": {
       "pattern_id": "PAT-1335",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9385,7 +9385,7 @@
     },
     "PAT-1341": {
       "pattern_id": "PAT-1341",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9427,21 +9427,21 @@
     },
     "PAT-1347": {
       "pattern_id": "PAT-1347",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1348": {
       "pattern_id": "PAT-1348",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1349": {
       "pattern_id": "PAT-1349",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9651,7 +9651,7 @@
     },
     "PAT-1379": {
       "pattern_id": "PAT-1379",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9707,7 +9707,7 @@
     },
     "PAT-1387": {
       "pattern_id": "PAT-1387",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9728,14 +9728,14 @@
     },
     "PAT-1390": {
       "pattern_id": "PAT-1390",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1391": {
       "pattern_id": "PAT-1391",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9791,7 +9791,7 @@
     },
     "PAT-1399": {
       "pattern_id": "PAT-1399",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9819,7 +9819,7 @@
     },
     "PAT-1403": {
       "pattern_id": "PAT-1403",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9868,7 +9868,7 @@
     },
     "PAT-1410": {
       "pattern_id": "PAT-1410",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9903,7 +9903,7 @@
     },
     "PAT-1415": {
       "pattern_id": "PAT-1415",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9924,7 +9924,7 @@
     },
     "PAT-1418": {
       "pattern_id": "PAT-1418",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9938,7 +9938,7 @@
     },
     "PAT-1420": {
       "pattern_id": "PAT-1420",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -9994,7 +9994,7 @@
     },
     "PAT-1428": {
       "pattern_id": "PAT-1428",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -10022,7 +10022,7 @@
     },
     "PAT-1432": {
       "pattern_id": "PAT-1432",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -10099,7 +10099,7 @@
     },
     "PAT-1443": {
       "pattern_id": "PAT-1443",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -10232,7 +10232,7 @@
     },
     "PAT-1462": {
       "pattern_id": "PAT-1462",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -10246,14 +10246,14 @@
     },
     "PAT-1464": {
       "pattern_id": "PAT-1464",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1465": {
       "pattern_id": "PAT-1465",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -10309,7 +10309,7 @@
     },
     "PAT-1473": {
       "pattern_id": "PAT-1473",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -10393,14 +10393,14 @@
     },
     "PAT-1485": {
       "pattern_id": "PAT-1485",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1486": {
       "pattern_id": "PAT-1486",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -10414,7 +10414,7 @@
     },
     "PAT-1488": {
       "pattern_id": "PAT-1488",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -10435,7 +10435,7 @@
     },
     "PAT-1491": {
       "pattern_id": "PAT-1491",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -10568,7 +10568,7 @@
     },
     "PAT-1510": {
       "pattern_id": "PAT-1510",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -10596,7 +10596,7 @@
     },
     "PAT-1514": {
       "pattern_id": "PAT-1514",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -10862,7 +10862,7 @@
     },
     "PAT-1552": {
       "pattern_id": "PAT-1552",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -10883,28 +10883,28 @@
     },
     "PAT-1555": {
       "pattern_id": "PAT-1555",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1556": {
       "pattern_id": "PAT-1556",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1557": {
       "pattern_id": "PAT-1557",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1558": {
       "pattern_id": "PAT-1558",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -10946,14 +10946,14 @@
     },
     "PAT-1564": {
       "pattern_id": "PAT-1564",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1565": {
       "pattern_id": "PAT-1565",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -11044,7 +11044,7 @@
     },
     "PAT-1578": {
       "pattern_id": "PAT-1578",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -11065,7 +11065,7 @@
     },
     "PAT-1581": {
       "pattern_id": "PAT-1581",
-      "category": "FUENTE_OFICIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -11415,21 +11415,21 @@
     },
     "PAT-1631": {
       "pattern_id": "PAT-1631",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1632": {
       "pattern_id": "PAT-1632",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1633": {
       "pattern_id": "PAT-1633",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -11471,7 +11471,7 @@
     },
     "PAT-1639": {
       "pattern_id": "PAT-1639",
-      "category": "TERRITORIAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -11548,35 +11548,35 @@
     },
     "PAT-1650": {
       "pattern_id": "PAT-1650",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1651": {
       "pattern_id": "PAT-1651",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1652": {
       "pattern_id": "PAT-1652",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1653": {
       "pattern_id": "PAT-1653",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1654": {
       "pattern_id": "PAT-1654",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -11730,21 +11730,21 @@
     },
     "PAT-1676": {
       "pattern_id": "PAT-1676",
-      "category": "TEMPORAL",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1677": {
       "pattern_id": "PAT-1677",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
     },
     "PAT-1678": {
       "pattern_id": "PAT-1678",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -11758,7 +11758,7 @@
     },
     "PAT-1680": {
       "pattern_id": "PAT-1680",
-      "category": "INDICADOR",
+      "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
       "policy_area_distribution": {}
@@ -12038,6 +12038,62 @@
     },
     "PAT-1720": {
       "pattern_id": "PAT-1720",
+      "category": "GENERAL",
+      "questions": [],
+      "dimension_distribution": {},
+      "policy_area_distribution": {}
+    },
+    "PAT-Q001-001": {
+      "pattern_id": "PAT-Q001-001",
+      "category": "GENERAL",
+      "questions": [],
+      "dimension_distribution": {},
+      "policy_area_distribution": {}
+    },
+    "PAT-Q063-002": {
+      "pattern_id": "PAT-Q063-002",
+      "category": "GENERAL",
+      "questions": [],
+      "dimension_distribution": {},
+      "policy_area_distribution": {}
+    },
+    "PAT-Q006-003": {
+      "pattern_id": "PAT-Q006-003",
+      "category": "GENERAL",
+      "questions": [],
+      "dimension_distribution": {},
+      "policy_area_distribution": {}
+    },
+    "PAT-Q011-000": {
+      "pattern_id": "PAT-Q011-000",
+      "category": "GENERAL",
+      "questions": [],
+      "dimension_distribution": {},
+      "policy_area_distribution": {}
+    },
+    "PAT-Q011-DNP-001": {
+      "pattern_id": "PAT-Q011-DNP-001",
+      "category": "GENERAL",
+      "questions": [],
+      "dimension_distribution": {},
+      "policy_area_distribution": {}
+    },
+    "PAT-Q011-DNP-002": {
+      "pattern_id": "PAT-Q011-DNP-002",
+      "category": "GENERAL",
+      "questions": [],
+      "dimension_distribution": {},
+      "policy_area_distribution": {}
+    },
+    "PAT-Q011-DNP-003": {
+      "pattern_id": "PAT-Q011-DNP-003",
+      "category": "GENERAL",
+      "questions": [],
+      "dimension_distribution": {},
+      "policy_area_distribution": {}
+    },
+    "PAT-Q026-001": {
+      "pattern_id": "PAT-Q026-001",
       "category": "GENERAL",
       "questions": [],
       "dimension_distribution": {},
@@ -13547,7 +13603,7 @@
     }
   },
   "statistics": {
-    "total_patterns": 1720,
+    "total_patterns": 1728,
     "total_questions": 300,
     "patterns_with_bindings": 0,
     "questions_with_patterns": 0

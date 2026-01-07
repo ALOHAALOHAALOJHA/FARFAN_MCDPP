@@ -1,0 +1,277 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q252",
+  "dimension_id": "DIM03",
+  "policy_area_id": "PA09",
+  "cluster_id": "CL04",
+  "identifiers": {
+    "base_slot": "D3-Q2",
+    "legacy_id": "Q252",
+    "canonical_notation": "DIM03.PA09.Q252"
+  },
+  "text": {
+    "es": "¿Las metas de los productos (ej. 'crear 100 nuevos cupos') son proporcionales a la magnitud del problema diagnosticado (ej. 'déficit de 200 cupos para sindicados')?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "proporcionalidad_meta_problema"
+    },
+    {
+      "type": "producto_definicion",
+      "required": true,
+      "dnp_criteria": "bien_o_servicio_tangible",
+      "validation_pattern": "must_be_deliverable_not_process",
+      "provenance": {
+        "source": "Guia_orientadora_definicion_de_productos-2.pdf:Page_4",
+        "criteria": "DNP Core Product Definition"
+      }
+    },
+    {
+      "type": "descripcion_tecnica",
+      "required": true,
+      "dnp_criteria": "caracteristicas_especificaciones",
+      "validation_pattern": "must_describe_technical_scope",
+      "provenance": {
+        "source": "Guia_orientadora_definicion_de_productos-2.pdf:Pages_21-22",
+        "criteria": "DNP Technical Description Standard"
+      }
+    },
+    {
+      "type": "unidad_medida",
+      "required": true,
+      "dnp_criteria": "unidad_medida_cuantificable",
+      "validation_pattern": "must_have_measurement_unit",
+      "provenance": {
+        "source": "CATALOGO_DE_PRODUCTOS.xlsx:Column_Unidad_de_medida",
+        "criteria": "DNP Measurement Unit Standard"
+      }
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-1631",
+      "PAT-1632",
+      "PAT-1633",
+      "PAT-1634",
+      "PAT-1635",
+      "PAT-Q011-DNP-001",
+      "PAT-Q011-DNP-002",
+      "PAT-Q011-DNP-003"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC02",
+      "MC05"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q252.v4.json",
+    "methods": [
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "_calculate_bayesian_posterior",
+        "method_type": "scoring",
+        "priority": 1,
+        "description": "AdvancedDAGValidator._calculate_bayesian_posterior"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "_calculate_confidence_interval",
+        "method_type": "scoring",
+        "priority": 2,
+        "description": "AdvancedDAGValidator._calculate_confidence_interval"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "function": "_adjust_domain_weights",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "AdaptivePriorCalculator._adjust_domain_weights"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_get_spanish_stopwords",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "PDETMunicipalPlanAnalyzer._get_spanish_stopwords"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_log_refactored_components",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "BayesianMechanismInference._log_refactored_components"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "analyze_financial_feasibility",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_score_indicators",
+        "method_type": "scoring",
+        "priority": 7,
+        "description": "PDETMunicipalPlanAnalyzer._score_indicators"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_interpret_risk",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "PDETMunicipalPlanAnalyzer._interpret_risk"
+      },
+      {
+        "class": "FinancialAuditor",
+        "function": "_calculate_sufficiency",
+        "method_type": "scoring",
+        "priority": 9,
+        "description": "FinancialAuditor._calculate_sufficiency"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_test_sufficiency",
+        "method_type": "analysis",
+        "priority": 10,
+        "description": "BayesianMechanismInference._test_sufficiency"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_test_necessity",
+        "method_type": "analysis",
+        "priority": 11,
+        "description": "BayesianMechanismInference._test_necessity"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_assess_financial_sustainability",
+        "method_type": "analysis",
+        "priority": 12,
+        "description": "PDETMunicipalPlanAnalyzer._assess_financial_sustainability"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "function": "calculate_likelihood_adaptativo",
+        "method_type": "scoring",
+        "priority": 13,
+        "description": "AdaptivePriorCalculator.calculate_likelihood_adaptativo"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_calculate_quality_score",
+        "method_type": "scoring",
+        "priority": 14,
+        "description": "IndustrialPolicyProcessor._calculate_quality_score"
+      },
+      {
+        "class": "TeoriaCambio",
+        "function": "_generar_sugerencias_internas",
+        "method_type": "analysis",
+        "priority": 15,
+        "description": "TeoriaCambio._generar_sugerencias_internas"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_deduplicate_tables",
+        "method_type": "analysis",
+        "priority": 16,
+        "description": "PDETMunicipalPlanAnalyzer._deduplicate_tables"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_indicator_to_dict",
+        "method_type": "analysis",
+        "priority": 17,
+        "description": "PDETMunicipalPlanAnalyzer._indicator_to_dict"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_generate_recommendations",
+        "method_type": "analysis",
+        "priority": 18,
+        "description": "PDETMunicipalPlanAnalyzer._generate_recommendations"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_compile_pattern_registry",
+        "method_type": "analysis",
+        "priority": 19,
+        "description": "IndustrialPolicyProcessor._compile_pattern_registry"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_build_point_patterns",
+        "method_type": "analysis",
+        "priority": 20,
+        "description": "IndustrialPolicyProcessor._build_point_patterns"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_empty_result",
+        "method_type": "analysis",
+        "priority": 21,
+        "description": "IndustrialPolicyProcessor._empty_result"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q282-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "PRODUCTOS",
+      "METAS",
+      "PLAN_INDICATIVO"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.911300+00:00",
+    "updated_at": "2026-01-06T17:38:07.911302+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

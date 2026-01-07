@@ -1,0 +1,151 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q024",
+  "dimension_id": "DIM05",
+  "policy_area_id": "PA01",
+  "cluster_id": "CL02",
+  "identifiers": {
+    "base_slot": "D5-Q4",
+    "legacy_id": "Q024",
+    "canonical_notation": "DIM05.PA01.Q024"
+  },
+  "text": {
+    "es": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados (ej. doble jornada laboral sin redistribución del cuidado, violencia como reacción al empoderamiento) y propone un enfoque de \"acción sin daño\" o límites de la gestión municipal?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "alineacion_marcos"
+    },
+    {
+      "required": true,
+      "type": "riesgos_sistemicos"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0244",
+      "PAT-0245",
+      "PAT-0246",
+      "PAT-0247",
+      "PAT-0248",
+      "PAT-0249"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC02",
+      "MC08"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_PERSPECTIVA_GENERO",
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q024.v4.json",
+    "methods": [
+      {
+        "class": "OperationalizationAuditor",
+        "function": "_audit_systemic_risk",
+        "method_type": "validation",
+        "priority": 1,
+        "description": "OperationalizationAuditor._audit_systemic_risk"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "refutation_and_sanity_checks",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "BayesianCounterfactualAuditor.refutation_and_sanity_checks"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "_test_effect_stability",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "BayesianCounterfactualAuditor._test_effect_stability"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_interpret_risk",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "PDETMunicipalPlanAnalyzer._interpret_risk"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_interpret_sensitivity",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "PDETMunicipalPlanAnalyzer._interpret_sensitivity"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_break_cycles",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "PDETMunicipalPlanAnalyzer._break_cycles"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "function": "sensitivity_analysis",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "AdaptivePriorCalculator.sensitivity_analysis"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q024-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "IMPACTOS",
+      "OBJETIVOS"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.772147+00:00",
+    "updated_at": "2026-01-06T17:38:07.772149+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

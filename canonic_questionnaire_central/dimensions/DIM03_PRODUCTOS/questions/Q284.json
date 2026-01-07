@@ -1,0 +1,317 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q284",
+  "dimension_id": "DIM03",
+  "policy_area_id": "PA10",
+  "cluster_id": "CL04",
+  "identifiers": {
+    "base_slot": "D3-Q4",
+    "legacy_id": "Q284",
+    "canonical_notation": "DIM03.PA10.Q284"
+  },
+  "text": {
+    "es": "¿Existe una relación factible entre la actividad (ej. 'una jornada de atención') y la meta del producto asociado (ej. '10.000 migrantes con acceso a salud') para la política migratoria? Se debe evaluar si los 'plazos' son realistas.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "financiamiento_realista"
+    },
+    {
+      "required": true,
+      "type": "capacidad_institucional_realista"
+    },
+    {
+      "type": "producto_definicion",
+      "required": true,
+      "dnp_criteria": "bien_o_servicio_tangible",
+      "validation_pattern": "must_be_deliverable_not_process",
+      "provenance": {
+        "source": "Guia_orientadora_definicion_de_productos-2.pdf:Page_4",
+        "criteria": "DNP Core Product Definition"
+      }
+    },
+    {
+      "type": "descripcion_tecnica",
+      "required": true,
+      "dnp_criteria": "caracteristicas_especificaciones",
+      "validation_pattern": "must_describe_technical_scope",
+      "provenance": {
+        "source": "Guia_orientadora_definicion_de_productos-2.pdf:Pages_21-22",
+        "criteria": "DNP Technical Description Standard"
+      }
+    },
+    {
+      "type": "unidad_medida",
+      "required": true,
+      "dnp_criteria": "unidad_medida_cuantificable",
+      "validation_pattern": "must_have_measurement_unit",
+      "provenance": {
+        "source": "CATALOGO_DE_PRODUCTOS.xlsx:Column_Unidad_de_medida",
+        "criteria": "DNP Measurement Unit Standard"
+      }
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0363",
+      "PAT-0364",
+      "PAT-0365",
+      "PAT-0366",
+      "PAT-Q001-001",
+      "PAT-Q011-DNP-001",
+      "PAT-Q011-DNP-002",
+      "PAT-Q011-DNP-003"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC02",
+      "MC05"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL",
+      "CC_INTEROPERABILIDAD"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q284.v4.json",
+    "methods": [
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "calculate_acyclicity_pvalue",
+        "method_type": "scoring",
+        "priority": 1,
+        "description": "AdvancedDAGValidator.calculate_acyclicity_pvalue"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "_is_acyclic",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "AdvancedDAGValidator._is_acyclic"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "get_graph_stats",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "AdvancedDAGValidator.get_graph_stats"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "_calculate_node_importance",
+        "method_type": "scoring",
+        "priority": 4,
+        "description": "AdvancedDAGValidator._calculate_node_importance"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "_generate_subgraph",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "AdvancedDAGValidator._generate_subgraph"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "add_node",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "AdvancedDAGValidator.add_node"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "add_edge",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "AdvancedDAGValidator.add_edge"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "export_nodes",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "AdvancedDAGValidator.export_nodes"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "_initialize_rng",
+        "method_type": "analysis",
+        "priority": 9,
+        "description": "AdvancedDAGValidator._initialize_rng"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "_calculate_statistical_power",
+        "method_type": "scoring",
+        "priority": 10,
+        "description": "AdvancedDAGValidator._calculate_statistical_power"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "_get_node_validator",
+        "method_type": "analysis",
+        "priority": 11,
+        "description": "AdvancedDAGValidator._get_node_validator"
+      },
+      {
+        "class": "AdvancedDAGValidator",
+        "function": "_create_empty_result",
+        "method_type": "analysis",
+        "priority": 12,
+        "description": "AdvancedDAGValidator._create_empty_result"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_test_necessity",
+        "method_type": "analysis",
+        "priority": 13,
+        "description": "BayesianMechanismInference._test_necessity"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "function": "execute_suite",
+        "method_type": "analysis",
+        "priority": 14,
+        "description": "IndustrialGradeValidator.execute_suite"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "function": "validate_connection_matrix",
+        "method_type": "validation",
+        "priority": 15,
+        "description": "IndustrialGradeValidator.validate_connection_matrix"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "function": "run_performance_benchmarks",
+        "method_type": "analysis",
+        "priority": 16,
+        "description": "IndustrialGradeValidator.run_performance_benchmarks"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "function": "_benchmark_operation",
+        "method_type": "analysis",
+        "priority": 17,
+        "description": "IndustrialGradeValidator._benchmark_operation"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "function": "_log_metric",
+        "method_type": "analysis",
+        "priority": 18,
+        "description": "IndustrialGradeValidator._log_metric"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "function": "validate_engine_readiness",
+        "method_type": "validation",
+        "priority": 19,
+        "description": "IndustrialGradeValidator.validate_engine_readiness"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "function": "analyze_performance",
+        "method_type": "analysis",
+        "priority": 20,
+        "description": "PerformanceAnalyzer.analyze_performance"
+      },
+      {
+        "class": "PerformanceAnalyzer",
+        "function": "_calculate_loss_functions",
+        "method_type": "scoring",
+        "priority": 21,
+        "description": "PerformanceAnalyzer._calculate_loss_functions"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "function": "_calculate_likelihood",
+        "method_type": "scoring",
+        "priority": 22,
+        "description": "HierarchicalGenerativeModel._calculate_likelihood"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "function": "_calculate_ess",
+        "method_type": "scoring",
+        "priority": 23,
+        "description": "HierarchicalGenerativeModel._calculate_ess"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "function": "_calculate_r_hat",
+        "method_type": "scoring",
+        "priority": 24,
+        "description": "HierarchicalGenerativeModel._calculate_r_hat"
+      },
+      {
+        "class": "IndustrialGradeValidator",
+        "function": "validate_causal_categories",
+        "method_type": "validation",
+        "priority": 25,
+        "description": "IndustrialGradeValidator.validate_causal_categories"
+      },
+      {
+        "class": "TeoriaCambio",
+        "function": "_extraer_categorias",
+        "method_type": "analysis",
+        "priority": 26,
+        "description": "TeoriaCambio._extraer_categorias"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q044-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "PRODUCTOS",
+      "METAS",
+      "PLAN_INDICATIVO"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.932663+00:00",
+    "updated_at": "2026-01-06T17:38:07.932665+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

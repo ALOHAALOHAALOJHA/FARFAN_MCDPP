@@ -104,6 +104,9 @@ class PatternResolver:
         # Instance-level cache to avoid memory leaks from @lru_cache on methods
         self._resolution_cache: Dict[str, List[str]] = {}
 
+        # Instance-level cache for pattern resolution
+        self._resolve_cache: Dict[str, List[str]] = {}
+
     def _load_empirical_base(self) -> PatternLevel:
         """
         Load empirical base patterns from calibration corpus.
@@ -316,10 +319,10 @@ class PatternResolver:
         # ]
         ```
         """
-        # Check instance-level cache
-        if question_id in self._resolution_cache:
-            return self._resolution_cache[question_id]
-        
+        # Check cache first
+        if question_id in self._resolve_cache:
+            return self._resolve_cache[question_id]
+
         chain = self._build_chain(question_id)
 
         # Collect patterns from chain (base to specific)
@@ -338,8 +341,8 @@ class PatternResolver:
                     flattened.append(pattern)
                     seen.add(pattern)
 
-        # Store in cache
-        self._resolution_cache[question_id] = flattened
+        # Cache result for future calls
+        self._resolve_cache[question_id] = flattened
         return flattened
 
     def _build_chain(self, question_id: str) -> List[PatternLevel]:

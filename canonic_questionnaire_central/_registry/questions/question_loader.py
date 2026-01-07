@@ -14,7 +14,8 @@ Date: 2026-01-06
 import json
 from pathlib import Path
 from typing import Dict, List, Optional, Any
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
+from functools import lru_cache
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 from collections import OrderedDict
@@ -82,9 +83,9 @@ class LRUCache:
     def put(self, key: str, value: Any) -> None:
         """Put value in cache, evicting LRU if full."""
         if key in self.cache:
-            # Update existing
+            # Update existing value and move to end
             self.cache.move_to_end(key)
-            self.cache[key] = value  # Update the value for existing key
+            self.cache[key] = value
         else:
             # Add new
             if len(self.cache) >= self.maxsize:

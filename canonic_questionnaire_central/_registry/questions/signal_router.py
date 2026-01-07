@@ -74,6 +74,8 @@ class SignalQuestionIndex:
         self.integration_map_path = integration_map_path
         self.index: Dict[str, Set[str]] = {}
         self.reverse_index: Dict[str, Set[str]] = {}  # question → signals
+        self.all_question_ids: Set[str] = set()  # All known question IDs
+        self.all_signal_ids: Set[str] = set()  # All known signal types
         self.metrics = SignalRoutingMetrics()
 
         # Build index on initialization
@@ -102,35 +104,34 @@ class SignalQuestionIndex:
         start = time.time()
 
         # Load integration map with error handling
-        integration_map = {}
-        slot_mappings = {}
-        
         try:
-            if not self.integration_map_path.exists():
-                print(f"Warning: integration_map.json not found at {self.integration_map_path}")
-            else:
-                with open(self.integration_map_path, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                
-                integration_map = data.get("farfan_question_mapping", {})
-                slot_mappings = integration_map.get("slot_to_signal_mapping", {})
-        except json.JSONDecodeError as e:
-            print(f"Error parsing integration_map.json: {e}")
-        except Exception as e:
-            print(f"Error loading integration_map.json: {e}")
+            with open(self.integration_map_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            integration_map = data.get("farfan_question_mapping", {})
+            slot_mappings = integration_map.get("slot_to_signal_mapping", {})
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            print(f"Warning: Could not load integration_map.json: {e}. Using empty mappings.")
+            integration_map = {}
+            slot_mappings = {}
 
         # Build forward index: signal → questions
         index = defaultdict(set)
         reverse_index = defaultdict(set)
+        all_questions = set()
+        all_signals = set()
 
         for slot_id, slot_data in slot_mappings.items():
             children_questions = slot_data.get("children_questions", [])
             primary_signals = slot_data.get("primary_signals", [])
             secondary_signals = slot_data.get("secondary_signals", [])
 
-            all_signals = primary_signals + secondary_signals
+            signals = primary_signals + secondary_signals
 
-            for signal_type in all_signals:
+            # Track all known IDs
+            all_questions.update(children_questions)
+            all_signals.update(signals)
+
+            for signal_type in signals:
                 for question_id in children_questions:
                     # Forward index
                     index[signal_type].add(question_id)
@@ -141,6 +142,10 @@ class SignalQuestionIndex:
         # Convert to dict with sorted sets (for deterministic ordering)
         self.index = {sig: set(sorted(qids)) for sig, qids in index.items()}
         self.reverse_index = {qid: set(sorted(sigs)) for qid, sigs in reverse_index.items()}
+
+        # Store all known IDs for orphan detection
+        self.all_question_ids = all_questions
+        self.all_signal_ids = all_signals
 
         # Compute metrics
         build_time = (time.time() - start) * 1000  # ms
@@ -294,17 +299,14 @@ class SignalQuestionIndex:
         max_signal = max(questions_per_signal.items(), key=lambda x: x[1]) if questions_per_signal else (None, 0)
         min_signal = min(questions_per_signal.items(), key=lambda x: x[1]) if questions_per_signal else (None, 0)
 
-        # Find orphans
-        # Note: This only detects orphans among indexed items
-        # To detect all possible orphans, you would need to compare against
-        # a canonical list of all expected signals/questions
+        # Find orphans by comparing against full sets
         questions_with_no_signals = [
-            qid for qid in self.reverse_index
-            if len(self.reverse_index[qid]) == 0
+            qid for qid in self.all_question_ids
+            if qid not in self.reverse_index or len(self.reverse_index.get(qid, [])) == 0
         ]
         signals_with_no_questions = [
-            sig for sig in self.index
-            if len(self.index[sig]) == 0
+            sig for sig in self.all_signal_ids
+            if sig not in self.index or len(self.index.get(sig, [])) == 0
         ]
 
         # Avg signals per question
