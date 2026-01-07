@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 from typing import Dict, Set, List, Optional
 from collections import defaultdict
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 import pandas as pd
 
 
