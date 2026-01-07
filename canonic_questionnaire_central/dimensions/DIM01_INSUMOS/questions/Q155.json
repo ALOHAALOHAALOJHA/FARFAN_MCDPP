@@ -1,0 +1,161 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q155",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA06",
+  "cluster_id": "CL02",
+  "identifiers": {
+    "base_slot": "D1-Q5",
+    "legacy_id": "Q155",
+    "canonical_notation": "DIM01.PA06.Q155"
+  },
+  "text": {
+    "es": "¿El plan justifica su alcance en niñez y juventud mencionando el marco legal (Código de Infancia y Adolescencia, Ley de Juventud) o reconociendo restricciones explícitas de tipo presupuestal o de competencias?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "coherencia_demostrada"
+    },
+    {
+      "required": true,
+      "type": "restricciones_competencias"
+    },
+    {
+      "required": true,
+      "type": "restricciones_legales"
+    },
+    {
+      "required": true,
+      "type": "restricciones_presupuestales"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-1101",
+      "PAT-1102",
+      "PAT-1103",
+      "PAT-1104",
+      "PAT-1105",
+      "PAT-1106",
+      "PAT-1107",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02",
+      "MC03"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_E",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q155.v4.json",
+    "methods": [
+      {
+        "class": "TemporalLogicVerifier",
+        "function": "_check_deadline_constraints",
+        "method_type": "analysis",
+        "priority": 1,
+        "description": "TemporalLogicVerifier._check_deadline_constraints"
+      },
+      {
+        "class": "TemporalLogicVerifier",
+        "function": "verify_temporal_consistency",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "TemporalLogicVerifier.verify_temporal_consistency"
+      },
+      {
+        "class": "CausalInferenceSetup",
+        "function": "identify_failure_points",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "CausalInferenceSetup.identify_failure_points"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_assess_temporal_coherence",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "CausalExtractor._assess_temporal_coherence"
+      },
+      {
+        "class": "TextMiningEngine",
+        "function": "_analyze_link_text",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "TextMiningEngine._analyze_link_text"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_analyze_causal_dimensions",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "IndustrialPolicyProcessor._analyze_causal_dimensions"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_extract_metadata",
+        "method_type": "extraction",
+        "priority": 7,
+        "description": "IndustrialPolicyProcessor._extract_metadata"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q185-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "DIAGNOSTICO",
+      "LINEA_BASE"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.852343+00:00",
+    "updated_at": "2026-01-06T17:38:07.852345+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

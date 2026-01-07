@@ -1,0 +1,92 @@
+{
+  "_dimension": "DIM02",
+  "_count": 1,
+  "patterns": {
+    "PAT-Q006-003": {
+      "id": "PAT-Q006-003",
+      "canonical_id": "PAT-Q006-003",
+      "legacy_ids": [
+        "PAT-Q066-003",
+        "PAT-Q096-003",
+        "PAT-Q126-003",
+        "PAT-Q156-003",
+        "PAT-Q186-003",
+        "PAT-Q216-003",
+        "PAT-Q246-003",
+        "PAT-Q276-003",
+        "PAT-Q036-003",
+        "PAT-Q016-007",
+        "PAT-Q076-007",
+        "PAT-Q106-008",
+        "PAT-Q136-008",
+        "PAT-Q166-008",
+        "PAT-Q196-008",
+        "PAT-Q226-009",
+        "PAT-Q046-009",
+        "PAT-Q111-005",
+        "PAT-Q231-005"
+      ],
+      "pattern_spec": {
+        "type": "LITERAL",
+        "pattern": "",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {},
+        "context_scope": "PARAGRAPH"
+      },
+      "classification": {
+        "category": "TEMPORAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q006",
+          "Q036",
+          "Q066",
+          "Q096",
+          "Q126",
+          "Q156",
+          "Q186",
+          "Q216",
+          "Q246",
+          "Q276",
+          "Q016",
+          "Q046",
+          "Q076",
+          "Q106",
+          "Q136",
+          "Q166",
+          "Q196",
+          "Q286",
+          "Q081",
+          "Q201"
+        ],
+        "applies_to_policy_areas": [
+          "PA01"
+        ],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "patterns/pattern_registry_v3.json",
+        "source_version": "v3",
+        "created_at": "2026-01-06T17:29:59.912190+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    }
+  }
+}

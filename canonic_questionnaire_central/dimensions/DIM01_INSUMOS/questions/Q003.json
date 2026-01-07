@@ -1,0 +1,222 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q003",
+  "dimension_id": "DIM01",
+  "policy_area_id": "PA01",
+  "cluster_id": "CL02",
+  "identifiers": {
+    "base_slot": "D1-Q3",
+    "legacy_id": "Q003",
+    "canonical_notation": "DIM01.PA01.Q003"
+  },
+  "text": {
+    "es": "¿El Plan Plurianual de Inversiones (PPI) o tablas presupuestales asignan recursos monetarios explícitos (en COP o millones $) a programas de prevención de violencias, funcionamiento de la Casa de la Mujer, estrategias de autonomía económica o transversalización del enfoque de género (Trazador Presupuestal de Género)?",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "asignacion_explicita"
+    },
+    {
+      "required": true,
+      "type": "suficiencia_justificada"
+    },
+    {
+      "required": true,
+      "type": "trazabilidad_ppi_bpin"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0134",
+      "PAT-0135",
+      "PAT-0136",
+      "PAT-0137",
+      "PAT-0138",
+      "PAT-0139",
+      "PAT-0140",
+      "PAT-0141",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC01",
+      "MC02",
+      "MC03"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_PERSPECTIVA_GENERO",
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_B",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q003.v4.json",
+    "methods": [
+      {
+        "class": "FinancialAuditor",
+        "function": "trace_financial_allocation",
+        "method_type": "analysis",
+        "priority": 1,
+        "description": "FinancialAuditor.trace_financial_allocation",
+        "pattern_dependencies": [
+          "PAT-Q003-000",
+          "PAT-Q003-001"
+        ],
+        "output_validates": [
+          "trazabilidad_ppi_bpin"
+        ],
+        "failure_mode": "CONTINUE_WITH_WARNING",
+        "depends_on_patterns": [
+          "PAT-Q003-000",
+          "PAT-Q003-001"
+        ],
+        "produces_elements": [
+          "trazabilidad_ppi_bpin"
+        ]
+      },
+      {
+        "class": "FinancialAuditor",
+        "function": "_process_financial_table",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "FinancialAuditor._process_financial_table"
+      },
+      {
+        "class": "FinancialAuditor",
+        "function": "_match_program_to_node",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "FinancialAuditor._match_program_to_node"
+      },
+      {
+        "class": "FinancialAuditor",
+        "function": "_match_goal_to_budget",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "FinancialAuditor._match_goal_to_budget",
+        "produces_elements": [
+          "suficiencia_justificada"
+        ]
+      },
+      {
+        "class": "FinancialAuditor",
+        "function": "_perform_counterfactual_budget_check",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "FinancialAuditor._perform_counterfactual_budget_check"
+      },
+      {
+        "class": "FinancialAuditor",
+        "function": "_calculate_sufficiency",
+        "method_type": "scoring",
+        "priority": 6,
+        "description": "FinancialAuditor._calculate_sufficiency"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "analyze_financial_feasibility",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_extract_budget_for_pillar",
+        "method_type": "extraction",
+        "priority": 8,
+        "description": "PDETMunicipalPlanAnalyzer._extract_budget_for_pillar",
+        "produces_elements": [
+          "asignacion_explicita"
+        ]
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_identify_funding_source",
+        "method_type": "analysis",
+        "priority": 9,
+        "description": "PDETMunicipalPlanAnalyzer._identify_funding_source"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_classify_tables",
+        "method_type": "analysis",
+        "priority": 10,
+        "description": "PDETMunicipalPlanAnalyzer._classify_tables"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_analyze_funding_sources",
+        "method_type": "analysis",
+        "priority": 11,
+        "description": "PDETMunicipalPlanAnalyzer._analyze_funding_sources"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_score_financial_component",
+        "method_type": "scoring",
+        "priority": 12,
+        "description": "PDETMunicipalPlanAnalyzer._score_financial_component"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "aggregate_risk_and_prioritize",
+        "method_type": "analysis",
+        "priority": 13,
+        "description": "BayesianCounterfactualAuditor.aggregate_risk_and_prioritize"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q003-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "DIAGNOSTICO",
+      "LINEA_BASE"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.757057+00:00",
+    "updated_at": "2026-01-06T17:38:07.757060+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

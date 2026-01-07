@@ -1,0 +1,161 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q085",
+  "dimension_id": "DIM05",
+  "policy_area_id": "PA03",
+  "cluster_id": "CL01",
+  "identifiers": {
+    "base_slot": "D5-Q5",
+    "legacy_id": "Q085",
+    "canonical_notation": "DIM05.PA03.Q085"
+  },
+  "text": {
+    "es": "¿La ambición del impacto ambiental (ej. 'territorio carbono neutro') es realista? Se debe buscar si se analizan posibles 'efectos no deseados' o se declaran 'hipótesis límite'.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "analisis_realismo"
+    },
+    {
+      "required": true,
+      "type": "efectos_no_deseados"
+    },
+    {
+      "required": true,
+      "type": "hipotesis_limite"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0720",
+      "PAT-0721",
+      "PAT-0722",
+      "PAT-0723",
+      "PAT-0724",
+      "PAT-Q001-001"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC02",
+      "MC08"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q085.v4.json",
+    "methods": [
+      {
+        "class": "HierarchicalGenerativeModel",
+        "function": "posterior_predictive_check",
+        "method_type": "analysis",
+        "priority": 1,
+        "description": "HierarchicalGenerativeModel.posterior_predictive_check"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "function": "_ablation_analysis",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "HierarchicalGenerativeModel._ablation_analysis"
+      },
+      {
+        "class": "HierarchicalGenerativeModel",
+        "function": "_calculate_waic_difference",
+        "method_type": "scoring",
+        "priority": 3,
+        "description": "HierarchicalGenerativeModel._calculate_waic_difference"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "function": "_add_ood_noise",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "AdaptivePriorCalculator._add_ood_noise"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "function": "validate_quality_criteria",
+        "method_type": "validation",
+        "priority": 5,
+        "description": "AdaptivePriorCalculator.validate_quality_criteria"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_compute_e_value",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "PDETMunicipalPlanAnalyzer._compute_e_value"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_compute_robustness_value",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "PDETMunicipalPlanAnalyzer._compute_robustness_value"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_calculate_coherence_factor",
+        "method_type": "scoring",
+        "priority": 8,
+        "description": "BayesianMechanismInference._calculate_coherence_factor"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q115-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "IMPACTOS",
+      "OBJETIVOS"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.810032+00:00",
+    "updated_at": "2026-01-06T17:38:07.810036+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

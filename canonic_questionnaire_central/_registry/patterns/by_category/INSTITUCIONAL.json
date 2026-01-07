@@ -1,0 +1,842 @@
+{
+  "_category": "INSTITUCIONAL",
+  "_count": 19,
+  "patterns": {
+    "PAT-0113": {
+      "id": "PAT-0113",
+      "canonical_id": "PAT-0113",
+      "legacy_ids": [
+        "PAT-Q001-002"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "DANE|Medicina Legal|Fiscalía|Policía Nacional|SIVIGILA|SISPRO",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "HIGH",
+        "confidence_weight": 0.95
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q001"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.874599+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0149": {
+      "id": "PAT-0149",
+      "canonical_id": "PAT-0149",
+      "legacy_ids": [
+        "PAT-Q004-007"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "articulación interinstitucional|coordinación con Fiscalía y Policía",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q004"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.874840+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0277": {
+      "id": "PAT-0277",
+      "canonical_id": "PAT-0277",
+      "legacy_ids": [
+        "PAT-Q031-003"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "DANE|Encuesta Pulso de la Migración|Censo",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q271"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.875705+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0443": {
+      "id": "PAT-0443",
+      "canonical_id": "PAT-0443",
+      "legacy_ids": [
+        "PAT-Q061-002"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "UARIV|RUV|Registro Único de Víctimas|Policía Nacional|SIEDCO|Medicina Legal",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q031"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.877165+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0445": {
+      "id": "PAT-0445",
+      "canonical_id": "PAT-0445",
+      "legacy_ids": [
+        "PAT-Q061-004"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "Fiscalía|SPOA|Observatorio de DDHH|Somos Defensores|INDEPAZ",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q031"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.877177+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0522": {
+      "id": "PAT-0522",
+      "canonical_id": "PAT-0522",
+      "legacy_ids": [
+        "PAT-Q073-005"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "articulado con la Defensoría del Pueblo|Policía Nacional",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q043"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.877691+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0747": {
+      "id": "PAT-0747",
+      "canonical_id": "PAT-0747",
+      "legacy_ids": [
+        "PAT-Q121-002"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "DANE|Censo Nacional|Encuesta de Calidad de Vida|ECV",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q091"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.879201+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0749": {
+      "id": "PAT-0749",
+      "canonical_id": "PAT-0749",
+      "legacy_ids": [
+        "PAT-Q121-004"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "SISPRO|MinSalud|RUAF|BDUA|SIVIGILA|ADRES",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q091"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.879213+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-0897": {
+      "id": "PAT-0897",
+      "canonical_id": "PAT-0897",
+      "legacy_ids": [
+        "PAT-Q149-001"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "monitoreo a través de los sistemas de información (SIMAT, SIVIGILA)",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q119"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.880431+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1066": {
+      "id": "PAT-1066",
+      "canonical_id": "PAT-1066",
+      "legacy_ids": [
+        "PAT-Q181-003"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "SISPRO|SIVIGILA|Estadísticas Vitales|DANE",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q151"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.881539+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1067": {
+      "id": "PAT-1067",
+      "canonical_id": "PAT-1067",
+      "legacy_ids": [
+        "PAT-Q181-004"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "Comisaría de Familia|Personería Municipal|Policía de Infancia y Adolescencia",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q151"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.881545+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1391": {
+      "id": "PAT-1391",
+      "canonical_id": "PAT-1391",
+      "legacy_ids": [
+        "PAT-Q241-004"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "UNP|Unidad Nacional de Protección|Fiscalía|Policía Nacional|SIEDCO",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q211"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.883966+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1428": {
+      "id": "PAT-1428",
+      "canonical_id": "PAT-1428",
+      "legacy_ids": [
+        "PAT-Q245-004"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "responsabilidad del alcalde como primera autoridad de policía",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q215"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.884224+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1432": {
+      "id": "PAT-1432",
+      "canonical_id": "PAT-1432",
+      "legacy_ids": [
+        "PAT-Q246-005"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "Secretaría de Gobierno|Personería|Comando de Policía",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q216"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.884250+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1462": {
+      "id": "PAT-1462",
+      "canonical_id": "PAT-1462",
+      "legacy_ids": [
+        "PAT-Q251-004"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "casos de amenaza tramitados ante la Personería/Fiscalía",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q221"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.884449+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1491": {
+      "id": "PAT-1491",
+      "canonical_id": "PAT-1491",
+      "legacy_ids": [
+        "PAT-Q257-006"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "se requiere una acción efectiva de la Fiscalía para que haya impunidad cero",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q227"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.884622+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1558": {
+      "id": "PAT-1558",
+      "canonical_id": "PAT-1558",
+      "legacy_ids": [
+        "PAT-Q271-006"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "centros de detención transitoria|estaciones de policía|URI",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q241"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.885067+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1578": {
+      "id": "PAT-1578",
+      "canonical_id": "PAT-1578",
+      "legacy_ids": [
+        "PAT-Q273-005"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "inversión en alimentación para PPL en estaciones de policía",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q243"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.885208+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    },
+    "PAT-1581": {
+      "id": "PAT-1581",
+      "canonical_id": "PAT-1581",
+      "legacy_ids": [
+        "PAT-Q274-000"
+      ],
+      "pattern_spec": {
+        "type": "NER_OR_REGEX",
+        "pattern": "Secretaría de Gobierno|Comando de Policía Municipal",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": null,
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.85
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [
+          "Q244"
+        ],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.1,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "pattern_registry.json",
+        "source_version": "v1",
+        "created_at": "2026-01-06T17:29:59.885225+00:00",
+        "validated": false
+      },
+      "examples": {
+        "positive": [],
+        "negative": []
+      }
+    }
+  }
+}

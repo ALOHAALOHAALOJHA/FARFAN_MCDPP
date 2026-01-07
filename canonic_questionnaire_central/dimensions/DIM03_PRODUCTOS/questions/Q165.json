@@ -1,0 +1,309 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q165",
+  "dimension_id": "DIM03",
+  "policy_area_id": "PA06",
+  "cluster_id": "CL02",
+  "identifiers": {
+    "base_slot": "D3-Q5",
+    "legacy_id": "Q165",
+    "canonical_notation": "DIM03.PA06.Q165"
+  },
+  "text": {
+    "es": "¿El PDM explica cómo los productos (ej. 'jóvenes formados en habilidades para el empleo') contribuyen a generar resultados (ej. 'aumento de la tasa de ocupación juvenil')? Se debe buscar este 'mecanismo'.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "conexion_producto_resultado"
+    },
+    {
+      "required": true,
+      "type": "mecanismo_causal_explicito"
+    },
+    {
+      "type": "producto_definicion",
+      "required": true,
+      "dnp_criteria": "bien_o_servicio_tangible",
+      "validation_pattern": "must_be_deliverable_not_process",
+      "provenance": {
+        "source": "Guia_orientadora_definicion_de_productos-2.pdf:Page_4",
+        "criteria": "DNP Core Product Definition"
+      }
+    },
+    {
+      "type": "descripcion_tecnica",
+      "required": true,
+      "dnp_criteria": "caracteristicas_especificaciones",
+      "validation_pattern": "must_describe_technical_scope",
+      "provenance": {
+        "source": "Guia_orientadora_definicion_de_productos-2.pdf:Pages_21-22",
+        "criteria": "DNP Technical Description Standard"
+      }
+    },
+    {
+      "type": "unidad_medida",
+      "required": true,
+      "dnp_criteria": "unidad_medida_cuantificable",
+      "validation_pattern": "must_have_measurement_unit",
+      "provenance": {
+        "source": "CATALOGO_DE_PRODUCTOS.xlsx:Column_Unidad_de_medida",
+        "criteria": "DNP Measurement Unit Standard"
+      }
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-1157",
+      "PAT-1158",
+      "PAT-1159",
+      "PAT-1160",
+      "PAT-Q001-001",
+      "PAT-Q011-DNP-001",
+      "PAT-Q011-DNP-002",
+      "PAT-Q011-DNP-003"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC02",
+      "MC05"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_ENFOQUE_DIFERENCIAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q165.v4.json",
+    "methods": [
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_identify_confounders",
+        "method_type": "analysis",
+        "priority": 1,
+        "description": "PDETMunicipalPlanAnalyzer._identify_confounders"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_effect_to_dict",
+        "method_type": "analysis",
+        "priority": 2,
+        "description": "PDETMunicipalPlanAnalyzer._effect_to_dict"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_scenario_to_dict",
+        "method_type": "analysis",
+        "priority": 3,
+        "description": "PDETMunicipalPlanAnalyzer._scenario_to_dict"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_simulate_intervention",
+        "method_type": "analysis",
+        "priority": 4,
+        "description": "PDETMunicipalPlanAnalyzer._simulate_intervention"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_generate_recommendations",
+        "method_type": "analysis",
+        "priority": 5,
+        "description": "PDETMunicipalPlanAnalyzer._generate_recommendations"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_identify_causal_nodes",
+        "method_type": "analysis",
+        "priority": 6,
+        "description": "PDETMunicipalPlanAnalyzer._identify_causal_nodes"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "_evaluate_factual",
+        "method_type": "analysis",
+        "priority": 7,
+        "description": "BayesianCounterfactualAuditor._evaluate_factual"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "_evaluate_counterfactual",
+        "method_type": "analysis",
+        "priority": 8,
+        "description": "BayesianCounterfactualAuditor._evaluate_counterfactual"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_assess_financial_consistency",
+        "method_type": "analysis",
+        "priority": 9,
+        "description": "CausalExtractor._assess_financial_consistency"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_infer_activity_sequence",
+        "method_type": "analysis",
+        "priority": 10,
+        "description": "BayesianMechanismInference._infer_activity_sequence"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_generate_necessity_remediation",
+        "method_type": "analysis",
+        "priority": 11,
+        "description": "BayesianMechanismInference._generate_necessity_remediation"
+      },
+      {
+        "class": "BayesianCounterfactualAuditor",
+        "function": "refutation_and_sanity_checks",
+        "method_type": "analysis",
+        "priority": 12,
+        "description": "BayesianCounterfactualAuditor.refutation_and_sanity_checks"
+      },
+      {
+        "class": "IndustrialPolicyProcessor",
+        "function": "_load_questionnaire",
+        "method_type": "analysis",
+        "priority": 13,
+        "description": "IndustrialPolicyProcessor._load_questionnaire"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "analyze_financial_feasibility",
+        "method_type": "analysis",
+        "priority": 14,
+        "description": "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "construct_causal_dag",
+        "method_type": "analysis",
+        "priority": 15,
+        "description": "PDETMunicipalPlanAnalyzer.construct_causal_dag"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "estimate_causal_effects",
+        "method_type": "analysis",
+        "priority": 16,
+        "description": "PDETMunicipalPlanAnalyzer.estimate_causal_effects"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "generate_counterfactuals",
+        "method_type": "analysis",
+        "priority": 17,
+        "description": "PDETMunicipalPlanAnalyzer.generate_counterfactuals"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_build_type_hierarchy",
+        "method_type": "analysis",
+        "priority": 18,
+        "description": "CausalExtractor._build_type_hierarchy"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_check_structural_violation",
+        "method_type": "analysis",
+        "priority": 19,
+        "description": "CausalExtractor._check_structural_violation"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_calculate_type_transition_prior",
+        "method_type": "scoring",
+        "priority": 20,
+        "description": "CausalExtractor._calculate_type_transition_prior"
+      },
+      {
+        "class": "CausalExtractor",
+        "function": "_calculate_textual_proximity",
+        "method_type": "scoring",
+        "priority": 21,
+        "description": "CausalExtractor._calculate_textual_proximity"
+      },
+      {
+        "class": "TeoriaCambio",
+        "function": "_validar_orden_causal",
+        "method_type": "analysis",
+        "priority": 22,
+        "description": "TeoriaCambio._validar_orden_causal"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_refine_edge_probabilities",
+        "method_type": "analysis",
+        "priority": 23,
+        "description": "PDETMunicipalPlanAnalyzer._refine_edge_probabilities"
+      },
+      {
+        "class": "PolicyAnalysisEmbedder",
+        "function": "compare_policy_interventions",
+        "method_type": "analysis",
+        "priority": 24,
+        "description": "PolicyAnalysisEmbedder.compare_policy_interventions"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "infer_mechanisms",
+        "method_type": "analysis",
+        "priority": 25,
+        "description": "BayesianMechanismInference.infer_mechanisms"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q195-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "PRODUCTOS",
+      "METAS",
+      "PLAN_INDICATIVO"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.858640+00:00",
+    "updated_at": "2026-01-06T17:38:07.858642+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}

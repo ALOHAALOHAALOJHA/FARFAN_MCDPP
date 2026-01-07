@@ -1,0 +1,157 @@
+{
+  "$schema": "../../question_schema.json",
+  "_schema_version": "2.0.0",
+  "question_id": "Q100",
+  "dimension_id": "DIM02",
+  "policy_area_id": "PA04",
+  "cluster_id": "CL03",
+  "identifiers": {
+    "base_slot": "D2-Q5",
+    "legacy_id": "Q100",
+    "canonical_notation": "DIM02.PA04.Q100"
+  },
+  "text": {
+    "es": "¿El conjunto de actividades sociales demuestra una estrategia coherente? Se debe buscar evidencia de 'complementariedad' (ej. mejora de vías + transporte escolar) o 'secuencia' lógica.",
+    "en": ""
+  },
+  "expected_elements": [
+    {
+      "required": true,
+      "type": "complementariedad_explicita"
+    },
+    {
+      "required": true,
+      "type": "secuenciacion_logica"
+    }
+  ],
+  "references": {
+    "pattern_refs": [
+      "PAT-0813",
+      "PAT-0814",
+      "PAT-0815",
+      "PAT-0816",
+      "PAT-0817",
+      "PAT-0818"
+    ],
+    "keyword_refs": [],
+    "membership_criteria_refs": [
+      "MC04",
+      "MC05"
+    ],
+    "entity_refs": [],
+    "cross_cutting_refs": [
+      "CC_SOSTENIBILIDAD_PRESUPUESTAL"
+    ]
+  },
+  "scoring": {
+    "modality": "TYPE_A",
+    "max_score": 3,
+    "threshold": 0.7,
+    "weights": {
+      "expected_elements": 0.3,
+      "pattern_matches": 0.25,
+      "keyword_density": 0.1,
+      "membership_criteria": 0.2,
+      "entity_presence": 0.05,
+      "cross_cutting_alignment": 0.1
+    }
+  },
+  "method_binding": {
+    "executor_contract_version": "v4",
+    "executor_contract_path": "executor_contracts/specialized/Q100.v4.json",
+    "methods": [
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_detect_logical_incompatibilities",
+        "method_type": "analysis",
+        "priority": 1,
+        "description": "PolicyContradictionDetector._detect_logical_incompatibilities"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_calculate_coherence_metrics",
+        "method_type": "scoring",
+        "priority": 2,
+        "description": "PolicyContradictionDetector._calculate_coherence_metrics"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_calculate_objective_alignment",
+        "method_type": "scoring",
+        "priority": 3,
+        "description": "PolicyContradictionDetector._calculate_objective_alignment"
+      },
+      {
+        "class": "PolicyContradictionDetector",
+        "function": "_calculate_graph_fragmentation",
+        "method_type": "scoring",
+        "priority": 4,
+        "description": "PolicyContradictionDetector._calculate_graph_fragmentation"
+      },
+      {
+        "class": "OperationalizationAuditor",
+        "function": "audit_sequence_logic",
+        "method_type": "validation",
+        "priority": 5,
+        "description": "OperationalizationAuditor.audit_sequence_logic"
+      },
+      {
+        "class": "BayesianMechanismInference",
+        "function": "_calculate_coherence_factor",
+        "method_type": "scoring",
+        "priority": 6,
+        "description": "BayesianMechanismInference._calculate_coherence_factor"
+      },
+      {
+        "class": "PDETMunicipalPlanAnalyzer",
+        "function": "_score_causal_coherence",
+        "method_type": "scoring",
+        "priority": 7,
+        "description": "PDETMunicipalPlanAnalyzer._score_causal_coherence"
+      },
+      {
+        "class": "AdaptivePriorCalculator",
+        "function": "calculate_likelihood_adaptativo",
+        "method_type": "scoring",
+        "priority": 8,
+        "description": "AdaptivePriorCalculator.calculate_likelihood_adaptativo"
+      }
+    ],
+    "fallback_method": "GenericQuestionProcessor.process"
+  },
+  "failure_contract": {
+    "abort_if": [
+      "missing_required_element",
+      "incomplete_text"
+    ],
+    "emit_code": "ABORT-Q130-REQ"
+  },
+  "interdependencies": {
+    "informs": [],
+    "informed_by": [],
+    "coherence_check_with": [],
+    "validates_with": []
+  },
+  "context_requirements": {
+    "preferred_sections": [
+      "ESTRATEGICO",
+      "PROGRAMAS"
+    ],
+    "acceptable_sections": [
+      "INTRODUCCION",
+      "CONTEXTO"
+    ],
+    "excluded_sections": [
+      "ANEXOS",
+      "GLOSARIO"
+    ]
+  },
+  "metadata": {
+    "created_at": "2026-01-06T17:38:07.818816+00:00",
+    "updated_at": "2026-01-06T17:38:07.818818+00:00",
+    "version": "2.0.0",
+    "author": "atomize_questions.py",
+    "validated": false,
+    "test_coverage": 0.0
+  }
+}
