@@ -32,7 +32,8 @@
       "canonical_name": "Zona Urbana",
       "category": "territorial",
       "type": "geographic_classification",
-      "aliases": ["urbano", "zona urbana", "área urbana"]
+      "aliases": ["urbano", "zona urbana", "área urbana"],
+      "scoring_context": {"boost_policy_areas": {"PA04": 0.10, "PA09": 0.15}}
     }
   }
 }

@@ -1,96 +1,201 @@
 {
   "$schema": "../../detection_rules_schema.json",
   "_schema_version": "2.0.0",
-  
+  "_generated_at": "2026-01-06T00:00:00Z",
+  "_author": "CQC Technical Excellence Framework v2.0.0",
+
   "theme_id": "CC_ENTORNO_TERRITORIAL",
   "name": "Entorno Territorial",
-  "description": "Detecta consideración de particularidades territoriales (rural/urbano, PDET, etc.)",
-  
+  "description": "Consideración de las particularidades territoriales y ambientales del contexto local",
+
   "detection_strategy": {
     "primary_method": "MULTI_SIGNAL_FUSION",
-    
+    "confidence_threshold": 0.55,
+
     "signals": [
       {
         "signal_id": "SIG-ET-001",
-        "name": "territorial_differentiation",
+        "name": "territorial_characterization",
         "type": "KEYWORD_MATCH",
+        "description": "Caracterización territorial explícita",
         "keywords": [
-          "enfoque territorial",
+          "caracterización territorial",
           "particularidades territoriales",
           "contexto territorial",
+          "especificidades territoriales",
           "vocación territorial",
-          "ordenamiento territorial"
+          "zonificación",
+          "subregiones"
         ],
-        "weight": 0.35,
-        "minimum_matches": 1
+        "weight": 0.30,
+        "minimum_matches": 1,
+        "context_validation": {
+          "must_not_be_negated": true,
+          "window_size": 10
+        }
       },
       {
         "signal_id": "SIG-ET-002",
-        "name": "rural_urban_distinction",
+        "name": "environmental_risks",
         "type": "PATTERN_MATCH",
+        "description": "Identificación de riesgos ambientales",
         "patterns": [
-          "zona\\s+(rural|urbana)",
-          "área\\s+(rural|urbana)",
-          "cabecera\\s+municipal",
-          "resto\\s+municipal",
-          "veredas?",
-          "corregimientos?"
+          "(?i)riesgos?\\s+(?:ambientales|naturales|climáticos)",
+          "(?i)vulnerabilidad\\s+(?:ambiental|climática|ante\\s+desastres)",
+          "(?i)amenaza[s]?\\s+(?:naturales|por\\s+inundación|por\\s+deslizamiento|sísmicas)",
+          "(?i)(?:inundaciones|deslizamientos|sequías|incendios\\s+forestales)"
         ],
         "weight": 0.25,
-        "minimum_matches": 2
+        "minimum_matches": 1
       },
       {
         "signal_id": "SIG-ET-003",
-        "name": "pdet_mention",
-        "type": "KEYWORD_MATCH",
-        "keywords": [
-          "PDET",
-          "Programas de Desarrollo con Enfoque Territorial",
-          "municipio PDET",
-          "subregión PDET"
+        "name": "land_use_planning",
+        "type": "SEMANTIC_PATTERN",
+        "description": "Ordenamiento territorial",
+        "patterns": [
+          "(?i)ordenamiento\\s+territorial",
+          "(?i)POT\\b",
+          "(?i)PBOT\\b",
+          "(?i)EOT\\b",
+          "(?i)plan\\s+(?:básico\\s+)?de\\s+ordenamiento\\s+territorial",
+          "(?i)usos\\s+del\\s+suelo",
+          "(?i)zonificación\\s+ambiental"
         ],
-        "weight": 0.25,
+        "weight": 0.20,
         "minimum_matches": 1
       },
       {
         "signal_id": "SIG-ET-004",
-        "name": "territorial_data",
-        "type": "PATTERN_MATCH",
-        "patterns": [
-          "desagregad[oa]\\s+por\\s+(municipio|vereda|corregimiento)",
-          "cobertura\\s+territorial",
-          "brechas?\\s+territorial(es)?"
+        "name": "rural_urban_differentiation",
+        "type": "CO_OCCURRENCE",
+        "description": "Diferenciación rural-urbano",
+        "term_pairs": [
+          ["rural", "urbano"],
+          ["cabecera", "veredas"],
+          ["centro poblado", "área rural"],
+          ["zona urbana", "zona rural"]
         ],
+        "window_size": 100,
         "weight": 0.15,
-        "minimum_matches": 1
+        "minimum_pairs": 1
+      },
+      {
+        "signal_id": "SIG-ET-005",
+        "name": "local_cosmovisions",
+        "type": "KEYWORD_MATCH",
+        "description": "Cosmovisiones y saberes locales",
+        "keywords": [
+          "cosmovisión",
+          "saberes ancestrales",
+          "conocimiento tradicional",
+          "medicina tradicional",
+          "territorialidad indígena",
+          "gobierno propio",
+          "autonomía territorial"
+        ],
+        "weight": 0.10,
+        "minimum_matches": 1,
+        "applies_when": {
+          "population_present": ["indígenas", "afrodescendientes"]
+        }
       }
     ],
-    
+
     "aggregation": {
       "method": "WEIGHTED_SUM_WITH_THRESHOLD",
-      "threshold": 0.40,
-      "minimum_signals_required": 2
+      "threshold": 0.55,
+      "formula": "score = sum(signal.weight * signal.match_score) / sum(signal.weight)",
+      "minimum_signals_required": 2,
+      "bonus_for_pot_reference": 0.10
     }
   },
-  
+
   "scoring_impact": {
     "when_detected": {
-      "boost_dimensions": ["DIM01", "DIM02"],
-      "boost_amount": 0.10
+      "boost_questions": [
+        "Q071", "Q072", "Q073", "Q074", "Q075",
+        "Q091", "Q092", "Q093",
+        "Q211", "Q212", "Q213",
+        "Q241", "Q242", "Q243"
+      ],
+      "boost_amount": 0.12,
+      "boost_type": "ADDITIVE",
+      "cap_at_max_score": true,
+      "cascade_to_dimensions": ["DIM01", "DIM02", "DIM05"]
+    },
+    "when_missing": {
+      "penalty_questions": ["Q071", "Q091"],
+      "penalty_amount": 0.12,
+      "penalty_type": "MULTIPLICATIVE",
+      "penalty_conditions": {
+        "only_if_policy_area_in": ["PA03", "PA07"]
+      }
+    },
+    "confidence_modifiers": {
+      "pot_reference_bonus": 0.15,
+      "risk_analysis_bonus": 0.10,
+      "rural_urban_differentiation_bonus": 0.05
     }
   },
-  
+
   "validation": {
-    "recommended_in_all_policy_areas": true
+    "required_in_dimensions": ["DIM01", "DIM05"],
+    "required_in_policy_areas": ["PA03", "PA07"],
+    "recommended_in_policy_areas": ["PA04", "PA08", "PA10"],
+    "validation_rules": [
+      {
+        "rule_id": "INTERDEP-ET-001",
+        "description": "PA03 (Ambiente) debe tener caracterización territorial",
+        "condition": "policy_area == 'PA03' AND signal_ET_001.matches == 0",
+        "severity": "WARNING",
+        "message": "PA03 debe incluir caracterización del entorno territorial"
+      },
+      {
+        "rule_id": "INTERDEP-ET-002",
+        "description": "PA07 (Ordenamiento) debe referenciar POT/PBOT/EOT",
+        "condition": "policy_area == 'PA07' AND signal_ET_003.matches == 0",
+        "severity": "ERROR",
+        "message": "PA07 debe referenciar instrumentos de ordenamiento territorial"
+      }
+    ]
   },
-  
-  "required_capabilities": [],
-  
+
+  "required_capabilities": ["SEMANTIC_PROCESSING", "GEOSPATIAL_AWARENESS"],
+  "empirical_calibration": {
+    "source": "corpus_empirico_calibracion_extractores.json",
+    "baseline_frequency": {
+      "rural_mentions_per_plan": {"mean": 156, "range": [78, 245]},
+      "urbano_mentions_per_plan": {"mean": 42, "range": [18, 89]},
+      "pot_references_per_plan": {"mean": 8, "range": [2, 18]},
+      "environmental_risks_per_plan": {"mean": 24, "range": [6, 52]}
+    }
+  },
+
   "testing": {
+    "test_file": "tests/cross_cutting/test_cc_entorno_territorial.py",
     "golden_examples": [
       {
-        "input": "El diagnóstico distingue la situación en zona rural y urbana, con énfasis en veredas priorizadas...",
-        "expected_detected": true
+        "input": "La caracterización territorial identifica vulnerabilidad climática en zonas rurales y riesgos de inundación en la cabecera municipal",
+        "expected_detected": true,
+        "expected_confidence_min": 0.75,
+        "expected_signals": ["SIG-ET-001", "SIG-ET-002", "SIG-ET-004"]
+      },
+      {
+        "input": "Según el POT, la zonificación ambiental establece áreas de protección",
+        "expected_detected": true,
+        "expected_confidence_min": 0.70,
+        "expected_signals": ["SIG-ET-003"]
+      },
+      {
+        "input": "Respeto por la cosmovisión y territorialidad indígena del resguardo",
+        "expected_detected": true,
+        "expected_confidence_min": 0.60,
+        "expected_signals": ["SIG-ET-005"]
+      },
+      {
+        "input": "Atención general de salud para toda la población",
+        "expected_detected": false
       }
     ]
   }

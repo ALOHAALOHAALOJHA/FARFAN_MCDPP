@@ -23,11 +23,11 @@
     },
     "ENT-INT-003": {
       "entity_id": "ENT-INT-003",
-      "canonical_name": "CEDAW",
+      "canonical_name": "Convención sobre la Eliminación de Todas las Formas de Discriminación contra la Mujer",
       "acronym": "CEDAW",
       "category": "international",
       "type": "treaty",
-      "aliases": ["CEDAW", "Convención sobre la Eliminación de Todas las Formas de Discriminación contra la Mujer"],
+      "aliases": ["CEDAW", "Convención CEDAW"],
       "scoring_context": {"boost_policy_areas": {"PA01": 0.25}}
     }
   }

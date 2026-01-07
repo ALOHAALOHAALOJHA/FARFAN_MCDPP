@@ -6,9 +6,8 @@
     "generated_at": "2026-01-06T19:57:00Z",
     "generator": "CQC Migration System"
   },
-
   "statistics": {
-    "total_entities": 28,
+    "total_entities": 34,
     "by_category": {
       "institution": 10,
       "normative": 10,
@@ -17,13 +16,9 @@
       "international": 3
     },
     "by_level": {
-      "NATIONAL": 10,
-      "DEPARTAMENTAL": 0,
-      "MUNICIPAL": 0,
-      "INTERNATIONAL": 3
+      "NATIONAL": 10
     }
   },
-
   "sources": {
     "institutions": "institutions.json",
     "normative": "normative.json",
@@ -31,7 +26,6 @@
     "territorial": "territorial.json",
     "international": "international.json"
   },
-
   "usage_notes": [
     "Este registro contiene entidades clave del contexto colombiano",
     "Las entidades se usan para:",
