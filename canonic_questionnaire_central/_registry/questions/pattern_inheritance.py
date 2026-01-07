@@ -102,6 +102,9 @@ class PatternResolver:
         self.dimensions = self._load_dimensions()
         self.slots = self._load_slots()
 
+        # Instance-level cache for pattern resolution
+        self._resolve_cache: Dict[str, List[str]] = {}
+
     def _load_empirical_base(self) -> PatternLevel:
         """
         Load empirical base patterns from calibration corpus.
@@ -280,7 +283,6 @@ class PatternResolver:
 
         return slots
 
-    @lru_cache(maxsize=300)
     def resolve(self, question_id: str) -> List[str]:
         """
         Resolve patterns for question through inheritance chain.
@@ -315,6 +317,10 @@ class PatternResolver:
         # ]
         ```
         """
+        # Check cache first
+        if question_id in self._resolve_cache:
+            return self._resolve_cache[question_id]
+
         chain = self._build_chain(question_id)
 
         # Collect patterns from chain (base to specific)
@@ -333,6 +339,8 @@ class PatternResolver:
                     flattened.append(pattern)
                     seen.add(pattern)
 
+        # Cache result for future calls
+        self._resolve_cache[question_id] = flattened
         return flattened
 
     def _build_chain(self, question_id: str) -> List[PatternLevel]:

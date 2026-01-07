@@ -83,8 +83,9 @@ class LRUCache:
     def put(self, key: str, value: Any) -> None:
         """Put value in cache, evicting LRU if full."""
         if key in self.cache:
-            # Update existing
+            # Update existing value and move to end
             self.cache.move_to_end(key)
+            self.cache[key] = value
         else:
             # Add new
             if len(self.cache) >= self.maxsize:

@@ -180,12 +180,26 @@ class CQCLoader:
 
         Returns:
             Dict mapping question_id → Question
+
+        Raises:
+            ValueError: If not all requested questions could be loaded
         """
         if self._registry_type == "lazy":
-            return self.registry.get_batch(question_ids)
+            result = self.registry.get_batch(question_ids)
         else:
             # Fallback
-            return {qid: self.get_question(qid) for qid in question_ids}
+            result = {qid: q for qid in question_ids if (q := self.get_question(qid)) is not None}
+
+        # Validate that all requested questions were returned
+        if len(result) != len(question_ids):
+            missing = set(question_ids) - set(result.keys())
+            raise ValueError(
+                f"Failed to load {len(missing)} question(s): {sorted(missing)}. "
+                f"Requested {len(question_ids)}, got {len(result)}. "
+                f"Registry type: {self._registry_type}"
+            )
+
+        return result
 
     # ========================================================================
     # SIGNAL ROUTING (Acupuncture Point 2)
