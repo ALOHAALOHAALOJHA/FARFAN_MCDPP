@@ -42,7 +42,7 @@ if TYPE_CHECKING:
 from farfan_pipeline.phases.Phase_two.phase2_40_02_schema_validation import (
     validate_phase6_schema_compatibility,
 )
-from farfan_pipeline.core.types import ChunkData, PreprocessedDocument
+from farfan_pipeline.calibracion_parametrizacion.types import ChunkData, PreprocessedDocument
 from farfan_pipeline.phases.Phase_two.phase2_40_00_synchronization import ChunkMatrix
 
 # Import executor-chunk synchronizer for JOIN table

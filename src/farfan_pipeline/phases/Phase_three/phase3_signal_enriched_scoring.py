@@ -272,7 +272,99 @@ class SignalEnrichedScorer:
             validated = quality_level
         
         return validated, validation_details
-    
+
+    def apply_signal_adjustments(
+        self,
+        raw_score: float,
+        question_id: str,
+        enriched_pack: dict[str, Any] | None,
+    ) -> tuple[float, dict[str, Any]]:
+        """
+        Apply signal presence bonus/penalty to raw score.
+        
+        Implements SISAS signal-driven scoring adjustments:
+        - +0.05 bonus per primary signal present (cap at +0.15)
+        - -0.10 penalty per missing primary signal (no floor)
+        
+        This is called AFTER existing modality scoring, before final threshold checks.
+        
+        Args:
+            raw_score: Score after modality (TYPE_A-F) scoring
+            question_id: Question being scored
+            enriched_pack: Signal enrichment pack from Phase 1
+            
+        Returns:
+            Tuple of (adjusted_score, adjustment_log)
+        """
+        adjustment_log = {
+            "raw_score": raw_score,
+            "signal_bonus": 0.0,
+            "signal_penalty": 0.0,
+            "net_adjustment": 0.0,
+            "adjusted_score": raw_score,
+            "signals_evaluated": [],
+        }
+        
+        if not enriched_pack:
+            adjustment_log["status"] = "no_enriched_pack"
+            return raw_score, adjustment_log
+        
+        # Get expected signals for question
+        expected_primary = []
+        try:
+            from canonic_questionnaire_central import CQCLoader
+            cqc = CQCLoader()
+            if hasattr(cqc, 'get_signals_for_question'):
+                expected_signals = cqc.get_signals_for_question(question_id)
+                expected_primary = list(expected_signals)[:2]  # First 2 are primary
+        except Exception:
+            pass
+        
+        # Get signals that were actually detected
+        received_signals = enriched_pack.get("signals_detected", [])
+        
+        # Calculate bonus for present signals
+        signal_bonus = 0.0
+        for signal in expected_primary:
+            if signal in received_signals:
+                signal_bonus += 0.05
+                adjustment_log["signals_evaluated"].append({
+                    "signal": signal,
+                    "status": "present",
+                    "adjustment": 0.05,
+                })
+        signal_bonus = min(0.15, signal_bonus)  # Cap at +0.15
+        
+        # Calculate penalty for missing signals
+        signal_penalty = 0.0
+        for signal in expected_primary:
+            if signal not in received_signals:
+                signal_penalty += 0.10
+                adjustment_log["signals_evaluated"].append({
+                    "signal": signal,
+                    "status": "missing",
+                    "adjustment": -0.10,
+                })
+        
+        # Apply adjustments
+        net_adjustment = signal_bonus - signal_penalty
+        adjusted_score = max(0.0, min(1.0, raw_score + net_adjustment))
+        
+        adjustment_log.update({
+            "signal_bonus": round(signal_bonus, 3),
+            "signal_penalty": round(signal_penalty, 3),
+            "net_adjustment": round(net_adjustment, 3),
+            "adjusted_score": round(adjusted_score, 3),
+            "status": "applied",
+        })
+        
+        logger.info(
+            f"Signal adjustment for {question_id}: "
+            f"{raw_score:.3f} → {adjusted_score:.3f} (Δ={net_adjustment:+.3f})"
+        )
+        
+        return adjusted_score, adjustment_log
+
     def enrich_scoring_details(
         self,
         question_id: str,

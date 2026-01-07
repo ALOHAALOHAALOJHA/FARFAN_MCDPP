@@ -2890,6 +2890,14 @@ class EvidenceNexus:
         """
         start_time = time.time()
         
+        # SISAS Signal Consumption: Log and validate expected signals
+        question_id = question_context.get("question_id", contract.get("identity", {}).get("question_id", ""))
+        signal_consumption_log = self._log_signal_consumption(
+            question_id=question_id,
+            signal_pack=signal_pack,
+            contract=contract,
+        )
+        
         # R-B3: Extract type system from contract for type-aware graph building
         evidence_assembly = contract.get("evidence_assembly", {})
         type_system = evidence_assembly.get("type_system", {})
@@ -3095,6 +3103,92 @@ class EvidenceNexus:
             graph.add_node(provenance_node)
         
         return graph
+
+    # -------------------------------------------------------------------------
+    # SISAS Signal Consumption Logging
+    # -------------------------------------------------------------------------
+
+    def _log_signal_consumption(
+        self,
+        question_id: str,
+        signal_pack: Any | None,
+        contract: dict[str, Any],
+    ) -> dict[str, Any]:
+        """
+        Log signal consumption for SISAS irrigation observability.
+        
+        Implements REGLA 2 (Value-Add Validation) from the SISAS spec:
+        - Logs expected vs received signals
+        - Calculates signal coverage
+        - Applies confidence penalty for missing signals
+        
+        Args:
+            question_id: Question being processed
+            signal_pack: Signal pack from Phase 1 enrichment
+            contract: Contract with expected signal info
+            
+        Returns:
+            Signal consumption log dict
+        """
+        # Try to get expected signals from integration_map via CQCLoader
+        expected_primary = []
+        expected_secondary = []
+        
+        try:
+            from canonic_questionnaire_central import CQCLoader
+            cqc = CQCLoader()
+            # Get signals for this question
+            expected_signals = cqc.get_signals_for_question(question_id)
+            if expected_signals:
+                # Split into primary/secondary based on integration_map
+                expected_primary = list(expected_signals)[:2]  # Heuristic
+                expected_secondary = list(expected_signals)[2:]
+        except Exception:
+            # Fallback: try to extract from contract
+            signal_spec = contract.get("signal_specification", {})
+            expected_primary = signal_spec.get("primary_signals", [])
+            expected_secondary = signal_spec.get("secondary_signals", [])
+        
+        # Get received signals from signal_pack
+        received_signals = []
+        if signal_pack:
+            if hasattr(signal_pack, "signals_detected"):
+                received_signals = signal_pack.signals_detected
+            elif isinstance(signal_pack, dict):
+                received_signals = signal_pack.get("signals_detected", [])
+        
+        # Calculate coverage
+        missing_primary = [s for s in expected_primary if s not in received_signals]
+        missing_secondary = [s for s in expected_secondary if s not in received_signals]
+        
+        primary_count = len(expected_primary)
+        coverage = (primary_count - len(missing_primary)) / primary_count if primary_count > 0 else 1.0
+        
+        # Calculate confidence penalty
+        confidence_penalty = len(missing_primary) * 0.10 + len(missing_secondary) * 0.05
+        
+        log_entry = {
+            "event": "nexus_signal_consumption",
+            "question_id": question_id,
+            "expected_primary": expected_primary,
+            "expected_secondary": expected_secondary,
+            "received_signals": received_signals,
+            "missing_primary": missing_primary,
+            "missing_secondary": missing_secondary,
+            "coverage": round(coverage, 3),
+            "confidence_penalty": round(confidence_penalty, 3),
+            "timestamp": time.time(),
+        }
+        
+        logger.info(
+            "signal_consumption",
+            question_id=question_id,
+            coverage=coverage,
+            missing_primary=len(missing_primary),
+            received=len(received_signals),
+        )
+        
+        return log_entry
 
     # -------------------------------------------------------------------------
     # R-B3: Type-Specific Graph Builders

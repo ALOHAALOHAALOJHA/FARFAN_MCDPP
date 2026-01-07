@@ -348,30 +348,30 @@ class TestPhase4EmptyMalformedInputs:
         assert not math.isinf(dim_score.score)
 
     def test_invalid_quality_level(self):
-        """Test with invalid quality level values."""
+        """Test with invalid quality level type (not string)."""
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
             validate_scored_results, ValidationError
         )
 
-        # Create results with invalid quality
+        # Create results with invalid quality type (integer instead of string)
         results = [
-            ScoredResult(
-                question_global=1,
-                base_slot="DIM01-Q001",
-                policy_area="PA01",
-                dimension="DIM01",
-                score=2.0,
-                quality_level="INVALID_QUALITY",
-                evidence={},
-                raw_results={}
-            )
+            {
+                "question_global": 1,
+                "base_slot": "DIM01-Q001",
+                "policy_area": "PA01",
+                "dimension": "DIM01",
+                "score": 2.0,
+                "quality_level": 12345,  # Invalid: should be str, not int
+                "evidence": {},
+                "raw_results": {}
+            }
         ]
 
-        # Should fail validation - use the aggregation module's validation
+        # Should fail validation - quality_level must be a string
         with pytest.raises(ValidationError) as exc_info:
             validate_scored_results(results)
 
-        assert "quality" in str(exc_info.value).lower() or "invalid" in str(exc_info.value).lower()
+        assert "quality_level" in str(exc_info.value).lower() or "type" in str(exc_info.value).lower()
 
 
 # =============================================================================

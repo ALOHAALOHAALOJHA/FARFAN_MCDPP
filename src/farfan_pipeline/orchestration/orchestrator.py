@@ -79,8 +79,8 @@ from farfan_pipeline.phases.Phase_two.phase2_40_03_irrigation_synchronizer impor
     IrrigationSynchronizer,
     ExecutionPlan,
 )
-from farfan_pipeline.phases.Phase_three.signal_enriched_scoring import SignalEnrichedScorer
-from farfan_pipeline.phases.Phase_three.validation import (
+from farfan_pipeline.phases.Phase_three.phase3_signal_enriched_scoring import SignalEnrichedScorer
+from farfan_pipeline.phases.Phase_three.phase3_validation import (
     ValidationCounters,
     validate_micro_results_input,
     validate_and_clamp_score,

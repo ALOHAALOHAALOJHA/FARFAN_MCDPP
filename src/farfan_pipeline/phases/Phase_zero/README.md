@@ -1,8 +1,8 @@
 # Phase 0: Validation, Hardening & Bootstrap
 
 **Document ID:** PHASE-0-README  
-**Version:** 1.2.0  
-**Date:** 2026-01-01  
+**Version:** 1.3.0  
+**Date:** 2026-01-07  
 **Status:** ACTIVE  
 **Authors:** F.A.R.F.A.N Core Architecture Team  
 **Classification:** Technical Specification - Internal
@@ -11,9 +11,11 @@
 
 ## Abstract
 
-Phase 0 constitutes the foundational layer of the F.A.R.F.A.N (Framework for Automated Reasoning on Fiscal, Administrative, and Regulatory Frameworks for Analytical Normalization) deterministic policy analysis pipeline. This phase implements a rigorous pre-execution validation, hardening, and bootstrap protocol that guarantees system integrity, reproducibility, and resource safety before any analytical computation commences. The architecture comprises 21 Python modules organized into 7 canonical stages (00-90), each implementing specific validation, enforcement, or orchestration responsibilities. Phase 0 enforces kernel-level resource limits via `setrlimit()`, guarantees bitwise-identical reproducibility through deterministic seed management, validates all input contracts and schemas, and orchestrates the complete wiring initialization sequence. This document specifies the complete technical architecture, execution semantics, module inventory, and formal verification properties required for production deployment of the F.A.R.F.A.N pipeline.
+Phase 0 constitutes the foundational layer of the F.A.R.F.A.N (Framework for Automated Reasoning on Fiscal, Administrative, and Regulatory Frameworks for Analytical Normalization) deterministic policy analysis pipeline. This phase implements a rigorous pre-execution validation, hardening, and bootstrap protocol that guarantees system integrity, reproducibility, and resource safety before any analytical computation commences. The architecture comprises **24 Python modules** organized into **7 canonical stages** (00-90), each implementing specific validation, enforcement, or orchestration responsibilities. Phase 0 enforces kernel-level resource limits via `setrlimit()`, guarantees bitwise-identical reproducibility through deterministic seed management, validates all input contracts and schemas, and orchestrates the complete wiring initialization sequence. This document specifies the complete technical architecture, execution semantics, module inventory, and formal verification properties required for production deployment of the F.A.R.F.A.N pipeline.
 
 **Keywords:** deterministic execution, resource enforcement, validation pipeline, bootstrap orchestration, reproducibility guarantees, kernel-level limits
+
+**Test Status (2026-01-07):** 115 unit tests passed, 0 failures. All adversarial security tests (33) passed following remediation of 6 identified vulnerabilities.
 
 ---
 
@@ -169,7 +171,7 @@ For critical enforcement (resource limits), Phase 0 delegates to kernel primitiv
 
 ### 2.1 Stage Taxonomy
 
-Phase 0 organizes its 21 modules into 7 canonical stages following the F.A.R.F.A.N naming convention:
+Phase 0 organizes its 24 modules into 7 canonical stages following the F.A.R.F.A.N naming convention:
 
 ```
 phase0_{STAGE}_{ORDER}_{name}.py
@@ -177,15 +179,15 @@ phase0_{STAGE}_{ORDER}_{name}.py
 
 | Stage | Code | Name | Description | Module Count |
 |-------|------|------|-------------|--------------|
-| 00 | INFRASTRUCTURE | Infrastructure | Base errors, types, initialization | 3 |
+| 00 | INFRASTRUCTURE | Infrastructure | Base errors, types, protocols, initialization | 4 |
 | 10 | ENVIRONMENT | Environment Configuration | Paths, config, logging | 3 |
 | 20 | DETERMINISM | Determinism Enforcement | Seeds, hashing, reproducibility | 5 |
-| 30 | RESOURCES | Resource Control | Limits, watchdog, enforcement | 1 |
+| 30 | RESOURCES | Resource Control | Limits, watchdog, performance metrics | 2 |
 | 40 | VALIDATION | Validation | Input, schema, signature, coverage | 4 |
 | 50 | BOOT | Boot Sequence | Checks, gates, wiring verification | 2 |
-| 90 | INTEGRATION | Integration | Main entry, runner, bootstrap | 3 |
+| 90 | INTEGRATION | Integration | Main entry, runner, bootstrap, wiring validator | 4 |
 
-**Total: 21 modules**
+**Total: 24 modules (excluding `__init__.py` and `PHASE_0_CONSTANTS.py`)**
 
 ### 2.2 Module Classification
 
@@ -424,6 +426,29 @@ ContractViolationError (base)
 
 **Responsibility:** Utility functions for runtime error handling and type coercion. Provides `ensure_list_return()` and similar defensive programming helpers.
 
+#### 3.1.4 phase0_00_03_protocols.py
+
+| Attribute | Value |
+|-----------|-------|
+| **Legacy Name** | N/A (new module) |
+| **Type** | INFRA |
+| **Criticality** | CRITICAL |
+| **Execution Pattern** | Boot-Once |
+| **Lines of Code** | ~350 |
+
+**Responsibility:** Defines the constitutional constraint framework for inter-phase communication. Implements `PhaseContract` generic base class with typed input/output contracts, `PhaseInvariant` for formal invariant specification, and `ContractValidationResult` for validation outcomes. This module enforces the principle that each phase communicates exclusively through explicit, validated contracts.
+
+**Key Exports:**
+```python
+__all__ = [
+    "PhaseContract",
+    "PhaseInvariant", 
+    "ContractValidationResult",
+    "TInput",
+    "TOutput",
+]
+```
+
 ---
 
 ### 3.2 Stage 10: Environment Configuration
@@ -600,6 +625,29 @@ executor_seed = hash(f"{phase_seed}:executor:{executor_id}")
 | Address Space | 2048 MB | `RLIMIT_AS` |
 | CPU Time | 300 s | `RLIMIT_CPU` |
 | File Descriptors | 1024 | `RLIMIT_NOFILE` |
+
+**Security Hardening (2026-01-07):** Input validation enhanced with path traversal detection, null byte injection prevention, SQL injection pattern detection, and strict type validation at construction time.
+
+#### 3.4.2 phase0_30_01_performance_metrics.py
+
+| Attribute | Value |
+|-----------|-------|
+| **Legacy Name** | N/A (new module) |
+| **Type** | UTIL |
+| **Criticality** | MEDIUM |
+| **Execution Pattern** | On-Demand |
+| **Lines of Code** | ~47 |
+
+**Responsibility:** Provides lightweight performance instrumentation for Phase 0 execution. Implements `PhaseTimer` for nanosecond-precision timing, `PerformanceMetrics` for aggregating phase durations, and `timed_phase` context manager for convenient instrumentation.
+
+**Key Exports:**
+```python
+__all__ = [
+    "PhaseTimer",
+    "PerformanceMetrics",
+    "timed_phase",
+]
+```
 
 ---
 
