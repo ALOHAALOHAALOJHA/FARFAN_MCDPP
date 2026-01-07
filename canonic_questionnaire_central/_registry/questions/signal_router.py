@@ -13,7 +13,7 @@ Date: 2026-01-06
 
 import json
 from pathlib import Path
-from typing import Dict, Set, List, Optional
+from typing import Dict, Set, List, Optional, Any
 from collections import defaultdict
 from dataclasses import dataclass
 import pandas as pd
@@ -101,12 +101,23 @@ class SignalQuestionIndex:
         import time
         start = time.time()
 
-        # Load integration map
-        with open(self.integration_map_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-
-        integration_map = data.get("farfan_question_mapping", {})
-        slot_mappings = integration_map.get("slot_to_signal_mapping", {})
+        # Load integration map with error handling
+        integration_map = {}
+        slot_mappings = {}
+        
+        try:
+            if not self.integration_map_path.exists():
+                print(f"Warning: integration_map.json not found at {self.integration_map_path}")
+            else:
+                with open(self.integration_map_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                
+                integration_map = data.get("farfan_question_mapping", {})
+                slot_mappings = integration_map.get("slot_to_signal_mapping", {})
+        except json.JSONDecodeError as e:
+            print(f"Error parsing integration_map.json: {e}")
+        except Exception as e:
+            print(f"Error loading integration_map.json: {e}")
 
         # Build forward index: signal → questions
         index = defaultdict(set)
@@ -260,7 +271,7 @@ class SignalQuestionIndex:
 
         return pd.DataFrame(matrix, index=all_signals, columns=all_questions)
 
-    def get_coverage_stats(self) -> Dict[str, any]:
+    def get_coverage_stats(self) -> Dict[str, Any]:
         """
         Get coverage statistics for diagnostics.
 
@@ -280,10 +291,13 @@ class SignalQuestionIndex:
         """
         # Find max and min
         questions_per_signal = {sig: len(qids) for sig, qids in self.index.items()}
-        max_signal = max(questions_per_signal.items(), key=lambda x: x[1])
-        min_signal = min(questions_per_signal.items(), key=lambda x: x[1])
+        max_signal = max(questions_per_signal.items(), key=lambda x: x[1]) if questions_per_signal else (None, 0)
+        min_signal = min(questions_per_signal.items(), key=lambda x: x[1]) if questions_per_signal else (None, 0)
 
         # Find orphans
+        # Note: This only detects orphans among indexed items
+        # To detect all possible orphans, you would need to compare against
+        # a canonical list of all expected signals/questions
         questions_with_no_signals = [
             qid for qid in self.reverse_index
             if len(self.reverse_index[qid]) == 0

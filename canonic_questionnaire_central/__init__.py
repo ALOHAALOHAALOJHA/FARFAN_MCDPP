@@ -181,11 +181,25 @@ class CQCLoader:
         Returns:
             Dict mapping question_id → Question
         """
+        requested_count = len(question_ids)
+        
         if self._registry_type == "lazy":
-            return self.registry.get_batch(question_ids)
+            results = self.registry.get_batch(question_ids)
         else:
             # Fallback
-            return {qid: self.get_question(qid) for qid in question_ids}
+            results = {qid: self.get_question(qid) for qid in question_ids}
+        
+        # Verify entry counts per coding guidelines
+        loaded_count = len(results)
+        if loaded_count < requested_count:
+            missing = set(question_ids) - set(results.keys())
+            import logging
+            logging.warning(
+                f"get_batch: requested {requested_count} questions, loaded {loaded_count}. "
+                f"Missing: {missing}"
+            )
+        
+        return results
 
     # ========================================================================
     # SIGNAL ROUTING (Acupuncture Point 2)
@@ -222,10 +236,24 @@ class CQCLoader:
         Returns:
             Dict mapping signal_type → question_ids
         """
+        requested_count = len(signal_types)
+        
         if self._router_type == "indexed":
-            return self.router.route_batch(signal_types)
+            results = self.router.route_batch(signal_types)
         else:
-            return {sig: self.route_signal(sig) for sig in signal_types}
+            results = {sig: self.route_signal(sig) for sig in signal_types}
+        
+        # Verify entry counts per coding guidelines
+        processed_count = len(results)
+        if processed_count < requested_count:
+            missing = set(signal_types) - set(results.keys())
+            import logging
+            logging.warning(
+                f"route_batch: requested {requested_count} signals, processed {processed_count}. "
+                f"Missing: {missing}"
+            )
+        
+        return results
 
     # ========================================================================
     # PATTERN RESOLUTION (Acupuncture Point 3)
