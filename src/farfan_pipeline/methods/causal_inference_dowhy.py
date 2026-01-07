@@ -33,7 +33,6 @@ if TYPE_CHECKING:
 try:
     from dowhy import CausalModel
     from dowhy.causal_estimator import CausalEstimate
-    from dowhy.causal_identifier import IdentifiedEstimand
 
     DOWHY_AVAILABLE = True
 except ImportError:
@@ -41,7 +40,6 @@ except ImportError:
     # Define stub types for type checking
     CausalModel = Any  # type: ignore[misc, assignment]
     CausalEstimate = Any  # type: ignore[misc, assignment]
-    IdentifiedEstimand = Any  # type: ignore[misc, assignment]
 
 
 @dataclass
