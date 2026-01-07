@@ -12,7 +12,10 @@ Key Features:
 - Performance metrics and reporting
 
 Available Extractors:
+- StructuralMarkerExtractor (MC01/Phase 1-SP2): Tables, sections, graphs
+- NormativeReferenceExtractor (MC03/Phase 1-SP5): Laws, decrees, treaties
 - FinancialChainExtractor (MC05): Budgetary chains
+- QuantitativeTripletExtractor (MC06/Phase 1-SP6): Línea Base, Meta, Año
 - CausalVerbExtractor (MC08): Causal relationships
 - InstitutionalNERExtractor (MC09): Colombian institutions
 
@@ -52,6 +55,21 @@ from .empirical_extractor_base import (
     generate_test_suite
 )
 
+from .structural_marker_extractor import (
+    StructuralMarkerExtractor,
+    StructuralElement
+)
+
+from .normative_reference_extractor import (
+    NormativeReferenceExtractor,
+    NormativeReference
+)
+
+from .quantitative_triplet_extractor import (
+    QuantitativeTripletExtractor,
+    QuantitativeTriplet
+)
+
 from .financial_chain_extractor import (
     FinancialChainExtractor,
     FinancialChain,
@@ -86,11 +104,17 @@ __all__ = [
     'ExtractionResult',
 
     # Extractors
+    'StructuralMarkerExtractor',
+    'NormativeReferenceExtractor',
+    'QuantitativeTripletExtractor',
     'FinancialChainExtractor',
     'CausalVerbExtractor',
     'InstitutionalNERExtractor',
 
     # Data structures
+    'StructuralElement',
+    'NormativeReference',
+    'QuantitativeTriplet',
     'FinancialChain',
     'CausalLink',
     'InstitutionalEntity',
