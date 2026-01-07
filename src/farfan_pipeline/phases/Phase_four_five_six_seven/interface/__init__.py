@@ -22,10 +22,8 @@ from __future__ import annotations
 
 from . import phase4_7_entry_contract
 from . import phase4_7_exit_contract
-from . import phase4_7_nexus_interface
 
 __all__ = [
     "phase4_7_entry_contract",
     "phase4_7_exit_contract",
-    "phase4_7_nexus_interface",
 ]

@@ -68,7 +68,7 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
 
     def __init__(self, calibration_file: Optional[Path] = None):
         super().__init__(
-            signal_type="INSTITUTIONAL_ENTITY",
+            signal_type="INSTITUTIONAL_NETWORK",  # Aligned with integration_map key
             calibration_file=calibration_file,
             auto_validate=True
         )
@@ -232,7 +232,7 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
 
         result = ExtractionResult(
             extractor_id="InstitutionalNERExtractor",
-            signal_type="INSTITUTIONAL_ENTITY",
+            signal_type="INSTITUTIONAL_NETWORK",  # Aligned with integration_map key
             matches=matches,
             confidence=avg_confidence,
             metadata={

@@ -17,7 +17,7 @@ try:
 except Exception:
     pytest.skip("psutil not installed in this environment", allow_module_level=True)
 
-from canonic_phases.Phase_one.phase1_circuit_breaker import (
+from farfan_pipeline.phases.Phase_one.phase1_40_00_circuit_breaker import (
     Phase1CircuitBreaker,
     CircuitState,
     FailureSeverity,

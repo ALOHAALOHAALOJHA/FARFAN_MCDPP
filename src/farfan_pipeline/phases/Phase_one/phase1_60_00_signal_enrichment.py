@@ -182,6 +182,39 @@ except ImportError as e:
     logger.warning(f"SISAS not available: {e}")
     SISAS_AVAILABLE = False
 
+# Signal Router imports (for O(1) signal-to-question routing)
+try:
+    from canonic_questionnaire_central._registry.questions.signal_router import (
+        SignalQuestionIndex,
+    )
+    SIGNAL_ROUTER_AVAILABLE = True
+except ImportError as e:
+    logger.warning(f"Signal router not available: {e}")
+    SIGNAL_ROUTER_AVAILABLE = False
+
+# Global signal router singleton (lazy initialization)
+_signal_router: Optional["SignalQuestionIndex"] = None
+
+
+def get_signal_router() -> Optional["SignalQuestionIndex"]:
+    """
+    Get or create the global signal router singleton.
+    
+    Returns:
+        SignalQuestionIndex instance for O(1) signal routing
+    """
+    global _signal_router
+    if _signal_router is None and SIGNAL_ROUTER_AVAILABLE:
+        try:
+            _signal_router = SignalQuestionIndex()
+            logger.info(
+                f"Signal router initialized: {_signal_router.metrics.total_signals} signals, "
+                f"{_signal_router.metrics.total_questions} questions"
+            )
+        except Exception as e:
+            logger.error(f"Failed to initialize signal router: {e}")
+    return _signal_router
+
 
 @dataclass
 class SignalEnrichmentContext:
@@ -310,6 +343,60 @@ class SignalEnricher:
             logger.error(f"Signal registry initialization error: {e}")
             self._initialized = False
 
+    def route_signal(self, signal_type: str) -> set[str]:
+        """
+        Route a signal type to target question IDs using O(1) lookup.
+        
+        This implements the signal routing from integration_map.json,
+        connecting extractors to the questions that consume their signals.
+        
+        Args:
+            signal_type: Signal type (e.g., "QUANTITATIVE_TRIPLET")
+            
+        Returns:
+            Set of question IDs that consume this signal type.
+            
+        Example:
+            >>> enricher.route_signal("QUANTITATIVE_TRIPLET")
+            {"Q001", "Q002", "Q031", "Q061", ...}
+        """
+        router = get_signal_router()
+        if router:
+            return router.route(signal_type)
+        return set()
+
+    def route_signals_batch(self, signal_types: list[str]) -> dict[str, set[str]]:
+        """
+        Route multiple signal types in batch.
+        
+        Args:
+            signal_types: List of signal types to route
+            
+        Returns:
+            Dict mapping signal_type -> set of target question IDs
+        """
+        router = get_signal_router()
+        if router:
+            return router.route_batch(signal_types)
+        return {st: set() for st in signal_types}
+
+    def get_signals_for_question(self, question_id: str) -> set[str]:
+        """
+        Get all signal types that route to a specific question.
+        
+        This is the reverse lookup: question -> signals.
+        
+        Args:
+            question_id: Question ID (e.g., "Q001")
+            
+        Returns:
+            Set of signal types that route to this question.
+        """
+        router = get_signal_router()
+        if router and hasattr(router, 'reverse_index'):
+            return router.reverse_index.get(question_id, set())
+        return set()
+
     def get_question_patterns(self, question_id: str) -> list[tuple[str, str, float]]:
         """
         Get patterns for a specific question from the questionnaire.
@@ -339,6 +426,114 @@ class SignalEnricher:
     def is_questionnaire_loaded(self) -> bool:
         """Check if questionnaire patterns were successfully loaded."""
         return len(self._questionnaire_patterns) > 0
+
+    def extract_and_route_signals(
+        self,
+        text: str,
+        context: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
+        """
+        Run all extractors on text and route their signals to target questions.
+        
+        This is the main integration point between extractors and the signal router.
+        It implements the SISAS irrigation flow: Extract → Route → Enrich.
+        
+        Args:
+            text: Text to analyze
+            context: Optional context dict with policy_area, document_type, etc.
+            
+        Returns:
+            Dict with:
+                - extraction_results: Dict of signal_type -> ExtractionResult
+                - routing_results: Dict of signal_type -> set of question_ids
+                - enriched_pack: Combined data for downstream phases
+                - metrics: Extraction and routing metrics
+        """
+        from farfan_pipeline.infrastructure.extractors import (
+            QuantitativeTripletExtractor,
+            NormativeReferenceExtractor,
+            StructuralMarkerExtractor,
+            FinancialChainExtractor,
+            CausalVerbExtractor,
+            InstitutionalNERExtractor,
+        )
+        
+        extraction_results = {}
+        all_signal_types = []
+        
+        # Run all available extractors
+        extractors = [
+            QuantitativeTripletExtractor(),
+            NormativeReferenceExtractor(),
+            StructuralMarkerExtractor(),
+            FinancialChainExtractor(),
+            CausalVerbExtractor(),
+            InstitutionalNERExtractor(),
+        ]
+        
+        for extractor in extractors:
+            try:
+                result = extractor.extract(text, context)
+                extraction_results[result.signal_type] = {
+                    "matches": result.matches,
+                    "confidence": result.confidence,
+                    "metadata": result.metadata,
+                }
+                if result.matches:
+                    all_signal_types.append(result.signal_type)
+            except Exception as e:
+                logger.warning(f"Extractor {type(extractor).__name__} failed: {e}")
+        
+        # Route all detected signals
+        routing_results = self.route_signals_batch(all_signal_types)
+        
+        # Build enriched pack for downstream phases
+        enriched_pack = {
+            "signals_detected": all_signal_types,
+            "extraction_summary": {
+                signal_type: {
+                    "match_count": len(data["matches"]),
+                    "confidence": data["confidence"],
+                }
+                for signal_type, data in extraction_results.items()
+            },
+            "routing_summary": {
+                signal_type: list(question_ids)
+                for signal_type, question_ids in routing_results.items()
+            },
+            "routed_questions": list(
+                set().union(*routing_results.values()) if routing_results else set()
+            ),
+        }
+        
+        # Compute metrics
+        total_matches = sum(
+            len(data["matches"]) for data in extraction_results.values()
+        )
+        total_routed = len(enriched_pack["routed_questions"])
+        
+        metrics = {
+            "extractors_run": len(extractors),
+            "signals_detected": len(all_signal_types),
+            "total_matches": total_matches,
+            "questions_routed_to": total_routed,
+            "avg_confidence": (
+                sum(data["confidence"] for data in extraction_results.values()) 
+                / len(extraction_results) if extraction_results else 0.0
+            ),
+        }
+        
+        logger.info(
+            f"Signal extraction complete: {len(all_signal_types)} signals, "
+            f"{total_matches} matches, {total_routed} questions routed"
+        )
+        
+        return {
+            "extraction_results": extraction_results,
+            "routing_results": {k: list(v) for k, v in routing_results.items()},
+            "enriched_pack": enriched_pack,
+            "metrics": metrics,
+        }
 
     def enrich_entity_with_signals(
         self,

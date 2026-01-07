@@ -74,8 +74,8 @@ from farfan_pipeline.phases.Phase_two.phase2_60_02_arg_router import (
     ExtendedArgRouter,
 )
 from farfan_pipeline.phases.Phase_two.phase2_10_01_class_registry import ClassRegistryError
-from canonic_phases.Phase_two.executor_config import ExecutorConfig
-from canonic_phases.Phase_two.irrigation_synchronizer import (
+from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_two.phase2_40_03_irrigation_synchronizer import (
     IrrigationSynchronizer,
     ExecutionPlan,
 )

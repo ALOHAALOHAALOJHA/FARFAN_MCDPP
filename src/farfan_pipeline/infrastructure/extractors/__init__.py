@@ -67,8 +67,22 @@ from .causal_verb_extractor import (
 from .institutional_ner_extractor import (
     InstitutionalNERExtractor,
     InstitutionalEntity,
-    extract_institutional_entities,
-    get_entity_info
+)
+
+from .quantitative_triplet_extractor import (
+    QuantitativeTripletExtractor,
+    QuantitativeTriplet,
+)
+
+from .normative_reference_extractor import (
+    NormativeReferenceExtractor,
+    NormativeReference,
+)
+
+from .structural_marker_extractor import (
+    StructuralMarkerExtractor,
+    StructuralMarker,
+    StructureType,
 )
 
 from .extractor_validator import (
@@ -89,17 +103,22 @@ __all__ = [
     'FinancialChainExtractor',
     'CausalVerbExtractor',
     'InstitutionalNERExtractor',
+    'QuantitativeTripletExtractor',
+    'NormativeReferenceExtractor',
+    'StructuralMarkerExtractor',
 
     # Data structures
     'FinancialChain',
     'CausalLink',
     'InstitutionalEntity',
+    'QuantitativeTriplet',
+    'NormativeReference',
+    'StructuralMarker',
+    'StructureType',
 
     # Convenience functions
     'extract_financial_chains',
     'extract_causal_links',
-    'extract_institutional_entities',
-    'get_entity_info',
 
     # Validation
     'ExtractorValidator',

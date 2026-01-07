@@ -82,7 +82,7 @@ class ExtractionResult:
         }
 
 
-class EmpiricallyCalibrated ABC:
+class EmpiricallyCalibrated(ABC):
     """Base class for empirically-calibrated extractors."""
 
     def __init__(

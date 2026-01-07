@@ -217,11 +217,20 @@ class Phase4_7EntryContract:
         questions = []
 
         for result in scored_results:
-            if hasattr(result, "dimension_id"):
+            # ScoredResult uses 'dimension', not 'dimension_id'
+            if hasattr(result, "dimension"):
+                dimensions.add(getattr(result, "dimension"))
+            elif hasattr(result, "dimension_id"):
                 dimensions.add(getattr(result, "dimension_id"))
-            if hasattr(result, "policy_area_id"):
+            # ScoredResult uses 'policy_area', not 'policy_area_id'
+            if hasattr(result, "policy_area"):
+                areas.add(getattr(result, "policy_area"))
+            elif hasattr(result, "policy_area_id"):
                 areas.add(getattr(result, "policy_area_id"))
-            if hasattr(result, "question_id"):
+            # ScoredResult uses 'question_global', not 'question_id'
+            if hasattr(result, "question_global"):
+                questions.append(getattr(result, "question_global"))
+            elif hasattr(result, "question_id"):
                 questions.append(getattr(result, "question_id"))
 
         provenance["dimensions_covered"] = list(dimensions)

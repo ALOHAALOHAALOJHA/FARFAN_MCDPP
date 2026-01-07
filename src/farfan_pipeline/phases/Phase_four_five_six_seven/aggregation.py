@@ -802,7 +802,7 @@ class DimensionAggregator:
         # SOTA: Initialize provenance DAG
         if self.enable_sota_features:
             self.provenance_dag = AggregationDAG()
-            self.bootstrap_aggregator = BootstrapAggregator(n_samples=1000, random_seed=42)
+            self.bootstrap_aggregator = BootstrapAggregator(iterations=1000, seed=42)
             logger.info("DimensionAggregator initialized with SOTA features enabled")
         else:
             self.provenance_dag = None
@@ -1469,6 +1469,15 @@ class AreaPolicyAggregator:
         Raises:
             HermeticityValidationError: If hermeticity is violated
         """
+        # Handle case when monolith is None (self.policy_areas is None)
+        if self.policy_areas is None:
+            # Cannot validate hermeticity without monolith data
+            if self.abort_on_insufficient:
+                raise HermeticityValidationError(
+                    f"Cannot validate hermeticity for area {area_id}: no monolith data available"
+                )
+            return False, f"No monolith data available for hermeticity validation of area {area_id}"
+
         # Get expected dimensions for this specific policy area
         area_def = next(
             (a for a in self.policy_areas if a["policy_area_id"] == area_id),

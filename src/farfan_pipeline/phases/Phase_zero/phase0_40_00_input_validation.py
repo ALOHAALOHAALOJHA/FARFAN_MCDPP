@@ -117,6 +117,15 @@ class Phase0Input:
     pdf_path: Path
     run_id: str
     questionnaire_path: Path | None = None
+    
+    def __post_init__(self) -> None:
+        """Validate types at construction time."""
+        if not isinstance(self.pdf_path, Path):
+            raise TypeError(f"pdf_path must be Path, got {type(self.pdf_path).__name__}")
+        if not isinstance(self.run_id, str):
+            raise TypeError(f"run_id must be str, got {type(self.run_id).__name__}")
+        if self.questionnaire_path is not None and not isinstance(self.questionnaire_path, Path):
+            raise TypeError(f"questionnaire_path must be Path or None, got {type(self.questionnaire_path).__name__}")
 
 
 class Phase0InputValidator(BaseModel):
@@ -155,6 +164,12 @@ class Phase0InputValidator(BaseModel):
         """Validate PDF path format with zero tolerance per FORCING ROUTE [PRE-003]."""
         if not v or not v.strip():
             raise ValueError("[PRE-003] FATAL: pdf_path cannot be empty")
+        # Security: Reject null bytes (truncation attack)
+        if '\x00' in v:
+            raise ValueError("[PRE-003] FATAL: pdf_path contains null bytes")
+        # Security: Reject path traversal attempts
+        if '..' in v:
+            raise ValueError("[PRE-003] FATAL: pdf_path contains path traversal sequences")
         return v
 
     @field_validator("run_id")
@@ -168,6 +183,14 @@ class Phase0InputValidator(BaseModel):
             raise ValueError(
                 "[PRE-002] FATAL: run_id contains invalid characters (must be filesystem-safe)"
             )
+        # Security: Reject SQL injection patterns
+        sql_patterns = ["'", ";", "--", "DROP", "SELECT", "UPDATE", "DELETE", "INSERT"]
+        v_upper = v.upper()
+        for pattern in sql_patterns:
+            if pattern.upper() in v_upper:
+                raise ValueError(
+                    "[PRE-002] FATAL: run_id contains invalid characters (potential SQL injection)"
+                )
         return v
 
 
@@ -207,17 +230,34 @@ class CanonicalInput:
     validation_passed: bool
     validation_errors: list[str] = field(default_factory=list)
     validation_warnings: list[str] = field(default_factory=list)
+    
+    def __post_init__(self) -> None:
+        """Validate types at construction time."""
+        if not isinstance(self.document_id, str):
+            raise TypeError(f"document_id must be str, got {type(self.document_id).__name__}")
+        if not isinstance(self.run_id, str):
+            raise TypeError(f"run_id must be str, got {type(self.run_id).__name__}")
+        if not isinstance(self.pdf_path, Path):
+            raise TypeError(f"pdf_path must be Path, got {type(self.pdf_path).__name__}")
+        if not isinstance(self.created_at, datetime):
+            raise TypeError(f"created_at must be datetime, got {type(self.created_at).__name__}")
+        if not isinstance(self.validation_passed, bool):
+            raise TypeError(f"validation_passed must be bool, got {type(self.validation_passed).__name__}")
 
 
 class CanonicalInputValidator(BaseModel):
     """Pydantic validator for CanonicalInput."""
 
+    # Max file size: 10GB, Max pages: 100,000 (reasonable bounds)
+    MAX_FILE_SIZE_BYTES: int = 10 * 1024 * 1024 * 1024  # 10GB
+    MAX_PAGE_COUNT: int = 100_000
+
     document_id: str = Field(min_length=1)
     run_id: str = Field(min_length=1)
     pdf_path: str
     pdf_sha256: str = Field(min_length=64, max_length=64)
-    pdf_size_bytes: int = Field(gt=0)
-    pdf_page_count: int = Field(gt=0)
+    pdf_size_bytes: int = Field(gt=0, le=10 * 1024 * 1024 * 1024)  # Max 10GB
+    pdf_page_count: int = Field(gt=0, le=100_000)  # Max 100k pages
     questionnaire_path: str
     questionnaire_sha256: str = Field(min_length=64, max_length=64)
     created_at: str

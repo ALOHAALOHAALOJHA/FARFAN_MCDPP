@@ -120,6 +120,10 @@ class MemoryWatchdog(threading.Thread):
         threshold_percent: int = 90,
         check_interval: float = 1.0,
     ) -> None:
+        if not isinstance(threshold_percent, int):
+            raise TypeError(f"threshold_percent must be int, got {type(threshold_percent).__name__}")
+        if not isinstance(check_interval, (int, float)):
+            raise TypeError(f"check_interval must be int or float, got {type(check_interval).__name__}")
         super().__init__(daemon=True, name="MemoryWatchdog")
         self.threshold_percent = threshold_percent
         self.check_interval = check_interval

@@ -1828,5 +1828,4 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
     return validation_results
 
 
-# _validate_questionnaire_structure moved to orchestration.questionnaire_validation
-# to break import cycle between factory and orchestrator.
+

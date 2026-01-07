@@ -43,7 +43,7 @@ try:
     import pandas as pd
     import spacy
     import yaml
-    from fuzzywuzzy import fuzz, process
+    from rapidfuzz import fuzz, process
     from pydantic import BaseModel, Field, ValidationError, validator
     from pydot import Dot, Edge, Node
     from scipy.spatial.distance import cosine
