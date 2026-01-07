@@ -222,10 +222,24 @@ class CQCLoader:
         Returns:
             Dict mapping signal_type → question_ids
         """
+        import logging
+        
         if self._router_type == "indexed":
-            return self.router.route_batch(signal_types)
+            results = self.router.route_batch(signal_types)
         else:
-            return {sig: self.route_signal(sig) for sig in signal_types}
+            results = {sig: self.route_signal(sig) for sig in signal_types}
+        
+        # Verify counts per coding guidelines
+        requested = len(signal_types)
+        processed = len(results)
+        if processed < requested:
+            missing = set(signal_types) - set(results.keys())
+            logging.warning(
+                f"route_batch: requested {requested} signals, processed {processed}. "
+                f"Missing: {missing}"
+            )
+        
+        return results
 
     # ========================================================================
     # PATTERN RESOLUTION (Acupuncture Point 3)
