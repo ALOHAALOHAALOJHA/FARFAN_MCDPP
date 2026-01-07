@@ -43,6 +43,8 @@ dependencies = [
     "scipy>=1.11.0",
     "networkx>=3.2.0",
     "dowhy>=0.11.1",
+    "causalnex>=0.12.0",
+    "econml>=0.15.0",
     "spacy>=3.7.0",
     "jsonschema>=4.20.0",
     "python-dotenv>=1.0.0",
@@ -211,6 +213,8 @@ module = [
     "pdfplumber.*",
     "langdetect.*",
     "dowhy.*",
+    "causalnex.*",
+    "econml.*",
 ]
 ignore_missing_imports = true
 
