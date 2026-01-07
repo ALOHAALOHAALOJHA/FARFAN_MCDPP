@@ -6166,7 +6166,8 @@ class CDAFFramework:
         # Focus on high-confidence links from Bayesian inference
         edges_to_validate = []
         for source, target, data in graph.edges(data=True):
-            confidence = data.get('confidence', 0.0)
+            # Try posterior_mean first, fall back to strength, default to 0.0
+            confidence = data.get('posterior_mean', data.get('strength', 0.0))
             if confidence > 0.7:  # High-confidence threshold
                 edges_to_validate.append((source, target, confidence))
 

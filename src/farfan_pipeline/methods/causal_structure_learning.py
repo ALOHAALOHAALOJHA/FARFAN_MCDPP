@@ -154,6 +154,32 @@ class CausalStructureLearner:
             self.logger.warning("Empty dataset provided for structure learning")
             return StructureLearningResult(metadata={"error": "Empty dataset"})
 
+        # Validation warnings
+        warnings = []
+        n_samples = len(data)
+        if n_samples < 1000:
+            warning_msg = (
+                f"Sample size ({n_samples}) is below recommended minimum (1000). "
+                f"Structure learning may be unreliable with small samples."
+            )
+            self.logger.warning(warning_msg)
+            warnings.append(warning_msg)
+
+        # Check for continuous variables (CausalNex Bayesian Networks expect discrete)
+        continuous_cols = []
+        for col in data.columns:
+            if data[col].dtype in ['float64', 'float32', 'float16']:
+                continuous_cols.append(col)
+
+        if continuous_cols:
+            warning_msg = (
+                f"Continuous variables detected: {continuous_cols}. "
+                f"CausalNex Bayesian Networks expect discrete variables. "
+                f"Consider discretizing continuous features for BN inference."
+            )
+            self.logger.warning(warning_msg)
+            warnings.append(warning_msg)
+
         try:
             # Learn structure using NOTEARS
             self.logger.info(
@@ -201,6 +227,8 @@ class CausalStructureLearner:
                     "w_threshold": w_threshold,
                     "max_iter": max_iter,
                     "algorithm": "NOTEARS",
+                    "warnings": warnings,
+                    "n_samples": n_samples,
                 },
             )
 
@@ -399,6 +427,17 @@ class CausalStructureLearner:
                 metadata={"error": "No inference engine"},
             )
 
+        if not query_variables:
+            self.logger.warning("No query variables specified for what-if analysis")
+            return WhatIfScenario(
+                scenario_name=scenario_name,
+                interventions=interventions,
+                predictions={},
+                causal_effects={},
+                confidence=0.0,
+                metadata={"warning": "No query variables specified"},
+            )
+
         try:
             predictions: dict[str, dict[Any, float]] = {}
             causal_effects: dict[str, float] = {}
@@ -473,6 +512,7 @@ class CausalStructureLearner:
         source: str,
         target: str,
         max_paths: int = 10,
+        max_path_length: int | None = None,
     ) -> list[list[str]]:
         """
         Find all causal paths from source to target.
@@ -481,6 +521,7 @@ class CausalStructureLearner:
             source: Source variable
             target: Target variable
             max_paths: Maximum number of paths to return
+            max_path_length: Maximum path length (None for unlimited)
 
         Returns:
             List of paths (each path is list of variables)
@@ -496,11 +537,14 @@ class CausalStructureLearner:
                     self.structure_model,
                     source=source,
                     target=target,
-                    cutoff=max_paths,
+                    cutoff=max_path_length,
                 )
             )
 
-            self.logger.debug(f"Found {len(paths)} causal paths from {source} to {target}")
+            self.logger.debug(
+                f"Found {len(paths)} causal paths from {source} to {target}, "
+                f"returning top {min(len(paths), max_paths)}"
+            )
             return paths[:max_paths]
 
         except Exception as e:
@@ -601,8 +645,13 @@ class CausalStructureLearner:
             in_degrees = dict(sm.in_degree())
             out_degrees = dict(sm.out_degree())
 
-            avg_in_degree = np.mean(list(in_degrees.values()))
-            avg_out_degree = np.mean(list(out_degrees.values()))
+            # Handle empty graph case
+            if n_nodes == 0 or not in_degrees:
+                avg_in_degree = 0.0
+                avg_out_degree = 0.0
+            else:
+                avg_in_degree = np.mean(list(in_degrees.values()))
+                avg_out_degree = np.mean(list(out_degrees.values()))
 
             # Find root nodes (no parents)
             root_nodes = [node for node in sm.nodes if sm.in_degree(node) == 0]

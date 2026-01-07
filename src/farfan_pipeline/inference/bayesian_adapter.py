@@ -310,7 +310,7 @@ class BayesianEngineAdapter:
         # Compute posterior statistics
         total = posterior_alpha + posterior_beta
         mean = posterior_alpha / total
-        mode = (posterior_alpha - 1) / (total - 2) if posterior_alpha > 1 and posterior_beta > 1 else None
+        mode = (posterior_alpha - 1) / (total - 2) if posterior_alpha > 1 and posterior_beta > 1 and total > 2 else None
         variance = (posterior_alpha * posterior_beta) / (total**2 * (total + 1))
 
         return {

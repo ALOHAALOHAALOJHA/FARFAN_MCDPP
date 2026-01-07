@@ -307,7 +307,8 @@ class TestHeterogeneousTreatmentIntegration:
         X_numeric = X[["income_num", "education_num", "region_num"]]
         cate_estimate = analyzer.estimate_cate_dml(X_numeric, T, Y, method="forest")
 
-        assert cate_estimate.success if hasattr(cate_estimate, "success") else True
+        # Check for errors in metadata
+        assert cate_estimate.metadata.get("error") is None
         assert cate_estimate.point_estimate > 0
 
         # Step 2: Analyze heterogeneity

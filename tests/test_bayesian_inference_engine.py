@@ -359,7 +359,7 @@ class TestBayesianEngineAdapter:
 
         assert "posterior_mean" in result
         assert "test_type" in result
-        assert result["test_type"] == "hoop"
+        assert result["test_type"] == "necessity_hoop"
         # High success rate should yield high posterior
         assert result["posterior_mean"] > 0.5
 
@@ -374,7 +374,7 @@ class TestBayesianEngineAdapter:
 
         assert "posterior_mean" in result
         assert "test_type" in result
-        assert result["test_type"] == "smoking_gun"
+        assert result["test_type"] == "sufficiency_smoking_gun"
 
     @pytest.mark.skipif(
         not BayesianEngineAdapter(Mock()).is_available(),
@@ -383,7 +383,7 @@ class TestBayesianEngineAdapter:
     def test_doubly_decisive_test(self, adapter: BayesianEngineAdapter) -> None:
         """Test doubly decisive (necessity AND sufficiency)"""
         observations = [1, 1, 1, 1, 1, 1, 1, 1, 1, 0]  # 9/10 success
-        result = adapter.test_doubly_decisive_from_observations(observations)
+        result = adapter.test_doubly_decisive(observations)
 
         assert "posterior_mean" in result
         assert "test_type" in result
@@ -415,7 +415,7 @@ class TestBayesianEngineIntegration:
         result = adapter.test_necessity_from_observations(observations, prior=prior)
 
         # Step 4: Validate results
-        assert result["success"] is True
+        assert result["converged"] is True
         assert 0.6 < result["posterior_mean"] < 0.95
 
         # Step 5: Check diagnostics
@@ -424,15 +424,16 @@ class TestBayesianEngineIntegration:
 
     def test_hierarchical_analysis_workflow(self, adapter: BayesianEngineAdapter) -> None:
         """Test hierarchical analysis for micro-meso-macro levels"""
+        # Convert observations to (successes, trials) tuples
         level_data = [
-            {"observations": [1] * 7 + [0] * 3, "level": "micro"},
-            {"observations": [1] * 12 + [0] * 8, "level": "meso"},
-            {"observations": [1] * 18 + [0] * 12, "level": "macro"},
+            (7, 10),   # micro: 7 successes out of 10
+            (12, 20),  # meso: 12 successes out of 20
+            (18, 30),  # macro: 18 successes out of 30
         ]
 
         result = adapter.analyze_hierarchical_mechanisms(
             level_data, level_names=["micro", "meso", "macro"]
         )
 
-        assert "level_results" in result
-        assert len(result["level_results"]) == 3
+        assert "levels" in result
+        assert len(result["levels"]) == 3

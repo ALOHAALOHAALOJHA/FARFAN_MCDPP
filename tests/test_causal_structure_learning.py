@@ -8,6 +8,7 @@ Phase 2 Testing - 2026-01-07
 """
 
 import logging
+from pathlib import Path
 from unittest.mock import Mock
 
 import numpy as np
@@ -199,7 +200,7 @@ class TestCausalStructureLearner:
         reason="CausalNex not available",
     )
     def test_export_structure_no_structure(
-        self, learner: CausalStructureLearner, tmp_path: pytest.TempPathFactory
+        self, learner: CausalStructureLearner, tmp_path: Path
     ) -> None:
         """Test exporting structure without structure"""
         output_path = tmp_path / "test.dot"
