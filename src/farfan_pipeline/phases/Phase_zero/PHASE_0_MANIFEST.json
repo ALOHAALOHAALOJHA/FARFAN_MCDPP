@@ -18,7 +18,7 @@
   },
   "statistics": {
     "total_modules": 24,
-    "total_lines_of_code": 9598,
+    "total_lines_of_code": 10864,
     "stages": 7,
     "critical_modules": 13,
     "high_modules": 7,
@@ -332,7 +332,7 @@
       "name": "Integration",
       "description": "Main entry point, pipeline runner, and bootstrap orchestration with secure handoff",
       "execution_order": 7,
-      "module_count": 3,
+      "module_count": 4,
       "modules": [
         {
           "order": 0,
@@ -372,6 +372,19 @@
           "dependencies": ["phase0_30_00_resource_controller", "phase0_50_01_exit_gates"],
           "exports": ["WiringBootstrap", "EnforcedBootstrap", "WiringComponents", "QuestionnaireResourceProvider", "ENFORCEMENT_AVAILABLE"],
           "security_features": ["component_integrity_verification", "secure_wiring", "dependency_locking"]
+        },
+        {
+          "order": 3,
+          "canonical_name": "phase0_90_03_wiring_validator",
+          "legacy_name": "wiring_validator",
+          "type": "VAL",
+          "criticality": "CRITICAL",
+          "execution_pattern": "Boot-Once",
+          "lines_of_code": 645,
+          "purpose": "Multi-tier structural integrity gate for Phase 0 components and wiring",
+          "dependencies": ["phase0_90_02_bootstrap"],
+          "exports": ["WiringValidator", "ValidationResult", "ContractViolation", "Severity", "WiringFeatureFlags", "Phase0ConfigValidator"],
+          "security_features": ["existential_validation", "cardinality_enforcement", "signature_verification", "referential_integrity", "integrity_hashing", "seed_consistency", "import_resolvability"]
         }
       ]
     }

@@ -29,7 +29,7 @@ __version__ = "1.0.0"
 __phase__ = 0
 __author__ = "F.A.R.F.A.N Core Team"
 __created__ = "2025-12-29"
-__modified__ = "2025-12-29"
+__modified__ = "2026-01-07"
 
 # =============================================================================
 # PHASE IDENTIFICATION
@@ -47,10 +47,10 @@ PHASE_CODENAME: Final[str] = "FOUNDATION"
 # Phase 0 uses a 7-stage architecture representing the temporal sequence
 # of validation and initialization operations:
 #
-#   STAGE 00: Infrastructure (init, errors, constants)
+#   STAGE 00: Infrastructure (init, errors, protocols, constants)
 #   STAGE 10: Environment Configuration (paths, config, logging)
 #   STAGE 20: Determinism Enforcement (seeds, hashing, reproducibility)
-#   STAGE 30: Resource Control (limits, watchdog, enforcement)
+#   STAGE 30: Resource Control (limits, watchdog, enforcement, metrics)
 #   STAGE 40: Validation (input, schema, signature, coverage)
 #   STAGE 50: Boot Sequence (checks, gates, wiring)
 #   STAGE 90: Integration (main entry, runner, bootstrap orchestration)
@@ -60,7 +60,7 @@ PHASE_CODENAME: Final[str] = "FOUNDATION"
 # Stage 00: Infrastructure - Base errors, types, and initialization
 STAGE_INFRASTRUCTURE: Final[int] = 0
 STAGE_00_NAME: Final[str] = "Infrastructure"
-STAGE_00_DESCRIPTION: Final[str] = "Base errors, types, package initialization"
+STAGE_00_DESCRIPTION: Final[str] = "Base errors, types, protocols, package initialization"
 
 # Stage 10: Environment Configuration - Paths, runtime config, logging
 STAGE_ENVIRONMENT: Final[int] = 10
@@ -72,25 +72,25 @@ STAGE_DETERMINISM: Final[int] = 20
 STAGE_20_NAME: Final[str] = "Determinism Enforcement"
 STAGE_20_DESCRIPTION: Final[str] = "Seed management, hash computation, deterministic execution"
 
-# Stage 30: Resource Control - Limits, watchdog, kernel enforcement
+# Stage 30: Resource Control - Limits, watchdog, kernel enforcement, metrics
 STAGE_RESOURCES: Final[int] = 30
 STAGE_30_NAME: Final[str] = "Resource Control"
-STAGE_30_DESCRIPTION: Final[str] = "Hard resource limits, memory watchdog, kernel enforcement"
+STAGE_30_DESCRIPTION: Final[str] = "Hard resource limits, memory watchdog, kernel enforcement, performance metrics"
 
 # Stage 40: Validation - Input, schema, signature validation
 STAGE_VALIDATION: Final[int] = 40
 STAGE_40_NAME: Final[str] = "Validation"
-STAGE_40_DESCRIPTION: Final[str] = "Input validation, schema monitoring, signature verification"
+STAGE_40_DESCRIPTION: Final[str] = "Input validation, schema monitoring, signature verification with security hardening"
 
 # Stage 50: Boot Sequence - Checks, gates, wiring verification
 STAGE_BOOT: Final[int] = 50
 STAGE_50_NAME: Final[str] = "Boot Sequence"
-STAGE_50_DESCRIPTION: Final[str] = "Boot checks, exit gates, coverage verification"
+STAGE_50_DESCRIPTION: Final[str] = "Boot checks, exit gates, wiring verification with security handoff"
 
 # Stage 90: Integration - Main entry, runner, bootstrap orchestration
 STAGE_INTEGRATION: Final[int] = 90
 STAGE_90_NAME: Final[str] = "Integration"
-STAGE_90_DESCRIPTION: Final[str] = "Main entry point, pipeline runner, bootstrap orchestration"
+STAGE_90_DESCRIPTION: Final[str] = "Main entry point, pipeline runner, and bootstrap orchestration with secure handoff"
 
 # All valid stages
 VALID_STAGES: Final[frozenset[int]] = frozenset({
@@ -211,6 +211,7 @@ MODULE_MANIFEST: Final[tuple[tuple[int, int, str, str, str, str], ...]] = (
     (0, 0, "init", "__init__", TYPE_INFRASTRUCTURE, CRITICALITY_LOW),
     (0, 1, "domain_errors", "domain_errors", TYPE_INFRASTRUCTURE, CRITICALITY_HIGH),
     (0, 2, "runtime_error_fixes", "runtime_error_fixes", TYPE_INFRASTRUCTURE, CRITICALITY_MEDIUM),
+    (0, 3, "protocols", None, TYPE_INFRASTRUCTURE, CRITICALITY_CRITICAL),
     
     # Stage 10: Environment Configuration
     (10, 0, "paths", "paths", TYPE_CONFIG, CRITICALITY_CRITICAL),
@@ -226,6 +227,7 @@ MODULE_MANIFEST: Final[tuple[tuple[int, int, str, str, str, str], ...]] = (
     
     # Stage 30: Resource Control
     (30, 0, "resource_controller", "resource_controller", TYPE_ENFORCER, CRITICALITY_CRITICAL),
+    (30, 1, "performance_metrics", None, TYPE_UTILITY, CRITICALITY_MEDIUM),
     
     # Stage 40: Validation
     (40, 0, "input_validation", "phase0_input_validation", TYPE_VALIDATOR, CRITICALITY_CRITICAL),
@@ -241,6 +243,7 @@ MODULE_MANIFEST: Final[tuple[tuple[int, int, str, str, str, str], ...]] = (
     (90, 0, "main", "main", TYPE_ENTRY, CRITICALITY_CRITICAL),
     (90, 1, "verified_pipeline_runner", "verified_pipeline_runner", TYPE_ORCHESTRATOR, CRITICALITY_CRITICAL),
     (90, 2, "bootstrap", "bootstrap", TYPE_ORCHESTRATOR, CRITICALITY_CRITICAL),
+    (90, 3, "wiring_validator", None, TYPE_VALIDATOR, CRITICALITY_CRITICAL),
 )
 
 # =============================================================================

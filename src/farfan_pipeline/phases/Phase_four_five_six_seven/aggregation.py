@@ -1637,12 +1637,10 @@ class AreaPolicyAggregator:
             }
         except HermeticityValidationError as e:
             logger.error(f"Hermeticity validation failed for area {area_id}: {e}")
-            # Get area name
-            area_name = next(
-                (a["i18n"]["keys"]["label_es"] for a in self.policy_areas
-                 if a["policy_area_id"] == area_id),
-                area_id
-            )
+            # Get area name and cluster_id from modular metadata
+            pa_data = next((a for a in self.policy_areas if a["policy_area_id"] == area_id), None)
+            area_name = pa_data["i18n"]["keys"]["label_es"] if pa_data else area_id
+            cluster_id = pa_data.get("cluster_id") if pa_data else None
             return AreaScore(
                 area_id=area_id,
                 area_name=area_name,
@@ -1650,16 +1648,15 @@ class AreaPolicyAggregator:
                 quality_level="INSUFICIENTE",
                 dimension_scores=[],
                 validation_passed=False,
-                validation_details={"error": str(e), "type": "hermeticity"}
+                validation_details={"error": str(e), "type": "hermeticity"},
+                cluster_id=cluster_id
             )
 
         if not area_dim_scores:
             logger.warning(f"No dimension scores for area {area_id}")
-            area_name = next(
-                (a["i18n"]["keys"]["label_es"] for a in self.policy_areas
-                 if a["policy_area_id"] == area_id),
-                area_id
-            )
+            pa_data = next((a for a in self.policy_areas if a["policy_area_id"] == area_id), None)
+            area_name = pa_data["i18n"]["keys"]["label_es"] if pa_data else area_id
+            cluster_id = pa_data.get("cluster_id") if pa_data else None
             return AreaScore(
                 area_id=area_id,
                 area_name=area_name,
@@ -1667,7 +1664,8 @@ class AreaPolicyAggregator:
                 quality_level="INSUFICIENTE",
                 dimension_scores=[],
                 validation_passed=False,
-                validation_details={"error": "No dimensions", "type": "empty"}
+                validation_details={"error": "No dimensions", "type": "empty"},
+                cluster_id=cluster_id
             )
 
         # Normalize scores
@@ -1696,8 +1694,16 @@ class AreaPolicyAggregator:
             area_id
         )
 
+        # Get cluster_id from modular metadata - MEANINGFUL CONNECTION
+        # This ensures AreaScore.cluster_id reflects the real PA→Cluster mapping
+        cluster_id = next(
+            (a.get("cluster_id") for a in self.policy_areas
+             if a["policy_area_id"] == area_id),
+            None
+        )
+
         logger.info(
-            f"✓ Policy area {area_id} ({area_name}): "
+            f"✓ Policy area {area_id} ({area_name}) [cluster={cluster_id}]: "
             f"score={avg_score:.4f}, quality={quality_level}"
         )
 
@@ -1708,7 +1714,8 @@ class AreaPolicyAggregator:
             quality_level=quality_level,
             dimension_scores=area_dim_scores,
             validation_passed=True,
-            validation_details=validation_details
+            validation_details=validation_details,
+            cluster_id=cluster_id  # Populate from modular metadata
         )
 
     def run(
@@ -2119,7 +2126,9 @@ class ClusterAggregator:
             variance=variance,
             weakest_area=weakest_area.area_id if weakest_area else None,
             area_scores=cluster_area_scores,
-            validation_passed=True,
+            # MEANINGFUL CONNECTION: validation_passed reflects actual hermeticity state
+            # This ensures ClusterScore.validation_passed matches the real structural validation
+            validation_passed=validation_details.get("hermeticity", {}).get("valid", True),
             validation_details=validation_details
         )
 
