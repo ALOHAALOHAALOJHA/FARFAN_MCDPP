@@ -52,7 +52,8 @@
       "legal_basis": "Decreto Ley 893 de 2017",
       "authoritative_sources": ["ART", "DNP", "DANE", "OCAD Paz"],
       "update_frequency": "Quarterly",
-      "last_validation": "2025-10-15"
+      "last_validation": "2026-01-08",
+      "_validation_note": "PDET data validated against source files during governance enrichment"
     }
   },
 
@@ -228,6 +229,7 @@
       "purpose": "Verify that enriched data materially improves, enables, or optimizes consumer processes",
       "validation_criteria": {
         "min_value_add_threshold": 0.10,
+        "_threshold_rationale": "10% minimum ensures material improvement over baseline questionnaire without enrichment",
         "value_estimates": {
           "municipality_data": 0.25,
           "subregion_context": 0.20,
@@ -281,9 +283,11 @@
   },
 
   "pdet_policy_area_mappings": {
+    "_note": "Municipality counts are indicative based on sample data from 8 documented subregions. Actual counts should be computed from pdet_municipalities.json",
     "PA01_Gender": {
       "relevant_subregions": ["SR04", "SR05", "SR08"],
       "municipality_count": 3,
+      "_count_note": "Approximate - based on sample data from pdet_municipalities.json",
       "key_indicators": ["women_labor_participation", "gender_wage_gap", "political_representation"],
       "pdet_pillars": ["pillar_4", "pillar_8"]
     },
