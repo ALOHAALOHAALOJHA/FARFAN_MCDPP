@@ -82,7 +82,6 @@ def demo_dimension_validations():
     print_header("3. DIMENSION-SPECIFIC VALIDATIONS")
     
     validator = PDETValidator()
-    mun_code = "19355"  # Jambaló
     
     dimensions = [
         ("DIM01_INSUMOS", "Inputs/Diagnostics"),
