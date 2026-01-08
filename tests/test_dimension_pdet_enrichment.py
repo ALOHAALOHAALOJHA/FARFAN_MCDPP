@@ -8,7 +8,6 @@ for dimensions.
 
 import json
 import pytest
-from pathlib import Path
 
 from canonic_questionnaire_central.dimensions import pdet_enrichment
 
