@@ -436,8 +436,18 @@ class EnrichmentOrchestrator:
         relevant_subregion_ids = set()
         for pa in policy_areas:
             pa_key = f"{pa}" if pa.startswith("PA") else f"PA{pa}"
-            pa_data = pa_mappings.get(pa_key, {})
-            relevant_subregion_ids.update(pa_data.get("relevant_subregions", []))
+            
+            # Try exact match first, then prefix match
+            pa_data = pa_mappings.get(pa_key)
+            if not pa_data:
+                # Try to find by prefix (e.g., PA01 matches PA01_Gender)
+                for key, value in pa_mappings.items():
+                    if key.startswith(pa_key + "_") or key == pa_key:
+                        pa_data = value
+                        break
+            
+            if pa_data:
+                relevant_subregion_ids.update(pa_data.get("relevant_subregions", []))
         
         # Extract municipalities from relevant subregions
         for subregion in self._pdet_data.get("subregions", []):
@@ -453,8 +463,18 @@ class EnrichmentOrchestrator:
         relevant_subregion_ids = set()
         for pa in policy_areas:
             pa_key = f"{pa}" if pa.startswith("PA") else f"PA{pa}"
-            pa_data = pa_mappings.get(pa_key, {})
-            relevant_subregion_ids.update(pa_data.get("relevant_subregions", []))
+            
+            # Try exact match first, then prefix match
+            pa_data = pa_mappings.get(pa_key)
+            if not pa_data:
+                # Try to find by prefix (e.g., PA01 matches PA01_Gender)
+                for key, value in pa_mappings.items():
+                    if key.startswith(pa_key + "_") or key == pa_key:
+                        pa_data = value
+                        break
+            
+            if pa_data:
+                relevant_subregion_ids.update(pa_data.get("relevant_subregions", []))
         
         # Filter subregions
         relevant_subregions = [
@@ -467,6 +487,23 @@ class EnrichmentOrchestrator:
     def _get_policy_area_mappings(self, policy_areas: List[str]) -> Dict[str, Any]:
         """Get policy area mappings."""
         pa_mappings = self._pdet_data.get("policy_area_mappings", {})
+        
+        # Filter mappings relevant to requested policy areas
+        filtered_mappings = {}
+        for pa in policy_areas:
+            pa_key = f"{pa}" if pa.startswith("PA") else f"PA{pa}"
+            
+            # Try exact match first, then prefix match
+            if pa_key in pa_mappings:
+                filtered_mappings[pa_key] = pa_mappings[pa_key]
+            else:
+                # Try to find by prefix (e.g., PA01 matches PA01_Gender)
+                for key, value in pa_mappings.items():
+                    if key.startswith(pa_key + "_") or key == pa_key:
+                        filtered_mappings[key] = value
+                        break
+        
+        return filtered_mappings
         
         filtered_mappings = {}
         for pa in policy_areas:
