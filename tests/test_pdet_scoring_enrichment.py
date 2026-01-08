@@ -16,9 +16,6 @@ from canonic_questionnaire_central.scoring.modules import (
     ScoredResult,
     ModalityConfig,
 )
-from canonic_questionnaire_central.validations.runtime_validators import (
-    SignalCapability,
-)
 
 
 @pytest.fixture
