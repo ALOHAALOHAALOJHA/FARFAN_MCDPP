@@ -115,6 +115,15 @@ class TimeInterval:
             return self.start - other.end
         return None
 
+    def __repr__(self) -> str:
+        return (
+            f"TimeInterval("
+            f"id='{self.record_id}', "
+            f"start={self.start.isoformat()}, "
+            f"duration={self.duration.total_seconds()}s"
+            f")"
+        )
+
 
 @dataclass(frozen=True)
 class TemporalGap:
@@ -147,6 +156,17 @@ class ConsistencyReport:
     out_of_order_detected: List[Tuple[str, str]]
     errors: List[TemporalError]
     metrics: Dict[str, Any]
+
+    def __repr__(self) -> str:
+        return (
+            f"ConsistencyReport("
+            f"valid={self.is_valid}, "
+            f"intervals={self.total_intervals}, "
+            f"errors={len(self.errors)}, "
+            f"gaps={len(self.gaps_detected)}, "
+            f"overlaps={len(self.overlaps_detected)}"
+            f")"
+        )
 
 
 # -----------------------------------------------------------------------------
