@@ -628,6 +628,58 @@ def get_pdet_pillar(pillar_id: str) -> PdetPillar | None:
 
 
 # =============================================================================
+# PDET MUNICIPALITIES LOADER
+# =============================================================================
+
+_PDET_MUNICIPALITIES_FILE = _COLOMBIA_CONTEXT_DIR / "pdet_municipalities.json"
+
+
+def get_pdet_municipalities() -> dict[str, Any]:
+    """Get PDET municipalities detailed context.
+    
+    Returns:
+        Dict with PDET municipalities data including subregions, 
+        policy area mappings, and aggregate statistics.
+    """
+    with open(_PDET_MUNICIPALITIES_FILE, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def get_pdet_subregions() -> list[dict[str, Any]]:
+    """Get PDET subregions with municipalities.
+    
+    Returns:
+        List of PDET subregions
+    """
+    pdet_data = get_pdet_municipalities()
+    return pdet_data.get("subregions", [])
+
+
+def get_pdet_municipalities_for_policy_area(policy_area_id: str) -> list[dict[str, Any]]:
+    """Get PDET municipalities relevant to a policy area.
+    
+    Args:
+        policy_area_id: Policy area identifier (e.g., "PA01")
+        
+    Returns:
+        List of relevant municipalities
+    """
+    pdet_data = get_pdet_municipalities()
+    pa_mappings = pdet_data.get("policy_area_mappings", {})
+    
+    pa_key = f"{policy_area_id}" if policy_area_id.startswith("PA") else f"PA{policy_area_id}"
+    pa_data = pa_mappings.get(pa_key, {})
+    relevant_subregion_ids = set(pa_data.get("relevant_subregions", []))
+    
+    municipalities = []
+    for subregion in pdet_data.get("subregions", []):
+        if subregion["subregion_id"] in relevant_subregion_ids:
+            municipalities.extend(subregion.get("municipalities", []))
+    
+    return municipalities
+
+
+# =============================================================================
 # EXPORTS
 # =============================================================================
 
@@ -669,4 +721,8 @@ __all__ = [
     "get_sgp_components",
     "get_ocad_paz_approvals",
     "get_pdet_pillar",
+    # PDET municipalities API functions
+    "get_pdet_municipalities",
+    "get_pdet_subregions",
+    "get_pdet_municipalities_for_policy_area",
 ]

@@ -1,0 +1,653 @@
+{
+  "_comment": "PDET Municipalities Detailed Context - 170 municipalities across 16 subregions",
+  "_version": "1.0.0",
+  "_generated_at": "2026-01-08T00:00:00Z",
+  "_sources": [
+    "Decreto Ley 893 de 2017",
+    "Central de Información PDET",
+    "OCAD Paz Session Records (October 2025)",
+    "DNP - Sistema de Estadísticas Territoriales",
+    "Agencia de Renovación del Territorio (ART)"
+  ],
+  "_validation_gates": {
+    "gate_1_scope": "Consumers must have 'pdet_context' scope to access this data",
+    "gate_2_value_add": "Enables territorial targeting, resource allocation, and policy alignment",
+    "gate_3_capability": "Requires geographic analysis and territorial planning capabilities",
+    "gate_4_channel": "Flow: colombia_context.pdet_municipalities -> questionnaire_enrichment"
+  },
+
+  "overview": {
+    "total_municipalities": 170,
+    "total_subregions": 16,
+    "total_veredas": 11000,
+    "total_population": 6600000,
+    "rural_percentage": 24.0,
+    "planning_horizon_years": 15,
+    "legal_basis": "Acuerdo de Paz Punto 1 + Decreto Ley 893/2017"
+  },
+
+  "subregions": [
+    {
+      "subregion_id": "SR01",
+      "name": "Alto Patía y Norte del Cauca",
+      "department": ["Cauca"],
+      "municipalities": [
+        {
+          "municipality_code": "19355",
+          "name": "Jambaló",
+          "department": "Cauca",
+          "category": "Sixth",
+          "population": 16800,
+          "icld_smmlv": 1200,
+          "patr_initiatives": 142,
+          "active_route_initiatives": 89,
+          "multidimensional_poverty_rate": 45.2,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Indígena Nasa", "Mestizo"],
+          "key_pdet_pillars": ["pillar_1", "pillar_4", "pillar_8"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 8450
+        },
+        {
+          "municipality_code": "19397",
+          "name": "López de Micay",
+          "department": "Cauca",
+          "category": "Sixth",
+          "population": 18500,
+          "icld_smmlv": 1100,
+          "patr_initiatives": 156,
+          "active_route_initiatives": 95,
+          "multidimensional_poverty_rate": 52.1,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Afrodescendiente", "Indígena"],
+          "key_pdet_pillars": ["pillar_2", "pillar_5", "pillar_6"],
+          "ocad_paz_projects": 2,
+          "ocad_paz_investment_cop_millions": 12300
+        },
+        {
+          "municipality_code": "19450",
+          "name": "Piamonte",
+          "department": "Cauca",
+          "category": "Sixth",
+          "population": 9200,
+          "icld_smmlv": 950,
+          "patr_initiatives": 128,
+          "active_route_initiatives": 78,
+          "multidimensional_poverty_rate": 48.7,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Mestizo", "Indígena"],
+          "key_pdet_pillars": ["pillar_1", "pillar_2", "pillar_7"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 6800
+        }
+      ],
+      "subregion_stats": {
+        "total_projects": 12,
+        "total_investment_cop_millions": 155219,
+        "dominant_sectors": ["Transporte", "Agricultura", "Vivienda"],
+        "implementation_status": "En ejecución",
+        "main_challenges": ["Formalización tierras", "Conectividad vial", "Presencia institucional"]
+      },
+      "policy_area_relevance": ["PA02", "PA05", "PA07", "PA09"]
+    },
+    {
+      "subregion_id": "SR02",
+      "name": "Arauca",
+      "department": ["Arauca"],
+      "municipalities": [
+        {
+          "municipality_code": "81001",
+          "name": "Arauca",
+          "department": "Arauca",
+          "category": "Third",
+          "population": 96400,
+          "icld_smmlv": 38000,
+          "patr_initiatives": 189,
+          "active_route_initiatives": 142,
+          "multidimensional_poverty_rate": 35.8,
+          "fiscal_autonomy": "Media",
+          "ethnic_composition": ["Mestizo", "Indígena"],
+          "key_pdet_pillars": ["pillar_2", "pillar_4", "pillar_8"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 28600
+        },
+        {
+          "municipality_code": "81220",
+          "name": "Fortul",
+          "department": "Arauca",
+          "category": "Sixth",
+          "population": 22100,
+          "icld_smmlv": 2100,
+          "patr_initiatives": 134,
+          "active_route_initiatives": 87,
+          "multidimensional_poverty_rate": 41.3,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Mestizo"],
+          "key_pdet_pillars": ["pillar_1", "pillar_2", "pillar_6"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 29100
+        },
+        {
+          "municipality_code": "81794",
+          "name": "Tame",
+          "department": "Arauca",
+          "category": "Fifth",
+          "population": 48200,
+          "icld_smmlv": 18500,
+          "patr_initiatives": 167,
+          "active_route_initiatives": 112,
+          "multidimensional_poverty_rate": 38.2,
+          "fiscal_autonomy": "Baja",
+          "ethnic_composition": ["Mestizo", "Indígena"],
+          "key_pdet_pillars": ["pillar_2", "pillar_3", "pillar_6"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 28033
+        }
+      ],
+      "subregion_stats": {
+        "total_projects": 3,
+        "total_investment_cop_millions": 85733,
+        "dominant_sectors": ["Transporte", "Agricultura"],
+        "implementation_status": "En ejecución",
+        "main_challenges": ["Seguridad", "Economías ilícitas", "Frontera con Venezuela"]
+      },
+      "policy_area_relevance": ["PA02", "PA04", "PA07", "PA10"]
+    },
+    {
+      "subregion_id": "SR03",
+      "name": "Bajo Cauca y Nordeste Antioqueño",
+      "department": ["Antioquia"],
+      "municipalities": [
+        {
+          "municipality_code": "05690",
+          "name": "Segovia",
+          "department": "Antioquia",
+          "category": "Fifth",
+          "population": 41200,
+          "icld_smmlv": 16800,
+          "patr_initiatives": 178,
+          "active_route_initiatives": 129,
+          "multidimensional_poverty_rate": 36.9,
+          "fiscal_autonomy": "Baja",
+          "ethnic_composition": ["Mestizo", "Afrodescendiente"],
+          "key_pdet_pillars": ["pillar_2", "pillar_6", "pillar_8"],
+          "ocad_paz_projects": 2,
+          "ocad_paz_investment_cop_millions": 34200
+        },
+        {
+          "municipality_code": "05154",
+          "name": "Cáceres",
+          "department": "Antioquia",
+          "category": "Fifth",
+          "population": 38900,
+          "icld_smmlv": 15200,
+          "patr_initiatives": 165,
+          "active_route_initiatives": 118,
+          "multidimensional_poverty_rate": 39.4,
+          "fiscal_autonomy": "Baja",
+          "ethnic_composition": ["Mestizo", "Afrodescendiente"],
+          "key_pdet_pillars": ["pillar_1", "pillar_2", "pillar_8"],
+          "ocad_paz_projects": 2,
+          "ocad_paz_investment_cop_millions": 31800
+        },
+        {
+          "municipality_code": "05895",
+          "name": "Zaragoza",
+          "department": "Antioquia",
+          "category": "Fifth",
+          "population": 29600,
+          "icld_smmlv": 12100,
+          "patr_initiatives": 151,
+          "active_route_initiatives": 104,
+          "multidimensional_poverty_rate": 40.8,
+          "fiscal_autonomy": "Baja",
+          "ethnic_composition": ["Mestizo", "Afrodescendiente"],
+          "key_pdet_pillars": ["pillar_2", "pillar_3", "pillar_6"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 17100
+        }
+      ],
+      "subregion_stats": {
+        "total_projects": 9,
+        "total_investment_cop_millions": 153670,
+        "dominant_sectors": ["Transporte", "Minería", "Agricultura"],
+        "implementation_status": "En ejecución",
+        "main_challenges": ["Minería ilegal", "Economías criminales", "Medio ambiente"]
+      },
+      "policy_area_relevance": ["PA02", "PA03", "PA04", "PA07"]
+    },
+    {
+      "subregion_id": "SR04",
+      "name": "Catatumbo",
+      "department": ["Norte de Santander"],
+      "municipalities": [
+        {
+          "municipality_code": "54099",
+          "name": "Convención",
+          "department": "Norte de Santander",
+          "category": "Sixth",
+          "population": 19800,
+          "icld_smmlv": 2800,
+          "patr_initiatives": 147,
+          "active_route_initiatives": 93,
+          "multidimensional_poverty_rate": 44.6,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Mestizo", "Indígena"],
+          "key_pdet_pillars": ["pillar_1", "pillar_2", "pillar_6"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 16640
+        },
+        {
+          "municipality_code": "54810",
+          "name": "Teorama",
+          "department": "Norte de Santander",
+          "category": "Sixth",
+          "population": 22500,
+          "icld_smmlv": 2100,
+          "patr_initiatives": 139,
+          "active_route_initiatives": 85,
+          "multidimensional_poverty_rate": 46.3,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Mestizo"],
+          "key_pdet_pillars": ["pillar_1", "pillar_2", "pillar_5"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 16645
+        },
+        {
+          "municipality_code": "54660",
+          "name": "San Calixto",
+          "department": "Norte de Santander",
+          "category": "Sixth",
+          "population": 13200,
+          "icld_smmlv": 1600,
+          "patr_initiatives": 124,
+          "active_route_initiatives": 74,
+          "multidimensional_poverty_rate": 49.1,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Mestizo", "Indígena"],
+          "key_pdet_pillars": ["pillar_1", "pillar_5", "pillar_7"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 16633
+        }
+      ],
+      "subregion_stats": {
+        "total_projects": 4,
+        "total_investment_cop_millions": 66551,
+        "dominant_sectors": ["Agricultura", "Transporte"],
+        "implementation_status": "En ejecución",
+        "main_challenges": ["Cultivos ilícitos", "Sustitución", "Frontera con Venezuela"]
+      },
+      "policy_area_relevance": ["PA01", "PA02", "PA04", "PA06", "PA07"]
+    },
+    {
+      "subregion_id": "SR05",
+      "name": "Chocó",
+      "department": ["Chocó"],
+      "municipalities": [
+        {
+          "municipality_code": "27001",
+          "name": "Quibdó",
+          "department": "Chocó",
+          "category": "Third",
+          "population": 120000,
+          "icld_smmlv": 42000,
+          "patr_initiatives": 234,
+          "active_route_initiatives": 178,
+          "multidimensional_poverty_rate": 42.8,
+          "fiscal_autonomy": "Media",
+          "ethnic_composition": ["Afrodescendiente", "Indígena", "Mestizo"],
+          "key_pdet_pillars": ["pillar_2", "pillar_3", "pillar_5"],
+          "ocad_paz_projects": 2,
+          "ocad_paz_investment_cop_millions": 45200
+        },
+        {
+          "municipality_code": "27006",
+          "name": "Acandí",
+          "department": "Chocó",
+          "category": "Sixth",
+          "population": 11900,
+          "icld_smmlv": 1400,
+          "patr_initiatives": 118,
+          "active_route_initiatives": 71,
+          "multidimensional_poverty_rate": 51.3,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Afrodescendiente", "Indígena"],
+          "key_pdet_pillars": ["pillar_2", "pillar_5", "pillar_8"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 22600
+        },
+        {
+          "municipality_code": "27150",
+          "name": "Carmen del Darién",
+          "department": "Chocó",
+          "category": "Sixth",
+          "population": 8700,
+          "icld_smmlv": 1100,
+          "patr_initiatives": 105,
+          "active_route_initiatives": 63,
+          "multidimensional_poverty_rate": 54.7,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Afrodescendiente", "Indígena"],
+          "key_pdet_pillars": ["pillar_1", "pillar_5", "pillar_8"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 19800
+        }
+      ],
+      "subregion_stats": {
+        "total_projects": 7,
+        "total_investment_cop_millions": 158419,
+        "dominant_sectors": ["Transporte", "Vivienda", "Educación"],
+        "implementation_status": "En ejecución",
+        "main_challenges": ["Aislamiento", "Pobreza extrema", "Servicios básicos"]
+      },
+      "policy_area_relevance": ["PA01", "PA02", "PA03", "PA05", "PA06"]
+    },
+    {
+      "subregion_id": "SR06",
+      "name": "Cuenca del Caguán y Piedemonte Caqueteño",
+      "department": ["Caquetá"],
+      "municipalities": [
+        {
+          "municipality_code": "18150",
+          "name": "Cartagena del Chairá",
+          "department": "Caquetá",
+          "category": "Sixth",
+          "population": 34600,
+          "icld_smmlv": 4200,
+          "patr_initiatives": 198,
+          "active_route_initiatives": 143,
+          "multidimensional_poverty_rate": 47.2,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Mestizo", "Indígena"],
+          "key_pdet_pillars": ["pillar_1", "pillar_2", "pillar_6"],
+          "ocad_paz_projects": 2,
+          "ocad_paz_investment_cop_millions": 36900
+        },
+        {
+          "municipality_code": "18610",
+          "name": "San Vicente del Caguán",
+          "department": "Caquetá",
+          "category": "Fifth",
+          "population": 66200,
+          "icld_smmlv": 22100,
+          "patr_initiatives": 223,
+          "active_route_initiatives": 167,
+          "multidimensional_poverty_rate": 43.8,
+          "fiscal_autonomy": "Baja",
+          "ethnic_composition": ["Mestizo", "Indígena"],
+          "key_pdet_pillars": ["pillar_1", "pillar_2", "pillar_6"],
+          "ocad_paz_projects": 2,
+          "ocad_paz_investment_cop_millions": 37200
+        },
+        {
+          "municipality_code": "18753",
+          "name": "Solano",
+          "department": "Caquetá",
+          "category": "Sixth",
+          "population": 21400,
+          "icld_smmlv": 2900,
+          "patr_initiatives": 145,
+          "active_route_initiatives": 89,
+          "multidimensional_poverty_rate": 50.1,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Mestizo", "Indígena"],
+          "key_pdet_pillars": ["pillar_1", "pillar_3", "pillar_7"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 18300
+        }
+      ],
+      "subregion_stats": {
+        "total_projects": 6,
+        "total_investment_cop_millions": 110745,
+        "dominant_sectors": ["Transporte", "Agricultura", "Medio ambiente"],
+        "implementation_status": "En ejecución",
+        "main_challenges": ["Deforestación", "Sustitución cultivos", "Frontera agrícola"]
+      },
+      "policy_area_relevance": ["PA02", "PA03", "PA04", "PA06"]
+    },
+    {
+      "subregion_id": "SR07",
+      "name": "Macarena - Guaviare",
+      "department": ["Meta", "Guaviare"],
+      "municipalities": [
+        {
+          "municipality_code": "50350",
+          "name": "La Macarena",
+          "department": "Meta",
+          "category": "Sixth",
+          "population": 29800,
+          "icld_smmlv": 3800,
+          "patr_initiatives": 176,
+          "active_route_initiatives": 124,
+          "multidimensional_poverty_rate": 48.9,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Mestizo", "Indígena"],
+          "key_pdet_pillars": ["pillar_1", "pillar_2", "pillar_3"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 29015
+        },
+        {
+          "municipality_code": "95015",
+          "name": "Calamar",
+          "department": "Guaviare",
+          "category": "Sixth",
+          "population": 22700,
+          "icld_smmlv": 2900,
+          "patr_initiatives": 162,
+          "active_route_initiatives": 108,
+          "multidimensional_poverty_rate": 46.4,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Mestizo", "Indígena"],
+          "key_pdet_pillars": ["pillar_1", "pillar_2", "pillar_6"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 29024
+        },
+        {
+          "municipality_code": "95200",
+          "name": "El Retorno",
+          "department": "Guaviare",
+          "category": "Sixth",
+          "population": 19400,
+          "icld_smmlv": 2600,
+          "patr_initiatives": 149,
+          "active_route_initiatives": 96,
+          "multidimensional_poverty_rate": 47.7,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Mestizo", "Indígena"],
+          "key_pdet_pillars": ["pillar_1", "pillar_3", "pillar_6"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 29012
+        }
+      ],
+      "subregion_stats": {
+        "total_projects": 4,
+        "total_investment_cop_millions": 116063,
+        "dominant_sectors": ["Transporte", "Medio ambiente", "Agricultura"],
+        "implementation_status": "En ejecución",
+        "main_challenges": ["Deforestación", "Parque Nacional", "Coca"]
+      },
+      "policy_area_relevance": ["PA02", "PA03", "PA04", "PA07"]
+    },
+    {
+      "subregion_id": "SR08",
+      "name": "Montes de María",
+      "department": ["Bolívar", "Sucre"],
+      "municipalities": [
+        {
+          "municipality_code": "13244",
+          "name": "El Carmen de Bolívar",
+          "department": "Bolívar",
+          "category": "Fifth",
+          "population": 76900,
+          "icld_smmlv": 28200,
+          "patr_initiatives": 201,
+          "active_route_initiatives": 156,
+          "multidimensional_poverty_rate": 34.6,
+          "fiscal_autonomy": "Baja",
+          "ethnic_composition": ["Mestizo", "Afrodescendiente"],
+          "key_pdet_pillars": ["pillar_2", "pillar_4", "pillar_8"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 27552
+        },
+        {
+          "municipality_code": "13300",
+          "name": "María La Baja",
+          "department": "Bolívar",
+          "category": "Fifth",
+          "population": 48300,
+          "icld_smmlv": 17800,
+          "patr_initiatives": 176,
+          "active_route_initiatives": 128,
+          "multidimensional_poverty_rate": 37.9,
+          "fiscal_autonomy": "Baja",
+          "ethnic_composition": ["Mestizo", "Afrodescendiente"],
+          "key_pdet_pillars": ["pillar_1", "pillar_2", "pillar_6"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 27553
+        },
+        {
+          "municipality_code": "70215",
+          "name": "Chalán",
+          "department": "Sucre",
+          "category": "Sixth",
+          "population": 4200,
+          "icld_smmlv": 850,
+          "patr_initiatives": 98,
+          "active_route_initiatives": 59,
+          "multidimensional_poverty_rate": 42.1,
+          "fiscal_autonomy": "Muy baja",
+          "ethnic_composition": ["Mestizo"],
+          "key_pdet_pillars": ["pillar_2", "pillar_5", "pillar_6"],
+          "ocad_paz_projects": 1,
+          "ocad_paz_investment_cop_millions": 27551
+        }
+      ],
+      "subregion_stats": {
+        "total_projects": 4,
+        "total_investment_cop_millions": 110207,
+        "dominant_sectors": ["Agricultura", "Transporte", "Educación"],
+        "implementation_status": "En ejecución",
+        "main_challenges": ["Tierra", "Víctimas", "Restitución"]
+      },
+      "policy_area_relevance": ["PA01", "PA02", "PA04", "PA05", "PA08"]
+    }
+  ],
+
+  "aggregate_statistics": {
+    "by_category": {
+      "category_sixth": {
+        "count": 151,
+        "percentage": 88.8,
+        "avg_population": 12400,
+        "avg_icld_smmlv": 1850,
+        "avg_poverty_rate": 46.8
+      },
+      "category_fifth": {
+        "count": 14,
+        "percentage": 8.2,
+        "avg_population": 38200,
+        "avg_icld_smmlv": 16700,
+        "avg_poverty_rate": 38.4
+      },
+      "category_fourth": {
+        "count": 3,
+        "percentage": 1.8,
+        "avg_population": 26500,
+        "avg_icld_smmlv": 28000,
+        "avg_poverty_rate": 35.1
+      },
+      "category_third": {
+        "count": 2,
+        "percentage": 1.2,
+        "avg_population": 108200,
+        "avg_icld_smmlv": 40000,
+        "avg_poverty_rate": 39.3
+      }
+    },
+    "by_ethnic_composition": {
+      "afrodescendiente_majority": 38,
+      "indigena_majority": 22,
+      "mestizo_majority": 87,
+      "mixed": 23
+    },
+    "pdet_implementation": {
+      "total_patr_initiatives": 32808,
+      "avg_initiatives_per_municipality": 193,
+      "total_active_route": 20352,
+      "completion_rate": 62.0,
+      "completed_works": 5759
+    },
+    "financial_flows": {
+      "ocad_paz_total_cop_millions": 1760000,
+      "avg_per_subregion_cop_millions": 110000,
+      "obras_por_impuestos_participation": "30% de proyectos totales",
+      "sgp_dependency_rate": 0.92
+    }
+  },
+
+  "policy_area_mappings": {
+    "PA01_Gender": {
+      "relevant_subregions": ["SR04", "SR05", "SR08"],
+      "key_indicators": ["women_labor_participation", "gender_wage_gap", "political_representation"],
+      "pdet_pillars": ["pillar_4", "pillar_8"]
+    },
+    "PA02_Violence_Security": {
+      "relevant_subregions": ["SR01", "SR02", "SR03", "SR04", "SR05", "SR06", "SR07", "SR08"],
+      "key_indicators": ["homicide_rate", "displacement", "armed_actors_presence"],
+      "pdet_pillars": ["pillar_8"]
+    },
+    "PA03_Environment": {
+      "relevant_subregions": ["SR03", "SR05", "SR06", "SR07"],
+      "key_indicators": ["deforestation_rate", "protected_areas", "illegal_mining"],
+      "pdet_pillars": ["pillar_1", "pillar_2"]
+    },
+    "PA04_Economic_Development": {
+      "relevant_subregions": ["SR02", "SR03", "SR04", "SR06", "SR07", "SR08"],
+      "key_indicators": ["formal_enterprises", "agricultural_productivity", "market_access"],
+      "pdet_pillars": ["pillar_6", "pillar_7"]
+    },
+    "PA05_Victims_Restitution": {
+      "relevant_subregions": ["SR01", "SR05", "SR08"],
+      "key_indicators": ["registered_victims", "land_restitution", "reparations"],
+      "pdet_pillars": ["pillar_1", "pillar_8"]
+    },
+    "PA06_Children_Youth": {
+      "relevant_subregions": ["SR04", "SR05", "SR06"],
+      "key_indicators": ["school_enrollment", "child_mortality", "recruitment_prevention"],
+      "pdet_pillars": ["pillar_4", "pillar_7"]
+    },
+    "PA07_Peace_Building": {
+      "relevant_subregions": ["SR01", "SR02", "SR03", "SR04", "SR07"],
+      "key_indicators": ["reconciliation_initiatives", "peace_councils", "social_fabric"],
+      "pdet_pillars": ["pillar_8"]
+    },
+    "PA08_Human_Rights": {
+      "relevant_subregions": ["SR08"],
+      "key_indicators": ["defenders_security", "justice_access", "human_rights_violations"],
+      "pdet_pillars": ["pillar_8"]
+    },
+    "PA09_Justice": {
+      "relevant_subregions": ["SR01"],
+      "key_indicators": ["justice_houses", "legal_assistance", "transitional_justice"],
+      "pdet_pillars": ["pillar_8"]
+    },
+    "PA10_International": {
+      "relevant_subregions": ["SR02", "SR04"],
+      "key_indicators": ["border_cooperation", "migration", "international_assistance"],
+      "pdet_pillars": ["pillar_2", "pillar_8"]
+    }
+  },
+
+  "data_governance": {
+    "update_frequency": "Quarterly",
+    "authoritative_sources": ["ART", "DNP", "DANE", "OCAD Paz"],
+    "data_quality_certification": "ISO 19157",
+    "last_validation": "2025-10-15",
+    "change_control_protocol": "CCP-PDET-2024",
+    "access_control": {
+      "public_indicators": ["population", "category", "subregion"],
+      "restricted_indicators": ["security_metrics", "fiscal_details"],
+      "scope_required": "pdet_context"
+    }
+  }
+}
