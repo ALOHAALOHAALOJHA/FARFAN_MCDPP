@@ -149,7 +149,7 @@ def validate_validators():
             consumer_id = "test"
             declared_capabilities = {SignalCapability.SEMANTIC_PROCESSING}
         
-        result = cap_validator.validate(TestConsumer(), "ENRICHMENT_DATA")
+        cap_validator.validate(TestConsumer(), "ENRICHMENT_DATA")
         print("✅ Gate 3 (Capability Validator) working correctly")
         
         # Test Channel Validator
