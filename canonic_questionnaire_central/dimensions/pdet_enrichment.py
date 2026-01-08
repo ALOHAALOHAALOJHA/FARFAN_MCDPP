@@ -163,6 +163,30 @@ def get_validation_gates(dimension_id: str) -> dict[str, ValidationGate]:
     return gates
 
 
+def _extract_requirements(pillar_data: dict[str, Any]) -> list[str]:
+    """Extract requirements from pillar data checking multiple possible keys.
+    
+    Args:
+        pillar_data: Dictionary containing pillar information
+        
+    Returns:
+        List of requirements (empty list if none found)
+    """
+    requirement_keys = [
+        "diagnostic_requirements",
+        "activity_requirements",
+        "product_requirements",
+        "outcome_requirements",
+        "impact_requirements"
+    ]
+    
+    for key in requirement_keys:
+        if key in pillar_data:
+            return pillar_data[key]
+    
+    return []
+
+
 def get_pdet_pillars(dimension_id: str, include_secondary: bool = False) -> list[PdetPillar]:
     """Get PDET pillar mappings for a dimension.
     
@@ -185,11 +209,7 @@ def get_pdet_pillars(dimension_id: str, include_secondary: bool = False) -> list
             pillar_name=pillar_data.get("pillar_name", ""),
             relevance=pillar_data.get("relevance", ""),
             relevance_score=pillar_data.get("relevance_score", 0.0),
-            requirements=pillar_data.get("diagnostic_requirements", 
-                                        pillar_data.get("activity_requirements",
-                                        pillar_data.get("product_requirements",
-                                        pillar_data.get("outcome_requirements",
-                                        pillar_data.get("impact_requirements", [])))))
+            requirements=_extract_requirements(pillar_data)
         ))
     
     # Secondary pillars if requested
@@ -200,11 +220,33 @@ def get_pdet_pillars(dimension_id: str, include_secondary: bool = False) -> list
                 pillar_name=pillar_data.get("pillar_name", ""),
                 relevance=pillar_data.get("relevance", ""),
                 relevance_score=pillar_data.get("relevance_score", 0.0),
-                requirements=pillar_data.get("diagnostic_requirements",
-                                            pillar_data.get("activity_requirements", []))
+                requirements=_extract_requirements(pillar_data)
             ))
     
     return pillars
+
+
+def _extract_required_elements(pa_data: dict[str, Any]) -> list[str]:
+    """Extract required elements from policy area data checking multiple possible keys.
+    
+    Args:
+        pa_data: Dictionary containing policy area information
+        
+    Returns:
+        List of required elements (empty list if none found)
+    """
+    element_keys = [
+        "required_diagnostics",
+        "required_activities",
+        "required_outcomes",
+        "required_elements"
+    ]
+    
+    for key in element_keys:
+        if key in pa_data:
+            return pa_data[key]
+    
+    return []
 
 
 def get_policy_area_criteria(dimension_id: str, policy_area_id: str) -> PolicyAreaCriteria | None:
@@ -238,9 +280,7 @@ def get_policy_area_criteria(dimension_id: str, policy_area_id: str) -> PolicyAr
     
     return PolicyAreaCriteria(
         policy_area_id=policy_area_id,
-        required_elements=pa_data.get("required_diagnostics", 
-                                     pa_data.get("required_activities",
-                                     pa_data.get("required_outcomes", []))),
+        required_elements=_extract_required_elements(pa_data),
         pdet_subregions_high_priority=pa_data.get("pdet_subregions_high_priority", []),
         key_indicators=pa_data.get("key_indicators", [])
     )
