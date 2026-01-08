@@ -670,9 +670,9 @@ class PDETContextValidator:
                 result.add_error(
                     f"'territorial_adjustment' must be numeric, got {type(adjustment).__name__}"
                 )
-            elif adjustment < 0.0 or adjustment > 0.2:
+            elif adjustment < 0.0 or adjustment > 0.16:  # max_total_adjustment from scoring_system.json
                 result.add_warning(
-                    f"'territorial_adjustment' outside typical range [0, 0.2]: {adjustment}"
+                    f"'territorial_adjustment' outside configured range [0, 0.16]: {adjustment}"
                 )
         
         return result

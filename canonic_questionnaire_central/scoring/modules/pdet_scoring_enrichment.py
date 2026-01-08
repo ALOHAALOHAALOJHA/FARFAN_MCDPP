@@ -82,6 +82,10 @@ class PDETScoringEnricher:
     - Gate 4: Channel authenticity
     """
     
+    # PDET Data Constants (from pdet_municipalities.json overview)
+    TOTAL_PDET_MUNICIPALITIES = 170
+    TOTAL_PDET_SUBREGIONS = 16
+    
     def __init__(
         self,
         orchestrator: Optional[EnrichmentOrchestrator] = None,
@@ -232,13 +236,11 @@ class PDETScoringEnricher:
         if not municipalities and not subregions:
             return 0.0
         
-        # Calculate based on number of relevant municipalities
-        # Max 170 PDET municipalities
-        muni_coverage = len(municipalities) / 170.0
+        # Calculate based on number of relevant municipalities (use class constant)
+        muni_coverage = len(municipalities) / float(self.TOTAL_PDET_MUNICIPALITIES)
         
-        # Calculate based on number of relevant subregions
-        # Max 16 PDET subregions
-        subregion_coverage = len(subregions) / 16.0
+        # Calculate based on number of relevant subregions (use class constant)
+        subregion_coverage = len(subregions) / float(self.TOTAL_PDET_SUBREGIONS)
         
         # Weighted average
         return (muni_coverage * 0.6) + (subregion_coverage * 0.4)
@@ -316,6 +318,9 @@ class PDETScoringEnricher:
         enriched_result: EnrichedScoredResult
     ) -> Dict[str, Any]:
         """Get summary of PDET enrichment."""
+        # Safely get threshold from metadata with default
+        base_threshold = enriched_result.base_result.scoring_metadata.get("threshold", 0.0)
+        
         return {
             "enrichment_applied": enriched_result.enrichment_applied,
             "gate_validation": enriched_result.gate_validation_status,
@@ -326,9 +331,8 @@ class PDETScoringEnricher:
             "territorial_adjustment": enriched_result.territorial_adjustment,
             "base_score": enriched_result.base_result.score,
             "adjusted_threshold": (
-                enriched_result.base_result.scoring_metadata.get("threshold", 0.0) -
-                enriched_result.territorial_adjustment
-            ) if enriched_result.enrichment_applied else None
+                base_threshold - enriched_result.territorial_adjustment
+            ) if enriched_result.enrichment_applied and base_threshold > 0 else None
         }
 
 
