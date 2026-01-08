@@ -282,7 +282,6 @@ class TestCL03ContextualEnrichment:
         assert scope_result.valid, "Gate 1 validation failed"
         
         # Gate 2: Value-Add Scorer
-        value_scorer = ValueAddScorer(min_value_add_threshold=0.10)
         estimated_value = enrichment_data["_validation_gates_compliance"]["gate_2_value_add"]["estimated_value_add"]
         assert estimated_value >= 0.10, "Gate 2 validation failed: value-add below threshold"
         
