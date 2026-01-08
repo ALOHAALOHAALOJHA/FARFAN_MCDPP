@@ -462,20 +462,21 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
             CanonicalInput with validated data
 
         Raises:
-            FileNotFoundError: If PDF or questionnaire doesn't exist
+            FileNotFoundError: If PDF or questionnaire manifest doesn't exist
             ValueError: If validation fails
         """
         errors = []
         warnings = []
 
-        # 1. Resolve questionnaire path
+        # 1. Resolve questionnaire path (Manifest Entry Point)
         questionnaire_path = input_data.questionnaire_path
         if questionnaire_path is None:
-            from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import QUESTIONNAIRE_FILE
+            # Use the new Modular Manifest Entry Point
+            from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import QUESTIONNAIRE_ENTRY_POINT
 
-            questionnaire_path = QUESTIONNAIRE_FILE
+            questionnaire_path = QUESTIONNAIRE_ENTRY_POINT
             warnings.append(
-                f"questionnaire_path not provided, using default: {questionnaire_path}"
+                f"questionnaire_path not provided, using default manifest: {questionnaire_path}"
             )
 
         # 2. Validate PDF exists
@@ -484,11 +485,11 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
         if not input_data.pdf_path.is_file():
             errors.append(f"PDF path is not a file: {input_data.pdf_path}")
 
-        # 3. Validate questionnaire exists
+        # 3. Validate questionnaire manifest exists
         if not questionnaire_path.exists():
-            errors.append(f"Questionnaire not found: {questionnaire_path}")
+            errors.append(f"Questionnaire Manifest not found: {questionnaire_path}")
         if not questionnaire_path.is_file():
-            errors.append(f"Questionnaire path is not a file: {questionnaire_path}")
+            errors.append(f"Questionnaire Manifest path is not a file: {questionnaire_path}")
 
         # If basic validation failed, abort
         if errors:
@@ -499,7 +500,10 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
         pdf_size_bytes = input_data.pdf_path.stat().st_size
         pdf_page_count = self._get_pdf_page_count(input_data.pdf_path)
 
-        # 5. Compute questionnaire hash
+        # 5. Compute questionnaire manifest hash
+        # NOTE: This validates the integrity of the MANIFEST file itself.
+        # It does NOT recursively validate the content of the referenced modules.
+        # This is a known limitation of Phase 0 in the Modular Architecture transition.
         questionnaire_sha256 = self._compute_sha256(questionnaire_path)
 
         # 6. Determine document_id
