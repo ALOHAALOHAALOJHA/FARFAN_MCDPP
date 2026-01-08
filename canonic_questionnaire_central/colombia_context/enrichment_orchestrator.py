@@ -260,16 +260,18 @@ class EnrichmentOrchestrator:
         
         # Check policy area authorization
         if request.consumer_scope.allowed_policy_areas:
-            unauthorized_pas = set(request.target_policy_areas) - set(request.consumer_scope.allowed_policy_areas)
-            if unauthorized_pas:
-                return {
-                    "valid": False,
-                    "gate": "GATE_1_SCOPE_VALIDITY",
-                    "violations": [
-                        f"Consumer not authorized for policy areas: {unauthorized_pas}"
-                    ],
-                    "unauthorized_policy_areas": list(unauthorized_pas)
-                }
+            # Allow wildcard "*" to authorize all policy areas
+            if "*" not in request.consumer_scope.allowed_policy_areas:
+                unauthorized_pas = set(request.target_policy_areas) - set(request.consumer_scope.allowed_policy_areas)
+                if unauthorized_pas:
+                    return {
+                        "valid": False,
+                        "gate": "GATE_1_SCOPE_VALIDITY",
+                        "violations": [
+                            f"Consumer not authorized for policy areas: {unauthorized_pas}"
+                        ],
+                        "unauthorized_policy_areas": list(unauthorized_pas)
+                    }
         
         return {
             "valid": True,

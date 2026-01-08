@@ -545,6 +545,140 @@ def validate_batch(results: list[ScoredResult]) -> ValidationResult:
 
 
 # =============================================================================
+# PDET CONTEXT VALIDATION
+# =============================================================================
+
+class PDETContextValidator:
+    """Validator for PDET enrichment context in scoring.
+    
+    Validates that PDET municipality context is properly structured
+    and relevant to the scoring context.
+    """
+    
+    REQUIRED_CONTEXT_KEYS = {"municipalities", "subregions", "policy_area_mappings"}
+    OPTIONAL_CONTEXT_KEYS = {"relevant_pillars", "territorial_coverage", "enrichment_metadata"}
+    
+    @classmethod
+    def validate_pdet_context(cls, pdet_context: dict[str, Any]) -> ValidationResult:
+        """Validate PDET context structure.
+        
+        Args:
+            pdet_context: PDET context dict from enrichment
+        
+        Returns:
+            ValidationResult with validation status
+        """
+        result = ValidationResult(is_valid=True)
+        
+        if not isinstance(pdet_context, dict):
+            result.add_error(
+                f"pdet_context must be dict, got {type(pdet_context).__name__}"
+            )
+            return result
+        
+        # Validate municipalities
+        municipalities = pdet_context.get("municipalities", [])
+        if not isinstance(municipalities, list):
+            result.add_error(
+                f"'municipalities' must be list, got {type(municipalities).__name__}"
+            )
+        
+        # Validate subregions
+        subregions = pdet_context.get("subregions", [])
+        if not isinstance(subregions, list):
+            result.add_error(
+                f"'subregions' must be list, got {type(subregions).__name__}"
+            )
+        
+        # Validate territorial coverage if present
+        if "territorial_coverage" in pdet_context:
+            coverage = pdet_context["territorial_coverage"]
+            if not isinstance(coverage, (int, float)):
+                result.add_error(
+                    f"'territorial_coverage' must be numeric, got {type(coverage).__name__}"
+                )
+            elif not 0.0 <= coverage <= 1.0:
+                result.add_error(
+                    f"'territorial_coverage' must be in [0, 1], got {coverage}"
+                )
+        
+        # Validate relevant pillars if present
+        if "relevant_pillars" in pdet_context:
+            pillars = pdet_context["relevant_pillars"]
+            if not isinstance(pillars, list):
+                result.add_error(
+                    f"'relevant_pillars' must be list, got {type(pillars).__name__}"
+                )
+        
+        return result
+    
+    @classmethod
+    def validate_enriched_result(cls, enriched_result: dict[str, Any]) -> ValidationResult:
+        """Validate enriched scored result with PDET context.
+        
+        Args:
+            enriched_result: EnrichedScoredResult as dict
+        
+        Returns:
+            ValidationResult with validation status
+        """
+        result = ValidationResult(is_valid=True)
+        
+        if not isinstance(enriched_result, dict):
+            result.add_error(
+                f"enriched_result must be dict, got {type(enriched_result).__name__}"
+            )
+            return result
+        
+        # Check required fields
+        required_fields = {"base_result", "pdet_context", "enrichment_applied"}
+        missing = required_fields - enriched_result.keys()
+        if missing:
+            result.add_error(f"Missing required fields: {missing}")
+            return result
+        
+        # Validate base result exists
+        base_result = enriched_result.get("base_result")
+        if base_result is None:
+            result.add_error("'base_result' cannot be None")
+        
+        # Validate PDET context
+        pdet_context = enriched_result.get("pdet_context")
+        if pdet_context is not None:
+            context_validation = cls.validate_pdet_context(pdet_context)
+            result.errors.extend(context_validation.errors)
+            result.warnings.extend(context_validation.warnings)
+            if not context_validation.is_valid:
+                result.is_valid = False
+        
+        # Validate gate validation status if enrichment applied
+        if enriched_result.get("enrichment_applied", False):
+            gate_status = enriched_result.get("gate_validation_status", {})
+            if not isinstance(gate_status, dict):
+                result.add_warning("'gate_validation_status' should be dict")
+            else:
+                # Check expected gates
+                expected_gates = {"gate_1_scope", "gate_2_value_add", "gate_3_capability", "gate_4_channel"}
+                missing_gates = expected_gates - gate_status.keys()
+                if missing_gates:
+                    result.add_warning(f"Missing gate validation for: {missing_gates}")
+        
+        # Validate territorial adjustment
+        if "territorial_adjustment" in enriched_result:
+            adjustment = enriched_result["territorial_adjustment"]
+            if not isinstance(adjustment, (int, float)):
+                result.add_error(
+                    f"'territorial_adjustment' must be numeric, got {type(adjustment).__name__}"
+                )
+            elif adjustment < 0.0 or adjustment > 0.16:  # max_total_adjustment from scoring_system.json
+                result.add_warning(
+                    f"'territorial_adjustment' outside configured range [0, 0.16]: {adjustment}"
+                )
+        
+        return result
+
+
+# =============================================================================
 # EXPORTS
 # =============================================================================
 
@@ -565,6 +699,7 @@ __all__ = [
     "QualityLevelValidator",
     "ScoredResultValidator",
     "MetadataValidator",
+    "PDETContextValidator",
     # Batch
     "validate_batch",
 ]
