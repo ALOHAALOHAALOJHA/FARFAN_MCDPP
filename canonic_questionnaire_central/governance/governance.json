@@ -1,7 +1,10 @@
 {
   "_comment": "Governance metadata for FARFAN questionnaire",
-  "_version": "1.0.0",
-  "_generated_at": "2026-01-01T00:00:00Z",
+  "_version": "2.0.0",
+  "_generated_at": "2026-01-08T00:00:00Z",
+  "_changelog": {
+    "2.0.0": "Added PDET municipality context with four-gate validation framework"
+  },
 
   "version_control": {
     "current_version": "3.0.0",
@@ -19,17 +22,37 @@
     "ownership": {
       "questionnaire_central": "F.A.R.F.A.N Pipeline Team",
       "scoring_system": "Phase Three Team",
-      "validation_rules": "Contract Team"
+      "validation_rules": "Contract Team",
+      "pdet_context": "Colombia Context Team",
+      "municipal_governance": "Territorial Development Team"
     },
     "stewardship": {
       "dimensions": "Domain Experts",
       "policy_areas": "Policy Analysts",
-      "cross_cutting": "Cross-Cutting Themes Coordinator"
+      "cross_cutting": "Cross-Cutting Themes Coordinator",
+      "pdet_municipalities": "PDET Specialists",
+      "territorial_context": "Regional Analysts"
     },
     "access_control": {
       "read": "public",
       "write": "authenticated",
-      "admin": "pipeline_admin"
+      "admin": "pipeline_admin",
+      "pdet_enrichment": {
+        "scope_required": ["pdet_context", "ENRICHMENT_DATA"],
+        "capabilities_required": ["SEMANTIC_PROCESSING", "TABLE_PARSING"],
+        "authorization_level": "authenticated"
+      }
+    },
+    "pdet_municipality_context": {
+      "enabled": true,
+      "source_file": "colombia_context/pdet_municipalities.json",
+      "governance_file": "colombia_context/municipal_governance.json",
+      "total_municipalities": 170,
+      "total_subregions": 16,
+      "legal_basis": "Decreto Ley 893 de 2017",
+      "authoritative_sources": ["ART", "DNP", "DANE", "OCAD Paz"],
+      "update_frequency": "Quarterly",
+      "last_validation": "2025-10-15"
     }
   },
 
@@ -150,8 +173,174 @@
         "system": "EvidenceNexus",
         "integration_type": "evidence_graph",
         "description": "Evidence extraction and validation"
+      },
+      {
+        "system": "PDET_Context",
+        "integration_type": "territorial_enrichment",
+        "description": "PDET municipality context for territorial analysis",
+        "data_flow": "colombia_context.pdet_municipalities -> questionnaire_enrichment",
+        "validation_gates": ["scope", "value_add", "capability", "channel_integrity"]
       }
-    ]
+    ],
+    "pdet_enrichment_flows": {
+      "municipalities_to_questions": {
+        "flow_id": "PDET_MUNICIPALITIES_ENRICHMENT",
+        "source": "colombia_context/pdet_municipalities.json",
+        "destination": "questionnaire_enrichment",
+        "data_schema": "PDETMunicipalityContext",
+        "governance_policy": "four_gate_validation",
+        "is_explicit": true,
+        "is_documented": true,
+        "is_traceable": true,
+        "is_governed": true,
+        "documentation_path": "colombia_context/README_PDET_ENRICHMENT.md"
+      },
+      "municipal_governance_to_analysis": {
+        "flow_id": "MUNICIPAL_GOVERNANCE_ENRICHMENT",
+        "source": "colombia_context/municipal_governance.json",
+        "destination": "policy_area_analysis",
+        "data_schema": "MunicipalGovernanceContext",
+        "governance_policy": "four_gate_validation",
+        "is_explicit": true,
+        "is_documented": true,
+        "is_traceable": true,
+        "is_governed": true,
+        "documentation_path": "colombia_context/README_PDET_ENRICHMENT.md"
+      }
+    }
+  },
+
+  "pdet_validation_gates": {
+    "gate_1_scope_validation": {
+      "name": "Consumer Scope Validity",
+      "purpose": "Ensure consumers' declared scopes authorize access to canonical data",
+      "validation_criteria": {
+        "required_scopes": ["pdet_context", "ENRICHMENT_DATA"],
+        "authorized_policy_areas": "Consumer must be authorized for requested policy areas",
+        "failure_mode": "hard_failure"
+      },
+      "implementation": "validations.runtime_validators.ScopeValidator",
+      "enforcement": "strict",
+      "compliance_requirement": "Unauthorized access attempts result in hard failures"
+    },
+    "gate_2_value_contribution": {
+      "name": "Value Contribution Assessment",
+      "purpose": "Verify that enriched data materially improves, enables, or optimizes consumer processes",
+      "validation_criteria": {
+        "min_value_add_threshold": 0.10,
+        "value_estimates": {
+          "municipality_data": 0.25,
+          "subregion_context": 0.20,
+          "policy_area_mappings": 0.30,
+          "pdet_pillars": 0.15
+        },
+        "rejection_policy": "Redundant or ornamental data is rejected"
+      },
+      "implementation": "validations.runtime_validators.ValueAddScorer",
+      "enforcement": "strict",
+      "compliance_requirement": "Estimated value-add must exceed 10% threshold"
+    },
+    "gate_3_consumer_readiness": {
+      "name": "Consumer Capability and Readiness",
+      "purpose": "Check that consumers possess necessary tools and capabilities to utilize enriched data",
+      "validation_criteria": {
+        "required_capabilities": ["SEMANTIC_PROCESSING", "TABLE_PARSING"],
+        "recommended_capabilities": ["GRAPH_CONSTRUCTION", "FINANCIAL_ANALYSIS"],
+        "capability_validation": "Consumer must declare and demonstrate required capabilities"
+      },
+      "implementation": "validations.runtime_validators.CapabilityValidator",
+      "enforcement": "strict",
+      "compliance_requirement": "Required capabilities must be present"
+    },
+    "gate_4_channel_integrity": {
+      "name": "Channel Authenticity and Integrity",
+      "purpose": "Confirm all data channels are explicit, traceable, governed, and resilient",
+      "validation_criteria": {
+        "flow_registration": "Flow must be explicitly registered",
+        "documentation_requirement": "Documentation path must be provided",
+        "traceability": "Traceability must be enabled",
+        "governance_policy": "Governance policy must be defined",
+        "observability": "Change control and observability are recommended"
+      },
+      "implementation": "validations.runtime_validators.ChannelValidator",
+      "enforcement": "strict",
+      "compliance_requirement": "All required validation criteria must pass"
+    },
+    "orchestration": {
+      "orchestrator_class": "colombia_context.enrichment_orchestrator.EnrichmentOrchestrator",
+      "strict_mode": true,
+      "enable_all_gates": true,
+      "gate_execution_order": ["gate_1_scope_validation", "gate_2_value_contribution", "gate_3_consumer_readiness", "gate_4_channel_integrity"],
+      "failure_handling": "Any gate failure terminates enrichment process",
+      "compliance_reporting": {
+        "enabled": true,
+        "report_format": "JSON",
+        "log_export": "enrichment_log.json"
+      }
+    }
+  },
+
+  "pdet_policy_area_mappings": {
+    "PA01_Gender": {
+      "relevant_subregions": ["SR04", "SR05", "SR08"],
+      "municipality_count": 3,
+      "key_indicators": ["women_labor_participation", "gender_wage_gap", "political_representation"],
+      "pdet_pillars": ["pillar_4", "pillar_8"]
+    },
+    "PA02_Violence_Security": {
+      "relevant_subregions": ["SR01", "SR02", "SR03", "SR04", "SR05", "SR06", "SR07", "SR08"],
+      "municipality_count": 8,
+      "key_indicators": ["homicide_rate", "displacement", "armed_actors_presence"],
+      "pdet_pillars": ["pillar_8"]
+    },
+    "PA03_Environment": {
+      "relevant_subregions": ["SR03", "SR05", "SR06", "SR07"],
+      "municipality_count": 4,
+      "key_indicators": ["deforestation_rate", "protected_areas", "illegal_mining"],
+      "pdet_pillars": ["pillar_1", "pillar_2"]
+    },
+    "PA04_Economic_Development": {
+      "relevant_subregions": ["SR02", "SR03", "SR04", "SR06", "SR07", "SR08"],
+      "municipality_count": 6,
+      "key_indicators": ["formal_enterprises", "agricultural_productivity", "market_access"],
+      "pdet_pillars": ["pillar_6", "pillar_7"]
+    },
+    "PA05_Victims_Restitution": {
+      "relevant_subregions": ["SR01", "SR05", "SR08"],
+      "municipality_count": 3,
+      "key_indicators": ["registered_victims", "land_restitution", "reparations"],
+      "pdet_pillars": ["pillar_1", "pillar_8"]
+    },
+    "PA06_Children_Youth": {
+      "relevant_subregions": ["SR04", "SR05", "SR06"],
+      "municipality_count": 3,
+      "key_indicators": ["school_enrollment", "child_mortality", "recruitment_prevention"],
+      "pdet_pillars": ["pillar_4", "pillar_7"]
+    },
+    "PA07_Peace_Building": {
+      "relevant_subregions": ["SR01", "SR02", "SR03", "SR04", "SR07"],
+      "municipality_count": 5,
+      "key_indicators": ["reconciliation_initiatives", "peace_councils", "social_fabric"],
+      "pdet_pillars": ["pillar_8"]
+    },
+    "PA08_Human_Rights": {
+      "relevant_subregions": ["SR08"],
+      "municipality_count": 1,
+      "key_indicators": ["defenders_security", "justice_access", "human_rights_violations"],
+      "pdet_pillars": ["pillar_8"]
+    },
+    "PA09_Justice": {
+      "relevant_subregions": ["SR01"],
+      "municipality_count": 1,
+      "key_indicators": ["justice_houses", "legal_assistance", "transitional_justice"],
+      "pdet_pillars": ["pillar_8"]
+    },
+    "PA10_International": {
+      "relevant_subregions": ["SR02", "SR04"],
+      "municipality_count": 2,
+      "key_indicators": ["border_cooperation", "migration", "international_assistance"],
+      "pdet_pillars": ["pillar_2", "pillar_8"]
+    }
   },
 
   "security": {
