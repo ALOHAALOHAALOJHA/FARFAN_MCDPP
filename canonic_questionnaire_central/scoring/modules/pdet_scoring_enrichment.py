@@ -38,11 +38,7 @@ from canonic_questionnaire_central.validations.runtime_validators import (
     ScopeLevel,
 )
 
-from .scoring_modalities import (
-    ScoredResult,
-    ScoringModality,
-    ModalityConfig,
-)
+from .scoring_modalities import ScoredResult
 from .quality_levels import (
     determine_quality_level,
     THRESHOLD_EXCELENTE,
