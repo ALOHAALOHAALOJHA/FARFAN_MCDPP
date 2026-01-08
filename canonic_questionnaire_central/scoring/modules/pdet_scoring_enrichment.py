@@ -162,10 +162,8 @@ class PDETScoringEnricher:
         
         if not enrichment_result.success:
             logger.warning(
-                "PDET enrichment failed validation",
-                question_id=question_id,
-                policy_area=policy_area,
-                violations=enrichment_result.violations
+                f"PDET enrichment failed validation for {question_id} {policy_area}: "
+                f"{enrichment_result.violations}"
             )
             # Return non-enriched result
             return EnrichedScoredResult(
