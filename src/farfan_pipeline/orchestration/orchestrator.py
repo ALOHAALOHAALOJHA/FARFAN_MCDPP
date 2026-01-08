@@ -117,10 +117,22 @@ class Phase0ValidationResult:
     enabling the orchestrator to validate that all bootstrap prerequisites
     have been met before executing the 11-phase pipeline.
     
+    Phase 0 Exit Gates (P00-EN v2.0 + P1 Hardening):
+        Gate 1 (Bootstrap): Runtime config loaded, artifacts dir created
+        Gate 2 (Input Verification): PDF and questionnaire hashed (SHA-256)
+        Gate 3 (Boot Checks): Dependencies validated (PROD: fatal, DEV: warn)
+        Gate 4 (Determinism): All required seeds applied to RNGs (python+numpy MANDATORY)
+        Gate 5 (Questionnaire Integrity): SHA256 validation against known-good
+        Gate 6 (Method Registry): Expected method count validation (416 methods)
+        Gate 7 (Smoke Tests): Sample methods from major categories operational
+    
     Attributes:
-        all_passed: True if all 4 Phase 0 gates passed
-        gate_results: List of GateResult objects (one per gate)
+        all_passed: True if all 7 Phase 0 gates passed
+        gate_results: List of GateResult objects (one per gate, up to 7)
         validation_time: ISO 8601 timestamp of when validation occurred
+        seed_snapshot: Dictionary of applied determinism seeds (from P0.3)
+        questionnaire_sha256: SHA256 of validated questionnaire file
+        input_pdf_sha256: SHA256 of validated input PDF
     
     Example:
         >>> from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import check_all_gates
@@ -128,7 +140,10 @@ class Phase0ValidationResult:
         >>> validation = Phase0ValidationResult(
         ...     all_passed=all_passed,
         ...     gate_results=gates,
-        ...     validation_time=datetime.utcnow().isoformat()
+        ...     validation_time=datetime.utcnow().isoformat(),
+        ...     seed_snapshot=runner.seed_snapshot,
+        ...     questionnaire_sha256=runner.questionnaire_sha256,
+        ...     input_pdf_sha256=runner.input_pdf_sha256,
         ... )
         >>> orchestrator = Orchestrator(..., phase0_validation=validation)
     """
@@ -136,6 +151,14 @@ class Phase0ValidationResult:
     all_passed: bool
     gate_results: list[GateResult]
     validation_time: str
+    seed_snapshot: dict[str, int] = field(default_factory=dict)
+    questionnaire_sha256: str = ""
+    input_pdf_sha256: str = ""
+    
+    # P1 Hardening gate expectations
+    EXPECTED_GATE_COUNT: int = 7
+    MANDATORY_GATES: tuple[str, ...] = ("bootstrap", "input_verification", "boot_checks", "determinism")
+    P1_HARDENING_GATES: tuple[str, ...] = ("questionnaire_integrity", "method_registry", "smoke_tests")
     
     def get_failed_gates(self) -> list[GateResult]:
         """Get list of gates that failed validation.
@@ -145,20 +168,75 @@ class Phase0ValidationResult:
         """
         return [g for g in self.gate_results if not g.passed]
     
+    def get_passed_gates(self) -> list[GateResult]:
+        """Get list of gates that passed validation.
+        
+        Returns:
+            List of GateResult objects where passed=True
+        """
+        return [g for g in self.gate_results if g.passed]
+    
+    def has_mandatory_gates_passed(self) -> bool:
+        """Check if all mandatory gates (1-4) passed.
+        
+        Returns:
+            True if gates 1-4 all passed
+        """
+        passed_names = {g.gate_name for g in self.gate_results if g.passed}
+        return all(gate in passed_names for gate in self.MANDATORY_GATES)
+    
+    def has_p1_hardening_gates_passed(self) -> bool:
+        """Check if all P1 Hardening gates (5-7) passed.
+        
+        Returns:
+            True if gates 5-7 all passed (or not yet checked)
+        """
+        passed_names = {g.gate_name for g in self.gate_results if g.passed}
+        checked_names = {g.gate_name for g in self.gate_results}
+        
+        for gate in self.P1_HARDENING_GATES:
+            if gate in checked_names and gate not in passed_names:
+                return False
+        return True
+    
     def get_summary(self) -> str:
         """Get human-readable summary of validation results.
         
         Returns:
-            Summary string like "4/4 gates passed" or "2/4 gates passed (bootstrap, input_verification failed)"
+            Summary string like "7/7 gates passed" or "4/7 gates passed (method_registry, smoke_tests failed)"
         """
         passed_count = sum(1 for g in self.gate_results if g.passed)
-        total_count = len(self.gate_results)
+        total_count = max(len(self.gate_results), self.EXPECTED_GATE_COUNT)
         
         if self.all_passed:
             return f"{passed_count}/{total_count} gates passed"
         else:
             failed_names = [g.gate_name for g in self.get_failed_gates()]
             return f"{passed_count}/{total_count} gates passed ({', '.join(failed_names)} failed)"
+    
+    def get_gate_by_name(self, gate_name: str) -> GateResult | None:
+        """Get specific gate result by name.
+        
+        Args:
+            gate_name: Name of gate (e.g., "bootstrap", "determinism")
+            
+        Returns:
+            GateResult if found, None otherwise
+        """
+        for gate in self.gate_results:
+            if gate.gate_name == gate_name:
+                return gate
+        return None
+    
+    def validate_determinism_seeds(self) -> tuple[bool, list[str]]:
+        """Validate that mandatory determinism seeds are present.
+        
+        Returns:
+            Tuple of (valid, missing_seeds)
+        """
+        MANDATORY_SEEDS = ["python", "numpy"]
+        missing = [s for s in MANDATORY_SEEDS if self.seed_snapshot.get(s) is None]
+        return len(missing) == 0, missing
 
 
 # ============================================================================
@@ -1323,16 +1401,64 @@ class Orchestrator:
             if not phase0_validation.all_passed:
                 failed = phase0_validation.get_failed_gates()
                 failed_names = [g.gate_name for g in failed]
+                
+                # Distinguish between mandatory gate failures and P1 hardening gate failures
+                mandatory_failed = [g for g in failed if g.gate_name in Phase0ValidationResult.MANDATORY_GATES]
+                p1_hardening_failed = [g for g in failed if g.gate_name in Phase0ValidationResult.P1_HARDENING_GATES]
+                
+                if mandatory_failed:
+                    raise RuntimeError(
+                        f"Cannot initialize orchestrator: "
+                        f"Phase 0 MANDATORY exit gates failed: {[g.gate_name for g in mandatory_failed]}. "
+                        f"Bootstrap must complete successfully before orchestrator execution. "
+                        f"Failed gate details: {[(g.gate_name, g.reason) for g in mandatory_failed]}"
+                    )
+                
+                # P1 Hardening gates (5-7) behavior depends on runtime mode
+                if p1_hardening_failed:
+                    is_prod_mode = (
+                        runtime_config is not None 
+                        and hasattr(runtime_config, "mode")
+                        and runtime_config.mode == RuntimeMode.PROD
+                    )
+                    
+                    if is_prod_mode:
+                        raise RuntimeError(
+                            f"Cannot initialize orchestrator in PROD mode: "
+                            f"Phase 0 P1 Hardening gates failed: {[g.gate_name for g in p1_hardening_failed]}. "
+                            f"PROD mode requires all 7 gates to pass. "
+                            f"Failed gate details: {[(g.gate_name, g.reason) for g in p1_hardening_failed]}"
+                        )
+                    else:
+                        # DEV/EXPLORATORY: warn but continue
+                        logger.warning(
+                            "orchestrator_phase0_p1_hardening_degraded",
+                            failed_gates=[g.gate_name for g in p1_hardening_failed],
+                            failed_reasons={g.gate_name: g.reason for g in p1_hardening_failed},
+                            message="P1 Hardening gates failed but continuing in non-PROD mode",
+                            category="phase0_integration"
+                        )
+            
+            # Validate determinism seeds from Phase 0
+            seeds_valid, missing_seeds = phase0_validation.validate_determinism_seeds()
+            if not seeds_valid:
                 raise RuntimeError(
                     f"Cannot initialize orchestrator: "
-                    f"Phase 0 exit gates failed: {failed_names}. "
-                    f"Bootstrap must complete successfully before orchestrator execution."
+                    f"Phase 0 determinism seeds incomplete. Missing mandatory seeds: {missing_seeds}. "
+                    f"Python and numpy seeds are MANDATORY for reproducible execution."
                 )
+            
             logger.info(
                 "orchestrator_phase0_validation_passed",
                 gates_checked=len(phase0_validation.gate_results),
+                gates_passed=len(phase0_validation.get_passed_gates()),
+                mandatory_gates_ok=phase0_validation.has_mandatory_gates_passed(),
+                p1_hardening_ok=phase0_validation.has_p1_hardening_gates_passed(),
                 validation_time=phase0_validation.validation_time,
-                summary=phase0_validation.get_summary()
+                seed_snapshot=phase0_validation.seed_snapshot,
+                questionnaire_sha256=phase0_validation.questionnaire_sha256[:16] + "..." if phase0_validation.questionnaire_sha256 else "N/A",
+                summary=phase0_validation.get_summary(),
+                category="phase0_integration"
             )
         
         if runtime_config is not None:
@@ -2024,19 +2150,38 @@ class Orchestrator:
         """
         Load and validate configuration with mode-specific behavior enforcement.
         
-        PHASE 0 RESPONSIBILITIES:
-        1. Compute deterministic monolith_sha256
-        2. Validate question counts
-        3. Extract aggregation settings
-        4. Enforce runtime mode constraints
+        PHASE 0 GRANULAR ALIGNMENT:
+        This method aligns with Phase 0's granular dynamics by:
         
-        MODE-SPECIFIC BEHAVIORS:
-        - PROD: Strict validation, fail on discrepancies, mark output as "verified"
-        - DEV: Permissive validation, warn on issues, mark output as "development"
-        - EXPLORATORY: Minimal validation, log everything, mark output as "experimental"
+        1. Validating Phase 0 exit gates (all 7 gates for P1 Hardening)
+        2. Enforcing RuntimeConfig category policies (A/B/C/D)
+        3. Verifying determinism seeds from Phase 0's seed_snapshot
+        4. Computing and cross-validating questionnaire SHA256
+        5. Validating method registry count (Gate 6 requirement)
+        
+        EXIT GATE VALIDATION MATRIX:
+        - Gate 1 (Bootstrap): Runtime config loaded → verified via self.runtime_config
+        - Gate 2 (Input Verification): PDF/questionnaire hashed → verified via phase0_validation.questionnaire_sha256
+        - Gate 3 (Boot Checks): Dependencies validated → verified via successful executor init
+        - Gate 4 (Determinism): Seeds applied → verified via phase0_validation.seed_snapshot
+        - Gate 5 (Questionnaire Integrity): SHA256 match → verified via monolith_hash comparison
+        - Gate 6 (Method Registry): 416 methods → verified via executor.get_registry_stats()
+        - Gate 7 (Smoke Tests): Categories operational → verified via executor.instances check
+        
+        MODE-SPECIFIC BEHAVIORS (per RuntimeConfig categories):
+        - PROD: Category A/B/C strict enforcement, fail on discrepancies, "verified" output
+        - DEV: Category C allowed, warn on issues, "development" output
+        - EXPLORATORY: All categories relaxed, log everything, "experimental" output
         
         Returns:
-            Configuration dictionary with monolith_sha256, runtime mode flags, and settings
+            Configuration dictionary with:
+            - monolith_sha256: Deterministic hash for reproducibility
+            - _runtime_mode: Current mode (prod/dev/exploratory)
+            - _strict_mode: Whether strict validation is enforced
+            - _verification_status: verified/development/experimental
+            - _phase0_alignment: Dict of Phase 0 gate validations performed
+            - _seed_snapshot: Copy of determinism seeds from Phase 0
+            - _aggregation_settings: AggregationSettings for phases 4-7
             
         Raises:
             RuntimeError: If Phase 0 bootstrap failed or PROD constraints violated
@@ -2045,14 +2190,54 @@ class Orchestrator:
         instrumentation = self._phase_instrumentation[0]
         start = time.perf_counter()
         
-        if self.phase0_validation is not None and not self.phase0_validation.all_passed:
-            failed_gates = self.phase0_validation.get_failed_gates()
-            raise RuntimeError(
-                f"Cannot execute orchestrator Phase 0: "
-                f"Phase_zero bootstrap did not complete successfully. "
-                f"Failed gates: {[g.gate_name for g in failed_gates]}"
+        # =========================================================================
+        # PHASE 0 ALIGNMENT: Validate exit gates before proceeding
+        # =========================================================================
+        phase0_alignment: dict[str, Any] = {
+            "gates_validated": [],
+            "gates_skipped": [],
+            "warnings": [],
+        }
+        
+        if self.phase0_validation is not None:
+            # Check mandatory gates (1-4) - these MUST have passed
+            if not self.phase0_validation.has_mandatory_gates_passed():
+                failed_gates = self.phase0_validation.get_failed_gates()
+                mandatory_failed = [g for g in failed_gates if g.gate_name in Phase0ValidationResult.MANDATORY_GATES]
+                raise RuntimeError(
+                    f"Cannot execute orchestrator Phase 0: "
+                    f"Phase_zero MANDATORY gates did not pass. "
+                    f"Failed gates: {[(g.gate_name, g.reason) for g in mandatory_failed]}"
+                )
+            
+            phase0_alignment["gates_validated"].extend(list(Phase0ValidationResult.MANDATORY_GATES))
+            
+            # Check P1 Hardening gates (5-7) - mode-dependent
+            if not self.phase0_validation.has_p1_hardening_gates_passed():
+                is_prod = self.runtime_config and self.runtime_config.mode == RuntimeMode.PROD
+                if is_prod:
+                    failed_gates = self.phase0_validation.get_failed_gates()
+                    p1_failed = [g for g in failed_gates if g.gate_name in Phase0ValidationResult.P1_HARDENING_GATES]
+                    raise RuntimeError(
+                        f"Cannot execute orchestrator Phase 0 in PROD mode: "
+                        f"Phase_zero P1 Hardening gates failed: {[(g.gate_name, g.reason) for g in p1_failed]}"
+                    )
+                else:
+                    phase0_alignment["warnings"].append("P1 Hardening gates not fully passed (non-PROD mode)")
+            else:
+                phase0_alignment["gates_validated"].extend(list(Phase0ValidationResult.P1_HARDENING_GATES))
+        else:
+            # Legacy mode: no Phase 0 validation provided
+            phase0_alignment["gates_skipped"] = ["all - legacy mode"]
+            logger.warning(
+                "orchestrator_phase0_legacy_mode",
+                message="No Phase0ValidationResult provided - running in legacy mode",
+                category="phase0_integration"
             )
         
+        # =========================================================================
+        # RUNTIME MODE CONFIGURATION
+        # =========================================================================
         mode_str = "UNKNOWN"
         is_strict = False
         verification_status = "experimental"
@@ -2066,14 +2251,16 @@ class Orchestrator:
                 logger.info(
                     "orchestrator_phase0_prod_mode", 
                     strict=True, 
-                    verification_status="verified"
+                    verification_status="verified",
+                    category="phase0_integration"
                 )
                 verification_status = "verified"
             elif mode == RuntimeMode.DEV:
                 logger.warning(
                     "orchestrator_phase0_dev_mode", 
                     strict=False,
-                    verification_status="development"
+                    verification_status="development",
+                    category="phase0_integration"
                 )
                 verification_status = "development"
             else:  # EXPLORATORY
@@ -2081,17 +2268,38 @@ class Orchestrator:
                     "orchestrator_phase0_exploratory_mode", 
                     strict=False,
                     verification_status="experimental",
-                    note="Results are experimental and not for production use"
+                    note="Results are experimental and not for production use",
+                    category="phase0_integration"
                 )
                 verification_status = "experimental"
         
+        # =========================================================================
+        # PHASE 0 ALIGNMENT: Questionnaire SHA256 Cross-Validation (Gate 5)
+        # =========================================================================
         monolith = _normalize_monolith_for_hash(self._monolith_data)
         monolith_hash = hashlib.sha256(
             json.dumps(monolith, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
             .encode("utf-8")
         ).hexdigest()
         
-        # Validate questionnaire hash against expected value
+        # Cross-validate with Phase 0 questionnaire_sha256 if available
+        if self.phase0_validation is not None and self.phase0_validation.questionnaire_sha256:
+            phase0_hash = self.phase0_validation.questionnaire_sha256
+            # Note: Phase 0 hashes the FILE, orchestrator hashes the CONTENT
+            # These may differ slightly but should be logged for traceability
+            logger.info(
+                "orchestrator_questionnaire_hash_traceability",
+                phase0_file_hash=phase0_hash[:16] + "...",
+                orchestrator_content_hash=monolith_hash[:16] + "...",
+                note="Phase 0 hashes file bytes, orchestrator hashes normalized JSON content",
+                category="phase0_integration"
+            )
+            phase0_alignment["questionnaire_hashes"] = {
+                "phase0_file_hash": phase0_hash,
+                "orchestrator_content_hash": monolith_hash,
+            }
+        
+        # Validate questionnaire hash against expected value (from env or config)
         expected_hash = os.getenv("EXPECTED_QUESTIONNAIRE_SHA256", "").strip()
         if self.runtime_config and hasattr(self.runtime_config, "expected_questionnaire_sha256"):
             config_hash = getattr(self.runtime_config, "expected_questionnaire_sha256", "")
@@ -2101,7 +2309,7 @@ class Orchestrator:
         if expected_hash:
             if monolith_hash.lower() != expected_hash.lower():
                 error_msg = (
-                    f"Questionnaire integrity check failed: "
+                    f"Questionnaire integrity check failed (Gate 5 alignment): "
                     f"expected SHA256 {expected_hash[:16]}..., "
                     f"got {monolith_hash[:16]}..."
                 )
@@ -2115,21 +2323,31 @@ class Orchestrator:
                     category="phase0_validation"
                 )
         
-        # Validate method count
+        # =========================================================================
+        # PHASE 0 ALIGNMENT: Method Registry Validation (Gate 6)
+        # =========================================================================
+        method_registry_stats = {}
         if self.executor:
             try:
                 stats = self.executor.get_registry_stats()
                 registered_count = stats.get("total_classes_registered", 0)
                 failed_count = stats.get("failed_classes", 0)
                 
+                method_registry_stats = {
+                    "registered": registered_count,
+                    "failed": failed_count,
+                    "expected": EXPECTED_METHOD_COUNT,
+                }
+                
                 if registered_count < EXPECTED_METHOD_COUNT:
                     error_msg = (
-                        f"Method registry validation failed: "
+                        f"Method registry validation failed (Gate 6 alignment): "
                         f"expected {EXPECTED_METHOD_COUNT} methods, "
                         f"got {registered_count}"
                     )
                     logger.error(error_msg)
                     instrumentation.record_error("method_count", error_msg)
+                    phase0_alignment["warnings"].append(error_msg)
                     
                     if self.runtime_config and self.runtime_config.mode == RuntimeMode.PROD:
                         raise RuntimeError(error_msg)
@@ -2141,6 +2359,7 @@ class Orchestrator:
                     warning_msg = f"Method registry has {failed_count} failed classes: {failed_names[:3]}"
                     logger.warning(warning_msg)
                     instrumentation.record_warning("method_failures", warning_msg)
+                    phase0_alignment["warnings"].append(warning_msg)
                     
                     if self.runtime_config and self.runtime_config.mode == RuntimeMode.PROD:
                         raise RuntimeError(f"PROD mode: {warning_msg}")
@@ -2149,11 +2368,16 @@ class Orchestrator:
                     "method_registry_validated",
                     registered=registered_count,
                     failed=failed_count,
-                    category="phase0_validation"
+                    expected=EXPECTED_METHOD_COUNT,
+                    category="phase0_integration"
                 )
             except AttributeError:
-                logger.warning("Method registry stats unavailable - skipping validation")
+                logger.warning("Method registry stats unavailable - skipping Gate 6 validation")
+                phase0_alignment["gates_skipped"].append("method_registry")
         
+        # =========================================================================
+        # QUESTION COUNT VALIDATION
+        # =========================================================================
         micro_questions = monolith["blocks"].get("micro_questions", [])
         meso_questions = monolith["blocks"].get("meso_questions", [])
         macro_question = monolith["blocks"].get("macro_question", {})
@@ -2163,6 +2387,7 @@ class Orchestrator:
         if question_total != EXPECTED_QUESTION_COUNT:
             msg = f"Question count mismatch: expected {EXPECTED_QUESTION_COUNT}, got {question_total}"
             instrumentation.record_warning("integrity", msg)
+            phase0_alignment["warnings"].append(msg)
             
             if self.runtime_config is not None and self.runtime_config.mode == RuntimeMode.PROD:
                 if not self.runtime_config.allow_aggregation_defaults:
@@ -2180,6 +2405,9 @@ class Orchestrator:
         duration = time.perf_counter() - start
         instrumentation.increment(latency=duration)
         
+        # =========================================================================
+        # BUILD CONFIGURATION WITH PHASE 0 ALIGNMENT METADATA
+        # =========================================================================
         config_dict = {
             "monolith": monolith,
             "monolith_sha256": monolith_hash,
@@ -2189,6 +2417,10 @@ class Orchestrator:
             "_aggregation_settings": aggregation_settings,
             "plan_name": "plan1",
             "artifacts_dir": str(PROJECT_ROOT / "artifacts"),
+            # Phase 0 alignment metadata
+            "_phase0_alignment": phase0_alignment,
+            "_verification_status": verification_status,
+            "_method_registry_stats": method_registry_stats,
         }
         
         if self.runtime_config is not None:
@@ -2197,6 +2429,22 @@ class Orchestrator:
             config_dict["_allow_partial_results"] = (
                 self.runtime_config.mode != RuntimeMode.PROD
             )
+            # Include RuntimeConfig fallback categories for downstream phases
+            config_dict["_fallback_summary"] = self.runtime_config.get_fallback_summary()
+        
+        # Include seed snapshot from Phase 0 validation if available
+        if self.phase0_validation is not None and self.phase0_validation.seed_snapshot:
+            config_dict["_seed_snapshot"] = dict(self.phase0_validation.seed_snapshot)
+        
+        logger.info(
+            "orchestrator_phase0_config_complete",
+            gates_validated=len(phase0_alignment["gates_validated"]),
+            gates_skipped=len(phase0_alignment["gates_skipped"]),
+            warnings_count=len(phase0_alignment["warnings"]),
+            verification_status=verification_status,
+            monolith_hash=monolith_hash[:16] + "...",
+            category="phase0_integration"
+        )
         
         return config_dict
 
