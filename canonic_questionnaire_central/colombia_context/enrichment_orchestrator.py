@@ -116,6 +116,11 @@ class EnrichmentOrchestrator:
         
         self._enrichment_log: List[EnrichmentResult] = []
     
+    @property
+    def _registered_flows(self) -> Dict[str, DataFlow]:
+        """Get registered flows from channel validator."""
+        return self._channel_validator._registered_flows
+    
     def _register_pdet_flow(self) -> None:
         """Register PDET enrichment as a data flow in channel validator."""
         pdet_flow = DataFlow(
