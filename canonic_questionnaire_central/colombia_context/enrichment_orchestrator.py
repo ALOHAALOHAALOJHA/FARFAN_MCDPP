@@ -433,10 +433,34 @@ class EnrichmentOrchestrator:
         
         return enriched
     
+    def _find_policy_area_data(self, pa_key: str) -> Dict[str, Any]:
+        """
+        Find policy area data from PDET mappings.
+        
+        Handles both exact matches (e.g., "PA09") and suffixed matches (e.g., "PA09_Justice").
+        
+        Args:
+            pa_key: Policy area key (e.g., "PA09")
+            
+        Returns:
+            Policy area data dictionary, or empty dict if not found
+        """
+        pa_mappings = self._pdet_data.get("policy_area_mappings", {})
+        
+        # Try exact match first
+        if pa_key in pa_mappings:
+            return pa_mappings[pa_key]
+        
+        # Try with suffix (e.g., PA09_Justice)
+        for key, value in pa_mappings.items():
+            if key.startswith(pa_key + "_"):
+                return value
+        
+        return {}
+
     def _get_municipalities_for_policy_areas(self, policy_areas: List[str]) -> List[Dict[str, Any]]:
         """Get municipalities relevant to specified policy areas."""
         municipalities = []
-        pa_mappings = self._pdet_data.get("policy_area_mappings", {})
         
         relevant_subregion_ids = set()
         for pa in policy_areas:
@@ -463,8 +487,6 @@ class EnrichmentOrchestrator:
     
     def _get_subregions_for_policy_areas(self, policy_areas: List[str]) -> List[Dict[str, Any]]:
         """Get subregions relevant to specified policy areas."""
-        pa_mappings = self._pdet_data.get("policy_area_mappings", {})
-        
         relevant_subregion_ids = set()
         for pa in policy_areas:
             pa_key = f"{pa}" if pa.startswith("PA") else f"PA{pa}"
@@ -513,8 +535,9 @@ class EnrichmentOrchestrator:
         filtered_mappings = {}
         for pa in policy_areas:
             pa_key = f"{pa}" if pa.startswith("PA") else f"PA{pa}"
-            if pa_key in pa_mappings:
-                filtered_mappings[pa_key] = pa_mappings[pa_key]
+            pa_data = self._find_policy_area_data(pa_key)
+            if pa_data:
+                filtered_mappings[pa_key] = pa_data
         
         return filtered_mappings
     
