@@ -30,7 +30,8 @@ def validate_semantic_config_pdet_references():
             print(f"❌ semantic_config.json not found at {config_path}")
             return False
         
-        config = json.load(open(config_path, encoding="utf-8"))
+        with open(config_path, encoding="utf-8") as f:
+            config = json.load(f)
         
         # Check version is updated
         version = config.get("_version", "")
@@ -170,7 +171,8 @@ def validate_pdet_semantic_enrichment_file():
             print(f"❌ pdet_semantic_enrichment.json not found at {enrichment_path}")
             return False
         
-        enrichment = json.load(open(enrichment_path, encoding="utf-8"))
+        with open(enrichment_path, encoding="utf-8") as f:
+            enrichment = json.load(f)
         print("✅ pdet_semantic_enrichment.json exists and is valid JSON")
         
         # Check required sections
