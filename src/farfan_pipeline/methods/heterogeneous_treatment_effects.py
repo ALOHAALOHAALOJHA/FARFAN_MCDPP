@@ -34,7 +34,7 @@ try:
     from econml.metalearners import TLearner, SLearner, XLearner
     from econml.dr import DRLearner
     from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
-    from sklearn.linear_model import LogisticRegression, LinearRegression
+    from sklearn.linear_model import LogisticRegression
 
     ECONML_AVAILABLE = True
 except ImportError:
