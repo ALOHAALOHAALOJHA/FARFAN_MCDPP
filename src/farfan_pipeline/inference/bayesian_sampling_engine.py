@@ -301,7 +301,7 @@ class BayesianSamplingEngine:
                 theta = pm.Beta("theta", alpha=alpha, beta=beta, shape=n_groups)
 
                 # Group-level likelihoods
-                y = pm.Binomial("y", n=trials_array, p=theta, observed=successes_array)
+                pm.Binomial("y", n=trials_array, p=theta, observed=successes_array)
 
                 # Sample
                 with warnings.catch_warnings():
