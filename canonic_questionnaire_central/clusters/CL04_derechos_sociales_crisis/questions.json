@@ -362,6 +362,68 @@
           "context_requirement": "near_quantitative_claim",
           "semantic_expansion": null,
           "context_scope": "PARAGRAPH"
+        },
+        {
+          "category": "PDET_TERRITORIAL",
+          "confidence_weight": 0.90,
+          "flags": "i",
+          "id": "PAT-Q271-013-PDET",
+          "match_type": "REGEX",
+          "pattern": "Alto Patía|Norte del Cauca|Jambaló|López de Micay|Piamonte",
+          "specificity": "HIGH",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_same_paragraph",
+          "semantic_expansion": {
+            "Alto Patía": ["subregión PDET Alto Patía", "municipios Alto Patía"],
+            "Norte del Cauca": ["norte caucano", "municipios del norte del Cauca"],
+            "Jambaló": ["municipio de Jambaló", "Jambaló Cauca"],
+            "López de Micay": ["municipio de López de Micay", "López Cauca"],
+            "Piamonte": ["municipio de Piamonte", "Piamonte Cauca"]
+          },
+          "context_scope": "PARAGRAPH",
+          "pdet_context": {
+            "subregion_id": "SR01",
+            "subregion_name": "Alto Patía y Norte del Cauca",
+            "relevance": "PA09_Justice_PrisonOversight",
+            "municipalities": ["19355", "19397", "19450"],
+            "key_factors": ["Indigenous justice systems", "Ethnic diversity", "Limited state presence"]
+          }
+        },
+        {
+          "category": "PDET_TERRITORIAL",
+          "confidence_weight": 0.90,
+          "flags": "i",
+          "id": "PAT-Q271-014-PDET",
+          "match_type": "REGEX",
+          "pattern": "comunidades indígenas|justicia ancestral|sistema de justicia propia|guardia indígena",
+          "specificity": "HIGH",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_same_paragraph",
+          "semantic_expansion": null,
+          "context_scope": "PARAGRAPH",
+          "pdet_context": {
+            "subregion_id": "SR01",
+            "relevance": "Indigenous_Justice_Integration",
+            "description": "PDET municipalities with significant indigenous populations require recognition of ancestral justice systems alongside formal prison oversight"
+          }
+        },
+        {
+          "category": "PDET_TERRITORIAL",
+          "confidence_weight": 0.88,
+          "flags": "i",
+          "id": "PAT-Q271-015-PDET",
+          "match_type": "REGEX",
+          "pattern": "comunidades afrodescendientes|consejos comunitarios|justicia comunitaria",
+          "specificity": "HIGH",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_same_paragraph",
+          "semantic_expansion": null,
+          "context_scope": "PARAGRAPH",
+          "pdet_context": {
+            "subregion_id": "SR01",
+            "relevance": "Afrodescendant_Community_Justice",
+            "description": "Afrodescendant communities in PDET areas have community justice mechanisms that interact with formal detention systems"
+          }
         }
       ],
       "policy_area_id": "PA09",
@@ -8204,6 +8266,94 @@
           "context_requirement": "near_quantitative_claim",
           "semantic_expansion": null,
           "context_scope": "PARAGRAPH"
+        },
+        {
+          "category": "PDET_TERRITORIAL",
+          "confidence_weight": 0.92,
+          "flags": "i",
+          "id": "PAT-Q031-013-PDET",
+          "match_type": "REGEX",
+          "pattern": "Arauca|Fortul|Tame|Catatumbo|Convención|Teorama|San Calixto",
+          "specificity": "HIGH",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_same_paragraph",
+          "semantic_expansion": {
+            "Arauca": ["municipio de Arauca", "frontera con Arauca", "Arauca capital"],
+            "Fortul": ["municipio de Fortul", "Fortul Arauca"],
+            "Tame": ["municipio de Tame", "Tame Arauca"],
+            "Catatumbo": ["región del Catatumbo", "subregión Catatumbo"],
+            "Convención": ["municipio de Convención", "Convención Norte de Santander"],
+            "Teorama": ["municipio de Teorama", "Teorama Norte de Santander"],
+            "San Calixto": ["municipio de San Calixto", "San Calixto Norte de Santander"]
+          },
+          "context_scope": "PARAGRAPH",
+          "pdet_context": {
+            "subregions": ["SR02", "SR04"],
+            "subregion_names": ["Arauca", "Catatumbo"],
+            "relevance": "PA10_Migration_BorderMunicipalities",
+            "municipalities": ["81001", "81220", "81794", "54099", "54810", "54660"],
+            "key_factors": [
+              "Venezuela border",
+              "Migration corridors",
+              "Humanitarian assistance needs",
+              "Integration challenges"
+            ]
+          }
+        },
+        {
+          "category": "PDET_TERRITORIAL",
+          "confidence_weight": 0.90,
+          "flags": "i",
+          "id": "PAT-Q031-014-PDET",
+          "match_type": "REGEX",
+          "pattern": "frontera con Venezuela|paso fronterizo|zona de frontera|corredor migratorio",
+          "specificity": "HIGH",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_same_paragraph",
+          "semantic_expansion": null,
+          "context_scope": "PARAGRAPH",
+          "pdet_context": {
+            "subregions": ["SR02", "SR04"],
+            "relevance": "International_Border_Migration",
+            "description": "PDET border municipalities are primary entry points for Venezuelan migration requiring coordinated humanitarian response"
+          }
+        },
+        {
+          "category": "PDET_TERRITORIAL",
+          "confidence_weight": 0.88,
+          "flags": "i",
+          "id": "PAT-Q031-015-PDET",
+          "match_type": "REGEX",
+          "pattern": "caminantes|población en tránsito|flujo irregular|ruta migratoria",
+          "specificity": "HIGH",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_same_paragraph",
+          "semantic_expansion": null,
+          "context_scope": "PARAGRAPH",
+          "pdet_context": {
+            "subregions": ["SR02", "SR04"],
+            "relevance": "Transit_Flows_Humanitarian_Emergency",
+            "description": "PDET municipalities serve as transit corridors with specific needs for walker/transit populations"
+          }
+        },
+        {
+          "category": "PDET_TERRITORIAL",
+          "confidence_weight": 0.87,
+          "flags": "i",
+          "id": "PAT-Q031-016-PDET",
+          "match_type": "REGEX",
+          "pattern": "xenofobia|discriminación|conflictos de convivencia|tensiones sociales",
+          "specificity": "MEDIUM",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_same_paragraph",
+          "semantic_expansion": null,
+          "context_scope": "PARAGRAPH",
+          "pdet_context": {
+            "subregions": ["SR02", "SR04"],
+            "relevance": "Social_Cohesion_Challenges",
+            "pdet_pillar": "pillar_8",
+            "description": "Reconciliation and social cohesion (pillar 8) critical for managing host community-migrant relations in PDET areas"
+          }
         }
       ],
       "policy_area_id": "PA10",
