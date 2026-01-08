@@ -32,7 +32,6 @@ if TYPE_CHECKING:
 try:
     from econml.dml import CausalForestDML, LinearDML
     from econml.metalearners import TLearner, SLearner, XLearner
-    from econml.dr import DRLearner
     from sklearn.ensemble import RandomForestRegressor
     from sklearn.linear_model import LogisticRegression
 
@@ -44,7 +43,6 @@ except ImportError:
     TLearner = Any  # type: ignore[misc, assignment]
     SLearner = Any  # type: ignore[misc, assignment]
     XLearner = Any  # type: ignore[misc, assignment]
-    DRLearner = Any  # type: ignore[misc, assignment]
 
 
 @dataclass
