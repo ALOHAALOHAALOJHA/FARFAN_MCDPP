@@ -19,7 +19,33 @@
       "PA05",
       "PA06"
     ],
-    "rationale": "Enfoque diferencial y derechos de grupos específicos"
+    "rationale": "Enfoque diferencial y derechos de grupos específicos",
+    "pdet_enrichment": {
+      "version": "1.0.0",
+      "enrichment_date": "2026-01-08",
+      "scope": "PDET contextual information for grupos poblacionales",
+      "description": "This enrichment adds PDET-specific patterns, territorial markers, and institutional actors relevant to population groups in PDET municipalities",
+      "key_additions": [
+        "PDET territorial patterns (veredas, corregimientos, subregions)",
+        "Ethnic territory markers (resguardos, consejos comunitarios)",
+        "PDET institutional actors (ART, OCAD Paz, Unidad de Víctimas)",
+        "PDET financing mechanisms (SGR-Paz, Obras por Impuestos)",
+        "PATR integration indicators",
+        "Rural disaggregation requirements for PDET contexts"
+      ],
+      "territorial_scope": {
+        "municipalities": 170,
+        "subregions": 16,
+        "veredas": 11000,
+        "population": 6600000
+      },
+      "consumer_requirements": {
+        "scope": "Questions apply to PDET municipalities with enhanced territorial specificity expectations",
+        "value": "Patterns detect PATR alignment, ethnic consultation, and rural population disaggregation",
+        "capability": "Enrichment enables identification of PDET-specific actors, financing, and territorial units",
+        "integrity": "Cross-validates against 32,808 PATR initiatives and 8 PDET pillars"
+      }
+    }
   },
   "question_count": 90,
   "questions": [
@@ -397,6 +423,54 @@
           "semantic_expansion": null,
           "dynamic_update": "CURRENT_YEAR_WINDOW",
           "context_scope": "PARAGRAPH"
+        },
+        {
+          "category": "TERRITORIAL",
+          "confidence_weight": 0.92,
+          "flags": "i",
+          "id": "PAT-PDET-TERR-001",
+          "match_type": "REGEX",
+          "pattern": "(?:municipio[s]?\\s+)?(?:ubicado[s]?|localizado[s]?|situado[s]?)\\s+en\\s+zona[s]?\\s+PDET",
+          "specificity": "HIGH",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_diagnostic_section",
+          "semantic_expansion": {
+            "PDET": [
+              "Programa de Desarrollo con Enfoque Territorial",
+              "zona priorizada",
+              "territorio PDET"
+            ]
+          },
+          "context_scope": "PARAGRAPH",
+          "pdet_specific": true
+        },
+        {
+          "category": "TERRITORIAL",
+          "confidence_weight": 0.95,
+          "flags": "i",
+          "id": "PAT-PDET-TERR-002",
+          "match_type": "REGEX",
+          "pattern": "vereda[s]?\\s+(?:[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+){0,3})",
+          "specificity": "MEDIUM",
+          "validation_rule": "must_match_territorial_unit",
+          "context_requirement": "within_disaggregation_section",
+          "semantic_expansion": null,
+          "context_scope": "SENTENCE",
+          "pdet_relevance": "Vereda-level disaggregation critical for PDET territorial specificity"
+        },
+        {
+          "category": "TERRITORIAL",
+          "confidence_weight": 0.94,
+          "flags": "i",
+          "id": "PAT-PDET-TERR-003",
+          "match_type": "REGEX",
+          "pattern": "resguardo[s]?\\s+indígena[s]?|consejo[s]?\\s+comunitario[s]?(?:\\s+afro)?|territorio[s]?\\s+(?:indígena[s]?|de\\s+comunidades\\s+negras)",
+          "specificity": "HIGH",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_ethnic_context",
+          "semantic_expansion": null,
+          "context_scope": "PARAGRAPH",
+          "pdet_relevance": "Ethnic territories have specific rights and consultation requirements in PDET zones"
         }
       ],
       "policy_area_id": "PA01",
@@ -490,7 +564,11 @@
         "Q211",
         "Q241",
         "Q271"
-      ]
+      ],
+      "pdet_enrichment": {
+        "territorial_specificity": "For PDET municipalities, expect vereda-level disaggregation and ethnic territory identification",
+        "enhanced_validation": "Presence of PDET territorial markers increases diagnostic quality score"
+      }
     },
     {
       "base_slot": "D1-Q2",
@@ -1012,6 +1090,39 @@
           "context_requirement": "within_same_paragraph",
           "semantic_expansion": null,
           "context_scope": "PARAGRAPH"
+        },
+        {
+          "category": "GENERAL",
+          "confidence_weight": 0.91,
+          "flags": "i",
+          "id": "PAT-PDET-FIN-001",
+          "match_type": "REGEX",
+          "pattern": "SGR\\s*-?\\s*Asignación\\s+para\\s+la\\s+Paz|OCAD\\s+(?:de\\s+)?Paz",
+          "specificity": "HIGH",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_financial_section",
+          "semantic_expansion": {
+            "OCAD Paz": [
+              "Órgano Colegiado de Administración y Decisión para la Paz",
+              "aprobación OCAD Paz"
+            ]
+          },
+          "context_scope": "PARAGRAPH",
+          "pdet_specific": true
+        },
+        {
+          "category": "GENERAL",
+          "confidence_weight": 0.9,
+          "flags": "i",
+          "id": "PAT-PDET-FIN-002",
+          "match_type": "REGEX",
+          "pattern": "Obras\\s+por\\s+Impuestos",
+          "specificity": "MEDIUM",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_financial_section",
+          "semantic_expansion": null,
+          "context_scope": "PARAGRAPH",
+          "pdet_relevance": "Tax offset mechanism applicable to ZOMAC/PDET zones"
         }
       ],
       "policy_area_id": "PA01",
@@ -1042,7 +1153,11 @@
         "Q213",
         "Q243",
         "Q273"
-      ]
+      ],
+      "pdet_enrichment": {
+        "financing_sources": "PDET municipalities should reference SGR-Asignación para la Paz, OCAD Paz, or Obras por Impuestos",
+        "patr_integration": "Budget should trace to PATR initiatives or PDET pillar allocations"
+      }
     },
     {
       "base_slot": "D1-Q4",
@@ -1313,6 +1428,66 @@
             "capacidad_institucional_realista"
           ],
           "context_scope": "PARAGRAPH"
+        },
+        {
+          "category": "FUENTE_OFICIAL",
+          "confidence_weight": 0.94,
+          "flags": "i",
+          "id": "PAT-PDET-INST-001",
+          "match_type": "REGEX",
+          "pattern": "(?:ART|Agencia de Renovación del Territorio)",
+          "specificity": "HIGH",
+          "validation_rule": "must_be_capitalized",
+          "context_requirement": "within_institutional_section",
+          "semantic_expansion": {
+            "ART": [
+              "Agencia de Renovación del Territorio",
+              "gestor PDET",
+              "autoridad PDET"
+            ]
+          },
+          "entity_type": "ORG",
+          "context_scope": "PARAGRAPH",
+          "pdet_specific": true
+        },
+        {
+          "category": "FUENTE_OFICIAL",
+          "confidence_weight": 0.93,
+          "flags": "i",
+          "id": "PAT-PDET-INST-002",
+          "match_type": "REGEX",
+          "pattern": "PATR|Plan(?:es)?\\s+de\\s+Acción\\s+para\\s+la\\s+Transformación\\s+Regional",
+          "specificity": "HIGH",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_planning_context",
+          "semantic_expansion": {
+            "PATR": [
+              "Plan de Acción para la Transformación Regional",
+              "iniciativas PATR",
+              "32,808 iniciativas"
+            ]
+          },
+          "context_scope": "PARAGRAPH",
+          "pdet_specific": true
+        },
+        {
+          "category": "FUENTE_OFICIAL",
+          "confidence_weight": 0.92,
+          "flags": "i",
+          "id": "PAT-PDET-INST-003",
+          "match_type": "REGEX",
+          "pattern": "Unidad\\s+para\\s+las\\s+Víctimas|Registro\\s+Único\\s+de\\s+Víctimas|RUV",
+          "specificity": "HIGH",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_victims_section",
+          "semantic_expansion": {
+            "RUV": [
+              "Registro Único de Víctimas",
+              "base de datos oficial de víctimas"
+            ]
+          },
+          "context_scope": "PARAGRAPH",
+          "pdet_relevance": "Essential for victims' policy in PDET municipalities"
         }
       ],
       "policy_area_id": "PA01",
@@ -1343,7 +1518,11 @@
         "Q214",
         "Q244",
         "Q274"
-      ]
+      ],
+      "pdet_enrichment": {
+        "institutional_actors": "Expect mention of ART as PDET coordinator, Unidad de Víctimas for PA05, ethnic consultation bodies",
+        "articulation_requirement": "PDET municipalities must demonstrate coordination with ART and PATR governance structures"
+      }
     },
     {
       "base_slot": "D1-Q5",
@@ -1556,6 +1735,59 @@
           "context_requirement": "within_same_paragraph",
           "semantic_expansion": null,
           "context_scope": "PARAGRAPH"
+        },
+        {
+          "category": "GENERAL",
+          "confidence_weight": 0.95,
+          "flags": "i",
+          "id": "PAT-PDET-LEGAL-001",
+          "match_type": "REGEX",
+          "pattern": "Decreto\\s+(?:Ley\\s+)?893\\s+de\\s+2017",
+          "specificity": "HIGH",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_normative_section",
+          "semantic_expansion": null,
+          "context_scope": "PARAGRAPH",
+          "pdet_specific": true,
+          "legal_mandate": "Establece régimen PDET y obligación de incorporar PATR"
+        },
+        {
+          "category": "GENERAL",
+          "confidence_weight": 0.93,
+          "flags": "i",
+          "id": "PAT-PDET-LEGAL-002",
+          "match_type": "REGEX",
+          "pattern": "Acuerdo\\s+de\\s+Paz|Punto\\s+1\\s+(?:del\\s+)?Acuerdo|Reforma\\s+Rural\\s+Integral",
+          "specificity": "MEDIUM",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_normative_section",
+          "semantic_expansion": {
+            "Punto 1": [
+              "Reforma Rural Integral",
+              "RRI",
+              "ordenamiento territorial"
+            ]
+          },
+          "context_scope": "PARAGRAPH",
+          "pdet_relevance": "Peace Agreement is constitutional framework for PDET"
+        },
+        {
+          "category": "GENERAL",
+          "confidence_weight": 0.91,
+          "flags": "i",
+          "id": "PAT-PDET-LEGAL-003",
+          "match_type": "REGEX",
+          "pattern": "Plan\\s+Marco\\s+de\\s+Implementación|PMI",
+          "specificity": "MEDIUM",
+          "validation_rule": "must_match_full_pattern",
+          "context_requirement": "within_normative_section",
+          "semantic_expansion": {
+            "PMI": [
+              "Plan Marco de Implementación del Acuerdo de Paz"
+            ]
+          },
+          "context_scope": "PARAGRAPH",
+          "pdet_specific": true
         }
       ],
       "policy_area_id": "PA01",
@@ -1586,7 +1818,11 @@
         "Q215",
         "Q245",
         "Q275"
-      ]
+      ],
+      "pdet_enrichment": {
+        "legal_framework": "PDET municipalities must reference Decreto 893/2017, Acuerdo de Paz, and Plan Marco de Implementación",
+        "mandatory_alignment": "Ley 152 Art. 32 + Decreto 893 require PDM alignment with PATR"
+      }
     },
     {
       "base_slot": "D2-Q1",
@@ -9020,7 +9256,8 @@
         "Q211",
         "Q241",
         "Q271"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D1-Q2",
@@ -9262,7 +9499,8 @@
         "Q212",
         "Q242",
         "Q272"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D1-Q3",
@@ -9528,7 +9766,8 @@
         "Q213",
         "Q243",
         "Q273"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D1-Q4",
@@ -9797,7 +10036,8 @@
         "Q214",
         "Q244",
         "Q274"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D1-Q5",
@@ -10021,7 +10261,8 @@
         "Q215",
         "Q245",
         "Q275"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D2-Q1",
@@ -10224,7 +10465,8 @@
         "Q216",
         "Q246",
         "Q276"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D2-Q2",
@@ -10471,7 +10713,8 @@
         "Q217",
         "Q247",
         "Q277"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D2-Q3",
@@ -10662,7 +10905,8 @@
         "Q218",
         "Q248",
         "Q278"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D2-Q4",
@@ -10886,7 +11130,8 @@
         "Q219",
         "Q249",
         "Q279"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D2-Q5",
@@ -11070,7 +11315,8 @@
         "Q220",
         "Q250",
         "Q280"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D3-Q1",
@@ -11469,7 +11715,8 @@
         "Q221",
         "Q251",
         "Q281"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D3-Q2",
@@ -11899,7 +12146,8 @@
         "Q222",
         "Q252",
         "Q282"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D3-Q3",
@@ -12353,7 +12601,8 @@
         "Q223",
         "Q253",
         "Q283"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D3-Q4",
@@ -12826,7 +13075,8 @@
         "Q224",
         "Q254",
         "Q284"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D3-Q5",
@@ -13288,7 +13538,8 @@
         "Q225",
         "Q255",
         "Q285"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D4-Q1",
@@ -13575,7 +13826,8 @@
         "Q226",
         "Q256",
         "Q286"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D4-Q2",
@@ -13776,7 +14028,8 @@
         "Q227",
         "Q257",
         "Q287"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D4-Q3",
@@ -13964,7 +14217,8 @@
         "Q228",
         "Q258",
         "Q288"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D4-Q4",
@@ -14142,7 +14396,8 @@
         "Q229",
         "Q259",
         "Q289"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D4-Q5",
@@ -14303,7 +14558,8 @@
         "Q230",
         "Q260",
         "Q290"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D5-Q1",
@@ -14491,7 +14747,8 @@
         "Q231",
         "Q261",
         "Q291"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D5-Q2",
@@ -14819,7 +15076,8 @@
         "Q232",
         "Q262",
         "Q292"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D5-Q3",
@@ -14993,7 +15251,8 @@
         "Q233",
         "Q263",
         "Q293"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D5-Q4",
@@ -15183,7 +15442,8 @@
         "Q234",
         "Q264",
         "Q294"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D5-Q5",
@@ -15384,7 +15644,8 @@
         "Q235",
         "Q265",
         "Q295"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D6-Q1",
@@ -15573,7 +15834,8 @@
         "Q236",
         "Q266",
         "Q296"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D6-Q2",
@@ -15750,7 +16012,8 @@
         "Q237",
         "Q267",
         "Q297"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D6-Q3",
@@ -15947,7 +16210,8 @@
         "Q238",
         "Q268",
         "Q298"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D6-Q4",
@@ -16141,7 +16405,8 @@
         "Q239",
         "Q269",
         "Q299"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D6-Q5",
@@ -16345,7 +16610,8 @@
         "Q240",
         "Q270",
         "Q300"
-      ]
+      ],
+      "pdet_note": "En municipios PDET, esta pregunta tiene peso elevado debido a concentración de víctimas del conflicto armado y mandato de incorporación de PATR (32,808 iniciativas)"
     },
     {
       "base_slot": "D1-Q1",

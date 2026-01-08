@@ -26,8 +26,9 @@
     
     "weight_rationale": {
       "PA01": "Peso medio por transversalidad de género",
-      "PA05": "Mayor peso por obligatoriedad en municipios PDET",
-      "PA06": "Peso medio por prioridad de protección"
+      "PA05": "Mayor peso por obligatoriedad en municipios PDET - Decreto 893/2017 y concentración de víctimas del conflicto armado",
+      "PA06": "Peso medio por prioridad de protección",
+      "pdet_note": "En contextos PDET, PA05 tiene peso elevado debido a mandato legal de incorporación de PATR y alta concentración de población victimizada"
     },
     
     "coherence_bonus": {
@@ -55,7 +56,14 @@
         
         "normative_alignment": {
           "required_norms": ["Ley 1257 de 2008", "Ley 1448 de 2011", "Ley 1098 de 2006"],
-          "weight": 0.20
+          "weight": 0.20,
+          "pdet_specific_norms": [
+            "Decreto Ley 893 de 2017 (PDET)",
+            "Acuerdo de Paz - Punto 1 (Reforma Rural Integral)",
+            "Acuerdo de Paz - Punto 5 (Víctimas)",
+            "Plan Marco de Implementación (PMI)"
+          ],
+          "pdet_note": "Para municipios PDET, se valora positivamente la mención explícita de PATR, Plan Marco de Implementación y Decreto 893/2017"
         }
       }
     },
@@ -81,5 +89,51 @@
   "signal_preservation": {
     "preserve_top_signals": 5,
     "preserve_types": ["NORMATIVE_REFERENCE", "POPULATION_DISAGGREGATION", "QUANTITATIVE_TRIPLET"]
+  },
+  
+  "pdet_enrichment": {
+    "contextual_scope": "Municipalities within 170 PDET territories across 16 subregions",
+    "territorial_markers": {
+      "veredas": "PDET covers approximately 11,000 veredas - territorial disaggregation to vereda level is highly valued",
+      "subregions": [
+        "Alto Patía y Norte del Cauca",
+        "Arauca",
+        "Bajo Cauca y Nordeste Antioqueño",
+        "Catatumbo",
+        "Chocó",
+        "Cuenca del Caguán",
+        "Macarena-Guaviare",
+        "Montes de María",
+        "Pacífico Medio",
+        "Pacífico y Frontera Nariñense",
+        "Putumayo",
+        "Sierra Nevada-Perijá",
+        "Sur de Bolívar",
+        "Sur de Córdoba",
+        "Sur del Tolima",
+        "Urabá Antioqueño"
+      ],
+      "ethnic_territories": "Resguardos indígenas, consejos comunitarios afrocolombianos, zonas de reserva campesina"
+    },
+    "consumer_integrity_requirements": {
+      "scope": "Plans must explicitly address population groups in PDET contexts with territorial specificity",
+      "value": "Enrichment provides mechanisms to detect PATR integration, ethnic consultation, and rural disaggregation",
+      "capability": "Patterns enable identification of institutional actors (ART, Unidad de Víctimas) and financing sources (SGR-Paz, Obras por Impuestos)",
+      "integrity": "Cross-validation with PATR initiatives (32,808 total) and 8 PDET pillars ensures coherence"
+    },
+    "key_indicators_pdet": {
+      "multidimensional_poverty": "39.2% in PDET vs national average",
+      "ethnic_initiative_lag": "25.15% of ethnic PDET initiatives have active implementation route",
+      "total_patr_initiatives": 32808,
+      "active_route_initiatives": 20352,
+      "completed_works": 5759,
+      "population_coverage": "6.6 million people (24% of Colombia's rural population)"
+    },
+    "validation_enhancement": {
+      "territorial_coherence": "Verify mention of specific PDET subregion and veredas/corregimientos",
+      "institutional_articulation": "Detect references to ART, OCAD Paz, Unidad de Víctimas, ethnic consultation bodies",
+      "financing_traceability": "Identify SGR-Asignación para la Paz, Obras por Impuestos, or PATR initiative codes",
+      "pillar_alignment": "Map interventions to PDET's 8 pillars, especially Pillar 8 (Reconciliation) for groups poblacionales"
+    }
   }
 }

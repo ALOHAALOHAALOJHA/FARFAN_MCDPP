@@ -17,5 +17,86 @@
     "PA05",
     "PA06"
   ],
-  "rationale": "Enfoque diferencial y derechos de grupos específicos"
+  "rationale": "Enfoque diferencial y derechos de grupos específicos",
+  "pdet_context": {
+    "relevance": "HIGH",
+    "description": "En municipios PDET, los grupos poblacionales enfrentan brechas históricas amplificadas por conflicto armado y déficit estatal",
+    "territorial_scope": {
+      "municipalities": 170,
+      "subregions": 16,
+      "rural_percentage": "24% de la población rural de Colombia",
+      "multidimensional_poverty": "39.2% en PDET vs promedio nacional"
+    },
+    "vulnerable_populations_pdet": {
+      "women": {
+        "challenges": [
+          "Mayor vulnerabilidad a violencia basada en género en contextos rurales dispersos",
+          "Limitado acceso a Comisarías de Familia y rutas de atención",
+          "Barreras para autonomía económica en economías informales",
+          "Subregistro agravado por dispersión territorial"
+        ],
+        "pdet_pillars": ["Pillar 8 - Reconciliación y Paz"]
+      },
+      "victims": {
+        "concentration": "PDET concentra víctimas históricas del conflicto armado",
+        "challenges": [
+          "Reparación integral en territorios con presencia institucional débil",
+          "Retornos y reubicaciones en zonas sin garantías de no repetición",
+          "Articulación Ley 1448 con PATR (Plan de Acción para la Transformación Regional)"
+        ],
+        "mandatory_integration": "Decreto 893/2017 obliga incorporar atención a víctimas en PDM PDET",
+        "pdet_pillars": ["Pillar 8 - Reconciliación, Convivencia y Construcción de Paz"]
+      },
+      "children_youth": {
+        "challenges": [
+          "Deserción escolar en veredas por distancias y falta de transporte",
+          "Riesgo de reclutamiento forzado en áreas con grupos armados",
+          "Limitado acceso a educación secundaria y superior",
+          "Embarazo adolescente elevado en zonas rurales PDET"
+        ],
+        "pdet_pillars": [
+          "Pillar 3 - Salud Rural",
+          "Pillar 4 - Educación Rural y Primera Infancia"
+        ]
+      },
+      "ethnic_groups": {
+        "representation": "Resguardos indígenas y consejos comunitarios afrocolombianos en territorios PDET",
+        "lag": "Solo 25.15% de iniciativas étnicas PDET tienen ruta activa de implementación",
+        "challenges": [
+          "Consulta previa y consentimiento libre, previo e informado",
+          "Articulación PDM con planes de vida indígenas y planes de etnodesarrollo",
+          "Territorios colectivos con superposición de jurisdicciones"
+        ],
+        "territorial_units": [
+          "Resguardos indígenas",
+          "Consejos comunitarios afrocolombianos",
+          "Zonas de Reserva Campesina (ZRC)"
+        ]
+      }
+    },
+    "institutional_actors": {
+      "art": "Agencia de Renovación del Territorio - gestor de iniciativas PATR relacionadas con grupos poblacionales",
+      "victims_unit": "Unidad para las Víctimas - articulación obligatoria en municipios PDET",
+      "ethnic_affairs": "Ministerio del Interior - Dirección de Asuntos para Comunidades Negras, Afrocolombianas, Raizales y Palenqueras y Dirección de Consulta Previa"
+    },
+    "financing_context": {
+      "sgr_peace_allocation": "Asignación para la Paz del SGR prioriza proyectos en zonas PDET",
+      "obras_por_impuestos": "Mecanismo Obras por Impuestos aplicable a ZOMAC (incluye muchos PDET)",
+      "ethnic_lag_warning": "Iniciativas para grupos étnicos muestran rezago en ejecución vs otras poblaciones"
+    },
+    "territorial_disaggregation": {
+      "required_levels": [
+        "Cabecera municipal vs rural disperso",
+        "Veredas PDET (11,000 veredas en total)",
+        "Corregimientos",
+        "Resguardos y consejos comunitarios"
+      ],
+      "rationale": "PATR construido desde asambleas veredales - desagregación territorial crítica para enfoque diferencial"
+    },
+    "coherence_requirements": {
+      "patr_alignment": "PDM debe incorporar iniciativas PATR relacionadas con grupos poblacionales",
+      "pmi_mandate": "Plan Marco de Implementación del Acuerdo de Paz establece estándares mínimos",
+      "continuity": "Política PDET trasciende períodos de alcaldes (15 años vs 4 años PDM)"
+    }
+  }
 }
