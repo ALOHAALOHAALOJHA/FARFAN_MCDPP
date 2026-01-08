@@ -77,6 +77,15 @@ class TemporalError:
     def __str__(self) -> str:
         return f"[{self.severity.upper()}] {self.error_type.value}: {self.message}"
 
+    def __repr__(self) -> str:
+        return (
+            f"TemporalError("
+            f"type={self.error_type.value}, "
+            f"severity={self.severity}, "
+            f"records={len(self.record_ids)}"
+            f")"
+        )
+
 
 @dataclass(frozen=True)
 class TimeInterval:
