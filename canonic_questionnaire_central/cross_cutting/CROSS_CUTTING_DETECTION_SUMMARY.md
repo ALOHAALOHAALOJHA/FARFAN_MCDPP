@@ -3,13 +3,14 @@
 ## Overview
 
 **Created**: 2026-01-06
+**Updated**: 2026-01-08 (PDET Enrichment Added)
 **Framework**: CQC Technical Excellence Framework v2.0.0
-**Status**: ✅ Complete (8/8 themes)
-**Version**: 2.0.0
+**Status**: ✅ Complete (9/9 themes)
+**Version**: 2.1.0
 
 ## Summary
 
-All 8 cross-cutting (CC) themes now have complete detection_rules.json files with empirically-calibrated signal detection strategies.
+All 9 cross-cutting (CC) themes now have complete detection_rules.json files with empirically-calibrated signal detection strategies. **NEW**: CC_CONTEXTO_PDET theme added to support PDET municipality context detection.
 
 ## Themes Implemented
 
@@ -211,6 +212,67 @@ All 8 cross-cutting (CC) themes now have complete detection_rules.json files wit
 - ERROR if no monitoring system defined
 - WARNING if indicators lack baseline or target
 - WARNING if frequency not specified
+
+---
+
+### 9. ✅ CC_CONTEXTO_PDET (PDET Context) **NEW**
+**Status**: **CREATED** ✨ (2026-01-08)
+**File**: `themes/CC_CONTEXTO_PDET/detection_rules.json`
+**Key Signals**:
+- SIG-PDET-001: Explicit PDET municipality mention (weight: 0.30)
+- SIG-PDET-002: PDET subregion identification (weight: 0.25)
+- SIG-PDET-003: PATR initiative references (weight: 0.20)
+- SIG-PDET-004: PMI alignment (weight: 0.15)
+- SIG-PDET-005: PDET pillars (8 pillars) (weight: 0.10)
+- SIG-PDET-006: ART institutional coordination (weight: 0.05)
+- SIG-PDET-007: OCAD Paz / SGR-Paz allocation (weight: 0.05)
+- SIG-PDET-008: Conflict-affected territory characterization (weight: 0.10)
+
+**Detection Threshold**: 0.65 (high threshold - critical for PDET municipalities)
+**Minimum Signals**: 2
+
+**Applies to**:
+- **Required**: PA02 (Seguridad), PA05 (Víctimas), PA07 (Paz) - severity: ERROR if missing in PDET municipalities
+- **Conditional**: All policy areas if municipality in PDET list
+- **Recommended**: PA03, PA04, PA06, PA08
+- **Dimensions**: DIM01, DIM02, DIM04, DIM05
+
+**Empirical Calibration**:
+- PDET explicit mentions per plan: 8 ± 6 (range: 2-18)
+- PATR initiative mentions: 12 ± 9 (range: 3-28)
+- PMI references: 4 ± 4 (range: 0-12)
+- RRI mentions: 7 ± 7 (range: 1-21)
+- ART coordination: 3 ± 3 (range: 0-9)
+
+**PDET Data Context**:
+- Total PDET municipalities: 170
+- Total subregions: 16
+- Total PATR initiatives: 32,808
+- Total population: 6,600,000
+- Rural percentage: 24.0%
+- Planning horizon: 15 years
+
+**Scoring Impact**:
+- **Boost**: +0.15 to Q031-Q033, Q061-Q063, Q181-Q183, Q211-Q213, Q271-Q273
+- **Penalty**: -0.10 if missing in PDET municipality
+- **Bonuses**: Explicit PDET mention (+0.20), PATR integration (+0.15), PMI alignment (+0.15), ART coordination (+0.10), OCAD Paz (+0.10), Multiple pillars (+0.05)
+
+**Validation Rules**:
+- ERROR if PDET municipality doesn't mention PDET condition
+- WARNING if PA05 in PDET municipality without PMI reference
+- WARNING if PDET municipality without PATR integration
+- WARNING if PA02 in PDET territory without conflict characterization
+
+**Data Source**: 
+- `pdet_municipalities.json` (170 municipalities, 16 subregions)
+- `pdet_empirical_patterns.json` (250+ patterns)
+- Decreto Ley 893 de 2017
+- OCAD Paz Session Records (October 2025)
+
+**Integration with Enrichment System**:
+- Uses 4-gate validation framework
+- Enriches with subregion context, policy area mappings, 8 PDET pillars
+- Enables territorial targeting and resource allocation
 
 ---
 
@@ -452,27 +514,29 @@ if not CC_ENFOQUE_DIFERENCIAL.detected:
 
 ## Success Criteria
 
-✅ **All 8 themes have complete detection_rules.json**
-✅ **Empirically calibrated with 14-plan corpus**
+✅ **All 9 themes have complete detection_rules.json** (Updated 2026-01-08)
+✅ **Empirically calibrated with 14-plan corpus + PDET data (170 municipalities)**
 ✅ **Multi-signal fusion strategy defined**
 ✅ **Scoring impact rules specified**
 ✅ **Validation rules established**
 ✅ **Golden test examples provided**
 ✅ **Integration points documented**
+✅ **PDET enrichment system integrated**
 
 ---
 
 ## Metrics
 
-- **Detection Rules**: 8 files
-- **Total Signals**: 40+ signals across themes
-- **Total Lines**: ~1,330 lines of detection logic
-- **Golden Examples**: 160+ test cases
-- **Empirical Baseline**: 14 PDT plans, 2,956 pages
-- **Coverage**: 100% of cross-cutting themes
+- **Detection Rules**: 9 files (8 original + 1 PDET context)
+- **Total Signals**: 48+ signals across themes (40 original + 8 PDET)
+- **Total Lines**: ~2,000 lines of detection logic (+670 for PDET)
+- **Golden Examples**: 165+ test cases (160 original + 5 PDET)
+- **Empirical Baseline**: 14 PDT plans, 2,956 pages + 170 PDET municipalities
+- **Coverage**: 100% of cross-cutting themes + PDET territorial context
+- **PDET Data**: 170 municipalities, 16 subregions, 32,808 PATR initiatives
 
 ---
 
 **Excellence Through Empirical Calibration** 🎯
 
-**CQC Technical Excellence Framework v2.0.0**
+**CQC Technical Excellence Framework v2.1.0** (PDET Enrichment Update)
