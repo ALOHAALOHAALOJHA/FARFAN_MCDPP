@@ -24,7 +24,6 @@ from typing import Any, Dict, List, Optional
 from canonic_questionnaire_central.validations.runtime_validators.scope_validator import (
     ScopeValidator,
     SignalScope,
-    ScopeLevel,
 )
 from canonic_questionnaire_central.validations.runtime_validators.value_add_validator import (
     ValueAddScorer,
