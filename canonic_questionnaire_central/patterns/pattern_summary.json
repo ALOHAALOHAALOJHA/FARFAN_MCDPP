@@ -147,5 +147,42 @@
         "Q002"
       ]
     }
+  },
+  "pdet_enrichment": {
+    "version": "2.0.0",
+    "enrichment_date": "2026-01-08T13:45:37.015780+00:00",
+    "total_pdet_patterns": 32,
+    "gate_conformance": {
+      "gate_1_consumer_scope": true,
+      "gate_2_value_contribution": true,
+      "gate_3_capability_requirements": true,
+      "gate_4_channel_integrity": true
+    },
+    "pdet_specific_categories": {
+      "PDET_TERRITORIAL": 8,
+      "INSTITUTIONAL_ENTITIES": 8,
+      "POLICY_INSTRUMENTS": 8,
+      "FINANCIAL_PATTERNS": 8
+    },
+    "municipalities_covered": 170,
+    "subregions_covered": 16,
+    "policy_areas_enriched": 10,
+    "enrichment_files": [
+      "pdet_empirical_patterns.json",
+      "pdet_pattern_enrichment_mapping.json",
+      "pdet_municipalities.json"
+    ]
+  },
+  "enrichment_statistics": {
+    "categories_with_pdet_context": {
+      "TERRITORIAL": "HIGH relevance - 170 municipalities",
+      "FUENTE_OFICIAL": "HIGH relevance - PDET-specific authorities",
+      "INDICADOR": "HIGH relevance - PDET-specific metrics",
+      "INSTRUMENTO": "CRITICAL relevance - PATR integration",
+      "FINANCIAL_PATTERNS": "CRITICAL relevance - OCAD Paz funding"
+    },
+    "avg_value_contribution": 0.4,
+    "patterns_with_gate_metadata": 32,
+    "patterns_with_pdet_linkage": 32
   }
 }
