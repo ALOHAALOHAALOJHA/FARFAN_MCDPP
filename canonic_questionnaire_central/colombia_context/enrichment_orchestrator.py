@@ -436,7 +436,15 @@ class EnrichmentOrchestrator:
         relevant_subregion_ids = set()
         for pa in policy_areas:
             pa_key = f"{pa}" if pa.startswith("PA") else f"PA{pa}"
+            
+            # Try exact match first, then with suffix
             pa_data = pa_mappings.get(pa_key, {})
+            if not pa_data:
+                for key, value in pa_mappings.items():
+                    if key.startswith(pa_key + "_"):
+                        pa_data = value
+                        break
+            
             relevant_subregion_ids.update(pa_data.get("relevant_subregions", []))
         
         # Extract municipalities from relevant subregions
@@ -453,7 +461,15 @@ class EnrichmentOrchestrator:
         relevant_subregion_ids = set()
         for pa in policy_areas:
             pa_key = f"{pa}" if pa.startswith("PA") else f"PA{pa}"
+            
+            # Try exact match first, then with suffix
             pa_data = pa_mappings.get(pa_key, {})
+            if not pa_data:
+                for key, value in pa_mappings.items():
+                    if key.startswith(pa_key + "_"):
+                        pa_data = value
+                        break
+            
             relevant_subregion_ids.update(pa_data.get("relevant_subregions", []))
         
         # Filter subregions
@@ -471,8 +487,16 @@ class EnrichmentOrchestrator:
         filtered_mappings = {}
         for pa in policy_areas:
             pa_key = f"{pa}" if pa.startswith("PA") else f"PA{pa}"
+            
+            # Try exact match first
             if pa_key in pa_mappings:
                 filtered_mappings[pa_key] = pa_mappings[pa_key]
+            else:
+                # Try with suffix (e.g., PA09_Justice)
+                for key, value in pa_mappings.items():
+                    if key.startswith(pa_key + "_"):
+                        filtered_mappings[pa_key] = value
+                        break
         
         return filtered_mappings
     
