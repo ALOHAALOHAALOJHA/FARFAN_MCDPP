@@ -17,5 +17,247 @@
     "PA03",
     "PA07"
   ],
-  "rationale": "Seguridad humana, protección de la vida y paz territorial"
+  "rationale": "Seguridad humana, protección de la vida y paz territorial",
+  "pdet_context": {
+    "relevance": "CRITICAL",
+    "description": "Los territorios PDET son epicentro histórico del conflicto armado y requieren estrategias especializadas de seguridad, protección y construcción de paz. La prevención de la violencia y el fortalecimiento institucional son pilares para la transformación territorial.",
+    "territorial_scope": {
+      "municipalities": 170,
+      "subregions": 16,
+      "rural_percentage": "24% de la población rural de Colombia",
+      "conflict_impact": "Concentran el 83% de las víctimas históricas del conflicto armado colombiano"
+    },
+    "security_peace_challenges_pdet": {
+      "violence_prevention": {
+        "description": "Prevención y atención ante manifestaciones de violencia asociadas al conflicto",
+        "specific_risks": [
+          "Homicidios en contextos de control territorial por grupos armados",
+          "Desplazamiento forzado masivo y eventos de confinamiento",
+          "Amenazas y extorsión a líderes sociales y defensores de derechos humanos",
+          "Violencia sexual en el marco del conflicto armado",
+          "Minas antipersonal (MAP) y municiones sin explotar (MUSE) en zonas rurales",
+          "Reclutamiento forzado de niños, niñas y adolescentes"
+        ],
+        "key_indicators": [
+          "Tasa de homicidios por 100,000 habitantes",
+          "Número de eventos de desplazamiento forzado",
+          "Casos reportados en RUV (Registro Único de Víctimas)",
+          "Alertas tempranas activas de la Defensoría del Pueblo"
+        ],
+        "pdet_pillars": [
+          "Pillar 8 - Reconciliación, Convivencia y Construcción de Paz"
+        ]
+      },
+      "institutional_presence": {
+        "description": "Fortalecimiento de la presencia estatal y capacidades institucionales de seguridad y justicia",
+        "gaps": [
+          "Ausencia o debilidad de Policía Nacional en veredas alejadas",
+          "Capacidad limitada de Personerías Municipales para atender denuncias",
+          "Falta de infraestructura para funcionamiento de Comités de Justicia Transicional",
+          "Deficiencias en Sistemas de Alertas Tempranas (SAT) por falta de conectividad",
+          "Escasa articulación entre Fuerza Pública y autoridades locales"
+        ],
+        "required_capacities": [
+          "Enlace Municipal de Víctimas con recursos y formación adecuada",
+          "Punto de Atención a Víctimas (PAV) funcional y accesible",
+          "Comité de Justicia Transicional operativo y con presupuesto",
+          "Rutas de protección para defensores de derechos humanos y líderes sociales",
+          "Protocolo municipal de respuesta ante emergencias humanitarias"
+        ],
+        "pdet_pillars": [
+          "Pillar 8 - Reconciliación, Convivencia y Construcción de Paz"
+        ]
+      },
+      "victims_attention": {
+        "description": "Atención, asistencia y reparación integral a víctimas del conflicto armado",
+        "pdet_specific": "Decreto 893/2017 obliga a municipios PDET incorporar Plan de Acción Territorial (PAT) para víctimas en articulación con PATR",
+        "challenges": [
+          "Extensión territorial dificulta acceso a UARIV y entidades de reparación",
+          "Subregistro de víctimas por miedo, estigmatización o desconocimiento de rutas",
+          "Retornos y reubicaciones sin garantías de no repetición",
+          "Reparación colectiva en comunidades étnicas con procesos complejos",
+          "Articulación deficiente entre PAT municipal, PATR subregional y política nacional"
+        ],
+        "mandatory_actions": [
+          "Implementar medidas de satisfacción (memoria histórica, dignificación de víctimas)",
+          "Garantizar participación efectiva de víctimas en Comité de Justicia Transicional",
+          "Ejecutar proyectos productivos de reparación colectiva",
+          "Coordinar con UARIV entrega de indemnizaciones y ayuda humanitaria"
+        ],
+        "pdet_pillars": [
+          "Pillar 8 - Reconciliación, Convivencia y Construcción de Paz"
+        ]
+      },
+      "peace_building": {
+        "description": "Construcción de paz territorial mediante reconciliación, convivencia y fortalecimiento del tejido social",
+        "pdet_initiatives": [
+          "Consejos Municipales de Paz activos y con participación ciudadana",
+          "Procesos de reconciliación y perdón en comunidades afectadas",
+          "Espacios de diálogo entre excombatientes reincorporados y comunidades receptoras",
+          "Pedagogía para la paz y cultura de no violencia en escuelas",
+          "Fortalecimiento de organizaciones sociales y liderazgos comunitarios"
+        ],
+        "territorial_approach": "Paz territorial implica reconocer particularidades de cada territorio, incluyendo contextos étnicos, rurales dispersos y zonas con economías ilegales",
+        "challenges": [
+          "Persistencia de grupos armados post-acuerdo en algunos territorios PDET",
+          "Estigmatización de comunidades asociadas históricamente con actores armados",
+          "Conflictos socioambientales y por uso del suelo en zonas de transición",
+          "Limitada apropiación social del Acuerdo de Paz en algunas comunidades",
+          "Discontinuidad de programas de reconciliación por cambios de gobierno"
+        ],
+        "pdet_pillars": [
+          "Pillar 8 - Reconciliación, Convivencia y Construcción de Paz"
+        ]
+      },
+      "transitional_justice": {
+        "description": "Implementación territorial de Sistema Integral de Verdad, Justicia, Reparación y No Repetición (SIVJRNR)",
+        "components": [
+          "Articulación con Jurisdicción Especial para la Paz (JEP)",
+          "Apoyo a Comisión para el Esclarecimiento de la Verdad (CEV) - testimonios territoriales",
+          "Búsqueda de personas desaparecidas en coordinación con UBPD",
+          "Participación en Macrocasos territoriales de JEP relevantes para la subregión PDET"
+        ],
+        "municipal_role": [
+          "Facilitar espacios para audiencias de JEP y eventos de reconocimiento",
+          "Acompañar a víctimas en procesos de verdad y reparación",
+          "Implementar garantías de no repetición a nivel territorial",
+          "Articular acciones municipales con sentencias y resoluciones de JEP"
+        ],
+        "pdet_pillars": [
+          "Pillar 8 - Reconciliación, Convivencia y Construcción de Paz"
+        ]
+      }
+    },
+    "institutional_actors": {
+      "art": {
+        "name": "Agencia de Renovación del Territorio (ART)",
+        "role": "Coordina implementación de PDET y PATR, incluyendo iniciativas de Pilar 8 (Reconciliación y Paz)",
+        "interaction": "Alcaldía debe articular PDM con PATR y reportar avance de iniciativas ante ART"
+      },
+      "victims_unit": {
+        "name": "Unidad para las Víctimas (UARIV)",
+        "role": "Coordina política pública de atención y reparación a víctimas",
+        "pdet_mandate": "Articulación obligatoria en municipios PDET para implementar PAT",
+        "interaction": "Enlace Municipal de Víctimas es contraparte clave; UARIV cofinancia proyectos"
+      },
+      "defensoria": {
+        "name": "Defensoría del Pueblo",
+        "role": "Sistema de Alertas Tempranas (SAT) y defensa de derechos humanos",
+        "interaction": "Alcaldía debe atender alertas tempranas y coordinar respuesta interinstitucional"
+      },
+      "jep": {
+        "name": "Jurisdicción Especial para la Paz (JEP)",
+        "role": "Justicia transicional para casos de graves violaciones a DDHH",
+        "municipal_support": "Facilitar procesos territoriales, audiencias y cumplimiento de sentencias"
+      },
+      "police_army": {
+        "name": "Policía Nacional y Fuerzas Militares",
+        "role": "Seguridad y orden público en territorios PDET",
+        "coordination": "Consejos de Seguridad municipales y Puestos de Mando Unificado (PMU)"
+      },
+      "personeria": {
+        "name": "Personería Municipal",
+        "role": "Vigilancia de derechos humanos y recepción de denuncias a nivel local",
+        "pdet_challenge": "Capacidad técnica y de personal limitada en municipios pequeños"
+      }
+    },
+    "financing_context": {
+      "sgr_paz": {
+        "name": "Sistema General de Regalías - Asignación para la Paz",
+        "description": "Recursos específicos para proyectos en zonas afectadas por conflicto",
+        "priority": "Proyectos de seguridad, víctimas y paz en municipios PDET tienen priorización"
+      },
+      "ocad_paz": {
+        "name": "Órgano Colegiado de Administración y Decisión (OCAD) Paz",
+        "description": "Aprueba proyectos financiados con SGR Asignación para la Paz",
+        "relevance_pdet": "170 municipios PDET son beneficiarios directos; se registran inversiones significativas en infraestructura social y reconciliación"
+      },
+      "uariv_cofinancing": {
+        "name": "Cofinanciación UARIV",
+        "description": "UARIV cofinancia proyectos de reparación colectiva y atención a víctimas en municipios",
+        "requirement": "Alcaldía debe aportar contrapartida (puede ser en especie o recursos propios)"
+      },
+      "international_cooperation": {
+        "description": "Fondos de cooperación internacional priorizan municipios PDET para programas de paz",
+        "examples": [
+          "Fondo Multidonante ONU para PDET",
+          "USAID programas de estabilización",
+          "Cooperación Unión Europea para paz territorial"
+        ]
+      },
+      "budget_constraints": {
+        "fiscal_autonomy": "La mayoría de municipios PDET son categoría 6 con 'muy baja' autonomía fiscal",
+        "dependency": "Alta dependencia de SGP (Sistema General de Participaciones) y transferencias nacionales",
+        "challenge": "Limitados recursos propios para contrapartidas en proyectos de paz y seguridad"
+      }
+    },
+    "territorial_disaggregation": {
+      "required_levels": [
+        "Cabecera municipal vs área rural dispersa",
+        "Veredas PDET (11,000 veredas en 170 municipios)",
+        "Corregimientos",
+        "Resguardos indígenas y consejos comunitarios afrocolombianos"
+      ],
+      "rationale": "PATR construido desde asambleas veredales - desagregación territorial crítica para diagnóstico de seguridad y focalización de intervenciones",
+      "security_implications": [
+        "Presencia diferenciada de grupos armados según vereda o corregimiento",
+        "Accesibilidad geográfica determina capacidad de respuesta institucional",
+        "Comunidades étnicas tienen autoridades propias de seguridad y justicia",
+        "Zonas de reserva campesina (ZRC) con dinámicas específicas de conflictividad"
+      ]
+    },
+    "coherence_requirements": {
+      "patr_alignment": {
+        "description": "PDM debe incorporar iniciativas PATR relacionadas con Pilar 8 (Reconciliación y Paz)",
+        "verification": "ART verifica coherencia PDM-PATR; inconsistencias pueden afectar acceso a financiación SGR Paz"
+      },
+      "pmi_standards": {
+        "description": "Plan Marco de Implementación (PMI) del Acuerdo de Paz establece estándares mínimos de atención a víctimas y construcción de paz",
+        "municipal_obligation": "Cumplir indicadores PMI relacionados con seguridad y paz territorial"
+      },
+      "continuity_horizon": {
+        "description": "Política PDET trasciende períodos administrativos (15 años PDET vs 4 años PDM)",
+        "implication": "PDM debe garantizar continuidad de iniciativas paz más allá del período del alcalde"
+      },
+      "ethnic_consultation": {
+        "description": "Intervenciones en territorios étnicos requieren consulta previa",
+        "legal_basis": "Convenio 169 OIT y jurisprudencia Corte Constitucional",
+        "municipal_duty": "Coordinar con Ministerio del Interior procesos de consulta previa para proyectos de seguridad que afecten comunidades étnicas"
+      },
+      "gender_approach": {
+        "description": "Enfoque de género transversal en todas las acciones de seguridad y paz",
+        "specifics": [
+          "Prevención de violencia basada en género en contextos de conflicto",
+          "Participación significativa de mujeres en Comités de Justicia Transicional",
+          "Reconocimiento de impactos diferenciados del conflicto en mujeres y niñas"
+        ]
+      }
+    },
+    "monitoring_evaluation": {
+      "pdet_indicators": [
+        "Tasa de homicidios (reducción)",
+        "Número de alertas tempranas atendidas",
+        "Porcentaje de víctimas con medidas de reparación implementadas",
+        "Funcionamiento efectivo del Comité de Justicia Transicional",
+        "Número de iniciativas de reconciliación ejecutadas"
+      ],
+      "reporting_frequency": "Semestral ante ART (marco PATR)",
+      "participatory_monitoring": "Veedurías ciudadanas y mesas de víctimas participan en seguimiento",
+      "adaptive_management": "Ajustes del PDM según evolución de contexto de seguridad y nuevas alertas tempranas"
+    },
+    "key_legal_frameworks": [
+      "Decreto Ley 893 de 2017 (creación de PDET)",
+      "Ley 1448 de 2011 (Ley de Víctimas y Restitución de Tierras)",
+      "Acto Legislativo 01 de 2017 y Ley 1957 de 2019 (JEP y SIVJRNR)",
+      "Acuerdo Final de Paz (2016) - Punto 5 Víctimas",
+      "Decreto 660 de 2018 (Plan Marco de Implementación)",
+      "Ley 418 de 1997 y prórrogas (Orden Público)"
+    ],
+    "cross_cutting_themes": [
+      "CC_ENFOQUE_DIFERENCIAL",
+      "CC_PERSPECTIVA_GENERO",
+      "CC_ENTORNO_TERRITORIAL",
+      "CC_PARTICIPACION_CIUDADANA"
+    ]
+  }
 }

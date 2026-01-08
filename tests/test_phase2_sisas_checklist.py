@@ -107,13 +107,9 @@ except ImportError:
     SISASSignalRegistry = None
     create_signal_registry = None
 
-# SignalPack with compute_hash - REAL PATH
-try:
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signals import SignalPack
-    SIGNAL_PACK_AVAILABLE = True
-except ImportError:
-    SIGNAL_PACK_AVAILABLE = False
-    SignalPack = None
+# SignalPack with compute_hash - REMOVED (Unused)
+SIGNAL_PACK_AVAILABLE = False
+SignalPack = None
 
 # Signal loader for building packs by policy area - REAL PATH
 try:
