@@ -23,7 +23,6 @@ from canonic_questionnaire_central.validations.runtime_validators import (
     ScopeLevel,
     SignalCapability,
     ScopeValidator,
-    ValueAddScorer,
     CapabilityValidator,
     ChannelValidator,
     DataFlow,
