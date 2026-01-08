@@ -6,7 +6,6 @@ Tests the loading, validation, and usage of PDET context enrichment
 for dimensions.
 """
 
-import json
 import pytest
 
 from canonic_questionnaire_central.dimensions import pdet_enrichment
