@@ -32,17 +32,16 @@ if TYPE_CHECKING:
 
 try:
     from dowhy import CausalModel
-    from dowhy.causal_estimator import CausalEstimate
 
     DOWHY_AVAILABLE = True
 except ImportError:
     DOWHY_AVAILABLE = False
     # Define stub types for type checking
     CausalModel = Any  # type: ignore[misc, assignment]
-    CausalEstimate = Any  # type: ignore[misc, assignment]
 
 
 @dataclass
+class CausalAnalysisResult:
 class CausalAnalysisResult:
     """Results from DoWhy causal analysis"""
 
