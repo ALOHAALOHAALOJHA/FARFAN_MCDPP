@@ -1,0 +1,173 @@
+{
+  "_schema_version": "1.0.0",
+  "_generated_at": "2026-01-08T13:13:48.817608Z",
+  "_description": "Contextual PDET enrichment for CL03 Territorio-Ambiente cluster",
+  "_validation_gates_compliance": {
+    "gate_1_scope": {
+      "required_scope": "pdet_context",
+      "allowed_signal_types": [
+        "ENRICHMENT_DATA"
+      ],
+      "authorized_policy_areas": [
+        "PA04",
+        "PA08"
+      ]
+    },
+    "gate_2_value_add": {
+      "estimated_value_add": 0.35,
+      "value_sources": [
+        "Territorial targeting for PA04 (Economic/Social Rights)",
+        "Human rights defender protection context for PA08",
+        "Municipality-level indicators for territorial planning",
+        "OCAD Paz investment data for resource allocation"
+      ]
+    },
+    "gate_3_capability": {
+      "required_capabilities": [
+        "SEMANTIC_PROCESSING",
+        "TABLE_PARSING"
+      ],
+      "recommended_capabilities": [
+        "GRAPH_CONSTRUCTION",
+        "FINANCIAL_ANALYSIS"
+      ]
+    },
+    "gate_4_channel": {
+      "flow_id": "CL03_PDET_ENRICHMENT",
+      "source": "colombia_context.pdet_municipalities",
+      "destination": "clusters.CL03_territorio_ambiente",
+      "governance_policy": "PDET_ENRICHMENT_POLICY_2024",
+      "documentation_path": "canonic_questionnaire_central/colombia_context/README_PDET_ENRICHMENT.md"
+    }
+  },
+  "cluster_id": "CL03",
+  "cluster_name": "Territorio-Ambiente",
+  "policy_areas": {
+    "PA04": {
+      "policy_area_id": "PA04",
+      "policy_area_name": "Derechos Económicos, Sociales y Culturales",
+      "pdet_relevance": "HIGH",
+      "relevant_subregions": [
+        "SR02",
+        "SR03",
+        "SR04",
+        "SR06",
+        "SR07",
+        "SR08"
+      ],
+      "key_indicators": [
+        "formal_enterprises",
+        "agricultural_productivity",
+        "market_access"
+      ],
+      "pdet_pillars": [
+        "pillar_6",
+        "pillar_7"
+      ],
+      "contextual_notes": [
+        "PDET municipalities in this policy area focus on territorial economic development",
+        "Key indicators include formal enterprises, agricultural productivity, and market access",
+        "Relevant PDET pillars: Land formalization (1), Economic reactivation (6), Food security (7)"
+      ]
+    },
+    "PA08": {
+      "policy_area_id": "PA08",
+      "policy_area_name": "Líderes Sociales y Defensores DDHH",
+      "pdet_relevance": "CRITICAL",
+      "relevant_subregions": [
+        "SR08"
+      ],
+      "key_indicators": [
+        "defenders_security",
+        "justice_access",
+        "human_rights_violations"
+      ],
+      "pdet_pillars": [
+        "pillar_8"
+      ],
+      "contextual_notes": [
+        "PDET municipalities face significant challenges protecting social leaders",
+        "Key indicators include defenders security, justice access, and human rights violations tracking",
+        "Relevant PDET pillar: Reconciliation and peacebuilding (8)",
+        "Special attention to ethnic territories and rural areas with armed conflict presence"
+      ]
+    }
+  },
+  "territorial_context": {
+    "total_pdet_municipalities": 170,
+    "total_subregions": 16,
+    "rural_percentage": 24.0,
+    "planning_horizon_years": 15,
+    "legal_basis": "Acuerdo de Paz Punto 1 + Decreto Ley 893/2017"
+  },
+  "usage_guidance": {
+    "for_diagnosis": [
+      "Use PDET municipality data to contextualize baseline indicators",
+      "Reference multidimensional poverty rates and fiscal autonomy levels",
+      "Consider ethnic composition when analyzing territorial challenges"
+    ],
+    "for_targeting": [
+      "Filter questions by relevant PDET subregions for territorial specificity",
+      "Prioritize municipalities with high poverty rates or low fiscal autonomy",
+      "Consider PATR initiatives and active route initiatives as capacity indicators"
+    ],
+    "for_resource_allocation": [
+      "Reference OCAD Paz investment data for co-financing opportunities",
+      "Consider existing PDET pillar investments when planning new initiatives",
+      "Analyze gaps between PATR initiatives and active implementation"
+    ],
+    "for_protection_strategies": [
+      "PA08: Identify high-risk territories for social leader protection",
+      "PA08: Cross-reference with ethnic territories requiring differentiated approaches",
+      "PA08: Consider armed conflict dynamics in protection planning"
+    ]
+  },
+  "data_governance": {
+    "authoritative_sources": [
+      "Decreto Ley 893 de 2017",
+      "Central de Información PDET",
+      "OCAD Paz Session Records (October 2025)",
+      "DNP - Sistema de Estadísticas Territoriales",
+      "Agencia de Renovación del Territorio (ART)"
+    ],
+    "last_update": "2026-01-08T00:00:00Z",
+    "update_frequency": "Quarterly",
+    "change_control_protocol": "CCP-PDET-2024",
+    "data_owner": "Agencia de Renovación del Territorio (ART)",
+    "compliance_framework": "Decreto Ley 893 de 2017"
+  },
+  "integration_examples": {
+    "example_1": {
+      "question_id": "Q091",
+      "dimension": "DIM01",
+      "integration_point": "Baseline diagnostics",
+      "pdet_context": "Use municipality multidimensional poverty rates as benchmark for DESC indicators",
+      "expected_enrichment": "Compare plan baselines against PDET municipal averages"
+    },
+    "example_2": {
+      "question_id": "Q093",
+      "dimension": "DIM01",
+      "integration_point": "Financial allocations",
+      "pdet_context": "Cross-reference plan budgets with OCAD Paz investment data",
+      "expected_enrichment": "Identify co-financing opportunities and resource gaps"
+    },
+    "example_3": {
+      "question_id": "Q236",
+      "dimension": "DIM06",
+      "integration_point": "Theory of change for leader protection",
+      "pdet_context": "Use PA08 subregion context to validate protection strategies",
+      "expected_enrichment": "Ensure protection strategies account for territorial armed conflict dynamics"
+    }
+  },
+  "quality_assurance": {
+    "completeness_check": {
+      "all_policy_areas_covered": true,
+      "all_gates_addressed": true,
+      "territorial_context_provided": true,
+      "usage_guidance_documented": true
+    },
+    "validation_status": "PENDING_GATE_VALIDATION",
+    "created_by": "GitHub Copilot",
+    "creation_date": "2026-01-08T13:13:48.817679Z"
+  }
+}

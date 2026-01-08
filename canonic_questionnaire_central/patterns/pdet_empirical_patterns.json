@@ -1,17 +1,22 @@
 {
-  "_version": "1.0.0",
-  "_generated_at": "2026-01-03T00:00:00Z",
+  "_version": "2.0.0",
+  "_generated_at": "2026-01-08T13:43:41.970350+00:00",
   "_description": "Comprehensive empirical pattern library for PDET municipal development plan analysis",
   "_source": "Based on unit_of_analysis.py and canonic_description_unit_analysis.json",
-  
   "metadata": {
     "total_patterns": 250,
     "pattern_categories": 12,
     "confidence_calibrated": true,
     "pdet_specific": true,
-    "target_document_type": "Plan de Desarrollo Territorial (PDT) - PDET municipalities"
+    "target_document_type": "Plan de Desarrollo Territorial (PDT) - PDET municipalities",
+    "gate_conformance": {
+      "gate_1_consumer_scope": true,
+      "gate_2_value_contribution": true,
+      "gate_3_capability_requirements": true,
+      "gate_4_channel_integrity": true,
+      "enrichment_date": "2026-01-08T13:43:41.970362+00:00"
+    }
   },
-
   "pattern_categories": {
     "PDET_TERRITORIAL": {
       "description": "Patterns for identifying PDET-specific territorial markers and administrative structures",
@@ -24,14 +29,26 @@
           "confidence_weight": 0.95,
           "context_scope": "PARAGRAPH",
           "disambiguation_rules": {
-            "required_context": ["PDET", "municipio"],
+            "required_context": [
+              "PDET",
+              "municipio"
+            ],
             "exclude_if_present": []
           },
-          "expected_location": ["Diagnóstico", "Marco normativo"],
+          "expected_location": [
+            "Diagnóstico",
+            "Marco normativo"
+          ],
           "example_matches": [
             "municipios ubicados en zonas PDET",
             "localizado en zona PDET del Alto Patía"
-          ]
+          ],
+          "gate_conformance_ref": "PDET_TERRITORIAL",
+          "pdet_context": {
+            "applicable_to": "170 PDET municipalities",
+            "coverage": "All PDET zones",
+            "reference_data": "pdet_municipalities.json"
+          }
         },
         {
           "pattern_id": "PDET-TERR-002",
@@ -43,7 +60,13 @@
           "example_matches": [
             "subregión PDET del Alto Patía y Norte del Cauca",
             "Sub-región de Montes de María"
-          ]
+          ],
+          "gate_conformance_ref": "PDET_TERRITORIAL",
+          "pdet_context": {
+            "applicable_to": "16 PDET subregions",
+            "coverage": "170 municipalities",
+            "reference_data": "pdet_municipalities.json"
+          }
         },
         {
           "pattern_id": "PDET-TERR-003",
@@ -56,19 +79,26 @@
           "example_matches": [
             "vereda Bella Vista",
             "veredas La Puentona, Las Juntas, San Joaquín"
-          ]
+          ],
+          "gate_conformance_ref": "PDET_TERRITORIAL",
+          "pdet_context": {
+            "applicable_to": "~11,000 veredas in PDET municipalities",
+            "coverage": "Rural territorial disaggregation",
+            "reference_data": "pdet_municipalities.json"
+          }
         },
         {
           "pattern_id": "PDET-TERR-004",
           "name": "Corregimiento administrative unit",
           "regex": "(?i)corregimiento[s]?\\s+(?:de\\s+)?([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+){0,2})",
-          "confidence_weight": 0.90,
+          "confidence_weight": 0.9,
           "context_scope": "SENTENCE",
           "named_entity_type": "TERRITORIAL_UNIT",
           "example_matches": [
             "Corregimiento de Bucana",
             "corregimientos La Mesa"
-          ]
+          ],
+          "gate_conformance_ref": "PDET_TERRITORIAL"
         },
         {
           "pattern_id": "PDET-TERR-005",
@@ -80,7 +110,8 @@
           "example_matches": [
             "zona rural y urbana",
             "territorio rural estratégico"
-          ]
+          ],
+          "gate_conformance_ref": "PDET_TERRITORIAL"
         },
         {
           "pattern_id": "PDET-TERR-006",
@@ -93,7 +124,8 @@
             "resguardos indígenas",
             "Consejo Comunitario La Fortaleza",
             "territorios de comunidades negras"
-          ]
+          ],
+          "gate_conformance_ref": "PDET_TERRITORIAL"
         },
         {
           "pattern_id": "PDET-TERR-007",
@@ -106,7 +138,8 @@
           "example_matches": [
             "32.808 iniciativas",
             "treinta y dos mil ochocientos ocho iniciativas del PATR"
-          ]
+          ],
+          "gate_conformance_ref": "PDET_TERRITORIAL"
         },
         {
           "pattern_id": "PDET-TERR-008",
@@ -119,11 +152,74 @@
           "example_matches": [
             "170 municipios PDET",
             "ciento setenta municipios priorizados"
-          ]
+          ],
+          "gate_conformance_ref": "PDET_TERRITORIAL",
+          "pdet_context": {
+            "applicable_to": "170 PDET municipalities",
+            "coverage": "All PDET zones",
+            "reference_data": "pdet_municipalities.json"
+          }
         }
-      ]
+      ],
+      "gate_conformance": {
+        "consumer_scope": {
+          "required_scope": "pdet_context",
+          "allowed_signal_types": [
+            "ENRICHMENT_DATA",
+            "TERRITORIAL_MARKER"
+          ],
+          "min_confidence": 0.75,
+          "policy_area_relevance": "ALL"
+        },
+        "value_contribution": {
+          "estimated_value_add": 0.3,
+          "enables": [
+            "territorial_targeting",
+            "subregion_analysis",
+            "vereda_level_planning"
+          ],
+          "optimizes": [
+            "resource_allocation",
+            "intervention_design"
+          ],
+          "contribution_type": "FOUNDATIONAL"
+        },
+        "capability_requirements": {
+          "required": [
+            "SEMANTIC_PROCESSING",
+            "TABLE_PARSING"
+          ],
+          "recommended": [
+            "GRAPH_CONSTRUCTION",
+            "GEOSPATIAL_ANALYSIS"
+          ]
+        },
+        "channel_integrity": {
+          "data_flow_id": "PDET_TERRITORIAL_ENRICHMENT",
+          "source": "pdet_municipalities.json",
+          "is_explicit": true,
+          "is_documented": true,
+          "is_traceable": true,
+          "is_governed": true,
+          "documentation_path": "canonic_questionnaire_central/colombia_context/README_PDET_ENRICHMENT.md"
+        }
+      },
+      "pdet_linkage": {
+        "total_municipalities": 170,
+        "total_subregions": 16,
+        "subregion_ids": [
+          "SR01",
+          "SR02",
+          "SR03",
+          "SR04",
+          "SR05",
+          "SR06",
+          "SR07",
+          "SR08"
+        ],
+        "planning_horizon_years": 15
+      }
     },
-
     "INSTITUTIONAL_ENTITIES": {
       "description": "Colombian institutional entities with disambiguation and acronym expansion",
       "confidence_baseline": 0.88,
@@ -138,7 +234,8 @@
           "entity_type": "COLOMBIAN_INSTITUTION",
           "role": "Autoridad metodológica, provee SisPT y TerriData",
           "context_scope": "DOCUMENT",
-          "normalization_rule": "expand_on_first_use"
+          "normalization_rule": "expand_on_first_use",
+          "gate_conformance_ref": "INSTITUTIONAL_ENTITIES"
         },
         {
           "pattern_id": "INST-002",
@@ -153,7 +250,8 @@
           "example_matches": [
             "la ART coordina las iniciativas PDET",
             "Agencia de Renovación del Territorio (ART)"
-          ]
+          ],
+          "gate_conformance_ref": "INSTITUTIONAL_ENTITIES"
         },
         {
           "pattern_id": "INST-003",
@@ -168,7 +266,8 @@
           "example_matches": [
             "aprobación del OCAD Paz",
             "proyectos presentados al Órgano Colegiado de Administración y Decisión para la Paz"
-          ]
+          ],
+          "gate_conformance_ref": "INSTITUTIONAL_ENTITIES"
         },
         {
           "pattern_id": "INST-004",
@@ -183,7 +282,8 @@
           "example_matches": [
             "según datos del DANE",
             "fuente: Departamento Administrativo Nacional de Estadística"
-          ]
+          ],
+          "gate_conformance_ref": "INSTITUTIONAL_ENTITIES"
         },
         {
           "pattern_id": "INST-005",
@@ -198,7 +298,8 @@
           "example_matches": [
             "formalización a cargo de la ANT",
             "meta de la Agencia Nacional de Tierras"
-          ]
+          ],
+          "gate_conformance_ref": "INSTITUTIONAL_ENTITIES"
         },
         {
           "pattern_id": "INST-006",
@@ -211,7 +312,8 @@
             "Ministerio de Salud",
             "Ministerio del Interior",
             "Ministerio de Hacienda y Crédito Público"
-          ]
+          ],
+          "gate_conformance_ref": "INSTITUTIONAL_ENTITIES"
         },
         {
           "pattern_id": "INST-007",
@@ -223,7 +325,8 @@
           "example_matches": [
             "Secretaría de Planeación",
             "Secretaría Municipal de Hacienda"
-          ]
+          ],
+          "gate_conformance_ref": "INSTITUTIONAL_ENTITIES"
         },
         {
           "pattern_id": "INST-008",
@@ -234,18 +337,63 @@
           "full_name": "Corporación Autónoma Regional",
           "entity_type": "COLOMBIAN_INSTITUTION",
           "role": "Entidad ambiental regional",
-          "policy_area_relevance": ["PA03"],
+          "policy_area_relevance": [
+            "PA03"
+          ],
           "example_matches": [
             "la CAR del Cauca",
             "Corporación Autónoma Regional"
-          ]
+          ],
+          "gate_conformance_ref": "INSTITUTIONAL_ENTITIES"
         }
-      ]
+      ],
+      "gate_conformance": {
+        "consumer_scope": {
+          "required_scope": "pdet_context",
+          "allowed_signal_types": [
+            "ENRICHMENT_DATA",
+            "ENTITY_RECOGNITION"
+          ],
+          "min_confidence": 0.8,
+          "policy_area_relevance": "ALL"
+        },
+        "value_contribution": {
+          "estimated_value_add": 0.25,
+          "enables": [
+            "institutional_mapping",
+            "governance_analysis",
+            "accountability_tracking"
+          ],
+          "optimizes": [
+            "referential_integrity",
+            "entity_disambiguation"
+          ],
+          "contribution_type": "STRUCTURAL"
+        },
+        "capability_requirements": {
+          "required": [
+            "SEMANTIC_PROCESSING",
+            "NER_PROCESSING"
+          ],
+          "recommended": [
+            "GRAPH_CONSTRUCTION",
+            "ACRONYM_EXPANSION"
+          ]
+        },
+        "channel_integrity": {
+          "data_flow_id": "INSTITUTIONAL_ENTITY_ENRICHMENT",
+          "source": "colombia_context/municipal_governance.json",
+          "is_explicit": true,
+          "is_documented": true,
+          "is_traceable": true,
+          "is_governed": true,
+          "documentation_path": "canonic_questionnaire_central/colombia_context/README_PDET_ENRICHMENT.md"
+        }
+      }
     },
-
     "POLICY_INSTRUMENTS": {
       "description": "Policy documents and planning instruments specific to Colombian municipal governance",
-      "confidence_baseline": 0.90,
+      "confidence_baseline": 0.9,
       "patterns": [
         {
           "pattern_id": "POLICY-INST-001",
@@ -261,7 +409,8 @@
           "example_matches": [
             "PND 2022-2026",
             "Plan Nacional de Desarrollo 'Colombia Potencia Mundial de la Vida'"
-          ]
+          ],
+          "gate_conformance_ref": "POLICY_INSTRUMENTS"
         },
         {
           "pattern_id": "POLICY-INST-002",
@@ -276,7 +425,8 @@
           "example_matches": [
             "PDM 2024-2027",
             "Plan de Desarrollo Territorial del municipio"
-          ]
+          ],
+          "gate_conformance_ref": "POLICY_INSTRUMENTS"
         },
         {
           "pattern_id": "POLICY-INST-003",
@@ -293,7 +443,8 @@
           "example_matches": [
             "iniciativas del PATR",
             "Planes de Acción para la Transformación Regional"
-          ]
+          ],
+          "gate_conformance_ref": "POLICY_INSTRUMENTS"
         },
         {
           "pattern_id": "POLICY-INST-004",
@@ -308,7 +459,8 @@
           "example_matches": [
             "matriz del PPI",
             "Plan Plurianual de Inversiones 2024-2027"
-          ]
+          ],
+          "gate_conformance_ref": "POLICY_INSTRUMENTS"
         },
         {
           "pattern_id": "POLICY-INST-005",
@@ -323,7 +475,8 @@
           "example_matches": [
             "actualización del POT",
             "Plan Básico de Ordenamiento Territorial (PBOT)"
-          ]
+          ],
+          "gate_conformance_ref": "POLICY_INSTRUMENTS"
         },
         {
           "pattern_id": "POLICY-INST-006",
@@ -337,7 +490,8 @@
           "example_matches": [
             "CONPES 3918",
             "documentos CONPES"
-          ]
+          ],
+          "gate_conformance_ref": "POLICY_INSTRUMENTS"
         },
         {
           "pattern_id": "POLICY-INST-007",
@@ -352,7 +506,8 @@
           "example_matches": [
             "disposiciones del PMI",
             "Plan Marco de Implementación del Acuerdo de Paz"
-          ]
+          ],
+          "gate_conformance_ref": "POLICY_INSTRUMENTS"
         },
         {
           "pattern_id": "POLICY-INST-008",
@@ -367,11 +522,54 @@
           "example_matches": [
             "objetivos de la RRI",
             "Reforma Rural Integral"
-          ]
+          ],
+          "gate_conformance_ref": "POLICY_INSTRUMENTS"
         }
-      ]
+      ],
+      "gate_conformance": {
+        "consumer_scope": {
+          "required_scope": "pdet_context",
+          "allowed_signal_types": [
+            "ENRICHMENT_DATA",
+            "POLICY_REFERENCE"
+          ],
+          "min_confidence": 0.85,
+          "policy_area_relevance": "ALL"
+        },
+        "value_contribution": {
+          "estimated_value_add": 0.35,
+          "enables": [
+            "policy_alignment_validation",
+            "legal_compliance_checking",
+            "integration_requirements_assessment"
+          ],
+          "optimizes": [
+            "cross_reference_validation",
+            "planning_coherence"
+          ],
+          "contribution_type": "CRITICAL"
+        },
+        "capability_requirements": {
+          "required": [
+            "SEMANTIC_PROCESSING",
+            "LEGAL_DOCUMENT_PARSING"
+          ],
+          "recommended": [
+            "TEMPORAL_ANALYSIS",
+            "HIERARCHICAL_RELATIONSHIP_MAPPING"
+          ]
+        },
+        "channel_integrity": {
+          "data_flow_id": "POLICY_INSTRUMENT_ENRICHMENT",
+          "source": "colombia_context/policy_framework.json",
+          "is_explicit": true,
+          "is_documented": true,
+          "is_traceable": true,
+          "is_governed": true,
+          "documentation_path": "canonic_questionnaire_central/colombia_context/README_PDET_ENRICHMENT.md"
+        }
+      }
     },
-
     "FINANCIAL_PATTERNS": {
       "description": "Financial systems, codes, and funding sources for municipal development plans",
       "confidence_baseline": 0.86,
@@ -395,7 +593,8 @@
           "example_matches": [
             "recursos del SGP",
             "Sistema General de Participaciones (SGP)"
-          ]
+          ],
+          "gate_conformance_ref": "FINANCIAL_PATTERNS"
         },
         {
           "pattern_id": "FIN-002",
@@ -411,7 +610,8 @@
           "example_matches": [
             "proyectos financiados con SGR",
             "Sistema General de Regalías - Asignación para la Paz"
-          ]
+          ],
+          "gate_conformance_ref": "FINANCIAL_PATTERNS"
         },
         {
           "pattern_id": "FIN-003",
@@ -425,20 +625,22 @@
           "example_matches": [
             "BPIN: 2023000100123",
             "código BPIN"
-          ]
+          ],
+          "gate_conformance_ref": "FINANCIAL_PATTERNS"
         },
         {
           "pattern_id": "FIN-004",
           "name": "MGA code pattern (Producto)",
           "regex": "(?i)(?:Código|Cód\\.?)\\s+(?:de\\s+)?Producto\\s*:?\\s*(\\d{7})",
-          "confidence_weight": 0.90,
+          "confidence_weight": 0.9,
           "code_type": "MGA_producto",
           "code_format": "7 digits",
           "methodology": "Metodología General Ajustada (MGA)",
           "example_matches": [
             "Código de Producto: 1203009",
             "Cód. Producto 4102051"
-          ]
+          ],
+          "gate_conformance_ref": "FINANCIAL_PATTERNS"
         },
         {
           "pattern_id": "FIN-005",
@@ -453,7 +655,8 @@
             "$455,000,000 COP",
             "8.242.757.474,00 pesos",
             "136,551 millones"
-          ]
+          ],
+          "gate_conformance_ref": "FINANCIAL_PATTERNS"
         },
         {
           "pattern_id": "FIN-006",
@@ -467,7 +670,8 @@
           "example_matches": [
             "financiado mediante Obras por Impuestos",
             "mecanismo de Obras por Impuestos"
-          ]
+          ],
+          "gate_conformance_ref": "FINANCIAL_PATTERNS"
         },
         {
           "pattern_id": "FIN-007",
@@ -481,13 +685,14 @@
           "example_matches": [
             "categoría según ICLD",
             "Ingresos Corrientes de Libre Destinación"
-          ]
+          ],
+          "gate_conformance_ref": "FINANCIAL_PATTERNS"
         },
         {
           "pattern_id": "FIN-008",
           "name": "MFMP - Marco Fiscal de Mediano Plazo",
           "regex": "(?:MFMP|Marco Fiscal de Mediano Plazo)(?:\\s+\\d{4}-\\d{4})?",
-          "confidence_weight": 0.90,
+          "confidence_weight": 0.9,
           "acronym": "MFMP",
           "full_name": "Marco Fiscal de Mediano Plazo",
           "planning_horizon": "10 years",
@@ -495,9 +700,55 @@
           "example_matches": [
             "MFMP 2024-2033",
             "proyección del Marco Fiscal de Mediano Plazo"
-          ]
+          ],
+          "gate_conformance_ref": "FINANCIAL_PATTERNS"
         }
-      ]
+      ],
+      "gate_conformance": {
+        "consumer_scope": {
+          "required_scope": "pdet_context",
+          "allowed_signal_types": [
+            "ENRICHMENT_DATA",
+            "FINANCIAL_MARKER"
+          ],
+          "min_confidence": 0.8,
+          "policy_area_relevance": "ALL"
+        },
+        "value_contribution": {
+          "estimated_value_add": 0.4,
+          "enables": [
+            "budget_analysis",
+            "funding_source_identification",
+            "fiscal_capacity_assessment"
+          ],
+          "optimizes": [
+            "financial_validation",
+            "investment_tracking"
+          ],
+          "contribution_type": "CRITICAL"
+        },
+        "capability_requirements": {
+          "required": [
+            "SEMANTIC_PROCESSING",
+            "TABLE_PARSING",
+            "FINANCIAL_ANALYSIS"
+          ],
+          "recommended": [
+            "NUMERIC_VALIDATION",
+            "CODE_EXTRACTION"
+          ]
+        },
+        "channel_integrity": {
+          "data_flow_id": "FINANCIAL_PATTERN_ENRICHMENT",
+          "source": "pdet_municipalities.json + OCAD_Paz_data",
+          "is_explicit": true,
+          "is_documented": true,
+          "is_traceable": true,
+          "is_governed": true,
+          "documentation_path": "canonic_questionnaire_central/colombia_context/README_PDET_ENRICHMENT.md"
+        }
+      }
     }
-  }
+  },
+  "_enrichment_wave": "Gate Conformance Enrichment"
 }
