@@ -1,0 +1,183 @@
+{
+  "_schema_version": "1.0.0",
+  "_dimension_id": "DIM04",
+  "_dimension_name": "RESULTADOS (Cambios en la Población)",
+  "_generated_at": "2026-01-08T13:30:00Z",
+  "_description": "PDET context enrichment for DIM04 focusing on outcome definition, population-level changes, and medium-term result measurement in PDET municipalities",
+  
+  "validation_gates_alignment": {
+    "gate_1_scope": {
+      "required_scope": "pdet_context",
+      "allowed_signal_types": ["ENRICHMENT_DATA", "OUTCOME_DATA"],
+      "scope_level": "EVIDENCE_COLLECTION",
+      "justification": "DIM04 requires access to PDET outcome frameworks, PATR result indicators, and population-level change metrics"
+    },
+    "gate_2_value_add": {
+      "estimated_value_add": 0.32,
+      "value_components": {
+        "outcome_definition_standards": 0.12,
+        "causal_attribution_criteria": 0.10,
+        "measurement_methodology": 0.06,
+        "patr_outcome_alignment": 0.04
+      },
+      "justification": "Provides outcome definition standards and attribution criteria critical for PDET results-based management"
+    },
+    "gate_3_capability": {
+      "required_capabilities": [
+        "SEMANTIC_PROCESSING",
+        "CAUSAL_INFERENCE",
+        "STATISTICAL_ANALYSIS"
+      ],
+      "recommended_capabilities": [
+        "BAYESIAN_ANALYSIS",
+        "IMPACT_EVALUATION"
+      ],
+      "justification": "Methods must identify outcome statements, assess causal claims, and evaluate measurement validity"
+    },
+    "gate_4_channel": {
+      "flow_id": "DIM04_PDET_ENRICHMENT",
+      "flow_type": "ENRICHMENT_FLOW",
+      "source": "pdet_municipalities.json",
+      "destination": "DIM04_questions_evaluation",
+      "data_schema": "PDETContextDIM04",
+      "governance_policy": "CCP-PDET-2024",
+      "documentation_path": "canonic_questionnaire_central/dimensions/DIM04_RESULTADOS/README_PDET_ENRICHMENT.md",
+      "is_explicit": true,
+      "is_documented": true,
+      "is_traceable": true,
+      "is_governed": true
+    }
+  },
+  
+  "pdet_pillar_mapping": {
+    "primary_pillars": [
+      {
+        "pillar_id": "pillar_1",
+        "pillar_name": "Ordenamiento social de la propiedad rural",
+        "relevance": "CRITICAL",
+        "relevance_score": 0.95,
+        "outcome_requirements": [
+          "Percentage increase in formalized rural properties",
+          "Reduction in land conflicts (quantified)",
+          "Increase in agricultural investment due to tenure security",
+          "Causal link from formalization to economic outcomes"
+        ]
+      },
+      {
+        "pillar_id": "pillar_4",
+        "pillar_name": "Educación rural",
+        "relevance": "CRITICAL",
+        "relevance_score": 0.90,
+        "outcome_requirements": [
+          "Improved learning outcomes (test scores)",
+          "Reduced school dropout rates",
+          "Increased transition to secondary education",
+          "Attribution to education interventions explicit"
+        ]
+      },
+      {
+        "pillar_id": "pillar_8",
+        "pillar_name": "Reconciliación y paz",
+        "relevance": "HIGH",
+        "relevance_score": 0.88,
+        "outcome_requirements": [
+          "Increased social cohesion indicators",
+          "Improved perceptions of security",
+          "Reduced violent incidents",
+          "Theory linking reconciliation activities to outcomes"
+        ]
+      }
+    ]
+  },
+  
+  "pdet_specific_criteria": {
+    "outcome_vs_output_distinction": {
+      "required": true,
+      "outcome_definition": "Changes in knowledge, attitudes, behaviors, or conditions of target populations",
+      "common_mistakes": [
+        "Confusing 'schools built' (output) with 'children educated' (outcome)",
+        "Listing 'roads constructed' instead of 'travel time reduced'",
+        "Stating 'programs implemented' instead of 'behaviors changed'"
+      ],
+      "justification": "PDET evaluation requires clear outcome focus; many PDTs conflate outputs with outcomes"
+    },
+    "causal_attribution": {
+      "required": true,
+      "elements": [
+        "explicit_theory_of_change",
+        "confounding_factors_acknowledged",
+        "alternative_explanations_considered",
+        "attribution_vs_contribution_clarified"
+      ],
+      "justification": "PDET territories have multiple interventions; attribution must be realistic and explicit"
+    },
+    "measurement_rigor": {
+      "required": true,
+      "requirements": [
+        "baseline_measurement_specified",
+        "target_value_quantified",
+        "measurement_frequency_defined",
+        "data_source_identified",
+        "sample_size_considerations",
+        "confidence_intervals_where_applicable"
+      ],
+      "justification": "Outcome measurement in PDET requires statistical rigor due to high stakes and evaluation requirements"
+    },
+    "temporal_realism": {
+      "required": true,
+      "considerations": [
+        "outcomes_achievable_within_pdt_period",
+        "lag_time_between_activities_and_outcomes",
+        "measurement_timeline_feasible"
+      ],
+      "typical_timeframes": {
+        "education_outcomes": "2-4 years",
+        "health_outcomes": "1-3 years",
+        "economic_outcomes": "3-5 years",
+        "peace_building_outcomes": "5-10 years"
+      },
+      "justification": "Unrealistic timelines undermine credibility; PDET outcomes must align with known causal delays"
+    },
+    "differential_outcomes": {
+      "required": true,
+      "disaggregation": [
+        "outcomes_by_sex",
+        "outcomes_by_ethnic_group",
+        "outcomes_by_age_cohort",
+        "outcomes_by_victimization_status",
+        "urban_vs_rural_outcomes"
+      ],
+      "justification": "PDET differential approach requires monitoring equity in outcome achievement"
+    }
+  },
+  
+  "common_outcome_gaps": {
+    "gap_1_output_outcome_confusion": {
+      "description": "Results section lists deliverables (products) instead of population changes",
+      "prevalence": "very_high",
+      "impact": "Planning focuses on spending rather than achieving change; evaluation becomes box-checking",
+      "remediation": "Flag any 'resultado' that is countable infrastructure or service provision"
+    },
+    "gap_2_no_causal_theory": {
+      "description": "Outcomes stated without explaining how activities will cause them",
+      "prevalence": "high",
+      "impact": "Implementation disconnected from results; no learning when outcomes fail",
+      "remediation": "Require explicit if-then logic for each outcome"
+    },
+    "gap_3_unmeasurable_outcomes": {
+      "description": "Outcomes like 'improved quality of life' without operational definition",
+      "prevalence": "high",
+      "impact": "Cannot monitor progress; accountability evaporates",
+      "remediation": "Demand specific indicators with measurement methods"
+    }
+  },
+  
+  "metadata": {
+    "created_at": "2026-01-08T13:30:00Z",
+    "version": "1.0.0",
+    "author": "PDET Enrichment System",
+    "validated": true,
+    "validation_date": "2026-01-08T13:30:00Z",
+    "last_updated": "2026-01-08T13:30:00Z"
+  }
+}
