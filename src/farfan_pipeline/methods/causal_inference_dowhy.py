@@ -161,7 +161,7 @@ class DoWhyCausalAnalyzer:
                 data=data,
                 treatment=treatment,
                 outcome=outcome,
-                graph=self._convert_to_dowhy_graph(self.graph),
+                graph=self._get_dowhy_compatible_graph(self.graph),
                 common_causes=common_causes,
                 instruments=instruments,
             )
@@ -275,7 +275,7 @@ class DoWhyCausalAnalyzer:
                 data=data,
                 treatment=treatment,
                 outcome=outcome,
-                graph=self._convert_to_dowhy_graph(self.graph),
+                graph=self._get_dowhy_compatible_graph(self.graph),
                 common_causes=common_causes,
             )
 
@@ -374,7 +374,7 @@ class DoWhyCausalAnalyzer:
                 data=data,
                 treatment=treatment,
                 outcome=outcome,
-                graph=self._convert_to_dowhy_graph(self.graph),
+                graph=self._get_dowhy_compatible_graph(self.graph),
             )
 
             identified_estimand = model.identify_effect()
@@ -441,21 +441,26 @@ class DoWhyCausalAnalyzer:
 
         return refutation_results
 
-    def _convert_to_dowhy_graph(self, nx_graph: nx.DiGraph) -> str:
+    def _get_dowhy_compatible_graph(self, nx_graph: nx.DiGraph) -> nx.DiGraph:
         """
-        Convert NetworkX graph to DoWhy GML format.
+        Return NetworkX DiGraph for DoWhy consumption.
+
+        DoWhy's CausalModel accepts NetworkX DiGraph objects directly via the
+        graph= parameter. No format conversion is required.
 
         Args:
-            nx_graph: NetworkX directed graph
+            nx_graph: Source causal graph as NetworkX DiGraph
 
         Returns:
-            GML string representation for DoWhy
-        """
-        if nx_graph is None or nx_graph.number_of_edges() == 0:
-            return "digraph {}"
+            The same nx.DiGraph instance (pass-through for API consistency)
 
-        edges = [f'"{u}"->"{v}"' for u, v in nx_graph.edges()]
-        return "digraph {" + "; ".join(edges) + ";}"
+        Note:
+            Previous implementation incorrectly produced a pseudo-DOT string format
+            that DoWhy cannot parse. DoWhy supports: NetworkX DiGraph, GML string,
+            or proper DOT format. Direct NetworkX pass-through is the recommended
+            approach per DoWhy documentation.
+        """
+        return nx_graph
 
     def get_all_paths(self, source: str, target: str) -> list[list[str]]:
         """
