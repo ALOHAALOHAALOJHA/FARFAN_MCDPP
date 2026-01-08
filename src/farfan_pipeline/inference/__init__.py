@@ -25,16 +25,25 @@ Theoretical Foundation:
 
 from __future__ import annotations
 
-from .bayesian_adapter import BayesianEngineAdapter
-from .bayesian_diagnostics import BayesianDiagnostics
 from .bayesian_prior_builder import BayesianPriorBuilder
 from .bayesian_sampling_engine import BayesianSamplingEngine
 
+# Optional imports for modules still in development
+try:
+    from .bayesian_adapter import BayesianEngineAdapter
+except ImportError:
+    BayesianEngineAdapter = None  # type: ignore[misc, assignment]
+
+try:
+    from .bayesian_diagnostics import BayesianDiagnostics
+except ImportError:
+    BayesianDiagnostics = None  # type: ignore[misc, assignment]
+
 __all__ = [
     "BayesianEngineAdapter",
+    "BayesianDiagnostics",
     "BayesianPriorBuilder",
     "BayesianSamplingEngine",
-    "BayesianDiagnostics",
 ]
 
 __version__ = "1.0.0"
