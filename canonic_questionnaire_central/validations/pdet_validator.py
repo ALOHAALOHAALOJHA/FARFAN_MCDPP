@@ -245,7 +245,6 @@ class PDETValidator:
         """Apply a single PDET validation rule."""
         
         validation_type = validation_rule.get("type", "unknown")
-        checks = validation_rule.get("checks", {})
         gates = validation_rule.get("validation_gates", [])
         
         result = PDETValidationResult(
