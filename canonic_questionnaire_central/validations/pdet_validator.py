@@ -14,7 +14,7 @@ Validates against:
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Set
+from typing import Dict, List, Any, Optional
 import logging
 
 logger = logging.getLogger(__name__)
