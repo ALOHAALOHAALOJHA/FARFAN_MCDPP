@@ -15,5 +15,150 @@
     "PA09",
     "PA10"
   ],
-  "rationale": "DESC y gestión de crisis migratoria"
+  "rationale": "DESC y gestión de crisis migratoria",
+  "pdet_enrichment": {
+    "enabled": true,
+    "enrichment_orchestrator": "canonic_questionnaire_central.colombia_context.enrichment_orchestrator.EnrichmentOrchestrator",
+    "validation_gates": {
+      "gate_1_scope": {
+        "enabled": true,
+        "required_scope": "pdet_context",
+        "allowed_signal_types": ["ENRICHMENT_DATA"],
+        "description": "Consumer scope validity check for PDET data access"
+      },
+      "gate_2_value_add": {
+        "enabled": true,
+        "min_threshold": 0.10,
+        "estimated_value": 0.35,
+        "description": "PDET context provides high value for crisis management and migration analysis"
+      },
+      "gate_3_capability": {
+        "enabled": true,
+        "required_capabilities": ["SEMANTIC_PROCESSING", "TABLE_PARSING"],
+        "recommended_capabilities": ["GRAPH_CONSTRUCTION", "FINANCIAL_ANALYSIS"],
+        "description": "Consumer must handle territorial and tabular PDET data"
+      },
+      "gate_4_channel": {
+        "enabled": true,
+        "flow_id": "PDET_MUNICIPALITY_ENRICHMENT",
+        "documentation_path": "canonic_questionnaire_central/colombia_context/README_PDET_ENRICHMENT.md",
+        "description": "Channel authenticity and integrity validation"
+      }
+    },
+    "policy_area_mappings": {
+      "PA09": {
+        "relevant_subregions": ["SR01"],
+        "subregion_names": ["Alto Patía y Norte del Cauca"],
+        "focus_municipalities": [
+          {
+            "code": "19355",
+            "name": "Jambaló",
+            "relevance": "High indigenous population, justice access challenges"
+          },
+          {
+            "code": "19397",
+            "name": "López de Micay",
+            "relevance": "Afrodescendant community, prison oversight needs"
+          },
+          {
+            "code": "19450",
+            "name": "Piamonte",
+            "relevance": "Rural isolation, limited justice infrastructure"
+          }
+        ],
+        "pdet_pillars": ["pillar_3", "pillar_8"],
+        "pillar_names": ["Rural health and justice", "Reconciliation and human rights"],
+        "key_indicators": [
+          "justice_houses",
+          "legal_assistance_coverage",
+          "detention_conditions",
+          "indigenous_justice_systems"
+        ],
+        "contextual_factors": [
+          "Ethnic diversity requires differentiated justice approaches",
+          "Limited state presence challenges prison oversight",
+          "Community justice mechanisms complement formal systems"
+        ]
+      },
+      "PA10": {
+        "relevant_subregions": ["SR02", "SR04"],
+        "subregion_names": ["Arauca", "Catatumbo"],
+        "focus_municipalities": [
+          {
+            "code": "81001",
+            "name": "Arauca",
+            "relevance": "International border, Venezuelan migration hub"
+          },
+          {
+            "code": "81220",
+            "name": "Fortul",
+            "relevance": "Border transit point, humanitarian needs"
+          },
+          {
+            "code": "81794",
+            "name": "Tame",
+            "relevance": "Reception center for displaced populations"
+          },
+          {
+            "code": "54099",
+            "name": "Convención",
+            "relevance": "Border municipality, migration corridor"
+          },
+          {
+            "code": "54810",
+            "name": "Teorama",
+            "relevance": "Migration route, integration challenges"
+          },
+          {
+            "code": "54660",
+            "name": "San Calixto",
+            "relevance": "Venezuela border, cross-border flows"
+          }
+        ],
+        "pdet_pillars": ["pillar_2", "pillar_3", "pillar_4", "pillar_8"],
+        "pillar_names": ["Infrastructure", "Health", "Education", "Social cohesion"],
+        "key_indicators": [
+          "migrant_population_count",
+          "border_cooperation_agreements",
+          "humanitarian_assistance_coverage",
+          "integration_programs",
+          "xenophobia_incidents",
+          "mixed_nationality_households"
+        ],
+        "contextual_factors": [
+          "Venezuela border creates continuous migration pressure",
+          "Humanitarian emergency requires coordinated response",
+          "Host community tensions need reconciliation interventions",
+          "Integration depends on service capacity (health, education)"
+        ]
+      }
+    },
+    "enrichment_context_types": [
+      "municipalities",
+      "subregions",
+      "policy_area_mappings",
+      "pillars",
+      "statistics"
+    ],
+    "data_sources": {
+      "primary": "Agencia de Renovación del Territorio (ART)",
+      "secondary": ["DNP", "DANE", "OCAD Paz"],
+      "update_frequency": "Quarterly",
+      "last_validation": "2025-10-15"
+    },
+    "use_cases": {
+      "PA09": [
+        "Identify municipalities with prison oversight challenges",
+        "Map indigenous/ethnic justice systems integration needs",
+        "Target legal assistance and justice access improvements",
+        "Analyze transitional justice implementation in conflict zones"
+      ],
+      "PA10": [
+        "Prioritize border municipalities for migration services",
+        "Assess humanitarian response capacity and gaps",
+        "Design integration programs based on municipal characteristics",
+        "Monitor xenophobia and social cohesion indicators"
+      ]
+    }
+  }
 }

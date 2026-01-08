@@ -1,0 +1,79 @@
+# FARFAN Enrichment System Configuration
+# Version: 2.0.0
+
+version: "2.0.0"
+
+# Operation modes
+strict_mode: true
+enable_all_gates: true
+async_enabled: true
+
+# Performance settings
+max_concurrent_validations: 4
+default_timeout: 30.0
+connection_pool_size: 10
+retry_attempts: 3
+retry_delay: 1.0
+
+# Features
+cache_enabled: true
+audit_trail_enabled: true
+metrics_enabled: true
+
+# Validation Gates
+gates:
+  gate_1_scope:
+    enabled: true
+    strict_mode: true
+    priority: 0
+    parameters:
+      allowed_scope_levels:
+        - SCORING_BASELINE
+        - EVIDENCE_COLLECTION
+        - POLICY_SYNTHESIS
+  
+  gate_2_value_add:
+    enabled: true
+    threshold: 0.10
+    priority: 1
+    parameters:
+      high_value_contexts:
+        - municipalities
+        - policy_area_mappings
+      minimum_contexts: 1
+  
+  gate_3_capability:
+    enabled: true
+    strict_mode: true
+    priority: 2
+    parameters:
+      required_capabilities:
+        - SEMANTIC_PROCESSING
+        - TABLE_PARSING
+      recommended_capabilities:
+        - GRAPH_CONSTRUCTION
+        - FINANCIAL_ANALYSIS
+  
+  gate_4_channel:
+    enabled: true
+    strict_mode: true
+    priority: 3
+    parameters:
+      require_documentation: true
+      require_change_control: true
+      require_observability: false
+
+# Data sources
+pdet_data_path: "canonic_questionnaire_central/colombia_context/pdet_municipalities.json"
+
+# Logging
+logging_level: "INFO"
+log_format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# Security
+require_documentation: true
+require_change_control: true
+
+# Observability
+metrics_port: 9090
+health_check_interval: 60
