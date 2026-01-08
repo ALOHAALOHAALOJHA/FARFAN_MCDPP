@@ -218,5 +218,83 @@
     "INV-SC-002": "Quality level must be deterministic from score",
     "INV-SC-003": "Scoring metadata must include modality and threshold",
     "INV-SC-004": "Normalized scores must be in range [0, 100]"
+  },
+
+  "pdet_enrichment": {
+    "_description": "PDET municipality context enrichment for scoring",
+    "_version": "1.0.0",
+    "_validated_through": "Four-gate validation framework",
+    
+    "enabled": true,
+    "strict_mode": true,
+    "enable_territorial_adjustment": true,
+    
+    "validation_gates": {
+      "gate_1_scope": {
+        "description": "Consumer scope validity - Scoring system authorized for PDET data",
+        "required_signal_types": ["ENRICHMENT_DATA"],
+        "scope_level": "EVIDENCE_COLLECTION"
+      },
+      "gate_2_value_add": {
+        "description": "Value contribution - PDET context improves territorial scoring accuracy",
+        "min_value_threshold": 0.10,
+        "estimated_value_add": 0.25
+      },
+      "gate_3_capability": {
+        "description": "Consumer capability - Scoring system has semantic processing",
+        "required_capabilities": ["SEMANTIC_PROCESSING", "TABLE_PARSING"],
+        "recommended_capabilities": ["GRAPH_CONSTRUCTION"]
+      },
+      "gate_4_channel": {
+        "description": "Channel authenticity - PDET enrichment flow is explicit and traceable",
+        "flow_id": "PDET_MUNICIPALITY_ENRICHMENT",
+        "documentation_path": "canonic_questionnaire_central/colombia_context/README_PDET_ENRICHMENT.md"
+      }
+    },
+    
+    "territorial_adjustments": {
+      "_description": "Threshold adjustments based on PDET territorial coverage",
+      "coverage_high_bonus": 0.05,
+      "coverage_medium_bonus": 0.03,
+      "pillar_relevance_bonus_per_pillar": 0.03,
+      "pillar_relevance_max_bonus": 0.09,
+      "territorial_modality_bonus": 0.02,
+      "max_total_adjustment": 0.16,
+      "min_threshold_floor": 0.4
+    },
+    
+    "policy_area_to_pdet_subregions": {
+      "PA01_Gender": ["SR04", "SR05", "SR08"],
+      "PA02_Violence_Security": ["SR01", "SR02", "SR03", "SR04", "SR05", "SR06", "SR07", "SR08"],
+      "PA03_Environment": ["SR03", "SR05", "SR06", "SR07"],
+      "PA04_Economic_Development": ["SR02", "SR03", "SR04", "SR06", "SR07", "SR08"],
+      "PA05_Victims_Restitution": ["SR01", "SR05", "SR08"],
+      "PA06_Children_Youth": ["SR04", "SR05", "SR06"],
+      "PA07_Peace_Building": ["SR01", "SR02", "SR03", "SR04", "SR07"],
+      "PA08_Human_Rights": ["SR08"],
+      "PA09_Justice": ["SR01"],
+      "PA10_International": ["SR02", "SR04"]
+    },
+    
+    "pdet_pillars_to_dimensions": {
+      "pillar_1_land_formalization": "Structural",
+      "pillar_2_infrastructure": "Instrumental",
+      "pillar_3_rural_health": "Substantive",
+      "pillar_4_education": "Procedural",
+      "pillar_5_housing_water": "Substantive",
+      "pillar_6_economic_reactivation": "Instrumental",
+      "pillar_7_food_security": "Substantive",
+      "pillar_8_reconciliation": "Symbolic"
+    },
+    
+    "enrichment_metadata_schema": {
+      "municipalities_count": "Number of relevant PDET municipalities",
+      "subregions_count": "Number of relevant PDET subregions",
+      "territorial_coverage": "Coverage ratio [0.0-1.0]",
+      "relevant_pillars": "List of applicable PDET pillars",
+      "territorial_adjustment": "Applied threshold adjustment",
+      "gate_validation_status": "Status of four validation gates",
+      "enrichment_timestamp": "ISO timestamp of enrichment"
+    }
   }
 }

@@ -94,6 +94,26 @@
         ],
         "weight": 0.10,
         "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-INT-006",
+        "name": "pdet_institutional_coordination",
+        "type": "PATTERN_MATCH",
+        "description": "Coordinación institucional específica PDET",
+        "patterns": [
+          "(?i)(?:coordinación|articulación)\\s+con\\s+(?:la\\s+)?ART",
+          "(?i)Agencia\\s+de\\s+Renovación\\s+del\\s+Territorio",
+          "(?i)esquemas\\s+de\\s+estructuración",
+          "(?i)comité[s]?\\s+PDET",
+          "(?i)(?:coordinación|articulación)\\s+(?:con\\s+)?(?:el\\s+)?PATR",
+          "(?i)(?:ANT|Agencia Nacional de Tierras).*(?:coordinación|articulación)"
+        ],
+        "weight": 0.08,
+        "minimum_matches": 1,
+        "applies_when": "municipality_in_pdet_list",
+        "context_validation": {
+          "boost_if_multiple_entities": 0.10
+        }
       }
     ],
 
@@ -102,7 +122,8 @@
       "threshold": 0.55,
       "formula": "score = sum(signal.weight * signal.match_score) / sum(signal.weight)",
       "minimum_signals_required": 2,
-      "bonus_for_committees": 0.10
+      "bonus_for_committees": 0.10,
+      "bonus_for_art_coordination": 0.12
     }
   },
 
@@ -129,7 +150,9 @@
     "confidence_modifiers": {
       "committees_established_bonus": 0.15,
       "information_systems_bonus": 0.10,
-      "clear_responsibilities_bonus": 0.10
+      "clear_responsibilities_bonus": 0.10,
+      "art_coordination_bonus": 0.12,
+      "pdet_interinstitutional_bonus": 0.08
     }
   },
 

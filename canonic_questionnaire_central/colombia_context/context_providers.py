@@ -233,8 +233,18 @@ class PDETContextProvider(BaseContextProvider):
         relevant_subregion_ids = set()
         for pa in policy_areas:
             pa_key = f"{pa}" if pa.startswith("PA") else f"PA{pa}"
-            pa_data = pa_mappings.get(pa_key, {})
-            relevant_subregion_ids.update(pa_data.get("relevant_subregions", []))
+            
+            # Try exact match first, then prefix match
+            pa_data = pa_mappings.get(pa_key)
+            if not pa_data:
+                # Try to find by prefix (e.g., PA01 matches PA01_Gender)
+                for key, value in pa_mappings.items():
+                    if key.startswith(pa_key + "_") or key == pa_key:
+                        pa_data = value
+                        break
+            
+            if pa_data:
+                relevant_subregion_ids.update(pa_data.get("relevant_subregions", []))
         
         # Filter subregions
         filtered_subregions = [
@@ -246,7 +256,7 @@ class PDETContextProvider(BaseContextProvider):
             "subregions": filtered_subregions,
             "policy_area_mappings": {
                 k: v for k, v in pa_mappings.items()
-                if any(pa in k for pa in policy_areas)
+                if any(pa in k or k.startswith(pa + "_") for pa in policy_areas)
             }
         }
 

@@ -257,6 +257,65 @@
         "meta",
         "fuente de verificación"
       ]
+    },
+    "CC_CONTEXTO_PDET": {
+      "enforcement": {
+        "PA02": "required",
+        "PA05": "required",
+        "PA07": "required",
+        "PA03": "recommended",
+        "PA04": "recommended",
+        "PA06": "recommended",
+        "PA08": "recommended"
+      },
+      "conditional_requirement": {
+        "condition": "municipality_in_pdet_list",
+        "applies_to_all_policy_areas": true,
+        "elevation_level": "required"
+      },
+      "validation_indicators": [
+        "mencion_explicita_pdet",
+        "integracion_patr",
+        "alineacion_pmi",
+        "coordinacion_art",
+        "caracterizacion_conflicto",
+        "proyectos_ocad_paz"
+      ],
+      "patterns_to_match": [
+        "PDET",
+        "Programas de Desarrollo con Enfoque Territorial",
+        "municipio PDET",
+        "zona PDET",
+        "PATR",
+        "Plan de Acción para la Transformación Regional",
+        "PMI",
+        "Plan Marco de Implementación",
+        "ART",
+        "Agencia de Renovación del Territorio",
+        "OCAD Paz",
+        "Asignación para la Paz",
+        "conflicto armado",
+        "territorio afectado",
+        "Reforma Rural Integral",
+        "RRI",
+        "reconciliación",
+        "construcción de paz"
+      ],
+      "pdet_enrichment": {
+        "total_municipalities": 170,
+        "total_subregions": 16,
+        "total_patr_initiatives": 32808,
+        "pillars": [
+          "Ordenamiento Social de la Propiedad",
+          "Infraestructura y Adecuación de Tierras",
+          "Salud Rural",
+          "Educación Rural",
+          "Vivienda Rural y Agua Potable",
+          "Reactivación Económica",
+          "Seguridad Alimentaria",
+          "Reconciliación y Convivencia"
+        ]
+      }
     }
   },
 
@@ -276,6 +335,42 @@
       "action": "coherence_bonus",
       "bonus_factor": 0.05,
       "description": "Bonus for comprehensive cross-cutting integration"
+    },
+    "pdet_context_rules": {
+      "condition": "municipality_in_pdet_list",
+      "actions": {
+        "pdet_context_missing": {
+          "action": "reduce_score",
+          "reduction_factor": 0.20,
+          "failure_code": "F-CC-PDET-MISSING",
+          "message": "Municipio PDET debe incluir contexto PDET explícito"
+        },
+        "pdet_context_present": {
+          "action": "bonus_points",
+          "bonus_factor": 0.15,
+          "applies_to_questions": ["Q031", "Q032", "Q033", "Q061", "Q062", "Q063", "Q181", "Q182", "Q183", "Q211", "Q212", "Q213", "Q271", "Q272", "Q273"]
+        },
+        "patr_integration_bonus": {
+          "action": "bonus_points",
+          "bonus_factor": 0.15,
+          "trigger": "patr_initiatives_referenced"
+        },
+        "pmi_alignment_bonus": {
+          "action": "bonus_points",
+          "bonus_factor": 0.15,
+          "trigger": "pmi_referenced"
+        },
+        "art_coordination_bonus": {
+          "action": "bonus_points",
+          "bonus_factor": 0.10,
+          "trigger": "art_coordination_mentioned"
+        },
+        "ocad_paz_bonus": {
+          "action": "bonus_points",
+          "bonus_factor": 0.10,
+          "trigger": "ocad_paz_projects_mentioned"
+        }
+      }
     }
   },
 
@@ -283,6 +378,10 @@
     "step_1": {
       "action": "identify_applicable_themes",
       "description": "Based on dimension_id and policy_area_id, determine which themes apply"
+    },
+    "step_1a": {
+      "action": "check_pdet_municipality",
+      "description": "Determine if municipality is in PDET list (170 municipalities). If yes, elevate CC_CONTEXTO_PDET to 'required' for all policy areas"
     },
     "step_2": {
       "action": "extract_theme_indicators",
@@ -292,6 +391,11 @@
       "action": "validate_required_themes",
       "description": "Ensure all required themes are present"
     },
+    "step_3a": {
+      "action": "validate_pdet_context",
+      "description": "For PDET municipalities, validate PDET context is present (explicit mention, PATR integration, PMI alignment)",
+      "conditional": "only if municipality_in_pdet_list"
+    },
     "step_4": {
       "action": "score_theme_presence",
       "description": "Calculate theme presence score"
@@ -299,6 +403,11 @@
     "step_5": {
       "action": "apply_scoring_adjustments",
       "description": "Apply bonuses or penalties based on theme presence"
+    },
+    "step_5a": {
+      "action": "apply_pdet_adjustments",
+      "description": "Apply PDET-specific bonuses (PATR integration +0.15, PMI alignment +0.15, ART coordination +0.10, OCAD Paz +0.10)",
+      "conditional": "only if municipality_in_pdet_list"
     }
   }
 }

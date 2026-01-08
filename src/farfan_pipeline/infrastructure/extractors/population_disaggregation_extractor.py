@@ -123,6 +123,15 @@ class PopulationGroup:
             return NotImplemented
         return self.axis_name == other.axis_name and self.value == other.value
 
+    def __repr__(self) -> str:
+        return (
+            f"PopulationGroup("
+            f"axis='{self.axis_name}', "
+            f"value='{self.value}', "
+            f"count={self.count}"
+            f")"
+        )
+
 
 @dataclass
 class DisaggregationReport:
@@ -135,6 +144,16 @@ class DisaggregationReport:
     gaps_detected: List[Dict[str, Any]]
     errors: List[DisaggregationError]
     metrics: Dict[str, Any]
+
+    def __repr__(self) -> str:
+        return (
+            f"DisaggregationReport("
+            f"valid={self.is_valid}, "
+            f"records={self.total_records}, "
+            f"errors={len(self.errors)}, "
+            f"gaps={len(self.gaps_detected)}"
+            f")"
+        )
 
 
 # -----------------------------------------------------------------------------
