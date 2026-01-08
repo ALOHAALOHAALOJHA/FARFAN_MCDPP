@@ -261,8 +261,6 @@ class BayesianSamplingEngine:
     def sample_hierarchical_beta(
         self,
         group_data: list[tuple[int, int]],
-        population_alpha: float = 2.0,
-        population_beta: float = 2.0,
     ) -> list[SamplingResult]:
         """
         Sample from hierarchical Beta-Binomial model.
@@ -274,8 +272,6 @@ class BayesianSamplingEngine:
 
         Args:
             group_data: List of (successes, trials) tuples for each group
-            population_alpha: Population-level alpha
-            population_beta: Population-level beta
 
         Returns:
             List of SamplingResult objects, one per group
