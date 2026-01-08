@@ -5823,14 +5823,20 @@ class CDAFFramework:
         # Initialize DoWhy causal analyzer (Phase 1 SOTA Enhancement)
         try:
             from farfan_pipeline.methods.causal_inference_dowhy import create_dowhy_analyzer
-            self.dowhy_analyzer = create_dowhy_analyzer()
-            if self.dowhy_analyzer.is_available():
+            analyzer = create_dowhy_analyzer()
+            if analyzer.is_available():
+                self.dowhy_analyzer = analyzer
                 self.logger.info("✓ DoWhy causal analyzer initialized (Phase 1 SOTA)")
             else:
                 self.logger.warning("DoWhy not available - using legacy causal inference")
                 self.dowhy_analyzer = None
         except ImportError as e:
             self.logger.warning(f"DoWhy integration not available: {e}")
+            self.dowhy_analyzer = None
+        except Exception as e:
+            self.logger.warning(
+                f"DoWhy analyzer initialization failed, continuing without it: {e}"
+            )
             self.dowhy_analyzer = None
 
         # Initialize Bayesian Engine (Phase 2 SOTA Enhancement)
@@ -5909,7 +5915,12 @@ class CDAFFramework:
             # Step 3.5: DoWhy Formal Causal Identification (Phase 1 SOTA)
             if self.dowhy_analyzer and self.dowhy_analyzer.is_available():
                 self.logger.info("Realizando identificación causal formal con DoWhy...")
-                self._perform_dowhy_analysis(graph, nodes, text)
+                try:
+                    self._perform_dowhy_analysis(graph, nodes, text)
+                except Exception as e:
+                    self.logger.warning(
+                        f"DoWhy analysis failed; continuing with legacy pipeline: {e}"
+                    )
 
             # Step 3.6: Advanced Bayesian Analysis (Phase 2 SOTA)
             if self.bayesian_engine and self.bayesian_engine.is_available():
@@ -6138,8 +6149,8 @@ class CDAFFramework:
     def _perform_dowhy_analysis(
         self,
         graph: nx.DiGraph,
-        nodes: dict[str, MetaNode],
-        text: str
+        _nodes: dict[str, MetaNode],
+        _text: str
     ) -> None:
         """
         Perform formal causal identification using DoWhy (Phase 1 SOTA Enhancement).
@@ -6212,8 +6223,8 @@ class CDAFFramework:
     def _perform_bayesian_analysis(
         self,
         graph: nx.DiGraph,
-        nodes: dict[str, MetaNode],
-        text: str
+        _nodes: dict[str, MetaNode],
+        _text: str
     ) -> None:
         """
         Perform advanced Bayesian inference using Phase 2 SOTA engine.
@@ -6240,7 +6251,8 @@ class CDAFFramework:
         # Sample key causal links for Bayesian validation
         edges_to_validate = []
         for source, target, data in graph.edges(data=True):
-            confidence = data.get('confidence', 0.0)
+            # Derive confidence from Bayesian posterior or link strength
+            confidence = data.get('posterior_mean', data.get('strength', 0.0))
             if confidence > 0.5:  # Medium-high confidence threshold
                 edges_to_validate.append((source, target, confidence))
 
@@ -6271,7 +6283,7 @@ class CDAFFramework:
             # Perform Bayesian test
             try:
                 if test_type == "doubly_decisive":
-                    result = self.bayesian_engine.test_doubly_decisive_from_observations(
+                    result = self.bayesian_engine.test_doubly_decisive(
                         observations=[1] * n_supporting + [0] * (n_observations - n_supporting)
                     )
                 elif test_type == "smoking_gun":
@@ -6307,8 +6319,10 @@ class CDAFFramework:
                             f"    ⚠ Poor convergence (R-hat={result['rhat']:.3f})"
                         )
 
-            except Exception as e:
-                self.logger.warning(f"Error in Bayesian test for {source} → {target}: {e}")
+            except (AttributeError, ValueError, RuntimeError) as e:
+                self.logger.warning(
+                    f"Bayesian analysis failed for link {source} → {target}: {e}"
+                )
                 continue
 
         self.logger.info("✓ Advanced Bayesian analysis complete")
