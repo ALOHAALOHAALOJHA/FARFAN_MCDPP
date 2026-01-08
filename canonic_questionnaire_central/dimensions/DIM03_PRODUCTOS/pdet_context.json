@@ -1,0 +1,189 @@
+{
+  "_schema_version": "1.0.0",
+  "_dimension_id": "DIM03",
+  "_dimension_name": "PRODUCTOS (Resultados Inmediatos)",
+  "_generated_at": "2026-01-08T13:30:00Z",
+  "_description": "PDET context enrichment for DIM03 focusing on product definition, deliverable specification, and output measurement in PDET municipalities",
+  
+  "validation_gates_alignment": {
+    "gate_1_scope": {
+      "required_scope": "pdet_context",
+      "allowed_signal_types": ["ENRICHMENT_DATA", "OUTPUT_DATA"],
+      "scope_level": "EVIDENCE_COLLECTION",
+      "justification": "DIM03 requires access to PDET deliverable specifications, PATR output targets, and implementation monitoring data"
+    },
+    "gate_2_value_add": {
+      "estimated_value_add": 0.28,
+      "value_components": {
+        "output_specification_standards": 0.10,
+        "measurement_criteria": 0.08,
+        "patr_deliverable_alignment": 0.06,
+        "monitoring_framework": 0.04
+      },
+      "justification": "Provides clear output standards and measurement criteria specific to PDET implementation context"
+    },
+    "gate_3_capability": {
+      "required_capabilities": [
+        "SEMANTIC_PROCESSING",
+        "TABLE_PARSING",
+        "NUMERICAL_ANALYSIS"
+      ],
+      "recommended_capabilities": [
+        "UNIT_EXTRACTION",
+        "QUANTITY_VALIDATION"
+      ],
+      "justification": "Methods must extract product specifications, validate measurement units, and assess quantitative targets"
+    },
+    "gate_4_channel": {
+      "flow_id": "DIM03_PDET_ENRICHMENT",
+      "flow_type": "ENRICHMENT_FLOW",
+      "source": "pdet_municipalities.json",
+      "destination": "DIM03_questions_evaluation",
+      "data_schema": "PDETContextDIM03",
+      "governance_policy": "CCP-PDET-2024",
+      "documentation_path": "canonic_questionnaire_central/dimensions/DIM03_PRODUCTOS/README_PDET_ENRICHMENT.md",
+      "is_explicit": true,
+      "is_documented": true,
+      "is_traceable": true,
+      "is_governed": true
+    }
+  },
+  
+  "pdet_pillar_mapping": {
+    "primary_pillars": [
+      {
+        "pillar_id": "pillar_2",
+        "pillar_name": "Infraestructura y adecuación de tierras",
+        "relevance": "CRITICAL",
+        "relevance_score": 0.95,
+        "product_requirements": [
+          "Km of roads constructed/improved (with technical specifications)",
+          "Hectares with irrigation infrastructure",
+          "Number of households with energy access",
+          "Bridges and culverts constructed (units and specifications)"
+        ]
+      },
+      {
+        "pillar_id": "pillar_4",
+        "pillar_name": "Educación rural",
+        "relevance": "HIGH",
+        "relevance_score": 0.88,
+        "product_requirements": [
+          "Schools constructed/refurbished (number and capacity)",
+          "Teachers trained (number and subject areas)",
+          "Students with educational materials (number and type)",
+          "School feeding programs established (number of beneficiaries)"
+        ]
+      },
+      {
+        "pillar_id": "pillar_3",
+        "pillar_name": "Salud rural",
+        "relevance": "HIGH",
+        "relevance_score": 0.85,
+        "product_requirements": [
+          "Health posts constructed/equipped (number and location)",
+          "Health professionals deployed (number and specialization)",
+          "Vaccination campaigns conducted (coverage and doses)",
+          "Telemedicine systems installed (units and connectivity)"
+        ]
+      }
+    ],
+    "secondary_pillars": [
+      {
+        "pillar_id": "pillar_6",
+        "pillar_name": "Reactivación económica",
+        "relevance": "MEDIUM",
+        "relevance_score": 0.70,
+        "product_requirements": [
+          "Farmers receiving technical assistance (number)",
+          "Hectares under sustainable production",
+          "Productive projects financed (number and value)"
+        ]
+      }
+    ]
+  },
+  
+  "pdet_specific_criteria": {
+    "product_specification_rigor": {
+      "required": true,
+      "elements": [
+        "quantitative_target_explicit",
+        "measurement_unit_standard",
+        "quality_specifications",
+        "delivery_timeline",
+        "responsible_entity",
+        "verification_method"
+      ],
+      "justification": "PDET monitoring requires precise, verifiable product definitions for accountability"
+    },
+    "patr_output_consistency": {
+      "required": true,
+      "validation_checks": [
+        "product_aligns_with_patr_deliverables",
+        "targets_consistent_with_patr_commitments",
+        "no_contradictory_outputs"
+      ],
+      "justification": "Municipal products must be consistent with PATR regional outputs to ensure coherence"
+    },
+    "territorial_disaggregation": {
+      "required": true,
+      "levels": [
+        "products_specified_by_vereda",
+        "urban_rural_output_split",
+        "corregimiento_deliverables_identified"
+      ],
+      "justification": "Territorial specificity enables monitoring of rural-urban equity and vereda-level accountability"
+    },
+    "measurement_feasibility": {
+      "required": true,
+      "criteria": [
+        "data_collection_method_specified",
+        "measurement_frequency_defined",
+        "responsible_monitoring_entity",
+        "baseline_reference_available"
+      ],
+      "justification": "Weak institutional capacity in PDET municipalities requires explicit measurement protocols"
+    },
+    "beneficiary_quantification": {
+      "required": true,
+      "elements": [
+        "total_beneficiaries_number",
+        "disaggregation_by_sex",
+        "disaggregation_by_age_group",
+        "ethnic_group_disaggregation",
+        "victims_identification"
+      ],
+      "justification": "PDET differential approach requires beneficiary disaggregation for equity monitoring"
+    }
+  },
+  
+  "common_product_gaps": {
+    "gap_1_vague_deliverables": {
+      "description": "Products described as 'strengthen', 'improve', 'promote' without quantifiable outputs",
+      "prevalence": "very_high",
+      "impact": "Impossible to monitor implementation; no accountability",
+      "remediation": "Mandate concrete, countable products with measurement units"
+    },
+    "gap_2_no_baselines": {
+      "description": "Product targets set without reference to current state",
+      "prevalence": "high",
+      "impact": "Cannot assess actual progress; targets may be already met or unrealistic",
+      "remediation": "Require baseline values for all product indicators"
+    },
+    "gap_3_aggregated_targets": {
+      "description": "Products specified only at municipal level without territorial breakdown",
+      "prevalence": "high",
+      "impact": "Masks rural-urban and inter-vereda inequities",
+      "remediation": "Demand vereda-level or at minimum urban/rural product targets"
+    }
+  },
+  
+  "metadata": {
+    "created_at": "2026-01-08T13:30:00Z",
+    "version": "1.0.0",
+    "author": "PDET Enrichment System",
+    "validated": true,
+    "validation_date": "2026-01-08T13:30:00Z",
+    "last_updated": "2026-01-08T13:30:00Z"
+  }
+}
