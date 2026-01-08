@@ -667,8 +667,21 @@ def get_pdet_municipalities_for_policy_area(policy_area_id: str) -> list[dict[st
     pdet_data = get_pdet_municipalities()
     pa_mappings = pdet_data.get("policy_area_mappings", {})
     
+    # Normalize policy area ID to match keys in JSON (e.g., PA01 or PA01_Gender)
     pa_key = f"{policy_area_id}" if policy_area_id.startswith("PA") else f"PA{policy_area_id}"
-    pa_data = pa_mappings.get(pa_key, {})
+    
+    # Try exact match first, then prefix match
+    pa_data = pa_mappings.get(pa_key)
+    if not pa_data:
+        # Try to find by prefix (e.g., PA01 matches PA01_Gender)
+        for key, value in pa_mappings.items():
+            if key.startswith(pa_key + "_") or key == pa_key:
+                pa_data = value
+                break
+    
+    if not pa_data:
+        return []
+    
     relevant_subregion_ids = set(pa_data.get("relevant_subregions", []))
     
     municipalities = []
