@@ -43,6 +43,12 @@ from .scoring_modalities import (
     ScoringModality,
     ModalityConfig,
 )
+from .quality_levels import (
+    determine_quality_level,
+    THRESHOLD_EXCELENTE,
+    THRESHOLD_BUENO,
+    THRESHOLD_ACEPTABLE,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -61,12 +67,18 @@ class PDETScoringContext:
 
 @dataclass
 class EnrichedScoredResult:
-    """Scored result enriched with PDET context."""
+    """Scored result enriched with PDET context.
+    
+    Includes context-aware quality level that reflects territorial adjustments.
+    The enriched_quality_level considers the adjusted threshold, providing
+    semantic consistency between territorial leniency and quality assessment.
+    """
     
     base_result: ScoredResult
     pdet_context: PDETScoringContext
     territorial_adjustment: float = 0.0
     enrichment_applied: bool = False
+    enriched_quality_level: Optional[str] = None  # Context-aware quality level
     gate_validation_status: Dict[str, bool] = field(default_factory=dict)
 
 
@@ -193,11 +205,23 @@ class PDETScoringEnricher:
         
         # Calculate territorial adjustment
         territorial_adjustment = 0.0
+        enriched_quality_level = None
+        
         if self._enable_territorial_adjustment:
             territorial_adjustment = self._calculate_territorial_adjustment(
                 scored_result,
                 pdet_context,
                 policy_area
+            )
+            
+            # Calculate context-aware quality level
+            base_threshold = scored_result.scoring_metadata.get("threshold", 0.65)
+            adjusted_threshold = max(base_threshold - territorial_adjustment, 0.4)
+            enriched_quality_level = self._calculate_enriched_quality_level(
+                base_score=scored_result.score,
+                adjusted_threshold=adjusted_threshold,
+                territorial_adjustment=territorial_adjustment,
+                pdet_context=pdet_context
             )
         
         return EnrichedScoredResult(
@@ -205,6 +229,7 @@ class PDETScoringEnricher:
             pdet_context=pdet_context,
             territorial_adjustment=territorial_adjustment,
             enrichment_applied=True,
+            enriched_quality_level=enriched_quality_level,
             gate_validation_status=enrichment_result.gate_status
         )
     
@@ -278,6 +303,64 @@ class PDETScoringEnricher:
         
         return adjustment
     
+    def _calculate_enriched_quality_level(
+        self,
+        base_score: float,
+        adjusted_threshold: float,
+        territorial_adjustment: float,
+        pdet_context: PDETScoringContext
+    ) -> str:
+        """
+        Calculate context-aware quality level reflecting territorial adjustments.
+        
+        This provides semantic consistency: when territorial context lowers the
+        threshold (making scoring more lenient), the quality level reflects
+        this contextual interpretation.
+        
+        Algorithm:
+        1. For significant PDET relevance (adjustment >= 0.10): Apply proportional
+           quality boost based on score's relationship to adjusted threshold
+        2. For moderate PDET relevance (0.05 <= adjustment < 0.10): Apply modest boost
+        3. For low PDET relevance (adjustment < 0.05): Use base quality level
+        
+        Args:
+            base_score: Original score value [0.0, 1.0]
+            adjusted_threshold: Threshold after territorial adjustment
+            territorial_adjustment: Magnitude of adjustment applied
+            pdet_context: PDET territorial context
+        
+        Returns:
+            Enriched quality level string (EXCELENTE, BUENO, ACEPTABLE, INSUFICIENTE)
+        """
+        # Determine contextual boost based on PDET relevance
+        if territorial_adjustment >= 0.10:
+            # Significant PDET relevance: Strong contextual boost
+            # Effective thresholds: EXCELENTE≥0.75, BUENO≥0.60, ACEPTABLE≥0.45
+            if base_score >= 0.75:
+                return "EXCELENTE"
+            elif base_score >= 0.60:
+                return "BUENO"
+            elif base_score >= 0.45:
+                return "ACEPTABLE"
+            else:
+                return "INSUFICIENTE"
+        
+        elif territorial_adjustment >= 0.05:
+            # Moderate PDET relevance: Modest contextual boost
+            # Effective thresholds: EXCELENTE≥0.80, BUENO≥0.65, ACEPTABLE≥0.50
+            if base_score >= 0.80:
+                return "EXCELENTE"
+            elif base_score >= 0.65:
+                return "BUENO"
+            elif base_score >= 0.50:
+                return "ACEPTABLE"
+            else:
+                return "INSUFICIENTE"
+        
+        else:
+            # Low PDET relevance: Use standard quality determination
+            return determine_quality_level(base_score)
+    
     def apply_enrichment_to_config(
         self,
         base_config: ModalityConfig,
@@ -329,6 +412,8 @@ class PDETScoringEnricher:
             "relevant_pillars": enriched_result.pdet_context.relevant_pillars,
             "territorial_adjustment": enriched_result.territorial_adjustment,
             "base_score": enriched_result.base_result.score,
+            "base_quality_level": enriched_result.base_result.quality_level,
+            "enriched_quality_level": enriched_result.enriched_quality_level,
             "adjusted_threshold": (
                 base_threshold - enriched_result.territorial_adjustment
             ) if enriched_result.enrichment_applied and base_threshold > 0 else None
