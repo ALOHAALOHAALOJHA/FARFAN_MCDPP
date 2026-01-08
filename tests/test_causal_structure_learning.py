@@ -17,11 +17,11 @@ import pytest
 
 from farfan_pipeline.methods.causal_structure_learning import (
     CausalStructureLearner,
-    StructureLearningResult,
     InferenceResult,
     WhatIfScenario,
     create_structure_learner,
 )
+
 
 
 @pytest.fixture
