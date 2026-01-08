@@ -1,7 +1,9 @@
 {
-  "_version": "2.0.0",
-  "_generated_at": "2026-01-03T00:00:00Z",
-  "_description": "Enhanced semantic processing configuration for FARFAN questionnaire analysis",
+  "_version": "2.1.0",
+  "_generated_at": "2026-01-08T13:50:00Z",
+  "_description": "Enhanced semantic processing configuration for FARFAN questionnaire analysis with PDET municipality context",
+  "_pdet_enrichment_metadata": "semantic/pdet_semantic_enrichment.json",
+  "_pdet_data_source": "colombia_context/pdet_municipalities.json",
 
   "disambiguation": {
     "confidence_threshold": 0.72,
@@ -69,6 +71,19 @@
       "TERRITORIAL_UNIT": {
         "examples": ["municipio", "departamento", "vereda", "corregimiento", "resguardo"],
         "pattern_file": "patterns/territorial_patterns.json"
+      },
+      "PDET_SUBREGION": {
+        "examples": ["Alto Patía y Norte del Cauca", "Montes de María", "Catatumbo", "Arauca"],
+        "pattern_file": "patterns/territorial_patterns.json",
+        "description": "16 PDET subregions for territorial context",
+        "total_count": 16
+      },
+      "PDET_MUNICIPALITY": {
+        "examples": ["Jambaló", "López de Micay", "Piamonte", "Tumaco"],
+        "pattern_file": "patterns/territorial_patterns.json",
+        "description": "170 PDET municipalities prioritized for peace implementation",
+        "total_count": 170,
+        "data_source": "colombia_context/pdet_municipalities.json"
       }
     },
     "min_confidence": 0.65
@@ -134,7 +149,9 @@
     "territorial_disambiguation": {
       "enabled": true,
       "use_municipal_registry": true,
-      "prioritize_pdet_municipalities": true
+      "prioritize_pdet_municipalities": true,
+      "pdet_data_file": "colombia_context/pdet_municipalities.json",
+      "pdet_context_description": "170 PDET municipalities across 16 subregions for territorial targeting"
     },
     "institutional_normalization": {
       "enabled": true,
@@ -147,6 +164,82 @@
       "link_to_legal_framework": true,
       "link_to_pnd": true,
       "link_to_ods": true
+    },
+    "pdet_enrichment": {
+      "enabled": true,
+      "total_municipalities": 170,
+      "total_subregions": 16,
+      "data_source": "colombia_context/pdet_municipalities.json",
+      "subregions": [
+        "Alto Patía y Norte del Cauca",
+        "Arauca",
+        "Bajo Cauca y Nordeste Antioqueño",
+        "Catatumbo",
+        "Chocó",
+        "Cuenca del Caguán y Piedemonte Caqueteño",
+        "Macarena-Guaviare",
+        "Montes de María",
+        "Pacífico y Frontera Nariñense",
+        "Pacífico Medio",
+        "Putumayo",
+        "Sierra Nevada-Perijá-Zona Bananera",
+        "Sur de Bolívar",
+        "Sur de Córdoba",
+        "Sur del Tolima",
+        "Urabá Antioqueño"
+      ],
+      "policy_area_mappings": {
+        "PA01_Gender": ["SR04", "SR05", "SR08"],
+        "PA02_Violence_Security": "all_subregions",
+        "PA03_Environment": ["SR03", "SR05", "SR07", "SR11"],
+        "PA04_Economic_Development": ["SR01", "SR02", "SR04", "SR06", "SR10"],
+        "PA05_Victims_Restitution": "all_subregions",
+        "PA06_Children_Youth": ["SR01", "SR03", "SR08", "SR09"],
+        "PA07_Peace_Building": "all_subregions",
+        "PA08_Human_Rights": ["SR02", "SR04", "SR07", "SR09"],
+        "PA09_Justice": ["SR01", "SR05", "SR11", "SR13"],
+        "PA10_International": ["SR02", "SR05", "SR11"]
+      },
+      "pdet_pillars": {
+        "pillar_1": {
+          "name": "Ordenamiento Social de la Propiedad",
+          "dimension": "Structural"
+        },
+        "pillar_2": {
+          "name": "Infraestructura y Adecuación de Tierras",
+          "dimension": "Instrumental"
+        },
+        "pillar_3": {
+          "name": "Salud Rural",
+          "dimension": "Substantive"
+        },
+        "pillar_4": {
+          "name": "Educación Rural",
+          "dimension": "Procedural"
+        },
+        "pillar_5": {
+          "name": "Vivienda, Agua Potable y Saneamiento Básico",
+          "dimension": "Substantive"
+        },
+        "pillar_6": {
+          "name": "Reactivación Económica y Producción Agropecuaria",
+          "dimension": "Instrumental"
+        },
+        "pillar_7": {
+          "name": "Seguridad Alimentaria y Nutrición",
+          "dimension": "Substantive"
+        },
+        "pillar_8": {
+          "name": "Reconciliación, Convivencia y Construcción de Paz",
+          "dimension": "Symbolic"
+        }
+      },
+      "enrichment_gates": {
+        "gate_1_scope": "Consumers must have 'pdet_context' or 'ENRICHMENT_DATA' in allowed signal types",
+        "gate_2_value_add": "PDET context provides 25% value-add for municipalities, 20% for subregions, 30% for policy mappings",
+        "gate_3_capability": "Requires SEMANTIC_PROCESSING and TABLE_PARSING capabilities",
+        "gate_4_channel": "Flow ID: PDET_MUNICIPALITY_ENRICHMENT, documented in README_PDET_ENRICHMENT.md"
+      }
     }
   },
 
