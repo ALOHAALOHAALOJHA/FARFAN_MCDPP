@@ -53,6 +53,22 @@
         "mc_reference": "MC07",
         "required_years": ["2024", "2025", "2026", "2027"],
         "weight": 0.10
+      },
+      {
+        "signal_id": "SIG-SP-005",
+        "name": "pdet_financing_sources",
+        "type": "KEYWORD_ANALYSIS",
+        "description": "Fuentes de financiación específicas PDET",
+        "keywords": {
+          "OCAD_PAZ": ["OCAD Paz", "Órgano Colegiado de Administración y Decisión para la Paz"],
+          "SGR_PAZ": ["SGR - Asignación para la Paz", "Asignación para la Paz", "regalías paz"],
+          "OBRAS_IMPUESTOS": ["Obras por Impuestos", "mecanismo de Obras por Impuestos"],
+          "ART_RESOURCES": ["recursos ART", "Agencia de Renovación del Territorio"],
+          "COOPERACION": ["cooperación internacional", "cooperación para la paz"]
+        },
+        "weight": 0.10,
+        "applies_when": "municipality_in_pdet_list",
+        "bonus_for_multiple_pdet_sources": 0.15
       }
     ],
     
