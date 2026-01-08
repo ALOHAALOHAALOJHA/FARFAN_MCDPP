@@ -480,7 +480,7 @@ class HeterogeneousTreatmentAnalyzer:
 
         try:
             # Estimate CATE
-            cate_estimate = self.estimate_cate_dml(X, T, Y, method="forest")
+            self.estimate_cate_dml(X, T, Y, method="forest")
 
             if self.model is None:
                 return PolicyRecommendation(
