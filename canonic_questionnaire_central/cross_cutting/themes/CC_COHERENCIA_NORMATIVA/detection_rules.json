@@ -65,7 +65,14 @@
           "pdet_municipalities": {
             "condition": "Municipality is in PDET list",
             "additional_mandatory": [
-              {"norm_id": "Decreto 893 de 2017", "penalty": 0.4}
+              {"norm_id": "Decreto Ley 893 de 2017", "penalty": 0.4, "description": "PDET framework law"},
+              {"norm_id": "Plan Marco de Implementación (PMI)", "penalty": 0.35, "description": "PMI alignment required"},
+              {"norm_id": "PATR Municipal", "penalty": 0.30, "description": "32,808 PATR initiatives"},
+              {"norm_id": "Acuerdo Final de Paz - Punto 1", "penalty": 0.25, "description": "Reforma Rural Integral"}
+            ],
+            "recommended": [
+              {"norm_id": "CONPES 3918 de 2018", "bonus": 0.10, "description": "PDET strategy"},
+              {"norm_id": "Resolución 464 de 2017 (ART)", "bonus": 0.08, "description": "ART coordination"}
             ]
           },
           "ethnic_territories": {

@@ -95,6 +95,27 @@
         ],
         "weight": 0.10,
         "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PC-006",
+        "name": "pdet_participatory_planning",
+        "type": "SEMANTIC_PATTERN",
+        "description": "Planificación participativa PDET - PATR",
+        "patterns": [
+          "(?i)PATR\\s+participativo",
+          "(?i)iniciativas?\\s+priorizadas?\\s+(?:en\\s+)?(?:el\\s+)?pacto\\s+municipal",
+          "(?i)diálogos?\\s+territoriales?\\s+PDET",
+          "(?i)asambleas?\\s+comunitarias?\\s+(?:del\\s+)?PATR",
+          "(?i)participación\\s+en\\s+(?:la\\s+)?formulación\\s+(?:del\\s+)?PATR",
+          "(?i)(?:32[.,]?808|treinta\\s+y\\s+dos\\s+mil)\\s+iniciativas?\\s+priorizadas?",
+          "(?i)pacto[s]?\\s+municipal(?:es)?\\s+de\\s+transformación"
+        ],
+        "weight": 0.12,
+        "minimum_matches": 1,
+        "applies_when": "municipality_in_pdet_list",
+        "context_validation": {
+          "boost_if_explicit_patr": 0.15
+        }
       }
     ],
 
@@ -103,7 +124,8 @@
       "threshold": 0.55,
       "formula": "score = sum(signal.weight * signal.match_score) / sum(signal.weight)",
       "minimum_signals_required": 2,
-      "bonus_for_multiple_mechanisms": 0.10
+      "bonus_for_multiple_mechanisms": 0.10,
+      "bonus_for_patr_participation": 0.15
     }
   },
 
