@@ -7,7 +7,6 @@ including four-gate validation.
 """
 
 import pytest
-from pathlib import Path
 
 from canonic_questionnaire_central.scoring.modules import (
     PDETScoringEnricher,
