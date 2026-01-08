@@ -299,7 +299,8 @@ def validate_semantic_patterns_have_pdet_context():
             print(f"❌ territorial_patterns.json not found")
             return False
         
-        territorial = json.load(open(territorial_path, encoding="utf-8"))
+        with open(territorial_path, encoding="utf-8") as f:
+            territorial = json.load(f)
         
         # Count PDET-specific patterns
         pdet_patterns = [p for p in territorial["patterns"] if "PDET" in p.get("pattern_id", "")]
@@ -327,7 +328,8 @@ def validate_semantic_patterns_have_pdet_context():
             return False
         
         # Read as text to avoid JSON parsing errors from regex escapes
-        institutional_text = open(institutional_path, encoding="utf-8").read()
+        with open(institutional_path, encoding="utf-8") as f:
+            institutional_text = f.read()
         
         # Check for ART (PDET-specific) - use text search
         if '"acronym": "ART"' not in institutional_text:
@@ -347,7 +349,8 @@ def validate_semantic_patterns_have_pdet_context():
             return False
         
         # Read as text to avoid JSON parsing errors
-        policy_text = open(policy_path, encoding="utf-8").read()
+        with open(policy_path, encoding="utf-8") as f:
+            policy_text = f.read()
         
         # Check for PATR pattern - use text search
         if '"acronym": "PATR"' not in policy_text:
@@ -379,9 +382,12 @@ def validate_cross_reference_consistency():
         base_path = Path(__file__).parent.parent / "canonic_questionnaire_central"
         
         # Load all relevant files
-        semantic_config = json.load(open(base_path / "semantic" / "semantic_config.json", encoding="utf-8"))
-        pdet_enrichment = json.load(open(base_path / "semantic" / "pdet_semantic_enrichment.json", encoding="utf-8"))
-        pdet_municipalities = json.load(open(base_path / "colombia_context" / "pdet_municipalities.json", encoding="utf-8"))
+        with open(base_path / "semantic" / "semantic_config.json", encoding="utf-8") as f:
+            semantic_config = json.load(f)
+        with open(base_path / "semantic" / "pdet_semantic_enrichment.json", encoding="utf-8") as f:
+            pdet_enrichment = json.load(f)
+        with open(base_path / "colombia_context" / "pdet_municipalities.json", encoding="utf-8") as f:
+            pdet_municipalities = json.load(f)
         
         # Check municipality count consistency
         config_count = semantic_config["colombian_context_awareness"]["pdet_enrichment"]["total_municipalities"]
