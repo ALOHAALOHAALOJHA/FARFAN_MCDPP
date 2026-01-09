@@ -21,7 +21,7 @@ Phase 2 implementation has begun with the creation of the Bayesian inference eng
    - Implemented `__init__.py` with proper exports
 
 2. **✅ BayesianPriorBuilder (AGUJA I)** - COMPLETE
-   - File: `bayesian_prior_builder.py` (520 lines)
+   - File: `bayesian_prior_builder.py` (~461 lines, current implementation)
    - Features:
      * `build_prior_for_evidence_type()` - Beach's test-specific priors
      * `build_hierarchical_prior()` - Multi-level priors (micro-meso-macro)
@@ -32,7 +32,7 @@ Phase 2 implementation has begun with the creation of the Bayesian inference eng
      * `get_prior_summary()` - Summary statistics
 
 3. **✅ BayesianSamplingEngine (AGUJA II)** - COMPLETE
-   - File: `bayesian_sampling_engine.py` (565 lines)
+   - File: `bayesian_sampling_engine.py` (~470 lines, current implementation)
    - Features:
      * `sample_beta_binomial()` - Conjugate Beta-Binomial sampling
      * `sample_normal_normal()` - Conjugate Normal-Normal sampling
@@ -40,6 +40,8 @@ Phase 2 implementation has begun with the creation of the Bayesian inference eng
      * Comprehensive convergence diagnostics (R-hat, ESS)
      * Automatic NUTS sampler configuration
      * Warning system for poor convergence
+
+*Note: Line counts reflect implemented code; planned additions tracked in TODOs.*
 
 ---
 

@@ -104,10 +104,16 @@ class BayesianEngineAdapter:
         """
         return {
             "prior_builder": "✓ disponible" if self.prior_builder else "✗ no disponible",
-            "sampling_engine": "✓ disponible"
-            if self.sampling_engine and self.sampling_engine.is_available()
-            else "✗ no disponible",
-            "diagnostics": "✓ disponible" if self.diagnostics and self.diagnostics.is_available() else "✗ no disponible",
+            "sampling_engine": (
+                "✓ disponible"
+                if self.sampling_engine and self.sampling_engine.is_available()
+                else "✗ no disponible"
+            ),
+            "diagnostics": (
+                "✓ disponible"
+                if self.diagnostics and self.diagnostics.is_available()
+                else "✗ no disponible"
+            ),
             "overall": "✓ disponible" if self.is_available() else "✗ no disponible",
         }
 
@@ -116,7 +122,9 @@ class BayesianEngineAdapter:
     # ========================================================================
 
     def test_necessity_from_observations(
-        self, observations: list[float] | NDArray[np.floating[Any]], prior: dict[str, float] | None = None
+        self,
+        observations: list[float] | NDArray[np.floating[Any]],
+        prior: dict[str, float] | None = None,
     ) -> dict[str, Any]:
         """
         Test necessity condition using Bayesian inference.
@@ -153,7 +161,10 @@ class BayesianEngineAdapter:
 
         # Sample posterior
         result = self.sampling_engine.sample_beta_binomial(
-            n_successes=n_successes, n_trials=n_trials, prior_alpha=prior_alpha, prior_beta=prior_beta
+            n_successes=n_successes,
+            n_trials=n_trials,
+            prior_alpha=prior_alpha,
+            prior_beta=prior_beta,
         )
 
         # Assess necessity: high posterior mean suggests necessary condition met
@@ -174,7 +185,9 @@ class BayesianEngineAdapter:
         }
 
     def test_sufficiency_from_observations(
-        self, observations: list[float] | NDArray[np.floating[Any]], prior: dict[str, float] | None = None
+        self,
+        observations: list[float] | NDArray[np.floating[Any]],
+        prior: dict[str, float] | None = None,
     ) -> dict[str, Any]:
         """
         Test sufficiency condition using Bayesian inference.
@@ -196,7 +209,9 @@ class BayesianEngineAdapter:
         """
         if prior is None:
             # Use smoking gun prior (favors sufficiency)
-            prior_params = self.prior_builder.build_prior_for_evidence_type("smoking_gun", rarity=0.7)
+            prior_params = self.prior_builder.build_prior_for_evidence_type(
+                "smoking_gun", rarity=0.7
+            )
             prior_alpha = prior_params.alpha
             prior_beta = prior_params.beta
         else:
@@ -210,7 +225,10 @@ class BayesianEngineAdapter:
 
         # Sample posterior
         result = self.sampling_engine.sample_beta_binomial(
-            n_successes=n_successes, n_trials=n_trials, prior_alpha=prior_alpha, prior_beta=prior_beta
+            n_successes=n_successes,
+            n_trials=n_trials,
+            prior_alpha=prior_alpha,
+            prior_beta=prior_beta,
         )
 
         # Assess sufficiency: high posterior with rare evidence = strong confirmation
@@ -231,7 +249,9 @@ class BayesianEngineAdapter:
         }
 
     def test_doubly_decisive(
-        self, observations: list[float] | NDArray[np.floating[Any]], prior: dict[str, float] | None = None
+        self,
+        observations: list[float] | NDArray[np.floating[Any]],
+        prior: dict[str, float] | None = None,
     ) -> dict[str, Any]:
         """
         Test both necessity and sufficiency (doubly decisive test).
@@ -252,7 +272,9 @@ class BayesianEngineAdapter:
             - Provides strongest possible confirmation
         """
         if prior is None:
-            prior_params = self.prior_builder.build_prior_for_evidence_type("doubly_decisive", rarity=0.8)
+            prior_params = self.prior_builder.build_prior_for_evidence_type(
+                "doubly_decisive", rarity=0.8
+            )
             prior_alpha = prior_params.alpha
             prior_beta = prior_params.beta
         else:
@@ -264,7 +286,10 @@ class BayesianEngineAdapter:
         n_trials = len(obs_array)
 
         result = self.sampling_engine.sample_beta_binomial(
-            n_successes=n_successes, n_trials=n_trials, prior_alpha=prior_alpha, prior_beta=prior_beta
+            n_successes=n_successes,
+            n_trials=n_trials,
+            prior_alpha=prior_alpha,
+            prior_beta=prior_beta,
         )
 
         # Doubly decisive requires very high posterior (> 0.9)
@@ -310,7 +335,8 @@ class BayesianEngineAdapter:
         # Compute posterior statistics
         total = posterior_alpha + posterior_beta
         mean = posterior_alpha / total
-        mode = (posterior_alpha - 1) / (total - 2) if posterior_alpha > 1 and posterior_beta > 1 and total > 2 else None
+        mode_valid = posterior_alpha > 1 and posterior_beta > 1 and total > 2
+        mode = (posterior_alpha - 1) / (total - 2) if mode_valid else None
         variance = (posterior_alpha * posterior_beta) / (total**2 * (total + 1))
 
         return {
@@ -363,12 +389,19 @@ class BayesianEngineAdapter:
                 "converged": result.converged,
                 "n_successes": level_data[i][0],
                 "n_trials": level_data[i][1],
-                "success_rate": level_data[i][0] / level_data[i][1] if level_data[i][1] > 0 else 0.0,
+                "success_rate": (
+                    level_data[i][0] / level_data[i][1] if level_data[i][1] > 0 else 0.0
+                ),
             }
 
         # Compute overall mechanism strength (average across levels)
-        overall_mean = float(np.mean([r.posterior_mean for r in results]))
-        overall_std = float(np.std([r.posterior_mean for r in results], ddof=1))
+        posterior_means = [r.posterior_mean for r in results]
+        overall_mean = float(np.mean(posterior_means))
+        
+        if len(results) <= 1:
+            overall_std = 0.0
+        else:
+            overall_std = float(np.std(posterior_means, ddof=1))
 
         return {
             "levels": level_results,
@@ -411,7 +444,11 @@ class BayesianEngineAdapter:
             for c in comparisons
         ]
 
-    def validate_model(self, trace: Any, observed_data: NDArray[np.floating[Any]]) -> dict[str, Any]:
+    def validate_model(
+        self,
+        trace: Any,
+        observed_data: NDArray[np.floating[Any]],
+    ) -> dict[str, Any]:
         """
         Validate Bayesian model using posterior predictive checks.
 
@@ -423,13 +460,23 @@ class BayesianEngineAdapter:
             Dictionary with validation results
         """
         # Posterior predictive check (mean)
-        ppc_mean = self.diagnostics.posterior_predictive_check(trace, observed_data, test_statistic="mean")
+        ppc_mean = self.diagnostics.posterior_predictive_check(
+            trace, observed_data, test_statistic="mean"
+        )
 
         # Posterior predictive check (std)
-        ppc_std = self.diagnostics.posterior_predictive_check(trace, observed_data, test_statistic="std")
+        ppc_std = self.diagnostics.posterior_predictive_check(
+            trace, observed_data, test_statistic="std"
+        )
 
         # Convergence check
         convergence = self.diagnostics.check_convergence(trace)
+
+        overall_valid = (
+            ppc_mean.passed
+            and ppc_std.passed
+            and convergence.get("converged", False)
+        )
 
         return {
             "ppc_mean": {
@@ -443,7 +490,7 @@ class BayesianEngineAdapter:
                 "message": ppc_std.message,
             },
             "convergence": convergence,
-            "overall_valid": ppc_mean.passed and ppc_std.passed and convergence.get("converged", False),
+            "overall_valid": overall_valid,
         }
 
     # ========================================================================

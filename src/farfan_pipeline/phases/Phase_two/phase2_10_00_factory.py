@@ -181,6 +181,25 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_regist
 )
 from farfan_pipeline.infrastructure.questionnaire import QuestionnaireModularResolver
 
+# JOB FRONT 1: MODULAR RESOLVER MIGRATION
+# Import new CanonicalQuestionnaireResolver from canonic_questionnaire_central
+# This is the single source of truth for questionnaire assembly
+try:
+    from canonic_questionnaire_central import (
+        CanonicalQuestionnaireResolver,
+        CanonicalQuestionnaire,
+        resolve_questionnaire,
+        ResolverError as CanonicalResolverError,
+        IntegrityError as CanonicalIntegrityError,
+    )
+    MODULAR_RESOLVER_AVAILABLE = True
+except ImportError:
+    MODULAR_RESOLVER_AVAILABLE = False
+    logger.warning(
+        "modular_resolver_unavailable",
+        message="CanonicalQuestionnaireResolver not available, using legacy loader"
+    )
+
 # Phase 1 validation constants module
 # NOTE: validation_constants module does not exist in current architecture
 # Using empty fallback - implement in future JOBFRONT if needed
@@ -226,6 +245,14 @@ logger = logging.getLogger(__name__)
 # ============================================================================
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 CANONICAL_QUESTIONNAIRE_PATH = _REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
+
+# ============================================================================
+# JOB FRONT 1: MODULAR RESOLVER MIGRATION FLAGS
+# ============================================================================
+# Migration control flags for transitioning to modular resolver
+# After validation period, set _USE_MODULAR_RESOLVER = True permanently
+_USE_MODULAR_RESOLVER = True  # Default: Use modular resolver (JF0)
+_ALLOW_FALLBACK_TO_MONOLITH = True  # Allow fallback during transition
 
 
 @dataclass(frozen=True)
@@ -282,6 +309,8 @@ class QuestionnaireIntegrityError(QuestionnaireLoadError):
 def load_questionnaire(
     path: Path | None = None,
     expected_hash: str | None = None,
+    *,
+    use_modular: bool | None = None,
 ) -> CanonicalQuestionnaire:
     """
     Carga el cuestionario canónico con verificación de integridad.
@@ -289,9 +318,18 @@ def load_questionnaire(
     NIVEL 1: ÚNICA función autorizada para I/O del monolito.
     CONSUMIDOR: Solo AnalysisPipelineFactory._load_canonical_questionnaire
 
+    MIGRATION STATUS (2026-01-09):
+    - Default: Modular resolver (canonic_questionnaire_central/resolver.py)
+    - Fallback: Legacy monolith (questionnaire_monolith.json)
+
     Args:
-        path: Ruta al archivo (default: CANONICAL_QUESTIONNAIRE_PATH)
+        path: Ruta al archivo (default: CANONICAL_QUESTIONNAIRE_PATH).
+              DEPRECATED: Ignored when using modular resolver.
         expected_hash: Hash SHA256 esperado para verificación
+        use_modular: Override default resolver selection.
+                     None = use _USE_MODULAR_RESOLVER flag
+                     True = force modular resolver
+                     False = force legacy monolith
 
     Returns:
         CanonicalQuestionnaire: Objeto inmutable verificado
@@ -299,6 +337,102 @@ def load_questionnaire(
     Raises:
         QuestionnaireLoadError: Archivo no existe o JSON inválido
         QuestionnaireIntegrityError: Hash no coincide
+    """
+    # Determine which loader to use
+    should_use_modular = (
+        use_modular if use_modular is not None else _USE_MODULAR_RESOLVER
+    )
+
+    if should_use_modular:
+        return _load_from_modular_resolver(expected_hash)
+    else:
+        logger.warning(
+            "using_deprecated_monolith_loader",
+            reason="use_modular=False or _USE_MODULAR_RESOLVER=False",
+        )
+        return _load_from_legacy_monolith(path, expected_hash)
+
+
+def _load_from_modular_resolver(
+    expected_hash: str | None = None,
+) -> CanonicalQuestionnaire:
+    """
+    Load questionnaire from modular resolver (JF0).
+
+    This is the PREFERRED path as of 2026-01-09.
+
+    Args:
+        expected_hash: SHA-256 hash for integrity verification
+
+    Returns:
+        CanonicalQuestionnaire with source='modular_resolver'
+
+    Raises:
+        QuestionnaireLoadError: If resolver fails
+        QuestionnaireIntegrityError: If hash verification fails
+    """
+    if not MODULAR_RESOLVER_AVAILABLE:
+        logger.warning("modular_resolver_not_available_fallback_to_monolith")
+        if _ALLOW_FALLBACK_TO_MONOLITH:
+            return _load_from_legacy_monolith(None, expected_hash)
+        else:
+            raise QuestionnaireLoadError(
+                "Modular resolver unavailable and fallback disabled"
+            )
+
+    try:
+        # Use the new CanonicalQuestionnaireResolver (JF0)
+        from canonic_questionnaire_central.resolver import CanonicalQuestionnaire as ModularQuestionnaire
+
+        resolver = CanonicalQuestionnaireResolver(
+            root=_REPO_ROOT / "canonic_questionnaire_central",
+            strict_mode=True,
+        )
+
+        resolved = resolver.resolve(expected_hash=expected_hash)
+
+        # Convert to legacy CanonicalQuestionnaire format for compatibility
+        return CanonicalQuestionnaire(
+            data=resolved.data,
+            sha256=resolved.sha256,
+            version=resolved.version,
+            load_timestamp=resolved.provenance.assembly_timestamp,
+            source_path=f"modular_resolver_v{resolver.RESOLVER_VERSION}",
+        )
+
+    except (CanonicalResolverError, CanonicalIntegrityError) as e:
+        logger.error(
+            "modular_resolver_failed",
+            error=str(e),
+            fallback="attempting_legacy_monolith" if _ALLOW_FALLBACK_TO_MONOLITH else "disabled",
+        )
+
+        # Attempt fallback to legacy monolith
+        if _ALLOW_FALLBACK_TO_MONOLITH:
+            logger.warning("falling_back_to_legacy_monolith")
+            return _load_from_legacy_monolith(None, expected_hash)
+        else:
+            raise QuestionnaireIntegrityError(
+                f"Modular resolver failed and fallback disabled: {e}"
+            ) from e
+
+
+def _load_from_legacy_monolith(
+    path: Path | None = None,
+    expected_hash: str | None = None,
+) -> CanonicalQuestionnaire:
+    """
+    Load questionnaire from legacy monolith file.
+
+    DEPRECATED: This path is for emergency rollback only.
+    Will be removed in future version.
+
+    Args:
+        path: Ruta al archivo (default: CANONICAL_QUESTIONNAIRE_PATH)
+        expected_hash: Hash SHA256 esperado para verificación
+
+    Returns:
+        CanonicalQuestionnaire: Objeto inmutable verificado
     """
     questionnaire_path = path or CANONICAL_QUESTIONNAIRE_PATH
 
@@ -327,6 +461,13 @@ def load_questionnaire(
         raise QuestionnaireLoadError("Missing 'blocks'")
 
     version = content.get("version", "unknown")
+
+    logger.warning(
+        "questionnaire_loaded_from_legacy_monolith",
+        sha256=computed_hash[:16],
+        path=str(questionnaire_path),
+        source="legacy_monolith",
+    )
 
     return CanonicalQuestionnaire(
         data=content,
@@ -410,6 +551,11 @@ class ExecutorConstructionError(FactoryError):
 
 class SingletonViolationError(FactoryError):
     """Raised when singleton pattern is violated."""
+    pass
+
+
+class GovernanceViolationError(FactoryError):
+    """Raised when questionnaire source validation fails."""
     pass
 
 
@@ -817,6 +963,9 @@ class AnalysisPipelineFactory:
 
             self._canonical_questionnaire = questionnaire
 
+            # Validate questionnaire source (Job Front 1: Governance)
+            self._validate_questionnaire_source(questionnaire)
+
             logger.info(
                 "questionnaire_loaded_successfully questions=%d hash=%s singleton=established",
                 len(questions),
@@ -827,6 +976,63 @@ class AnalysisPipelineFactory:
             if isinstance(e, (IntegrityError, SingletonViolationError, QuestionnaireValidationError)):
                 raise
             raise QuestionnaireValidationError(f"Failed to load questionnaire: {e}") from e
+
+    def _validate_questionnaire_source(
+        self,
+        questionnaire: CanonicalQuestionnaire,
+    ) -> None:
+        """
+        Validate questionnaire came from authorized source.
+
+        GOVERNANCE ENFORCEMENT (Job Front 1):
+        - modular_resolver: APPROVED (default)
+        - legacy_monolith: APPROVED with warning (transition period)
+        - other: REJECTED
+
+        Args:
+            questionnaire: The loaded questionnaire to validate
+
+        Raises:
+            GovernanceViolationError: If questionnaire source is unauthorized
+        """
+        # Extract source from questionnaire
+        source = getattr(questionnaire, 'source', None)
+        source_path = getattr(questionnaire, 'source_path', '')
+
+        # Valid sources
+        valid_sources = {"modular_resolver", "legacy_monolith"}
+        valid_source_paths = {
+            "modular_resolver",
+            "modular-assembly",
+            "questionnaire_monolith.json",
+        }
+
+        # Check if source is valid
+        source_valid = (
+            source in valid_sources or
+            any(valid_path in source_path for valid_path in valid_source_paths)
+        )
+
+        if not source_valid:
+            raise GovernanceViolationError(
+                f"Questionnaire from unauthorized source: {source} (path: {source_path}). "
+                f"Valid sources: {valid_sources}"
+            )
+
+        # Warn if using legacy source
+        if source == "legacy_monolith" or "questionnaire_monolith.json" in source_path:
+            logger.warning(
+                "questionnaire_from_legacy_source",
+                message="Using deprecated legacy monolith. Migrate to modular resolver.",
+                source=source,
+                source_path=source_path,
+            )
+        else:
+            logger.info(
+                "questionnaire_source_validated",
+                source=source,
+                source_path=source_path,
+            )
 
     def _run_phase0_validation(
         self,

@@ -1,6 +1,6 @@
 # Derek Beach SOTA Implementation Checklist
 
-**Quick Reference Guide for Library Enhancement**
+## Quick Reference Guide for Library Enhancement
 
 ---
 
