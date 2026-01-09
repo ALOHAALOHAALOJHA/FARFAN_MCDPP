@@ -1,6 +1,6 @@
 {
   "summary": {
-    "timestamp": "2026-01-09T21:55:43.593709+00:00",
+    "timestamp": "2026-01-09T22:19:39.046876+00:00",
     "total_checks": 35,
     "passed_checks": 32,
     "failed_checks": 3,
@@ -197,23 +197,47 @@
     },
     {
       "section": "2.1",
-      "check_name": "Epistemic Ratio Sum - SUBTIPO_F",
+      "check_name": "Epistemic Ratio Sum - TYPE_C",
       "passed": true,
-      "message": "SUBTIPO_F: Ratio sum = 1.0000",
+      "message": "TYPE_C: Ratio sum = 1.0000",
       "severity": "INFO",
       "details": {
-        "type": "SUBTIPO_F",
+        "type": "TYPE_C",
         "n1_mid": 0.30000000000000004,
-        "n2_mid": 0.4,
-        "n3_mid": 0.30000000000000004,
+        "n2_mid": 0.35,
+        "n3_mid": 0.35,
         "sum": 1.0
       }
     },
     {
       "section": "2.3",
-      "check_name": "Operations Disjointness - SUBTIPO_F",
+      "check_name": "Operations Disjointness - TYPE_C",
       "passed": true,
-      "message": "SUBTIPO_F: No overlap between permitted/prohibited",
+      "message": "TYPE_C: No overlap between permitted/prohibited",
+      "severity": "INFO",
+      "details": {
+        "overlap": []
+      }
+    },
+    {
+      "section": "2.1",
+      "check_name": "Epistemic Ratio Sum - TYPE_D",
+      "passed": true,
+      "message": "TYPE_D: Ratio sum = 1.0000",
+      "severity": "INFO",
+      "details": {
+        "type": "TYPE_D",
+        "n1_mid": 0.25,
+        "n2_mid": 0.55,
+        "n3_mid": 0.2,
+        "sum": 1.0
+      }
+    },
+    {
+      "section": "2.3",
+      "check_name": "Operations Disjointness - TYPE_D",
+      "passed": true,
+      "message": "TYPE_D: No overlap between permitted/prohibited",
       "severity": "INFO",
       "details": {
         "overlap": []
@@ -245,23 +269,23 @@
     },
     {
       "section": "2.1",
-      "check_name": "Epistemic Ratio Sum - TYPE_C",
+      "check_name": "Epistemic Ratio Sum - SUBTIPO_F",
       "passed": true,
-      "message": "TYPE_C: Ratio sum = 1.0000",
+      "message": "SUBTIPO_F: Ratio sum = 1.0000",
       "severity": "INFO",
       "details": {
-        "type": "TYPE_C",
+        "type": "SUBTIPO_F",
         "n1_mid": 0.30000000000000004,
-        "n2_mid": 0.35,
-        "n3_mid": 0.35,
+        "n2_mid": 0.4,
+        "n3_mid": 0.30000000000000004,
         "sum": 1.0
       }
     },
     {
       "section": "2.3",
-      "check_name": "Operations Disjointness - TYPE_C",
+      "check_name": "Operations Disjointness - SUBTIPO_F",
       "passed": true,
-      "message": "TYPE_C: No overlap between permitted/prohibited",
+      "message": "SUBTIPO_F: No overlap between permitted/prohibited",
       "severity": "INFO",
       "details": {
         "overlap": []
@@ -292,41 +316,17 @@
       }
     },
     {
-      "section": "2.1",
-      "check_name": "Epistemic Ratio Sum - TYPE_D",
-      "passed": true,
-      "message": "TYPE_D: Ratio sum = 1.0000",
-      "severity": "INFO",
-      "details": {
-        "type": "TYPE_D",
-        "n1_mid": 0.25,
-        "n2_mid": 0.55,
-        "n3_mid": 0.2,
-        "sum": 1.0
-      }
-    },
-    {
-      "section": "2.3",
-      "check_name": "Operations Disjointness - TYPE_D",
-      "passed": true,
-      "message": "TYPE_D: No overlap between permitted/prohibited",
-      "severity": "INFO",
-      "details": {
-        "overlap": []
-      }
-    },
-    {
       "section": "3.1",
       "check_name": "Required Parameters Defined",
       "passed": true,
-      "message": "Required parameters set defined: frozenset({'chunk_size', 'extraction_coverage_target', 'veto_threshold', 'prior_strength'})",
+      "message": "Required parameters set defined: frozenset({'prior_strength', 'chunk_size', 'veto_threshold', 'extraction_coverage_target'})",
       "severity": "INFO",
       "details": {
         "required_params": [
+          "prior_strength",
           "chunk_size",
-          "extraction_coverage_target",
           "veto_threshold",
-          "prior_strength"
+          "extraction_coverage_target"
         ]
       }
     },
@@ -334,13 +334,13 @@
       "section": "3.2",
       "check_name": "Evidence Prefixes Defined",
       "passed": true,
-      "message": "Valid evidence prefixes: frozenset({'docs/', 'src/', 'artifacts/'})",
+      "message": "Valid evidence prefixes: frozenset({'artifacts/', 'src/', 'docs/'})",
       "severity": "INFO",
       "details": {
         "prefixes": [
-          "docs/",
+          "artifacts/",
           "src/",
-          "artifacts/"
+          "docs/"
         ]
       }
     },

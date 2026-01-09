@@ -1,6 +1,6 @@
 # FARFAN Calibration & Parametrization System Audit Report
 
-**Timestamp:** 2026-01-09T21:55:15.742488
+**Timestamp:** 2026-01-09T22:19:39.046876+00:00
 
 ## Executive Summary
 
@@ -44,34 +44,34 @@
 | Status | Check | Message | Severity |
 |--------|-------|---------|----------|
 | ✓ | Epistemic Ratio Sum - TYPE_A | TYPE_A: Ratio sum = 1.0000 | - |
-| ✓ | Epistemic Ratio Sum - TYPE_B | TYPE_B: Ratio sum = 1.0000 | - |
 | ✓ | Epistemic Ratio Sum - TYPE_D | TYPE_D: Ratio sum = 1.0000 | - |
-| ✓ | Epistemic Ratio Sum - TYPE_E | TYPE_E: Ratio sum = 1.0000 | - |
 | ✓ | Epistemic Ratio Sum - TYPE_C | TYPE_C: Ratio sum = 1.0000 | - |
 | ✓ | Epistemic Ratio Sum - SUBTIPO_F | SUBTIPO_F: Ratio sum = 1.0000 | - |
+| ✓ | Epistemic Ratio Sum - TYPE_B | TYPE_B: Ratio sum = 1.0000 | - |
+| ✓ | Epistemic Ratio Sum - TYPE_E | TYPE_E: Ratio sum = 1.0000 | - |
 
 ### Section 2.3
 
 | Status | Check | Message | Severity |
 |--------|-------|---------|----------|
 | ✓ | Operations Disjointness - TYPE_A | TYPE_A: No overlap between permitted/prohibited | - |
-| ✓ | Operations Disjointness - TYPE_B | TYPE_B: No overlap between permitted/prohibited | - |
 | ✓ | Operations Disjointness - TYPE_D | TYPE_D: No overlap between permitted/prohibited | - |
-| ✓ | Operations Disjointness - TYPE_E | TYPE_E: No overlap between permitted/prohibited | - |
 | ✓ | Operations Disjointness - TYPE_C | TYPE_C: No overlap between permitted/prohibited | - |
 | ✓ | Operations Disjointness - SUBTIPO_F | SUBTIPO_F: No overlap between permitted/prohibited | - |
+| ✓ | Operations Disjointness - TYPE_B | TYPE_B: No overlap between permitted/prohibited | - |
+| ✓ | Operations Disjointness - TYPE_E | TYPE_E: No overlap between permitted/prohibited | - |
 
 ### Section 3.1
 
 | Status | Check | Message | Severity |
 |--------|-------|---------|----------|
-| ✓ | Required Parameters Defined | Required parameters set defined: frozenset({'extraction_coverage_target', 'prior_strength', 'veto_threshold', 'chunk_size'}) | - |
+| ✓ | Required Parameters Defined | Required parameters set defined: frozenset({'chunk_size', 'prior_strength', 'extraction_coverage_target', 'veto_threshold'}) | - |
 
 ### Section 3.2
 
 | Status | Check | Message | Severity |
 |--------|-------|---------|----------|
-| ✓ | Evidence Prefixes Defined | Valid evidence prefixes: frozenset({'artifacts/', 'src/', 'docs/'}) | - |
+| ✓ | Evidence Prefixes Defined | Valid evidence prefixes: frozenset({'docs/', 'src/', 'artifacts/'}) | - |
 | ✓ | Commit SHA Pattern Defined | Commit SHA pattern defined: ^[0-9a-f]{40}$ | - |
 
 ### Section 4.1
