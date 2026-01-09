@@ -5,16 +5,13 @@ execution, including circuit breaker behavior and budget adaptation.
 """
 
 import asyncio
-import sys
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
 
 # Add src to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
-
-from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
 from orchestration.orchestrator import (
     AbortRequested,
     Orchestrator,

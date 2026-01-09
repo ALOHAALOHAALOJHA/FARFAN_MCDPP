@@ -69,7 +69,7 @@ class SignalQuestionIndex:
                                  Defaults to _registry/questions/integration_map.json
         """
         if integration_map_path is None:
-            integration_map_path = Path(__file__).parent / "integration_map.json"
+            integration_map_path = Path(__file__).resolve().parent / "integration_map.json"
 
         self.integration_map_path = integration_map_path
         self.index: Dict[str, Set[str]] = {}

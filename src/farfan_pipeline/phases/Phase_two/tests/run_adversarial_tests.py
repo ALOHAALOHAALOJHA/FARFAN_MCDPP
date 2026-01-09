@@ -29,7 +29,7 @@ from pathlib import Path
 from typing import List
 
 
-TESTS_DIR = Path(__file__).parent
+TESTS_DIR = Path(__file__).resolve().parent
 PHASE_TWO_DIR = TESTS_DIR.parent
 
 

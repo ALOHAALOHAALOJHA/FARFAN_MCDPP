@@ -1,6 +1,6 @@
 """Tests for Evidence Query Engine - Phase 2 GAP 7."""
 
-from src.farfan_pipeline.phases.Phase_two.phase2_80_01_evidence_query_engine import (
+from farfan_pipeline.phases.Phase_two.phase2_80_01_evidence_query_engine import (
     EvidenceQueryEngine,
     SimpleEvidenceNexus,
     EvidenceNode,

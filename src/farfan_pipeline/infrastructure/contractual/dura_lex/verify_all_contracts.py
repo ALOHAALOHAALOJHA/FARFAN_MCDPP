@@ -8,10 +8,11 @@ import json
 import os
 import subprocess
 import sys
+from pathlib import Path
 
-CONTRACTS_DIR = "src/farfan_pipeline/contracts"
-TOOLS_DIR = os.path.join(CONTRACTS_DIR, "tools")
-TESTS_DIR = os.path.join(CONTRACTS_DIR, "tests")
+CONTRACTS_DIR = Path("src/farfan_pipeline/contracts")
+TOOLS_DIR = CONTRACTS_DIR / "tools"
+TESTS_DIR = CONTRACTS_DIR / "tests"
 
 
 def run_command(cmd: str, description: str, set_pythonpath: bool = False) -> bool:
@@ -19,8 +20,8 @@ def run_command(cmd: str, description: str, set_pythonpath: bool = False) -> boo
     try:
         env = os.environ.copy()
         if set_pythonpath:
-            cwd = os.getcwd()
-            src_path = os.path.join(cwd, "src")
+            cwd = Path.cwd()
+            src_path = cwd / "src"
             env["PYTHONPATH"] = f"{src_path}:{env.get('PYTHONPATH', '')}"
         subprocess.check_call(cmd, shell=True, env=env)
         print(f"✅ {description} PASSED")
@@ -42,9 +43,9 @@ def main() -> None:
 
     # 2. Run CLI Tools to generate certificates
     print("\n--- 2. GENERATING CERTIFICATES ---")
-    tools = glob.glob(os.path.join(TOOLS_DIR, "*.py"))
-    for tool in sorted(tools):
-        tool_name = os.path.basename(tool)
+    tools = sorted(TOOLS_DIR.glob("*.py"))
+    for tool in tools:
+        tool_name = tool.name
         if not run_command(f"python {tool}", f"Tool: {tool_name}", set_pythonpath=True):
             sys.exit(1)
 

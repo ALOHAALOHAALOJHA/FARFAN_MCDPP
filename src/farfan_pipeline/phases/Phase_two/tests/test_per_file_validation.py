@@ -21,7 +21,7 @@ from typing import Any
 
 import pytest
 
-PHASE_TWO_DIR = Path(__file__).parent.parent
+PHASE_TWO_DIR = Path(__file__).resolve().parent.parent
 
 
 class TestPhase2Factory:

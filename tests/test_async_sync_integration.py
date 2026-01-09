@@ -45,7 +45,7 @@ class TestOrchestratorIntegration:
         executor_config = Mock()
         
         # Mock RuntimeConfig
-        from src.farfan_pipeline.phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
+        from farfan_pipeline.phases.Phase_zero.runtime_config import RuntimeConfig, RuntimeMode
         runtime_config = RuntimeConfig(
             mode=RuntimeMode.DEV,
             allow_partial_results=True,
@@ -54,8 +54,8 @@ class TestOrchestratorIntegration:
         )
         
         # Mock Phase0ValidationResult
-        from src.farfan_pipeline.orchestration.orchestrator import Phase0ValidationResult
-        from src.farfan_pipeline.phases.Phase_zero.exit_gates import GateResult
+        from farfan_pipeline.orchestration.orchestrator import Phase0ValidationResult
+        from farfan_pipeline.phases.Phase_zero.exit_gates import GateResult
         
         phase0_validation = Phase0ValidationResult(
             all_passed=True,
@@ -78,7 +78,7 @@ class TestOrchestratorIntegration:
     
     def test_sync_entrypoint_basic(self, mock_dependencies):
         """Test that orchestrator can be initialized and guards work."""
-        from src.farfan_pipeline.orchestration.orchestrator import Orchestrator
+        from farfan_pipeline.orchestration.orchestrator import Orchestrator
         
         # Create orchestrator
         orchestrator = Orchestrator(
@@ -96,7 +96,7 @@ class TestOrchestratorIntegration:
     @pytest.mark.asyncio
     async def test_async_entrypoint_basic(self, mock_dependencies):
         """Test that orchestrator async entrypoint works."""
-        from src.farfan_pipeline.orchestration.orchestrator import Orchestrator
+        from farfan_pipeline.orchestration.orchestrator import Orchestrator
         
         # Create orchestrator
         orchestrator = Orchestrator(
@@ -113,7 +113,7 @@ class TestOrchestratorIntegration:
     
     def test_process_development_plan_guard_from_sync(self, mock_dependencies):
         """Test that sync wrapper works correctly from sync context."""
-        from src.farfan_pipeline.orchestration.orchestrator import Orchestrator
+        from farfan_pipeline.orchestration.orchestrator import Orchestrator
         
         orchestrator = Orchestrator(
             method_executor=mock_dependencies["method_executor"],
@@ -137,7 +137,7 @@ class TestOrchestratorIntegration:
     @pytest.mark.asyncio
     async def test_process_development_plan_guard_from_async(self, mock_dependencies):
         """Test that sync wrapper raises error from async context."""
-        from src.farfan_pipeline.orchestration.orchestrator import Orchestrator
+        from farfan_pipeline.orchestration.orchestrator import Orchestrator
         
         orchestrator = Orchestrator(
             method_executor=mock_dependencies["method_executor"],
@@ -157,7 +157,7 @@ class TestOrchestratorIntegration:
     @pytest.mark.asyncio
     async def test_process_development_plan_async_from_async(self, mock_dependencies):
         """Test that async entrypoint works from async context."""
-        from src.farfan_pipeline.orchestration.orchestrator import Orchestrator
+        from farfan_pipeline.orchestration.orchestrator import Orchestrator
         
         # Patch phase methods to avoid full execution
         with patch.object(Orchestrator, '_load_configuration', return_value={}):
@@ -187,7 +187,7 @@ class TestPhaseExecutionBoundaries:
     @pytest.mark.asyncio
     async def test_sync_phase_uses_to_thread(self):
         """Test that sync phases are executed via asyncio.to_thread."""
-        from src.farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
+        from farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
         
         # Create a sync function that would block
         def sync_phase_handler():
@@ -211,7 +211,7 @@ class TestPhaseExecutionBoundaries:
     @pytest.mark.asyncio
     async def test_async_phase_direct_execution(self):
         """Test that async phases are executed directly."""
-        from src.farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
+        from farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
         
         async def async_phase_handler():
             await asyncio.sleep(0.1)
@@ -234,7 +234,7 @@ class TestPhaseExecutionBoundaries:
     @pytest.mark.asyncio
     async def test_event_loop_responsive_during_sync_phase(self):
         """Test that event loop remains responsive during sync phase execution."""
-        from src.farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
+        from farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
         
         def blocking_sync_phase():
             time.sleep(0.2)
@@ -270,7 +270,7 @@ class TestPhaseExecutionBoundaries:
     @pytest.mark.asyncio
     async def test_multiple_phases_sequential(self):
         """Test sequential execution of multiple phases with mixed sync/async."""
-        from src.farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
+        from farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
         
         def sync_phase_1():
             time.sleep(0.05)
@@ -357,7 +357,7 @@ class TestEventLoopResponsiveness:
     @pytest.mark.asyncio
     async def test_heartbeat_during_phases(self):
         """Test that heartbeat/monitoring tasks work during phase execution."""
-        from src.farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
+        from farfan_pipeline.orchestration.orchestrator import execute_phase_with_timeout
         
         heartbeat_count = 0
         

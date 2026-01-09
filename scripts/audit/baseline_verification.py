@@ -29,7 +29,7 @@ from pathlib import Path
 from typing import Any
 
 # Rutas relativas al proyecto
-PROJECT_ROOT = Path(__file__).parent.parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 CANONIC_QC = PROJECT_ROOT / "canonic_questionnaire_central"
 SRC_DIR = PROJECT_ROOT / "src"
 

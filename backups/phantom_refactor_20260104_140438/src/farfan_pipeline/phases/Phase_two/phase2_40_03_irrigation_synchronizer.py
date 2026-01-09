@@ -39,15 +39,15 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from orchestration.task_planner import ExecutableTask
-from canonic_phases.Phase_two.schema_validation import (
+from farfan_pipeline.phases.Phase_two.schema_validation import (
     validate_phase6_schema_compatibility,
 )
 from farfan_pipeline.core.types import ChunkData, PreprocessedDocument
-from canonic_phases.Phase_two.synchronization import ChunkMatrix
+from farfan_pipeline.phases.Phase_two.synchronization import ChunkMatrix
 
 # Import executor-chunk synchronizer for JOIN table
 try:
-    from canonic_phases.Phase_two.executor_chunk_synchronizer import (
+    from farfan_pipeline.phases.Phase_two.executor_chunk_synchronizer import (
         ExecutorChunkBinding,
         build_join_table,
         generate_verification_manifest,

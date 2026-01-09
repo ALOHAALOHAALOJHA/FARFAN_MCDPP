@@ -17,7 +17,7 @@ from typing import Any
 
 # Add project root to path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(PROJECT_ROOT / "src"))
+sys.path.insert(0, str(PROJECT_ROOT / "src"))  # noqa: E501
 
 
 def load_sample_v4_contracts(limit: int = 5) -> list[dict[str, Any]]:

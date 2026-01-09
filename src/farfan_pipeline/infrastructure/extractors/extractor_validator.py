@@ -50,7 +50,7 @@ class ExtractorValidator:
 
     def __init__(self, calibration_file: Optional[Path] = None):
         if calibration_file is None:
-            calibration_file = Path(__file__).parent.parent.parent.parent / \
+            calibration_file = Path(__file__).resolve().parent.parent.parent.parent / \
                               "canonic_questionnaire_central" / \
                               "_registry" / "membership_criteria" / "_calibration" / \
                               "extractor_calibration.json"
@@ -279,7 +279,7 @@ DO NOT EDIT MANUALLY - regenerate using extractor_validator.py
 """
 
 import pytest
-from src.farfan_pipeline.infrastructure.extractors.financial_chain_extractor import FinancialChainExtractor
+from farfan_pipeline.infrastructure.extractors.financial_chain_extractor import FinancialChainExtractor
 
 
 @pytest.fixture
@@ -315,7 +315,7 @@ Auto-generated tests for CausalVerbExtractor.
 """
 
 import pytest
-from src.farfan_pipeline.infrastructure.extractors.causal_verb_extractor import CausalVerbExtractor
+from farfan_pipeline.infrastructure.extractors.causal_verb_extractor import CausalVerbExtractor
 
 
 @pytest.fixture
@@ -350,7 +350,7 @@ Auto-generated tests for InstitutionalNERExtractor.
 """
 
 import pytest
-from src.farfan_pipeline.infrastructure.extractors.institutional_ner_extractor import InstitutionalNERExtractor
+from farfan_pipeline.infrastructure.extractors.institutional_ner_extractor import InstitutionalNERExtractor
 
 
 @pytest.fixture

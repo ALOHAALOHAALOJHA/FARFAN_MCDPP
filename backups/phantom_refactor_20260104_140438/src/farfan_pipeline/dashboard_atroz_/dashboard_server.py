@@ -74,7 +74,7 @@ from flask import Flask, jsonify, request, Response
 
 @app.route('/')
 def index():
-    dashboard_path = os.path.join(PROJECT_ROOT, 'dashboard.html')
+    dashboard_path = PROJECT_ROOT / "dashboard.html"
     with open(dashboard_path, 'r', encoding='utf-8') as f:
         return Response(f.read(), mimetype='text/html')
 

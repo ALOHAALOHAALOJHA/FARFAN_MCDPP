@@ -85,13 +85,13 @@ class PDETValidator:
         # Default paths
         if pdet_data_path is None:
             pdet_data_path = (
-                Path(__file__).parent.parent / 
+                Path(__file__).resolve().parent.parent / 
                 "colombia_context" / 
                 "pdet_municipalities.json"
             )
         
         if templates_path is None:
-            templates_path = Path(__file__).parent / "validation_templates.json"
+            templates_path = Path(__file__).resolve().parent / "validation_templates.json"
         
         self._load_pdet_data(pdet_data_path)
         self._load_validation_templates(templates_path)

@@ -16,7 +16,7 @@ class TestContractModules:
     
     def test_all_contract_files_exist(self):
         """Verify all 4 contract files exist."""
-        contracts_dir = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts"
+        contracts_dir = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts"
         
         contract_files = [
             "phase1_mission_contract.py",
@@ -39,7 +39,7 @@ class TestContractStructure:
     
     def test_mission_contract_defines_subphases(self):
         """Verify mission contract defines all subphases."""
-        mission_contract_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_mission_contract.py"
+        mission_contract_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_mission_contract.py"
         
         content = mission_contract_path.read_text()
         
@@ -57,7 +57,7 @@ class TestContractStructure:
     
     def test_input_contract_defines_preconditions(self):
         """Verify input contract defines preconditions."""
-        input_contract_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_input_contract.py"
+        input_contract_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_input_contract.py"
         
         content = input_contract_path.read_text()
         
@@ -74,7 +74,7 @@ class TestContractStructure:
     
     def test_output_contract_defines_postconditions(self):
         """Verify output contract defines postconditions."""
-        output_contract_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_output_contract.py"
+        output_contract_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_output_contract.py"
         
         content = output_contract_path.read_text()
         
@@ -92,7 +92,7 @@ class TestContractStructure:
     
     def test_constitutional_contract_defines_constants(self):
         """Verify constitutional contract defines key constants."""
-        constitutional_contract_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_constitutional_contract.py"
+        constitutional_contract_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_constitutional_contract.py"
         
         content = constitutional_contract_path.read_text()
         
@@ -110,13 +110,13 @@ class TestCertificates:
     
     def test_certificates_directory_exists(self):
         """Verify certificates directory exists."""
-        cert_dir = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "certificates"
+        cert_dir = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "certificates"
         assert cert_dir.exists(), "certificates directory must exist"
         assert cert_dir.is_dir(), "certificates must be a directory"
     
     def test_exactly_15_certificates(self):
         """Verify exactly 15 certificates exist (SP0-SP14)."""
-        cert_dir = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "certificates"
+        cert_dir = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "certificates"
         
         certificates = list(cert_dir.glob("CERTIFICATE_*.md"))
         # Filter out any that don't match the expected pattern
@@ -126,7 +126,7 @@ class TestCertificates:
     
     def test_certificate_required_fields(self):
         """Verify certificates contain required fields."""
-        cert_dir = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "certificates"
+        cert_dir = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "certificates"
         
         required_fields = [
             "**Status**:",
@@ -151,7 +151,7 @@ class TestCertificates:
     
     def test_certificates_are_markdown(self):
         """Verify all certificates are Markdown files."""
-        cert_dir = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "certificates"
+        cert_dir = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "certificates"
         
         for cert_file in cert_dir.glob("CERTIFICATE_*"):
             assert cert_file.suffix == ".md", f"Certificate must be Markdown: {cert_file.name}"
@@ -162,7 +162,7 @@ class TestContractsPackage:
     
     def test_contracts_init_exists(self):
         """Verify contracts __init__.py exists and has exports."""
-        contracts_init = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "__init__.py"
+        contracts_init = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "__init__.py"
         
         assert contracts_init.exists(), "contracts/__init__.py must exist"
         

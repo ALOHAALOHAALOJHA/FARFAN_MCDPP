@@ -16,7 +16,7 @@ class TestSISASIntegration:
     
     def test_signal_enrichment_module_exists(self):
         """Verify signal_enrichment module exists."""
-        signal_enrichment_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "signal_enrichment.py"
+        signal_enrichment_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "signal_enrichment.py"
         assert signal_enrichment_path.exists(), "signal_enrichment.py must exist"
         
         # Verify it's substantial (not a stub)
@@ -25,7 +25,7 @@ class TestSISASIntegration:
     
     def test_signal_registry_parameter_in_main_function(self):
         """Verify execute_phase_1_with_full_contract accepts signal_registry."""
-        cpp_ingestion_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "phase1_cpp_ingestion_full.py"
+        cpp_ingestion_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "phase1_cpp_ingestion_full.py"
         
         assert cpp_ingestion_path.exists(), "phase1_cpp_ingestion_full.py must exist"
         
@@ -39,7 +39,7 @@ class TestSISASIntegration:
         """Verify SP12 irrigation specification is documented."""
         from pathlib import Path
         
-        readme_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "README.md"
+        readme_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "README.md"
         
         assert readme_path.exists(), "README.md must exist"
         
@@ -54,7 +54,7 @@ class TestSISASIntegration:
         """Verify SISAS operation points (SP3, SP5, SP10, SP12) are documented."""
         from pathlib import Path
         
-        readme_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "README.md"
+        readme_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "README.md"
         readme_content = readme_path.read_text()
         
         sisas_subphases = ["SP3", "SP5", "SP10", "SP12"]
@@ -69,7 +69,7 @@ class TestSP12IrrigationOutputs:
         """Verify irrigation outputs are documented in README."""
         from pathlib import Path
         
-        readme_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "README.md"
+        readme_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "README.md"
         readme_content = readme_path.read_text()
         
         # Verify outputs are documented

@@ -3,7 +3,7 @@ ADVERSARIAL TESTS FOR INTERACTION GOVERNOR
 ==========================================
 """
 import pytest
-from src.farfan_pipeline.infrastructure.calibration.interaction_governor import (
+from farfan_pipeline.infrastructure.calibration.interaction_governor import (
     DependencyGraph,
     MethodNode,
     CycleDetector,

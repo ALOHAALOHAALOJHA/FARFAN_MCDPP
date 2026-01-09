@@ -110,7 +110,7 @@ class EnrichmentOrchestrator:
         if pdet_data_path and pdet_data_path.exists():
             self._load_pdet_data(pdet_data_path)
         else:
-            default_path = Path(__file__).parent.parent / "colombia_context" / "pdet_municipalities.json"
+            default_path = Path(__file__).resolve().parent.parent / "colombia_context" / "pdet_municipalities.json"
             if default_path.exists():
                 self._load_pdet_data(default_path)
         

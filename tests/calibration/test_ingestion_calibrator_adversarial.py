@@ -20,7 +20,7 @@ from __future__ import annotations
 import pytest
 from datetime import datetime, timezone
 
-from src.farfan_pipeline.infrastructure.calibration import (
+from farfan_pipeline.infrastructure.calibration import (
     FiscalContext,
     MunicipalityCategory,
     UnitOfAnalysis,
@@ -29,7 +29,7 @@ from src.farfan_pipeline.infrastructure.calibration import (
     AggressiveCalibrationStrategy,
     ConservativeCalibrationStrategy,
 )
-from src.farfan_pipeline.infrastructure.calibration.type_defaults import (
+from farfan_pipeline.infrastructure.calibration.type_defaults import (
     UnknownContractTypeError,
     VALID_CONTRACT_TYPES,
 )

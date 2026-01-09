@@ -1396,7 +1396,7 @@ class ColombianContextRule:
     def __init__(self):
         """Initialize with Colombian context loaded from file."""
         self._colombian_context_data: dict[str, Any] | None = None
-        self._context_path = Path(__file__).parent.parent.parent.parent.parent / "canonic_questionnaire_central" / "colombia_context" / "colombia_context.json"
+        self._context_path = Path(__file__).resolve().parent.parent.parent.parent.parent / "canonic_questionnaire_central" / "colombia_context" / "colombia_context.json"
         self._context_load_error: str | None = None
         self._load_colombian_context()
 

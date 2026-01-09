@@ -161,7 +161,7 @@ class PDETContextProvider(BaseContextProvider):
     
     def __init__(self, data_path: Optional[Path] = None):
         if data_path is None:
-            data_path = Path(__file__).parent.parent / "colombia_context" / "pdet_municipalities.json"
+            data_path = Path(__file__).resolve().parent.parent / "colombia_context" / "pdet_municipalities.json"
         
         super().__init__(
             provider_name="PDET_Colombia",

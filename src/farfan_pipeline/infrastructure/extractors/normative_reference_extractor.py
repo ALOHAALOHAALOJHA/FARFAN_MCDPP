@@ -96,7 +96,7 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
         self.entity_registry: Dict[str, Dict] = {}
         self.alias_to_entity: Dict[str, str] = {}  # Quick lookup by alias
         
-        registry_path = Path(__file__).parent.parent.parent.parent / \
+        registry_path = Path(__file__).resolve().parent.parent.parent.parent / \
                        "canonic_questionnaire_central" / "_registry" / "entities" / "normative.json"
         
         if not registry_path.exists():

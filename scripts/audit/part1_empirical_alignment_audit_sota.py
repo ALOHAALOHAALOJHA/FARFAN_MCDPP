@@ -47,10 +47,19 @@ warnings.filterwarnings('ignore')
 # =============================================================================
 # PATH CONFIGURATION
 # =============================================================================
-ROOT = Path("/Users/recovered/FARFAN_MPP")
-CQC_ROOT = ROOT / "canonic_questionnaire_central"
-PLANS_ROOT = ROOT / "data" / "plans"
-OUTPUT_DIR = ROOT / "artifacts" / "audit_reports"
+# Use centralized path management
+import sys
+_script_dir = Path(__file__).resolve().parent
+_repo_root = _script_dir.parent.parent
+if str(_repo_root / "src") not in sys.path:
+    sys.path.insert(0, str(_repo_root / "src"))  # noqa: E501
+
+from farfan_pipeline.utils.paths import PROJECT_ROOT, CONFIG_DIR, DATA_DIR
+
+ROOT = PROJECT_ROOT
+CQC_ROOT = CONFIG_DIR
+PLANS_ROOT = DATA_DIR / "plans"
+OUTPUT_DIR = PROJECT_ROOT / "artifacts" / "audit_reports"
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 

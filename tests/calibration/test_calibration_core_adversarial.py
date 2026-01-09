@@ -8,7 +8,7 @@ Schema Version: 2.0.0
 """
 import pytest
 from datetime import datetime, timezone, timedelta
-from src.farfan_pipeline.infrastructure.calibration import (
+from farfan_pipeline.infrastructure.calibration import (
     ClosedInterval,
     EvidenceReference,
     CalibrationParameter,

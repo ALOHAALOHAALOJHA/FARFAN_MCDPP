@@ -1684,7 +1684,7 @@ class QuestionnaireSignalRegistry:
         """
         import glob
 
-        base_path = Path(__file__).parent.parent.parent.parent.parent.parent
+        base_path = Path(__file__).resolve().parent.parent.parent.parent.parent.parent
         pa_pattern = str(base_path / "canonic_questionnaire_central" / "policy_areas" / f"{policy_area_id}_*")
 
         matches = sorted(glob.glob(pa_pattern))

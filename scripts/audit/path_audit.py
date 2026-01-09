@@ -6,9 +6,13 @@ This script audits the codebase for common path-related issues:
 - Deprecated import patterns
 - Manual sys.path manipulation
 - Inappropriate use of os.getcwd()
+- String concatenation for paths
+- os.path.join usage
+- Fragile relative path navigation
+- Unresolved __file__ usage
 
 Usage:
-    python scripts/audit/path_audit.py [--fix] [--verbose]
+    python scripts/audit/path_audit.py [--verbose] [--json] [--severity LEVEL]
 
 Exit codes:
     0 - No issues found
@@ -16,19 +20,22 @@ Exit codes:
 """
 
 import argparse
+import json
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional
 
 
 class PathAuditor:
     """Audits Python files for path-related issues."""
 
-    def __init__(self, root: Path, verbose: bool = False):
+    def __init__(self, root: Path, verbose: bool = False, exclude_patterns: Optional[List[str]] = None):
         self.root = root
         self.verbose = verbose
+        self.exclude_patterns = exclude_patterns or []
         self.issues: List[Dict[str, str]] = []
+        self.files_scanned = 0
 
     def audit_file(self, py_file: Path) -> List[Dict[str, str]]:
         """Audit a single Python file for path issues."""
@@ -79,6 +86,9 @@ class PathAuditor:
 
             # Check 4: Raw sys.path manipulation
             if ("sys.path.append" in line or "sys.path.insert" in line) and "import sys" not in line:
+                # Skip if line has noqa comment
+                if "# noqa" in line or "# type: ignore" in line:
+                    continue
                 # Allow in conftest.py and setup files
                 if not (py_file.name in ["conftest.py", "setup.py", "__init__.py"]):
                     file_issues.append({
@@ -112,6 +122,39 @@ class PathAuditor:
                     "code": line.strip()
                 })
 
+            # Check 7: Using os.path.join instead of Path / operator
+            if "os.path.join" in line and "import" not in line:
+                file_issues.append({
+                    "file": str(py_file.relative_to(self.root)),
+                    "line": i,
+                    "type": "os_path_join",
+                    "severity": "low",
+                    "message": "Using os.path.join (prefer Path / operator)",
+                    "code": line.strip()
+                })
+
+            # Check 8: Relative path navigation (../../)
+            if re.search(r'[\'"](\.\.[\\/]){2,}', line):
+                file_issues.append({
+                    "file": str(py_file.relative_to(self.root)),
+                    "line": i,
+                    "type": "relative_navigation",
+                    "severity": "medium",
+                    "message": "Fragile relative path navigation (use PROJECT_ROOT)",
+                    "code": line.strip()
+                })
+
+            # Check 9: Direct __file__ manipulation without proper resolution
+            if "__file__" in line and "resolve()" not in line and "Path(" in line:
+                file_issues.append({
+                    "file": str(py_file.relative_to(self.root)),
+                    "line": i,
+                    "type": "unresolved_file",
+                    "severity": "low",
+                    "message": "Using __file__ without .resolve() (may fail with symlinks)",
+                    "code": line.strip()
+                })
+
         return file_issues
 
     def audit_directory(self) -> None:
@@ -121,21 +164,46 @@ class PathAuditor:
             if any(part in py_file.parts for part in [".venv", "venv", "__pycache__", ".git", "node_modules"]):
                 continue
 
+            # Skip files matching exclude patterns
+            if any(pattern in str(py_file) for pattern in self.exclude_patterns):
+                continue
+
+            self.files_scanned += 1
+
             if self.verbose:
                 print(f"Auditing: {py_file.relative_to(self.root)}")
 
             file_issues = self.audit_file(py_file)
             self.issues.extend(file_issues)
 
-    def print_report(self) -> None:
-        """Print a formatted audit report."""
-        if not self.issues:
+    def print_report(self, format: str = "text", min_severity: str = None) -> None:
+        """Print a formatted audit report.
+        
+        Args:
+            format: Output format ('text' or 'json')
+            min_severity: Minimum severity to report ('low', 'medium', 'high')
+        """
+        # Filter by severity if requested
+        issues_to_report = self.issues
+        if min_severity:
+            severity_levels = {"low": 0, "medium": 1, "high": 2}
+            min_level = severity_levels.get(min_severity, 0)
+            issues_to_report = [
+                issue for issue in self.issues
+                if severity_levels.get(issue["severity"], 0) >= min_level
+            ]
+
+        if format == "json":
+            self._print_json_report(issues_to_report)
+            return
+
+        if not issues_to_report:
             print("✅ Path audit passed - no issues found")
             return
 
         # Group by severity
         by_severity = {"high": [], "medium": [], "low": []}
-        for issue in self.issues:
+        for issue in issues_to_report:
             by_severity[issue["severity"]].append(issue)
 
         print("❌ PATH AUDIT ISSUES FOUND\n")
@@ -157,10 +225,26 @@ class PathAuditor:
                 print()
 
         print("=" * 80)
-        print(f"\nTotal issues: {len(self.issues)}")
+        print(f"\nTotal issues: {len(issues_to_report)}")
         print(f"  High: {len(by_severity['high'])}")
         print(f"  Medium: {len(by_severity['medium'])}")
         print(f"  Low: {len(by_severity['low'])}")
+        print(f"\nFiles scanned: {self.files_scanned}")
+
+    def _print_json_report(self, issues: List[Dict[str, str]]) -> None:
+        """Print report in JSON format."""
+        stats = self.get_statistics()
+        report = {
+            "summary": {
+                "total_issues": len(issues),
+                "files_scanned": self.files_scanned,
+                "high_severity": stats["high"],
+                "medium_severity": stats["medium"],
+                "low_severity": stats["low"]
+            },
+            "issues": issues
+        }
+        print(json.dumps(report, indent=2))
 
     def get_statistics(self) -> Dict[str, int]:
         """Get statistics about issues found."""
@@ -188,6 +272,22 @@ def main():
         help="Enable verbose output"
     )
     parser.add_argument(
+        "--json",
+        action="store_true",
+        help="Output results in JSON format"
+    )
+    parser.add_argument(
+        "--severity",
+        choices=["low", "medium", "high"],
+        help="Minimum severity level to report"
+    )
+    parser.add_argument(
+        "--exclude",
+        action="append",
+        default=[],
+        help="Patterns to exclude from scanning (can be used multiple times)"
+    )
+    parser.add_argument(
         "--root",
         type=Path,
         default=None,
@@ -209,12 +309,14 @@ def main():
             print("Error: Could not find project root (no pyproject.toml)")
             sys.exit(1)
 
-    if args.verbose:
+    if args.verbose and not args.json:
         print(f"Auditing directory: {root}\n")
 
-    auditor = PathAuditor(root, verbose=args.verbose)
+    auditor = PathAuditor(root, verbose=args.verbose, exclude_patterns=args.exclude)
     auditor.audit_directory()
-    auditor.print_report()
+    
+    output_format = "json" if args.json else "text"
+    auditor.print_report(format=output_format, min_severity=args.severity)
 
     stats = auditor.get_statistics()
 

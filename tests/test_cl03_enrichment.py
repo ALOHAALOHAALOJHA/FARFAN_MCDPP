@@ -36,7 +36,7 @@ class TestCL03ContextualEnrichment:
     @pytest.fixture
     def enrichment_file_path(self):
         """Path to CL03 contextual enrichment file."""
-        base_path = Path(__file__).parent.parent
+        base_path = Path(__file__).resolve().parent.parent
         return base_path / "canonic_questionnaire_central" / "clusters" / "CL03_territorio_ambiente" / "contextual_enrichment.json"
 
     @pytest.fixture
@@ -151,7 +151,7 @@ class TestCL03ContextualEnrichment:
         assert "documentation_path" in gate4
         
         # Verify documentation path exists
-        doc_path = Path(__file__).parent.parent / gate4["documentation_path"]
+        doc_path = Path(__file__).resolve().parent.parent / gate4["documentation_path"]
         assert doc_path.exists(), f"Documentation not found at {doc_path}"
 
     def test_territorial_context(self, enrichment_data, pdet_data):

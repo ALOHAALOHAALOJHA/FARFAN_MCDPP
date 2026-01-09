@@ -13,7 +13,7 @@ from typing import Dict, Any
 
 def load_cluster_metadata(cluster_id: str) -> Dict[str, Any]:
     """Load cluster metadata."""
-    cluster_path = Path(__file__).parent.parent / "canonic_questionnaire_central" / "clusters" / f"{cluster_id}_seguridad_paz" / "metadata.json"
+    cluster_path = Path(__file__).resolve().parent.parent / "canonic_questionnaire_central" / "clusters" / f"{cluster_id}_seguridad_paz" / "metadata.json"
     with open(cluster_path) as f:
         return json.load(f)
 

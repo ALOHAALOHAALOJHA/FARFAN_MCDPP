@@ -32,7 +32,7 @@ from pathlib import Path
 from typing import NamedTuple
 
 # Project paths
-PROJECT_ROOT = Path(__file__).parent.parent.parent
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 SRC_DIR = PROJECT_ROOT / "src"
 BACKUP_DIR = PROJECT_ROOT / "backups" / f"phantom_refactor_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
 

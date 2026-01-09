@@ -16,6 +16,15 @@ python scripts/audit/path_audit.py
 # Verbose output
 python scripts/audit/path_audit.py --verbose
 
+# JSON output for CI/CD
+python scripts/audit/path_audit.py --json
+
+# Filter by severity
+python scripts/audit/path_audit.py --severity high
+
+# Exclude patterns
+python scripts/audit/path_audit.py --exclude backups --exclude tests/legacy
+
 # Specify custom root directory
 python scripts/audit/path_audit.py --root /path/to/project
 ```
@@ -26,6 +35,9 @@ python scripts/audit/path_audit.py --root /path/to/project
 - ❌ Manual `sys.path` manipulation
 - ❌ Inappropriate use of `os.getcwd()`
 - ❌ String concatenation for paths
+- ❌ Using `os.path.join` instead of `Path /` operator
+- ❌ Fragile relative path navigation (`../../`)
+- ❌ Unresolved `__file__` usage (missing `.resolve()`)
 
 **Exit codes:**
 - `0` - No issues found (or only low/medium severity)
@@ -57,6 +69,26 @@ Total issues: 7
   High: 2
   Medium: 5
   Low: 0
+Files scanned: 877
+```
+
+**JSON Output:**
+```bash
+python scripts/audit/path_audit.py --json --severity high
+```
+
+Returns structured JSON for CI/CD integration:
+```json
+{
+  "summary": {
+    "total_issues": 22,
+    "files_scanned": 877,
+    "high_severity": 22,
+    "medium_severity": 77,
+    "low_severity": 213
+  },
+  "issues": [...]
+}
 ```
 
 ---
@@ -76,12 +108,17 @@ python scripts/audit/path_repair.py --fix
 # Apply fixes with backup files
 python scripts/audit/path_repair.py --fix --backup
 
+# Aggressive mode (includes os.path.join and __file__ fixes)
+python scripts/audit/path_repair.py --fix --backup --aggressive
+
 # Verbose output
 python scripts/audit/path_repair.py --fix --verbose
 ```
 
 **Repairs:**
-- ✅ **Automated:** Deprecated import patterns
+- ✅ **Automated (always):** Deprecated import patterns
+- ✅ **Automated (--aggressive):** `os.path.join` to `Path /` operator
+- ✅ **Automated (--aggressive):** `Path(__file__)` to `Path(__file__).resolve()`
 - 💡 **Suggestions:** Hardcoded paths (requires manual review)
 
 **Example workflow:**

@@ -4,11 +4,8 @@ Verifies: Content-hash de-duplication, 10 runs = 1 result
 Duplicate detection guarantee
 """
 import pytest
-import sys
 from pathlib import Path
 from typing import Any
-
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 from cross_cutting_infrastructure.contractual.dura_lex.idempotency_dedup import (
     IdempotencyContract,

@@ -34,7 +34,7 @@ from dataclasses import dataclass
 
 
 # Path to dimensions directory
-_DIMENSIONS_DIR = Path(__file__).parent
+_DIMENSIONS_DIR = Path(__file__).resolve().parent
 
 
 @dataclass

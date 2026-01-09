@@ -8,18 +8,14 @@ Verifies:
 """
 
 import pytest
-import sys
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
-
 
 class TestSignalWiring:
     """Tests for SISAS signal integration."""
     
     def test_signal_enriched_aggregator_exists(self):
         """Verify SignalEnrichedAggregator is available."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.enhancements import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.enhancements import (
             SignalEnrichedAggregator
         )
         assert SignalEnrichedAggregator is not None
@@ -70,7 +66,7 @@ class TestSignalWiring:
         # Signal-derived weights should be traceable
         # This ensures auditability
         
-        from canonic_phases.phase_4_7_aggregation_pipeline.aggregation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
             AggregationSettings
         )
         
@@ -89,7 +85,7 @@ class TestSignalWiring:
     
     def test_fallback_to_legacy_when_no_registry(self):
         """Verify fallback to monolith weights when signal registry unavailable."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.aggregation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
             AggregationSettings
         )
         
@@ -114,7 +110,7 @@ class TestSignalIntegrationPaths:
     def test_sisas_registry_path(self):
         """Document SISAS registry integration path."""
         # AggregationSettings.from_signal_registry should exist
-        from canonic_phases.phase_4_7_aggregation_pipeline.aggregation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
             AggregationSettings
         )
         
@@ -123,7 +119,7 @@ class TestSignalIntegrationPaths:
     
     def test_legacy_monolith_path(self):
         """Document legacy monolith integration path."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.aggregation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
             AggregationSettings
         )
         

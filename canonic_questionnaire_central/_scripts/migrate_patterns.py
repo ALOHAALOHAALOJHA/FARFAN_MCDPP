@@ -33,7 +33,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-CQC_ROOT = Path(__file__).parent.parent
+CQC_ROOT = Path(__file__).resolve().parent.parent
 PATTERN_REGISTRY_V1 = CQC_ROOT / "pattern_registry.json"
 PATTERN_REGISTRY_V3 = CQC_ROOT / "patterns" / "pattern_registry_v3.json"
 QUESTIONNAIRE_MONOLITH = CQC_ROOT / "questionnaire_monolith.json"

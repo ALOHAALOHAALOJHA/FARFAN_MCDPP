@@ -14,7 +14,6 @@ Test Coverage:
 6. Phase0ValidationResult dataclass functionality
 """
 
-import sys
 from datetime import UTC, datetime
 from pathlib import Path
 from unittest.mock import Mock, patch
@@ -22,8 +21,6 @@ from unittest.mock import Mock, patch
 import pytest
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
-
 # Phase 0 imports
 # Orchestrator imports
 from farfan_pipeline.orchestration.orchestrator import Orchestrator, Phase0ValidationResult
