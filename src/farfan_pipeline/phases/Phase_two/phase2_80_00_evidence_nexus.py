@@ -49,6 +49,8 @@ from enum import Enum
 from pathlib import Path
 from typing import (
     Any,
+    ClassVar,
+    Dict,
     Protocol,
     Sequence,
     TypeAlias,
