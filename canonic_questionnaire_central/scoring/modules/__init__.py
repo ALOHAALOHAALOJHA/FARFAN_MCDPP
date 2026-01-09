@@ -9,6 +9,8 @@ Modules:
 --------
 - quality_levels: Quality level enumeration and thresholds
 - scoring_modalities: Six scoring types (TYPE_A through TYPE_F)
+- pdet_scoring_enrichment: PDET municipality context enrichment for scoring
+- phase4_territorial_integration: Phase 4 integration with territorial context
 
 Usage:
 ------
@@ -16,10 +18,12 @@ Usage:
         QualityLevel,
         determine_quality_level,
         apply_scoring,
+        PDETScoringEnricher,
+        TerritorialAggregationAdapter,
     )
 
 Author: F.A.R.F.A.N Pipeline Team
-Version: 1.0.0
+Version: 1.2.0
 """
 
 from .quality_levels import (
@@ -54,6 +58,21 @@ from .scoring_modalities import (
     is_valid_modality,
 )
 
+from .pdet_scoring_enrichment import (
+    PDETScoringContext,
+    EnrichedScoredResult,
+    PDETScoringEnricher,
+    create_pdet_enricher,
+)
+
+from .phase4_territorial_integration import (
+    TerritorialRelevance,
+    TerritorialAggregationContext,
+    TerritorialAggregationAdapter,
+    create_territorial_contexts_from_enriched_results,
+    create_territorial_adapter,
+)
+
 __all__ = [
     # Quality levels
     "QualityLevel",
@@ -83,4 +102,15 @@ __all__ = [
     "clamp",
     "get_all_modalities",
     "is_valid_modality",
+    # PDET enrichment
+    "PDETScoringContext",
+    "EnrichedScoredResult",
+    "PDETScoringEnricher",
+    "create_pdet_enricher",
+    # Phase 4 integration
+    "TerritorialRelevance",
+    "TerritorialAggregationContext",
+    "TerritorialAggregationAdapter",
+    "create_territorial_contexts_from_enriched_results",
+    "create_territorial_adapter",
 ]

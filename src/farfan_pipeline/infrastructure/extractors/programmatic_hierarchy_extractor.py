@@ -363,7 +363,10 @@ class ProgrammaticHierarchyExtractor:
         """
         self._ensure_ingested()
         node_id = self._normalize_key(node_id)
+        return self._get_descendants_internal(node_id)
 
+    def _get_descendants_internal(self, node_id: str) -> List[str]:
+        """Internal method to get descendants without checking ingested flag."""
         if node_id not in self._nodes:
             return []
 
@@ -594,7 +597,7 @@ class ProgrammaticHierarchyExtractor:
         reachable: Set[str] = set()
         for root in self._roots:
             reachable.add(root)
-            reachable.update(self.get_descendants(root))
+            reachable.update(self._get_descendants_internal(root))
 
         orphans = set(self._nodes.keys()) - reachable
         for orphan in orphans:
@@ -606,51 +609,84 @@ class ProgrammaticHierarchyExtractor:
             )
 
     # -------------------------------------------------------------------------
-    # Private: Cycle Detection (Tarjan's SCC Algorithm)
+    # Private: Cycle Detection (Tarjan's SCC Algorithm - Iterative)
     # -------------------------------------------------------------------------
 
     def _detect_cycles_tarjan(self) -> List[List[str]]:
         """
         Detect cycles using Tarjan's Strongly Connected Components algorithm.
-
+        
+        Iterative implementation to avoid stack overflow on deep hierarchies.
         Returns list of cycles (SCCs with size > 1 indicate cycles).
         """
-        index_counter = [0]
+        index_counter = 0
         stack: List[str] = []
         lowlink: Dict[str, int] = {}
         index: Dict[str, int] = {}
         on_stack: Set[str] = set()
         sccs: List[List[str]] = []
 
-        def strongconnect(node: str) -> None:
-            index[node] = index_counter[0]
-            lowlink[node] = index_counter[0]
-            index_counter[0] += 1
-            stack.append(node)
-            on_stack.add(node)
+        for start_node in self._nodes:
+            if start_node in index:
+                continue
 
-            # Consider successors (children in our case)
-            for child in self._children.get(node, []):
-                if child not in index:
-                    strongconnect(child)
-                    lowlink[node] = min(lowlink[node], lowlink[child])
-                elif child in on_stack:
-                    lowlink[node] = min(lowlink[node], index[child])
+            # Iterative DFS using explicit call stack
+            # Each frame: (node, child_iterator, phase)
+            # phase 0: first visit, phase 1: processing children, phase 2: post-visit
+            call_stack: List[Tuple[str, Iterator[str], int]] = []
+            call_stack.append((start_node, iter(self._children.get(start_node, [])), 0))
 
-            # If node is a root of an SCC
-            if lowlink[node] == index[node]:
-                scc: List[str] = []
-                while True:
-                    w = stack.pop()
-                    on_stack.discard(w)
-                    scc.append(w)
-                    if w == node:
-                        break
-                sccs.append(scc)
+            while call_stack:
+                node, children_iter, phase = call_stack.pop()
 
-        for node in self._nodes:
-            if node not in index:
-                strongconnect(node)
+                if phase == 0:
+                    # First visit: initialize node
+                    index[node] = index_counter
+                    lowlink[node] = index_counter
+                    index_counter += 1
+                    stack.append(node)
+                    on_stack.add(node)
+                    # Push back with phase 1 to process children
+                    call_stack.append((node, children_iter, 1))
+
+                elif phase == 1:
+                    # Processing children
+                    try:
+                        child = next(children_iter)
+                        if child not in index:
+                            # Push current node back to continue after child returns
+                            call_stack.append((node, children_iter, 1))
+                            # Push child for first visit
+                            call_stack.append((child, iter(self._children.get(child, [])), 0))
+                        elif child in on_stack:
+                            lowlink[node] = min(lowlink[node], index[child])
+                            # Continue with same iterator
+                            call_stack.append((node, children_iter, 1))
+                        else:
+                            # Child already processed, continue
+                            call_stack.append((node, children_iter, 1))
+                    except StopIteration:
+                        # All children processed, move to post-visit
+                        call_stack.append((node, children_iter, 2))
+
+                elif phase == 2:
+                    # Post-visit: update parent's lowlink and extract SCC if root
+                    # Update parent's lowlink if we have a parent
+                    if call_stack:
+                        parent_node, _, parent_phase = call_stack[-1]
+                        if parent_phase == 1 and parent_node in lowlink:
+                            lowlink[parent_node] = min(lowlink[parent_node], lowlink[node])
+
+                    # If node is root of an SCC
+                    if lowlink[node] == index[node]:
+                        scc: List[str] = []
+                        while True:
+                            w = stack.pop()
+                            on_stack.discard(w)
+                            scc.append(w)
+                            if w == node:
+                                break
+                        sccs.append(scc)
 
         # Return only SCCs with cycles (size > 1)
         cycles = [scc for scc in sccs if len(scc) > 1]

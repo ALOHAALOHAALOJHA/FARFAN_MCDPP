@@ -1,0 +1,324 @@
+{
+  "$schema": "../../detection_rules_schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-08T13:30:00Z",
+  "_author": "CQC Technical Excellence Framework v2.0.0 - PDET Enrichment",
+
+  "theme_id": "CC_CONTEXTO_PDET",
+  "name": "Contexto PDET",
+  "description": "Identificación y consideración del contexto específico de municipios PDET (Programas de Desarrollo con Enfoque Territorial) en la planificación territorial",
+
+  "detection_strategy": {
+    "primary_method": "MULTI_SIGNAL_FUSION",
+    "confidence_threshold": 0.65,
+
+    "signals": [
+      {
+        "signal_id": "SIG-PDET-001",
+        "name": "pdet_municipality_explicit",
+        "type": "KEYWORD_MATCH",
+        "description": "Mención explícita de municipio PDET",
+        "keywords": [
+          "municipio PDET",
+          "municipios PDET",
+          "ubicado en zona PDET",
+          "ubicados en zonas PDET",
+          "territorio PDET",
+          "Programas de Desarrollo con Enfoque Territorial",
+          "priorizados PDET"
+        ],
+        "weight": 0.30,
+        "minimum_matches": 1,
+        "context_validation": {
+          "must_not_be_negated": true,
+          "window_size": 10
+        }
+      },
+      {
+        "signal_id": "SIG-PDET-002",
+        "name": "pdet_subregion_identification",
+        "type": "PATTERN_MATCH",
+        "description": "Identificación de subregión PDET",
+        "patterns": [
+          "(?i)(?:subregión|sub-región)\\s+(?:PDET\\s+)?(?:de(?:l)?\\s+)?(?:Alto Patía y Norte del Cauca|Arauca|Bajo Cauca y Nordeste Antioqueño|Catatumbo|Chocó|Cuenca del Caguán y Piedemonte Caqueteño|Macarena[\\s-]*Guaviare|Montes de María|Pacífico y Frontera Nariñense|Pacífico Medio|Putumayo|Sierra Nevada y Perijá|Sur de Bolívar|Sur de Córdoba|Sur del Tolima|Urabá Antioqueño)",
+          "(?i)subregión\\s+de\\s+los\\s+(?:170|ciento\\s+setenta)\\s+municipios"
+        ],
+        "weight": 0.25,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PDET-003",
+        "name": "patr_initiative_reference",
+        "type": "SEMANTIC_PATTERN",
+        "description": "Referencias a iniciativas PATR",
+        "patterns": [
+          "(?i)PATR",
+          "(?i)Plan(?:es)?\\s+de\\s+Acción\\s+para\\s+la\\s+Transformación\\s+Regional",
+          "(?i)iniciativas?\\s+(?:del\\s+)?PATR",
+          "(?i)32[.,]?808\\s+iniciativas?",
+          "(?i)iniciativas?\\s+priorizadas?\\s+(?:en\\s+)?(?:el\\s+)?pacto\\s+municipal"
+        ],
+        "weight": 0.20,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PDET-004",
+        "name": "pmi_alignment",
+        "type": "KEYWORD_MATCH",
+        "description": "Alineación con Plan Marco de Implementación",
+        "keywords": [
+          "PMI",
+          "Plan Marco de Implementación",
+          "disposiciones del PMI",
+          "prioridad del PMI",
+          "articulación con el PMI"
+        ],
+        "weight": 0.15,
+        "minimum_matches": 1,
+        "context_validation": {
+          "must_not_be_negated": true,
+          "window_size": 15
+        }
+      },
+      {
+        "signal_id": "SIG-PDET-005",
+        "name": "pdet_pillars",
+        "type": "PATTERN_MATCH",
+        "description": "Referencias a los 8 pilares PDET",
+        "patterns": [
+          "(?i)Reforma\\s+Rural\\s+Integral",
+          "(?i)RRI\\b",
+          "(?i)ordenamiento\\s+social\\s+de\\s+la\\s+propiedad",
+          "(?i)formalización\\s+de\\s+tierras?",
+          "(?i)infraestructura\\s+y\\s+adecuación\\s+de\\s+tierras?",
+          "(?i)salud\\s+rural",
+          "(?i)educación\\s+rural",
+          "(?i)vivienda\\s+rural",
+          "(?i)agua\\s+potable\\s+y\\s+saneamiento\\s+básico\\s+rural",
+          "(?i)reactivación\\s+económica",
+          "(?i)seguridad\\s+alimentaria",
+          "(?i)reconciliación",
+          "(?i)convivencia",
+          "(?i)construcción\\s+de\\s+paz"
+        ],
+        "weight": 0.10,
+        "minimum_matches": 2
+      },
+      {
+        "signal_id": "SIG-PDET-006",
+        "name": "institutional_coordination_art",
+        "type": "KEYWORD_MATCH",
+        "description": "Coordinación con Agencia de Renovación del Territorio",
+        "keywords": [
+          "ART",
+          "Agencia de Renovación del Territorio",
+          "coordinación con la ART",
+          "apoyo de la ART",
+          "esquemas de estructuración"
+        ],
+        "weight": 0.05,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PDET-007",
+        "name": "ocad_paz_sgr",
+        "type": "PATTERN_MATCH",
+        "description": "Referencias a OCAD Paz y asignación SGR para la Paz",
+        "patterns": [
+          "(?i)OCAD\\s+(?:de\\s+)?Paz",
+          "(?i)Órgano Colegiado de Administración y Decisión para la Paz",
+          "(?i)SGR\\s+-\\s+Asignación para la Paz",
+          "(?i)Asignación para la Paz",
+          "(?i)proyectos\\s+(?:del\\s+)?OCAD\\s+Paz"
+        ],
+        "weight": 0.05,
+        "minimum_matches": 1
+      },
+      {
+        "signal_id": "SIG-PDET-008",
+        "name": "conflict_affected_territory",
+        "type": "SEMANTIC_PATTERN",
+        "description": "Caracterización como territorio afectado por conflicto",
+        "patterns": [
+          "(?i)afectado(?:s)?\\s+por\\s+(?:el\\s+)?conflicto",
+          "(?i)territorio(?:s)?\\s+(?:más\\s+)?afectado(?:s)?",
+          "(?i)zonas\\s+de\\s+consolidación",
+          "(?i)municipios\\s+más\\s+afectados",
+          "(?i)víctimas?\\s+del\\s+conflicto\\s+armado",
+          "(?i)posconflicto",
+          "(?i)post[\\s-]?conflicto"
+        ],
+        "weight": 0.10,
+        "minimum_matches": 1
+      }
+    ],
+
+    "aggregation": {
+      "method": "WEIGHTED_SUM_WITH_THRESHOLD",
+      "threshold": 0.65,
+      "formula": "score = sum(signal.weight * signal.match_score) / sum(signal.weight)",
+      "minimum_signals_required": 2,
+      "bonus_for_explicit_pdet": 0.15,
+      "bonus_for_patr_integration": 0.10
+    }
+  },
+
+  "scoring_impact": {
+    "when_detected": {
+      "boost_questions": [
+        "Q031", "Q032", "Q033",
+        "Q061", "Q062", "Q063",
+        "Q181", "Q182", "Q183",
+        "Q211", "Q212", "Q213",
+        "Q271", "Q272", "Q273"
+      ],
+      "boost_amount": 0.15,
+      "boost_type": "ADDITIVE",
+      "cap_at_max_score": true,
+      "cascade_to_dimensions": ["DIM01", "DIM02", "DIM04", "DIM05"],
+      "cascade_to_policy_areas": ["PA02", "PA05", "PA07"]
+    },
+    "when_missing": {
+      "penalty_questions": ["Q181", "Q271"],
+      "penalty_amount": 0.10,
+      "penalty_type": "MULTIPLICATIVE",
+      "penalty_conditions": {
+        "only_if_municipality_in_pdet_list": true,
+        "check_against": "pdet_municipalities.json"
+      }
+    },
+    "confidence_modifiers": {
+      "explicit_pdet_mention_bonus": 0.20,
+      "patr_integration_bonus": 0.15,
+      "pmi_alignment_bonus": 0.15,
+      "art_coordination_bonus": 0.10,
+      "ocad_paz_project_bonus": 0.10,
+      "multiple_pillars_bonus": 0.05
+    }
+  },
+
+  "validation": {
+    "required_in_dimensions": ["DIM01", "DIM04"],
+    "required_in_policy_areas": ["PA02", "PA05", "PA07"],
+    "conditional_requirement": {
+      "condition": "municipality_in_pdet_list",
+      "severity": "ERROR",
+      "message": "Municipio PDET debe tener contexto PDET explícito"
+    },
+    "validation_rules": [
+      {
+        "rule_id": "INTERDEP-PDET-001",
+        "description": "Municipios PDET deben mencionar su condición PDET",
+        "condition": "municipality_in_pdet_list AND signal_PDET_001.matches == 0",
+        "severity": "ERROR",
+        "message": "Municipio en lista PDET (170 municipios) debe hacer mención explícita de su condición PDET"
+      },
+      {
+        "rule_id": "INTERDEP-PDET-002",
+        "description": "PA05 (Víctimas) en municipio PDET debe referenciar PMI",
+        "condition": "municipality_in_pdet_list AND policy_area == 'PA05' AND signal_PDET_004.matches == 0",
+        "severity": "WARNING",
+        "message": "PA05 en municipio PDET debe alinearse con Plan Marco de Implementación (PMI)"
+      },
+      {
+        "rule_id": "INTERDEP-PDET-003",
+        "description": "Municipios PDET deben integrar iniciativas PATR",
+        "condition": "municipality_in_pdet_list AND signal_PDET_003.matches == 0",
+        "severity": "WARNING",
+        "message": "PDT de municipio PDET debe integrar iniciativas del PATR (32,808 iniciativas totales)"
+      },
+      {
+        "rule_id": "INTERDEP-PDET-004",
+        "description": "PA02 (Seguridad) en municipio PDET debe caracterizar conflicto",
+        "condition": "municipality_in_pdet_list AND policy_area == 'PA02' AND signal_PDET_008.matches == 0",
+        "severity": "WARNING",
+        "message": "PA02 en territorio PDET debe caracterizar afectación por conflicto"
+      }
+    ]
+  },
+
+  "required_capabilities": [
+    "SEMANTIC_PROCESSING",
+    "GEOSPATIAL_AWARENESS",
+    "TABLE_PARSING",
+    "INSTITUTIONAL_NETWORK_ANALYSIS"
+  ],
+
+  "empirical_calibration": {
+    "source": "pdet_municipalities.json",
+    "baseline_frequency": {
+      "pdet_explicit_mentions_per_plan": {"mean": 8, "std": 6, "range": [2, 18]},
+      "patr_mentions_per_plan": {"mean": 12, "std": 9, "range": [3, 28]},
+      "pmi_references_per_plan": {"mean": 4, "std": 4, "range": [0, 12]},
+      "rri_mentions_per_plan": {"mean": 7, "std": 7, "range": [1, 21]},
+      "art_coordination_per_plan": {"mean": 3, "std": 3, "range": [0, 9]},
+      "ocad_paz_projects": {"total": 1760000, "avg_per_municipality": 10353}
+    },
+    "pdet_municipalities": {
+      "total": 170,
+      "total_subregions": 16,
+      "total_veredas": 11000,
+      "total_population": 6600000,
+      "rural_percentage": 24.0,
+      "planning_horizon_years": 15
+    },
+    "validation_source": "Decreto Ley 893 de 2017, OCAD Paz Session Records Oct 2025"
+  },
+
+  "pdet_context_enrichment": {
+    "subregions": [
+      {"id": "SR01", "name": "Alto Patía y Norte del Cauca", "departments": ["Cauca"]},
+      {"id": "SR02", "name": "Arauca", "departments": ["Arauca"]},
+      {"id": "SR03", "name": "Bajo Cauca y Nordeste Antioqueño", "departments": ["Antioquia"]},
+      {"id": "SR04", "name": "Catatumbo", "departments": ["Norte de Santander"]},
+      {"id": "SR05", "name": "Chocó", "departments": ["Chocó"]},
+      {"id": "SR06", "name": "Cuenca del Caguán y Piedemonte Caqueteño", "departments": ["Caquetá"]},
+      {"id": "SR07", "name": "Macarena - Guaviare", "departments": ["Meta", "Guaviare"]},
+      {"id": "SR08", "name": "Montes de María", "departments": ["Bolívar", "Sucre"]}
+    ],
+    "pdet_pillars": [
+      {"id": "pillar_1", "name": "Ordenamiento Social de la Propiedad", "policy_areas": ["PA04", "PA05"]},
+      {"id": "pillar_2", "name": "Infraestructura y Adecuación de Tierras", "policy_areas": ["PA03", "PA04"]},
+      {"id": "pillar_3", "name": "Salud Rural", "policy_areas": ["PA06"]},
+      {"id": "pillar_4", "name": "Educación Rural", "policy_areas": ["PA06"]},
+      {"id": "pillar_5", "name": "Vivienda Rural y Agua Potable", "policy_areas": ["PA03"]},
+      {"id": "pillar_6", "name": "Reactivación Económica", "policy_areas": ["PA04"]},
+      {"id": "pillar_7", "name": "Seguridad Alimentaria", "policy_areas": ["PA04"]},
+      {"id": "pillar_8", "name": "Reconciliación y Convivencia", "policy_areas": ["PA02", "PA05", "PA07", "PA08"]}
+    ]
+  },
+
+  "testing": {
+    "test_file": "tests/cross_cutting/test_cc_contexto_pdet.py",
+    "golden_examples": [
+      {
+        "input": "El municipio de Jambaló, ubicado en zona PDET de la subregión Alto Patía y Norte del Cauca, integra las 142 iniciativas priorizadas en el PATR municipal",
+        "expected_detected": true,
+        "expected_confidence_min": 0.85,
+        "expected_signals": ["SIG-PDET-001", "SIG-PDET-002", "SIG-PDET-003"]
+      },
+      {
+        "input": "En articulación con el Plan Marco de Implementación (PMI), se priorizan proyectos de formalización de tierras en coordinación con la Agencia de Renovación del Territorio (ART)",
+        "expected_detected": true,
+        "expected_confidence_min": 0.70,
+        "expected_signals": ["SIG-PDET-004", "SIG-PDET-005", "SIG-PDET-006"]
+      },
+      {
+        "input": "El municipio presenta proyectos al OCAD Paz para financiación mediante Asignación para la Paz del SGR",
+        "expected_detected": true,
+        "expected_confidence_min": 0.65,
+        "expected_signals": ["SIG-PDET-007"]
+      },
+      {
+        "input": "Como territorio afectado por el conflicto, se implementan programas de reconciliación y construcción de paz",
+        "expected_detected": true,
+        "expected_confidence_min": 0.70,
+        "expected_signals": ["SIG-PDET-008", "SIG-PDET-005"]
+      },
+      {
+        "input": "Plan de desarrollo general sin contexto específico de paz o PDET",
+        "expected_detected": false
+      }
+    ]
+  }
+}

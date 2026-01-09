@@ -4,8 +4,10 @@ Comprehensive Adversarial Tests for Phase 4-7 Modules
 
 This test suite covers ALL 26 files in the Phase_four_five_six_seven module.
 
+Uses REAL modularized monolith from conftest.py - NO FAKE DATA.
+
 Author: F.A.R.F.A.N. Pipeline Team
-Version: 2.0.0 - Comprehensive Coverage
+Version: 2.1.0 - With REAL monolith integration
 """
 
 from __future__ import annotations
@@ -16,7 +18,7 @@ from dataclasses import dataclass, replace
 from typing import Any
 
 # =============================================================================
-# FIXTURES AND HELPERS
+# TEST DATA HELPERS (Uses REAL monolith from conftest.py fixtures)
 # =============================================================================
 
 @dataclass
@@ -73,44 +75,6 @@ def create_dimension_score_group(
     ]
 
 
-def create_minimal_monolith() -> dict[str, Any]:
-    """Create minimal monolith for testing."""
-    return {
-        "blocks": {
-            "scoring": {
-                "quality_levels": {
-                    "EXCELENTE": {"threshold": 2.55},
-                    "BUENO": {"threshold": 2.10},
-                    "ACEPTABLE": {"threshold": 1.65},
-                    "INSUFICIENTE": {"threshold": 0.0}
-                }
-            },
-            "niveles_abstraccion": {
-                "policy_areas": [
-                    {
-                        "policy_area_id": "PA01",
-                        "i18n": {"keys": {"label_es": "Area 1"}}
-                    },
-                    {
-                        "policy_area_id": "PA02",
-                        "i18n": {"keys": {"label_es": "Area 2"}}
-                    }
-                ],
-                "clusters": [
-                    {
-                        "cluster_id": "MESO_1",
-                        "i18n": {"keys": {"label_es": "Cluster 1"}}
-                    }
-                ],
-                "dimensions": [
-                    {"dimension_id": f"DIM{i:02d}"}
-                    for i in range(1, 7)
-                ]
-            }
-        }
-    }
-
-
 # =============================================================================
 # TEST CLASS 1: AREA POLICY AGGREGATOR
 # =============================================================================
@@ -118,17 +82,15 @@ def create_minimal_monolith() -> dict[str, Any]:
 class TestAreaPolicyAggregatorAdversarial:
     """Adversarial tests for AreaPolicyAggregator (aggregation.py)."""
 
-    def test_area_aggregation_with_all_dimensions(self):
+    def test_area_aggregation_with_all_dimensions(self, questionnaire_monolith):
         """Test area aggregation with complete 6 dimensions."""
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
             AreaPolicyAggregator, DimensionAggregator
         )
 
-        monolith = create_minimal_monolith()
-
         # Create 6 dimension scores for one area
         dim_aggregator = DimensionAggregator(
-            monolith=monolith,
+            monolith=questionnaire_monolith,
             abort_on_insufficient=False
         )
 
@@ -147,7 +109,7 @@ class TestAreaPolicyAggregatorAdversarial:
 
         # Aggregate to area
         area_aggregator = AreaPolicyAggregator(
-            monolith=monolith,
+            monolith=questionnaire_monolith,
             abort_on_insufficient=False
         )
 
@@ -161,17 +123,15 @@ class TestAreaPolicyAggregatorAdversarial:
         assert area_score.quality_level == "BUENO"
         assert len(area_score.dimension_scores) == 6
 
-    def test_area_aggregation_hermeticity_validation_failure(self):
+    def test_area_aggregation_hermeticity_validation_failure(self, questionnaire_monolith):
         """Test that missing dimensions trigger hermeticity validation failure."""
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
             AreaPolicyAggregator, HermeticityValidationError, DimensionAggregator
         )
 
-        monolith = create_minimal_monolith()
-
         # Create only 4 dimension scores (missing 2)
         dim_aggregator = DimensionAggregator(
-            monolith=monolith,
+            monolith=questionnaire_monolith,
             abort_on_insufficient=False
         )
 
@@ -189,7 +149,7 @@ class TestAreaPolicyAggregatorAdversarial:
             dimension_scores.append(dim_score)
 
         area_aggregator = AreaPolicyAggregator(
-            monolith=monolith,
+            monolith=questionnaire_monolith,
             abort_on_insufficient=False
         )
 
@@ -202,7 +162,7 @@ class TestAreaPolicyAggregatorAdversarial:
         assert area_score.validation_passed is False
         assert "hermeticity" in str(area_score.validation_details).lower()
 
-    def test_area_aggregation_with_dimension_overlap(self):
+    def test_area_aggregation_with_dimension_overlap(self, questionnaire_monolith):
         """Test that duplicate dimension IDs are detected."""
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
             AreaPolicyAggregator, DimensionAggregator
@@ -240,7 +200,7 @@ class TestAreaPolicyAggregatorAdversarial:
         # Should detect overlap
         assert area_score.validation_details.get("duplicate_dimensions") is not None
 
-    def test_area_aggregation_score_clamping(self):
+    def test_area_aggregation_score_clamping(self, questionnaire_monolith):
         """Test that out-of-range dimension scores are clamped."""
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
             AreaPolicyAggregator
@@ -284,7 +244,7 @@ class TestAreaPolicyAggregatorAdversarial:
 class TestClusterAggregatorAdversarial:
     """Adversarial tests for ClusterAggregator (aggregation.py)."""
 
-    def test_cluster_aggregation_with_multiple_areas(self):
+    def test_cluster_aggregation_with_multiple_areas(self, questionnaire_monolith):
         """Test cluster aggregation with multiple policy areas."""
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
             ClusterAggregator, AreaScore
@@ -381,7 +341,7 @@ class TestClusterAggregatorAdversarial:
             )
         ]
 
-        cluster_aggregator = ClusterAggregator(monolith=create_minimal_monolith(), abort_on_insufficient=False)
+        cluster_aggregator = ClusterAggregator(monolith=questionnaire_monolith, abort_on_insufficient=False)
 
         cluster_score = cluster_aggregator.aggregate_cluster(
             area_scores,
@@ -445,7 +405,7 @@ class TestMacroAggregatorAdversarial:
             )
         ]
 
-        macro_aggregator = MacroAggregator(monolith=create_minimal_monolith(), abort_on_insufficient=False)
+        macro_aggregator = MacroAggregator(monolith=questionnaire_monolith, abort_on_insufficient=False)
 
         macro_result = macro_aggregator.evaluate_macro(
             dimension_scores=dimension_scores,
@@ -478,7 +438,7 @@ class TestMacroAggregatorAdversarial:
             for i in range(1, 7)
         ]
 
-        macro_aggregator = MacroAggregator(monolith=create_minimal_monolith(), abort_on_insufficient=False)
+        macro_aggregator = MacroAggregator(monolith=questionnaire_monolith, abort_on_insufficient=False)
 
         macro_result = macro_aggregator.evaluate_macro(
             dimension_scores=dimension_scores,

@@ -73,12 +73,13 @@ else:  # pragma: no cover - runtime avoids import to break cycles
 class BaseExecutorWithContract(ABC):
     """Contract-driven executor that routes all calls through MethodExecutor.
 
-    Supports both v2 and v3 contract formats:
-    - v2: Legacy format with method_inputs, assembly_rules, validation_rules at top level
-    - v3: New format with identity, executor_binding, method_binding, question_context,
+    Supports v4 contract format ONLY:
+    - v4: Epistemological pipeline with identity, method_binding (execution_phases),
+          question_context (streamlined with monolith_ref), signal_requirements,
           evidence_assembly, output_contract, validation_rules, etc.
 
-    Contract version is auto-detected based on file name (.v3.json vs .json) and structure.
+    All contracts must be v4 format from generated_contracts/ directory.
+    File naming: {question_id}_{policy_area_id}_contract_v4.json (e.g., Q001_PA01_contract_v4.json)
     """
 
     _contract_cache: dict[str, dict[str, Any]] = {}
@@ -647,10 +648,13 @@ class BaseExecutorWithContract(ABC):
         contract["_contract_version"] = "v4"
 
         # Validate base_slot (flexible for v4 which uses composite IDs)
-        identity_base_slot = identity.get("base_slot")
+        contract_identity = contract.get("identity", {})
+        identity_base_slot = contract_identity.get("base_slot")
         if identity_base_slot and identity_base_slot != base_slot:
             # For v4 contracts, base_slot in identity may differ from executor base_slot
             # because v4 uses Q001_PA01 format while executor uses D1-Q1 format
+            # Extract detected_version from contract
+            detected_version = cls._detect_contract_version(contract)
             if detected_version != "v4":
                 raise ValueError(
                     f"Contract base_slot mismatch: expected {base_slot}, found {identity_base_slot}"
