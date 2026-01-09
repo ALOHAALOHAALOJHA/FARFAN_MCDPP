@@ -27,7 +27,7 @@ import numpy as np
 import pandas as pd
 
 if TYPE_CHECKING:
-    from numpy.typing import NDArray
+    pass
 
 try:
     from causalnex.structure import StructureModel

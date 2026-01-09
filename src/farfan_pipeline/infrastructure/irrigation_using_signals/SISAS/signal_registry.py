@@ -787,7 +787,7 @@ class QuestionnaireSignalRegistry:
 
     def __init__(self, questionnaire: QuestionnairePort) -> None:
         """Initialize signal registry.
-        
+
         Args:
             questionnaire: Canonical questionnaire instance (immutable)
         """
@@ -810,7 +810,12 @@ class QuestionnaireSignalRegistry:
 
         self._questionnaire = questionnaire
         self._source_hash = self._compute_source_hash()
-        
+
+        # JOB FRONT 2: Provenance tracking
+        # Extract provenance information from questionnaire if available
+        self._questionnaire_source = getattr(questionnaire, "source", "unknown")
+        self._questionnaire_provenance = getattr(questionnaire, "provenance", None)
+
         # Lazy-loaded caches
         self._chunking_signals: ChunkingSignalPack | None = None
         self._micro_answering_cache: dict[str, MicroAnsweringSignalPack] = {}
@@ -818,16 +823,16 @@ class QuestionnaireSignalRegistry:
         self._assembly_cache: dict[str, AssemblySignalPack] = {}
         self._scoring_cache: dict[str, ScoringSignalPack] = {}
         self._policy_area_cache: dict[str, SignalPack] = {}
-        
+
         # Metrics
         self._metrics = RegistryMetrics()
-        
+
         # Circuit breaker for graceful degradation
         self._circuit_breaker = CircuitBreaker()
-        
+
         # Valid assembly levels (for validation)
         self._valid_assembly_levels = self._extract_valid_assembly_levels()
-        
+
         # Initialize enhancement integrator (Opportunity #1)
         self._enhancement_integrator = create_enhancement_integrator(questionnaire)
 
@@ -836,6 +841,13 @@ class QuestionnaireSignalRegistry:
             source_hash=self._source_hash[:16],
             questionnaire_version=questionnaire.version,
             questionnaire_sha256=questionnaire.sha256[:16],
+            # JOB FRONT 2: Provenance logging
+            questionnaire_source=self._questionnaire_source,
+            questionnaire_provenance={
+                "source_file_count": getattr(self._questionnaire_provenance, "source_file_count", None),
+                "assembly_timestamp": getattr(self._questionnaire_provenance, "assembly_timestamp", None),
+                "resolver_version": getattr(self._questionnaire_provenance, "resolver_version", None),
+            } if self._questionnaire_provenance else None,
         )
 
     def _warmup_single_question(self, q_id: str) -> None:
@@ -1787,7 +1799,7 @@ class QuestionnaireSignalRegistry:
 
     def get_metrics(self) -> dict[str, Any]:
         """Get registry metrics for observability.
-        
+
         Returns:
             Dictionary with cache performance and usage statistics
         """
@@ -1806,6 +1818,18 @@ class QuestionnaireSignalRegistry:
             logger.warning("cache_size_limit_exceeded", size=cache_size)
             self.clear_cache()
 
+        # JOB FRONT 2: Provenance metrics
+        provenance_metrics = {
+            "questionnaire_source": self._questionnaire_source,
+        }
+        if self._questionnaire_provenance:
+            provenance_metrics["questionnaire_provenance"] = {
+                "source_file_count": self._questionnaire_provenance.source_file_count,
+                "assembly_timestamp": self._questionnaire_provenance.assembly_timestamp,
+                "resolver_version": self._questionnaire_provenance.resolver_version,
+                "assembly_duration_ms": self._questionnaire_provenance.assembly_duration_ms,
+            }
+
         return {
             "cache_hits": self._metrics.cache_hits,
             "cache_misses": self._metrics.cache_misses,
@@ -1822,6 +1846,8 @@ class QuestionnaireSignalRegistry:
             "questionnaire_version": self._questionnaire.version,
             "last_cache_clear": self._metrics.last_cache_clear,
             "circuit_breaker": self._circuit_breaker.get_status(),
+            # JOB FRONT 2: Include provenance in metrics
+            **provenance_metrics,
         }
     
     def health_check(self) -> dict[str, Any]:

@@ -427,3 +427,33 @@ __all__ = [
 ]
 
 __version__ = "2.0.0"
+
+# ============================================================================
+# MODULAR RESOLVER (JOB FRONT 0)
+# ============================================================================
+
+from .resolver import (
+    CanonicalQuestionnaireResolver,
+    CanonicalQuestionnaire,
+    AssemblyProvenance,
+    QuestionnairePort,
+    ResolverError,
+    AssemblyError,
+    IntegrityError,
+    ValidationError,
+    get_resolver,
+    resolve_questionnaire,
+)
+
+__all__.extend([
+    "CanonicalQuestionnaireResolver",
+    "CanonicalQuestionnaire",
+    "AssemblyProvenance",
+    "QuestionnairePort",
+    "ResolverError",
+    "AssemblyError",
+    "IntegrityError",
+    "ValidationError",
+    "get_resolver",
+    "resolve_questionnaire",
+])

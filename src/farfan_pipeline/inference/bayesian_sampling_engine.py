@@ -92,7 +92,10 @@ class BayesianSamplingEngine:
 
         # Configuration loading with explicit None handling
         # This preserves zero as a valid value while defaulting only on None
-        bayesian_thresholds = config.get("bayesian_thresholds", {}) if hasattr(config, 'get') else {}
+        if hasattr(config, 'get'):
+            bayesian_thresholds = config.get("bayesian_thresholds", {})
+        else:
+            bayesian_thresholds = {}
 
         # If config is object-style, extract thresholds dict
         if not isinstance(bayesian_thresholds, dict):
@@ -272,17 +275,21 @@ class BayesianSamplingEngine:
     def sample_hierarchical_beta(
         self,
         group_data: list[tuple[int, int]],
+        population_alpha: float = 2.0,
+        population_beta: float = 2.0,
     ) -> list[SamplingResult]:
         """
         Sample from hierarchical Beta-Binomial model.
 
         Model for multi-level process tracing (micro-meso-macro):
-            Population: alpha, beta ~ HalfNormal(...)
+            Population: alpha, beta ~ HalfNormal(sigma=population_alpha/beta)
             Group priors: theta_g ~ Beta(alpha, beta)
             Group data: y_g ~ Binomial(n_g, theta_g)
 
         Args:
             group_data: List of (successes, trials) tuples for each group
+            population_alpha: Sigma for population-level alpha hyperprior (default 2.0)
+            population_beta: Sigma for population-level beta hyperprior (default 2.0)
 
         Returns:
             List of SamplingResult objects, one per group
@@ -304,9 +311,9 @@ class BayesianSamplingEngine:
 
         try:
             with pm.Model() as model:
-                # Population-level hyperpriors
-                alpha = pm.HalfNormal("alpha", sigma=10.0)
-                beta = pm.HalfNormal("beta", sigma=10.0)
+                # Population-level hyperpriors (parameterized)
+                alpha = pm.HalfNormal("alpha", sigma=population_alpha)
+                beta = pm.HalfNormal("beta", sigma=population_beta)
 
                 # Group-level priors
                 theta = pm.Beta("theta", alpha=alpha, beta=beta, shape=n_groups)
@@ -356,7 +363,9 @@ class BayesianSamplingEngine:
                     else:
                         ess_tail = float(ess_tail_data["theta"].item())
                 except Exception as e:
-                    self.logger.warning(f"Could not compute ESS tail: {e}, using bulk ESS approximation")
+                    self.logger.warning(
+                        f"Could not compute ESS tail: {e}, using bulk ESS approximation"
+                    )
                     ess_tail = ess_bulk * 0.8
 
                 result = SamplingResult(

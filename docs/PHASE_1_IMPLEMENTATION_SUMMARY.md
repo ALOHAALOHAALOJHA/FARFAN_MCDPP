@@ -179,7 +179,7 @@ if self.dowhy_analyzer and self.dowhy_analyzer.is_available():
 4. Logs formal identification results for validation
 
 **Sample Output**:
-```
+```text
 DoWhy formal validation: analyzing 5 high-confidence causal links
   INSUMOS → ACTIVIDADES (Bayesian confidence: 0.923)
     - Confounders identified: ['VIABILIDAD_POLITICA', 'CONTEXTO_SOCIOECONOMICO']
