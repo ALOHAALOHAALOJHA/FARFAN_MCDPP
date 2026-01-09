@@ -4,7 +4,7 @@ ADVERSARIAL TESTS FOR FACT REGISTRY
 """
 import pytest
 from datetime import datetime, timezone
-from src.farfan_pipeline.infrastructure.calibration.fact_registry import (
+from farfan_pipeline.infrastructure.calibration.fact_registry import (
     CanonicalFactRegistry,
     FactEntry,
     FactFactory,

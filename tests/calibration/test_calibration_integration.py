@@ -6,7 +6,7 @@ to creating a fully validated calibration layer.
 """
 import pytest
 from datetime import datetime, timezone, timedelta
-from src.farfan_pipeline.infrastructure.calibration.calibration_core import (
+from farfan_pipeline.infrastructure.calibration.calibration_core import (
     ClosedInterval,
     EvidenceReference,
     CalibrationParameter,
@@ -15,7 +15,7 @@ from src.farfan_pipeline.infrastructure.calibration.calibration_core import (
     ValidityStatus,
     create_calibration_parameter,
 )
-from src.farfan_pipeline.infrastructure.calibration.type_defaults import (
+from farfan_pipeline.infrastructure.calibration.type_defaults import (
     get_type_defaults,
     is_operation_prohibited,
 )

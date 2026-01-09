@@ -14,11 +14,11 @@ from unittest.mock import Mock, patch, MagicMock
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
-from canonic_phases.phase_4_7_aggregation_pipeline.aggregation import (
+from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
     AggregationSettings,
     ScoredResult,
 )
-from canonic_phases.phase_4_7_aggregation_pipeline.validation import (
+from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,

@@ -14,7 +14,7 @@ from typing import Any
 repo_root = Path(__file__).parent.parent
 sys.path.insert(0, str(repo_root / "src"))
 
-from canonic_phases.Phase_three.scoring import (
+from farfan_pipeline.phases.Phase_three.scoring import (
     extract_score_from_nexus,
     map_completeness_to_quality,
     extract_score_from_evidence,

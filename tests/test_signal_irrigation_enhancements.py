@@ -22,7 +22,7 @@ class TestPhase3SignalEnrichment:
     
     def test_threshold_adjustment_no_registry(self):
         """Test threshold adjustment without signal registry (graceful degradation)."""
-        from canonic_phases.Phase_three.signal_enriched_scoring import (
+        from farfan_pipeline.phases.Phase_three.signal_enriched_scoring import (
             SignalEnrichedScorer,
         )
         
@@ -41,7 +41,7 @@ class TestPhase3SignalEnrichment:
     
     def test_quality_validation_score_consistency(self):
         """Test quality validation with score-quality consistency check."""
-        from canonic_phases.Phase_three.signal_enriched_scoring import (
+        from farfan_pipeline.phases.Phase_three.signal_enriched_scoring import (
             SignalEnrichedScorer,
         )
         
@@ -61,7 +61,7 @@ class TestPhase3SignalEnrichment:
     
     def test_quality_validation_completeness_alignment(self):
         """Test quality validation with completeness alignment."""
-        from canonic_phases.Phase_three.signal_enriched_scoring import (
+        from farfan_pipeline.phases.Phase_three.signal_enriched_scoring import (
             SignalEnrichedScorer,
         )
         
@@ -80,7 +80,7 @@ class TestPhase3SignalEnrichment:
     
     def test_scoring_details_enrichment(self):
         """Test enrichment of scoring details with signal provenance."""
-        from canonic_phases.Phase_three.signal_enriched_scoring import (
+        from farfan_pipeline.phases.Phase_three.signal_enriched_scoring import (
             SignalEnrichedScorer,
         )
         
@@ -113,7 +113,7 @@ class TestPhase47SignalEnrichment:
     
     def test_weight_adjustment_critical_scores(self):
         """Test weight adjustment for critical scores."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         
@@ -149,7 +149,7 @@ class TestPhase47SignalEnrichment:
     
     def test_dispersion_analysis_convergence(self):
         """Test dispersion analysis with convergent scores."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         
@@ -169,7 +169,7 @@ class TestPhase47SignalEnrichment:
     
     def test_dispersion_analysis_high_dispersion(self):
         """Test dispersion analysis with high dispersion."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         
@@ -188,7 +188,7 @@ class TestPhase47SignalEnrichment:
     
     def test_aggregation_method_selection(self):
         """Test aggregation method selection based on dispersion."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         
@@ -218,7 +218,7 @@ class TestPhase8SignalEnrichment:
     
     def test_rule_condition_enhancement_basic(self):
         """Test basic rule condition enhancement."""
-        from canonic_phases.Phase_eight.signal_enriched_recommendations import (
+        from farfan_pipeline.phases.Phase_eight.signal_enriched_recommendations import (
             SignalEnrichedRecommender,
         )
         
@@ -247,7 +247,7 @@ class TestPhase8SignalEnrichment:
     
     def test_intervention_priority_critical_score(self):
         """Test intervention priority for critical score."""
-        from canonic_phases.Phase_eight.signal_enriched_recommendations import (
+        from farfan_pipeline.phases.Phase_eight.signal_enriched_recommendations import (
             SignalEnrichedRecommender,
         )
         
@@ -275,7 +275,7 @@ class TestPhase8SignalEnrichment:
     
     def test_intervention_priority_good_score(self):
         """Test intervention priority for good score (lower priority)."""
-        from canonic_phases.Phase_eight.signal_enriched_recommendations import (
+        from farfan_pipeline.phases.Phase_eight.signal_enriched_recommendations import (
             SignalEnrichedRecommender,
         )
         
@@ -302,7 +302,7 @@ class TestPhase8SignalEnrichment:
     
     def test_template_selection(self):
         """Test intervention template selection."""
-        from canonic_phases.Phase_eight.signal_enriched_recommendations import (
+        from farfan_pipeline.phases.Phase_eight.signal_enriched_recommendations import (
             SignalEnrichedRecommender,
         )
         
@@ -327,7 +327,7 @@ class TestPhase9SignalEnrichment:
     
     def test_narrative_enrichment_low_score(self):
         """Test narrative enrichment for low score."""
-        from canonic_phases.Phase_nine.signal_enriched_reporting import (
+        from farfan_pipeline.phases.Phase_nine.signal_enriched_reporting import (
             SignalEnrichedReporter,
         )
         
@@ -351,7 +351,7 @@ class TestPhase9SignalEnrichment:
     
     def test_section_emphasis_critical_scores(self):
         """Test section emphasis with critical scores."""
-        from canonic_phases.Phase_nine.signal_enriched_reporting import (
+        from farfan_pipeline.phases.Phase_nine.signal_enriched_reporting import (
             SignalEnrichedReporter,
         )
         
@@ -374,7 +374,7 @@ class TestPhase9SignalEnrichment:
     
     def test_section_emphasis_convergent_scores(self):
         """Test section emphasis with convergent scores."""
-        from canonic_phases.Phase_nine.signal_enriched_reporting import (
+        from farfan_pipeline.phases.Phase_nine.signal_enriched_reporting import (
             SignalEnrichedReporter,
         )
         
@@ -396,7 +396,7 @@ class TestPhase9SignalEnrichment:
     
     def test_evidence_highlighting_no_registry(self):
         """Test evidence highlighting without registry (graceful degradation)."""
-        from canonic_phases.Phase_nine.signal_enriched_reporting import (
+        from farfan_pipeline.phases.Phase_nine.signal_enriched_reporting import (
             SignalEnrichedReporter,
         )
         
@@ -423,10 +423,10 @@ class TestSignalIrrigationIntegration:
     
     def test_phase3_to_phase47_flow(self):
         """Test signal enrichment flow from Phase 3 to Phase 4-7."""
-        from canonic_phases.Phase_three.signal_enriched_scoring import (
+        from farfan_pipeline.phases.Phase_three.signal_enriched_scoring import (
             SignalEnrichedScorer,
         )
-        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
         
@@ -454,10 +454,10 @@ class TestSignalIrrigationIntegration:
     
     def test_phase47_to_phase8_flow(self):
         """Test signal enrichment flow from Phase 4-7 to Phase 8."""
-        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
-        from canonic_phases.Phase_eight.signal_enriched_recommendations import (
+        from farfan_pipeline.phases.Phase_eight.signal_enriched_recommendations import (
             SignalEnrichedRecommender,
         )
         
@@ -492,16 +492,16 @@ class TestSignalIrrigationIntegration:
     
     def test_end_to_end_signal_provenance(self):
         """Test signal provenance tracking end-to-end."""
-        from canonic_phases.Phase_three.signal_enriched_scoring import (
+        from farfan_pipeline.phases.Phase_three.signal_enriched_scoring import (
             SignalEnrichedScorer,
         )
-        from canonic_phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
+        from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
-        from canonic_phases.Phase_eight.signal_enriched_recommendations import (
+        from farfan_pipeline.phases.Phase_eight.signal_enriched_recommendations import (
             SignalEnrichedRecommender,
         )
-        from canonic_phases.Phase_nine.signal_enriched_reporting import (
+        from farfan_pipeline.phases.Phase_nine.signal_enriched_reporting import (
             SignalEnrichedReporter,
         )
         

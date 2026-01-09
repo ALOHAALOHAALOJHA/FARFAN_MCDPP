@@ -22,14 +22,14 @@ from datetime import datetime, timezone
 from typing import List, Dict
 
 # Phase 0 Models
-from canonic_phases.Phase_one.phase0_input_validation import (
+from farfan_pipeline.phases.Phase_one.phase0_input_validation import (
     Phase0Input,
     CanonicalInput,
     Phase0ValidationContract,
 )
 
 # Phase 1 Models
-from canonic_phases.Phase_one.phase1_models import (
+from farfan_pipeline.phases.Phase_one.phase1_models import (
     LanguageData,
     PreprocessedDoc,
     StructureData,
@@ -49,7 +49,7 @@ from canonic_phases.Phase_one.phase1_models import (
 )
 
 # CPP Models
-from canonic_phases.Phase_one.cpp_models import (
+from farfan_pipeline.phases.Phase_one.cpp_models import (
     CanonPolicyPackage,
     ChunkGraph,
     QualityMetrics,
