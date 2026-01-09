@@ -3,8 +3,7 @@ Module: phase2_30_01_resource_integration
 PHASE_LABEL: Phase 2
 Sequence: J
 
-"""
-"""Resource Management Integration.
+Resource Management Integration.
 
 Factory functions and helpers to integrate adaptive resource management
 with the existing orchestrator infrastructure.

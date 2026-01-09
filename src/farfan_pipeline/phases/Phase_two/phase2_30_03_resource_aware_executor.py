@@ -3,8 +3,7 @@ Module: phase2_30_03_resource_aware_executor
 PHASE_LABEL: Phase 2
 Sequence: K
 
-"""
-"""Resource-Aware Executor Wrapper.
+Resource-Aware Executor Wrapper.
 
 Integrates AdaptiveResourceManager with MethodExecutor to provide:
 - Automatic resource allocation before execution
