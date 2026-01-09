@@ -39,9 +39,12 @@ import time
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
+
+# Default confidence score used when no explicit confidence is provided
+DEFAULT_CONFIDENCE_SCORE: float = 0.5
 
 
 @dataclass
@@ -61,7 +64,7 @@ class ContractFeatures:
     has_bayesian_methods: bool
     complexity_score: float
 
-    def to_feature_vector(self) -> List[float]:
+    def to_feature_vector(self) -> list[float]:
         """Convert to numerical feature vector."""
         return [
             float(self.method_count),
@@ -84,8 +87,8 @@ class PredictionResult:
     contract_id: str
     predicted_time_ms: float
     predicted_memory_mb: float
-    confidence_interval_time: Tuple[float, float]
-    confidence_interval_memory: Tuple[float, float]
+    confidence_interval_time: tuple[float, float]
+    confidence_interval_memory: tuple[float, float]
     confidence_level: float
     prediction_uncertainty: float
     based_on_samples: int
@@ -176,7 +179,7 @@ class PredictiveProfiler:
             f"confidence_level={confidence_level}"
         )
 
-    def extract_features(self, contract: Dict[str, Any]) -> ContractFeatures:
+    def extract_features(self, contract: dict[str, Any]) -> ContractFeatures:
         """
         Extract feature vector from contract.
 
@@ -203,6 +206,7 @@ class PredictiveProfiler:
         has_causal = False
         has_bayesian = False
 
+        method_count = 0
         for phase_name, phase_data in execution_phases.items():
             methods = phase_data.get("methods", [])
 
@@ -210,8 +214,9 @@ class PredictiveProfiler:
                 class_name = method.get("class_name", "")
                 method_name = method.get("method_name", "")
                 level = method.get("level", "")
-                confidence = method.get("confidence_score", 0.5)
+                confidence = method.get("confidence_score", DEFAULT_CONFIDENCE_SCORE)
 
+                method_count += 1
                 unique_classes.add(class_name)
                 unique_methods.add(method_name)
                 confidence_scores.append(confidence)
@@ -228,8 +233,11 @@ class PredictiveProfiler:
                 if "Bayesian" in class_name or "bayesian" in method_name.lower():
                     has_bayesian = True
 
-        method_count = len(unique_methods)
-        avg_confidence = statistics.mean(confidence_scores) if confidence_scores else 0.5
+        avg_confidence = (
+            statistics.mean(confidence_scores)
+            if confidence_scores
+            else DEFAULT_CONFIDENCE_SCORE
+        )
 
         # Complexity score (heuristic)
         # Higher = more complex
@@ -289,11 +297,14 @@ class PredictiveProfiler:
         # Ensure [0, 1]
         return max(0.0, min(1.0, similarity))
 
+    # Minimum number of samples required for Wilson interval estimation
+    MIN_WILSON_SAMPLE_SIZE: int = 2
+
     def compute_wilson_interval(
         self,
-        values: List[float],
+        values: list[float],
         confidence_level: float = 0.95,
-    ) -> Tuple[float, float]:
+    ) -> tuple[float, float]:
         """
         Compute Wilson score confidence interval.
 
@@ -304,7 +315,7 @@ class PredictiveProfiler:
         Returns:
             (lower_bound, upper_bound)
         """
-        if len(values) < 2:
+        if len(values) < self.MIN_WILSON_SAMPLE_SIZE:
             mean = values[0] if values else 0.0
             return (mean * 0.5, mean * 1.5)
 
@@ -328,7 +339,7 @@ class PredictiveProfiler:
 
     def predict(
         self,
-        contract: Dict[str, Any],
+        contract: dict[str, Any],
     ) -> PredictionResult:
         """
         Predict execution time and memory for contract.
@@ -413,7 +424,7 @@ class PredictiveProfiler:
 
     def record_execution(
         self,
-        contract: Dict[str, Any],
+        contract: dict[str, Any],
         execution_time_ms: float,
         memory_mb: float,
     ) -> None:
@@ -457,7 +468,7 @@ class PredictiveProfiler:
         predicted: PredictionResult,
         actual_time_ms: float,
         actual_memory_mb: float,
-    ) -> Tuple[bool, str]:
+    ) -> tuple[bool, str]:
         """
         Detect performance anomaly using statistical process control.
 
@@ -516,7 +527,7 @@ class PredictiveProfiler:
 
         return (False, "No anomaly detected")
 
-    def get_statistics(self) -> Dict[str, Any]:
+    def get_statistics(self) -> dict[str, Any]:
         """Get profiler statistics."""
         return {
             "history_size": len(self._history),

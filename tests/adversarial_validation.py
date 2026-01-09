@@ -9,7 +9,10 @@ This script performs comprehensive validation of all three job fronts:
 Run: python tests/adversarial_validation.py
 """
 
+import ast
+import importlib.util
 import sys
+import types
 from pathlib import Path
 
 # Add src to path
@@ -104,15 +107,58 @@ def test_jf1_factory_migration():
 
     # Test 1: Migration flags are set correctly
     print('[TEST 1] Verify migration flags...', end=' ')
-    if '_USE_MODULAR_RESOLVER = True' not in factory_content:
+    spec = importlib.util.spec_from_file_location(
+        "farfan_phase2_factory", factory_path
+    )
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Could not load spec for factory module at {factory_path}")
+    factory_module = importlib.util.module_from_spec(spec)
+    # Execute the module so that its module-level flags are set
+    spec.loader.exec_module(factory_module)  # type: ignore[union-attr]
+    if not hasattr(factory_module, "_USE_MODULAR_RESOLVER"):
+        raise AssertionError('_USE_MODULAR_RESOLVER flag not defined')
+    if not getattr(factory_module, "_USE_MODULAR_RESOLVER"):
         raise AssertionError('_USE_MODULAR_RESOLVER not set to True')
-    if '_ALLOW_FALLBACK_TO_MONOLITH = True' not in factory_content:
-        raise AssertionError('_ALLOW_FALLBACK_TO_MONOLITH not set')
+    if not hasattr(factory_module, "_ALLOW_FALLBACK_TO_MONOLITH"):
+        raise AssertionError('_ALLOW_FALLBACK_TO_MONOLITH flag not defined')
+    if not getattr(factory_module, "_ALLOW_FALLBACK_TO_MONOLITH"):
+        raise AssertionError('_ALLOW_FALLBACK_TO_MONOLITH not set to True')
     print('PASS')
 
     # Test 2: load_questionnaire has use_modular parameter
     print('[TEST 2] Verify load_questionnaire signature...', end=' ')
-    if 'use_modular: bool | None = None' not in factory_content:
+    module_ast = ast.parse(factory_content, filename=str(factory_path))
+    load_q_func = None
+    for node in module_ast.body:
+        if isinstance(node, ast.FunctionDef) and node.name == 'load_questionnaire':
+            load_q_func = node
+            break
+    if load_q_func is None:
+        raise AssertionError('load_questionnaire function not found')
+
+    # Check that load_questionnaire has a parameter named use_modular with default None
+    has_use_modular = False
+    args = load_q_func.args
+    all_params = list(args.args) + list(getattr(args, 'kwonlyargs', []))
+    defaults = list(args.defaults) + list(getattr(args, 'kw_defaults', []))
+    # Align defaults with parameters: only the last len(defaults) params have defaults
+    default_start = len(all_params) - len(defaults)
+    for idx, param in enumerate(all_params):
+        if param.arg != 'use_modular':
+            continue
+        default_idx = idx - default_start
+        if default_idx < 0 or default_idx >= len(defaults):
+            continue
+        default_node = defaults[default_idx]
+        if isinstance(default_node, ast.Constant):
+            is_none_default = default_node.value is None
+        else:
+            # For compatibility with older Python versions where None is NameConstant
+            is_none_default = getattr(default_node, 'value', None) is None and getattr(default_node, 'id', None) == 'None'
+        if is_none_default:
+            has_use_modular = True
+            break
+    if not has_use_modular:
         raise AssertionError('load_questionnaire missing use_modular parameter')
     print('PASS')
 
