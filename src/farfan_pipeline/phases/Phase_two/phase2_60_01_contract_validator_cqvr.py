@@ -3,6 +3,7 @@
 PHASE_LABEL: Phase 2
 PHASE_COMPONENT: CQVR Validator
 PHASE_ROLE: Validates executor contracts using multi-tier quality scoring
+"""
 
 from __future__ import annotations
 
@@ -674,3 +675,14 @@ class CQVRValidator:
                 f"Reasons: {reason_str}. "
                 f"Contract needs substantial rework."
             )
+
+
+# === MODULE EXPORTS ===
+
+__all__ = [
+    "ContractValidatorCQVR",
+    "ValidationScore",
+    "ValidationResult",
+    "ContractValidationError",
+]
+

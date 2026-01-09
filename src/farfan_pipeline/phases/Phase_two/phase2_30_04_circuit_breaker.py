@@ -43,18 +43,28 @@ class CircuitState(Enum):
 
 @dataclass
 class CircuitBreakerConfig:
-    """Configuration for circuit breaker behavior.
+    """
+    Circuit breaker configuration with graceful degradation support.
+
+    Degradation Instance: 5, 6, 6a
+    Pattern:  CIRCUIT_BREAKER
+    Fallback Behavior: When circuit OPEN, requests fail-fast with fallback
+    Recovery: Half-open state tests limited requests before closing
 
     Attributes:
-        failure_threshold: Number of failures before opening circuit
-        success_threshold: Successes needed in half-open to close
-        recovery_timeout_s: Seconds to wait before half-open
-        half_open_max_calls: Max calls allowed in half-open state
+        failure_threshold:  Failures before opening circuit (default: 5)
+        recovery_timeout_s: Seconds before half-open test (default: 60.0)
+        success_threshold: Successes in half-open to close (default: 3)
+        half_open_max_calls: Max concurrent calls in half-open (default: 3)
     """
     failure_threshold: int = 5
     success_threshold: int = 3
     recovery_timeout_s: float = 60.0
     half_open_max_calls: int = 3
+
+    # Degradation metadata
+    degradation_instance: str = "CIRCUIT_BREAKER_5_6_6a"
+    fallback_strategy: str = "FAIL_FAST_WITH_CACHED"
 
 
 @dataclass
