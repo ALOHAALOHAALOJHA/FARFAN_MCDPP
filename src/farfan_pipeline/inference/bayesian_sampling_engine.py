@@ -90,15 +90,26 @@ class BayesianSamplingEngine:
                 "Install with: pip install pymc>=5.16.0"
             )
 
-        # Load sampling parameters from config
-        bayesian_thresholds = getattr(config, "bayesian_thresholds", {})
-        self.n_samples = int(
-            getattr(bayesian_thresholds, "mcmc_samples", None) or config.get("bayesian_thresholds.mcmc_samples", 2000)
-        )
-        self.n_chains = int(
-            getattr(bayesian_thresholds, "mcmc_chains", None) or config.get("bayesian_thresholds.mcmc_chains", 4)
-        )
-        self.target_accept = float(config.get("bayesian_thresholds.target_accept", 0.9))
+        # Configuration loading with explicit None handling
+        # This preserves zero as a valid value while defaulting only on None
+        bayesian_thresholds = config.get("bayesian_thresholds", {}) if hasattr(config, 'get') else {}
+
+        # If config is object-style, extract thresholds dict
+        if not isinstance(bayesian_thresholds, dict):
+            bayesian_thresholds = {
+                "mcmc_samples": getattr(bayesian_thresholds, "mcmc_samples", None),
+                "mcmc_chains": getattr(bayesian_thresholds, "mcmc_chains", None),
+                "target_accept": getattr(bayesian_thresholds, "target_accept", None),
+            }
+
+        # Apply defaults only when value is None (preserves explicit zeros)
+        raw_samples = bayesian_thresholds.get("mcmc_samples")
+        raw_chains = bayesian_thresholds.get("mcmc_chains")
+        raw_accept = bayesian_thresholds.get("target_accept")
+
+        self.n_samples: int = int(raw_samples) if raw_samples is not None else 2000
+        self.n_chains: int = int(raw_chains) if raw_chains is not None else 4
+        self.target_accept: float = float(raw_accept) if raw_accept is not None else 0.9
 
         self.logger.info(
             f"BayesianSamplingEngine initialized: "
@@ -336,13 +347,25 @@ class BayesianSamplingEngine:
                 ess = az.ess(trace, var_names=["theta"])
                 ess_bulk = float(ess["theta"].mean().item())
 
+                # Compute ESS tail (for extreme quantiles) - actual computation
+                try:
+                    ess_tail_data = az.ess(trace, var_names=["theta"], method="tail")
+                    # Extract scalar from xarray - handle both array and scalar cases
+                    if hasattr(ess_tail_data["theta"], "mean"):
+                        ess_tail = float(ess_tail_data["theta"].mean().item())
+                    else:
+                        ess_tail = float(ess_tail_data["theta"].item())
+                except Exception as e:
+                    self.logger.warning(f"Could not compute ESS tail: {e}, using bulk ESS approximation")
+                    ess_tail = ess_bulk * 0.8
+
                 result = SamplingResult(
                     posterior_mean=posterior_mean,
                     posterior_std=posterior_std,
                     hdi_95=(hdi_lower, hdi_upper),
                     rhat=rhat,
                     ess_bulk=ess_bulk,
-                    ess_tail=ess_bulk * 0.8,  # Approximation
+                    ess_tail=ess_tail,
                     converged=rhat < 1.05,
                     n_samples=self.n_samples * self.n_chains,
                     n_chains=self.n_chains,
