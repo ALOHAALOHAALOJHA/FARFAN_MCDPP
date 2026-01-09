@@ -56,39 +56,41 @@ from pylint.interfaces import IAstroidChecker
 
 class UnreachableFallbackChecker(BaseChecker):
     """
-    Checker for unreachable fallback handlers in FailureFallbackContract.
+    Enhanced checker with inter-procedural analysis for unreachable fallback handlers in FailureFallbackContract.
 
     Detects:
     - Fallback handlers where expected_exceptions cannot be raised
     - Functions without any raise statements but fallback expects exceptions
     - Mismatched exception types between function and fallback
+    - Inter-procedural mismatches where called functions don't raise expected exceptions
     """
 
     __implements__ = IAstroidChecker
 
     name = "unreachable-fallback"
     priority = -1
+
     msgs = {
         "W9001": (
-            "Unreachable fallback handler for '%s'. Function cannot raise %s but fallback expects it.",
+            "Unreachable fallback for '%s':  function cannot raise %s",
             "unreachable-fallback-handler",
-            "Used when FailureFallbackContract.execute_with_fallback is called with "
-            "exception types that the wrapped function provably cannot raise. "
-            "The fallback is dead code and should be removed or the function signature "
-            "should be updated.",
+            "Fallback handler will never execute.",
         ),
-        "W9002": (
-            "Suspicious fallback handler for '%s'. Function has no raise statements but fallback expects %s.",
+        "W9002":  (
+            "Suspicious fallback for '%s': function may not raise %s",
             "suspicious-fallback-handler",
-            "Used when FailureFallbackContract.execute_with_fallback is called on a "
-            "function with no visible raise statements. This may indicate the fallback "
-            "is unnecessary or the function's exception behavior is unclear.",
+            "Fallback may be dead code.",
         ),
         "I9001": (
-            "Fallback handler for '%s' expects %s. Verify function can raise these exceptions.",
-            "fallback-handler-verification",
-            "Informational: fallback handler detected. Manual verification recommended "
-            "to ensure the function can actually raise the expected exceptions.",
+            "Manual verification needed for '%s': inter-procedural analysis incomplete",
+            "fallback-verification-needed",
+            "Cannot statically determine exception behavior.",
+        ),
+        # NEW: Inter-procedural warnings
+        "W9003": (
+            "Fallback mismatch in call chain '%s' -> '%s':  expected %s not raised",
+            "interprocedural-fallback-mismatch",
+            "Called function doesn't raise expected exceptions.",
         ),
     }
 

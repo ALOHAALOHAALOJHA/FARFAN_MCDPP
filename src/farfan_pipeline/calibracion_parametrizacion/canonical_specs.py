@@ -27,16 +27,16 @@ from typing import Final
 # ============================================================================
 
 CANON_POLICY_AREAS: Final[dict[str, str]] = {
-    "PA01": "Educación",
-    "PA02": "Salud",
-    "PA03": "Vivienda y Servicios Públicos",
-    "PA04": "Empleo y Desarrollo Económico",
-    "PA05": "Infraestructura Vial y Transporte",
-    "PA06": "Cultura, Deporte y Recreación",
-    "PA07": "Medio Ambiente y Gestión del Riesgo",
-    "PA08": "Justicia, Seguridad y Convivencia",
-    "PA09": "Fortalecimiento Institucional",
-    "PA10": "Grupos Poblacionales y Equidad",
+    "PA01": "Derechos de las mujeres e igualdad de género",
+    "PA02": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
+    "PA03": "Ambiente sano, cambio climático, prevención y atención a desastres",
+    "PA04": "Derechos económicos, sociales y culturales",
+    "PA05": "Derechos de las víctimas y construcción de paz",
+    "PA06": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
+    "PA07": "Tierras y territorios",
+    "PA08": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
+    "PA09": "Crisis de derechos de personas privadas de la libertad",
+    "PA10": "Migración transfronteriza",
 }
 
 # Validation: Exactly 10 policy areas as per FARFAN structure

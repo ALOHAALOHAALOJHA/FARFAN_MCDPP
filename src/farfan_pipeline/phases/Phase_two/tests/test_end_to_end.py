@@ -220,7 +220,7 @@ class TestCarverSynthesisEndToEnd:
         )
 
     def test_carver_produces_human_readable_output(self) -> None:
-        """FAIL if Carver doesn't produce human_readable_output."""
+        """FAIL if Carver doesn't produce human answer output."""
         carver_path = PHASE_TWO_DIR / "phase2_90_00_carver.py"
         
         if not carver_path.exists():
@@ -228,8 +228,9 @@ class TestCarverSynthesisEndToEnd:
         
         content = carver_path.read_text(encoding="utf-8")
         
-        assert "human_readable" in content.lower(), (
-            "DoctoralCarverSynthesizer MUST produce human_readable_output."
+        # Carver uses human_answer, not human_readable
+        assert "human_answer" in content.lower(), (
+            "DoctoralCarverSynthesizer MUST produce human_answer output."
         )
 
     def test_carver_enforces_citations(self) -> None:
