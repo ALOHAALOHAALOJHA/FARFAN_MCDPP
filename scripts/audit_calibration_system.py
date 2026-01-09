@@ -899,8 +899,9 @@ def main():
     
     if args.section:
         print(f"Running section {args.section} only...")
-        method_name = f"audit_section_{args.section}_"
-        methods = [m for m in dir(auditor) if m.startswith(method_name)]
+        # Find method that starts with audit_section_{section_number}
+        method_name = f"audit_section_{args.section}"
+        methods = [m for m in dir(auditor) if m.startswith(method_name) and callable(getattr(auditor, m))]
         if methods:
             getattr(auditor, methods[0])()
         else:

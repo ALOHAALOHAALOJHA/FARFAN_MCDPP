@@ -15,6 +15,8 @@ This document presents the deliverables from the comprehensive audit of the FARF
 
 🟢 **HEALTHY** - System is well-architected and functioning as designed
 
+_Note: Results below reflect audit performed on 2026-01-09. Run the audit script for current results._
+
 - **Total Checks Performed:** 35
 - **Checks Passed:** 32 (91.43%)
 - **Warnings:** 3
