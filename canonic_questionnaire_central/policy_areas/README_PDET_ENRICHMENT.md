@@ -403,9 +403,9 @@ python scripts/validate_policy_area_enrichment.py --policy-area PA01
 import json
 from pathlib import Path
 
-def verify_gate_compliance(policy_area_id):
+def verify_gate_compliance(policy_area_dir):
     """Verify all four gates are properly configured."""
-    pa_path = Path(f"canonic_questionnaire_central/policy_areas/{policy_area_id}/metadata.json")
+    pa_path = Path(f"canonic_questionnaire_central/policy_areas/{policy_area_dir}/metadata.json")
     
     with open(pa_path) as f:
         metadata = json.load(f)
@@ -425,12 +425,18 @@ def verify_gate_compliance(policy_area_id):
     assert qa["gate_compliance_verified"]
     assert qa["compliance_score"] == 1.0
     
-    print(f"✅ {policy_area_id}: All gates validated")
+    print(f"✅ {policy_area_dir}: All gates validated")
 
-# Test all policy areas
-for i in range(1, 11):
-    pa_id = f"PA{i:02d}_*"  # Adjust with actual names
-    verify_gate_compliance(pa_id)
+# Test specific policy areas
+policy_areas = [
+    "PA01_mujeres_genero",
+    "PA02_violencia_conflicto",
+    "PA03_ambiente_cambio_climatico",
+    # Add other policy areas as needed
+]
+
+for pa_dir in policy_areas:
+    verify_gate_compliance(pa_dir)
 ```
 
 ---

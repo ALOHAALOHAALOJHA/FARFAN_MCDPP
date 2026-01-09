@@ -229,10 +229,21 @@ def enrich_keywords_file(
 
 def main():
     """Main enrichment process."""
-    # Set up paths
-    repo_root = Path(__file__).parent.parent
+    # Use relative path from script location
+    script_dir = Path(__file__).parent
+    repo_root = script_dir.parent
     pdet_data_path = repo_root / "canonic_questionnaire_central" / "colombia_context" / "pdet_municipalities.json"
     policy_areas_dir = repo_root / "canonic_questionnaire_central" / "policy_areas"
+    
+    if not pdet_data_path.exists():
+        print(f"Error: PDET data file not found at {pdet_data_path}")
+        print("Please run this script from the repository root or scripts directory.")
+        return 1
+    
+    if not policy_areas_dir.exists():
+        print(f"Error: Policy areas directory not found at {policy_areas_dir}")
+        print("Please run this script from the repository root or scripts directory.")
+        return 1
     
     print("=" * 80)
     print("PDET Municipality Context Enrichment for Policy Areas")
