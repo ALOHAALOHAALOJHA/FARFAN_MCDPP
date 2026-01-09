@@ -48,7 +48,7 @@ class PathRepairer:
         self.dry_run = dry_run
         self.backup = backup
         self.verbose = verbose
-        self.changes: List[Dict[str, any]] = []
+        self.changes: List[Dict[str, Any]] = []
 
     def repair_imports(self, py_file: Path) -> int:
         """Repair deprecated imports in a file."""
