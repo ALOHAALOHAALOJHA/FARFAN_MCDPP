@@ -1,0 +1,496 @@
+{
+  "summary": {
+    "timestamp": "2026-01-09T21:55:43.593709+00:00",
+    "total_checks": 35,
+    "passed_checks": 32,
+    "failed_checks": 3,
+    "warnings": 3,
+    "errors": 0,
+    "critical": 0,
+    "pass_rate": "91.43%"
+  },
+  "results": [
+    {
+      "section": "1.1",
+      "check_name": "Policy Areas Count",
+      "passed": true,
+      "message": "CANON_POLICY_AREAS has 10 entries (expected 10)",
+      "severity": "INFO",
+      "details": {
+        "count": 10,
+        "expected": 10
+      }
+    },
+    {
+      "section": "1.1",
+      "check_name": "Policy Areas Format",
+      "passed": true,
+      "message": "All policy area keys follow PA## format",
+      "severity": "INFO",
+      "details": {}
+    },
+    {
+      "section": "1.1",
+      "check_name": "Dimensions Count",
+      "passed": true,
+      "message": "CANON_DIMENSIONS has 6 entries (expected 6)",
+      "severity": "INFO",
+      "details": {
+        "count": 6,
+        "expected": 6
+      }
+    },
+    {
+      "section": "1.1",
+      "check_name": "Dimensions Format",
+      "passed": true,
+      "message": "All dimension keys follow DIM## format",
+      "severity": "INFO",
+      "details": {}
+    },
+    {
+      "section": "1.1",
+      "check_name": "Micro Levels Monotonicity",
+      "passed": true,
+      "message": "MICRO_LEVELS maintain monotonic ordering",
+      "severity": "INFO",
+      "details": {
+        "EXCELENTE": 0.85,
+        "BUENO": 0.7,
+        "ACEPTABLE": 0.55,
+        "INSUFICIENTE": 0.0
+      }
+    },
+    {
+      "section": "1.1",
+      "check_name": "CDAF Domain Weights Sum",
+      "passed": true,
+      "message": "Domain weights sum to 1.0000000000 (expected 1.0)",
+      "severity": "INFO",
+      "details": {
+        "sum": 1.0,
+        "weights": {
+          "semantic": 0.35,
+          "temporal": 0.25,
+          "financial": 0.25,
+          "structural": 0.15
+        }
+      }
+    },
+    {
+      "section": "1.1",
+      "check_name": "Causal Chain Sequential",
+      "passed": true,
+      "message": "CAUSAL_CHAIN_ORDER values are sequential",
+      "severity": "INFO",
+      "details": {
+        "insumos": 0,
+        "actividades": 1,
+        "productos": 2,
+        "resultados": 3,
+        "efectos": 4,
+        "impactos": 5
+      }
+    },
+    {
+      "section": "1.1",
+      "check_name": "Canonical Specs Validation Function",
+      "passed": true,
+      "message": "All canonical specs validation checks passed",
+      "severity": "INFO",
+      "details": {
+        "policy_areas_count": true,
+        "policy_areas_format": true,
+        "dimensions_count": true,
+        "dimensions_format": true,
+        "micro_levels_monotonic": true,
+        "alignment_threshold": true,
+        "total_questions": true,
+        "domain_weights_sum": true,
+        "causal_chain_sequential": true
+      }
+    },
+    {
+      "section": "1.2",
+      "check_name": "Hardcoded Parameters",
+      "passed": false,
+      "message": "Found 141 hardcoded parameters outside canonical_specs",
+      "severity": "WARNING",
+      "details": {
+        "hardcoded_locations": [
+          {
+            "file": "src/farfan_pipeline/inference/bayesian_adapter.py",
+            "pattern": "\\b0\\.[5-9]\\d*\\b",
+            "matches": 8
+          },
+          {
+            "file": "src/farfan_pipeline/inference/bayesian_sampling_engine.py",
+            "pattern": "\\b0\\.[5-9]\\d*\\b",
+            "matches": 6
+          },
+          {
+            "file": "src/farfan_pipeline/inference/bayesian_prior_builder.py",
+            "pattern": "\\b0\\.[5-9]\\d*\\b",
+            "matches": 5
+          },
+          {
+            "file": "src/farfan_pipeline/inference/bayesian_diagnostics.py",
+            "pattern": "\\b0\\.[5-9]\\d*\\b",
+            "matches": 3
+          },
+          {
+            "file": "src/farfan_pipeline/methods/embedding_policy.py",
+            "pattern": "\\b0\\.[5-9]\\d*\\b",
+            "matches": 8
+          },
+          {
+            "file": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
+            "pattern": "\\b0\\.[5-9]\\d*\\b",
+            "matches": 9
+          },
+          {
+            "file": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
+            "pattern": "\\b0\\.[5-9]\\d*\\b",
+            "matches": 26
+          },
+          {
+            "file": "src/farfan_pipeline/methods/policy_processor.py",
+            "pattern": "\\b0\\.[5-9]\\d*\\b",
+            "matches": 15
+          },
+          {
+            "file": "src/farfan_pipeline/methods/heterogeneous_treatment_effects.py",
+            "pattern": "\\b0\\.[5-9]\\d*\\b",
+            "matches": 1
+          },
+          {
+            "file": "src/farfan_pipeline/methods/financiero_viabilidad_tablas.py",
+            "pattern": "\\b0\\.[5-9]\\d*\\b",
+            "matches": 41
+          }
+        ]
+      }
+    },
+    {
+      "section": "2.1",
+      "check_name": "Epistemic Ratio Sum - TYPE_B",
+      "passed": true,
+      "message": "TYPE_B: Ratio sum = 1.0000",
+      "severity": "INFO",
+      "details": {
+        "type": "TYPE_B",
+        "n1_mid": 0.35,
+        "n2_mid": 0.4,
+        "n3_mid": 0.25,
+        "sum": 1.0
+      }
+    },
+    {
+      "section": "2.3",
+      "check_name": "Operations Disjointness - TYPE_B",
+      "passed": true,
+      "message": "TYPE_B: No overlap between permitted/prohibited",
+      "severity": "INFO",
+      "details": {
+        "overlap": []
+      }
+    },
+    {
+      "section": "2.1",
+      "check_name": "Epistemic Ratio Sum - SUBTIPO_F",
+      "passed": true,
+      "message": "SUBTIPO_F: Ratio sum = 1.0000",
+      "severity": "INFO",
+      "details": {
+        "type": "SUBTIPO_F",
+        "n1_mid": 0.30000000000000004,
+        "n2_mid": 0.4,
+        "n3_mid": 0.30000000000000004,
+        "sum": 1.0
+      }
+    },
+    {
+      "section": "2.3",
+      "check_name": "Operations Disjointness - SUBTIPO_F",
+      "passed": true,
+      "message": "SUBTIPO_F: No overlap between permitted/prohibited",
+      "severity": "INFO",
+      "details": {
+        "overlap": []
+      }
+    },
+    {
+      "section": "2.1",
+      "check_name": "Epistemic Ratio Sum - TYPE_A",
+      "passed": true,
+      "message": "TYPE_A: Ratio sum = 1.0000",
+      "severity": "INFO",
+      "details": {
+        "type": "TYPE_A",
+        "n1_mid": 0.30000000000000004,
+        "n2_mid": 0.5,
+        "n3_mid": 0.2,
+        "sum": 1.0
+      }
+    },
+    {
+      "section": "2.3",
+      "check_name": "Operations Disjointness - TYPE_A",
+      "passed": true,
+      "message": "TYPE_A: No overlap between permitted/prohibited",
+      "severity": "INFO",
+      "details": {
+        "overlap": []
+      }
+    },
+    {
+      "section": "2.1",
+      "check_name": "Epistemic Ratio Sum - TYPE_C",
+      "passed": true,
+      "message": "TYPE_C: Ratio sum = 1.0000",
+      "severity": "INFO",
+      "details": {
+        "type": "TYPE_C",
+        "n1_mid": 0.30000000000000004,
+        "n2_mid": 0.35,
+        "n3_mid": 0.35,
+        "sum": 1.0
+      }
+    },
+    {
+      "section": "2.3",
+      "check_name": "Operations Disjointness - TYPE_C",
+      "passed": true,
+      "message": "TYPE_C: No overlap between permitted/prohibited",
+      "severity": "INFO",
+      "details": {
+        "overlap": []
+      }
+    },
+    {
+      "section": "2.1",
+      "check_name": "Epistemic Ratio Sum - TYPE_E",
+      "passed": true,
+      "message": "TYPE_E: Ratio sum = 1.0000",
+      "severity": "INFO",
+      "details": {
+        "type": "TYPE_E",
+        "n1_mid": 0.25,
+        "n2_mid": 0.4,
+        "n3_mid": 0.35,
+        "sum": 1.0
+      }
+    },
+    {
+      "section": "2.3",
+      "check_name": "Operations Disjointness - TYPE_E",
+      "passed": true,
+      "message": "TYPE_E: No overlap between permitted/prohibited",
+      "severity": "INFO",
+      "details": {
+        "overlap": []
+      }
+    },
+    {
+      "section": "2.1",
+      "check_name": "Epistemic Ratio Sum - TYPE_D",
+      "passed": true,
+      "message": "TYPE_D: Ratio sum = 1.0000",
+      "severity": "INFO",
+      "details": {
+        "type": "TYPE_D",
+        "n1_mid": 0.25,
+        "n2_mid": 0.55,
+        "n3_mid": 0.2,
+        "sum": 1.0
+      }
+    },
+    {
+      "section": "2.3",
+      "check_name": "Operations Disjointness - TYPE_D",
+      "passed": true,
+      "message": "TYPE_D: No overlap between permitted/prohibited",
+      "severity": "INFO",
+      "details": {
+        "overlap": []
+      }
+    },
+    {
+      "section": "3.1",
+      "check_name": "Required Parameters Defined",
+      "passed": true,
+      "message": "Required parameters set defined: frozenset({'chunk_size', 'extraction_coverage_target', 'veto_threshold', 'prior_strength'})",
+      "severity": "INFO",
+      "details": {
+        "required_params": [
+          "chunk_size",
+          "extraction_coverage_target",
+          "veto_threshold",
+          "prior_strength"
+        ]
+      }
+    },
+    {
+      "section": "3.2",
+      "check_name": "Evidence Prefixes Defined",
+      "passed": true,
+      "message": "Valid evidence prefixes: frozenset({'docs/', 'src/', 'artifacts/'})",
+      "severity": "INFO",
+      "details": {
+        "prefixes": [
+          "docs/",
+          "src/",
+          "artifacts/"
+        ]
+      }
+    },
+    {
+      "section": "3.2",
+      "check_name": "Commit SHA Pattern Defined",
+      "passed": true,
+      "message": "Commit SHA pattern defined: ^[0-9a-f]{40}$",
+      "severity": "INFO",
+      "details": {}
+    },
+    {
+      "section": "4.1",
+      "check_name": "Bounded Fusion Constants",
+      "passed": true,
+      "message": "Fusion bounds: [0.01, 10.0]",
+      "severity": "INFO",
+      "details": {
+        "min": 0.01,
+        "max": 10.0
+      }
+    },
+    {
+      "section": "4.1",
+      "check_name": "Unbounded Multiplications",
+      "passed": false,
+      "message": "Found 2 potential unbounded multiplications",
+      "severity": "WARNING",
+      "details": {
+        "locations": [
+          {
+            "file": "src/farfan_pipeline/phases/Phase_two/epistemological_assets/phase2_10_00_epistemological_method_classifier.py",
+            "pattern": "math\\.prod\\("
+          },
+          {
+            "file": "src/farfan_pipeline/phases/Phase_two/epistemological_assets/epistemological_method_classifier.py",
+            "pattern": "math\\.prod\\("
+          }
+        ]
+      }
+    },
+    {
+      "section": "5.1",
+      "check_name": "Veto Threshold Range - STRICTEST",
+      "passed": true,
+      "message": "STRICTEST: [0.01, 0.05], default=0.03",
+      "severity": "INFO",
+      "details": {
+        "min": 0.01,
+        "max": 0.05,
+        "default": 0.03
+      }
+    },
+    {
+      "section": "5.1",
+      "check_name": "Veto Threshold Range - STANDARD",
+      "passed": true,
+      "message": "STANDARD: [0.03, 0.07], default=0.05",
+      "severity": "INFO",
+      "details": {
+        "min": 0.03,
+        "max": 0.07,
+        "default": 0.05
+      }
+    },
+    {
+      "section": "5.1",
+      "check_name": "Veto Threshold Range - LENIENT",
+      "passed": true,
+      "message": "LENIENT: [0.05, 0.1], default=0.07",
+      "severity": "INFO",
+      "details": {
+        "min": 0.05,
+        "max": 0.1,
+        "default": 0.07
+      }
+    },
+    {
+      "section": "6.1",
+      "check_name": "Prior Strength Default Bounds",
+      "passed": true,
+      "message": "Prior strength: min=0.1, default=1.0, max=10.0",
+      "severity": "INFO",
+      "details": {
+        "min": 0.1,
+        "default": 1.0,
+        "max": 10.0,
+        "bayesian": 2.0
+      }
+    },
+    {
+      "section": "6.1",
+      "check_name": "Bayesian Prior Strength Bounds",
+      "passed": true,
+      "message": "Bayesian prior strength 2.0 within bounds",
+      "severity": "INFO",
+      "details": {}
+    },
+    {
+      "section": "7.1",
+      "check_name": "Complexity Score Formula Present",
+      "passed": true,
+      "message": "Complexity score formula found in unit_of_analysis.py",
+      "severity": "INFO",
+      "details": {}
+    },
+    {
+      "section": "8.1",
+      "check_name": "Verbosity Threshold",
+      "passed": true,
+      "message": "Verbosity threshold: 0.9 (expected 0.90)",
+      "severity": "INFO",
+      "details": {
+        "threshold": 0.9
+      }
+    },
+    {
+      "section": "9",
+      "check_name": "Manifest Module Exists",
+      "passed": true,
+      "message": "calibration_manifest.py found",
+      "severity": "INFO",
+      "details": {}
+    },
+    {
+      "section": "10.1",
+      "check_name": "Uncalibrated Modules",
+      "passed": false,
+      "message": "Found 132 modules with potential uncalibrated parameters",
+      "severity": "WARNING",
+      "details": {
+        "uncalibrated_files": [
+          "src/farfan_pipeline/utils/method_config_loader.py",
+          "src/farfan_pipeline/inference/bayesian_adapter.py",
+          "src/farfan_pipeline/inference/bayesian_sampling_engine.py",
+          "src/farfan_pipeline/inference/bayesian_prior_builder.py",
+          "src/farfan_pipeline/inference/bayesian_diagnostics.py",
+          "src/farfan_pipeline/inference/__init__.py",
+          "src/farfan_pipeline/methods/embedding_policy.py",
+          "src/farfan_pipeline/methods/semantic_chunking_policy.py",
+          "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
+          "src/farfan_pipeline/methods/policy_processor.py"
+        ]
+      }
+    }
+  ],
+  "recommendations": [
+    "\ud83d\udccc Review 3 warning(s) for potential improvements",
+    "\ud83d\udccb Section 1: Migrate hardcoded parameters to canonical_specs.py",
+    "\ud83d\udccb Section 4: Replace unbounded multiplications with bounded_multiplicative_fusion()",
+    "\ud83d\udccb Section 10: Integrate uncalibrated modules into calibration framework"
+  ]
+}
