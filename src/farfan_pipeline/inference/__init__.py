@@ -29,6 +29,12 @@ from .bayesian_prior_builder import BayesianPriorBuilder
 from .bayesian_sampling_engine import BayesianSamplingEngine
 
 # Optional imports for modules still in development
+# GRACEFUL_DEGRADATION(irreducible): Module availability depends on:
+# 1. Installation completeness (user may have partial installation)
+# 2. Development state (modules explicitly marked "still in development")
+# 3. Deployment environment (CI/testing may not have all dependencies)
+# Cannot be resolved statically - file system state is a runtime property.
+# Severity: QUALITY - Bayesian analysis features unavailable if modules missing.
 try:
     from .bayesian_adapter import BayesianEngineAdapter
 except ImportError:

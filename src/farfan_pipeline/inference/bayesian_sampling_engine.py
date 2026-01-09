@@ -110,9 +110,31 @@ class BayesianSamplingEngine:
         raw_chains = bayesian_thresholds.get("mcmc_chains")
         raw_accept = bayesian_thresholds.get("target_accept")
 
-        self.n_samples: int = int(raw_samples) if raw_samples is not None else 2000
-        self.n_chains: int = int(raw_chains) if raw_chains is not None else 4
-        self.target_accept: float = float(raw_accept) if raw_accept is not None else 0.9
+        # Parse with defaults
+        n_samples_parsed = int(raw_samples) if raw_samples is not None else 2000
+        n_chains_parsed = int(raw_chains) if raw_chains is not None else 4
+        target_accept_parsed = float(raw_accept) if raw_accept is not None else 0.9
+
+        # RIGOROUS VALIDATION: MCMC parameters must be valid
+        if n_samples_parsed < 1:
+            self.logger.warning(
+                f"mcmc_samples={n_samples_parsed} invalid, using minimum 100"
+            )
+            n_samples_parsed = 100
+        if n_chains_parsed < 1:
+            self.logger.warning(
+                f"mcmc_chains={n_chains_parsed} invalid, using minimum 1"
+            )
+            n_chains_parsed = 1
+        if not 0.0 < target_accept_parsed < 1.0:
+            self.logger.warning(
+                f"target_accept={target_accept_parsed} outside (0,1), using 0.9"
+            )
+            target_accept_parsed = 0.9
+
+        self.n_samples: int = n_samples_parsed
+        self.n_chains: int = n_chains_parsed
+        self.target_accept: float = target_accept_parsed
 
         self.logger.info(
             f"BayesianSamplingEngine initialized: "
@@ -125,7 +147,11 @@ class BayesianSamplingEngine:
         return PYMC_AVAILABLE
 
     def sample_beta_binomial(
-        self, n_successes: int, n_trials: int, prior_alpha: float = 1.0, prior_beta: float = 1.0
+        self,
+        n_successes: int,
+        n_trials: int,
+        prior_alpha: float = 1.0,
+        prior_beta: float = 1.0,
     ) -> SamplingResult:
         """
         Sample from Beta-Binomial conjugate model.
@@ -136,32 +162,57 @@ class BayesianSamplingEngine:
             Posterior: theta | y ~ Beta(prior_alpha + n_successes, prior_beta + n_failures)
 
         Args:
-            n_successes: Number of successes observed
-            n_trials: Total number of trials
-            prior_alpha: Prior alpha parameter
-            prior_beta: Prior beta parameter
+            n_successes: Number of successes observed (must be >= 0)
+            n_trials: Total number of trials (must be >= n_successes)
+            prior_alpha: Prior alpha parameter (must be > 0)
+            prior_beta: Prior beta parameter (must be > 0)
 
         Returns:
             SamplingResult with posterior samples and diagnostics
 
         Raises:
-            RuntimeError: If PyMC is not available
+            ValueError: If prior parameters are not positive
+
+        Raises:
+            ValueError: If prior parameters are not positive
         """
+        # CRITICAL VALIDATION: Prior parameters must be positive for Beta distribution
+        # Validate BEFORE checking PyMC availability (fail fast principle)
+        if not isinstance(prior_alpha, (int, float)) or not np.isfinite(prior_alpha):
+            raise ValueError(f"prior_alpha must be finite numeric, got {prior_alpha}")
+        if not isinstance(prior_beta, (int, float)) or not np.isfinite(prior_beta):
+            raise ValueError(f"prior_beta must be finite numeric, got {prior_beta}")
+        if prior_alpha <= 0:
+            raise ValueError(
+                f"prior_alpha must be > 0 for Beta distribution, got {prior_alpha}"
+            )
+        if prior_beta <= 0:
+            raise ValueError(
+                f"prior_beta must be > 0 for Beta distribution, got {prior_beta}"
+            )
+
         if not PYMC_AVAILABLE:
             self.logger.error("PyMC not available for Beta-Binomial sampling")
             return self._null_result("pymc_unavailable")
 
+        # RIGOROUS VALIDATION: Data constraints
         if n_trials < 0 or n_successes < 0 or n_successes > n_trials:
             self.logger.error(f"Invalid data: successes={n_successes}, trials={n_trials}")
             return self._null_result("invalid_data")
 
+        # Handle degenerate case: n_trials = 0 produces uninformative update
+        if n_trials == 0:
+            self.logger.warning(
+                "n_trials=0 produces degenerate posterior equal to prior"
+            )
+
         try:
-            with pm.Model() as model:
+            with pm.Model():
                 # Prior: Beta distribution
                 theta = pm.Beta("theta", alpha=prior_alpha, beta=prior_beta)
 
                 # Likelihood: Binomial
-                y = pm.Binomial("y", n=n_trials, p=theta, observed=n_successes)
+                pm.Binomial("y", n=n_trials, p=theta, observed=n_successes)
 
                 # Sample posterior
                 with warnings.catch_warnings():
@@ -288,15 +339,46 @@ class BayesianSamplingEngine:
 
         Args:
             group_data: List of (successes, trials) tuples for each group
-            population_alpha: Sigma for population-level alpha hyperprior (default 2.0)
-            population_beta: Sigma for population-level beta hyperprior (default 2.0)
+            population_alpha: Sigma for population-level alpha hyperprior (must be > 0)
+            population_beta: Sigma for population-level beta hyperprior (must be > 0)
 
         Returns:
             List of SamplingResult objects, one per group
 
         Raises:
-            RuntimeError: If PyMC is not available
+            ValueError: If population parameters are not positive or group data invalid
         """
+        # CRITICAL VALIDATION: HalfNormal sigma must be positive
+        # Validate BEFORE checking PyMC availability (fail fast principle)
+        if not isinstance(population_alpha, (int, float)) or not np.isfinite(population_alpha):
+            raise ValueError(f"population_alpha must be finite numeric, got {population_alpha}")
+        if not isinstance(population_beta, (int, float)) or not np.isfinite(population_beta):
+            raise ValueError(f"population_beta must be finite numeric, got {population_beta}")
+        if population_alpha <= 0:
+            raise ValueError(
+                f"population_alpha must be > 0 for HalfNormal sigma, got {population_alpha}"
+            )
+        if population_beta <= 0:
+            raise ValueError(
+                f"population_beta must be > 0 for HalfNormal sigma, got {population_beta}"
+            )
+
+        # RIGOROUS VALIDATION: Validate each group's data BEFORE PyMC check
+        if len(group_data) > 0:
+            for i, (successes, trials) in enumerate(group_data):
+                if not isinstance(successes, (int, np.integer)):
+                    raise TypeError(f"group_data[{i}][0] (successes) must be integer")
+                if not isinstance(trials, (int, np.integer)):
+                    raise TypeError(f"group_data[{i}][1] (trials) must be integer")
+                if successes < 0:
+                    raise ValueError(f"group_data[{i}][0] (successes) must be >= 0, got {successes}")
+                if trials < 0:
+                    raise ValueError(f"group_data[{i}][1] (trials) must be >= 0, got {trials}")
+                if successes > trials:
+                    raise ValueError(
+                        f"group_data[{i}]: successes ({successes}) > trials ({trials})"
+                    )
+
         if not PYMC_AVAILABLE:
             self.logger.error("PyMC not available for hierarchical sampling")
             return [self._null_result("pymc_unavailable") for _ in group_data]
@@ -306,11 +388,15 @@ class BayesianSamplingEngine:
             return []
 
         n_groups = len(group_data)
+        for i, (successes, trials) in enumerate(group_data):
+            if trials == 0:
+                self.logger.warning(f"group_data[{i}] has trials=0, will produce uninformative update")
+
         successes_array = np.array([s for s, _ in group_data], dtype=np.int64)
         trials_array = np.array([t for _, t in group_data], dtype=np.int64)
 
         try:
-            with pm.Model() as model:
+            with pm.Model():
                 # Population-level hyperpriors (parameterized)
                 alpha = pm.HalfNormal("alpha", sigma=population_alpha)
                 beta = pm.HalfNormal("beta", sigma=population_beta)

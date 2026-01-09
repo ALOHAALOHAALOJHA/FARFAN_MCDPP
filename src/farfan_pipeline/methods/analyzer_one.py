@@ -42,6 +42,14 @@ CAL_ROOT = CANONICAL_ROOT / "calibration"
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# GRACEFUL_DEGRADATION(irreducible): Heavy NLP/ML dependencies availability depends on:
+# 1. Installation environment (minimal environments may exclude heavyweight packages)
+# 2. Compilation requirements (NumPy requires compilation, may fail on some platforms)
+# 3. Additional data downloads (NLTK requires separate corpus downloads)
+# 4. Version compatibility constraints (scikit-learn/pandas version conflicts)
+# Cannot be resolved statically - package availability is a deployment-time property.
+# Severity: QUALITY - Core NLP/ML features unavailable, analysis degrades to basic text processing.
+# Usage pattern: Code using these libraries must check `if np is not None:` before use.
 try:
     import numpy as np
 except ImportError as e:
