@@ -22,5 +22,111 @@
     "official_stats",
     "official_documents",
     "third_party_research"
-  ]
+  ],
+  "pdet_enrichment": {
+    "_pdet_enrichment_version": "1.0.0",
+    "_enrichment_date": "2026-01-09T23:23:38.327785",
+    "_validation_gates": {
+      "gate_1_scope": {
+        "required_scope": "pdet_context",
+        "allowed_signal_types": [
+          "ENRICHMENT_DATA",
+          "TERRITORIAL_MARKER"
+        ],
+        "min_confidence": 0.75,
+        "policy_area_relevance": "HIGH"
+      },
+      "gate_2_value_add": {
+        "estimated_value_add": 0.25,
+        "enables": [
+          "territorial_targeting",
+          "resource_allocation",
+          "subregion_analysis"
+        ],
+        "optimizes": [
+          "policy_alignment",
+          "contextual_validation",
+          "intervention_design"
+        ],
+        "contribution_type": "FOUNDATIONAL"
+      },
+      "gate_3_capability": {
+        "required_capabilities": [
+          "SEMANTIC_PROCESSING",
+          "TABLE_PARSING"
+        ],
+        "recommended_capabilities": [
+          "GRAPH_CONSTRUCTION",
+          "GEOSPATIAL_ANALYSIS",
+          "FINANCIAL_ANALYSIS"
+        ],
+        "minimum_capability_count": 2
+      },
+      "gate_4_channel": {
+        "flow_id": "PDET_ENRICHMENT_PA01_mujeres_genero",
+        "flow_type": "ENRICHMENT_FLOW",
+        "source": "colombia_context.pdet_municipalities",
+        "destination": "policy_areas.PA01_mujeres_genero",
+        "is_explicit": true,
+        "is_documented": true,
+        "is_traceable": true,
+        "is_governed": true,
+        "documentation_path": "canonic_questionnaire_central/colombia_context/README_PDET_ENRICHMENT.md"
+      }
+    },
+    "pdet_context": {
+      "relevant_subregions": [
+        "SR01",
+        "SR04",
+        "SR05",
+        "SR08",
+        "SR09",
+        "SR10",
+        "SR12",
+        "SR14",
+        "SR16"
+      ],
+      "subregion_count": 9,
+      "key_indicators": [
+        "women_labor_participation",
+        "gender_wage_gap",
+        "political_representation"
+      ],
+      "pdet_pillars": [
+        "pillar_4",
+        "pillar_8"
+      ],
+      "pillar_descriptions": {
+        "pillar_1": "Reforma Rural Integral (Land formalization)",
+        "pillar_2": "Infraestructura (Infrastructure and connectivity)",
+        "pillar_3": "Salud Rural (Rural health services)",
+        "pillar_4": "Educación Rural (Rural education)",
+        "pillar_5": "Vivienda y Agua (Housing and water access)",
+        "pillar_6": "Reactivación Económica (Economic reactivation)",
+        "pillar_7": "Seguridad Alimentaria (Food security)",
+        "pillar_8": "Reconciliación (Reconciliation and peacebuilding)"
+      },
+      "territorial_coverage": {
+        "total_pdet_municipalities": 170,
+        "total_pdet_subregions": 16,
+        "total_pdet_population": 6848000,
+        "rural_percentage": 24.0
+      },
+      "legal_basis": "Acuerdo de Paz Punto 1 + Decreto Ley 893/2017",
+      "planning_horizon_years": 15
+    },
+    "data_sources": [
+      "Decreto Ley 893 de 2017",
+      "Central de Información PDET",
+      "OCAD Paz Session Records",
+      "DNP - Sistema de Estadísticas Territoriales",
+      "Agencia de Renovación del Territorio (ART)"
+    ],
+    "quality_assurance": {
+      "data_validation_date": "2026-01-08",
+      "gate_compliance_verified": true,
+      "all_gates_passed": true,
+      "compliance_score": 1.0
+    }
+  }
 }
