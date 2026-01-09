@@ -15,8 +15,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from farfan_pipeline.methods.causal_structure_learning import (
-    CausalStructureLearner,
+from farfan_pipeline.methods.causal_structure_learning import CausalStructureLearner
 
 
 
