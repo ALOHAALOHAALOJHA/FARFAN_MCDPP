@@ -40,6 +40,13 @@ from typing import Any, Callable, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
+# GRACEFUL_DEGRADATION(irreducible): psutil availability depends on:
+# 1. Operating system compatibility (not available on all platforms)
+# 2. Installation environment (CI/minimal environments may exclude it)
+# 3. Security policies (some environments prohibit system introspection)
+# Cannot be resolved statically - platform capabilities vary at deployment time.
+# Severity: HIGH - Resource checks will be skipped (lines 277-292) with warning.
+# Resource exhaustion will be caught by OS (OOM killer) rather than pre-flight check.
 try:
     import psutil  # type: ignore
 except Exception:  # pragma: no cover

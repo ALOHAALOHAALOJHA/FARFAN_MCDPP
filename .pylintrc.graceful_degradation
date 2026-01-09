@@ -1,0 +1,99 @@
+# Pylint Configuration for Graceful Degradation Analysis
+# ========================================================
+#
+# RECOMMENDATION 4: Static linter for unnecessary fallbacks
+#
+# This configuration file enables custom pylint checkers that detect
+# unreachable or suspicious fallback handlers in the codebase.
+#
+# Usage:
+#   pylint --rcfile=.pylintrc.graceful_degradation src/farfan_pipeline/
+#
+# Or to check specific files:
+#   pylint --rcfile=.pylintrc.graceful_degradation \
+#       src/farfan_pipeline/infrastructure/contractual/dura_lex/failure_fallback.py
+
+[MASTER]
+
+# Load custom pylint plugins
+load-plugins=farfan_pipeline.linters.pylint_unreachable_fallback
+
+# Python code to execute on startup (e.g., import sys; sys.path.append('src'))
+init-hook='import sys; sys.path.insert(0, "src")'
+
+
+[MESSAGES CONTROL]
+
+# Enable specific messages for graceful degradation analysis
+enable=
+    unreachable-fallback-handler,
+    suspicious-fallback-handler,
+    fallback-handler-verification
+
+# Disable other messages to focus on fallback analysis
+disable=
+    all
+
+# Or enable all and just focus on fallback warnings:
+# disable=
+# enable=all
+
+
+[REPORTS]
+
+# Set output format
+output-format=text
+
+# Include message IDs in output
+msg-template={path}:{line}:{column}: {msg_id}: {msg} ({symbol})
+
+
+[UNREACHABLE-FALLBACK]
+
+# Custom configuration for unreachable fallback checker
+# (currently no custom options, but can be extended)
+
+
+# =============================================================================
+# EXAMPLE CHECKS
+# =============================================================================
+#
+# The following patterns will be detected:
+#
+# 1. UNREACHABLE FALLBACK (W9001):
+#    ```python
+#    def always_succeeds():
+#        return 42
+#
+#    x = FailureFallbackContract.execute_with_fallback(
+#        always_succeeds,
+#        fallback_value=0,
+#        expected_exceptions=(ValueError,)  # ValueError never raised!
+#    )
+#    ```
+#
+# 2. SUSPICIOUS FALLBACK (W9002):
+#    ```python
+#    def no_exceptions():
+#        data = {"key": "value"}
+#        return data["key"]
+#
+#    x = FailureFallbackContract.execute_with_fallback(
+#        no_exceptions,
+#        fallback_value="default",
+#        expected_exceptions=(KeyError,)  # No raise statements in function
+#    )
+#    ```
+#
+# 3. VERIFICATION NEEDED (I9001):
+#    ```python
+#    def complex_operation():
+#        # Calls external functions, analysis cannot determine exceptions
+#        return external_api_call()
+#
+#    x = FailureFallbackContract.execute_with_fallback(
+#        complex_operation,
+#        fallback_value=None,
+#        expected_exceptions=(NetworkError,)  # Manual verification needed
+#    )
+#    ```
