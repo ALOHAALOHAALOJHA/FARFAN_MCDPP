@@ -1,17 +1,41 @@
-# Phase 2: Deterministic Executor Orchestration for Reproducible Policy Analysis
+# Phase 2: 300-Contract Deterministic Executor Orchestration
 
-**A Contract-Driven Multi-Method Synthesis Architecture with Signal-Irrigated Evidence Assembly**
+**Contract-Driven Question Execution with Signal-Irrigated Evidence Assembly**
 
 *F.A.R.F.A.N Mechanistic Policy Pipeline*  
-Version 3.1.0 | December 2025
+Version 4.0.0 | January 2026
+
+---
+
+## ⚠️ ARCHITECTURE NOTICE (2026-01-09)
+
+**THIS MODULE IMPLEMENTS THE 300 JSON CONTRACT ARCHITECTURE.**
+
+The legacy 30-executor design (D1Q1_Executor through D6Q5_Executor with 10× policy area multiplier) has been **FULLY DEPRECATED AND REMOVED**. All execution now flows through:
+
+1. **300 individual v4 JSON contracts** in `generated_contracts/`
+2. **DynamicContractExecutor** for runtime contract loading
+3. **Single sequential execution path** (no competing flows)
+
+Any reference to "30 executors" in docstrings is HISTORICAL DOCUMENTATION ONLY.
 
 ---
 
 ## Abstract
 
-Phase 2 constitutes the analytical core of the F.A.R.F.A.N deterministic policy pipeline, implementing contract-driven executor orchestration with Signal-Irrigated Smart Augmentation System (SISAS) integration. This module transforms 60-chunk Canonical Policy Packages into 300 evidence-rich analytical responses through a five-stage transformation pipeline guaranteeing bitwise-identical reproducibility. The architecture comprises 29 Python modules organized in strict alphabetical sequence (a–z, aa–ac), each labeled with `PHASE_LABEL: Phase 2` for provenance tracking. This document specifies the complete technical architecture, execution semantics, signal irrigation mechanics, and formal verification properties required for peer-reviewed computational social science.
+Phase 2 implements **contract-driven execution of 300 analytical questions** through individual JSON contracts. Each contract specifies:
+- **Identity**: Q{001-030}\_PA{01-10} (30 base questions × 10 policy areas)
+- **Method binding**: Epistemological pipeline with N1-EMP → N2-INF → N3-AUD phases
+- **Evidence assembly**: Dempster-Shafer belief propagation via EvidenceNexus
+- **Output synthesis**: Doctoral-level narratives via Carver synthesizer
 
-**Keywords**: deterministic orchestration, contract-driven execution, signal irrigation, multi-method synthesis, evidence provenance, reproducible policy analysis
+**Critical Invariants**:
+- Exactly **300 contracts** in `generated_contracts/`
+- Exactly **300 TaskResult** objects produced
+- **Zero** legacy executor classes required
+- **Single** deterministic execution sequence
+
+**Keywords**: 300 contracts, v4 JSON, DynamicContractExecutor, epistemological pipeline, signal irrigation, deterministic execution
 
 ---
 
@@ -88,11 +112,126 @@ Where $S_i$ are signals matching question $Q_i$'s requirements.
 
 ## 3. Module Architecture
 
-### 3.1 Complete Module Inventory (29 Modules)
+### 3.1 300-Contract Architecture (CURRENT)
 
-Phase 2 comprises **29 Python modules** organized in strict alphabetical sequence. Each module contains `PHASE_LABEL: Phase 2` in its docstring header (first 20 lines).
+Phase 2 implements the **300 JSON Contract Architecture**:
 
-#### 3.1.1 Core Pipeline Layer (a–f)
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    300 CONTRACT EXECUTION MODEL                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│   generated_contracts/                                                      │
+│   ├── Q001_PA01_contract_v4.json  ─┐                                       │
+│   ├── Q001_PA02_contract_v4.json   │                                       │
+│   ├── ...                          ├── 300 individual JSON contracts        │
+│   ├── Q030_PA09_contract_v4.json   │                                       │
+│   └── Q030_PA10_contract_v4.json  ─┘                                       │
+│                                                                             │
+│   DynamicContractExecutor                                                   │
+│   ├── Derives base_slot from question_id (Q001 → D1-Q1)                    │
+│   ├── Loads contract at runtime from generated_contracts/                  │
+│   ├── Executes epistemological pipeline (N1→N2→N3)                        │
+│   └── Returns Phase2QuestionResult                                         │
+│                                                                             │
+│   ❌ NO hardcoded executor classes (D1Q1_Executor, etc.)                    │
+│   ❌ NO executors.py with class definitions                                 │
+│   ❌ NO 30-executor × 10-multiplier pattern                                 │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 3.2 Module Inventory
+
+Phase 2 comprises **29+ Python modules**. Each module contains `PHASE_LABEL: Phase 2` in its docstring.
+
+#### 3.2.1 Core Pipeline Layer (10_xx)
+
+| File | Purpose | Status |
+|------|---------|--------|
+| `phase2_10_00_factory.py` | **DI Factory** - Single authority for orchestrator construction. Loads questionnaire (singleton), builds SignalRegistry, MethodExecutor. | ✅ ACTIVE |
+| `phase2_10_01_class_registry.py` | Maps class names to import paths for 40+ method dispensary classes. | ✅ ACTIVE |
+| `phase2_10_02_methods_registry.py` | Lazy-loading method registry with TTL cache for 240+ methods. | ✅ ACTIVE |
+| `phase2_10_03_executor_config.py` | Executor configuration (timeouts, memory, seeds). | ✅ ACTIVE |
+
+#### 3.2.2 Validation Layer (20_xx)
+
+| File | Purpose | Status |
+|------|---------|--------|
+| `phase2_20_00_method_signature_validator.py` | Validates method signatures against chain requirements. | ✅ ACTIVE |
+| `phase2_20_01_method_source_validator.py` | AST-based source code validation. | ✅ ACTIVE |
+
+#### 3.2.3 Resource Management Layer (30_xx)
+
+| File | Purpose | Status |
+|------|---------|--------|
+| `phase2_30_00_resource_manager.py` | Memory (≤2GB) and time (≤5000ms) enforcement. | ✅ ACTIVE |
+| `phase2_30_01_resource_integration.py` | Integrates resource limits with executor lifecycle. | ✅ ACTIVE |
+| `phase2_30_02_resource_alerts.py` | Threshold alerting system. | ✅ ACTIVE |
+| `phase2_30_03_resource_aware_executor.py` | Adaptive batch sizes based on resources. | ✅ ACTIVE |
+
+#### 3.2.4 Synchronization Layer (40_xx)
+
+| File | Purpose | Status |
+|------|---------|--------|
+| `phase2_40_00_synchronization.py` | ChunkMatrix construction, ExecutionPlan generation. | ✅ ACTIVE |
+| `phase2_40_01_executor_chunk_synchronizer.py` | Executor-chunk JOIN table (300 bindings). | ✅ ACTIVE |
+| `phase2_40_02_schema_validation.py` | Schema compatibility validation. | ✅ ACTIVE |
+| `phase2_40_03_irrigation_synchronizer.py` | **Core SISAS integration** - 60-chunk → 300-task transformation. | ✅ ACTIVE |
+
+#### 3.2.5 Task Execution Layer (50_xx)
+
+| File | Purpose | Status |
+|------|---------|--------|
+| `phase2_50_00_task_executor.py` | **300 contract execution engine** with TaskExecutor, DynamicContractExecutor, checkpointing. | ✅ ACTIVE |
+| `phase2_50_01_task_planner.py` | Deterministic task scheduling. | ✅ ACTIVE |
+
+#### 3.2.6 Executor Framework Layer (60_xx)
+
+| File | Purpose | Status |
+|------|---------|--------|
+| `phase2_60_00_base_executor_with_contract.py` | **BaseExecutorWithContract + DynamicContractExecutor** - v4 contract loading and execution. | ✅ ACTIVE |
+| `phase2_60_01_contract_validator_cqvr.py` | CQVR scoring for contracts. | ✅ ACTIVE |
+| `phase2_60_02_arg_router.py` | Type-safe argument routing. | ✅ ACTIVE |
+| `phase2_60_03_signature_runtime_validator.py` | Runtime signature validation. | ✅ ACTIVE |
+| `phase2_60_04_calibration_policy.py` | 8-layer calibration hierarchy. | ✅ ACTIVE |
+| `phase2_60_05_executor_instrumentation_mixin.py` | Observability mixin. | ✅ ACTIVE |
+
+#### 3.2.7 Evidence & Synthesis Layer (80_xx, 90_xx)
+
+| File | Purpose | Status |
+|------|---------|--------|
+| `phase2_80_00_evidence_nexus.py` | Graph-native evidence assembly with Dempster-Shafer propagation. | ✅ ACTIVE |
+| `phase2_90_00_carver.py` | Doctoral narrative synthesizer (Carver style). | ✅ ACTIVE |
+
+#### 3.2.8 Utilities Layer (95_xx)
+
+| File | Purpose | Status |
+|------|---------|--------|
+| `phase2_95_00_contract_hydrator.py` | **v4 contract hydration** - bridges streamlined contracts to Carver. | ✅ ACTIVE |
+| `phase2_95_00_executor_profiler.py` | Performance profiling. | ✅ ACTIVE |
+| `phase2_95_01_metrics_persistence.py` | Telemetry persistence. | ✅ ACTIVE |
+| `phase2_95_02_precision_tracking.py` | Numerical precision monitoring. | ✅ ACTIVE |
+| `phase2_95_03_executor_calibration_integration.py` | Calibration integration. | ✅ ACTIVE |
+
+### 3.3 DEPRECATED: Legacy 30-Executor Design
+
+The following components are **NO LONGER USED**:
+
+| Component | Status | Replacement |
+|-----------|--------|-------------|
+| `executors.py` | ❌ DELETED | `DynamicContractExecutor` |
+| `D1Q1_Executor` through `D6Q5_Executor` classes | ❌ DELETED | v4 JSON contracts |
+| 30-executor × 10-policy-area multiplier pattern | ❌ DELETED | 300 individual contracts |
+| Base contracts (D1-Q1.json through D6-Q5.json) | ❌ DEPRECATED | `generated_contracts/Q*_PA*_contract_v4.json` |
+
+---
+
+## 4. LEGACY DOCUMENTATION (for reference only)
+
+The following sections are preserved for historical context but describe the **DEPRECATED** architecture.
+
+#### 4.1 Legacy Module Naming (a–z sequence)
 
 | Seq | Module | Purpose | Input | Output |
 |-----|--------|---------|-------|--------|
@@ -568,7 +707,56 @@ Example:
 
 ## 7. Validation & Compliance
 
-### 7.1 Dura Lex Contractual Tests (15)
+### 7.1 Adversarial Test Suite (2026-01-09)
+
+Phase 2 includes a **SEVERE adversarial test suite** in `tests/` that validates:
+
+| Test Module | Tests | Purpose |
+|-------------|-------|---------|
+| `test_contract_integrity.py` | 50+ | Validates all 300 contracts exist, have valid structure, no legacy references |
+| `test_architecture_compliance.py` | 30+ | No legacy executors, proper DynamicContractExecutor usage |
+| `test_execution_flow.py` | 25+ | Deterministic execution, no parallelism in default path |
+| `test_end_to_end.py` | 30+ | Full pipeline simulation, all 300 results produced |
+| `test_adversarial_edge_cases.py` | 40+ | Malformed inputs, security boundaries, boundary conditions |
+| `test_per_file_validation.py` | 60+ | Per-module validation, PHASE_LABEL presence |
+
+#### Running the Tests
+
+```bash
+# Run ALL adversarial tests (severe)
+cd src/farfan_pipeline/phases/Phase_two/tests
+python run_adversarial_tests.py
+
+# Run specific test categories
+python run_adversarial_tests.py --contracts      # Contract integrity only
+python run_adversarial_tests.py --architecture   # Architecture compliance only
+python run_adversarial_tests.py --security       # Security tests only
+python run_adversarial_tests.py --quick          # Quick smoke test (5 failures max)
+
+# Generate HTML report
+python run_adversarial_tests.py --report
+
+# Or use pytest directly
+pytest tests/ -v --tb=long -x  # Stop on first failure
+pytest tests/ -m severe        # Run only severe tests
+```
+
+#### Critical Test Assertions
+
+| ID | Assertion | Severity | Threshold |
+|----|-----------|----------|-----------|
+| ADV-01 | Exactly 300 contracts in generated_contracts/ | CRITICAL | 100% |
+| ADV-02 | No legacy executor classes (D1Q1_Executor, etc.) | CRITICAL | 0 matches |
+| ADV-03 | No executors.py file exists | CRITICAL | File absent |
+| ADV-04 | DynamicContractExecutor present and functional | CRITICAL | Class exists |
+| ADV-05 | All modules have PHASE_LABEL | CRITICAL | 100% |
+| ADV-06 | No parallel execution in default path | CRITICAL | Sequential only |
+| ADV-07 | All contracts are valid JSON | CRITICAL | 100% |
+| ADV-08 | All contracts have v4 structure | CRITICAL | 100% |
+| ADV-09 | No credential/path leaks in contracts | SECURITY | 0 violations |
+| ADV-10 | Contract IDs unique across all 300 | CRITICAL | 100% unique |
+
+### 7.2 Dura Lex Contractual Tests (15)
 
 | ID | Assertion | Module | Threshold |
 |----|-----------|--------|-----------|

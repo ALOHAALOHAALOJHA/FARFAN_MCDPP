@@ -3,8 +3,7 @@ Module: phase2_95_01_metrics_persistence
 PHASE_LABEL: Phase 2
 Sequence: H
 
-"""
-"""Metrics persistence for PhaseInstrumentation telemetry.
+Metrics persistence for PhaseInstrumentation telemetry.
 
 This module provides functions to persist Orchestrator metrics and telemetry
 into artifacts/ directory for CI analysis and regression detection.

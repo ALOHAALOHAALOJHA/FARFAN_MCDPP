@@ -35,7 +35,13 @@ class PermanentError(Exception):
 
 
 class RetryConfig:
-    """Configuration for retry behavior with metrics tracking.
+    """
+    Configuration for retry behavior with metrics tracking.
+
+    Degradation Instance: 7
+    Pattern: RETRY_WITH_BACKOFF
+    Fallback Behavior: After max_retries, raise or return fallback
+    Recovery: Each retry waits longer with jitter to prevent thundering herd
 
     Args:
         max_retries: Maximum number of retry attempts (default: 4)
@@ -64,6 +70,9 @@ class RetryConfig:
         retryable_exceptions: Sequence[Type[Exception]] = (Exception, TransientError),
         on_retry: Callable[[Exception, int, float], None] | None = None
     ):
+        # Degradation metadata
+        self.degradation_instance = "RETRY_PATTERN_7"
+        self.fallback_strategy = "PROPAGATE_AFTER_EXHAUST"
         # Validate parameters
         if max_retries < 0:
             raise ValueError(f"max_retries must be non-negative, got {max_retries}")

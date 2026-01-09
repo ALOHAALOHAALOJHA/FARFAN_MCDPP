@@ -3,8 +3,6 @@ Module: phase2_10_00_factory
 PHASE_LABEL: Phase 2
 Sequence: W
 
-"""
-"""
 Factory module — canonical Dependency Injection (DI) and access control for F.A.R.F.A.N. 
 
 This module is the SINGLE AUTHORITATIVE BOUNDARY for:
