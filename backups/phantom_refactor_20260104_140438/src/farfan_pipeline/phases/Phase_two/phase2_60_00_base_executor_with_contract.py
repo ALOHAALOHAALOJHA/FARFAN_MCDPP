@@ -22,9 +22,9 @@ except ImportError:
     from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
 
 try:
-    from farfan_pipeline.phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
+    from farfan_pipeline.phases.Phase_two.evidence_nexus import process_evidence
 except ImportError:
-    from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import EvidenceNexus, process_evidence
+    from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import process_evidence
 
 try:
     from farfan_pipeline.phases.Phase_two.carver import DoctoralCarverSynthesizer
