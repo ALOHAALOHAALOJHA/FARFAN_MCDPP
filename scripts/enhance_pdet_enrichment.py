@@ -13,8 +13,9 @@ from datetime import datetime
 
 
 # Enhanced indicator mappings for each policy area
+# Using ACTUAL policy area directory names (not fake English translations)
 ENHANCED_INDICATORS = {
-    "PA01_Gender": [
+    "PA01_mujeres_genero": [
         "women_labor_participation",
         "gender_wage_gap",
         "political_representation",
@@ -24,7 +25,7 @@ ENHANCED_INDICATORS = {
         "womens_economic_autonomy",
         "gender_parity_education"
     ],
-    "PA02_Violence_Security": [
+    "PA02_violencia_conflicto": [
         "homicide_rate",
         "displacement",
         "armed_actors_presence",
@@ -34,7 +35,7 @@ ENHANCED_INDICATORS = {
         "illegal_armed_groups",
         "territorial_control_disputes"
     ],
-    "PA03_Environment": [
+    "PA03_ambiente_cambio_climatico": [
         "deforestation_rate",
         "protected_areas",
         "illegal_mining",
@@ -44,7 +45,7 @@ ENHANCED_INDICATORS = {
         "climate_vulnerability",
         "ecosystem_services_degradation"
     ],
-    "PA04_Economic_Development": [
+    "PA04_derechos_economicos_sociales_culturales": [
         "formal_enterprises",
         "agricultural_productivity",
         "market_access",
@@ -54,7 +55,7 @@ ENHANCED_INDICATORS = {
         "rural_employment_rate",
         "income_diversification"
     ],
-    "PA05_Victims_Restitution": [
+    "PA05_victimas_paz": [
         "registered_victims",
         "land_restitution",
         "reparations",
@@ -64,7 +65,7 @@ ENHANCED_INDICATORS = {
         "psychosocial_support",
         "truth_commission_participation"
     ],
-    "PA06_Children_Youth": [
+    "PA06_ninez_adolescencia_juventud": [
         "school_enrollment",
         "child_mortality",
         "recruitment_prevention",
@@ -74,7 +75,7 @@ ENHANCED_INDICATORS = {
         "vocational_training_access",
         "youth_participation_spaces"
     ],
-    "PA07_Peace_Building": [
+    "PA07_tierras_territorios": [
         "reconciliation_initiatives",
         "peace_councils",
         "social_fabric",
@@ -84,7 +85,7 @@ ENHANCED_INDICATORS = {
         "conflict_resolution_mechanisms",
         "social_cohesion_index"
     ],
-    "PA08_Human_Rights": [
+    "PA08_lideres_defensores": [
         "defenders_security",
         "justice_access",
         "human_rights_violations",
@@ -94,7 +95,7 @@ ENHANCED_INDICATORS = {
         "civic_space_restrictions",
         "impunity_rate"
     ],
-    "PA09_Justice": [
+    "PA09_crisis_PPL": [
         "justice_houses",
         "legal_assistance",
         "transitional_justice",
@@ -104,7 +105,7 @@ ENHANCED_INDICATORS = {
         "traditional_justice_systems",
         "access_to_justice_barriers"
     ],
-    "PA10_International": [
+    "PA10_migracion": [
         "border_cooperation",
         "migration",
         "international_assistance",
@@ -199,18 +200,18 @@ def main():
     print("=" * 80)
     print()
     
-    # Map policy area directories to enhanced indicators
+    # Map policy area directories - now using correct names (no translation needed)
     PA_DIR_MAPPING = {
-        "PA01_mujeres_genero": "PA01_Gender",
-        "PA02_violencia_conflicto": "PA02_Violence_Security",
-        "PA03_ambiente_cambio_climatico": "PA03_Environment",
-        "PA04_derechos_economicos_sociales_culturales": "PA04_Economic_Development",
-        "PA05_victimas_paz": "PA05_Victims_Restitution",
-        "PA06_ninez_adolescencia_juventud": "PA06_Children_Youth",
-        "PA07_tierras_territorios": "PA07_Peace_Building",
-        "PA08_lideres_defensores": "PA08_Human_Rights",
-        "PA09_crisis_PPL": "PA09_Justice",
-        "PA10_migracion": "PA10_International"
+        "PA01_mujeres_genero": "PA01_mujeres_genero",
+        "PA02_violencia_conflicto": "PA02_violencia_conflicto",
+        "PA03_ambiente_cambio_climatico": "PA03_ambiente_cambio_climatico",
+        "PA04_derechos_economicos_sociales_culturales": "PA04_derechos_economicos_sociales_culturales",
+        "PA05_victimas_paz": "PA05_victimas_paz",
+        "PA06_ninez_adolescencia_juventud": "PA06_ninez_adolescencia_juventud",
+        "PA07_tierras_territorios": "PA07_tierras_territorios",
+        "PA08_lideres_defensores": "PA08_lideres_defensores",
+        "PA09_crisis_PPL": "PA09_crisis_PPL",
+        "PA10_migracion": "PA10_migracion"
     }
     
     enhanced_count = 0

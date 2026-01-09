@@ -12,18 +12,19 @@ from typing import Dict, List, Any
 from datetime import datetime
 
 
-# Policy area ID mappings
+# Policy area ID mappings - Use actual directory names (no translation needed)
+# The PDET source data now uses the same keys as the policy area directories
 PA_ID_MAPPING = {
-    "PA01_mujeres_genero": "PA01_Gender",
-    "PA02_violencia_conflicto": "PA02_Violence_Security",
-    "PA03_ambiente_cambio_climatico": "PA03_Environment",
-    "PA04_derechos_economicos_sociales_culturales": "PA04_Economic_Development",
-    "PA05_victimas_paz": "PA05_Victims_Restitution",
-    "PA06_ninez_adolescencia_juventud": "PA06_Children_Youth",
-    "PA07_tierras_territorios": "PA07_Peace_Building",
-    "PA08_lideres_defensores": "PA08_Human_Rights",
-    "PA09_crisis_PPL": "PA09_Justice",
-    "PA10_migracion": "PA10_International"
+    "PA01_mujeres_genero": "PA01_mujeres_genero",
+    "PA02_violencia_conflicto": "PA02_violencia_conflicto",
+    "PA03_ambiente_cambio_climatico": "PA03_ambiente_cambio_climatico",
+    "PA04_derechos_economicos_sociales_culturales": "PA04_derechos_economicos_sociales_culturales",
+    "PA05_victimas_paz": "PA05_victimas_paz",
+    "PA06_ninez_adolescencia_juventud": "PA06_ninez_adolescencia_juventud",
+    "PA07_tierras_territorios": "PA07_tierras_territorios",
+    "PA08_lideres_defensores": "PA08_lideres_defensores",
+    "PA09_crisis_PPL": "PA09_crisis_PPL",
+    "PA10_migracion": "PA10_migracion"
 }
 
 

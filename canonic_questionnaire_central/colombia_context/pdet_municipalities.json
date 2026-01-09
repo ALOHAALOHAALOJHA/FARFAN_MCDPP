@@ -4441,7 +4441,7 @@
     }
   },
   "policy_area_mappings": {
-    "PA01_Gender": {
+    "PA01_mujeres_genero": {
       "relevant_subregions": [
         "SR01",
         "SR04",
@@ -4463,7 +4463,7 @@
         "pillar_8"
       ]
     },
-    "PA02_Violence_Security": {
+    "PA02_violencia_conflicto": {
       "relevant_subregions": [
         "SR01",
         "SR02",
@@ -4492,7 +4492,7 @@
         "pillar_8"
       ]
     },
-    "PA03_Environment": {
+    "PA03_ambiente_cambio_climatico": {
       "relevant_subregions": [
         "SR03",
         "SR05",
@@ -4515,7 +4515,7 @@
         "pillar_2"
       ]
     },
-    "PA04_Economic_Development": {
+    "PA04_derechos_economicos_sociales_culturales": {
       "relevant_subregions": [
         "SR01",
         "SR02",
@@ -4542,7 +4542,7 @@
         "pillar_7"
       ]
     },
-    "PA05_Victims_Restitution": {
+    "PA05_victimas_paz": {
       "relevant_subregions": [
         "SR01",
         "SR02",
@@ -4563,7 +4563,7 @@
         "pillar_8"
       ]
     },
-    "PA06_Children_Youth": {
+    "PA06_ninez_adolescencia_juventud": {
       "relevant_subregions": [
         "SR01",
         "SR04",
@@ -4585,7 +4585,7 @@
         "pillar_7"
       ]
     },
-    "PA07_Peace_Building": {
+    "PA07_tierras_territorios": {
       "relevant_subregions": [
         "SR01",
         "SR02",
@@ -4609,7 +4609,7 @@
         "pillar_8"
       ]
     },
-    "PA08_Human_Rights": {
+    "PA08_lideres_defensores": {
       "relevant_subregions": [
         "SR01",
         "SR03",
@@ -4628,7 +4628,7 @@
         "pillar_8"
       ]
     },
-    "PA09_Justice": {
+    "PA09_crisis_PPL": {
       "relevant_subregions": [
         "SR01",
         "SR03",
@@ -4648,7 +4648,7 @@
         "pillar_8"
       ]
     },
-    "PA10_International": {
+    "PA10_migracion": {
       "relevant_subregions": [
         "SR02",
         "SR04",
