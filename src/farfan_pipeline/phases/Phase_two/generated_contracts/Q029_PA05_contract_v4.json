@@ -18,7 +18,7 @@
   },
   "executor_binding": {
     "executor_class": "D6_Q4_PA05_Executor",
-    "executor_module": "farfan_pipeline. phases.Phase_two. executors",
+    "executor_module": "farfan_pipeline.phases.Phase_two.executors",
     "contract_number": 285
   },
   "method_binding": {
@@ -1036,7 +1036,7 @@
   },
   "evidence_assembly": {
     "engine": "EVIDENCE_NEXUS",
-    "module": "farfan_pipeline. phases.Phase_two.evidence_nexus",
+    "module": "farfan_pipeline.phases.Phase_two.evidence_nexus",
     "class_name": "EvidenceNexus",
     "method_name": "assemble",
     "type_system": {
