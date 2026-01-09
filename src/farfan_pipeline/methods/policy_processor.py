@@ -1021,37 +1021,40 @@ class BayesianEvidenceScorer:
 
     
     def _configure_from_calibration(self) -> None:
-        config = self.calibration.get("bayesian_inference_robust") if isinstance(self.calibration, dict) else {}
-        if not isinstance(config, dict):
-            return
+        """
+        RECOMMENDATION 2 IMPLEMENTATION: Pydantic-based configuration loading.
 
-        evidence_cfg = config.get("mechanistic_evidence_system", {})
-        if isinstance(evidence_cfg, dict):
-            stability = evidence_cfg.get("stability_controls", {})
-            if isinstance(stability, dict):
-                self.epsilon_clip = float(stability.get("epsilon_clip", self.epsilon_clip))
-                self.duplicate_gamma = float(stability.get("duplicate_gamma", self.duplicate_gamma))
-                self.cross_type_floor = float(stability.get("cross_type_floor", self.cross_type_floor))
-                self.epsilon_clip = min(max(self.epsilon_clip, 0.0), 0.45)
-                self.duplicate_gamma = max(0.0, self.duplicate_gamma)
-                self.cross_type_floor = max(0.0, min(1.0, self.cross_type_floor))
+        BEFORE: Nested .get() calls with implicit schema and silent defaults
+        AFTER: Explicit Pydantic validation with fail-fast on invalid config
 
-            weights = evidence_cfg.get("source_quality_weights", {})
-            if isinstance(weights, dict):
-                self.source_quality_weights = {str(k): float(v) for k, v in weights.items() if isinstance(v, (int, float))}
+        Benefits:
+        - Schema is documented via Pydantic models
+        - Validation is eager (fails immediately on invalid values)
+        - Defaults are centralized in config_schemas.py
+        - Type checker can prove correctness
+        - No runtime uncertainty about configuration completeness
+        """
+        from farfan_pipeline.methods.config_schemas import BayesianInferenceConfig
 
-        context_cfg = config.get("theoretically_grounded_priors", {})
-        if isinstance(context_cfg, dict):
-            hierarchy = context_cfg.get("hierarchical_context_priors", {})
-            if isinstance(hierarchy, dict):
-                sector = hierarchy.get("sector_multipliers", {})
-                if isinstance(sector, dict):
-                    self.sector_multipliers = {str(k).lower(): float(v) for k, v in sector.items() if isinstance(v, (int, float))}
-                    self.sector_default = float(self.sector_multipliers.get("default", 1.0))
-                muni = hierarchy.get("municipio_tamano_multipliers", {})
-                if isinstance(muni, dict):
-                    self.municipio_multipliers = {str(k).lower(): float(v) for k, v in muni.items() if isinstance(v, (int, float))}
-                    self.municipio_default = float(self.municipio_multipliers.get("default", 1.0))
+        # Pydantic validates and applies defaults for missing keys
+        # Raises ValidationError on invalid values (fail-fast)
+        config = BayesianInferenceConfig.from_calibration_dict(self.calibration)
+
+        # Direct attribute access - no .get() needed, Pydantic guarantees existence
+        stability = config.mechanistic_evidence_system.stability_controls
+        self.epsilon_clip = stability.epsilon_clip
+        self.duplicate_gamma = stability.duplicate_gamma
+        self.cross_type_floor = stability.cross_type_floor
+
+        # Source quality weights
+        self.source_quality_weights = config.mechanistic_evidence_system.source_quality_weights
+
+        # Hierarchical context priors
+        hierarchy = config.theoretically_grounded_priors.hierarchical_context_priors
+        self.sector_multipliers = hierarchy.sector_multipliers
+        self.sector_default = self.sector_multipliers.get("default", 1.0)
+        self.municipio_multipliers = hierarchy.municipio_tamano_multipliers
+        self.municipio_default = self.municipio_multipliers.get("default", 1.0)
 
     def compute_evidence_score(
         self,

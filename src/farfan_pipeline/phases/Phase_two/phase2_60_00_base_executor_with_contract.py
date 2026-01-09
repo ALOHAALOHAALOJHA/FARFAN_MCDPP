@@ -23,18 +23,15 @@ except ImportError:
     Draft7Validator = Any  # type: ignore[misc,assignment]
     JSONSCHEMA_AVAILABLE = False
     logger.warning(
-        "jsonschema_not_available",
-        message="jsonschema library not installed. Contract schema validation will be DISABLED.",
-        remediation="Install jsonschema: pip install jsonschema",
+        "jsonschema library not installed. Contract schema validation will be DISABLED. "
+        "Install jsonschema: pip install jsonschema"
     )
 except Exception as e:
     Draft7Validator = Any  # type: ignore[misc,assignment]
     JSONSCHEMA_AVAILABLE = False
     logger.error(
-        "jsonschema_import_failed",
-        message=f"Failed to import jsonschema: {e}. Contract schema validation will be DISABLED.",
-        error=str(e),
-        error_type=type(e).__name__,
+        f"Failed to import jsonschema: {e}. Contract schema validation will be DISABLED. "
+        f"Error type: {type(e).__name__}"
     )
 
 try:
