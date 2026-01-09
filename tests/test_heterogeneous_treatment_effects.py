@@ -16,11 +16,11 @@ import pytest
 
 from farfan_pipeline.methods.heterogeneous_treatment_effects import (
     HeterogeneousTreatmentAnalyzer,
-    CATEEstimate,
     HeterogeneityAnalysis,
     PolicyRecommendation,
     create_treatment_analyzer,
 )
+
 
 
 @pytest.fixture
