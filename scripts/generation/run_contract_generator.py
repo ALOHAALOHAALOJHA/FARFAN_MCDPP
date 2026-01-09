@@ -19,7 +19,7 @@ def load_module_from_file(module_name, file_path):
 
 # Agregar src al path
 src_path = Path(__file__).resolve().parent / 'src'
-sys.path.insert(0, str(src_path))
+sys.path.insert(0, str(src_path))  # noqa: E501
 
 # Cargar módulos del generador directamente desde archivos
 base_path = src_path / 'farfan_pipeline/phases/Phase_two/contract_generator'

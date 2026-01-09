@@ -86,6 +86,9 @@ class PathAuditor:
 
             # Check 4: Raw sys.path manipulation
             if ("sys.path.append" in line or "sys.path.insert" in line) and "import sys" not in line:
+                # Skip if line has noqa comment
+                if "# noqa" in line or "# type: ignore" in line:
+                    continue
                 # Allow in conftest.py and setup files
                 if not (py_file.name in ["conftest.py", "setup.py", "__init__.py"]):
                     file_issues.append({

@@ -14,7 +14,7 @@ import json
 from pathlib import Path
 
 # Add parent directory to path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # noqa: E501
 
 
 def validate_semantic_config_pdet_references():

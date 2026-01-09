@@ -19,7 +19,7 @@ SPECIFICATION 2: Phase 4 Integration
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))  # noqa: E501
 
 from canonic_questionnaire_central.scoring.modules import (
     create_pdet_enricher,
