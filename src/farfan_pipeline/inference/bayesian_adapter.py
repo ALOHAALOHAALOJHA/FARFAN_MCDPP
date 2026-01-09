@@ -367,8 +367,13 @@ class BayesianEngineAdapter:
             }
 
         # Compute overall mechanism strength (average across levels)
-        overall_mean = float(np.mean([r.posterior_mean for r in results]))
-        overall_std = float(np.std([r.posterior_mean for r in results], ddof=1))
+        posterior_means = [r.posterior_mean for r in results]
+        overall_mean = float(np.mean(posterior_means))
+
+        if len(results) <= 1:
+            overall_std = 0.0
+        else:
+            overall_std = float(np.std(posterior_means, ddof=1))
 
         return {
             "levels": level_results,

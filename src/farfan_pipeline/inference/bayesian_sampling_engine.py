@@ -272,17 +272,21 @@ class BayesianSamplingEngine:
     def sample_hierarchical_beta(
         self,
         group_data: list[tuple[int, int]],
+        population_alpha: float = 2.0,
+        population_beta: float = 2.0,
     ) -> list[SamplingResult]:
         """
         Sample from hierarchical Beta-Binomial model.
 
         Model for multi-level process tracing (micro-meso-macro):
-            Population: alpha, beta ~ HalfNormal(...)
+            Population: alpha, beta ~ HalfNormal(sigma=population_alpha/beta)
             Group priors: theta_g ~ Beta(alpha, beta)
             Group data: y_g ~ Binomial(n_g, theta_g)
 
         Args:
             group_data: List of (successes, trials) tuples for each group
+            population_alpha: Sigma for alpha hyperprior (default: 2.0)
+            population_beta: Sigma for beta hyperprior (default: 2.0)
 
         Returns:
             List of SamplingResult objects, one per group
@@ -304,9 +308,9 @@ class BayesianSamplingEngine:
 
         try:
             with pm.Model() as model:
-                # Population-level hyperpriors
-                alpha = pm.HalfNormal("alpha", sigma=10.0)
-                beta = pm.HalfNormal("beta", sigma=10.0)
+                # Population-level hyperpriors (using parameterized sigmas)
+                alpha = pm.HalfNormal("alpha", sigma=population_alpha)
+                beta = pm.HalfNormal("beta", sigma=population_beta)
 
                 # Group-level priors
                 theta = pm.Beta("theta", alpha=alpha, beta=beta, shape=n_groups)
