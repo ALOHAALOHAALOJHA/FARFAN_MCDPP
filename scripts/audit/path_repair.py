@@ -102,15 +102,20 @@ class PathRepairer:
         suggestions = []
 
         try:
-            content = py_file.read_text(encoding="utf-8", errors="ignore")
+            content = py_file.read_text(encoding="utf-8", errors="replace")
         except Exception as e:
             return suggestions
 
         lines = content.split("\n")
 
+        project_dir_pattern = re.escape(self.project_dir_name)
+
         for i, line in enumerate(lines, 1):
             # Look for common hardcoded path patterns
-            unix_match = re.search(r'Path\(["\']/(Users|home)/([^/]+)/FARFAN_MPP["\']', line)
+            unix_match = re.search(
+                rf'Path\(["\']/(Users|home)/([^/]+)/{project_dir_pattern}["\']',
+                line,
+            )
             if unix_match:
                 suggestions.append({
                     "file": str(py_file.relative_to(self.root)),
@@ -224,7 +229,7 @@ class PathRepairer:
 
         for py_file in self.root.rglob("*.py"):
             # Skip virtual environments and cache directories
-            if any(part in py_file.parts for part in [".venv", "venv", "__pycache__", ".git", "node_modules"]):
+            if any(part in py_file.parts for part in self.EXCLUDED_DIRS):
                 continue
 
             # Skip backup files

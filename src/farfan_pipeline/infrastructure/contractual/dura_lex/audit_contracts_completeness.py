@@ -13,7 +13,7 @@ to ensure:
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 from collections import defaultdict
 
 # Base requirements from base_executor_with_contract.py

@@ -2,7 +2,7 @@
 API v2 Endpoints
 High-performance endpoints serving data from the PostgreSQL aggregation pyramid.
 """
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter
 from typing import List, Optional, Dict
 from pydantic import BaseModel
 import uuid

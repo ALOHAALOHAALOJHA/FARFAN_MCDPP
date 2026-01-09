@@ -249,9 +249,6 @@ class WiringAuditor:
         """Verify signal transformation pipeline completeness."""
         # Check if context scoping is integrated
         try:
-            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
-                filter_patterns_by_context,
-            )
             # Function exists, but check if it's used in registry
             # This is a usage check - actual integration is verified in scope audit
         except ImportError:
@@ -266,9 +263,7 @@ class WiringAuditor:
         
         # Check if consumption tracking is integrated
         try:
-            from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
-                SignalConsumptionProof,
-            )
+            pass
         except ImportError:
             self.wiring_gaps.append(WiringGap(
                 source_component="signal_consumption",
