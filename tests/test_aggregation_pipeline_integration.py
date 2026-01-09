@@ -9,14 +9,11 @@ This test validates that the aggregation pipeline:
 """
 
 import pytest
-import sys
 import json
 from pathlib import Path
 from unittest.mock import Mock, MagicMock
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
-
 from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
     DimensionAggregator,
     AreaPolicyAggregator,

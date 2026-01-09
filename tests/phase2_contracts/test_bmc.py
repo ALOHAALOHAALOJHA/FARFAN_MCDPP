@@ -4,10 +4,7 @@ Verifies: S*(B1) ⊆ S*(B2) for B1 < B2
 Resource allocation ordering guarantee
 """
 import pytest
-import sys
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 
 from cross_cutting_infrastructure.contractual.dura_lex.budget_monotonicity import (
     BudgetMonotonicityContract,

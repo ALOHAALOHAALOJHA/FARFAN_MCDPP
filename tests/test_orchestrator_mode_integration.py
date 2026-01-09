@@ -11,12 +11,9 @@ Date: 2025-12-17
 import hashlib
 import json
 import os
-import sys
 from pathlib import Path
 from types import MappingProxyType
 from typing import Any
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 import pytest
 

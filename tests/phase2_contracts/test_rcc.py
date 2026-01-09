@@ -4,11 +4,8 @@ Verifies: A* path is bitwise identical for same inputs
 Request routing rules guarantee
 """
 import pytest
-import sys
 from pathlib import Path
 from typing import Any
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 
 from cross_cutting_infrastructure.contractual.dura_lex.routing_contract import (
     RoutingContract,

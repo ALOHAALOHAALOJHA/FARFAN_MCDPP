@@ -2,15 +2,11 @@
 Conftest for Phase 2 Contract Tests
 Common fixtures and configuration
 """
-import sys
 from pathlib import Path
 
 import pytest
 
 # Add src to path for imports
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
-
-
 @pytest.fixture(scope="session")
 def contracts_base_path() -> Path:
     """Path to the contracts module."""

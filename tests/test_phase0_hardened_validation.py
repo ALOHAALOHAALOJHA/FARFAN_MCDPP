@@ -18,7 +18,6 @@ Test Coverage:
 
 import pytest
 import os
-import sys
 import hashlib
 import json
 from pathlib import Path
@@ -26,8 +25,6 @@ from unittest.mock import Mock, MagicMock, patch
 from dataclasses import dataclass
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
-
 # Phase 0 imports
 from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
 from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import (

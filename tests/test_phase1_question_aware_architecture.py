@@ -21,13 +21,10 @@ Version: 2.0.0 - Question-Aware Architecture
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
 # Add src to path for imports
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
-
 import pytest
 
 

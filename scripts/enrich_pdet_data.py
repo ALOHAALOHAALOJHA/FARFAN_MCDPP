@@ -13,6 +13,7 @@ from datetime import datetime
 from typing import Dict, List, Any
 
 # Add src to path to import the reference data
+# Standalone script path setup (not needed if package installed with pip install -e .)  # noqa: E501
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from farfan_pipeline.dashboard_atroz_.pdet_colombia_data import (

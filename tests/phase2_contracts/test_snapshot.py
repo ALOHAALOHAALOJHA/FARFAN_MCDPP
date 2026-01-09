@@ -4,11 +4,8 @@ Verifies: System refuses to run without frozen σ digests
 State snapshot consistency guarantee
 """
 import pytest
-import sys
 from pathlib import Path
 from typing import Any
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 
 from cross_cutting_infrastructure.contractual.dura_lex.snapshot_contract import (
     SnapshotContract,

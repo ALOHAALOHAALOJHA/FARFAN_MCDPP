@@ -4,11 +4,8 @@ Verifies: Merkle Tree root proves execution path
 Audit trail validation guarantee
 """
 import pytest
-import sys
 from pathlib import Path
 from typing import Any
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 
 from cross_cutting_infrastructure.contractual.dura_lex.traceability import (
     TraceabilityContract,

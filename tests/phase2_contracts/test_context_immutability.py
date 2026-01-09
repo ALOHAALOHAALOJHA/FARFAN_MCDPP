@@ -4,13 +4,10 @@ Verifies: QuestionContext is frozen, mutation raises FrozenInstanceError
 Immutable context enforcement guarantee
 """
 import pytest
-import sys
 from pathlib import Path
 from dataclasses import dataclass, FrozenInstanceError
 from types import MappingProxyType
 from typing import Any
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 
 from cross_cutting_infrastructure.contractual.dura_lex.context_immutability import (
     ContextImmutabilityContract,

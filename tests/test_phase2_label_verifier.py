@@ -45,7 +45,6 @@ PHASE_COMPONENT: Test Module
         """Test that file without docstring is detected as violation."""
         test_file = tmp_path / "no_docstring.py"
         test_file.write_text('''# Just a comment
-import sys
 ''')
         
         violation = check_file_for_phase2_label(test_file, tmp_path)

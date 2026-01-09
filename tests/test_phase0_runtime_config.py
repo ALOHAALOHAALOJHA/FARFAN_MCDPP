@@ -9,12 +9,9 @@ Date: 2025-12-10
 """
 
 import os
-import sys
 from pathlib import Path
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
-
 import pytest
 
 # Import Phase 0 components from Phase_zero folder

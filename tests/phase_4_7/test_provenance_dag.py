@@ -9,11 +9,7 @@ Verifies:
 """
 
 import pytest
-import sys
 from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
-
 
 class TestProvenanceDAG:
     """Tests for provenance DAG construction."""

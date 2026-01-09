@@ -19,7 +19,6 @@ Test Coverage:
 """
 
 import pytest
-import sys
 import os
 import json
 import hashlib
@@ -28,8 +27,6 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
-
 # Mark all tests in this module as integration tests
 pytestmark = pytest.mark.integration
 
