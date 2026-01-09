@@ -176,16 +176,8 @@ class BayesianSamplingEngine:
         Raises:
             ValueError: If prior parameters are not positive
         """
-        if not PYMC_AVAILABLE:
-            self.logger.error("PyMC not available for Beta-Binomial sampling")
-            return self._null_result("pymc_unavailable")
-
-        # RIGOROUS VALIDATION: Data constraints
-        if n_trials < 0 or n_successes < 0 or n_successes > n_trials:
-            self.logger.error(f"Invalid data: successes={n_successes}, trials={n_trials}")
-            return self._null_result("invalid_data")
-
         # CRITICAL VALIDATION: Prior parameters must be positive for Beta distribution
+        # Validate BEFORE checking PyMC availability (fail fast principle)
         if not isinstance(prior_alpha, (int, float)) or not np.isfinite(prior_alpha):
             raise ValueError(f"prior_alpha must be finite numeric, got {prior_alpha}")
         if not isinstance(prior_beta, (int, float)) or not np.isfinite(prior_beta):
@@ -198,6 +190,15 @@ class BayesianSamplingEngine:
             raise ValueError(
                 f"prior_beta must be > 0 for Beta distribution, got {prior_beta}"
             )
+
+        if not PYMC_AVAILABLE:
+            self.logger.error("PyMC not available for Beta-Binomial sampling")
+            return self._null_result("pymc_unavailable")
+
+        # RIGOROUS VALIDATION: Data constraints
+        if n_trials < 0 or n_successes < 0 or n_successes > n_trials:
+            self.logger.error(f"Invalid data: successes={n_successes}, trials={n_trials}")
+            return self._null_result("invalid_data")
 
         # Handle degenerate case: n_trials = 0 produces uninformative update
         if n_trials == 0:
@@ -347,15 +348,8 @@ class BayesianSamplingEngine:
         Raises:
             ValueError: If population parameters are not positive or group data invalid
         """
-        if not PYMC_AVAILABLE:
-            self.logger.error("PyMC not available for hierarchical sampling")
-            return [self._null_result("pymc_unavailable") for _ in group_data]
-
-        if len(group_data) == 0:
-            self.logger.error("No group data provided")
-            return []
-
         # CRITICAL VALIDATION: HalfNormal sigma must be positive
+        # Validate BEFORE checking PyMC availability (fail fast principle)
         if not isinstance(population_alpha, (int, float)) or not np.isfinite(population_alpha):
             raise ValueError(f"population_alpha must be finite numeric, got {population_alpha}")
         if not isinstance(population_beta, (int, float)) or not np.isfinite(population_beta):
@@ -369,21 +363,32 @@ class BayesianSamplingEngine:
                 f"population_beta must be > 0 for HalfNormal sigma, got {population_beta}"
             )
 
-        # RIGOROUS VALIDATION: Validate each group's data
+        # RIGOROUS VALIDATION: Validate each group's data BEFORE PyMC check
+        if len(group_data) > 0:
+            for i, (successes, trials) in enumerate(group_data):
+                if not isinstance(successes, (int, np.integer)):
+                    raise TypeError(f"group_data[{i}][0] (successes) must be integer")
+                if not isinstance(trials, (int, np.integer)):
+                    raise TypeError(f"group_data[{i}][1] (trials) must be integer")
+                if successes < 0:
+                    raise ValueError(f"group_data[{i}][0] (successes) must be >= 0, got {successes}")
+                if trials < 0:
+                    raise ValueError(f"group_data[{i}][1] (trials) must be >= 0, got {trials}")
+                if successes > trials:
+                    raise ValueError(
+                        f"group_data[{i}]: successes ({successes}) > trials ({trials})"
+                    )
+
+        if not PYMC_AVAILABLE:
+            self.logger.error("PyMC not available for hierarchical sampling")
+            return [self._null_result("pymc_unavailable") for _ in group_data]
+
+        if len(group_data) == 0:
+            self.logger.error("No group data provided")
+            return []
+
         n_groups = len(group_data)
         for i, (successes, trials) in enumerate(group_data):
-            if not isinstance(successes, (int, np.integer)):
-                raise TypeError(f"group_data[{i}][0] (successes) must be integer")
-            if not isinstance(trials, (int, np.integer)):
-                raise TypeError(f"group_data[{i}][1] (trials) must be integer")
-            if successes < 0:
-                raise ValueError(f"group_data[{i}][0] (successes) must be >= 0, got {successes}")
-            if trials < 0:
-                raise ValueError(f"group_data[{i}][1] (trials) must be >= 0, got {trials}")
-            if successes > trials:
-                raise ValueError(
-                    f"group_data[{i}]: successes ({successes}) > trials ({trials})"
-                )
             if trials == 0:
                 self.logger.warning(f"group_data[{i}] has trials=0, will produce uninformative update")
 
