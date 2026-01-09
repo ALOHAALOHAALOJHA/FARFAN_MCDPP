@@ -24,8 +24,8 @@
     "third_party_research"
   ],
   "pdet_enrichment": {
-    "_pdet_enrichment_version": "1.0.0",
-    "_enrichment_date": "2026-01-09T23:23:38.334490",
+    "_pdet_enrichment_version": "2.0.0",
+    "_enrichment_date": "2026-01-09T23:41:03.706145",
     "_validation_gates": {
       "gate_1_scope": {
         "required_scope": "pdet_context",
@@ -37,11 +37,14 @@
         "policy_area_relevance": "MEDIUM"
       },
       "gate_2_value_add": {
-        "estimated_value_add": 0.2,
+        "estimated_value_add": 0.30000000000000004,
         "enables": [
           "territorial_targeting",
           "resource_allocation",
-          "subregion_analysis"
+          "subregion_analysis",
+          "granular_analysis",
+          "multi_indicator_validation",
+          "comprehensive_monitoring"
         ],
         "optimizes": [
           "policy_alignment",
@@ -88,7 +91,12 @@
       "key_indicators": [
         "justice_houses",
         "legal_assistance",
-        "transitional_justice"
+        "transitional_justice",
+        "judicial_presence",
+        "case_resolution_rate",
+        "restorative_justice",
+        "traditional_justice_systems",
+        "access_to_justice_barriers"
       ],
       "pdet_pillars": [
         "pillar_6",
@@ -111,7 +119,33 @@
         "rural_percentage": 24.0
       },
       "legal_basis": "Acuerdo de Paz Punto 1 + Decreto Ley 893/2017",
-      "planning_horizon_years": 15
+      "planning_horizon_years": 15,
+      "additional_data_fields": {
+        "demographic": [
+          "population",
+          "rural_percentage",
+          "ethnic_composition",
+          "population_density"
+        ],
+        "institutional": [
+          "category",
+          "fiscal_autonomy",
+          "icld_smmlv",
+          "institutional_capacity_index"
+        ],
+        "pdet_specific": [
+          "patr_initiatives",
+          "active_route_initiatives",
+          "ocad_paz_projects",
+          "ocad_paz_investment_cop_millions"
+        ],
+        "socioeconomic": [
+          "multidimensional_poverty_rate",
+          "unsatisfied_basic_needs",
+          "gini_coefficient",
+          "income_per_capita"
+        ]
+      }
     },
     "data_sources": [
       "Decreto Ley 893 de 2017",
