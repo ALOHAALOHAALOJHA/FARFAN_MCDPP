@@ -63,11 +63,17 @@ except ImportError:
 
 @dataclass(frozen=True)
 class ResourceLimits:
-    """Hard limits enforced via kernel primitives.
-    
+    """
+    Kernel-level resource limits with hard enforcement.
+
+    Degradation Instance: 8
+    Pattern: MEMORY_GUARD
+    Fallback Behavior: Pre-flight check fails -> ResourceExhausted exception
+    Recovery: Process SIGKILL if limits exceeded (no graceful recovery)
+
     These limits are NON-NEGOTIABLE once set. The kernel will SIGKILL
     the process if they are exceeded.
-    
+
     Attributes:
         memory_mb: Maximum address space in megabytes (RLIMIT_AS)
         cpu_seconds: Maximum CPU time in seconds (RLIMIT_CPU)
@@ -78,7 +84,7 @@ class ResourceLimits:
     cpu_seconds: int = 300
     disk_mb: int = 500
     file_descriptors: int = 1024
-    
+
     def __post_init__(self) -> None:
         if self.memory_mb < 256:
             raise ValueError(f"memory_mb must be >= 256, got {self.memory_mb}")

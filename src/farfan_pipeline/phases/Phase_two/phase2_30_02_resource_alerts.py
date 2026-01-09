@@ -3,8 +3,7 @@ Module: phase2_30_02_resource_alerts
 PHASE_LABEL: Phase 2
 Sequence: AB
 
-"""
-"""Resource Pressure Alerting and Observability.
+Resource Pressure Alerting and Observability.
 
 Provides comprehensive alerting and monitoring for resource management:
 - Structured logging for resource events
