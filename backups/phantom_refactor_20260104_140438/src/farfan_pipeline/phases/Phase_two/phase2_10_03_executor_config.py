@@ -141,7 +141,7 @@ class ExecutorConfig:
     @staticmethod
     def _load_executor_config_file(executor_id: str) -> Optional[Dict[str, Any]]:
         """Load executor-specific config file."""
-        config_file = Path(__file__).parent / "executor_configs" / f"{executor_id}.json"
+        config_file = Path(__file__).resolve().parent / "executor_configs" / f"{executor_id}.json"
         
         if not config_file.exists():
             return None
@@ -156,7 +156,7 @@ class ExecutorConfig:
     @staticmethod
     def _load_environment_file(environment: str) -> Optional[Dict[str, Any]]:
         """Load environment-specific config file."""
-        base_path = Path(__file__).parent.parent.parent.parent / "system" / "config" / "environments"
+        base_path = Path(__file__).resolve().parent.parent.parent.parent / "system" / "config" / "environments"
         env_file = base_path / f"{environment}.json"
         
         if not env_file.exists():

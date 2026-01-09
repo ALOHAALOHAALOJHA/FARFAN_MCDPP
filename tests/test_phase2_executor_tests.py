@@ -181,7 +181,7 @@ class TestExecutorCalibrationIntegration:
     
     def test_no_hardcoded_calibration_values(self):
         """Verify no hardcoded calibration values in executor code."""
-        executors_file = Path(__file__).parent / "executors.py"
+        executors_file = Path(__file__).resolve().parent / "executors.py"
         
         with open(executors_file) as f:
             content = f.read()
@@ -217,7 +217,7 @@ class TestExecutorCalibrationIntegration:
     
     def test_executor_config_files_exist(self):
         """Verify executor config files exist for sample executors."""
-        config_dir = Path(__file__).parent / "executor_configs"
+        config_dir = Path(__file__).resolve().parent / "executor_configs"
         
         sample_executors = [
             "D1_Q1_QuantitativeBaselineExtractor",
@@ -240,7 +240,7 @@ class TestExecutorCalibrationIntegration:
     
     def test_calibration_report_completeness(self):
         """Verify calibration report documents all 30 executors."""
-        report_file = Path(__file__).parent / "executor_calibration_report.json"
+        report_file = Path(__file__).resolve().parent / "executor_calibration_report.json"
         
         with open(report_file) as f:
             report = json.load(f)
@@ -343,7 +343,7 @@ class TestConfigurationLoading:
     
     def test_executor_config_schema(self):
         """Test executor config files follow correct schema."""
-        config_dir = Path(__file__).parent / "executor_configs"
+        config_dir = Path(__file__).resolve().parent / "executor_configs"
         template_file = config_dir / "executor_config_template.json"
         
         if not template_file.exists():

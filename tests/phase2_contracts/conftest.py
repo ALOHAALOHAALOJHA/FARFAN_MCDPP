@@ -8,25 +8,25 @@ from pathlib import Path
 import pytest
 
 # Add src to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 
 
 @pytest.fixture(scope="session")
 def contracts_base_path() -> Path:
     """Path to the contracts module."""
-    return Path(__file__).parent.parent.parent / "src" / "cross_cutting_infrastructure" / "contractual" / "dura_lex"
+    return Path(__file__).resolve().parent.parent.parent / "src" / "cross_cutting_infrastructure" / "contractual" / "dura_lex"
 
 
 @pytest.fixture(scope="session")
 def phase2_base_path() -> Path:
     """Path to Phase 2 module."""
-    return Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "Phase_two"
+    return Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "Phase_two"
 
 
 @pytest.fixture(scope="session")
 def executor_contracts_path() -> Path:
     """Path to V3 executor contracts."""
-    return Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts" / "specialized"
+    return Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts" / "specialized"
 
 
 def pytest_configure(config: pytest.Config) -> None:

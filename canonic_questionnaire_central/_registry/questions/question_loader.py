@@ -155,7 +155,7 @@ class LazyQuestionRegistry:
                           Defaults to _registry/questions/atomized/
         """
         if questions_dir is None:
-            questions_dir = Path(__file__).parent / "atomized"
+            questions_dir = Path(__file__).resolve().parent / "atomized"
 
         self.questions_dir = questions_dir
         self.cache = LRUCache(maxsize=cache_size)
@@ -411,7 +411,7 @@ class EagerQuestionRegistry:
 
     def __init__(self, questions_dir: Optional[Path] = None):
         if questions_dir is None:
-            questions_dir = Path(__file__).parent / "atomized"
+            questions_dir = Path(__file__).resolve().parent / "atomized"
 
         self.questions_dir = questions_dir
         self.questions: Dict[str, Question] = {}

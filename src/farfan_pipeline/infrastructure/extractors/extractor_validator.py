@@ -50,7 +50,7 @@ class ExtractorValidator:
 
     def __init__(self, calibration_file: Optional[Path] = None):
         if calibration_file is None:
-            calibration_file = Path(__file__).parent.parent.parent.parent / \
+            calibration_file = Path(__file__).resolve().parent.parent.parent.parent / \
                               "canonic_questionnaire_central" / \
                               "_registry" / "membership_criteria" / "_calibration" / \
                               "extractor_calibration.json"

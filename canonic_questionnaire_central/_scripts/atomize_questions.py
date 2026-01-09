@@ -34,7 +34,7 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-CQC_ROOT = Path(__file__).parent.parent
+CQC_ROOT = Path(__file__).resolve().parent.parent
 DIMENSIONS = CQC_ROOT / "dimensions"
 
 

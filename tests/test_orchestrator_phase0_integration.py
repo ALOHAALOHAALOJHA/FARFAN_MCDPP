@@ -22,7 +22,7 @@ from unittest.mock import Mock, patch
 import pytest
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 # Phase 0 imports
 # Orchestrator imports

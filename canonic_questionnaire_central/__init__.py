@@ -129,13 +129,13 @@ class CQCLoader:
         """Get atomized questions directory."""
         if self.config.registry_path:
             return self.config.registry_path / "questions" / "atomized"
-        return Path(__file__).parent / "_registry" / "questions" / "atomized"
+        return Path(__file__).resolve().parent / "_registry" / "questions" / "atomized"
 
     def _get_registry_path(self) -> Path:
         """Get registry root path."""
         if self.config.registry_path:
             return self.config.registry_path
-        return Path(__file__).parent / "_registry"
+        return Path(__file__).resolve().parent / "_registry"
 
     def _fallback_registry(self):
         """Fallback to traditional loading if lazy loading unavailable."""

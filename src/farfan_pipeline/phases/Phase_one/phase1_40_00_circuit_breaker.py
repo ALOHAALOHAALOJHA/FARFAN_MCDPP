@@ -543,7 +543,8 @@ class CrystallizationCheckpoint:
             checkpoint_dir: Directory to store checkpoint files.
                             If None, uses temp directory.
         """
-        self.checkpoint_dir = checkpoint_dir or Path("/tmp/farfan_checkpoints")
+        from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import get_tmpdir
+        self.checkpoint_dir = checkpoint_dir or (get_tmpdir() / "farfan_checkpoints")
         self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
         self.crystals: Dict[int, Dict[str, Any]] = {}
     

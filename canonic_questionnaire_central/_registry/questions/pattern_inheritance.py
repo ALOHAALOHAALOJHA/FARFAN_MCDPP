@@ -92,7 +92,7 @@ class PatternResolver:
                           Defaults to parent of this file
         """
         if registry_path is None:
-            registry_path = Path(__file__).parent.parent
+            registry_path = Path(__file__).resolve().parent.parent
 
         self.registry_path = registry_path
         self.empirical_base = self._load_empirical_base()

@@ -20,7 +20,7 @@ class TestConstitutionalInvariant:
     
     def test_expected_constants_defined(self):
         """Verify expected constants are defined in constitutional contract."""
-        constitutional_contract_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_constitutional_contract.py"
+        constitutional_contract_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_constitutional_contract.py"
         
         assert constitutional_contract_path.exists(), f"Constitutional contract must exist: {constitutional_contract_path}"
         
@@ -36,7 +36,7 @@ class TestConstitutionalInvariant:
     
     def test_contract_files_exist(self):
         """Verify all 4 contract files exist."""
-        contracts_dir = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts"
+        contracts_dir = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts"
         
         required_contracts = [
             "phase1_mission_contract.py",
@@ -55,7 +55,7 @@ class TestConstitutionalInvariant:
     
     def test_subphase_weights_defined(self):
         """Verify all 16 subphase weights are defined in mission contract."""
-        mission_contract_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_mission_contract.py"
+        mission_contract_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_mission_contract.py"
         
         content = mission_contract_path.read_text()
         
@@ -74,7 +74,7 @@ class TestConstitutionalInvariant:
     
     def test_mission_contract_has_validation_function(self):
         """Verify mission contract has validation function."""
-        mission_contract_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_mission_contract.py"
+        mission_contract_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "phase1_mission_contract.py"
         
         content = mission_contract_path.read_text()
         
@@ -106,7 +106,7 @@ class TestCertificates:
         """Verify all 15 certificates exist."""
         from pathlib import Path
         
-        cert_dir = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "certificates"
+        cert_dir = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "certificates"
         
         assert cert_dir.exists(), f"Certificates directory must exist: {cert_dir}"
         
@@ -118,7 +118,7 @@ class TestCertificates:
         """Verify certificate files have required fields."""
         from pathlib import Path
         
-        cert_dir = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "certificates"
+        cert_dir = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion" / "contracts" / "certificates"
         
         required_fields = [
             "**Status**:",
@@ -143,7 +143,7 @@ class TestOrchestratorIntegration:
     
     def test_orchestrator_has_60_chunk_assertion(self):
         """Verify orchestrator enforces 60-chunk invariant."""
-        orchestrator_path = Path(__file__).parent.parent.parent / "src" / "farfan_pipeline" / "orchestration" / "orchestrator.py"
+        orchestrator_path = Path(__file__).resolve().parent.parent.parent / "src" / "farfan_pipeline" / "orchestration" / "orchestrator.py"
         
         assert orchestrator_path.exists(), "Orchestrator must exist"
         
@@ -162,7 +162,7 @@ class TestOrchestratorIntegration:
     
     def test_orchestrator_has_dag_check(self):
         """Verify orchestrator has DAG acyclicity check."""
-        orchestrator_path = Path(__file__).parent.parent.parent / "src" / "farfan_pipeline" / "orchestration" / "orchestrator.py"
+        orchestrator_path = Path(__file__).resolve().parent.parent.parent / "src" / "farfan_pipeline" / "orchestration" / "orchestrator.py"
         
         content = orchestrator_path.read_text()
         

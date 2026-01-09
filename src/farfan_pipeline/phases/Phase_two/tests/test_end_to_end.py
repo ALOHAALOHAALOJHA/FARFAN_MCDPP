@@ -24,7 +24,7 @@ from dataclasses import dataclass
 
 import pytest
 
-PHASE_TWO_DIR = Path(__file__).parent.parent
+PHASE_TWO_DIR = Path(__file__).resolve().parent.parent
 GENERATED_CONTRACTS_DIR = PHASE_TWO_DIR / "generated_contracts"
 
 

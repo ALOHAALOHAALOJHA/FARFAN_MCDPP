@@ -88,7 +88,7 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
         """Load entities from _registry/entities/."""
         self.entity_registry = {}
 
-        registry_path = Path(__file__).parent.parent.parent.parent / \
+        registry_path = Path(__file__).resolve().parent.parent.parent.parent / \
                        "canonic_questionnaire_central" / "_registry" / "entities"
 
         if not registry_path.exists():

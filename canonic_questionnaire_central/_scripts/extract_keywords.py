@@ -30,7 +30,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-CQC_ROOT = Path(__file__).parent.parent
+CQC_ROOT = Path(__file__).resolve().parent.parent
 POLICY_AREAS = CQC_ROOT / "policy_areas"
 CLUSTERS = CQC_ROOT / "clusters"
 OUTPUT_DIR = CQC_ROOT / "_registry" / "keywords"

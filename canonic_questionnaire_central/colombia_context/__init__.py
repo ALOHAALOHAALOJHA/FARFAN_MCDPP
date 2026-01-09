@@ -52,7 +52,7 @@ from pathlib import Path
 from typing import Any
 
 # Path to Colombia context configuration
-_COLOMBIA_CONTEXT_DIR = Path(__file__).parent
+_COLOMBIA_CONTEXT_DIR = Path(__file__).resolve().parent
 _CONTEXT_FILE = _COLOMBIA_CONTEXT_DIR / "colombia_context.json"
 _MUNICIPAL_GOVERNANCE_FILE = _COLOMBIA_CONTEXT_DIR / "municipal_governance.json"
 

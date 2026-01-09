@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 # Add src to path for imports
-repo_root = Path(__file__).parent.parent
+repo_root = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(repo_root / "src"))
 
 

@@ -24,7 +24,7 @@ from typing import Any
 import pytest
 
 # Constants
-PHASE_TWO_DIR = Path(__file__).parent.parent
+PHASE_TWO_DIR = Path(__file__).resolve().parent.parent
 SRC_DIR = PHASE_TWO_DIR.parent.parent.parent  # farfan_pipeline
 
 

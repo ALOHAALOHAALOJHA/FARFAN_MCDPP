@@ -253,7 +253,7 @@ class NullFieldPopulator:
 def main():
     """Execute surgical operation 1."""
 
-    root_path = Path(__file__).parent.parent / "canonic_questionnaire_central"
+    root_path = Path(__file__).resolve().parent.parent / "canonic_questionnaire_central"
 
     populator = NullFieldPopulator()
     populator.process_all_files(root_path)

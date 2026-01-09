@@ -363,7 +363,7 @@ def generate_html_report(
         ) from e
     
     # Get template directory
-    template_dir = Path(__file__).parent / "templates"
+    template_dir = Path(__file__).resolve().parent / "templates"
     
     if not template_dir.exists():
         raise ReportGenerationError(

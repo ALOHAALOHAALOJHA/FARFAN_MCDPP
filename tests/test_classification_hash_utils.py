@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 # Keep consistent with the rest of the repo's tests
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from classification.hash_utils import compute_classification_hash, decision_payload_for_hash
 

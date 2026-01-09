@@ -10,8 +10,8 @@ import subprocess
 import sys
 
 CONTRACTS_DIR = "src/farfan_pipeline/contracts"
-TOOLS_DIR = os.path.join(CONTRACTS_DIR, "tools")
-TESTS_DIR = os.path.join(CONTRACTS_DIR, "tests")
+TOOLS_DIR = CONTRACTS_DIR / "tools"
+TESTS_DIR = CONTRACTS_DIR / "tests"
 
 
 def run_command(cmd: str, description: str, set_pythonpath: bool = False) -> bool:
@@ -20,7 +20,7 @@ def run_command(cmd: str, description: str, set_pythonpath: bool = False) -> boo
         env = os.environ.copy()
         if set_pythonpath:
             cwd = os.getcwd()
-            src_path = os.path.join(cwd, "src")
+            src_path = cwd / "src"
             env["PYTHONPATH"] = f"{src_path}:{env.get('PYTHONPATH', '')}"
         subprocess.check_call(cmd, shell=True, env=env)
         print(f"✅ {description} PASSED")
@@ -42,7 +42,7 @@ def main() -> None:
 
     # 2. Run CLI Tools to generate certificates
     print("\n--- 2. GENERATING CERTIFICATES ---")
-    tools = glob.glob(os.path.join(TOOLS_DIR, "*.py"))
+    tools = glob.glob(TOOLS_DIR / "*.py")
     for tool in sorted(tools):
         tool_name = os.path.basename(tool)
         if not run_command(f"python {tool}", f"Tool: {tool_name}", set_pythonpath=True):

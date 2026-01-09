@@ -12,7 +12,7 @@ from pathlib import Path
 @pytest.fixture(scope="session")
 def calibration_data():
     """Load empirical calibration data."""
-    calibration_file = Path(__file__).parent.parent.parent.parent.parent.parent / \
+    calibration_file = Path(__file__).resolve().parent.parent.parent.parent.parent.parent / \
                       "canonic_questionnaire_central" / "_registry" / \
                       "membership_criteria" / "_calibration" / "extractor_calibration.json"
 

@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
     DimensionScore,

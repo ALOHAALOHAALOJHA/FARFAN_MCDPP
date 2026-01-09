@@ -1082,7 +1082,7 @@ class InputLoader:
         sectors: dict[str, SectorDefinition] = {}
 
         pa_base = (
-            Path(__file__).parent.parent.parent.parent.parent.parent
+            Path(__file__).resolve().parent.parent.parent.parent.parent.parent
             / "canonic_questionnaire_central"
             / "policy_areas"
         )

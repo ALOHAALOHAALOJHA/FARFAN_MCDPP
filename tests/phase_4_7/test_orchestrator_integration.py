@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 from unittest.mock import Mock, patch, MagicMock
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "src"))
 
 from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
     AggregationSettings,

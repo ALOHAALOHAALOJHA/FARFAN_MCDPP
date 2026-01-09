@@ -19,7 +19,7 @@ import pytest
 # Import executor_calibration_integration directly without __init__.py
 spec = importlib.util.spec_from_file_location(
     "executor_calibration_integration",
-    Path(__file__).parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "phase2_95_03_executor_calibration_integration.py"
+    Path(__file__).resolve().parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "phase2_95_03_executor_calibration_integration.py"
 )
 assert spec is not None and spec.loader is not None
 executor_calibration_integration = importlib.util.module_from_spec(spec)

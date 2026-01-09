@@ -18,7 +18,7 @@ def load_module_from_file(module_name, file_path):
     return module
 
 # Agregar src al path
-src_path = Path(__file__).parent / 'src'
+src_path = Path(__file__).resolve().parent / 'src'
 sys.path.insert(0, str(src_path))
 
 # Cargar módulos del generador directamente desde archivos

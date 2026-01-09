@@ -16,13 +16,13 @@ class TestNamingConventions:
     
     def test_canonical_path_exists(self):
         """Verify canonical path exists."""
-        canonical_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion"
+        canonical_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion"
         assert canonical_path.exists(), f"Canonical path must exist: {canonical_path}"
         assert canonical_path.is_dir(), f"Canonical path must be a directory"
     
     def test_no_spaces_in_filenames(self):
         """NR-04: No spaces in filenames."""
-        canonical_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion"
+        canonical_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion"
         
         for file_path in canonical_path.rglob("*"):
             if file_path.is_file():
@@ -30,7 +30,7 @@ class TestNamingConventions:
     
     def test_explicit_extensions(self):
         """NR-05: All files must have explicit extensions."""
-        canonical_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion"
+        canonical_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion"
         
         for file_path in canonical_path.rglob("*"):
             if file_path.is_file() and not file_path.name.startswith("."):
@@ -38,7 +38,7 @@ class TestNamingConventions:
     
     def test_phase1_prefix_compliance(self):
         """NR-03: Phase-specific files must have phase1_ prefix."""
-        canonical_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion"
+        canonical_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion"
         
         phase_specific_files = [
             "phase1_cpp_ingestion_full.py",
@@ -54,7 +54,7 @@ class TestNamingConventions:
     
     def test_snake_case_compliance(self):
         """NR-02: Python files must use snake_case."""
-        canonical_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion"
+        canonical_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion"
         
         for file_path in canonical_path.rglob("*.py"):
             filename = file_path.name
@@ -69,12 +69,12 @@ class TestPurgeVerification:
     
     def test_no_legacy_phase_one_folder(self):
         """Verify legacy Phase_one folder deleted."""
-        legacy_path = Path(__file__).parent.parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_one"
+        legacy_path = Path(__file__).resolve().parent.parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_one"
         assert not legacy_path.exists(), f"Legacy Phase_one folder must be deleted: {legacy_path}"
     
     def test_no_phase1_in_root(self):
         """Verify no Phase 1 scripts/files in repository root."""
-        root_path = Path(__file__).parent.parent.parent
+        root_path = Path(__file__).resolve().parent.parent.parent
         
         forbidden_root_files = [
             "implement_phase1_subgroup_a.py",
@@ -91,7 +91,7 @@ class TestPurgeVerification:
     
     def test_purge_command_verification(self):
         """Run purge verification command."""
-        root_path = Path(__file__).parent.parent.parent
+        root_path = Path(__file__).resolve().parent.parent.parent
         
         # Find all phase1-related files outside canonical path
         result = subprocess.run(
@@ -121,7 +121,7 @@ class TestImportPaths:
     
     def test_canonical_path_exists(self):
         """Verify canonical path exists and is importable."""
-        canonical_path = Path(__file__).parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion"
+        canonical_path = Path(__file__).resolve().parent.parent.parent / "src" / "canonic_phases" / "phase_1_cpp_ingestion"
         assert canonical_path.exists(), f"Canonical path must exist: {canonical_path}"
         
         # Check __init__.py exists
@@ -134,7 +134,7 @@ class TestImportPaths:
     
     def test_legacy_path_deleted(self):
         """Verify legacy Phase_one path is deleted."""
-        legacy_path = Path(__file__).parent.parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_one"
+        legacy_path = Path(__file__).resolve().parent.parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_one"
         assert not legacy_path.exists(), f"Legacy Phase_one folder must be deleted: {legacy_path}"
 
 

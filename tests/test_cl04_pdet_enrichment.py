@@ -34,7 +34,7 @@ class TestCL04PDETEnrichment:
     @pytest.fixture
     def cl04_metadata(self):
         """Load CL04 metadata."""
-        metadata_path = Path(__file__).parent.parent / "canonic_questionnaire_central" / "clusters" / "CL04_derechos_sociales_crisis" / "metadata.json"
+        metadata_path = Path(__file__).resolve().parent.parent / "canonic_questionnaire_central" / "clusters" / "CL04_derechos_sociales_crisis" / "metadata.json"
         with open(metadata_path, "r", encoding="utf-8") as f:
             return json.load(f)
 

@@ -36,7 +36,7 @@ import pytest
 @pytest.fixture(scope="session")
 def cqc_base_path() -> Path:
     """Base path to the modularized canonical questionnaire central."""
-    return Path(__file__).parent.parent.parent / "canonic_questionnaire_central"
+    return Path(__file__).resolve().parent.parent.parent / "canonic_questionnaire_central"
 
 
 @pytest.fixture(scope="session")

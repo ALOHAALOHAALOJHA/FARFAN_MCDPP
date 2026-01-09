@@ -15,7 +15,7 @@ from pathlib import Path
 from unittest.mock import Mock, MagicMock
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
     DimensionAggregator,
@@ -34,7 +34,7 @@ from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validatio
 @pytest.fixture
 def real_monolith():
     """Load real questionnaire monolith."""
-    monolith_path = Path(__file__).parent.parent / "canonic_questionnaire_central" / "questionnaire_monolith.json"
+    monolith_path = Path(__file__).resolve().parent.parent / "canonic_questionnaire_central" / "questionnaire_monolith.json"
     with open(monolith_path, 'r') as f:
         return json.load(f)
 

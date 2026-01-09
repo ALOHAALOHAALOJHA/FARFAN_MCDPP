@@ -23,7 +23,7 @@ from typing import Any
 import pytest
 
 # Constants
-PHASE_TWO_DIR = Path(__file__).parent.parent
+PHASE_TWO_DIR = Path(__file__).resolve().parent.parent
 GENERATED_CONTRACTS_DIR = PHASE_TWO_DIR / "generated_contracts"
 EXPECTED_CONTRACT_COUNT = 300
 EXPECTED_QUESTIONS = 30  # Q001-Q030
