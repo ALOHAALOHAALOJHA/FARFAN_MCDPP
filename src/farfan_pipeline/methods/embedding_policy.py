@@ -59,7 +59,8 @@ if TYPE_CHECKING:
 
 # Model constants
 DEFAULT_CROSS_ENCODER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
-MODEL_PARAPHRASE_MULTILINGUAL = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
+# Updated to BGE-M3 (2024 SOTA multilingual embeddings) - Phase 1 enhancement
+MODEL_PARAPHRASE_MULTILINGUAL = "BAAI/bge-m3"
 
 # ============================================================================
 # JSON-DRIVEN DISPATCH TABLES (Monolith, no external ontology dependencies)
