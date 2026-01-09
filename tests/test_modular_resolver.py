@@ -32,7 +32,6 @@ from unittest.mock import MagicMock, Mock, patch
 import pytest
 
 # Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 try:
     from canonic_questionnaire_central.resolver import (

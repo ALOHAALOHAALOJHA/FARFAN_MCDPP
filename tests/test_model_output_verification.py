@@ -71,12 +71,12 @@ class TestPhase0Models:
     def test_phase0_input_instantiation(self):
         """Test Phase0Input can be instantiated with required fields."""
         input_data = Phase0Input(
-            pdf_path=Path("/tmp/test.pdf"),
+            pdf_path=Path("test.pdf"),
             run_id="test_run_001",
             questionnaire_path=None
         )
         
-        assert input_data.pdf_path == Path("/tmp/test.pdf")
+        assert input_data.pdf_path == Path("test.pdf")
         assert input_data.run_id == "test_run_001"
         assert input_data.questionnaire_path is None
     
@@ -85,11 +85,11 @@ class TestPhase0Models:
         output = CanonicalInput(
             document_id="test_doc",
             run_id="test_run_001",
-            pdf_path=Path("/tmp/test.pdf"),
+            pdf_path=Path("test.pdf"),
             pdf_sha256="a" * 64,
             pdf_size_bytes=1000,
             pdf_page_count=10,
-            questionnaire_path=Path("/tmp/q.json"),
+            questionnaire_path=Path("q.json"),
             questionnaire_sha256="b" * 64,
             created_at=datetime.now(timezone.utc),
             phase0_version="1.0.0",
@@ -112,11 +112,11 @@ class TestPhase0Models:
         output = CanonicalInput(
             document_id="test",
             run_id="run",
-            pdf_path=Path("/tmp/test.pdf"),
+            pdf_path=Path("test.pdf"),
             pdf_sha256="a" * 64,
             pdf_size_bytes=100,
             pdf_page_count=1,
-            questionnaire_path=Path("/tmp/q.json"),
+            questionnaire_path=Path("q.json"),
             questionnaire_sha256="b" * 64,
             created_at=datetime.now(timezone.utc),
             phase0_version="1.0.0",

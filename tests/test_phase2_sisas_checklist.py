@@ -35,8 +35,6 @@ import pytest
 # PATH SETUP - Ensure imports work from project root
 # ============================================================================
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 # ============================================================================
 # CONDITIONAL IMPORTS - Handle missing dependencies gracefully

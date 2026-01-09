@@ -1,7 +1,7 @@
 
 import sys
 import os
-sys.path.append(os.getcwd())
+sys.path.append(os.getcwd())  # noqa: E501
 
 try:
     from farfan_pipeline.infrastructure.calibration.calibration_core import create_calibration_parameter

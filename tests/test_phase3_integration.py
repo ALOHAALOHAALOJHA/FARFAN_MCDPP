@@ -14,8 +14,6 @@ from typing import Any
 import pytest
 
 # Add src to path for imports
-repo_root = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(repo_root / "src"))
 
 
 @dataclass

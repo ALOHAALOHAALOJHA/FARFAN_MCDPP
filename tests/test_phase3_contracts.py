@@ -13,8 +13,6 @@ from dataclasses import dataclass, field
 from unittest.mock import MagicMock
 
 # Add src to path
-repo_root = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(repo_root / "src"))
 
 from orchestration.orchestrator import Orchestrator, MicroQuestionRun, ScoredMicroQuestion, Evidence
 

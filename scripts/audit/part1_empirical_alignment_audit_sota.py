@@ -52,7 +52,7 @@ import sys
 _script_dir = Path(__file__).resolve().parent
 _repo_root = _script_dir.parent.parent
 if str(_repo_root / "src") not in sys.path:
-    sys.path.insert(0, str(_repo_root / "src"))
+    sys.path.insert(0, str(_repo_root / "src"))  # noqa: E501
 
 from farfan_pipeline.utils.paths import PROJECT_ROOT, CONFIG_DIR, DATA_DIR
 
