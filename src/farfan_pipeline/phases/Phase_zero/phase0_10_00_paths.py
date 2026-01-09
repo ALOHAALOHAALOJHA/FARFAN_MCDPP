@@ -104,13 +104,29 @@ SRC_DIR: Final[Path] = PROJECT_ROOT / "src"
 DATA_DIR: Final[Path] = PROJECT_ROOT / "data"
 TESTS_DIR: Final[Path] = PROJECT_ROOT / "tests"
 CONFIG_DIR: Final[Path] = PROJECT_ROOT / "canonic_questionnaire_central"
-QUESTIONNAIRE_FILE: Final[Path] = CONFIG_DIR / "questionnaire_monolith.json"
-QUESTIONNAIRE_MODULAR_ROOT: Final[Path] = CONFIG_DIR
-QUESTIONNAIRE_MANIFEST_FILE: Final[Path] = CONFIG_DIR / "modular_manifest.json"
+
+# Questionnaire Authority: Modular Manifest
+# This is the SINGLE SOURCE OF TRUTH for the questionnaire structure.
+QUESTIONNAIRE_ROOT: Final[Path] = CONFIG_DIR
+QUESTIONNAIRE_ENTRY_POINT: Final[Path] = CONFIG_DIR / "modular_manifest.json"
+
+# Legacy/Deprecated Paths (Maintained only for transition, do not use in new code)
+_LEGACY_MONOLITH_FILE: Final[Path] = CONFIG_DIR / "questionnaire_monolith.json"
+
+# Questionnaire Modular Structure Components
 QUESTIONNAIRE_INDEX_FILE: Final[Path] = CONFIG_DIR / "questionnaire_index.json"
 QUESTIONNAIRE_CANONICAL_NOTATION_FILE: Final[Path] = CONFIG_DIR / "canonical_notation.json"
 QUESTIONNAIRE_MESO_FILE: Final[Path] = CONFIG_DIR / "meso_questions.json"
 QUESTIONNAIRE_MACRO_FILE: Final[Path] = CONFIG_DIR / "macro_question.json"
+
+# Cross-referenced modular files
+
+# Cross-referenced modular files
+QUESTIONNAIRE_SCORING_FILE: Final[Path] = CONFIG_DIR / "scoring/scoring_system.json"
+QUESTIONNAIRE_SEMANTIC_CONFIG_FILE: Final[Path] = CONFIG_DIR / "semantic/semantic_config.json"
+QUESTIONNAIRE_CROSS_CUTTING_FILE: Final[Path] = CONFIG_DIR / "cross_cutting/cross_cutting_themes.json"
+QUESTIONNAIRE_GOVERNANCE_FILE: Final[Path] = CONFIG_DIR / "governance/governance.json"
+QUESTIONNAIRE_VALIDATION_TEMPLATES_FILE: Final[Path] = CONFIG_DIR / "validations/validation_templates.json"
 
 
 def proj_root() -> Path:
@@ -460,7 +476,17 @@ __all__ = [
     "DATA_DIR",
     "TESTS_DIR",
     "CONFIG_DIR",
-    "QUESTIONNAIRE_FILE",
+    "QUESTIONNAIRE_ROOT",
+    "QUESTIONNAIRE_ENTRY_POINT",
+    "QUESTIONNAIRE_INDEX_FILE",
+    "QUESTIONNAIRE_CANONICAL_NOTATION_FILE",
+    "QUESTIONNAIRE_MESO_FILE",
+    "QUESTIONNAIRE_MACRO_FILE",
+    "QUESTIONNAIRE_SCORING_FILE",
+    "QUESTIONNAIRE_SEMANTIC_CONFIG_FILE",
+    "QUESTIONNAIRE_CROSS_CUTTING_FILE",
+    "QUESTIONNAIRE_GOVERNANCE_FILE",
+    "QUESTIONNAIRE_VALIDATION_TEMPLATES_FILE",
     # Directory accessors
     "proj_root",
     "src_dir",

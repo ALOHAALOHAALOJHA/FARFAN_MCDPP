@@ -1,0 +1,235 @@
+{
+  "_schema_version": "1.0.0",
+  "_dimension_id": "DIM05",
+  "_dimension_name": "IMPACTOS (Transformaciones de Largo Plazo)",
+  "_generated_at": "2026-01-08T13:30:00Z",
+  "_description": "PDET context enrichment for DIM05 focusing on long-term impact definition, structural transformations, and sustainability in PDET municipalities",
+  
+  "validation_gates_alignment": {
+    "gate_1_scope": {
+      "required_scope": "pdet_context",
+      "allowed_signal_types": ["ENRICHMENT_DATA", "IMPACT_DATA"],
+      "scope_level": "STRATEGIC_PLANNING",
+      "justification": "DIM05 requires access to PDET long-term transformation goals, structural change indicators, and sustainability frameworks"
+    },
+    "gate_2_value_add": {
+      "estimated_value_add": 0.33,
+      "value_components": {
+        "structural_transformation_criteria": 0.15,
+        "sustainability_framework": 0.08,
+        "pdet_vision_alignment": 0.06,
+        "long_term_measurement": 0.04
+      },
+      "justification": "Provides frameworks for assessing long-term structural transformations aligned with PDET 15-year vision"
+    },
+    "gate_3_capability": {
+      "required_capabilities": [
+        "SEMANTIC_PROCESSING",
+        "CAUSAL_INFERENCE",
+        "SYSTEMS_THINKING"
+      ],
+      "recommended_capabilities": [
+        "SCENARIO_ANALYSIS",
+        "SUSTAINABILITY_ASSESSMENT"
+      ],
+      "justification": "Methods must identify impact statements, assess structural change logic, and evaluate long-term sustainability"
+    },
+    "gate_4_channel": {
+      "flow_id": "DIM05_PDET_ENRICHMENT",
+      "flow_type": "ENRICHMENT_FLOW",
+      "source": "pdet_municipalities.json",
+      "destination": "DIM05_questions_evaluation",
+      "data_schema": "PDETContextDIM05",
+      "governance_policy": "CCP-PDET-2024",
+      "documentation_path": "canonic_questionnaire_central/dimensions/DIM05_IMPACTOS/README_PDET_ENRICHMENT.md",
+      "is_explicit": true,
+      "is_documented": true,
+      "is_traceable": true,
+      "is_governed": true
+    }
+  },
+  
+  "pdet_pillar_mapping": {
+    "primary_pillars": [
+      {
+        "pillar_id": "pillar_8",
+        "pillar_name": "Reconciliación, convivencia y construcción de paz",
+        "relevance": "CRITICAL",
+        "relevance_score": 0.98,
+        "impact_requirements": [
+          "Sustained reduction in violent conflict",
+          "Structural transformation of conflict drivers",
+          "Intergenerational reconciliation",
+          "Consolidation of democratic institutions",
+          "Cultural change toward non-violent conflict resolution"
+        ],
+        "typical_impacts": [
+          "Homicide rate reduced by >50% sustained over 10 years",
+          "Land conflicts resolved through legal mechanisms (not violence)",
+          "Youth participation in civic processes >30%",
+          "Trust in institutions index increased >20 points"
+        ]
+      },
+      {
+        "pillar_id": "pillar_1",
+        "pillar_name": "Ordenamiento social de la propiedad rural",
+        "relevance": "CRITICAL",
+        "relevance_score": 0.92,
+        "impact_requirements": [
+          "Consolidation of property rights system",
+          "Elimination of forced displacement due to land disputes",
+          "Sustainable rural development model",
+          "Reduction in structural land inequality"
+        ],
+        "typical_impacts": [
+          "Gini coefficient for land reduced from 0.85 to <0.70",
+          "Zero forced displacements due to land conflicts",
+          "Rural productive investment increased >100%",
+          "Formalization rate >80% sustained"
+        ]
+      },
+      {
+        "pillar_id": "pillar_6",
+        "pillar_name": "Reactivación económica",
+        "relevance": "HIGH",
+        "relevance_score": 0.88,
+        "impact_requirements": [
+          "Structural economic transformation from illicit to licit",
+          "Sustained poverty reduction",
+          "Economic diversification",
+          "Integration into regional/national markets"
+        ],
+        "typical_impacts": [
+          "Multidimensional poverty reduced from 47% to <25%",
+          "Coca cultivation reduced by >90% sustained",
+          "Licit rural GDP increased >150%",
+          "Market integration index >70"
+        ]
+      }
+    ]
+  },
+  
+  "pdet_specific_criteria": {
+    "structural_transformation_focus": {
+      "required": true,
+      "definition": "Changes in fundamental structures, systems, power relations, or cultural patterns that are self-sustaining",
+      "examples_valid": [
+        "Transformation from violence-based to law-based land conflict resolution",
+        "Shift from subsistence to market-integrated rural economy",
+        "Change from authoritarian to participatory governance culture"
+      ],
+      "examples_invalid": [
+        "Continued service provision (not structural)",
+        "Incremental improvements (not transformational)",
+        "Outcomes dependent on external funding (not self-sustaining)"
+      ],
+      "justification": "PDET aims for structural peace and development; impacts must reflect fundamental rather than incremental change"
+    },
+    "fifteen_year_horizon": {
+      "required": true,
+      "planning_horizon": "2017-2032",
+      "measurement_points": [
+        "baseline_2017",
+        "mid_term_2024",
+        "end_term_2032"
+      ],
+      "temporal_logic": [
+        "impacts_achievable_within_15_years",
+        "realistic_lag_times_from_activities",
+        "sustainability_mechanisms_specified"
+      ],
+      "justification": "PDET decree establishes 15-year implementation period; impacts must be achievable and measurable within this timeframe"
+    },
+    "sustainability_specification": {
+      "required": true,
+      "dimensions": [
+        "financial_sustainability",
+        "institutional_sustainability",
+        "political_sustainability",
+        "social_sustainability",
+        "environmental_sustainability"
+      ],
+      "requirements": [
+        "exit_strategies_explicit",
+        "local_ownership_mechanisms",
+        "ongoing_financing_sources_identified",
+        "risk_mitigation_for_reversal"
+      ],
+      "justification": "Impacts must be self-sustaining beyond PDET period; many past interventions collapsed after external support ended"
+    },
+    "attribution_complexity": {
+      "required": true,
+      "acknowledgments": [
+        "multiple_interventions_contributing",
+        "national_level_factors",
+        "regional_spillovers",
+        "exogenous_shocks"
+      ],
+      "approach": "contribution_not_attribution",
+      "measurement_strategy": "theory_based_evaluation_with_counterfactuals",
+      "justification": "Long-term impacts have multiple causes; PDT cannot claim sole attribution but can show contribution"
+    },
+    "territorial_equity": {
+      "required": true,
+      "focus": [
+        "rural_urban_impact_parity",
+        "vereda_level_impact_distribution",
+        "ethnic_group_impact_equity",
+        "gender_impact_equity"
+      ],
+      "justification": "PDET aims to close territorial gaps; impacts must show reduction in rural-urban and inter-vereda inequities"
+    },
+    "conflict_transformation": {
+      "required": true,
+      "elements": [
+        "reduction_in_structural_conflict_drivers",
+        "transformation_of_conflict_dynamics",
+        "consolidation_of_peace_infrastructure",
+        "cultural_shift_toward_peace"
+      ],
+      "measurement_approaches": [
+        "violence_indicators_long_term_trends",
+        "institutional_trust_indices",
+        "civic_participation_rates",
+        "social_cohesion_measures"
+      ],
+      "justification": "PDET's core purpose is structural peacebuilding; impacts must demonstrate conflict transformation not just violence reduction"
+    }
+  },
+  
+  "common_impact_gaps": {
+    "gap_1_outcome_mislabeled_as_impact": {
+      "description": "Medium-term outcomes (e.g., 'increased school enrollment') presented as long-term impacts",
+      "prevalence": "very_high",
+      "impact": "Confuses planning logic; no vision for structural transformation",
+      "remediation": "Apply 'sustainability test': if external funding stops, does change persist? If no, it's not an impact"
+    },
+    "gap_2_no_sustainability_mechanism": {
+      "description": "Impacts stated without explaining how they will be maintained after PDT period",
+      "prevalence": "very_high",
+      "impact": "Gains likely to reverse; no institutional ownership",
+      "remediation": "Mandate explicit sustainability strategies for each claimed impact"
+    },
+    "gap_3_unrealistic_timelines": {
+      "description": "Impacts requiring generational change claimed within 4-year PDT period",
+      "prevalence": "high",
+      "impact": "Impacts become aspirational; no accountability",
+      "remediation": "Cross-check claimed impacts against realistic transformation timelines"
+    },
+    "gap_4_generic_impacts": {
+      "description": "Impacts like 'improved quality of life' that could apply anywhere",
+      "prevalence": "high",
+      "impact": "Fails to address PDET-specific structural challenges",
+      "remediation": "Require impacts explicitly addressing conflict, land, illicit economies, or territorial exclusion"
+    }
+  },
+  
+  "metadata": {
+    "created_at": "2026-01-08T13:30:00Z",
+    "version": "1.0.0",
+    "author": "PDET Enrichment System",
+    "validated": true,
+    "validation_date": "2026-01-08T13:30:00Z",
+    "last_updated": "2026-01-08T13:30:00Z"
+  }
+}

@@ -212,6 +212,41 @@
       "validation_rules": {
         "required_for_all": true
       }
+    },
+    {
+      "theme_id": "CC_CONTEXTO_PDET",
+      "name": "Contexto PDET",
+      "description": "Identificación y consideración del contexto específico de municipios PDET (Programas de Desarrollo con Enfoque Territorial)",
+      "i18n": {
+        "default": "es",
+        "keys": {
+          "label_en": "PDET Context",
+          "label_es": "Contexto PDET"
+        }
+      },
+      "applies_to": {
+        "dimensions": ["DIM01", "DIM02", "DIM04", "DIM05"],
+        "policy_areas": ["PA02", "PA05", "PA07"]
+      },
+      "indicators": [
+        "mencion_explicita_pdet",
+        "integracion_patr",
+        "alineacion_pmi",
+        "coordinacion_art",
+        "caracterizacion_conflicto",
+        "proyectos_ocad_paz"
+      ],
+      "validation_rules": {
+        "required_for": ["PA02", "PA05", "PA07"],
+        "conditional_for": "municipality_in_pdet_list",
+        "recommended_for": ["PA03", "PA04", "PA06", "PA08"]
+      },
+      "pdet_enrichment": {
+        "total_municipalities": 170,
+        "total_subregions": 16,
+        "total_patr_initiatives": 32808,
+        "data_source": "pdet_municipalities.json"
+      }
     }
   ],
 
@@ -233,6 +268,18 @@
       "themes": ["CC_INTEROPERABILIDAD", "CC_MECANISMOS_SEGUIMIENTO"],
       "description": "Coordinación para seguimiento interinstitucional",
       "priority": "alta"
+    },
+    {
+      "combination_id": "CC_PDET_TERRITORIO",
+      "themes": ["CC_CONTEXTO_PDET", "CC_ENTORNO_TERRITORIAL"],
+      "description": "Integración de contexto PDET con particularidades territoriales",
+      "priority": "alta"
+    },
+    {
+      "combination_id": "CC_PDET_PARTICIPACION",
+      "themes": ["CC_CONTEXTO_PDET", "CC_PARTICIPACION_CIUDADANA"],
+      "description": "Planificación participativa en territorios PDET",
+      "priority": "media"
     }
   ],
 
@@ -243,6 +290,7 @@
       "CC_ENFOQUE_DIFERENCIAL",
       "CC_PERSPECTIVA_GENERO",
       "CC_ENTORNO_TERRITORIAL",
+      "CC_CONTEXTO_PDET",
       "CC_PARTICIPACION_CIUDADANA",
       "CC_COHERENCIA_NORMATIVA",
       "CC_SOSTENIBILIDAD_PRESUPUESTAL",

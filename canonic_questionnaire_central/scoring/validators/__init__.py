@@ -13,11 +13,13 @@ Validators:
 - QualityLevelValidator: Validates quality levels
 - ScoredResultValidator: Complete validation of scored results
 - MetadataValidator: Validates scoring metadata
+- PDETContextValidator: Validates PDET municipality context enrichment
 
 Usage:
 ------
     from canonic_questionnaire_central.scoring.validators import (
         ScoredResultValidator,
+        PDETContextValidator,
         validate_batch,
         ValidationResult,
     )
@@ -25,7 +27,7 @@ Usage:
     result = ScoredResultValidator.validate(scored_result)
 
 Author: F.A.R.F.A.N Pipeline Team
-Version: 1.0.0
+Version: 1.1.0
 """
 
 from .scoring_validators import (
@@ -42,6 +44,7 @@ from .scoring_validators import (
     QualityLevelValidator,
     ScoredResultValidator,
     MetadataValidator,
+    PDETContextValidator,
     validate_batch,
 )
 
@@ -62,6 +65,7 @@ __all__ = [
     "QualityLevelValidator",
     "ScoredResultValidator",
     "MetadataValidator",
+    "PDETContextValidator",
     # Batch
     "validate_batch",
 ]

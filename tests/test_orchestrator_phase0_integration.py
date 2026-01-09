@@ -69,17 +69,23 @@ def mock_runtime_config_dev():
 
 @pytest.fixture
 def mock_phase0_validation_success():
-    """Phase0ValidationResult with all gates passed."""
+    """Phase0ValidationResult with all 7 gates passed (P1 Hardening compliant)."""
     gate_results = [
         GateResult(passed=True, gate_name="bootstrap", gate_id=1),
         GateResult(passed=True, gate_name="input_verification", gate_id=2),
         GateResult(passed=True, gate_name="boot_checks", gate_id=3),
         GateResult(passed=True, gate_name="determinism", gate_id=4),
+        GateResult(passed=True, gate_name="questionnaire_integrity", gate_id=5),
+        GateResult(passed=True, gate_name="method_registry", gate_id=6),
+        GateResult(passed=True, gate_name="smoke_tests", gate_id=7),
     ]
     return Phase0ValidationResult(
         all_passed=True,
         gate_results=gate_results,
-        validation_time=datetime.now(UTC).isoformat()
+        validation_time=datetime.now(UTC).isoformat(),
+        seed_snapshot={"python": 42, "numpy": 42},
+        questionnaire_sha256="a" * 64,
+        input_pdf_sha256="b" * 64,
     )
 
 
@@ -97,7 +103,32 @@ def mock_phase0_validation_failure():
     return Phase0ValidationResult(
         all_passed=False,
         gate_results=gate_results,
-        validation_time=datetime.now(UTC).isoformat()
+        validation_time=datetime.now(UTC).isoformat(),
+        seed_snapshot={},
+        questionnaire_sha256="",
+        input_pdf_sha256="",
+    )
+
+
+@pytest.fixture
+def mock_phase0_validation_p1_hardening_failure():
+    """Phase0ValidationResult with P1 Hardening gates (5-7) failed but mandatory (1-4) passed."""
+    gate_results = [
+        GateResult(passed=True, gate_name="bootstrap", gate_id=1),
+        GateResult(passed=True, gate_name="input_verification", gate_id=2),
+        GateResult(passed=True, gate_name="boot_checks", gate_id=3),
+        GateResult(passed=True, gate_name="determinism", gate_id=4),
+        GateResult(passed=False, gate_name="questionnaire_integrity", gate_id=5, reason="Hash mismatch"),
+        GateResult(passed=False, gate_name="method_registry", gate_id=6, reason="Only 400 of 416 methods"),
+        GateResult(passed=True, gate_name="smoke_tests", gate_id=7),
+    ]
+    return Phase0ValidationResult(
+        all_passed=False,
+        gate_results=gate_results,
+        validation_time=datetime.now(UTC).isoformat(),
+        seed_snapshot={"python": 42, "numpy": 42},
+        questionnaire_sha256="c" * 64,
+        input_pdf_sha256="d" * 64,
     )
 
 
@@ -130,13 +161,15 @@ class TestPhase0ValidationResult:
     """Test Phase0ValidationResult dataclass functionality."""
 
     def test_phase0_validation_result_all_passed(self, mock_phase0_validation_success):
-        """Test Phase0ValidationResult when all gates pass."""
+        """Test Phase0ValidationResult when all 7 gates pass."""
         result = mock_phase0_validation_success
 
         assert result.all_passed is True
-        assert len(result.gate_results) == 4
+        assert len(result.gate_results) == 7
         assert all(g.passed for g in result.gate_results)
         assert len(result.get_failed_gates()) == 0
+        assert result.has_mandatory_gates_passed() is True
+        assert result.has_p1_hardening_gates_passed() is True
 
     def test_phase0_validation_result_failure(self, mock_phase0_validation_failure):
         """Test Phase0ValidationResult when gates fail."""
@@ -147,13 +180,28 @@ class TestPhase0ValidationResult:
         assert result.gate_results[0].passed is False
         assert len(result.get_failed_gates()) == 1
         assert result.get_failed_gates()[0].gate_name == "bootstrap"
+        # Mandatory gates NOT passed because bootstrap failed
+        assert result.has_mandatory_gates_passed() is False
+
+    def test_phase0_validation_p1_hardening_gates(self, mock_phase0_validation_p1_hardening_failure):
+        """Test Phase0ValidationResult with P1 hardening gates failed."""
+        result = mock_phase0_validation_p1_hardening_failure
+        
+        assert result.all_passed is False
+        assert result.has_mandatory_gates_passed() is True  # Gates 1-4 passed
+        assert result.has_p1_hardening_gates_passed() is False  # Gates 5-7 have failures
+        
+        failed = result.get_failed_gates()
+        failed_names = [g.gate_name for g in failed]
+        assert "questionnaire_integrity" in failed_names
+        assert "method_registry" in failed_names
 
     def test_phase0_validation_get_summary_success(self, mock_phase0_validation_success):
         """Test get_summary() method for successful validation."""
         result = mock_phase0_validation_success
         summary = result.get_summary()
 
-        assert "4/4 gates passed" in summary
+        assert "7/7 gates passed" in summary
         assert "failed" not in summary
 
     def test_phase0_validation_get_summary_failure(self, mock_phase0_validation_failure):
@@ -161,8 +209,38 @@ class TestPhase0ValidationResult:
         result = mock_phase0_validation_failure
         summary = result.get_summary()
 
-        assert "0/1 gates passed" in summary
+        assert "0/7 gates passed" in summary
         assert "bootstrap failed" in summary
+
+    def test_phase0_validation_seed_snapshot(self, mock_phase0_validation_success):
+        """Test seed_snapshot attribute for determinism."""
+        result = mock_phase0_validation_success
+        
+        assert result.seed_snapshot == {"python": 42, "numpy": 42}
+        seeds_valid, missing = result.validate_determinism_seeds()
+        assert seeds_valid is True
+        assert missing == []
+
+    def test_phase0_validation_missing_seeds(self, mock_phase0_validation_failure):
+        """Test seed validation when seeds are missing."""
+        result = mock_phase0_validation_failure
+        
+        seeds_valid, missing = result.validate_determinism_seeds()
+        assert seeds_valid is False
+        assert "python" in missing
+        assert "numpy" in missing
+
+    def test_phase0_validation_get_gate_by_name(self, mock_phase0_validation_success):
+        """Test get_gate_by_name() method."""
+        result = mock_phase0_validation_success
+        
+        bootstrap_gate = result.get_gate_by_name("bootstrap")
+        assert bootstrap_gate is not None
+        assert bootstrap_gate.gate_id == 1
+        assert bootstrap_gate.passed is True
+        
+        nonexistent = result.get_gate_by_name("nonexistent")
+        assert nonexistent is None
 
 
 # ============================================================================

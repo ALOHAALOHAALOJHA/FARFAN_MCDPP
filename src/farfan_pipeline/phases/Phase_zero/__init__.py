@@ -44,7 +44,7 @@ __version__ = "1.0.0"
 __phase__ = 0
 __author__ = "F.A.R.F.A.N Core Team"
 __created__ = "2025-12-29"
-__modified__ = "2025-12-29"
+__modified__ = "2026-01-07"
 
 # Legacy compatibility
 PHASE_LABEL = "Phase 0"
@@ -58,6 +58,23 @@ from .phase0_00_01_domain_errors import (
     ContractViolationError,
     DataContractError,
     SystemContractError,
+)
+from .phase0_00_03_primitives import (
+    HashStr,
+    Timestamp,
+    RunID,
+    PolicyAreaID,
+    DimensionID,
+    validate_hash_str,
+)
+from .phase0_00_03_protocols import (
+    PhaseContract,
+    PhaseInvariant,
+    PhaseMetadata,
+    ContractValidationResult,
+    PhaseArtifact,
+    PhaseManifestBuilder,
+    compute_contract_hash,
 )
 
 # Stage 30: Resource Control
@@ -83,6 +100,19 @@ __all__ = [
     "ContractViolationError",
     "DataContractError",
     "SystemContractError",
+    "HashStr",
+    "Timestamp",
+    "RunID",
+    "PolicyAreaID",
+    "DimensionID",
+    "validate_hash_str",
+    "PhaseContract",
+    "PhaseInvariant",
+    "PhaseMetadata",
+    "ContractValidationResult",
+    "PhaseArtifact",
+    "PhaseManifestBuilder",
+    "compute_contract_hash",
     # Stage 30: Resource Control
     "ResourceController",
     "ResourceLimits",

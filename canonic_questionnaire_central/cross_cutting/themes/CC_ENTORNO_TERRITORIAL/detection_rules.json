@@ -99,6 +99,25 @@
         "applies_when": {
           "population_present": ["indígenas", "afrodescendientes"]
         }
+      },
+      {
+        "signal_id": "SIG-ET-006",
+        "name": "pdet_territorial_context",
+        "type": "PATTERN_MATCH",
+        "description": "Contexto territorial PDET - subregiones y características rurales",
+        "patterns": [
+          "(?i)subregión\\s+PDET",
+          "(?i)(?:Alto Patía|Arauca|Bajo Cauca|Catatumbo|Chocó|Macarena|Montes de María|Putumayo|Sierra Nevada|Sur de Bolívar|Sur de Córdoba|Sur del Tolima|Urabá)",
+          "(?i)zona(?:s)?\\s+rurales?\\s+dispersas?",
+          "(?i)corregimiento(?:s)?\\s+y\\s+vereda(?:s)?",
+          "(?i)territorio(?:s)?\\s+afectado(?:s)?\\s+por\\s+(?:el\\s+)?conflicto"
+        ],
+        "weight": 0.10,
+        "minimum_matches": 1,
+        "pdet_enrichment": true,
+        "context_validation": {
+          "boost_if_pdet_municipality": 0.15
+        }
       }
     ],
 
@@ -107,7 +126,8 @@
       "threshold": 0.55,
       "formula": "score = sum(signal.weight * signal.match_score) / sum(signal.weight)",
       "minimum_signals_required": 2,
-      "bonus_for_pot_reference": 0.10
+      "bonus_for_pot_reference": 0.10,
+      "bonus_for_pdet_context": 0.12
     }
   },
 
@@ -135,7 +155,9 @@
     "confidence_modifiers": {
       "pot_reference_bonus": 0.15,
       "risk_analysis_bonus": 0.10,
-      "rural_urban_differentiation_bonus": 0.05
+      "rural_urban_differentiation_bonus": 0.05,
+      "pdet_subregion_context_bonus": 0.12,
+      "corregimiento_vereda_detail_bonus": 0.08
     }
   },
 
@@ -169,6 +191,13 @@
       "urbano_mentions_per_plan": {"mean": 42, "range": [18, 89]},
       "pot_references_per_plan": {"mean": 8, "range": [2, 18]},
       "environmental_risks_per_plan": {"mean": 24, "range": [6, 52]}
+    },
+    "pdet_enrichment": {
+      "pdet_municipalities": 170,
+      "rural_percentage_pdet": 24.0,
+      "corregimientos_veredas_avg": 65,
+      "subregions_with_high_rurality": ["SR05", "SR06", "SR07"],
+      "conflict_affected_territories": ["SR01", "SR02", "SR03", "SR04"]
     }
   },
 

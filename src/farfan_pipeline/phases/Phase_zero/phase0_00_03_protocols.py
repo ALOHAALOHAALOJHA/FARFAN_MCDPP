@@ -37,7 +37,7 @@ phase2_microquestions:
     Output: Phase2Result (305 questions answered)
 
 Author: F.A.R.F.A.N Architecture Team
-Date: 2025-01-19
+Date: 2026-01-07
 """
 
 from __future__ import annotations
@@ -48,7 +48,12 @@ from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, TypeVar, List, Optional
+
+# Use primitives from our new module
+from farfan_pipeline.phases.Phase_zero.phase0_00_03_primitives import (
+    HashStr, Timestamp, RunID, PhaseID, validate_hash_str
+)
 
 # Type variables for generic phase contracts
 TInput = TypeVar("TInput")
@@ -70,11 +75,11 @@ class PhaseMetadata:
     """Metadata for a phase execution."""
 
     phase_name: str
-    started_at: str
-    finished_at: str | None = None
-    duration_ms: float | None = None
+    started_at: Timestamp
+    finished_at: Optional[Timestamp] = None
+    duration_ms: Optional[float] = None
     success: bool = False
-    error: str | None = None
+    error: Optional[str] = None
 
 
 @dataclass
@@ -84,10 +89,10 @@ class ContractValidationResult:
     passed: bool
     contract_type: str  # "input" or "output"
     phase_name: str
-    errors: list[str] = field(default_factory=list)
-    warnings: list[str] = field(default_factory=list)
-    validation_timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+    errors: List[str] = field(default_factory=list)
+    warnings: List[str] = field(default_factory=list)
+    validation_timestamp: Timestamp = field(
+        default_factory=lambda: Timestamp(datetime.now(timezone.utc).isoformat())
     )
 
 
@@ -113,8 +118,8 @@ class PhaseContract(ABC, Generic[TInput, TOutput]):
             phase_name: Canonical name of the phase (e.g., "phase0_input_validation")
         """
         self.phase_name = phase_name
-        self.invariants: list[PhaseInvariant] = []
-        self.metadata: PhaseMetadata | None = None
+        self.invariants: List[PhaseInvariant] = []
+        self.metadata: Optional[PhaseMetadata] = None
 
     @abstractmethod
     def validate_input(self, input_data: Any) -> ContractValidationResult:
@@ -184,7 +189,7 @@ class PhaseContract(ABC, Generic[TInput, TOutput]):
             )
         )
 
-    def check_invariants(self, data: Any) -> tuple[bool, list[str]]:
+    def check_invariants(self, data: Any) -> tuple[bool, List[str]]:
         """
         Check all invariants for this phase.
 
@@ -229,7 +234,7 @@ class PhaseContract(ABC, Generic[TInput, TOutput]):
         started_at = datetime.now(timezone.utc)
         metadata = PhaseMetadata(
             phase_name=self.phase_name,
-            started_at=started_at.isoformat(),
+            started_at=Timestamp(started_at.isoformat()),
         )
 
         try:
@@ -271,7 +276,7 @@ class PhaseContract(ABC, Generic[TInput, TOutput]):
 
         finally:
             finished_at = datetime.now(timezone.utc)
-            metadata.finished_at = finished_at.isoformat()
+            metadata.finished_at = Timestamp(finished_at.isoformat())
             metadata.duration_ms = (
                 finished_at - started_at
             ).total_seconds() * 1000
@@ -284,9 +289,9 @@ class PhaseArtifact:
 
     artifact_name: str
     artifact_path: Path
-    sha256: str
+    sha256: HashStr
     size_bytes: int
-    created_at: str
+    created_at: Timestamp
 
 
 class PhaseManifestBuilder:
@@ -310,8 +315,8 @@ class PhaseManifestBuilder:
         metadata: PhaseMetadata,
         input_validation: ContractValidationResult,
         output_validation: ContractValidationResult,
-        invariants_checked: list[str],
-        artifacts: list[PhaseArtifact],
+        invariants_checked: List[str],
+        artifacts: List[PhaseArtifact],
     ) -> None:
         """
         Record a phase execution in the manifest.
@@ -382,7 +387,7 @@ class PhaseManifestBuilder:
             json.dump(self.to_dict(), f, indent=2)
 
 
-def compute_contract_hash(contract_data: Any) -> str:
+def compute_contract_hash(contract_data: Any) -> HashStr:
     """
     Compute SHA256 hash of a contract's data.
 
@@ -390,7 +395,7 @@ def compute_contract_hash(contract_data: Any) -> str:
         contract_data: Contract data (dict, dataclass, or Pydantic model)
 
     Returns:
-        Hex-encoded SHA256 hash
+        Hex-encoded SHA256 hash (HashStr)
     """
     # Convert to dict if needed
     if hasattr(contract_data, "dict"):
@@ -406,7 +411,8 @@ def compute_contract_hash(contract_data: Any) -> str:
 
     # Serialize to JSON with sorted keys for determinism
     json_str = json.dumps(data_dict, sort_keys=True, separators=(",", ":"))
-    return hashlib.sha256(json_str.encode("utf-8")).hexdigest()
+    hash_val = hashlib.sha256(json_str.encode("utf-8")).hexdigest()
+    return HashStr(hash_val)
 
 
 __all__ = [

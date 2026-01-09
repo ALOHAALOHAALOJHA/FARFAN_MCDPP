@@ -101,6 +101,47 @@ from .programmatic_hierarchy_extractor import (
     HierarchyErrorType,
 )
 
+from .population_disaggregation_extractor import (
+    PopulationDisaggregationExtractor,
+    PopulationSourceAdapter,
+    DictPopulationAdapter,
+    CSVPopulationAdapter,
+    JSONPopulationAdapter,
+    DisaggregationAxis,
+    DisaggregationError,
+    DisaggregationErrorType,
+    DisaggregationReport,
+    PopulationGroup,
+)
+
+from .temporal_consistency_extractor import (
+    TemporalConsistencyExtractor,
+    TemporalSourceAdapter,
+    DictTemporalAdapter,
+    CSVTemporalAdapter,
+    JSONTemporalAdapter,
+    TemporalError,
+    TemporalErrorType,
+    TimeInterval,
+    TemporalGap,
+    TemporalOverlap,
+    ConsistencyReport,
+)
+
+from .semantic_relationship_extractor import (
+    SemanticRelationshipExtractor,
+    RelationshipSourceAdapter,
+    DictRelationshipAdapter,
+    CSVRelationshipAdapter,
+    JSONRelationshipAdapter,
+    RelationshipType,
+    RelationshipError,
+    RelationshipErrorType,
+    SemanticRelationship,
+    RelationshipCluster,
+    RelationshipReport,
+)
+
 __version__ = "2.0.0"
 
 __all__ = [
@@ -148,6 +189,44 @@ __all__ = [
     'HierarchyNode',
     'HierarchyError',
     'HierarchyErrorType',
+
+    # Population Disaggregation Extractor
+    'PopulationDisaggregationExtractor',
+    'PopulationSourceAdapter',
+    'DictPopulationAdapter',
+    'CSVPopulationAdapter',
+    'JSONPopulationAdapter',
+    'DisaggregationAxis',
+    'DisaggregationError',
+    'DisaggregationErrorType',
+    'DisaggregationReport',
+    'PopulationGroup',
+
+    # Temporal Consistency Extractor
+    'TemporalConsistencyExtractor',
+    'TemporalSourceAdapter',
+    'DictTemporalAdapter',
+    'CSVTemporalAdapter',
+    'JSONTemporalAdapter',
+    'TemporalError',
+    'TemporalErrorType',
+    'TimeInterval',
+    'TemporalGap',
+    'TemporalOverlap',
+    'ConsistencyReport',
+
+    # Semantic Relationship Extractor
+    'SemanticRelationshipExtractor',
+    'RelationshipSourceAdapter',
+    'DictRelationshipAdapter',
+    'CSVRelationshipAdapter',
+    'JSONRelationshipAdapter',
+    'RelationshipType',
+    'RelationshipError',
+    'RelationshipErrorType',
+    'SemanticRelationship',
+    'RelationshipCluster',
+    'RelationshipReport',
 ]
 
 
