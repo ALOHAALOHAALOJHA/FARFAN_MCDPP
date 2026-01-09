@@ -125,7 +125,7 @@ class PathRepairer:
     def repair_os_path_join(self, py_file: Path) -> int:
         """Replace os.path.join with Path / operator if aggressive mode is enabled.
         
-        NOTE: This only handles simple cases like var / "string".
+        NOTE: This only handles simple cases like os.path.join(var, "string") → var / "string".
         Complex cases with multiple arguments or nested calls require manual review.
         """
         if not self.aggressive:
@@ -179,7 +179,7 @@ class PathRepairer:
         return changes_made
 
     def repair_unresolved_file(self, py_file: Path) -> int:
-        """Add .resolve() to Path(__file__).resolve() usage if aggressive mode is enabled."""
+        """Add .resolve() to Path(__file__) usage if aggressive mode is enabled."""
         if not self.aggressive:
             return 0
 
@@ -192,14 +192,15 @@ class PathRepairer:
 
         changes_made = 0
 
-        # Replace Path(__file__).resolve() with Path(__file__).resolve()
+        # Replace Path(__file__) with Path(__file__).resolve()
         # But only if resolve() is not already present
         pattern = r'Path\(__file__\)(?!\.resolve\(\))'
         if re.search(pattern, content):
             new_content = re.sub(pattern, r'Path(__file__).resolve()', content)
             
             if new_content != content:
-                changes_made = content.count('Path(__file__).resolve()') - new_content.count('Path(__file__).resolve()')
+                # Count how many Path(__file__) patterns were replaced
+                changes_made = len(re.findall(pattern, content))
                 
                 if not self.dry_run:
                     if self.backup:
