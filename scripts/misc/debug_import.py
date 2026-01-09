@@ -10,7 +10,7 @@ except ImportError as e:
     print(f"Failed importing from calibration_core: {e}")
 
 try:
-    from farfan_pipeline.infrastructure.calibration import create_calibration_parameter
+    import farfan_pipeline.infrastructure.calibration as calibration
     print("Success importing from calibration package")
 except ImportError as e:
     print(f"Failed importing from calibration package: {e}")
