@@ -24,13 +24,13 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 
 class PathAuditor:
     """Audits Python files for path-related issues."""
 
-    def __init__(self, root: Path, verbose: bool = False, exclude_patterns: List[str] = None):
+    def __init__(self, root: Path, verbose: bool = False, exclude_patterns: Optional[List[str]] = None):
         self.root = root
         self.verbose = verbose
         self.exclude_patterns = exclude_patterns or []

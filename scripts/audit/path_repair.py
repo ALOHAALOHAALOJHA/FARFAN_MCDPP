@@ -19,7 +19,7 @@ import re
 import shutil
 import sys
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 
 class PathRepairer:
@@ -123,7 +123,11 @@ class PathRepairer:
         return suggestions
 
     def repair_os_path_join(self, py_file: Path) -> int:
-        """Replace os.path.join with Path / operator if aggressive mode is enabled."""
+        """Replace os.path.join with Path / operator if aggressive mode is enabled.
+        
+        NOTE: This only handles simple cases like os.path.join(var, "string").
+        Complex cases with multiple arguments or nested calls require manual review.
+        """
         if not self.aggressive:
             return 0
 
@@ -144,7 +148,7 @@ class PathRepairer:
 
         for i, line in enumerate(lines):
             if "os.path.join" in line and "# noqa" not in line:
-                # Only handle simple cases
+                # Only handle simple cases: os.path.join(var, "string")
                 match = re.search(r'os\.path\.join\((\w+),\s*["\']([^"\']+)["\']\)', line)
                 if match:
                     base_var = match.group(1)
