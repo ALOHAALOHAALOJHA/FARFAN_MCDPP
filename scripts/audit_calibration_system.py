@@ -688,8 +688,13 @@ class CalibrationAuditor:
                             "pattern": pattern
                         })
                         break
-            except Exception:
-                pass
+            except Exception as exc:
+                # Best-effort scan: record files that could not be analyzed but do not fail the audit
+                unbounded.append({
+                    "file": str(py_file.relative_to(self.repo_root)),
+                    "pattern": None,
+                    "error": str(exc),
+                })
                 
         return unbounded
 
