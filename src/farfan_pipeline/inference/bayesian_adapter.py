@@ -118,6 +118,92 @@ class BayesianEngineAdapter:
         }
 
     # ========================================================================
+    # OBSERVATION VALIDATION HELPER
+    # ========================================================================
+
+    def _validate_and_convert_observations(
+        self,
+        observations: list[float] | NDArray[np.floating[Any]],
+        method_name: str,
+    ) -> tuple[int, int, list[str]]:
+        """
+        Rigorously validate and convert observations to successes/trials.
+
+        Args:
+            observations: Raw observations array
+            method_name: Name of calling method for error messages
+
+        Returns:
+            Tuple of (n_successes, n_trials, warnings_list)
+
+        Raises:
+            ValueError: If observations are invalid or empty
+        """
+        warnings_list: list[str] = []
+
+        # Convert to numpy array
+        obs_array = np.asarray(observations, dtype=np.float64)
+
+        # CRITICAL: Check for empty observations
+        if obs_array.size == 0:
+            raise ValueError(
+                f"{method_name}: observations array is empty"
+            )
+
+        # CRITICAL: Filter NaN values
+        nan_mask = np.isnan(obs_array)
+        n_nan = int(np.sum(nan_mask))
+        if n_nan > 0:
+            warnings_list.append(f"Filtered {n_nan} NaN values from observations")
+            self.logger.warning(f"{method_name}: {warnings_list[-1]}")
+            obs_array = obs_array[~nan_mask]
+
+        # CRITICAL: Filter Inf values
+        inf_mask = np.isinf(obs_array)
+        n_inf = int(np.sum(inf_mask))
+        if n_inf > 0:
+            warnings_list.append(f"Filtered {n_inf} Inf values from observations")
+            self.logger.warning(f"{method_name}: {warnings_list[-1]}")
+            obs_array = obs_array[~inf_mask]
+
+        # Check if anything remains after filtering
+        if obs_array.size == 0:
+            raise ValueError(
+                f"{method_name}: all observations were NaN or Inf"
+            )
+
+        # VALIDATION: Check for non-binary values (warn but proceed)
+        non_binary_mask = ~np.isin(obs_array, [0.0, 1.0])
+        n_non_binary = int(np.sum(non_binary_mask))
+        if n_non_binary > 0:
+            warnings_list.append(
+                f"{n_non_binary} non-binary values detected; "
+                f"treating as fractional successes (sum={np.sum(obs_array):.2f})"
+            )
+            self.logger.warning(f"{method_name}: {warnings_list[-1]}")
+
+        # VALIDATION: Check for negative values
+        n_negative = int(np.sum(obs_array < 0))
+        if n_negative > 0:
+            raise ValueError(
+                f"{method_name}: {n_negative} negative values in observations"
+            )
+
+        # Convert to successes/trials
+        n_successes = int(np.sum(obs_array))
+        n_trials = len(obs_array)
+
+        # Sanity check: successes can exceed trials with fractional values
+        if n_successes > n_trials:
+            warnings_list.append(
+                f"n_successes ({n_successes}) > n_trials ({n_trials}) due to fractional values"
+            )
+            # Clip to valid range
+            n_successes = n_trials
+
+        return n_successes, n_trials, warnings_list
+
+    # ========================================================================
     # HIGH-LEVEL PROCESS TRACING METHODS
     # ========================================================================
 
@@ -140,11 +226,19 @@ class BayesianEngineAdapter:
         Returns:
             Dictionary with posterior statistics and necessity assessment
 
+        Raises:
+            ValueError: If observations are empty or all invalid
+
         Beach's Hoop Test:
             - Prior: Beta(2, 1) favors necessity
             - Updates with evidence
             - High posterior = necessary condition likely met
         """
+        # Rigorous observation validation
+        n_successes, n_trials, obs_warnings = self._validate_and_convert_observations(
+            observations, "test_necessity_from_observations"
+        )
+
         if prior is None:
             # Use hoop test prior (favors necessity)
             prior_params = self.prior_builder.build_prior_for_evidence_type("hoop", rarity=0.5)
@@ -153,11 +247,6 @@ class BayesianEngineAdapter:
         else:
             prior_alpha = float(prior.get("alpha", 1.0))
             prior_beta = float(prior.get("beta", 1.0))
-
-        # Convert observations to successes/trials
-        obs_array = np.asarray(observations, dtype=np.float64)
-        n_successes = int(np.sum(obs_array))
-        n_trials = len(obs_array)
 
         # Sample posterior
         result = self.sampling_engine.sample_beta_binomial(
@@ -182,6 +271,7 @@ class BayesianEngineAdapter:
             "n_successes": n_successes,
             "n_trials": n_trials,
             "evidence_strength": "strong" if necessity_met else "weak",
+            "validation_warnings": obs_warnings,
         }
 
     def test_sufficiency_from_observations(
@@ -207,6 +297,11 @@ class BayesianEngineAdapter:
             - Strong evidence if posterior is high
             - Presence of evidence confirms hypothesis
         """
+        # Rigorous observation validation
+        n_successes, n_trials, obs_warnings = self._validate_and_convert_observations(
+            observations, "test_sufficiency_from_observations"
+        )
+
         if prior is None:
             # Use smoking gun prior (favors sufficiency)
             prior_params = self.prior_builder.build_prior_for_evidence_type(
@@ -217,11 +312,6 @@ class BayesianEngineAdapter:
         else:
             prior_alpha = float(prior.get("alpha", 1.0))
             prior_beta = float(prior.get("beta", 1.0))
-
-        # Convert observations
-        obs_array = np.asarray(observations, dtype=np.float64)
-        n_successes = int(np.sum(obs_array))
-        n_trials = len(obs_array)
 
         # Sample posterior
         result = self.sampling_engine.sample_beta_binomial(
@@ -246,6 +336,7 @@ class BayesianEngineAdapter:
             "n_successes": n_successes,
             "n_trials": n_trials,
             "evidence_strength": "very_strong" if sufficiency_met else "moderate",
+            "validation_warnings": obs_warnings,
         }
 
     def test_doubly_decisive(
@@ -266,11 +357,19 @@ class BayesianEngineAdapter:
         Returns:
             Dictionary with comprehensive test results
 
+        Raises:
+            ValueError: If observations are empty or all invalid
+
         Beach's Doubly Decisive Test:
             - Prior: Beta(3, 3) concentrated prior
             - Must meet both necessity and sufficiency criteria
             - Provides strongest possible confirmation
         """
+        # Rigorous observation validation
+        n_successes, n_trials, obs_warnings = self._validate_and_convert_observations(
+            observations, "test_doubly_decisive"
+        )
+
         if prior is None:
             prior_params = self.prior_builder.build_prior_for_evidence_type(
                 "doubly_decisive", rarity=0.8
@@ -280,10 +379,6 @@ class BayesianEngineAdapter:
         else:
             prior_alpha = float(prior.get("alpha", 1.0))
             prior_beta = float(prior.get("beta", 1.0))
-
-        obs_array = np.asarray(observations, dtype=np.float64)
-        n_successes = int(np.sum(obs_array))
-        n_trials = len(obs_array)
 
         result = self.sampling_engine.sample_beta_binomial(
             n_successes=n_successes,
@@ -307,6 +402,7 @@ class BayesianEngineAdapter:
             "n_successes": n_successes,
             "n_trials": n_trials,
             "evidence_strength": "decisive" if test_passed else "inconclusive",
+            "validation_warnings": obs_warnings,
         }
 
     def update_prior_with_evidence(
@@ -368,20 +464,42 @@ class BayesianEngineAdapter:
         Returns:
             Dictionary with hierarchical analysis results
 
+        Raises:
+            ValueError: If level_names length doesn't match level_data length
+
         Hierarchical Model:
             - Population hyperpriors capture overall trend
             - Group-level parameters for each mechanism level
             - Partial pooling borrows strength across levels
         """
+        # RIGOROUS VALIDATION: Handle empty level_data
+        if len(level_data) == 0:
+            self.logger.warning("Empty level_data provided to analyze_hierarchical_mechanisms")
+            return {
+                "levels": {},
+                "overall_mean": 0.0,
+                "overall_std": 0.0,
+                "n_levels": 0,
+                "all_converged": True,
+                "warning": "empty_level_data",
+            }
+
         if level_names is None:
             level_names = [f"level_{i}" for i in range(len(level_data))]
+
+        # CRITICAL VALIDATION: level_names must match level_data length
+        if len(level_names) != len(level_data):
+            raise ValueError(
+                f"level_names length ({len(level_names)}) must match "
+                f"level_data length ({len(level_data)})"
+            )
 
         # Sample hierarchical model
         results = self.sampling_engine.sample_hierarchical_beta(level_data)
 
-        # Compile results
+        # Compile results using strict zip to catch any mismatch
         level_results = {}
-        for i, (name, result) in enumerate(zip(level_names, results)):
+        for i, (name, result) in enumerate(zip(level_names, results, strict=True)):
             level_results[name] = {
                 "posterior_mean": result.posterior_mean,
                 "posterior_std": result.posterior_std,
