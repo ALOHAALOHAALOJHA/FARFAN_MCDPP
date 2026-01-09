@@ -2,8 +2,8 @@
 
 **Complete Documentation Navigator**
 
-Version: 1.0.0  
-Last Updated: 2024-12-16
+Version: 1.1.0
+Last Updated: 2026-01-09
 
 ---
 
@@ -27,6 +27,10 @@ Last Updated: 2024-12-16
 - [CALIBRATION_GUIDE.md](./CALIBRATION_GUIDE.md) - Calibrating new methods
 - [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) - Common problems and solutions
 - [VALIDATION_GUIDE.md](./VALIDATION_GUIDE.md) - System integrity validation
+
+### 🔧 Infrastructure & Operations
+- [audit/PATH_AUDIT_SPECIFICATION.md](./audit/PATH_AUDIT_SPECIFICATION.md) - Path management audit & repair guide
+- [scripts/audit/README_PATH_TOOLS.md](../scripts/audit/README_PATH_TOOLS.md) - Path audit tooling documentation
 
 ### 📝 Project Management
 - [CHANGELOG.md](../CHANGELOG.md) - Version history and changes
@@ -64,8 +68,9 @@ Last Updated: 2024-12-16
 3. Learn [CONFIG_REFERENCE.md](./CONFIG_REFERENCE.md) - All configurations
 4. Study [WEIGHT_TUNING.md](./WEIGHT_TUNING.md) - Adjust fusion weights
 5. Implement [VALIDATION_GUIDE.md](./VALIDATION_GUIDE.md) - Integrity checks
+6. Review [audit/PATH_AUDIT_SPECIFICATION.md](./audit/PATH_AUDIT_SPECIFICATION.md) - Path infrastructure management
 
-**Key Concepts**: SIN_CARRETA doctrine, HMAC signatures, configuration management
+**Key Concepts**: SIN_CARRETA doctrine, HMAC signatures, configuration management, path centralization
 
 ### For Researchers
 **Goal**: Understand theoretical foundations
@@ -155,8 +160,9 @@ Last Updated: 2024-12-16
 | [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) | ✅ Complete | 100% | 2024-12-16 |
 | [VALIDATION_GUIDE.md](./VALIDATION_GUIDE.md) | ✅ Complete | 100% | 2024-12-16 |
 | [CHANGELOG.md](../CHANGELOG.md) | ✅ Complete | 100% | 2024-12-16 |
+| [audit/PATH_AUDIT_SPECIFICATION.md](./audit/PATH_AUDIT_SPECIFICATION.md) | ✅ Complete | 100% | 2026-01-09 |
 
-**Total Documentation**: ~50,000+ words across 12 comprehensive files
+**Total Documentation**: ~50,000+ words across 13 comprehensive files
 
 ---
 
@@ -242,6 +248,6 @@ All documentation follows these standards:
 
 ---
 
-**Documentation Index Version**: 1.0.0  
-**Last Updated**: 2024-12-16  
+**Documentation Index Version**: 1.1.0
+**Last Updated**: 2026-01-09
 **Maintained by**: Policy Analytics Research Unit
