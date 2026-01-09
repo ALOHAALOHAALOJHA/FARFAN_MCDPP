@@ -18,6 +18,13 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, TypeVar
 
+# GRACEFUL_DEGRADATION(irreducible): psutil availability depends on:
+# 1. Operating system compatibility (not available on all platforms)
+# 2. Installation environment (CI/minimal environments may exclude it)
+# 3. Security policies (some environments prohibit system introspection)
+# Cannot be resolved statically - platform capabilities vary at deployment time.
+# Severity: HIGH - Memory guards still function, just skip resource pressure detection.
+# See also: lines 277-292 where resource checks are skipped with warning logged.
 try:
     import psutil
 
