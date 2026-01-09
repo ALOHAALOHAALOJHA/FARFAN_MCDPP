@@ -218,7 +218,7 @@ class TestDoWhyCausalAnalyzer:
 
         analyzer = DoWhyCausalAnalyzer(graph)
 
-        with pytest.raises(ValueError, match="Treatment variable.*not found"):
+        with pytest.raises(ValueError, match=r"Treatment variable .* not found"):
             analyzer.identify_effect(data, treatment="INVALID", outcome="Y")
 
     def test_invalid_outcome_variable(self):
@@ -228,7 +228,7 @@ class TestDoWhyCausalAnalyzer:
 
         analyzer = DoWhyCausalAnalyzer(graph)
 
-        with pytest.raises(ValueError, match="Outcome variable.*not found"):
+        with pytest.raises(ValueError, match=r"Outcome variable .* not found"):
             analyzer.identify_effect(data, treatment="T", outcome="INVALID")
 
     def test_policy_graph_structure(self):

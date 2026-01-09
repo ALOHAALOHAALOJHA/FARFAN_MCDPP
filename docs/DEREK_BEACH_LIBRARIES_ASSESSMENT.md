@@ -617,11 +617,11 @@ This approach minimizes risk while systematically improving SOTA alignment.
 
 ### Library Documentation
 
-1. DoWhy: https://microsoft.github.io/dowhy/
-2. CausalNex: https://causalnex.readthedocs.io/
-3. EconML: https://econml.azurewebsites.net/
-4. PyMC: https://www.pymc.io/
-5. BGE-M3: https://huggingface.co/BAAI/bge-m3
+1. DoWhy: <https://microsoft.github.io/dowhy/>
+2. CausalNex: <https://causalnex.readthedocs.io/>
+3. EconML: <https://econml.azurewebsites.net/>
+4. PyMC: <https://www.pymc.io/>
+5. BGE-M3: <https://huggingface.co/BAAI/bge-m3>
 
 ### Current Implementation
 

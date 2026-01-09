@@ -233,7 +233,7 @@ class TestBayesianSamplingEngine:
             n_chains=2,
         )
 
-        assert result.success is True
+        assert result.converged is True
         assert 0.0 < result.posterior_mean < 1.0
         assert result.n_samples == 500
         assert result.n_chains == 2
@@ -267,12 +267,12 @@ class TestBayesianSamplingEngine:
     def test_hierarchical_sampling(self, sampling_engine: BayesianSamplingEngine) -> None:
         """Test hierarchical Beta-Binomial sampling"""
         group_data = [
-            {"n_successes": 7, "n_trials": 10},
-            {"n_successes": 12, "n_trials": 20},
-            {"n_successes": 18, "n_trials": 30},
+            (7, 10),   # (n_successes, n_trials) for level 1
+            (12, 20),  # (n_successes, n_trials) for level 2
+            (18, 30),  # (n_successes, n_trials) for level 3
         ]
 
-        result = sampling_engine.sample_hierarchical_beta(
+        results = sampling_engine.sample_hierarchical_beta(
             group_data=group_data,
             population_alpha=2.0,
             population_beta=2.0,
@@ -280,10 +280,9 @@ class TestBayesianSamplingEngine:
             n_chains=2,
         )
 
-        assert result.success is True
-        assert "population_mean" in result.metadata
-        assert "group_means" in result.metadata
-        assert len(result.metadata["group_means"]) == 3
+        assert len(results) == 3
+        for result in results:
+            assert result.converged is True
 
 
 # ==================== BayesianDiagnostics Tests ====================
