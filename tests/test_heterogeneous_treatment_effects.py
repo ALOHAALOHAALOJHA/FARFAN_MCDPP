@@ -16,7 +16,6 @@ import pytest
 
 from farfan_pipeline.methods.heterogeneous_treatment_effects import (
     HeterogeneousTreatmentAnalyzer,
-    PolicyRecommendation,
     create_treatment_analyzer,
 )
 
