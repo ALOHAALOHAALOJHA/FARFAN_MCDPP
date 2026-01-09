@@ -190,11 +190,11 @@ class ProdRuntimeConfig:
             ),
 
             # Path Configuration
-            project_root_override=os.getenv("SAAAAAA_PROJECT_ROOT"),
-            data_dir_override=os.getenv("SAAAAAA_DATA_DIR"),
-            output_dir_override=os.getenv("SAAAAAA_OUTPUT_DIR"),
-            cache_dir_override=os.getenv("SAAAAAA_CACHE_DIR"),
-            logs_dir_override=os.getenv("SAAAAAA_LOGS_DIR"),
+            project_root_override=os.getenv("FARFAN_PROJECT_ROOT"),
+            data_dir_override=os.getenv("FARFAN_DATA_DIR"),
+            output_dir_override=os.getenv("FARFAN_OUTPUT_DIR"),
+            cache_dir_override=os.getenv("FARFAN_CACHE_DIR"),
+            logs_dir_override=os.getenv("FARFAN_LOGS_DIR"),
 
             # External Dependencies
             hf_online=parse_bool("HF_ONLINE", False),
@@ -334,11 +334,11 @@ class DevRuntimeConfig:
             ),
 
             # Path Configuration
-            project_root_override=os.getenv("SAAAAAA_PROJECT_ROOT"),
-            data_dir_override=os.getenv("SAAAAAA_DATA_DIR"),
-            output_dir_override=os.getenv("SAAAAAA_OUTPUT_DIR"),
-            cache_dir_override=os.getenv("SAAAAAA_CACHE_DIR"),
-            logs_dir_override=os.getenv("SAAAAAA_LOGS_DIR"),
+            project_root_override=os.getenv("FARFAN_PROJECT_ROOT"),
+            data_dir_override=os.getenv("FARFAN_DATA_DIR"),
+            output_dir_override=os.getenv("FARFAN_OUTPUT_DIR"),
+            cache_dir_override=os.getenv("FARFAN_CACHE_DIR"),
+            logs_dir_override=os.getenv("FARFAN_LOGS_DIR"),
 
             # External Dependencies
             hf_online=parse_bool("HF_ONLINE", False),
@@ -364,20 +364,20 @@ def create_runtime_config_typed(
     Factory function to create appropriate typed configuration based on mode.
 
     Args:
-        mode: Runtime mode (defaults to environment variable SAAAAAA_RUNTIME_MODE)
+        mode: Runtime mode (defaults to environment variable FARFAN_RUNTIME_MODE)
 
     Returns:
         ProdRuntimeConfig for PROD mode
         DevRuntimeConfig for DEV/EXPLORATORY modes
 
     Example:
-        >>> os.environ['SAAAAAA_RUNTIME_MODE'] = 'prod'
+        >>> os.environ['FARFAN_RUNTIME_MODE'] = 'prod'
         >>> config = create_runtime_config_typed()
         >>> assert isinstance(config, ProdRuntimeConfig)
         >>> # Type checker knows config.allow_dev_ingestion_fallbacks is False
     """
     if mode is None:
-        mode_str = os.getenv("SAAAAAA_RUNTIME_MODE", "prod").lower()
+        mode_str = os.getenv("FARFAN_RUNTIME_MODE", "prod").lower()
         try:
             mode = RuntimeMode(mode_str)
         except ValueError:

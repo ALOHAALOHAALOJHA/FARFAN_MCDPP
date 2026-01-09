@@ -19,7 +19,7 @@ import re
 import shutil
 import sys
 from pathlib import Path
-from typing import Dict, List
+from typing import Any, Dict, List
 
 
 class PathRepairer:
@@ -43,11 +43,16 @@ class PathRepairer:
             'from farfan_pipeline.phases.',
     }
 
-    def __init__(self, root: Path, dry_run: bool = True, backup: bool = False, verbose: bool = False):
+    # Directories to exclude when scanning for Python files
+    EXCLUDED_DIRS = (".venv", "venv", "__pycache__", ".git", "node_modules")
+
+    def __init__(self, root: Path, dry_run: bool = True, backup: bool = False, verbose: bool = False,
+                 project_dir_name: str = "FARFAN_MPP"):
         self.root = root
         self.dry_run = dry_run
         self.backup = backup
         self.verbose = verbose
+        self.project_dir_name = project_dir_name
         self.changes: List[Dict[str, Any]] = []
 
     def repair_imports(self, py_file: Path) -> int:
@@ -90,20 +95,25 @@ class PathRepairer:
 
         return changes_made
 
-    def analyze_hardcoded_paths(self, py_file: Path) -> List[Dict[str, any]]:
+    def analyze_hardcoded_paths(self, py_file: Path) -> List[Dict[str, Any]]:
         """Analyze hardcoded paths and suggest fixes (manual review required)."""
         suggestions = []
 
         try:
-            content = py_file.read_text(encoding="utf-8", errors="ignore")
+            content = py_file.read_text(encoding="utf-8", errors="replace")
         except Exception as e:
             return suggestions
 
         lines = content.split("\n")
 
+        project_dir_pattern = re.escape(self.project_dir_name)
+
         for i, line in enumerate(lines, 1):
             # Look for common hardcoded path patterns
-            unix_match = re.search(r'Path\(["\']/(Users|home)/([^/]+)/FARFAN_MPP["\']', line)
+            unix_match = re.search(
+                rf'Path\(["\']/(Users|home)/([^/]+)/{project_dir_pattern}["\']',
+                line,
+            )
             if unix_match:
                 suggestions.append({
                     "file": str(py_file.relative_to(self.root)),
@@ -122,7 +132,7 @@ class PathRepairer:
 
         for py_file in self.root.rglob("*.py"):
             # Skip virtual environments and cache directories
-            if any(part in py_file.parts for part in [".venv", "venv", "__pycache__", ".git", "node_modules"]):
+            if any(part in py_file.parts for part in self.EXCLUDED_DIRS):
                 continue
 
             # Skip backup files
