@@ -464,6 +464,7 @@ class EnrichmentOrchestrator:
         """Get municipalities relevant to specified policy areas."""
         municipalities = []
         
+        pa_mappings = self._pdet_data.get("policy_area_mappings", {})
         relevant_subregion_ids = set()
         for pa in policy_areas:
             pa_key = f"{pa}" if pa.startswith("PA") else f"PA{pa}"
@@ -489,6 +490,7 @@ class EnrichmentOrchestrator:
     
     def _get_subregions_for_policy_areas(self, policy_areas: List[str]) -> List[Dict[str, Any]]:
         """Get subregions relevant to specified policy areas."""
+        pa_mappings = self._pdet_data.get("policy_area_mappings", {})
         relevant_subregion_ids = set()
         for pa in policy_areas:
             pa_key = f"{pa}" if pa.startswith("PA") else f"PA{pa}"
