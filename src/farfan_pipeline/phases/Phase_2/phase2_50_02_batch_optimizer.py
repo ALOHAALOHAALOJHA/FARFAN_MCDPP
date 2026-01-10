@@ -32,11 +32,9 @@ Date: 2026-01-09
 from __future__ import annotations
 
 import logging
-import math
 import time
-from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Set, Tuple, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -47,11 +45,11 @@ class ContractProfile:
 
     contract_id: str
     method_count: int
-    method_classes: Set[str]
-    method_names: Set[str]
+    method_classes: set[str]
+    method_names: set[str]
     estimated_time_ms: float = 0.0
     estimated_memory_mb: float = 0.0
-    dependencies: List[str] = field(default_factory=list)
+    dependencies: list[str] = field(default_factory=list)
 
     def jaccard_similarity(self, other: ContractProfile) -> float:
         """
@@ -75,8 +73,8 @@ class BatchProfile:
     """Profile for a batch of contracts."""
 
     batch_id: int
-    contracts: List[ContractProfile]
-    shared_classes: Set[str]
+    contracts: list[ContractProfile]
+    shared_classes: set[str]
     total_time_ms: float
     total_memory_mb: float
     parallelizable: bool = True
@@ -107,7 +105,7 @@ class BatchProfile:
 class OptimizationResult:
     """Result of batch optimization."""
 
-    batches: List[BatchProfile]
+    batches: list[BatchProfile]
     total_batches: int
     avg_batch_size: float
     avg_similarity: float
@@ -173,7 +171,7 @@ class SmartBatchOptimizer:
             f"similarity_threshold={similarity_threshold}"
         )
 
-    def extract_profile(self, contract: Dict[str, Any]) -> ContractProfile:
+    def extract_profile(self, contract: dict[str, Any]) -> ContractProfile:
         """
         Extract performance profile from v4 contract.
 
@@ -236,8 +234,8 @@ class SmartBatchOptimizer:
 
     def cluster_by_similarity(
         self,
-        profiles: List[ContractProfile],
-    ) -> List[List[ContractProfile]]:
+        profiles: list[ContractProfile],
+    ) -> list[list[ContractProfile]]:
         """
         Cluster contracts by method similarity.
 
@@ -298,8 +296,8 @@ class SmartBatchOptimizer:
 
     def create_batches(
         self,
-        cluster: List[ContractProfile],
-    ) -> List[BatchProfile]:
+        cluster: list[ContractProfile],
+    ) -> list[BatchProfile]:
         """
         Create batches from a cluster respecting resource constraints.
 
@@ -372,7 +370,7 @@ class SmartBatchOptimizer:
 
     def optimize(
         self,
-        contracts: List[Dict[str, Any]],
+        contracts: list[dict[str, Any]],
     ) -> OptimizationResult:
         """
         Optimize execution order for contracts.
@@ -433,7 +431,7 @@ class SmartBatchOptimizer:
     def get_execution_plan(
         self,
         optimization_result: OptimizationResult,
-    ) -> List[List[str]]:
+    ) -> list[list[str]]:
         """
         Convert optimization result to execution plan.
 
@@ -455,7 +453,7 @@ if __name__ == "__main__":
     from pathlib import Path
 
     # Load sample contracts
-    contracts_dir = Path("src/farfan_pipeline/phases/Phase_two/generated_contracts")
+    contracts_dir = Path("src/farfan_pipeline/phases/Phase_2/generated_contracts")
     contracts = []
 
     for contract_file in list(contracts_dir.glob("Q*_PA*_contract_v4.json"))[:30]:

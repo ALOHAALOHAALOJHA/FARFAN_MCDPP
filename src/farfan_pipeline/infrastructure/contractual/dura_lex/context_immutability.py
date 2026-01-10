@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import json
-from dataclasses import is_dataclass, fields, FrozenInstanceError
-from typing import Any
 from collections.abc import Mapping as ABCMapping
+from dataclasses import FrozenInstanceError, fields, is_dataclass
 from types import MappingProxyType
-from collections.abc import Sequence as ABCSequence  # optional, for type checks
+from typing import Any
 
 
 class ContextImmutabilityContract:
@@ -60,7 +59,7 @@ class ContextImmutabilityContract:
         """
         # 1) Top-level attribute mutation must fail
         try:
-            setattr(ctx, "traceability_id", "MUTATE_ME")
+            ctx.traceability_id = "MUTATE_ME"
             raise RuntimeError("Mutation succeeded but should have failed!")
         except (FrozenInstanceError, AttributeError, TypeError):
             pass  # expected

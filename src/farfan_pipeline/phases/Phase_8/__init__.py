@@ -2,7 +2,7 @@
 Phase Eight: Recommendation Engine
 ===================================
 
-Module: src.farfan_pipeline.phases.Phase_eight
+Module: src.farfan_pipeline.phases.Phase_8
 Purpose: Phase 8 of F.A.R.F.A.N pipeline - Rule-based recommendation generation
 Owner: phase8_core
 Lifecycle: ACTIVE
@@ -22,7 +22,7 @@ based on scoring results from Phase 7. Uses enhanced rule templates with:
 
 Directory Structure (GNEA Compliant):
 -------------------------------------
-Phase_eight/
+Phase_8/
 ├── __init__.py                                     # This file
 ├── PHASE_8_MANIFEST.json                           # Phase manifest
 ├── phase8_20_00_recommendation_engine.py           # Stage 20: Core engine (ENG)
@@ -56,9 +56,14 @@ __codename__ = "RECOMMENDER"
 
 # Lazy imports for performance
 if TYPE_CHECKING:
+    from .interfaces import (
+        Phase8InterfaceValidator,
+        validate_phase8_inputs,
+        validate_phase8_outputs,
+    )
     from .phase8_20_00_recommendation_engine import (
-        RecommendationEngine,
         Recommendation,
+        RecommendationEngine,
         RecommendationSet,
     )
     from .phase8_20_01_recommendation_engine_adapter import (
@@ -68,52 +73,47 @@ if TYPE_CHECKING:
     from .phase8_30_00_signal_enriched_recommendations import (
         SignalEnrichedRecommender,
     )
-    from .interfaces import (
-        Phase8InterfaceValidator,
-        validate_phase8_inputs,
-        validate_phase8_outputs,
-    )
     from .primitives import (
+        MAX_RECOMMENDATIONS_PER_AREA,
+        MIN_CONFIDENCE_THRESHOLD,
+        PHASE_CODENAME,
+        PHASE_NAME,
         # Constants
         PHASE_NUMBER,
-        PHASE_NAME,
-        PHASE_CODENAME,
-        MIN_CONFIDENCE_THRESHOLD,
-        MAX_RECOMMENDATIONS_PER_AREA,
-        # Enums
-        Level,
-        ScoreBand,
-        VarianceLevel,
         # Types
         AnalysisResultsInput,
+        # Enums
+        Level,
         RecommendationOutput,
+        ScoreBand,
+        VarianceLevel,
     )
 
 logger = logging.getLogger(__name__)
 
 
-def get_recommendation_engine() -> "RecommendationEngine":
+def get_recommendation_engine() -> RecommendationEngine:
     """Lazy-load and return RecommendationEngine."""
     from .phase8_20_00_recommendation_engine import RecommendationEngine
 
     return RecommendationEngine()
 
 
-def get_recommendation_adapter() -> "RecommendationEngineAdapter":
+def get_recommendation_adapter() -> RecommendationEngineAdapter:
     """Lazy-load and return RecommendationEngineAdapter."""
     from .phase8_20_01_recommendation_engine_adapter import create_recommendation_engine_adapter
 
     return create_recommendation_engine_adapter()
 
 
-def get_signal_enriched_recommender() -> "SignalEnrichedRecommender":
+def get_signal_enriched_recommender() -> SignalEnrichedRecommender:
     """Lazy-load and return SignalEnrichedRecommender."""
     from .phase8_30_00_signal_enriched_recommendations import SignalEnrichedRecommender
 
     return SignalEnrichedRecommender()
 
 
-def get_interface_validator() -> "Phase8InterfaceValidator":
+def get_interface_validator() -> Phase8InterfaceValidator:
     """Lazy-load and return Phase8InterfaceValidator."""
     from .interfaces import Phase8InterfaceValidator
 

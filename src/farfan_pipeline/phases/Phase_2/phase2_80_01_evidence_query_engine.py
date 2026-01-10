@@ -47,7 +47,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional, Protocol, Set
+from typing import Any, Protocol
 
 logger = logging.getLogger(__name__)
 
@@ -234,11 +234,11 @@ class QueryAST:
         offset: Number of results to skip
     """
 
-    select_fields: List[str]
-    conditions: List[QueryCondition] = field(default_factory=list)
-    order_by: Optional[str] = None
+    select_fields: list[str]
+    conditions: list[QueryCondition] = field(default_factory=list)
+    order_by: str | None = None
     order_direction: str = "ASC"
-    limit: Optional[int] = None
+    limit: int | None = None
     offset: int = 0
 
 
@@ -261,14 +261,14 @@ class EvidenceNode:
 
     node_id: str
     claim_type: str
-    content: Dict[str, Any]
+    content: dict[str, Any]
     source: str
     confidence: float
     timestamp: str
-    parent_ids: List[str] = field(default_factory=list)
-    child_ids: List[str] = field(default_factory=list)
+    parent_ids: list[str] = field(default_factory=list)
+    child_ids: list[str] = field(default_factory=list)
     merkle_hash: str = ""
-    tags: Set[str] = field(default_factory=set)
+    tags: set[str] = field(default_factory=set)
 
 
 @dataclass
@@ -298,9 +298,9 @@ class CausalGraph:
         edges: All edges in the graph
     """
 
-    root_node: Optional[EvidenceNode]
-    nodes: Dict[str, EvidenceNode]
-    edges: List[CausalEdge]
+    root_node: EvidenceNode | None
+    nodes: dict[str, EvidenceNode]
+    edges: list[CausalEdge]
 
 
 @dataclass
@@ -314,7 +314,7 @@ class QueryResult:
         execution_time_ms: Query execution time
     """
 
-    nodes: List[EvidenceNode]
+    nodes: list[EvidenceNode]
     total_count: int
     query: str
     execution_time_ms: float
@@ -326,11 +326,11 @@ class QueryResult:
 class EvidenceNexusProtocol(Protocol):
     """Protocol for Evidence Nexus interface."""
 
-    def get_node(self, node_id: str) -> Optional[EvidenceNode]:
+    def get_node(self, node_id: str) -> EvidenceNode | None:
         """Get a node by ID."""
         raise NotImplementedError()
 
-    def get_all_nodes(self) -> List[EvidenceNode]:
+    def get_all_nodes(self) -> list[EvidenceNode]:
         """Get all nodes in the nexus."""
         raise NotImplementedError()
 
@@ -350,19 +350,19 @@ class SimpleEvidenceNexus:
     """Simple in-memory evidence store for standalone query engine use."""
 
     def __init__(self):
-        self._nodes: Dict[str, EvidenceNode] = {}
-        self._contradictions: Set[tuple] = set()
-        self._supports: Set[tuple] = set()
+        self._nodes: dict[str, EvidenceNode] = {}
+        self._contradictions: set[tuple] = set()
+        self._supports: set[tuple] = set()
 
     def add_node(self, node: EvidenceNode) -> None:
         """Add a node to the nexus."""
         self._nodes[node.node_id] = node
 
-    def get_node(self, node_id: str) -> Optional[EvidenceNode]:
+    def get_node(self, node_id: str) -> EvidenceNode | None:
         """Get a node by ID."""
         return self._nodes.get(node_id)
 
-    def get_all_nodes(self) -> List[EvidenceNode]:
+    def get_all_nodes(self) -> list[EvidenceNode]:
         """Get all nodes."""
         return list(self._nodes.values())
 
@@ -516,8 +516,8 @@ class EvidenceQueryEngine:
         if isinstance(direction, str):
             direction = TraversalDirection(direction)
 
-        visited: Dict[str, EvidenceNode] = {}
-        edges: List[CausalEdge] = []
+        visited: dict[str, EvidenceNode] = {}
+        edges: list[CausalEdge] = []
 
         def traverse(node_id: str, depth: int) -> None:
             if depth > max_depth or node_id in visited:
@@ -560,7 +560,7 @@ class EvidenceQueryEngine:
             edges=edges,
         )
 
-    def find_contradictions(self, node_id: str) -> List[EvidenceNode]:
+    def find_contradictions(self, node_id: str) -> list[EvidenceNode]:
         """
         Find all nodes that contradict a given node.
 
@@ -572,7 +572,7 @@ class EvidenceQueryEngine:
         """
         return self.query(f"SELECT * FROM evidence WHERE contradicts(node_id='{node_id}')").nodes
 
-    def find_supporting(self, node_id: str) -> List[EvidenceNode]:
+    def find_supporting(self, node_id: str) -> list[EvidenceNode]:
         """
         Find all nodes that support a given node.
 
@@ -644,7 +644,7 @@ class EvidenceQueryEngine:
             offset=offset,
         )
 
-    def _parse_conditions(self, conditions_str: str) -> List[QueryCondition]:
+    def _parse_conditions(self, conditions_str: str) -> list[QueryCondition]:
         """
         Parse WHERE clause conditions.
 
@@ -668,7 +668,7 @@ class EvidenceQueryEngine:
 
         return conditions
 
-    def _parse_single_condition(self, condition_str: str) -> Optional[QueryCondition]:
+    def _parse_single_condition(self, condition_str: str) -> QueryCondition | None:
         """
         Parse a single condition.
 
@@ -752,7 +752,7 @@ class EvidenceQueryEngine:
         except ValueError:
             return value_str
 
-    def _execute_query(self, ast: QueryAST) -> tuple[List[EvidenceNode], int]:
+    def _execute_query(self, ast: QueryAST) -> tuple[list[EvidenceNode], int]:
         """
         Execute a parsed query against the nexus.
 
@@ -791,7 +791,7 @@ class EvidenceQueryEngine:
 
         return paginated_results, total_count
 
-    def _matches_conditions(self, node: EvidenceNode, conditions: List[QueryCondition]) -> bool:
+    def _matches_conditions(self, node: EvidenceNode, conditions: list[QueryCondition]) -> bool:
         """
         Check if a node matches all conditions.
 
@@ -874,7 +874,7 @@ class EvidenceQueryEngine:
 # === CONVENIENCE FUNCTIONS ===
 
 
-def create_query_engine(nodes: List[Dict[str, Any]] | None = None) -> EvidenceQueryEngine:
+def create_query_engine(nodes: list[dict[str, Any]] | None = None) -> EvidenceQueryEngine:
     """
     Create a query engine with optional initial nodes.
 

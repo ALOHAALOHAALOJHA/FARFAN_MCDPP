@@ -7,9 +7,9 @@ and verifies the integrity of the global schema before runtime execution.
 
 import hashlib
 import json
-from datetime import datetime, timezone
-from pathlib import Path
 from collections.abc import Callable
+from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any, ParamSpec, TypeVar
 
 import jsonschema
@@ -39,7 +39,7 @@ class MonolithIntegrityReport(BaseModel):
 
     model_config = ConfigDict(extra="allow")
 
-    timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    timestamp: str = Field(default_factory=lambda: datetime.now(UTC).isoformat())
     schema_version: str
     validation_passed: bool
     errors: list[str] = Field(default_factory=list)
@@ -96,7 +96,7 @@ class MonolithSchemaValidator:
             return
 
         try:
-            with open(schema_file, mode="r", encoding="utf-8") as f:
+            with open(schema_file, encoding="utf-8") as f:
                 self.schema = json.load(f)
         except json.JSONDecodeError as e:
             self.warnings.append(f"Invalid JSON in schema file {self.schema_path}: {e}")

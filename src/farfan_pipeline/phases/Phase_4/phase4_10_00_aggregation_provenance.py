@@ -26,7 +26,7 @@ import json
 import logging
 from collections import defaultdict
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 import networkx as nx
@@ -53,7 +53,7 @@ class ProvenanceNode:
     level: str  # "micro", "dimension", "area", "cluster", "macro"
     score: float
     quality_level: str
-    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     metadata: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -91,7 +91,7 @@ class AggregationEdge:
     target_id: str
     operation: str
     weight: float
-    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     metadata: dict[str, Any] = field(default_factory=dict)
 
 
@@ -447,7 +447,7 @@ class AggregationDAG:
 
 
 __all__ = [
-    "ProvenanceNode",
-    "AggregationEdge",
     "AggregationDAG",
+    "AggregationEdge",
+    "ProvenanceNode",
 ]

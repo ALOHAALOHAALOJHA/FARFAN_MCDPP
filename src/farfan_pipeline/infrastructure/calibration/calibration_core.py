@@ -49,15 +49,13 @@ import json
 import logging
 import math
 import re
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum, auto
 from typing import (
     TYPE_CHECKING,
     Final,
-    Mapping,
-    Self,
-    Sequence,
 )
 
 if TYPE_CHECKING:
@@ -267,7 +265,7 @@ class ClosedInterval:
             ValidationError: If value is NaN.
         """
         if math.isnan(value):
-            raise ValidationError(f"Cannot check membership of NaN value")
+            raise ValidationError("Cannot check membership of NaN value")
         return self.lower <= value <= self.upper
 
     def intersect(self, other: ClosedInterval) -> ClosedInterval | None:
@@ -550,7 +548,7 @@ class CalibrationParameter:
             ValidationError: If from_time is timezone-naive.
         """
         if from_time is None:
-            from_time = datetime.now(timezone.utc)
+            from_time = datetime.now(UTC)
         elif from_time.tzinfo is None:
             raise ValidationError("from_time must be timezone-aware")
 
@@ -950,7 +948,7 @@ def create_calibration_parameter(
         Fully constructed CalibrationParameter.
     """
     if calibrated_at is None:
-        calibrated_at = datetime.now(timezone.utc)
+        calibrated_at = datetime.now(UTC)
 
     from datetime import timedelta
 

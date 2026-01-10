@@ -86,16 +86,15 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
-from enum import Enum
 from typing import Any, Literal
 
 # Import mathematical foundations (academic rigor)
 try:
     from .mathematical_foundation import (
-        wilson_score_interval,
-        weighted_aggregation,
         validate_scoring_invariants,
         verify_convexity_property,
+        weighted_aggregation,
+        wilson_score_interval,
     )
 
     _HAS_MATH_FOUNDATION = True
@@ -121,7 +120,6 @@ ScoringModality = Literal["TYPE_A", "TYPE_B", "TYPE_C", "TYPE_D", "TYPE_E", "TYP
 
 
 from .quality_levels import QualityLevel
-
 
 # =============================================================================
 # EXCEPTIONS

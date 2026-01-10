@@ -9,6 +9,7 @@ Date: 2026-01-06
 """
 
 import pytest
+
 from farfan_pipeline.infrastructure.extractors import CausalVerbExtractor, extract_causal_links
 
 
@@ -348,11 +349,11 @@ class TestCausalVerbExtractor:
             if result.matches:
                 conf = result.matches[0]["confidence"]
                 if strength == "strong":
-                    assert conf >= 0.75, f"Strong verbs should have conf >= 0.75"
+                    assert conf >= 0.75, "Strong verbs should have conf >= 0.75"
                 elif strength == "medium":
-                    assert conf >= 0.65, f"Medium verbs should have conf >= 0.65"
+                    assert conf >= 0.65, "Medium verbs should have conf >= 0.65"
                 elif strength == "weak":
-                    assert conf >= 0.60, f"Weak verbs should have conf >= 0.60"
+                    assert conf >= 0.60, "Weak verbs should have conf >= 0.60"
 
     # ========================================================================
     # METADATA GENERATION TESTS

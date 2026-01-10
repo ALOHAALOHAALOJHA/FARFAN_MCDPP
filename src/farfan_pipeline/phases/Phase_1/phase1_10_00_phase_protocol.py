@@ -46,7 +46,7 @@ import hashlib
 import json
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Generic, TypeVar
 
@@ -86,9 +86,7 @@ class ContractValidationResult:
     phase_name: str
     errors: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
-    validation_timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
+    validation_timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
 
 class PhaseContract(ABC, Generic[TInput, TOutput]):
@@ -226,7 +224,7 @@ class PhaseContract(ABC, Generic[TInput, TOutput]):
             ValueError: If contract validation fails
             RuntimeError: If invariants fail or execution fails
         """
-        started_at = datetime.now(timezone.utc)
+        started_at = datetime.now(UTC)
         metadata = PhaseMetadata(
             phase_name=self.phase_name,
             started_at=started_at.isoformat(),
@@ -270,7 +268,7 @@ class PhaseContract(ABC, Generic[TInput, TOutput]):
             raise
 
         finally:
-            finished_at = datetime.now(timezone.utc)
+            finished_at = datetime.now(UTC)
             metadata.finished_at = finished_at.isoformat()
             metadata.duration_ms = (finished_at - started_at).total_seconds() * 1000
             self.metadata = metadata
@@ -404,11 +402,11 @@ def compute_contract_hash(contract_data: Any) -> str:
 
 
 __all__ = [
-    "PhaseContract",
-    "PhaseInvariant",
-    "PhaseMetadata",
     "ContractValidationResult",
     "PhaseArtifact",
+    "PhaseContract",
+    "PhaseInvariant",
     "PhaseManifestBuilder",
+    "PhaseMetadata",
     "compute_contract_hash",
 ]

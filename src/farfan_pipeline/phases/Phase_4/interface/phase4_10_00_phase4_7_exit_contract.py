@@ -27,17 +27,17 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from ..PHASE_4_7_CONSTANTS import (
-    MIN_SCORE,
     MAX_SCORE,
-    QUALITY_LEVEL_EXCELENTE,
-    QUALITY_LEVEL_BUENO,
-    QUALITY_LEVEL_ACEPTABLE,
-    QUALITY_LEVEL_INSUFICIENTE,
-    META_PROVENANCE_SOURCE_PHASE,
     META_PROVENANCE_NODE_ID,
+    META_PROVENANCE_SOURCE_PHASE,
+    MIN_SCORE,
+    QUALITY_LEVEL_ACEPTABLE,
+    QUALITY_LEVEL_BUENO,
+    QUALITY_LEVEL_EXCELENTE,
+    QUALITY_LEVEL_INSUFICIENTE,
 )
 
 logger = logging.getLogger(__name__)
@@ -88,7 +88,7 @@ class Phase4_7ExitContract:
         self,
         macro_score: Any,
         strict_mode: bool = True,
-    ) -> tuple[bool, List[str], Dict[str, Any]]:
+    ) -> tuple[bool, list[str], dict[str, Any]]:
         """
         Validate output data against exit contract.
 
@@ -124,7 +124,7 @@ class Phase4_7ExitContract:
 
         # Check score range
         if hasattr(macro_score, "score"):
-            score = getattr(macro_score, "score")
+            score = macro_score.score
             if not (MIN_SCORE <= score <= MAX_SCORE):
                 violations.append(f"Score {score} outside valid range [{MIN_SCORE}, {MAX_SCORE}]")
             metadata["score"] = score
@@ -133,7 +133,7 @@ class Phase4_7ExitContract:
 
         # Check quality level
         if hasattr(macro_score, "quality_level"):
-            quality = getattr(macro_score, "quality_level")
+            quality = macro_score.quality_level
             valid_qualities = {
                 QUALITY_LEVEL_EXCELENTE,
                 QUALITY_LEVEL_BUENO,
@@ -150,7 +150,7 @@ class Phase4_7ExitContract:
 
         # Check cross-cutting coherence [0, 1]
         if hasattr(macro_score, "cross_cutting_coherence"):
-            coherence = getattr(macro_score, "cross_cutting_coherence")
+            coherence = macro_score.cross_cutting_coherence
             if not (0.0 <= coherence <= 1.0):
                 violations.append(f"Cross-cutting coherence {coherence} outside valid range [0, 1]")
             metadata["cross_cutting_coherence"] = coherence
@@ -159,7 +159,7 @@ class Phase4_7ExitContract:
 
         # Check strategic alignment [0, 1]
         if hasattr(macro_score, "strategic_alignment"):
-            alignment = getattr(macro_score, "strategic_alignment")
+            alignment = macro_score.strategic_alignment
             if not (0.0 <= alignment <= 1.0):
                 violations.append(f"Strategic alignment {alignment} outside valid range [0, 1]")
             metadata["strategic_alignment"] = alignment
@@ -168,7 +168,7 @@ class Phase4_7ExitContract:
 
         # Check traceability
         if hasattr(macro_score, "cluster_scores"):
-            cluster_scores = getattr(macro_score, "cluster_scores")
+            cluster_scores = macro_score.cluster_scores
             if not cluster_scores or len(cluster_scores) == 0:
                 violations.append("No cluster scores provided (not traceable)")
             metadata["cluster_count"] = len(cluster_scores) if cluster_scores else 0
@@ -177,7 +177,7 @@ class Phase4_7ExitContract:
 
         # Check for systemic gaps
         if hasattr(macro_score, "systemic_gaps"):
-            systemic_gaps = getattr(macro_score, "systemic_gaps")
+            systemic_gaps = macro_score.systemic_gaps
             metadata["systemic_gaps_count"] = len(systemic_gaps) if systemic_gaps else 0
         else:
             metadata["systemic_gaps_count"] = 0
@@ -191,7 +191,7 @@ class Phase4_7ExitContract:
 
         # Log validation result
         if is_valid:
-            logger.info(f"Exit contract validation passed: MacroScore ready for Phase 8")
+            logger.info("Exit contract validation passed: MacroScore ready for Phase 8")
         else:
             logger.warning(
                 f"Exit contract validation failed: {len(violations)} violations detected"
@@ -209,7 +209,7 @@ class Phase4_7ExitContract:
     def extract_delivery_metadata(
         self,
         macro_score: Any,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Extract delivery metadata from output data.
 
@@ -228,17 +228,17 @@ class Phase4_7ExitContract:
 
         # Extract core metrics
         if hasattr(macro_score, "score"):
-            metadata["score"] = getattr(macro_score, "score")
+            metadata["score"] = macro_score.score
         if hasattr(macro_score, "quality_level"):
-            metadata["quality_level"] = getattr(macro_score, "quality_level")
+            metadata["quality_level"] = macro_score.quality_level
         if hasattr(macro_score, "cross_cutting_coherence"):
-            metadata["cross_cutting_coherence"] = getattr(macro_score, "cross_cutting_coherence")
+            metadata["cross_cutting_coherence"] = macro_score.cross_cutting_coherence
         if hasattr(macro_score, "strategic_alignment"):
-            metadata["strategic_alignment"] = getattr(macro_score, "strategic_alignment")
+            metadata["strategic_alignment"] = macro_score.strategic_alignment
 
         # Extract traceability info
         if hasattr(macro_score, "cluster_scores"):
-            cluster_scores = getattr(macro_score, "cluster_scores")
+            cluster_scores = macro_score.cluster_scores
             metadata["cluster_count"] = len(cluster_scores) if cluster_scores else 0
 
             # Extract cluster IDs
@@ -246,12 +246,12 @@ class Phase4_7ExitContract:
             if cluster_scores:
                 for cs in cluster_scores:
                     if hasattr(cs, "cluster_id"):
-                        cluster_ids.append(getattr(cs, "cluster_id"))
+                        cluster_ids.append(cs.cluster_id)
             metadata["cluster_ids"] = cluster_ids
 
         # Extract systemic gaps
         if hasattr(macro_score, "systemic_gaps"):
-            systemic_gaps = getattr(macro_score, "systemic_gaps")
+            systemic_gaps = macro_score.systemic_gaps
             metadata["systemic_gaps"] = systemic_gaps if systemic_gaps else []
 
         return metadata
@@ -260,7 +260,7 @@ class Phase4_7ExitContract:
 def validate_phase4_7_exit(
     macro_score: Any,
     strict_mode: bool = True,
-) -> tuple[bool, List[str], Dict[str, Any]]:
+) -> tuple[bool, list[str], dict[str, Any]]:
     """
     Convenience function to validate Phase 4-7 exit.
 
@@ -277,7 +277,7 @@ def validate_phase4_7_exit(
 
 def extract_exit_delivery_metadata(
     macro_score: Any,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
     Convenience function to extract exit delivery metadata.
 
@@ -294,6 +294,6 @@ def extract_exit_delivery_metadata(
 __all__ = [
     "ExitContractViolationError",
     "Phase4_7ExitContract",
-    "validate_phase4_7_exit",
     "extract_exit_delivery_metadata",
+    "validate_phase4_7_exit",
 ]

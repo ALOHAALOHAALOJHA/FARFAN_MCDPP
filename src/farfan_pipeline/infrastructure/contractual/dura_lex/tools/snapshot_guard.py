@@ -2,8 +2,9 @@
 """
 CLI tool for Snapshot Contract (SC) guard
 """
-import sys
 import json
+import sys
+
 from farfan_pipeline.contracts.snapshot_contract import SnapshotContract
 
 

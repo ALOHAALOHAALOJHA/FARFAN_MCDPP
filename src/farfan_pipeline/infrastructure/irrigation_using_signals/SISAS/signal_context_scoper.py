@@ -261,9 +261,10 @@ def create_document_context(
 # gets tagged with "HIGH_RELEVANCE: Q013, Q115, Q126".
 # ============================================================================
 
-from dataclasses import dataclass, field as dataclass_field
-from typing import NamedTuple
 import re
+from dataclasses import dataclass
+from dataclasses import field as dataclass_field
+from typing import NamedTuple
 
 
 class PageRange(NamedTuple):

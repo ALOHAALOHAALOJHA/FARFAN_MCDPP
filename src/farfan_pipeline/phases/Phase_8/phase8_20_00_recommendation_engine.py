@@ -1,6 +1,6 @@
 # phase8_20_00_recommendation_engine.py - Rule-Based Recommendation Engine
 """
-Module: src.farfan_pipeline.phases.Phase_eight.phase8_20_00_recommendation_engine
+Module: src.farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine
 Purpose: Multi-level rule-based recommendation generation (MICRO/MESO/MACRO)
 Owner: phase8_core
 Stage: 20 (Engine)
@@ -28,7 +28,7 @@ Python: 3.10+
 import logging
 import re
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -359,7 +359,7 @@ class RecommendationEngine:
         return RecommendationSet(
             level="MICRO",
             recommendations=recommendations,
-            generated_at=datetime.now(timezone.utc).isoformat(),
+            generated_at=datetime.now(UTC).isoformat(),
             total_rules_evaluated=rules_evaluated,
             rules_matched=len(recommendations),
         )
@@ -496,7 +496,7 @@ class RecommendationEngine:
         return RecommendationSet(
             level="MESO",
             recommendations=recommendations,
-            generated_at=datetime.now(timezone.utc).isoformat(),
+            generated_at=datetime.now(UTC).isoformat(),
             total_rules_evaluated=rules_evaluated,
             rules_matched=len(recommendations),
         )
@@ -514,12 +514,9 @@ class RecommendationEngine:
         """Check if MESO conditions are met"""
         # Check score band
         if (
-            score_band == "BAJO"
-            and score >= 55
-            or score_band == "MEDIO"
-            and (score < 55 or score >= 75)
-            or score_band == "ALTO"
-            and score < 75
+            (score_band == "BAJO" and score >= 55)
+            or (score_band == "MEDIO" and (score < 55 or score >= 75))
+            or (score_band == "ALTO" and score < 75)
         ):
             return False
 
@@ -532,7 +529,8 @@ class RecommendationEngine:
                 "auto_param_L488_52",
                 0.08,
             )
-            or variance_level == "MEDIA"
+        ) or (
+            variance_level == "MEDIA"
             and (
                 variance
                 < ParameterLoaderV2.get(
@@ -550,10 +548,8 @@ class RecommendationEngine:
         ):
             return False
         elif variance_level == "ALTA":
-            if (
-                variance_threshold
-                and variance < variance_threshold / 100
-                or not variance_threshold
+            if (variance_threshold and variance < variance_threshold / 100) or (
+                not variance_threshold
                 and variance
                 < ParameterLoaderV2.get(
                     "farfan_core.analysis.recommendation_engine.RecommendationEngine.get_thresholds_from_monolith",
@@ -681,7 +677,7 @@ class RecommendationEngine:
         return RecommendationSet(
             level="MACRO",
             recommendations=recommendations,
-            generated_at=datetime.now(timezone.utc).isoformat(),
+            generated_at=datetime.now(UTC).isoformat(),
             total_rules_evaluated=rules_evaluated,
             rules_matched=len(recommendations),
         )

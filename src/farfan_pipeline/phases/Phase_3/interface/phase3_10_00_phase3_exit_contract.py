@@ -5,9 +5,8 @@ Contract: Phase 3 Exit Contract
 Defines the output types and postconditions for Phase 3 (Scoring).
 """
 
-from dataclasses import dataclass, field
-from typing import Any, List, Optional, Dict
-from ..primitives.quality_levels import QualityLevel
+from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
@@ -21,6 +20,6 @@ class ScoredMicroQuestion:
     normalized_score: float  # [0.0, 1.0] or [0, 100] depending on config
     quality_level: str  # ∈ VALID_QUALITY_LEVELS — INVARIANT (String for broader compatibility)
     evidence: Any | None
-    scoring_details: Dict[str, Any]  # Includes signal enrichment provenance
-    metadata: Dict[str, Any]
+    scoring_details: dict[str, Any]  # Includes signal enrichment provenance
+    metadata: dict[str, Any]
     error: str | None

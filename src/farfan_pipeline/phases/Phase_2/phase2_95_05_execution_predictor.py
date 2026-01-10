@@ -36,8 +36,8 @@ import logging
 import math
 import statistics
 import time
-from collections import defaultdict, deque
-from dataclasses import dataclass, field
+from collections import deque
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -536,7 +536,7 @@ if __name__ == "__main__":
 
     # Load sample contract
     contract_path = Path(
-        "src/farfan_pipeline/phases/Phase_two/generated_contracts/Q001_PA01_contract_v4.json"
+        "src/farfan_pipeline/phases/Phase_2/generated_contracts/Q001_PA01_contract_v4.json"
     )
     with open(contract_path) as f:
         contract = json.load(f)

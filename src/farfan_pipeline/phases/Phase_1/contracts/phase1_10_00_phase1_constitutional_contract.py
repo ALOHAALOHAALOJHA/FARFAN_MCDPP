@@ -9,8 +9,7 @@ This is a CRITICAL contract that cannot be violated under any circumstances.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, Set
-
+from typing import Any
 
 EXPECTED_CHUNK_COUNT = 60
 EXPECTED_POLICY_AREA_COUNT = 10
@@ -48,9 +47,9 @@ def validate_constitutional_invariant(cpp: Any) -> bool:
         )
 
     # Verify PA × Dimension coverage
-    coverage: Set[tuple[str, str]] = set()
-    policy_areas: Set[str] = set()
-    dimensions: Set[str] = set()
+    coverage: set[tuple[str, str]] = set()
+    policy_areas: set[str] = set()
+    dimensions: set[str] = set()
 
     for chunk in cpp.chunk_graph.chunks:
         if chunk.policy_area is None or chunk.dimension is None:
@@ -88,7 +87,7 @@ def validate_constitutional_invariant(cpp: Any) -> bool:
     return True
 
 
-def get_padim_coverage_matrix(cpp: Any) -> Dict[str, Dict[str, str]]:
+def get_padim_coverage_matrix(cpp: Any) -> dict[str, dict[str, str]]:
     """Get PA × Dimension coverage matrix.
 
     Args:
@@ -97,7 +96,7 @@ def get_padim_coverage_matrix(cpp: Any) -> Dict[str, Dict[str, str]]:
     Returns:
         Dict mapping PA → Dimension → chunk_id
     """
-    matrix: Dict[str, Dict[str, str]] = {}
+    matrix: dict[str, dict[str, str]] = {}
 
     for chunk in cpp.chunk_graph.chunks:
         pa = chunk.policy_area
@@ -113,9 +112,9 @@ def get_padim_coverage_matrix(cpp: Any) -> Dict[str, Dict[str, str]]:
 
 __all__ = [
     "EXPECTED_CHUNK_COUNT",
-    "EXPECTED_POLICY_AREA_COUNT",
     "EXPECTED_DIMENSION_COUNT",
+    "EXPECTED_POLICY_AREA_COUNT",
     "PADimCoverage",
-    "validate_constitutional_invariant",
     "get_padim_coverage_matrix",
+    "validate_constitutional_invariant",
 ]

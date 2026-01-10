@@ -2,7 +2,7 @@
 Módulo: contract_generator.py
 Propósito: Orquestador principal de generación de 300 contratos ejecutores
 
-Ubicación: src/farfan_pipeline/phases/Phase_two/contract_generator/contract_generator.py
+Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/contract_generator.py
 
 RESPONSABILIDADES:
 1. Cargar y validar todos los inputs (método, contratos, sectores)
@@ -32,20 +32,21 @@ from __future__ import annotations
 
 import logging
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-# Imports de módulos internos
-from .input_registry import InputLoader, InputRegistry, SectorDefinition
-from .method_expander import MethodExpander
 from .chain_composer import ChainComposer, EpistemicChain
 from .contract_assembler import ContractAssembler, GeneratedContract
 from .contract_validator import ContractValidator, ValidationReport
+
+# Imports de módulos internos
+from .input_registry import InputLoader, InputRegistry, SectorDefinition
 from .json_emitter import JSONEmitter
+from .method_expander import MethodExpander
 
 if TYPE_CHECKING:
-    from .input_registry import ContractClassification, QuestionMethodSet
+    from .input_registry import ContractClassification
 
 # ══════════════════════════════════════════════════════════════════════════════
 # CONFIGURACIÓN DE LOGGING
@@ -126,7 +127,7 @@ class ContractGenerator:
         self.strict_mode = strict_mode
 
         # Timestamp de generación (único para toda la ejecución)
-        self.generation_timestamp = datetime.now(timezone.utc).isoformat()
+        self.generation_timestamp = datetime.now(UTC).isoformat()
 
         # Componentes (inicializados en _initialize_components)
         self.registry: InputRegistry | None = None
@@ -393,7 +394,7 @@ class ContractGenerator:
     def _generate_single_contract(
         self,
         chain: EpistemicChain,
-        classification: "ContractClassification",
+        classification: ContractClassification,
         sector: SectorDefinition,
         contract_number: int,
     ) -> tuple[GeneratedContract, ValidationReport]:
@@ -524,7 +525,7 @@ def main() -> int:
     Punto de entrada principal. 
 
     USO:
-        python -m farfan_pipeline.phases.Phase_two.contract_generator. contract_generator \
+        python -m farfan_pipeline.phases.Phase_2.contract_generator. contract_generator \
             --assets /path/to/epistemological_assets \
             --output /path/to/output \
             [--strict | --no-strict]

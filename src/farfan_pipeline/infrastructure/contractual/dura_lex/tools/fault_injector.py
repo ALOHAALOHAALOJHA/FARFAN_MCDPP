@@ -2,8 +2,8 @@
 """
 CLI tool for Failure & Fallback Contract (FFC) fault injector
 """
-import sys
 import json
+
 from farfan_pipeline.contracts.failure_fallback import FailureFallbackContract
 
 

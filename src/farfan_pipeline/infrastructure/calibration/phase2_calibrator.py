@@ -23,7 +23,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Final
 
 from .calibration_core import (
@@ -32,17 +32,17 @@ from .calibration_core import (
     ClosedInterval,
     create_calibration_parameter,
 )
-from .type_defaults import (
-    PROHIBITED_OPERATIONS,
-    VALID_CONTRACT_TYPES,
-    UnknownContractTypeError,
-    get_type_defaults,
-)
 from .method_binding_validator import (
     EpistemicViolation,
     MethodBindingSet,
     MethodBindingValidator,
     ValidationSeverity,
+)
+from .type_defaults import (
+    PROHIBITED_OPERATIONS,
+    VALID_CONTRACT_TYPES,
+    UnknownContractTypeError,
+    get_type_defaults,
 )
 
 logger = logging.getLogger(__name__)
@@ -136,7 +136,7 @@ class Phase2Calibrator:
 
         # Step 4: Build calibration layer
         type_defaults = get_type_defaults(contract_type)
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         validity_days = 365
 
         prior_param = create_calibration_parameter(
@@ -173,7 +173,7 @@ class Phase2Calibrator:
             bounds=placeholder_bounds,
             unit="tokens",
             rationale="Not applicable to Phase-2 (ingestion parameter)",
-            evidence_path="src/farfan_pipeline/phases/Phase_two/README.md",
+            evidence_path="src/farfan_pipeline/phases/Phase_2/README.md",
             evidence_commit=self._evidence_commit,
             evidence_description="Phase-2 documentation",
             validity_days=validity_days,
@@ -187,7 +187,7 @@ class Phase2Calibrator:
             bounds=coverage_bounds,
             unit="fraction",
             rationale="Not applicable to Phase-2 (ingestion parameter)",
-            evidence_path="src/farfan_pipeline/phases/Phase_two/README.md",
+            evidence_path="src/farfan_pipeline/phases/Phase_2/README.md",
             evidence_commit=self._evidence_commit,
             evidence_description="Phase-2 documentation",
             validity_days=validity_days,

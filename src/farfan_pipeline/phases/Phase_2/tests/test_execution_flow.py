@@ -14,12 +14,8 @@ These tests are SEVERE and will FAIL if:
 
 from __future__ import annotations
 
-import json
-import hashlib
 import re
 from pathlib import Path
-from typing import Any
-from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -183,7 +179,7 @@ class TestNoCompetingFlows:
                 violations.append(pattern)
 
         assert not violations, (
-            f"SUSPICIOUS EXECUTION PATTERNS found:\n"
+            "SUSPICIOUS EXECUTION PATTERNS found:\n"
             + "\n".join(f"  {p}" for p in violations)
             + "\n\nThese may create competing execution flows."
         )

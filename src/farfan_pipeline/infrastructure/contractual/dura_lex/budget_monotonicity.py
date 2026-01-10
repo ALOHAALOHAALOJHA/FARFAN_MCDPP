@@ -2,12 +2,10 @@
 Budget & Monotonicity Contract (BMC) - Implementation
 """
 
-from typing import List, Dict, Set
-
 
 class BudgetMonotonicityContract:
     @staticmethod
-    def solve_knapsack(items: Dict[str, float], budget: float) -> Set[str]:
+    def solve_knapsack(items: dict[str, float], budget: float) -> set[str]:
         """
         Solves a knapsack-like problem (selecting items within budget).
         To ensure monotonicity (S*(B1) ⊆ S*(B2)), we use a greedy approach based on cost/benefit
@@ -29,7 +27,7 @@ class BudgetMonotonicityContract:
         return selected
 
     @staticmethod
-    def verify_monotonicity(items: Dict[str, float], budgets: List[float]) -> bool:
+    def verify_monotonicity(items: dict[str, float], budgets: list[float]) -> bool:
         """
         Verifies S*(B1) ⊆ S*(B2) for B1 < B2.
         """

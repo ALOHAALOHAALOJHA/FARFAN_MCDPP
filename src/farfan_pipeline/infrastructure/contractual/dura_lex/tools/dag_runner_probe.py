@@ -2,8 +2,8 @@
 """
 CLI tool for Concurrency Determinism Contract (CDC) probe
 """
-import sys
 import json
+
 from farfan_pipeline.contracts.concurrency_determinism import ConcurrencyDeterminismContract
 
 

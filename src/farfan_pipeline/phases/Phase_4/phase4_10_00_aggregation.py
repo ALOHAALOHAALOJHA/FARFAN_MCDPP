@@ -45,22 +45,22 @@ def calibrated_method(method_path: str) -> Any:
 
 
 # SOTA imports
-from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_provenance import (
+from farfan_pipeline.phases.Phase_4.aggregation_provenance import (
     AggregationDAG,
     ProvenanceNode,
 )
-from farfan_pipeline.phases.Phase_four_five_six_seven.uncertainty_quantification import (
+from farfan_pipeline.phases.Phase_4.choquet_adapter import (
+    create_default_choquet_adapter,
+)
+from farfan_pipeline.phases.Phase_4.uncertainty_quantification import (
     BootstrapAggregator,
     UncertaintyMetrics,
     aggregate_with_uncertainty,
 )
-from farfan_pipeline.phases.Phase_four_five_six_seven.choquet_adapter import (
-    ChoquetProcessingAdapter,
-    create_default_choquet_adapter,
-)
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
+
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
     )
@@ -91,9 +91,9 @@ class AggregationSettings:
     @classmethod
     def from_signal_registry(
         cls,
-        registry: "QuestionnaireSignalRegistry",
+        registry: QuestionnaireSignalRegistry,
         level: str = "MACRO_1",
-    ) -> "AggregationSettings":
+    ) -> AggregationSettings:
         """SISAS: Build aggregation settings from signal registry.
 
         This method provides deterministic, signal-driven aggregation by:
@@ -129,16 +129,14 @@ class AggregationSettings:
             for cluster_id, area_ids in cluster_policy_areas.items():
                 if area_ids:
                     equal_weight = 1.0 / len(area_ids)
-                    cluster_policy_area_weights[cluster_id] = {
-                        area_id: equal_weight for area_id in area_ids
-                    }
+                    cluster_policy_area_weights[cluster_id] = dict.fromkeys(area_ids, equal_weight)
 
             # Build macro weights (equal across clusters)
             cluster_ids = list(cluster_policy_areas.keys())
             macro_cluster_weights: dict[str, float] = {}
             if cluster_ids:
                 equal_weight = 1.0 / len(cluster_ids)
-                macro_cluster_weights = {cid: equal_weight for cid in cluster_ids}
+                macro_cluster_weights = dict.fromkeys(cluster_ids, equal_weight)
 
             settings = cls(
                 dimension_group_by_keys=["policy_area", "dimension"],
@@ -183,7 +181,7 @@ class AggregationSettings:
             )
 
     @classmethod
-    def from_monolith(cls, monolith: dict[str, Any] | None) -> "AggregationSettings":
+    def from_monolith(cls, monolith: dict[str, Any] | None) -> AggregationSettings:
         """Build aggregation settings from canonical questionnaire data."""
         if not monolith:
             return cls(
@@ -292,9 +290,9 @@ class AggregationSettings:
     def from_monolith_or_registry(
         cls,
         monolith: dict[str, Any] | None = None,
-        registry: "QuestionnaireSignalRegistry | None" = None,
+        registry: QuestionnaireSignalRegistry | None = None,
         level: str = "MACRO_1",
-    ) -> "AggregationSettings":
+    ) -> AggregationSettings:
         """SISAS: Transition method - prefer registry, fallback to monolith.
 
         This method enables gradual migration from legacy monolith-based
@@ -369,7 +367,7 @@ class AggregationSettings:
                 if not slots:
                     continue
                 equal = 1.0 / len(slots)
-                dimension_weights[dim_id] = {slot: equal for slot in slots}
+                dimension_weights[dim_id] = dict.fromkeys(slots, equal)
 
         return dimension_weights
 
@@ -400,7 +398,7 @@ class AggregationSettings:
                 if not area_id or not dims:
                     continue
                 equal = 1.0 / len(dims)
-                area_weights[area_id] = {dim: equal for dim in dims}
+                area_weights[area_id] = dict.fromkeys(dims, equal)
 
         return area_weights
 
@@ -431,7 +429,7 @@ class AggregationSettings:
                 if not cluster_id or not area_ids:
                     continue
                 equal = 1.0 / len(area_ids)
-                cluster_weights[cluster_id] = {area_id: equal for area_id in area_ids}
+                cluster_weights[cluster_id] = dict.fromkeys(area_ids, equal)
 
         return cluster_weights
 
@@ -458,7 +456,7 @@ class AggregationSettings:
         if not cluster_ids:
             return {}
         equal = 1.0 / len(cluster_ids)
-        return {cluster_id: equal for cluster_id in cluster_ids}
+        return dict.fromkeys(cluster_ids, equal)
 
 
 def group_by(items: Iterable[T], key_func: Callable[[T], tuple]) -> dict[tuple, list[T]]:
@@ -789,7 +787,7 @@ class DimensionAggregator:
         abort_on_insufficient: bool = True,
         aggregation_settings: AggregationSettings | None = None,
         enable_sota_features: bool = True,
-        signal_registry: "QuestionnaireSignalRegistry | None" = None,  # SISAS injection
+        signal_registry: QuestionnaireSignalRegistry | None = None,  # SISAS injection
     ) -> None:
         """
         Initialize dimension aggregator.

@@ -14,7 +14,6 @@ Preconditions (enforced):
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List
 
 
 @dataclass(frozen=True)
@@ -27,7 +26,7 @@ class Phase1InputPrecondition:
     severity: str  # "CRITICAL", "HIGH", "STANDARD"
 
 
-PHASE1_INPUT_PRECONDITIONS: List[Phase1InputPrecondition] = [
+PHASE1_INPUT_PRECONDITIONS: list[Phase1InputPrecondition] = [
     Phase1InputPrecondition(
         "PRE-01", "PDF file must exist and be readable", "validate_pdf_exists", "CRITICAL"
     ),
@@ -86,17 +85,17 @@ def validate_phase1_input_contract(canonical_input: Any) -> bool:
     # PRE-04: Questionnaire SHA256 matches
     actual_q_hash = hashlib.sha256(canonical_input.questionnaire_path.read_bytes()).hexdigest()
     if actual_q_hash != canonical_input.questionnaire_sha256:
-        raise ValueError(f"PRE-04 failed: Questionnaire SHA256 mismatch")
+        raise ValueError("PRE-04 failed: Questionnaire SHA256 mismatch")
 
     # PRE-05: Phase 0 validation passed
     if not canonical_input.validation_passed:
-        raise ValueError(f"PRE-05 failed: Phase 0 validation did not pass")
+        raise ValueError("PRE-05 failed: Phase 0 validation did not pass")
 
     return True
 
 
 __all__ = [
-    "Phase1InputPrecondition",
     "PHASE1_INPUT_PRECONDITIONS",
+    "Phase1InputPrecondition",
     "validate_phase1_input_contract",
 ]

@@ -20,12 +20,11 @@ from __future__ import annotations
 import json
 import logging
 import re
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from enum import Enum, auto
 from pathlib import Path
-from typing import Callable
 
-from .calibration_core import ValidationError
 from .type_defaults import get_type_defaults, is_operation_prohibited
 
 logger = logging.getLogger(__name__)
@@ -201,7 +200,7 @@ class MethodBindingValidator:
                 message=f"Epistemic minima file not found: {minima_path}",
             )
 
-        with open(minima_path, "r") as f:
+        with open(minima_path) as f:
             minima = json.load(f)
 
         type_spec = minima.get("type_specifications", {}).get(binding_set.contract_type_code, {})
@@ -309,10 +308,10 @@ class MethodBindingValidator:
 
 
 __all__ = [
-    "ValidationSeverity",
-    "ValidationResult",
+    "EpistemicViolation",
     "MethodBinding",
     "MethodBindingSet",
     "MethodBindingValidator",
-    "EpistemicViolation",
+    "ValidationResult",
+    "ValidationSeverity",
 ]

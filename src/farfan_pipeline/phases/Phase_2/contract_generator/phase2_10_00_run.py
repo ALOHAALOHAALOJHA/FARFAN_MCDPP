@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Script ejecutable para generar 300 contratos epistemológicos. 
+Script ejecutable para generar 300 contratos epistemológicos.
 
-Ubicación: src/farfan_pipeline/phases/Phase_two/contract_generator/run.py
+Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/run.py
 
-USO: 
+USO:
     # Desde el directorio del script
     python3 run.py
 
@@ -15,7 +15,7 @@ USO:
     python3 run.py --verbose --no-strict
 
 ESTRUCTURA ESPERADA:
-    src/farfan_pipeline/phases/Phase_two/
+    src/farfan_pipeline/phases/Phase_2/
     ├── epistemological_assets/
     │   ├── classified_methods.json
     │   ├── contratos_clasificados.json
@@ -33,7 +33,7 @@ ESTRUCTURA ESPERADA:
     │   └── contract_generator.py
     └── generated_contracts/          ← SALIDA
         ├── contracts/
-        │   └── Q001_PA01_contract_v4.json ... 
+        │   └── Q001_PA01_contract_v4.json ...
         ├── validation/
         └── generation_manifest.json
 
@@ -104,21 +104,22 @@ logger = logging.getLogger("run")
 def load_generator_modules() -> dict:
     """
     Carga todos los módulos del contract_generator.
-    
+
     Uses package imports when running as a module, falls back to
     dynamic loading for direct script execution.
-    
+
     Returns:
         Diccionario con módulos cargados
-    
+
     Raises:
         ImportError: Si algún módulo no puede cargarse
     """
     # Try package imports first (when running as module)
     try:
-        import farfan_pipeline.phases.Phase_2.contract_generator import (
-                    chain_composer,
+        from farfan_pipeline.phases.Phase_2.contract_generator import (
+            chain_composer,
         )
+
         logger.debug("Loaded modules via package imports")
         return {
             "input_registry": input_registry,
@@ -157,11 +158,11 @@ def load_generator_modules() -> dict:
             )
 
         try:
-            spec = importlib. util.spec_from_file_location(
+            spec = importlib.util.spec_from_file_location(
                 module_name,
                 module_path,
             )
-            module = importlib. util.module_from_spec(spec)
+            module = importlib.util.module_from_spec(spec)
 
             # Registrar en sys.modules para que imports internos funcionen
             sys.modules[module_name] = module
@@ -187,10 +188,10 @@ def load_generator_modules() -> dict:
 def validate_assets_directory(assets_path: Path) -> None:
     """
     Valida que el directorio de assets existe y tiene los archivos requeridos.
-    
+
     Args:
         assets_path: Path al directorio de assets
-    
+
     Raises:
         FileNotFoundError: Si falta algún archivo requerido
     """
@@ -215,21 +216,20 @@ def validate_assets_directory(assets_path: Path) -> None:
 
     if missing:
         raise FileNotFoundError(
-            f"Missing required files in {assets_path}:\n"
-            + "\n".join(f"  - {f}" for f in missing)
+            f"Missing required files in {assets_path}:\n" + "\n".join(f"  - {f}" for f in missing)
         )
 
     logger.info(f"✓ Assets directory validated: {assets_path}")
     for filename in required_files:
         filepath = assets_path / filename
         size_kb = filepath.stat().st_size / 1024
-        logger. info(f"  - {filename}: {size_kb:.1f} KB")
+        logger.info(f"  - {filename}: {size_kb:.1f} KB")
 
 
 def ensure_output_directory(output_path: Path) -> None:
     """
     Asegura que el directorio de salida existe y está limpio.
-    
+
     Args:
         output_path: Path al directorio de salida
     """
@@ -254,14 +254,14 @@ def run_generation(
     verbose: bool = False,
 ) -> int:
     """
-    Ejecuta la generación de contratos. 
-    
+    Ejecuta la generación de contratos.
+
     Args:
         assets_path:  Directorio con insumos epistemológicos
         output_path: Directorio de salida
         strict_mode: Si True, falla en cualquier warning
         verbose: Si True, logging verbose
-    
+
     Returns:
         0 si éxito total, 1 si hubo errores
     """
@@ -326,8 +326,10 @@ def run_generation(
 
         if result["total_contracts"] != EXPECTED_CONTRACTS:
             print()
-            print(f"⚠️  ADVERTENCIA: Se esperaban {EXPECTED_CONTRACTS} contratos, "
-                  f"se generaron {result['total_contracts']}")
+            print(
+                f"⚠️  ADVERTENCIA: Se esperaban {EXPECTED_CONTRACTS} contratos, "
+                f"se generaron {result['total_contracts']}"
+            )
             return 1
 
         print()
@@ -339,7 +341,7 @@ def run_generation(
         return 1
 
     except ImportError as e:
-        logger. error(f"ERROR DE IMPORTACIÓN: {e}")
+        logger.error(f"ERROR DE IMPORTACIÓN: {e}")
         return 1
 
     except ValueError as e:
@@ -415,7 +417,8 @@ Estructura de assets esperada:
     )
 
     parser.add_argument(
-        "--verbose", "-v",
+        "--verbose",
+        "-v",
         action="store_true",
         help="Logging verbose (DEBUG level)",
     )
@@ -438,7 +441,7 @@ def main() -> NoReturn:
 
     # Ejecutar generación
     exit_code = run_generation(
-        assets_path=args.assets. resolve(),
+        assets_path=args.assets.resolve(),
         output_path=args.output.resolve(),
         strict_mode=args.strict,
         verbose=args.verbose,

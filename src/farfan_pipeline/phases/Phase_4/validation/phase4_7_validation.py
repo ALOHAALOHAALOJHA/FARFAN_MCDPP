@@ -17,9 +17,9 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .aggregation import (
-        DimensionScore,
         AreaScore,
         ClusterScore,
+        DimensionScore,
         MacroScore,
         ScoredResult,
     )
@@ -42,8 +42,8 @@ class AggregationValidationError(Exception):
 
 
 def validate_phase4_output(
-    dimension_scores: list["DimensionScore"],
-    input_scored_results: list["ScoredResult"],
+    dimension_scores: list[DimensionScore],
+    input_scored_results: list[ScoredResult],
 ) -> ValidationResult:
     """
     Validate Phase 4 (Dimension Aggregation) output.
@@ -114,8 +114,8 @@ def validate_phase4_output(
 
 
 def validate_phase5_output(
-    area_scores: list["AreaScore"],
-    input_dimension_scores: list["DimensionScore"],
+    area_scores: list[AreaScore],
+    input_dimension_scores: list[DimensionScore],
 ) -> ValidationResult:
     """
     Validate Phase 5 (Area Policy Aggregation) output.
@@ -181,8 +181,8 @@ def validate_phase5_output(
 
 
 def validate_phase6_output(
-    cluster_scores: list["ClusterScore"],
-    input_area_scores: list["AreaScore"],
+    cluster_scores: list[ClusterScore],
+    input_area_scores: list[AreaScore],
 ) -> ValidationResult:
     """
     Validate Phase 6 (Cluster Aggregation) output.
@@ -248,10 +248,10 @@ def validate_phase6_output(
 
 
 def validate_phase7_output(
-    macro_score: "MacroScore",
-    input_cluster_scores: list["ClusterScore"],
-    input_area_scores: list["AreaScore"],
-    input_dimension_scores: list["DimensionScore"],
+    macro_score: MacroScore,
+    input_cluster_scores: list[ClusterScore],
+    input_area_scores: list[AreaScore],
+    input_dimension_scores: list[DimensionScore],
 ) -> ValidationResult:
     """
     Validate Phase 7 (Macro Evaluation) output.
@@ -347,11 +347,11 @@ def validate_phase7_output(
 
 
 def validate_full_aggregation_pipeline(
-    dimension_scores: list["DimensionScore"],
-    area_scores: list["AreaScore"],
-    cluster_scores: list["ClusterScore"],
-    macro_score: "MacroScore",
-    input_scored_results: list["ScoredResult"],
+    dimension_scores: list[DimensionScore],
+    area_scores: list[AreaScore],
+    cluster_scores: list[ClusterScore],
+    macro_score: MacroScore,
+    input_scored_results: list[ScoredResult],
 ) -> tuple[bool, list[ValidationResult]]:
     """
     Validate the entire aggregation pipeline (Phases 4-7).

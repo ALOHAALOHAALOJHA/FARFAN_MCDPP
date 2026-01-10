@@ -52,18 +52,18 @@ Phase 2.2 Process:
 
 from __future__ import annotations
 
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
-from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Any, Final, Callable
 import hashlib
 import json
 import logging
 import os
 import threading
-from datetime import datetime, timezone
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from dataclasses import dataclass, field
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any, Final
 
-from .phase2_d_irrigation_orchestrator import ExecutionPlan, ExecutableTask
+from .phase2_d_irrigation_orchestrator import ExecutableTask, ExecutionPlan
 
 logger: Final = logging.getLogger(__name__)
 
@@ -208,7 +208,7 @@ class CheckpointManager:
             data = {
                 "plan_id": plan_id,
                 "completed_tasks": completed_tasks,
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
                 "metadata": metadata or {},
             }
             # Compute hash before adding it to the data (avoiding circular dependency)
@@ -247,7 +247,7 @@ class CheckpointManager:
                 return None
 
             try:
-                with open(checkpoint_path, "r") as f:
+                with open(checkpoint_path) as f:
                     data = json.load(f)
             except (json.JSONDecodeError, OSError) as exc:
                 raise CheckpointCorruptionError(
@@ -307,7 +307,7 @@ class CheckpointManager:
         if not checkpoint_path.exists():
             return None
 
-        with open(checkpoint_path, "r") as f:
+        with open(checkpoint_path) as f:
             return json.load(f)
 
 
@@ -588,7 +588,7 @@ class ParallelTaskExecutor:
         Returns:
             TaskResult with success or failure status.
         """
-        start_time = datetime.now(timezone.utc)
+        start_time = datetime.now(UTC)
 
         try:
             # Lookup question from monolith
@@ -627,7 +627,7 @@ class ParallelTaskExecutor:
             output = executor.execute(question_context)
 
             # Calculate execution time
-            end_time = datetime.now(timezone.utc)
+            end_time = datetime.now(UTC)
             execution_time_ms = (end_time - start_time).total_seconds() * 1000
 
             return TaskResult(
@@ -647,7 +647,7 @@ class ParallelTaskExecutor:
             )
 
         except Exception as e:
-            end_time = datetime.now(timezone.utc)
+            end_time = datetime.now(UTC)
             execution_time_ms = (end_time - start_time).total_seconds() * 1000
 
             logger.error(
@@ -969,7 +969,7 @@ class DynamicContractExecutor:
         Raises:
             ExecutionError: If execution fails
         """
-        start_time = datetime.now(timezone.utc)
+        start_time = datetime.now(UTC)
 
         try:
             # Build method context
@@ -979,7 +979,7 @@ class DynamicContractExecutor:
             output = self._execute_methods(method_context, question_context)
 
             # Track execution time
-            end_time = datetime.now(timezone.utc)
+            end_time = datetime.now(UTC)
             execution_time_ms = (end_time - start_time).total_seconds() * 1000
 
             logger.info(
@@ -1010,7 +1010,7 @@ class DynamicContractExecutor:
             )
             raise ExecutionError(
                 error_code="E2007",
-                message=f"Task execution failed: {str(e)}",
+                message=f"Task execution failed: {e!s}",
                 task_id=question_context.question_id,
                 details={"base_slot": self.base_slot, "error": str(e)},
             ) from e
@@ -1058,7 +1058,7 @@ class DynamicContractExecutor:
         - Simplified execution for canonical Phase 2 pipeline
         - Full MethodRegistry integration available via orchestrator
         - See: farfan_pipeline/orchestration/method_registry.py
-        - See: farfan_pipeline/phases/Phase_two/calibration_policy.py
+        - See: farfan_pipeline/phases/Phase_2/calibration_policy.py
         """
         # Simplified execution - full integration via orchestrator's MethodRegistry
         return {
@@ -1220,7 +1220,7 @@ class TaskExecutor:
 
     def _execute_task(self, task: ExecutableTask) -> TaskResult:
         """Execute single task."""
-        start_time = datetime.now(timezone.utc)
+        start_time = datetime.now(UTC)
 
         # Lookup question from monolith
         question = self._lookup_question(task)
@@ -1235,7 +1235,7 @@ class TaskExecutor:
         output = executor.execute(question_context)
 
         # Calculate execution time
-        end_time = datetime.now(timezone.utc)
+        end_time = datetime.now(UTC)
         execution_time_ms = (end_time - start_time).total_seconds() * 1000
 
         return TaskResult(

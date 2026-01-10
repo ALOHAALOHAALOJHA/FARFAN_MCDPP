@@ -3,14 +3,14 @@ Comparison Engine
 Logic for calculating deltas and aggregating stats across regions.
 """
 
-from typing import List, Dict, Any
+from typing import Any
 
 
 class ComparisonEngine:
     def __init__(self, db_session=None):
         self.db = db_session
 
-    def compare_regions(self, region_ids: List[str]) -> Dict[str, Any]:
+    def compare_regions(self, region_ids: list[str]) -> dict[str, Any]:
         """
         Compare a list of regions.
         Returns a dictionary with 'matrix' and 'deltas'.
@@ -31,7 +31,7 @@ class ComparisonEngine:
 
         return {"matrix": matrix, "deltas": deltas, "metadata": {"count": len(region_ids)}}
 
-    def compute_pdet_average(self, subregion_id: str) -> Dict[str, float]:
+    def compute_pdet_average(self, subregion_id: str) -> dict[str, float]:
         """
         Compute average scores for a PDET subregion.
         Should use cached aggregates if available.

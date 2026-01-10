@@ -24,10 +24,11 @@ import json
 import logging
 import threading
 import time
+from collections.abc import Callable
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any, Callable, Dict, Optional, TypeVar
+from typing import Any, TypeVar
 
 logger = logging.getLogger(__name__)
 
@@ -109,7 +110,7 @@ class CircuitBreaker:
         self.state = CircuitState.CLOSED
         self.failure_count = 0
         self.success_count = 0
-        self.last_failure_time: Optional[float] = None
+        self.last_failure_time: float | None = None
         self.half_open_calls = 0
         self._lock = threading.Lock()
         self._metrics = CircuitBreakerMetrics()
@@ -217,7 +218,7 @@ class CircuitBreaker:
         elapsed = time.time() - self.last_failure_time
         return max(0.0, self.config.recovery_timeout_s - elapsed)
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get circuit breaker metrics."""
         with self._lock:
             return {
@@ -268,7 +269,7 @@ class PersistentCircuitBreaker(CircuitBreaker):
             return
 
         try:
-            with open(self.state_file, "r") as f:
+            with open(self.state_file) as f:
                 state = json.load(f)
 
             self.state = CircuitState(state["state"])
@@ -302,7 +303,7 @@ class PersistentCircuitBreaker(CircuitBreaker):
             with open(self.state_file, "w") as f:
                 json.dump(state, f, indent=2)
             logger.debug(f"Saved state for {self.name}")
-        except IOError as e:
+        except OSError as e:
             logger.error(f"Failed to save state for {self.name}: {e}")
 
     def record_failure(self) -> None:
@@ -350,7 +351,7 @@ class CircuitBreakerRegistry:
         """
         self.state_dir = Path(state_dir)
         self.state_dir.mkdir(parents=True, exist_ok=True)
-        self._breakers: Dict[str, CircuitBreaker] = {}
+        self._breakers: dict[str, CircuitBreaker] = {}
         self._lock = threading.Lock()
 
     def get_or_create(
@@ -383,7 +384,7 @@ class CircuitBreakerRegistry:
                     )
             return self._breakers[name]
 
-    def get_all_metrics(self) -> Dict[str, Dict[str, Any]]:
+    def get_all_metrics(self) -> dict[str, dict[str, Any]]:
         """Get metrics for all circuit breakers."""
         with self._lock:
             return {name: breaker.get_metrics() for name, breaker in self._breakers.items()}
@@ -405,7 +406,7 @@ class CircuitBreakerRegistry:
 
 
 def circuit_protected(
-    breaker: CircuitBreaker, fallback: Optional[Callable[..., T]] = None
+    breaker: CircuitBreaker, fallback: Callable[..., T] | None = None
 ) -> Callable[[Callable[..., T]], Callable[..., T]]:
     """
     Decorator to protect a function with a circuit breaker.
@@ -439,7 +440,7 @@ def circuit_protected(
                 result = func(*args, **kwargs)
                 breaker.record_success()
                 return result
-            except Exception as e:
+            except Exception:
                 breaker.record_failure()
                 raise
 
@@ -451,11 +452,11 @@ def circuit_protected(
 # === MODULE EXPORTS ===
 
 __all__ = [
-    "CircuitState",
+    "CircuitBreaker",
     "CircuitBreakerConfig",
     "CircuitBreakerMetrics",
-    "CircuitBreaker",
-    "PersistentCircuitBreaker",
     "CircuitBreakerRegistry",
+    "CircuitState",
+    "PersistentCircuitBreaker",
     "circuit_protected",
 ]

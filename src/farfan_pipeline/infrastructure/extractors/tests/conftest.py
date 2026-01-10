@@ -4,9 +4,10 @@ Pytest configuration for extractor tests.
 Provides fixtures and test data for empirically-calibrated extractors.
 """
 
-import pytest
 import json
 from pathlib import Path
+
+import pytest
 
 
 @pytest.fixture(scope="session")
@@ -21,7 +22,7 @@ def calibration_data():
         / "extractor_calibration.json"
     )
 
-    with open(calibration_file, "r", encoding="utf-8") as f:
+    with open(calibration_file, encoding="utf-8") as f:
         return json.load(f)
 
 

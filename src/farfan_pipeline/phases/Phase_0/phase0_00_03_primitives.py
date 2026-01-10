@@ -17,7 +17,7 @@ Primitives Defined:
 
 Usage:
 ------
-from farfan_pipeline.phases.Phase_zero.phase0_00_03_primitives import HashStr, PolicyAreaID
+from farfan_pipeline.phases.Phase_0.phase0_00_03_primitives import HashStr, PolicyAreaID
 
 def validate_hash(h: HashStr) -> bool: ...
 
@@ -29,14 +29,14 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Literal, NewType, Union, Final
+from typing import Any, Literal, NewType, Union
 
 # =============================================================================
 # BASE TYPE ALIASES
 # =============================================================================
 
 PrimitiveType = Union[str, int, float, bool, None]
-JsonDict = Dict[str, Any]  # Loosely typed dict for JSON compatibility
+JsonDict = dict[str, Any]  # Loosely typed dict for JSON compatibility
 PathLike = Union[str, Path]
 
 # =============================================================================
@@ -109,18 +109,18 @@ def validate_dimension_id(dim_id: str) -> bool:
 # =============================================================================
 
 __all__ = [
-    "PrimitiveType",
+    "CriticalityLevel",
+    "DimensionID",
+    "HashStr",
     "JsonDict",
     "PathLike",
-    "HashStr",
+    "PhaseID",
+    "PolicyAreaID",
+    "PrimitiveType",
+    "RunID",
     "Timestamp",
     "UUIDStr",
-    "RunID",
-    "PolicyAreaID",
-    "DimensionID",
-    "PhaseID",
-    "CriticalityLevel",
+    "validate_dimension_id",
     "validate_hash_str",
     "validate_policy_area_id",
-    "validate_dimension_id",
 ]

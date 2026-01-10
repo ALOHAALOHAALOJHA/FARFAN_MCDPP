@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_zero.phase0_30_00_resource_controller
+Module: src.farfan_pipeline.phases.Phase_0.phase0_30_00_resource_controller
 PHASE_LABEL: Phase 0
 Purpose: Hard kernel-level resource enforcement for Phase Zero
 Owner: phase0_resources
@@ -46,9 +46,10 @@ import logging
 import resource
 import threading
 import time
+from collections.abc import Generator
 from contextlib import contextmanager
-from dataclasses import dataclass, field
-from typing import Any, Generator
+from dataclasses import dataclass
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -155,8 +156,7 @@ class MemoryWatchdog(threading.Thread):
                 mem = psutil.virtual_memory()
 
                 with self._lock:
-                    if mem.percent > self.peak_memory_percent:
-                        self.peak_memory_percent = mem.percent
+                    self.peak_memory_percent = max(self.peak_memory_percent, mem.percent)
 
                 if mem.percent > self.threshold_percent:
                     with self._lock:
@@ -544,10 +544,10 @@ class ResourceController:
 
 
 __all__ = [
-    "ResourceLimits",
-    "ResourceExhausted",
+    "PSUTIL_AVAILABLE",
+    "EnforcementMetrics",
     "MemoryWatchdog",
     "ResourceController",
-    "EnforcementMetrics",
-    "PSUTIL_AVAILABLE",
+    "ResourceExhausted",
+    "ResourceLimits",
 ]

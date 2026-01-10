@@ -2,7 +2,7 @@
 """
 Comprehensive audit of 300 executor contracts for completeness, alignment, and signal wiring.
 
-This script audits all contracts in src/farfan_pipeline.phases/Phase_two/json_files_phase_two/executor_contracts/specialized/
+This script audits all contracts in src/farfan_pipeline.phases/Phase_2/json_files_phase_two/executor_contracts/specialized/
 to ensure:
 1. Completeness and disaggregation of all required fields per v3 schema
 2. Alignment with base_executor_with_contract.py requirements
@@ -12,9 +12,9 @@ to ensure:
 
 import json
 import sys
-from pathlib import Path
-from typing import Any, Dict, List
 from collections import defaultdict
+from pathlib import Path
+from typing import Any
 
 # Base requirements from base_executor_with_contract.py
 V3_REQUIRED_TOP_LEVEL_FIELDS = [
@@ -83,7 +83,7 @@ class ContractAuditor:
             "stats": defaultdict(int),
         }
 
-    def audit_all_contracts(self) -> Dict[str, Any]:
+    def audit_all_contracts(self) -> dict[str, Any]:
         """Audit all contracts in the directory."""
         contract_files = sorted(self.contracts_dir.glob("Q*.v3.json"))
         self.results["total_contracts"] = len(contract_files)
@@ -103,7 +103,7 @@ class ContractAuditor:
         contract_id = contract_file.stem
 
         try:
-            with open(contract_file, "r", encoding="utf-8") as f:
+            with open(contract_file, encoding="utf-8") as f:
                 contract = json.load(f)
         except json.JSONDecodeError as e:
             self.results["failed"] += 1
@@ -155,7 +155,7 @@ class ContractAuditor:
         # Update statistics
         self._update_stats(contract)
 
-    def _check_top_level_fields(self, contract: Dict, contract_id: str) -> List[str]:
+    def _check_top_level_fields(self, contract: dict, contract_id: str) -> list[str]:
         """Check that all v3 top-level fields are present."""
         errors = []
         for field in V3_REQUIRED_TOP_LEVEL_FIELDS:
@@ -163,7 +163,7 @@ class ContractAuditor:
                 errors.append(f"[{contract_id}] Missing required top-level field: {field}")
         return errors
 
-    def _check_identity_section(self, contract: Dict, contract_id: str) -> List[str]:
+    def _check_identity_section(self, contract: dict, contract_id: str) -> list[str]:
         """Check identity section completeness."""
         errors = []
         identity = contract.get("identity", {})
@@ -180,7 +180,7 @@ class ContractAuditor:
 
         return errors
 
-    def _check_method_binding(self, contract: Dict, contract_id: str) -> List[str]:
+    def _check_method_binding(self, contract: dict, contract_id: str) -> list[str]:
         """Check method_binding completeness and disaggregation."""
         errors = []
         method_binding = contract.get("method_binding", {})
@@ -214,16 +214,15 @@ class ContractAuditor:
                     for req_field in ["class_name", "method_name", "provides", "priority"]:
                         if req_field not in method_spec:
                             errors.append(f"[{contract_id}] methods[{idx}] missing '{req_field}'")
-        else:
-            # Single method mode - check class_name and method_name
-            if "class_name" not in method_binding and "primary_method" not in method_binding:
-                errors.append(
-                    f"[{contract_id}] Missing class_name or primary_method for single_method mode"
-                )
+        # Single method mode - check class_name and method_name
+        elif "class_name" not in method_binding and "primary_method" not in method_binding:
+            errors.append(
+                f"[{contract_id}] Missing class_name or primary_method for single_method mode"
+            )
 
         return errors
 
-    def _check_evidence_assembly(self, contract: Dict, contract_id: str) -> List[str]:
+    def _check_evidence_assembly(self, contract: dict, contract_id: str) -> list[str]:
         """Check evidence_assembly alignment with EvidenceAssembler."""
         errors = []
         evidence_assembly = contract.get("evidence_assembly", {})
@@ -269,7 +268,7 @@ class ContractAuditor:
 
         return errors
 
-    def _check_validation_rules(self, contract: Dict, contract_id: str) -> List[str]:
+    def _check_validation_rules(self, contract: dict, contract_id: str) -> list[str]:
         """Check validation_rules alignment with EvidenceValidator."""
         warnings = []
         validation_rules_section = contract.get("validation_rules", {})
@@ -302,7 +301,7 @@ class ContractAuditor:
 
         return warnings
 
-    def _check_signal_requirements(self, contract: Dict, contract_id: str) -> List[str]:
+    def _check_signal_requirements(self, contract: dict, contract_id: str) -> list[str]:
         """Check signal_requirements for proper irrigation."""
         errors = []
         signal_requirements = contract.get("signal_requirements", {})
@@ -335,7 +334,7 @@ class ContractAuditor:
 
         return errors
 
-    def _check_error_handling(self, contract: Dict, contract_id: str) -> List[str]:
+    def _check_error_handling(self, contract: dict, contract_id: str) -> list[str]:
         """Check error_handling for failure_contract wiring."""
         errors = []
         error_handling = contract.get("error_handling", {})
@@ -368,7 +367,7 @@ class ContractAuditor:
 
         return errors
 
-    def _check_question_context(self, contract: Dict, contract_id: str) -> List[str]:
+    def _check_question_context(self, contract: dict, contract_id: str) -> list[str]:
         """Check question_context completeness."""
         errors = []
         question_context = contract.get("question_context", {})
@@ -391,7 +390,7 @@ class ContractAuditor:
 
         return errors
 
-    def _update_stats(self, contract: Dict) -> None:
+    def _update_stats(self, contract: dict) -> None:
         """Update statistics from contract."""
         # Count orchestration modes
         method_binding = contract.get("method_binding", {})
@@ -465,26 +464,26 @@ class ContractAuditor:
         print("-" * 80)
         stats = self.results["stats"]
 
-        print(f"Orchestration Modes:")
+        print("Orchestration Modes:")
         print(
             f"  - Multi-method pipeline: {stats.get('orchestration_mode_multi_method_pipeline', 0)}"
         )
         print(f"  - Single method: {stats.get('orchestration_mode_single_method', 0)}")
         print(f"  - Unknown: {stats.get('orchestration_mode_unknown', 0)}")
 
-        print(f"\nMethod Disaggregation:")
+        print("\nMethod Disaggregation:")
         print(f"  - Total methods: {stats.get('total_methods', 0)}")
         print(f"  - Avg methods/pipeline: {stats.get('avg_methods_per_pipeline', 0):.1f}")
 
-        print(f"\nEvidence Assembly:")
+        print("\nEvidence Assembly:")
         print(f"  - Total assembly rules: {stats.get('total_assembly_rules', 0)}")
         print(f"  - Avg rules/contract: {stats.get('avg_assembly_rules_per_contract', 0):.1f}")
 
-        print(f"\nValidation:")
+        print("\nValidation:")
         print(f"  - Total validation rules: {stats.get('total_validation_rules', 0)}")
         print(f"  - Avg rules/contract: {stats.get('avg_validation_rules_per_contract', 0):.1f}")
 
-        print(f"\nSignal Irrigation:")
+        print("\nSignal Irrigation:")
         print(
             f"  - Contracts with signal_requirements: {stats.get('contracts_with_signal_requirements', 0)}"
         )
@@ -523,7 +522,7 @@ def main():
         script_dir
         / "src"
         / "farfan_pipeline.phases"
-        / "Phase_two"
+        / "Phase_2"
         / "json_files_phase_two"
         / "executor_contracts"
         / "specialized"

@@ -22,8 +22,8 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
 from pathlib import Path
+from typing import Any
 
 # Module-level constants for scoring and thresholds
 DIMENSIONS_PER_POLICY_AREA = 6
@@ -173,15 +173,15 @@ except ImportError:
 
 # Signal infrastructure imports
 try:
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_quality_metrics import (
+        analyze_coverage_gaps,
+        compute_signal_quality_metrics,
+    )
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         create_signal_registry,
     )
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
         create_default_signal_pack,
-    )
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_quality_metrics import (
-        compute_signal_quality_metrics,
-        analyze_coverage_gaps,
     )
 
     SISAS_AVAILABLE = True
@@ -201,10 +201,10 @@ except ImportError as e:
     SIGNAL_ROUTER_AVAILABLE = False
 
 # Global signal router singleton (lazy initialization)
-_signal_router: Optional["SignalQuestionIndex"] = None
+_signal_router: SignalQuestionIndex | None = None
 
 
-def get_signal_router() -> Optional["SignalQuestionIndex"]:
+def get_signal_router() -> SignalQuestionIndex | None:
     """
     Get or create the global signal router singleton.
 
@@ -237,11 +237,11 @@ class SignalEnrichmentContext:
         provenance: Signal application provenance tracking
     """
 
-    signal_registry: Optional[Any] = None
-    signal_packs: Dict[str, Any] = field(default_factory=dict)
-    quality_metrics: Dict[str, Any] = field(default_factory=dict)
-    coverage_analysis: Optional[Any] = None
-    provenance: Dict[str, List[str]] = field(default_factory=dict)
+    signal_registry: Any | None = None
+    signal_packs: dict[str, Any] = field(default_factory=dict)
+    quality_metrics: dict[str, Any] = field(default_factory=dict)
+    coverage_analysis: Any | None = None
+    provenance: dict[str, list[str]] = field(default_factory=dict)
 
     def track_signal_application(self, chunk_id: str, signal_type: str, source: str) -> None:
         """Track signal application for provenance."""
@@ -256,7 +256,7 @@ class SignalEnricher:
     Provides comprehensive signal-based analysis across all subphases.
     """
 
-    def __init__(self, questionnaire_path: Optional[Path] = None):
+    def __init__(self, questionnaire_path: Path | None = None):
         """
         Initialize signal enricher.
 
@@ -439,8 +439,8 @@ class SignalEnricher:
         return len(self._questionnaire_patterns) > 0
 
     def extract_and_route_signals(
-        self, text: str, context: Optional[Dict[str, Any]] = None
-    ) -> Dict[str, Any]:
+        self, text: str, context: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         """
         Run all extractors on text and route their signals to target questions.
 
@@ -461,21 +461,21 @@ class SignalEnricher:
         # Import extractors with fallback for different environments
         try:
             from farfan_pipeline.infrastructure.extractors import (
-                QuantitativeTripletExtractor,
-                NormativeReferenceExtractor,
-                StructuralMarkerExtractor,
-                FinancialChainExtractor,
                 CausalVerbExtractor,
+                FinancialChainExtractor,
                 InstitutionalNERExtractor,
+                NormativeReferenceExtractor,
+                QuantitativeTripletExtractor,
+                StructuralMarkerExtractor,
             )
         except ImportError:
             from farfan_pipeline.infrastructure.extractors import (
-                QuantitativeTripletExtractor,
-                NormativeReferenceExtractor,
-                StructuralMarkerExtractor,
-                FinancialChainExtractor,
                 CausalVerbExtractor,
+                FinancialChainExtractor,
                 InstitutionalNERExtractor,
+                NormativeReferenceExtractor,
+                QuantitativeTripletExtractor,
+                StructuralMarkerExtractor,
             )
 
         extraction_results = {}
@@ -556,8 +556,8 @@ class SignalEnricher:
         }
 
     def enrich_entity_with_signals(
-        self, entity_text: str, entity_type: str, policy_area: Optional[str] = None
-    ) -> Dict[str, Any]:
+        self, entity_text: str, entity_type: str, policy_area: str | None = None
+    ) -> dict[str, Any]:
         """
         Enrich entity with signal-based scoring.
 
@@ -636,7 +636,7 @@ class SignalEnricher:
 
     def extract_causal_markers_with_signals(
         self, text: str, policy_area: str
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """
         Extract causal markers using signal-driven pattern matching.
 
@@ -722,7 +722,7 @@ class SignalEnricher:
 
     def score_argument_with_signals(
         self, argument_text: str, argument_type: str, policy_area: str
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Score argument strength using signal-based indicators.
 
@@ -782,7 +782,7 @@ class SignalEnricher:
 
     def extract_temporal_markers_with_signals(
         self, text: str, policy_area: str
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """
         Extract temporal markers enhanced with signal patterns.
 
@@ -833,7 +833,7 @@ class SignalEnricher:
 
         return markers
 
-    def compute_signal_coverage_metrics(self, chunks: List[Any]) -> Dict[str, Any]:
+    def compute_signal_coverage_metrics(self, chunks: list[Any]) -> dict[str, Any]:
         """
         Compute comprehensive signal coverage metrics for chunk set.
 
@@ -914,7 +914,7 @@ class SignalEnricher:
 
         return metrics
 
-    def get_provenance_report(self) -> Dict[str, Any]:
+    def get_provenance_report(self) -> dict[str, Any]:
         """
         Generate signal application provenance report.
 
@@ -934,7 +934,7 @@ class SignalEnricher:
         }
 
 
-def create_signal_enricher(questionnaire_path: Optional[Path] = None) -> SignalEnricher:
+def create_signal_enricher(questionnaire_path: Path | None = None) -> SignalEnricher:
     """
     Factory function to create signal enricher instance.
 

@@ -1,10 +1,10 @@
-"""CPP to Orchestrator Adapter. 
+"""CPP to Orchestrator Adapter.
 
-This adapter converts Canon Policy Package (CPP) documents from the ingestion pipeline 
-into the orchestrator's PreprocessedDocument format. 
+This adapter converts Canon Policy Package (CPP) documents from the ingestion pipeline
+into the orchestrator's PreprocessedDocument format.
 
-Note: This is the canonical adapter implementation. File cpp_to_orchestrator.py is 
-deprecated and should be removed. 
+Note: This is the canonical adapter implementation. File cpp_to_orchestrator.py is
+deprecated and should be removed.
 
 Design Principles:
 - Preserves complete provenance information
@@ -25,7 +25,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from types import MappingProxyType
 from typing import Any, Final
 
@@ -34,22 +34,24 @@ from farfan_pipeline.core.types import ChunkData, PreprocessedDocument, Provenan
 
 logger = logging.getLogger(__name__)
 
-_EMPTY_MAPPING:  Final[MappingProxyType[str, Any]] = MappingProxyType({})
+_EMPTY_MAPPING: Final[MappingProxyType[str, Any]] = MappingProxyType({})
 
-_VALID_CHUNK_TYPES: Final[frozenset[str]] = frozenset({
-    "diagnostic",
-    "activity",
-    "indicator",
-    "resource",
-    "temporal",
-    "entity",
-})
+_VALID_CHUNK_TYPES: Final[frozenset[str]] = frozenset(
+    {
+        "diagnostic",
+        "activity",
+        "indicator",
+        "resource",
+        "temporal",
+        "entity",
+    }
+)
 
 
 @dataclass(frozen=True, slots=True)
 class ChunkArtifacts:
-    """Immutable container for all outputs produced by processing a single chunk. 
-    
+    """Immutable container for all outputs produced by processing a single chunk.
+
     Attributes:
         sentence:  Sentence representation for orchestrator compatibility
         sentence_metadata: Positional and contextual metadata for the sentence
@@ -66,7 +68,7 @@ class ChunkArtifacts:
     sentence_metadata: dict[str, Any]
     chunk_summary: dict[str, Any]
     chunk_data: ChunkData
-    table:  dict[str, Any] | None
+    table: dict[str, Any] | None
     entity_mentions: dict[str, list[int]]
     temporal_mentions: dict[str, list[int]]
     chunk_text_length: int
@@ -74,9 +76,9 @@ class ChunkArtifacts:
 
 
 class CPPAdapterError(Exception):
-    """Raised when CPP to PreprocessedDocument conversion fails. 
-    
-    Error messages are prescriptive, indicating: 
+    """Raised when CPP to PreprocessedDocument conversion fails.
+
+    Error messages are prescriptive, indicating:
     - What failed
     - What was expected
     - Suggested remediation
@@ -87,14 +89,14 @@ class CPPAdapterError(Exception):
 
 class CPPAdapter:
     """
-    Adapter to convert CanonPolicyPackage (CPP output) to PreprocessedDocument. 
+    Adapter to convert CanonPolicyPackage (CPP output) to PreprocessedDocument.
 
     This is the canonical adapter for the FARFAN pipeline, converting the rich
     CanonPolicyPackage data into the format expected by the orchestrator.
-    
+
     Thread Safety: Instances are thread-safe for concurrent to_preprocessed_document calls.
-    
-    Attributes: 
+
+    Attributes:
         enable_runtime_validation: Whether WiringValidator is enabled
         wiring_validator:  Optional WiringValidator instance for contract checking
         config:  Centralized configuration dictionary with all parameter values
@@ -102,89 +104,61 @@ class CPPAdapter:
 
     _PARAMETER_CONTEXT: Final[str] = "farfan_core.utils.cpp_adapter.CPPAdapter.__init__"
 
-    def __init__(self, enable_runtime_validation:  bool = True) -> None:
-        """Initialize the CPP adapter. 
+    def __init__(self, enable_runtime_validation: bool = True) -> None:
+        """Initialize the CPP adapter.
 
         Args:
-            enable_runtime_validation: Enable WiringValidator for runtime contract checking. 
+            enable_runtime_validation: Enable WiringValidator for runtime contract checking.
                 When True, validates Adapter → Orchestrator contract after conversion.
         """
         self.logger = logging.getLogger(self.__class__.__name__)
 
         self.enable_runtime_validation = enable_runtime_validation
-        self.wiring_validator:  Any = None
-        
+        self.wiring_validator: Any = None
+
         if enable_runtime_validation:
             try:
-                import farfan_pipeline.phases.Phase_0.phase0_90_03_wiring_validator import WiringValidator
+                from farfan_pipeline.phases.Phase_0.phase0_90_03_wiring_validator import (
+                    WiringValidator,
+                )
 
                 self.wiring_validator = WiringValidator()
-                self.logger.info(
-                    "WiringValidator enabled for runtime contract checking"
-                )
+                self.logger.info("WiringValidator enabled for runtime contract checking")
             except ImportError:
-                self.logger.warning(
-                    "WiringValidator not available. Runtime validation disabled."
-                )
+                self.logger.warning("WiringValidator not available. Runtime validation disabled.")
 
         self.config: dict[str, Any] = self._build_config()
 
-    def _build_config(self) -> dict[str, Any]: 
-        """Build centralized configuration dictionary. 
-        
-        Returns: 
+    def _build_config(self) -> dict[str, Any]:
+        """Build centralized configuration dictionary.
+
+        Returns:
             Configuration dictionary with all parameter values loaded once.
         """
         ctx = self._PARAMETER_CONTEXT
         return {
-            "confidence_layout_default": ParameterLoaderV2.get(
-                ctx, "auto_param_L256_66", 0.0
-            ),
-            "confidence_layout_missing": ParameterLoaderV2.get(
-                ctx, "auto_param_L256_108", 0.0
-            ),
-            "confidence_ocr_default": ParameterLoaderV2.get(
-                ctx, "auto_param_L257_60", 0.0
-            ),
-            "confidence_ocr_missing": ParameterLoaderV2.get(
-                ctx, "auto_param_L257_102", 0.0
-            ),
-            "confidence_typing_default": ParameterLoaderV2.get(
-                ctx, "auto_param_L258_66", 0.0
-            ),
-            "confidence_typing_missing": ParameterLoaderV2.get(
-                ctx, "auto_param_L258_108", 0.0
-            ),
+            "confidence_layout_default": ParameterLoaderV2.get(ctx, "auto_param_L256_66", 0.0),
+            "confidence_layout_missing": ParameterLoaderV2.get(ctx, "auto_param_L256_108", 0.0),
+            "confidence_ocr_default": ParameterLoaderV2.get(ctx, "auto_param_L257_60", 0.0),
+            "confidence_ocr_missing": ParameterLoaderV2.get(ctx, "auto_param_L257_102", 0.0),
+            "confidence_typing_default": ParameterLoaderV2.get(ctx, "auto_param_L258_66", 0.0),
+            "confidence_typing_missing": ParameterLoaderV2.get(ctx, "auto_param_L258_108", 0.0),
             "quality_metrics_defaults": {
-                "provenance_completeness": ParameterLoaderV2.get(
-                    ctx, "auto_param_L328_117", 0.0
-                ),
-                "structural_consistency": ParameterLoaderV2.get(
-                    ctx, "auto_param_L329_114", 0.0
-                ),
-                "boundary_f1": ParameterLoaderV2.get(
-                    ctx, "auto_param_L330_81", 0.0
-                ),
-                "kpi_linkage_rate": ParameterLoaderV2.get(
-                    ctx, "auto_param_L331_96", 0.0
-                ),
-                "budget_consistency_score": ParameterLoaderV2.get(
-                    ctx, "auto_param_L332_120", 0.0
-                ),
-                "temporal_robustness": ParameterLoaderV2.get(
-                    ctx, "auto_param_L333_105", 0.0
-                ),
-                "chunk_context_coverage": ParameterLoaderV2.get(
-                    ctx, "auto_param_L334_114", 0.0
-                ),
+                "provenance_completeness": ParameterLoaderV2.get(ctx, "auto_param_L328_117", 0.0),
+                "structural_consistency": ParameterLoaderV2.get(ctx, "auto_param_L329_114", 0.0),
+                "boundary_f1": ParameterLoaderV2.get(ctx, "auto_param_L330_81", 0.0),
+                "kpi_linkage_rate": ParameterLoaderV2.get(ctx, "auto_param_L331_96", 0.0),
+                "budget_consistency_score": ParameterLoaderV2.get(ctx, "auto_param_L332_120", 0.0),
+                "temporal_robustness": ParameterLoaderV2.get(ctx, "auto_param_L333_105", 0.0),
+                "chunk_context_coverage": ParameterLoaderV2.get(ctx, "auto_param_L334_114", 0.0),
             },
             "provenance_completeness_default": ParameterLoaderV2.get(
                 ctx, "auto_param_L397_92", 0.0
             ),
         }
 
-    def _resolve_chunk_attributes(self, chunk:  Any) -> dict[str, Any]: 
-        """Extract all needed attributes from a chunk in a single pass. 
+    def _resolve_chunk_attributes(self, chunk: Any) -> dict[str, Any]:
+        """Extract all needed attributes from a chunk in a single pass.
 
         Args:
             chunk:  Chunk object to extract attributes from
@@ -194,33 +168,33 @@ class CPPAdapter:
         """
         resolution_raw = getattr(chunk, "resolution", None)
         resolution_value = (
-            resolution_raw.value. lower()
+            resolution_raw.value.lower()
             if resolution_raw is not None and hasattr(resolution_raw, "value")
             else None
         )
-        
+
         return {
             "policy_area_id": getattr(chunk, "policy_area_id", None),
             "dimension_id": getattr(chunk, "dimension_id", None),
-            "resolution":  resolution_value,
+            "resolution": resolution_value,
             "confidence": getattr(chunk, "confidence", None),
-            "provenance":  getattr(chunk, "provenance", None),
+            "provenance": getattr(chunk, "provenance", None),
             "entities": getattr(chunk, "entities", None),
             "time_facets": getattr(chunk, "time_facets", None),
             "geo_facets": getattr(chunk, "geo_facets", None),
             "policy_facets": getattr(chunk, "policy_facets", None),
-            "kpi":  getattr(chunk, "kpi", None),
+            "kpi": getattr(chunk, "kpi", None),
             "budget": getattr(chunk, "budget", None),
         }
 
     def _validate_provenance(self, provenance: Any, chunk_id: str) -> None:
-        """Validate provenance data completeness. 
-        
-        Args: 
+        """Validate provenance data completeness.
+
+        Args:
             provenance:  Provenance object to validate
             chunk_id: Chunk identifier for error messages
-            
-        Raises: 
+
+        Raises:
             CPPAdapterError: If provenance is missing or incomplete
         """
         if provenance is None:
@@ -228,61 +202,53 @@ class CPPAdapter:
                 f"Missing provenance in chunk {chunk_id}. "
                 f"All chunks must have provenance data for audit trail."
             )
-        
+
         if not hasattr(provenance, "page_number") or provenance.page_number is None:
             raise CPPAdapterError(
                 f"Missing provenance.page_number in chunk {chunk_id}. "
                 f"Page number is required for source traceability."
             )
-        
+
         if not hasattr(provenance, "section_header") or not provenance.section_header:
             raise CPPAdapterError(
                 f"Missing provenance.section_header in chunk {chunk_id}. "
                 f"Section header is required for document structure mapping."
             )
 
-    def _build_confidence_dict(self, confidence:  Any) -> dict[str, float]:
+    def _build_confidence_dict(self, confidence: Any) -> dict[str, float]:
         """Build confidence dictionary from chunk confidence object.
-        
+
         Args:
             confidence: Confidence object or None
-            
+
         Returns:
             Dictionary with layout, ocr, and typing confidence values
         """
         if confidence is None:
             return {
-                "layout":  self.config["confidence_layout_missing"],
+                "layout": self.config["confidence_layout_missing"],
                 "ocr": self.config["confidence_ocr_missing"],
-                "typing": self. config["confidence_typing_missing"],
+                "typing": self.config["confidence_typing_missing"],
             }
-        
+
         return {
-            "layout": getattr(
-                confidence, "layout", self.config["confidence_layout_default"]
-            ),
-            "ocr":  getattr(
-                confidence, "ocr", self.config["confidence_ocr_default"]
-            ),
-            "typing": getattr(
-                confidence, "typing", self.config["confidence_typing_default"]
-            ),
+            "layout": getattr(confidence, "layout", self.config["confidence_layout_default"]),
+            "ocr": getattr(confidence, "ocr", self.config["confidence_ocr_default"]),
+            "typing": getattr(confidence, "typing", self.config["confidence_typing_default"]),
         }
 
-    def _process_chunk(
-        self, chunk: Any, idx: int, current_offset: int
-    ) -> ChunkArtifacts:
-        """Process a single chunk and return all its artifacts. 
+    def _process_chunk(self, chunk: Any, idx: int, current_offset: int) -> ChunkArtifacts:
+        """Process a single chunk and return all its artifacts.
 
         Args:
             chunk: Chunk object to process
             idx: Index of the chunk in the sorted list
             current_offset: Current character offset in the full text
 
-        Returns: 
+        Returns:
             ChunkArtifacts containing all outputs for this chunk
 
-        Raises: 
+        Raises:
             CPPAdapterError: If chunk data is invalid or missing required fields
         """
         chunk_text = chunk.text
@@ -297,10 +263,10 @@ class CPPAdapter:
             "resolution": attrs["resolution"],
         }
 
-        extra_metadata:  dict[str, Any] = {
+        extra_metadata: dict[str, Any] = {
             "chunk_id": chunk.id,
-            "policy_area_id":  attrs["policy_area_id"],
-            "dimension_id":  attrs["dimension_id"],
+            "policy_area_id": attrs["policy_area_id"],
+            "dimension_id": attrs["dimension_id"],
             "resolution": attrs["resolution"],
         }
 
@@ -326,9 +292,9 @@ class CPPAdapter:
         sentence_metadata = {
             "index": idx,
             "page_number": None,
-            "start_char":  chunk_start,
+            "start_char": chunk_start,
             "end_char": chunk_end,
-            "extra":  dict(extra_metadata),
+            "extra": dict(extra_metadata),
         }
 
         confidence_dict = self._build_confidence_dict(attrs["confidence"])
@@ -346,34 +312,34 @@ class CPPAdapter:
 
         self._validate_provenance(attrs["provenance"], chunk.id)
 
-        entity_mentions:  dict[str, list[int]] = {}
+        entity_mentions: dict[str, list[int]] = {}
         if attrs["entities"] is not None:
             for entity in attrs["entities"]:
                 entity_text = getattr(entity, "text", str(entity))
-                if entity_text not in entity_mentions: 
+                if entity_text not in entity_mentions:
                     entity_mentions[entity_text] = []
                 entity_mentions[entity_text].append(idx)
 
         temporal_mentions: dict[str, list[int]] = {}
         if attrs["time_facets"] is not None:
             years = getattr(attrs["time_facets"], "years", None)
-            if years: 
+            if years:
                 for year in years:
                     year_key = str(year)
                     if year_key not in temporal_mentions:
                         temporal_mentions[year_key] = []
-                    temporal_mentions[year_key]. append(idx)
+                    temporal_mentions[year_key].append(idx)
 
-        table:  dict[str, Any] | None = None
-        if attrs["budget"] is not None: 
+        table: dict[str, Any] | None = None
+        if attrs["budget"] is not None:
             budget = attrs["budget"]
             table = {
                 "table_id": f"budget_{idx}",
                 "label": f"Budget:  {getattr(budget, 'source', 'Unknown')}",
                 "amount": getattr(budget, "amount", 0),
-                "currency":  getattr(budget, "currency", "COP"),
+                "currency": getattr(budget, "currency", "COP"),
                 "year": getattr(budget, "year", None),
-                "use":  getattr(budget, "use", None),
+                "use": getattr(budget, "use", None),
                 "source": getattr(budget, "source", None),
             }
 
@@ -424,28 +390,22 @@ class CPPAdapter:
 
     def _validate_canon_package(self, canon_package: Any, document_id: str) -> None:
         """Execute 6-layer validation for robust phase-one output processing.
-        
+
         Args:
             canon_package: CanonPolicyPackage to validate
             document_id: Document identifier for error messages
-            
-        Raises: 
+
+        Raises:
             CPPAdapterError: If any validation layer fails
         """
-        if not canon_package: 
+        if not canon_package:
             raise CPPAdapterError(
-                "canon_package is None or empty. "
-                "Ensure ingestion completed successfully."
+                "canon_package is None or empty. " "Ensure ingestion completed successfully."
             )
 
-        if (
-            not document_id
-            or not isinstance(document_id, str)
-            or not document_id.strip()
-        ):
+        if not document_id or not isinstance(document_id, str) or not document_id.strip():
             raise CPPAdapterError(
-                f"document_id must be a non-empty string. "
-                f"Received:  {repr(document_id)}"
+                f"document_id must be a non-empty string. " f"Received:  {document_id!r}"
             )
 
         if not hasattr(canon_package, "chunk_graph") or not canon_package.chunk_graph:
@@ -456,35 +416,27 @@ class CPPAdapter:
 
         chunk_graph = canon_package.chunk_graph
 
-        if not chunk_graph. chunks:
+        if not chunk_graph.chunks:
             raise CPPAdapterError(
                 "chunk_graph. chunks is empty - no chunks to process.  "
                 "Minimum 1 chunk required from phase-one."
             )
 
-        validation_failures:  list[str] = []
+        validation_failures: list[str] = []
         for chunk_id, chunk in chunk_graph.chunks.items():
             if not hasattr(chunk, "text"):
-                validation_failures.append(
-                    f"Chunk {chunk_id}:  missing 'text' attribute"
-                )
+                validation_failures.append(f"Chunk {chunk_id}:  missing 'text' attribute")
             elif not chunk.text or not chunk.text.strip():
-                validation_failures.append(
-                    f"Chunk {chunk_id}:  text is empty or whitespace"
-                )
+                validation_failures.append(f"Chunk {chunk_id}:  text is empty or whitespace")
 
             if not hasattr(chunk, "text_span"):
-                validation_failures.append(
-                    f"Chunk {chunk_id}: missing 'text_span' attribute"
-                )
-            elif not hasattr(chunk.text_span, "start") or not hasattr(
-                chunk. text_span, "end"
-            ):
+                validation_failures.append(f"Chunk {chunk_id}: missing 'text_span' attribute")
+            elif not hasattr(chunk.text_span, "start") or not hasattr(chunk.text_span, "end"):
                 validation_failures.append(
                     f"Chunk {chunk_id}:  invalid text_span (missing start/end)"
                 )
 
-        if validation_failures: 
+        if validation_failures:
             failure_summary = "\n  - ".join(validation_failures)
             raise CPPAdapterError(
                 f"Chunk validation failed ({len(validation_failures)} errors):\n"
@@ -493,18 +445,16 @@ class CPPAdapter:
                 f"This indicates SmartChunkConverter produced invalid output."
             )
 
-    def _validate_chunk_cardinality_and_metadata(
-        self, sorted_chunks: list[Any]
-    ) -> None:
+    def _validate_chunk_cardinality_and_metadata(self, sorted_chunks: list[Any]) -> None:
         """Enforce cardinality and metadata integrity constraints.
-        
+
         Args:
             sorted_chunks: List of chunks sorted by text_span. start
-            
+
         Raises:
             CPPAdapterError: If cardinality or metadata constraints are violated
         """
-        if len(sorted_chunks) != 60: 
+        if len(sorted_chunks) != 60:
             raise CPPAdapterError(
                 f"Cardinality mismatch: Expected 60 chunks for 'chunked' processing mode, "
                 f"but found {len(sorted_chunks)}. This is a critical violation of the "
@@ -512,12 +462,12 @@ class CPPAdapter:
             )
 
         for chunk in sorted_chunks:
-            if not hasattr(chunk, "policy_area_id") or not chunk.policy_area_id: 
+            if not hasattr(chunk, "policy_area_id") or not chunk.policy_area_id:
                 raise CPPAdapterError(
                     f"Missing policy_area_id in chunk {chunk. id}. "
                     f"PA×DIM metadata is required for Phase 2 question routing."
                 )
-            if not hasattr(chunk, "dimension_id") or not chunk.dimension_id: 
+            if not hasattr(chunk, "dimension_id") or not chunk.dimension_id:
                 raise CPPAdapterError(
                     f"Missing dimension_id in chunk {chunk.id}.  "
                     f"PA×DIM metadata is required for Phase 2 question routing."
@@ -530,54 +480,52 @@ class CPPAdapter:
 
     def _build_quality_metrics(self, canon_package: Any) -> dict[str, float]:
         """Extract quality metrics from canon_package or use defaults.
-        
+
         Args:
             canon_package: CanonPolicyPackage with optional quality_metrics
-            
+
         Returns:
             Dictionary of quality metric values
         """
         defaults = self.config["quality_metrics_defaults"]
-        
+
         if not hasattr(canon_package, "quality_metrics") or not canon_package.quality_metrics:
             return dict(defaults)
-        
+
         qm = canon_package.quality_metrics
         return {
-            "provenance_completeness":  getattr(
+            "provenance_completeness": getattr(
                 qm, "provenance_completeness", defaults["provenance_completeness"]
             ),
             "structural_consistency": getattr(
                 qm, "structural_consistency", defaults["structural_consistency"]
             ),
             "boundary_f1": getattr(qm, "boundary_f1", defaults["boundary_f1"]),
-            "kpi_linkage_rate": getattr(
-                qm, "kpi_linkage_rate", defaults["kpi_linkage_rate"]
-            ),
-            "budget_consistency_score":  getattr(
+            "kpi_linkage_rate": getattr(qm, "kpi_linkage_rate", defaults["kpi_linkage_rate"]),
+            "budget_consistency_score": getattr(
                 qm, "budget_consistency_score", defaults["budget_consistency_score"]
             ),
-            "temporal_robustness":  getattr(
+            "temporal_robustness": getattr(
                 qm, "temporal_robustness", defaults["temporal_robustness"]
             ),
-            "chunk_context_coverage":  getattr(
+            "chunk_context_coverage": getattr(
                 qm, "chunk_context_coverage", defaults["chunk_context_coverage"]
             ),
         }
 
     def _build_policy_manifest(self, canon_package: Any) -> dict[str, list[Any]] | None:
         """Extract policy manifest from canon_package if available.
-        
+
         Args:
             canon_package: CanonPolicyPackage with optional policy_manifest
-            
+
         Returns:
             Policy manifest dictionary or None
         """
         if not hasattr(canon_package, "policy_manifest") or not canon_package.policy_manifest:
             return None
-        
-        pm = canon_package. policy_manifest
+
+        pm = canon_package.policy_manifest
         return {
             "axes": getattr(pm, "axes", []),
             "programs": getattr(pm, "programs", []),
@@ -590,43 +538,41 @@ class CPPAdapter:
         self, preprocessed_doc: PreprocessedDocument, metadata_dict: dict[str, Any]
     ) -> None:
         """Validate Adapter → Orchestrator contract at runtime.
-        
+
         Args:
             preprocessed_doc:  The converted PreprocessedDocument
             metadata_dict:  Metadata dictionary for provenance_completeness
-            
-        Raises: 
+
+        Raises:
             ValueError: If contract validation fails
         """
         if self.wiring_validator is None:
             return
-        
+
         self.logger.info("Validating Adapter → Orchestrator contract (runtime)")
         try:
             preprocessed_dict = {
                 "document_id": preprocessed_doc.document_id,
                 "sentence_metadata": preprocessed_doc.sentence_metadata,
                 "resolution_index": {},
-                "provenance_completeness": metadata_dict. get(
+                "provenance_completeness": metadata_dict.get(
                     "provenance_completeness",
                     self.config["provenance_completeness_default"],
                 ),
             }
             self.wiring_validator.validate_adapter_to_orchestrator(preprocessed_dict)
             self.logger.info("✓ Adapter → Orchestrator contract validation passed")
-        except Exception as e: 
-            self.logger. error(
-                f"Adapter → Orchestrator contract validation failed: {e}"
-            )
+        except Exception as e:
+            self.logger.error(f"Adapter → Orchestrator contract validation failed: {e}")
             raise ValueError(
                 f"Runtime contract violation at Adapter → Orchestrator boundary: {e}"
             ) from e
 
     def to_preprocessed_document(
-        self, canon_package: Any, document_id:  str
+        self, canon_package: Any, document_id: str
     ) -> PreprocessedDocument:
         """
-        Convert CanonPolicyPackage to PreprocessedDocument. 
+        Convert CanonPolicyPackage to PreprocessedDocument.
 
         Args:
             canon_package: CanonPolicyPackage from ingestion
@@ -635,7 +581,7 @@ class CPPAdapter:
         Returns:
             PreprocessedDocument ready for orchestrator
 
-        Raises: 
+        Raises:
             CPPAdapterError: If conversion fails or data is invalid
             ValueError: If runtime contract validation fails
 
@@ -669,25 +615,21 @@ class CPPAdapter:
                 - policy_facets: object with axes, programs, projects
                 - geo_facets: object with territories, regions
         """
-        self. logger.info(
-            f"Converting CanonPolicyPackage to PreprocessedDocument:  {document_id}"
-        )
+        self.logger.info(f"Converting CanonPolicyPackage to PreprocessedDocument:  {document_id}")
 
         self._validate_canon_package(canon_package, document_id)
 
         chunk_graph = canon_package.chunk_graph
         sorted_chunks = sorted(
             chunk_graph.chunks.values(),
-            key=lambda c: (
-                c.text_span.start if hasattr(c, "text_span") and c.text_span else 0
-            ),
+            key=lambda c: (c.text_span.start if hasattr(c, "text_span") and c.text_span else 0),
         )
 
         self._validate_chunk_cardinality_and_metadata(sorted_chunks)
 
-        self. logger.info(f"Processing {len(sorted_chunks)} chunks")
+        self.logger.info(f"Processing {len(sorted_chunks)} chunks")
 
-        chunk_index:  dict[str, int] = {}
+        chunk_index: dict[str, int] = {}
         term_index: dict[str, list[int]] = {}
         numeric_index: dict[str, list[int]] = {}
         temporal_index: dict[str, list[int]] = {}
@@ -702,48 +644,48 @@ class CPPAdapter:
             artifacts = self._process_chunk(chunk, idx, current_offset)
             artifacts_list.append(artifacts)
 
-            if artifacts.has_provenance: 
+            if artifacts.has_provenance:
                 provenance_with_data += 1
 
-            for entity_text, indices in artifacts.entity_mentions. items():
+            for entity_text, indices in artifacts.entity_mentions.items():
                 if entity_text not in entity_index:
                     entity_index[entity_text] = []
                 entity_index[entity_text].extend(indices)
 
-            for year_key, indices in artifacts. temporal_mentions.items():
+            for year_key, indices in artifacts.temporal_mentions.items():
                 if year_key not in temporal_index:
                     temporal_index[year_key] = []
-                temporal_index[year_key]. extend(indices)
+                temporal_index[year_key].extend(indices)
 
             current_offset += artifacts.chunk_text_length + 1
 
         full_text_parts = [art.sentence["text"] for art in artifacts_list]
         sentences = [art.sentence for art in artifacts_list]
         sentence_metadata = [art.sentence_metadata for art in artifacts_list]
-        chunk_summaries = [art. chunk_summary for art in artifacts_list]
+        chunk_summaries = [art.chunk_summary for art in artifacts_list]
 
-        chunks_data:  list[ChunkData] = []
-        tables:  list[dict[str, Any]] = []
+        chunks_data: list[ChunkData] = []
+        tables: list[dict[str, Any]] = []
         table_counter = 0
 
-        for art in artifacts_list: 
+        for art in artifacts_list:
             if art.table is not None:
                 updated_chunk_data = ChunkData(
-                    id=art. chunk_data.id,
-                    text=art. chunk_data.text,
-                    chunk_type=art. chunk_data.chunk_type,
-                    sentences=art.chunk_data. sentences,
+                    id=art.chunk_data.id,
+                    text=art.chunk_data.text,
+                    chunk_type=art.chunk_data.chunk_type,
+                    sentences=art.chunk_data.sentences,
                     tables=[table_counter],
                     start_pos=art.chunk_data.start_pos,
                     end_pos=art.chunk_data.end_pos,
                     confidence=art.chunk_data.confidence,
                     edges_out=art.chunk_data.edges_out,
-                    policy_area_id=art.chunk_data. policy_area_id,
-                    dimension_id=art. chunk_data.dimension_id,
-                    provenance=art.chunk_data. provenance,
+                    policy_area_id=art.chunk_data.policy_area_id,
+                    dimension_id=art.chunk_data.dimension_id,
+                    provenance=art.chunk_data.provenance,
                 )
                 chunks_data.append(updated_chunk_data)
-                tables.append(art. table)
+                tables.append(art.table)
                 table_counter += 1
             else:
                 chunks_data.append(art.chunk_data)
@@ -758,21 +700,21 @@ class CPPAdapter:
 
         indexes = {
             "term_index": {k: tuple(v) for k, v in term_index.items()},
-            "numeric_index": {k:  tuple(v) for k, v in numeric_index.items()},
+            "numeric_index": {k: tuple(v) for k, v in numeric_index.items()},
             "temporal_index": {k: tuple(v) for k, v in temporal_index.items()},
-            "entity_index": {k: tuple(v) for k, v in entity_index. items()},
+            "entity_index": {k: tuple(v) for k, v in entity_index.items()},
         }
 
-        metadata_dict:  dict[str, Any] = {
+        metadata_dict: dict[str, Any] = {
             "adapter_source": "CPPAdapter",
             "schema_version": getattr(canon_package, "schema_version", "CPP-2025.1"),
             "chunk_count": len(sorted_chunks),
             "processing_mode": "chunked",
-            "chunks":  chunk_summaries,
+            "chunks": chunk_summaries,
         }
 
         quality_metrics = self._build_quality_metrics(canon_package)
-        if quality_metrics: 
+        if quality_metrics:
             metadata_dict["quality_metrics"] = quality_metrics
 
         policy_manifest = self._build_policy_manifest(canon_package)
@@ -784,9 +726,7 @@ class CPPAdapter:
                 metadata_dict["spc_rich_data"] = canon_package.metadata["spc_rich_data"]
 
         if len(sorted_chunks) > 0:
-            metadata_dict["provenance_completeness"] = provenance_with_data / len(
-                sorted_chunks
-            )
+            metadata_dict["provenance_completeness"] = provenance_with_data / len(sorted_chunks)
 
         metadata = MappingProxyType(metadata_dict)
 
@@ -806,13 +746,13 @@ class CPPAdapter:
                 "page_boundaries": (),
             },
             language=language,
-            ingested_at=datetime. now(timezone.utc),
+            ingested_at=datetime.now(UTC),
             full_text=full_text,
             chunks=chunks_data,
             chunk_index=chunk_index,
             chunk_graph={
                 "chunks": {cid: chunk_index[cid] for cid in chunk_index},
-                "edges":  list(getattr(chunk_graph, "edges", [])),
+                "edges": list(getattr(chunk_graph, "edges", [])),
             },
             processing_mode="chunked",
         )
@@ -827,11 +767,9 @@ class CPPAdapter:
         return preprocessed_doc
 
 
-def adapt_cpp_to_orchestrator(
-    canon_package: Any, document_id: str
-) -> PreprocessedDocument:
+def adapt_cpp_to_orchestrator(canon_package: Any, document_id: str) -> PreprocessedDocument:
     """
-    Convenience function to adapt CPP to PreprocessedDocument. 
+    Convenience function to adapt CPP to PreprocessedDocument.
 
     Args:
         canon_package: CanonPolicyPackage from ingestion
@@ -845,7 +783,7 @@ def adapt_cpp_to_orchestrator(
         ValueError: If runtime contract validation fails
     """
     adapter = CPPAdapter()
-    return adapter. to_preprocessed_document(canon_package, document_id)
+    return adapter.to_preprocessed_document(canon_package, document_id)
 
 
 __all__ = [

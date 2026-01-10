@@ -21,7 +21,7 @@ Version: 1.0.0
 from __future__ import annotations
 
 import logging
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     try:
@@ -48,7 +48,7 @@ CV_HIGH_THRESHOLD = 0.60  # CV threshold for high dispersion
 # Utility: Select a representative question for a given dimension from the signal registry
 def get_representative_question_for_dimension(
     dimension_id: str,
-    signal_registry: "QuestionnaireSignalRegistry" | None,
+    signal_registry: QuestionnaireSignalRegistry | None,
 ) -> str | None:
     """
     Returns a representative question ID for the given dimension, or None if not found.

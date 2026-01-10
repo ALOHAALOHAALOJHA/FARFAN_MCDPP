@@ -76,7 +76,7 @@ Example:
 import os
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Optional
+from typing import ClassVar
 
 
 class RuntimeMode(Enum):
@@ -192,11 +192,11 @@ class RuntimeConfig:
     preferred_embedding_model: str
 
     # Path Configuration
-    project_root_override: Optional[str]
-    data_dir_override: Optional[str]
-    output_dir_override: Optional[str]
-    cache_dir_override: Optional[str]
-    logs_dir_override: Optional[str]
+    project_root_override: str | None
+    data_dir_override: str | None
+    output_dir_override: str | None
+    cache_dir_override: str | None
+    logs_dir_override: str | None
 
     # External Dependencies
     hf_online: bool

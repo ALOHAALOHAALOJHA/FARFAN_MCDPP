@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_two.PHASE_2_CONSTANTS
+Module: src.farfan_pipeline.phases.Phase_2.PHASE_2_CONSTANTS
 Purpose: Global constants for Phase 2 - Executor Contract Factory
 Owner: phase2_core
 Lifecycle: ACTIVE
@@ -130,20 +130,20 @@ HASH_ALGORITHM: Final[str] = "blake3"
 # ============================================================================
 
 __all__ = [
-    "PHASE_NUMBER",
-    "PHASE_NAME",
-    "PHASE_LABEL",
+    "BASE_QUESTIONS",
+    "DEFAULT_SEED",
+    "HASH_ALGORITHM",
+    "METHODS_PER_CONTRACT",
     "PHASE_CODENAME",
-    "VALID_STAGES",
+    "PHASE_LABEL",
+    "PHASE_NAME",
+    "PHASE_NUMBER",
+    "POLICY_AREAS",
+    "SEED_STRATEGY",
     "STAGE_METADATA",
-    "VALID_MODULE_TYPES",
+    "TOTAL_CONTRACTS",
     "VALID_CRITICALITY_LEVELS",
     "VALID_EXECUTION_PATTERNS",
-    "TOTAL_CONTRACTS",
-    "BASE_QUESTIONS",
-    "POLICY_AREAS",
-    "METHODS_PER_CONTRACT",
-    "DEFAULT_SEED",
-    "SEED_STRATEGY",
-    "HASH_ALGORITHM",
+    "VALID_MODULE_TYPES",
+    "VALID_STAGES",
 ]

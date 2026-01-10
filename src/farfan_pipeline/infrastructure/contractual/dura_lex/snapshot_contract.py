@@ -4,12 +4,12 @@ Snapshot Contract (SC) - Implementation
 
 import hashlib
 import json
-from typing import Dict, Any
+from typing import Any
 
 
 class SnapshotContract:
     @staticmethod
-    def verify_snapshot(sigma: Dict[str, Any]) -> str:
+    def verify_snapshot(sigma: dict[str, Any]) -> str:
         """
         Verifies that all external inputs are frozen by checksums.
         Returns the digest of the snapshot.

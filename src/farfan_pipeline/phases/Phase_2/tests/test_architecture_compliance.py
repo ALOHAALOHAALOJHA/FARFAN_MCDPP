@@ -14,12 +14,8 @@ These tests are SEVERE and will FAIL if:
 
 from __future__ import annotations
 
-import ast
-import importlib
 import re
-import sys
 from pathlib import Path
-from typing import Any
 
 import pytest
 
@@ -51,7 +47,7 @@ class TestNoLegacyExecutors:
                 legacy_files.append(py_file)
 
         assert not legacy_files, (
-            f"LEGACY EXECUTOR FILES FOUND:\n"
+            "LEGACY EXECUTOR FILES FOUND:\n"
             + "\n".join(f"  {f}" for f in legacy_files)
             + "\nDELETE these files - they are replaced by 300 JSON contracts."
         )
@@ -71,7 +67,7 @@ class TestNoLegacyExecutors:
                 violations.append((py_file.name, matches))
 
         assert not violations, (
-            f"LEGACY EXECUTOR CLASS DEFINITIONS in:\n"
+            "LEGACY EXECUTOR CLASS DEFINITIONS in:\n"
             + "\n".join(f"  {name}: {classes}" for name, classes in violations)
             + "\n\nREMOVE these class definitions. "
             "300 JSON contracts replace ALL hardcoded executor classes."
@@ -95,7 +91,7 @@ class TestNoLegacyExecutors:
                     violations.append((py_file.name, filtered))
 
         assert not violations, (
-            f"LEGACY EXECUTOR IMPORTS:\n"
+            "LEGACY EXECUTOR IMPORTS:\n"
             + "\n".join(f"  {name}: {imports}" for name, imports in violations)
             + "\n\nREMOVE these imports. Use DynamicContractExecutor instead."
         )
@@ -224,7 +220,7 @@ class TestModuleStructure:
                 modules_without_label.append(py_file.name)
 
         assert not modules_without_label, (
-            f"MODULES MISSING PHASE_LABEL:\n"
+            "MODULES MISSING PHASE_LABEL:\n"
             + "\n".join(f"  {m}" for m in modules_without_label)
             + "\n\nAll Phase 2 modules MUST have 'PHASE_LABEL: Phase 2' in docstring."
         )
@@ -268,7 +264,7 @@ class TestNoCompetingImplementations:
                 base_executor_classes.append(py_file.name)
 
         assert len(base_executor_classes) == 1, (
-            f"MULTIPLE BaseExecutorWithContract definitions found in:\n"
+            "MULTIPLE BaseExecutorWithContract definitions found in:\n"
             + "\n".join(f"  {f}" for f in base_executor_classes)
             + "\n\nThere MUST be exactly ONE BaseExecutorWithContract class."
         )

@@ -19,9 +19,9 @@ import hashlib
 import json
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Final
+from typing import Final
 
 from .calibration_core import CalibrationLayer, CalibrationPhase
 from .unit_of_analysis import UnitOfAnalysis
@@ -66,7 +66,7 @@ class DriftReport:
 
     indicators: list[DriftIndicator] = field(default_factory=list)
     drift_detected: bool = False
-    report_timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    report_timestamp: datetime = field(default_factory=lambda: datetime.now(UTC))
 
 
 @dataclass(frozen=True)
@@ -194,7 +194,7 @@ class ManifestBuilder:
             raise ValueError("Phase-2 layer is required")
 
         manifest_id = hashlib.sha256(
-            f"{self._contract_id}_{datetime.now(timezone.utc).isoformat()}".encode()
+            f"{self._contract_id}_{datetime.now(UTC).isoformat()}".encode()
         ).hexdigest()[:16]
 
         return CalibrationManifest(
@@ -205,5 +205,5 @@ class ManifestBuilder:
             ingestion_layer=self._ingestion_layer,
             phase2_layer=self._phase2_layer,
             decisions=tuple(self._decisions),
-            created_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
         )

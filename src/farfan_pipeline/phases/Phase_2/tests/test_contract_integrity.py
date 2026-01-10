@@ -14,7 +14,6 @@ These tests are SEVERE and will FAIL if:
 
 from __future__ import annotations
 
-import hashlib
 import json
 import re
 from pathlib import Path
@@ -105,7 +104,7 @@ class TestContractStructure:
         if not contracts:
             pytest.skip("No contracts found")
 
-        with open(contracts[0], "r", encoding="utf-8") as f:
+        with open(contracts[0], encoding="utf-8") as f:
             return json.load(f)
 
     def test_contract_has_identity_section(self, sample_contract: dict) -> None:
@@ -211,7 +210,7 @@ class TestNoLegacyReferences:
         violations = []
 
         for contract_path in GENERATED_CONTRACTS_DIR.glob("Q*_PA*_contract_v4.json"):
-            with open(contract_path, "r", encoding="utf-8") as f:
+            with open(contract_path, encoding="utf-8") as f:
                 contract = json.load(f)
 
             identity = contract.get("identity", {})
@@ -265,7 +264,7 @@ class TestContractCompleteness:
         if not contract_path.exists():
             pytest.skip(f"Contract {contract_path.name} doesn't exist")
 
-        with open(contract_path, "r", encoding="utf-8") as f:
+        with open(contract_path, encoding="utf-8") as f:
             contract = json.load(f)
 
         missing = [s for s in self.REQUIRED_SECTIONS if s not in contract]
@@ -288,7 +287,7 @@ class TestContractIntegrityHashes:
 
         for contract_path in GENERATED_CONTRACTS_DIR.glob("Q*_PA*_contract_v4.json"):
             try:
-                with open(contract_path, "r", encoding="utf-8") as f:
+                with open(contract_path, encoding="utf-8") as f:
                     json.load(f)
             except json.JSONDecodeError as e:
                 invalid_contracts.append((contract_path.name, str(e)))
@@ -326,7 +325,7 @@ class TestContractIntegrityHashes:
         contract_ids: dict[str, list[str]] = {}
 
         for contract_path in GENERATED_CONTRACTS_DIR.glob("Q*_PA*_contract_v4.json"):
-            with open(contract_path, "r", encoding="utf-8") as f:
+            with open(contract_path, encoding="utf-8") as f:
                 contract = json.load(f)
 
             contract_id = contract.get("identity", {}).get("contract_id", "UNKNOWN")
@@ -337,7 +336,7 @@ class TestContractIntegrityHashes:
         duplicates = {k: v for k, v in contract_ids.items() if len(v) > 1}
 
         assert not duplicates, (
-            f"DUPLICATE CONTRACT IDs:\n"
+            "DUPLICATE CONTRACT IDs:\n"
             + "\n".join(f"  {cid}: {files}" for cid, files in duplicates.items())
             + "\nEach contract MUST have a unique contract_id."
         )
@@ -354,7 +353,7 @@ class TestMethodBindingIntegrity:
         violations = []
 
         for contract_path in GENERATED_CONTRACTS_DIR.glob("Q*_PA*_contract_v4.json"):
-            with open(contract_path, "r", encoding="utf-8") as f:
+            with open(contract_path, encoding="utf-8") as f:
                 contract = json.load(f)
 
             execution_phases = contract.get("method_binding", {}).get("execution_phases", {})
@@ -364,7 +363,7 @@ class TestMethodBindingIntegrity:
                     if "class_name" not in method or "method_name" not in method:
                         violations.append(f"{contract_path.name}:{phase_name}:methods[{idx}]")
 
-        assert not violations, f"METHODS MISSING class_name/method_name in:\n" + "\n".join(
+        assert not violations, "METHODS MISSING class_name/method_name in:\n" + "\n".join(
             f"  {v}" for v in violations[:20]
         )
 
@@ -377,7 +376,7 @@ class TestMethodBindingIntegrity:
         violations = []
 
         for contract_path in list(GENERATED_CONTRACTS_DIR.glob("Q*_PA*_contract_v4.json"))[:10]:
-            with open(contract_path, "r", encoding="utf-8") as f:
+            with open(contract_path, encoding="utf-8") as f:
                 contract = json.load(f)
 
             execution_phases = contract.get("method_binding", {}).get("execution_phases", {})

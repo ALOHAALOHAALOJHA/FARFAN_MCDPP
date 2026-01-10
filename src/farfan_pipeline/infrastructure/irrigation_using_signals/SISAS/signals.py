@@ -23,7 +23,7 @@ import json
 import time
 from collections import OrderedDict
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any, Literal, Protocol
 
 if TYPE_CHECKING:
@@ -177,7 +177,7 @@ class SignalPack(BaseModel):
     )
     source_fingerprint: str = Field(default="", description="BLAKE3 hash of source content")
     valid_from: str = Field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat(),
+        default_factory=lambda: datetime.now(UTC).isoformat(),
         description="ISO timestamp when signal becomes valid",
     )
     valid_to: str = Field(default="", description="ISO timestamp when signal expires")
@@ -251,7 +251,7 @@ class SignalPack(BaseModel):
             True if signal is within validity window
         """
         if now is None:
-            now = datetime.now(timezone.utc)
+            now = datetime.now(UTC)
 
         valid_from_dt = self._parse_iso_timestamp(self.valid_from)
         if now < valid_from_dt:
@@ -990,7 +990,7 @@ class SignalUsageMetadata:
     policy_area: str
     hash: str
     keys_used: list[str]
-    timestamp_utc: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    timestamp_utc: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""

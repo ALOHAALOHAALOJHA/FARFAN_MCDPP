@@ -13,18 +13,18 @@ To integrate into orchestrator:
 from __future__ import annotations
 
 import logging
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from orchestration.orchestrator import ScoredMicroQuestion, MacroEvaluation
+    pass
 
-from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
-    DimensionAggregator,
-    DimensionScore,
+from farfan_pipeline.phases.Phase_4.aggregation import (
     AreaPolicyAggregator,
     AreaScore,
     ClusterAggregator,
     ClusterScore,
+    DimensionAggregator,
+    DimensionScore,
     MacroAggregator,
     MacroScore,
     group_by,

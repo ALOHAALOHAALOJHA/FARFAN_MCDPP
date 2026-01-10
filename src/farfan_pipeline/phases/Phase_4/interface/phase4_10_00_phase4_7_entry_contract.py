@@ -26,24 +26,25 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from ..PHASE_4_7_CONSTANTS import (
-    MIN_SCORE,
     MAX_SCORE,
-    META_PROVENANCE_SOURCE_PHASE,
     META_PROVENANCE_NODE_ID,
     META_PROVENANCE_PARENT_ID,
+    META_PROVENANCE_SOURCE_PHASE,
+    MIN_SCORE,
 )
 
 if TYPE_CHECKING:
-    import farfan_pipeline.phases.Phase_3.phase3_score_extraction import ScoredResult
+    pass
 
 logger = logging.getLogger(__name__)
 
 
 class EntryContractViolationError(RuntimeError):
     """Raised when entry contract validation fails."""
+
     pass
 
 
@@ -80,9 +81,9 @@ class Phase4_7EntryContract:
 
     def validate_input(
         self,
-        scored_results: List[Any],
+        scored_results: list[Any],
         strict_mode: bool = True,
-    ) -> tuple[bool, List[str], Dict[str, Any]]:
+    ) -> tuple[bool, list[str], dict[str, Any]]:
         """
         Validate input data against entry contract.
 
@@ -108,9 +109,7 @@ class Phase4_7EntryContract:
         if not scored_results:
             violations.append("Empty input: No scored results received from Phase 3")
             if strict_mode:
-                raise EntryContractViolationError(
-                    f"Entry contract violation: {violations[0]}"
-                )
+                raise EntryContractViolationError(f"Entry contract violation: {violations[0]}")
             return False, violations, metadata
 
         # Validate each scored result
@@ -127,7 +126,7 @@ class Phase4_7EntryContract:
 
             # Check score range
             if hasattr(result, "score"):
-                score = getattr(result, "score")
+                score = result.score
                 if not (MIN_SCORE <= score <= MAX_SCORE):
                     invalid_scores.append(
                         f"Result {idx}: Score {score} outside range [{MIN_SCORE}, {MAX_SCORE}]"
@@ -135,16 +134,14 @@ class Phase4_7EntryContract:
 
             # Check quality level
             if hasattr(result, "quality_level"):
-                quality = getattr(result, "quality_level")
+                quality = result.quality_level
                 valid_qualities = {"EXCELENTE", "BUENO", "ACEPTABLE", "INSUFICIENTE"}
                 if quality not in valid_qualities:
-                    invalid_quality.append(
-                        f"Result {idx}: Invalid quality level '{quality}'"
-                    )
+                    invalid_quality.append(f"Result {idx}: Invalid quality level '{quality}'")
 
             # Check traceability
             if hasattr(result, "question_id"):
-                qid = getattr(result, "question_id")
+                qid = result.question_id
                 if not qid or qid == "":
                     non_traceable.append(f"Result {idx}: Missing or empty question_id")
 
@@ -185,16 +182,16 @@ class Phase4_7EntryContract:
         # Raise exception in strict mode
         if not is_valid and strict_mode:
             raise EntryContractViolationError(
-                f"Entry contract validation failed with {len(violations)} violations:\n" +
-                "\n".join(violations[:10])
+                f"Entry contract validation failed with {len(violations)} violations:\n"
+                + "\n".join(violations[:10])
             )
 
         return is_valid, violations, metadata
 
     def extract_provenance_metadata(
         self,
-        scored_results: List[Any],
-    ) -> Dict[str, Any]:
+        scored_results: list[Any],
+    ) -> dict[str, Any]:
         """
         Extract provenance metadata from input data.
 
@@ -219,19 +216,19 @@ class Phase4_7EntryContract:
         for result in scored_results:
             # ScoredResult uses 'dimension', not 'dimension_id'
             if hasattr(result, "dimension"):
-                dimensions.add(getattr(result, "dimension"))
+                dimensions.add(result.dimension)
             elif hasattr(result, "dimension_id"):
-                dimensions.add(getattr(result, "dimension_id"))
+                dimensions.add(result.dimension_id)
             # ScoredResult uses 'policy_area', not 'policy_area_id'
             if hasattr(result, "policy_area"):
-                areas.add(getattr(result, "policy_area"))
+                areas.add(result.policy_area)
             elif hasattr(result, "policy_area_id"):
-                areas.add(getattr(result, "policy_area_id"))
+                areas.add(result.policy_area_id)
             # ScoredResult uses 'question_global', not 'question_id'
             if hasattr(result, "question_global"):
-                questions.append(getattr(result, "question_global"))
+                questions.append(result.question_global)
             elif hasattr(result, "question_id"):
-                questions.append(getattr(result, "question_id"))
+                questions.append(result.question_id)
 
         provenance["dimensions_covered"] = list(dimensions)
         provenance["areas_covered"] = list(areas)
@@ -241,9 +238,9 @@ class Phase4_7EntryContract:
 
 
 def validate_phase4_7_entry(
-    scored_results: List[Any],
+    scored_results: list[Any],
     strict_mode: bool = True,
-) -> tuple[bool, List[str], Dict[str, Any]]:
+) -> tuple[bool, list[str], dict[str, Any]]:
     """
     Convenience function to validate Phase 4-7 entry.
 
@@ -259,8 +256,8 @@ def validate_phase4_7_entry(
 
 
 def extract_entry_provenance(
-    scored_results: List[Any],
-) -> Dict[str, Any]:
+    scored_results: list[Any],
+) -> dict[str, Any]:
     """
     Convenience function to extract entry provenance.
 
@@ -277,6 +274,6 @@ def extract_entry_provenance(
 __all__ = [
     "EntryContractViolationError",
     "Phase4_7EntryContract",
-    "validate_phase4_7_entry",
     "extract_entry_provenance",
+    "validate_phase4_7_entry",
 ]

@@ -24,13 +24,13 @@ Version: 2.0.0
 Date: 2026-01-06
 """
 
-import re
-from typing import Dict, List, Any, Optional, Tuple
-from dataclasses import dataclass, field
-from pathlib import Path
 import logging
+import re
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
 
-from .empirical_extractor_base import PatternBasedExtractor, ExtractionResult, ExtractionPattern
+from .empirical_extractor_base import ExtractionResult, PatternBasedExtractor
 
 logger = logging.getLogger(__name__)
 
@@ -40,13 +40,13 @@ class FinancialChain:
     """Represents a complete or partial financial chain."""
 
     chain_id: str
-    monto: Optional[Dict[str, Any]] = None
-    fuente: Optional[Dict[str, Any]] = None
-    programa: Optional[Dict[str, Any]] = None
-    periodo: Optional[Dict[str, Any]] = None
+    monto: dict[str, Any] | None = None
+    fuente: dict[str, Any] | None = None
+    programa: dict[str, Any] | None = None
+    periodo: dict[str, Any] | None = None
     completeness: float = 0.0
     confidence: float = 0.0
-    text_span: Tuple[int, int] = (0, 0)
+    text_span: tuple[int, int] = (0, 0)
 
     def is_complete(self) -> bool:
         """Check if chain has all required components."""
@@ -70,7 +70,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
     4. Períodos de vigencia (fiscal years)
     """
 
-    def __init__(self, calibration_file: Optional[Path] = None):
+    def __init__(self, calibration_file: Path | None = None):
         super().__init__(
             signal_type="FINANCIAL_CHAIN", calibration_file=calibration_file, auto_validate=True
         )
@@ -90,7 +90,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
             },
         ]
 
-        logger.info(f"FinancialChainExtractor initialized with empirical calibration")
+        logger.info("FinancialChainExtractor initialized with empirical calibration")
 
     def _load_financial_patterns(self):
         """Load and compile financial-specific patterns."""
@@ -117,7 +117,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
             for pattern_str in config.get("patterns", []):
                 self.periodo_patterns.append(re.compile(pattern_str, re.IGNORECASE))
 
-    def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
+    def extract(self, text: str, context: dict | None = None) -> ExtractionResult:
         """
         Extract financial chains from text.
 
@@ -181,7 +181,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
 
         return result
 
-    def _extract_montos(self, text: str) -> List[Dict[str, Any]]:
+    def _extract_montos(self, text: str) -> list[dict[str, Any]]:
         """Extract monetary amounts."""
         montos = []
 
@@ -220,7 +220,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
 
         return montos
 
-    def _normalize_currency(self, valor_str: str, unidad: Optional[str]) -> float:
+    def _normalize_currency(self, valor_str: str, unidad: str | None) -> float:
         """Normalize currency to pesos."""
         # Remove thousands separators and convert to float
         valor_str = valor_str.replace(",", "").replace(".", "")
@@ -239,7 +239,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
 
         return valor
 
-    def _extract_fuentes(self, text: str) -> List[Dict[str, Any]]:
+    def _extract_fuentes(self, text: str) -> list[dict[str, Any]]:
         """Extract funding sources."""
         fuentes = []
 
@@ -270,7 +270,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
 
         return fuentes
 
-    def _extract_programas(self, text: str, context: Optional[Dict]) -> List[Dict[str, Any]]:
+    def _extract_programas(self, text: str, context: dict | None) -> list[dict[str, Any]]:
         """Extract linked programs (simplified - uses context if available)."""
         programas = []
 
@@ -307,7 +307,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
 
         return programas
 
-    def _extract_periodos(self, text: str) -> List[Dict[str, Any]]:
+    def _extract_periodos(self, text: str) -> list[dict[str, Any]]:
         """Extract fiscal periods."""
         periodos = []
 
@@ -349,12 +349,12 @@ class FinancialChainExtractor(PatternBasedExtractor):
 
     def _link_components(
         self,
-        montos: List[Dict],
-        fuentes: List[Dict],
-        programas: List[Dict],
-        periodos: List[Dict],
+        montos: list[dict],
+        fuentes: list[dict],
+        programas: list[dict],
+        periodos: list[dict],
         text: str,
-    ) -> List[FinancialChain]:
+    ) -> list[FinancialChain]:
         """Link components into financial chains using proximity."""
         chains = []
         chain_id = 0
@@ -405,8 +405,8 @@ class FinancialChainExtractor(PatternBasedExtractor):
         return chains
 
     def _find_closest(
-        self, position: int, components: List[Dict], max_distance: int = 200
-    ) -> Optional[Dict]:
+        self, position: int, components: list[dict], max_distance: int = 200
+    ) -> dict | None:
         """Find closest component to a position."""
         closest = None
         min_distance = max_distance
@@ -423,10 +423,10 @@ class FinancialChainExtractor(PatternBasedExtractor):
 # Convenience functions
 
 
-def extract_financial_chains(text: str, context: Optional[Dict] = None) -> ExtractionResult:
+def extract_financial_chains(text: str, context: dict | None = None) -> ExtractionResult:
     """Convenience function to extract financial chains."""
     extractor = FinancialChainExtractor()
     return extractor.extract(text, context)
 
 
-__all__ = ["FinancialChainExtractor", "FinancialChain", "extract_financial_chains"]
+__all__ = ["FinancialChain", "FinancialChainExtractor", "extract_financial_chains"]

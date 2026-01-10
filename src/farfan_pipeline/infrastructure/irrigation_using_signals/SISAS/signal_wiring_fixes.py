@@ -25,9 +25,6 @@ if TYPE_CHECKING:
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
     )
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
-        create_document_context,
-    )
 
 
 # ============================================================================
@@ -278,8 +275,8 @@ def validate_access_level(
 
     # Consumer-level accessors
     consumer_modules = [
-        "farfan_pipeline.phases.Phase_two",
-        "farfan_pipeline.phases.Phase_three",
+        "farfan_pipeline.phases.Phase_2",
+        "farfan_pipeline.phases.Phase_3",
     ]
 
     # Determine expected level from accessor

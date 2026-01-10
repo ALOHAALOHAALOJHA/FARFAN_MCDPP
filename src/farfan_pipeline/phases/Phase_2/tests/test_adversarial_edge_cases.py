@@ -15,13 +15,11 @@ These tests are SEVERE and will FAIL if:
 
 from __future__ import annotations
 
+import copy
 import json
 import re
-import tempfile
 from pathlib import Path
 from typing import Any
-from unittest.mock import MagicMock, patch
-import copy
 
 import pytest
 
@@ -42,7 +40,7 @@ class TestMalformedContractHandling:
         if not contract_path.exists():
             pytest.skip("No template contract")
 
-        with open(contract_path, "r", encoding="utf-8") as f:
+        with open(contract_path, encoding="utf-8") as f:
             return json.load(f)
 
     def test_contract_missing_identity_detected(self, valid_contract_template: dict) -> None:
@@ -161,7 +159,7 @@ class TestInvalidMethodBindingHandling:
         if not contracts:
             pytest.skip("No contracts")
 
-        with open(contracts[0], "r", encoding="utf-8") as f:
+        with open(contracts[0], encoding="utf-8") as f:
             return json.load(f)
 
     def test_method_without_class_name_detected(self, valid_contract: dict) -> None:
@@ -170,7 +168,7 @@ class TestInvalidMethodBindingHandling:
 
         # Find first method and remove class_name
         for phase_spec in malformed["method_binding"]["execution_phases"].values():
-            if "methods" in phase_spec and phase_spec["methods"]:
+            if phase_spec.get("methods"):
                 del phase_spec["methods"][0]["class_name"]
                 break
 
@@ -189,7 +187,7 @@ class TestInvalidMethodBindingHandling:
         malformed = copy.deepcopy(valid_contract)
 
         for phase_spec in malformed["method_binding"]["execution_phases"].values():
-            if "methods" in phase_spec and phase_spec["methods"]:
+            if phase_spec.get("methods"):
                 del phase_spec["methods"][0]["method_name"]
                 break
 
@@ -245,7 +243,7 @@ class TestBoundaryConditions:
             if not pa10_contract.exists():
                 missing_boundaries.append(f"{q_id}_PA10")
 
-        assert not missing_boundaries, f"BOUNDARY CONTRACTS MISSING:\n" + "\n".join(
+        assert not missing_boundaries, "BOUNDARY CONTRACTS MISSING:\n" + "\n".join(
             f"  {c}" for c in missing_boundaries
         )
 
@@ -257,7 +255,7 @@ class TestBoundaryConditions:
         contract_numbers = []
 
         for contract_path in GENERATED_CONTRACTS_DIR.glob("Q*_PA*_contract_v4.json"):
-            with open(contract_path, "r", encoding="utf-8") as f:
+            with open(contract_path, encoding="utf-8") as f:
                 contract = json.load(f)
 
             contract_num = contract.get("identity", {}).get("contract_number")
@@ -308,7 +306,7 @@ class TestSecurityBoundaries:
 
         assert (
             not violations
-        ), f"SECURITY VIOLATION - Dangerous patterns in contracts:\n" + "\n".join(
+        ), "SECURITY VIOLATION - Dangerous patterns in contracts:\n" + "\n".join(
             f"  {name}: {pattern}" for name, pattern in violations[:10]
         )
 
@@ -334,7 +332,7 @@ class TestSecurityBoundaries:
                 if re.search(pattern, content):
                     violations.append((contract_path.name, pattern))
 
-        assert not violations, f"SECURITY - Absolute paths in contracts:\n" + "\n".join(
+        assert not violations, "SECURITY - Absolute paths in contracts:\n" + "\n".join(
             f"  {name}: {pattern}" for name, pattern in violations[:10]
         )
 
@@ -360,7 +358,7 @@ class TestSecurityBoundaries:
                 if re.search(pattern, content, re.IGNORECASE):
                     violations.append((contract_path.name, pattern))
 
-        assert not violations, f"SECURITY - Potential credentials in contracts:\n" + "\n".join(
+        assert not violations, "SECURITY - Potential credentials in contracts:\n" + "\n".join(
             f"  {name}: {pattern}" for name, pattern in violations
         )
 
@@ -445,7 +443,7 @@ class TestDuplicateContractPrevention:
         duplicates = []
 
         for contract_path in GENERATED_CONTRACTS_DIR.glob("Q*_PA*_contract_v4.json"):
-            with open(contract_path, "r", encoding="utf-8") as f:
+            with open(contract_path, encoding="utf-8") as f:
                 contract = json.load(f)
 
             contract_id = contract.get("identity", {}).get("contract_id")
@@ -455,7 +453,7 @@ class TestDuplicateContractPrevention:
                 else:
                     contract_ids[contract_id] = contract_path.name
 
-        assert not duplicates, f"DUPLICATE CONTRACT IDs:\n" + "\n".join(
+        assert not duplicates, "DUPLICATE CONTRACT IDs:\n" + "\n".join(
             f"  {cid}: {f1} vs {f2}" for cid, f1, f2 in duplicates
         )
 
@@ -475,7 +473,7 @@ class TestDuplicateContractPrevention:
             else:
                 filenames_lower[name_lower] = contract_path.name
 
-        assert not collisions, f"CASE-INSENSITIVE FILENAME COLLISIONS:\n" + "\n".join(
+        assert not collisions, "CASE-INSENSITIVE FILENAME COLLISIONS:\n" + "\n".join(
             f"  {f1} vs {f2}" for f1, f2 in collisions
         )
 

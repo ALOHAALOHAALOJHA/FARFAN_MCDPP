@@ -25,7 +25,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, List
+from typing import Any
 
 warnings.filterwarnings("ignore")
 
@@ -88,16 +88,6 @@ except ImportError as e:
 # ADR: Import frozen constants from single source of truth
 # =============================================================================
 
-from farfan_pipeline.core.canonical_specs import (
-    MICRO_LEVELS,
-    CANON_POLICY_AREAS,
-    CANON_DIMENSIONS,
-    PDT_SECTION_PATTERNS,
-    PDT_STRATEGIC_PATTERNS,
-    PDT_FINANCIAL_PATTERNS,
-    CAUSAL_CHAIN_VOCABULARY,
-    CAUSAL_CHAIN_ORDER,
-)
 
 # DEPRECATED: POLICY_AREAS_CANONICAL hardcoded below
 # Migration: Use CANON_POLICY_AREAS from canonical_specs instead
@@ -1944,9 +1934,9 @@ class SemanticAnalyzer:
         return {
             "base_slots_count": base_slots_count,
             "theoretical_max_segments_per_slot": theoretical_max_segments,
-            "expected_segment_budget_by_slot": {
-                slot: theoretical_max_segments for slot in ALL_BASE_SLOTS
-            },
+            "expected_segment_budget_by_slot": dict.fromkeys(
+                ALL_BASE_SLOTS, theoretical_max_segments
+            ),
             "unit_of_analysis_natural_blocks": self._unit_of_analysis_stats,
             "unit_of_analysis_source_path": "pdt_analysis_report.json",
         }
@@ -2777,7 +2767,7 @@ class MunicipalAnalyzer:
             return results
 
         except Exception as e:
-            logger.error(f"Analysis failed: {str(e)}")
+            logger.error(f"Analysis failed: {e!s}")
             raise
 
     def _load_document(self, document_path: str) -> list[str]:

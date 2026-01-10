@@ -25,13 +25,12 @@ Version: 2.0.0
 Date: 2026-01-06
 """
 
+import logging
 import re
-from typing import Dict, List, Any, Optional, Tuple, Set
 from dataclasses import dataclass
 from pathlib import Path
-import logging
 
-from .empirical_extractor_base import PatternBasedExtractor, ExtractionResult
+from .empirical_extractor_base import ExtractionResult, PatternBasedExtractor
 
 logger = logging.getLogger(__name__)
 
@@ -43,12 +42,12 @@ class CausalLink:
     link_id: str
     verb: str
     verb_lemma: str
-    subject: Optional[str] = None
-    object: Optional[str] = None
-    outcome: Optional[str] = None
+    subject: str | None = None
+    object: str | None = None
+    outcome: str | None = None
     causal_strength: str = "medium"  # weak, medium, strong
     confidence: float = 0.65
-    text_span: Tuple[int, int] = (0, 0)
+    text_span: tuple[int, int] = (0, 0)
     chain_length: int = 1
 
     def is_complete(self) -> bool:
@@ -109,7 +108,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
         ],
     }
 
-    def __init__(self, calibration_file: Optional[Path] = None):
+    def __init__(self, calibration_file: Path | None = None):
         super().__init__(
             signal_type="CAUSAL_VERBS",  # Aligned with integration_map key
             calibration_file=calibration_file,
@@ -146,7 +145,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
             pattern_str = r"\b(" + "|".join(verb_alternatives) + r")\b"
             self.verb_patterns[strength] = re.compile(pattern_str, re.IGNORECASE)
 
-    def _get_verb_variants(self, verb: str) -> List[str]:
+    def _get_verb_variants(self, verb: str) -> list[str]:
         """Generate common verb variants for pattern matching."""
         variants = [verb]  # infinitive
 
@@ -194,7 +193,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
             re.IGNORECASE,
         )
 
-    def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
+    def extract(self, text: str, context: dict | None = None) -> ExtractionResult:
         """
         Extract causal links from text.
 
@@ -309,7 +308,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
 
         return verb_lower
 
-    def _extract_subject(self, text: str, verb_pos: int, context: str) -> Optional[Dict]:
+    def _extract_subject(self, text: str, verb_pos: int, context: str) -> dict | None:
         """Extract subject (entity performing the action)."""
         # Look backwards from verb position
         preceding_text = text[max(0, verb_pos - 100) : verb_pos]
@@ -328,7 +327,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
 
         return None
 
-    def _extract_object(self, text: str, verb_end: int, context: str) -> Optional[Dict]:
+    def _extract_object(self, text: str, verb_end: int, context: str) -> dict | None:
         """Extract object (what is being acted upon)."""
         # Look forward from verb
         following_text = text[verb_end : verb_end + 200]
@@ -343,7 +342,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
 
         return None
 
-    def _extract_outcome(self, text: str, verb_end: int, context: str) -> Optional[Dict]:
+    def _extract_outcome(self, text: str, verb_end: int, context: str) -> dict | None:
         """Extract outcome (desired result)."""
         following_text = text[verb_end : verb_end + 300]
 
@@ -357,9 +356,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
 
         return None
 
-    def _calculate_confidence(
-        self, strength: str, obj: Optional[Dict], outcome: Optional[Dict]
-    ) -> float:
+    def _calculate_confidence(self, strength: str, obj: dict | None, outcome: dict | None) -> float:
         """Calculate confidence based on causal strength and completeness."""
         base_confidence = {"strong": 0.80, "medium": 0.70, "weak": 0.60}[strength]
 
@@ -371,7 +368,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
 
         return min(1.0, base_confidence)
 
-    def _calculate_chain_length(self, obj: Optional[Dict], outcome: Optional[Dict]) -> int:
+    def _calculate_chain_length(self, obj: dict | None, outcome: dict | None) -> int:
         """Calculate causal chain length."""
         length = 1  # verb
         if obj:
@@ -384,10 +381,10 @@ class CausalVerbExtractor(PatternBasedExtractor):
 # Convenience functions
 
 
-def extract_causal_links(text: str, context: Optional[Dict] = None) -> ExtractionResult:
+def extract_causal_links(text: str, context: dict | None = None) -> ExtractionResult:
     """Convenience function to extract causal links."""
     extractor = CausalVerbExtractor()
     return extractor.extract(text, context)
 
 
-__all__ = ["CausalVerbExtractor", "CausalLink", "extract_causal_links"]
+__all__ = ["CausalLink", "CausalVerbExtractor", "extract_causal_links"]

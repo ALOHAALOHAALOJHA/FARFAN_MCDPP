@@ -2,9 +2,9 @@
 """
 CLI tool for Refusal Contract (RefC) matrix
 """
-import sys
 import json
-from farfan_pipeline.contracts.refusal import RefusalContract, RefusalError
+
+from farfan_pipeline.contracts.refusal import RefusalContract
 
 
 def main():

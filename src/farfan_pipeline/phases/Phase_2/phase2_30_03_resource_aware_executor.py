@@ -19,25 +19,27 @@ import asyncio
 import logging
 import threading
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from functools import wraps
-from typing import TYPE_CHECKING, Any, Callable, List, Optional
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from farfan_pipeline.orchestration.orchestrator import MethodExecutor
-    from farfan_pipeline.phases.Phase_two.phase2_30_00_resource_manager import (
-        AdaptiveResourceManager,
+    from farfan_pipeline.phases.Phase_0.phase0_10_00_canonical_questionnaire import (
+        CanonicalQuestionnaire,
     )
+
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
     )
-    from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import (
+    from farfan_pipeline.orchestration.orchestrator import MethodExecutor
+    from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import (
         ExecutorConfig,
     )
-    import farfan_pipeline.phases.Phase_0.phase0_10_00_canonical_questionnaire import (
-            CanonicalQuestionnaire,
+    from farfan_pipeline.phases.Phase_2.phase2_30_00_resource_manager import (
+        AdaptiveResourceManager,
     )
-    from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import (
+    from farfan_pipeline.phases.Phase_2.phase2_60_04_calibration_policy import (
         CalibrationPolicy,
     )
 
@@ -45,6 +47,7 @@ logger = logging.getLogger(__name__)
 
 
 # === GAP 6: INTERRUPTIBLE EXECUTOR ===
+
 
 class ResourceEmergencyInterrupt(Exception):
     """Raised when a resource emergency requires task interruption.
@@ -55,6 +58,7 @@ class ResourceEmergencyInterrupt(Exception):
         reason: Description of why the interrupt was triggered.
         partial_results: Any partial results before interruption.
     """
+
     def __init__(self, reason: str, partial_results: Any = None):
         super().__init__(reason)
         self.reason = reason
@@ -70,9 +74,10 @@ class InterruptState:
         reason: Reason for the interrupt.
         timestamp: When the interrupt was signaled.
     """
+
     is_set: bool = False
-    reason: Optional[str] = None
-    timestamp: Optional[float] = None
+    reason: str | None = None
+    timestamp: float | None = None
 
 
 class InterruptController:
@@ -100,8 +105,8 @@ class InterruptController:
     def __init__(self):
         """Initialize interrupt controller."""
         self._interrupt_flag = threading.Event()
-        self._interrupt_reason: Optional[str] = None
-        self._interrupt_timestamp: Optional[float] = None
+        self._interrupt_reason: str | None = None
+        self._interrupt_timestamp: float | None = None
         self._lock = threading.Lock()
 
     def signal_interrupt(self, reason: str) -> None:
@@ -130,12 +135,12 @@ class InterruptController:
         return self._interrupt_flag.is_set()
 
     @property
-    def interrupt_reason(self) -> Optional[str]:
+    def interrupt_reason(self) -> str | None:
         """Get the reason for the current interrupt."""
         return self._interrupt_reason
 
     @property
-    def interrupt_timestamp(self) -> Optional[float]:
+    def interrupt_timestamp(self) -> float | None:
         """Get when the interrupt was signaled."""
         return self._interrupt_timestamp
 
@@ -148,7 +153,7 @@ class InterruptController:
                 timestamp=self._interrupt_timestamp,
             )
 
-    def wait_for_interrupt(self, timeout: Optional[float] = None) -> bool:
+    def wait_for_interrupt(self, timeout: float | None = None) -> bool:
         """
         Block until interrupt is signaled or timeout.
 
@@ -173,11 +178,12 @@ class PartialExecutionResult:
         interrupt_reason: Why execution was interrupted.
         resumable: Whether execution can be resumed.
     """
+
     task_id: str
     completed_steps: int
     total_steps: int
-    partial_results: List[Any] = field(default_factory=list)
-    interrupt_reason: Optional[str] = None
+    partial_results: list[Any] = field(default_factory=list)
+    interrupt_reason: str | None = None
     resumable: bool = True
 
 
@@ -206,11 +212,7 @@ class InterruptibleExecutor:
         wrapped_method = executor.wrap_with_interrupt_check(my_method)
     """
 
-    def __init__(
-        self,
-        interrupt_controller: InterruptController,
-        check_interval_ms: int = 100
-    ):
+    def __init__(self, interrupt_controller: InterruptController, check_interval_ms: int = 100):
         """
         Initialize interruptible executor.
 
@@ -249,17 +251,16 @@ class InterruptibleExecutor:
         Returns:
             Wrapped method that checks for interrupts.
         """
+
         @wraps(method)
         def wrapper(*args, **kwargs):
             self.check_interrupt()
             return method(*args, **kwargs)
+
         return wrapper
 
     def execute_with_interrupts(
-        self,
-        task_id: str,
-        methods: List[Callable],
-        context: Any = None
+        self, task_id: str, methods: list[Callable], context: Any = None
     ) -> PartialExecutionResult:
         """
         Execute methods with interrupt checking.
@@ -290,9 +291,7 @@ class InterruptibleExecutor:
 
                 partial_results.append(result)
 
-                logger.debug(
-                    f"Task {task_id}: completed step {i + 1}/{total_steps}"
-                )
+                logger.debug(f"Task {task_id}: completed step {i + 1}/{total_steps}")
 
             return PartialExecutionResult(
                 task_id=task_id,
@@ -321,11 +320,7 @@ class InterruptibleExecutor:
 
             return partial_result
 
-    def _save_partial_progress(
-        self,
-        task_id: str,
-        result: PartialExecutionResult
-    ) -> None:
+    def _save_partial_progress(self, task_id: str, result: PartialExecutionResult) -> None:
         """
         Save partial progress for later resumption.
 
@@ -339,7 +334,7 @@ class InterruptibleExecutor:
             self._partial_results_store[task_id] = result
             logger.debug(f"Saved partial progress for task {task_id}")
 
-    def get_partial_progress(self, task_id: str) -> Optional[PartialExecutionResult]:
+    def get_partial_progress(self, task_id: str) -> PartialExecutionResult | None:
         """
         Get saved partial progress for a task.
 
@@ -369,11 +364,8 @@ class InterruptibleExecutor:
             return False
 
     def resume_execution(
-        self,
-        task_id: str,
-        methods: List[Callable],
-        context: Any = None
-    ) -> Optional[PartialExecutionResult]:
+        self, task_id: str, methods: list[Callable], context: Any = None
+    ) -> PartialExecutionResult | None:
         """
         Resume execution from saved partial progress.
 
@@ -390,7 +382,7 @@ class InterruptibleExecutor:
             return None
 
         # Skip already completed methods
-        remaining_methods = methods[partial.completed_steps:]
+        remaining_methods = methods[partial.completed_steps :]
         if not remaining_methods:
             return partial
 
@@ -416,6 +408,7 @@ class InterruptibleExecutor:
 
 # === RESOURCE MANAGER INTEGRATION ===
 
+
 class InterruptibleResourceManager:
     """
     ResourceManager extension with interrupt signaling.
@@ -433,9 +426,7 @@ class InterruptibleResourceManager:
     INTERRUPT_THRESHOLD = 4  # CRITICAL level
 
     def __init__(
-        self,
-        interrupt_controller: InterruptController,
-        check_interval_seconds: float = 0.1
+        self, interrupt_controller: InterruptController, check_interval_seconds: float = 0.1
     ):
         """
         Initialize interruptible resource manager.
@@ -447,7 +438,7 @@ class InterruptibleResourceManager:
         self.interrupt_controller = interrupt_controller
         self.check_interval_seconds = check_interval_seconds
         self._monitoring = False
-        self._monitor_thread: Optional[threading.Thread] = None
+        self._monitor_thread: threading.Thread | None = None
 
     def start_monitoring(self) -> None:
         """Start background resource monitoring."""
@@ -456,9 +447,7 @@ class InterruptibleResourceManager:
 
         self._monitoring = True
         self._monitor_thread = threading.Thread(
-            target=self._monitor_loop,
-            daemon=True,
-            name="InterruptibleResourceManager"
+            target=self._monitor_loop, daemon=True, name="InterruptibleResourceManager"
         )
         self._monitor_thread.start()
         logger.info("Started interrupt-aware resource monitoring")
@@ -530,14 +519,14 @@ class InterruptibleResourceManager:
 
 class ResourceAwareExecutor:
     """Wraps MethodExecutor with adaptive resource management.
-    
+
     This executor provides the bridge between:
     - Resource management layer (circuit breakers, degradation, metrics)
     - Contract-based execution layer (BaseExecutorWithContract, DynamicContractExecutor)
-    
+
     All dependencies required by BaseExecutorWithContract must be injected at construction
     time to enable instantiation of DynamicContractExecutor during execution.
-    
+
     Dependency Injection Contract:
         - method_executor: REQUIRED - Routes method calls to registered classes
         - resource_manager: REQUIRED - Manages resource allocation and circuit breakers
@@ -548,25 +537,25 @@ class ResourceAwareExecutor:
         - enriched_packs: OPTIONAL - Pre-enriched signal packs by policy area
         - validation_orchestrator: OPTIONAL - For validation tracking
         - calibration_policy: OPTIONAL - Method selection based on calibration
-    
+
     Thread Safety:
         This class is NOT thread-safe for concurrent mutations. Each execution context
         should use its own instance or external synchronization.
     """
-    
+
     __slots__ = (
+        "_executor_cache",
+        "calibration_orchestrator",
+        "calibration_policy",
+        "config",
+        "enriched_packs",
         "method_executor",
+        "questionnaire_provider",
         "resource_manager",
         "signal_registry",
-        "config",
-        "questionnaire_provider",
-        "calibration_orchestrator",
-        "enriched_packs",
         "validation_orchestrator",
-        "calibration_policy",
-        "_executor_cache",
     )
-    
+
     def __init__(
         self,
         method_executor: MethodExecutor,
@@ -580,7 +569,7 @@ class ResourceAwareExecutor:
         calibration_policy: CalibrationPolicy | None = None,
     ) -> None:
         """Initialize ResourceAwareExecutor with all required dependencies.
-        
+
         Args:
             method_executor: MethodExecutor instance for method routing.
             resource_manager: AdaptiveResourceManager for resource allocation.
@@ -591,7 +580,7 @@ class ResourceAwareExecutor:
             enriched_packs: Optional dict of EnrichedSignalPack by policy_area_id.
             validation_orchestrator: Optional validation orchestrator.
             calibration_policy: Optional CalibrationPolicy for method selection.
-            
+
         Raises:
             ValueError: If any required dependency is None.
             TypeError: If dependency types do not match expected interfaces.
@@ -607,7 +596,7 @@ class ResourceAwareExecutor:
             raise ValueError("config is required and cannot be None")
         if questionnaire_provider is None:
             raise ValueError("questionnaire_provider is required and cannot be None")
-        
+
         # Runtime interface validation (defensive programming)
         if not hasattr(resource_manager, "can_execute"):
             raise TypeError(
@@ -617,7 +606,7 @@ class ResourceAwareExecutor:
             raise TypeError(
                 "resource_manager must implement start_executor_execution(executor_id: str) -> Awaitable"
             )
-        
+
         self.method_executor = method_executor
         self.resource_manager = resource_manager
         self.signal_registry = signal_registry
@@ -627,10 +616,10 @@ class ResourceAwareExecutor:
         self.enriched_packs = enriched_packs or {}
         self.validation_orchestrator = validation_orchestrator
         self.calibration_policy = calibration_policy
-        
+
         # Per-instance executor cache (keyed by question_id)
         self._executor_cache: dict[str, Any] = {}
-        
+
         logger.debug(
             "ResourceAwareExecutor initialized",
             extra={
@@ -640,7 +629,7 @@ class ResourceAwareExecutor:
                 "has_calibration_policy": calibration_policy is not None,
             },
         )
-    
+
     async def execute_with_resource_management(
         self,
         executor_id: str,
@@ -648,34 +637,28 @@ class ResourceAwareExecutor:
         **kwargs: Any,
     ) -> dict[str, Any]:
         """Execute with full resource management integration.
-        
+
         Args:
             executor_id: Executor identifier (e.g., "D3-Q3")
             context: Execution context
             **kwargs: Additional arguments for execution
-            
+
         Returns:
             Execution result with resource metadata
-            
+
         Raises:
             RuntimeError: If circuit breaker is open or execution fails
         """
         can_execute, reason = self.resource_manager.can_execute(executor_id)
         if not can_execute:
-            logger.warning(
-                f"Executor {executor_id} blocked by circuit breaker: {reason}"
-            )
-            raise RuntimeError(
-                f"Executor {executor_id} unavailable: {reason}"
-            )
-        
-        allocation = await self.resource_manager.start_executor_execution(
-            executor_id
-        )
-        
+            logger.warning(f"Executor {executor_id} blocked by circuit breaker: {reason}")
+            raise RuntimeError(f"Executor {executor_id} unavailable: {reason}")
+
+        allocation = await self.resource_manager.start_executor_execution(executor_id)
+
         degradation_config = allocation["degradation"]
         enriched_context = self._apply_degradation(context, degradation_config)
-        
+
         logger.info(
             f"Executing {executor_id} with resource allocation",
             extra={
@@ -685,12 +668,12 @@ class ResourceAwareExecutor:
                 "degradation_applied": degradation_config["applied_strategies"],
             },
         )
-        
+
         start_time = time.perf_counter()
         success = False
         result = None
         error = None
-        
+
         try:
             result = await self._execute_with_timeout(
                 executor_id, enriched_context, allocation, **kwargs
@@ -706,16 +689,16 @@ class ResourceAwareExecutor:
             raise
         finally:
             duration_ms = (time.perf_counter() - start_time) * 1000
-            
+
             memory_mb = self._estimate_memory_usage()
-            
+
             await self.resource_manager.end_executor_execution(
                 executor_id=executor_id,
                 success=success,
                 duration_ms=duration_ms,
                 memory_mb=memory_mb,
             )
-            
+
             logger.info(
                 f"Executor {executor_id} completed",
                 extra={
@@ -725,7 +708,7 @@ class ResourceAwareExecutor:
                     "error": error,
                 },
             )
-    
+
     async def _execute_with_timeout(
         self,
         executor_id: str,
@@ -735,21 +718,17 @@ class ResourceAwareExecutor:
     ) -> dict[str, Any]:
         """Execute with timeout based on resource allocation."""
         timeout_seconds = self._calculate_timeout(allocation)
-        
+
         try:
             result = await asyncio.wait_for(
                 self._execute_async(executor_id, context, **kwargs),
                 timeout=timeout_seconds,
             )
             return result
-        except asyncio.TimeoutError as exc:
-            logger.error(
-                f"Executor {executor_id} timed out after {timeout_seconds}s"
-            )
-            raise RuntimeError(
-                f"Executor {executor_id} timed out"
-            ) from exc
-    
+        except TimeoutError as exc:
+            logger.error(f"Executor {executor_id} timed out after {timeout_seconds}s")
+            raise RuntimeError(f"Executor {executor_id} timed out") from exc
+
     async def _execute_async(
         self,
         executor_id: str,
@@ -758,10 +737,8 @@ class ResourceAwareExecutor:
     ) -> dict[str, Any]:
         """Async wrapper for executor execution."""
         loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(
-            None, self._execute_sync, executor_id, context, kwargs
-        )
-    
+        return await loop.run_in_executor(None, self._execute_sync, executor_id, context, kwargs)
+
     def _execute_sync(
         self,
         executor_id: str,
@@ -769,30 +746,30 @@ class ResourceAwareExecutor:
         kwargs: dict[str, Any],
     ) -> dict[str, Any]:
         """Synchronous execution wrapper that instantiates DynamicContractExecutor.
-        
+
         Args:
             executor_id: Executor identifier (e.g., "D3-Q3" or "Q013").
             context: Execution context containing document and question data.
             kwargs: Additional keyword arguments for execution.
-            
+
         Returns:
             Execution result dictionary from contract executor.
-            
+
         Raises:
             ValueError: If question_id cannot be determined.
             RuntimeError: If contract execution fails.
         """
-        from farfan_pipeline.phases.Phase_two.phase2_60_00_base_executor_with_contract import (
+        from farfan_pipeline.phases.Phase_2.phase2_60_00_base_executor_with_contract import (
             DynamicContractExecutor,
         )
-        
+
         # Derive question_id from context or executor_id
         question_id = self._resolve_question_id(executor_id, context)
-        
+
         # Derive policy_area_id for enriched pack lookup
         policy_area_id = context.get("policy_area_id")
         enriched_pack = self.enriched_packs.get(policy_area_id) if policy_area_id else None
-        
+
         # Check executor cache for existing instance
         cache_key = f"{question_id}:{policy_area_id}" if policy_area_id else question_id
         if cache_key in self._executor_cache:
@@ -813,36 +790,36 @@ class ResourceAwareExecutor:
             )
             self._executor_cache[cache_key] = executor_instance
             logger.debug(f"Created new executor for {cache_key}")
-        
+
         # Execute the contract
         document = context.get("document")
         question_context = context.get("question_context", {})
-        
+
         result = executor_instance.execute(
             document=document,
             method_executor=self.method_executor,
             question_context=question_context,
             **kwargs,
         )
-        
+
         return result
-    
+
     @staticmethod
     def _resolve_question_id(executor_id: str, context: dict[str, Any]) -> str:
         """Resolve question_id from executor_id or context.
-        
+
         Resolution priority:
         1. Explicit question_id in context
         2. Direct question_id format in executor_id (e.g., "Q001")
         3. Derived from base_slot format (e.g., "D3-Q3" -> "Q013")
-        
+
         Args:
             executor_id: Executor identifier.
             context: Execution context.
-            
+
         Returns:
             Resolved question_id (e.g., "Q013").
-            
+
         Raises:
             ValueError: If question_id cannot be determined.
         """
@@ -850,11 +827,11 @@ class ResourceAwareExecutor:
         question_id = context.get("question_id")
         if question_id:
             return str(question_id)
-        
+
         # Priority 2: Direct format (Q001, Q150, etc.)
         if executor_id.startswith("Q") and len(executor_id) >= 2:
             return executor_id
-        
+
         # Priority 3: Derive from base_slot format (D3-Q3 -> Q013)
         if "-" in executor_id:
             parts = executor_id.split("-")
@@ -867,15 +844,15 @@ class ResourceAwareExecutor:
                     return f"Q{q_number:03d}"
                 except ValueError:
                     pass
-        
+
         raise ValueError(
             f"Cannot determine question_id from executor_id='{executor_id}' "
             f"and context keys={list(context.keys())}"
         )
-    
+
     def clear_executor_cache(self) -> int:
         """Clear the internal executor instance cache.
-        
+
         Returns:
             Number of entries cleared.
         """
@@ -883,7 +860,7 @@ class ResourceAwareExecutor:
         self._executor_cache.clear()
         logger.info(f"Cleared {count} cached executor instances")
         return count
-    
+
     def _apply_degradation(
         self,
         context: dict[str, Any],
@@ -891,30 +868,26 @@ class ResourceAwareExecutor:
     ) -> dict[str, Any]:
         """Apply degradation strategies to context."""
         enriched = context.copy()
-        
+
         enriched["_resource_constraints"] = {
             "entity_limit_factor": degradation_config["entity_limit_factor"],
-            "disable_expensive_computations": degradation_config[
-                "disable_expensive_computations"
-            ],
+            "disable_expensive_computations": degradation_config["disable_expensive_computations"],
             "use_simplified_methods": degradation_config["use_simplified_methods"],
             "skip_optional_analysis": degradation_config["skip_optional_analysis"],
             "reduce_embedding_dims": degradation_config["reduce_embedding_dims"],
         }
-        
+
         if degradation_config["entity_limit_factor"] < 1.0:
             for key in ["max_entities", "max_chunks", "max_results"]:
                 if key in enriched:
-                    enriched[key] = int(
-                        enriched[key] * degradation_config["entity_limit_factor"]
-                    )
-        
+                    enriched[key] = int(enriched[key] * degradation_config["entity_limit_factor"])
+
         return enriched
-    
+
     def _calculate_timeout(self, allocation: dict[str, Any]) -> float:
         """Calculate execution timeout based on allocation."""
         base_timeout = 300.0
-        
+
         priority = allocation["priority"]
         if priority == 1:
             return base_timeout * 1.5
@@ -922,11 +895,12 @@ class ResourceAwareExecutor:
             return base_timeout * 1.2
         else:
             return base_timeout
-    
+
     def _estimate_memory_usage(self) -> float:
         """Estimate current memory usage."""
         try:
             import psutil
+
             process = psutil.Process()
             return process.memory_info().rss / (1024 * 1024)
         except Exception:
@@ -936,7 +910,7 @@ class ResourceAwareExecutor:
 
 class ResourceConstraints:
     """Helper to extract and apply resource constraints in executors."""
-    
+
     @staticmethod
     def get_constraints(context: dict[str, Any]) -> dict[str, Any]:
         """Extract resource constraints from context."""
@@ -950,32 +924,32 @@ class ResourceConstraints:
                 "reduce_embedding_dims": False,
             },
         )
-    
+
     @staticmethod
     def should_skip_expensive_computation(context: dict[str, Any]) -> bool:
         """Check if expensive computations should be skipped."""
         constraints = ResourceConstraints.get_constraints(context)
         return constraints.get("disable_expensive_computations", False)
-    
+
     @staticmethod
     def should_use_simplified_methods(context: dict[str, Any]) -> bool:
         """Check if simplified methods should be used."""
         constraints = ResourceConstraints.get_constraints(context)
         return constraints.get("use_simplified_methods", False)
-    
+
     @staticmethod
     def should_skip_optional_analysis(context: dict[str, Any]) -> bool:
         """Check if optional analysis should be skipped."""
         constraints = ResourceConstraints.get_constraints(context)
         return constraints.get("skip_optional_analysis", False)
-    
+
     @staticmethod
     def get_entity_limit(context: dict[str, Any], default: int) -> int:
         """Get entity limit with degradation applied."""
         constraints = ResourceConstraints.get_constraints(context)
         factor = constraints.get("entity_limit_factor", 1.0)
         return int(default * factor)
-    
+
     @staticmethod
     def get_embedding_dimensions(context: dict[str, Any], default: int) -> int:
         """Get embedding dimensions with degradation applied."""

@@ -5,4 +5,4 @@ continue to work after the canonical specs were stabilized under
 `calibracion_parametrizacion.canonical_specs`.
 """
 
-from farfan_pipeline.calibracion_parametrizacion.canonical_specs import *  # noqa: F401,F403
+from farfan_pipeline.calibracion_parametrizacion.canonical_specs import *  # noqa: F403

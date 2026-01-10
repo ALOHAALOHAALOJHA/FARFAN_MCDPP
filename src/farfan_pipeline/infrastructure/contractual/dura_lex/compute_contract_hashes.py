@@ -56,7 +56,7 @@ def update_contract_hash(contract_path: Path, dry_run: bool = False) -> dict[str
     """
     try:
         # Load contract
-        with open(contract_path, "r", encoding="utf-8") as f:
+        with open(contract_path, encoding="utf-8") as f:
             contract = json.load(f)
 
         # Validate structure
@@ -122,7 +122,7 @@ def verify_contract_hash(contract_path: Path) -> dict[str, Any]:
         dict with keys: valid, stored_hash, computed_hash, message
     """
     try:
-        with open(contract_path, "r", encoding="utf-8") as f:
+        with open(contract_path, encoding="utf-8") as f:
             contract = json.load(f)
 
         if "identity" not in contract or "contract_hash" not in contract["identity"]:
@@ -182,7 +182,7 @@ def main():
             / "src"
             / "farfan_pipeline"
             / "phases"
-            / "Phase_two"
+            / "Phase_2"
             / "json_files_phase_two"
             / "executor_contracts"
             / "specialized"

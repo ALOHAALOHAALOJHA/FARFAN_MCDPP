@@ -2,12 +2,12 @@
 Total Ordering Contract (TOC) - Implementation
 """
 
-from typing import List, Any, Tuple
+from typing import Any
 
 
 class TotalOrderingContract:
     @staticmethod
-    def stable_sort(items: List[dict], key: Any) -> List[dict]:
+    def stable_sort(items: list[dict], key: Any) -> list[dict]:
         """
         Sorts items using a primary key and a deterministic tie-breaker (lexicographical).
         Assumes items have a 'content_hash' or similar unique ID for tie-breaking.
@@ -17,7 +17,7 @@ class TotalOrderingContract:
         return sorted(items, key=lambda x: (key(x), x.get("content_hash", "")))
 
     @staticmethod
-    def verify_order(items: List[dict], key: Any) -> bool:
+    def verify_order(items: list[dict], key: Any) -> bool:
         """
         Verifies that the sort is stable and deterministic.
         """

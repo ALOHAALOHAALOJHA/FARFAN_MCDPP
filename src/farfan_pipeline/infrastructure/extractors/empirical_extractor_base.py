@@ -17,13 +17,13 @@ Date: 2026-01-06
 """
 
 import json
+import logging
 import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Dict, List, Any, Optional, Tuple, Set
+from datetime import UTC, datetime
 from pathlib import Path
-from datetime import datetime, timezone
-import logging
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -36,10 +36,10 @@ class ExtractionPattern:
     pattern: str
     pattern_type: str  # REGEX, KEYWORD, SEMANTIC
     confidence_base: float
-    flags: List[str] = field(default_factory=list)
-    captures: Dict[str, Any] = field(default_factory=dict)
-    validation_rules: List[Dict] = field(default_factory=list)
-    empirical_frequency: Dict[str, Any] = field(default_factory=dict)
+    flags: list[str] = field(default_factory=list)
+    captures: dict[str, Any] = field(default_factory=dict)
+    validation_rules: list[dict] = field(default_factory=list)
+    empirical_frequency: dict[str, Any] = field(default_factory=dict)
 
     def compile(self) -> re.Pattern:
         """Compile regex pattern with flags."""
@@ -62,13 +62,13 @@ class ExtractionResult:
 
     extractor_id: str
     signal_type: str
-    matches: List[Dict[str, Any]]
+    matches: list[dict[str, Any]]
     confidence: float
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
     validation_passed: bool = True
-    validation_errors: List[str] = field(default_factory=list)
+    validation_errors: list[str] = field(default_factory=list)
 
-    def to_signal(self) -> Dict[str, Any]:
+    def to_signal(self) -> dict[str, Any]:
         """Convert to Signal format for SISAS."""
         return {
             "signal_id": f"{self.extractor_id}_{datetime.now().timestamp()}",
@@ -80,7 +80,7 @@ class ExtractionResult:
                 "validation_passed": self.validation_passed,
             },
             "producer_node": self.extractor_id,
-            "produced_at": datetime.now(timezone.utc).isoformat(),
+            "produced_at": datetime.now(UTC).isoformat(),
         }
 
 
@@ -88,7 +88,7 @@ class EmpiricallyCalibrated(ABC):
     """Base class for empirically-calibrated extractors."""
 
     def __init__(
-        self, signal_type: str, calibration_file: Optional[Path] = None, auto_validate: bool = True
+        self, signal_type: str, calibration_file: Path | None = None, auto_validate: bool = True
     ):
         self.signal_type = signal_type
         self.auto_validate = auto_validate
@@ -121,7 +121,7 @@ class EmpiricallyCalibrated(ABC):
             / "extractor_calibration.json"
         )
 
-    def _load_calibration(self, calibration_file: Path) -> Dict[str, Any]:
+    def _load_calibration(self, calibration_file: Path) -> dict[str, Any]:
         """Load empirical calibration data."""
         if not calibration_file.exists():
             logger.warning(f"Calibration file not found: {calibration_file}")
@@ -131,7 +131,7 @@ class EmpiricallyCalibrated(ABC):
             data = json.load(f)
             return data.get("signal_type_catalog", {}).get(self.signal_type, {})
 
-    def _load_patterns(self) -> List[ExtractionPattern]:
+    def _load_patterns(self) -> list[ExtractionPattern]:
         """Load and compile patterns from calibration."""
         patterns = []
         extraction_patterns = self.calibration.get("extraction_patterns", {})
@@ -152,16 +152,16 @@ class EmpiricallyCalibrated(ABC):
 
         return patterns
 
-    def _load_gold_standards(self) -> List[Dict[str, Any]]:
+    def _load_gold_standards(self) -> list[dict[str, Any]]:
         """Load gold standard examples for validation."""
         return self.calibration.get("gold_standard_examples", [])
 
     @abstractmethod
-    def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
+    def extract(self, text: str, context: dict | None = None) -> ExtractionResult:
         """Extract signals from text. Must be implemented by subclass."""
         pass
 
-    def validate_extraction(self, result: ExtractionResult) -> Tuple[bool, List[str]]:
+    def validate_extraction(self, result: ExtractionResult) -> tuple[bool, list[str]]:
         """Validate extraction against empirical rules."""
         errors = []
 
@@ -192,7 +192,7 @@ class EmpiricallyCalibrated(ABC):
 
         return is_valid, errors
 
-    def _apply_validation_rule(self, match: Dict, rule: Dict) -> bool:
+    def _apply_validation_rule(self, match: dict, rule: dict) -> bool:
         """Apply a single validation rule."""
         rule_type = rule.get("type")
 
@@ -216,7 +216,7 @@ class EmpiricallyCalibrated(ABC):
         """Get empirically calibrated confidence threshold."""
         return self.calibration.get("confidence_threshold", 0.70)
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get extractor performance metrics."""
         return {
             "extractor": self.__class__.__name__,
@@ -233,7 +233,7 @@ class EmpiricallyCalibrated(ABC):
             "gold_standards_loaded": len(self.gold_standards),
         }
 
-    def self_test(self) -> Dict[str, Any]:
+    def self_test(self) -> dict[str, Any]:
         """Run self-test against gold standard examples."""
         logger.info(f"Running self-test for {self.__class__.__name__}...")
 
@@ -284,7 +284,7 @@ class EmpiricallyCalibrated(ABC):
 class PatternBasedExtractor(EmpiricallyCalibrated):
     """Base class for pattern-based extractors (regex, keyword)."""
 
-    def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
+    def extract(self, text: str, context: dict | None = None) -> ExtractionResult:
         """Extract using compiled patterns."""
         matches = []
 
@@ -340,7 +340,7 @@ class PatternBasedExtractor(EmpiricallyCalibrated):
 # Utility functions for framework
 
 
-def load_all_extractors_from_calibration(calibration_file: Path) -> Dict[str, Any]:
+def load_all_extractors_from_calibration(calibration_file: Path) -> dict[str, Any]:
     """Load configuration for all extractors from calibration file."""
     with open(calibration_file) as f:
         data = json.load(f)
@@ -388,9 +388,9 @@ def test_gold_standard_{i}(extractor):
 # Export main classes
 __all__ = [
     "EmpiricallyCalibrated",
-    "PatternBasedExtractor",
     "ExtractionPattern",
     "ExtractionResult",
-    "load_all_extractors_from_calibration",
+    "PatternBasedExtractor",
     "generate_test_suite",
+    "load_all_extractors_from_calibration",
 ]

@@ -9,7 +9,7 @@ Lifecycle State:  DESIGN-TIME FROZEN, RUNTIME IMMUTABLE
 Schema Version: 2.0.0
 
 CANONICAL SOURCE:
-    src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json
+    src/farfan_pipeline/phases/Phase_2/epistemological_assets/contratos_clasificados.json
 
     Only authorized files from epistemological_assets directory are used.
     This module infers calibration bounds from the contract taxonomies and fusion strategies
@@ -58,23 +58,22 @@ DEPENDENCIES:
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, field
+from collections.abc import Mapping
+from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
-from typing import Final, Mapping
+from typing import Final
 
 from .calibration_core import (
     ClosedInterval,
-    ValidationError,
 )
-
 
 # =============================================================================
 # MODULE CONSTANTS
 # =============================================================================
 
 _CONTRATOS_CLASIFICADOS_PATH: Final[Path] = Path(
-    "src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json"
+    "src/farfan_pipeline/phases/Phase_2/epistemological_assets/contratos_clasificados.json"
 )
 
 # Epistemic ratio sum tolerance (accounts for floating-point arithmetic)
@@ -133,27 +132,27 @@ VETO_THRESHOLD_LENIENT_DEFAULT: Final[float] = 0.07
 
 # Public API for this module
 __all__ = [
-    "RATIO_SUM_TOLERANCE",
+    "CONTRACT_SUBTIPO_F",
     "CONTRACT_TYPE_A",
     "CONTRACT_TYPE_B",
     "CONTRACT_TYPE_C",
     "CONTRACT_TYPE_D",
     "CONTRACT_TYPE_E",
-    "CONTRACT_SUBTIPO_F",
-    "VALID_CONTRACT_TYPES",
-    "PRIOR_STRENGTH_MIN",
-    "PRIOR_STRENGTH_MAX",
-    "PRIOR_STRENGTH_DEFAULT",
     "PRIOR_STRENGTH_BAYESIAN",
-    "VETO_THRESHOLD_STRICTEST_MIN",
-    "VETO_THRESHOLD_STRICTEST_MAX",
-    "VETO_THRESHOLD_STRICTEST_DEFAULT",
-    "VETO_THRESHOLD_STANDARD_MIN",
-    "VETO_THRESHOLD_STANDARD_MAX",
-    "VETO_THRESHOLD_STANDARD_DEFAULT",
-    "VETO_THRESHOLD_LENIENT_MIN",
-    "VETO_THRESHOLD_LENIENT_MAX",
+    "PRIOR_STRENGTH_DEFAULT",
+    "PRIOR_STRENGTH_MAX",
+    "PRIOR_STRENGTH_MIN",
+    "RATIO_SUM_TOLERANCE",
+    "VALID_CONTRACT_TYPES",
     "VETO_THRESHOLD_LENIENT_DEFAULT",
+    "VETO_THRESHOLD_LENIENT_MAX",
+    "VETO_THRESHOLD_LENIENT_MIN",
+    "VETO_THRESHOLD_STANDARD_DEFAULT",
+    "VETO_THRESHOLD_STANDARD_MAX",
+    "VETO_THRESHOLD_STANDARD_MIN",
+    "VETO_THRESHOLD_STRICTEST_DEFAULT",
+    "VETO_THRESHOLD_STRICTEST_MAX",
+    "VETO_THRESHOLD_STRICTEST_MIN",
     "CalibrationDefaultsError",
     "CanonicalSourceError",
     "UnknownContractTypeError",
@@ -749,7 +748,7 @@ def _validate_contract_type_in_source(contract_type_code: str) -> None:
         UnknownContractTypeError:  If type not in canonical source.
     """
     try:
-        with open(_CONTRATOS_CLASIFICADOS_PATH, "r", encoding="utf-8") as f:
+        with open(_CONTRATOS_CLASIFICADOS_PATH, encoding="utf-8") as f:
             data = json.load(f)
     except json.JSONDecodeError as exc:
         raise CanonicalSourceError(f"Canonical contracts file is not valid JSON: {exc}") from exc

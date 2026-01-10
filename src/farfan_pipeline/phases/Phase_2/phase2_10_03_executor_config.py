@@ -23,13 +23,14 @@ See CALIBRATION_VS_PARAMETRIZATION.md for complete specification.
 from __future__ import annotations
 
 import json
+import logging
 import os
 import threading
-import logging
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from collections.abc import Callable
+from dataclasses import dataclass
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, Optional, Callable
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -78,7 +79,7 @@ class ExecutorConfig:
             raise ValueError("memory_limit_mb must be positive when provided")
 
     @classmethod
-    def from_dict(cls, config_dict: Dict[str, Any]) -> ExecutorConfig:
+    def from_dict(cls, config_dict: dict[str, Any]) -> ExecutorConfig:
         """Create ExecutorConfig from dictionary."""
         valid_fields = {
             "timeout_s",
@@ -98,7 +99,7 @@ class ExecutorConfig:
         cls,
         executor_id: str,
         environment: str = "production",
-        cli_overrides: Optional[Dict[str, Any]] = None,
+        cli_overrides: dict[str, Any] | None = None,
     ) -> ExecutorConfig:
         """
         Load ExecutorConfig from multiple sources with proper hierarchy.
@@ -137,7 +138,7 @@ class ExecutorConfig:
         return cls.from_dict(config)
 
     @staticmethod
-    def _get_conservative_defaults() -> Dict[str, Any]:
+    def _get_conservative_defaults() -> dict[str, Any]:
         """Get conservative default parameters."""
         return {
             "timeout_s": 300.0,
@@ -150,7 +151,7 @@ class ExecutorConfig:
         }
 
     @staticmethod
-    def _load_executor_config_file(executor_id: str) -> Optional[Dict[str, Any]]:
+    def _load_executor_config_file(executor_id: str) -> dict[str, Any] | None:
         """Load executor-specific config file."""
         config_file = Path(__file__).resolve().parent / "executor_configs" / f"{executor_id}.json"
 
@@ -161,11 +162,11 @@ class ExecutorConfig:
             with open(config_file) as f:
                 data = json.load(f)
                 return data.get("runtime_parameters", {})
-        except (json.JSONDecodeError, IOError):
+        except (OSError, json.JSONDecodeError):
             return None
 
     @staticmethod
-    def _load_environment_file(environment: str) -> Optional[Dict[str, Any]]:
+    def _load_environment_file(environment: str) -> dict[str, Any] | None:
         """Load environment-specific config file."""
         base_path = (
             Path(__file__).resolve().parent.parent.parent.parent
@@ -181,11 +182,11 @@ class ExecutorConfig:
         try:
             with open(env_file) as f:
                 return json.load(f)
-        except (json.JSONDecodeError, IOError):
+        except (OSError, json.JSONDecodeError):
             return None
 
     @staticmethod
-    def _load_environment_variables() -> Dict[str, Any]:
+    def _load_environment_variables() -> dict[str, Any]:
         """Load configuration from environment variables."""
         config = {}
 
@@ -204,7 +205,7 @@ class ExecutorConfig:
 
         return config
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary, excluding None values."""
         return {
             k: v
@@ -228,7 +229,6 @@ class ExecutorConfig:
 
 import signal
 import time
-from typing import Callable
 
 
 class HotReloadableConfig:
@@ -270,7 +270,7 @@ class HotReloadableConfig:
         """
         self.config_path = config_path
         self.reload_interval_seconds = reload_interval_seconds
-        self._config: Dict[str, Any] = {}
+        self._config: dict[str, Any] = {}
         self._lock = threading.RLock()
 
         # Track both execution time and file modification time
@@ -278,8 +278,8 @@ class HotReloadableConfig:
         self._file_modified_at: datetime | None = None  # File modification time (timezone-aware)
 
         self._watching = False
-        self._watch_thread: Optional[threading.Thread] = None
-        self._reload_callbacks: list[Callable[[Dict[str, Any]], None]] = []
+        self._watch_thread: threading.Thread | None = None
+        self._reload_callbacks: list[Callable[[dict[str, Any]], None]] = []
 
         # Load initial config
         self._load_config()
@@ -288,7 +288,7 @@ class HotReloadableConfig:
         if auto_reload_signal:
             self._register_signal_handler()
 
-    def _load_config(self) -> Dict[str, Any]:
+    def _load_config(self) -> dict[str, Any]:
         """Load configuration from file."""
         with self._lock:
             if not self.config_path.exists():
@@ -296,20 +296,20 @@ class HotReloadableConfig:
                 return self._config
 
             try:
-                with open(self.config_path, "r") as f:
+                with open(self.config_path) as f:
                     self._config = json.load(f)
 
                 # Track when config was loaded (execution time)
-                self._loaded_at = datetime.now(timezone.utc)
+                self._loaded_at = datetime.now(UTC)
 
                 # Track file modification time (convert to timezone-aware)
                 self._file_modified_at = datetime.fromtimestamp(
-                    self.config_path.stat().st_mtime, tz=timezone.utc
+                    self.config_path.stat().st_mtime, tz=UTC
                 )
 
                 logger.info(f"Configuration loaded from {self.config_path}")
                 return self._config
-            except (json.JSONDecodeError, IOError) as e:
+            except (OSError, json.JSONDecodeError) as e:
                 logger.error(f"Failed to load config: {e}")
                 return self._config
 
@@ -341,7 +341,7 @@ class HotReloadableConfig:
         logger.info("Received SIGHUP, reloading configuration")
         self.reload()
 
-    def reload(self) -> Dict[str, Any]:
+    def reload(self) -> dict[str, Any]:
         """
         Reload configuration from file.
 
@@ -375,12 +375,12 @@ class HotReloadableConfig:
         with self._lock:
             return self._config.get(key, default)
 
-    def get_all(self) -> Dict[str, Any]:
+    def get_all(self) -> dict[str, Any]:
         """Get complete configuration."""
         with self._lock:
             return dict(self._config)
 
-    def on_reload(self, callback: Callable[[Dict[str, Any]], None]) -> None:
+    def on_reload(self, callback: Callable[[dict[str, Any]], None]) -> None:
         """
         Register callback for configuration reload.
 
@@ -416,7 +416,7 @@ class HotReloadableConfig:
                 if self.config_path.exists():
                     # Convert file mtime to timezone-aware datetime
                     current_file_modified = datetime.fromtimestamp(
-                        self.config_path.stat().st_mtime, tz=timezone.utc
+                        self.config_path.stat().st_mtime, tz=UTC
                     )
 
                     # Compare with last known file modification time

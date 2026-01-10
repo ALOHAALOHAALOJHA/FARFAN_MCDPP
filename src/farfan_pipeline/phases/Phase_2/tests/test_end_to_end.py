@@ -15,12 +15,11 @@ These tests are SEVERE and will FAIL if:
 
 from __future__ import annotations
 
-import json
 import hashlib
+import json
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-from unittest.mock import MagicMock, patch
-from dataclasses import dataclass
 
 import pytest
 
@@ -98,7 +97,7 @@ class TestContractLoadingEndToEnd:
 
         for contract_path in sample_contracts:
             try:
-                with open(contract_path, "r", encoding="utf-8") as f:
+                with open(contract_path, encoding="utf-8") as f:
                     json.load(f)
             except json.JSONDecodeError as e:
                 failures.append((contract_path.name, str(e)))
@@ -112,13 +111,13 @@ class TestContractLoadingEndToEnd:
         failures = []
 
         for contract_path in sample_contracts[:50]:  # Sample 50 contracts
-            with open(contract_path, "r", encoding="utf-8") as f:
+            with open(contract_path, encoding="utf-8") as f:
                 contract = json.load(f)
 
             if "method_binding" not in contract:
                 failures.append(contract_path.name)
 
-        assert not failures, f"CONTRACTS MISSING method_binding:\n" + "\n".join(
+        assert not failures, "CONTRACTS MISSING method_binding:\n" + "\n".join(
             f"  {name}" for name in failures
         )
 
@@ -127,7 +126,7 @@ class TestContractLoadingEndToEnd:
         failures = []
 
         for contract_path in sample_contracts[:50]:
-            with open(contract_path, "r", encoding="utf-8") as f:
+            with open(contract_path, encoding="utf-8") as f:
                 contract = json.load(f)
 
             method_binding = contract.get("method_binding", {})
@@ -140,7 +139,7 @@ class TestContractLoadingEndToEnd:
                 elif "methods" not in phase_spec:
                     failures.append((contract_path.name, f"{phase_name} missing methods"))
 
-        assert not failures, f"INVALID EXECUTION PHASES:\n" + "\n".join(
+        assert not failures, "INVALID EXECUTION PHASES:\n" + "\n".join(
             f"  {name}: {issue}" for name, issue in failures[:10]
         )
 
@@ -169,7 +168,7 @@ class TestEvidenceAssemblyEndToEnd:
         if not contracts:
             pytest.skip("No Q001_PA01 contract")
 
-        with open(contracts[0], "r", encoding="utf-8") as f:
+        with open(contracts[0], encoding="utf-8") as f:
             return json.load(f)
 
     def test_evidence_assembly_module_has_process_evidence(self) -> None:
@@ -259,10 +258,10 @@ class TestDeterminismEndToEnd:
             pytest.skip("Q001_PA01 contract doesn't exist")
 
         # Load twice and compare hash
-        with open(contract_path, "r", encoding="utf-8") as f:
+        with open(contract_path, encoding="utf-8") as f:
             content1 = f.read()
 
-        with open(contract_path, "r", encoding="utf-8") as f:
+        with open(contract_path, encoding="utf-8") as f:
             content2 = f.read()
 
         hash1 = hashlib.sha256(content1.encode()).hexdigest()
@@ -282,7 +281,7 @@ class TestDeterminismEndToEnd:
         if not manifest_path.exists():
             pytest.skip("No manifest file")
 
-        with open(manifest_path, "r", encoding="utf-8") as f:
+        with open(manifest_path, encoding="utf-8") as f:
             manifest = json.load(f)
 
         # Check if manifest has contract hashes
@@ -308,7 +307,7 @@ class TestFullPipelineSimulation:
 
         missing = [(name, path) for name, path in components if not path.exists()]
 
-        assert not missing, f"PIPELINE CHAIN BROKEN - Missing components:\n" + "\n".join(
+        assert not missing, "PIPELINE CHAIN BROKEN - Missing components:\n" + "\n".join(
             f"  {name}: {path}" for name, path in missing
         )
 
@@ -422,7 +421,7 @@ class TestErrorHandlingEndToEnd:
         if not contract_path.exists():
             pytest.skip("Q001_PA01 contract doesn't exist")
 
-        with open(contract_path, "r", encoding="utf-8") as f:
+        with open(contract_path, encoding="utf-8") as f:
             contract = json.load(f)
 
         # error_handling may be in question_context.failure_contract

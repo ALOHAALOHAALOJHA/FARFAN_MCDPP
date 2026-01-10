@@ -2,7 +2,7 @@
 Módulo: json_emitter.py
 Propósito: Emitir contratos como JSON determinista
 
-Ubicación: src/farfan_pipeline/phases/Phase_two/contract_generator/json_emitter.py
+Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/json_emitter.py
 
 RESPONSABILIDADES:
 1. Emitir contratos individuales como JSON
@@ -36,7 +36,7 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -125,8 +125,8 @@ class JSONEmitter:
 
     def emit_contract(
         self,
-        contract: "GeneratedContract",
-        validation_report: "ValidationReport",
+        contract: GeneratedContract,
+        validation_report: ValidationReport,
     ) -> Path:
         """
         Emite contrato como archivo JSON.
@@ -171,8 +171,8 @@ class JSONEmitter:
 
     def _prepare_contract_dict(
         self,
-        contract: "GeneratedContract",
-        validation_report: "ValidationReport",
+        contract: GeneratedContract,
+        validation_report: ValidationReport,
     ) -> dict[str, Any]:
         """
         Prepara diccionario del contrato con información de validación.
@@ -200,7 +200,7 @@ class JSONEmitter:
         # Añadir emission metadata
         contract_dict["audit_annotations"]["emission_metadata"] = {
             "emitter_version": EMITTER_VERSION,
-            "emission_timestamp": datetime.now(timezone.utc).isoformat(),
+            "emission_timestamp": datetime.now(UTC).isoformat(),
             "output_format": "json",
             "encoding": "utf-8",
             "deterministic": True,
@@ -214,8 +214,8 @@ class JSONEmitter:
 
     def emit_generation_manifest(
         self,
-        contracts: list["GeneratedContract"],
-        reports: list["ValidationReport"],
+        contracts: list[GeneratedContract],
+        reports: list[ValidationReport],
         timestamp: str,
         generator_version: str,
     ) -> Path:
@@ -262,7 +262,7 @@ class JSONEmitter:
             "manifest_version": "4.0.0",
             "generation_metadata": {
                 "timestamp": timestamp,
-                "completion_timestamp": datetime.now(timezone.utc).isoformat(),
+                "completion_timestamp": datetime.now(UTC).isoformat(),
                 "generator_version": generator_version,
                 "emitter_version": EMITTER_VERSION,
                 "target_contracts": 300,
@@ -305,8 +305,8 @@ class JSONEmitter:
 
     def _contract_summary(
         self,
-        contract: "GeneratedContract",
-        report: "ValidationReport",
+        contract: GeneratedContract,
+        report: ValidationReport,
         index: int,
     ) -> dict[str, Any]:
         """Crea resumen de un contrato para el manifiesto."""
@@ -340,8 +340,8 @@ class JSONEmitter:
 
     def _compute_sector_stats(
         self,
-        contracts: list["GeneratedContract"],
-        reports: list["ValidationReport"],
+        contracts: list[GeneratedContract],
+        reports: list[ValidationReport],
     ) -> dict[str, dict[str, Any]]:
         """Computa estadísticas por sector."""
         stats: dict[str, dict[str, Any]] = {}
@@ -377,8 +377,8 @@ class JSONEmitter:
 
     def _compute_type_stats(
         self,
-        contracts: list["GeneratedContract"],
-        reports: list["ValidationReport"],
+        contracts: list[GeneratedContract],
+        reports: list[ValidationReport],
     ) -> dict[str, dict[str, int]]:
         """Computa estadísticas por tipo de contrato."""
         stats: dict[str, dict[str, int]] = {}
@@ -407,7 +407,7 @@ class JSONEmitter:
 
     def _emit_validation_reports(
         self,
-        reports: list["ValidationReport"],
+        reports: list[ValidationReport],
     ) -> Path:
         """
         Emite todos los reportes de validación en un archivo.
@@ -420,7 +420,7 @@ class JSONEmitter:
         """
         validation_data = {
             "validation_metadata": {
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
                 "total_reports": len(reports),
                 "emitter_version": EMITTER_VERSION,
             },
@@ -443,8 +443,8 @@ class JSONEmitter:
 
     def _emit_invalid_contracts_list(
         self,
-        contracts: list["GeneratedContract"],
-        reports: list["ValidationReport"],
+        contracts: list[GeneratedContract],
+        reports: list[ValidationReport],
     ) -> Path:
         """
         Emite lista de contratos inválidos con detalles de fallos.
@@ -488,7 +488,7 @@ class JSONEmitter:
 
         invalid_data = {
             "metadata": {
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
                 "total_invalid": len(invalid_list),
             },
             "invalid_contracts": invalid_list,

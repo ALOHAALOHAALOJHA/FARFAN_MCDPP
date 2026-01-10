@@ -10,7 +10,7 @@ Author: F.A.R.F.A.N Policy Pipeline
 License: Proprietary
 
 This module is part of Phase 2: Analysis & Question Execution.
-All files in Phase_two/ must contain PHASE_LABEL: Phase 2.
+All files in Phase_2/ must contain PHASE_LABEL: Phase 2.
 """
 
 from __future__ import annotations
@@ -19,8 +19,9 @@ import hashlib
 import json
 import logging
 import re
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from typing import Any, Mapping, Sequence
+from typing import Any
 
 logger = logging.getLogger(__name__)
 

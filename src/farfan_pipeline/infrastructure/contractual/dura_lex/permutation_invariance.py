@@ -3,12 +3,13 @@ Permutation-Invariance Contract (PIC) - Implementation
 """
 
 import hashlib
-from typing import List, Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 
 class PermutationInvarianceContract:
     @staticmethod
-    def aggregate(items: List[Any], transform: Callable[[Any], float]) -> float:
+    def aggregate(items: list[Any], transform: Callable[[Any], float]) -> float:
         """
         Implements f(S) = ϕ(Σ ψ(x)) pattern for permutation invariance.
         Here, sum is the aggregation function (symmetric).
@@ -25,7 +26,7 @@ class PermutationInvarianceContract:
         return total
 
     @staticmethod
-    def verify_invariance(items: List[Any], transform: Callable[[Any], float]) -> str:
+    def verify_invariance(items: list[Any], transform: Callable[[Any], float]) -> str:
         """
         Calculates digest of the aggregation.
         """

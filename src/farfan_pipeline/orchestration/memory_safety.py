@@ -424,11 +424,11 @@ def create_default_guard() -> MemorySafetyGuard:
 
 __all__ = [
     "ExecutorType",
-    "MemorySafetyConfig",
+    "FallbackStrategy",
     "MemoryMetrics",
     "MemoryPressureDetector",
-    "ObjectSizeEstimator",
-    "FallbackStrategy",
+    "MemorySafetyConfig",
     "MemorySafetyGuard",
+    "ObjectSizeEstimator",
     "create_default_guard",
 ]
