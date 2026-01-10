@@ -1,0 +1,56 @@
+{
+  "$schema": "../../schemas/phase_manifest_schema.json",
+  "manifest_version": "2.0.0",
+  "phase": {
+    "number": 4,
+    "name": "Dimension Aggregation",
+    "codename": "DIMENSION",
+    "label": "Phase 4",
+    "version": "1.0.0",
+    "status": "ACTIVE",
+    "criticality": "CRITICAL"
+  },
+  "metadata": {
+    "created": "2025-01-09T00:00:00Z",
+    "modified": "2025-01-09T00:00:00Z",
+    "authors": ["F.A.R.F.A.N Core Team"],
+    "owners": ["phase4_team"],
+    "repository": "FARFAN_MPP"
+  },
+  "description": "Phase 4 aggregates 300 scored micro-questions into 60 dimension scores (6 dimensions × 10 policy areas) using weighted averaging or Choquet integral.",
+  "stages": [
+    {
+      "code": 10,
+      "name": "Dimension Aggregation",
+      "description": "Core dimension aggregation logic",
+      "execution_order": 1
+    },
+    {
+      "code": 20,
+      "name": "Choquet Integration",
+      "description": "Choquet integral for advanced aggregation",
+      "execution_order": 2
+    }
+  ],
+  "contracts": {
+    "input": "300 ScoredMicroQuestion",
+    "output": "60 DimensionScore",
+    "invariants": [
+      "len(output) == 60",
+      "all scores in [0.0, 3.0]",
+      "provenance DAG created"
+    ]
+  },
+  "quality_metrics": {
+    "coverage": 0.90,
+    "complexity": "HIGH"
+  },
+  "performance_characteristics": {
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)"
+  },
+  "validation": {
+    "compliant": true,
+    "last_check": "2025-01-09T00:00:00Z"
+  }
+}

@@ -106,6 +106,7 @@ from farfan_pipeline.core.canonical_specs import (
     PDT_SECTION_PATTERNS,
     PDT_STRATEGIC_PATTERNS,
     PDT_FINANCIAL_PATTERNS,
+    PDT_PATTERNS,
     CAUSAL_CHAIN_VOCABULARY,
 )
 

@@ -19,6 +19,7 @@ Architecture Decision Record (ADR):
 from __future__ import annotations
 
 from typing import Final
+import re
 
 # ============================================================================
 # POLICY AREAS - Canonical 10 Areas (PA01-PA10)
@@ -212,6 +213,197 @@ CAUSAL_CHAIN_ORDER: Final[dict[str, int]] = {
 assert list(CAUSAL_CHAIN_ORDER.values()) == list(range(len(CAUSAL_CHAIN_ORDER))), \
     "Causal chain order must be sequential starting from 0"
 
+# ==========================================================================
+# PDT/PDM PATTERN SUITE - Precompiled Regexes
+# Source: Consolidated from policy_processor.py and derek_beach.py
+# Provides section, strategic, financial, and coding markers for PDM/PDT docs
+# ==========================================================================
+
+def _compile_union(patterns: list[str], flags: int = 0) -> re.Pattern[str]:
+    joined = "|".join(f"(?:{p})" for p in patterns)
+    return re.compile(joined, flags)
+
+
+SECTION_DELIMITERS_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^(?:"
+    r"CAP[IÍ]TULO\s+[IVX\d]+(?:\.|:)?\s*[A-ZÁÉÍÓÚÑ]|"
+    r"T[ÍI]TULO\s+[IVX\d]+(?:\.|:)?\s*[A-ZÁÉÍÓÚÑ]|"
+    r"PARTE\s+[IVX\d]+(?:\.|:)?\s*[A-ZÁÉÍÓÚÑ]|"
+    r"L[ÍI]NEA\s+ESTRAT[ÉE]GICA\s*[IVX\d]*(?:\.|:)?|"
+    r"EJE\s+[IVX\d]+(?:\.|:)?|"
+    r"SECTOR:\s*[\w\s]+|"
+    r"PROGRAMA:\s*[\w\s]+|"
+    r"\#{3,5}\s*\d+\.\d+|"
+    r"\d+\.\d+\.?\s+[A-ZÁÉÍÓÚÑ]|"
+    r"\d+\.\s+[A-ZÁÉÍÓÚÑ]"
+    r")",
+    re.MULTILINE | re.IGNORECASE,
+)
+
+PRODUCT_CODES_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?:"
+    r"\b\d{7}\b|"
+    r"C[oó]d\.\s*(?:Producto|Programa|Indicador):\s*[\w\-]+|"
+    r"BPIN\s*:\s*\d{10,13}|"
+    r"C[oó]digo\s+(?:MGA|de\s+Producto):\s*\d+|"
+    r"\b[MP][RIP]-\d{3}\b"
+    r")",
+    re.IGNORECASE,
+)
+
+META_INDICATORS_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?:Meta\s+(?:de\s+)?(?:producto|resultado|bienestar):\s*[\d\.,]+|"
+    r"Indicador\s+(?:de\s+)?(?:producto|resultado|impacto):\s*[^\. ]+)",
+    re.IGNORECASE,
+)
+
+INDICATOR_MATRIX_HEADERS_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?:"
+    r"L[íi]nea\s+Estrat[ée]gica|"
+    r"C[oó]d\.\s*Programa|"
+    r"C[oó]d\.\s*Producto|"
+    r"C[oó]d\.\s*indicador|"
+    r"Programas\s+presupuestales|"
+    r"Indicadores?\s+(?:de\s+)?producto|"
+    r"Indicadores?\s+(?:de\s+)?resultado|"
+    r"Unidad\s+de\s+medida|"
+    r"L[íi]nea\s+base|"
+    r"Año\s+l[íi]nea\s+base|"
+    r"Meta\s+(?:Total\s+)?(?:Cuatrienio|202[4-7])|"
+    r"Meta\s+de\s+(?:Producto|Resultado|Bienestar)|"
+    r"Fuente\s+de\s+informaci[óo]n|"
+    r"Metas\s+de\s+producto"
+    r")",
+    re.IGNORECASE,
+)
+
+PPI_HEADERS_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?:"
+    r"TOTAL\s+202[4-7]|"
+    r"Costo\s+Total\s+Cuatrienio|"
+    r"Valor\s+total\s+inversi[óo]n|"
+    r"Vigencia\s+202[4-7]|"
+    r"SGP|Sistema\s+General\s+de\s+Participaciones|"
+    r"SGR|Sistema\s+General\s+de\s+Regal[ií]as|"
+    r"Regal[ií]as|"
+    r"Recursos\s+Propios|"
+    r"Otras\s+Fuentes|"
+    r"Fondo\s+subregional|"
+    r"Cooperaci[óo]n\s+internacional|"
+    r"Gesti[óo]n\s+e\s+inversi[óo]n|"
+    r"Plan\s+Plurianual\s+de\s+Inversiones|"
+    r"PPI|POAI"
+    r")",
+    re.IGNORECASE,
+)
+
+# Extended semantic markers (imported from derek_beach and policy_processor)
+CAUSAL_CONNECTORS_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?:"
+    r"con\s+el\s+fin\s+de|a\s+tr[aá]ves\s+de|mediante|para\s+lograr|"
+    r"con\s+el\s+prop[óo]sito\s+de|con\s+el\s+objetivo\s+de|"
+    r"contribuye\s+al\s+logro|cierre\s+de\s+brechas|permite|"
+    r"genera|produce|resulta\s+en|"
+    r"gracias\s+a|como\s+resultado\s+de|debido\s+a|porque|"
+    r"por\s+medio\s+de|permitir[áa]|contribuir[áa]\s+a|"
+    r"implementar|realizar|desarrollar|adelantar|ejecutar|"
+    r"contempla\s+actividades|"
+    r"transformaci[óo]n|desarrollo|mejora|cambio|efecto|impacto"
+    r")",
+    re.IGNORECASE,
+)
+
+DIAGNOSTIC_MARKERS_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?:"
+    r"diagn[óo]stico|caracterizaci[óo]n|an[aá]lisis\s+situacional|"
+    r"l[íi]nea\s+base|a[ñn]o\s+base|situaci[óo]n\s+inicial|"
+    r"brecha|d[eé]ficit|rezago|carencia|limitaci[óo]n|"
+    r"problem[aá]tica|necesidad|"
+    r"Ejes\s+problem[aá]ticos|Problem[aá]ticas\s+priorizadas|"
+    r"brechas\s+territoriales|"
+    r"ausencia\s+de|falta\s+de|desactualizado"
+    r")",
+    re.IGNORECASE,
+)
+
+LEGAL_REFERENCES_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?:"
+    r"Ley\s+\d+\s+de\s+\d{4}|"
+    r"DECRETO\s+\d+\s+DE\s+\d{4}|"
+    r"Resoluci[óo]n\s+\d+\s+de\s+\d{4}|"
+    r"Acuerdo\s+(?:Municipal\s+)?(?:No\s+)?\d+\s+de\s+\d{4}|"
+    r"Constituci[óo]n\s+Pol[íi]tica|"
+    r"Art\.\s*\d+|Art[íi]culo\s+\d+|"
+    r"Circular\s+conjunta\s+[\d\-]+|"
+    r"Estatuto\s+Org[aá]nico"
+    r")",
+    re.IGNORECASE,
+)
+
+TEMPORAL_EXPRESSIONS_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?:"
+    r"cuatrienio|202[4-7]|vigencia\s+202[4-7]|"
+    r"per[ií]odo\s+de\s+cuatro\s+a[ñn]os|"
+    r"corto\s+plazo|mediano\s+plazo|largo\s+plazo|"
+    r"\d{1,2}\s+de\s+(?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)|"
+    r"\d{2}-\d{2}-\d{4}|"
+    r"Marco\s+Fiscal\s+de\s+Mediano\s+Plazo|MFMP|"
+    r"POAI|Plan\s+Operativo\s+Anual|"
+    r"a[ñn]o\s+fiscal|"
+    r"serie\s+hist[óo]rica|evoluci[óo]n\s+20\d{2}-20\d{2}|"
+    r"tendencia\s+de\s+los\s+[uú]ltimos|"
+    r"vigencia\s+anterior|cuatrienio\s+anterior"
+    r")",
+    re.IGNORECASE,
+)
+
+TERRITORIAL_REFERENCES_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?:"
+    r"Municipio\s+de\s+[\w\s]+|"
+    r"Departamento\s+del\s+Cauca|Gobernaci[óo]n\s+de\s+Cauca|"
+    r"territorio|urbano|rural|"
+    r"cabecera\s+(?:urbana|municipal)|"
+    r"corregimiento|vereda|"
+    r"centro\s+poblado|"
+    r"regi[óo]n\s+(?:Norte|Sur|Centro)\s+del\s+Cauca|"
+    r"Alto\s+Pat[ií]a|"
+    r"subregi[óo]n|"
+    r"PDET|Programas\s+de\s+Desarrollo\s+con\s+Enfoque\s+Territorial|"
+    r"zonas?\s+PDET|"
+    r"municipios\s+m[aá]s\s+afectados\s+por\s+el\s+conflicto|"
+    r"Consejo\s+Comunitario|"
+    r"resguardo\s+ind[ií]gena|"
+    r"territorios?\s+(?:[éet]tnicos?|colectivos?)"
+    r")",
+    re.IGNORECASE,
+)
+
+PDT_PATTERNS: Final[dict[str, re.Pattern[str]]] = {
+    "section_delimiters": SECTION_DELIMITERS_PATTERN,
+    "strategic_markers": _compile_union(
+        PDT_STRATEGIC_PATTERNS + [
+            r"Parte\s+Estrat[ée]gica|Componente\s+estrat[ée]gico|"
+            r"objetivos?|metas?|indicadores?|"
+            r"apuestas|priorizaci[óo]n|"
+            r"definici[óo]n\s+de\s+los\s+objetivos|"
+            r"alternativas\s+de\s+soluci[óo]n|"
+            r"se\s+abordar[aá]n\s+en\s+el\s+presente\s+cuatrienio|"
+            r"grandes\s+apuestas"
+        ],
+        re.IGNORECASE,
+    ),
+    "financial_markers": _compile_union(PDT_FINANCIAL_PATTERNS, re.IGNORECASE),
+    "product_codes": PRODUCT_CODES_PATTERN,
+    "meta_indicators": META_INDICATORS_PATTERN,
+    "indicator_matrix_headers": INDICATOR_MATRIX_HEADERS_PATTERN,
+    "ppi_headers": PPI_HEADERS_PATTERN,
+    "causal_connectors": CAUSAL_CONNECTORS_PATTERN,
+    "diagnostic_markers": DIAGNOSTIC_MARKERS_PATTERN,
+    "legal_references": LEGAL_REFERENCES_PATTERN,
+    "temporal_expressions": TEMPORAL_EXPRESSIONS_PATTERN,
+    "territorial_references": TERRITORIAL_REFERENCES_PATTERN,
+}
+
 # ============================================================================
 # VALIDATION RULES - Quality Gates
 # These ensure constants maintain expected properties
@@ -294,6 +486,7 @@ __all__ = [
     "PDT_SECTION_PATTERNS",
     "PDT_STRATEGIC_PATTERNS",
     "PDT_FINANCIAL_PATTERNS",
+    "PDT_PATTERNS",
     "CAUSAL_CHAIN_VOCABULARY",
     "CAUSAL_CHAIN_ORDER",
     "BASE_QUESTIONS_PER_DIMENSION",

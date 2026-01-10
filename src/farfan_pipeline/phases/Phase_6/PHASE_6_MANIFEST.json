@@ -1,0 +1,56 @@
+{
+  "$schema": "../../schemas/phase_manifest_schema.json",
+  "manifest_version": "2.0.0",
+  "phase": {
+    "number": 6,
+    "name": "Cluster Aggregation (MESO)",
+    "codename": "CLUSTER",
+    "label": "Phase 6",
+    "version": "1.0.0",
+    "status": "ACTIVE",
+    "criticality": "HIGH"
+  },
+  "metadata": {
+    "created": "2025-01-09T00:00:00Z",
+    "modified": "2025-01-09T00:00:00Z",
+    "authors": ["F.A.R.F.A.N Core Team"],
+    "owners": ["phase6_team"],
+    "repository": "FARFAN_MPP"
+  },
+  "description": "Phase 6 aggregates 10 area scores into 4 cluster scores with adaptive penalty based on dispersion analysis.",
+  "stages": [
+    {
+      "code": 10,
+      "name": "Cluster Aggregation",
+      "description": "Core cluster aggregation logic",
+      "execution_order": 1
+    },
+    {
+      "code": 20,
+      "name": "Adaptive Penalty",
+      "description": "Dispersion analysis and adaptive penalty application",
+      "execution_order": 2
+    }
+  ],
+  "contracts": {
+    "input": "10 AreaScore",
+    "output": "4 ClusterScore",
+    "invariants": [
+      "len(output) == 4",
+      "all scores in [0.0, 3.0]",
+      "dispersion metrics computed"
+    ]
+  },
+  "quality_metrics": {
+    "coverage": 0.87,
+    "complexity": "HIGH"
+  },
+  "performance_characteristics": {
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)"
+  },
+  "validation": {
+    "compliant": true,
+    "last_check": "2025-01-09T00:00:00Z"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "../../schemas/phase_manifest_schema.json",
+  "manifest_version": "2.0.0",
+  "phase": {
+    "number": 3,
+    "name": "Scoring & Calibration",
+    "codename": "SCORING",
+    "label": "Phase 3",
+    "version": "1.0.0",
+    "status": "ACTIVE",
+    "criticality": "CRITICAL"
+  },
+  "metadata": {
+    "created": "2025-01-09T00:00:00Z",
+    "modified": "2025-01-09T00:00:00Z",
+    "authors": ["F.A.R.F.A.N Core Team"],
+    "owners": ["phase3_team"],
+    "repository": "FARFAN_MPP"
+  },
+  "description": "Phase 3 performs scoring and calibration of micro-question responses, converting raw answers into normalized scores for aggregation.",
+  "stages": [
+    {
+      "code": 10,
+      "name": "Scoring Engine",
+      "description": "Core scoring logic for micro-questions",
+      "execution_order": 1
+    },
+    {
+      "code": 20,
+      "name": "Calibration",
+      "description": "Score calibration and normalization",
+      "execution_order": 2
+    }
+  ],
+  "contracts": {
+    "input": "300 RawQuestionResponse",
+    "output": "300 ScoredMicroQuestion",
+    "invariants": [
+      "len(output) == 300",
+      "all scores in [0.0, 1.0]"
+    ]
+  },
+  "quality_metrics": {
+    "coverage": 0.85,
+    "complexity": "HIGH"
+  },
+  "performance_characteristics": {
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)"
+  },
+  "validation": {
+    "compliant": true,
+    "last_check": "2025-01-09T00:00:00Z"
+  }
+}

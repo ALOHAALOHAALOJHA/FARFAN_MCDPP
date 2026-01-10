@@ -1,0 +1,56 @@
+{
+  "$schema": "../../schemas/phase_manifest_schema.json",
+  "manifest_version": "2.0.0",
+  "phase": {
+    "number": 7,
+    "name": "Macro Evaluation",
+    "codename": "MACRO",
+    "label": "Phase 7",
+    "version": "1.0.0",
+    "status": "ACTIVE",
+    "criticality": "CRITICAL"
+  },
+  "metadata": {
+    "created": "2025-01-09T00:00:00Z",
+    "modified": "2025-01-09T00:00:00Z",
+    "authors": ["F.A.R.F.A.N Core Team"],
+    "owners": ["phase7_team"],
+    "repository": "FARFAN_MPP"
+  },
+  "description": "Phase 7 evaluates 4 cluster scores and produces a holistic MacroScore with cross-cutting coherence and strategic alignment analysis.",
+  "stages": [
+    {
+      "code": 10,
+      "name": "Macro Evaluation",
+      "description": "Core macro evaluation logic",
+      "execution_order": 1
+    },
+    {
+      "code": 20,
+      "name": "Coherence Analysis",
+      "description": "Cross-cutting coherence and strategic alignment",
+      "execution_order": 2
+    }
+  ],
+  "contracts": {
+    "input": "4 ClusterScore",
+    "output": "1 MacroScore",
+    "invariants": [
+      "output is not None",
+      "score in [0.0, 3.0]",
+      "coherence in [0.0, 1.0]"
+    ]
+  },
+  "quality_metrics": {
+    "coverage": 0.92,
+    "complexity": "CRITICAL"
+  },
+  "performance_characteristics": {
+    "time_complexity": "O(1)",
+    "space_complexity": "O(1)"
+  },
+  "validation": {
+    "compliant": true,
+    "last_check": "2025-01-09T00:00:00Z"
+  }
+}

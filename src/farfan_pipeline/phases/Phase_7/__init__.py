@@ -1,1 +1,66 @@
-"""Phase 7 components."""
+"""
+Phase 7: Macro Evaluation
+
+This module provides the Phase 7 macro evaluation components for the FARFAN pipeline.
+Phase 7 evaluates 4 ClusterScore inputs and produces a holistic MacroScore.
+
+Module: src/farfan_pipeline/phases/Phase_7/__init__.py
+Purpose: Package façade for Phase 7
+Owner: phase7_00
+Lifecycle: ACTIVE
+Version: 1.0.0
+Effective-Date: 2025-01-09
+"""
+
+# METADATA
+__version__ = "1.0.0"
+__phase__ = 7
+__stage__ = 0
+__order__ = 0
+__author__ = "GNEA-Enforcement"
+__created__ = "2025-01-09T00:00:00Z"
+__modified__ = "2025-01-09T00:00:00Z"
+__criticality__ = "CRITICAL"
+__execution_pattern__ = "Per-Task"
+
+from .PHASE_7_CONSTANTS import (
+    INPUT_CLUSTERS,
+    EXPECTED_MACRO_SCORE_COUNT,
+    MIN_SCORE,
+    MAX_SCORE,
+    COHERENCE_THRESHOLD_EXCELLENT,
+    COHERENCE_THRESHOLD_GOOD,
+    COHERENCE_THRESHOLD_ACCEPTABLE,
+    ALIGNMENT_THRESHOLD_HIGH,
+    ALIGNMENT_THRESHOLD_MEDIUM,
+    ALIGNMENT_THRESHOLD_LOW,
+    QualityLevel,
+    QUALITY_THRESHOLDS,
+    SYSTEMIC_GAP_THRESHOLD,
+    MacroInvariants,
+    CLUSTER_WEIGHTS,
+    COHERENCE_WEIGHT_STRATEGIC,
+    COHERENCE_WEIGHT_OPERATIONAL,
+    COHERENCE_WEIGHT_INSTITUTIONAL
+)
+
+__all__ = [
+    "INPUT_CLUSTERS",
+    "EXPECTED_MACRO_SCORE_COUNT",
+    "MIN_SCORE",
+    "MAX_SCORE",
+    "COHERENCE_THRESHOLD_EXCELLENT",
+    "COHERENCE_THRESHOLD_GOOD",
+    "COHERENCE_THRESHOLD_ACCEPTABLE",
+    "ALIGNMENT_THRESHOLD_HIGH",
+    "ALIGNMENT_THRESHOLD_MEDIUM",
+    "ALIGNMENT_THRESHOLD_LOW",
+    "QualityLevel",
+    "QUALITY_THRESHOLDS",
+    "SYSTEMIC_GAP_THRESHOLD",
+    "MacroInvariants",
+    "CLUSTER_WEIGHTS",
+    "COHERENCE_WEIGHT_STRATEGIC",
+    "COHERENCE_WEIGHT_OPERATIONAL",
+    "COHERENCE_WEIGHT_INSTITUTIONAL"
+]

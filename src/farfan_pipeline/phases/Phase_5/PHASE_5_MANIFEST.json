@@ -1,0 +1,56 @@
+{
+  "$schema": "../../schemas/phase_manifest_schema.json",
+  "manifest_version": "2.0.0",
+  "phase": {
+    "number": 5,
+    "name": "Policy Area Aggregation",
+    "codename": "AREA",
+    "label": "Phase 5",
+    "version": "1.0.0",
+    "status": "ACTIVE",
+    "criticality": "HIGH"
+  },
+  "metadata": {
+    "created": "2025-01-09T00:00:00Z",
+    "modified": "2025-01-09T00:00:00Z",
+    "authors": ["F.A.R.F.A.N Core Team"],
+    "owners": ["phase5_team"],
+    "repository": "FARFAN_MPP"
+  },
+  "description": "Phase 5 aggregates 60 dimension scores into 10 area scores (one per policy area PA01-PA10) with hermeticity validation.",
+  "stages": [
+    {
+      "code": 10,
+      "name": "Area Aggregation",
+      "description": "Core area aggregation logic",
+      "execution_order": 1
+    },
+    {
+      "code": 20,
+      "name": "Hermeticity Validation",
+      "description": "Hermeticity checks and graceful degradation",
+      "execution_order": 2
+    }
+  ],
+  "contracts": {
+    "input": "60 DimensionScore",
+    "output": "10 AreaScore",
+    "invariants": [
+      "len(output) == 10",
+      "all scores in [0.0, 3.0]",
+      "hermeticity validated"
+    ]
+  },
+  "quality_metrics": {
+    "coverage": 0.88,
+    "complexity": "HIGH"
+  },
+  "performance_characteristics": {
+    "time_complexity": "O(n)",
+    "space_complexity": "O(n)"
+  },
+  "validation": {
+    "compliant": true,
+    "last_check": "2025-01-09T00:00:00Z"
+  }
+}
