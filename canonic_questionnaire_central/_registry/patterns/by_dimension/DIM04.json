@@ -1,0 +1,527 @@
+{
+    "_dimension": "DIM04",
+    "_dimension_name_es": "Resultados (Medibles)",
+    "_dimension_name_en": "Outcomes (Measurable)",
+    "_description": "Evalúa la definición de resultados (cambios en la población) con métricas, líneas base, metas y encadenamiento causal.",
+    "_last_updated": "2026-01-09",
+    "_question_slots": [
+        "Q016-Q020",
+        "Q046-Q050",
+        "Q076-Q080",
+        "Q106-Q110",
+        "Q136-Q140",
+        "Q166-Q170",
+        "Q196-Q200",
+        "Q226-Q230",
+        "Q256-Q260",
+        "Q286-Q290"
+    ],
+    "_count": 4,
+    "dimension_metadata": {
+        "typical_evaluation_focus": [
+            "Cambios en indicadores de bienestar poblacional",
+            "Efectos intermedios de las intervenciones",
+            "Indicadores de resultado con líneas base y metas",
+            "Encadenamiento lógico producto → resultado"
+        ],
+        "related_membership_criteria": [
+            "MC02",
+            "MC07",
+            "MC08"
+        ],
+        "scoring_weight_in_layer_d": 0.25,
+        "key_causal_verbs": [
+            "lograr",
+            "alcanzar",
+            "mejorar",
+            "reducir",
+            "incrementar"
+        ]
+    },
+    "patterns": {
+        "PAT-DIM04-RESULTADO-001": {
+            "id": "PAT-DIM04-RESULTADO-001",
+            "canonical_id": "PAT-DIM04-RESULTADO-001",
+            "legacy_ids": [
+                "PAT-Q016-001",
+                "PAT-Q046-001",
+                "PAT-Q076-001",
+                "PAT-Q106-001",
+                "PAT-Q136-001",
+                "PAT-Q166-001",
+                "PAT-Q196-001",
+                "PAT-Q226-001",
+                "PAT-Q256-001",
+                "PAT-Q286-001"
+            ],
+            "pattern_spec": {
+                "type": "REGEX",
+                "pattern": "resultado|outcome|cambio en|efecto|mejora en|reducción de|incremento de|aumento de|disminución de",
+                "flags": [
+                    "IGNORECASE"
+                ],
+                "captures": {},
+                "context_scope": "PARAGRAPH"
+            },
+            "classification": {
+                "category": "RESULTADO",
+                "subcategory": "CAMBIO_POBLACIONAL",
+                "specificity": "HIGH",
+                "confidence_weight": 0.90
+            },
+            "bindings": {
+                "applies_to_dimensions": [
+                    "DIM04"
+                ],
+                "applies_to_questions": [
+                    "Q016",
+                    "Q017",
+                    "Q018",
+                    "Q019",
+                    "Q020",
+                    "Q046",
+                    "Q047",
+                    "Q048",
+                    "Q049",
+                    "Q050",
+                    "Q076",
+                    "Q077",
+                    "Q078",
+                    "Q079",
+                    "Q080",
+                    "Q106",
+                    "Q107",
+                    "Q108",
+                    "Q109",
+                    "Q110",
+                    "Q136",
+                    "Q137",
+                    "Q138",
+                    "Q139",
+                    "Q140",
+                    "Q166",
+                    "Q167",
+                    "Q168",
+                    "Q169",
+                    "Q170",
+                    "Q196",
+                    "Q197",
+                    "Q198",
+                    "Q199",
+                    "Q200",
+                    "Q226",
+                    "Q227",
+                    "Q228",
+                    "Q229",
+                    "Q230",
+                    "Q256",
+                    "Q257",
+                    "Q258",
+                    "Q259",
+                    "Q260",
+                    "Q286",
+                    "Q287",
+                    "Q288",
+                    "Q289",
+                    "Q290"
+                ],
+                "applies_to_policy_areas": [
+                    "PA01",
+                    "PA02",
+                    "PA03",
+                    "PA04",
+                    "PA05",
+                    "PA06",
+                    "PA07",
+                    "PA08",
+                    "PA09",
+                    "PA10"
+                ],
+                "applies_to_membership_criteria": [
+                    "MC02",
+                    "MC08"
+                ]
+            },
+            "scoring_impact": {
+                "weight_in_scoring": 0.15,
+                "boost_conditions": [
+                    {
+                        "condition": "triplet_completo",
+                        "boost": 1.20
+                    }
+                ],
+                "penalty_conditions": []
+            },
+            "provenance": {
+                "source_file": "patterns/by_dimension/DIM04.json",
+                "source_version": "v2.0.0",
+                "created_at": "2026-01-09T22:50:00Z",
+                "validated": true
+            },
+            "examples": {
+                "positive": [
+                    "Reducción de la tasa de mortalidad infantil en un 15%",
+                    "Incremento de la cobertura educativa neta a 85%",
+                    "Mejora en el índice de calidad de vida de los beneficiarios"
+                ],
+                "negative": [
+                    "Construcción de 10 escuelas (producto, no resultado)",
+                    "Capacitación a 500 personas (actividad, no resultado)"
+                ]
+            }
+        },
+        "PAT-DIM04-INDICADOR-001": {
+            "id": "PAT-DIM04-INDICADOR-001",
+            "canonical_id": "PAT-DIM04-INDICADOR-001",
+            "legacy_ids": [
+                "PAT-Q016-002",
+                "PAT-Q046-002",
+                "PAT-Q076-002",
+                "PAT-Q106-002",
+                "PAT-Q136-002",
+                "PAT-Q166-002",
+                "PAT-Q196-002",
+                "PAT-Q226-002",
+                "PAT-Q256-002",
+                "PAT-Q286-002"
+            ],
+            "pattern_spec": {
+                "type": "REGEX",
+                "pattern": "indicador de resultado|tasa de|índice de|porcentaje de|proporción de|cobertura de|número de beneficiarios",
+                "flags": [
+                    "IGNORECASE"
+                ],
+                "captures": {},
+                "context_scope": "PARAGRAPH"
+            },
+            "classification": {
+                "category": "INDICADOR",
+                "subcategory": "RESULTADO",
+                "specificity": "HIGH",
+                "confidence_weight": 0.88
+            },
+            "bindings": {
+                "applies_to_dimensions": [
+                    "DIM04"
+                ],
+                "applies_to_questions": [
+                    "Q016",
+                    "Q017",
+                    "Q018",
+                    "Q019",
+                    "Q020",
+                    "Q046",
+                    "Q047",
+                    "Q048",
+                    "Q049",
+                    "Q050",
+                    "Q076",
+                    "Q077",
+                    "Q078",
+                    "Q079",
+                    "Q080",
+                    "Q106",
+                    "Q107",
+                    "Q108",
+                    "Q109",
+                    "Q110",
+                    "Q136",
+                    "Q137",
+                    "Q138",
+                    "Q139",
+                    "Q140",
+                    "Q166",
+                    "Q167",
+                    "Q168",
+                    "Q169",
+                    "Q170",
+                    "Q196",
+                    "Q197",
+                    "Q198",
+                    "Q199",
+                    "Q200",
+                    "Q226",
+                    "Q227",
+                    "Q228",
+                    "Q229",
+                    "Q230",
+                    "Q256",
+                    "Q257",
+                    "Q258",
+                    "Q259",
+                    "Q260",
+                    "Q286",
+                    "Q287",
+                    "Q288",
+                    "Q289",
+                    "Q290"
+                ],
+                "applies_to_policy_areas": [
+                    "PA01",
+                    "PA02",
+                    "PA03",
+                    "PA04",
+                    "PA05",
+                    "PA06",
+                    "PA07",
+                    "PA08",
+                    "PA09",
+                    "PA10"
+                ],
+                "applies_to_membership_criteria": [
+                    "MC02"
+                ]
+            },
+            "scoring_impact": {
+                "weight_in_scoring": 0.12,
+                "boost_conditions": [],
+                "penalty_conditions": []
+            },
+            "provenance": {
+                "source_file": "patterns/by_dimension/DIM04.json",
+                "source_version": "v2.0.0",
+                "created_at": "2026-01-09T22:50:00Z",
+                "validated": true
+            },
+            "examples": {
+                "positive": [
+                    "Tasa de desnutrición crónica infantil",
+                    "Índice de Pobreza Multidimensional",
+                    "Porcentaje de hogares con acceso a agua potable"
+                ],
+                "negative": []
+            }
+        },
+        "PAT-DIM04-LOGRO-001": {
+            "id": "PAT-DIM04-LOGRO-001",
+            "canonical_id": "PAT-DIM04-LOGRO-001",
+            "legacy_ids": [
+                "PAT-Q017-DNP-001",
+                "PAT-Q018-DNP-001",
+                "PAT-Q019-DNP-001",
+                "PAT-Q020-DNP-001"
+            ],
+            "pattern_spec": {
+                "type": "REGEX",
+                "pattern": "lograr|alcanzar|conseguir|obtener|cumplir|materializar|meta de resultado|resultado esperado",
+                "flags": [
+                    "IGNORECASE"
+                ],
+                "captures": {},
+                "context_scope": "SENTENCE"
+            },
+            "classification": {
+                "category": "CAUSAL",
+                "subcategory": "ACHIEVEMENT",
+                "specificity": "MEDIUM",
+                "confidence_weight": 0.85
+            },
+            "bindings": {
+                "applies_to_dimensions": [
+                    "DIM04"
+                ],
+                "applies_to_questions": [
+                    "Q016",
+                    "Q017",
+                    "Q018",
+                    "Q019",
+                    "Q020",
+                    "Q046",
+                    "Q047",
+                    "Q048",
+                    "Q049",
+                    "Q050",
+                    "Q076",
+                    "Q077",
+                    "Q078",
+                    "Q079",
+                    "Q080",
+                    "Q106",
+                    "Q107",
+                    "Q108",
+                    "Q109",
+                    "Q110",
+                    "Q136",
+                    "Q137",
+                    "Q138",
+                    "Q139",
+                    "Q140",
+                    "Q166",
+                    "Q167",
+                    "Q168",
+                    "Q169",
+                    "Q170",
+                    "Q196",
+                    "Q197",
+                    "Q198",
+                    "Q199",
+                    "Q200",
+                    "Q226",
+                    "Q227",
+                    "Q228",
+                    "Q229",
+                    "Q230",
+                    "Q256",
+                    "Q257",
+                    "Q258",
+                    "Q259",
+                    "Q260",
+                    "Q286",
+                    "Q287",
+                    "Q288",
+                    "Q289",
+                    "Q290"
+                ],
+                "applies_to_policy_areas": [
+                    "PA01",
+                    "PA02",
+                    "PA03",
+                    "PA04",
+                    "PA05",
+                    "PA06",
+                    "PA07",
+                    "PA08",
+                    "PA09",
+                    "PA10"
+                ],
+                "applies_to_membership_criteria": [
+                    "MC08"
+                ]
+            },
+            "scoring_impact": {
+                "weight_in_scoring": 0.10,
+                "boost_conditions": [],
+                "penalty_conditions": []
+            },
+            "provenance": {
+                "source_file": "patterns/by_dimension/DIM04.json",
+                "source_version": "v2.0.0",
+                "created_at": "2026-01-09T22:50:00Z",
+                "validated": true
+            },
+            "examples": {
+                "positive": [
+                    "Lograr una cobertura del 90% en vacunación",
+                    "Alcanzar la reducción del 20% en la tasa de homicidios"
+                ],
+                "negative": []
+            }
+        },
+        "PAT-DIM04-ENCADENAMIENTO-001": {
+            "id": "PAT-DIM04-ENCADENAMIENTO-001",
+            "canonical_id": "PAT-DIM04-ENCADENAMIENTO-001",
+            "legacy_ids": [],
+            "pattern_spec": {
+                "type": "REGEX",
+                "pattern": "producto.*?→.*?resultado|producto.*?que genera|producto.*?que permite|actividad.*?para lograr|con el fin de.*?resultado",
+                "flags": [
+                    "IGNORECASE",
+                    "DOTALL"
+                ],
+                "captures": {},
+                "context_scope": "PARAGRAPH"
+            },
+            "classification": {
+                "category": "CAUSAL",
+                "subcategory": "CHAIN_PRODUCT_OUTCOME",
+                "specificity": "HIGH",
+                "confidence_weight": 0.92
+            },
+            "bindings": {
+                "applies_to_dimensions": [
+                    "DIM04"
+                ],
+                "applies_to_questions": [
+                    "Q016",
+                    "Q017",
+                    "Q018",
+                    "Q019",
+                    "Q020",
+                    "Q046",
+                    "Q047",
+                    "Q048",
+                    "Q049",
+                    "Q050",
+                    "Q076",
+                    "Q077",
+                    "Q078",
+                    "Q079",
+                    "Q080",
+                    "Q106",
+                    "Q107",
+                    "Q108",
+                    "Q109",
+                    "Q110",
+                    "Q136",
+                    "Q137",
+                    "Q138",
+                    "Q139",
+                    "Q140",
+                    "Q166",
+                    "Q167",
+                    "Q168",
+                    "Q169",
+                    "Q170",
+                    "Q196",
+                    "Q197",
+                    "Q198",
+                    "Q199",
+                    "Q200",
+                    "Q226",
+                    "Q227",
+                    "Q228",
+                    "Q229",
+                    "Q230",
+                    "Q256",
+                    "Q257",
+                    "Q258",
+                    "Q259",
+                    "Q260",
+                    "Q286",
+                    "Q287",
+                    "Q288",
+                    "Q289",
+                    "Q290"
+                ],
+                "applies_to_policy_areas": [
+                    "PA01",
+                    "PA02",
+                    "PA03",
+                    "PA04",
+                    "PA05",
+                    "PA06",
+                    "PA07",
+                    "PA08",
+                    "PA09",
+                    "PA10"
+                ],
+                "applies_to_membership_criteria": [
+                    "MC08"
+                ]
+            },
+            "scoring_impact": {
+                "weight_in_scoring": 0.15,
+                "boost_conditions": [
+                    {
+                        "condition": "explicit_chain",
+                        "boost": 1.30
+                    }
+                ],
+                "penalty_conditions": []
+            },
+            "provenance": {
+                "source_file": "patterns/by_dimension/DIM04.json",
+                "source_version": "v2.0.0",
+                "created_at": "2026-01-09T22:50:00Z",
+                "validated": true
+            },
+            "examples": {
+                "positive": [
+                    "Construcción de acueductos (producto) → Incremento en acceso a agua potable (resultado)",
+                    "Capacitaciones que permiten mejorar los ingresos de los beneficiarios"
+                ],
+                "negative": []
+            }
+        }
+    }
+}

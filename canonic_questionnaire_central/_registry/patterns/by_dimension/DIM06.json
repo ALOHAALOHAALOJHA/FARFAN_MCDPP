@@ -1,28 +1,62 @@
 {
   "_dimension": "DIM06",
-  "_count": 1,
+  "_dimension_name_es": "Causalidad (Teoría de Cambio Explícita)",
+  "_dimension_name_en": "Causality (Explicit Theory of Change)",
+  "_description": "Evalúa la explicitación de teorías de cambio, identificación de causas raíz, mediadores, moderadores y supuestos verificables.",
+  "_last_updated": "2026-01-09",
+  "_question_slots": [
+    "Q026-Q030",
+    "Q056-Q060",
+    "Q086-Q090",
+    "Q116-Q120",
+    "Q146-Q150",
+    "Q176-Q180",
+    "Q206-Q210",
+    "Q236-Q240",
+    "Q266-Q270",
+    "Q296-Q300"
+  ],
+  "_count": 5,
+  "dimension_metadata": {
+    "typical_evaluation_focus": [
+      "Teoría de cambio explícita",
+      "Identificación de causas raíz",
+      "Mediadores y moderadores del cambio",
+      "Supuestos verificables",
+      "Encadenamiento causal completo"
+    ],
+    "related_membership_criteria": [
+      "MC08",
+      "MC04"
+    ],
+    "scoring_weight_in_layer_d": 0.15,
+    "key_concepts": [
+      "teoría de cambio",
+      "causa raíz",
+      "supuesto",
+      "mediador",
+      "encadenamiento"
+    ]
+  },
   "patterns": {
-    "PAT-Q026-001": {
-      "id": "PAT-Q026-001",
-      "canonical_id": "PAT-Q026-001",
+    "PAT-DIM06-TEORIA-CAMBIO-001": {
+      "id": "PAT-DIM06-TEORIA-CAMBIO-001",
+      "canonical_id": "PAT-DIM06-TEORIA-CAMBIO-001",
       "legacy_ids": [
-        "PAT-Q030-003",
+        "PAT-Q026-001",
+        "PAT-Q056-001",
         "PAT-Q086-001",
-        "PAT-Q090-004",
         "PAT-Q116-001",
         "PAT-Q146-001",
-        "PAT-Q150-004",
         "PAT-Q176-001",
         "PAT-Q206-001",
         "PAT-Q236-001",
         "PAT-Q266-001",
-        "PAT-Q270-004",
-        "PAT-Q296-001",
-        "PAT-Q056-001"
+        "PAT-Q296-001"
       ],
       "pattern_spec": {
         "type": "REGEX",
-        "pattern": "",
+        "pattern": "teoría de cambio|cadena de valor|marco lógico|encadenamiento lógico|ruta causal|modelo causal",
         "flags": [
           "IGNORECASE"
         ],
@@ -31,7 +65,234 @@
       },
       "classification": {
         "category": "CAUSAL",
-        "subcategory": null,
+        "subcategory": "TEORIA_CAMBIO",
+        "specificity": "HIGH",
+        "confidence_weight": 0.92
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q026",
+          "Q027",
+          "Q028",
+          "Q029",
+          "Q030",
+          "Q056",
+          "Q057",
+          "Q058",
+          "Q059",
+          "Q060",
+          "Q086",
+          "Q087",
+          "Q088",
+          "Q089",
+          "Q090",
+          "Q116",
+          "Q117",
+          "Q118",
+          "Q119",
+          "Q120",
+          "Q146",
+          "Q147",
+          "Q148",
+          "Q149",
+          "Q150",
+          "Q176",
+          "Q177",
+          "Q178",
+          "Q179",
+          "Q180",
+          "Q206",
+          "Q207",
+          "Q208",
+          "Q209",
+          "Q210",
+          "Q236",
+          "Q237",
+          "Q238",
+          "Q239",
+          "Q240",
+          "Q266",
+          "Q267",
+          "Q268",
+          "Q269",
+          "Q270",
+          "Q296",
+          "Q297",
+          "Q298",
+          "Q299",
+          "Q300"
+        ],
+        "applies_to_policy_areas": [
+          "PA01",
+          "PA02",
+          "PA03",
+          "PA04",
+          "PA05",
+          "PA06",
+          "PA07",
+          "PA08",
+          "PA09",
+          "PA10"
+        ],
+        "applies_to_membership_criteria": [
+          "MC08"
+        ]
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.20,
+        "boost_conditions": [
+          {
+            "condition": "teoria_explicita",
+            "boost": 1.50
+          }
+        ],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "patterns/by_dimension/DIM06.json",
+        "source_version": "v2.0.0",
+        "created_at": "2026-01-09T22:50:00Z",
+        "validated": true
+      },
+      "examples": {
+        "positive": [
+          "La teoría de cambio establece que si se mejora la infraestructura educativa, entonces...",
+          "Marco lógico: Actividad → Producto → Resultado → Impacto",
+          "Encadenamiento lógico del programa"
+        ],
+        "negative": []
+      }
+    },
+    "PAT-DIM06-CAUSA-RAIZ-001": {
+      "id": "PAT-DIM06-CAUSA-RAIZ-001",
+      "canonical_id": "PAT-DIM06-CAUSA-RAIZ-001",
+      "legacy_ids": [],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "causa raíz|causa principal|origen del problema|factor determinante|determinante estructural|causas subyacentes",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {},
+        "context_scope": "PARAGRAPH"
+      },
+      "classification": {
+        "category": "CAUSAL",
+        "subcategory": "CAUSA_RAIZ",
+        "specificity": "HIGH",
+        "confidence_weight": 0.90
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q026",
+          "Q027",
+          "Q028",
+          "Q029",
+          "Q030",
+          "Q056",
+          "Q057",
+          "Q058",
+          "Q059",
+          "Q060",
+          "Q086",
+          "Q087",
+          "Q088",
+          "Q089",
+          "Q090",
+          "Q116",
+          "Q117",
+          "Q118",
+          "Q119",
+          "Q120",
+          "Q146",
+          "Q147",
+          "Q148",
+          "Q149",
+          "Q150",
+          "Q176",
+          "Q177",
+          "Q178",
+          "Q179",
+          "Q180",
+          "Q206",
+          "Q207",
+          "Q208",
+          "Q209",
+          "Q210",
+          "Q236",
+          "Q237",
+          "Q238",
+          "Q239",
+          "Q240",
+          "Q266",
+          "Q267",
+          "Q268",
+          "Q269",
+          "Q270",
+          "Q296",
+          "Q297",
+          "Q298",
+          "Q299",
+          "Q300"
+        ],
+        "applies_to_policy_areas": [
+          "PA01",
+          "PA02",
+          "PA03",
+          "PA04",
+          "PA05",
+          "PA06",
+          "PA07",
+          "PA08",
+          "PA09",
+          "PA10"
+        ],
+        "applies_to_membership_criteria": [
+          "MC08"
+        ]
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "patterns/by_dimension/DIM06.json",
+        "source_version": "v2.0.0",
+        "created_at": "2026-01-09T22:50:00Z",
+        "validated": true
+      },
+      "examples": {
+        "positive": [
+          "La causa raíz de la deserción escolar es la pobreza monetaria",
+          "Factor determinante: falta de acceso a servicios de salud",
+          "Determinantes estructurales del desempleo juvenil"
+        ],
+        "negative": []
+      }
+    },
+    "PAT-DIM06-SUPUESTO-001": {
+      "id": "PAT-DIM06-SUPUESTO-001",
+      "canonical_id": "PAT-DIM06-SUPUESTO-001",
+      "legacy_ids": [],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "supuesto|asunción|premisa|condición necesaria|requisito previo|si.*?entonces|bajo el supuesto de",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {},
+        "context_scope": "PARAGRAPH"
+      },
+      "classification": {
+        "category": "CAUSAL",
+        "subcategory": "SUPUESTO",
         "specificity": "MEDIUM",
         "confidence_weight": 0.85
       },
@@ -41,38 +302,321 @@
         ],
         "applies_to_questions": [
           "Q026",
+          "Q027",
+          "Q028",
+          "Q029",
           "Q030",
           "Q056",
+          "Q057",
+          "Q058",
+          "Q059",
           "Q060",
           "Q086",
+          "Q087",
+          "Q088",
+          "Q089",
+          "Q090",
           "Q116",
+          "Q117",
+          "Q118",
+          "Q119",
           "Q120",
           "Q146",
+          "Q147",
+          "Q148",
+          "Q149",
+          "Q150",
           "Q176",
+          "Q177",
+          "Q178",
+          "Q179",
+          "Q180",
           "Q206",
+          "Q207",
+          "Q208",
+          "Q209",
+          "Q210",
           "Q236",
+          "Q237",
+          "Q238",
+          "Q239",
           "Q240",
           "Q266",
-          "Q296"
+          "Q267",
+          "Q268",
+          "Q269",
+          "Q270",
+          "Q296",
+          "Q297",
+          "Q298",
+          "Q299",
+          "Q300"
         ],
         "applies_to_policy_areas": [
-          "PA01"
+          "PA01",
+          "PA02",
+          "PA03",
+          "PA04",
+          "PA05",
+          "PA06",
+          "PA07",
+          "PA08",
+          "PA09",
+          "PA10"
         ],
-        "applies_to_membership_criteria": []
+        "applies_to_membership_criteria": [
+          "MC08"
+        ]
       },
       "scoring_impact": {
-        "weight_in_scoring": 0.1,
+        "weight_in_scoring": 0.12,
+        "boost_conditions": [
+          {
+            "condition": "supuesto_verificable",
+            "boost": 1.20
+          }
+        ],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "patterns/by_dimension/DIM06.json",
+        "source_version": "v2.0.0",
+        "created_at": "2026-01-09T22:50:00Z",
+        "validated": true
+      },
+      "examples": {
+        "positive": [
+          "Supuesto: La comunidad participa activamente en las intervenciones",
+          "Si se capacitan los docentes, entonces mejorará la calidad educativa",
+          "Condición necesaria: Estabilidad macroeconómica"
+        ],
+        "negative": []
+      }
+    },
+    "PAT-DIM06-ENCADENAMIENTO-001": {
+      "id": "PAT-DIM06-ENCADENAMIENTO-001",
+      "canonical_id": "PAT-DIM06-ENCADENAMIENTO-001",
+      "legacy_ids": [],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "actividad.*?→.*?producto.*?→.*?resultado|insumo.*?→.*?actividad|producto.*?→.*?resultado.*?→.*?impacto|cadena.*?valor|encadenamiento",
+        "flags": [
+          "IGNORECASE",
+          "DOTALL"
+        ],
+        "captures": {},
+        "context_scope": "PARAGRAPH"
+      },
+      "classification": {
+        "category": "CAUSAL",
+        "subcategory": "ENCADENAMIENTO_COMPLETO",
+        "specificity": "HIGH",
+        "confidence_weight": 0.95
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q026",
+          "Q027",
+          "Q028",
+          "Q029",
+          "Q030",
+          "Q056",
+          "Q057",
+          "Q058",
+          "Q059",
+          "Q060",
+          "Q086",
+          "Q087",
+          "Q088",
+          "Q089",
+          "Q090",
+          "Q116",
+          "Q117",
+          "Q118",
+          "Q119",
+          "Q120",
+          "Q146",
+          "Q147",
+          "Q148",
+          "Q149",
+          "Q150",
+          "Q176",
+          "Q177",
+          "Q178",
+          "Q179",
+          "Q180",
+          "Q206",
+          "Q207",
+          "Q208",
+          "Q209",
+          "Q210",
+          "Q236",
+          "Q237",
+          "Q238",
+          "Q239",
+          "Q240",
+          "Q266",
+          "Q267",
+          "Q268",
+          "Q269",
+          "Q270",
+          "Q296",
+          "Q297",
+          "Q298",
+          "Q299",
+          "Q300"
+        ],
+        "applies_to_policy_areas": [
+          "PA01",
+          "PA02",
+          "PA03",
+          "PA04",
+          "PA05",
+          "PA06",
+          "PA07",
+          "PA08",
+          "PA09",
+          "PA10"
+        ],
+        "applies_to_membership_criteria": [
+          "MC08"
+        ]
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.20,
+        "boost_conditions": [
+          {
+            "condition": "cadena_completa",
+            "boost": 1.40
+          }
+        ],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "patterns/by_dimension/DIM06.json",
+        "source_version": "v2.0.0",
+        "created_at": "2026-01-09T22:50:00Z",
+        "validated": true
+      },
+      "examples": {
+        "positive": [
+          "Insumo (diagnóstico) → Actividad (capacitación) → Producto (docentes formados) → Resultado (mejor rendimiento) → Impacto (mayor capital humano)",
+          "Cadena de valor del programa de seguridad alimentaria"
+        ],
+        "negative": []
+      }
+    },
+    "PAT-DIM06-MEDIADOR-001": {
+      "id": "PAT-DIM06-MEDIADOR-001",
+      "canonical_id": "PAT-DIM06-MEDIADOR-001",
+      "legacy_ids": [],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "mediador|moderador|variable intermedia|canal de transmisión|mecanismo de|factor facilitador|elemento catalizador",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {},
+        "context_scope": "PARAGRAPH"
+      },
+      "classification": {
+        "category": "CAUSAL",
+        "subcategory": "MEDIADOR",
+        "specificity": "HIGH",
+        "confidence_weight": 0.88
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM06"
+        ],
+        "applies_to_questions": [
+          "Q026",
+          "Q027",
+          "Q028",
+          "Q029",
+          "Q030",
+          "Q056",
+          "Q057",
+          "Q058",
+          "Q059",
+          "Q060",
+          "Q086",
+          "Q087",
+          "Q088",
+          "Q089",
+          "Q090",
+          "Q116",
+          "Q117",
+          "Q118",
+          "Q119",
+          "Q120",
+          "Q146",
+          "Q147",
+          "Q148",
+          "Q149",
+          "Q150",
+          "Q176",
+          "Q177",
+          "Q178",
+          "Q179",
+          "Q180",
+          "Q206",
+          "Q207",
+          "Q208",
+          "Q209",
+          "Q210",
+          "Q236",
+          "Q237",
+          "Q238",
+          "Q239",
+          "Q240",
+          "Q266",
+          "Q267",
+          "Q268",
+          "Q269",
+          "Q270",
+          "Q296",
+          "Q297",
+          "Q298",
+          "Q299",
+          "Q300"
+        ],
+        "applies_to_policy_areas": [
+          "PA01",
+          "PA02",
+          "PA03",
+          "PA04",
+          "PA05",
+          "PA06",
+          "PA07",
+          "PA08",
+          "PA09",
+          "PA10"
+        ],
+        "applies_to_membership_criteria": [
+          "MC08"
+        ]
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.10,
         "boost_conditions": [],
         "penalty_conditions": []
       },
       "provenance": {
-        "source_file": "patterns/pattern_registry_v3.json",
-        "source_version": "v3",
-        "created_at": "2026-01-06T17:29:59.919048+00:00",
-        "validated": false
+        "source_file": "patterns/by_dimension/DIM06.json",
+        "source_version": "v2.0.0",
+        "created_at": "2026-01-09T22:50:00Z",
+        "validated": true
       },
       "examples": {
-        "positive": [],
+        "positive": [
+          "Mediador: El acceso a crédito facilita la inversión productiva",
+          "Factor facilitador: Articulación interinstitucional",
+          "Variable intermedia: Nivel de ingresos del hogar"
+        ],
         "negative": []
       }
     }

@@ -1,28 +1,26 @@
 {
   "$schema": "../schema.json",
   "_schema_version": "2.0.0",
-  
+  "_last_updated": "2026-01-09",
+  "_calibration_source": "../_calibration/extractor_calibration.json",
   "criterion_id": "MC07",
   "name": "Temporal Markers",
   "description_es": "Detecta marcadores temporales: años, períodos, vigencias",
   "description_en": "Detects temporal markers: years, periods, terms",
-  
   "signal_type": "TEMPORAL_MARKER",
   "implementation_status": "PARTIAL",
   "extractor_class": "TemporalMarkerExtractor",
-  
   "detection": {
     "primary_method": "REGEX",
-    "_source": "corpus_thresholds_weights.json",
-    
+    "_calibration_reference": "extractor_calibration.json/signal_type_catalog/TEMPORAL_CONSISTENCY",
     "components": [
       {
         "component_id": "TM-YEAR",
         "name": "year_standalone",
         "detection": {
           "type": "REGEX",
-          "pattern": "\\b(20[1-3]\\d)\\b",
-          "validation": "year >= 2015 AND year <= 2035"
+          "pattern": "\\b(19\\d{2}|20[0-2]\\d)\\b",
+          "validation": "year >= 1990 AND year <= 2050"
         },
         "confidence_base": 0.95
       },
@@ -31,8 +29,13 @@
         "name": "period_range",
         "detection": {
           "type": "REGEX",
-          "pattern": "(20[2-3]\\d)\\s*[-–]\\s*(20[2-3]\\d)",
-          "validation": "start_year < end_year"
+          "pattern": "(\\d{4})\\s*[-–—]\\s*(\\d{4})",
+          "validation": "start_year < end_year",
+          "examples": [
+            "2024-2027",
+            "2020–2023",
+            "2018—2022"
+          ]
         },
         "confidence_base": 0.93
       },
@@ -44,6 +47,10 @@
           "patterns": [
             "vigencia\\s+(20[2-3]\\d)",
             "cuatrienio\\s+(20[2-3]\\d)\\s*[-–]\\s*(20[2-3]\\d)"
+          ],
+          "examples": [
+            "vigencia 2024",
+            "Vigencia 2025"
           ]
         },
         "confidence_base": 0.91
@@ -53,13 +60,53 @@
         "name": "cuatrienio_pdt",
         "detection": {
           "type": "KEYWORD",
-          "keywords": ["2024-2027", "cuatrienio 2024", "periodo de gobierno"]
+          "keywords": [
+            "2024-2027",
+            "cuatrienio 2024",
+            "periodo de gobierno"
+          ]
         },
         "confidence_base": 0.90
       }
-    ]
+    ],
+    "empirical_frequency": {
+      "_source": "extractor_calibration.json (14 planes PDT Colombia 2024-2027)",
+      "periodos_cuatrienales": {
+        "mean": 320,
+        "range": [
+          116,
+          541
+        ]
+      },
+      "vigencias_anuales": {
+        "mean": 8,
+        "range": [
+          0,
+          11
+        ]
+      },
+      "años_unicos_referenciados": {
+        "mean": 18,
+        "range": [
+          10,
+          29
+        ]
+      },
+      "series_historicas": "6-10 años atrás typical"
+    },
+    "temporal_heuristics": {
+      "plan_period": "2024-2027 (universal)",
+      "baseline_typical": "2020-2023",
+      "historical_series": "2015-2023",
+      "projection": "2027-2035 (some plans)"
+    },
+    "consistency_validation": {
+      "baseline_before_target": "baseline_year < target_year",
+      "baseline_recent": "target_year - baseline_year <= 5",
+      "no_future_baseline": "baseline_year <= current_year",
+      "sequential_series": "años en serie histórica son consecutivos o tienen gaps explicados"
+    }
   },
-  
   "scoring_impact": {
     "dimension_boost": {
       "DIM01": 0.05,
@@ -70,9 +117,50 @@
       "CC_MECANISMOS_SEGUIMIENTO": 0.10
     }
   },
-  
-  "required_capabilities": ["TEMPORAL_REASONING"],
-  
+  "dimension_binding": {
+    "_reference": "../_bindings/mc_to_dimensions.json",
+    "primary_dimensions": [
+      "DIM01",
+      "DIM03",
+      "DIM04"
+    ]
+  },
+  "question_binding": {
+    "_reference": "../_bindings/mc_to_questions.json",
+    "questions_mapped": 41,
+    "coverage": 0.14,
+    "applies_to_slots": [
+      "D1-Q1",
+      "D3-Q1",
+      "D4-Q1"
+    ],
+    "primary_questions": [
+      "Q001",
+      "Q031",
+      "Q061",
+      "Q091",
+      "Q121",
+      "Q151",
+      "Q011",
+      "Q041",
+      "Q071",
+      "Q101",
+      "Q131",
+      "Q161"
+    ]
+  },
+  "scoring_layer_binding": {
+    "_reference": "../_bindings/mc_to_scoring.json",
+    "scoring_layers": {
+      "layer_q_quality": {
+        "weight": 0.20
+      }
+    },
+    "required_for": []
+  },
+  "required_capabilities": [
+    "TEMPORAL_REASONING"
+  ],
   "testing": {
     "test_file": "tests/membership_criteria/test_mc07_temporal.py",
     "expected_precision": 0.95,

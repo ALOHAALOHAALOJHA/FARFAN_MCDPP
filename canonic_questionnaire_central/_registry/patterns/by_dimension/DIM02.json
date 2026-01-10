@@ -1,11 +1,174 @@
 {
   "_dimension": "DIM02",
-  "_count": 1,
+  "_dimension_name_es": "Actividades (Diseño de Intervención)",
+  "_dimension_name_en": "Activities (Intervention Design)",
+  "_description": "Evalúa la formalización de actividades con estructura clara, responsables, cronogramas, costos y mecanismos causales.",
+  "_last_updated": "2026-01-09",
+  "_question_slots": [
+    "Q006-Q010",
+    "Q036-Q040",
+    "Q066-Q070",
+    "Q096-Q100",
+    "Q126-Q130",
+    "Q156-Q160",
+    "Q186-Q190",
+    "Q216-Q220",
+    "Q246-Q250",
+    "Q276-Q280"
+  ],
+  "_count": 4,
+  "dimension_metadata": {
+    "typical_evaluation_focus": [
+      "Actividades claramente definidas",
+      "Responsables institucionales asignados",
+      "Cronogramas y plazos de ejecución",
+      "Costos y presupuestos por actividad",
+      "Estructura programática (Eje → Programa → Subprograma)"
+    ],
+    "related_membership_criteria": [
+      "MC01",
+      "MC04",
+      "MC05",
+      "MC09"
+    ],
+    "scoring_weight_in_layer_d": 0.20,
+    "key_concepts": [
+      "actividad",
+      "programa",
+      "responsable",
+      "cronograma",
+      "presupuesto"
+    ]
+  },
   "patterns": {
-    "PAT-Q006-003": {
-      "id": "PAT-Q006-003",
-      "canonical_id": "PAT-Q006-003",
+    "PAT-DIM02-ACTIVIDAD-001": {
+      "id": "PAT-DIM02-ACTIVIDAD-001",
+      "canonical_id": "PAT-DIM02-ACTIVIDAD-001",
       "legacy_ids": [
+        "PAT-Q006-000",
+        "PAT-Q036-000",
+        "PAT-Q066-000",
+        "PAT-Q096-000",
+        "PAT-Q126-000",
+        "PAT-Q156-000",
+        "PAT-Q186-000",
+        "PAT-Q216-000",
+        "PAT-Q246-000",
+        "PAT-Q276-000"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "actividad|acción|intervención|estrategia|programa|subprograma|proyecto|iniciativa",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {},
+        "context_scope": "PARAGRAPH"
+      },
+      "classification": {
+        "category": "ACTIVIDAD",
+        "subcategory": null,
+        "specificity": "HIGH",
+        "confidence_weight": 0.88
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q006",
+          "Q007",
+          "Q008",
+          "Q009",
+          "Q010",
+          "Q036",
+          "Q037",
+          "Q038",
+          "Q039",
+          "Q040",
+          "Q066",
+          "Q067",
+          "Q068",
+          "Q069",
+          "Q070",
+          "Q096",
+          "Q097",
+          "Q098",
+          "Q099",
+          "Q100",
+          "Q126",
+          "Q127",
+          "Q128",
+          "Q129",
+          "Q130",
+          "Q156",
+          "Q157",
+          "Q158",
+          "Q159",
+          "Q160",
+          "Q186",
+          "Q187",
+          "Q188",
+          "Q189",
+          "Q190",
+          "Q216",
+          "Q217",
+          "Q218",
+          "Q219",
+          "Q220",
+          "Q246",
+          "Q247",
+          "Q248",
+          "Q249",
+          "Q250",
+          "Q276",
+          "Q277",
+          "Q278",
+          "Q279",
+          "Q280"
+        ],
+        "applies_to_policy_areas": [
+          "PA01",
+          "PA02",
+          "PA03",
+          "PA04",
+          "PA05",
+          "PA06",
+          "PA07",
+          "PA08",
+          "PA09",
+          "PA10"
+        ],
+        "applies_to_membership_criteria": [
+          "MC04"
+        ]
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "patterns/by_dimension/DIM02.json",
+        "source_version": "v2.0.0",
+        "created_at": "2026-01-09T22:50:00Z",
+        "validated": true
+      },
+      "examples": {
+        "positive": [
+          "Programa 1: Educación de Calidad",
+          "Actividad 1.1: Capacitación a docentes",
+          "Subprograma de fortalecimiento institucional"
+        ],
+        "negative": []
+      }
+    },
+    "PAT-DIM02-RESPONSABLE-001": {
+      "id": "PAT-DIM02-RESPONSABLE-001",
+      "canonical_id": "PAT-DIM02-RESPONSABLE-001",
+      "legacy_ids": [
+        "PAT-Q006-003",
+        "PAT-Q036-003",
         "PAT-Q066-003",
         "PAT-Q096-003",
         "PAT-Q126-003",
@@ -13,22 +176,127 @@
         "PAT-Q186-003",
         "PAT-Q216-003",
         "PAT-Q246-003",
-        "PAT-Q276-003",
-        "PAT-Q036-003",
-        "PAT-Q016-007",
-        "PAT-Q076-007",
-        "PAT-Q106-008",
-        "PAT-Q136-008",
-        "PAT-Q166-008",
-        "PAT-Q196-008",
-        "PAT-Q226-009",
-        "PAT-Q046-009",
-        "PAT-Q111-005",
-        "PAT-Q231-005"
+        "PAT-Q276-003"
       ],
       "pattern_spec": {
-        "type": "LITERAL",
-        "pattern": "",
+        "type": "REGEX",
+        "pattern": "responsable|a cargo de|ejecutor|secretaría de|dependencia|entidad responsable|liderado por|bajo la dirección de",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {},
+        "context_scope": "PARAGRAPH"
+      },
+      "classification": {
+        "category": "INSTITUCIONAL",
+        "subcategory": "RESPONSABLE",
+        "specificity": "HIGH",
+        "confidence_weight": 0.90
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q006",
+          "Q007",
+          "Q008",
+          "Q009",
+          "Q010",
+          "Q036",
+          "Q037",
+          "Q038",
+          "Q039",
+          "Q040",
+          "Q066",
+          "Q067",
+          "Q068",
+          "Q069",
+          "Q070",
+          "Q096",
+          "Q097",
+          "Q098",
+          "Q099",
+          "Q100",
+          "Q126",
+          "Q127",
+          "Q128",
+          "Q129",
+          "Q130",
+          "Q156",
+          "Q157",
+          "Q158",
+          "Q159",
+          "Q160",
+          "Q186",
+          "Q187",
+          "Q188",
+          "Q189",
+          "Q190",
+          "Q216",
+          "Q217",
+          "Q218",
+          "Q219",
+          "Q220",
+          "Q246",
+          "Q247",
+          "Q248",
+          "Q249",
+          "Q250",
+          "Q276",
+          "Q277",
+          "Q278",
+          "Q279",
+          "Q280"
+        ],
+        "applies_to_policy_areas": [
+          "PA01",
+          "PA02",
+          "PA03",
+          "PA04",
+          "PA05",
+          "PA06",
+          "PA07",
+          "PA08",
+          "PA09",
+          "PA10"
+        ],
+        "applies_to_membership_criteria": [
+          "MC09"
+        ]
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.12,
+        "boost_conditions": [
+          {
+            "condition": "responsable_especifico",
+            "boost": 1.15
+          }
+        ],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "patterns/by_dimension/DIM02.json",
+        "source_version": "v2.0.0",
+        "created_at": "2026-01-09T22:50:00Z",
+        "validated": true
+      },
+      "examples": {
+        "positive": [
+          "Responsable: Secretaría de Educación",
+          "A cargo de la Oficina de Planeación Municipal",
+          "Ejecutor: ICBF Regional Cauca"
+        ],
+        "negative": []
+      }
+    },
+    "PAT-DIM02-CRONOGRAMA-001": {
+      "id": "PAT-DIM02-CRONOGRAMA-001",
+      "canonical_id": "PAT-DIM02-CRONOGRAMA-001",
+      "legacy_ids": [],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "cronograma|plazo|fecha|vigencia|2024|2025|2026|2027|trimestre|semestre|anual|cuatrienio|periodo de ejecución",
         "flags": [
           "IGNORECASE"
         ],
@@ -37,7 +305,7 @@
       },
       "classification": {
         "category": "TEMPORAL",
-        "subcategory": null,
+        "subcategory": "CRONOGRAMA",
         "specificity": "MEDIUM",
         "confidence_weight": 0.85
       },
@@ -47,44 +315,205 @@
         ],
         "applies_to_questions": [
           "Q006",
+          "Q007",
+          "Q008",
+          "Q009",
+          "Q010",
           "Q036",
+          "Q037",
+          "Q038",
+          "Q039",
+          "Q040",
           "Q066",
+          "Q067",
+          "Q068",
+          "Q069",
+          "Q070",
           "Q096",
+          "Q097",
+          "Q098",
+          "Q099",
+          "Q100",
           "Q126",
+          "Q127",
+          "Q128",
+          "Q129",
+          "Q130",
           "Q156",
+          "Q157",
+          "Q158",
+          "Q159",
+          "Q160",
           "Q186",
+          "Q187",
+          "Q188",
+          "Q189",
+          "Q190",
           "Q216",
+          "Q217",
+          "Q218",
+          "Q219",
+          "Q220",
           "Q246",
+          "Q247",
+          "Q248",
+          "Q249",
+          "Q250",
           "Q276",
-          "Q016",
-          "Q046",
-          "Q076",
-          "Q106",
-          "Q136",
-          "Q166",
-          "Q196",
-          "Q286",
-          "Q081",
-          "Q201"
+          "Q277",
+          "Q278",
+          "Q279",
+          "Q280"
         ],
         "applies_to_policy_areas": [
-          "PA01"
+          "PA01",
+          "PA02",
+          "PA03",
+          "PA04",
+          "PA05",
+          "PA06",
+          "PA07",
+          "PA08",
+          "PA09",
+          "PA10"
         ],
-        "applies_to_membership_criteria": []
+        "applies_to_membership_criteria": [
+          "MC07"
+        ]
       },
       "scoring_impact": {
-        "weight_in_scoring": 0.1,
+        "weight_in_scoring": 0.10,
         "boost_conditions": [],
         "penalty_conditions": []
       },
       "provenance": {
-        "source_file": "patterns/pattern_registry_v3.json",
-        "source_version": "v3",
-        "created_at": "2026-01-06T17:29:59.912190+00:00",
-        "validated": false
+        "source_file": "patterns/by_dimension/DIM02.json",
+        "source_version": "v2.0.0",
+        "created_at": "2026-01-09T22:50:00Z",
+        "validated": true
       },
       "examples": {
-        "positive": [],
+        "positive": [
+          "Cronograma: Ejecución 2024-2027",
+          "Plazo de ejecución: Segundo semestre 2025",
+          "Vigencia 2024: Fase de diagnóstico"
+        ],
+        "negative": []
+      }
+    },
+    "PAT-DIM02-COSTO-001": {
+      "id": "PAT-DIM02-COSTO-001",
+      "canonical_id": "PAT-DIM02-COSTO-001",
+      "legacy_ids": [],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "costo|presupuesto|recursos|inversión|monto|$|millones|fuente de financiación|asignación presupuestal",
+        "flags": [
+          "IGNORECASE"
+        ],
+        "captures": {},
+        "context_scope": "PARAGRAPH"
+      },
+      "classification": {
+        "category": "FINANCIERO",
+        "subcategory": "COSTO_ACTIVIDAD",
+        "specificity": "HIGH",
+        "confidence_weight": 0.88
+      },
+      "bindings": {
+        "applies_to_dimensions": [
+          "DIM02"
+        ],
+        "applies_to_questions": [
+          "Q006",
+          "Q007",
+          "Q008",
+          "Q009",
+          "Q010",
+          "Q036",
+          "Q037",
+          "Q038",
+          "Q039",
+          "Q040",
+          "Q066",
+          "Q067",
+          "Q068",
+          "Q069",
+          "Q070",
+          "Q096",
+          "Q097",
+          "Q098",
+          "Q099",
+          "Q100",
+          "Q126",
+          "Q127",
+          "Q128",
+          "Q129",
+          "Q130",
+          "Q156",
+          "Q157",
+          "Q158",
+          "Q159",
+          "Q160",
+          "Q186",
+          "Q187",
+          "Q188",
+          "Q189",
+          "Q190",
+          "Q216",
+          "Q217",
+          "Q218",
+          "Q219",
+          "Q220",
+          "Q246",
+          "Q247",
+          "Q248",
+          "Q249",
+          "Q250",
+          "Q276",
+          "Q277",
+          "Q278",
+          "Q279",
+          "Q280"
+        ],
+        "applies_to_policy_areas": [
+          "PA01",
+          "PA02",
+          "PA03",
+          "PA04",
+          "PA05",
+          "PA06",
+          "PA07",
+          "PA08",
+          "PA09",
+          "PA10"
+        ],
+        "applies_to_membership_criteria": [
+          "MC05"
+        ]
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [
+          {
+            "condition": "fuente_especificada",
+            "boost": 1.20
+          }
+        ],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "patterns/by_dimension/DIM02.json",
+        "source_version": "v2.0.0",
+        "created_at": "2026-01-09T22:50:00Z",
+        "validated": true
+      },
+      "examples": {
+        "positive": [
+          "Presupuesto: $500 millones (SGP)",
+          "Inversión estimada: $1,200 millones cuatrienio",
+          "Recursos propios: $85,000,000"
+        ],
         "negative": []
       }
     }

@@ -1,64 +1,153 @@
 {
   "$schema": "../schema.json",
   "_schema_version": "2.0.0",
-  
+  "_last_updated": "2026-01-09",
+  "_calibration_source": "../_calibration/extractor_calibration.json",
   "criterion_id": "MC09",
   "name": "Institutional Network",
   "description_es": "Detecta entidades institucionales colombianas y relaciones interinstitucionales",
   "description_en": "Detects Colombian institutional entities and inter-institutional relationships",
-  
   "signal_type": "INSTITUTIONAL_ENTITY",
   "implementation_status": "MISSING",
   "extractor_class": "InstitutionalNER",
   "_priority": "MEDIUM",
-  
   "detection": {
     "primary_method": "NER",
-    
+    "_calibration_reference": "extractor_calibration.json/signal_type_catalog/INSTITUTIONAL_NETWORK",
     "entity_categories": {
       "NATIONAL": {
         "description": "Entidades del orden nacional",
         "examples": [
-          "DNP", "DANE", "Ministerio de Hacienda",
-          "Ministerio del Interior", "ICBF", "SENA"
+          "DNP",
+          "DANE",
+          "Ministerio de Hacienda",
+          "Ministerio del Interior",
+          "ICBF",
+          "SENA"
         ],
-        "confidence_base": 0.94
+        "confidence_base": 0.94,
+        "empirical_frequency": {
+          "DNP": {
+            "mean": 15,
+            "range": [
+              5,
+              24
+            ]
+          },
+          "DANE": {
+            "mean": 10,
+            "range": [
+              3,
+              13
+            ]
+          },
+          "ICBF": {
+            "mean": 11,
+            "range": [
+              4,
+              14
+            ]
+          },
+          "Ministerios": {
+            "mean": 12,
+            "range": [
+              6,
+              17
+            ]
+          },
+          "SENA": {
+            "mean": 8,
+            "range": [
+              2,
+              15
+            ]
+          }
+        }
       },
       "DEPARTMENTAL": {
         "description": "Entidades del orden departamental",
         "examples": [
-          "Gobernación", "Secretaría Departamental",
+          "Gobernación",
+          "Secretaría Departamental",
           "Asamblea Departamental"
         ],
-        "confidence_base": 0.90
+        "confidence_base": 0.90,
+        "empirical_frequency": {
+          "Gobernación": {
+            "mean": 28,
+            "range": [
+              9,
+              87
+            ]
+          }
+        }
       },
       "MUNICIPAL": {
         "description": "Entidades del orden municipal",
         "examples": [
-          "Alcaldía", "Secretaría de Planeación",
-          "Secretaría de Hacienda", "Concejo Municipal",
-          "Personería", "Contraloría Municipal"
+          "Alcaldía",
+          "Secretaría de Planeación",
+          "Secretaría de Hacienda",
+          "Concejo Municipal",
+          "Personería",
+          "Contraloría Municipal"
         ],
-        "confidence_base": 0.89
+        "confidence_base": 0.89,
+        "empirical_frequency": {
+          "Alcaldía": {
+            "mean": 420,
+            "range": [
+              116,
+              660
+            ],
+            "note": "Muy alta frecuencia"
+          },
+          "Secretarías": {
+            "mean": 9,
+            "range": [
+              4,
+              15
+            ]
+          }
+        }
       },
       "CONTROL": {
         "description": "Entidades de control",
         "examples": [
-          "Contraloría", "Procuraduría", "Defensoría del Pueblo",
-          "Personería", "Veeduría Ciudadana"
+          "Contraloría",
+          "Procuraduría",
+          "Defensoría del Pueblo",
+          "Personería",
+          "Veeduría Ciudadana"
         ],
         "confidence_base": 0.91
       },
       "INTERNATIONAL": {
         "description": "Organismos internacionales",
         "examples": [
-          "ONU", "PNUD", "UNICEF", "ACNUR",
-          "OIM", "Banco Mundial", "BID"
+          "ONU",
+          "PNUD",
+          "UNICEF",
+          "ACNUR",
+          "OIM",
+          "Banco Mundial",
+          "BID"
         ],
         "confidence_base": 0.92
       }
     },
-    
+    "extraction_patterns": {
+      "national_entities": {
+        "regex": "\\b(DNP|DANE|ICBF|SENA|MinSalud|MinEducación|MinHacienda|MinInterior|MinAmbiente)\\b",
+        "confidence": 0.94,
+        "ner_enhancement": true
+      },
+      "territorial_entities": {
+        "regex": "\\b(Alcaldía|Gobernación|Secretaría\\s+de\\s+\\w+)\\b",
+        "confidence": 0.89,
+        "context_validation": true
+      }
+    },
     "relationship_patterns": [
       {
         "pattern": "(?:en articulación con|en coordinación con|junto con)\\s+(.+)",
@@ -72,9 +161,19 @@
         "pattern": "(?:con apoyo de|con recursos de)\\s+(.+)",
         "relationship_type": "SUPPORT"
       }
-    ]
+    ],
+    "entity_roles": {
+      "RESPONSABLE": "Primary executor of program/indicator",
+      "COORDINADOR": "Coordination role",
+      "APOYO": "Support/technical assistance",
+      "FINANCIADOR": "Funding source"
+    },
+    "articulation_patterns": {
+      "convenio": "\\b(?:convenio|acuerdo)\\s+interadministrativo\\b",
+      "mesa": "\\bmesa\\s+de\\s+(?:coordinación|articulación)\\b",
+      "comite": "\\bcomité\\s+de\\s+\\w+\\b"
+    }
   },
-  
   "scoring_impact": {
     "dimension_boost": {
       "DIM02": 0.10,
@@ -84,12 +183,55 @@
       "CC_INTEROPERABILIDAD": 0.25
     }
   },
-  
-  "required_capabilities": ["NER_EXTRACTION"],
-  
+  "dimension_binding": {
+    "_reference": "../_bindings/mc_to_dimensions.json",
+    "primary_dimensions": [
+      "DIM02",
+      "DIM03"
+    ]
+  },
+  "question_binding": {
+    "_reference": "../_bindings/mc_to_questions.json",
+    "questions_mapped": 39,
+    "coverage": 0.13,
+    "lowest_coverage_mc": true,
+    "applies_to_slots": [
+      "D1-Q4",
+      "D2-Q2"
+    ],
+    "primary_questions": [
+      "Q004",
+      "Q034",
+      "Q064",
+      "Q094",
+      "Q124",
+      "Q154",
+      "Q184",
+      "Q214",
+      "Q244",
+      "Q274"
+    ]
+  },
+  "scoring_layer_binding": {
+    "_reference": "../_bindings/mc_to_scoring.json",
+    "scoring_layers": {
+      "layer_p_policy_area": {
+        "weight": 0.10
+      },
+      "layer_C_crosscutting": {
+        "weight": 0.10
+      }
+    },
+    "required_for": []
+  },
+  "required_capabilities": [
+    "NER_EXTRACTION"
+  ],
   "testing": {
     "test_file": "tests/membership_criteria/test_mc09_institutional.py",
     "expected_precision": 0.90,
-    "expected_recall": 0.85
+    "expected_recall": 0.85,
+    "gold_standard_plan": "Quibdó",
+    "gold_standard_reason": "Best institutional network diversity"
   }
 }

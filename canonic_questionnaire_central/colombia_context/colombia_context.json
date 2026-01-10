@@ -1,22 +1,59 @@
 {
-  "_comment": "Colombia-specific context for FARFAN questionnaire analysis",
-  "_version": "1.0.0",
-  "_generated_at": "2026-01-01T00:00:00Z",
-
+  "_metadata": {
+    "_comment": "Colombia-specific context enriched for F.A.R.F.A.N 3.0 questionnaire analysis",
+    "_version": "2.0.0",
+    "_base_version": "1.0.0",
+    "_generated_at": "2026-01-07T00:00:00Z",
+    "_enrichment_status": "complete",
+    "_farfan_compatibility": "3.0",
+    "_last_updated_by": "F.A.R.F.A.N Enrichment Pipeline"
+  },
   "country": {
     "name": "Colombia",
+    "official_name": "República de Colombia",
     "iso_code": "CO",
+    "iso_alpha3": "COL",
     "capital": "Bogotá",
     "currency": "COP",
+    "currency_name": "Peso colombiano",
     "population": {
       "total": 51520000,
       "year": 2023,
-      "source": "DANE"
+      "source": "DANE",
+      "growth_rate": 0.71,
+      "urban_percentage": 81.4,
+      "rural_percentage": 18.6
+    },
+    "demographic_composition": {
+      "women": {
+        "percentage": 51.2,
+        "total": 26378240
+      },
+      "indigenous": {
+        "percentage": 4.4,
+        "total": 2266880,
+        "pueblos": 115
+      },
+      "afrodescendant": {
+        "percentage": 9.34,
+        "total": 4811680
+      },
+      "rom": {
+        "percentage": 0.01,
+        "total": 5152
+      },
+      "raizal": {
+        "percentage": 0.06,
+        "total": 30912
+      },
+      "palenquero": {
+        "percentage": 0.02,
+        "total": 10304
+      }
     }
   },
-
   "territorial_organization": {
-    "description": "División político-administrativa de Colombia",
+    "description": "División político-administrativa de Colombia según Constitución de 1991",
     "departments": 32,
     "districts": 1,
     "municipalities": 1119,
@@ -27,226 +64,1026 @@
       {
         "region_id": "BOR",
         "name": "Bogotá",
-        "type": "Distrito Capital"
+        "type": "Distrito Capital",
+        "population": 7901653,
+        "gdp_contribution": 26.3,
+        "relevant_pa": [
+          "PA01",
+          "PA02",
+          "PA04",
+          "PA06",
+          "PA09",
+          "PA10"
+        ]
       },
       {
         "region_id": "SAN",
         "name": "San Andrés y Providencia",
-        "type": "Departamento"
+        "type": "Departamento Archipiélago",
+        "population": 75167,
+        "special_status": "Régimen especial por ser territorio insular",
+        "relevant_pa": [
+          "PA03",
+          "PA07",
+          "PA10"
+        ]
       },
       {
         "region_id": "RAP",
-        "name": "Región Amazónica de Planección",
-        "type": "Región especial"
+        "name": "Región Amazónica de Planificación",
+        "type": "Región especial",
+        "departments": [
+          "Amazonas",
+          "Caquetá",
+          "Guainía",
+          "Guaviare",
+          "Putumayo",
+          "Vaupés"
+        ],
+        "relevant_pa": [
+          "PA03",
+          "PA07",
+          "PA08"
+        ]
       },
       {
         "region_id": "RPEP",
         "name": "Región para la Paz y el Progreso",
-        "type": "Región especial"
+        "type": "Región especial post-acuerdo",
+        "created": 2017,
+        "relevant_pa": [
+          "PA02",
+          "PA05",
+          "PA07"
+        ]
       }
-    ]
+    ],
+    "territorial_levels": {
+      "national": {
+        "planning_instrument": "Plan Nacional de Desarrollo (PND)",
+        "duration_years": 4
+      },
+      "departmental": {
+        "planning_instrument": "Plan de Desarrollo Departamental (PDD)",
+        "duration_years": 4,
+        "quantity": 32
+      },
+      "municipal": {
+        "planning_instrument": "Plan de Desarrollo Municipal (PDM)",
+        "duration_years": 4,
+        "quantity": 1119
+      },
+      "district": {
+        "planning_instrument": "Plan de Desarrollo Distrital",
+        "duration_years": 4,
+        "quantity": 1
+      }
+    }
   },
-
   "legal_framework": {
     "constitution": {
       "year": 1991,
+      "type": "Constitución Política",
       "key_articles": {
-        "rights": ["Artículo 1", "Artículo 2", "Artículo 13"],
-        "gender": ["Artículo 13", "Artículo 40", "Artículo 43"],
-        "environment": ["Artículo 79", "Artículo 80", "Artículo 81"],
-        "victims": ["Artículo Transitorio 60"],
-        "peace": ["Artículo 22", "Artículo Transitorio 66"]
+        "rights": {
+          "articles": [
+            "Artículo 1",
+            "Artículo 2",
+            "Artículo 13"
+          ],
+          "description": "Derechos fundamentales y dignidad humana"
+        },
+        "gender": {
+          "articles": [
+            "Artículo 13",
+            "Artículo 40",
+            "Artículo 43"
+          ],
+          "description": "Igualdad de género y participación política"
+        },
+        "environment": {
+          "articles": [
+            "Artículo 79",
+            "Artículo 80",
+            "Artículo 81"
+          ],
+          "description": "Derecho a un ambiente sano"
+        },
+        "victims": {
+          "articles": [
+            "Artículo Transitorio 60"
+          ],
+          "description": "Reparación integral a víctimas del conflicto"
+        },
+        "peace": {
+          "articles": [
+            "Artículo 22",
+            "Artículo Transitorio 66"
+          ],
+          "description": "Paz como derecho y deber"
+        },
+        "children": {
+          "articles": [
+            "Artículo 44",
+            "Artículo 45"
+          ],
+          "description": "Derechos prevalentes de niños, niñas y adolescentes"
+        },
+        "territory": {
+          "articles": [
+            "Artículo 286",
+            "Artículo 329",
+            "Artículo 330"
+          ],
+          "description": "Ordenamiento territorial y autonomía"
+        }
       }
     },
     "key_laws": [
       {
         "law_id": "L1448_2011",
         "name": "Ley de Víctimas y Restitución de Tierras",
-        "relevance": ["PA02", "PA05", "PA07"]
+        "date": "2011-06-10",
+        "relevance": [
+          "PA02",
+          "PA05",
+          "PA07"
+        ],
+        "description": "Marco legal para atención, asistencia y reparación integral a víctimas del conflicto armado",
+        "farfan_dimensions": [
+          "DIM01",
+          "DIM02",
+          "DIM04"
+        ]
+      },
+      {
+        "law_id": "L1257_2008",
+        "name": "Ley de No Violencias contra las Mujeres",
+        "date": "2008-12-04",
+        "relevance": [
+          "PA01",
+          "PA02"
+        ],
+        "description": "Normas de sensibilización, prevención y sanción de formas de violencia contra las mujeres",
+        "farfan_dimensions": [
+          "DIM01",
+          "DIM02",
+          "DIM03"
+        ]
       },
       {
         "law_id": "L1757_2015",
-        "name": "Ley de Cuotas de Género",
-        "relevance": ["PA01"]
+        "name": "Ley Estatutaria de Participación Ciudadana",
+        "date": "2015-07-06",
+        "relevance": [
+          "PA01",
+          "PA06"
+        ],
+        "description": "Promoción y protección del derecho a la participación democrática",
+        "farfan_dimensions": [
+          "DIM02",
+          "DIM06"
+        ]
       },
       {
-        "law_id": "L1709_2014",
-        "name": "Ley Garante de una Vida Libre de Violencias contra las Mujeres",
-        "relevance": ["PA01", "PA02"]
+        "law_id": "L1719_2014",
+        "name": "Ley de Violencia Sexual en el Conflicto Armado",
+        "date": "2014-06-18",
+        "relevance": [
+          "PA01",
+          "PA02",
+          "PA05"
+        ],
+        "description": "Medidas para garantizar acceso a la justicia a víctimas de violencia sexual",
+        "farfan_dimensions": [
+          "DIM01",
+          "DIM04"
+        ]
       },
       {
         "law_id": "L1776_2016",
-        "name": "Ruta Integral de Atención para la Prevención y Atención de Violencias Sexuales",
-        "relevance": ["PA01", "PA02"]
+        "name": "Ley de Zonas de Interés de Desarrollo Rural",
+        "date": "2016-01-29",
+        "relevance": [
+          "PA04",
+          "PA07"
+        ],
+        "description": "Instrumentos para el desarrollo rural",
+        "farfan_dimensions": [
+          "DIM02",
+          "DIM03",
+          "DIM05"
+        ]
       },
       {
-        "law_id": "L1907_2018",
-        "name": "Régimen de Reparación Integral a las Víctimas del Conflicto Armado Interno",
-        "relevance": ["PA02", "PA05"]
+        "law_id": "L1922_2018",
+        "name": "Ley de Financiamiento del Sistema de Seguridad Social",
+        "date": "2018-07-12",
+        "relevance": [
+          "PA04"
+        ],
+        "description": "Fortalecimiento de fuentes de financiamiento de servicios sociales",
+        "farfan_dimensions": [
+          "DIM01",
+          "DIM03"
+        ]
       },
       {
         "law_id": "L2046_2020",
         "name": "Ley de Defensores de Derechos Humanos",
-        "relevance": ["PA08"]
+        "date": "2020-08-06",
+        "relevance": [
+          "PA08"
+        ],
+        "description": "Protección integral a defensores de derechos humanos, líderes sociales y comunales",
+        "farfan_dimensions": [
+          "DIM01",
+          "DIM02",
+          "DIM03",
+          "DIM04"
+        ]
       },
       {
         "law_id": "L2272_2022",
-        "name": "Ley de Garantías para la Lideresa Social y Defensora de DDHH",
-        "relevance": ["PA08"]
+        "name": "Ley de Garantías para Lideresas Sociales",
+        "date": "2022-12-16",
+        "relevance": [
+          "PA01",
+          "PA08"
+        ],
+        "description": "Garantías específicas para mujeres lideresas y defensoras de DDHH",
+        "farfan_dimensions": [
+          "DIM02",
+          "DIM03"
+        ]
       },
       {
         "law_id": "L2157_2021",
-        "name": "Ley de Niñez y Adolescencia",
-        "relevance": ["PA06"]
+        "name": "Ley por medio de la cual se adopta una reforma tributaria solidaria",
+        "date": "2021-10-14",
+        "relevance": [
+          "PA04"
+        ],
+        "description": "Medidas para la reactivación económica y el empleo",
+        "farfan_dimensions": [
+          "DIM01",
+          "DIM03"
+        ]
       },
       {
         "law_id": "L2097_2021",
         "name": "Ley de Acción Climática",
-        "relevance": ["PA03"]
+        "date": "2021-07-21",
+        "relevance": [
+          "PA03"
+        ],
+        "description": "Lineamientos para adaptación y mitigación del cambio climático",
+        "farfan_dimensions": [
+          "DIM01",
+          "DIM02",
+          "DIM04",
+          "DIM05"
+        ]
+      },
+      {
+        "law_id": "L1098_2006",
+        "name": "Código de la Infancia y la Adolescencia",
+        "date": "2006-11-08",
+        "relevance": [
+          "PA06"
+        ],
+        "description": "Garantía de derechos y prevención de su amenaza o vulneración",
+        "farfan_dimensions": [
+          "DIM01",
+          "DIM02",
+          "DIM03",
+          "DIM04"
+        ]
+      },
+      {
+        "law_id": "L1709_2014",
+        "name": "Ley del Sistema Penitenciario y Carcelario",
+        "date": "2014-01-20",
+        "relevance": [
+          "PA09"
+        ],
+        "description": "Reforma al sistema penitenciario y medidas alternativas",
+        "farfan_dimensions": [
+          "DIM01",
+          "DIM02"
+        ]
+      },
+      {
+        "law_id": "L2136_2021",
+        "name": "Ley de Migración",
+        "date": "2021-08-04",
+        "relevance": [
+          "PA10"
+        ],
+        "description": "Régimen migratorio colombiano",
+        "farfan_dimensions": [
+          "DIM01",
+          "DIM02",
+          "DIM03"
+        ]
       }
     ],
     "international_treaties": [
       {
-        "treaty": "Convención Belém do Pará",
-        "year": 1995,
+        "treaty": "Convención de Belém do Pará",
+        "full_name": "Convención Interamericana para Prevenir, Sancionar y Erradicar la Violencia contra la Mujer",
+        "year": 1994,
         "ratification_year": 1996,
-        "relevance": ["PA01", "PA02"]
+        "relevance": [
+          "PA01",
+          "PA02"
+        ],
+        "status": "vigente"
       },
       {
         "treaty": "CEDAW",
+        "full_name": "Convención sobre la Eliminación de Todas las Formas de Discriminación contra la Mujer",
         "year": 1979,
         "ratification_year": 1981,
-        "relevance": ["PA01"]
+        "relevance": [
+          "PA01"
+        ],
+        "status": "vigente"
       },
       {
-        "treaty": "Acuerdo de Paz",
+        "treaty": "Convención sobre los Derechos del Niño",
+        "year": 1989,
+        "ratification_year": 1991,
+        "relevance": [
+          "PA06"
+        ],
+        "status": "vigente"
+      },
+      {
+        "treaty": "Acuerdo de Escazú",
+        "full_name": "Acuerdo Regional sobre el Acceso a la Información, la Participación Pública y el Acceso a la Justicia en Asuntos Ambientales en América Latina y el Caribe",
+        "year": 2018,
+        "ratification_year": 2023,
+        "relevance": [
+          "PA03",
+          "PA08"
+        ],
+        "status": "vigente"
+      },
+      {
+        "treaty": "Acuerdo de París",
+        "full_name": "Acuerdo de París sobre Cambio Climático",
+        "year": 2015,
+        "ratification_year": 2016,
+        "relevance": [
+          "PA03"
+        ],
+        "status": "vigente",
+        "ndc_commitment": "Reducción del 51% de emisiones GEI para 2030"
+      },
+      {
+        "treaty": "Acuerdo Final para la Terminación del Conflicto",
         "year": 2016,
         "type": "Peace Agreement",
-        "relevance": ["PA02", "PA05", "PA07"]
+        "relevance": [
+          "PA02",
+          "PA05",
+          "PA07",
+          "PA08"
+        ],
+        "status": "en implementación",
+        "implementation_percentage": 32
+      },
+      {
+        "treaty": "Pacto de San José",
+        "full_name": "Convención Americana sobre Derechos Humanos",
+        "year": 1969,
+        "ratification_year": 1973,
+        "relevance": [
+          "PA01",
+          "PA02",
+          "PA05",
+          "PA06",
+          "PA08",
+          "PA09"
+        ],
+        "status": "vigente"
       }
-    ]
+    ],
+    "jurisprudence": {
+      "constitutional_court": [
+        {
+          "sentence": "T-025 de 2004",
+          "topic": "Estado de Cosas Inconstitucional - Desplazamiento Forzado",
+          "relevance": [
+            "PA02",
+            "PA05",
+            "PA07"
+          ]
+        },
+        {
+          "sentence": "C-754 de 2015",
+          "topic": "Matrimonio igualitario",
+          "relevance": [
+            "PA01"
+          ]
+        },
+        {
+          "sentence": "SU-599 de 2019",
+          "topic": "Consulta previa a comunidades étnicas",
+          "relevance": [
+            "PA07"
+          ]
+        },
+        {
+          "sentence": "T-388 de 2013",
+          "topic": "Derechos de personas privadas de la libertad",
+          "relevance": [
+            "PA09"
+          ]
+        }
+      ]
+    }
   },
-
   "institutional_framework": {
     "executive_branch": {
-      "description": "Entidades del nivel central y territorial",
+      "description": "Entidades del nivel central y territorial responsables de la implementación de políticas públicas",
       "national_level": [
         {
           "entity_id": "DNP",
           "name": "Departamento Nacional de Planeación",
-          "role": "planificación y coordinación"
+          "role": "Planificación, coordinación y seguimiento de políticas públicas",
+          "relevant_pa": [
+            "ALL"
+          ],
+          "farfan_role": "Fuente principal para DIM01, DIM06"
         },
         {
           "entity_id": "MINTIC",
           "name": "Ministerio de Tecnologías de la Información y Comunicaciones",
-          "role": "política digital"
+          "role": "Política digital y conectividad",
+          "relevant_pa": [
+            "PA04"
+          ],
+          "farfan_role": "DIM02, DIM03"
         },
         {
           "entity_id": "MINHACIENDA",
           "name": "Ministerio de Hacienda y Crédito Público",
-          "role": "política fiscal"
+          "role": "Política fiscal y presupuestal",
+          "relevant_pa": [
+            "ALL"
+          ],
+          "farfan_role": "Fuente para DIM01 (recursos), DIM03 (trazabilidad presupuestal)"
+        },
+        {
+          "entity_id": "DANE",
+          "name": "Departamento Administrativo Nacional de Estadística",
+          "role": "Producción y difusión de información estadística oficial",
+          "relevant_pa": [
+            "ALL"
+          ],
+          "farfan_role": "Fuente primaria para líneas base (DIM01)"
         }
       ],
-      "sectorial_ministries": [
-        {"id": "MININTERIOR", "name": "Ministerio del Interior", "pa": ["PA01", "PA06"]},
-        {"id": "MINMUJER", "name": "Ministerio de la Mujer", "pa": ["PA01"]},
-        {"id": "MINDEFENSA", "name": "Ministerio de Defensa", "pa": ["PA02", "PA07"]},
-        {"id": "MINAMBIENTE", "name": "Ministerio de Ambiente", "pa": ["PA03"]},
-        {"id": "MINTRABAJO", "name": "Ministerio del Trabajo", "pa": ["PA04"]},
-        {"id": "MINJUSTICIA", "name": "Ministerio de Justicia", "pa": ["PA09"]},
-        {"id": "MINRELACIONES", "name": "Ministerio de Relaciones Exteriores", "pa": ["PA10"]}
+      "sectoral_ministries": [
+        {
+          "id": "MININTERIOR",
+          "name": "Ministerio del Interior",
+          "pa": [
+            "PA01",
+            "PA06",
+            "PA08"
+          ],
+          "programs": [
+            "Sistema de Alertas Tempranas",
+            "Programa de Prevención Electoral"
+          ],
+          "farfan_dimensions": [
+            "DIM02",
+            "DIM03"
+          ]
+        },
+        {
+          "id": "MINMUJER",
+          "name": "Ministerio de la Igualdad y Equidad",
+          "pa": [
+            "PA01"
+          ],
+          "programs": [
+            "Estrategia Integral de Prevención de VBG",
+            "Observatorio de Género"
+          ],
+          "farfan_dimensions": [
+            "DIM01",
+            "DIM02",
+            "DIM04"
+          ]
+        },
+        {
+          "id": "MINDEFENSA",
+          "name": "Ministerio de Defensa Nacional",
+          "pa": [
+            "PA02",
+            "PA07"
+          ],
+          "programs": [
+            "Política de Seguridad y Convivencia",
+            "Desminado Humanitario"
+          ],
+          "farfan_dimensions": [
+            "DIM02",
+            "DIM03",
+            "DIM04"
+          ]
+        },
+        {
+          "id": "MINAMBIENTE",
+          "name": "Ministerio de Ambiente y Desarrollo Sostenible",
+          "pa": [
+            "PA03"
+          ],
+          "programs": [
+            "Estrategia Nacional de Cambio Climático",
+            "Plan Nacional de Restauración Ecológica"
+          ],
+          "farfan_dimensions": [
+            "DIM01",
+            "DIM02",
+            "DIM04",
+            "DIM05"
+          ]
+        },
+        {
+          "id": "MINTRABAJO",
+          "name": "Ministerio del Trabajo",
+          "pa": [
+            "PA04"
+          ],
+          "programs": [
+            "Plan Nacional de Empleo",
+            "Sistema de Protección al Cesante"
+          ],
+          "farfan_dimensions": [
+            "DIM02",
+            "DIM03"
+          ]
+        },
+        {
+          "id": "MINEDUCACION",
+          "name": "Ministerio de Educación Nacional",
+          "pa": [
+            "PA04",
+            "PA06"
+          ],
+          "programs": [
+            "Plan Nacional de Desarrollo Educativo",
+            "Programa de Alimentación Escolar"
+          ],
+          "farfan_dimensions": [
+            "DIM02",
+            "DIM03",
+            "DIM04"
+          ]
+        },
+        {
+          "id": "MINSALUD",
+          "name": "Ministerio de Salud y Protección Social",
+          "pa": [
+            "PA04",
+            "PA06"
+          ],
+          "programs": [
+            "Plan Decenal de Salud Pública",
+            "Programa de Salud Mental"
+          ],
+          "farfan_dimensions": [
+            "DIM01",
+            "DIM02",
+            "DIM03",
+            "DIM04"
+          ]
+        },
+        {
+          "id": "MINJUSTICIA",
+          "name": "Ministerio de Justicia y del Derecho",
+          "pa": [
+            "PA09"
+          ],
+          "programs": [
+            "Política Penitenciaria y Carcelaria",
+            "Justicia Transicional"
+          ],
+          "farfan_dimensions": [
+            "DIM01",
+            "DIM02"
+          ]
+        },
+        {
+          "id": "MINRELACIONES",
+          "name": "Ministerio de Relaciones Exteriores",
+          "pa": [
+            "PA10"
+          ],
+          "programs": [
+            "Política Migratoria",
+            "Asistencia a Colombianos en el Exterior"
+          ],
+          "farfan_dimensions": [
+            "DIM02",
+            "DIM03"
+          ]
+        },
+        {
+          "id": "MINVIVIENDA",
+          "name": "Ministerio de Vivienda, Ciudad y Territorio",
+          "pa": [
+            "PA04",
+            "PA07"
+          ],
+          "programs": [
+            "Programa Nacional de Vivienda de Interés Social",
+            "Agua Potable y Saneamiento Básico"
+          ],
+          "farfan_dimensions": [
+            "DIM02",
+            "DIM03",
+            "DIM04"
+          ]
+        }
       ]
     },
     "special_entities": [
       {
         "entity_id": "CONPES",
         "name": "Consejo Nacional de Política Económica y Social",
-        "role": "política intersectorial"
+        "role": "Máximo organismo de coordinación de política económica y social",
+        "relevant_pa": [
+          "ALL"
+        ],
+        "farfan_role": "Fuente de políticas transversales (DIM06)"
       },
       {
-        "entity_id": "CONPESD",
-        "name": "Consejo Nacional de Seguridad y Defensa",
-        "role": "política de seguridad"
+        "entity_id": "UARIV",
+        "name": "Unidad para las Víctimas",
+        "role": "Coordinación del Sistema Nacional de Atención y Reparación Integral a las Víctimas",
+        "relevant_pa": [
+          "PA02",
+          "PA05"
+        ],
+        "farfan_role": "DIM01 (RUV), DIM02, DIM03, DIM04"
       },
       {
-        "entity_id": "CNR",
-        "name": "Comisión Nacional de Reparación",
-        "role": "política de víctimas"
+        "entity_id": "UNP",
+        "name": "Unidad Nacional de Protección",
+        "role": "Protección de personas en situación de riesgo extraordinario",
+        "relevant_pa": [
+          "PA08"
+        ],
+        "farfan_role": "DIM02, DIM03"
       },
       {
-        "entity_id": "CNRR",
-        "name": "Comisión Nacional de Búsqueda de Personas dadas por Desaparecidas",
-        "role": "búsqueda de desaparecidos"
+        "entity_id": "ANT",
+        "name": "Agencia Nacional de Tierras",
+        "role": "Gestión integral de tierras rurales",
+        "relevant_pa": [
+          "PA07"
+        ],
+        "farfan_role": "DIM01, DIM02, DIM03"
       },
       {
-        "entity_id": "UMPJ",
-        "name": "Unidad de Búsqueda de Personas dadas por Desaparecidas",
-        "role": "búsqueda de desaparecidos"
+        "entity_id": "ICBF",
+        "name": "Instituto Colombiano de Bienestar Familiar",
+        "role": "Protección integral de niñez y adolescencia",
+        "relevant_pa": [
+          "PA06"
+        ],
+        "farfan_role": "DIM01, DIM02, DIM03, DIM04"
       },
       {
-        "entity_id": "CNAI",
-        "name": "Comisión de Seguimiento y Monitoreo",
-        "role": "implementación del Acuerdo de Paz"
+        "entity_id": "INPEC",
+        "name": "Instituto Nacional Penitenciario y Carcelario",
+        "role": "Administración del sistema penitenciario",
+        "relevant_pa": [
+          "PA09"
+        ],
+        "farfan_role": "DIM01, DIM02"
+      },
+      {
+        "entity_id": "MIGCOL",
+        "name": "Migración Colombia",
+        "role": "Control migratorio y gestión de flujos migratorios",
+        "relevant_pa": [
+          "PA10"
+        ],
+        "farfan_role": "DIM01, DIM02, DIM03"
+      },
+      {
+        "entity_id": "CEV",
+        "name": "Comisión para el Esclarecimiento de la Verdad",
+        "role": "Esclarecimiento de patrones y contextos del conflicto armado",
+        "relevant_pa": [
+          "PA05"
+        ],
+        "farfan_role": "DIM01, DIM05",
+        "status": "finalizada_2022",
+        "informe_final": "Hay Futuro si hay Verdad"
+      },
+      {
+        "entity_id": "JEP",
+        "name": "Jurisdicción Especial para la Paz",
+        "role": "Justicia transicional para crímenes del conflicto",
+        "relevant_pa": [
+          "PA05"
+        ],
+        "farfan_role": "DIM04, DIM05"
+      },
+      {
+        "entity_id": "UBPD",
+        "name": "Unidad de Búsqueda de Personas Dadas por Desaparecidas",
+        "role": "Búsqueda humanitaria de personas desaparecidas",
+        "relevant_pa": [
+          "PA05"
+        ],
+        "farfan_role": "DIM02, DIM03, DIM04"
+      }
+    ],
+    "control_entities": [
+      {
+        "entity_id": "CGR",
+        "name": "Contraloría General de la República",
+        "role": "Control fiscal",
+        "farfan_role": "Verificación de DIM03 (trazabilidad presupuestal)"
+      },
+      {
+        "entity_id": "PGN",
+        "name": "Procuraduría General de la Nación",
+        "role": "Control disciplinario y vigilancia de gestión pública",
+        "farfan_role": "Monitoreo de DIM04, DIM06"
+      },
+      {
+        "entity_id": "DEFENSORIA",
+        "name": "Defensoría del Pueblo",
+        "role": "Protección y promoción de derechos humanos",
+        "farfan_role": "Fuente de información para DIM01, evaluación de DIM04"
       }
     ]
   },
-
   "development_plans": {
     "national_development_plan": {
       "acronym": "PND",
       "current_period": "2022-2026",
       "name": "Colombia Potencia Mundial de la Vida",
+      "legal_base": "Ley 2294 de 2023",
       "pillars": [
-        "Pilar 1: Derechos sociales y seguridad social integral",
-        "Pilar 2: Derechos humanos, seguridad y convivencia",
-        "Pilar 3: Crecimiento económico con productividad y competitividad",
-        "Pilar 4: Transformación climática y sostenibilidad ambiental",
-        "Pilar 5: Paz y legitimidad",
-        "Pilar 6: Desarrollo regional equilibrado"
-      ]
+        {
+          "pilar_id": "P1",
+          "name": "Ordenamiento del territorio alrededor del agua y justicia ambiental",
+          "relevant_pa": [
+            "PA03",
+            "PA07"
+          ]
+        },
+        {
+          "pilar_id": "P2",
+          "name": "Seguridad humana y justicia social",
+          "relevant_pa": [
+            "PA01",
+            "PA02",
+            "PA04",
+            "PA06"
+          ]
+        },
+        {
+          "pilar_id": "P3",
+          "name": "Derecho humano a la alimentación",
+          "relevant_pa": [
+            "PA04",
+            "PA07"
+          ]
+        },
+        {
+          "pilar_id": "P4",
+          "name": "Transformación productiva, internacionalización y acción climática",
+          "relevant_pa": [
+            "PA03",
+            "PA04"
+          ]
+        },
+        {
+          "pilar_id": "P5",
+          "name": "Convergencia regional",
+          "relevant_pa": [
+            "ALL"
+          ]
+        }
+      ],
+      "transformations": [
+        {
+          "trans_id": "T1",
+          "name": "Ordenamiento del territorio alrededor del agua",
+          "relevant_dimensions": [
+            "DIM05",
+            "DIM06"
+          ]
+        },
+        {
+          "trans_id": "T2",
+          "name": "Seguridad humana para la vida y la paz",
+          "relevant_dimensions": [
+            "DIM04",
+            "DIM05"
+          ]
+        },
+        {
+          "trans_id": "T3",
+          "name": "Derecho humano a la alimentación",
+          "relevant_dimensions": [
+            "DIM04",
+            "DIM05"
+          ]
+        },
+        {
+          "trans_id": "T4",
+          "name": "Transformación productiva, internacionalización y acción climática",
+          "relevant_dimensions": [
+            "DIM05"
+          ]
+        },
+        {
+          "trans_id": "T5",
+          "name": "Convergencia regional",
+          "relevant_dimensions": [
+            "DIM05",
+            "DIM06"
+          ]
+        }
+      ],
+      "investment_plan": {
+        "total_amount": 1512700000000000,
+        "currency": "COP",
+        "sources": [
+          {
+            "source": "Presupuesto General de la Nación",
+            "percentage": 51.2
+          },
+          {
+            "source": "Sistema General de Participaciones",
+            "percentage": 26.8
+          },
+          {
+            "source": "Recursos propios territoriales",
+            "percentage": 14.3
+          },
+          {
+            "source": "Cooperación internacional",
+            "percentage": 4.2
+          },
+          {
+            "source": "Otros",
+            "percentage": 3.5
+          }
+        ]
+      }
     },
     "sectoral_plans": [
       {
-        "plan_id": "PNPSV",
-        "name": "Política Nacional de Seguridad y Convivencia",
-        "period": "2022-2032"
+        "plan_id": "PDET",
+        "name": "Programas de Desarrollo con Enfoque Territorial",
+        "period": "2017-2027",
+        "municipalities": 170,
+        "relevant_pa": [
+          "PA02",
+          "PA05",
+          "PA07"
+        ],
+        "legal_base": "Decreto 893 de 2017"
       },
       {
-        "plan_id": "PNG",
-        "name": "Política Nacional de Género",
-        "period": "2023-2027"
+        "plan_id": "CONPES_161",
+        "name": "CONPES 161 - Política de Igualdad de Mujeres",
+        "period": "2013-2023",
+        "relevant_pa": [
+          "PA01"
+        ],
+        "status": "finalizado"
       },
       {
-        "plan_id": "CONPES",
-        "name": "CONPES de Niñez y Adolescencia",
-        "period": "2023-2035"
+        "plan_id": "CONPES_4080",
+        "name": "CONPES 4080 - Política de Prevención del Reclutamiento",
+        "period": "2022-2032",
+        "relevant_pa": [
+          "PA02",
+          "PA06"
+        ],
+        "farfan_role": "Referencia para DIM02, DIM04"
       },
       {
-        "plan_id": "PISGVA",
-        "name": "Plan Integral de Sustitución de Cultivos Ilícitos",
-        "period": "2023-2033"
+        "plan_id": "CONPES_4021",
+        "name": "CONPES 4021 - Política para la Reincorporación de Excombatientes",
+        "period": "2020-2030",
+        "relevant_pa": [
+          "PA05"
+        ],
+        "farfan_role": "DIM02, DIM04, DIM05"
+      },
+      {
+        "plan_id": "PNS_2022-2031",
+        "name": "Plan Decenal de Salud Pública",
+        "period": "2022-2031",
+        "relevant_pa": [
+          "PA04",
+          "PA06"
+        ],
+        "farfan_role": "DIM02, DIM04"
       }
     ]
   },
-
   "key_statistics": {
     "violence_indicators": {
       "homicide_rate": {
         "value": 25.8,
         "unit": "por 100.000 habitantes",
         "year": 2022,
-        "source": "INMLCF"
+        "source": "INMLCF",
+        "trend": "decreasing",
+        "historical": [
+          {
+            "year": 2020,
+            "value": 24.7
+          },
+          {
+            "year": 2021,
+            "value": 25.2
+          },
+          {
+            "year": 2022,
+            "value": 25.8
+          }
+        ]
       },
       "femicide_rate": {
         "value": 0.69,
         "unit": "por 100.000 mujeres",
         "year": 2022,
-        "source": "INMLCF"
+        "source": "INMLCF",
+        "trend": "stable",
+        "historical": [
+          {
+            "year": 2020,
+            "value": 0.71
+          },
+          {
+            "year": 2021,
+            "value": 0.68
+          },
+          {
+            "year": 2022,
+            "value": 0.69
+          }
+        ]
       },
-      "disappeared_population": {
-        "value": 120000,
+      "displaced_population": {
+        "total": 9100000,
         "year": 2023,
-        "source": "CNRR"
+        "source": "RUV - UARIV",
+        "active_registry": 8200000,
+        "trend": "increasing",
+        "relevant_pa": [
+          "PA02",
+          "PA05",
+          "PA07"
+        ]
+      },
+      "violence_against_leaders": {
+        "homicides": 188,
+        "year": 2022,
+        "source": "Defensoría del Pueblo",
+        "trend": "increasing",
+        "relevant_pa": [
+          "PA08"
+        ]
+      },
+      "sexual_violence_conflict": {
+        "registered_victims": 34000,
+        "year": 2023,
+        "source": "RUV",
+        "underreporting_estimate": "90%",
+        "relevant_pa": [
+          "PA01",
+          "PA02",
+          "PA05"
+        ]
+      },
+      "landmines_victims": {
+        "annual": 234,
+        "year": 2022,
+        "source": "AICMA",
+        "trend": "decreasing",
+        "relevant_pa": [
+          "PA02",
+          "PA05"
+        ]
       }
     },
     "gender_indicators": {
@@ -254,13 +1091,55 @@
         "value": 52.4,
         "unit": "porcentaje",
         "year": 2022,
-        "source": "DANE"
+        "source": "DANE",
+        "trend": "stable",
+        "gap_with_men": 20.3,
+        "relevant_pa": [
+          "PA01",
+          "PA04"
+        ]
       },
       "gender_wage_gap": {
         "value": 14.8,
         "unit": "porcentaje",
         "year": 2022,
-        "source": "DANE"
+        "source": "DANE",
+        "trend": "decreasing_slowly",
+        "relevant_pa": [
+          "PA01",
+          "PA04"
+        ]
+      },
+      "women_political_participation": {
+        "congress_percentage": 29.1,
+        "municipal_councils_percentage": 18.7,
+        "mayors_percentage": 13.2,
+        "year": 2023,
+        "source": "Registraduría Nacional",
+        "relevant_pa": [
+          "PA01"
+        ]
+      },
+      "teenage_pregnancy_rate": {
+        "value": 17.1,
+        "unit": "por 1000 mujeres 15-19 años",
+        "year": 2022,
+        "source": "DANE",
+        "trend": "decreasing",
+        "relevant_pa": [
+          "PA01",
+          "PA06"
+        ]
+      },
+      "violence_against_women_reports": {
+        "total": 51000,
+        "year": 2022,
+        "source": "Fiscalía General",
+        "conviction_rate": 8.3,
+        "relevant_pa": [
+          "PA01",
+          "PA02"
+        ]
       }
     },
     "environmental_indicators": {
@@ -268,47 +1147,752 @@
         "value": 117000,
         "unit": "hectáreas",
         "year": 2022,
-        "source": "IDEAM"
+        "source": "IDEAM",
+        "trend": "decreasing",
+        "hotspots": [
+          "Amazonía",
+          "Pacífico"
+        ],
+        "relevant_pa": [
+          "PA03",
+          "PA07"
+        ]
       },
       "ghg_emissions": {
         "value": 280,
         "unit": "millones de toneladas CO2eq",
         "year": 2021,
-        "source": "IDEAM"
+        "source": "IDEAM",
+        "trend": "stable",
+        "per_capita": 5.4,
+        "relevant_pa": [
+          "PA03"
+        ]
+      },
+      "protected_areas_coverage": {
+        "value": 15.4,
+        "unit": "porcentaje del territorio",
+        "year": 2023,
+        "source": "PNN",
+        "relevant_pa": [
+          "PA03"
+        ]
+      },
+      "water_access": {
+        "urban": 97.2,
+        "rural": 73.8,
+        "unit": "porcentaje",
+        "year": 2022,
+        "source": "DANE",
+        "relevant_pa": [
+          "PA03",
+          "PA04"
+        ]
+      },
+      "climate_vulnerability_index": {
+        "value": 6.8,
+        "scale": "0-10",
+        "year": 2023,
+        "source": "IDEAM",
+        "relevant_pa": [
+          "PA03"
+        ]
+      }
+    },
+    "social_indicators": {
+      "multidimensional_poverty": {
+        "national": 12.9,
+        "urban": 9.4,
+        "rural": 25.4,
+        "unit": "porcentaje",
+        "year": 2022,
+        "source": "DANE",
+        "relevant_pa": [
+          "PA04"
+        ]
+      },
+      "monetary_poverty": {
+        "national": 36.6,
+        "urban": 32.6,
+        "rural": 47.9,
+        "unit": "porcentaje",
+        "year": 2022,
+        "source": "DANE",
+        "relevant_pa": [
+          "PA04"
+        ]
+      },
+      "gini_coefficient": {
+        "value": 0.556,
+        "year": 2022,
+        "source": "DANE",
+        "trend": "stable",
+        "relevant_pa": [
+          "PA04"
+        ]
+      },
+      "unemployment_rate": {
+        "value": 11.2,
+        "year": 2023,
+        "source": "DANE",
+        "youth_unemployment": 21.8,
+        "women_unemployment": 13.4,
+        "relevant_pa": [
+          "PA04"
+        ]
+      },
+      "informal_employment": {
+        "value": 58.3,
+        "unit": "porcentaje",
+        "year": 2023,
+        "source": "DANE",
+        "relevant_pa": [
+          "PA04"
+        ]
+      },
+      "health_coverage": {
+        "value": 99.8,
+        "unit": "porcentaje",
+        "year": 2023,
+        "source": "MinSalud",
+        "relevant_pa": [
+          "PA04"
+        ]
+      },
+      "education_coverage": {
+        "preschool": 78.2,
+        "primary": 88.3,
+        "secondary": 76.8,
+        "unit": "porcentaje",
+        "year": 2022,
+        "source": "MinEducación",
+        "relevant_pa": [
+          "PA04",
+          "PA06"
+        ]
+      }
+    },
+    "children_and_youth_indicators": {
+      "child_labor": {
+        "value": 3.7,
+        "unit": "porcentaje niños 5-17 años",
+        "year": 2022,
+        "source": "DANE",
+        "relevant_pa": [
+          "PA06"
+        ]
+      },
+      "recruitment_by_armed_groups": {
+        "verified_cases": 147,
+        "year": 2022,
+        "source": "ICBF",
+        "underreporting_estimate": "high",
+        "relevant_pa": [
+          "PA02",
+          "PA06"
+        ]
+      },
+      "children_protective_system": {
+        "total_under_protection": 42000,
+        "year": 2023,
+        "source": "ICBF",
+        "relevant_pa": [
+          "PA06"
+        ]
+      },
+      "youth_unemployment": {
+        "value": 21.8,
+        "unit": "porcentaje 14-28 años",
+        "year": 2023,
+        "source": "DANE",
+        "relevant_pa": [
+          "PA04",
+          "PA06"
+        ]
+      },
+      "school_dropout_rate": {
+        "primary": 2.3,
+        "secondary": 4.7,
+        "year": 2022,
+        "source": "MinEducación",
+        "relevant_pa": [
+          "PA06"
+        ]
+      }
+    },
+    "victims_indicators": {
+      "total_registered_victims": {
+        "value": 9600000,
+        "year": 2023,
+        "source": "RUV",
+        "active": 8200000,
+        "relevant_pa": [
+          "PA05"
+        ]
+      },
+      "victims_by_type": {
+        "displacement": 8100000,
+        "homicide": 1200000,
+        "disappearance": 350000,
+        "kidnapping": 45000,
+        "sexual_violence": 34000,
+        "torture": 12000,
+        "recruitment": 9000,
+        "year": 2023,
+        "source": "RUV",
+        "relevant_pa": [
+          "PA02",
+          "PA05"
+        ]
+      },
+      "reparation_measures": {
+        "indemnization_delivered": 980000,
+        "land_restitution_sentences": 7800,
+        "year": 2023,
+        "source": "UARIV",
+        "relevant_pa": [
+          "PA05",
+          "PA07"
+        ]
+      },
+      "psychosocial_attention": {
+        "papsivi_beneficiaries": 125000,
+        "year": 2023,
+        "source": "UARIV",
+        "relevant_pa": [
+          "PA05"
+        ]
+      }
+    },
+    "land_and_territory_indicators": {
+      "land_concentration_gini": {
+        "value": 0.897,
+        "year": 2021,
+        "source": "IGAC",
+        "trend": "stable_high",
+        "relevant_pa": [
+          "PA07"
+        ]
+      },
+      "formalized_land_ownership": {
+        "value": 41.2,
+        "unit": "porcentaje de predios rurales",
+        "year": 2022,
+        "source": "ANT",
+        "relevant_pa": [
+          "PA07"
+        ]
+      },
+      "land_restitution_claims": {
+        "received": 125000,
+        "resolved": 7800,
+        "year": 2023,
+        "source": "URT",
+        "relevant_pa": [
+          "PA05",
+          "PA07"
+        ]
+      },
+      "indigenous_territories_titled": {
+        "value": 34000000,
+        "unit": "hectáreas",
+        "percentage_national_territory": 29.8,
+        "year": 2023,
+        "source": "ANT",
+        "relevant_pa": [
+          "PA07"
+        ]
+      },
+      "collective_territories_afro": {
+        "value": 6000000,
+        "unit": "hectáreas",
+        "year": 2023,
+        "source": "ANT",
+        "relevant_pa": [
+          "PA07"
+        ]
+      },
+      "illicit_crops": {
+        "coca": 230000,
+        "unit": "hectáreas",
+        "year": 2022,
+        "source": "UNODC",
+        "trend": "increasing",
+        "relevant_pa": [
+          "PA02",
+          "PA03",
+          "PA07"
+        ]
+      }
+    },
+    "prison_indicators": {
+      "total_prison_population": {
+        "value": 97000,
+        "year": 2023,
+        "source": "INPEC",
+        "capacity": 82000,
+        "overcrowding": 118.3,
+        "relevant_pa": [
+          "PA09"
+        ]
+      },
+      "pretrial_detention_rate": {
+        "value": 37.2,
+        "unit": "porcentaje",
+        "year": 2023,
+        "source": "INPEC",
+        "relevant_pa": [
+          "PA09"
+        ]
+      },
+      "women_in_prison": {
+        "value": 5800,
+        "percentage": 6.0,
+        "year": 2023,
+        "source": "INPEC",
+        "relevant_pa": [
+          "PA01",
+          "PA09"
+        ]
+      },
+      "prison_deaths": {
+        "total": 267,
+        "year": 2022,
+        "source": "INPEC",
+        "relevant_pa": [
+          "PA09"
+        ]
+      },
+      "resocialization_programs": {
+        "beneficiaries": 34000,
+        "percentage": 35.1,
+        "year": 2023,
+        "source": "INPEC",
+        "relevant_pa": [
+          "PA09"
+        ]
       }
     },
     "migration_indicators": {
       "venezuelan_migrants": {
         "value": 2850000,
         "year": 2023,
-        "source": "Migración Colombia"
+        "source": "Migración Colombia",
+        "regularized": 1600000,
+        "trend": "stable",
+        "relevant_pa": [
+          "PA10"
+        ]
+      },
+      "temporary_protection_status": {
+        "beneficiaries": 1800000,
+        "year": 2023,
+        "source": "Migración Colombia",
+        "relevant_pa": [
+          "PA10"
+        ]
+      },
+      "refugee_applications": {
+        "pending": 45000,
+        "year": 2023,
+        "source": "ACNUR",
+        "relevant_pa": [
+          "PA10"
+        ]
+      },
+      "migrant_children_education": {
+        "enrolled": 620000,
+        "year": 2023,
+        "source": "MinEducación",
+        "relevant_pa": [
+          "PA06",
+          "PA10"
+        ]
+      },
+      "colombians_abroad": {
+        "value": 5000000,
+        "year": 2023,
+        "source": "MinRelaciones Exteriores",
+        "relevant_pa": [
+          "PA10"
+        ]
+      }
+    },
+    "leaders_and_defenders_indicators": {
+      "human_rights_defenders_killed": {
+        "value": 188,
+        "year": 2022,
+        "source": "Defensoría del Pueblo",
+        "trend": "increasing",
+        "relevant_pa": [
+          "PA08"
+        ]
+      },
+      "threats_against_defenders": {
+        "reported": 1247,
+        "year": 2022,
+        "source": "Defensoría del Pueblo",
+        "relevant_pa": [
+          "PA08"
+        ]
+      },
+      "protection_measures_active": {
+        "value": 11500,
+        "year": 2023,
+        "source": "UNP",
+        "beneficiaries_types": {
+          "leaders": 4200,
+          "journalists": 380,
+          "trade_unionists": 890,
+          "other": 6030
+        },
+        "relevant_pa": [
+          "PA08"
+        ]
+      },
+      "environmental_defenders_at_risk": {
+        "value": 89,
+        "year": 2022,
+        "source": "Global Witness",
+        "ranking": "most_dangerous_country",
+        "relevant_pa": [
+          "PA03",
+          "PA08"
+        ]
       }
     }
   },
-
+  "baseline_data_sources": {
+    "description": "Fuentes oficiales de líneas base para DIM01",
+    "national_sources": [
+      {
+        "source_id": "DANE",
+        "name": "Departamento Administrativo Nacional de Estadística",
+        "datasets": [
+          {
+            "name": "Censo Nacional de Población y Vivienda",
+            "year": 2018,
+            "pa": [
+              "ALL"
+            ]
+          },
+          {
+            "name": "Gran Encuesta Integrada de Hogares",
+            "frequency": "trimestral",
+            "pa": [
+              "PA04"
+            ]
+          },
+          {
+            "name": "Encuesta de Calidad de Vida",
+            "frequency": "anual",
+            "pa": [
+              "PA04"
+            ]
+          },
+          {
+            "name": "Estadísticas Vitales",
+            "frequency": "anual",
+            "pa": [
+              "PA04",
+              "PA06"
+            ]
+          }
+        ],
+        "reliability": "high",
+        "farfan_role": "Fuente primaria DIM01"
+      },
+      {
+        "source_id": "RUV",
+        "name": "Registro Único de Víctimas",
+        "managing_entity": "UARIV",
+        "datasets": [
+          {
+            "name": "Registro de víctimas del conflicto",
+            "update": "continua",
+            "pa": [
+              "PA02",
+              "PA05"
+            ]
+          }
+        ],
+        "reliability": "high",
+        "farfan_role": "Fuente primaria DIM01 para PA05"
+      },
+      {
+        "source_id": "SISBEN",
+        "name": "Sistema de Identificación de Potenciales Beneficiarios",
+        "managing_entity": "DNP",
+        "datasets": [
+          {
+            "name": "Registro socioeconómico de hogares",
+            "version": "IV",
+            "pa": [
+              "PA04"
+            ]
+          }
+        ],
+        "reliability": "high",
+        "farfan_role": "Fuente DIM01 para focalización"
+      },
+      {
+        "source_id": "SIVIGILA",
+        "name": "Sistema Nacional de Vigilancia en Salud Pública",
+        "managing_entity": "INS",
+        "datasets": [
+          {
+            "name": "Vigilancia epidemiológica",
+            "update": "semanal",
+            "pa": [
+              "PA04"
+            ]
+          }
+        ],
+        "reliability": "high",
+        "farfan_role": "Fuente DIM01 para salud pública"
+      },
+      {
+        "source_id": "INMLCF",
+        "name": "Instituto Nacional de Medicina Legal",
+        "datasets": [
+          {
+            "name": "Forensis - Datos sobre violencia",
+            "frequency": "anual",
+            "pa": [
+              "PA01",
+              "PA02"
+            ]
+          },
+          {
+            "name": "Registro de feminicidios",
+            "frequency": "anual",
+            "pa": [
+              "PA01"
+            ]
+          }
+        ],
+        "reliability": "high",
+        "farfan_role": "Fuente DIM01 para violencia"
+      },
+      {
+        "source_id": "IDEAM",
+        "name": "Instituto de Hidrología, Meteorología y Estudios Ambientales",
+        "datasets": [
+          {
+            "name": "Sistema de Monitoreo de Bosques",
+            "frequency": "anual",
+            "pa": [
+              "PA03"
+            ]
+          },
+          {
+            "name": "Inventario Nacional de GEI",
+            "frequency": "bienal",
+            "pa": [
+              "PA03"
+            ]
+          }
+        ],
+        "reliability": "high",
+        "farfan_role": "Fuente DIM01 para ambiente"
+      }
+    ],
+    "specialized_sources": [
+      {
+        "source_id": "OBSERVATORIO_GENERO",
+        "name": "Observatorio de Asuntos de Género",
+        "managing_entity": "Consejería Presidencial para la Equidad de la Mujer",
+        "pa": [
+          "PA01"
+        ],
+        "farfan_role": "Fuente DIM01, DIM04 para género"
+      },
+      {
+        "source_id": "SAT",
+        "name": "Sistema de Alertas Tempranas",
+        "managing_entity": "Defensoría del Pueblo",
+        "pa": [
+          "PA02",
+          "PA08"
+        ],
+        "farfan_role": "Fuente DIM01 para riesgos"
+      },
+      {
+        "source_id": "OACP",
+        "name": "Observatorio de Acción Climática Participativa",
+        "managing_entity": "MinAmbiente",
+        "pa": [
+          "PA03"
+        ],
+        "farfan_role": "Fuente DIM01, DIM04 para clima"
+      }
+    ]
+  },
+  "budgetary_instruments": {
+    "description": "Instrumentos presupuestales relevantes para DIM01 (recursos) y DIM03 (trazabilidad)",
+    "national_instruments": [
+      {
+        "instrument_id": "PGN",
+        "name": "Presupuesto General de la Nación",
+        "managing_entity": "MinHacienda",
+        "frequency": "anual",
+        "farfan_role": "Fuente primaria DIM01-Q3, DIM03-Q3"
+      },
+      {
+        "instrument_id": "BPIN",
+        "name": "Banco de Proyectos de Inversión Nacional",
+        "managing_entity": "DNP",
+        "farfan_role": "Trazabilidad DIM03-Q3"
+      },
+      {
+        "instrument_id": "SGP",
+        "name": "Sistema General de Participaciones",
+        "components": [
+          "Educación",
+          "Salud",
+          "Agua Potable",
+          "Propósito General"
+        ],
+        "farfan_role": "Fuente DIM01-Q3 nivel territorial"
+      },
+      {
+        "instrument_id": "SGR",
+        "name": "Sistema General de Regalías",
+        "distribution": [
+          "Ciencia y Tecnología",
+          "Desarrollo Regional",
+          "Compensación Regional"
+        ],
+        "farfan_role": "Fuente DIM01-Q3, DIM03-Q3 territorial"
+      },
+      {
+        "instrument_id": "FONPET",
+        "name": "Fondo de Pensiones de las Entidades Territoriales",
+        "farfan_role": "Fuente DIM01-Q3 territorial"
+      }
+    ],
+    "sectoral_funds": [
+      {
+        "fund_id": "FONDO_JUSTICIA_TRANSICIONAL",
+        "name": "Fondo para la Reparación de Víctimas",
+        "pa": [
+          "PA05"
+        ],
+        "farfan_role": "DIM01-Q3, DIM03-Q3"
+      },
+      {
+        "fund_id": "FONDO_MUJERES",
+        "name": "Fondo de Igualdad de Mujeres",
+        "pa": [
+          "PA01"
+        ],
+        "farfan_role": "DIM01-Q3, DIM03-Q3"
+      },
+      {
+        "fund_id": "FONDO_ADAPTACION",
+        "name": "Fondo de Adaptación al Cambio Climático",
+        "pa": [
+          "PA03"
+        ],
+        "farfan_role": "DIM01-Q3, DIM03-Q3"
+      }
+    ]
+  },
+  "monitoring_systems": {
+    "description": "Sistemas de monitoreo y seguimiento relevantes para DIM04 y DIM06",
+    "systems": [
+      {
+        "system_id": "SISMEG",
+        "name": "Sistema de Seguimiento a Metas de Gobierno",
+        "managing_entity": "DNP",
+        "scope": "PND y sectoriales",
+        "pa": [
+          "ALL"
+        ],
+        "farfan_role": "Fuente DIM04, DIM06"
+      },
+      {
+        "system_id": "SISCONPES",
+        "name": "Sistema de Seguimiento a CONPES",
+        "managing_entity": "DNP",
+        "pa": [
+          "ALL"
+        ],
+        "farfan_role": "Fuente DIM04, DIM06"
+      },
+      {
+        "system_id": "SINERGIA",
+        "name": "Sistema Nacional de Evaluación de Gestión y Resultados",
+        "managing_entity": "DNP",
+        "pa": [
+          "ALL"
+        ],
+        "farfan_role": "Fuente DIM04"
+      },
+      {
+        "system_id": "SIMCI",
+        "name": "Sistema Integrado de Monitoreo de Cultivos Ilícitos",
+        "managing_entity": "UNODC",
+        "pa": [
+          "PA02",
+          "PA03",
+          "PA07"
+        ],
+        "farfan_role": "Fuente DIM01, DIM04"
+      },
+      {
+        "system_id": "SISOBP",
+        "name": "Sistema de Seguimiento al Plan Marco de Implementación del Acuerdo de Paz",
+        "managing_entity": "Oficina del Alto Comisionado para la Paz",
+        "pa": [
+          "PA02",
+          "PA05",
+          "PA07"
+        ],
+        "farfan_role": "Fuente DIM04, DIM05"
+      }
+    ]
+  },
   "territorial_context": {
+    "description": "Contextos regionales diferenciados relevantes para DIM06-Q5 (contextualización territorial)",
     "pacific_region": {
       "key_issues": [
-        "conflicto armado",
-        "economías ilícitas",
-        "minería ilegal",
-        "biodiversidad",
-        "culturas afrodescendientes"
+        "conflicto armado persistente",
+        "economías ilícitas (coca, minería ilegal)",
+        "minería ilegal de oro",
+        "biodiversidad megadiversa",
+        "culturas afrodescendientes e indígenas",
+        "ausencia estatal histórica",
+        "baja cobertura de servicios básicos"
       ],
       "departments": [
         "Chocó",
         "Valle del Cauca",
         "Cauca",
         "Nariño"
-      ]
+      ],
+      "priority_pa": [
+        "PA02",
+        "PA03",
+        "PA07",
+        "PA08"
+      ],
+      "special_challenges": {
+        "PA02": "Presencia de grupos armados ilegales y economías ilícitas",
+        "PA03": "Deforestación por minería ilegal y cultivos ilícitos",
+        "PA07": "Titulación colectiva de territorios étnicos",
+        "PA08": "Alta victimización de líderes sociales y ambientales"
+      },
+      "farfan_role": "Referencia crítica para DIM06-Q5"
     },
     "caribbean_region": {
       "key_issues": [
-        "migración venezolana",
-        "turismo",
-        "zonas áridas",
-        "pueblos indígenas",
-        "economía costera"
+        "migración venezolana masiva",
+        "economía turística y portuaria",
+        "zonas áridas y desertificación",
+        "pueblos indígenas wayúu, arhuaco, kogui",
+        "economía costera y pesca",
+        "corredores de tráfico ilegal"
       ],
       "departments": [
         "La Guajira",
@@ -318,15 +1902,29 @@
         "Cesar",
         "Córdoba",
         "Sucre"
-      ]
+      ],
+      "priority_pa": [
+        "PA10",
+        "PA03",
+        "PA07"
+      ],
+      "special_challenges": {
+        "PA10": "Mayor receptor de migración venezolana",
+        "PA03": "Cambio climático y estrés hídrico",
+        "PA07": "Conflictos por uso de tierra y agua",
+        "PA04": "Alta informalidad laboral y pobreza"
+      },
+      "farfan_role": "Referencia crítica para DIM06-Q5, especialmente PA10"
     },
     "amazon_region": {
       "key_issues": [
-        "deforestación",
-        "minería ilegal",
-        "pueblos indígenas en aislamiento",
-        "frontera agrícola",
-        "cambio climático"
+        "deforestación acelerada",
+        "minería ilegal y contaminación por mercurio",
+        "pueblos indígenas en aislamiento voluntario",
+        "frontera agrícola en expansión",
+        "cambio climático y punto de no retorno",
+        "economías extractivas",
+        "baja densidad poblacional"
       ],
       "departments": [
         "Amazonas",
@@ -336,30 +1934,56 @@
         "Guaviare",
         "Vaupés",
         "Vichada"
-      ]
+      ],
+      "priority_pa": [
+        "PA03",
+        "PA07",
+        "PA02"
+      ],
+      "special_challenges": {
+        "PA03": "Deforestación de 117,000 ha/año concentrada aquí",
+        "PA07": "Resguardos indígenas sin saneamiento completo",
+        "PA02": "Post-desmovilización FARC, nuevos actores armados",
+        "PA05": "Presencia de disidencias y nuevos grupos"
+      },
+      "farfan_role": "Referencia crítica para DIM06-Q5"
     },
     "orinoquia_region": {
       "key_issues": [
-        "agroindustria",
-        "frontera agrícola",
+        "agroindustria extensiva",
+        "frontera agrícola en expansión",
         "conflicto por tierras",
-        "economías extractivas",
-        "ganadería extensiva"
+        "economías extractivas (petróleo)",
+        "ganadería extensiva",
+        "baja densidad poblacional"
       ],
       "departments": [
         "Arauca",
         "Casanare",
         "Meta",
         "Vichada"
-      ]
+      ],
+      "priority_pa": [
+        "PA07",
+        "PA02",
+        "PA03"
+      ],
+      "special_challenges": {
+        "PA07": "Alto nivel de concentración de tierra",
+        "PA02": "Zona de frontera con actividad armada ilegal",
+        "PA03": "Tensión entre conservación y desarrollo agroindustrial",
+        "PA04": "Economía dependiente del petróleo"
+      },
+      "farfan_role": "Referencia para DIM06-Q5"
     },
     "andean_region": {
       "key_issues": [
-        "urbanización",
-        "seguridad ciudadana",
+        "urbanización acelerada",
+        "seguridad ciudadana urbana",
         "corredores industriales",
-        "conflicto social",
-        "movilidad"
+        "conflicto social y protestas",
+        "movilidad y transporte",
+        "mayor concentración poblacional"
       ],
       "departments": [
         "Antioquia",
@@ -372,23 +1996,716 @@
         "Risaralda",
         "Santander",
         "Tolima"
-      ]
+      ],
+      "priority_pa": [
+        "PA04",
+        "PA02",
+        "PA01",
+        "PA06"
+      ],
+      "special_challenges": {
+        "PA04": "Mayor concentración de pobreza urbana",
+        "PA02": "Violencia urbana y microtráfico",
+        "PA06": "Deserción escolar en zonas urbanas marginales",
+        "PA09": "Mayor concentración de población carcelaria"
+      },
+      "farfan_role": "Referencia para DIM06-Q5"
     }
   },
-
   "peace_agreement_context": {
     "acuerdo": "Acuerdo Final para la Terminación del Conflicto y la Construcción de una Paz Estable y Duradera",
     "year": 2016,
+    "points": [
+      {
+        "point": 1,
+        "name": "Reforma Rural Integral",
+        "pa": [
+          "PA07",
+          "PA04"
+        ],
+        "farfan_dimensions": [
+          "DIM02",
+          "DIM04",
+          "DIM05"
+        ]
+      },
+      {
+        "point": 2,
+        "name": "Participación Política",
+        "pa": [
+          "PA05",
+          "PA08"
+        ],
+        "farfan_dimensions": [
+          "DIM02",
+          "DIM04"
+        ]
+      },
+      {
+        "point": 3,
+        "name": "Fin del Conflicto",
+        "pa": [
+          "PA02",
+          "PA05"
+        ],
+        "farfan_dimensions": [
+          "DIM02",
+          "DIM03",
+          "DIM04"
+        ]
+      },
+      {
+        "point": 4,
+        "name": "Solución al Problema de Drogas Ilícitas",
+        "pa": [
+          "PA02",
+          "PA03",
+          "PA07"
+        ],
+        "farfan_dimensions": [
+          "DIM02",
+          "DIM04",
+          "DIM05"
+        ]
+      },
+      {
+        "point": 5,
+        "name": "Víctimas",
+        "pa": [
+          "PA05"
+        ],
+        "farfan_dimensions": [
+          "DIM01",
+          "DIM02",
+          "DIM04",
+          "DIM05"
+        ]
+      },
+      {
+        "point": 6,
+        "name": "Implementación y Verificación",
+        "pa": [
+          "ALL"
+        ],
+        "farfan_dimensions": [
+          "DIM04",
+          "DIM06"
+        ]
+      }
+    ],
     "implementation": {
       "status": "en implementación",
+      "percentage_completed": 32,
+      "year": 2023,
+      "source": "Instituto Kroc",
       "challenges": [
-        "security guarantees",
-        "rural reform",
-        "political participation",
-        "illicit crop substitution",
-        "victim reparations"
+        {
+          "challenge": "Garantías de seguridad para excombatientes y líderes sociales",
+          "status": "crítico",
+          "pa": [
+            "PA02",
+            "PA05",
+            "PA08"
+          ]
+        },
+        {
+          "challenge": "Reforma rural integral y acceso a tierras",
+          "status": "bajo avance",
+          "pa": [
+            "PA07"
+          ]
+        },
+        {
+          "challenge": "Sustitución de cultivos ilícitos",
+          "status": "retroceso",
+          "pa": [
+            "PA02",
+            "PA03",
+            "PA07"
+          ]
+        },
+        {
+          "challenge": "Reparación integral a víctimas",
+          "status": "avance moderado",
+          "pa": [
+            "PA05"
+          ]
+        }
       ]
     },
-    "relevant_policy_areas": ["PA02", "PA05", "PA07"]
+    "farfan_role": "Marco fundamental para PA02, PA05, PA07 - Referencia obligatoria DIM05, DIM06"
+  }
+},
+"policy_area_specific_context": {
+  "PA01_gender": {
+    "key_frameworks": [
+      "Política Pública Nacional de Equidad de Género para las Mujeres",
+      "Lineamientos de la Política Pública para la Prevención de Riesgos, la Protección y Garantía de los Derechos de las Mujeres Víctimas del Conflicto Armado",
+      "Estrategia de respuesta rápida para VBG"
+    ],
+    "critical_gaps": [
+      {
+        "gap": "Brecha salarial persistente del 14.8%",
+        "farfan_relevance": "DIM01-Q2 (cuantificación de brechas)"
+      },
+      {
+        "gap": "Baja participación política (29% Congreso, 13% alcaldías)",
+        "farfan_relevance": "DIM01-Q2, DIM04-Q4"
+      },
+      {
+        "gap": "Alta impunidad en casos de VBG (tasa de condena 8.3%)",
+        "farfan_relevance": "DIM01-Q2, DIM04-Q1"
+      }
+    ],
+    "specialized_institutions": [
+      "Consejería Presidencial para la Equidad de la Mujer",
+      "Alta Consejería para la Mujer (territorial)",
+      "Comités territoriales de prevención de VBG"
+    ],
+    "farfan_evaluation_priorities": [
+      "DIM01-Q1: Datos desagregados por sexo en diagnóstico",
+      "DIM02-Q2: Instrumentos específicos de prevención VBG",
+      "DIM04-Q2: Ruta causal género → reducción brechas",
+      "DIM06-Q5: Enfoque diferencial territorial"
+    ]
+  },
+  "PA02_violence_prevention": {
+    "key_frameworks": [
+      "Política Nacional de Seguridad y Convivencia Ciudadana",
+      "Plan Nacional de Acción contra Minas Antipersonal",
+      "Estrategia de Prevención del Reclutamiento"
+    ],
+    "critical_gaps": [
+      {
+        "gap": "Tasa de homicidios 25.8 por 100,000 hab (alta para LAC)",
+        "farfan_relevance": "DIM01-Q1, DIM01-Q2"
+      },
+      {
+        "gap": "188 líderes asesinados/año (tendencia creciente)",
+        "farfan_relevance": "DIM01-Q2, vinculado con PA08"
+      },
+      {
+        "gap": "Reconfiguración de actores armados post-acuerdo",
+        "farfan_relevance": "DIM01-Q1, DIM02-Q4 (riesgos)"
+      }
+    ],
+    "specialized_institutions": [
+      "Ministerio de Defensa",
+      "Policía Nacional - Dirección de Seguridad Ciudadana",
+      "AICMA (Acción contra Minas)",
+      "Comisión Intersectorial para la Respuesta Rápida a Alertas Tempranas"
+    ],
+    "farfan_evaluation_priorities": [
+      "DIM01-Q1: Líneas base violencia desagregadas territorialmente",
+      "DIM02-Q3: Vínculos con diagnóstico de factores de riesgo",
+      "DIM02-Q4: Identificación de riesgos y mitigación",
+      "DIM04-Q2: Ruta causal intervención → reducción violencia",
+      "DIM06-Q3: Reconocimiento de complejidad multicausal"
+    ]
+  },
+  "PA03_environment": {
+    "key_frameworks": [
+      "Política Nacional de Cambio Climático",
+      "Plan Nacional de Adaptación al Cambio Climático",
+      "Estrategia Integral de Control a la Deforestación",
+      "NDC de Colombia (reducción 51% emisiones GEI para 2030)"
+    ],
+    "critical_gaps": [
+      {
+        "gap": "Deforestación de 117,000 ha/año concentrada en Amazonía",
+        "farfan_relevance": "DIM01-Q2, DIM05-Q3"
+      },
+      {
+        "gap": "Minería ilegal con contaminación por mercurio",
+        "farfan_relevance": "DIM01-Q2, vinculado PA02"
+      },
+      {
+        "gap": "Colombia: país más peligroso para defensores ambientales",
+        "farfan_relevance": "Vinculo crítico PA08"
+      }
+    ],
+    "specialized_institutions": [
+      "Ministerio de Ambiente",
+      "IDEAM",
+      "Parques Nacionales Naturales",
+      "Corporaciones Autónomas Regionales (33)",
+      "Sistema Nacional de Cambio Climático"
+    ],
+    "farfan_evaluation_priorities": [
+      "DIM01-Q1: Líneas base ambientales georreferenciadas",
+      "DIM02-Q2: Instrumentos específicos (vedas, POMCAS, PIGCCS)",
+      "DIM04-Q5: Alineación con NDC y Acuerdo de París",
+      "DIM05-Q1: Impactos de largo plazo (ecosistémicos)",
+      "DIM05-Q3: Riesgos sistémicos (puntos de no retorno climáticos)"
+    ]
+  },
+  "PA04_desc": {
+    "key_frameworks": [
+      "Plan Decenal de Salud Pública 2022-2031",
+      "Plan Nacional de Desarrollo Educativo",
+      "Política de Vivienda de Interés Social",
+      "Sistema de Protección Social"
+    ],
+    "critical_gaps": [
+      {
+        "gap": "Pobreza multidimensional 12.9% (25.4% rural)",
+        "farfan_relevance": "DIM01-Q2"
+      },
+      {
+        "gap": "Informalidad laboral 58.3%",
+        "farfan_relevance": "DIM01-Q2, DIM04-Q4"
+      },
+      {
+        "gap": "Gini 0.556 (alta desigualdad)",
+        "farfan_relevance": "DIM01-Q2, DIM05-Q2"
+      }
+    ],
+    "specialized_institutions": [
+      "MinSalud",
+      "MinEducación",
+      "MinTrabajo",
+      "MinVivienda",
+      "DPS (Departamento de Prosperidad Social)",
+      "ICETEX",
+      "SENA"
+    ],
+    "farfan_evaluation_priorities": [
+      "DIM01-Q1: Uso de SISBEN, ECV, GEIH como líneas base",
+      "DIM03-Q1: Indicadores producto claros (cobertura, beneficiarios)",
+      "DIM03-Q2: Proporcionalidad metas vs magnitud problema",
+      "DIM04-Q4: Atención a grupos priorizados (pobreza extrema)",
+      "DIM05-Q2: Uso de índices (IPM, Gini) como proxies impacto"
+    ]
+  },
+  "PA05_victims": {
+    "key_frameworks": [
+      "Ley 1448 de 2011 (Ley de Víctimas)",
+      "Acuerdo Final de Paz - Punto 5",
+      "Política Pública de Víctimas",
+      "Sistema Integral de Verdad, Justicia, Reparación y No Repetición"
+    ],
+    "critical_gaps": [
+      {
+        "gap": "9.6 millones de víctimas registradas (8.2M activas)",
+        "farfan_relevance": "DIM01-Q2 (magnitud del desafío)"
+      },
+      {
+        "gap": "Solo 980,000 indemnizaciones entregadas (10% de víctimas)",
+        "farfan_relevance": "DIM01-Q2, DIM03-Q2"
+      },
+      {
+        "gap": "7,800 sentencias restitución de tierras de 125,000 solicitudes",
+        "farfan_relevance": "DIM03-Q2, vinculo PA07"
+      }
+    ],
+    "specialized_institutions": [
+      "UARIV (Unidad para las Víctimas)",
+      "JEP (Jurisdicción Especial para la Paz)",
+      "CEV (Comisión de la Verdad - finalizada)",
+      "UBPD (Unidad de Búsqueda)",
+      "URT (Unidad de Restitución de Tierras)"
+    ],
+    "farfan_evaluation_priorities": [
+      "DIM01-Q1: Uso de RUV como línea base oficial",
+      "DIM02-Q2: PAPSIVI y rutas de atención psicosocial",
+      "DIM03-Q2: Realismo de metas de reparación",
+      "DIM04-Q2: Ruta causal reparación → reconstrucción vida",
+      "DIM05-Q1: Impactos generacionales y memoria histórica",
+      "DIM06-Q1: Teoría de cambio de justicia transicional"
+    ]
+  },
+  "PA06_children_youth": {
+    "key_frameworks": [
+      "Código de Infancia y Adolescencia (Ley 1098)",
+      "CONPES de Niñez y Adolescencia",
+      "Estrategia de Cero a Siempre",
+      "Política de Prevención del Reclutamiento"
+    ],
+    "critical_gaps": [
+      {
+        "gap": "42,000 niños/as en sistema de protección",
+        "farfan_relevance": "DIM01-Q2"
+      },
+      {
+        "gap": "147 casos verificados de reclutamiento/año (alta subregistro)",
+        "farfan_relevance": "DIM01-Q2, vinculo PA02"
+      },
+      {
+        "gap": "Deserción escolar 4.7% secundaria",
+        "farfan_relevance": "DIM01-Q2, DIM04-Q4"
+      }
+    ],
+    "specialized_institutions": [
+      "ICBF (Instituto Colombiano de Bienestar Familiar)",
+      "MinEducación",
+      "Comités de Infancia y Adolescencia (territoriales)",
+      "Consejo Nacional de Política Social"
+    ],
+    "farfan_evaluation_priorities": [
+      "DIM01-Q1: Datos desagregados por edad, etnia, territorio",
+      "DIM02-Q2: Entornos protectores y prevención",
+      "DIM04-Q4: Enfoque en primera infancia y adolescencia",
+      "DIM05-Q1: Impactos en ciclo de vida",
+      "DIM06-Q5: Enfoque diferencial territorial"
+    ]
+  },
+  "PA07_land_territory": {
+    "key_frameworks": [
+      "Acuerdo de Paz - Punto 1 (Reforma Rural Integral)",
+      "Ley 1448 - Restitución de Tierras",
+      "Política de Tierras y Territorios",
+      "Catastro Multipropósito"
+    ],
+    "critical_gaps": [
+      {
+        "gap": "Gini tierras 0.897 (altísima concentración)",
+        "farfan_relevance": "DIM01-Q2"
+      },
+      {
+        "gap": "41.2% predios rurales formalizados",
+        "farfan_relevance": "DIM01-Q2, DIM03-Q2"
+      },
+      {
+        "gap": "125,000 solicitudes restitución vs 7,800 resueltas",
+        "farfan_relevance": "DIM03-Q2, DIM03-Q4"
+      }
+    ],
+    "specialized_institutions": [
+      "ANT (Agencia Nacional de Tierras)",
+      "URT (Unidad de Restitución de Tierras)",
+      "IGAC (Instituto Geográfico Agustín Codazzi)",
+      "Comisión Intersectorial de Tierras"
+    ],
+    "farfan_evaluation_priorities": [
+      "DIM01-Q1: Catastro, Gini rural, RUV desplazamiento",
+      "DIM02-Q2: Instrumentos (formalización, restitución, adjudicación)",
+      "DIM03-Q3: Trazabilidad presupuestal ANT/URT",
+      "DIM04-Q2: Ruta causal acceso tierra → desarrollo rural",
+      "DIM05-Q5: Sostenibilidad post-titulación",
+      "DIM06-Q5: Enfoque territorial diferenciado"
+    ]
+  },
+  "PA08_leaders_defenders": {
+    "key_frameworks": [
+      "Ley 2046 de 2020 (Defensores DDHH)",
+      "Ley 2272 de 2022 (Lideresas)",
+      "Acuerdo de Escazú",
+      "Plan de Acción Oportuna (PAO)"
+    ],
+    "critical_gaps": [
+      {
+        "gap": "188 defensores asesinados en 2022 (tendencia creciente)",
+        "farfan_relevance": "DIM01-Q2"
+      },
+      {
+        "gap": "1,247 amenazas reportadas/año",
+        "farfan_relevance": "DIM01-Q2"
+      },
+      {
+        "gap": "Colombia: país más peligroso para defensores ambientales",
+        "farfan_relevance": "DIM01-Q2, vinculo PA03"
+      }
+    ],
+    "specialized_institutions": [
+      "UNP (Unidad Nacional de Protección)",
+      "Defensoría del Pueblo - SAT",
+      "Fiscalía - Unidad Especial de Investigación",
+      "Comisión Intersectorial de Garantías para Líderes"
+    ],
+    "farfan_evaluation_priorities": [
+      "DIM01-Q1: Registro de amenazas, homicidios (Defensoría, ONG)",
+      "DIM02-Q2: Esquemas de protección, PAO",
+      "DIM02-Q4: Análisis de riesgos territoriales",
+      "DIM04-Q1: Indicadores de seguridad para defensores",
+      "DIM05-Q3: Riesgos sistémicos (impunidad, continuidad violencia)",
+      "DIM06-Q3: Reconocimiento complejidad multicausal"
+    ]
+  },
+  "PA09_prison": {
+    "key_frameworks": [
+      "Ley 1709 de 2014 (Reforma Sistema Penitenciario)",
+      "Política Penitenciaria y Carcelaria",
+      "Sentencia T-388 de 2013 (Estado de Cosas Inconstitucional)"
+    ],
+    "critical_gaps": [
+      {
+        "gap": "Hacinamiento 118.3% (97,000 PPL, capacidad 82,000)",
+        "farfan_relevance": "DIM01-Q2"
+      },
+      {
+        "gap": "37.2% detención preventiva (sin condena)",
+        "farfan_relevance": "DIM01-Q2"
+      },
+      {
+        "gap": "Solo 35.1% acceso a programas de resocialización",
+        "farfan_relevance": "DIM01-Q2, DIM03-Q2"
+      }
+    ],
+    "specialized_institutions": [
+      "INPEC (Instituto Nacional Penitenciario)",
+      "MinJusticia",
+      "USPEC (Unidad de Servicios Penitenciarios)",
+      "Defensoría del Pueblo - Delegada para Política Criminal"
+    ],
+    "farfan_evaluation_priorities": [
+      "DIM01-Q1: Datos oficiales INPEC (población, hacinamiento)",
+      "DIM01-Q2: Cuantificación déficit (cupos, programas)",
+      "DIM02-Q2: Alternativas privación libertad, resocialización",
+      "DIM03-Q2: Realismo metas construcción/ampliación",
+      "DIM04-Q4: Atención a ECI T-388",
+      "DIM05-Q4: Efectos no deseados (reincidencia, prisonización)"
+    ]
+  },
+  "PA10_migration": {
+    "key_frameworks": [
+      "Ley 2136 de 2021 (Ley de Migración)",
+      "Estatuto Temporal de Protección (ETPV)",
+      "CONPES Migración Venezuela",
+      "Plan Nacional de Atención a Migrantes"
+    ],
+    "critical_gaps": [
+      {
+        "gap": "2.85 millones migrantes venezolanos (1.6M regularizados)",
+        "farfan_relevance": "DIM01-Q2"
+      },
+      {
+        "gap": "620,000 niños/as migrantes en educación (brechas acceso)",
+        "farfan_relevance": "DIM01-Q2, vinculo PA06"
+      },
+      {
+        "gap": "45,000 solicitudes refugio pendientes",
+        "farfan_relevance": "DIM01-Q2"
+      }
+    ],
+    "specialized_institutions": [
+      "Migración Colombia",
+      "MinRelaciones Exteriores",
+      "RAMV (Registro Administrativo de Migrantes Venezolanos)",
+      "Gerencia de Fronteras"
+    ],
+    "farfan_evaluation_priorities": [
+      "DIM01-Q1: Datos Migración Colombia, RAMV",
+      "DIM02-Q2: ETPV, rutas de regularización",
+      "DIM03-Q1: Indicadores producto (regularizados, servicios)",
+      "DIM04-Q4: Enfoque en frontera caribe y norte Santander",
+      "DIM05-Q3: Riesgos regionales (crisis Venezuela)",
+      "DIM06-Q5: Contextualización territorial (Caribe, Norte Santander)"
+    ]
+  }
+},
+"cross_cutting_themes": {
+  "description": "Temas transversales relevantes para DIM06 (coherencia causal) y evaluación MESO/MACRO",
+  "ethnic_differential_approach": {
+    "populations": [
+      {
+        "group": "Indígenas",
+        "percentage": 4.4,
+        "pueblos": 115
+      },
+      {
+        "group": "Afrodescendientes",
+        "percentage": 9.34
+      },
+      {
+        "group": "Rom",
+        "percentage": 0.01
+      },
+      {
+        "group": "Raizales",
+        "percentage": 0.06
+      },
+      {
+        "group": "Palenqueros",
+        "percentage": 0.02
+      }
+    ],
+    "relevant_pa": [
+      "ALL"
+    ],
+    "special_considerations": [
+      "Consulta previa (Convenio 169 OIT)",
+      "Jurisdicción especial indígena",
+      "Territorios colectivos",
+      "Autonomía y gobierno propio"
+    ],
+    "farfan_role": "Evaluación transversal DIM01-Q1 (desagregación), DIM06-Q5 (contextualización)"
+  },
+  "gender_mainstreaming": {
+    "relevant_pa": [
+      "ALL"
+    ],
+    "special_considerations": [
+      "Desagregación por sexo en todos los indicadores",
+      "Enfoque de género en violencias (VBG)",
+      "Participación política paritaria",
+      "Cuidado no remunerado"
+    ],
+    "farfan_role": "Evaluación transversal DIM01-Q1, conexión con PA01"
+  },
+  "territorial_peace": {
+    "instruments": [
+      "PDET (Programas de Desarrollo con Enfoque Territorial)",
+      "Zonas Futuro",
+      "Espacios Territoriales de Capacitación y Reincorporación (ETCR)"
+    ],
+    "municipalities": 170,
+    "relevant_pa": [
+      "PA02",
+      "PA05",
+      "PA07"
+    ],
+    "farfan_role": "Referencia crítica DIM06-Q5, evaluación MESO CL01"
+  },
+  "climate_change_adaptation": {
+    "commitment": "Reducción 51% emisiones GEI para 2030",
+    "relevant_pa": [
+      "PA03",
+      "PA04",
+      "PA07"
+    ],
+    "special_considerations": [
+      "Vulnerabilidad climática diferenciada territorial",
+      "Transición justa",
+      "Economías verdes"
+    ],
+    "farfan_role": "Transversal DIM05-Q3 (riesgos sistémicos)"
+  }
+},
+"farfan_mapping_guide": {
+  "description": "Guía de mapeo entre contexto colombiano y sistema F.A.R.F.A.N 3.0",
+  "dimension_source_mapping": {
+    "DIM01_insumos": {
+      "primary_sources": [
+        "DANE",
+        "RUV",
+        "SISBEN",
+        "INMLCF",
+        "IDEAM",
+        "INPEC",
+        "Migración Colombia"
+      ],
+      "verification": "Todas las líneas base deben tener fuente oficial identificada",
+      "critical_questions": [
+        "D1-Q1",
+        "D1-Q2",
+        "D1-Q3"
+      ]
+    },
+    "DIM02_actividades": {
+      "instruments_to_verify": [
+        "Programas ministeriales",
+        "PDET",
+        "ETPV",
+        "PAO",
+        "PAPSIVI"
+      ],
+      "critical_questions": [
+        "D2-Q1",
+        "D2-Q2",
+        "D2-Q4"
+      ]
+    },
+    "DIM03_productos": {
+      "budget_codes": [
+        "BPIN",
+        "SGP",
+        "SGR",
+        "PPI"
+      ],
+      "critical_questions": [
+        "D3-Q1",
+        "D3-Q3"
+      ]
+    },
+    "DIM04_resultados": {
+      "monitoring_systems": [
+        "SISMEG",
+        "SISCONPES",
+        "SINERGIA"
+      ],
+      "critical_questions": [
+        "D4-Q1",
+        "D4-Q2",
+        "D4-Q5"
+      ]
+    },
+    "DIM05_impactos": {
+      "long_term_references": [
+        "Acuerdo de Paz",
+        "NDC",
+        "ODS",
+        "CONPES sectoriales"
+      ],
+      "critical_questions": [
+        "D5-Q1",
+        "D5-Q3",
+        "D5-Q5"
+      ]
+    },
+    "DIM06_coherencia": {
+      "frameworks": [
+        "Teoría de cambio",
+        "Marco lógico",
+        "Enfoque territorial"
+      ],
+      "critical_questions": [
+        "D6-Q1",
+        "D6-Q3",
+        "D6-Q5"
+      ]
+    }
+  },
+  "cluster_integration_priorities": {
+    "CL01_security_peace": {
+      "pas": [
+        "PA02",
+        "PA05",
+        "PA07"
+      ],
+      "key_integration": "Acuerdo de Paz como marco integrador",
+      "critical_linkages": [
+        "PA02-PA05: Prevención violencia ← → Atención víctimas",
+        "PA05-PA07: Reparación víctimas ← → Restitución tierras",
+        "PA02-PA07: Seguridad territorial ← → Ordenamiento rural"
+      ]
+    },
+    "CL02_population_groups": {
+      "pas": [
+        "PA01",
+        "PA06",
+        "PA08"
+      ],
+      "key_integration": "Enfoque diferencial poblacional",
+      "critical_linkages": [
+        "PA01-PA08: Lideresas ← → Protección mujeres defensoras",
+        "PA06-PA02: Niñez ← → Prevención reclutamiento",
+        "PA01-PA06: Género ← → Prevención embarazo adolescente"
+      ]
+    },
+    "CL03_territory_environment": {
+      "pas": [
+        "PA03",
+        "PA04"
+      ],
+      "key_integration": "Desarrollo sostenible territorial",
+      "critical_linkages": [
+        "PA03-PA04: Ambiente ← → DESC (agua, saneamiento)",
+        "PA03-PA07: Cambio climático ← → Ordenamiento territorial"
+      ]
+    },
+    "CL04_social_crisis": {
+      "pas": [
+        "PA09",
+        "PA10"
+      ],
+      "key_integration": "Crisis de derechos sociales específicos",
+      "critical_linkages": [
+        "PA09-PA04: Sistema penitenciario ← → Derechos sociales PPL",
+        "PA10-PA06: Migración ← → Niñez migrante",
+        "PA10-PA04: Migración ← → Regularización laboral"
+      ]
+    }
   }
 }
+}
+        "

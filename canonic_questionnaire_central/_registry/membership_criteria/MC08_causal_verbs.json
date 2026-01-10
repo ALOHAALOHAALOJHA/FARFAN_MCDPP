@@ -1,49 +1,250 @@
 {
   "$schema": "../schema.json",
   "_schema_version": "2.0.0",
-  
+  "_last_updated": "2026-01-09",
+  "_calibration_source": "../_calibration/extractor_calibration.json",
   "criterion_id": "MC08",
   "name": "Causal Verbs",
   "description_es": "Detecta verbos causales y enlaces lógicos entre componentes del plan",
   "description_en": "Detects causal verbs and logical links between plan components",
-  
   "signal_type": "CAUSAL_LINK",
   "implementation_status": "MISSING",
   "extractor_class": "CausalVerbExtractor",
   "_priority": "HIGH",
-  
   "detection": {
     "primary_method": "COMPOUND_PATTERN",
-    
+    "_calibration_reference": "extractor_calibration.json/signal_type_catalog/CAUSAL_VERBS",
     "causal_verb_categories": {
-      "GENERATION": [
-        "generar", "producir", "crear", "desarrollar",
-        "construir", "establecer", "implementar"
-      ],
-      "CONTRIBUTION": [
-        "contribuir", "aportar", "apoyar", "fortalecer",
-        "mejorar", "incrementar", "potenciar"
-      ],
-      "CAUSATION": [
-        "causar", "provocar", "ocasionar", "originar",
-        "derivar", "resultar", "conducir"
-      ],
-      "ACHIEVEMENT": [
-        "lograr", "alcanzar", "obtener", "conseguir",
-        "cumplir", "materializar", "concretar"
-      ],
-      "REDUCTION": [
-        "reducir", "disminuir", "mitigar", "minimizar",
-        "prevenir", "evitar", "eliminar"
+      "GENERATION": {
+        "verbs": [
+          "generar",
+          "producir",
+          "crear",
+          "desarrollar",
+          "construir",
+          "establecer",
+          "implementar"
+        ],
+        "semantic_role": "Creates new state or entity"
+      },
+      "CONTRIBUTION": {
+        "verbs": [
+          "contribuir",
+          "aportar",
+          "apoyar",
+          "fortalecer",
+          "mejorar",
+          "incrementar",
+          "potenciar"
+        ],
+        "semantic_role": "Enhances existing state"
+      },
+      "CAUSATION": {
+        "verbs": [
+          "causar",
+          "provocar",
+          "ocasionar",
+          "originar",
+          "derivar",
+          "resultar",
+          "conducir"
+        ],
+        "semantic_role": "Direct causal relationship"
+      },
+      "ACHIEVEMENT": {
+        "verbs": [
+          "lograr",
+          "alcanzar",
+          "obtener",
+          "conseguir",
+          "cumplir",
+          "materializar",
+          "concretar"
+        ],
+        "semantic_role": "Goal attainment"
+      },
+      "REDUCTION": {
+        "verbs": [
+          "reducir",
+          "disminuir",
+          "mitigar",
+          "minimizar",
+          "prevenir",
+          "evitar",
+          "eliminar"
+        ],
+        "semantic_role": "Negative change"
+      }
+    },
+    "empirical_frequency": {
+      "_source": "extractor_calibration.json (14 planes PDT Colombia 2024-2027)",
+      "top_10_verbs": [
+        {
+          "verb": "garantizar",
+          "mean": 55,
+          "range": [
+            31,
+            91
+          ]
+        },
+        {
+          "verb": "fortalecer",
+          "mean": 52,
+          "range": [
+            28,
+            89
+          ]
+        },
+        {
+          "verb": "implementar",
+          "mean": 51,
+          "range": [
+            24,
+            87
+          ]
+        },
+        {
+          "verb": "mejorar",
+          "mean": 49,
+          "range": [
+            25,
+            84
+          ]
+        },
+        {
+          "verb": "promover",
+          "mean": 48,
+          "range": [
+            22,
+            78
+          ]
+        },
+        {
+          "verb": "gestionar",
+          "mean": 38,
+          "range": [
+            15,
+            67
+          ]
+        },
+        {
+          "verb": "impulsar",
+          "mean": 35,
+          "range": [
+            18,
+            64
+          ]
+        },
+        {
+          "verb": "articular",
+          "mean": 31,
+          "range": [
+            14,
+            58
+          ]
+        },
+        {
+          "verb": "asegurar",
+          "mean": 28,
+          "range": [
+            12,
+            52
+          ]
+        },
+        {
+          "verb": "capacitar",
+          "mean": 24,
+          "range": [
+            10,
+            45
+          ]
+        }
       ]
     },
-    
-    "causal_connectors": [
-      "para", "con el fin de", "a través de",
-      "mediante", "por medio de", "lo que permite",
-      "lo cual genera", "contribuyendo a", "que resulta en"
-    ],
-    
+    "causal_connectors": {
+      "PURPOSE": [
+        {
+          "phrase": "para",
+          "weight": 0.8
+        },
+        {
+          "phrase": "con el fin de",
+          "weight": 1.0,
+          "frequency": {
+            "mean": 18
+          }
+        },
+        {
+          "phrase": "para lograr",
+          "weight": 1.0,
+          "frequency": {
+            "mean": 15
+          }
+        },
+        {
+          "phrase": "a fin de",
+          "weight": 1.0
+        }
+      ],
+      "MEANS": [
+        {
+          "phrase": "mediante",
+          "weight": 0.9,
+          "frequency": {
+            "mean": 22,
+            "note": "MUY_ALTA"
+          }
+        },
+        {
+          "phrase": "a través de",
+          "weight": 0.9,
+          "frequency": {
+            "mean": 35,
+            "note": "MUY_ALTA"
+          }
+        },
+        {
+          "phrase": "por medio de",
+          "weight": 0.9
+        }
+      ],
+      "EFFECT": [
+        {
+          "phrase": "lo que permite",
+          "weight": 0.85
+        },
+        {
+          "phrase": "lo cual genera",
+          "weight": 0.85
+        },
+        {
+          "phrase": "contribuyendo a",
+          "weight": 0.85
+        },
+        {
+          "phrase": "que resulta en",
+          "weight": 0.85
+        },
+        {
+          "phrase": "como resultado de",
+          "weight": 0.85
+        }
+      ],
+      "CAUSE": [
+        {
+          "phrase": "debido a",
+          "weight": 0.85
+        }
+      ]
+    },
+    "extraction_patterns": {
+      "causal_verbs": {
+        "regex": "\\b(fortalecer|implementar|garantizar|promover|mejorar|reducir|aumentar|desarrollar|construir|capacitar)\\w*\\b",
+        "confidence": 0.82,
+        "context_required": true,
+        "validation": "Must be in strategic/programmatic section"
+      }
+    },
     "chain_patterns": {
       "producto_resultado": {
         "pattern": "(?:producto|actividad).*?(?:→|genera|produce|permite).*?(?:resultado|outcome)",
@@ -57,9 +258,25 @@
         "pattern": "(?:si|cuando).*?(?:entonces|se logrará|permitirá)",
         "confidence": 0.90
       }
+    },
+    "causal_chain_detection": {
+      "pattern": "VERB + PRODUCT + CONNECTOR + RESULT",
+      "example": "Implementar [programa de vacunación] con el fin de [reducir mortalidad infantil]",
+      "confidence": 0.78,
+      "validation": "Must link to PROGRAMMATIC_HIERARCHY and QUANTITATIVE_TRIPLET"
+    },
+    "teoria_del_cambio_markers": {
+      "explicit_phrases": [
+        "teoría del cambio",
+        "cadena de valor",
+        "marco lógico",
+        "encadenamiento lógico"
+      ],
+      "frequency": "BAJA (explicit), ALTA (implicit)",
+      "plans_with_explicit": 0,
+      "plans_with_implicit": 14
     }
   },
-  
   "scoring_impact": {
     "dimension_boost": {
       "DIM04": 0.15,
@@ -68,9 +285,63 @@
     },
     "cross_cutting_boost": {}
   },
-  
-  "required_capabilities": ["CAUSAL_INFERENCE", "GRAPH_CONSTRUCTION"],
-  
+  "dimension_binding": {
+    "_reference": "../_bindings/mc_to_dimensions.json",
+    "primary_dimensions": [
+      "DIM04",
+      "DIM05",
+      "DIM06"
+    ]
+  },
+  "question_binding": {
+    "_reference": "../_bindings/mc_to_questions.json",
+    "questions_mapped": 68,
+    "coverage": 0.23,
+    "applies_to_slots": [
+      "D2-Q3",
+      "D3-Q5",
+      "D4-Q3",
+      "D6-Q1",
+      "D6-Q2"
+    ],
+    "primary_questions": [
+      "Q008",
+      "Q038",
+      "Q068",
+      "Q098",
+      "Q128",
+      "Q158",
+      "Q188",
+      "Q218",
+      "Q248",
+      "Q278",
+      "Q015",
+      "Q045",
+      "Q075",
+      "Q105",
+      "Q135",
+      "Q165",
+      "Q195",
+      "Q225",
+      "Q255",
+      "Q285"
+    ]
+  },
+  "scoring_layer_binding": {
+    "_reference": "../_bindings/mc_to_scoring.json",
+    "scoring_layers": {
+      "layer_chain_causal": {
+        "weight": 0.50
+      }
+    },
+    "required_for": [
+      "layer_chain_causal"
+    ]
+  },
+  "required_capabilities": [
+    "CAUSAL_INFERENCE",
+    "GRAPH_CONSTRUCTION"
+  ],
   "testing": {
     "test_file": "tests/membership_criteria/test_mc08_causal.py",
     "expected_precision": 0.85,

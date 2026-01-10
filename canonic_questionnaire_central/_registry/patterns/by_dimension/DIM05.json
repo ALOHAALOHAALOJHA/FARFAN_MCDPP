@@ -1,0 +1,653 @@
+{
+    "_dimension": "DIM05",
+    "_dimension_name_es": "Impactos (Largo Plazo)",
+    "_dimension_name_en": "Impacts (Long-term)",
+    "_description": "Evalúa la proyección de impactos (transformaciones estructurales) con rutas de transmisión, rezagos temporales y consideración de riesgos sistémicos.",
+    "_last_updated": "2026-01-09",
+    "_question_slots": [
+        "Q021-Q025",
+        "Q051-Q055",
+        "Q081-Q085",
+        "Q111-Q115",
+        "Q141-Q145",
+        "Q171-Q175",
+        "Q201-Q205",
+        "Q231-Q235",
+        "Q261-Q265",
+        "Q291-Q295"
+    ],
+    "_count": 5,
+    "dimension_metadata": {
+        "typical_evaluation_focus": [
+            "Transformaciones estructurales de largo plazo",
+            "Rutas de transmisión resultado → impacto",
+            "Rezagos temporales y horizontes de realización",
+            "Riesgos sistémicos y efectos no deseados",
+            "Proxies para impactos intangibles"
+        ],
+        "related_membership_criteria": [
+            "MC08",
+            "MC02"
+        ],
+        "scoring_weight_in_layer_d": 0.20,
+        "key_concepts": [
+            "impacto",
+            "transformación",
+            "largo plazo",
+            "sostenibilidad",
+            "riesgo sistémico"
+        ]
+    },
+    "patterns": {
+        "PAT-DIM05-IMPACTO-001": {
+            "id": "PAT-DIM05-IMPACTO-001",
+            "canonical_id": "PAT-DIM05-IMPACTO-001",
+            "legacy_ids": [
+                "PAT-Q021-001",
+                "PAT-Q051-001",
+                "PAT-Q081-001",
+                "PAT-Q111-001",
+                "PAT-Q141-001",
+                "PAT-Q171-001",
+                "PAT-Q201-001",
+                "PAT-Q231-001",
+                "PAT-Q261-001",
+                "PAT-Q291-001"
+            ],
+            "pattern_spec": {
+                "type": "REGEX",
+                "pattern": "impacto|transformación estructural|cambio duradero|efecto de largo plazo|bienestar sostenible|desarrollo integral|cambio sistémico",
+                "flags": [
+                    "IGNORECASE"
+                ],
+                "captures": {},
+                "context_scope": "PARAGRAPH"
+            },
+            "classification": {
+                "category": "IMPACTO",
+                "subcategory": "TRANSFORMACION_ESTRUCTURAL",
+                "specificity": "HIGH",
+                "confidence_weight": 0.90
+            },
+            "bindings": {
+                "applies_to_dimensions": [
+                    "DIM05"
+                ],
+                "applies_to_questions": [
+                    "Q021",
+                    "Q022",
+                    "Q023",
+                    "Q024",
+                    "Q025",
+                    "Q051",
+                    "Q052",
+                    "Q053",
+                    "Q054",
+                    "Q055",
+                    "Q081",
+                    "Q082",
+                    "Q083",
+                    "Q084",
+                    "Q085",
+                    "Q111",
+                    "Q112",
+                    "Q113",
+                    "Q114",
+                    "Q115",
+                    "Q141",
+                    "Q142",
+                    "Q143",
+                    "Q144",
+                    "Q145",
+                    "Q171",
+                    "Q172",
+                    "Q173",
+                    "Q174",
+                    "Q175",
+                    "Q201",
+                    "Q202",
+                    "Q203",
+                    "Q204",
+                    "Q205",
+                    "Q231",
+                    "Q232",
+                    "Q233",
+                    "Q234",
+                    "Q235",
+                    "Q261",
+                    "Q262",
+                    "Q263",
+                    "Q264",
+                    "Q265",
+                    "Q291",
+                    "Q292",
+                    "Q293",
+                    "Q294",
+                    "Q295"
+                ],
+                "applies_to_policy_areas": [
+                    "PA01",
+                    "PA02",
+                    "PA03",
+                    "PA04",
+                    "PA05",
+                    "PA06",
+                    "PA07",
+                    "PA08",
+                    "PA09",
+                    "PA10"
+                ],
+                "applies_to_membership_criteria": [
+                    "MC08"
+                ]
+            },
+            "scoring_impact": {
+                "weight_in_scoring": 0.15,
+                "boost_conditions": [
+                    {
+                        "condition": "horizonte_temporal_explicito",
+                        "boost": 1.25
+                    }
+                ],
+                "penalty_conditions": []
+            },
+            "provenance": {
+                "source_file": "patterns/by_dimension/DIM05.json",
+                "source_version": "v2.0.0",
+                "created_at": "2026-01-09T22:50:00Z",
+                "validated": true
+            },
+            "examples": {
+                "positive": [
+                    "Impacto en la reducción sostenida de la pobreza multidimensional",
+                    "Transformación estructural del tejido productivo local",
+                    "Cambio duradero en las condiciones de habitabilidad territorial"
+                ],
+                "negative": [
+                    "Incremento del 20% en cobertura (resultado, no impacto)"
+                ]
+            }
+        },
+        "PAT-DIM05-PROXY-001": {
+            "id": "PAT-DIM05-PROXY-001",
+            "canonical_id": "PAT-DIM05-PROXY-001",
+            "legacy_ids": [
+                "PAT-Q022-001",
+                "PAT-Q052-001",
+                "PAT-Q082-001",
+                "PAT-Q112-001",
+                "PAT-Q142-001",
+                "PAT-Q172-001",
+                "PAT-Q202-001",
+                "PAT-Q232-001",
+                "PAT-Q262-001",
+                "PAT-Q292-001"
+            ],
+            "pattern_spec": {
+                "type": "REGEX",
+                "pattern": "proxy|indicador indirecto|aproximación|índice compuesto|medición alternativa|variable sustituta|IPM|índice de pobreza|IDH",
+                "flags": [
+                    "IGNORECASE"
+                ],
+                "captures": {},
+                "context_scope": "PARAGRAPH"
+            },
+            "classification": {
+                "category": "IMPACTO",
+                "subcategory": "PROXY_INTANGIBLE",
+                "specificity": "HIGH",
+                "confidence_weight": 0.88
+            },
+            "bindings": {
+                "applies_to_dimensions": [
+                    "DIM05"
+                ],
+                "applies_to_questions": [
+                    "Q021",
+                    "Q022",
+                    "Q023",
+                    "Q024",
+                    "Q025",
+                    "Q051",
+                    "Q052",
+                    "Q053",
+                    "Q054",
+                    "Q055",
+                    "Q081",
+                    "Q082",
+                    "Q083",
+                    "Q084",
+                    "Q085",
+                    "Q111",
+                    "Q112",
+                    "Q113",
+                    "Q114",
+                    "Q115",
+                    "Q141",
+                    "Q142",
+                    "Q143",
+                    "Q144",
+                    "Q145",
+                    "Q171",
+                    "Q172",
+                    "Q173",
+                    "Q174",
+                    "Q175",
+                    "Q201",
+                    "Q202",
+                    "Q203",
+                    "Q204",
+                    "Q205",
+                    "Q231",
+                    "Q232",
+                    "Q233",
+                    "Q234",
+                    "Q235",
+                    "Q261",
+                    "Q262",
+                    "Q263",
+                    "Q264",
+                    "Q265",
+                    "Q291",
+                    "Q292",
+                    "Q293",
+                    "Q294",
+                    "Q295"
+                ],
+                "applies_to_policy_areas": [
+                    "PA01",
+                    "PA02",
+                    "PA03",
+                    "PA04",
+                    "PA05",
+                    "PA06",
+                    "PA07",
+                    "PA08",
+                    "PA09",
+                    "PA10"
+                ],
+                "applies_to_membership_criteria": [
+                    "MC02"
+                ]
+            },
+            "scoring_impact": {
+                "weight_in_scoring": 0.12,
+                "boost_conditions": [
+                    {
+                        "condition": "justificacion_proxy",
+                        "boost": 1.15
+                    }
+                ],
+                "penalty_conditions": []
+            },
+            "provenance": {
+                "source_file": "patterns/by_dimension/DIM05.json",
+                "source_version": "v2.0.0",
+                "created_at": "2026-01-09T22:50:00Z",
+                "validated": true
+            },
+            "examples": {
+                "positive": [
+                    "El IPM como proxy del bienestar multidimensional",
+                    "Tasa de empleo como indicador indirecto de desarrollo económico local",
+                    "Índice de percepción de seguridad como aproximación al bienestar"
+                ],
+                "negative": []
+            }
+        },
+        "PAT-DIM05-RIESGO-001": {
+            "id": "PAT-DIM05-RIESGO-001",
+            "canonical_id": "PAT-DIM05-RIESGO-001",
+            "legacy_ids": [
+                "PAT-Q024-001",
+                "PAT-Q054-001",
+                "PAT-Q084-001",
+                "PAT-Q114-001",
+                "PAT-Q144-001",
+                "PAT-Q174-001",
+                "PAT-Q204-001",
+                "PAT-Q234-001",
+                "PAT-Q264-001",
+                "PAT-Q294-001"
+            ],
+            "pattern_spec": {
+                "type": "REGEX",
+                "pattern": "riesgo sistémico|efecto no deseado|efecto adverso|externalidad negativa|impacto no previsto|vulnerabilidad|resiliencia|factor de riesgo",
+                "flags": [
+                    "IGNORECASE"
+                ],
+                "captures": {},
+                "context_scope": "PARAGRAPH"
+            },
+            "classification": {
+                "category": "IMPACTO",
+                "subcategory": "RIESGO_SISTEMICO",
+                "specificity": "HIGH",
+                "confidence_weight": 0.87
+            },
+            "bindings": {
+                "applies_to_dimensions": [
+                    "DIM05"
+                ],
+                "applies_to_questions": [
+                    "Q021",
+                    "Q022",
+                    "Q023",
+                    "Q024",
+                    "Q025",
+                    "Q051",
+                    "Q052",
+                    "Q053",
+                    "Q054",
+                    "Q055",
+                    "Q081",
+                    "Q082",
+                    "Q083",
+                    "Q084",
+                    "Q085",
+                    "Q111",
+                    "Q112",
+                    "Q113",
+                    "Q114",
+                    "Q115",
+                    "Q141",
+                    "Q142",
+                    "Q143",
+                    "Q144",
+                    "Q145",
+                    "Q171",
+                    "Q172",
+                    "Q173",
+                    "Q174",
+                    "Q175",
+                    "Q201",
+                    "Q202",
+                    "Q203",
+                    "Q204",
+                    "Q205",
+                    "Q231",
+                    "Q232",
+                    "Q233",
+                    "Q234",
+                    "Q235",
+                    "Q261",
+                    "Q262",
+                    "Q263",
+                    "Q264",
+                    "Q265",
+                    "Q291",
+                    "Q292",
+                    "Q293",
+                    "Q294",
+                    "Q295"
+                ],
+                "applies_to_policy_areas": [
+                    "PA01",
+                    "PA02",
+                    "PA03",
+                    "PA04",
+                    "PA05",
+                    "PA06",
+                    "PA07",
+                    "PA08",
+                    "PA09",
+                    "PA10"
+                ],
+                "applies_to_membership_criteria": [
+                    "MC08"
+                ]
+            },
+            "scoring_impact": {
+                "weight_in_scoring": 0.10,
+                "boost_conditions": [
+                    {
+                        "condition": "mitigacion_propuesta",
+                        "boost": 1.20
+                    }
+                ],
+                "penalty_conditions": []
+            },
+            "provenance": {
+                "source_file": "patterns/by_dimension/DIM05.json",
+                "source_version": "v2.0.0",
+                "created_at": "2026-01-09T22:50:00Z",
+                "validated": true
+            },
+            "examples": {
+                "positive": [
+                    "Riesgo sistémico de dependencia de transferencias",
+                    "Posibles efectos adversos sobre el medio ambiente",
+                    "Vulnerabilidad ante cambios en el contexto macroeconómico"
+                ],
+                "negative": []
+            }
+        },
+        "PAT-DIM05-TRANSMISION-001": {
+            "id": "PAT-DIM05-TRANSMISION-001",
+            "canonical_id": "PAT-DIM05-TRANSMISION-001",
+            "legacy_ids": [],
+            "pattern_spec": {
+                "type": "REGEX",
+                "pattern": "ruta de transmisión|canal de impacto|mecanismo de transmisión|resultado.*?→.*?impacto|outcome.*?genera.*?impacto|conduce a|se traduce en",
+                "flags": [
+                    "IGNORECASE",
+                    "DOTALL"
+                ],
+                "captures": {},
+                "context_scope": "PARAGRAPH"
+            },
+            "classification": {
+                "category": "CAUSAL",
+                "subcategory": "CHAIN_OUTCOME_IMPACT",
+                "specificity": "HIGH",
+                "confidence_weight": 0.90
+            },
+            "bindings": {
+                "applies_to_dimensions": [
+                    "DIM05"
+                ],
+                "applies_to_questions": [
+                    "Q021",
+                    "Q022",
+                    "Q023",
+                    "Q024",
+                    "Q025",
+                    "Q051",
+                    "Q052",
+                    "Q053",
+                    "Q054",
+                    "Q055",
+                    "Q081",
+                    "Q082",
+                    "Q083",
+                    "Q084",
+                    "Q085",
+                    "Q111",
+                    "Q112",
+                    "Q113",
+                    "Q114",
+                    "Q115",
+                    "Q141",
+                    "Q142",
+                    "Q143",
+                    "Q144",
+                    "Q145",
+                    "Q171",
+                    "Q172",
+                    "Q173",
+                    "Q174",
+                    "Q175",
+                    "Q201",
+                    "Q202",
+                    "Q203",
+                    "Q204",
+                    "Q205",
+                    "Q231",
+                    "Q232",
+                    "Q233",
+                    "Q234",
+                    "Q235",
+                    "Q261",
+                    "Q262",
+                    "Q263",
+                    "Q264",
+                    "Q265",
+                    "Q291",
+                    "Q292",
+                    "Q293",
+                    "Q294",
+                    "Q295"
+                ],
+                "applies_to_policy_areas": [
+                    "PA01",
+                    "PA02",
+                    "PA03",
+                    "PA04",
+                    "PA05",
+                    "PA06",
+                    "PA07",
+                    "PA08",
+                    "PA09",
+                    "PA10"
+                ],
+                "applies_to_membership_criteria": [
+                    "MC08"
+                ]
+            },
+            "scoring_impact": {
+                "weight_in_scoring": 0.15,
+                "boost_conditions": [
+                    {
+                        "condition": "explicit_transmission_route",
+                        "boost": 1.30
+                    }
+                ],
+                "penalty_conditions": []
+            },
+            "provenance": {
+                "source_file": "patterns/by_dimension/DIM05.json",
+                "source_version": "v2.0.0",
+                "created_at": "2026-01-09T22:50:00Z",
+                "validated": true
+            },
+            "examples": {
+                "positive": [
+                    "La mejora en ingresos (resultado) → se traduce en reducción de pobreza (impacto)",
+                    "El incremento de cobertura educativa conduce a mayor capital humano a largo plazo"
+                ],
+                "negative": []
+            }
+        },
+        "PAT-DIM05-TEMPORAL-001": {
+            "id": "PAT-DIM05-TEMPORAL-001",
+            "canonical_id": "PAT-DIM05-TEMPORAL-001",
+            "legacy_ids": [],
+            "pattern_spec": {
+                "type": "REGEX",
+                "pattern": "largo plazo|mediano plazo|horizonte temporal|años después|rezago|efecto diferido|sostenibilidad|perdurabilidad|2030|2035|generaciones",
+                "flags": [
+                    "IGNORECASE"
+                ],
+                "captures": {},
+                "context_scope": "PARAGRAPH"
+            },
+            "classification": {
+                "category": "TEMPORAL",
+                "subcategory": "HORIZONTE_LARGO_PLAZO",
+                "specificity": "MEDIUM",
+                "confidence_weight": 0.85
+            },
+            "bindings": {
+                "applies_to_dimensions": [
+                    "DIM05"
+                ],
+                "applies_to_questions": [
+                    "Q021",
+                    "Q022",
+                    "Q023",
+                    "Q024",
+                    "Q025",
+                    "Q051",
+                    "Q052",
+                    "Q053",
+                    "Q054",
+                    "Q055",
+                    "Q081",
+                    "Q082",
+                    "Q083",
+                    "Q084",
+                    "Q085",
+                    "Q111",
+                    "Q112",
+                    "Q113",
+                    "Q114",
+                    "Q115",
+                    "Q141",
+                    "Q142",
+                    "Q143",
+                    "Q144",
+                    "Q145",
+                    "Q171",
+                    "Q172",
+                    "Q173",
+                    "Q174",
+                    "Q175",
+                    "Q201",
+                    "Q202",
+                    "Q203",
+                    "Q204",
+                    "Q205",
+                    "Q231",
+                    "Q232",
+                    "Q233",
+                    "Q234",
+                    "Q235",
+                    "Q261",
+                    "Q262",
+                    "Q263",
+                    "Q264",
+                    "Q265",
+                    "Q291",
+                    "Q292",
+                    "Q293",
+                    "Q294",
+                    "Q295"
+                ],
+                "applies_to_policy_areas": [
+                    "PA01",
+                    "PA02",
+                    "PA03",
+                    "PA04",
+                    "PA05",
+                    "PA06",
+                    "PA07",
+                    "PA08",
+                    "PA09",
+                    "PA10"
+                ],
+                "applies_to_membership_criteria": [
+                    "MC07"
+                ]
+            },
+            "scoring_impact": {
+                "weight_in_scoring": 0.10,
+                "boost_conditions": [],
+                "penalty_conditions": []
+            },
+            "provenance": {
+                "source_file": "patterns/by_dimension/DIM05.json",
+                "source_version": "v2.0.0",
+                "created_at": "2026-01-09T22:50:00Z",
+                "validated": true
+            },
+            "examples": {
+                "positive": [
+                    "Impacto esperado a largo plazo (2030-2035)",
+                    "Efectos sostenibles más allá del periodo de gobierno",
+                    "Rezago de 3-5 años en la materialización del impacto"
+                ],
+                "negative": []
+            }
+        }
+    }
+}
