@@ -44,7 +44,9 @@ class RuntimeConfigSchema(BaseModel):
     
     # Model and Processing Configuration
     preferred_spacy_model: str = Field(default="es_core_news_lg")
-    preferred_embedding_model: str = Field(default="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+    preferred_embedding_model: str = Field(
+        default="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    )
     
     # Path Configuration
     project_root_override: Optional[str] = Field(default=None)

@@ -248,12 +248,57 @@ class UnreachableFallbackChecker(BaseChecker):
                 ):
                     func_def = inferred[0]
                     self._collect_raised_exceptions(func_def, raised_exceptions)
+
+                    # Inter-procedural analysis: analyze called functions
+                    called_exceptions = self._analyze_call_chain(func_def)
+                    raised_exceptions.update(called_exceptions)
+
                     return raised_exceptions
             except (astroid.InferenceError, astroid.NameInferenceError):
                 pass
 
         # Cannot determine - return None
         return None
+
+    def _analyze_call_chain(self, func_node: astroid.FunctionDef, depth: int = 2) -> set[str]:
+        """
+        Analyze exception types raised by function and its callees.
+        Args:
+            func_node: Function AST node
+            depth: Maximum call chain depth to analyze (default: 2)
+        Returns:
+            Set of exception type names that may be raised
+        """
+        raised_exceptions: set[str] = set()
+
+        # Direct raises in this function
+        for node in func_node.nodes_of_class(astroid.Raise):
+            if node.exc:
+                exc_name = self._get_exception_name(node.exc)
+                if exc_name:
+                    raised_exceptions.add(exc_name)
+
+        # Inter-procedural: analyze called functions (limited depth)
+        if depth > 0:
+            for call in func_node.nodes_of_class(astroid.Call):
+                try:
+                    # Try to infer the called function
+                    inferred = call.func.infer()
+                    for inferred_func in inferred:
+                        if isinstance(inferred_func, astroid.FunctionDef):
+                            # Recursively analyze the called function
+                            called_exceptions = self._analyze_call_chain(inferred_func, depth - 1)
+                            raised_exceptions.update(called_exceptions)
+                        elif isinstance(inferred_func, astroid.BoundMethod):
+                            # Handle method calls
+                            if inferred_func.type == 'method' and inferred_func.parent:
+                                called_exceptions = self._analyze_call_chain(inferred_func.parent, depth - 1)
+                                raised_exceptions.update(called_exceptions)
+                except (astroid.InferenceError, astroid.NameInferenceError, AttributeError):
+                    # Cannot infer callee, continue to next call
+                    continue
+
+        return raised_exceptions
 
     def _collect_raised_exceptions(
         self, node: astroid.NodeNG, exceptions: set[str]
