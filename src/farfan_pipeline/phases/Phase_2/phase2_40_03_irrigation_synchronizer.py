@@ -39,15 +39,15 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from orchestration.task_planner import ExecutableTask
-import farfan_pipeline.phases.Phase_2.phase2_40_02_schema_validation import (
+from farfan_pipeline.phases.Phase_2.phase2_40_02_schema_validation import (
     validate_phase6_schema_compatibility,
 )
 from farfan_pipeline.calibracion_parametrizacion.types import ChunkData, PreprocessedDocument
-import farfan_pipeline.phases.Phase_2.phase2_40_00_synchronization import ChunkMatrix
+from farfan_pipeline.phases.Phase_2.phase2_40_00_synchronization import ChunkMatrix
 
 # Import executor-chunk synchronizer for JOIN table
 try:
-    import farfan_pipeline.phases.Phase_2.phase2_40_01_executor_chunk_synchronizer import (
+    from farfan_pipeline.phases.Phase_2.phase2_40_01_executor_chunk_synchronizer import (
             ExecutorChunkBinding,
     )
     SYNCHRONIZER_AVAILABLE = True
@@ -59,25 +59,25 @@ except ImportError as e:
     class ExecutorChunkBinding:  # type: ignore
         def __init__(self, *args: Any, **kwargs: Any) -> None:
             raise ImportError(
-                "farfan_pipeline.phases.Phase_two.executor_chunk_synchronizer is not available. "
+                "farfan_pipeline.phases.Phase_2.executor_chunk_synchronizer is not available. "
                 "Please ensure the dependency is installed and importable."
             ) from _import_error
     
     def build_join_table(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
-            "farfan_pipeline.phases.Phase_two.executor_chunk_synchronizer is not available. "
+            "farfan_pipeline.phases.Phase_2.executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
     
     def generate_verification_manifest(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
-            "farfan_pipeline.phases.Phase_two.executor_chunk_synchronizer is not available. "
+            "farfan_pipeline.phases.Phase_2.executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
     
     def save_verification_manifest(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
-            "farfan_pipeline.phases.Phase_two.executor_chunk_synchronizer is not available. "
+            "farfan_pipeline.phases.Phase_2.executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
     

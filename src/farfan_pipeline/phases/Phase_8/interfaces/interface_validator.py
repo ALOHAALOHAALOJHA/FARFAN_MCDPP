@@ -2,7 +2,7 @@
 Phase 8 Interface Validator
 ============================
 
-Module: src.farfan_pipeline.phases.Phase_eight.interfaces.interface_validator
+Module: src.farfan_pipeline.phases.Phase_8.interfaces.interface_validator
 Purpose: Validates all inputs and outputs for Phase 8 - Recommendation Engine
 Owner: phase8_interfaces
 Lifecycle: ACTIVE
@@ -21,7 +21,7 @@ from dataclasses import dataclass, field
 from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_eight.phase8_20_00_recommendation_engine import (
+    from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import (
         Recommendation,
         RecommendationSet,
     )

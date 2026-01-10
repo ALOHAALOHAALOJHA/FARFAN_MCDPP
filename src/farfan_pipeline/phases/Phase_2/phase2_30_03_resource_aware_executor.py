@@ -25,19 +25,19 @@ from typing import TYPE_CHECKING, Any, Callable, List, Optional
 
 if TYPE_CHECKING:
     from farfan_pipeline.orchestration.orchestrator import MethodExecutor
-    from farfan_pipeline.phases.Phase_two.phase2_30_00_resource_manager import (
+    from farfan_pipeline.phases.Phase_2.phase2_30_00_resource_manager import (
         AdaptiveResourceManager,
     )
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
     )
-    from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import (
+    from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import (
         ExecutorConfig,
     )
-    import farfan_pipeline.phases.Phase_0.phase0_10_00_canonical_questionnaire import (
+    from farfan_pipeline.phases.Phase_0.phase0_10_00_canonical_questionnaire import (
             CanonicalQuestionnaire,
     )
-    from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import (
+    from farfan_pipeline.phases.Phase_2.phase2_60_04_calibration_policy import (
         CalibrationPolicy,
     )
 
@@ -782,7 +782,7 @@ class ResourceAwareExecutor:
             ValueError: If question_id cannot be determined.
             RuntimeError: If contract execution fails.
         """
-        from farfan_pipeline.phases.Phase_two.phase2_60_00_base_executor_with_contract import (
+        from farfan_pipeline.phases.Phase_2.phase2_60_00_base_executor_with_contract import (
             DynamicContractExecutor,
         )
         

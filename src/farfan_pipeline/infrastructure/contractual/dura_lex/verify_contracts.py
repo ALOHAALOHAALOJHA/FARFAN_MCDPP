@@ -24,7 +24,7 @@ import logging
 import sys
 from typing import Any
 
-import farfan_pipeline.phases.Phase_2.executors.base_executor_with_contract import BaseExecutorWithContract
+from farfan_pipeline.phases.Phase_2.executors.base_executor_with_contract import BaseExecutorWithContract
 
 logger = logging.getLogger(__name__)
 

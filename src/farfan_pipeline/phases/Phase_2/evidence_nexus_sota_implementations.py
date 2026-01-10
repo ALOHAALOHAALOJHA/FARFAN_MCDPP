@@ -579,7 +579,7 @@ class SOTAEvidenceNexus:
             ("never ", ""),
             ("none ", ""),
             ("without ", ""),
-        }
+        ]
 
         for pattern in negation_patterns:
             if pattern[0] in content_a and pattern[1] in content_b:

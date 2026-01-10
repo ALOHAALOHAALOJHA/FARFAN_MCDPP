@@ -35,27 +35,27 @@ except Exception as e:
     )
 
 try:
-    import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
+    from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
 except ImportError:
-    import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
+    from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
 
 try:
-    from farfan_pipeline.phases.Phase_two.evidence_nexus import EvidenceNexus, process_evidence
+    from farfan_pipeline.phases.Phase_2.evidence_nexus import EvidenceNexus, process_evidence
 except ImportError:
-    from farfan_pipeline.phases.Phase_two.phase2_80_00_evidence_nexus import EvidenceNexus, process_evidence
+    from farfan_pipeline.phases.Phase_2.phase2_80_00_evidence_nexus import EvidenceNexus, process_evidence
 
 try:
-    from farfan_pipeline.phases.Phase_two.carver import DoctoralCarverSynthesizer
+    from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
 except ImportError:
-    from farfan_pipeline.phases.Phase_two.phase2_90_00_carver import DoctoralCarverSynthesizer
+    from farfan_pipeline.phases.Phase_2.phase2_90_00_carver import DoctoralCarverSynthesizer
 
 try:
-    from farfan_pipeline.phases.Phase_two.calibration_policy import CalibrationPolicy, create_default_policy
+    from farfan_pipeline.phases.Phase_2.calibration_policy import CalibrationPolicy, create_default_policy
 except ImportError:
     try:
-        from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import CalibrationPolicy, create_default_policy
+        from farfan_pipeline.phases.Phase_2.phase2_60_04_calibration_policy import CalibrationPolicy, create_default_policy
     except ImportError:
-        from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import CalibrationPolicy
+        from farfan_pipeline.phases.Phase_2.phase2_60_04_calibration_policy import CalibrationPolicy
         def create_default_policy():
             return CalibrationPolicy()
 
@@ -222,7 +222,7 @@ class BaseExecutorWithContract(ABC):
         q_number = (dimension - 1) * 5 + question
         q_id = f"Q{q_number:03d}"
 
-        contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts"
+        contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "json_files_phase_two" / "executor_contracts"
 
         v3_path = contracts_dir / f"{base_slot}.v3.json"
         v2_path = contracts_dir / f"{base_slot}.json"
@@ -535,13 +535,13 @@ class BaseExecutorWithContract(ABC):
             else:
                 schema_path = PROJECT_ROOT / "config" / "executor_contract.schema.json"
 
-            # If default path doesn't exist, try local path in Phase_two/json_files_phase_two
+            # If default path doesn't exist, try local path in Phase_2/json_files_phase_two
             if not schema_path.exists():
                 local_path = (
                     PROJECT_ROOT
                     / "src"
                     / "farfan_pipeline.phases"
-                    / "Phase_two"
+                    / "Phase_2"
                     / "json_files_phase_two"
                     / f"executor_contract.{version}.schema.json"
                 )
@@ -614,7 +614,7 @@ class BaseExecutorWithContract(ABC):
 
         # === V4 CONTRACTS ONLY - generated_contracts/ ===
         # All contracts must be v4 format from this directory
-        v4_contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "generated_contracts"
+        v4_contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "generated_contracts"
 
         # v4 contract filename format: {q_id}_{policy_area_id}_contract_v4.json
         if not policy_area_id:
@@ -2754,7 +2754,7 @@ class DynamicContractExecutor(BaseExecutorWithContract):
             FileNotFoundError: If contract not found
         """
         # Try v4 contracts first (generated_contracts/)
-        v4_contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "generated_contracts"
+        v4_contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "generated_contracts"
         
         contract_path = None
         
@@ -2765,7 +2765,7 @@ class DynamicContractExecutor(BaseExecutorWithContract):
         
         # Fallback to legacy paths
         if contract_path is None:
-            contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts"
+            contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "json_files_phase_two" / "executor_contracts"
             
             # Try specialized contract
             v3_path = contracts_dir / "specialized" / f"{question_id}.v3.json"

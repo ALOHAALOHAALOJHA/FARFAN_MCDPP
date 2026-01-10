@@ -42,7 +42,6 @@ except ImportError:
 
 @dataclass
 class CausalAnalysisResult:
-class CausalAnalysisResult:
     """Results from DoWhy causal analysis"""
 
     identified: bool = False

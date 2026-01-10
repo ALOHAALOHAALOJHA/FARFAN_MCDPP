@@ -1210,7 +1210,7 @@ def main():
     
     # 4. Exportar resultados
     print("\n[4/4] Exportando resultados...")
-    import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
+    from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
     output_dir = PROJECT_ROOT / "artifacts" / "reports"
     output_dir.mkdir(parents=True, exist_ok=True)
     

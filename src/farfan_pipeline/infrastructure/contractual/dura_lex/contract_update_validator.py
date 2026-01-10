@@ -28,8 +28,8 @@ class ContractUpdateValidator:
     """Validates and executes contract updates with granular checks"""
     
     def __init__(self):
-        self.contracts_dir = SRC_ROOT / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts" / "specialized"
-        self.executors_methods_path = SRC_ROOT / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executors_methods.json"
+        self.contracts_dir = SRC_ROOT / "farfan_pipeline" / "phases" / "Phase_2" / "json_files_phase_two" / "executor_contracts" / "specialized"
+        self.executors_methods_path = SRC_ROOT / "farfan_pipeline" / "phases" / "Phase_2" / "json_files_phase_two" / "executors_methods.json"
         self.questionnaire_path = REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
         self.dispensary_path = SRC_ROOT / "methods_dispensary"
         

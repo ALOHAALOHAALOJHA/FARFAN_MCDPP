@@ -191,7 +191,7 @@ def main():
         # Auto-detect from script location
         script_dir = Path(__file__).resolve().parent
         project_root = script_dir.parent
-        contracts_dir = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts" / "specialized"
+        contracts_dir = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_2" / "json_files_phase_two" / "executor_contracts" / "specialized"
     
     if not contracts_dir.exists():
         print(f"❌ Contracts directory not found: {contracts_dir}", file=sys.stderr)

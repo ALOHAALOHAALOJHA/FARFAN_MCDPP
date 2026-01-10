@@ -463,7 +463,7 @@ if __name__ == "__main__":
     from pathlib import Path
 
     # Load sample contracts
-    contracts_dir = Path("src/farfan_pipeline/phases/Phase_two/generated_contracts")
+    contracts_dir = Path("src/farfan_pipeline/phases/Phase_2/generated_contracts")
     contracts = []
 
     for contract_file in list(contracts_dir.glob("Q*_PA*_contract_v4.json"))[:30]:

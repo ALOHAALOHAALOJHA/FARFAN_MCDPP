@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_eight.primitives.PHASE_8_TYPES
+Module: src.farfan_pipeline.phases.Phase_8.primitives.PHASE_8_TYPES
 Purpose: Type definitions and type aliases for Phase 8 - Recommendation Engine
 Owner: phase8_core
 Lifecycle: ACTIVE

@@ -39,17 +39,17 @@ except ImportError:
     STRUCTLOG_AVAILABLE = False
 
 # Import Phase 1 models
-import farfan_pipeline.phases.Phase_1.phase1_10_00_models import (
+from farfan_pipeline.phases.Phase_1.phase1_10_00_models import (
     Chunk,
 )
 
 # Import questionnaire mapper
-import farfan_pipeline.phases.Phase_1.phase1_15_00_questionnaire_mapper import (
+from farfan_pipeline.phases.Phase_1.phase1_15_00_questionnaire_mapper import (
     QuestionSpec,
 )
 
 # Import Phase 1 constants
-import farfan_pipeline.phases.Phase_1.PHASE_1_CONSTANTS import (
+from farfan_pipeline.phases.Phase_1.PHASE_1_CONSTANTS import (
     POLICY_AREA_COUNT,
 )
 

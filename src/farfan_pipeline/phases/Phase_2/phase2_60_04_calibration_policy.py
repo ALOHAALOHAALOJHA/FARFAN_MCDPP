@@ -10,7 +10,7 @@ Author: F.A.R.F.A.N Policy Pipeline
 License: Proprietary
 
 This module is part of Phase 2: Analysis & Question Execution.
-All files in Phase_two/ must contain PHASE_LABEL: Phase 2.
+All files in Phase_2/ must contain PHASE_LABEL: Phase 2.
 
 DESIGN PATTERN: Policy Facade
 - Provides high-level policy resolution for 300 JSON contracts

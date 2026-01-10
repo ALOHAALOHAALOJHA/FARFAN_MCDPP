@@ -71,12 +71,12 @@ from enum import Enum
 # Core pipeline imports - REAL PATHS based on actual project structure
 # Phase 0/1 models from same directory
 try:
-    import farfan_pipeline.phases.Phase_0.phase0_40_00_input_validation import CanonicalInput
+    from farfan_pipeline.phases.Phase_0.phase0_40_00_input_validation import CanonicalInput
 except ImportError:
     # Fallback if farfan_pipeline is not in path directly but src is?
     # Or keep the old one just in case but it seems broken.
     # I'll try the absolute one first.
-    import farfan_pipeline.phases.Phase_0.phase0_40_00_input_validation import CanonicalInput
+    from farfan_pipeline.phases.Phase_0.phase0_40_00_input_validation import CanonicalInput
 
 from .phase1_10_00_models import (
     LanguageData, PreprocessedDoc, StructureData, KnowledgeGraph, KGNode, KGEdge,
@@ -202,12 +202,12 @@ except ImportError as e:
 
 # Methods Dispensary via factory/registry (no direct module imports)
 try:
-    from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry import MethodRegistry, MethodRegistryError
+    from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import MethodRegistry, MethodRegistryError
 except ImportError:
     # If import fails, raise with clear message
     raise ImportError(
-        "Cannot import MethodRegistry from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry. "
-        "Ensure Phase_two module is properly installed and accessible."
+        "Cannot import MethodRegistry from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry. "
+        "Ensure Phase_2 module is properly installed and accessible."
     )
 
 _METHOD_REGISTRY = MethodRegistry()
@@ -3486,7 +3486,7 @@ class Phase1CPPIngestionFullContract:
         """
         try:
             # Use centralized path management
-            import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
+            from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
             base_path = PROJECT_ROOT
             spec_path = base_path / "artifacts/data/canonic_description_unit_analysis.json"
             

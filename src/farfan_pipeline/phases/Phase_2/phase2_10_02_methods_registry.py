@@ -10,7 +10,7 @@ Author: F.A.R.F.A.N Policy Pipeline
 License: Proprietary
 
 This module is part of Phase 2: Analysis & Question Execution.
-All files in Phase_two/ must contain PHASE_LABEL: Phase 2.
+All files in Phase_2/ must contain PHASE_LABEL: Phase 2.
 """
 from __future__ import annotations
 
@@ -95,7 +95,7 @@ class MethodRegistry:
         """
         # Import class paths from existing registry
         if class_paths is None:
-            import farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import get_class_paths
+            from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import get_class_paths
             class_paths = dict(get_class_paths())
 
         self._class_paths = class_paths

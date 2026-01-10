@@ -1,5 +1,5 @@
 """
-Module: Phase_two/__init__
+Module: Phase_2/__init__
 PHASE_LABEL: Phase 2
 Sequence: Package Init
 Description: Phase 2 package interface and exports
@@ -52,23 +52,23 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 # Evidence processing - EvidenceNexus for causal graph construction
-import farfan_pipeline.phases.Phase_2.phase2_80_00_evidence_nexus import (
+from farfan_pipeline.phases.Phase_2.phase2_80_00_evidence_nexus import (
     EvidenceNexus,
 )
 
 # Narrative synthesis - Doctoral Carver for PhD-level responses
-import farfan_pipeline.phases.Phase_2.phase2_90_00_carver import (
+from farfan_pipeline.phases.Phase_2.phase2_90_00_carver import (
     DoctoralCarverSynthesizer,
 )
 
 # Contract Hydrator - V4 to Carver-compatible adapter
-import farfan_pipeline.phases.Phase_2.phase2_95_00_contract_hydrator import (
+from farfan_pipeline.phases.Phase_2.phase2_95_00_contract_hydrator import (
     ContractHydrator,
 )
 
 # Executor configuration and base class
-import farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
-import farfan_pipeline.phases.Phase_2.phase2_60_00_base_executor_with_contract import (
+from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_2.phase2_60_00_base_executor_with_contract import (
     BaseExecutorWithContract,
 )
 

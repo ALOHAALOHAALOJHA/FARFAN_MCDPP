@@ -71,7 +71,7 @@ except ImportError as e:
     ) from e
 
 # Phase protocol from Phase Zero Infrastructure
-import farfan_pipeline.phases.Phase_0.phase0_00_03_protocols import (
+from farfan_pipeline.phases.Phase_0.phase0_00_03_protocols import (
     ContractValidationResult,
 )
 
@@ -471,7 +471,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
         questionnaire_path = input_data.questionnaire_path
         if questionnaire_path is None:
             # Use the new Modular Manifest Entry Point
-            import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import QUESTIONNAIRE_ENTRY_POINT
+            from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import QUESTIONNAIRE_ENTRY_POINT
 
             questionnaire_path = QUESTIONNAIRE_ENTRY_POINT
             warnings.append(

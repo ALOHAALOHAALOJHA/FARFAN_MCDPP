@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_eight.phase8_20_01_recommendation_engine_adapter
+Module: src.farfan_pipeline.phases.Phase_8.phase8_20_01_recommendation_engine_adapter
 Purpose: Ports and Adapters pattern adapter for RecommendationEngine
 Owner: phase8_core
 Stage: 20 (Engine)

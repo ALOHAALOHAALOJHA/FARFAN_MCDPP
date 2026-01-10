@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_zero
+Module: src.farfan_pipeline.phases.Phase_0
 PHASE_LABEL: Phase 0
 Purpose: Package initialization for Phase 0 - Validation, Hardening & Bootstrap
 Owner: phase0_core

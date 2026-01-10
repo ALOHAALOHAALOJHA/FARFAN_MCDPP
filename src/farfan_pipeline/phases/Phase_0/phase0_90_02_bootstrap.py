@@ -42,11 +42,11 @@ except ImportError:
     ResourceExhausted = Exception  # type: ignore[misc, assignment]
     PSUTIL_AVAILABLE = False
 
-import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import CONFIG_DIR
-from farfan_pipeline.phases.Phase_two.phase2_10_00_factory import CanonicalQuestionnaire
-from farfan_pipeline.phases.Phase_two.phase2_60_02_arg_router import ExtendedArgRouter
-from farfan_pipeline.phases.Phase_two.phase2_10_01_class_registry import build_class_registry
-from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import CONFIG_DIR
+from farfan_pipeline.phases.Phase_2.phase2_10_00_factory import CanonicalQuestionnaire
+from farfan_pipeline.phases.Phase_2.phase2_60_02_arg_router import ExtendedArgRouter
+from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import build_class_registry
+from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
     InMemorySignalSource,
     SignalClient,
@@ -253,7 +253,7 @@ _DEFAULT_CALIBRATION_CONFIG = None  # type: ignore[assignment]
 _HAS_CALIBRATION = False
 
 # Import wiring support from consolidated module
-import farfan_pipeline.phases.Phase_0.phase0_90_03_wiring_validator import (
+from farfan_pipeline.phases.Phase_0.phase0_90_03_wiring_validator import (
     MissingDependencyError,
 )
 

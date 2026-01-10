@@ -16,7 +16,7 @@ from __future__ import annotations
 # ==============================================================================
 
 # Core Aggregation Pipeline
-from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+from farfan_pipeline.phases.Phase_4.aggregation import (
     # Dataclasses
     AggregationSettings,
     ScoredResult,
@@ -40,14 +40,14 @@ from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
 )
 
 # Choquet Integral Aggregator
-from farfan_pipeline.phases.Phase_four_five_six_seven.choquet_aggregator import (
+from farfan_pipeline.phases.Phase_4.choquet_aggregator import (
     ChoquetAggregator,
     ChoquetConfig,
     CalibrationResult,
 )
 
 # Enhanced Aggregation
-from farfan_pipeline.phases.Phase_four_five_six_seven.enhancements import (
+from farfan_pipeline.phases.Phase_4.enhancements import (
     EnhancedDimensionAggregator,
     DispersionMetrics,
     HermeticityDiagnosis,
@@ -55,7 +55,7 @@ from farfan_pipeline.phases.Phase_four_five_six_seven.enhancements import (
 )
 
 # Validation
-from farfan_pipeline.phases.Phase_four_five_six_seven.validation import (
+from farfan_pipeline.phases.Phase_4.validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,
@@ -66,18 +66,18 @@ from farfan_pipeline.phases.Phase_four_five_six_seven.validation import (
 )
 
 # Provenance (standalone re-export for explicit access)
-from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_provenance import (
+from farfan_pipeline.phases.Phase_4.aggregation_provenance import (
     AggregationDAG as ProvenanceDAG,
     ProvenanceNode as ProvenanceEntry,
 )
 
 # Signal-Enriched Aggregation
-from farfan_pipeline.phases.Phase_four_five_six_seven.enhancements.signal_enriched_aggregation import (
+from farfan_pipeline.phases.Phase_4.enhancements.signal_enriched_aggregation import (
     SignalEnrichedAggregator,
 )
 
 # Adaptive Meso Scoring
-from farfan_pipeline.phases.Phase_four_five_six_seven.enhancements.adaptive_meso_scoring import (
+from farfan_pipeline.phases.Phase_4.enhancements.adaptive_meso_scoring import (
     AdaptiveMesoScoring,
 )
 

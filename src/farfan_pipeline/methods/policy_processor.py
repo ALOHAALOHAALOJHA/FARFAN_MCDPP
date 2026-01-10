@@ -34,7 +34,7 @@ import numpy as np
 
 # Import runtime error fixes for defensive programming
 try:
-    import farfan_pipeline.phases.Phase_0.phase0_00_02_runtime_error_fixes import ensure_list_return
+    from farfan_pipeline.phases.Phase_0.phase0_00_02_runtime_error_fixes import ensure_list_return
 except Exception:  # pragma: no cover - local fallback for standalone import
 
     def ensure_list_return(value: Any) -> list[Any]:

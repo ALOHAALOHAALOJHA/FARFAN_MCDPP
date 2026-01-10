@@ -85,7 +85,7 @@ INTEGRATION GUIDE:
    Pass validation orchestrator to executors:
 
    ```python
-   from farfan_pipeline.phases.Phase_two.base_executor_with_contract import (
+   from farfan_pipeline.phases.Phase_2.base_executor_with_contract import (
        BaseExecutorWithContract
    )
    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_contract_validator import (

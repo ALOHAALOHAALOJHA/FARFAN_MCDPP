@@ -37,7 +37,7 @@ from ..PHASE_4_7_CONSTANTS import (
 )
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_three.phase3_score_extraction import ScoredResult
+    from farfan_pipeline.phases.Phase_3.phase3_score_extraction import ScoredResult
 
 logger = logging.getLogger(__name__)
 

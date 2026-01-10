@@ -21,7 +21,7 @@ from __future__ import annotations
 import time
 from typing import Any, Dict, Optional
 
-import farfan_pipeline.phases.Phase_2.phase2_95_03_executor_calibration_integration import (
+from farfan_pipeline.phases.Phase_2.phase2_95_03_executor_calibration_integration import (
     instrument_executor,
 )
 

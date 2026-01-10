@@ -2,7 +2,7 @@
 Módulo:  input_registry.py
 Propósito: Cargar, validar e indexar todos los insumos como registro inmutable
 
-Ubicación: src/farfan_pipeline/phases/Phase_two/contract_generator/input_registry. py
+Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/input_registry. py
 
 RESPONSABILIDADES: 
 1. Cargar los 3 archivos JSON de insumos

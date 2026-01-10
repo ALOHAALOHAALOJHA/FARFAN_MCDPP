@@ -41,13 +41,13 @@ from itertools import combinations, chain
 from collections import defaultdict, Counter
 
 # Cross-module integration with Uncertainty Quantification
-from farfan_pipeline.phases.Phase_four_five_six_seven.uncertainty_quantification import (
+from farfan_pipeline.phases.Phase_4.uncertainty_quantification import (
     UncertaintyMetrics,
     BootstrapAggregator
 )
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import AggregationSettings
+    from farfan_pipeline.phases.Phase_4.aggregation import AggregationSettings
 
 logger = logging.getLogger(__name__)
 

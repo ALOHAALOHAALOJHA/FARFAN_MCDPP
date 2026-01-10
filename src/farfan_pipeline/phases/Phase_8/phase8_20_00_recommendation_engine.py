@@ -1,6 +1,6 @@
 # phase8_20_00_recommendation_engine.py - Rule-Based Recommendation Engine
 """
-Module: src.farfan_pipeline.phases.Phase_eight.phase8_20_00_recommendation_engine
+Module: src.farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine
 Purpose: Multi-level rule-based recommendation generation (MICRO/MESO/MACRO)
 Owner: phase8_core
 Stage: 20 (Engine)

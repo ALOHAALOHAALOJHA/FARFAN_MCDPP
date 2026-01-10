@@ -2,7 +2,7 @@
 Módulo: json_emitter.py
 Propósito: Emitir contratos como JSON determinista
 
-Ubicación: src/farfan_pipeline/phases/Phase_two/contract_generator/json_emitter.py
+Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/json_emitter.py
 
 RESPONSABILIDADES:
 1. Emitir contratos individuales como JSON

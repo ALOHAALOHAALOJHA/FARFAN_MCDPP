@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_two.PHASE_2_CONSTANTS
+Module: src.farfan_pipeline.phases.Phase_2.PHASE_2_CONSTANTS
 Purpose: Global constants for Phase 2 - Executor Contract Factory
 Owner: phase2_core
 Lifecycle: ACTIVE
