@@ -88,7 +88,7 @@
     "strategy": "FIXED"
   },
   "documentation": {
-    "constants": "PHASE_9_CONSTANTS.py",
+    "constants": "phase9_10_00_phase_9_constants.py",
     "manifest": "PHASE_9_MANIFEST.json"
   }
 }

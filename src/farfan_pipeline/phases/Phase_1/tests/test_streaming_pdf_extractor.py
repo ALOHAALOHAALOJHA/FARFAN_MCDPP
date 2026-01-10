@@ -15,14 +15,14 @@ from unittest.mock import MagicMock, patch
 from farfan_pipeline.phases.Phase_1.primitives.streaming_extractor import (
     StreamingPDFExtractor,
 =======
-from farfan_pipeline.phases.Phase_1.PHASE_1_CONSTANTS import PDF_EXTRACTION_CHAR_LIMIT
+from farfan_pipeline.phases.Phase_1.phase1_10_00_phase_1_constants import PDF_EXTRACTION_CHAR_LIMIT
 from farfan_pipeline.phases.Phase_1.primitives.streaming_extractor import (
 >>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
     PYMUPDF_AVAILABLE,
     StreamingPDFExtractor,
 )
 <<<<<<< HEAD
-from farfan_pipeline.phases.Phase_1.PHASE_1_CONSTANTS import PDF_EXTRACTION_CHAR_LIMIT
+from farfan_pipeline.phases.Phase_1.phase1_10_00_phase_1_constants import PDF_EXTRACTION_CHAR_LIMIT
 =======
 >>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
 

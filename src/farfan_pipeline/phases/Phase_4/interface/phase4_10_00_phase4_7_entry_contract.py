@@ -28,7 +28,7 @@ import logging
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
-from ..PHASE_4_7_CONSTANTS import (
+from ..phase4_10_00_phase_4_7_constants import (
     MAX_SCORE,
     META_PROVENANCE_NODE_ID,
     META_PROVENANCE_PARENT_ID,

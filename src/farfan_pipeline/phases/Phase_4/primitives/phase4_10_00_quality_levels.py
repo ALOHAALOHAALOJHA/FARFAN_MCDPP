@@ -22,7 +22,7 @@ import logging
 from dataclasses import dataclass
 from enum import Enum
 
-from ..PHASE_4_7_CONSTANTS import (
+from ..phase4_10_00_phase_4_7_constants import (
     MAX_SCORE,
     MIN_SCORE,
     QUALITY_LEVEL_ACEPTABLE,

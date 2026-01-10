@@ -94,7 +94,7 @@ from .phase1_10_00_models import (
     Temporal,
     ValidationResult,
 )
-from .PHASE_1_CONSTANTS import (
+from .phase1_10_00_phase_1_constants import (
     ASSIGNMENT_METHOD_FALLBACK,
     ASSIGNMENT_METHOD_SEMANTIC,
     PDF_EXTRACTION_CHAR_LIMIT,

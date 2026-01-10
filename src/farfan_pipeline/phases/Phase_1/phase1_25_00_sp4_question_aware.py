@@ -51,7 +51,7 @@ from farfan_pipeline.phases.Phase_1.phase1_15_00_questionnaire_mapper import (
 )
 
 # Import Phase 1 constants
-from farfan_pipeline.phases.Phase_1.PHASE_1_CONSTANTS import (
+from farfan_pipeline.phases.Phase_1.phase1_10_00_phase_1_constants import (
     POLICY_AREA_COUNT,
 )
 

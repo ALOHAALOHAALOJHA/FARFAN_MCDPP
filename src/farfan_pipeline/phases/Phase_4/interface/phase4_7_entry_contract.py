@@ -28,7 +28,7 @@ import logging
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
-from ..PHASE_4_7_CONSTANTS import (
+from ..phase4_10_00_phase_4_7_constants import (
     MIN_SCORE,
     MAX_SCORE,
     META_PROVENANCE_SOURCE_PHASE,
