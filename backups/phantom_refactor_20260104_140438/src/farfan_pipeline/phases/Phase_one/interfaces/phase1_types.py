@@ -12,8 +12,9 @@ from typing_extensions import NotRequired
 
 class TruncationAuditDict(TypedDict):
     """Serialized form of TruncationAudit."""
+
     total_chars: int
-    processed_chars:  int
+    processed_chars: int
     chars_lost: int
     loss_ratio: float
     limit_applied: int
@@ -22,7 +23,8 @@ class TruncationAuditDict(TypedDict):
 
 class SubphaseResultDict(TypedDict):
     """Result from a single subphase execution."""
-    subphase_id:  int
+
+    subphase_id: int
     success: bool
     output: Any
     error: NotRequired[str]
@@ -30,6 +32,7 @@ class SubphaseResultDict(TypedDict):
 
 class ChunkTraceability(TypedDict):
     """Traceability metadata for chunk assignment."""
+
     assignment_method: str
     semantic_confidence: float
 

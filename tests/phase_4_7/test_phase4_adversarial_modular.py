@@ -26,13 +26,12 @@ from typing import Any
 # VALUE: Verifies aggregation respects real cluster structure from modular metadata
 # =============================================================================
 
+
 class TestClusterStructureValidation:
     """Validate that aggregation respects REAL cluster→PA mappings."""
 
     def test_cluster_01_has_correct_pas(
-        self,
-        cluster_to_pas_mapping: dict[str, list[str]],
-        pa_to_cluster_mapping: dict[str, str]
+        self, cluster_to_pas_mapping: dict[str, list[str]], pa_to_cluster_mapping: dict[str, str]
     ):
         """
         VALUE: Validates CL01 structure matches modular metadata.
@@ -44,9 +43,11 @@ class TestClusterStructureValidation:
         """
         # CL01 should have exactly 3 PAs
         cl01_pas = cluster_to_pas_mapping["CL01"]
-        assert cl01_pas == ["PA02", "PA03", "PA07"], (
-            f"CL01 PA mismatch from modular metadata: expected [PA02, PA03, PA07], got {cl01_pas}"
-        )
+        assert cl01_pas == [
+            "PA02",
+            "PA03",
+            "PA07",
+        ], f"CL01 PA mismatch from modular metadata: expected [PA02, PA03, PA07], got {cl01_pas}"
 
         # Verify reverse mapping: each PA maps to CL01
         for pa_id in cl01_pas:
@@ -56,9 +57,7 @@ class TestClusterStructureValidation:
             )
 
     def test_cluster_02_has_correct_pas(
-        self,
-        cluster_to_pas_mapping: dict[str, list[str]],
-        pa_to_cluster_mapping: dict[str, str]
+        self, cluster_to_pas_mapping: dict[str, list[str]], pa_to_cluster_mapping: dict[str, str]
     ):
         """
         VALUE: Validates CL02 structure matches modular metadata.
@@ -72,9 +71,7 @@ class TestClusterStructureValidation:
             assert pa_to_cluster_mapping[pa_id] == "CL02"
 
     def test_cluster_03_has_correct_pas(
-        self,
-        cluster_to_pas_mapping: dict[str, list[str]],
-        pa_to_cluster_mapping: dict[str, str]
+        self, cluster_to_pas_mapping: dict[str, list[str]], pa_to_cluster_mapping: dict[str, str]
     ):
         """
         VALUE: Validates CL03 structure matches modular metadata.
@@ -88,9 +85,7 @@ class TestClusterStructureValidation:
             assert pa_to_cluster_mapping[pa_id] == "CL03"
 
     def test_cluster_04_has_correct_pas(
-        self,
-        cluster_to_pas_mapping: dict[str, list[str]],
-        pa_to_cluster_mapping: dict[str, str]
+        self, cluster_to_pas_mapping: dict[str, list[str]], pa_to_cluster_mapping: dict[str, str]
     ):
         """
         VALUE: Validates CL04 structure matches modular metadata.
@@ -109,6 +104,7 @@ class TestClusterStructureValidation:
 # VALUE: Verifies area aggregation respects PA→Cluster assignments
 # =============================================================================
 
+
 class TestAreaAggregatorWithRealStructure:
     """Test AreaPolicyAggregator with REAL modular structure."""
 
@@ -116,7 +112,7 @@ class TestAreaAggregatorWithRealStructure:
         self,
         pa_to_cluster_mapping: dict[str, str],
         generate_dimension_score_for_pa,
-        monolith_from_modular
+        monolith_from_modular,
     ):
         """
         VALUE: Verifies AreaScore.cluster_id matches PA→Cluster mapping from modular metadata.
@@ -127,10 +123,13 @@ class TestAreaAggregatorWithRealStructure:
             etc.
         """
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
-            AreaPolicyAggregator, DimensionScore
+            AreaPolicyAggregator,
+            DimensionScore,
         )
 
-        aggregator = AreaPolicyAggregator(monolith=monolith_from_modular, abort_on_insufficient=False)
+        aggregator = AreaPolicyAggregator(
+            monolith=monolith_from_modular, abort_on_insufficient=False
+        )
 
         # Create dimension scores for PA02 (should map to CL01)
         pa_id = "PA02"
@@ -144,14 +143,13 @@ class TestAreaAggregatorWithRealStructure:
                 quality_level="BUENO",
                 contributing_questions=[1, 2, 3, 4, 5],
                 validation_passed=True,
-                validation_details={}
+                validation_details={},
             )
             for i in range(1, 7)
         ]
 
         area_score = aggregator.aggregate_area(
-            dimension_scores,
-            {"area_id": pa_id}  # Code expects area_id, not policy_area
+            dimension_scores, {"area_id": pa_id}  # Code expects area_id, not policy_area
         )
 
         # MEANINGFUL ASSERTION: Verify cluster_id matches modular metadata
@@ -164,7 +162,7 @@ class TestAreaAggregatorWithRealStructure:
         self,
         cluster_to_pas_mapping: dict[str, list[str]],
         pa_to_cluster_mapping: dict[str, str],
-        monolith_from_modular
+        monolith_from_modular,
     ):
         """
         VALUE: Verifies areas are grouped by correct cluster boundaries.
@@ -175,10 +173,13 @@ class TestAreaAggregatorWithRealStructure:
         This validates that aggregation respects REAL cluster boundaries.
         """
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
-            AreaPolicyAggregator, DimensionScore
+            AreaPolicyAggregator,
+            DimensionScore,
         )
 
-        aggregator = AreaPolicyAggregator(monolith=monolith_from_modular, abort_on_insufficient=False)
+        aggregator = AreaPolicyAggregator(
+            monolith=monolith_from_modular, abort_on_insufficient=False
+        )
 
         # Create area scores for CL01 PAs: PA02, PA03, PA07
         cl01_expected_pas = set(cluster_to_pas_mapping["CL01"])
@@ -194,7 +195,7 @@ class TestAreaAggregatorWithRealStructure:
                     quality_level="BUENO",
                     contributing_questions=[1, 2, 3, 4, 5],
                     validation_passed=True,
-                    validation_details={}
+                    validation_details={},
                 )
                 for i in range(1, 7)
             ]
@@ -214,6 +215,7 @@ class TestAreaAggregatorWithRealStructure:
 # VALUE: Verifies hermeticity uses correct PA counts from modular structure
 # =============================================================================
 
+
 class TestClusterHermeticityWithRealCounts:
     """Test ClusterAggregator hermeticity with REAL PA counts from modular metadata."""
 
@@ -222,7 +224,7 @@ class TestClusterHermeticityWithRealCounts:
         cluster_to_pas_mapping: dict[str, list[str]],
         cluster_policy_area_counts: dict[str, int],
         assert_hermeticity_for_cluster,
-        monolith_from_modular
+        monolith_from_modular,
     ):
         """
         VALUE: Verifies CL01 hermeticity uses REAL count (3 PAs) from modular metadata.
@@ -234,7 +236,8 @@ class TestClusterHermeticityWithRealCounts:
         If aggregation receives only 2 areas, it should detect hermeticity violation.
         """
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
-            ClusterAggregator, AreaScore
+            ClusterAggregator,
+            AreaScore,
         )
 
         aggregator = ClusterAggregator(monolith=monolith_from_modular, abort_on_insufficient=False)
@@ -249,7 +252,7 @@ class TestClusterHermeticityWithRealCounts:
                 dimension_scores=[],
                 cluster_id="CL01",
                 validation_passed=True,
-                validation_details={}
+                validation_details={},
             ),
             AreaScore(
                 area_id="PA03",
@@ -259,14 +262,13 @@ class TestClusterHermeticityWithRealCounts:
                 dimension_scores=[],
                 cluster_id="CL01",
                 validation_passed=True,
-                validation_details={}
-            )
+                validation_details={},
+            ),
             # Missing PA07 - hermeticity violation
         ]
 
         cluster_score = aggregator.aggregate_cluster(
-            area_scores,
-            {"cluster_id": "CL01", "cluster_name": "Seguridad y Paz"}
+            area_scores, {"cluster_id": "CL01", "cluster_name": "Seguridad y Paz"}
         )
 
         # MEANINGFUL ASSERTION: Hermeticity should fail due to missing PA07
@@ -274,9 +276,7 @@ class TestClusterHermeticityWithRealCounts:
         assert "hermeticity" in str(cluster_score.validation_details).lower()
 
     def test_cluster_02_hermeticity_with_real_pa_count(
-        self,
-        cluster_policy_area_counts: dict[str, int],
-        monolith_from_modular
+        self, cluster_policy_area_counts: dict[str, int], monolith_from_modular
     ):
         """
         VALUE: Verifies CL02 hermeticity uses REAL count (3 PAs) from modular metadata.
@@ -284,7 +284,8 @@ class TestClusterHermeticityWithRealCounts:
         CL02 from modular metadata: [PA01, PA05, PA06]
         """
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
-            ClusterAggregator, AreaScore
+            ClusterAggregator,
+            AreaScore,
         )
 
         aggregator = ClusterAggregator(monolith=monolith_from_modular, abort_on_insufficient=False)
@@ -299,14 +300,13 @@ class TestClusterHermeticityWithRealCounts:
                 dimension_scores=[],
                 cluster_id="CL02",
                 validation_passed=True,
-                validation_details={}
+                validation_details={},
             )
             for pa_id in ["PA01", "PA05", "PA06"]
         ]
 
         cluster_score = aggregator.aggregate_cluster(
-            area_scores,
-            {"cluster_id": "CL02", "cluster_name": "Grupos Poblacionales"}
+            area_scores, {"cluster_id": "CL02", "cluster_name": "Grupos Poblacionales"}
         )
 
         # MEANINGFUL ASSERTION: Hermeticity should pass with all 3 PAs
@@ -318,12 +318,12 @@ class TestClusterHermeticityWithRealCounts:
 # VALUE: Verifies SOTA features (uncertainty, provenance) work correctly
 # =============================================================================
 
+
 class TestDimensionAggregatorSOTAFeatures:
     """Test DimensionAggregator SOTA features add value."""
 
     def test_bootstrap_uncertainty_produces_confidence_interval(
-        self,
-        generate_scored_result_for_pa
+        self, generate_scored_result_for_pa
     ):
         """
         VALUE: Verifies BootstrapAggregator produces meaningful uncertainty metrics.
@@ -333,7 +333,7 @@ class TestDimensionAggregatorSOTAFeatures:
         EQUIPMENT: Tests verify CI is reasonable (not too wide, not too narrow)
         """
         from farfan_pipeline.phases.Phase_four_five_six_seven.uncertainty_quantification import (
-            BootstrapAggregator
+            BootstrapAggregator,
         )
 
         aggregator = BootstrapAggregator(iterations=100, seed=42)
@@ -358,9 +358,7 @@ class TestDimensionAggregatorSOTAFeatures:
         assert ci_width < 2.0, f"CI too wide: {ci_width}"
 
     def test_provenance_dag_tracks_real_lineage(
-        self,
-        generate_scored_result_for_pa,
-        pa_to_cluster_mapping: dict[str, str]
+        self, generate_scored_result_for_pa, pa_to_cluster_mapping: dict[str, str]
     ):
         """
         VALUE: Verifies ProvenanceDAG tracks REAL question→dimension→area lineage.
@@ -370,7 +368,8 @@ class TestDimensionAggregatorSOTAFeatures:
         EQUIPMENT: Tests verify lineage is complete and accurate
         """
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_provenance import (
-            AggregationDAG, ProvenanceNode
+            AggregationDAG,
+            ProvenanceNode,
         )
 
         dag = AggregationDAG()
@@ -381,29 +380,33 @@ class TestDimensionAggregatorSOTAFeatures:
 
         # Add micro-question nodes
         for q_id in [1, 2, 3]:
-            dag.add_node(ProvenanceNode(
-                node_id=f"Q00{q_id}",
-                level="micro",
-                score=2.0,
-                quality_level="BUENO",
-                metadata={"policy_area": pa_id}
-            ))
+            dag.add_node(
+                ProvenanceNode(
+                    node_id=f"Q00{q_id}",
+                    level="micro",
+                    score=2.0,
+                    quality_level="BUENO",
+                    metadata={"policy_area": pa_id},
+                )
+            )
 
         # Add dimension node
-        dag.add_node(ProvenanceNode(
-            node_id="DIM02",
-            level="dimension",
-            score=2.0,
-            quality_level="BUENO",
-            metadata={"policy_area": pa_id}
-        ))
+        dag.add_node(
+            ProvenanceNode(
+                node_id="DIM02",
+                level="dimension",
+                score=2.0,
+                quality_level="BUENO",
+                metadata={"policy_area": pa_id},
+            )
+        )
 
         # Add aggregation edge (3 questions → dimension)
         dag.add_aggregation_edge(
             source_ids=["Q001", "Q002", "Q003"],
             target_id="DIM02",
             operation="weighted_average",
-            weights=[1/3, 1/3, 1/3]
+            weights=[1 / 3, 1 / 3, 1 / 3],
         )
 
         # MEANINGFUL ASSERTION: Verify lineage is complete
@@ -414,10 +417,7 @@ class TestDimensionAggregatorSOTAFeatures:
         # depth is average depth (0.33 = 1/3 levels in this case)
         assert lineage["ancestor_count"] >= 3  # All 3 questions should be ancestors
 
-    def test_choquet_aggregation_handles_interactions(
-        self,
-        monolith_from_modular
-    ):
+    def test_choquet_aggregation_handles_interactions(self, monolith_from_modular):
         """
         VALUE: Verifies Choquet aggregator captures synergies between layers.
 
@@ -426,20 +426,20 @@ class TestDimensionAggregatorSOTAFeatures:
         EQUIPMENT: Tests verify interaction contribution is meaningful
         """
         from farfan_pipeline.phases.Phase_four_five_six_seven.choquet_aggregator import (
-            ChoquetAggregator, ChoquetConfig
+            ChoquetAggregator,
+            ChoquetConfig,
         )
 
         config = ChoquetConfig(
             linear_weights={"@b": 0.5, "@chain": 0.3},
             interaction_weights={("@b", "@chain"): 0.2},
-            validate_boundedness=True
+            validate_boundedness=True,
         )
 
         aggregator = ChoquetAggregator(config)
 
         result = aggregator.aggregate(
-            subject="test_with_interaction",
-            layer_scores={"@b": 0.8, "@chain": 0.6}
+            subject="test_with_interaction", layer_scores={"@b": 0.8, "@chain": 0.6}
         )
 
         # MEANINGFUL ASSERTIONS:
@@ -459,13 +459,12 @@ class TestDimensionAggregatorSOTAFeatures:
 # VALUE: Verifies data flow adds value at each transformation step
 # =============================================================================
 
+
 class TestIntermodularWiring:
     """Test that data flow adds value through Phase 3 → 4 → 5."""
 
     def test_phase_3_to_4_traceability_preserved(
-        self,
-        generate_scored_result_for_pa,
-        monolith_from_modular
+        self, generate_scored_result_for_pa, monolith_from_modular
     ):
         """
         VALUE: Verifies Phase 3 → 4 preserves question traceability.
@@ -474,22 +473,21 @@ class TestIntermodularWiring:
             Phase 3 outputs (ScoredResult) contain question_global IDs
             Phase 4 outputs (DimensionScore) must preserve these IDs
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
-            DimensionAggregator
-        )
+        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import DimensionAggregator
 
-        aggregator = DimensionAggregator(monolith=monolith_from_modular, abort_on_insufficient=False)
+        aggregator = DimensionAggregator(
+            monolith=monolith_from_modular, abort_on_insufficient=False
+        )
 
         # Simulate Phase 3 output with traceability
         phase3_output = [
-            generate_scored_result_for_pa(pa_id="PA02", question_id=i+1, score=2.0)
+            generate_scored_result_for_pa(pa_id="PA02", question_id=i + 1, score=2.0)
             for i in range(5)
         ]
 
         # Phase 4: Aggregate to dimension
         dim_score = aggregator.aggregate_dimension(
-            phase3_output,
-            {"policy_area": "PA02", "dimension": "DIM01"}
+            phase3_output, {"policy_area": "PA02", "dimension": "DIM01"}
         )
 
         # MEANINGFUL ASSERTION: Traceability is preserved
@@ -500,7 +498,7 @@ class TestIntermodularWiring:
         self,
         pa_to_cluster_mapping: dict[str, str],
         generate_dimension_score_for_pa,
-        monolith_from_modular
+        monolith_from_modular,
     ):
         """
         VALUE: Verifies Phase 4 → 5 propagates cluster_id correctly.
@@ -510,10 +508,13 @@ class TestIntermodularWiring:
             AreaScore for PA02 must have cluster_id="CL01"
         """
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
-            AreaPolicyAggregator, DimensionScore
+            AreaPolicyAggregator,
+            DimensionScore,
         )
 
-        aggregator = AreaPolicyAggregator(monolith=monolith_from_modular, abort_on_insufficient=False)
+        aggregator = AreaPolicyAggregator(
+            monolith=monolith_from_modular, abort_on_insufficient=False
+        )
 
         pa_id = "PA02"
         expected_cluster = pa_to_cluster_mapping[pa_id]
@@ -527,15 +528,14 @@ class TestIntermodularWiring:
                 quality_level="BUENO",
                 contributing_questions=[1, 2, 3, 4, 5],
                 validation_passed=True,
-                validation_details={}
+                validation_details={},
             )
             for i in range(1, 7)
         ]
 
         # Phase 5: Aggregate to area
         area_score = aggregator.aggregate_area(
-            dimension_scores,
-            {"area_id": pa_id}  # Code expects area_id, not policy_area
+            dimension_scores, {"area_id": pa_id}  # Code expects area_id, not policy_area
         )
 
         # MEANINGFUL ASSERTION: cluster_id from modular metadata propagates
@@ -550,13 +550,12 @@ class TestIntermodularWiring:
 # VALUE: Ensures each transformation step adds meaningful value
 # =============================================================================
 
+
 class TestValueAddValidation:
     """Verify each aggregation step adds meaningful value."""
 
     def test_dimension_aggregation_adds_statistical_value(
-        self,
-        generate_scored_result_for_pa,
-        monolith_from_modular
+        self, generate_scored_result_for_pa, monolith_from_modular
     ):
         """
         VALUE: Verifies dimension aggregation provides statistical summary.
@@ -568,21 +567,20 @@ class TestValueAddValidation:
 
         EQUIPMENT: Tests verify these outputs are meaningful
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
-            DimensionAggregator
-        )
+        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import DimensionAggregator
 
-        aggregator = DimensionAggregator(monolith=monolith_from_modular, abort_on_insufficient=False)
+        aggregator = DimensionAggregator(
+            monolith=monolith_from_modular, abort_on_insufficient=False
+        )
 
         # Input: 5 question scores with variance
         phase3_output = [
-            generate_scored_result_for_pa(pa_id="PA01", question_id=i+1, score=1.5 + i*0.2)
+            generate_scored_result_for_pa(pa_id="PA01", question_id=i + 1, score=1.5 + i * 0.2)
             for i in range(5)
         ]
 
         dim_score = aggregator.aggregate_dimension(
-            phase3_output,
-            {"policy_area": "PA01", "dimension": "DIM01"}
+            phase3_output, {"policy_area": "PA01", "dimension": "DIM01"}
         )
 
         # MEANINGFUL ASSERTIONS:
@@ -605,7 +603,7 @@ class TestValueAddValidation:
         self,
         generate_dimension_score_for_pa,
         cluster_policy_area_counts: dict[str, int],
-        monolith_from_modular
+        monolith_from_modular,
     ):
         """
         VALUE: Verifies area aggregation adds hermeticity validation.
@@ -618,10 +616,13 @@ class TestValueAddValidation:
         This adds value by catching data quality issues early.
         """
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
-            AreaPolicyAggregator, DimensionScore
+            AreaPolicyAggregator,
+            DimensionScore,
         )
 
-        aggregator = AreaPolicyAggregator(monolith=monolith_from_modular, abort_on_insufficient=False)
+        aggregator = AreaPolicyAggregator(
+            monolith=monolith_from_modular, abort_on_insufficient=False
+        )
 
         # Create dimension scores with missing dimensions (only 4 of 6)
         dimension_scores = [
@@ -632,21 +633,21 @@ class TestValueAddValidation:
                 quality_level="BUENO",
                 contributing_questions=[1, 2, 3, 4, 5],
                 validation_passed=True,
-                validation_details={}
+                validation_details={},
             )
             for i in [1, 2, 4, 5]  # Missing DIM03, DIM06
         ]
 
-        area_score = aggregator.aggregate_area(
-            dimension_scores,
-            {"policy_area": "PA01"}
-        )
+        area_score = aggregator.aggregate_area(dimension_scores, {"policy_area": "PA01"})
 
         # MEANINGFUL ASSERTION: Hermeticity validation adds value
         assert area_score.validation_passed is False
         assert "hermeticity" in str(area_score.validation_details).lower()
         # Should indicate missing dimensions
-        assert "missing" in str(area_score.validation_details).lower() or "dimension" in str(area_score.validation_details).lower()
+        assert (
+            "missing" in str(area_score.validation_details).lower()
+            or "dimension" in str(area_score.validation_details).lower()
+        )
 
 
 # =============================================================================
@@ -654,13 +655,11 @@ class TestValueAddValidation:
 # VALUE: Verifies quality levels match rubric from modular structure
 # =============================================================================
 
+
 class TestQualityLevelDetermination:
     """Verify quality level determination adds value."""
 
-    def test_quality_level_thresholds_match_rubric(
-        self,
-        monolith_from_modular
-    ):
+    def test_quality_level_thresholds_match_rubric(self, monolith_from_modular):
         """
         VALUE: Verifies quality levels match canonical thresholds.
 
@@ -672,47 +671,51 @@ class TestQualityLevelDetermination:
 
         VALUE ADDED: Provides interpretable quality classification
         """
-        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
-            DimensionAggregator
-        )
+        from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import DimensionAggregator
         from farfan_pipeline.phases.Phase_four_five_six_seven.primitives.quality_levels import (
-            QualityLevel, QualityLevelThresholds
+            QualityLevel,
+            QualityLevelThresholds,
         )
 
-        aggregator = DimensionAggregator(monolith=monolith_from_modular, abort_on_insufficient=False)
+        aggregator = DimensionAggregator(
+            monolith=monolith_from_modular, abort_on_insufficient=False
+        )
 
         thresholds = QualityLevelThresholds()
 
         # Test each threshold boundary
         test_cases = [
-            (2.7, QualityLevel.EXCELENTE),   # >= 2.55
-            (2.2, QualityLevel.BUENO),       # >= 2.10
-            (1.8, QualityLevel.ACEPTABLE),   # >= 1.65
-            (1.0, QualityLevel.INSUFICIENTE), # < 1.65
+            (2.7, QualityLevel.EXCELENTE),  # >= 2.55
+            (2.2, QualityLevel.BUENO),  # >= 2.10
+            (1.8, QualityLevel.ACEPTABLE),  # >= 1.65
+            (1.0, QualityLevel.INSUFICIENTE),  # < 1.65
         ]
 
         for score, expected_quality in test_cases:
             # Create scored results with all same score
             results = [
-                type('Obj', (), {
-                    'question_global': i+1,
-                    'base_slot': f"DIM01-Q{i+1:03d}",
-                    'policy_area': 'PA01',
-                    'dimension': 'DIM01',
-                    'score': score,
-                    'quality_level': 'BUENO',
-                    'evidence': {},
-                    'raw_results': {}
-                })()
+                type(
+                    "Obj",
+                    (),
+                    {
+                        "question_global": i + 1,
+                        "base_slot": f"DIM01-Q{i+1:03d}",
+                        "policy_area": "PA01",
+                        "dimension": "DIM01",
+                        "score": score,
+                        "quality_level": "BUENO",
+                        "evidence": {},
+                        "raw_results": {},
+                    },
+                )()
                 for i in range(5)
             ]
 
             dim_score = aggregator.aggregate_dimension(
-                results,
-                {"policy_area": "PA01", "dimension": "DIM01"}
+                results, {"policy_area": "PA01", "dimension": "DIM01"}
             )
 
             # MEANINGFUL ASSERTION: Quality matches rubric
-            assert dim_score.quality_level == expected_quality.value, (
-                f"Score {score} should be {expected_quality.value}, got {dim_score.quality_level}"
-            )
+            assert (
+                dim_score.quality_level == expected_quality.value
+            ), f"Score {score} should be {expected_quality.value}, got {dim_score.quality_level}"

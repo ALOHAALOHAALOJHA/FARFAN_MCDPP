@@ -41,6 +41,7 @@ DEPENDENCIES:
     - Standard library only for core types (no external crypto in base)
     - Optional:  cryptography (Ed25519) for signature operations
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -59,7 +60,7 @@ from typing import (
 )
 
 if TYPE_CHECKING:
-    from cryptography.hazmat.primitives. asymmetric. ed25519 import (
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import (
         Ed25519PrivateKey,
         Ed25519PublicKey,
     )
@@ -88,7 +89,7 @@ class CalibrationError(Exception):
 
 class ValidationError(CalibrationError):
     """
-    Raised when calibration invariants are violated at construction time. 
+    Raised when calibration invariants are violated at construction time.
 
     This exception indicates a programming error or invalid configuration,
     not a runtime condition that can be recovered from.
@@ -155,11 +156,11 @@ class ValidityStatus(Enum):
 # =============================================================================
 
 
-def _canonical_json(obj:  Mapping[str, object] | Sequence[object]) -> bytes:
+def _canonical_json(obj: Mapping[str, object] | Sequence[object]) -> bytes:
     """
     Produce canonical JSON bytes for deterministic hashing.
 
-    Specification: 
+    Specification:
         - Keys sorted lexicographically (recursive)
         - No whitespace between tokens
         - UTF-8 encoding
@@ -167,13 +168,13 @@ def _canonical_json(obj:  Mapping[str, object] | Sequence[object]) -> bytes:
         - No NaN or Infinity values permitted (raises ValueError)
 
     This function is the SINGLE SOURCE OF TRUTH for serialization
-    used in content hashing.  Any change here invalidates all existing hashes. 
+    used in content hashing.  Any change here invalidates all existing hashes.
 
     Args:
         obj:  Mapping or sequence to serialize.
 
     Returns:
-        UTF-8 encoded bytes of canonical JSON. 
+        UTF-8 encoded bytes of canonical JSON.
 
     Raises:
         ValueError:  If obj contains NaN or Infinity float values.
@@ -252,14 +253,14 @@ class ClosedInterval:
             value: The value to check for membership.
 
         Returns:
-            True if lower <= value <= upper, False otherwise. 
+            True if lower <= value <= upper, False otherwise.
 
         Raises:
-            ValidationError: If value is NaN. 
+            ValidationError: If value is NaN.
         """
-        if math. isnan(value):
+        if math.isnan(value):
             raise ValidationError(f"Cannot check membership of NaN value")
-        return self.lower <= value <= self. upper
+        return self.lower <= value <= self.upper
 
     def intersect(self, other: ClosedInterval) -> ClosedInterval | None:
         """
@@ -274,18 +275,18 @@ class ClosedInterval:
         """
         new_lower = max(self.lower, other.lower)
         new_upper = min(self.upper, other.upper)
-        if new_lower > new_upper: 
+        if new_lower > new_upper:
             return None
         return ClosedInterval(lower=new_lower, upper=new_upper)
 
     def width(self) -> float:
         """
-        Compute the width of the interval. 
+        Compute the width of the interval.
 
         Returns:
             The difference (upper - lower).
         """
-        return self. upper - self.lower
+        return self.upper - self.lower
 
     def midpoint(self) -> float:
         """
@@ -305,7 +306,7 @@ class ClosedInterval:
 
         Returns:
             A float in [0, 1] indicating position from lower to upper.
-            Returns 0.0 if value <= lower, 1.0 if value >= upper. 
+            Returns 0.0 if value <= lower, 1.0 if value >= upper.
 
         Raises:
             ValidationError: If value is NaN or interval has zero width.
@@ -337,7 +338,7 @@ class EvidenceReference:
     Structured reference to calibration evidence in the repository.
 
     Evidence references pin calibration decisions to specific artifacts
-    at specific commits, enabling full reproducibility and audit trails. 
+    at specific commits, enabling full reproducibility and audit trails.
 
     Invariants:
         INV-EV-001: path must be relative to repository root, under allowed prefixes
@@ -366,12 +367,11 @@ class EvidenceReference:
         # INV-EV-002: Valid commit SHA format
         if not COMMIT_SHA_PATTERN.fullmatch(self.commit_sha):
             raise ValidationError(
-                f"commit_sha must be 40-character lowercase hex; "
-                f"got: '{self.commit_sha}'"
+                f"commit_sha must be 40-character lowercase hex; " f"got: '{self.commit_sha}'"
             )
 
         # INV-EV-003: Non-empty description
-        if not self.description. strip():
+        if not self.description.strip():
             raise ValidationError("Evidence description cannot be empty or whitespace-only")
 
     def github_permalink(self, owner: str, repo: str) -> str:
@@ -407,11 +407,11 @@ class EvidenceReference:
 
 
 @dataclass(frozen=True, slots=True)
-class CalibrationParameter: 
+class CalibrationParameter:
     """
     Single calibration parameter with full provenance and validity semantics.
 
-    A CalibrationParameter represents a tunable value in the pipeline with: 
+    A CalibrationParameter represents a tunable value in the pipeline with:
     - Explicit bounds constraining valid values
     - Time-bounded validity (calibration date and expiration)
     - Full provenance linking to source evidence
@@ -439,15 +439,15 @@ class CalibrationParameter:
     value: float
     unit: str
     bounds: ClosedInterval
-    rationale:  str
+    rationale: str
     evidence: EvidenceReference
-    calibrated_at:  datetime
+    calibrated_at: datetime
     expires_at: datetime
 
     def __post_init__(self) -> None:
         """Validate parameter invariants at construction."""
         # INV-CP-001: Value within bounds
-        if not self.bounds. contains(self.value):
+        if not self.bounds.contains(self.value):
             raise ValidationError(
                 f"Parameter '{self.name}':  value {self.value} not in "
                 f"[{self.bounds.lower}, {self.bounds.upper}]"
@@ -489,11 +489,11 @@ class CalibrationParameter:
         implement appropriate handling (e.g., warnings for EXPIRING_SOON).
 
         Args:
-            check_time: The point in time to check validity against. 
+            check_time: The point in time to check validity against.
                 Must be timezone-aware.
 
         Returns:
-            ValidityStatus indicating the parameter's state at check_time. 
+            ValidityStatus indicating the parameter's state at check_time.
 
         Raises:
             ValidationError: If check_time is timezone-naive.
@@ -510,12 +510,12 @@ class CalibrationParameter:
             return ValidityStatus.EXPIRED
 
         # Compute remaining validity as fraction of total window
-        total_window_seconds = (self. expires_at - self.calibrated_at).total_seconds()
+        total_window_seconds = (self.expires_at - self.calibrated_at).total_seconds()
         remaining_seconds = (self.expires_at - check_time).total_seconds()
 
         # 10% threshold for "expiring soon" warning
         expiring_soon_threshold = 0.10
-        if remaining_seconds / total_window_seconds < expiring_soon_threshold: 
+        if remaining_seconds / total_window_seconds < expiring_soon_threshold:
             return ValidityStatus.EXPIRING_SOON
 
         return ValidityStatus.VALID
@@ -547,7 +547,7 @@ class CalibrationParameter:
         Convert to canonical dictionary for hashing and serialization.
 
         The dictionary structure is deterministic and includes all
-        fields necessary to reconstruct the parameter. 
+        fields necessary to reconstruct the parameter.
 
         Returns:
             Dictionary with all parameter attributes in canonical form.
@@ -556,7 +556,7 @@ class CalibrationParameter:
             "bounds": self.bounds.to_canonical_dict(),
             "calibrated_at": self.calibrated_at.isoformat(),
             "evidence": self.evidence.to_canonical_dict(),
-            "expires_at": self.expires_at. isoformat(),
+            "expires_at": self.expires_at.isoformat(),
             "name": self.name,
             "rationale": self.rationale,
             "unit": self.unit,
@@ -573,7 +573,7 @@ class CalibrationParameter:
         Returns:
             64-character lowercase hexadecimal SHA-256 digest.
         """
-        canonical_bytes = _canonical_json(self. to_canonical_dict())
+        canonical_bytes = _canonical_json(self.to_canonical_dict())
         return _compute_sha256(canonical_bytes)
 
 
@@ -620,14 +620,16 @@ class CalibrationLayer:
     signer_key_id: str | None = None
 
     # Class-level constants (not instance fields)
-    SCHEMA_VERSION:  str = field(default=SCHEMA_VERSION, init=False, repr=False)
+    SCHEMA_VERSION: str = field(default=SCHEMA_VERSION, init=False, repr=False)
     REQUIRED_PARAMETER_NAMES: frozenset[str] = field(
-        default=frozenset({
-            "prior_strength",
-            "veto_threshold",
-            "chunk_size",
-            "extraction_coverage_target",
-        }),
+        default=frozenset(
+            {
+                "prior_strength",
+                "veto_threshold",
+                "chunk_size",
+                "extraction_coverage_target",
+            }
+        ),
         init=False,
         repr=False,
     )
@@ -635,7 +637,7 @@ class CalibrationLayer:
     def __post_init__(self) -> None:
         """Validate layer invariants at construction."""
         # INV-CL-002: Valid unit_of_analysis_id format
-        if not UNIT_OF_ANALYSIS_PATTERN.fullmatch(self. unit_of_analysis_id):
+        if not UNIT_OF_ANALYSIS_PATTERN.fullmatch(self.unit_of_analysis_id):
             raise ValidationError(
                 f"unit_of_analysis_id must match pattern "
                 f"{UNIT_OF_ANALYSIS_PATTERN.pattern}; got: '{self.unit_of_analysis_id}'"
@@ -651,19 +653,16 @@ class CalibrationLayer:
         parameter_names = frozenset(p.name for p in self.parameters)
         missing = self.REQUIRED_PARAMETER_NAMES - parameter_names
         if missing:
-            raise ValidationError(
-                f"Missing required parameters: {sorted(missing)}"
-            )
+            raise ValidationError(f"Missing required parameters: {sorted(missing)}")
 
         # Check for duplicate parameter names
         if len(parameter_names) != len(self.parameters):
             duplicates = [
-                p. name for p in self.parameters
+                p.name
+                for p in self.parameters
                 if sum(1 for q in self.parameters if q.name == p.name) > 1
             ]
-            raise ValidationError(
-                f"Duplicate parameter names detected: {sorted(set(duplicates))}"
-            )
+            raise ValidationError(f"Duplicate parameter names detected: {sorted(set(duplicates))}")
 
         # INV-CL-003:  Signature verification (if present)
         # Note:  Actual verification requires public key, deferred to verify_signature()
@@ -693,13 +692,13 @@ class CalibrationLayer:
         Convenience method for accessing parameter values directly.
 
         Args:
-            name: The parameter name to look up. 
+            name: The parameter name to look up.
 
         Returns:
             The float value of the parameter.
 
         Raises:
-            KeyError: If no parameter with that name exists. 
+            KeyError: If no parameter with that name exists.
         """
         return self.get_parameter(name).value
 
@@ -708,19 +707,16 @@ class CalibrationLayer:
         Check if all parameters are valid at the given time.
 
         Args:
-            check_time: The point in time to check validity against. 
+            check_time: The point in time to check validity against.
 
         Returns:
             True if all parameters have ValidityStatus.VALID or
-            ValidityStatus.EXPIRING_SOON at check_time. 
+            ValidityStatus.EXPIRING_SOON at check_time.
         """
         acceptable_statuses = {ValidityStatus.VALID, ValidityStatus.EXPIRING_SOON}
-        return all(
-            p.validity_status_at(check_time) in acceptable_statuses
-            for p in self.parameters
-        )
+        return all(p.validity_status_at(check_time) in acceptable_statuses for p in self.parameters)
 
-    def expired_parameters_at(self, check_time:  datetime) -> tuple[CalibrationParameter, ...]: 
+    def expired_parameters_at(self, check_time: datetime) -> tuple[CalibrationParameter, ...]:
         """
         Return all parameters that are expired at the given time.
 
@@ -728,16 +724,13 @@ class CalibrationLayer:
             check_time:  The point in time to check validity against.
 
         Returns:
-            Tuple of parameters with ValidityStatus.EXPIRED. 
+            Tuple of parameters with ValidityStatus.EXPIRED.
         """
         return tuple(
-            p for p in self.parameters
-            if p.validity_status_at(check_time) == ValidityStatus.EXPIRED
+            p for p in self.parameters if p.validity_status_at(check_time) == ValidityStatus.EXPIRED
         )
 
-    def expiring_soon_parameters_at(
-        self, check_time: datetime
-    ) -> tuple[CalibrationParameter, ...]:
+    def expiring_soon_parameters_at(self, check_time: datetime) -> tuple[CalibrationParameter, ...]:
         """
         Return all parameters that are expiring soon at the given time.
 
@@ -745,18 +738,19 @@ class CalibrationLayer:
             check_time:  The point in time to check validity against.
 
         Returns:
-            Tuple of parameters with ValidityStatus. EXPIRING_SOON. 
+            Tuple of parameters with ValidityStatus. EXPIRING_SOON.
         """
         return tuple(
-            p for p in self.parameters
+            p
+            for p in self.parameters
             if p.validity_status_at(check_time) == ValidityStatus.EXPIRING_SOON
         )
 
-    def to_canonical_dict(self) -> dict[str, object]: 
+    def to_canonical_dict(self) -> dict[str, object]:
         """
-        Convert to canonical dictionary for hashing and serialization. 
+        Convert to canonical dictionary for hashing and serialization.
 
-        The structure is deterministic with parameters sorted by name. 
+        The structure is deterministic with parameters sorted by name.
 
         Returns:
             Dictionary with all layer attributes in canonical form.
@@ -790,17 +784,17 @@ class CalibrationLayer:
         Create a signed copy of this calibration layer.
 
         Args:
-            private_key: Ed25519 private key for signing. 
+            private_key: Ed25519 private key for signing.
             key_id: Identifier for the signing key (for key rotation tracking).
 
         Returns:
-            New CalibrationLayer instance with signature and signer_key_id set. 
+            New CalibrationLayer instance with signature and signer_key_id set.
 
         Raises:
             ImportError: If cryptography package is not installed.
         """
         try:
-            from cryptography.hazmat.primitives.asymmetric. ed25519 import Ed25519PrivateKey
+            from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
         except ImportError as exc:
             raise ImportError(
                 "cryptography package required for signing. "
@@ -812,24 +806,24 @@ class CalibrationLayer:
 
         # Create new instance with signature (frozen dataclass)
         return CalibrationLayer(
-            unit_of_analysis_id=self. unit_of_analysis_id,
+            unit_of_analysis_id=self.unit_of_analysis_id,
             phase=self.phase,
             contract_type_code=self.contract_type_code,
             parameters=self.parameters,
-            created_at=self. created_at,
+            created_at=self.created_at,
             signature=signature,
             signer_key_id=key_id,
         )
 
     def verify_signature(self, public_key: Ed25519PublicKey) -> bool:
         """
-        Verify the cryptographic signature of this calibration layer. 
+        Verify the cryptographic signature of this calibration layer.
 
         Args:
             public_key: Ed25519 public key corresponding to the signer.
 
         Returns:
-            True if signature is valid. 
+            True if signature is valid.
 
         Raises:
             IntegrityError: If signature is invalid or missing.
@@ -890,7 +884,7 @@ def create_default_bounds() -> dict[str, tuple[ClosedInterval, str, float]]:
             "tokens",
             2000.0,
         ),
-        "extraction_coverage_target":  (
+        "extraction_coverage_target": (
             ClosedInterval(lower=0.5, upper=1.0),
             "fraction",
             0.85,
@@ -902,7 +896,7 @@ def create_calibration_parameter(
     name: str,
     value: float,
     bounds: ClosedInterval,
-    unit:  str,
+    unit: str,
     rationale: str,
     evidence_path: str,
     evidence_commit: str,
@@ -914,7 +908,7 @@ def create_calibration_parameter(
     Factory function to create a CalibrationParameter with computed expiry.
 
     This function simplifies parameter creation by computing expires_at
-    from calibrated_at and validity_days. 
+    from calibrated_at and validity_days.
 
     Args:
         name:  Parameter name.
@@ -925,14 +919,14 @@ def create_calibration_parameter(
         evidence_path: Repository path to evidence artifact.
         evidence_commit: Commit SHA containing the evidence.
         evidence_description: Description of the evidence.
-        validity_days: Number of days the calibration is valid. 
+        validity_days: Number of days the calibration is valid.
         calibrated_at:  Calibration timestamp (defaults to current UTC time).
 
     Returns:
-        Fully constructed CalibrationParameter. 
+        Fully constructed CalibrationParameter.
     """
-    if calibrated_at is None: 
-        calibrated_at = datetime. now(timezone.utc)
+    if calibrated_at is None:
+        calibrated_at = datetime.now(timezone.utc)
 
     from datetime import timedelta
 

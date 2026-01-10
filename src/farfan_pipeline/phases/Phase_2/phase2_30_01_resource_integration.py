@@ -41,7 +41,7 @@ def create_resource_manager(
     alert_webhook_url: str | None = None,
 ) -> tuple[AdaptiveResourceManager, ResourceAlertManager | None]:
     """Create and configure adaptive resource manager with alerts.
-    
+
     Args:
         resource_limits: Existing ResourceLimits instance
         enable_circuit_breakers: Enable circuit breaker protection
@@ -49,12 +49,12 @@ def create_resource_manager(
         enable_alerts: Enable alerting system
         alert_channels: Alert delivery channels
         alert_webhook_url: Webhook URL for external alerts
-        
+
     Returns:
         Tuple of (AdaptiveResourceManager, ResourceAlertManager)
     """
     alert_manager = None
-    
+
     if enable_alerts:
         thresholds = AlertThresholds(
             memory_warning_percent=75.0,
@@ -64,26 +64,26 @@ def create_resource_manager(
             circuit_breaker_warning_count=3,
             degradation_critical_count=3,
         )
-        
+
         alert_manager = ResourceAlertManager(
             thresholds=thresholds,
             channels=alert_channels or [AlertChannel.LOG],
             webhook_url=alert_webhook_url,
         )
-        
+
         alert_callback = alert_manager.process_event
     else:
         alert_callback = None
-    
+
     resource_manager = AdaptiveResourceManager(
         resource_limits=resource_limits,
         enable_circuit_breakers=enable_circuit_breakers,
         enable_degradation=enable_degradation,
         alert_callback=alert_callback,
     )
-    
+
     register_default_policies(resource_manager)
-    
+
     logger.info(
         "Resource management system initialized",
         extra={
@@ -92,7 +92,7 @@ def create_resource_manager(
             "alerts": enable_alerts,
         },
     )
-    
+
     return resource_manager, alert_manager
 
 
@@ -177,7 +177,7 @@ def register_default_policies(
             max_workers=4,
         ),
     ]
-    
+
     for policy in policies:
         resource_manager.register_allocation_policy(policy)
 
@@ -194,7 +194,7 @@ def wrap_method_executor(
     calibration_policy: Any | None = None,
 ) -> ResourceAwareExecutor:
     """Wrap MethodExecutor with resource management and contract support.
-    
+
     Args:
         method_executor: Existing MethodExecutor instance.
         resource_manager: Configured AdaptiveResourceManager.
@@ -205,7 +205,7 @@ def wrap_method_executor(
         enriched_packs: Optional enriched signal packs by policy_area_id.
         validation_orchestrator: Optional validation orchestrator.
         calibration_policy: Optional calibration policy.
-        
+
     Returns:
         ResourceAwareExecutor wrapping the method executor with full
         contract execution capability.
@@ -230,33 +230,31 @@ def integrate_with_orchestrator(
     enable_alerts: bool = True,
 ) -> dict[str, Any]:
     """Integrate resource management with existing Orchestrator.
-    
+
     Args:
         orchestrator: Existing Orchestrator instance
         enable_circuit_breakers: Enable circuit breaker protection
         enable_degradation: Enable graceful degradation
         enable_alerts: Enable alerting system
-        
+
     Returns:
         Dictionary with resource management components
     """
     if not hasattr(orchestrator, "resource_limits"):
-        raise RuntimeError(
-            "Orchestrator must have resource_limits attribute"
-        )
-    
+        raise RuntimeError("Orchestrator must have resource_limits attribute")
+
     resource_manager, alert_manager = create_resource_manager(
         resource_limits=orchestrator.resource_limits,
         enable_circuit_breakers=enable_circuit_breakers,
         enable_degradation=enable_degradation,
         enable_alerts=enable_alerts,
     )
-    
+
     setattr(orchestrator, "_resource_manager", resource_manager)
     setattr(orchestrator, "_alert_manager", alert_manager)
-    
+
     logger.info("Resource management integrated with orchestrator")
-    
+
     return {
         "resource_manager": resource_manager,
         "alert_manager": alert_manager,
@@ -266,10 +264,10 @@ def integrate_with_orchestrator(
 
 def get_resource_status(orchestrator: Orchestrator) -> dict[str, Any]:
     """Get comprehensive resource management status from orchestrator.
-    
+
     Args:
         orchestrator: Orchestrator with integrated resource management
-        
+
     Returns:
         Complete resource management status
     """
@@ -279,7 +277,7 @@ def get_resource_status(orchestrator: Orchestrator) -> dict[str, Any]:
         "resource_manager": {},
         "alerts": {},
     }
-    
+
     if hasattr(orchestrator, "resource_limits"):
         status["resource_limits"] = {
             "max_memory_mb": orchestrator.resource_limits.max_memory_mb,
@@ -287,39 +285,37 @@ def get_resource_status(orchestrator: Orchestrator) -> dict[str, Any]:
             "max_workers": orchestrator.resource_limits.max_workers,
             "current_usage": orchestrator.resource_limits.get_resource_usage(),
         }
-    
+
     if hasattr(orchestrator, "_resource_manager"):
         status["resource_management_enabled"] = True
-        status["resource_manager"] = (
-            orchestrator._resource_manager.get_resource_status()
-        )
-    
+        status["resource_manager"] = orchestrator._resource_manager.get_resource_status()
+
     if hasattr(orchestrator, "_alert_manager") and orchestrator._alert_manager:
         status["alerts"] = orchestrator._alert_manager.get_alert_summary()
-    
+
     return status
 
 
 def reset_circuit_breakers(orchestrator: Orchestrator) -> dict[str, bool]:
     """Reset all circuit breakers in orchestrator.
-    
+
     Args:
         orchestrator: Orchestrator with integrated resource management
-        
+
     Returns:
         Dictionary mapping executor_id to reset success status
     """
     if not hasattr(orchestrator, "_resource_manager"):
         return {}
-    
+
     resource_manager = orchestrator._resource_manager
     results = {}
-    
+
     for executor_id in resource_manager.circuit_breakers:
         success = resource_manager.reset_circuit_breaker(executor_id)
         results[executor_id] = success
-        
+
         if success:
             logger.info(f"Reset circuit breaker for {executor_id}")
-    
+
     return results

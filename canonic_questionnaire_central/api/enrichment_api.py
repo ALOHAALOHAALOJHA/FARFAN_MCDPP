@@ -23,13 +23,14 @@ logger = logging.getLogger(__name__)
 app = FastAPI(
     title="FARFAN Enrichment API",
     description="REST API for PDET context enrichment with four-gate validation",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 
 # Pydantic models
 class ScopeModel(BaseModel):
     """Scope configuration."""
+
     scope_name: str
     scope_level: str = "EVIDENCE_COLLECTION"
     allowed_signal_types: List[str]
@@ -40,6 +41,7 @@ class ScopeModel(BaseModel):
 
 class EnrichmentRequestModel(BaseModel):
     """Enrichment request."""
+
     consumer_id: str
     consumer_scope: ScopeModel
     consumer_capabilities: List[str]
@@ -51,6 +53,7 @@ class EnrichmentRequestModel(BaseModel):
 
 class HealthResponse(BaseModel):
     """Health check response."""
+
     status: str
     version: str
     timestamp: str
@@ -59,22 +62,21 @@ class HealthResponse(BaseModel):
 @app.get("/health", response_model=HealthResponse)
 async def health_check():
     """Health check endpoint."""
-    return HealthResponse(
-        status="healthy",
-        version="1.0.0",
-        timestamp=datetime.now().isoformat()
-    )
+    return HealthResponse(status="healthy", version="1.0.0", timestamp=datetime.now().isoformat())
 
 
 @app.post("/api/v1/enrich")
 async def enrich_data(request: EnrichmentRequestModel):
     """Enrich data endpoint."""
-    return JSONResponse(content={
-        "message": "Enrichment endpoint",
-        "request_id": f"ENR_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-    })
+    return JSONResponse(
+        content={
+            "message": "Enrichment endpoint",
+            "request_id": f"ENR_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+        }
+    )
 
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)

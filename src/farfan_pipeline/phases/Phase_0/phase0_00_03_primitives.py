@@ -24,6 +24,7 @@ def validate_hash(h: HashStr) -> bool: ...
 Author: F.A.R.F.A.N Architecture Team
 Date: 2026-01-07
 """
+
 from __future__ import annotations
 
 import re
@@ -60,18 +61,14 @@ RunID = NewType("RunID", str)
 
 # Canonical Policy Area IDs
 PolicyAreaID = Literal[
-    "PA01", "PA02", "PA03", "PA04", "PA05",
-    "PA06", "PA07", "PA08", "PA09", "PA10"
+    "PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"
 ]
 
 # Canonical Dimension IDs
 DimensionID = Literal["D01", "D02", "D03", "D04"]
 
 # Phase Identifiers
-PhaseID = Literal[
-    "phase0", "phase1", "phase2", "phase3",
-    "phase4", "phase5", "phase6", "phase7"
-]
+PhaseID = Literal["phase0", "phase1", "phase2", "phase3", "phase4", "phase5", "phase6", "phase7"]
 
 # Criticality Levels (matching constants)
 CriticalityLevel = Literal["CRITICAL", "HIGH", "MEDIUM", "LOW"]
@@ -80,14 +77,15 @@ CriticalityLevel = Literal["CRITICAL", "HIGH", "MEDIUM", "LOW"]
 # VALIDATION UTILITIES
 # =============================================================================
 
+
 def validate_hash_str(h: str, alg: str = "sha256") -> bool:
     """
     Validate that a string is a valid hex hash.
-    
+
     Args:
         h: The hash string to validate
         alg: Algorithm used (sha256 or blake3 default to 64 chars)
-        
+
     Returns:
         True if valid hex string of correct length
     """
@@ -95,16 +93,16 @@ def validate_hash_str(h: str, alg: str = "sha256") -> bool:
         return bool(re.match(r"^[a-f0-9]{64}$", h, re.IGNORECASE))
     return False
 
+
 def validate_policy_area_id(pa_id: str) -> bool:
     """Validate a policy area ID format."""
-    return pa_id in [
-        "PA01", "PA02", "PA03", "PA04", "PA05",
-        "PA06", "PA07", "PA08", "PA09", "PA10"
-    ]
+    return pa_id in ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
+
 
 def validate_dimension_id(dim_id: str) -> bool:
     """Validate a dimension ID format."""
     return dim_id in ["D01", "D02", "D03", "D04"]
+
 
 # =============================================================================
 # EXPORTS

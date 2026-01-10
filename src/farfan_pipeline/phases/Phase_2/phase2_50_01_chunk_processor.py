@@ -20,7 +20,7 @@ from farfan_pipeline.utils.retry import (
     RetryPolicy,
     with_exponential_backoff,
     TransientError,
-    PermanentError
+    PermanentError,
 )
 
 logger = logging.getLogger(__name__)
@@ -30,18 +30,19 @@ T = TypeVar("T")
 
 # === EXCEPTIONS ===
 
+
 class ChunkProcessingError(Exception):
     """Raised when chunk processing fails after all retries."""
+
     def __init__(self, chunk_id: str, attempts: int, last_error: str):
         self.chunk_id = chunk_id
         self.attempts = attempts
         self.last_error = last_error
-        super().__init__(
-            f"Chunk {chunk_id} failed after {attempts} attempts: {last_error}"
-        )
+        super().__init__(f"Chunk {chunk_id} failed after {attempts} attempts: {last_error}")
 
 
 # === DATA MODELS ===
+
 
 @dataclass
 class Chunk:
@@ -52,6 +53,7 @@ class Chunk:
         content: Chunk text content
         metadata: Additional metadata
     """
+
     chunk_id: str
     content: str
     metadata: Dict[str, Any] = field(default_factory=dict)
@@ -69,6 +71,7 @@ class ChunkResult:
         attempts: Number of attempts made
         total_time_ms: Total processing time including retries
     """
+
     chunk_id: str
     success: bool
     output: Any = None
@@ -79,17 +82,14 @@ class ChunkResult:
 
 # === CHUNK PROCESSOR ===
 
+
 class RetryableChunkProcessor:
     """
     Processes chunks with exponential backoff retry.
     Uses shared RetryPolicy for consistent behavior and metrics.
     """
 
-    def __init__(
-        self,
-        processor_func: Callable[[Chunk], Any],
-        config: RetryConfig | None = None
-    ):
+    def __init__(self, processor_func: Callable[[Chunk], Any], config: RetryConfig | None = None):
         """
         Initialize chunk processor.
 
@@ -114,7 +114,7 @@ class RetryableChunkProcessor:
             try:
                 output = self.processor_func(chunk)
                 attempt.mark_success()
-                
+
                 total_time_ms = (time.perf_counter() - start_time) * 1000
                 return ChunkResult(
                     chunk_id=chunk.chunk_id,
@@ -156,17 +156,14 @@ class RetryableChunkProcessor:
 
 # === ASYNC CHUNK PROCESSOR ===
 
+
 class AsyncRetryableChunkProcessor:
     """
     Async version of chunk processor with exponential backoff.
     Currently uses with_exponential_backoff decorator on an internal method.
     """
 
-    def __init__(
-        self,
-        processor_func: Callable[[Chunk], Any],
-        config: RetryConfig | None = None
-    ):
+    def __init__(self, processor_func: Callable[[Chunk], Any], config: RetryConfig | None = None):
         self.processor_func = processor_func
         self.config = config or RetryConfig()
 
@@ -199,18 +196,19 @@ class AsyncRetryableChunkProcessor:
                 if isinstance(e, PermanentError) or attempt_num >= self.config.max_retries:
                     self.config.failed_chunks += 1
                     break
-                
+
                 self.config.total_retries += 1
                 delay = min(
-                    self.config.base_delay_seconds * (self.config.multiplier ** attempt_num),
-                    self.config.max_delay_seconds
+                    self.config.base_delay_seconds * (self.config.multiplier**attempt_num),
+                    self.config.max_delay_seconds,
                 )
                 import random
+
                 delay += delay * self.config.jitter_factor * random.random()
-                
+
                 if self.config.on_retry:
                     self.config.on_retry(e, attempts, delay * 1000)
-                
+
                 await asyncio.sleep(delay)
 
         total_time_ms = (time.perf_counter() - start_time) * 1000
@@ -226,6 +224,7 @@ class AsyncRetryableChunkProcessor:
     async def process_chunks(self, chunks: List[Chunk]) -> List[ChunkResult]:
         """Process multiple chunks concurrently."""
         import asyncio
+
         tasks = [self.process_chunk(chunk) for chunk in chunks]
         return await asyncio.gather(*tasks)
 
@@ -236,18 +235,15 @@ class AsyncRetryableChunkProcessor:
 
 # === CONVENIENCE FUNCTIONS ===
 
-def process_with_retry(
-    func: Callable[[], T],
-    max_retries: int = 4,
-    base_delay: float = 1.0
-) -> T:
+
+def process_with_retry(func: Callable[[], T], max_retries: int = 4, base_delay: float = 1.0) -> T:
     """Execute a function with exponential backoff retry using shared utility."""
     config = RetryConfig(max_retries=max_retries, base_delay_seconds=base_delay)
-    
+
     @with_exponential_backoff(config=config)
     def wrapped():
         return func()
-    
+
     return wrapped()
 
 

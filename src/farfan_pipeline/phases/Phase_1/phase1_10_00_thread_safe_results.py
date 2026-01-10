@@ -10,6 +10,7 @@ from collections import UserDict
 import threading
 from typing import Any, Dict, Optional, Iterator
 
+
 class ThreadSafeResults(UserDict):
     """
     A thread-safe dictionary wrapper for storing subphase results.
@@ -49,7 +50,7 @@ class ThreadSafeResults(UserDict):
         with self.lock:
             return super().get(key, default)
 
-    def copy(self) -> 'ThreadSafeResults':
+    def copy(self) -> "ThreadSafeResults":
         with self.lock:
             return ThreadSafeResults(self.data.copy())
 

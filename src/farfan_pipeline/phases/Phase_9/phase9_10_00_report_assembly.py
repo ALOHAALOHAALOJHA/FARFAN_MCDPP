@@ -33,6 +33,7 @@ from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+
 # Calibration parameters - loaded at runtime if calibration system available
 try:
     from farfan_pipeline.core.parameters import ParameterLoaderV2
@@ -40,12 +41,16 @@ except (ImportError, AttributeError):
     # Fallback: use explicit defaults if calibration system not available
     _PARAM_LOADER = None
 
+
 # Calibrated method decorator stub (calibration system not available)
 def calibrated_method(method_name: str):
     """No-op decorator stub for compatibility when calibration system unavailable."""
+
     def decorator(func):
         return func
+
     return decorator
+
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -56,6 +61,7 @@ logger = logging.getLogger(__name__)
 # DOMAIN-SPECIFIC EXCEPTIONS
 # ============================================================================
 
+
 class ReportAssemblyException(Exception):
     """Base exception for report assembly operations with structured payloads."""
 
@@ -65,7 +71,7 @@ class ReportAssemblyException(Exception):
         details: dict[str, Any] | None = None,
         stage: str | None = None,
         recoverable: bool = False,
-        event_id: str | None = None
+        event_id: str | None = None,
     ) -> None:
         self.message = message
         self.details = details or {}
@@ -88,33 +94,37 @@ class ReportAssemblyException(Exception):
     def to_dict(self) -> dict[str, Any]:
         """Convert exception to structured dictionary."""
         return {
-            'error_type': self.__class__.__name__,
-            'message': self.message,
-            'details': self.details,
-            'stage': self.stage,
-            'recoverable': self.recoverable,
-            'event_id': self.event_id
+            "error_type": self.__class__.__name__,
+            "message": self.message,
+            "details": self.details,
+            "stage": self.stage,
+            "recoverable": self.recoverable,
+            "event_id": self.event_id,
         }
 
 
 class ReportValidationError(ReportAssemblyException):
     """Raised when report data validation fails."""
+
     pass
 
 
 class ReportIntegrityError(ReportAssemblyException):
     """Raised when cryptographic verification fails (hash mismatch)."""
+
     pass
 
 
 class ReportExportError(ReportAssemblyException):
     """Raised when report export to file fails."""
+
     pass
 
 
 # ============================================================================
 # UTILITY FUNCTIONS
 # ============================================================================
+
 
 def compute_content_digest(content: str | bytes | dict[str, Any]) -> str:
     """
@@ -131,17 +141,17 @@ def compute_content_digest(content: str | bytes | dict[str, Any]) -> str:
     """
     if isinstance(content, dict):
         # Sort keys for deterministic JSON
-        content_str = json.dumps(content, sort_keys=True, ensure_ascii=True, separators=(',', ':'))
-        content_bytes = content_str.encode('utf-8')
+        content_str = json.dumps(content, sort_keys=True, ensure_ascii=True, separators=(",", ":"))
+        content_bytes = content_str.encode("utf-8")
     elif isinstance(content, str):
-        content_bytes = content.encode('utf-8')
+        content_bytes = content.encode("utf-8")
     elif isinstance(content, bytes):
         content_bytes = content
     else:
         raise ReportValidationError(
             f"Cannot compute digest for type {type(content).__name__}",
-            details={'content_type': type(content).__name__},
-            stage="digest_computation"
+            details={"content_type": type(content).__name__},
+            stage="digest_computation",
         )
 
     return hashlib.sha256(content_bytes).hexdigest()
@@ -154,49 +164,46 @@ def utc_now_iso() -> str:
     Returns:
         ISO-8601 timestamp string (UTC timezone)
     """
-    return datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z')
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 # ============================================================================
 # PYDANTIC CONTRACT MODELS
 # ============================================================================
 
+
 class ReportMetadata(BaseModel):
     """Enhanced metadata for analysis report with cryptographic traceability."""
 
     model_config = ConfigDict(
         frozen=True,
-        extra='forbid',
+        extra="forbid",
         validate_assignment=True,
         str_strip_whitespace=True,
     )
 
     report_id: str = Field(..., description="Unique report identifier", min_length=1)
     generated_at: str = Field(
-        default_factory=utc_now_iso,
-        description="UTC timestamp in ISO-8601 format"
+        default_factory=utc_now_iso, description="UTC timestamp in ISO-8601 format"
     )
     monolith_version: str = Field(..., description="Questionnaire monolith version")
     monolith_hash: str = Field(
-        ...,
-        description="SHA-256 hash of questionnaire_monolith.json",
-        pattern=r"^[a-f0-9]{64}$"
+        ..., description="SHA-256 hash of questionnaire_monolith.json", pattern=r"^[a-f0-9]{64}$"
     )
     plan_name: str = Field(..., description="Development plan name", min_length=1)
     total_questions: int = Field(..., description="Total number of questions", ge=0)
     questions_analyzed: int = Field(..., description="Number of questions analyzed", ge=0)
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
     correlation_id: str = Field(
-        default_factory=lambda: str(uuid.uuid4()),
-        description="UUID for request correlation"
+        default_factory=lambda: str(uuid.uuid4()), description="UUID for request correlation"
     )
 
-    @field_validator('generated_at')
+    @field_validator("generated_at")
     @classmethod
     def validate_timestamp(cls, v: str) -> str:
         """Validate timestamp is ISO-8601 format and UTC."""
         try:
-            dt = datetime.fromisoformat(v.replace('Z', '+00:00'))
+            dt = datetime.fromisoformat(v.replace("Z", "+00:00"))
             # Ensure UTC
             if dt.tzinfo is None or dt.utcoffset() != timezone.utc.utcoffset(None):
                 raise ValueError("Timestamp must be UTC")
@@ -204,11 +211,11 @@ class ReportMetadata(BaseModel):
         except (ValueError, AttributeError) as e:
             raise ReportValidationError(
                 f"Invalid ISO-8601 timestamp: {v}",
-                details={'timestamp': v, 'error': str(e)},
-                stage="metadata_validation"
+                details={"timestamp": v, "error": str(e)},
+                stage="metadata_validation",
             ) from e
 
-    @field_validator('questions_analyzed')
+    @field_validator("questions_analyzed")
     @classmethod
     def validate_analyzed_count(cls, v: int, info) -> int:
         """Validate analyzed count doesn't exceed total."""
@@ -217,8 +224,8 @@ class ReportMetadata(BaseModel):
         if v < 0:
             raise ReportValidationError(
                 "questions_analyzed must be non-negative",
-                details={'questions_analyzed': v},
-                stage="metadata_validation"
+                details={"questions_analyzed": v},
+                stage="metadata_validation",
             )
         return v
 
@@ -228,7 +235,7 @@ class QuestionAnalysis(BaseModel):
 
     model_config = ConfigDict(
         frozen=True,
-        extra='forbid',
+        extra="forbid",
         validate_assignment=True,
     )
 
@@ -240,10 +247,12 @@ class QuestionAnalysis(BaseModel):
     evidence: list[str] = Field(default_factory=list, description="Evidence list")
     patterns_applied: list[str] = Field(default_factory=list, description="Applied pattern IDs")
     recommendation: str | None = Field(default=None, description="Analysis recommendation")
-    human_answer: str | None = Field(default=None, description="Carver-synthesized human-readable answer")
+    human_answer: str | None = Field(
+        default=None, description="Carver-synthesized human-readable answer"
+    )
     metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
-    @field_validator('score')
+    @field_validator("score")
     @classmethod
     def validate_score_bounds(cls, v: float | None) -> float | None:
         """Validate score is within bounds if present."""
@@ -253,8 +262,8 @@ class QuestionAnalysis(BaseModel):
             if not (min_score <= v <= max_score):
                 raise ReportValidationError(
                     f"Score must be in [{min_score}, {max_score}], got {v}",
-                    details={'score': v, 'min': min_score, 'max': max_score},
-                    stage="question_validation"
+                    details={"score": v, "min": min_score, "max": max_score},
+                    stage="question_validation",
                 )
             # Round to avoid floating point precision issues
             return round(v, 6)
@@ -264,13 +273,15 @@ class QuestionAnalysis(BaseModel):
 
 class Recommendation(BaseModel):
     """Structured recommendation with type and severity classification."""
-    
-    model_config = ConfigDict(frozen=True, extra='forbid')
-    
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
     type: str = Field(..., description="Recommendation type (RISK, PRIORITY, OMISSION, etc.)")
     severity: str = Field(..., description="Severity level (CRITICAL, HIGH, MEDIUM, LOW, INFO)")
     description: str = Field(..., description="Actionable recommendation text")
-    source: str = Field(default="macro", description="Source of recommendation (micro, meso, macro)")
+    source: str = Field(
+        default="macro", description="Source of recommendation (micro, meso, macro)"
+    )
 
     @classmethod
     def from_string(cls, text: str, source: str = "macro") -> "Recommendation":
@@ -280,7 +291,7 @@ class Recommendation(BaseModel):
         if ":" in text:
             prefix, desc = text.split(":", 1)
             desc = desc.strip()
-            
+
             # Parse prefix like "CRITICAL_RISK" -> severity="CRITICAL", type="RISK"
             parts = prefix.split("_")
             if len(parts) >= 2:
@@ -293,56 +304,51 @@ class Recommendation(BaseModel):
             severity = "INFO"
             rec_type = "GENERAL"
             desc = text
-            
-        return cls(
-            type=rec_type,
-            severity=severity,
-            description=desc,
-            source=source
-        )
+
+        return cls(type=rec_type, severity=severity, description=desc, source=source)
 
 
 class MesoCluster(BaseModel):
     """Validated meso-level cluster analysis."""
-    
-    model_config = ConfigDict(frozen=True, extra='forbid')
-    
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
     cluster_id: str = Field(..., min_length=1)
     raw_meso_score: float = Field(..., ge=0.0, le=1.0)
     adjusted_score: float = Field(..., ge=0.0, le=1.0)
-    
+
     # Penalties
     dispersion_penalty: float = Field(..., ge=0.0, le=1.0)
     peer_penalty: float = Field(..., ge=0.0, le=1.0)
     total_penalty: float = Field(..., ge=0.0, le=1.0)
-    
+
     # Metrics
     dispersion_metrics: dict[str, float] = Field(default_factory=dict)
     micro_scores: list[float] = Field(default_factory=list)
-    
+
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
 class MacroSummary(BaseModel):
     """Validated macro-level portfolio analysis."""
-    
-    model_config = ConfigDict(frozen=True, extra='forbid')
-    
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
     overall_posterior: float = Field(..., ge=0.0, le=1.0)
     adjusted_score: float = Field(..., ge=0.0, le=1.0)
-    
+
     # Penalties
     coverage_penalty: float = Field(..., ge=0.0, le=1.0)
     dispersion_penalty: float = Field(..., ge=0.0, le=1.0)
     contradiction_penalty: float = Field(..., ge=0.0, le=1.0)
     total_penalty: float = Field(..., ge=0.0, le=1.0)
-    
+
     # Counts
     contradiction_count: int = Field(..., ge=0)
-    
+
     # Recommendations
     recommendations: list[Recommendation] = Field(default_factory=list)
-    
+
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -351,35 +357,33 @@ class AnalysisReport(BaseModel):
 
     model_config = ConfigDict(
         frozen=True,
-        extra='forbid',
+        extra="forbid",
         validate_assignment=True,
     )
 
     metadata: ReportMetadata = Field(..., description="Report metadata")
     micro_analyses: list[QuestionAnalysis] = Field(..., description="Micro-level analyses")
-    meso_clusters: dict[str, MesoCluster] = Field(default_factory=dict, description="Meso-level clusters")
+    meso_clusters: dict[str, MesoCluster] = Field(
+        default_factory=dict, description="Meso-level clusters"
+    )
     macro_summary: MacroSummary | None = Field(default=None, description="Macro-level summary")
     evidence_chain_hash: str | None = Field(
-        default=None,
-        description="Evidence chain hash",
-        pattern=r"^[a-f0-9]{64}$"
+        default=None, description="Evidence chain hash", pattern=r"^[a-f0-9]{64}$"
     )
     report_digest: str | None = Field(
-        default=None,
-        description="SHA-256 digest of report content",
-        pattern=r"^[a-f0-9]{64}$"
+        default=None, description="SHA-256 digest of report content", pattern=r"^[a-f0-9]{64}$"
     )
 
     @calibrated_method("farfan_core.analysis.report_assembly.AnalysisReport.to_dict")
     def to_dict(self) -> dict[str, Any]:
         """Convert report to dictionary for JSON serialization."""
         report_dict = {
-            'metadata': self.metadata.model_dump(),
-            'micro_analyses': [q.model_dump() for q in self.micro_analyses],
-            'meso_clusters': {k: v.model_dump() for k, v in self.meso_clusters.items()},
-            'macro_summary': self.macro_summary.model_dump() if self.macro_summary else None,
-            'evidence_chain_hash': self.evidence_chain_hash,
-            'report_digest': self.report_digest
+            "metadata": self.metadata.model_dump(),
+            "micro_analyses": [q.model_dump() for q in self.micro_analyses],
+            "meso_clusters": {k: v.model_dump() for k, v in self.meso_clusters.items()},
+            "macro_summary": self.macro_summary.model_dump() if self.macro_summary else None,
+            "evidence_chain_hash": self.evidence_chain_hash,
+            "report_digest": self.report_digest,
         }
         return report_dict
 
@@ -388,11 +392,11 @@ class AnalysisReport(BaseModel):
         """Compute cryptographic digest of report content."""
         # Create deterministic representation without the digest field
         content = {
-            'metadata': self.metadata.model_dump(),
-            'micro_analyses': [q.model_dump() for q in self.micro_analyses],
-            'meso_clusters': {k: v.model_dump() for k, v in self.meso_clusters.items()},
-            'macro_summary': self.macro_summary.model_dump() if self.macro_summary else None,
-            'evidence_chain_hash': self.evidence_chain_hash
+            "metadata": self.metadata.model_dump(),
+            "micro_analyses": [q.model_dump() for q in self.micro_analyses],
+            "meso_clusters": {k: v.model_dump() for k, v in self.meso_clusters.items()},
+            "macro_summary": self.macro_summary.model_dump() if self.macro_summary else None,
+            "evidence_chain_hash": self.evidence_chain_hash,
         }
         return compute_content_digest(content)
 
@@ -409,6 +413,7 @@ class AnalysisReport(BaseModel):
 # STRUCTURED LOGGING HELPER
 # ============================================================================
 
+
 class ReportLogger:
     """Structured JSON logger for report assembly operations."""
 
@@ -418,12 +423,7 @@ class ReportLogger:
         self.logger.setLevel(logging.INFO)
 
     def log_operation(
-        self,
-        operation: str,
-        correlation_id: str,
-        success: bool,
-        latency_ms: float,
-        **kwargs: Any
+        self, operation: str, correlation_id: str, success: bool, latency_ms: float, **kwargs: Any
     ) -> None:
         """Log operation event with structured data."""
         log_entry = {
@@ -444,7 +444,7 @@ class ReportLogger:
         correlation_id: str,
         success: bool,
         error: str | None = None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         """Log validation event."""
         log_entry = {
@@ -465,6 +465,7 @@ class ReportLogger:
 # REPORT ASSEMBLER
 # ============================================================================
 
+
 class ReportAssembler:
     """
     Assembles comprehensive policy analysis reports.
@@ -480,11 +481,7 @@ class ReportAssembler:
     """
 
     def __init__(
-        self,
-        questionnaire_provider,
-        evidence_registry=None,
-        qmcm_recorder=None,
-        orchestrator=None
+        self, questionnaire_provider, evidence_registry=None, qmcm_recorder=None, orchestrator=None
     ) -> None:
         """
         Initialize report assembler.
@@ -500,9 +497,9 @@ class ReportAssembler:
         if questionnaire_provider is None:
             raise ReportValidationError(
                 "questionnaire_provider is required",
-                details={'provider': None},
+                details={"provider": None},
                 stage="initialization",
-                recoverable=False
+                recoverable=False,
             )
 
         self.questionnaire_provider = questionnaire_provider
@@ -519,7 +516,7 @@ class ReportAssembler:
         plan_name: str,
         execution_results: dict[str, Any],
         report_id: str | None = None,
-        enriched_packs: dict[str, Any] | None = None
+        enriched_packs: dict[str, Any] | None = None,
     ) -> AnalysisReport:
         """
         Assemble complete analysis report.
@@ -537,21 +534,22 @@ class ReportAssembler:
             ReportIntegrityError: If hash computation fails
         """
         import time
+
         start_time = time.time()
 
         # Input validation
         if not plan_name or not isinstance(plan_name, str):
             raise ReportValidationError(
                 "plan_name must be a non-empty string",
-                details={'plan_name': plan_name, 'type': type(plan_name).__name__},
-                stage="input_validation"
+                details={"plan_name": plan_name, "type": type(plan_name).__name__},
+                stage="input_validation",
             )
 
         if not isinstance(execution_results, dict):
             raise ReportValidationError(
                 "execution_results must be a dictionary",
-                details={'type': type(execution_results).__name__},
-                stage="input_validation"
+                details={"type": type(execution_results).__name__},
+                stage="input_validation",
             )
 
         # Generate report ID if not provided
@@ -568,38 +566,42 @@ class ReportAssembler:
             if not isinstance(questionnaire_data, dict):
                 raise ReportIntegrityError(
                     "Invalid questionnaire data format",
-                    details={'type': type(questionnaire_data).__name__},
-                    stage="questionnaire_loading"
+                    details={"type": type(questionnaire_data).__name__},
+                    stage="questionnaire_loading",
                 )
 
             # Import hash utility for content verification
             from farfan_pipeline.utils.hash_utils import compute_hash
+
             monolith_hash = compute_hash(questionnaire_data)
 
             # Validate hash format
             if not isinstance(monolith_hash, str) or len(monolith_hash) != 64:
                 raise ReportIntegrityError(
                     "Invalid monolith hash format",
-                    details={'hash': monolith_hash, 'length': len(monolith_hash) if isinstance(monolith_hash, str) else 0},
-                    stage="hash_computation"
+                    details={
+                        "hash": monolith_hash,
+                        "length": len(monolith_hash) if isinstance(monolith_hash, str) else 0,
+                    },
+                    stage="hash_computation",
                 )
 
             # Extract metadata with defensive checks
-            version = questionnaire_data.get('version', 'unknown')
-            blocks = questionnaire_data.get('blocks', {})
+            version = questionnaire_data.get("version", "unknown")
+            blocks = questionnaire_data.get("blocks", {})
             if not isinstance(blocks, dict):
                 raise ReportValidationError(
                     "questionnaire blocks must be a dictionary",
-                    details={'type': type(blocks).__name__},
-                    stage="data_extraction"
+                    details={"type": type(blocks).__name__},
+                    stage="data_extraction",
                 )
 
-            micro_questions = blocks.get('micro_questions', [])
+            micro_questions = blocks.get("micro_questions", [])
             if not isinstance(micro_questions, list):
                 raise ReportValidationError(
                     "micro_questions must be a list",
-                    details={'type': type(micro_questions).__name__},
-                    stage="data_extraction"
+                    details={"type": type(micro_questions).__name__},
+                    stage="data_extraction",
                 )
 
             # Create report metadata with Pydantic validation
@@ -610,15 +612,13 @@ class ReportAssembler:
                 monolith_hash=monolith_hash,
                 plan_name=plan_name,
                 total_questions=len(micro_questions),
-                questions_analyzed=len(execution_results.get('questions', {})),
-                correlation_id=correlation_id
+                questions_analyzed=len(execution_results.get("questions", {})),
+                correlation_id=correlation_id,
             )
 
             # Assemble micro analyses
             micro_analyses = self._assemble_micro_analyses(
-                micro_questions,
-                execution_results,
-                correlation_id
+                micro_questions, execution_results, correlation_id
             )
 
             # Assemble meso clusters
@@ -636,19 +636,17 @@ class ReportAssembler:
 
             # JOBFRONT 9: Compute signal usage summary if enriched_packs provided
             if enriched_packs:
-                signal_usage = self._compute_signal_usage_summary(
-                    execution_results,
-                    enriched_packs
-                )
+                signal_usage = self._compute_signal_usage_summary(execution_results, enriched_packs)
                 # Add to metadata
                 if metadata.metadata is None:
                     # metadata.metadata is immutable, need to recreate
                     from dataclasses import replace
+
                     new_metadata_dict = {
-                        'signal_version': '1.0.0',
-                        'total_patterns_available': signal_usage['total_patterns_available'],
-                        'total_patterns_used': signal_usage['total_patterns_used'],
-                        'signal_usage_summary': signal_usage
+                        "signal_version": "1.0.0",
+                        "total_patterns_available": signal_usage["total_patterns_available"],
+                        "total_patterns_used": signal_usage["total_patterns_used"],
+                        "signal_usage_summary": signal_usage,
                     }
                     metadata = ReportMetadata(
                         report_id=metadata.report_id,
@@ -659,7 +657,7 @@ class ReportAssembler:
                         total_questions=metadata.total_questions,
                         questions_analyzed=metadata.questions_analyzed,
                         metadata=new_metadata_dict,
-                        correlation_id=metadata.correlation_id
+                        correlation_id=metadata.correlation_id,
                     )
 
             # Create report and compute digest
@@ -669,7 +667,7 @@ class ReportAssembler:
                 meso_clusters=meso_clusters,
                 macro_summary=macro_summary,
                 evidence_chain_hash=evidence_chain_hash,
-                report_digest=None  # Will be computed
+                report_digest=None,  # Will be computed
             )
 
             # Compute and attach digest
@@ -680,7 +678,7 @@ class ReportAssembler:
                 meso_clusters=meso_clusters,
                 macro_summary=macro_summary,
                 evidence_chain_hash=evidence_chain_hash,
-                report_digest=report_digest
+                report_digest=report_digest,
             )
 
             latency_ms = (time.time() - start_time) * 1000
@@ -694,7 +692,7 @@ class ReportAssembler:
                 report_id=report_id,
                 question_count=len(micro_analyses),
                 monolith_hash=monolith_hash[:16],
-                report_digest=report_digest[:16]
+                report_digest=report_digest[:16],
             )
 
             logger.info(
@@ -711,27 +709,29 @@ class ReportAssembler:
             # Wrap unexpected exceptions
             raise ReportAssemblyException(
                 f"Unexpected error during report assembly: {str(e)}",
-                details={'error_type': type(e).__name__, 'error': str(e)},
+                details={"error_type": type(e).__name__, "error": str(e)},
                 stage="assembly",
-                recoverable=False
+                recoverable=False,
             ) from e
 
-    @calibrated_method("farfan_core.analysis.report_assembly.ReportAssembler._assemble_micro_analyses")
+    @calibrated_method(
+        "farfan_core.analysis.report_assembly.ReportAssembler._assemble_micro_analyses"
+    )
     def _assemble_micro_analyses(
         self,
         micro_questions: list[dict[str, Any]],
         execution_results: dict[str, Any],
-        correlation_id: str
+        correlation_id: str,
     ) -> list[QuestionAnalysis]:
         """Assemble micro-level question analyses with validation."""
         analyses = []
-        question_results = execution_results.get('questions', {})
+        question_results = execution_results.get("questions", {})
 
         if not isinstance(question_results, dict):
             raise ReportValidationError(
                 "execution_results.questions must be a dictionary",
-                details={'type': type(question_results).__name__},
-                stage="micro_analysis"
+                details={"type": type(question_results).__name__},
+                stage="micro_analysis",
             )
 
         for question in micro_questions:
@@ -739,7 +739,7 @@ class ReportAssembler:
                 logger.warning(f"Skipping invalid question entry: {type(question).__name__}")
                 continue
 
-            question_id = question.get('question_id', '')
+            question_id = question.get("question_id", "")
             if not question_id:
                 logger.warning("Skipping question with missing question_id")
                 continue
@@ -748,24 +748,32 @@ class ReportAssembler:
 
             # Extract patterns applied using QuestionnaireResourceProvider
             patterns = self.questionnaire_provider.get_patterns_by_question(question_id)
-            pattern_names = [p.get('pattern_id', '') for p in patterns] if patterns else []
+            pattern_names = [p.get("pattern_id", "") for p in patterns] if patterns else []
 
             try:
                 # Pydantic validation
                 analysis = QuestionAnalysis(
                     question_id=question_id,
-                    question_global=question.get('question_global', 0),
-                    base_slot=question.get('base_slot', ''),
-                    scoring_modality=question.get('scoring', {}).get('modality') if isinstance(question.get('scoring'), dict) else None,
-                    score=result.get('score'),
-                    evidence=result.get('evidence', []) if isinstance(result.get('evidence'), list) else [],
+                    question_global=question.get("question_global", 0),
+                    base_slot=question.get("base_slot", ""),
+                    scoring_modality=(
+                        question.get("scoring", {}).get("modality")
+                        if isinstance(question.get("scoring"), dict)
+                        else None
+                    ),
+                    score=result.get("score"),
+                    evidence=(
+                        result.get("evidence", [])
+                        if isinstance(result.get("evidence"), list)
+                        else []
+                    ),
                     patterns_applied=pattern_names,
-                    recommendation=result.get('recommendation'),
-                    human_answer=result.get('human_answer'),
+                    recommendation=result.get("recommendation"),
+                    human_answer=result.get("human_answer"),
                     metadata={
-                        'dimension': question.get('dimension'),
-                        'policy_area': question.get('policy_area')
-                    }
+                        "dimension": question.get("dimension"),
+                        "policy_area": question.get("policy_area"),
+                    },
                 )
                 analyses.append(analysis)
 
@@ -773,7 +781,7 @@ class ReportAssembler:
                     item_type="question_analysis",
                     correlation_id=correlation_id,
                     success=True,
-                    question_id=question_id
+                    question_id=question_id,
                 )
 
             except Exception as e:
@@ -783,35 +791,36 @@ class ReportAssembler:
                     correlation_id=correlation_id,
                     success=False,
                     error=str(e),
-                    question_id=question_id
+                    question_id=question_id,
                 )
                 logger.error(f"Failed to create QuestionAnalysis for {question_id}: {e}")
 
         return analyses
 
-    @calibrated_method("farfan_core.analysis.report_assembly.ReportAssembler._assemble_meso_clusters")
-    @calibrated_method("farfan_core.analysis.report_assembly.ReportAssembler._assemble_meso_clusters")
-    def _assemble_meso_clusters(
-        self,
-        execution_results: dict[str, Any]
-    ) -> dict[str, MesoCluster]:
+    @calibrated_method(
+        "farfan_core.analysis.report_assembly.ReportAssembler._assemble_meso_clusters"
+    )
+    @calibrated_method(
+        "farfan_core.analysis.report_assembly.ReportAssembler._assemble_meso_clusters"
+    )
+    def _assemble_meso_clusters(self, execution_results: dict[str, Any]) -> dict[str, MesoCluster]:
         """Assemble meso-level cluster analyses with strict validation."""
-        raw_clusters = execution_results.get('meso_clusters', {})
-        
+        raw_clusters = execution_results.get("meso_clusters", {})
+
         # Handle list format from Bayesian orchestrator
         if isinstance(raw_clusters, list):
             # Convert list of objects to dict keyed by cluster_id
             cluster_dict = {}
             for item in raw_clusters:
                 # Handle both dicts and objects (if coming from dataclasses)
-                if hasattr(item, '__dict__'):
+                if hasattr(item, "__dict__"):
                     data = item.__dict__
                 elif isinstance(item, dict):
                     data = item
                 else:
                     continue
-                    
-                c_id = data.get('cluster_id')
+
+                c_id = data.get("cluster_id")
                 if c_id:
                     cluster_dict[c_id] = data
             raw_clusters = cluster_dict
@@ -824,48 +833,47 @@ class ReportAssembler:
         for cluster_id, data in raw_clusters.items():
             try:
                 # Ensure data is a dict
-                if hasattr(data, '__dict__'):
+                if hasattr(data, "__dict__"):
                     data = data.__dict__
-                
+
                 if not isinstance(data, dict):
                     continue
 
                 cluster = MesoCluster(
-                    cluster_id=str(data.get('cluster_id', cluster_id)),
-                    raw_meso_score=float(data.get('raw_meso_score', 0.0)),
-                    adjusted_score=float(data.get('adjusted_score', 0.0)),
-                    dispersion_penalty=float(data.get('dispersion_penalty', 0.0)),
-                    peer_penalty=float(data.get('peer_penalty', 0.0)),
-                    total_penalty=float(data.get('total_penalty', 0.0)),
-                    dispersion_metrics=data.get('dispersion_metrics', {}),
-                    micro_scores=data.get('micro_scores', []),
-                    metadata=data.get('metadata', {})
+                    cluster_id=str(data.get("cluster_id", cluster_id)),
+                    raw_meso_score=float(data.get("raw_meso_score", 0.0)),
+                    adjusted_score=float(data.get("adjusted_score", 0.0)),
+                    dispersion_penalty=float(data.get("dispersion_penalty", 0.0)),
+                    peer_penalty=float(data.get("peer_penalty", 0.0)),
+                    total_penalty=float(data.get("total_penalty", 0.0)),
+                    dispersion_metrics=data.get("dispersion_metrics", {}),
+                    micro_scores=data.get("micro_scores", []),
+                    metadata=data.get("metadata", {}),
                 )
                 validated_clusters[cluster_id] = cluster
             except Exception as e:
                 logger.error(f"Failed to validate meso cluster {cluster_id}: {e}")
-                
+
         return validated_clusters
 
-    @calibrated_method("farfan_core.analysis.report_assembly.ReportAssembler._assemble_macro_summary")
-    def _assemble_macro_summary(
-        self,
-        execution_results: dict[str, Any]
-    ) -> MacroSummary | None:
+    @calibrated_method(
+        "farfan_core.analysis.report_assembly.ReportAssembler._assemble_macro_summary"
+    )
+    def _assemble_macro_summary(self, execution_results: dict[str, Any]) -> MacroSummary | None:
         """Assemble macro-level summary with strict validation and recommendation wiring."""
-        raw_macro = execution_results.get('macro_summary', {})
-        
+        raw_macro = execution_results.get("macro_summary", {})
+
         # Handle object format
-        if hasattr(raw_macro, '__dict__'):
+        if hasattr(raw_macro, "__dict__"):
             raw_macro = raw_macro.__dict__
-            
+
         if not isinstance(raw_macro, dict) or not raw_macro:
             logger.warning("macro_summary is missing or invalid")
             return None
 
         try:
             # Parse recommendations
-            raw_recs = raw_macro.get('recommendations', [])
+            raw_recs = raw_macro.get("recommendations", [])
             validated_recs = []
             for rec in raw_recs:
                 if isinstance(rec, str):
@@ -878,15 +886,15 @@ class ReportAssembler:
                         pass
 
             return MacroSummary(
-                overall_posterior=float(raw_macro.get('overall_posterior', 0.0)),
-                adjusted_score=float(raw_macro.get('adjusted_score', 0.0)),
-                coverage_penalty=float(raw_macro.get('coverage_penalty', 0.0)),
-                dispersion_penalty=float(raw_macro.get('dispersion_penalty', 0.0)),
-                contradiction_penalty=float(raw_macro.get('contradiction_penalty', 0.0)),
-                total_penalty=float(raw_macro.get('total_penalty', 0.0)),
-                contradiction_count=int(raw_macro.get('contradiction_count', 0)),
+                overall_posterior=float(raw_macro.get("overall_posterior", 0.0)),
+                adjusted_score=float(raw_macro.get("adjusted_score", 0.0)),
+                coverage_penalty=float(raw_macro.get("coverage_penalty", 0.0)),
+                dispersion_penalty=float(raw_macro.get("dispersion_penalty", 0.0)),
+                contradiction_penalty=float(raw_macro.get("contradiction_penalty", 0.0)),
+                total_penalty=float(raw_macro.get("total_penalty", 0.0)),
+                contradiction_count=int(raw_macro.get("contradiction_count", 0)),
                 recommendations=validated_recs,
-                metadata=raw_macro.get('metadata', {})
+                metadata=raw_macro.get("metadata", {}),
             )
         except Exception as e:
             logger.error(f"Failed to validate macro summary: {e}")
@@ -894,10 +902,7 @@ class ReportAssembler:
 
     @calibrated_method("farfan_core.analysis.report_assembly.ReportAssembler.export_report")
     def export_report(
-        self,
-        report: AnalysisReport,
-        output_path: Path,
-        format: str = 'json'
+        self, report: AnalysisReport, output_path: Path, format: str = "json"
     ) -> None:
         """
         Export report to file.
@@ -914,6 +919,7 @@ class ReportAssembler:
         NOTE: This delegates I/O to factory for architectural compliance.
         """
         import time
+
         start_time = time.time()
         correlation_id = report.metadata.correlation_id
 
@@ -921,16 +927,16 @@ class ReportAssembler:
             # Delegate to factory for I/O
             from farfan_pipeline.analysis.factory import save_json, write_text_file
 
-            if format == 'json':
+            if format == "json":
                 save_json(report.to_dict(), str(output_path))
-            elif format == 'markdown':
+            elif format == "markdown":
                 markdown = self._format_as_markdown(report)
                 write_text_file(markdown, str(output_path))
             else:
                 raise ReportValidationError(
                     f"Unsupported format: {format}",
-                    details={'format': format, 'supported': ['json', 'markdown']},
-                    stage="export"
+                    details={"format": format, "supported": ["json", "markdown"]},
+                    stage="export",
                 )
 
             latency_ms = (time.time() - start_time) * 1000
@@ -941,7 +947,7 @@ class ReportAssembler:
                 success=True,
                 latency_ms=latency_ms,
                 output_path=str(output_path),
-                format=format
+                format=format,
             )
 
             logger.info(f"Report exported to {output_path} in {format} format")
@@ -951,9 +957,9 @@ class ReportAssembler:
         except Exception as e:
             raise ReportExportError(
                 f"Failed to export report: {str(e)}",
-                details={'output_path': str(output_path), 'format': format, 'error': str(e)},
+                details={"output_path": str(output_path), "format": format, "error": str(e)},
                 stage="export",
-                recoverable=True
+                recoverable=True,
             ) from e
 
     @calibrated_method("farfan_core.analysis.report_assembly.ReportAssembler._format_as_markdown")
@@ -962,8 +968,12 @@ class ReportAssembler:
         # Externalized parameters
         # Load from calibration system if available
         if _PARAM_LOADER:
-            preview_count = _PARAM_LOADER.get("farfan_core.analysis.report_assembly.ReportAssembler._format_as_markdown").get("preview_question_count", 10)
-            hash_preview_length = _PARAM_LOADER.get("farfan_core.analysis.report_assembly.ReportAssembler._format_as_markdown").get("hash_preview_length", 16)
+            preview_count = _PARAM_LOADER.get(
+                "farfan_core.analysis.report_assembly.ReportAssembler._format_as_markdown"
+            ).get("preview_question_count", 10)
+            hash_preview_length = _PARAM_LOADER.get(
+                "farfan_core.analysis.report_assembly.ReportAssembler._format_as_markdown"
+            ).get("hash_preview_length", 16)
         else:
             preview_count = 10
             hash_preview_length = 16
@@ -989,36 +999,44 @@ class ReportAssembler:
             lines.append(f"- **Patterns:** {', '.join(analysis.patterns_applied)}\n")
 
         if len(report.micro_analyses) > preview_count:
-            lines.append(f"\n_...and {len(report.micro_analyses) - preview_count} more questions_\n")
+            lines.append(
+                f"\n_...and {len(report.micro_analyses) - preview_count} more questions_\n"
+            )
 
         lines.append("\n## Meso-Level Clusters\n")
         for cid, cluster in report.meso_clusters.items():
             lines.append(f"\n### Cluster {cid}\n")
-            lines.append(f"- **Score:** {cluster.adjusted_score:.4f} (Raw: {cluster.raw_meso_score:.4f})\n")
-            lines.append(f"- **Penalties:** Total {cluster.total_penalty:.4f} (Dispersion: {cluster.dispersion_penalty:.4f}, Peer: {cluster.peer_penalty:.4f})\n")
+            lines.append(
+                f"- **Score:** {cluster.adjusted_score:.4f} (Raw: {cluster.raw_meso_score:.4f})\n"
+            )
+            lines.append(
+                f"- **Penalties:** Total {cluster.total_penalty:.4f} (Dispersion: {cluster.dispersion_penalty:.4f}, Peer: {cluster.peer_penalty:.4f})\n"
+            )
 
         if report.macro_summary:
             lines.append("\n## Macro Summary\n")
             lines.append(f"- **Overall Score:** {report.macro_summary.adjusted_score:.4f}\n")
             lines.append(f"- **Contradictions:** {report.macro_summary.contradiction_count}\n")
-            
+
             lines.append("\n### Recommendations\n")
             for rec in report.macro_summary.recommendations:
-                icon = "🔴" if "CRITICAL" in rec.severity else "🟠" if "HIGH" in rec.severity else "🟡"
+                icon = (
+                    "🔴" if "CRITICAL" in rec.severity else "🟠" if "HIGH" in rec.severity else "🟡"
+                )
                 lines.append(f"- {icon} **{rec.type}** ({rec.severity}): {rec.description}\n")
         else:
             lines.append("\n## Macro Summary\n")
             lines.append("_No macro summary available_\n")
 
         if report.evidence_chain_hash:
-            lines.append(f"\n**Evidence Chain Hash:** {report.evidence_chain_hash[:hash_preview_length]}...\n")
+            lines.append(
+                f"\n**Evidence Chain Hash:** {report.evidence_chain_hash[:hash_preview_length]}...\n"
+            )
 
         return "".join(lines)
 
     def _compute_signal_usage_summary(
-        self,
-        execution_results: dict[str, Any],
-        enriched_packs: dict[str, Any]
+        self, execution_results: dict[str, Any], enriched_packs: dict[str, Any]
     ) -> dict[str, Any]:
         """
         Compute signal usage summary for report provenance (JOBFRONT 9).
@@ -1052,12 +1070,22 @@ class ReportAssembler:
 
             # Track validation failures
             if validation.get("status") == "failed" or validation.get("contract_failed"):
-                validation_failures.append({
-                    "question_id": question_id,
-                    "policy_area": policy_area,
-                    "error_code": validation.get("errors", [{}])[0].get("error_code") if validation.get("errors") else None,
-                    "remediation": validation.get("errors", [{}])[0].get("remediation") if validation.get("errors") else None
-                })
+                validation_failures.append(
+                    {
+                        "question_id": question_id,
+                        "policy_area": policy_area,
+                        "error_code": (
+                            validation.get("errors", [{}])[0].get("error_code")
+                            if validation.get("errors")
+                            else None
+                        ),
+                        "remediation": (
+                            validation.get("errors", [{}])[0].get("remediation")
+                            if validation.get("errors")
+                            else None
+                        ),
+                    }
+                )
 
             # Aggregate by policy area
             if policy_area not in by_policy_area:
@@ -1065,7 +1093,7 @@ class ReportAssembler:
                     "patterns_available": len(enriched_packs[policy_area].patterns),
                     "patterns_used": 0,
                     "questions_analyzed": 0,
-                    "avg_completeness": 0.0
+                    "avg_completeness": 0.0,
                 }
 
             by_policy_area[policy_area]["patterns_used"] += len(patterns_used)
@@ -1075,14 +1103,18 @@ class ReportAssembler:
         for pa_id, summary in by_policy_area.items():
             pa_results = [r for r in micro_results.values() if r.get("policy_area_id") == pa_id]
             completeness_values = [r.get("completeness", 1.0) for r in pa_results]
-            summary["avg_completeness"] = sum(completeness_values) / len(completeness_values) if completeness_values else 0.0
+            summary["avg_completeness"] = (
+                sum(completeness_values) / len(completeness_values) if completeness_values else 0.0
+            )
 
         return {
             "total_patterns_available": total_patterns_available,
             "total_patterns_used": total_patterns_used,
             "by_policy_area": by_policy_area,
-            "avg_completeness": sum(completeness_scores) / len(completeness_scores) if completeness_scores else 0.0,
-            "validation_failures": validation_failures
+            "avg_completeness": (
+                sum(completeness_scores) / len(completeness_scores) if completeness_scores else 0.0
+            ),
+            "validation_failures": validation_failures,
         }
 
 
@@ -1090,11 +1122,9 @@ class ReportAssembler:
 # FACTORY FUNCTIONS
 # ============================================================================
 
+
 def create_report_assembler(
-    questionnaire_provider,
-    evidence_registry=None,
-    qmcm_recorder=None,
-    orchestrator=None
+    questionnaire_provider, evidence_registry=None, qmcm_recorder=None, orchestrator=None
 ) -> ReportAssembler:
     """
     Factory function to create ReportAssembler with dependencies.
@@ -1115,7 +1145,7 @@ def create_report_assembler(
         questionnaire_provider=questionnaire_provider,
         evidence_registry=evidence_registry,
         qmcm_recorder=qmcm_recorder,
-        orchestrator=orchestrator
+        orchestrator=orchestrator,
     )
 
 
@@ -1125,22 +1155,22 @@ def create_report_assembler(
 
 __all__ = [
     # Exceptions
-    'ReportAssemblyException',
-    'ReportValidationError',
-    'ReportIntegrityError',
-    'ReportExportError',
+    "ReportAssemblyException",
+    "ReportValidationError",
+    "ReportIntegrityError",
+    "ReportExportError",
     # Contracts
-    'ReportMetadata',
-    'QuestionAnalysis',
-    'AnalysisReport',
+    "ReportMetadata",
+    "QuestionAnalysis",
+    "AnalysisReport",
     # Main Classes
-    'ReportAssembler',
-    'ReportLogger',
+    "ReportAssembler",
+    "ReportLogger",
     # Factory Functions
-    'create_report_assembler',
+    "create_report_assembler",
     # Utilities
-    'compute_content_digest',
-    'utc_now_iso',
+    "compute_content_digest",
+    "utc_now_iso",
 ]
 
 
@@ -1157,9 +1187,7 @@ if __name__ == "__main__":
     print("\n1. Testing domain-specific exceptions:")
     try:
         raise ReportValidationError(
-            "Test validation error",
-            details={'field': 'test'},
-            stage="validation"
+            "Test validation error", details={"field": "test"}, stage="validation"
         )
     except ReportValidationError as e:
         print(f"   ✓ ReportValidationError: {e.event_id[:8]}... - {e.message}")
@@ -1175,7 +1203,7 @@ if __name__ == "__main__":
             monolith_hash="invalid",
             plan_name="Test Plan",
             total_questions=10,
-            questions_analyzed=5
+            questions_analyzed=5,
         )
         print("   ✗ Expected validation error for invalid hash")
     except Exception as e:
@@ -1189,7 +1217,7 @@ if __name__ == "__main__":
         monolith_hash=valid_hash,
         plan_name="Test Plan",
         total_questions=10,
-        questions_analyzed=5
+        questions_analyzed=5,
     )
     print(f"   ✓ Valid metadata created: {metadata.report_id}")
 
@@ -1204,21 +1232,18 @@ if __name__ == "__main__":
     # Test 4: Report digest verification
     print("\n4. Testing report digest verification:")
     micro_analysis = QuestionAnalysis(
-        question_id="Q001",
-        question_global=1,
-        base_slot="slot1",
-        score=0.85
+        question_id="Q001", question_global=1, base_slot="slot1", score=0.85
     )
-    
+
     meso_cluster = MesoCluster(
         cluster_id="CL01",
         raw_meso_score=0.8,
         adjusted_score=0.75,
         dispersion_penalty=0.05,
         peer_penalty=0.0,
-        total_penalty=0.05
+        total_penalty=0.05,
     )
-    
+
     macro_summary = MacroSummary(
         overall_posterior=0.75,
         adjusted_score=0.7,
@@ -1229,28 +1254,28 @@ if __name__ == "__main__":
         contradiction_count=0,
         recommendations=[
             Recommendation(type="RISK", severity="LOW", description="Monitor closely")
-        ]
+        ],
     )
-    
+
     report = AnalysisReport(
         metadata=metadata,
         micro_analyses=[micro_analysis],
         meso_clusters={"CL01": meso_cluster},
-        macro_summary=macro_summary
+        macro_summary=macro_summary,
     )
-    
+
     report_digest = report.compute_digest()
     print(f"   ✓ Report digest: {report_digest[:16]}...")
-    
+
     # Create report with digest
     report_with_digest = AnalysisReport(
         metadata=metadata,
         micro_analyses=[micro_analysis],
         meso_clusters={"CL01": meso_cluster},
         macro_summary=macro_summary,
-        report_digest=report_digest
+        report_digest=report_digest,
     )
-    
+
     is_valid = report_with_digest.verify_digest()
     print(f"   ✓ Digest verification: {is_valid}")
 
@@ -1262,7 +1287,7 @@ if __name__ == "__main__":
         correlation_id=metadata.correlation_id,
         success=True,
         latency_ms=12.345,
-        custom_field="test_value"
+        custom_field="test_value",
     )
     print("   ✓ Structured log emitted")
 

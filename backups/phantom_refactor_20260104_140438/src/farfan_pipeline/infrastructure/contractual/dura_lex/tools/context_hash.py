@@ -14,6 +14,7 @@ from farfan_pipeline.contracts.context_immutability import (
     ContextImmutabilityContract,
 )
 
+
 def load_json_file(path: str | None) -> Dict[str, Any]:
     if not path:
         return {}
@@ -22,26 +23,35 @@ def load_json_file(path: str | None) -> Dict[str, Any]:
         raise FileNotFoundError(f"Standards/JSON file not found: {p}")
     return json.loads(p.read_text(encoding="utf-8"))
 
+
 def parse_csv_tuple(s: str | None) -> Tuple[str, ...]:
     if not s:
         return tuple()
     return tuple(x.strip() for x in s.split(",") if x.strip())
+
 
 def main() -> None:
     ap = argparse.ArgumentParser(
         description="Compute canonical digest of a deep-immutable QuestionContext."
     )
     ap.add_argument("--question-id", default="Q001")
-    ap.add_argument("--mapping-json", default=None,
-                    help="JSON string or @path/to/file.json describing question_mapping")
-    ap.add_argument("--standards", default=None,
-                    help="Path to dnp_standards_complete.json (optional)")
-    ap.add_argument("--evidence-types", default="",
-                    help="Comma-separated list of evidence type strings")
-    ap.add_argument("--queries", default="",
-                    help="Comma-separated list of search query strings")
-    ap.add_argument("--criteria-json", default=None,
-                    help="JSON string or @path/to/file.json for validation_criteria")
+    ap.add_argument(
+        "--mapping-json",
+        default=None,
+        help="JSON string or @path/to/file.json describing question_mapping",
+    )
+    ap.add_argument(
+        "--standards", default=None, help="Path to dnp_standards_complete.json (optional)"
+    )
+    ap.add_argument(
+        "--evidence-types", default="", help="Comma-separated list of evidence type strings"
+    )
+    ap.add_argument("--queries", default="", help="Comma-separated list of search query strings")
+    ap.add_argument(
+        "--criteria-json",
+        default=None,
+        help="JSON string or @path/to/file.json for validation_criteria",
+    )
     ap.add_argument("--trace-id", default="TRACE-DEMO")
 
     args = ap.parse_args()
@@ -98,6 +108,7 @@ def main() -> None:
     pathlib.Path("cic_certificate.json").write_text(
         json.dumps(cert, indent=2, ensure_ascii=False), encoding="utf-8"
     )
+
 
 if __name__ == "__main__":
     try:

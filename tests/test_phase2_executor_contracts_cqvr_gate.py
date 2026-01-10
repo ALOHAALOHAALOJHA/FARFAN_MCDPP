@@ -85,12 +85,20 @@ def test_phase2_executor_contracts_structural_invariants() -> None:
         mandatory = (
             signal_reqs.get("mandatory_signals", []) if isinstance(signal_reqs, dict) else []
         )
-        threshold = signal_reqs.get("minimum_signal_threshold", 0.0) if isinstance(signal_reqs, dict) else 0.0
+        threshold = (
+            signal_reqs.get("minimum_signal_threshold", 0.0)
+            if isinstance(signal_reqs, dict)
+            else 0.0
+        )
         if isinstance(mandatory, list) and mandatory and float(threshold) <= 0.0:
-            errors.append(f"{contract_id}: minimum_signal_threshold must be >0 for mandatory_signals")
+            errors.append(
+                f"{contract_id}: minimum_signal_threshold must be >0 for mandatory_signals"
+            )
         if isinstance(mandatory, list) and "transparency" in mandatory:
             errors.append(f"{contract_id}: raw 'transparency' mandatory signal must be normalized")
-        if isinstance(mandatory, list) and not all(isinstance(s, str) and "_" in s for s in mandatory):
+        if isinstance(mandatory, list) and not all(
+            isinstance(s, str) and "_" in s for s in mandatory
+        ):
             errors.append(f"{contract_id}: mandatory_signals must be snake_case")
 
         method_binding = contract.get("method_binding", {})
@@ -116,9 +124,7 @@ def test_phase2_executor_contracts_structural_invariants() -> None:
                 errors.append(f"{contract_id}: assembly_rules[0].sources must equal provides")
 
         template = (
-            contract.get("output_contract", {})
-            .get("human_readable_output", {})
-            .get("template", {})
+            contract.get("output_contract", {}).get("human_readable_output", {}).get("template", {})
         )
         title = str(template.get("title") or "") if isinstance(template, dict) else ""
         if contract_id not in title:
@@ -149,4 +155,3 @@ def test_phase2_executor_contracts_structural_invariants() -> None:
                         break
 
     assert not errors, f"Contract invariant violations: {errors[:25]}"
-

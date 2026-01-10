@@ -56,7 +56,10 @@ def get_representative_question_for_dimension(
     Selection strategy: first question found for the dimension in the registry.
     """
     if signal_registry is None:
-        logger.warning("Signal registry is None; cannot select representative question for dimension '%s'.", dimension_id)
+        logger.warning(
+            "Signal registry is None; cannot select representative question for dimension '%s'.",
+            dimension_id,
+        )
         return None
     questions = signal_registry.get_questions_for_dimension(dimension_id)
     if not questions:
@@ -147,14 +150,16 @@ class SignalEnrichedAggregator:
                         original_weight = adjusted_weights[key]
                         adjusted_weights[key] = min(1.0, original_weight * boost_factor)
 
-                        adjustment_details["adjustments"].append({
-                            "type": "critical_score_boost",
-                            "key": key,
-                            "original_weight": original_weight,
-                            "adjusted_weight": adjusted_weights[key],
-                            "score": score,
-                            "boost_factor": boost_factor,
-                        })
+                        adjustment_details["adjustments"].append(
+                            {
+                                "type": "critical_score_boost",
+                                "key": key,
+                                "original_weight": original_weight,
+                                "adjusted_weight": adjusted_weights[key],
+                                "score": score,
+                                "boost_factor": boost_factor,
+                            }
+                        )
 
             # Adjustment 2: Signal-based pattern density weighting
             if self.signal_registry and dimension_id:
@@ -165,15 +170,17 @@ class SignalEnrichedAggregator:
                     )
                     if representative_question is None:
                         # No representative question found, skip signal-based weighting
-                        logger.debug(f"No representative question for dimension {dimension_id}, skipping signal-based weighting")
+                        logger.debug(
+                            f"No representative question for dimension {dimension_id}, skipping signal-based weighting"
+                        )
                         return adjusted_weights, adjustment_details
 
                     signal_pack = self.signal_registry.get_micro_answering_signals(
                         representative_question
                     )
 
-                    pattern_count = len(getattr(signal_pack, 'patterns', []))
-                    indicator_count = len(getattr(signal_pack, 'indicators', []))
+                    pattern_count = len(getattr(signal_pack, "patterns", []))
+                    indicator_count = len(getattr(signal_pack, "indicators", []))
 
                     # High signal density suggests importance
                     if pattern_count > HIGH_SIGNAL_PATTERN_THRESHOLD:
@@ -183,12 +190,14 @@ class SignalEnrichedAggregator:
                             original_weight = adjusted_weights[key]
                             adjusted_weights[key] = min(1.0, original_weight * boost_factor)
 
-                        adjustment_details["adjustments"].append({
-                            "type": "high_pattern_density",
-                            "pattern_count": pattern_count,
-                            "indicator_count": indicator_count,
-                            "boost_factor": 1.05,
-                        })
+                        adjustment_details["adjustments"].append(
+                            {
+                                "type": "high_pattern_density",
+                                "pattern_count": pattern_count,
+                                "indicator_count": indicator_count,
+                                "boost_factor": 1.05,
+                            }
+                        )
 
                 except Exception as e:
                     logger.debug(f"Signal-based weight adjustment failed: {e}")
@@ -196,9 +205,7 @@ class SignalEnrichedAggregator:
             # Normalize weights to sum to 1.0
             weight_sum = sum(adjusted_weights.values())
             if weight_sum > 0:
-                adjusted_weights = {
-                    k: v / weight_sum for k, v in adjusted_weights.items()
-                }
+                adjusted_weights = {k: v / weight_sum for k, v in adjusted_weights.items()}
 
             adjustment_details["adjusted_weights"] = adjusted_weights
             adjustment_details["total_adjustment"] = sum(
@@ -250,7 +257,7 @@ class SignalEnrichedAggregator:
             # Basic dispersion metrics
             mean_score = sum(scores) / len(scores)
             variance = sum((s - mean_score) ** 2 for s in scores) / len(scores)
-            std_dev = variance ** 0.5
+            std_dev = variance**0.5
             min_score = min(scores)
             max_score = max(scores)
             score_range = max_score - min_score
@@ -271,29 +278,37 @@ class SignalEnrichedAggregator:
 
             # Interpretation based on dispersion
             if cv < CV_CONVERGENCE_THRESHOLD:
-                interpretation["insights"].append({
-                    "type": "convergence",
-                    "description": "Scores show high convergence (low dispersion)",
-                    "recommendation": "Aggregation is reliable with standard weighting",
-                })
+                interpretation["insights"].append(
+                    {
+                        "type": "convergence",
+                        "description": "Scores show high convergence (low dispersion)",
+                        "recommendation": "Aggregation is reliable with standard weighting",
+                    }
+                )
             elif cv < CV_MODERATE_THRESHOLD:
-                interpretation["insights"].append({
-                    "type": "moderate_dispersion",
-                    "description": "Scores show moderate dispersion",
-                    "recommendation": "Consider weighted aggregation with quality-based weights",
-                })
+                interpretation["insights"].append(
+                    {
+                        "type": "moderate_dispersion",
+                        "description": "Scores show moderate dispersion",
+                        "recommendation": "Consider weighted aggregation with quality-based weights",
+                    }
+                )
             elif cv < CV_HIGH_THRESHOLD:
-                interpretation["insights"].append({
-                    "type": "high_dispersion",
-                    "description": "Scores show high dispersion",
-                    "recommendation": "Use adaptive penalty and investigate outliers",
-                })
+                interpretation["insights"].append(
+                    {
+                        "type": "high_dispersion",
+                        "description": "Scores show high dispersion",
+                        "recommendation": "Use adaptive penalty and investigate outliers",
+                    }
+                )
             else:
-                interpretation["insights"].append({
-                    "type": "extreme_dispersion",
-                    "description": "Scores show extreme dispersion",
-                    "recommendation": "Consider non-linear aggregation methods",
-                })
+                interpretation["insights"].append(
+                    {
+                        "type": "extreme_dispersion",
+                        "description": "Scores show extreme dispersion",
+                        "recommendation": "Consider non-linear aggregation methods",
+                    }
+                )
 
             # Signal-based enhancement
             if self.signal_registry and dimension_id:
@@ -310,25 +325,32 @@ class SignalEnrichedAggregator:
                             representative_question
                         )
 
-                        pattern_count = len(signal_pack.patterns) if hasattr(signal_pack, 'patterns') else 0
+                        pattern_count = (
+                            len(signal_pack.patterns) if hasattr(signal_pack, "patterns") else 0
+                        )
 
                         # High pattern count with high dispersion suggests genuine complexity
                         if pattern_count > 15 and cv > CV_MODERATE_THRESHOLD:
-                            interpretation["insights"].append({
-                                "type": "genuine_complexity",
-                                "description": f"High pattern density ({pattern_count}) with high dispersion suggests inherent complexity",
-                                "recommendation": "Dispersion may reflect genuine answer complexity, not data quality issues",
-                            })
+                            interpretation["insights"].append(
+                                {
+                                    "type": "genuine_complexity",
+                                    "description": f"High pattern density ({pattern_count}) with high dispersion suggests inherent complexity",
+                                    "recommendation": "Dispersion may reflect genuine answer complexity, not data quality issues",
+                                }
+                            )
 
                 except Exception as e:
                     logger.debug(f"Signal-based dispersion analysis failed: {e}")
 
             interpretation["summary"] = {
                 "dispersion_level": (
-                    "convergence" if cv < CV_CONVERGENCE_THRESHOLD
-                    else "moderate" if cv < CV_MODERATE_THRESHOLD
-                    else "high" if cv < CV_HIGH_THRESHOLD
-                    else "extreme"
+                    "convergence"
+                    if cv < CV_CONVERGENCE_THRESHOLD
+                    else (
+                        "moderate"
+                        if cv < CV_MODERATE_THRESHOLD
+                        else "high" if cv < CV_HIGH_THRESHOLD else "extreme"
+                    )
                 ),
                 "cv": cv,
             }
@@ -372,38 +394,46 @@ class SignalEnrichedAggregator:
             if cv < CV_CONVERGENCE_THRESHOLD:
                 # Low dispersion - simple weighted mean is fine
                 method_name = "weighted_mean"
-                selection_details["candidates"].append({
-                    "method": "weighted_mean",
-                    "reason": "low_dispersion",
-                    "cv": cv,
-                })
+                selection_details["candidates"].append(
+                    {
+                        "method": "weighted_mean",
+                        "reason": "low_dispersion",
+                        "cv": cv,
+                    }
+                )
             elif cv < CV_MODERATE_THRESHOLD:
                 # Moderate dispersion - weighted mean with quality weights
                 method_name = "weighted_mean"
-                selection_details["candidates"].append({
-                    "method": "weighted_mean",
-                    "reason": "moderate_dispersion",
-                    "cv": cv,
-                    "note": "Use quality-based weights",
-                })
+                selection_details["candidates"].append(
+                    {
+                        "method": "weighted_mean",
+                        "reason": "moderate_dispersion",
+                        "cv": cv,
+                        "note": "Use quality-based weights",
+                    }
+                )
             elif cv < CV_HIGH_THRESHOLD:
                 # High dispersion - consider median or trimmed mean
                 method_name = "median"
-                selection_details["candidates"].append({
-                    "method": "median",
-                    "reason": "high_dispersion",
-                    "cv": cv,
-                    "note": "Robust to outliers",
-                })
+                selection_details["candidates"].append(
+                    {
+                        "method": "median",
+                        "reason": "high_dispersion",
+                        "cv": cv,
+                        "note": "Robust to outliers",
+                    }
+                )
             else:
                 # Extreme dispersion - use robust aggregation
                 method_name = "choquet"
-                selection_details["candidates"].append({
-                    "method": "choquet",
-                    "reason": "extreme_dispersion",
-                    "cv": cv,
-                    "note": "Captures synergies and interactions",
-                })
+                selection_details["candidates"].append(
+                    {
+                        "method": "choquet",
+                        "reason": "extreme_dispersion",
+                        "cv": cv,
+                        "note": "Captures synergies and interactions",
+                    }
+                )
 
             selection_details["selected_method"] = method_name
             selection_details["cv"] = cv

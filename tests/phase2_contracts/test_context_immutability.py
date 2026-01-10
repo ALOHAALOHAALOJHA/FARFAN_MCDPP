@@ -3,6 +3,7 @@ Test CIC - Context Immutability Contract
 Verifies: QuestionContext is frozen, mutation raises FrozenInstanceError
 Immutable context enforcement guarantee
 """
+
 import pytest
 from pathlib import Path
 from dataclasses import dataclass, FrozenInstanceError
@@ -36,28 +37,20 @@ class TestContextImmutabilityContract:
             question_id="Q001",
             policy_area_id="PA01",
             dimension_id="DIM01",
-            dnp_standards=MappingProxyType(
-                {"standard_1": "value_1", "standard_2": "value_2"}
-            ),
+            dnp_standards=MappingProxyType({"standard_1": "value_1", "standard_2": "value_2"}),
         )
 
-    def test_cic_001_top_level_mutation_fails(
-        self, frozen_context: QuestionContext
-    ) -> None:
+    def test_cic_001_top_level_mutation_fails(self, frozen_context: QuestionContext) -> None:
         """CIC-001: Top-level attribute mutation raises FrozenInstanceError."""
         with pytest.raises(FrozenInstanceError):
             frozen_context.traceability_id = "MUTATED"  # type: ignore[misc]
 
-    def test_cic_002_deep_mutation_fails(
-        self, frozen_context: QuestionContext
-    ) -> None:
+    def test_cic_002_deep_mutation_fails(self, frozen_context: QuestionContext) -> None:
         """CIC-002: Deep mapping mutation raises TypeError."""
         with pytest.raises(TypeError):
             frozen_context.dnp_standards["__MUTATE__"] = 1  # type: ignore[index]
 
-    def test_cic_003_canonical_digest_stable(
-        self, frozen_context: QuestionContext
-    ) -> None:
+    def test_cic_003_canonical_digest_stable(self, frozen_context: QuestionContext) -> None:
         """CIC-003: Canonical digest is deterministic."""
         digest1 = ContextImmutabilityContract.canonical_digest(frozen_context)
         digest2 = ContextImmutabilityContract.canonical_digest(frozen_context)

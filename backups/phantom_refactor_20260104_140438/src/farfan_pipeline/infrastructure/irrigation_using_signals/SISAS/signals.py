@@ -32,18 +32,22 @@ if TYPE_CHECKING:
 
 class ChunkProtocol(Protocol):
     """Protocol for chunk objects with chunk_id."""
+
     @property
     def chunk_id(self) -> str:
         """Get the chunk identifier."""
         ...
 
+
 # Optional dependency - blake3
 try:
     import blake3
+
     BLAKE3_AVAILABLE = True
 except ImportError:
     BLAKE3_AVAILABLE = False
     import hashlib
+
     # Fallback to hashlib if blake3 not available
     class blake3:  # type: ignore
         @staticmethod
@@ -51,16 +55,22 @@ except ImportError:
             class HashResult:
                 def __init__(self, data: bytes) -> None:
                     self._hash = hashlib.sha256(data)
+
                 def hexdigest(self) -> str:
                     return self._hash.hexdigest()
+
             return HashResult(data)
+
+
 # Optional dependency - structlog
 try:
     import structlog
+
     STRUCTLOG_AVAILABLE = True
 except ImportError:
     STRUCTLOG_AVAILABLE = False
     import logging
+
     structlog = logging  # type: ignore  # Fallback to standard logging
 from pydantic import BaseModel, Field, field_validator
 
@@ -72,18 +82,24 @@ try:
         stop_after_attempt,
         wait_exponential,
     )
+
     TENACITY_AVAILABLE = True
 except ImportError:
     TENACITY_AVAILABLE = False
+
     # Dummy decorator when tenacity not available
     def retry(*args, **kwargs):  # type: ignore
         def decorator(func):
             return func
+
         return decorator
+
     def stop_after_attempt(x) -> None:
         return None  # type: ignore
+
     def wait_exponential(**kwargs) -> None:
         return None  # type: ignore
+
     def retry_if_exception_type(x) -> None:
         return None  # type: ignore
 
@@ -92,10 +108,22 @@ logger = structlog.get_logger(__name__) if STRUCTLOG_AVAILABLE else logging.getL
 
 
 PolicyArea = Literal[
-    "PA01", "PA02", "PA03", "PA04", "PA05",
-    "PA06", "PA07", "PA08", "PA09", "PA10",
+    "PA01",
+    "PA02",
+    "PA03",
+    "PA04",
+    "PA05",
+    "PA06",
+    "PA07",
+    "PA08",
+    "PA09",
+    "PA10",
     # Legacy policy areas (kept for backward compatibility)
-    "fiscal", "salud", "ambiente", "energía", "transporte"
+    "fiscal",
+    "salud",
+    "ambiente",
+    "energía",
+    "transporte",
 ]
 
 
@@ -122,56 +150,37 @@ class SignalPack(BaseModel):
         metadata: Optional additional metadata
     """
 
-    version: str = Field(
-        description="Semantic version string (e.g., '1.0.0')"
-    )
-    policy_area: PolicyArea = Field(
-        description="Policy domain this pack targets"
-    )
+    version: str = Field(description="Semantic version string (e.g., '1.0.0')")
+    policy_area: PolicyArea = Field(description="Policy domain this pack targets")
     patterns: list[str] = Field(
-        default_factory=list,
-        description="Text patterns for narrative detection"
+        default_factory=list, description="Text patterns for narrative detection"
     )
     indicators: list[str] = Field(
-        default_factory=list,
-        description="Key performance indicators for scoring"
+        default_factory=list, description="Key performance indicators for scoring"
     )
     regex: list[str] = Field(
-        default_factory=list,
-        description="Regular expressions for structured extraction"
+        default_factory=list, description="Regular expressions for structured extraction"
     )
     verbs: list[str] = Field(
-        default_factory=list,
-        description="Action verbs for policy intent detection"
+        default_factory=list, description="Action verbs for policy intent detection"
     )
     entities: list[str] = Field(
-        default_factory=list,
-        description="Named entities relevant to policy area"
+        default_factory=list, description="Named entities relevant to policy area"
     )
     thresholds: dict[str, float] = Field(
-        default_factory=dict,
-        description="Named thresholds for scoring/filtering"
+        default_factory=dict, description="Named thresholds for scoring/filtering"
     )
     ttl_s: int = Field(
-        default=3600,
-        ge=0,
-        description="Time-to-live in seconds for cache management"
+        default=3600, ge=0, description="Time-to-live in seconds for cache management"
     )
-    source_fingerprint: str = Field(
-        default="",
-        description="BLAKE3 hash of source content"
-    )
+    source_fingerprint: str = Field(default="", description="BLAKE3 hash of source content")
     valid_from: str = Field(
         default_factory=lambda: datetime.now(timezone.utc).isoformat(),
-        description="ISO timestamp when signal becomes valid"
+        description="ISO timestamp when signal becomes valid",
     )
-    valid_to: str = Field(
-        default="",
-        description="ISO timestamp when signal expires"
-    )
+    valid_to: str = Field(default="", description="ISO timestamp when signal expires")
     metadata: dict[str, Any] = Field(
-        default_factory=dict,
-        description="Optional additional metadata"
+        default_factory=dict, description="Optional additional metadata"
     )
 
     model_config = {
@@ -197,9 +206,7 @@ class SignalPack(BaseModel):
         """Validate threshold values are in valid range."""
         for key, value in v.items():
             if not (0.0 <= value <= 1.0):
-                raise ValueError(
-                    f"Threshold '{key}' must be in range [0.0, 1.0], got {value}"
-                )
+                raise ValueError(f"Threshold '{key}' must be in range [0.0, 1.0], got {value}")
         return v
 
     def compute_hash(self) -> str:
@@ -215,7 +222,7 @@ class SignalPack(BaseModel):
         )
 
         # Sort keys for deterministic hashing
-        content_json = json.dumps(content_dict, sort_keys=True, separators=(',', ':'))
+        content_json = json.dumps(content_dict, sort_keys=True, separators=(",", ":"))
         return blake3.blake3(content_json.encode("utf-8")).hexdigest()
 
     @staticmethod
@@ -281,6 +288,7 @@ class SignalPack(BaseModel):
 @dataclass
 class CacheEntry:
     """Entry in the signal registry cache."""
+
     signal_pack: SignalPack
     inserted_at: float
     access_count: int = 0
@@ -467,9 +475,7 @@ class SignalRegistry:
         self._chunk_cache.clear()
         logger.info("signal_registry_cleared")
 
-    def get_signals_for_chunk(
-        self, chunk: ChunkProtocol, required_types: set[str]
-    ) -> list[Signal]:
+    def get_signals_for_chunk(self, chunk: ChunkProtocol, required_types: set[str]) -> list[Signal]:
         """
         Get signals for a chunk with per-chunk caching.
 
@@ -494,7 +500,9 @@ class SignalRegistry:
             )
             return self._chunk_cache[chunk_id]
 
-        from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_resolution import Signal
+        from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_resolution import (
+            Signal,
+        )
 
         signals: list[Signal] = []
         for signal_type in required_types:
@@ -516,6 +524,7 @@ class SignalRegistry:
 
 class CircuitBreakerError(Exception):
     """Raised when circuit breaker is open."""
+
     pass
 
 
@@ -649,7 +658,7 @@ class SignalClient:
                 logger.warning(
                     "http_signals_disabled",
                     message="HTTP URL provided but enable_http_signals=False. "
-                            "Falling back to memory:// mode.",
+                    "Falling back to memory:// mode.",
                 )
                 self._transport = "memory"
                 self._memory_source = memory_source or InMemorySignalSource()
@@ -659,6 +668,7 @@ class SignalClient:
                 # Import httpx only when needed
                 try:
                     import httpx
+
                     self._httpx = httpx
                 except ImportError as e:
                     raise ImportError(
@@ -733,7 +743,8 @@ class SignalClient:
                 logger.warning(
                     "signal_client_circuit_open",
                     policy_area=policy_area,
-                    cooldown_remaining=self._circuit_breaker_cooldown_s - (now - self._last_failure_time),
+                    cooldown_remaining=self._circuit_breaker_cooldown_s
+                    - (now - self._last_failure_time),
                 )
                 raise CircuitBreakerError(
                     f"Circuit breaker is open. Cooldown remaining: "
@@ -746,16 +757,18 @@ class SignalClient:
                 self._failure_count = 0
 
                 # Record state change
-                self._state_changes.append({
-                    'timestamp': time.time(),
-                    'from_open': old_open,
-                    'to_open': self._circuit_open,
-                    'failures': self._failure_count,
-                })
+                self._state_changes.append(
+                    {
+                        "timestamp": time.time(),
+                        "from_open": old_open,
+                        "to_open": self._circuit_open,
+                        "failures": self._failure_count,
+                    }
+                )
 
                 # Trim history
                 if len(self._state_changes) > self._max_history:
-                    self._state_changes = self._state_changes[-self._max_history:]
+                    self._state_changes = self._state_changes[-self._max_history :]
 
                 logger.info("signal_client_circuit_closed")
 
@@ -883,16 +896,18 @@ class SignalClient:
 
         # Record state change if circuit opened
         if old_open != self._circuit_open:
-            self._state_changes.append({
-                'timestamp': time.time(),
-                'from_open': old_open,
-                'to_open': self._circuit_open,
-                'failures': self._failure_count,
-            })
+            self._state_changes.append(
+                {
+                    "timestamp": time.time(),
+                    "from_open": old_open,
+                    "to_open": self._circuit_open,
+                    "failures": self._failure_count,
+                }
+            )
 
             # Trim history
             if len(self._state_changes) > self._max_history:
-                self._state_changes = self._state_changes[-self._max_history:]
+                self._state_changes = self._state_changes[-self._max_history :]
 
             logger.warning(
                 "signal_client_circuit_opened",
@@ -973,9 +988,7 @@ class SignalUsageMetadata:
     policy_area: str
     hash: str
     keys_used: list[str]
-    timestamp_utc: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
+    timestamp_utc: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""

@@ -18,4 +18,3 @@ async def test_store_bootstraps_170_municipalities_and_16_regions() -> None:
         total_municipalities += len(municipalities)
 
     assert total_municipalities == 170
-

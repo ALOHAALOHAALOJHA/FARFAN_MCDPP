@@ -39,8 +39,10 @@ logger = structlog.get_logger(__name__)
 
 # === POLICY AREA DEFINITIONS ===
 
+
 class PolicyArea(Enum):
     """Policy areas supported by the signal extraction system."""
+
     FISCAL = "fiscal"
     SALUD = "salud"
     AMBIENTE = "ambiente"
@@ -52,6 +54,7 @@ class PolicyArea(Enum):
 
 
 # === SIGNAL EXTRACTION CONFIGURATION ===
+
 
 @dataclass
 class ExtractionConfig:
@@ -67,6 +70,7 @@ class ExtractionConfig:
         extract_patterns: Extract regex patterns
         extract_indicators: Extract KPI indicators
     """
+
     min_confidence: float = 0.65
     enable_nlp: bool = True
     enable_ml_entities: bool = True
@@ -78,6 +82,7 @@ class ExtractionConfig:
 
 
 # === EXTRACTION RESULT DATA MODELS ===
+
 
 @dataclass
 class ExtractedPattern:
@@ -91,6 +96,7 @@ class ExtractedPattern:
         source_location: Source in questionnaire
         extraction_method: How this was extracted
     """
+
     pattern_id: str
     text: str
     policy_area: PolicyArea
@@ -111,6 +117,7 @@ class ExtractedEntity:
         confidence: Extraction confidence [0, 1]
         frequency: How often this entity appears
     """
+
     entity_id: str
     text: str
     entity_type: str
@@ -131,6 +138,7 @@ class ExtractedIndicator:
         unit_of_measure: Unit (%, currency, count, etc.)
         confidence: Extraction confidence [0, 1]
     """
+
     indicator_id: str
     name: str
     description: str
@@ -155,6 +163,7 @@ class ExtractionResult:
         extraction_timestamp: When extraction was performed
         version: Extraction version
     """
+
     policy_area: PolicyArea
     patterns: List[str]
     entities: List[str]
@@ -168,6 +177,7 @@ class ExtractionResult:
 
 
 # === CORE EXTRACTION ENGINE ===
+
 
 class SOTASignalExtractor:
     """
@@ -224,11 +234,31 @@ class SOTASignalExtractor:
 
     # Common action verbs for policy documents
     ACTION_VERBS = [
-        "implementar", "fortalecer", "desarrollar", "mejorar", "promover",
-        "establecer", "crear", "construir", "expandir", "modernizar",
-        "reformar", "optimizar", "coordinar", "integrar", "regular",
-        "supervisar", "evaluar", "monitorear", "asegurar", "garantizar",
-        "facilitar", "impulsar", "fomentar", "incentivar", "apoyar",
+        "implementar",
+        "fortalecer",
+        "desarrollar",
+        "mejorar",
+        "promover",
+        "establecer",
+        "crear",
+        "construir",
+        "expandir",
+        "modernizar",
+        "reformar",
+        "optimizar",
+        "coordinar",
+        "integrar",
+        "regular",
+        "supervisar",
+        "evaluar",
+        "monitorear",
+        "asegurar",
+        "garantizar",
+        "facilitar",
+        "impulsar",
+        "fomentar",
+        "incentivar",
+        "apoyar",
     ]
 
     # Indicator patterns
@@ -272,6 +302,7 @@ class SOTASignalExtractor:
         if enable_spacy:
             try:
                 import spacy
+
                 self.nlp = spacy.load(spacy_model, disable=["parser", "ner"])
                 logger.info("spaCy loaded", model=spacy_model)
             except OSError:
@@ -372,9 +403,7 @@ class SOTASignalExtractor:
             ExtractionResult for the policy area
         """
         # Collect relevant text from questionnaire
-        relevant_texts = self._collect_relevant_texts(
-            policy_area, questionnaire_data
-        )
+        relevant_texts = self._collect_relevant_texts(policy_area, questionnaire_data)
 
         combined_text = " ".join(relevant_texts)
 
@@ -577,9 +606,7 @@ class SOTASignalExtractor:
 
         # Look for percentage patterns
         percentage_matches = re.findall(
-            r"\b\d+(?:\.\d+)?\s*%\b|\b\d+(?:\.\d+)?\s*por\s+ciento\b",
-            text,
-            re.IGNORECASE
+            r"\b\d+(?:\.\d+)?\s*%\b|\b\d+(?:\.\d+)?\s*por\s+ciento\b", text, re.IGNORECASE
         )
         for pm in percentage_matches:
             # Find context around the percentage
@@ -722,6 +749,7 @@ class SOTASignalExtractor:
 
 
 # === PUBLIC API ===
+
 
 def load_signals_from_monolith_sota(
     questionnaire_data: Dict[str, Any],

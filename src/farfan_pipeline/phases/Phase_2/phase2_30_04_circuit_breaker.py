@@ -36,6 +36,7 @@ T = TypeVar("T")
 
 class CircuitState(Enum):
     """States of the circuit breaker."""
+
     CLOSED = "closed"
     OPEN = "open"
     HALF_OPEN = "half_open"
@@ -57,6 +58,7 @@ class CircuitBreakerConfig:
         success_threshold: Successes in half-open to close (default: 3)
         half_open_max_calls: Max concurrent calls in half-open (default: 3)
     """
+
     failure_threshold: int = 5
     success_threshold: int = 3
     recovery_timeout_s: float = 60.0
@@ -78,6 +80,7 @@ class CircuitBreakerMetrics:
         rejected_calls: Calls rejected due to open circuit
         state_changes: Number of state transitions
     """
+
     total_calls: int = 0
     successful_calls: int = 0
     failed_calls: int = 0
@@ -93,11 +96,7 @@ class CircuitBreaker:
     blocking requests when failures exceed a threshold.
     """
 
-    def __init__(
-        self,
-        name: str,
-        config: CircuitBreakerConfig | None = None
-    ):
+    def __init__(self, name: str, config: CircuitBreakerConfig | None = None):
         """
         Initialize circuit breaker.
 
@@ -247,10 +246,7 @@ class PersistentCircuitBreaker(CircuitBreaker):
     """
 
     def __init__(
-        self,
-        name: str,
-        state_file: Path | str,
-        config: CircuitBreakerConfig | None = None
+        self, name: str, state_file: Path | str, config: CircuitBreakerConfig | None = None
     ):
         """
         Initialize persistent circuit breaker.
@@ -358,10 +354,7 @@ class CircuitBreakerRegistry:
         self._lock = threading.Lock()
 
     def get_or_create(
-        self,
-        name: str,
-        config: CircuitBreakerConfig | None = None,
-        persistent: bool = True
+        self, name: str, config: CircuitBreakerConfig | None = None, persistent: bool = True
     ) -> CircuitBreaker:
         """
         Get existing or create new circuit breaker.
@@ -393,10 +386,7 @@ class CircuitBreakerRegistry:
     def get_all_metrics(self) -> Dict[str, Dict[str, Any]]:
         """Get metrics for all circuit breakers."""
         with self._lock:
-            return {
-                name: breaker.get_metrics()
-                for name, breaker in self._breakers.items()
-            }
+            return {name: breaker.get_metrics() for name, breaker in self._breakers.items()}
 
     def reset_all(self) -> int:
         """
@@ -413,9 +403,9 @@ class CircuitBreakerRegistry:
 
 # === DECORATOR FOR CIRCUIT BREAKER PROTECTION ===
 
+
 def circuit_protected(
-    breaker: CircuitBreaker,
-    fallback: Optional[Callable[..., T]] = None
+    breaker: CircuitBreaker, fallback: Optional[Callable[..., T]] = None
 ) -> Callable[[Callable[..., T]], Callable[..., T]]:
     """
     Decorator to protect a function with a circuit breaker.
@@ -434,15 +424,14 @@ def circuit_protected(
         def call_external_service():
             ...
     """
+
     def decorator(func: Callable[..., T]) -> Callable[..., T]:
         def wrapper(*args: Any, **kwargs: Any) -> T:
             can_execute, reason = breaker.can_execute()
 
             if not can_execute:
                 if fallback:
-                    logger.warning(
-                        f"Circuit {breaker.name} open, using fallback: {reason}"
-                    )
+                    logger.warning(f"Circuit {breaker.name} open, using fallback: {reason}")
                     return fallback(*args, **kwargs)
                 raise RuntimeError(f"Circuit {breaker.name} open: {reason}")
 
@@ -455,6 +444,7 @@ def circuit_protected(
                 raise
 
         return wrapper
+
     return decorator
 
 

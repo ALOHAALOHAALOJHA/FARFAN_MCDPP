@@ -34,7 +34,7 @@ from .PHASE_6_CONSTANTS import (
     COHERENCE_THRESHOLD_LOW,
     COHERENCE_THRESHOLD_HIGH,
     DispersionScenario,
-    Phase6Invariants
+    Phase6Invariants,
 )
 
 __all__ = [
@@ -48,5 +48,5 @@ __all__ = [
     "COHERENCE_THRESHOLD_LOW",
     "COHERENCE_THRESHOLD_HIGH",
     "DispersionScenario",
-    "Phase6Invariants"
+    "Phase6Invariants",
 ]

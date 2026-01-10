@@ -96,7 +96,7 @@ class BatchProfile:
         pairs = 0
 
         for i, c1 in enumerate(self.contracts):
-            for c2 in self.contracts[i + 1:]:
+            for c2 in self.contracts[i + 1 :]:
                 total_similarity += c1.jaccard_similarity(c2)
                 pairs += 1
 
@@ -325,20 +325,14 @@ class SmartBatchOptimizer:
         for profile in sorted_cluster:
             # Check if adding this contract violates constraints
             would_exceed_size = len(current_batch) >= self.max_batch_size
-            would_exceed_time = (
-                current_time + profile.estimated_time_ms > self.max_batch_time_ms
-            )
+            would_exceed_time = current_time + profile.estimated_time_ms > self.max_batch_time_ms
             would_exceed_memory = (
                 current_memory + profile.estimated_memory_mb > self.max_batch_memory_mb
             )
 
-            if current_batch and (
-                would_exceed_size or would_exceed_time or would_exceed_memory
-            ):
+            if current_batch and (would_exceed_size or would_exceed_time or would_exceed_memory):
                 # Finalize current batch
-                shared_classes = set.intersection(
-                    *[p.method_classes for p in current_batch]
-                )
+                shared_classes = set.intersection(*[p.method_classes for p in current_batch])
 
                 batches.append(
                     BatchProfile(
@@ -362,9 +356,7 @@ class SmartBatchOptimizer:
 
         # Finalize last batch
         if current_batch:
-            shared_classes = set.intersection(
-                *[p.method_classes for p in current_batch]
-            )
+            shared_classes = set.intersection(*[p.method_classes for p in current_batch])
 
             batches.append(
                 BatchProfile(

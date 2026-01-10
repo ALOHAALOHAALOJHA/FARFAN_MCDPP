@@ -6,6 +6,7 @@ Every test should attempt to violate an invariant.
 
 Schema Version: 2.0.0
 """
+
 import pytest
 from datetime import datetime, timezone, timedelta
 from farfan_pipeline.infrastructure.calibration import (
@@ -30,22 +31,22 @@ class TestClosedIntervalAdversarial:
     def test_nan_lower_MUST_RAISE(self) -> None:
         """ADVERSARIAL: NaN bounds are invalid."""
         with pytest.raises(ValidationError, match="cannot be NaN"):
-            ClosedInterval(lower=float('nan'), upper=1.0)
+            ClosedInterval(lower=float("nan"), upper=1.0)
 
     def test_nan_upper_MUST_RAISE(self) -> None:
         """ADVERSARIAL: NaN bounds are invalid."""
         with pytest.raises(ValidationError, match="cannot be NaN"):
-            ClosedInterval(lower=0.0, upper=float('nan'))
+            ClosedInterval(lower=0.0, upper=float("nan"))
 
     def test_inf_lower_MUST_RAISE(self) -> None:
         """ADVERSARIAL: Infinite bounds are invalid."""
         with pytest.raises(ValidationError, match="must be finite"):
-            ClosedInterval(lower=float('-inf'), upper=1.0)
+            ClosedInterval(lower=float("-inf"), upper=1.0)
 
     def test_inf_upper_MUST_RAISE(self) -> None:
         """ADVERSARIAL: Infinite bounds are invalid."""
         with pytest.raises(ValidationError, match="must be finite"):
-            ClosedInterval(lower=0.0, upper=float('inf'))
+            ClosedInterval(lower=0.0, upper=float("inf"))
 
 
 class TestEvidenceReferenceAdversarial:
@@ -54,38 +55,22 @@ class TestEvidenceReferenceAdversarial:
     def test_invalid_prefix_MUST_RAISE(self) -> None:
         """ADVERSARIAL: Path must start with allowed prefix."""
         with pytest.raises(ValidationError, match="must start with one of"):
-            EvidenceReference(
-                path="/etc/passwd",
-                commit_sha="a" * 40,
-                description="Test"
-            )
+            EvidenceReference(path="/etc/passwd", commit_sha="a" * 40, description="Test")
 
     def test_invalid_commit_sha_too_short_MUST_RAISE(self) -> None:
         """ADVERSARIAL: Commit SHA must be 40 characters."""
         with pytest.raises(ValidationError, match="must be 40-character"):
-            EvidenceReference(
-                path="src/test.py",
-                commit_sha="abc123",
-                description="Test"
-            )
+            EvidenceReference(path="src/test.py", commit_sha="abc123", description="Test")
 
     def test_invalid_commit_sha_uppercase_MUST_RAISE(self) -> None:
         """ADVERSARIAL: Commit SHA must be lowercase hex."""
         with pytest.raises(ValidationError, match="must be 40-character"):
-            EvidenceReference(
-                path="src/test.py",
-                commit_sha="A" * 40,
-                description="Test"
-            )
+            EvidenceReference(path="src/test.py", commit_sha="A" * 40, description="Test")
 
     def test_empty_description_MUST_RAISE(self) -> None:
         """ADVERSARIAL: Description cannot be empty."""
         with pytest.raises(ValidationError, match="description cannot be empty"):
-            EvidenceReference(
-                path="src/test.py",
-                commit_sha="a" * 40,
-                description=""
-            )
+            EvidenceReference(path="src/test.py", commit_sha="a" * 40, description="")
 
 
 class TestCalibrationParameterAdversarial:
@@ -100,7 +85,7 @@ class TestCalibrationParameterAdversarial:
         return EvidenceReference(
             path="src/farfan_pipeline/infrastructure/calibration/calibration_core.py",
             commit_sha="a" * 40,
-            description="Test evidence"
+            description="Test evidence",
         )
 
     def test_value_outside_bounds_MUST_RAISE(
@@ -233,7 +218,7 @@ class TestCalibrationLayerImmutability:
         evidence = EvidenceReference(
             path="src/farfan_pipeline/infrastructure/calibration/calibration_core.py",
             commit_sha="a" * 40,
-            description="Test"
+            description="Test",
         )
         now = datetime.now(timezone.utc)
         return CalibrationParameter(

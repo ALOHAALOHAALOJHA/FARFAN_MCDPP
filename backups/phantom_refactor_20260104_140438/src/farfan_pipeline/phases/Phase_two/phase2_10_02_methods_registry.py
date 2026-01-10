@@ -12,6 +12,7 @@ License: Proprietary
 This module is part of Phase 2: Analysis & Question Execution.
 All files in Phase_two/ must contain PHASE_LABEL: Phase 2.
 """
+
 from __future__ import annotations
 
 import json
@@ -52,18 +53,18 @@ class MethodRegistryError(RuntimeError):
 @dataclass
 class CacheEntry:
     """Cache entry with TTL tracking."""
-    
+
     instance: Any
     created_at: float
     last_accessed: float
     access_count: int = 0
-    
+
     def is_expired(self, ttl_seconds: float) -> bool:
         """Check if entry has exceeded TTL."""
         if ttl_seconds <= 0:
             return False
         return (time.time() - self.last_accessed) > ttl_seconds
-    
+
     def touch(self) -> None:
         """Update access timestamp and counter."""
         self.last_accessed = time.time()
@@ -72,7 +73,7 @@ class CacheEntry:
 
 class MethodRegistry:
     """Registry for lazy method injection without full class instantiation.
-    
+
     Features memory management with TTL-based eviction and weakref support.
     """
 
@@ -96,6 +97,7 @@ class MethodRegistry:
         # Import class paths from existing registry
         if class_paths is None:
             from orchestration.class_registry import get_class_paths
+
             class_paths = dict(get_class_paths())
 
         self._class_paths = class_paths
@@ -110,7 +112,7 @@ class MethodRegistry:
 
         # Special instantiation rules (from original MethodExecutor)
         self._special_instantiation: dict[str, Callable[[type], Any]] = {}
-        
+
         # Metrics
         self._cache_hits = 0
         self._cache_misses = 0
@@ -170,26 +172,20 @@ class MethodRegistry:
             MethodRegistryError: If class cannot be loaded
         """
         if class_name not in self._class_paths:
-            raise MethodRegistryError(
-                f"Class '{class_name}' not found in registry paths"
-            )
+            raise MethodRegistryError(f"Class '{class_name}' not found in registry paths")
 
         path = self._class_paths[class_name]
         module_name, _, attr_name = path.rpartition(".")
 
         if not module_name:
-            raise MethodRegistryError(
-                f"Invalid path for '{class_name}': {path}"
-            )
+            raise MethodRegistryError(f"Invalid path for '{class_name}': {path}")
 
         try:
             module = import_module(module_name)
             cls = getattr(module, attr_name)
 
             if not isinstance(cls, type):
-                raise MethodRegistryError(
-                    f"'{class_name}' is not a class: {type(cls).__name__}"
-                )
+                raise MethodRegistryError(f"'{class_name}' is not a class: {type(cls).__name__}")
 
             return cls
 
@@ -257,9 +253,7 @@ class MethodRegistry:
         """
         # Check if already failed
         if class_name in self._failed_classes:
-            raise MethodRegistryError(
-                f"Class '{class_name}' previously failed to instantiate"
-            )
+            raise MethodRegistryError(f"Class '{class_name}' previously failed to instantiate")
 
         # Use a lock to ensure thread-safe instantiation
         with self._lock:
@@ -276,7 +270,7 @@ class MethodRegistry:
                 else:
                     # Weakref was garbage collected
                     del self._weakref_cache[class_name]
-            
+
             # Check regular cache and evict if expired
             if class_name in self._cache:
                 entry = self._cache[class_name]
@@ -296,7 +290,7 @@ class MethodRegistry:
 
             # Cache miss - need to instantiate
             self._cache_misses += 1
-            
+
             # Evict oldest entries if cache is full
             self._evict_if_full()
 
@@ -305,7 +299,7 @@ class MethodRegistry:
                 cls = self._load_class(class_name)
                 instance = self._instantiate_class(class_name, cls)
                 self._total_instantiations += 1
-                
+
                 # Store in appropriate cache
                 if self._enable_weakref:
                     self._weakref_cache[class_name] = weakref.ref(instance)
@@ -325,25 +319,25 @@ class MethodRegistry:
                         "class_instantiated_cached",
                         class_name=class_name,
                     )
-                
+
                 return instance
 
             except MethodRegistryError:
                 # Mark as failed to avoid repeated attempts
                 self._failed_classes.add(class_name)
                 raise
-    
+
     def _evict_if_full(self) -> None:
         """Evict oldest cache entries if cache size exceeds maximum."""
         if len(self._cache) <= self._max_cache_size:
             return
-        
+
         # Sort by last accessed time and evict oldest
         sorted_entries = sorted(
             self._cache.items(),
             key=lambda x: x[1].last_accessed,
         )
-        
+
         evict_count = len(self._cache) - self._max_cache_size
         for class_name, entry in sorted_entries[:evict_count]:
             logger.info(
@@ -390,9 +384,7 @@ class MethodRegistry:
             method = getattr(instance, method_name)
 
             if not callable(method):
-                raise MethodRegistryError(
-                    f"'{class_name}.{method_name}' is not callable"
-                )
+                raise MethodRegistryError(f"'{class_name}.{method_name}' is not callable")
 
             logger.debug(
                 "method_retrieved_from_instance",
@@ -436,19 +428,19 @@ class MethodRegistry:
         # Otherwise, assume it exists (lazy check)
         # Full validation happens on first get_method() call
         return True
-    
+
     def clear_cache(self) -> dict[str, Any]:
         """Clear all cached instances.
-        
+
         This should be called between pipeline runs to prevent memory bloat.
-        
+
         Returns:
             Statistics about cleared cache entries.
         """
         with self._lock:
             cache_size = len(self._cache)
             weakref_size = len(self._weakref_cache)
-            
+
             stats = {
                 "entries_cleared": cache_size,
                 "weakrefs_cleared": weakref_size,
@@ -457,21 +449,21 @@ class MethodRegistry:
                 "total_evictions": self._evictions,
                 "total_instantiations": self._total_instantiations,
             }
-            
+
             # Clear caches
             self._cache.clear()
             self._weakref_cache.clear()
-            
+
             logger.info(
                 "cache_cleared",
                 **stats,
             )
-            
+
             return stats
-    
+
     def evict_expired(self) -> int:
         """Manually evict expired entries.
-        
+
         Returns:
             Number of entries evicted.
         """
@@ -480,7 +472,7 @@ class MethodRegistry:
             for class_name, entry in self._cache.items():
                 if entry.is_expired(self._cache_ttl_seconds):
                     expired.append(class_name)
-            
+
             for class_name in expired:
                 entry = self._cache[class_name]
                 logger.info(
@@ -491,7 +483,7 @@ class MethodRegistry:
                 )
                 del self._cache[class_name]
                 self._evictions += 1
-            
+
             return len(expired)
 
     def get_stats(self) -> dict[str, Any]:
@@ -503,18 +495,20 @@ class MethodRegistry:
         with self._lock:
             cache_entries = []
             for class_name, entry in self._cache.items():
-                cache_entries.append({
-                    "class_name": class_name,
-                    "age_seconds": time.time() - entry.created_at,
-                    "last_accessed_seconds_ago": time.time() - entry.last_accessed,
-                    "access_count": entry.access_count,
-                })
-            
+                cache_entries.append(
+                    {
+                        "class_name": class_name,
+                        "age_seconds": time.time() - entry.created_at,
+                        "last_accessed_seconds_ago": time.time() - entry.last_accessed,
+                        "access_count": entry.access_count,
+                    }
+                )
+
             hit_rate = 0.0
             total_accesses = self._cache_hits + self._cache_misses
             if total_accesses > 0:
                 hit_rate = self._cache_hits / total_accesses
-            
+
             return {
                 "total_classes_registered": len(self._class_paths),
                 "cached_instances": len(self._cache),
@@ -569,6 +563,7 @@ def setup_default_instantiation_rules(registry: MethodRegistry) -> None:
     def instantiate_policy_processor(cls: type) -> Any:
         try:
             from farfan_pipeline.processing.policy_processor import ProcessorConfig
+
             return cls(ProcessorConfig())
         except ImportError as exc:
             raise MethodRegistryError(
@@ -580,10 +575,10 @@ def setup_default_instantiation_rules(registry: MethodRegistry) -> None:
 
 def load_canonical_methods_inventory() -> list[dict[str, Any]]:
     """Load the canonical methods inventory from JSON.
-    
+
     Returns:
         List of base question entries with canonical methods.
-        
+
     Raises:
         FileNotFoundError: If canonical inventory file not found.
     """
@@ -591,18 +586,18 @@ def load_canonical_methods_inventory() -> list[dict[str, Any]]:
         raise FileNotFoundError(
             f"Canonical methods inventory not found: {_CANONICAL_INVENTORY_PATH}"
         )
-    
+
     with open(_CANONICAL_INVENTORY_PATH) as f:
         return json.load(f)
 
 
 def inject_canonical_methods(registry: MethodRegistry) -> dict[str, Any]:
     """Inject all canonical methods directly into registry.
-    
+
     This is the DEFAULT operation for executor methods - bypasses class
     instantiation entirely by importing methods as unbound functions and
     wrapping them to handle 'self' parameter.
-    
+
     The injection flow:
     1. Load canonical_methods_triangulated.json
     2. For each (class, method) pair:
@@ -612,10 +607,10 @@ def inject_canonical_methods(registry: MethodRegistry) -> dict[str, Any]:
        d. Inject wrapper into registry._direct_methods
     3. When get_method() is called, wrapper is returned (no class instantiation)
     4. When wrapper is called, it instantiates class ONCE and caches it
-    
+
     Args:
         registry: MethodRegistry to populate with canonical methods.
-        
+
     Returns:
         Statistics about injection results.
     """
@@ -626,17 +621,17 @@ def inject_canonical_methods(registry: MethodRegistry) -> dict[str, Any]:
         "failures": [],
         "classes_loaded": set(),
     }
-    
+
     try:
         inventory = load_canonical_methods_inventory()
     except FileNotFoundError as e:
         logger.error("canonical_inventory_not_found error=%s", e)
         return {"error": str(e), **stats}
-    
+
     # Cache for class instances (lazy instantiation on first method call)
     class_instances: dict[str, Any] = {}
     class_types: dict[str, type] = {}
-    
+
     # Collect unique (class, method, mother_file) tuples
     unique_methods: dict[tuple[str, str], str] = {}
     for entry in inventory:
@@ -644,17 +639,17 @@ def inject_canonical_methods(registry: MethodRegistry) -> dict[str, Any]:
             key = (m["class"], m["method"])
             if key not in unique_methods:
                 unique_methods[key] = m["mother_file"]
-    
+
     stats["total_methods"] = len(unique_methods)
     logger.info("canonical_injection_start total_methods=%d", len(unique_methods))
-    
+
     for (class_name, method_name), mother_file in unique_methods.items():
         try:
             # Get module path from mother file
             module_path = _MOTHER_FILE_TO_MODULE.get(mother_file)
             if not module_path:
                 raise ValueError(f"Unknown mother file: {mother_file}")
-            
+
             # Load class type if not cached
             if class_name not in class_types:
                 module = import_module(module_path)
@@ -663,22 +658,25 @@ def inject_canonical_methods(registry: MethodRegistry) -> dict[str, Any]:
                     raise TypeError(f"{class_name} is not a class")
                 class_types[class_name] = cls
                 stats["classes_loaded"].add(class_name)
-            
+
             cls = class_types[class_name]
-            
+
             # Verify method exists on class
             if not hasattr(cls, method_name):
                 raise AttributeError(f"Method {method_name} not found on {class_name}")
-            
+
             # Create lazy wrapper that instantiates class on first call
             def create_wrapper(cls_name: str, meth_name: str, cls_type: type) -> Callable:
                 """Create wrapper with closure over class info."""
+
                 def wrapper(*args: Any, **kwargs: Any) -> Any:
                     # Lazy instantiation
                     if cls_name not in class_instances:
                         # Use special instantiation if available
                         if cls_name in registry._special_instantiation:
-                            class_instances[cls_name] = registry._special_instantiation[cls_name](cls_type)
+                            class_instances[cls_name] = registry._special_instantiation[cls_name](
+                                cls_type
+                            )
                         else:
                             try:
                                 class_instances[cls_name] = cls_type()
@@ -686,42 +684,46 @@ def inject_canonical_methods(registry: MethodRegistry) -> dict[str, Any]:
                                 # Class requires arguments - try common patterns
                                 class_instances[cls_name] = cls_type.__new__(cls_type)
                         logger.debug("lazy_class_instantiated class=%s", cls_name)
-                    
+
                     instance = class_instances[cls_name]
                     method = getattr(instance, meth_name)
                     return method(*args, **kwargs)
-                
+
                 wrapper.__name__ = f"{cls_name}.{meth_name}"
                 wrapper.__qualname__ = f"{cls_name}.{meth_name}"
                 return wrapper
-            
+
             wrapped_method = create_wrapper(class_name, method_name, cls)
-            
+
             # Inject into registry
             registry.inject_method(class_name, method_name, wrapped_method)
             stats["injected"] += 1
-            
+
         except Exception as e:
             stats["failed"] += 1
-            stats["failures"].append({
-                "class": class_name,
-                "method": method_name,
-                "error": str(e),
-            })
+            stats["failures"].append(
+                {
+                    "class": class_name,
+                    "method": method_name,
+                    "error": str(e),
+                }
+            )
             logger.warning(
                 "canonical_method_injection_failed class=%s method=%s error=%s",
-                class_name, method_name, e
+                class_name,
+                method_name,
+                e,
             )
-    
+
     stats["classes_loaded"] = list(stats["classes_loaded"])
-    
+
     logger.info(
         "canonical_injection_complete injected=%d failed=%d classes=%d",
         stats["injected"],
         stats["failed"],
         len(stats["classes_loaded"]),
     )
-    
+
     return stats
 
 
@@ -730,14 +732,14 @@ def setup_registry_with_canonical_methods(
     cache_ttl_seconds: float = 300.0,
 ) -> tuple[MethodRegistry, dict[str, Any]]:
     """Create and configure MethodRegistry with canonical methods pre-injected.
-    
+
     This is the RECOMMENDED way to create a MethodRegistry for executor use.
     All canonical methods are injected directly, bypassing class instantiation.
-    
+
     Args:
         class_paths: Optional class paths (uses default if None).
         cache_ttl_seconds: Cache TTL for fallback instantiation.
-        
+
     Returns:
         Tuple of (configured MethodRegistry, injection statistics).
     """
@@ -745,13 +747,13 @@ def setup_registry_with_canonical_methods(
         class_paths=class_paths,
         cache_ttl_seconds=cache_ttl_seconds,
     )
-    
+
     # Setup special instantiation rules first (used by lazy wrappers)
     setup_default_instantiation_rules(registry)
-    
+
     # Inject all canonical methods
     stats = inject_canonical_methods(registry)
-    
+
     return registry, stats
 
 

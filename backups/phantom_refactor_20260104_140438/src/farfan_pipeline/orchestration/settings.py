@@ -18,6 +18,7 @@ ENV_FILE: Final[Path] = REPO_ROOT / ".env"
 if ENV_FILE.exists():
     load_dotenv(ENV_FILE)
 
+
 def _get_int(key: str, default: int) -> int:
     """Safely get an integer from environment variables."""
     value = os.getenv(key)
@@ -28,9 +29,11 @@ def _get_int(key: str, default: int) -> int:
     except (ValueError, TypeError):
         return default
 
+
 def _get_bool(key: str, default: str) -> bool:
     """Safely get a boolean from environment variables."""
     return os.getenv(key, default).lower() == "true"
+
 
 class Settings:
     """Application settings loaded from environment variables."""
@@ -75,6 +78,7 @@ class Settings:
     ENABLE_CACHING: bool = _get_bool("ENABLE_CACHING", "true")
     ENABLE_MONITORING: bool = _get_bool("ENABLE_MONITORING", "false")
     ENABLE_RATE_LIMITING: bool = _get_bool("ENABLE_RATE_LIMITING", "true")
+
 
 # Global settings instance
 settings = Settings()

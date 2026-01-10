@@ -24,10 +24,12 @@ from typing import Any, Callable, Dict, List, Optional
 
 try:
     import structlog
+
     logger = structlog.get_logger(__name__)
     STRUCTLOG_AVAILABLE = True
 except ImportError:
     import logging
+
     logger = logging.getLogger(__name__)
     STRUCTLOG_AVAILABLE = False
 
@@ -49,6 +51,7 @@ class QuestionSpec:
     - Method sets for analysis
     - Expected elements for verification
     """
+
     question_id: str  # e.g., "Q001"
     policy_area: str  # e.g., "PA01"
     dimension: str  # e.g., "DIM01"
@@ -83,6 +86,7 @@ class QuestionnaireMap:
     - Method invocation utilities
     - Expected elements verification
     """
+
     questions_by_id: Dict[str, QuestionSpec] = field(default_factory=dict)
     questions_by_pa_dim: Dict[tuple[str, str], List[QuestionSpec]] = field(default_factory=dict)
 
@@ -130,20 +134,20 @@ def load_questionnaire_map(questionnaire_path: Path) -> QuestionnaireMap:
     qmap = QuestionnaireMap()
 
     # Extract micro questions (300 questions)
-    micro_questions = data.get('blocks', {}).get('micro_questions', [])
+    micro_questions = data.get("blocks", {}).get("micro_questions", [])
 
     if not micro_questions:
         logger.warning("No micro_questions found in questionnaire")
         return qmap
 
     # Extract canonical notation for PA and DIM mappings
-    canonical = data.get('canonical_notation', {})
-    policy_areas = canonical.get('policy_areas', {})
-    dimensions = canonical.get('dimensions', {})
+    canonical = data.get("canonical_notation", {})
+    policy_areas = canonical.get("policy_areas", {})
+    dimensions = canonical.get("dimensions", {})
 
     # Process each question
     for q_data in micro_questions:
-        question_id = q_data.get('question_id', '')
+        question_id = q_data.get("question_id", "")
         if not question_id:
             continue
 
@@ -155,7 +159,9 @@ def load_questionnaire_map(questionnaire_path: Path) -> QuestionnaireMap:
         try:
             q_num = int(question_id[1:])  # Remove 'Q' prefix
             pa_idx = (q_num - 1) // (NUM_DIMENSIONS * QUESTIONS_PER_DIMENSION)
-            dim_idx = ((q_num - 1) % (NUM_DIMENSIONS * QUESTIONS_PER_DIMENSION)) // QUESTIONS_PER_DIMENSION
+            dim_idx = (
+                (q_num - 1) % (NUM_DIMENSIONS * QUESTIONS_PER_DIMENSION)
+            ) // QUESTIONS_PER_DIMENSION
             slot = ((q_num - 1) % QUESTIONS_PER_DIMENSION) + 1
 
             policy_area = f"PA{pa_idx + 1:02d}"
@@ -170,13 +176,13 @@ def load_questionnaire_map(questionnaire_path: Path) -> QuestionnaireMap:
             policy_area=policy_area,
             dimension=dimension,
             slot=slot,
-            text=q_data.get('text', ''),
-            question_type=q_data.get('type', ''),
-            scoring_modality=q_data.get('scoring_modality', ''),
-            patterns=q_data.get('patterns', []),
-            method_sets=q_data.get('method_sets', []),
-            expected_elements=q_data.get('expected_elements', []),
-            failure_contract=q_data.get('failure_contract', {})
+            text=q_data.get("text", ""),
+            question_type=q_data.get("type", ""),
+            scoring_modality=q_data.get("scoring_modality", ""),
+            patterns=q_data.get("patterns", []),
+            method_sets=q_data.get("method_sets", []),
+            expected_elements=q_data.get("expected_elements", []),
+            failure_contract=q_data.get("failure_contract", {}),
         )
 
         # Add to mappings
@@ -194,9 +200,7 @@ def load_questionnaire_map(questionnaire_path: Path) -> QuestionnaireMap:
 
     # Verify we have exactly 300 questions
     if len(qmap.questions_by_id) != TOTAL_QUESTIONS:
-        logger.warning(
-            f"Expected {TOTAL_QUESTIONS} questions, got {len(qmap.questions_by_id)}"
-        )
+        logger.warning(f"Expected {TOTAL_QUESTIONS} questions, got {len(qmap.questions_by_id)}")
 
     return qmap
 
@@ -205,7 +209,7 @@ def invoke_method_set(
     chunk_text: str,
     question_spec: QuestionSpec,
     method_registry: Any,
-    method_filter: Optional[Callable[[Dict[str, Any]], bool]] = None
+    method_filter: Optional[Callable[[Dict[str, Any]], bool]] = None,
 ) -> Dict[str, Any]:
     """
     Invoke all method sets defined for a question.
@@ -233,10 +237,10 @@ def invoke_method_set(
     )
 
     for method_spec in question_spec.method_sets:
-        class_name = method_spec.get('class')
-        function_name = method_spec.get('function')
-        priority = method_spec.get('priority', 0)
-        method_type = method_spec.get('method_type', 'analysis')
+        class_name = method_spec.get("class")
+        function_name = method_spec.get("function")
+        priority = method_spec.get("priority", 0)
+        method_type = method_spec.get("method_type", "analysis")
 
         # Apply filter if provided
         if method_filter and not method_filter(method_spec):
@@ -262,23 +266,21 @@ def invoke_method_set(
             # Store result
             key = f"{class_name}.{function_name}"
             results[key] = {
-                'result': result,
-                'priority': priority,
-                'method_type': method_type,
-                'success': True
+                "result": result,
+                "priority": priority,
+                "method_type": method_type,
+                "success": True,
             }
 
         except Exception as e:
-            logger.error(
-                f"Method invocation failed for {class_name}.{function_name}: {e}"
-            )
+            logger.error(f"Method invocation failed for {class_name}.{function_name}: {e}")
             key = f"{class_name}.{function_name}"
             results[key] = {
-                'result': None,
-                'priority': priority,
-                'method_type': method_type,
-                'success': False,
-                'error': str(e)
+                "result": None,
+                "priority": priority,
+                "method_type": method_type,
+                "success": False,
+                "error": str(e),
             }
 
     logger.info(
@@ -288,10 +290,7 @@ def invoke_method_set(
     return results
 
 
-def verify_expected_elements(
-    chunk_text: str,
-    question_spec: QuestionSpec
-) -> Dict[str, bool]:
+def verify_expected_elements(chunk_text: str, question_spec: QuestionSpec) -> Dict[str, bool]:
     """
     Verify expected elements for a question.
 
@@ -316,8 +315,8 @@ def verify_expected_elements(
     )
 
     for element_spec in question_spec.expected_elements:
-        element_type = element_spec.get('type', 'unknown')
-        required = element_spec.get('required', False)
+        element_type = element_spec.get("type", "unknown")
+        required = element_spec.get("required", False)
 
         # Check if element is present in chunk text
         # This is a simplified check - more sophisticated verification
@@ -325,23 +324,20 @@ def verify_expected_elements(
         text_lower = chunk_text.lower()
 
         # Pattern-based verification
-        pattern = element_spec.get('pattern', '')
+        pattern = element_spec.get("pattern", "")
         if pattern:
             import re
+
             match = re.search(pattern, chunk_text, re.IGNORECASE)
             verification[element_type] = match is not None
         else:
             # Keyword-based verification (fallback)
-            keywords = element_spec.get('keywords', [])
+            keywords = element_spec.get("keywords", [])
             if keywords:
-                verification[element_type] = any(
-                    kw.lower() in text_lower for kw in keywords
-                )
+                verification[element_type] = any(kw.lower() in text_lower for kw in keywords)
             else:
                 # If no pattern or keywords, check based on type
-                verification[element_type] = _verify_element_by_type(
-                    element_type, chunk_text
-                )
+                verification[element_type] = _verify_element_by_type(element_type, chunk_text)
 
         # Log verification result
         status = "✓" if verification.get(element_type, False) else "✗"
@@ -349,13 +345,9 @@ def verify_expected_elements(
         logger.debug(f"  {status} {element_type}{required_flag}")
 
     # Check if all required elements are present
-    required_elements = [
-        e for e in question_spec.expected_elements
-        if e.get('required', False)
-    ]
+    required_elements = [e for e in question_spec.expected_elements if e.get("required", False)]
     all_required_present = all(
-        verification.get(e.get('type', ''), False)
-        for e in required_elements
+        verification.get(e.get("type", ""), False) for e in required_elements
     )
 
     logger.info(
@@ -376,24 +368,22 @@ def _verify_element_by_type(element_type: str, text: str) -> bool:
     text_lower = text.lower()
 
     # Type-specific heuristics
-    if 'diagnostico' in element_type or 'diagnosis' in element_type:
-        return any(term in text_lower for term in ['diagnóstico', 'diagnóstico', 'análisis de situación'])
-    elif 'dato' in element_type or 'data' in element_type:
-        return any(term in text_lower for term in ['dato', 'estadística', '%', 'tasa'])
-    elif 'meta' in element_type or 'objetivo' in element_type:
-        return any(term in text_lower for term in ['meta', 'objetivo', 'indicador'])
-    elif 'presupuesto' in element_type or 'financiero' in element_type:
-        return any(term in text_lower for term in ['presupuesto', 'financiero', 'inversión', '$'])
+    if "diagnostico" in element_type or "diagnosis" in element_type:
+        return any(
+            term in text_lower for term in ["diagnóstico", "diagnóstico", "análisis de situación"]
+        )
+    elif "dato" in element_type or "data" in element_type:
+        return any(term in text_lower for term in ["dato", "estadística", "%", "tasa"])
+    elif "meta" in element_type or "objetivo" in element_type:
+        return any(term in text_lower for term in ["meta", "objetivo", "indicador"])
+    elif "presupuesto" in element_type or "financiero" in element_type:
+        return any(term in text_lower for term in ["presupuesto", "financiero", "inversión", "$"])
     else:
         # Generic check: element type appears in text
         return element_type.lower() in text_lower
 
 
-def create_chunk_id_for_question(
-    policy_area: str,
-    dimension: str,
-    slot: int
-) -> str:
+def create_chunk_id_for_question(policy_area: str, dimension: str, slot: int) -> str:
     """
     Create a chunk ID for a specific question.
 
@@ -416,7 +406,9 @@ def parse_question_id(question_id: str) -> tuple[str, str, int]:
     try:
         q_num = int(question_id[1:])  # Remove 'Q' prefix
         pa_idx = (q_num - 1) // (NUM_DIMENSIONS * QUESTIONS_PER_DIMENSION)
-        dim_idx = ((q_num - 1) % (NUM_DIMENSIONS * QUESTIONS_PER_DIMENSION)) // QUESTIONS_PER_DIMENSION
+        dim_idx = (
+            (q_num - 1) % (NUM_DIMENSIONS * QUESTIONS_PER_DIMENSION)
+        ) // QUESTIONS_PER_DIMENSION
         slot = ((q_num - 1) % QUESTIONS_PER_DIMENSION) + 1
 
         return (f"PA{pa_idx + 1:02d}", f"DIM{dim_idx + 1:02d}", slot)

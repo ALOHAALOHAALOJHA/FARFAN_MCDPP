@@ -9,6 +9,7 @@ Effective-Date: 2026-01-05
 This module provides type definitions used throughout Phase 8 for type safety
 and documentation purposes.
 """
+
 from __future__ import annotations
 
 from typing import Any, TypedDict, NewType, Literal
@@ -64,9 +65,10 @@ VerificationFormat = Literal["PDF", "DATABASE_QUERY", "JSON", "XML"]
 class AnalysisResultsInput(TypedDict, total=True):
     """
     P8-IN-001: Analysis results from Phase 7.
-    
+
     Contains aggregated scoring results at all three levels.
     """
+
     micro_scores: dict[str, float]  # PA##-DIM## -> score (0.0-3.0)
     cluster_data: dict[str, "ClusterDataEntry"]
     macro_data: "MacroDataEntry"
@@ -74,6 +76,7 @@ class AnalysisResultsInput(TypedDict, total=True):
 
 class ClusterDataEntry(TypedDict, total=False):
     """Entry for a single cluster in cluster_data."""
+
     score: float
     variance: float
     weak_pa: str | None
@@ -81,6 +84,7 @@ class ClusterDataEntry(TypedDict, total=False):
 
 class MacroDataEntry(TypedDict, total=False):
     """Macro-level aggregated data."""
+
     macro_band: str
     clusters_below_target: list[str]
     variance_alert: str
@@ -91,6 +95,7 @@ class PolicyContextInput(TypedDict, total=False):
     """
     P8-IN-002: Policy context information.
     """
+
     policy_area_id: str
     dimension_id: str
     question_global: int
@@ -101,6 +106,7 @@ class SignalDataInput(TypedDict, total=False):
     """
     P8-IN-003: Optional signal enrichment data.
     """
+
     patterns: list[Any]
     indicators: list[Any]
 
@@ -112,6 +118,7 @@ class SignalDataInput(TypedDict, total=False):
 
 class IndicatorSpec(TypedDict, total=False):
     """Indicator specification in a recommendation."""
+
     name: str
     baseline: float | None
     target: float
@@ -128,6 +135,7 @@ class IndicatorSpec(TypedDict, total=False):
 
 class ResponsibleSpec(TypedDict, total=False):
     """Responsible entity specification."""
+
     entity: str
     role: str
     partners: list[str]
@@ -138,6 +146,7 @@ class ResponsibleSpec(TypedDict, total=False):
 
 class ApprovalLevel(TypedDict, total=True):
     """Single level in approval chain."""
+
     level: int
     role: str
     decision: str
@@ -145,6 +154,7 @@ class ApprovalLevel(TypedDict, total=True):
 
 class EscalationPath(TypedDict, total=False):
     """Escalation path specification."""
+
     threshold_days_delay: int
     escalate_to: str
     final_escalation: str
@@ -153,6 +163,7 @@ class EscalationPath(TypedDict, total=False):
 
 class HorizonSpec(TypedDict, total=False):
     """Time horizon specification."""
+
     start: str
     end: str
     start_type: str
@@ -164,6 +175,7 @@ class HorizonSpec(TypedDict, total=False):
 
 class Milestone(TypedDict, total=False):
     """Milestone within a horizon."""
+
     name: str
     offset_months: int
     deliverables: list[str]
@@ -172,6 +184,7 @@ class Milestone(TypedDict, total=False):
 
 class VerificationArtifact(TypedDict, total=False):
     """Verification artifact specification."""
+
     id: str
     type: str  # VerificationType
     artifact: str
@@ -187,6 +200,7 @@ class VerificationArtifact(TypedDict, total=False):
 
 class ExecutionSpec(TypedDict, total=False):
     """Execution logic specification."""
+
     trigger_condition: str
     blocking: bool
     auto_apply: bool
@@ -196,6 +210,7 @@ class ExecutionSpec(TypedDict, total=False):
 
 class BudgetSpec(TypedDict, total=False):
     """Budget specification."""
+
     estimated_cost_cop: int
     cost_breakdown: dict[str, int]
     funding_sources: list["FundingSource"]
@@ -204,6 +219,7 @@ class BudgetSpec(TypedDict, total=False):
 
 class FundingSource(TypedDict, total=True):
     """Single funding source."""
+
     source: str
     amount: int
     confirmed: bool
@@ -211,6 +227,7 @@ class FundingSource(TypedDict, total=True):
 
 class RecommendationTemplate(TypedDict, total=False):
     """Full recommendation template structure."""
+
     problem: str
     intervention: str
     indicator: IndicatorSpec
@@ -223,6 +240,7 @@ class RecommendationTemplate(TypedDict, total=False):
 
 class RuleCondition(TypedDict, total=False):
     """Rule condition (when clause)."""
+
     # MICRO
     pa_id: str
     dim_id: str
@@ -242,6 +260,7 @@ class RuleCondition(TypedDict, total=False):
 
 class RecommendationRule(TypedDict, total=False):
     """Full recommendation rule structure."""
+
     rule_id: str
     level: str  # RecommendationLevel
     when: RuleCondition
@@ -257,6 +276,7 @@ class RecommendationRule(TypedDict, total=False):
 
 class RecommendationOutput(TypedDict, total=False):
     """Single recommendation output."""
+
     rule_id: str
     level: str
     problem: str
@@ -274,6 +294,7 @@ class RecommendationOutput(TypedDict, total=False):
 
 class RecommendationSetOutput(TypedDict, total=True):
     """Recommendation set output for a single level."""
+
     level: str
     recommendations: list[RecommendationOutput]
     generated_at: str
@@ -284,6 +305,7 @@ class RecommendationSetOutput(TypedDict, total=True):
 
 class RecommendationMetadata(TypedDict, total=False):
     """P8-OUT-002: Recommendation generation metadata."""
+
     generated_at: str
     total_rules_evaluated: int
     rules_matched: int

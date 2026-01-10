@@ -43,6 +43,7 @@ Phase_eight/
     ├── recommendation_rules.json                   # Base rules
     └── recommendation_rules_enhanced.json          # Enhanced v2.0 rules
 """
+
 from __future__ import annotations
 
 import logging
@@ -94,24 +95,28 @@ logger = logging.getLogger(__name__)
 def get_recommendation_engine() -> "RecommendationEngine":
     """Lazy-load and return RecommendationEngine."""
     from .phase8_20_00_recommendation_engine import RecommendationEngine
+
     return RecommendationEngine()
 
 
 def get_recommendation_adapter() -> "RecommendationEngineAdapter":
     """Lazy-load and return RecommendationEngineAdapter."""
     from .phase8_20_01_recommendation_engine_adapter import create_recommendation_engine_adapter
+
     return create_recommendation_engine_adapter()
 
 
 def get_signal_enriched_recommender() -> "SignalEnrichedRecommender":
     """Lazy-load and return SignalEnrichedRecommender."""
     from .phase8_30_00_signal_enriched_recommendations import SignalEnrichedRecommender
+
     return SignalEnrichedRecommender()
 
 
 def get_interface_validator() -> "Phase8InterfaceValidator":
     """Lazy-load and return Phase8InterfaceValidator."""
     from .interfaces import Phase8InterfaceValidator
+
     return Phase8InterfaceValidator()
 
 

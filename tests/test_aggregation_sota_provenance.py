@@ -11,10 +11,7 @@ from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
 
 
 def test_sota_provenance_handles_string_qids() -> None:
-    monolith_path = (
-        REPO_ROOT / "canonic_questionnaire_central"
-        / "questionnaire_monolith.json"
-    )
+    monolith_path = REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
     monolith = json.loads(monolith_path.read_text(encoding="utf-8"))
     settings = AggregationSettings.from_monolith(monolith)
 

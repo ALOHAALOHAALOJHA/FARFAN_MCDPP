@@ -53,8 +53,10 @@ logger = logging.getLogger(__name__)
 # Type Definitions & Enums
 # -----------------------------------------------------------------------------
 
+
 class DisaggregationErrorType(Enum):
     """Types of disaggregation anomalies detected."""
+
     OVERLAP_DETECTED = "overlap_detected"
     COVERAGE_GAP = "coverage_gap"
     INVALID_AXIS = "invalid_axis"
@@ -67,6 +69,7 @@ class DisaggregationErrorType(Enum):
 @dataclass(frozen=True)
 class DisaggregationError:
     """Immutable record of a disaggregation anomaly."""
+
     error_type: DisaggregationErrorType
     axis: str
     affected_values: Tuple[str, ...]
@@ -91,6 +94,7 @@ class DisaggregationError:
 @dataclass(frozen=True)
 class DisaggregationAxis:
     """Defines a demographic axis for disaggregation."""
+
     axis_name: str
     values: Tuple[str, ...]
     required: bool = True
@@ -108,6 +112,7 @@ class DisaggregationAxis:
 @dataclass
 class PopulationGroup:
     """Represents a specific population subgroup."""
+
     axis_name: str
     value: str
     count: int
@@ -136,6 +141,7 @@ class PopulationGroup:
 @dataclass
 class DisaggregationReport:
     """Report from disaggregation validation."""
+
     is_valid: bool
     total_records: int
     axes_validated: Dict[str, bool]
@@ -160,6 +166,7 @@ class DisaggregationReport:
 # Protocol: PopulationSourceAdapter
 # -----------------------------------------------------------------------------
 
+
 @runtime_checkable
 class PopulationSourceAdapter(Protocol):
     """
@@ -179,6 +186,7 @@ class PopulationSourceAdapter(Protocol):
 # -----------------------------------------------------------------------------
 # Built-in Source Adapters
 # -----------------------------------------------------------------------------
+
 
 class DictPopulationAdapter:
     """Adapter for in-memory list of dictionaries."""
@@ -201,12 +209,7 @@ class DictPopulationAdapter:
 class CSVPopulationAdapter:
     """Adapter for CSV file sources with population data."""
 
-    def __init__(
-        self,
-        file_path: Path,
-        encoding: str = "utf-8",
-        **kwargs
-    ):
+    def __init__(self, file_path: Path, encoding: str = "utf-8", **kwargs):
         self._file_path = Path(file_path)
         self._encoding = encoding
         self._kwargs = kwargs
@@ -230,12 +233,7 @@ class CSVPopulationAdapter:
 class JSONPopulationAdapter:
     """Adapter for JSON file sources."""
 
-    def __init__(
-        self,
-        file_path: Path,
-        record_path: str = "records",
-        encoding: str = "utf-8"
-    ):
+    def __init__(self, file_path: Path, record_path: str = "records", encoding: str = "utf-8"):
         self._file_path = Path(file_path)
         self._record_path = record_path
         self._encoding = encoding
@@ -265,6 +263,7 @@ class JSONPopulationAdapter:
 # Core: PopulationDisaggregationExtractor
 # -----------------------------------------------------------------------------
 
+
 class PopulationDisaggregationExtractor:
     """
     Pluggable frontier class for extracting and validating population disaggregations.
@@ -293,7 +292,14 @@ class PopulationDisaggregationExtractor:
         ),
         "ethnicity": DisaggregationAxis(
             axis_name="ethnicity",
-            values=("Indígena", "Rom", "Afrodescendiente", "Palenquero", "Raizal", "Sin información"),
+            values=(
+                "Indígena",
+                "Rom",
+                "Afrodescendiente",
+                "Palenquero",
+                "Raizal",
+                "Sin información",
+            ),
             required=False,
             tolerance=0.20,
         ),
@@ -368,7 +374,9 @@ class PopulationDisaggregationExtractor:
         self._reset()
         self._source_metadata = source.get_source_metadata()
 
-        logger.info(f"Ingesting population data from {self._source_metadata.get('source_type', 'unknown')}")
+        logger.info(
+            f"Ingesting population data from {self._source_metadata.get('source_type', 'unknown')}"
+        )
 
         # Phase 1: Load all records
         for raw_record in source.fetch_records():
@@ -381,7 +389,7 @@ class PopulationDisaggregationExtractor:
                     "unknown",
                     (),
                     f"Failed to process record: {e}",
-                    severity="warning"
+                    severity="warning",
                 )
 
         logger.info(f"Loaded {self._total_count} records across {len(self._groups)} groups")
@@ -427,29 +435,35 @@ class PopulationDisaggregationExtractor:
             # Gap detection
             if axis.required and coverage < (1.0 - axis.tolerance):
                 gap_size = self._total_count - axis_total
-                gaps.append({
-                    "axis": axis_name,
-                    "gap_count": gap_size,
-                    "gap_percentage": 1.0 - coverage,
-                    "tolerance": axis.tolerance,
-                })
-                validation_errors.append(DisaggregationError(
-                    error_type=DisaggregationErrorType.COVERAGE_GAP,
-                    axis=axis_name,
-                    affected_values=tuple(g.value for g in axis_groups),
-                    message=f"Coverage {coverage:.1%} below threshold {1.0 - axis.tolerance:.1%}",
-                    severity="error" if self._strict_mode else "warning"
-                ))
+                gaps.append(
+                    {
+                        "axis": axis_name,
+                        "gap_count": gap_size,
+                        "gap_percentage": 1.0 - coverage,
+                        "tolerance": axis.tolerance,
+                    }
+                )
+                validation_errors.append(
+                    DisaggregationError(
+                        error_type=DisaggregationErrorType.COVERAGE_GAP,
+                        axis=axis_name,
+                        affected_values=tuple(g.value for g in axis_groups),
+                        message=f"Coverage {coverage:.1%} below threshold {1.0 - axis.tolerance:.1%}",
+                        severity="error" if self._strict_mode else "warning",
+                    )
+                )
 
             # Missing required axis
             if axis.required and not axis_groups:
-                validation_errors.append(DisaggregationError(
-                    error_type=DisaggregationErrorType.MISSING_REQUIRED_AXIS,
-                    axis=axis_name,
-                    affected_values=(),
-                    message=f"Required axis '{axis_name}' has no data",
-                    severity="fatal" if self._strict_mode else "error"
-                ))
+                validation_errors.append(
+                    DisaggregationError(
+                        error_type=DisaggregationErrorType.MISSING_REQUIRED_AXIS,
+                        axis=axis_name,
+                        affected_values=(),
+                        message=f"Required axis '{axis_name}' has no data",
+                        severity="fatal" if self._strict_mode else "error",
+                    )
+                )
 
             axes_validated[axis_name] = len(gaps) == 0 or not axis.required
 
@@ -460,17 +474,18 @@ class PopulationDisaggregationExtractor:
         # Total mismatch check
         grand_total = sum(g.count for g in self._groups.values())
         if grand_total != self._total_count:
-            validation_errors.append(DisaggregationError(
-                error_type=DisaggregationErrorType.TOTAL_MISMATCH,
-                axis="all",
-                affected_values=(),
-                message=f"Sum of group counts ({grand_total}) != total records ({self._total_count})",
-                severity="warning"
-            ))
+            validation_errors.append(
+                DisaggregationError(
+                    error_type=DisaggregationErrorType.TOTAL_MISMATCH,
+                    axis="all",
+                    affected_values=(),
+                    message=f"Sum of group counts ({grand_total}) != total records ({self._total_count})",
+                    severity="warning",
+                )
+            )
 
-        is_valid = (
-            len(validation_errors) == 0 or
-            all(e.severity != "fatal" and e.severity != "error" for e in validation_errors)
+        is_valid = len(validation_errors) == 0 or all(
+            e.severity != "fatal" and e.severity != "error" for e in validation_errors
         )
 
         report = DisaggregationReport(
@@ -488,9 +503,7 @@ class PopulationDisaggregationExtractor:
         return report
 
     def get_subpopulations(
-        self,
-        parent: Optional[str] = None,
-        axis: Optional[str] = None
+        self, parent: Optional[str] = None, axis: Optional[str] = None
     ) -> List[PopulationGroup]:
         """
         Get subpopulations, optionally filtered by parent or axis.
@@ -555,11 +568,7 @@ class PopulationDisaggregationExtractor:
 
         return summary
 
-    def get_cross_tabulation(
-        self,
-        axis1: str,
-        axis2: str
-    ) -> Dict[str, Dict[str, int]]:
+    def get_cross_tabulation(self, axis1: str, axis2: str) -> Dict[str, Dict[str, int]]:
         """
         Get cross-tabulation between two axes.
 
@@ -635,7 +644,7 @@ class PopulationDisaggregationExtractor:
                         axis_name,
                         (value_str,),
                         f"Value '{value_str}' not in allowed values for axis '{axis_name}'",
-                        severity="error"
+                        severity="error",
                     )
                 continue
 
@@ -686,12 +695,14 @@ class PopulationDisaggregationExtractor:
             if len(children) > 1:
                 parent_group = next((g for g in groups if g.value == parent), None)
                 if parent_group:
-                    overlaps.append({
-                        "axis": axis_name,
-                        "parent_value": parent,
-                        "overlapping_children": children,
-                        "type": "hierarchical_overlap",
-                    })
+                    overlaps.append(
+                        {
+                            "axis": axis_name,
+                            "parent_value": parent,
+                            "overlapping_children": children,
+                            "type": "hierarchical_overlap",
+                        }
+                    )
 
         return overlaps
 
@@ -813,13 +824,15 @@ class PopulationDisaggregationExtractor:
         severity: Literal["warning", "error", "fatal"] = "error",
     ) -> None:
         """Add an error to the error list."""
-        self._errors.append(DisaggregationError(
-            error_type=error_type,
-            axis=axis,
-            affected_values=affected_values,
-            message=message,
-            severity=severity,
-        ))
+        self._errors.append(
+            DisaggregationError(
+                error_type=error_type,
+                axis=axis,
+                affected_values=affected_values,
+                message=message,
+                severity=severity,
+            )
+        )
         logger.warning(f"Disaggregation anomaly: {error_type.value} - {message}")
 
     def _count_errors_by_type(self) -> Dict[str, int]:

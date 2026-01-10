@@ -8,7 +8,7 @@ Purpose: Contract-type-specific calibration bounds and prohibited operations
 Lifecycle State:  DESIGN-TIME FROZEN, RUNTIME IMMUTABLE
 Schema Version: 2.0.0
 
-CANONICAL SOURCE: 
+CANONICAL SOURCE:
     src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json
 
     Only authorized files from epistemological_assets directory are used.
@@ -54,6 +54,7 @@ DEPENDENCIES:
     - calibration_core: ClosedInterval, ValidationError
     - Standard library: json, pathlib, functools
 """
+
 from __future__ import annotations
 
 import json
@@ -87,14 +88,16 @@ CONTRACT_TYPE_D: Final[str] = "TYPE_D"  # Financial
 CONTRACT_TYPE_E: Final[str] = "TYPE_E"  # Logical
 CONTRACT_SUBTIPO_F: Final[str] = "SUBTIPO_F"  # Hybrid/Fallback
 
-VALID_CONTRACT_TYPES: Final[frozenset[str]] = frozenset({
-    CONTRACT_TYPE_A,
-    CONTRACT_TYPE_B,
-    CONTRACT_TYPE_C,
-    CONTRACT_TYPE_D,
-    CONTRACT_TYPE_E,
-    CONTRACT_SUBTIPO_F,
-})
+VALID_CONTRACT_TYPES: Final[frozenset[str]] = frozenset(
+    {
+        CONTRACT_TYPE_A,
+        CONTRACT_TYPE_B,
+        CONTRACT_TYPE_C,
+        CONTRACT_TYPE_D,
+        CONTRACT_TYPE_E,
+        CONTRACT_SUBTIPO_F,
+    }
+)
 
 # -----------------------------------------------------------------------------
 # Prior Strength Bounds (Bayesian inference weight)
@@ -103,7 +106,7 @@ VALID_CONTRACT_TYPES: Final[frozenset[str]] = frozenset({
 # in Bayesian updating operations.  Higher values = stronger prior influence.
 
 PRIOR_STRENGTH_MIN: Final[float] = 0.1
-PRIOR_STRENGTH_MAX:  Final[float] = 10.0
+PRIOR_STRENGTH_MAX: Final[float] = 10.0
 PRIOR_STRENGTH_DEFAULT: Final[float] = 1.0
 PRIOR_STRENGTH_BAYESIAN: Final[float] = 2.0  # TYPE_B uses stronger priors
 
@@ -170,7 +173,7 @@ class CalibrationDefaultsError(Exception):
 
 class CanonicalSourceError(CalibrationDefaultsError):
     """
-    Raised when the canonical source file is missing or invalid. 
+    Raised when the canonical source file is missing or invalid.
 
     This indicates a deployment or configuration error—the canonical
     contracts file is required for the pipeline to function.
@@ -189,7 +192,7 @@ class UnknownContractTypeError(CalibrationDefaultsError):
 
     def __init__(self, contract_type_code: str, valid_types: frozenset[str]) -> None:
         self.contract_type_code = contract_type_code
-        self. valid_types = valid_types
+        self.valid_types = valid_types
         super().__init__(
             f"Unknown contract type:  '{contract_type_code}'. "
             f"Valid types: {sorted(valid_types)}"
@@ -198,7 +201,7 @@ class UnknownContractTypeError(CalibrationDefaultsError):
 
 class ConfigurationError(CalibrationDefaultsError):
     """
-    Raised when calibration configuration violates invariants. 
+    Raised when calibration configuration violates invariants.
 
     This indicates a bug in the defaults definition that must be
     fixed before deployment.
@@ -215,11 +218,11 @@ class ConfigurationError(CalibrationDefaultsError):
 @dataclass(frozen=True, slots=True)
 class EpistemicLayerRatios:
     """
-    Distribution of processing effort across epistemic regime layers. 
+    Distribution of processing effort across epistemic regime layers.
 
     The three layers (N1_EMP, N2_INF, N3_AUD) must sum to 1.0 within tolerance.
     Different contract types emphasize different layers based on their
-    epistemic requirements. 
+    epistemic requirements.
 
     Invariants:
         INV-ELR-001: All ratios in [0.0, 1.0]
@@ -240,9 +243,7 @@ class EpistemicLayerRatios:
         # Extract default values (midpoints would also work, but defaults are canonical)
         # We check that the default configuration is valid
         default_sum = (
-            self.n1_empirical.midpoint()
-            + self.n2_inferential.midpoint()
-            + self.n3_audit. midpoint()
+            self.n1_empirical.midpoint() + self.n2_inferential.midpoint() + self.n3_audit.midpoint()
         )
 
         if abs(default_sum - 1.0) > RATIO_SUM_TOLERANCE:
@@ -254,24 +255,22 @@ class EpistemicLayerRatios:
                 f"n3({self.n3_audit.midpoint():.3f})"
             )
 
-    def validate_concrete_ratios(
-        self, n1: float, n2: float, n3: float
-    ) -> tuple[bool, str]:
+    def validate_concrete_ratios(self, n1: float, n2: float, n3: float) -> tuple[bool, str]:
         """
         Validate a concrete ratio configuration against bounds.
 
         Args:
             n1: Concrete N1_EMP ratio value.
-            n2: Concrete N2_INF ratio value. 
-            n3: Concrete N3_AUD ratio value. 
+            n2: Concrete N2_INF ratio value.
+            n3: Concrete N3_AUD ratio value.
 
         Returns:
             Tuple of (is_valid, error_message). error_message is empty if valid.
         """
-        errors:  list[str] = []
+        errors: list[str] = []
 
         if not self.n1_empirical.contains(n1):
-            errors. append(
+            errors.append(
                 f"n1_empirical={n1} not in [{self.n1_empirical.lower}, {self.n1_empirical.upper}]"
             )
         if not self.n2_inferential.contains(n2):
@@ -279,9 +278,7 @@ class EpistemicLayerRatios:
                 f"n2_inferential={n2} not in [{self. n2_inferential.lower}, {self.n2_inferential.upper}]"
             )
         if not self.n3_audit.contains(n3):
-            errors.append(
-                f"n3_audit={n3} not in [{self.n3_audit.lower}, {self.n3_audit.upper}]"
-            )
+            errors.append(f"n3_audit={n3} not in [{self.n3_audit.lower}, {self.n3_audit.upper}]")
 
         ratio_sum = n1 + n2 + n3
         if abs(ratio_sum - 1.0) > RATIO_SUM_TOLERANCE:
@@ -292,7 +289,7 @@ class EpistemicLayerRatios:
     def to_canonical_dict(self) -> dict[str, dict[str, float]]:
         """Convert to canonical dictionary for serialization."""
         return {
-            "n1_empirical":  self.n1_empirical. to_canonical_dict(),
+            "n1_empirical": self.n1_empirical.to_canonical_dict(),
             "n2_inferential": self.n2_inferential.to_canonical_dict(),
             "n3_audit": self.n3_audit.to_canonical_dict(),
         }
@@ -304,7 +301,7 @@ class ContractTypeDefaults:
     Complete calibration defaults for a contract type.
 
     This dataclass aggregates all calibration bounds for a specific contract
-    type, including epistemic layer ratios, veto thresholds, and prior strength. 
+    type, including epistemic layer ratios, veto thresholds, and prior strength.
 
     Invariants:
         INV-CTD-001: All bounds are valid ClosedIntervals
@@ -313,8 +310,8 @@ class ContractTypeDefaults:
 
     Attributes:
         contract_type_code: Canonical identifier for this contract type.
-        description: Human-readable description of the contract type. 
-        epistemic_ratios: Distribution across N1/N2/N3 layers. 
+        description: Human-readable description of the contract type.
+        epistemic_ratios: Distribution across N1/N2/N3 layers.
         veto_threshold: Bounds for veto gate probability threshold.
         prior_strength: Bounds for Bayesian prior weight.
         permitted_operations: Operations allowed for this contract type.
@@ -326,12 +323,12 @@ class ContractTypeDefaults:
     epistemic_ratios: EpistemicLayerRatios
     veto_threshold: ClosedInterval
     prior_strength: ClosedInterval
-    permitted_operations:  frozenset[str]
+    permitted_operations: frozenset[str]
     prohibited_operations: frozenset[str]
 
     def __post_init__(self) -> None:
         """Validate contract type defaults."""
-        if self.contract_type_code not in VALID_CONTRACT_TYPES: 
+        if self.contract_type_code not in VALID_CONTRACT_TYPES:
             raise UnknownContractTypeError(self.contract_type_code, VALID_CONTRACT_TYPES)
 
         # Verify permitted and prohibited are disjoint
@@ -350,15 +347,15 @@ class ContractTypeDefaults:
             operation: Operation name to check.
 
         Returns:
-            True if operation is in permitted_operations. 
+            True if operation is in permitted_operations.
         """
-        return operation. lower() in self.permitted_operations
+        return operation.lower() in self.permitted_operations
 
     def is_operation_prohibited(self, operation: str) -> bool:
         """
         Check if an operation is prohibited for this contract type.
 
-        An operation is prohibited if: 
+        An operation is prohibited if:
         1. It is explicitly in prohibited_operations, OR
         2. Any prohibited operation name is a substring of the operation name
 
@@ -372,7 +369,7 @@ class ContractTypeDefaults:
         if op_lower in self.prohibited_operations:
             return True
         # Check for substring matches (e.g., "weighted_mean_v2" matches "weighted_mean")
-        return any(prohibited in op_lower for prohibited in self. prohibited_operations)
+        return any(prohibited in op_lower for prohibited in self.prohibited_operations)
 
     def get_default_veto_threshold(self) -> float:
         """Return the default veto threshold value."""
@@ -386,7 +383,7 @@ class ContractTypeDefaults:
         """Convert to canonical dictionary for serialization."""
         return {
             "contract_type_code": self.contract_type_code,
-            "description": self. description,
+            "description": self.description,
             "epistemic_ratios": self.epistemic_ratios.to_canonical_dict(),
             "permitted_operations": sorted(self.permitted_operations),
             "prior_strength": self.prior_strength.to_canonical_dict(),
@@ -399,8 +396,8 @@ class ContractTypeDefaults:
 # TYPE-SPECIFIC DEFAULTS DEFINITIONS
 # =============================================================================
 
-# These definitions encode the epistemic characteristics of each contract type. 
-# Derived from analysis of contratos_clasificados.json and domain requirements. 
+# These definitions encode the epistemic characteristics of each contract type.
+# Derived from analysis of contratos_clasificados.json and domain requirements.
 
 
 def _create_type_a_defaults() -> ContractTypeDefaults:
@@ -408,7 +405,7 @@ def _create_type_a_defaults() -> ContractTypeDefaults:
     Create defaults for TYPE_A (Semantic) contracts.
 
     TYPE_A emphasizes semantic triangulation via N2 layer operations.
-    Uses semantic_corroboration, dempster_shafer, and veto_gate. 
+    Uses semantic_corroboration, dempster_shafer, and veto_gate.
     """
     return ContractTypeDefaults(
         contract_type_code=CONTRACT_TYPE_A,
@@ -426,19 +423,23 @@ def _create_type_a_defaults() -> ContractTypeDefaults:
             lower=PRIOR_STRENGTH_MIN,
             upper=PRIOR_STRENGTH_MAX,
         ),
-        permitted_operations=frozenset({
-            "semantic_corroboration",
-            "dempster_shafer",
-            "veto_gate",
-            "semantic_triangulation",
-            "embedding_similarity",
-        }),
-        prohibited_operations=frozenset({
-            "weighted_mean",
-            "simple_average",
-            "bayesian_update",
-            "arithmetic_aggregation",
-        }),
+        permitted_operations=frozenset(
+            {
+                "semantic_corroboration",
+                "dempster_shafer",
+                "veto_gate",
+                "semantic_triangulation",
+                "embedding_similarity",
+            }
+        ),
+        prohibited_operations=frozenset(
+            {
+                "weighted_mean",
+                "simple_average",
+                "bayesian_update",
+                "arithmetic_aggregation",
+            }
+        ),
     )
 
 
@@ -446,8 +447,8 @@ def _create_type_b_defaults() -> ContractTypeDefaults:
     """
     Create defaults for TYPE_B (Bayesian) contracts.
 
-    TYPE_B emphasizes Bayesian inference with strong priors. 
-    Uses bayesian_update, concat, veto_gate, carver_doctoral_synthesis. 
+    TYPE_B emphasizes Bayesian inference with strong priors.
+    Uses bayesian_update, concat, veto_gate, carver_doctoral_synthesis.
     """
     return ContractTypeDefaults(
         contract_type_code=CONTRACT_TYPE_B,
@@ -465,20 +466,24 @@ def _create_type_b_defaults() -> ContractTypeDefaults:
             lower=PRIOR_STRENGTH_MIN,
             upper=PRIOR_STRENGTH_MAX,
         ),
-        permitted_operations=frozenset({
-            "bayesian_update",
-            "concat",
-            "veto_gate",
-            "carver_doctoral_synthesis",
-            "prior_posterior_update",
-            "credible_interval",
-        }),
-        prohibited_operations=frozenset({
-            "weighted_mean",
-            "simple_average",
-            "semantic_corroboration",
-            "arithmetic_aggregation",
-        }),
+        permitted_operations=frozenset(
+            {
+                "bayesian_update",
+                "concat",
+                "veto_gate",
+                "carver_doctoral_synthesis",
+                "prior_posterior_update",
+                "credible_interval",
+            }
+        ),
+        prohibited_operations=frozenset(
+            {
+                "weighted_mean",
+                "simple_average",
+                "semantic_corroboration",
+                "arithmetic_aggregation",
+            }
+        ),
     )
 
 
@@ -505,20 +510,24 @@ def _create_type_c_defaults() -> ContractTypeDefaults:
             lower=PRIOR_STRENGTH_MIN,
             upper=PRIOR_STRENGTH_MAX,
         ),
-        permitted_operations=frozenset({
-            "topological_overlay",
-            "graph_construction",
-            "veto_gate",
-            "carver_doctoral_synthesis",
-            "dag_validation",
-            "causal_path_analysis",
-        }),
-        prohibited_operations=frozenset({
-            "weighted_mean",
-            "concat",
-            "simple_average",
-            "arithmetic_aggregation",
-        }),
+        permitted_operations=frozenset(
+            {
+                "topological_overlay",
+                "graph_construction",
+                "veto_gate",
+                "carver_doctoral_synthesis",
+                "dag_validation",
+                "causal_path_analysis",
+            }
+        ),
+        prohibited_operations=frozenset(
+            {
+                "weighted_mean",
+                "concat",
+                "simple_average",
+                "arithmetic_aggregation",
+            }
+        ),
     )
 
 
@@ -527,7 +536,7 @@ def _create_type_d_defaults() -> ContractTypeDefaults:
     Create defaults for TYPE_D (Financial) contracts.
 
     TYPE_D emphasizes N2 for financial aggregation with lenient veto.
-    Uses weighted_mean, concat, financial_coherence_audit. 
+    Uses weighted_mean, concat, financial_coherence_audit.
     Note: weighted_mean IS permitted for financial data aggregation.
     """
     return ContractTypeDefaults(
@@ -546,20 +555,24 @@ def _create_type_d_defaults() -> ContractTypeDefaults:
             lower=PRIOR_STRENGTH_MIN,
             upper=PRIOR_STRENGTH_MAX,
         ),
-        permitted_operations=frozenset({
-            "weighted_mean",
-            "concat",
-            "financial_coherence_audit",
-            "budget_aggregation",
-            "fiscal_validation",
-            "arithmetic_aggregation",
-        }),
-        prohibited_operations=frozenset({
-            "semantic_corroboration",
-            "topological_overlay",
-            "bayesian_update",
-            "graph_construction",
-        }),
+        permitted_operations=frozenset(
+            {
+                "weighted_mean",
+                "concat",
+                "financial_coherence_audit",
+                "budget_aggregation",
+                "fiscal_validation",
+                "arithmetic_aggregation",
+            }
+        ),
+        prohibited_operations=frozenset(
+            {
+                "semantic_corroboration",
+                "topological_overlay",
+                "bayesian_update",
+                "graph_construction",
+            }
+        ),
     )
 
 
@@ -587,20 +600,24 @@ def _create_type_e_defaults() -> ContractTypeDefaults:
             lower=PRIOR_STRENGTH_MIN,
             upper=PRIOR_STRENGTH_MAX,
         ),
-        permitted_operations=frozenset({
-            "concat",
-            "weighted_mean",  # Permitted per canonical source
-            "logical_consistency_validation",
-            "contradiction_detection",
-            "veto_gate",
-            "propositional_analysis",
-        }),
-        prohibited_operations=frozenset({
-            "bayesian_update",
-            "semantic_corroboration",
-            "graph_construction",
-            "topological_overlay",
-        }),
+        permitted_operations=frozenset(
+            {
+                "concat",
+                "weighted_mean",  # Permitted per canonical source
+                "logical_consistency_validation",
+                "contradiction_detection",
+                "veto_gate",
+                "propositional_analysis",
+            }
+        ),
+        prohibited_operations=frozenset(
+            {
+                "bayesian_update",
+                "semantic_corroboration",
+                "graph_construction",
+                "topological_overlay",
+            }
+        ),
     )
 
 
@@ -627,11 +644,13 @@ def _create_subtipo_f_defaults() -> ContractTypeDefaults:
             lower=PRIOR_STRENGTH_MIN,
             upper=PRIOR_STRENGTH_MAX,
         ),
-        permitted_operations=frozenset({
-            "concat",
-            "veto_gate",
-            "weighted_mean",
-        }),
+        permitted_operations=frozenset(
+            {
+                "concat",
+                "veto_gate",
+                "weighted_mean",
+            }
+        ),
         prohibited_operations=frozenset(),  # No prohibitions for fallback type
     )
 
@@ -657,9 +676,9 @@ _TYPE_FACTORY_REGISTRY: Final[Mapping[str, type[ContractTypeDefaults] | object]]
 
 
 @lru_cache(maxsize=8)  # 6 types + buffer for potential future types
-def get_type_defaults(contract_type_code: str) -> ContractTypeDefaults: 
+def get_type_defaults(contract_type_code: str) -> ContractTypeDefaults:
     """
-    Load calibration defaults for a contract type. 
+    Load calibration defaults for a contract type.
 
     This function implements the Flyweight pattern:  each contract type's
     defaults are computed once and cached for the lifetime of the process.
@@ -673,7 +692,7 @@ def get_type_defaults(contract_type_code: str) -> ContractTypeDefaults:
         contract_type_code:  Canonical identifier (e.g., "TYPE_A", "TYPE_B").
 
     Returns:
-        ContractTypeDefaults instance with all calibration bounds. 
+        ContractTypeDefaults instance with all calibration bounds.
 
     Raises:
         CanonicalSourceError: If contratos_clasificados.json is missing or invalid.
@@ -708,7 +727,7 @@ def _validate_canonical_source_exists() -> None:
     Validate that the canonical contracts file exists.
 
     Raises:
-        CanonicalSourceError: If file is missing. 
+        CanonicalSourceError: If file is missing.
     """
     if not _CONTRATOS_CLASIFICADOS_PATH.exists():
         raise CanonicalSourceError(
@@ -720,10 +739,10 @@ def _validate_canonical_source_exists() -> None:
 
 def _validate_contract_type_in_source(contract_type_code: str) -> None:
     """
-    Validate that the contract type exists in the canonical source. 
+    Validate that the contract type exists in the canonical source.
 
     Args:
-        contract_type_code: Contract type to validate. 
+        contract_type_code: Contract type to validate.
 
     Raises:
         CanonicalSourceError: If file cannot be read or parsed.
@@ -733,13 +752,9 @@ def _validate_contract_type_in_source(contract_type_code: str) -> None:
         with open(_CONTRATOS_CLASIFICADOS_PATH, "r", encoding="utf-8") as f:
             data = json.load(f)
     except json.JSONDecodeError as exc:
-        raise CanonicalSourceError(
-            f"Canonical contracts file is not valid JSON: {exc}"
-        ) from exc
-    except OSError as exc: 
-        raise CanonicalSourceError(
-            f"Cannot read canonical contracts file: {exc}"
-        ) from exc
+        raise CanonicalSourceError(f"Canonical contracts file is not valid JSON: {exc}") from exc
+    except OSError as exc:
+        raise CanonicalSourceError(f"Cannot read canonical contracts file: {exc}") from exc
 
     # Extract valid types from canonical source
     taxonomies = data.get("taxonomias_aplicadas", {})
@@ -749,7 +764,7 @@ def _validate_contract_type_in_source(contract_type_code: str) -> None:
         # Fall back to our known types if not in file
         source_types = list(VALID_CONTRACT_TYPES)
 
-    if contract_type_code not in source_types and contract_type_code not in VALID_CONTRACT_TYPES: 
+    if contract_type_code not in source_types and contract_type_code not in VALID_CONTRACT_TYPES:
         raise UnknownContractTypeError(
             contract_type_code,
             frozenset(source_types) | VALID_CONTRACT_TYPES,
@@ -758,20 +773,20 @@ def _validate_contract_type_in_source(contract_type_code: str) -> None:
 
 def is_operation_prohibited(contract_type_code: str, operation: str) -> bool:
     """
-    Check if an operation is prohibited for a contract type. 
+    Check if an operation is prohibited for a contract type.
 
-    Convenience function that retrieves type defaults and checks prohibition. 
+    Convenience function that retrieves type defaults and checks prohibition.
 
     Args:
         contract_type_code: Canonical contract type identifier.
         operation: Operation name to check.
 
     Returns:
-        True if operation is prohibited for the contract type. 
+        True if operation is prohibited for the contract type.
 
     Raises:
         CanonicalSourceError: If canonical source is unavailable.
-        UnknownContractTypeError: If contract type is not recognized. 
+        UnknownContractTypeError: If contract type is not recognized.
 
     Example:
         >>> is_operation_prohibited("TYPE_A", "weighted_mean")
@@ -785,7 +800,7 @@ def is_operation_prohibited(contract_type_code: str, operation: str) -> bool:
 
 def is_operation_permitted(contract_type_code: str, operation: str) -> bool:
     """
-    Check if an operation is permitted for a contract type. 
+    Check if an operation is permitted for a contract type.
 
     Convenience function that retrieves type defaults and checks permission.
 
@@ -794,7 +809,7 @@ def is_operation_permitted(contract_type_code: str, operation: str) -> bool:
         operation: Operation name to check.
 
     Returns:
-        True if operation is in the permitted set for the contract type. 
+        True if operation is in the permitted set for the contract type.
 
     Raises:
         CanonicalSourceError: If canonical source is unavailable.
@@ -807,7 +822,7 @@ def is_operation_permitted(contract_type_code: str, operation: str) -> bool:
         False
     """
     defaults = get_type_defaults(contract_type_code)
-    return defaults. is_operation_permitted(operation)
+    return defaults.is_operation_permitted(operation)
 
 
 def get_all_type_defaults() -> dict[str, ContractTypeDefaults]:
@@ -815,15 +830,12 @@ def get_all_type_defaults() -> dict[str, ContractTypeDefaults]:
     Load calibration defaults for all known contract types.
 
     Returns:
-        Dictionary mapping contract type codes to their defaults. 
+        Dictionary mapping contract type codes to their defaults.
 
     Raises:
         CanonicalSourceError: If canonical source is unavailable.
     """
-    return {
-        type_code: get_type_defaults(type_code)
-        for type_code in VALID_CONTRACT_TYPES
-    }
+    return {type_code: get_type_defaults(type_code) for type_code in VALID_CONTRACT_TYPES}
 
 
 def clear_defaults_cache() -> None:
@@ -844,37 +856,47 @@ def clear_defaults_cache() -> None:
 # This constant maintains backward compatibility with code that directly
 # accesses PROHIBITED_OPERATIONS.  New code should use get_type_defaults().
 
-PROHIBITED_OPERATIONS:  Final[dict[str, frozenset[str]]] = {
-    CONTRACT_TYPE_A: frozenset({
-        "weighted_mean",
-        "simple_average",
-        "bayesian_update",
-        "arithmetic_aggregation",
-    }),
-    CONTRACT_TYPE_B: frozenset({
-        "weighted_mean",
-        "simple_average",
-        "semantic_corroboration",
-        "arithmetic_aggregation",
-    }),
-    CONTRACT_TYPE_C: frozenset({
-        "weighted_mean",
-        "concat",
-        "simple_average",
-        "arithmetic_aggregation",
-    }),
-    CONTRACT_TYPE_D: frozenset({
-        "semantic_corroboration",
-        "topological_overlay",
-        "bayesian_update",
-        "graph_construction",
-    }),
-    CONTRACT_TYPE_E: frozenset({
-        "bayesian_update",
-        "semantic_corroboration",
-        "graph_construction",
-        "topological_overlay",
-    }),
+PROHIBITED_OPERATIONS: Final[dict[str, frozenset[str]]] = {
+    CONTRACT_TYPE_A: frozenset(
+        {
+            "weighted_mean",
+            "simple_average",
+            "bayesian_update",
+            "arithmetic_aggregation",
+        }
+    ),
+    CONTRACT_TYPE_B: frozenset(
+        {
+            "weighted_mean",
+            "simple_average",
+            "semantic_corroboration",
+            "arithmetic_aggregation",
+        }
+    ),
+    CONTRACT_TYPE_C: frozenset(
+        {
+            "weighted_mean",
+            "concat",
+            "simple_average",
+            "arithmetic_aggregation",
+        }
+    ),
+    CONTRACT_TYPE_D: frozenset(
+        {
+            "semantic_corroboration",
+            "topological_overlay",
+            "bayesian_update",
+            "graph_construction",
+        }
+    ),
+    CONTRACT_TYPE_E: frozenset(
+        {
+            "bayesian_update",
+            "semantic_corroboration",
+            "graph_construction",
+            "topological_overlay",
+        }
+    ),
     CONTRACT_SUBTIPO_F: frozenset(),
 }
 

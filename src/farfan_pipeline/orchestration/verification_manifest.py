@@ -88,6 +88,7 @@ class VerificationManifest:
         # Try to get memory info
         try:
             import psutil
+
             mem = psutil.virtual_memory()
             env_data["memory_gb"] = round(mem.total / (1024**3), 2)
         except ImportError:
@@ -119,7 +120,7 @@ class VerificationManifest:
         base_seed: int | None = None,
         policy_unit_id: str | None = None,
         correlation_id: str | None = None,
-        seeds_by_component: dict[str, int] | None = None
+        seeds_by_component: dict[str, int] | None = None,
     ):
         """
         Set determinism tracking information.
@@ -131,9 +132,7 @@ class VerificationManifest:
             correlation_id: Execution correlation ID
             seeds_by_component: Dict mapping component names to seeds
         """
-        determinism_data = {
-            "seed_version": seed_version
-        }
+        determinism_data = {"seed_version": seed_version}
 
         if base_seed is not None:
             determinism_data["base_seed"] = base_seed
@@ -158,7 +157,7 @@ class VerificationManifest:
         version: str,
         calibration_hash: str,
         methods_calibrated: int,
-        methods_missing: list[str]
+        methods_missing: list[str],
     ):
         """
         Set calibration information.
@@ -173,7 +172,7 @@ class VerificationManifest:
             "version": version,
             "hash": calibration_hash,
             "methods_calibrated": methods_calibrated,
-            "methods_missing": methods_missing
+            "methods_missing": methods_missing,
         }
         return self
 
@@ -190,7 +189,7 @@ class VerificationManifest:
         text_length: int,
         sentence_count: int,
         chunk_strategy: str | None = None,
-        chunk_overlap: int | None = None
+        chunk_overlap: int | None = None,
     ):
         """
         Set ingestion information.
@@ -207,7 +206,7 @@ class VerificationManifest:
             "method": method,
             "chunk_count": chunk_count,
             "text_length": text_length,
-            "sentence_count": sentence_count
+            "sentence_count": sentence_count,
         }
 
         if chunk_strategy:
@@ -228,21 +227,20 @@ class VerificationManifest:
         if spc_utilization:
             self.manifest_data["spc_utilization"] = spc_utilization
         return self
-    
+
     def set_path_import_verification(self, report):
         """
         Set path and import verification results.
-        
+
         Args:
             report: PolicyReport object from observability.path_import_policy
-            
+
         Returns:
             self for chaining
         """
         # Use PolicyReport.to_dict() as canonical serialization
         self.manifest_data["path_import_verification"] = report.to_dict()
         return self
-
 
     def set_parametrization(self, parametrization: dict[str, Any]):
         """Record executor/config parameterization data."""
@@ -257,7 +255,7 @@ class VerificationManifest:
         success: bool,
         duration_ms: float | None = None,
         items_processed: int | None = None,
-        error: str | None = None
+        error: str | None = None,
     ):
         """
         Add phase execution information.
@@ -273,11 +271,7 @@ class VerificationManifest:
         if "phases" not in self.manifest_data:
             self.manifest_data["phases"] = []
 
-        phase_data = {
-            "phase_id": phase_id,
-            "phase_name": phase_name,
-            "success": success
-        }
+        phase_data = {"phase_id": phase_id, "phase_name": phase_name, "success": success}
 
         if duration_ms is not None:
             phase_data["duration_ms"] = duration_ms
@@ -295,11 +289,7 @@ class VerificationManifest:
         return self
 
     def add_artifact(
-        self,
-        artifact_id: str,
-        path: str,
-        artifact_hash: str,
-        size_bytes: int | None = None
+        self, artifact_id: str, path: str, artifact_hash: str, size_bytes: int | None = None
     ):
         """
         Add artifact information.
@@ -313,10 +303,7 @@ class VerificationManifest:
         if "artifacts" not in self.manifest_data:
             self.manifest_data["artifacts"] = {}
 
-        artifact_data = {
-            "path": path,
-            "hash": artifact_hash
-        }
+        artifact_data = {"path": path, "hash": artifact_hash}
 
         if size_bytes is not None:
             artifact_data["size_bytes"] = size_bytes
@@ -338,9 +325,7 @@ class VerificationManifest:
             return "00" * 32  # Placeholder if no secret
 
         signature = hmac.new(
-            self.hmac_secret.encode("utf-8"),
-            content.encode("utf-8"),
-            hashlib.sha256
+            self.hmac_secret.encode("utf-8"), content.encode("utf-8"), hashlib.sha256
         )
         return signature.hexdigest()
 
@@ -353,10 +338,7 @@ class VerificationManifest:
         """
         # Create canonical JSON (without HMAC)
         canonical = json.dumps(
-            self.manifest_data,
-            sort_keys=True,
-            indent=None,
-            separators=(',', ':')
+            self.manifest_data, sort_keys=True, indent=None, separators=(",", ":")
         )
 
         # Compute HMAC
@@ -390,16 +372,13 @@ class VerificationManifest:
         """
         manifest_json = self.build_json()
 
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             f.write(manifest_json)
 
         logger.info(f"Verification manifest written to: {filepath}")
 
 
-def verify_manifest_integrity(
-    manifest: dict[str, Any],
-    hmac_secret: str
-) -> bool:
+def verify_manifest_integrity(manifest: dict[str, Any], hmac_secret: str) -> bool:
     """
     Verify HMAC integrity of a manifest.
 
@@ -422,17 +401,12 @@ def verify_manifest_integrity(
 
     # Compute canonical JSON
     canonical = json.dumps(
-        manifest_without_hmac,
-        sort_keys=True,
-        indent=None,
-        separators=(',', ':')
+        manifest_without_hmac, sort_keys=True, indent=None, separators=(",", ":")
     )
 
     # Compute expected HMAC
     expected_hmac = hmac.new(
-        hmac_secret.encode("utf-8"),
-        canonical.encode("utf-8"),
-        hashlib.sha256
+        hmac_secret.encode("utf-8"), canonical.encode("utf-8"), hashlib.sha256
     ).hexdigest()
 
     # Constant-time comparison

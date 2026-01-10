@@ -10,7 +10,16 @@ from typing import Any
 from uuid import UUID
 
 import structlog
-from fastapi import APIRouter, Body, Depends, Query, Request, Response, WebSocket, WebSocketDisconnect
+from fastapi import (
+    APIRouter,
+    Body,
+    Depends,
+    Query,
+    Request,
+    Response,
+    WebSocket,
+    WebSocketDisconnect,
+)
 from fastapi.responses import JSONResponse
 from sse_starlette.sse import EventSourceResponse
 
@@ -87,8 +96,12 @@ SSE_HUB = SSEHub()
 router = APIRouter(prefix="/api/v1", tags=["atroz-dashboard"])
 
 
-def _api_error(status: int, code: str, message: str, details: dict[str, Any] | None = None) -> JSONResponse:
-    payload = APIError(status=status, code=code, message=message, details=details).model_dump(mode="json")
+def _api_error(
+    status: int, code: str, message: str, details: dict[str, Any] | None = None
+) -> JSONResponse:
+    payload = APIError(status=status, code=code, message=message, details=details).model_dump(
+        mode="json"
+    )
     return JSONResponse(status_code=status, content=payload)
 
 
@@ -106,12 +119,16 @@ def _require_headers(request: Request) -> None:
     try:
         UUID(request_id)
     except ValueError as exc:
-        raise AtrozAPIException(status=400, code="BAD_REQUEST", message="Invalid X-Request-ID") from exc
+        raise AtrozAPIException(
+            status=400, code="BAD_REQUEST", message="Invalid X-Request-ID"
+        ) from exc
 
     if os.getenv("ATROZ_AUTH_REQUIRED", "false").lower() == "true":
         auth = request.headers.get("Authorization", "")
         if not auth.startswith("Bearer ") or len(auth) < 16:
-            raise AtrozAPIException(status=401, code="UNAUTHORIZED", message="Missing/invalid Authorization")
+            raise AtrozAPIException(
+                status=401, code="UNAUTHORIZED", message="Missing/invalid Authorization"
+            )
 
 
 async def require_atroz_headers(request: Request) -> None:
@@ -177,13 +194,17 @@ async def ingest_data(
 
 
 @router.get("/pdet/regions", response_model=list[PDETRegion])
-async def list_regions(response: Response, _: None = Depends(require_atroz_headers)) -> list[PDETRegion]:
+async def list_regions(
+    response: Response, _: None = Depends(require_atroz_headers)
+) -> list[PDETRegion]:
     response.headers["Cache-Control"] = "max-age=300"
     return await STORE.list_regions()
 
 
 @router.get("/pdet/regions/{region_id}", response_model=PDETRegion)
-async def get_region(region_id: str, response: Response, _: None = Depends(require_atroz_headers)) -> Response:
+async def get_region(
+    region_id: str, response: Response, _: None = Depends(require_atroz_headers)
+) -> Response:
     region = await STORE.get_region(region_id)
     if region is None:
         return _api_error(404, "NOT_FOUND", f"Region '{region_id}' not found")
@@ -238,14 +259,18 @@ async def get_questions(
 
 
 @router.get("/visualization/constellation", response_model=ConstellationData)
-async def get_constellation(response: Response, _: None = Depends(require_atroz_headers)) -> ConstellationData:
+async def get_constellation(
+    response: Response, _: None = Depends(require_atroz_headers)
+) -> ConstellationData:
     response.headers["Cache-Control"] = "max-age=1800"
     data = await STORE.build_constellation()
     return data
 
 
 @router.get("/visualization/radar/{municipality_id}", response_model=dict[str, float])
-async def get_radar(municipality_id: str, response: Response, _: None = Depends(require_atroz_headers)) -> Response:
+async def get_radar(
+    municipality_id: str, response: Response, _: None = Depends(require_atroz_headers)
+) -> Response:
     analysis = await STORE.get_municipality_analysis(municipality_id)
     if analysis is None:
         return _api_error(404, "NOT_FOUND", f"Municipality '{municipality_id}' not found")
@@ -269,7 +294,9 @@ async def get_helix(region_id: str, _: None = Depends(require_atroz_headers)) ->
 
 
 @router.get("/timeline/regions/{region_id}", response_model=list[TimelinePoint])
-async def get_timeline(region_id: str, _: None = Depends(require_atroz_headers)) -> list[TimelinePoint]:
+async def get_timeline(
+    region_id: str, _: None = Depends(require_atroz_headers)
+) -> list[TimelinePoint]:
     return await STORE.get_timeline(region_id)
 
 
@@ -292,7 +319,9 @@ async def compare_matrix(
 
 
 @router.get("/evidence/stream")
-async def evidence_stream(request: Request, _: None = Depends(require_atroz_headers)) -> EventSourceResponse:
+async def evidence_stream(
+    request: Request, _: None = Depends(require_atroz_headers)
+) -> EventSourceResponse:
     return EventSourceResponse(SSE_HUB.events(request))
 
 
@@ -319,17 +348,23 @@ async def export_dashboard(
 
 
 @router.post("/export/region")
-async def export_region(payload: ExportRequest, _: None = Depends(require_atroz_headers)) -> Response:
+async def export_region(
+    payload: ExportRequest, _: None = Depends(require_atroz_headers)
+) -> Response:
     return _export_bytes("region", payload)
 
 
 @router.post("/export/comparison")
-async def export_comparison(payload: ExportRequest, _: None = Depends(require_atroz_headers)) -> Response:
+async def export_comparison(
+    payload: ExportRequest, _: None = Depends(require_atroz_headers)
+) -> Response:
     return _export_bytes("comparison", payload)
 
 
 @router.post("/export/reports")
-async def export_reports(payload: ExportRequest, _: None = Depends(require_atroz_headers)) -> Response:
+async def export_reports(
+    payload: ExportRequest, _: None = Depends(require_atroz_headers)
+) -> Response:
     return _export_bytes("reports", payload)
 
 
@@ -356,27 +391,27 @@ def _export_bytes(scope: str, payload: ExportRequest) -> Response:
         return Response(
             content=data,
             media_type="image/png",
-            headers={"Content-Disposition": f"attachment; filename=\"{scope}.png\""},
+            headers={"Content-Disposition": f'attachment; filename="{scope}.png"'},
         )
     if payload.format == "svg":
-        svg = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1\" height=\"1\"></svg>"
+        svg = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"></svg>'
         return Response(
             content=svg.encode("utf-8"),
             media_type="image/svg+xml",
-            headers={"Content-Disposition": f"attachment; filename=\"{scope}.svg\""},
+            headers={"Content-Disposition": f'attachment; filename="{scope}.svg"'},
         )
     if payload.format == "pdf":
         pdf = _minimal_pdf()
         return Response(
             content=pdf,
             media_type="application/pdf",
-            headers={"Content-Disposition": f"attachment; filename=\"{scope}.pdf\""},
+            headers={"Content-Disposition": f'attachment; filename="{scope}.pdf"'},
         )
     html = "<!doctype html><html><body><pre>Export placeholder</pre></body></html>"
     return Response(
         content=html.encode("utf-8"),
         media_type="text/html",
-        headers={"Content-Disposition": f"attachment; filename=\"{scope}.html\""},
+        headers={"Content-Disposition": f'attachment; filename="{scope}.html"'},
     )
 
 

@@ -52,8 +52,10 @@ logger = logging.getLogger(__name__)
 # Type Definitions & Enums
 # -----------------------------------------------------------------------------
 
+
 class RelationshipType(Enum):
     """Standard types of semantic relationships."""
+
     DEPENDS_ON = "depends_on"
     EQUIVALENT_TO = "equivalent_to"
     CONTRADICTS = "contradicts"
@@ -72,6 +74,7 @@ class RelationshipType(Enum):
 
 class RelationshipErrorType(Enum):
     """Types of relationship anomalies detected."""
+
     CYCLE_DETECTED = "cycle_detected"
     SELF_REFERENCE = "self_reference"
     INVALID_TYPE = "invalid_type"
@@ -83,6 +86,7 @@ class RelationshipErrorType(Enum):
 @dataclass(frozen=True)
 class RelationshipError:
     """Immutable record of a relationship anomaly."""
+
     error_type: RelationshipErrorType
     entity_ids: Tuple[str, ...]
     message: str
@@ -96,6 +100,7 @@ class RelationshipError:
 @dataclass(frozen=True)
 class SemanticRelationship:
     """Represents a semantic relationship between two entities."""
+
     source_id: str
     target_id: str
     relationship_type: RelationshipType
@@ -156,6 +161,7 @@ class SemanticRelationship:
 @dataclass
 class RelationshipCluster:
     """A cluster of entities related by equivalence or same-as."""
+
     cluster_id: str
     entity_ids: Set[str]
     representative_id: str
@@ -165,6 +171,7 @@ class RelationshipCluster:
 @dataclass
 class RelationshipReport:
     """Report from relationship extraction."""
+
     total_relationships: int
     total_entities: int
     relationships_by_type: Dict[str, int]
@@ -176,6 +183,7 @@ class RelationshipReport:
 # -----------------------------------------------------------------------------
 # Protocol: RelationshipSourceAdapter
 # -----------------------------------------------------------------------------
+
 
 @runtime_checkable
 class RelationshipSourceAdapter(Protocol):
@@ -197,6 +205,7 @@ class RelationshipSourceAdapter(Protocol):
 # Built-in Source Adapters
 # -----------------------------------------------------------------------------
 
+
 class DictRelationshipAdapter:
     """Adapter for in-memory list of relationship dictionaries."""
 
@@ -206,7 +215,7 @@ class DictRelationshipAdapter:
         source_field: str = "source",
         target_field: str = "target",
         type_field: str = "type",
-        source_name: str = "in_memory"
+        source_name: str = "in_memory",
     ):
         self._data = data
         self._source_field = source_field
@@ -226,7 +235,7 @@ class DictRelationshipAdapter:
                 "source": self._source_field,
                 "target": self._target_field,
                 "type": self._type_field,
-            }
+            },
         }
 
 
@@ -240,7 +249,7 @@ class CSVRelationshipAdapter:
         target_field: str = "target",
         type_field: str = "type",
         encoding: str = "utf-8",
-        **kwargs
+        **kwargs,
     ):
         self._file_path = Path(file_path)
         self._source_field = source_field
@@ -278,7 +287,7 @@ class JSONRelationshipAdapter:
         target_field: str = "target",
         type_field: str = "type",
         record_path: str = "relationships",
-        encoding: str = "utf-8"
+        encoding: str = "utf-8",
     ):
         self._file_path = Path(file_path)
         self._source_field = source_field
@@ -314,6 +323,7 @@ class JSONRelationshipAdapter:
 # -----------------------------------------------------------------------------
 # Core: SemanticRelationshipExtractor
 # -----------------------------------------------------------------------------
+
 
 class SemanticRelationshipExtractor:
     """
@@ -380,7 +390,9 @@ class SemanticRelationshipExtractor:
         self._reset()
         self._source_metadata = source.get_source_metadata()
 
-        logger.info(f"Ingesting relationships from {self._source_metadata.get('source_type', 'unknown')}")
+        logger.info(
+            f"Ingesting relationships from {self._source_metadata.get('source_type', 'unknown')}"
+        )
 
         # Phase 1: Load all relationships
         for raw_rel in source.fetch_relationships():
@@ -388,22 +400,26 @@ class SemanticRelationshipExtractor:
                 rel = self._parse_relationship(raw_rel)
                 if rel:
                     self._add_relationship(rel)
-                    self._audit_trail.append({
-                        "action": "add",
-                        "relationship": f"{rel.source_id} -> {rel.target_id}",
-                        "type": rel.relationship_type.value,
-                        "timestamp": datetime.now(timezone.utc).isoformat(),
-                    })
+                    self._audit_trail.append(
+                        {
+                            "action": "add",
+                            "relationship": f"{rel.source_id} -> {rel.target_id}",
+                            "type": rel.relationship_type.value,
+                            "timestamp": datetime.now(timezone.utc).isoformat(),
+                        }
+                    )
             except Exception as e:
                 logger.warning(f"Failed to parse relationship: {e}")
                 self._add_error(
                     RelationshipErrorType.INVALID_TYPE,
                     (),
                     f"Failed to parse relationship: {e}",
-                    severity="warning"
+                    severity="warning",
                 )
 
-        logger.info(f"Loaded {len(self._relationships)} relationships between {len(self._entities)} entities")
+        logger.info(
+            f"Loaded {len(self._relationships)} relationships between {len(self._entities)} entities"
+        )
 
         # Phase 2: Detect cycles
         if self._detect_cycles:
@@ -621,7 +637,11 @@ class SemanticRelationshipExtractor:
             target_id=str(target),
             relationship_type=rel_type,
             confidence=float(raw.get("confidence", 1.0)),
-            metadata={k: v for k, v in raw.items() if k not in (self._source_field, self._target_field, self._type_field)}
+            metadata={
+                k: v
+                for k, v in raw.items()
+                if k not in (self._source_field, self._target_field, self._type_field)
+            },
         )
 
     def _add_relationship(self, rel: SemanticRelationship) -> None:
@@ -632,7 +652,7 @@ class SemanticRelationshipExtractor:
                 RelationshipErrorType.SELF_REFERENCE,
                 (rel.source_id,),
                 f"Self-reference detected for entity '{rel.source_id}'",
-                severity="warning"
+                severity="warning",
             )
             return
 
@@ -644,7 +664,7 @@ class SemanticRelationshipExtractor:
                     RelationshipErrorType.DUPLICATE_RELATIONSHIP,
                     (rel.source_id, rel.target_id),
                     f"Duplicate relationship: {rel.source_id} -> {rel.target_id}",
-                    severity="warning"
+                    severity="warning",
                 )
                 return
 
@@ -671,7 +691,7 @@ class SemanticRelationshipExtractor:
                     RelationshipErrorType.CYCLE_DETECTED,
                     tuple(cycle),
                     f"Cycle detected: {' -> '.join(cycle)}",
-                    severity="warning"
+                    severity="warning",
                 )
                 return
 
@@ -730,12 +750,14 @@ class SemanticRelationshipExtractor:
         for i, (root, members) in enumerate(clusters_by_root.items()):
             if len(members) > 1:  # Only clusters with >1 member
                 representative = min(members)  # Use lexicographically smallest as representative
-                clusters.append(RelationshipCluster(
-                    cluster_id=f"cluster_{i}",
-                    entity_ids=members,
-                    representative_id=representative,
-                    relationship_type=RelationshipType.SAME_AS,
-                ))
+                clusters.append(
+                    RelationshipCluster(
+                        cluster_id=f"cluster_{i}",
+                        entity_ids=members,
+                        representative_id=representative,
+                        relationship_type=RelationshipType.SAME_AS,
+                    )
+                )
 
         self._clusters = clusters
         return clusters
@@ -745,7 +767,9 @@ class SemanticRelationshipExtractor:
         metrics = {
             "total_entities": len(self._entities),
             "total_relationships": len(self._relationships),
-            "relationships_by_type": dict(Counter(r.relationship_type.value for r in self._relationships)),
+            "relationships_by_type": dict(
+                Counter(r.relationship_type.value for r in self._relationships)
+            ),
             "error_count": len(self._errors),
             "errors_by_type": self._count_errors_by_type(),
             "cluster_count": len(self._clusters),
@@ -807,8 +831,8 @@ class SemanticRelationshipExtractor:
         """Export as Graphviz DOT format."""
         lines = [
             "digraph SemanticRelationships {",
-            '  rankdir=LR;',
-            '  node [shape=box];',
+            "  rankdir=LR;",
+            "  node [shape=box];",
             "",
         ]
 
@@ -862,12 +886,14 @@ class SemanticRelationshipExtractor:
         severity: Literal["warning", "error", "fatal"] = "error",
     ) -> None:
         """Add an error to the error list."""
-        self._errors.append(RelationshipError(
-            error_type=error_type,
-            entity_ids=entity_ids,
-            message=message,
-            severity=severity,
-        ))
+        self._errors.append(
+            RelationshipError(
+                error_type=error_type,
+                entity_ids=entity_ids,
+                message=message,
+                severity=severity,
+            )
+        )
         logger.warning(f"Relationship anomaly: {error_type.value} - {message}")
 
     def _count_errors_by_type(self) -> Dict[str, int]:

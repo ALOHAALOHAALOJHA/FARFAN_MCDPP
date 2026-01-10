@@ -18,14 +18,16 @@ from typing import Dict
 
 class WeightTier(Enum):
     """Weight tier classification for subphases."""
+
     CRITICAL = "CRITICAL"  # 10000: Constitutional invariants
-    HIGH = "HIGH"          # 5000-9000: Essential processing
+    HIGH = "HIGH"  # 5000-9000: Essential processing
     STANDARD = "STANDARD"  # 900-4999: Standard processing
 
 
 @dataclass(frozen=True)
 class SubphaseWeight:
     """Weight specification for a subphase."""
+
     subphase_id: str
     weight: int
     tier: WeightTier
@@ -40,14 +42,18 @@ PHASE1_SUBPHASE_WEIGHTS: Dict[str, SubphaseWeight] = {
     "SP1": SubphaseWeight("SP1", 2500, WeightTier.STANDARD, 1.0, False, "Language preprocessing"),
     "SP2": SubphaseWeight("SP2", 3000, WeightTier.STANDARD, 1.0, False, "Structural analysis"),
     "SP3": SubphaseWeight("SP3", 4000, WeightTier.STANDARD, 1.0, False, "Knowledge graph"),
-    "SP4": SubphaseWeight("SP4", 10000, WeightTier.CRITICAL, 3.0, True, "PA×Dim grid specification"),
+    "SP4": SubphaseWeight(
+        "SP4", 10000, WeightTier.CRITICAL, 3.0, True, "PA×Dim grid specification"
+    ),
     "SP5": SubphaseWeight("SP5", 5000, WeightTier.HIGH, 2.0, False, "Causal extraction"),
     "SP6": SubphaseWeight("SP6", 3500, WeightTier.STANDARD, 1.0, False, "Arguments extraction"),
     "SP7": SubphaseWeight("SP7", 4500, WeightTier.STANDARD, 1.0, False, "Discourse analysis"),
     "SP8": SubphaseWeight("SP8", 3500, WeightTier.STANDARD, 1.0, False, "Temporal extraction"),
     "SP9": SubphaseWeight("SP9", 6000, WeightTier.HIGH, 2.0, False, "Causal integration"),
     "SP10": SubphaseWeight("SP10", 8000, WeightTier.HIGH, 2.0, False, "Strategic integration"),
-    "SP11": SubphaseWeight("SP11", 10000, WeightTier.CRITICAL, 3.0, True, "Chunk assembly (60 chunks)"),
+    "SP11": SubphaseWeight(
+        "SP11", 10000, WeightTier.CRITICAL, 3.0, True, "Chunk assembly (60 chunks)"
+    ),
     "SP12": SubphaseWeight("SP12", 7000, WeightTier.HIGH, 2.0, False, "SISAS irrigation"),
     "SP13": SubphaseWeight("SP13", 10000, WeightTier.CRITICAL, 3.0, True, "CPP packaging"),
     "SP14": SubphaseWeight("SP14", 5000, WeightTier.HIGH, 2.0, False, "Quality metrics"),
@@ -57,24 +63,30 @@ PHASE1_SUBPHASE_WEIGHTS: Dict[str, SubphaseWeight] = {
 
 def validate_mission_contract() -> bool:
     """Validate Phase 1 mission contract integrity.
-    
+
     Returns:
         True if contract is valid
-        
+
     Raises:
         ValueError: If contract validation fails
     """
     if len(PHASE1_SUBPHASE_WEIGHTS) != 16:
-        raise ValueError(f"Mission contract must have exactly 16 subphases, got {len(PHASE1_SUBPHASE_WEIGHTS)}")
-    
-    critical_subphases = [sp for sp in PHASE1_SUBPHASE_WEIGHTS.values() if sp.tier == WeightTier.CRITICAL]
+        raise ValueError(
+            f"Mission contract must have exactly 16 subphases, got {len(PHASE1_SUBPHASE_WEIGHTS)}"
+        )
+
+    critical_subphases = [
+        sp for sp in PHASE1_SUBPHASE_WEIGHTS.values() if sp.tier == WeightTier.CRITICAL
+    ]
     if len(critical_subphases) != 3:
-        raise ValueError(f"Mission contract must have exactly 3 CRITICAL subphases, got {len(critical_subphases)}")
-    
+        raise ValueError(
+            f"Mission contract must have exactly 3 CRITICAL subphases, got {len(critical_subphases)}"
+        )
+
     # Verify SP4, SP11, SP13 are critical
     if not all(sp in ["SP4", "SP11", "SP13"] for sp in [s.subphase_id for s in critical_subphases]):
         raise ValueError("CRITICAL subphases must be SP4, SP11, SP13")
-    
+
     return True
 
 

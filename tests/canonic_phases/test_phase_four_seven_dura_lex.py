@@ -43,6 +43,7 @@ from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_enhanceme
 # CONTRACT 1: AUDIT TRAIL
 # ============================================================================
 
+
 def test_dura_lex_01_aggregation_audit_trail():
     """
     DURA LEX CONTRACT 1: All operations must be auditable.
@@ -52,8 +53,7 @@ def test_dura_lex_01_aggregation_audit_trail():
         - Rationales are provided for every contribution
     """
     config = ChoquetConfig(
-        linear_weights={"@a": 0.5, "@b": 0.5},
-        interaction_weights={("@a", "@b"): 0.2}
+        linear_weights={"@a": 0.5, "@b": 0.5}, interaction_weights={("@a", "@b"): 0.2}
     )
     aggregator = ChoquetAggregator(config)
     result = aggregator.aggregate("test", {"@a": 0.8, "@b": 0.6})
@@ -72,6 +72,7 @@ def test_dura_lex_01_aggregation_audit_trail():
 # ============================================================================
 # CONTRACT 2 & 4: DETERMINISM
 # ============================================================================
+
 
 def test_dura_lex_02_04_aggregation_determinism():
     """
@@ -93,6 +94,7 @@ def test_dura_lex_02_04_aggregation_determinism():
 # CONTRACT 3: CONTEXT IMMUTABILITY
 # ============================================================================
 
+
 def test_dura_lex_03_config_immutability():
     """
     DURA LEX CONTRACT 3: Config objects must be immutable.
@@ -109,6 +111,7 @@ def test_dura_lex_03_config_immutability():
 # ============================================================================
 # CONTRACT 5: FAILURE FALLBACK
 # ============================================================================
+
 
 def test_dura_lex_05_failure_handling():
     """
@@ -131,6 +134,7 @@ def test_dura_lex_05_failure_handling():
 # CONTRACT 6: GOVERNANCE (BOUNDEDNESS)
 # ============================================================================
 
+
 def test_dura_lex_06_boundedness_governance():
     """
     DURA LEX CONTRACT 6: Governance rules (boundedness) enforced.
@@ -141,10 +145,7 @@ def test_dura_lex_06_boundedness_governance():
     """
     # Create config that could theoretically exceed 1.0 without normalization
     # But aggregator normalizes by default
-    config = ChoquetConfig(
-        linear_weights={"@a": 10.0},
-        normalize_weights=True
-    )
+    config = ChoquetConfig(linear_weights={"@a": 10.0}, normalize_weights=True)
     aggregator = ChoquetAggregator(config)
     result = aggregator.aggregate("test", {"@a": 1.0})
 
@@ -156,6 +157,7 @@ def test_dura_lex_06_boundedness_governance():
 # ============================================================================
 # CONTRACT 7: IDEMPOTENCY
 # ============================================================================
+
 
 def test_dura_lex_07_idempotency():
     """
@@ -178,6 +180,7 @@ def test_dura_lex_07_idempotency():
 # CONTRACT 8: MONOTONE COMPLIANCE
 # ============================================================================
 
+
 def test_dura_lex_08_monotonicity():
     """
     DURA LEX CONTRACT 8: Monotone compliance (Higher inputs -> Higher outputs).
@@ -186,8 +189,7 @@ def test_dura_lex_08_monotonicity():
         - Increasing a layer score increases (or keeps constant) the aggregate
     """
     config = ChoquetConfig(
-        linear_weights={"@a": 0.5, "@b": 0.5},
-        interaction_weights={("@a", "@b"): 0.2}
+        linear_weights={"@a": 0.5, "@b": 0.5}, interaction_weights={("@a", "@b"): 0.2}
     )
     aggregator = ChoquetAggregator(config)
 
@@ -201,6 +203,7 @@ def test_dura_lex_08_monotonicity():
 # CONTRACT 9: PERMUTATION INVARIANCE (PARTIAL)
 # ============================================================================
 
+
 def test_dura_lex_09_permutation_invariance():
     """
     DURA LEX CONTRACT 9: Permutation invariance.
@@ -210,8 +213,7 @@ def test_dura_lex_09_permutation_invariance():
         - If weights are equal, swapping inputs shouldn't change result.
     """
     config = ChoquetConfig(
-        linear_weights={"@a": 0.5, "@b": 0.5},
-        interaction_weights={("@a", "@b"): 0.1}
+        linear_weights={"@a": 0.5, "@b": 0.5}, interaction_weights={("@a", "@b"): 0.1}
     )
     aggregator = ChoquetAggregator(config)
 
@@ -224,6 +226,7 @@ def test_dura_lex_09_permutation_invariance():
 # ============================================================================
 # CONTRACT 10: REFUSAL
 # ============================================================================
+
 
 def test_dura_lex_10_refusal():
     """
@@ -239,6 +242,7 @@ def test_dura_lex_10_refusal():
 # ============================================================================
 # CONTRACT 14: SNAPSHOT CONTRACT
 # ============================================================================
+
 
 def test_dura_lex_14_snapshot():
     """
@@ -261,6 +265,7 @@ def test_dura_lex_14_snapshot():
 # CONTRACT 15: TRACEABILITY
 # ============================================================================
 
+
 def test_dura_lex_15_traceability():
     """
     DURA LEX CONTRACT 15: Decisions must be traceable.
@@ -268,12 +273,13 @@ def test_dura_lex_15_traceability():
     Validates:
         - Enhanced cluster aggregator adaptive penalty is traceable via metrics
     """
+
     class MockBase:
         pass
 
     enhanced = EnhancedClusterAggregator(MockBase(), enable_contracts=False)
 
-    scores = [1.0, 1.0, 1.0, 1.0] # Convergence
+    scores = [1.0, 1.0, 1.0, 1.0]  # Convergence
     metrics = enhanced.compute_dispersion_metrics(scores)
 
     assert metrics.scenario == "convergence"

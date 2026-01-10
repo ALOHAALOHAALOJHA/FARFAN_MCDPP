@@ -24,6 +24,7 @@ from farfan_pipeline.phases.Phase_three.scoring import (
 @dataclass
 class MockEvidence:
     """Mock Evidence object for testing."""
+
     modality: str
     elements: list[Any] = field(default_factory=list)
     raw_results: dict[str, Any] = field(default_factory=dict)
@@ -34,6 +35,7 @@ class MockEvidence:
 @dataclass
 class MockMicroQuestionRun:
     """Mock MicroQuestionRun for testing."""
+
     question_id: str
     question_global: int
     base_slot: str
@@ -44,11 +46,8 @@ class MockMicroQuestionRun:
 
 def test_extract_score_from_nexus_with_overall_confidence():
     """Test extracting score from overall_confidence (primary path)."""
-    result_data = {
-        "overall_confidence": 0.85,
-        "completeness": "complete"
-    }
-    
+    result_data = {"overall_confidence": 0.85, "completeness": "complete"}
+
     score = extract_score_from_nexus(result_data)
     assert score == 0.85, f"Expected 0.85, got {score}"
     print("✓ extract_score_from_nexus with overall_confidence")
@@ -56,13 +55,8 @@ def test_extract_score_from_nexus_with_overall_confidence():
 
 def test_extract_score_from_nexus_fallback_validation():
     """Test extracting score from validation.score (fallback)."""
-    result_data = {
-        "validation": {
-            "score": 0.0,
-            "quality_level": "FAILED_VALIDATION"
-        }
-    }
-    
+    result_data = {"validation": {"score": 0.0, "quality_level": "FAILED_VALIDATION"}}
+
     score = extract_score_from_nexus(result_data)
     assert score == 0.0, f"Expected 0.0, got {score}"
     print("✓ extract_score_from_nexus with validation fallback")
@@ -70,16 +64,8 @@ def test_extract_score_from_nexus_fallback_validation():
 
 def test_extract_score_from_nexus_fallback_confidence_mean():
     """Test extracting score from evidence confidence_scores.mean."""
-    result_data = {
-        "evidence": {
-            "confidence_scores": {
-                "mean": 0.72,
-                "min": 0.5,
-                "max": 0.9
-            }
-        }
-    }
-    
+    result_data = {"evidence": {"confidence_scores": {"mean": 0.72, "min": 0.5, "max": 0.9}}}
+
     score = extract_score_from_nexus(result_data)
     assert score == 0.72, f"Expected 0.72, got {score}"
     print("✓ extract_score_from_nexus with confidence_scores fallback")
@@ -122,12 +108,8 @@ def test_extract_quality_level_with_completeness():
 
 def test_extract_quality_level_fallback_validation():
     """Test extracting quality level from validation (fallback)."""
-    evidence = {
-        "validation": {
-            "quality_level": "FAILED_VALIDATION"
-        }
-    }
-    
+    evidence = {"validation": {"quality_level": "FAILED_VALIDATION"}}
+
     quality = extract_quality_level(evidence, completeness=None)
     assert quality == "FAILED_VALIDATION", f"Expected FAILED_VALIDATION, got {quality}"
     print("✓ extract_quality_level with validation fallback")
@@ -143,7 +125,7 @@ def test_extract_quality_level_none():
 def run_all_tests():
     """Run all Phase 3 tests."""
     print("\n=== Phase 3 Scoring Tests (EvidenceNexus) ===\n")
-    
+
     try:
         test_extract_score_from_nexus_with_overall_confidence()
         test_extract_score_from_nexus_fallback_validation()
@@ -155,16 +137,17 @@ def run_all_tests():
         test_extract_quality_level_with_completeness()
         test_extract_quality_level_fallback_validation()
         test_extract_quality_level_none()
-        
+
         print("\n✅ All Phase 3 tests passed! (EvidenceNexus architecture validated)\n")
         return True
-        
+
     except AssertionError as e:
         print(f"\n❌ Test failed: {e}\n")
         return False
     except Exception as e:
         print(f"\n❌ Unexpected error: {e}\n")
         import traceback
+
         traceback.print_exc()
         return False
 

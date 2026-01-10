@@ -21,7 +21,7 @@ from .audit_trail import (
 
 __all__ = [
     "SegmentationMethod",
-    "SegmentationInfo", 
+    "SegmentationInfo",
     "FallbackCategory",
     "VerificationManifest",
     "CalibrationScore",

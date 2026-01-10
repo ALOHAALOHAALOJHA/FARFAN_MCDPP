@@ -9,6 +9,7 @@ import importlib.util
 from pathlib import Path
 from datetime import datetime, timezone
 
+
 def load_module_from_file(module_name, file_path):
     """Carga un módulo desde un archivo sin ejecutar __init__.py del paquete"""
     spec = importlib.util.spec_from_file_location(module_name, file_path)
@@ -17,41 +18,36 @@ def load_module_from_file(module_name, file_path):
     spec.loader.exec_module(module)
     return module
 
+
 # Agregar src al path
-src_path = Path(__file__).resolve().parent / 'src'
+src_path = Path(__file__).resolve().parent / "src"
 sys.path.insert(0, str(src_path))  # noqa: E501
 
 # Cargar módulos del generador directamente desde archivos
-base_path = src_path / 'farfan_pipeline/phases/Phase_two/contract_generator'
+base_path = src_path / "farfan_pipeline/phases/Phase_two/contract_generator"
 
 input_registry = load_module_from_file(
-    'contract_generator.input_registry',
-    base_path / 'input_registry.py'
+    "contract_generator.input_registry", base_path / "input_registry.py"
 )
 
 method_expander = load_module_from_file(
-    'contract_generator.method_expander',
-    base_path / 'method_expander.py'
+    "contract_generator.method_expander", base_path / "method_expander.py"
 )
 
 chain_composer = load_module_from_file(
-    'contract_generator.chain_composer',
-    base_path / 'chain_composer.py'
+    "contract_generator.chain_composer", base_path / "chain_composer.py"
 )
 
 contract_assembler = load_module_from_file(
-    'contract_generator.contract_assembler',
-    base_path / 'contract_assembler.py'
+    "contract_generator.contract_assembler", base_path / "contract_assembler.py"
 )
 
 contract_validator = load_module_from_file(
-    'contract_generator.contract_validator',
-    base_path / 'contract_validator.py'
+    "contract_generator.contract_validator", base_path / "contract_validator.py"
 )
 
 json_emitter = load_module_from_file(
-    'contract_generator.json_emitter',
-    base_path / 'json_emitter.py'
+    "contract_generator.json_emitter", base_path / "json_emitter.py"
 )
 
 # Importar clases necesarias
@@ -64,10 +60,7 @@ JSONEmitter = json_emitter.JSONEmitter
 
 import logging
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger("ContractGenerator")
 
 

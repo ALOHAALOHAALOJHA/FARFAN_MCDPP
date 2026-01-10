@@ -25,6 +25,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 class EnforcementLevel(Enum):
     """GNEA enforcement levels as defined in FPN-GNEA-001."""
+
     L0_ADVISORY = "advisory"
     L1_GUIDED = "guided"
     L2_ENFORCED = "enforced"
@@ -34,6 +35,7 @@ class EnforcementLevel(Enum):
 
 class Severity(Enum):
     """Violation severity levels."""
+
     ERROR = "ERROR"
     WARNING = "WARNING"
     INFO = "INFO"
@@ -42,6 +44,7 @@ class Severity(Enum):
 @dataclass
 class Violation:
     """Represents a GNEA policy violation."""
+
     filepath: Path
     rule: str
     severity: Severity
@@ -55,6 +58,7 @@ class Violation:
 @dataclass
 class ComplianceReport:
     """Compliance report for GNEA validation."""
+
     timestamp: str
     enforcement_level: str
     total_files: int
@@ -82,31 +86,38 @@ class GNEARules:
     # OO = Order within stage (00, 01, 02, ...)
     # name = lowercase_with_underscores
     PHASE_MODULE_PATTERN = re.compile(
-        r'^phase(?P<phase>[0-9])_'
-        r'(?P<stage>\d{2})_'
-        r'(?P<order>\d{2})_'
-        r'(?P<name>[a-z][a-z0-9_]*)\.py$'
+        r"^phase(?P<phase>[0-9])_"
+        r"(?P<stage>\d{2})_"
+        r"(?P<order>\d{2})_"
+        r"(?P<name>[a-z][a-z0-9_]*)\.py$"
     )
 
     # Contract pattern: Q{NNN}_{policy_area}_executor_contract.json
     CONTRACT_PATTERN = re.compile(
-        r'^Q(?P<number>\d{3})_'
-        r'(?P<policy_area>[a-z][a-z0-9_]*)_executor_contract\.json$'
+        r"^Q(?P<number>\d{3})_" r"(?P<policy_area>[a-z][a-z0-9_]*)_executor_contract\.json$"
     )
 
     # Contract with version suffix (existing pattern)
     CONTRACT_VERSION_PATTERN = re.compile(
-        r'^Q(?P<number>\d{3})_'
-        r'(?P<policy_area>[A-Z0-9]+)_contract_v(?P<version>\d+)\.json$'
+        r"^Q(?P<number>\d{3})_" r"(?P<policy_area>[A-Z0-9]+)_contract_v(?P<version>\d+)\.json$"
     )
 
     # Phase directory pattern: Phase_{N}
-    PHASE_DIR_PATTERN = re.compile(r'^Phase_(?P<number>[0-9])$')
+    PHASE_DIR_PATTERN = re.compile(r"^Phase_(?P<number>[0-9])$")
 
     # Forbidden directory names
     FORBIDDEN_DIRS = {
-        'temp', 'tmp', 'backup', 'old', 'misc', 'legacy',
-        'deprecated', 'archive', 'staging', 'dev', 'test'
+        "temp",
+        "tmp",
+        "backup",
+        "old",
+        "misc",
+        "legacy",
+        "deprecated",
+        "archive",
+        "staging",
+        "dev",
+        "test",
     }
 
     # Stage numbers for phase modules
@@ -127,7 +138,7 @@ class GNEAEnforcer:
         self,
         level: EnforcementLevel = EnforcementLevel.L1_GUIDED,
         repo_root: Optional[Path] = None,
-        verbose: bool = False
+        verbose: bool = False,
     ):
         self.level = level
         self.repo_root = repo_root or Path.cwd()
@@ -136,9 +147,17 @@ class GNEAEnforcer:
         self.rules = GNEARules()
         self.files_validated: Set[Path] = set()
         self.excluded_paths = {
-            '.git', '.venv', '__pycache__', '.pytest_cache',
-            '.ruff_cache', '.mypy_cache', 'node_modules', '.tox',
-            'dist', 'build', '*.egg-info'
+            ".git",
+            ".venv",
+            "__pycache__",
+            ".pytest_cache",
+            ".ruff_cache",
+            ".mypy_cache",
+            "node_modules",
+            ".tox",
+            "dist",
+            "build",
+            "*.egg-info",
         }
 
     def validate_repository(self) -> ComplianceReport:
@@ -195,14 +214,14 @@ class GNEAEnforcer:
             self._validate_contract(filepath)
 
         # Documentation validation
-        if filepath.suffix == '.md':
+        if filepath.suffix == ".md":
             self._validate_documentation(filepath)
 
         # Hierarchy depth validation
         self._validate_hierarchy_depth(filepath)
 
         # Python metadata validation
-        if filepath.suffix == '.py':
+        if filepath.suffix == ".py":
             self._validate_python_metadata(filepath)
 
     def _is_phase_module(self, filepath: Path) -> bool:
@@ -211,11 +230,11 @@ class GNEAEnforcer:
         parts = filepath.parts
         if "phases" not in parts:
             return False
-        return filepath.suffix == '.py' and filepath.name.startswith('phase')
+        return filepath.suffix == ".py" and filepath.name.startswith("phase")
 
     def _is_contract(self, filepath: Path) -> bool:
         """Check if file is a contract file."""
-        return filepath.name.startswith('Q') and filepath.suffix == '.json'
+        return filepath.name.startswith("Q") and filepath.suffix == ".json"
 
     def _validate_phase_module(self, filepath: Path) -> None:
         """Validate phase module naming and structure."""
@@ -224,14 +243,16 @@ class GNEAEnforcer:
         # Check if filename matches pattern
         match = self.rules.PHASE_MODULE_PATTERN.match(filename)
         if not match:
-            self.violations.append(Violation(
-                filepath=filepath,
-                rule="PHASE-001",
-                severity=Severity.ERROR,
-                message=f"Invalid phase module name: {filename}",
-                suggestion=self._suggest_phase_name(filepath),
-                auto_fixable=True
-            ))
+            self.violations.append(
+                Violation(
+                    filepath=filepath,
+                    rule="PHASE-001",
+                    severity=Severity.ERROR,
+                    message=f"Invalid phase module name: {filename}",
+                    suggestion=self._suggest_phase_name(filepath),
+                    auto_fixable=True,
+                )
+            )
             return
 
         # Validate internal consistency
@@ -250,7 +271,7 @@ class GNEAEnforcer:
                 if isinstance(node, ast.Assign):
                     for target in node.targets:
                         if isinstance(target, ast.Name):
-                            if target.id.startswith('__') and target.id.endswith('__'):
+                            if target.id.startswith("__") and target.id.endswith("__"):
                                 try:
                                     if isinstance(node.value, ast.Constant):
                                         metadata[target.id] = node.value.value
@@ -258,37 +279,43 @@ class GNEAEnforcer:
                                     pass
 
             # Check phase metadata
-            expected_phase = parts['phase']
-            actual_phase = metadata.get('__phase__')
+            expected_phase = parts["phase"]
+            actual_phase = metadata.get("__phase__")
             if actual_phase is not None and str(actual_phase) != expected_phase:
-                self.violations.append(Violation(
-                    filepath=filepath,
-                    rule="PHASE-002",
-                    severity=Severity.ERROR,
-                    message=f"Phase metadata mismatch: expected __phase__ = {expected_phase}, got {actual_phase}",
-                    auto_fixable=True
-                ))
+                self.violations.append(
+                    Violation(
+                        filepath=filepath,
+                        rule="PHASE-002",
+                        severity=Severity.ERROR,
+                        message=f"Phase metadata mismatch: expected __phase__ = {expected_phase}, got {actual_phase}",
+                        auto_fixable=True,
+                    )
+                )
 
             # Check stage metadata
-            expected_stage = int(parts['stage'])
-            actual_stage = metadata.get('__stage__')
+            expected_stage = int(parts["stage"])
+            actual_stage = metadata.get("__stage__")
             if actual_stage is not None and int(actual_stage) != expected_stage:
-                self.violations.append(Violation(
-                    filepath=filepath,
-                    rule="PHASE-003",
-                    severity=Severity.ERROR,
-                    message=f"Stage metadata mismatch: expected __stage__ = {expected_stage}, got {actual_stage}",
-                    auto_fixable=True
-                ))
+                self.violations.append(
+                    Violation(
+                        filepath=filepath,
+                        rule="PHASE-003",
+                        severity=Severity.ERROR,
+                        message=f"Stage metadata mismatch: expected __stage__ = {expected_stage}, got {actual_stage}",
+                        auto_fixable=True,
+                    )
+                )
 
         except (SyntaxError, UnicodeDecodeError) as e:
-            self.violations.append(Violation(
-                filepath=filepath,
-                rule="PHASE-004",
-                severity=Severity.WARNING,
-                message=f"Could not parse file: {e}",
-                auto_fixable=False
-            ))
+            self.violations.append(
+                Violation(
+                    filepath=filepath,
+                    rule="PHASE-004",
+                    severity=Severity.WARNING,
+                    message=f"Could not parse file: {e}",
+                    auto_fixable=False,
+                )
+            )
 
     def _validate_contract(self, filepath: Path) -> None:
         """Validate contract file naming."""
@@ -299,29 +326,33 @@ class GNEAEnforcer:
         match_v2 = self.rules.CONTRACT_VERSION_PATTERN.match(filename)
 
         if not match_v1 and not match_v2:
-            self.violations.append(Violation(
-                filepath=filepath,
-                rule="CONTRACT-001",
-                severity=Severity.WARNING,
-                message=f"Contract name doesn't match standard pattern: {filename}",
-                auto_fixable=False
-            ))
+            self.violations.append(
+                Violation(
+                    filepath=filepath,
+                    rule="CONTRACT-001",
+                    severity=Severity.WARNING,
+                    message=f"Contract name doesn't match standard pattern: {filename}",
+                    auto_fixable=False,
+                )
+            )
             return
 
         # Validate contract sequential numbering
         if match_v1:
-            number = int(match_v1.group('number'))
+            number = int(match_v1.group("number"))
         else:
-            number = int(match_v2.group('number'))
+            number = int(match_v2.group("number"))
 
         if number < 1 or number > 300:
-            self.violations.append(Violation(
-                filepath=filepath,
-                rule="CONTRACT-002",
-                severity=Severity.ERROR,
-                message=f"Contract number out of range (001-300): Q{number:03d}",
-                auto_fixable=False
-            ))
+            self.violations.append(
+                Violation(
+                    filepath=filepath,
+                    rule="CONTRACT-002",
+                    severity=Severity.ERROR,
+                    message=f"Contract number out of range (001-300): Q{number:03d}",
+                    auto_fixable=False,
+                )
+            )
 
     def _validate_documentation(self, filepath: Path) -> None:
         """Validate documentation file naming."""
@@ -329,65 +360,69 @@ class GNEAEnforcer:
 
         # Documentation files should be UPPERCASE_WITH_UNDERSCORES.md
         # for formal docs, or lowercase-with-dashes.md for informal docs
-        if filename.endswith('.md'):
+        if filename.endswith(".md"):
             # Check if it's a formal documentation file
-            if re.match(r'^[A-Z][A-Z0-9_]+\.md$', filename):
+            if re.match(r"^[A-Z][A-Z0-9_]+\.md$", filename):
                 return  # Valid formal doc
-            if re.match(r'^[a-z][a-z0-9-]+\.md$', filename):
+            if re.match(r"^[a-z][a-z0-9-]+\.md$", filename):
                 return  # Valid informal doc
 
             # Check for specific documentation patterns
             valid_patterns = [
-                r'^README\.md$',
-                r'^README_[A-Z_]+\.md$',
-                r'^CHANGELOG\.md$',
-                r'^CONTRIBUTING\.md$',
-                r'^LICENSE\.md$',
-                r'^PHASE_\d+_.*\.md$',
-                r'^CERTIFICATE_.*\.md$',
-                r'^FORCING_ROUTE\.md$',
+                r"^README\.md$",
+                r"^README_[A-Z_]+\.md$",
+                r"^CHANGELOG\.md$",
+                r"^CONTRIBUTING\.md$",
+                r"^LICENSE\.md$",
+                r"^PHASE_\d+_.*\.md$",
+                r"^CERTIFICATE_.*\.md$",
+                r"^FORCING_ROUTE\.md$",
             ]
 
             if any(re.match(p, filename) for p in valid_patterns):
                 return
 
             # Check for forbidden patterns in root
-            if filepath.parent == self.repo_root or 'phases' in filepath.parts:
+            if filepath.parent == self.repo_root or "phases" in filepath.parts:
                 if not self._is_valid_doc_location(filepath):
-                    self.violations.append(Violation(
-                        filepath=filepath,
-                        rule="DOC-001",
-                        severity=Severity.WARNING,
-                        message=f"Documentation file may need relocation: {filename}",
-                        auto_fixable=False
-                    ))
+                    self.violations.append(
+                        Violation(
+                            filepath=filepath,
+                            rule="DOC-001",
+                            severity=Severity.WARNING,
+                            message=f"Documentation file may need relocation: {filename}",
+                            auto_fixable=False,
+                        )
+                    )
 
     def _is_valid_doc_location(self, filepath: Path) -> bool:
         """Check if documentation file is in a valid location."""
         # Valid locations for documentation
-        valid_dirs = {'docs', 'docs_html', 'artifacts', 'contracts'}
+        valid_dirs = {"docs", "docs_html", "artifacts", "contracts"}
         return any(d in filepath.parts for d in valid_dirs)
 
     def _validate_hierarchy_depth(self, filepath: Path) -> None:
         """Validate file is within maximum hierarchy depth."""
         # Calculate depth from src/ directory
         parts = filepath.parts
-        if 'src' in parts:
-            src_idx = parts.index('src')
+        if "src" in parts:
+            src_idx = parts.index("src")
             depth = len(parts) - src_idx
 
             if depth > self.rules.MAX_HIERARCHY_DEPTH:
-                self.violations.append(Violation(
-                    filepath=filepath,
-                    rule="HIERARCHY-001",
-                    severity=Severity.WARNING,
-                    message=f"File exceeds maximum hierarchy depth ({depth} > {self.rules.MAX_HIERARCHY_DEPTH})",
-                    auto_fixable=False
-                ))
+                self.violations.append(
+                    Violation(
+                        filepath=filepath,
+                        rule="HIERARCHY-001",
+                        severity=Severity.WARNING,
+                        message=f"File exceeds maximum hierarchy depth ({depth} > {self.rules.MAX_HIERARCHY_DEPTH})",
+                        auto_fixable=False,
+                    )
+                )
 
     def _validate_python_metadata(self, filepath: Path) -> None:
         """Validate Python file has required metadata."""
-        if filepath.name.startswith('__') or filepath.name == '__init__.py':
+        if filepath.name.startswith("__") or filepath.name == "__init__.py":
             return  # Skip dunder files
 
         try:
@@ -396,7 +431,7 @@ class GNEAEnforcer:
 
             # Check for required metadata in phase modules
             if self._is_phase_module(filepath):
-                required_metadata = ['__version__', '__phase__', '__stage__']
+                required_metadata = ["__version__", "__phase__", "__stage__"]
                 found_metadata = set()
 
                 for node in ast.walk(tree):
@@ -408,13 +443,15 @@ class GNEAEnforcer:
 
                 missing = set(required_metadata) - found_metadata
                 if missing:
-                    self.violations.append(Violation(
-                        filepath=filepath,
-                        rule="META-001",
-                        severity=Severity.WARNING,
-                        message=f"Missing required metadata: {', '.join(missing)}",
-                        auto_fixable=True
-                    ))
+                    self.violations.append(
+                        Violation(
+                            filepath=filepath,
+                            rule="META-001",
+                            severity=Severity.WARNING,
+                            message=f"Missing required metadata: {', '.join(missing)}",
+                            auto_fixable=True,
+                        )
+                    )
 
         except (SyntaxError, UnicodeDecodeError):
             pass
@@ -430,13 +467,15 @@ class GNEAEnforcer:
         for root, dirs, _ in os.walk(phases_dir):
             for dir_name in dirs:
                 if dir_name.lower() in self.rules.FORBIDDEN_DIRS:
-                    self.violations.append(Violation(
-                        filepath=Path(root) / dir_name,
-                        rule="DIR-001",
-                        severity=Severity.ERROR,
-                        message=f"Forbidden directory name: {dir_name}",
-                        auto_fixable=False
-                    ))
+                    self.violations.append(
+                        Violation(
+                            filepath=Path(root) / dir_name,
+                            rule="DIR-001",
+                            severity=Severity.ERROR,
+                            message=f"Forbidden directory name: {dir_name}",
+                            auto_fixable=False,
+                        )
+                    )
 
     def _validate_phase_directories(self) -> None:
         """Validate phase directory naming."""
@@ -452,50 +491,65 @@ class GNEAEnforcer:
             dir_name = item.name
 
             # Skip hidden directories
-            if dir_name.startswith('.'):
+            if dir_name.startswith("."):
                 continue
 
             # Check if it's a combined phase directory (violation)
-            if re.match(r'^Phase_[a-z]+(_[a-z]+)+$', dir_name):
-                self.violations.append(Violation(
-                    filepath=item,
-                    rule="PHASE-DIR-001",
-                    severity=Severity.ERROR,
-                    message=f"Combined phase directory must be split: {dir_name}",
-                    suggestion="Split into separate Phase_4, Phase_5, Phase_6, Phase_7 directories",
-                    auto_fixable=False
-                ))
+            if re.match(r"^Phase_[a-z]+(_[a-z]+)+$", dir_name):
+                self.violations.append(
+                    Violation(
+                        filepath=item,
+                        rule="PHASE-DIR-001",
+                        severity=Severity.ERROR,
+                        message=f"Combined phase directory must be split: {dir_name}",
+                        suggestion="Split into separate Phase_4, Phase_5, Phase_6, Phase_7 directories",
+                        auto_fixable=False,
+                    )
+                )
                 continue
 
             # Check if it matches Phase_N pattern
             if not self.rules.PHASE_DIR_PATTERN.match(dir_name):
                 # Check if it's an old-style phase name (Phase_zero, Phase_one, etc.)
-                old_style_match = re.match(r'^Phase_(?P<name>zero|one|two|three|four|five|six|seven|eight|nine)$', dir_name)
+                old_style_match = re.match(
+                    r"^Phase_(?P<name>zero|one|two|three|four|five|six|seven|eight|nine)$", dir_name
+                )
                 if old_style_match:
                     name_map = {
-                        'zero': '0', 'one': '1', 'two': '2', 'three': '3',
-                        'four': '4', 'five': '5', 'six': '6', 'seven': '7',
-                        'eight': '8', 'nine': '9'
+                        "zero": "0",
+                        "one": "1",
+                        "two": "2",
+                        "three": "3",
+                        "four": "4",
+                        "five": "5",
+                        "six": "6",
+                        "seven": "7",
+                        "eight": "8",
+                        "nine": "9",
                     }
                     new_name = f"Phase_{name_map[old_style_match.group('name')]}"
-                    self.violations.append(Violation(
-                        filepath=item,
-                        rule="PHASE-DIR-002",
-                        severity=Severity.ERROR,
-                        message=f"Old-style phase directory name: {dir_name}",
-                        suggestion=f"Rename to: {new_name}",
-                        auto_fixable=True,
-                        fix_command=f"git mv {dir_name} {new_name}"
-                    ))
+                    self.violations.append(
+                        Violation(
+                            filepath=item,
+                            rule="PHASE-DIR-002",
+                            severity=Severity.ERROR,
+                            message=f"Old-style phase directory name: {dir_name}",
+                            suggestion=f"Rename to: {new_name}",
+                            auto_fixable=True,
+                            fix_command=f"git mv {dir_name} {new_name}",
+                        )
+                    )
                 else:
-                    self.violations.append(Violation(
-                        filepath=item,
-                        rule="PHASE-DIR-003",
-                        severity=Severity.ERROR,
-                        message=f"Invalid phase directory name: {dir_name}",
-                        suggestion="Use Phase_0 through Phase_9 naming",
-                        auto_fixable=False
-                    ))
+                    self.violations.append(
+                        Violation(
+                            filepath=item,
+                            rule="PHASE-DIR-003",
+                            severity=Severity.ERROR,
+                            message=f"Invalid phase directory name: {dir_name}",
+                            suggestion="Use Phase_0 through Phase_9 naming",
+                            auto_fixable=False,
+                        )
+                    )
 
     def _suggest_phase_name(self, filepath: Path) -> str:
         """Suggest a proper phase name based on file location and content."""
@@ -507,15 +561,22 @@ class GNEAEnforcer:
             if part == "phases" and i + 1 < len(parts):
                 phase_dir = parts[i + 1]
                 # Extract phase number from Phase_N or Phase_N
-                match = re.search(r'Phase_?(\d)', phase_dir)
+                match = re.search(r"Phase_?(\d)", phase_dir)
                 if match:
                     phase = match.group(1)
                 else:
                     # Try old-style names
                     name_map = {
-                        'zero': '0', 'one': '1', 'two': '2', 'three': '3',
-                        'four': '4', 'five': '5', 'six': '6', 'seven': '7',
-                        'eight': '8', 'nine': '9'
+                        "zero": "0",
+                        "one": "1",
+                        "two": "2",
+                        "three": "3",
+                        "four": "4",
+                        "five": "5",
+                        "six": "6",
+                        "seven": "7",
+                        "eight": "8",
+                        "nine": "9",
                     }
                     for name, num in name_map.items():
                         if name in phase_dir.lower():
@@ -528,14 +589,14 @@ class GNEAEnforcer:
 
         # Try to guess from filename
         stem = filepath.stem
-        if stem.startswith('phase'):
+        if stem.startswith("phase"):
             # Already has phase prefix
             return f"Use pattern: phase{phase}_{stage}_{order}_{{name}}.py"
 
         # Generate descriptive name from filename
-        name = stem.lower().replace('-', '_').replace(' ', '_')
+        name = stem.lower().replace("-", "_").replace(" ", "_")
         # Remove non-alphanumeric characters (except underscores)
-        name = re.sub(r'[^a-z0-9_]', '', name)
+        name = re.sub(r"[^a-z0-9_]", "", name)
         # Ensure it starts with a letter
         if name and name[0].isdigit():
             name = f"file_{name}"
@@ -560,7 +621,7 @@ class GNEAEnforcer:
             non_compliant_files=len(violating_files),
             violations=self.violations,
             auto_fixable_count=sum(1 for v in self.violations if v.auto_fixable),
-            manual_fix_required_count=sum(1 for v in self.violations if not v.auto_fixable)
+            manual_fix_required_count=sum(1 for v in self.violations if not v.auto_fixable),
         )
 
         report.calculate_score()
@@ -599,7 +660,9 @@ class GNEAEnforcer:
                 violations_by_file[v.filepath].append(v)
 
             for filepath, violations in sorted(violations_by_file.items()):
-                rel_path = filepath.relative_to(self.repo_root) if filepath.is_absolute() else filepath
+                rel_path = (
+                    filepath.relative_to(self.repo_root) if filepath.is_absolute() else filepath
+                )
                 print(f"\n{rel_path}:")
                 for v in violations:
                     prefix = "[ERROR]" if v.severity == Severity.ERROR else "[WARN]"
@@ -628,58 +691,43 @@ Examples:
   python gnea_enforcer.py                    # Validate at L1 (guided) level
   python gnea_enforcer.py --level L2         # Validate at L2 (enforced) level
   python gnea_enforcer.py --output report.json --verbose
-        """
+        """,
     )
 
     parser.add_argument(
-        '--level',
-        choices=['L0', 'L1', 'L2', 'L3', 'L4'],
-        default='L1',
-        help='Enforcement level (default: L1)'
+        "--level",
+        choices=["L0", "L1", "L2", "L3", "L4"],
+        default="L1",
+        help="Enforcement level (default: L1)",
     )
 
     parser.add_argument(
-        '--path',
+        "--path",
         type=Path,
         default=None,
-        help='Path to repository root (default: current directory)'
+        help="Path to repository root (default: current directory)",
     )
 
-    parser.add_argument(
-        '--output',
-        type=Path,
-        default=None,
-        help='Output file for JSON report'
-    )
+    parser.add_argument("--output", type=Path, default=None, help="Output file for JSON report")
+
+    parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
 
     parser.add_argument(
-        '--verbose', '-v',
-        action='store_true',
-        help='Verbose output'
-    )
-
-    parser.add_argument(
-        '--fail-on-violations',
-        action='store_true',
-        help='Exit with error code if violations found'
+        "--fail-on-violations", action="store_true", help="Exit with error code if violations found"
     )
 
     args = parser.parse_args()
 
     # Map level string to enum
     level_map = {
-        'L0': EnforcementLevel.L0_ADVISORY,
-        'L1': EnforcementLevel.L1_GUIDED,
-        'L2': EnforcementLevel.L2_ENFORCED,
-        'L3': EnforcementLevel.L3_SEALED,
-        'L4': EnforcementLevel.L4_FORENSIC,
+        "L0": EnforcementLevel.L0_ADVISORY,
+        "L1": EnforcementLevel.L1_GUIDED,
+        "L2": EnforcementLevel.L2_ENFORCED,
+        "L3": EnforcementLevel.L3_SEALED,
+        "L4": EnforcementLevel.L4_FORENSIC,
     }
 
-    enforcer = GNEAEnforcer(
-        level=level_map[args.level],
-        repo_root=args.path,
-        verbose=args.verbose
-    )
+    enforcer = GNEAEnforcer(level=level_map[args.level], repo_root=args.path, verbose=args.verbose)
 
     report = enforcer.validate_repository()
     enforcer.print_report(report)
@@ -687,23 +735,23 @@ Examples:
     # Save JSON report if requested
     if args.output:
         report_dict = {
-            'timestamp': report.timestamp,
-            'enforcement_level': report.enforcement_level,
-            'total_files': report.total_files,
-            'compliant_files': report.compliant_files,
-            'non_compliant_files': report.non_compliant_files,
-            'compliance_score': report.compliance_score,
-            'violations': [
+            "timestamp": report.timestamp,
+            "enforcement_level": report.enforcement_level,
+            "total_files": report.total_files,
+            "compliant_files": report.compliant_files,
+            "non_compliant_files": report.non_compliant_files,
+            "compliance_score": report.compliance_score,
+            "violations": [
                 {
-                    'filepath': str(v.filepath),
-                    'rule': v.rule,
-                    'severity': v.severity.value,
-                    'message': v.message,
-                    'suggestion': v.suggestion,
-                    'auto_fixable': v.auto_fixable,
+                    "filepath": str(v.filepath),
+                    "rule": v.rule,
+                    "severity": v.severity.value,
+                    "message": v.message,
+                    "suggestion": v.suggestion,
+                    "auto_fixable": v.auto_fixable,
                 }
                 for v in report.violations
-            ]
+            ],
         }
         args.output.write_text(json.dumps(report_dict, indent=2))
 
@@ -714,7 +762,8 @@ Examples:
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Import os for directory walking
     import os
+
     sys.exit(main())

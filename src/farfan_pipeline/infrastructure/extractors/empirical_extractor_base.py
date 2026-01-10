@@ -31,6 +31,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ExtractionPattern:
     """Represents a calibrated extraction pattern."""
+
     pattern_id: str
     pattern: str
     pattern_type: str  # REGEX, KEYWORD, SEMANTIC
@@ -46,7 +47,7 @@ class ExtractionPattern:
             "IGNORECASE": re.IGNORECASE,
             "MULTILINE": re.MULTILINE,
             "DOTALL": re.DOTALL,
-            "UNICODE": re.UNICODE
+            "UNICODE": re.UNICODE,
         }
         flags_combined = 0
         for flag in self.flags:
@@ -58,6 +59,7 @@ class ExtractionPattern:
 @dataclass
 class ExtractionResult:
     """Result of an extraction operation."""
+
     extractor_id: str
     signal_type: str
     matches: List[Dict[str, Any]]
@@ -75,10 +77,10 @@ class ExtractionResult:
             "payload": {
                 "matches": self.matches,
                 "metadata": self.metadata,
-                "validation_passed": self.validation_passed
+                "validation_passed": self.validation_passed,
             },
             "producer_node": self.extractor_id,
-            "produced_at": datetime.now(timezone.utc).isoformat()
+            "produced_at": datetime.now(timezone.utc).isoformat(),
         }
 
 
@@ -86,10 +88,7 @@ class EmpiricallyCalibrated(ABC):
     """Base class for empirically-calibrated extractors."""
 
     def __init__(
-        self,
-        signal_type: str,
-        calibration_file: Optional[Path] = None,
-        auto_validate: bool = True
+        self, signal_type: str, calibration_file: Optional[Path] = None, auto_validate: bool = True
     ):
         self.signal_type = signal_type
         self.auto_validate = auto_validate
@@ -107,14 +106,20 @@ class EmpiricallyCalibrated(ABC):
         self.validation_pass_count = 0
         self.validation_fail_count = 0
 
-        logger.info(f"Initialized {self.__class__.__name__} with {len(self.patterns)} empirical patterns")
+        logger.info(
+            f"Initialized {self.__class__.__name__} with {len(self.patterns)} empirical patterns"
+        )
 
     def _default_calibration_path(self) -> Path:
         """Get default calibration file path."""
-        return Path(__file__).resolve().parent.parent.parent.parent / \
-               "canonic_questionnaire_central" / \
-               "_registry" / "membership_criteria" / "_calibration" / \
-               "extractor_calibration.json"
+        return (
+            Path(__file__).resolve().parent.parent.parent.parent
+            / "canonic_questionnaire_central"
+            / "_registry"
+            / "membership_criteria"
+            / "_calibration"
+            / "extractor_calibration.json"
+        )
 
     def _load_calibration(self, calibration_file: Path) -> Dict[str, Any]:
         """Load empirical calibration data."""
@@ -141,7 +146,7 @@ class EmpiricallyCalibrated(ABC):
                     flags=pattern_config.get("flags", ["IGNORECASE", "MULTILINE"]),
                     captures=pattern_config.get("captures", {}),
                     validation_rules=pattern_config.get("validation", []),
-                    empirical_frequency=self.calibration.get("empirical_frequency", {})
+                    empirical_frequency=self.calibration.get("empirical_frequency", {}),
                 )
                 patterns.append(pattern)
 
@@ -165,7 +170,7 @@ class EmpiricallyCalibrated(ABC):
         if freq:
             match_count = len(result.matches)
             expected_min = freq.get("min_per_document", 0)
-            expected_max = freq.get("max_per_document", float('inf'))
+            expected_max = freq.get("max_per_document", float("inf"))
 
             if match_count < expected_min:
                 errors.append(f"Match count {match_count} below empirical minimum {expected_min}")
@@ -174,7 +179,7 @@ class EmpiricallyCalibrated(ABC):
 
         # Custom validation rules
         for match in result.matches:
-            for rule in getattr(self, 'validation_rules', []):
+            for rule in getattr(self, "validation_rules", []):
                 if not self._apply_validation_rule(match, rule):
                     errors.append(f"Validation rule failed: {rule.get('name', 'unnamed')}")
 
@@ -219,9 +224,13 @@ class EmpiricallyCalibrated(ABC):
             "extractions_performed": self.extraction_count,
             "validations_passed": self.validation_pass_count,
             "validations_failed": self.validation_fail_count,
-            "pass_rate": self.validation_pass_count / self.extraction_count if self.extraction_count > 0 else 0.0,
+            "pass_rate": (
+                self.validation_pass_count / self.extraction_count
+                if self.extraction_count > 0
+                else 0.0
+            ),
             "patterns_loaded": len(self.patterns),
-            "gold_standards_loaded": len(self.gold_standards)
+            "gold_standards_loaded": len(self.gold_standards),
         }
 
     def self_test(self) -> Dict[str, Any]:
@@ -234,7 +243,7 @@ class EmpiricallyCalibrated(ABC):
             "gold_standards_tested": len(self.gold_standards),
             "passed": 0,
             "failed": 0,
-            "failures": []
+            "failures": [],
         }
 
         for i, example in enumerate(self.gold_standards):
@@ -249,21 +258,23 @@ class EmpiricallyCalibrated(ABC):
                     results["passed"] += 1
                 else:
                     results["failed"] += 1
-                    results["failures"].append({
-                        "example_id": i,
-                        "expected": expected,
-                        "actual": actual,
-                        "text_preview": text[:100]
-                    })
+                    results["failures"].append(
+                        {
+                            "example_id": i,
+                            "expected": expected,
+                            "actual": actual,
+                            "text_preview": text[:100],
+                        }
+                    )
             except Exception as e:
                 results["failed"] += 1
-                results["failures"].append({
-                    "example_id": i,
-                    "error": str(e),
-                    "text_preview": text[:100]
-                })
+                results["failures"].append(
+                    {"example_id": i, "error": str(e), "text_preview": text[:100]}
+                )
 
-        results["pass_rate"] = results["passed"] / len(self.gold_standards) if self.gold_standards else 0.0
+        results["pass_rate"] = (
+            results["passed"] / len(self.gold_standards) if self.gold_standards else 0.0
+        )
 
         logger.info(f"Self-test complete: {results['pass_rate']:.2%} pass rate")
 
@@ -286,7 +297,7 @@ class PatternBasedExtractor(EmpiricallyCalibrated):
                     "text": match.group(0),
                     "start": match.start(),
                     "end": match.end(),
-                    "confidence": pattern_obj.confidence_base
+                    "confidence": pattern_obj.confidence_base,
                 }
 
                 # Extract captures
@@ -312,10 +323,7 @@ class PatternBasedExtractor(EmpiricallyCalibrated):
             signal_type=self.signal_type,
             matches=matches,
             confidence=avg_confidence,
-            metadata={
-                "patterns_used": len(self.patterns),
-                "total_matches": len(matches)
-            }
+            metadata={"patterns_used": len(self.patterns), "total_matches": len(matches)},
         )
 
         # Validate if enabled
@@ -330,6 +338,7 @@ class PatternBasedExtractor(EmpiricallyCalibrated):
 
 
 # Utility functions for framework
+
 
 def load_all_extractors_from_calibration(calibration_file: Path) -> Dict[str, Any]:
     """Load configuration for all extractors from calibration file."""
@@ -378,10 +387,10 @@ def test_gold_standard_{i}(extractor):
 
 # Export main classes
 __all__ = [
-    'EmpiricallyCalibrated',
-    'PatternBasedExtractor',
-    'ExtractionPattern',
-    'ExtractionResult',
-    'load_all_extractors_from_calibration',
-    'generate_test_suite'
+    "EmpiricallyCalibrated",
+    "PatternBasedExtractor",
+    "ExtractionPattern",
+    "ExtractionResult",
+    "load_all_extractors_from_calibration",
+    "generate_test_suite",
 ]

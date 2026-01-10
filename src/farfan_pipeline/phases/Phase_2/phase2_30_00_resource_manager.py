@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 
 class ResourcePressureLevel(Enum):
     """Resource pressure severity levels."""
-    
+
     NORMAL = "normal"
     ELEVATED = "elevated"
     HIGH = "high"
@@ -46,7 +46,7 @@ class ResourcePressureLevel(Enum):
 
 class ExecutorPriority(Enum):
     """Priority levels for executor resource allocation."""
-    
+
     CRITICAL = 1
     HIGH = 2
     NORMAL = 3
@@ -55,7 +55,7 @@ class ExecutorPriority(Enum):
 
 class CircuitState(Enum):
     """Circuit breaker states."""
-    
+
     CLOSED = "closed"
     OPEN = "open"
     HALF_OPEN = "half_open"
@@ -64,7 +64,7 @@ class CircuitState(Enum):
 @dataclass
 class ExecutorMetrics:
     """Metrics for individual executor performance and resource usage."""
-    
+
     executor_id: str
     total_executions: int = 0
     successful_executions: int = 0
@@ -81,7 +81,7 @@ class ExecutorMetrics:
 @dataclass
 class CircuitBreakerConfig:
     """Configuration for circuit breaker behavior."""
-    
+
     failure_threshold: int = 5
     timeout_seconds: float = 60.0
     half_open_timeout: float = 30.0
@@ -92,7 +92,7 @@ class CircuitBreakerConfig:
 @dataclass
 class CircuitBreaker:
     """Circuit breaker for memory-intensive executors."""
-    
+
     executor_id: str
     state: CircuitState = CircuitState.CLOSED
     failure_count: int = 0
@@ -100,30 +100,28 @@ class CircuitBreaker:
     last_failure_time: datetime | None = None
     last_state_change: datetime | None = None
     config: CircuitBreakerConfig = field(default_factory=CircuitBreakerConfig)
-    
+
     def can_execute(self) -> bool:
         """Check if executor can be executed based on circuit state."""
         if self.state == CircuitState.CLOSED:
             return True
-        
+
         if self.state == CircuitState.OPEN:
             if self.last_state_change:
                 elapsed = (datetime.now(timezone.utc) - self.last_state_change).total_seconds()
                 if elapsed >= self.config.timeout_seconds:
                     self.state = CircuitState.HALF_OPEN
                     self.success_count = 0
-                    logger.info(
-                        f"Circuit breaker for {self.executor_id} moved to HALF_OPEN"
-                    )
+                    logger.info(f"Circuit breaker for {self.executor_id} moved to HALF_OPEN")
                     return True
             return False
-        
+
         return True
-    
+
     def record_success(self) -> None:
         """Record successful execution."""
         self.failure_count = 0
-        
+
         if self.state == CircuitState.HALF_OPEN:
             self.success_count += 1
             if self.success_count >= self.config.success_threshold:
@@ -133,16 +131,14 @@ class CircuitBreaker:
                     f"Circuit breaker for {self.executor_id} closed after "
                     f"{self.success_count} successes"
                 )
-    
+
     def record_failure(self, memory_mb: float | None = None) -> None:
         """Record failed execution."""
         self.failure_count += 1
         self.last_failure_time = datetime.now(timezone.utc)
-        
-        exceeded_memory = (
-            memory_mb is not None and memory_mb > self.config.memory_threshold_mb
-        )
-        
+
+        exceeded_memory = memory_mb is not None and memory_mb > self.config.memory_threshold_mb
+
         if self.state == CircuitState.HALF_OPEN:
             self.state = CircuitState.OPEN
             self.last_state_change = datetime.now(timezone.utc)
@@ -150,9 +146,7 @@ class CircuitBreaker:
                 f"Circuit breaker for {self.executor_id} opened from HALF_OPEN "
                 f"(memory: {memory_mb}MB)"
             )
-        elif (
-            self.failure_count >= self.config.failure_threshold or exceeded_memory
-        ):
+        elif self.failure_count >= self.config.failure_threshold or exceeded_memory:
             self.state = CircuitState.OPEN
             self.last_state_change = datetime.now(timezone.utc)
             logger.warning(
@@ -164,7 +158,7 @@ class CircuitBreaker:
 @dataclass
 class DegradationStrategy:
     """Defines degradation behavior for resource-constrained scenarios."""
-    
+
     name: str
     pressure_threshold: ResourcePressureLevel
     enabled: bool = True
@@ -174,12 +168,12 @@ class DegradationStrategy:
     skip_optional_analysis: bool = False
     reduce_embedding_dims: bool = False
     applied_count: int = 0
-    
+
     def should_apply(self, pressure: ResourcePressureLevel) -> bool:
         """Check if strategy should be applied at current pressure level."""
         if not self.enabled:
             return False
-        
+
         pressure_values = {
             ResourcePressureLevel.NORMAL: 0,
             ResourcePressureLevel.ELEVATED: 1,
@@ -187,14 +181,14 @@ class DegradationStrategy:
             ResourcePressureLevel.CRITICAL: 3,
             ResourcePressureLevel.EMERGENCY: 4,
         }
-        
+
         return pressure_values[pressure] >= pressure_values[self.pressure_threshold]
 
 
 @dataclass
 class ResourceAllocationPolicy:
     """Defines resource allocation priority for executors."""
-    
+
     executor_id: str
     priority: ExecutorPriority
     min_memory_mb: float
@@ -208,7 +202,7 @@ class ResourceAllocationPolicy:
 @dataclass
 class ResourcePressureEvent:
     """Event capturing resource pressure state changes."""
-    
+
     timestamp: datetime
     pressure_level: ResourcePressureLevel
     cpu_percent: float
@@ -223,7 +217,7 @@ class ResourcePressureEvent:
 
 class AdaptiveResourceManager:
     """Manages dynamic resource allocation and degradation strategies."""
-    
+
     CRITICAL_EXECUTORS = {
         "D3-Q3": ExecutorPriority.CRITICAL,
         "D4-Q2": ExecutorPriority.CRITICAL,
@@ -231,7 +225,7 @@ class AdaptiveResourceManager:
         "D4-Q1": ExecutorPriority.HIGH,
         "D2-Q3": ExecutorPriority.HIGH,
     }
-    
+
     DEFAULT_POLICIES = {
         "D3-Q3": ResourceAllocationPolicy(
             executor_id="D3-Q3",
@@ -268,7 +262,7 @@ class AdaptiveResourceManager:
             max_workers=6,
         ),
     }
-    
+
     def __init__(
         self,
         resource_limits: ResourceLimits,
@@ -280,22 +274,20 @@ class AdaptiveResourceManager:
         self.enable_circuit_breakers = enable_circuit_breakers
         self.enable_degradation = enable_degradation
         self.alert_callback = alert_callback
-        
+
         self.executor_metrics: dict[str, ExecutorMetrics] = {}
         self.circuit_breakers: dict[str, CircuitBreaker] = {}
-        self.allocation_policies: dict[str, ResourceAllocationPolicy] = (
-            self.DEFAULT_POLICIES.copy()
-        )
-        
+        self.allocation_policies: dict[str, ResourceAllocationPolicy] = self.DEFAULT_POLICIES.copy()
+
         self.degradation_strategies = self._init_degradation_strategies()
         self.pressure_history: deque[ResourcePressureEvent] = deque(maxlen=100)
         self.current_pressure = ResourcePressureLevel.NORMAL
-        
+
         self._lock = asyncio.Lock()
         self._active_executors: set[str] = set()
-        
+
         logger.info("Adaptive Resource Manager initialized")
-    
+
     def _init_degradation_strategies(self) -> list[DegradationStrategy]:
         """Initialize degradation strategies for different pressure levels."""
         return [
@@ -335,51 +327,49 @@ class AdaptiveResourceManager:
                 reduce_embedding_dims=True,
             ),
         ]
-    
-    def get_or_create_circuit_breaker(
-        self, executor_id: str
-    ) -> CircuitBreaker:
+
+    def get_or_create_circuit_breaker(self, executor_id: str) -> CircuitBreaker:
         """Get or create circuit breaker for executor."""
         if executor_id not in self.circuit_breakers:
             config = CircuitBreakerConfig()
-            
+
             if executor_id in self.allocation_policies:
                 policy = self.allocation_policies[executor_id]
                 if policy.is_memory_intensive:
                     config.memory_threshold_mb = policy.max_memory_mb * 1.5
-            
+
             self.circuit_breakers[executor_id] = CircuitBreaker(
                 executor_id=executor_id, config=config
             )
-        
+
         return self.circuit_breakers[executor_id]
-    
+
     def can_execute(self, executor_id: str) -> tuple[bool, str]:
         """Check if executor can be executed based on circuit breaker state."""
         if not self.enable_circuit_breakers:
             return True, "Circuit breakers disabled"
-        
+
         breaker = self.get_or_create_circuit_breaker(executor_id)
-        
+
         if not breaker.can_execute():
             return False, f"Circuit breaker is {breaker.state.value}"
-        
+
         return True, "OK"
-    
+
     async def assess_resource_pressure(self) -> ResourcePressureLevel:
         """Assess current resource pressure level."""
         usage = self.resource_limits.get_resource_usage()
-        
+
         cpu_percent = usage.get("cpu_percent", 0.0)
         memory_percent = usage.get("memory_percent", 0.0)
         rss_mb = usage.get("rss_mb", 0.0)
-        
+
         max_memory_mb = self.resource_limits.max_memory_mb or 4096.0
         max_cpu = self.resource_limits.max_cpu_percent
-        
+
         memory_ratio = rss_mb / max_memory_mb
         cpu_ratio = cpu_percent / max_cpu if max_cpu else 0.0
-        
+
         if memory_ratio >= 0.95 or cpu_ratio >= 0.95:
             pressure = ResourcePressureLevel.EMERGENCY
         elif memory_ratio >= 0.85 or cpu_ratio >= 0.85:
@@ -390,30 +380,30 @@ class AdaptiveResourceManager:
             pressure = ResourcePressureLevel.ELEVATED
         else:
             pressure = ResourcePressureLevel.NORMAL
-        
+
         if pressure != self.current_pressure:
             await self._handle_pressure_change(pressure, usage)
-        
+
         self.current_pressure = pressure
         return pressure
-    
+
     async def _handle_pressure_change(
         self, new_pressure: ResourcePressureLevel, usage: dict[str, Any]
     ) -> None:
         """Handle resource pressure level changes."""
         degradation_applied = []
-        
+
         for strategy in self.degradation_strategies:
             if strategy.should_apply(new_pressure):
                 degradation_applied.append(strategy.name)
                 strategy.applied_count += 1
-        
+
         circuit_breakers_open = [
             executor_id
             for executor_id, breaker in self.circuit_breakers.items()
             if breaker.state == CircuitState.OPEN
         ]
-        
+
         event = ResourcePressureEvent(
             timestamp=datetime.now(timezone.utc),
             pressure_level=new_pressure,
@@ -426,9 +416,9 @@ class AdaptiveResourceManager:
             circuit_breakers_open=circuit_breakers_open,
             message=f"Resource pressure changed: {self.current_pressure.value} -> {new_pressure.value}",
         )
-        
+
         self.pressure_history.append(event)
-        
+
         logger.warning(
             f"Resource pressure: {new_pressure.value}",
             extra={
@@ -439,16 +429,14 @@ class AdaptiveResourceManager:
                 "circuit_breakers_open": circuit_breakers_open,
             },
         )
-        
+
         if self.alert_callback:
             try:
                 self.alert_callback(event)
             except Exception as exc:
                 logger.error(f"Alert callback failed: {exc}")
-    
-    def get_degradation_config(
-        self, executor_id: str
-    ) -> dict[str, Any]:
+
+    def get_degradation_config(self, executor_id: str) -> dict[str, Any]:
         """Get degradation configuration for executor at current pressure."""
         config: dict[str, Any] = {
             "entity_limit_factor": 1.0,
@@ -458,10 +446,10 @@ class AdaptiveResourceManager:
             "reduce_embedding_dims": False,
             "applied_strategies": [],
         }
-        
+
         if not self.enable_degradation:
             return config
-        
+
         for strategy in self.degradation_strategies:
             if strategy.should_apply(self.current_pressure):
                 config["entity_limit_factor"] = min(
@@ -481,15 +469,13 @@ class AdaptiveResourceManager:
                     config["reduce_embedding_dims"] or strategy.reduce_embedding_dims
                 )
                 config["applied_strategies"].append(strategy.name)
-        
+
         return config
-    
-    async def allocate_resources(
-        self, executor_id: str
-    ) -> dict[str, Any]:
+
+    async def allocate_resources(self, executor_id: str) -> dict[str, Any]:
         """Allocate resources for executor based on priority and availability."""
         await self.assess_resource_pressure()
-        
+
         policy = self.allocation_policies.get(
             executor_id,
             ResourceAllocationPolicy(
@@ -501,15 +487,15 @@ class AdaptiveResourceManager:
                 max_workers=4,
             ),
         )
-        
+
         degradation = self.get_degradation_config(executor_id)
-        
+
         max_memory = policy.max_memory_mb * degradation["entity_limit_factor"]
         max_workers = min(
             policy.max_workers,
             max(policy.min_workers, self.resource_limits.max_workers),
         )
-        
+
         if self.current_pressure in [
             ResourcePressureLevel.CRITICAL,
             ResourcePressureLevel.EMERGENCY,
@@ -520,30 +506,26 @@ class AdaptiveResourceManager:
                 max_workers = max(policy.min_workers, policy.max_workers - 2)
             else:
                 max_workers = policy.min_workers
-        
+
         return {
             "max_memory_mb": max_memory,
             "max_workers": max_workers,
             "priority": policy.priority.value,
             "degradation": degradation,
         }
-    
-    async def start_executor_execution(
-        self, executor_id: str
-    ) -> dict[str, Any]:
+
+    async def start_executor_execution(self, executor_id: str) -> dict[str, Any]:
         """Start tracking executor execution."""
         async with self._lock:
             self._active_executors.add(executor_id)
-        
+
         allocation = await self.allocate_resources(executor_id)
-        
+
         if executor_id not in self.executor_metrics:
-            self.executor_metrics[executor_id] = ExecutorMetrics(
-                executor_id=executor_id
-            )
-        
+            self.executor_metrics[executor_id] = ExecutorMetrics(executor_id=executor_id)
+
         return allocation
-    
+
     async def end_executor_execution(
         self,
         executor_id: str,
@@ -554,14 +536,14 @@ class AdaptiveResourceManager:
         """End tracking executor execution and update metrics."""
         async with self._lock:
             self._active_executors.discard(executor_id)
-        
+
         metrics = self.executor_metrics.get(executor_id)
         if not metrics:
             return
-        
+
         metrics.total_executions += 1
         metrics.last_execution_time = datetime.now(timezone.utc)
-        
+
         if success:
             metrics.successful_executions += 1
             if self.enable_circuit_breakers:
@@ -572,41 +554,33 @@ class AdaptiveResourceManager:
             if self.enable_circuit_breakers:
                 breaker = self.get_or_create_circuit_breaker(executor_id)
                 breaker.record_failure(memory_mb)
-        
+
         if memory_mb is not None:
             metrics.memory_samples.append(memory_mb)
             if len(metrics.memory_samples) > 100:
                 metrics.memory_samples.pop(0)
-            
-            metrics.avg_memory_mb = sum(metrics.memory_samples) / len(
-                metrics.memory_samples
-            )
-            metrics.peak_memory_mb = max(
-                metrics.peak_memory_mb, memory_mb
-            )
-        
+
+            metrics.avg_memory_mb = sum(metrics.memory_samples) / len(metrics.memory_samples)
+            metrics.peak_memory_mb = max(metrics.peak_memory_mb, memory_mb)
+
         metrics.duration_samples.append(duration_ms)
         if len(metrics.duration_samples) > 100:
             metrics.duration_samples.pop(0)
-        
-        metrics.avg_duration_ms = sum(metrics.duration_samples) / len(
-            metrics.duration_samples
-        )
-    
+
+        metrics.avg_duration_ms = sum(metrics.duration_samples) / len(metrics.duration_samples)
+
     def get_executor_metrics(self, executor_id: str) -> dict[str, Any]:
         """Get metrics for specific executor."""
         metrics = self.executor_metrics.get(executor_id)
         if not metrics:
             return {}
-        
+
         success_rate = 0.0
         if metrics.total_executions > 0:
-            success_rate = (
-                metrics.successful_executions / metrics.total_executions
-            ) * 100
-        
+            success_rate = (metrics.successful_executions / metrics.total_executions) * 100
+
         breaker = self.circuit_breakers.get(executor_id)
-        
+
         return {
             "executor_id": executor_id,
             "total_executions": metrics.total_executions,
@@ -617,22 +591,20 @@ class AdaptiveResourceManager:
             "peak_memory_mb": metrics.peak_memory_mb,
             "avg_duration_ms": metrics.avg_duration_ms,
             "last_execution": (
-                metrics.last_execution_time.isoformat()
-                if metrics.last_execution_time
-                else None
+                metrics.last_execution_time.isoformat() if metrics.last_execution_time else None
             ),
             "circuit_breaker_state": breaker.state.value if breaker else "closed",
         }
-    
+
     def get_resource_status(self) -> dict[str, Any]:
         """Get comprehensive resource management status."""
         usage = self.resource_limits.get_resource_usage()
-        
+
         executor_stats = {
             executor_id: self.get_executor_metrics(executor_id)
             for executor_id in self.executor_metrics
         }
-        
+
         active_strategies = [
             {
                 "name": strategy.name,
@@ -649,22 +621,20 @@ class AdaptiveResourceManager:
             for strategy in self.degradation_strategies
             if strategy.should_apply(self.current_pressure)
         ]
-        
+
         circuit_breaker_summary = {
             executor_id: {
                 "state": breaker.state.value,
                 "failure_count": breaker.failure_count,
                 "last_failure": (
-                    breaker.last_failure_time.isoformat()
-                    if breaker.last_failure_time
-                    else None
+                    breaker.last_failure_time.isoformat() if breaker.last_failure_time else None
                 ),
             }
             for executor_id, breaker in self.circuit_breakers.items()
         }
-        
+
         recent_pressure = list(self.pressure_history)[-10:]
-        
+
         return {
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "current_pressure": self.current_pressure.value,
@@ -684,27 +654,25 @@ class AdaptiveResourceManager:
                 for event in recent_pressure
             ],
         }
-    
-    def register_allocation_policy(
-        self, policy: ResourceAllocationPolicy
-    ) -> None:
+
+    def register_allocation_policy(self, policy: ResourceAllocationPolicy) -> None:
         """Register custom resource allocation policy for executor."""
         self.allocation_policies[policy.executor_id] = policy
         logger.info(
             f"Registered allocation policy for {policy.executor_id}: "
             f"priority={policy.priority.value}"
         )
-    
+
     def reset_circuit_breaker(self, executor_id: str) -> bool:
         """Manually reset circuit breaker for executor."""
         breaker = self.circuit_breakers.get(executor_id)
         if not breaker:
             return False
-        
+
         breaker.state = CircuitState.CLOSED
         breaker.failure_count = 0
         breaker.success_count = 0
         breaker.last_state_change = datetime.now(timezone.utc)
-        
+
         logger.info(f"Circuit breaker reset for {executor_id}")
         return True

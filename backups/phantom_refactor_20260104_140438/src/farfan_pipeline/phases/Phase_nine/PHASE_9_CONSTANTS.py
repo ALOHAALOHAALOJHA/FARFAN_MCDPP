@@ -6,6 +6,7 @@ Lifecycle: ACTIVE
 Version: 1.0.0
 Effective-Date: 2025-12-30
 """
+
 from __future__ import annotations
 
 from typing import Final

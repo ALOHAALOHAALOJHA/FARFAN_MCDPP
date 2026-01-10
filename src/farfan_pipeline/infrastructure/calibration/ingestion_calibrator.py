@@ -36,6 +36,7 @@ DEPENDENCIES:
     - type_defaults: get_type_defaults, ContractTypeDefaults
     - unit_of_analysis: UnitOfAnalysis
 """
+
 from __future__ import annotations
 
 import logging
@@ -157,9 +158,7 @@ class StandardCalibrationStrategy:
             Chunk size in characters, clamped to [256, 2048].
         """
         complexity = unit.complexity_score()
-        scaled_size = int(
-            _BASE_CHUNK_SIZE * (1 + self.complexity_scaling_factor * complexity)
-        )
+        scaled_size = int(_BASE_CHUNK_SIZE * (1 + self.complexity_scaling_factor * complexity))
         return max(_MIN_CHUNK_SIZE, min(_MAX_CHUNK_SIZE, scaled_size))
 
     def compute_coverage_target(self, unit: UnitOfAnalysis) -> float:
@@ -197,9 +196,7 @@ class AggressiveCalibrationStrategy:
     def compute_chunk_size(self, unit: UnitOfAnalysis) -> int:
         """Compute chunk size with aggressive scaling."""
         complexity = unit.complexity_score()
-        scaled_size = int(
-            _BASE_CHUNK_SIZE * (1.5 + self.complexity_scaling_factor * complexity)
-        )
+        scaled_size = int(_BASE_CHUNK_SIZE * (1.5 + self.complexity_scaling_factor * complexity))
         return max(_MIN_CHUNK_SIZE, min(_MAX_CHUNK_SIZE, scaled_size))
 
     def compute_coverage_target(self, unit: UnitOfAnalysis) -> float:
@@ -227,9 +224,7 @@ class ConservativeCalibrationStrategy:
     def compute_chunk_size(self, unit: UnitOfAnalysis) -> int:
         """Compute chunk size with conservative scaling."""
         complexity = unit.complexity_score()
-        scaled_size = int(
-            _BASE_CHUNK_SIZE * (0.8 + self.complexity_scaling_factor * complexity)
-        )
+        scaled_size = int(_BASE_CHUNK_SIZE * (0.8 + self.complexity_scaling_factor * complexity))
         return max(_MIN_CHUNK_SIZE, min(_MAX_CHUNK_SIZE, scaled_size))
 
     def compute_coverage_target(self, unit: UnitOfAnalysis) -> float:
@@ -394,9 +389,7 @@ class IngestionCalibrator:
             created_at=now,
         )
 
-        self._logger.info(
-            f"Calibration complete: manifest_hash={layer.manifest_hash()[:12]}..."
-        )
+        self._logger.info(f"Calibration complete: manifest_hash={layer.manifest_hash()[:12]}...")
 
         return layer
 
@@ -408,9 +401,7 @@ class IngestionCalibrator:
         validity_days: int,
     ) -> CalibrationParameter:
         """Create chunk_size calibration parameter."""
-        strategy_info = getattr(
-            self._strategy, "complexity_scaling_factor", "unknown"
-        )
+        strategy_info = getattr(self._strategy, "complexity_scaling_factor", "unknown")
 
         return create_calibration_parameter(
             name="chunk_size",

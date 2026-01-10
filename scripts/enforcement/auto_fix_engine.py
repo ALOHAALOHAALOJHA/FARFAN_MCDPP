@@ -25,6 +25,7 @@ from typing import Callable, Dict, List, Optional, Set, Tuple
 
 class FixType(Enum):
     """Types of auto-fixable operations."""
+
     RENAME_FILE = "RENAME_FILE"
     ADD_METADATA = "ADD_METADATA"
     UPDATE_IMPORTS = "UPDATE_IMPORTS"
@@ -36,6 +37,7 @@ class FixType(Enum):
 @dataclass
 class FixOperation:
     """Represents a fix operation."""
+
     fix_type: FixType
     target: Path
     description: str
@@ -58,14 +60,14 @@ class AutoFixEngine:
 
     # Phase module naming pattern
     PHASE_MODULE_PATTERN = re.compile(
-        r'^phase(?P<phase>[0-9])_'
-        r'(?P<stage>\d{2})_'
-        r'(?P<order>\d{2})_'
-        r'(?P<name>[a-z][a-z0-9_]*)\.py$'
+        r"^phase(?P<phase>[0-9])_"
+        r"(?P<stage>\d{2})_"
+        r"(?P<order>\d{2})_"
+        r"(?P<name>[a-z][a-z0-9_]*)\.py$"
     )
 
     # Metadata template for phase modules
-    METADATA_TEMPLATE = '''
+    METADATA_TEMPLATE = """
 # METADATA
 __version__ = "1.0.0"
 __phase__ = {phase}
@@ -76,13 +78,13 @@ __created__ = "{created}"
 __modified__ = "{modified}"
 __criticality__ = "{criticality}"
 __execution_pattern__ = "{execution_pattern}"
-'''
+"""
 
     def __init__(
         self,
         repo_root: Optional[Path] = None,
         dry_run: bool = False,
-        require_confirmation: bool = True
+        require_confirmation: bool = True,
     ):
         self.repo_root = repo_root or Path.cwd()
         self.dry_run = dry_run
@@ -92,11 +94,7 @@ __execution_pattern__ = "{execution_pattern}"
         self.failed: List[Tuple[FixOperation, str]] = []
         self.backup_dir = self.repo_root / ".gnea_backup"
 
-    def fix_phase_directory_naming(
-        self,
-        old_name: str,
-        new_name: str
-    ) -> bool:
+    def fix_phase_directory_naming(self, old_name: str, new_name: str) -> bool:
         """Fix phase directory naming (e.g., Phase_zero → Phase_0)."""
         phases_dir = self.repo_root / "src/farfan_pipeline/phases"
         old_path = phases_dir / old_name
@@ -150,16 +148,12 @@ __execution_pattern__ = "{execution_pattern}"
             description=f"Rename phase directory: {old_name} → {new_name}",
             operation=operation,
             rollback=rollback,
-            requires_confirmation=True
+            requires_confirmation=True,
         )
 
         return self._execute_operation(op)
 
-    def fix_module_naming(
-        self,
-        old_path: Path,
-        new_name: str
-    ) -> bool:
+    def fix_module_naming(self, old_path: Path, new_name: str) -> bool:
         """Fix module file naming to follow phase{N}_{SS}_{OO}_{name}.py pattern."""
         if not old_path.exists():
             print(f"✗ File not found: {old_path}")
@@ -206,18 +200,13 @@ __execution_pattern__ = "{execution_pattern}"
             description=f"Rename module: {old_path.name} → {new_name}",
             operation=operation,
             rollback=rollback,
-            requires_confirmation=False
+            requires_confirmation=False,
         )
 
         return self._execute_operation(op)
 
     def add_metadata_to_module(
-        self,
-        filepath: Path,
-        phase: int,
-        stage: int,
-        order: int,
-        author: str = "GNEA-AutoFix"
+        self, filepath: Path, phase: int, stage: int, order: int, author: str = "GNEA-AutoFix"
     ) -> bool:
         """Add required metadata to a phase module."""
         if not filepath.exists():
@@ -229,7 +218,7 @@ __execution_pattern__ = "{execution_pattern}"
                 content = filepath.read_text()
 
                 # Check if metadata already exists
-                if '__phase__' in content:
+                if "__phase__" in content:
                     print(f"✓ Metadata already exists in {filepath.name}")
                     return True
 
@@ -253,7 +242,7 @@ __execution_pattern__ = "{execution_pattern}"
                     created=now,
                     modified=now,
                     criticality="MEDIUM",
-                    execution_pattern="Per-Task"
+                    execution_pattern="Per-Task",
                 )
 
                 # Find first non-docstring statement
@@ -271,7 +260,7 @@ __execution_pattern__ = "{execution_pattern}"
                             break
 
                 # Insert metadata
-                lines = content.split('\n')
+                lines = content.split("\n")
 
                 if found_docstring:
                     # Insert after docstring
@@ -282,7 +271,7 @@ __execution_pattern__ = "{execution_pattern}"
                     lines.insert(0, metadata)
 
                 # Write back
-                filepath.write_text('\n'.join(lines))
+                filepath.write_text("\n".join(lines))
                 return True
 
             except Exception as e:
@@ -303,7 +292,7 @@ __execution_pattern__ = "{execution_pattern}"
             description=f"Add metadata to: {filepath.name}",
             operation=operation,
             rollback=rollback,
-            requires_confirmation=False
+            requires_confirmation=False,
         )
 
         return self._execute_operation(op)
@@ -332,6 +321,7 @@ __execution_pattern__ = "{execution_pattern}"
 
     def _create_directory(self, dir_path: Path) -> bool:
         """Create a directory."""
+
         def operation() -> bool:
             try:
                 if self.dry_run:
@@ -362,7 +352,7 @@ __execution_pattern__ = "{execution_pattern}"
             description=f"Create directory: {dir_path.name}",
             operation=operation,
             rollback=rollback,
-            requires_confirmation=False
+            requires_confirmation=False,
         )
 
         return self._execute_operation(op)
@@ -374,7 +364,7 @@ __execution_pattern__ = "{execution_pattern}"
         # Check if confirmation is required
         if self.require_confirmation and op.requires_confirmation:
             response = input(f"\nExecute: {op.description}? [y/N] ")
-            if response.lower() != 'y':
+            if response.lower() != "y":
                 print("⊘ Skipped")
                 return False
 
@@ -423,8 +413,8 @@ __execution_pattern__ = "{execution_pattern}"
         src_dir = self.repo_root / "src"
 
         # Find import patterns to update
-        old_module = old_name.replace('.py', '')
-        new_module = new_name.replace('.py', '')
+        old_module = old_name.replace(".py", "")
+        new_module = new_name.replace(".py", "")
 
         for py_file in src_dir.rglob("*.py"):
             try:
@@ -449,14 +439,14 @@ __execution_pattern__ = "{execution_pattern}"
         """Update imports related to a phase rename."""
         # Map old phase names to module prefixes
         phase_map = {
-            'Phase_zero': 'phase0',
-            'Phase_one': 'phase1',
-            'Phase_two': 'phase2',
-            'Phase_three': 'phase3',
-            'Phase_0': 'phase0',
-            'Phase_1': 'phase1',
-            'Phase_2': 'phase2',
-            'Phase_3': 'phase3',
+            "Phase_zero": "phase0",
+            "Phase_one": "phase1",
+            "Phase_two": "phase2",
+            "Phase_three": "phase3",
+            "Phase_0": "phase0",
+            "Phase_1": "phase1",
+            "Phase_2": "phase2",
+            "Phase_3": "phase3",
         }
 
         old_prefix = phase_map.get(old_phase)
@@ -488,45 +478,32 @@ def main():
         description="Auto-Fix Engine - Automatically fix GNEA violations"
     )
 
-    parser.add_argument(
-        '--path',
-        type=Path,
-        default=None,
-        help='Path to repository root'
-    )
+    parser.add_argument("--path", type=Path, default=None, help="Path to repository root")
 
     parser.add_argument(
-        '--dry-run',
-        action='store_true',
-        help='Preview changes without applying them'
+        "--dry-run", action="store_true", help="Preview changes without applying them"
     )
 
-    parser.add_argument(
-        '--yes', '-y',
-        action='store_true',
-        help='Auto-confirm all operations'
-    )
+    parser.add_argument("--yes", "-y", action="store_true", help="Auto-confirm all operations")
 
     parser.add_argument(
-        '--rename-phase',
+        "--rename-phase",
         nargs=2,
-        metavar=('OLD', 'NEW'),
-        help='Rename a phase directory (e.g., Phase_zero Phase_0)'
+        metavar=("OLD", "NEW"),
+        help="Rename a phase directory (e.g., Phase_zero Phase_0)",
     )
 
     parser.add_argument(
-        '--rename-file',
+        "--rename-file",
         nargs=2,
-        metavar=('PATH', 'NEW_NAME'),
-        help='Rename a file (e.g., path/to/file.py new_name.py)'
+        metavar=("PATH", "NEW_NAME"),
+        help="Rename a file (e.g., path/to/file.py new_name.py)",
     )
 
     args = parser.parse_args()
 
     engine = AutoFixEngine(
-        repo_root=args.path,
-        dry_run=args.dry_run,
-        require_confirmation=not args.yes
+        repo_root=args.path, dry_run=args.dry_run, require_confirmation=not args.yes
     )
 
     # Execute requested operation
@@ -542,6 +519,7 @@ def main():
 
     # Exit with appropriate code
     import sys
+
     sys.exit(0 if not engine.failed else 1)
 
 

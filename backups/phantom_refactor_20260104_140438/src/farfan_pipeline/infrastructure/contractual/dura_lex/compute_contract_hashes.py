@@ -22,10 +22,10 @@ from typing import Any
 
 def compute_contract_hash(contract_data: dict[str, Any]) -> str:
     """Compute SHA-256 hash of contract, excluding contract_hash field.
-    
+
     Args:
         contract_data: Contract dictionary
-        
+
     Returns:
         64-character lowercase hex SHA-256 hash
     """
@@ -34,26 +34,23 @@ def compute_contract_hash(contract_data: dict[str, Any]) -> str:
     if "identity" in contract_copy and "contract_hash" in contract_copy["identity"]:
         contract_copy["identity"] = contract_copy["identity"].copy()
         contract_copy["identity"]["contract_hash"] = ""
-    
+
     # Serialize deterministically
     json_bytes = json.dumps(
-        contract_copy,
-        sort_keys=True,
-        separators=(",", ":"),
-        ensure_ascii=False
+        contract_copy, sort_keys=True, separators=(",", ":"), ensure_ascii=False
     ).encode("utf-8")
-    
+
     # Compute SHA-256
     return hashlib.sha256(json_bytes).hexdigest()
 
 
 def update_contract_hash(contract_path: Path, dry_run: bool = False) -> dict[str, Any]:
     """Update contract_hash field in contract file.
-    
+
     Args:
         contract_path: Path to contract JSON file
         dry_run: If True, don't write changes
-        
+
     Returns:
         dict with keys: success, old_hash, new_hash, message
     """
@@ -61,22 +58,22 @@ def update_contract_hash(contract_path: Path, dry_run: bool = False) -> dict[str
         # Load contract
         with open(contract_path, "r", encoding="utf-8") as f:
             contract = json.load(f)
-        
+
         # Validate structure
         if "identity" not in contract:
             return {
                 "success": False,
                 "message": "Missing 'identity' field",
                 "old_hash": None,
-                "new_hash": None
+                "new_hash": None,
             }
-        
+
         # Get old hash
         old_hash = contract["identity"].get("contract_hash", "")
-        
+
         # Compute new hash
         new_hash = compute_contract_hash(contract)
-        
+
         # Check if update needed
         if old_hash == new_hash:
             return {
@@ -84,81 +81,76 @@ def update_contract_hash(contract_path: Path, dry_run: bool = False) -> dict[str
                 "message": "Hash already correct",
                 "old_hash": old_hash,
                 "new_hash": new_hash,
-                "updated": False
+                "updated": False,
             }
-        
+
         # Update hash
         contract["identity"]["contract_hash"] = new_hash
-        
+
         if not dry_run:
             # Write back to file
             with open(contract_path, "w", encoding="utf-8") as f:
                 json.dump(contract, f, indent=2, ensure_ascii=False)
                 f.write("\n")  # Add trailing newline
-        
+
         return {
             "success": True,
             "message": "Hash updated successfully" if not dry_run else "Would update hash",
             "old_hash": old_hash,
             "new_hash": new_hash,
-            "updated": True
+            "updated": True,
         }
-        
+
     except json.JSONDecodeError as e:
         return {
             "success": False,
             "message": f"JSON decode error: {e}",
             "old_hash": None,
-            "new_hash": None
+            "new_hash": None,
         }
     except Exception as e:
-        return {
-            "success": False,
-            "message": f"Error: {e}",
-            "old_hash": None,
-            "new_hash": None
-        }
+        return {"success": False, "message": f"Error: {e}", "old_hash": None, "new_hash": None}
 
 
 def verify_contract_hash(contract_path: Path) -> dict[str, Any]:
     """Verify contract hash is correct.
-    
+
     Args:
         contract_path: Path to contract JSON file
-        
+
     Returns:
         dict with keys: valid, stored_hash, computed_hash, message
     """
     try:
         with open(contract_path, "r", encoding="utf-8") as f:
             contract = json.load(f)
-        
+
         if "identity" not in contract or "contract_hash" not in contract["identity"]:
             return {
                 "valid": False,
                 "message": "Missing contract_hash field",
                 "stored_hash": None,
-                "computed_hash": None
+                "computed_hash": None,
             }
-        
+
         stored_hash = contract["identity"]["contract_hash"]
         computed_hash = compute_contract_hash(contract)
-        
+
         valid = stored_hash == computed_hash
-        
+
         return {
             "valid": valid,
             "message": "Hash valid" if valid else "Hash mismatch",
             "stored_hash": stored_hash,
-            "computed_hash": computed_hash
+            "computed_hash": computed_hash,
         }
-        
+
     except Exception as e:
         return {
             "valid": False,
             "message": f"Error: {e}",
             "stored_hash": None,
-            "computed_hash": None
+            "computed_hash": None,
         }
 
 
@@ -167,23 +159,17 @@ def main():
         description="Compute and update SHA-256 hashes for V3 executor contracts"
     )
     parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Show what would be updated without making changes"
+        "--dry-run", action="store_true", help="Show what would be updated without making changes"
     )
     parser.add_argument(
-        "--verify-only",
-        action="store_true",
-        help="Only verify hashes, don't update"
+        "--verify-only", action="store_true", help="Only verify hashes, don't update"
     )
     parser.add_argument(
-        "--contracts-dir",
-        type=Path,
-        help="Path to contracts directory (default: auto-detect)"
+        "--contracts-dir", type=Path, help="Path to contracts directory (default: auto-detect)"
     )
-    
+
     args = parser.parse_args()
-    
+
     # Find contracts directory
     if args.contracts_dir:
         contracts_dir = args.contracts_dir
@@ -191,31 +177,40 @@ def main():
         # Auto-detect from script location
         script_dir = Path(__file__).resolve().parent
         project_root = script_dir.parent
-        contracts_dir = project_root / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts" / "specialized"
-    
+        contracts_dir = (
+            project_root
+            / "src"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_two"
+            / "json_files_phase_two"
+            / "executor_contracts"
+            / "specialized"
+        )
+
     if not contracts_dir.exists():
         print(f"❌ Contracts directory not found: {contracts_dir}", file=sys.stderr)
         sys.exit(1)
-    
+
     # Find all V3 contracts
     contract_files = sorted(contracts_dir.glob("Q*.v3.json"))
-    
+
     if not contract_files:
         print(f"❌ No V3 contracts found in {contracts_dir}", file=sys.stderr)
         sys.exit(1)
-    
+
     print(f"Found {len(contract_files)} V3 contracts")
     print()
-    
+
     # Process contracts
     updated = 0
     already_correct = 0
     errors = 0
     invalid_hashes = []
-    
+
     for contract_path in contract_files:
         contract_id = contract_path.stem.replace(".v3", "")
-        
+
         if args.verify_only:
             # Verify mode
             result = verify_contract_hash(contract_path)
@@ -245,12 +240,12 @@ def main():
             else:
                 errors += 1
                 print(f"❌ {contract_id}: {result['message']}")
-    
+
     print()
     print("=" * 60)
     print("Summary:")
     print(f"  Total contracts: {len(contract_files)}")
-    
+
     if args.verify_only:
         print(f"  Valid hashes: {already_correct}")
         print(f"  Invalid hashes: {errors}")
@@ -262,13 +257,13 @@ def main():
         print(f"  Updated: {updated}")
         print(f"  Already correct: {already_correct}")
         print(f"  Errors: {errors}")
-        
+
         if args.dry_run:
             print()
             print("DRY RUN - No files were modified")
-    
+
     print("=" * 60)
-    
+
     # Exit code
     if errors > 0 and args.verify_only:
         sys.exit(1)

@@ -1,9 +1,11 @@
 """
 Traceability Contract (TC) - Implementation
 """
+
 import hashlib
 import json
 from typing import List, Any
+
 
 class MerkleTree:
     def __init__(self, items: List[str]):
@@ -18,15 +20,16 @@ class MerkleTree:
             return ""
         if len(nodes) == 1:
             return nodes[0]
-            
+
         new_level = []
         for i in range(0, len(nodes), 2):
             left = nodes[i]
-            right = nodes[i+1] if i+1 < len(nodes) else left
+            right = nodes[i + 1] if i + 1 < len(nodes) else left
             combined = self._hash(left + right)
             new_level.append(combined)
-            
+
         return self._build_tree(new_level)
+
 
 class TraceabilityContract:
     @staticmethod
