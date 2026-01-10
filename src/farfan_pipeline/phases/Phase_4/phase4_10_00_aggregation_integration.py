@@ -35,11 +35,8 @@ if TYPE_CHECKING:
     pass
 
 from farfan_pipeline.phases.Phase_4.aggregation import (
-<<<<<<< HEAD
     DimensionAggregator,
     DimensionScore,
-=======
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
     AreaPolicyAggregator,
     AreaScore,
     ClusterAggregator,

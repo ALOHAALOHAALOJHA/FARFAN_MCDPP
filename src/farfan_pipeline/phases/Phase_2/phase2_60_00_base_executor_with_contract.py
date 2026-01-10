@@ -59,13 +59,7 @@ except ImportError:
 try:
     from farfan_pipeline.phases.Phase_2.evidence_nexus import EvidenceNexus, process_evidence
 except ImportError:
-<<<<<<< HEAD
     from farfan_pipeline.phases.Phase_2.phase2_80_00_evidence_nexus import EvidenceNexus, process_evidence
-=======
-    from farfan_pipeline.phases.Phase_2.phase2_80_00_evidence_nexus import (
-        process_evidence,
-    )
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
 
 try:
     from farfan_pipeline.phases.Phase_2.carver import DoctoralCarverSynthesizer
@@ -73,28 +67,12 @@ except ImportError:
     from farfan_pipeline.phases.Phase_2.phase2_90_00_carver import DoctoralCarverSynthesizer
 
 try:
-<<<<<<< HEAD
     from farfan_pipeline.phases.Phase_2.calibration_policy import CalibrationPolicy, create_default_policy
 except ImportError:
     try:
         from farfan_pipeline.phases.Phase_2.phase2_60_04_calibration_policy import CalibrationPolicy, create_default_policy
     except ImportError:
         from farfan_pipeline.phases.Phase_2.phase2_60_04_calibration_policy import CalibrationPolicy
-=======
-    from farfan_pipeline.phases.Phase_2.calibration_policy import (
-        CalibrationPolicy,
-        create_default_policy,
-    )
-except ImportError:
-    try:
-        from farfan_pipeline.phases.Phase_2.phase2_60_04_calibration_policy import (
-            CalibrationPolicy,
-            create_default_policy,
-        )
-    except ImportError:
-        from farfan_pipeline.phases.Phase_2.phase2_60_04_calibration_policy import CalibrationPolicy
-
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
         def create_default_policy():
             return CalibrationPolicy()
 

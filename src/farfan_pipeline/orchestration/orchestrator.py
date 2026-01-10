@@ -39,87 +39,14 @@ from farfan_pipeline.phases.Phase_0.phase0_50_01_exit_gates import GateResult
 
 # Define RULES_DIR locally (not exported from paths)
 RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"
-<<<<<<< HEAD
-=======
-from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import ClassRegistryError
-from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
-from farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer import (
-    ExecutionPlan,
-    IrrigationSynchronizer,
-)
-from farfan_pipeline.phases.Phase_2.phase2_60_00_base_executor_with_contract import (
-    DynamicContractExecutor,
-)
-from farfan_pipeline.phases.Phase_2.phase2_60_02_arg_router import (
-    ArgRouterError,
-    ArgumentValidationError,
-    ExtendedArgRouter,
-)
-from farfan_pipeline.phases.Phase_3.phase3_signal_enriched_scoring import SignalEnrichedScorer
-from farfan_pipeline.phases.Phase_3.phase3_validation import (
-    ValidationCounters,
-    validate_and_clamp_score,
-    validate_evidence_presence,
-    validate_micro_results_input,
-    validate_quality_level,
-)
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
-from farfan_pipeline.phases.Phase_4.aggregation import (
-    AggregationSettings,
-    AreaPolicyAggregator,
-    AreaScore,
-    ClusterAggregator,
-    ClusterScore,
-    DimensionAggregator,
-    DimensionScore,
-    MacroAggregator,
-    MacroScore,
-    ScoredResult,
-)
-<<<<<<< HEAD
-=======
 from farfan_pipeline.phases.Phase_4.aggregation_enhancements import (
     enhance_aggregator,
 )
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
 from farfan_pipeline.phases.Phase_4.aggregation_validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,
     validate_phase7_output,
-<<<<<<< HEAD
-    enforce_validation_or_fail,
-)
-from farfan_pipeline.phases.Phase_4.aggregation_enhancements import (
-    enhance_aggregator,
-    EnhancedDimensionAggregator,
-    EnhancedAreaAggregator,
-    EnhancedClusterAggregator,
-    EnhancedMacroAggregator,
-)
-from farfan_pipeline.phases.Phase_2.phase2_60_00_base_executor_with_contract import (
-    DynamicContractExecutor,
-)
-from farfan_pipeline.phases.Phase_2.phase2_60_02_arg_router import (
-    ArgRouterError,
-    ArgumentValidationError,
-    ExtendedArgRouter,
-)
-from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import ClassRegistryError
-from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
-from farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer import (
-    IrrigationSynchronizer,
-    ExecutionPlan,
-)
-from farfan_pipeline.phases.Phase_3.phase3_signal_enriched_scoring import SignalEnrichedScorer
-from farfan_pipeline.phases.Phase_3.phase3_validation import (
-    ValidationCounters,
-    validate_micro_results_input,
-    validate_and_clamp_score,
-    validate_quality_level,
-    validate_evidence_presence,
-=======
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
 )
 
 logger = structlog.get_logger(__name__)
@@ -1286,13 +1213,7 @@ class MethodExecutor:
 
     def execute(self, class_name: str, method_name: str, **kwargs: Any) -> Any:
         """Execute method."""
-<<<<<<< HEAD
-        from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import (
-            MethodRegistryError,
-        )
-=======
         from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import MethodRegistryError
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
 
         try:
             method = self._method_registry.get_method(class_name, method_name)
@@ -2614,15 +2535,6 @@ class Orchestrator:
         document_id = os.path.splitext(os.path.basename(pdf_path))[0] or "doc_1"
 
         try:
-<<<<<<< HEAD
-            from farfan_pipeline.phases.Phase_1 import (
-                CanonicalInput,
-                execute_phase_1_with_full_contract,
-                CanonPolicyPackage,
-            )
-            from pathlib import Path
-=======
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
             import hashlib
             from pathlib import Path
 
@@ -3658,13 +3570,6 @@ class Orchestrator:
         try:
             from farfan_pipeline.phases.Phase_9.report_assembly import (
                 ReportAssembler,
-<<<<<<< HEAD
-                ReportMetadata,
-            )
-            from farfan_pipeline.phases.Phase_9.report_generator import (
-                ReportGenerator,
-=======
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
             )
 
             # Get questionnaire provider from config

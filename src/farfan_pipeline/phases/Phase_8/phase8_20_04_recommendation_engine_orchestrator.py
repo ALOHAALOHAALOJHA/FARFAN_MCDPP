@@ -27,6 +27,8 @@ This refactored version uses:
 Result: 300 lines vs 1,289 lines (77% reduction) with exponential performance benefits.
 """
 
+from __future__ import annotations
+
 # =============================================================================
 # METADATA
 # =============================================================================
@@ -40,10 +42,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "Singleton"
-
-
-
-from __future__ import annotations
 
 import logging
 from pathlib import Path

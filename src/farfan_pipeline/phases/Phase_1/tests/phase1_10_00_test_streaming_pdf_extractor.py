@@ -11,69 +11,21 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-<<<<<<< HEAD
 from farfan_pipeline.phases.Phase_1.primitives.streaming_extractor import (
     StreamingPDFExtractor,
-=======
-from farfan_pipeline.phases.Phase_1.phase1_10_00_phase_1_constants import PDF_EXTRACTION_CHAR_LIMIT
-from farfan_pipeline.phases.Phase_1.primitives.streaming_extractor import (
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
     PYMUPDF_AVAILABLE,
     StreamingPDFExtractor,
 )
-<<<<<<< HEAD
 from farfan_pipeline.phases.Phase_1.phase1_10_00_phase_1_constants import PDF_EXTRACTION_CHAR_LIMIT
-=======
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
-
-
-class TestStreamingPDFExtractorInstantiation(unittest.TestCase):
-    """Test basic instantiation and configuration."""
-
-    def test_instantiation_with_path(self):
-        extractor = StreamingPDFExtractor(Path("/some/path/doc.pdf"))
-        self.assertEqual(extractor.pdf_path, Path("/some/path/doc.pdf"))
-
-
-class TestStreamingPDFExtractorValidation(unittest.TestCase):
-    """Test file existence and dependency validation."""
-
-    def test_extract_text_stream_raises_on_missing_file(self):
-        extractor = StreamingPDFExtractor(Path("/nonexistent/file.pdf"))
-
-        if PYMUPDF_AVAILABLE:
-            with self.assertRaises(FileNotFoundError) as ctx:
-                list(extractor.extract_text_stream())
-            self.assertIn("PDF file not found", str(ctx.exception))
-
-    def test_extract_with_limit_raises_on_missing_file(self):
-        extractor = StreamingPDFExtractor(Path("/nonexistent/file.pdf"))
-
-        if PYMUPDF_AVAILABLE:
-            with self.assertRaises(FileNotFoundError) as ctx:
-                extractor.extract_with_limit()
-            self.assertIn("PDF file not found", str(ctx.exception))
-
-<<<<<<< HEAD
-    @patch(
-        "farfan_pipeline.phases.Phase_1.primitives.streaming_extractor.PYMUPDF_AVAILABLE", False
-    )
-=======
-    @patch("farfan_pipeline.phases.Phase_1.primitives.streaming_extractor.PYMUPDF_AVAILABLE", False)
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
     def test_raises_runtime_error_when_pymupdf_not_available_stream(self):
         extractor = StreamingPDFExtractor(Path("dummy.pdf"))
         with self.assertRaises(RuntimeError) as ctx:
             list(extractor.extract_text_stream())
         self.assertIn("PyMuPDF", str(ctx.exception))
 
-<<<<<<< HEAD
     @patch(
         "farfan_pipeline.phases.Phase_1.primitives.streaming_extractor.PYMUPDF_AVAILABLE", False
     )
-=======
-    @patch("farfan_pipeline.phases.Phase_1.primitives.streaming_extractor.PYMUPDF_AVAILABLE", False)
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
     def test_raises_runtime_error_when_pymupdf_not_available_limit(self):
         extractor = StreamingPDFExtractor(Path("dummy. pdf"))
         with self.assertRaises(RuntimeError) as ctx:

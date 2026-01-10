@@ -16,6 +16,8 @@ Extracted from phase8_20_00_recommendation_engine.py for better separation of co
 Enhancement: Window 1 - Schema-driven data models
 """
 
+from __future__ import annotations
+
 # =============================================================================
 # METADATA
 # =============================================================================
@@ -29,10 +31,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "LOW"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import logging
 from dataclasses import asdict, dataclass, field

@@ -28,6 +28,8 @@ Adding a new rule type requires only:
 Benefit: 1 schema edit → 5 artifacts updated automatically (120x multiplier)
 """
 
+from __future__ import annotations
+
 # =============================================================================
 # METADATA
 # =============================================================================
@@ -41,10 +43,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import hashlib
 import json
