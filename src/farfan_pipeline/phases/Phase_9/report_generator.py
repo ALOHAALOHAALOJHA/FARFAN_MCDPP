@@ -93,18 +93,24 @@ class ReportGenerator:
         generate_pdf: bool = True,
         generate_html: bool = True,
         generate_markdown: bool = True,
+        template_name: str = "report_enhanced.html.j2",
     ) -> dict[str, Path]:
         """Generate all report formats.
-        
+
         Args:
             report: AnalysisReport to render
             generate_pdf: Generate PDF output
             generate_html: Generate HTML output
             generate_markdown: Generate Markdown output
-            
+            template_name: Jinja2 template to use for HTML/PDF generation
+                          Options: 'report_enhanced.html.j2' (default),
+                                  'executive_dashboard.html.j2',
+                                  'technical_deep_dive.html.j2',
+                                  'report.html.j2' (legacy)
+
         Returns:
             Dictionary mapping format to output path
-            
+
         Raises:
             ReportGenerationError: If generation fails
         """
@@ -134,11 +140,12 @@ class ReportGenerator:
                 html_path = self.output_dir / f"{self.plan_name}_report.html"
                 html_content = generate_html_report(
                     report,
-                    chart_paths=chart_paths
+                    chart_paths=chart_paths,
+                    template_name=template_name
                 )
                 html_path.write_text(html_content, encoding="utf-8")
                 artifacts["html"] = html_path
-                logger.info(f"Generated HTML report: {html_path}")
+                logger.info(f"Generated HTML report: {html_path} (template: {template_name})")
             
             # Generate PDF from HTML
             if generate_pdf:
@@ -146,7 +153,8 @@ class ReportGenerator:
                     # Need HTML as intermediate
                     html_content = generate_html_report(
                         report,
-                        chart_paths=chart_paths
+                        chart_paths=chart_paths,
+                        template_name=template_name
                     )
                 else:
                     html_content = html_path.read_text(encoding="utf-8")
@@ -344,14 +352,18 @@ def generate_markdown_report(report: AnalysisReport) -> str:
 
 def generate_html_report(
     report: AnalysisReport,
-    chart_paths: list[Path] | None = None
+    chart_paths: list[Path] | None = None,
+    template_name: str = "report.html.j2"
 ) -> str:
     """Generate HTML report using Jinja2 template.
-    
+
     Args:
         report: AnalysisReport to render
         chart_paths: Optional paths to chart images
-        
+        template_name: Name of template file to use (default: report.html.j2)
+                      Options: report.html.j2, report_enhanced.html.j2,
+                               executive_dashboard.html.j2, technical_deep_dive.html.j2
+
     Returns:
         HTML content as string
     """
@@ -377,7 +389,7 @@ def generate_html_report(
     )
     
     # Load template
-    template = env.get_template("report.html.j2")
+    template = env.get_template(template_name)
     
     # Prepare context
     context = {

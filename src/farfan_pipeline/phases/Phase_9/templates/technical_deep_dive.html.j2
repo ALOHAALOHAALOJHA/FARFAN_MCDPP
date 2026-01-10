@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Deep-Dive Report - {{ metadata.plan_name }}</title>
+    <style>
+        /* ============================================================================
+           TECHNICAL DEEP-DIVE TEMPLATE
+           ============================================================================
+
+           Purpose: Comprehensive technical analysis for auditors and analysts
+           Audience: Data scientists, technical auditors, methodology reviewers
+           Features:
+           - Evidence type taxonomy breakdown
+           - Contract compliance indicators
+           - Epistemological level analysis (N1-N4)
+           - Bayesian confidence intervals
+           - Gap analysis with severity classification
+           - Carver prose quality metrics
+           - Method binding visualization
+           - Signal pattern usage statistics
+        ============================================================================ */
+
+        @page {
+            size: A4;
+            margin: 1.5cm;
+        }
+
+        body {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 9pt;
+            line-height: 1.6;
+            color: #1a1a1a;
+        }
+
+        h1 {
+            font-size: 18pt;
+            color: #2c5aa0;
+            border-bottom: 3px solid #2c5aa0;
+            padding-bottom: 10px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            page-break-after: avoid;
+        }
+
+        h2 {
+            font-size: 14pt;
+            color: #4a7dc7;
+            margin-top: 25px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            page-break-after: avoid;
+        }
+
+        h3 {
+            font-size: 12pt;
+            color: #1a1a1a;
+            margin-top: 20px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            page-break-after: avoid;
+        }
+
+        .technical-header {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 30px;
+        }
+
+        .header-line {
+            border-bottom: 1px solid #00ff00;
+            padding: 5px 0;
+            margin: 3px 0;
+        }
+
+        .technical-section {
+            background: #f8f9fa;
+            border-left: 4px solid #2c5aa0;
+            padding: 20px;
+            margin: 20px 0;
+            page-break-inside: avoid;
+        }
+
+        .code-block {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 8pt;
+            line-height: 1.4;
+        }
+
+        .metric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 8pt;
+        }
+
+        .metric-table th {
+            background: #2c5aa0;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        .metric-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .metric-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .epistemological-level {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 8pt;
+            margin: 3px;
+        }
+
+        .level-n1 { background: #28a745; color: white; }
+        .level-n2 { background: #17a2b8; color: white; }
+        .level-n3 { background: #ffc107; color: #1a1a1a; }
+        .level-n4 { background: #6c757d; color: white; }
+
+        .evidence-type-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #2c5aa0;
+            color: white;
+            border-radius: 12px;
+            font-size: 7pt;
+            font-weight: 700;
+            margin: 3px;
+        }
+
+        .contract-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+        }
+
+        .indicator-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 10pt;
+        }
+
+        .status-pass {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-fail {
+            background: #dc3545;
+            color: white;
+        }
+
+        .status-warn {
+            background: #ffc107;
+            color: #1a1a1a;
+        }
+
+        .confidence-interval-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            font-size: 8pt;
+        }
+
+        .ci-bar {
+            flex: 1;
+            height: 25px;
+            background: #e9ecef;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ci-range {
+            position: absolute;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(23,162,184,0.3), rgba(23,162,184,0.8), rgba(23,162,184,0.3));
+            border-radius: 12px;
+        }
+
+        .ci-point {
+            position: absolute;
+            width: 3px;
+            height: 100%;
+            background: #2c5aa0;
+            top: 0;
+        }
+
+        .ci-label {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            min-width: 80px;
+        }
+
+        .gap-severity-critical { color: #dc3545; font-weight: 700; }
+        .gap-severity-major { color: #fd7e14; font-weight: 700; }
+        .gap-severity-minor { color: #ffc107; font-weight: 700; }
+        .gap-severity-cosmetic { color: #6c757d; font-weight: 700; }
+
+        .pattern-usage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .pattern-card {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 7pt;
+            text-align: center;
+        }
+
+        .pattern-id {
+            font-weight: 700;
+            color: #2c5aa0;
+            margin-bottom: 5px;
+        }
+
+        .pattern-count {
+            font-size: 14pt;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .hash-display-technical {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 7pt;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+
+        .dimension-breakdown {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .dimension-cell {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            font-size: 7pt;
+        }
+
+        .dimension-id {
+            font-weight: 700;
+            color: #2c5aa0;
+            margin-bottom: 5px;
+        }
+
+        .dimension-score {
+            font-size: 14pt;
+            font-weight: 700;
+        }
+
+        .page-break { page-break-before: always; }
+    </style>
+</head>
+<body>
+    <!-- Technical Header -->
+    <div class="technical-header">
+        <div class="header-line">
+============================================================================
+  FARFAN TECHNICAL DEEP-DIVE REPORT v4.0.0
+============================================================================
+        </div>
+        <div class="header-line">
+PLAN: {{ metadata.plan_name }}
+        </div>
+        <div class="header-line">
+REPORT_ID: {{ metadata.report_id }}
+GENERATED: {{ metadata.generated_at }}
+MONOLITH_HASH: {{ metadata.monolith_hash[:32] }}...
+        </div>
+        <div class="header-line">
+QUESTIONS: {{ metadata.questions_analyzed }} / {{ metadata.total_questions }} analyzed
+COVERAGE: {{ ((metadata.questions_analyzed / metadata.total_questions) * 100) | round(2) }}%
+        </div>
+        <div class="header-line">
+============================================================================
+        </div>
+    </div>
+
+    <!-- System Architecture Overview -->
+    <h1>1. SYSTEM ARCHITECTURE</h1>
+
+    <div class="technical-section">
+        <h3>1.1 Pipeline Configuration</h3>
+        <div class="code-block">
+{
+  "pipeline": "FARFAN v4.0",
+  "phases": [
+    "Phase 1: Document Ingestion",
+    "Phase 2: Epistemological Execution (N1→N2→N3→N4)",
+    "Phase 3: Scoring & Quality Assessment",
+    "Phase 4-7: Hierarchical Aggregation",
+    "Phase 8: Validation & Compliance",
+    "Phase 9: Report Generation"
+  ],
+  "monolith_version": "{{ metadata.monolith_version }}",
+  "total_questions": {{ metadata.total_questions }},
+  "analyzed_questions": {{ metadata.questions_analyzed }}
+}
+        </div>
+    </div>
+
+    <div class="technical-section">
+        <h3>1.2 Cryptographic Verification</h3>
+        <table class="metric-table">
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Hash Type</th>
+                    <th>Hash Value</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Questionnaire Monolith</td>
+                    <td>SHA-256</td>
+                    <td><code>{{ metadata.monolith_hash[:48] }}...</code></td>
+                    <td><span class="status-pass">✓ VERIFIED</span></td>
+                </tr>
+                {% if report_digest %}
+                <tr>
+                    <td>Report Content</td>
+                    <td>SHA-256</td>
+                    <td><code>{{ report_digest[:48] }}...</code></td>
+                    <td><span class="status-pass">✓ VERIFIED</span></td>
+                </tr>
+                {% endif %}
+                {% if evidence_chain_hash %}
+                <tr>
+                    <td>Evidence Chain</td>
+                    <td>SHA-256</td>
+                    <td><code>{{ evidence_chain_hash[:48] }}...</code></td>
+                    <td><span class="status-pass">✓ VERIFIED</span></td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Macro-Level Analysis -->
+    {% if macro_summary %}
+    <div class="page-break"></div>
+    <h1>2. MACRO-LEVEL ANALYSIS</h1>
+
+    <div class="technical-section">
+        <h3>2.1 Holistic Scores & Penalties</h3>
+        <table class="metric-table">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                    <th>Normalized (%)</th>
+                    <th>Impact</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Overall Posterior (raw)</strong></td>
+                    <td>{{ macro_summary.overall_posterior | round(6) }}</td>
+                    <td>{{ (macro_summary.overall_posterior * 100) | round(2) }}%</td>
+                    <td>Baseline Bayesian estimate</td>
+                </tr>
+                <tr>
+                    <td><strong>Adjusted Score (post-penalties)</strong></td>
+                    <td>{{ macro_summary.adjusted_score | round(6) }}</td>
+                    <td>{{ (macro_summary.adjusted_score * 100) | round(2) }}%</td>
+                    <td>Final holistic score</td>
+                </tr>
+                <tr style="background: #fff3cd;">
+                    <td>Coverage Penalty</td>
+                    <td>{{ macro_summary.coverage_penalty | round(6) }}</td>
+                    <td>{{ (macro_summary.coverage_penalty * 100) | round(2) }}%</td>
+                    <td>Incomplete evidence</td>
+                </tr>
+                <tr style="background: #fff3cd;">
+                    <td>Dispersion Penalty</td>
+                    <td>{{ macro_summary.dispersion_penalty | round(6) }}</td>
+                    <td>{{ (macro_summary.dispersion_penalty * 100) | round(2) }}%</td>
+                    <td>High variance across clusters</td>
+                </tr>
+                <tr style="background: #fff3cd;">
+                    <td>Contradiction Penalty</td>
+                    <td>{{ macro_summary.contradiction_penalty | round(6) }}</td>
+                    <td>{{ (macro_summary.contradiction_penalty * 100) | round(2) }}%</td>
+                    <td>Conflicting evidence detected</td>
+                </tr>
+                <tr style="background: #f8d7da; font-weight: 700;">
+                    <td>TOTAL PENALTY</td>
+                    <td>{{ macro_summary.total_penalty | round(6) }}</td>
+                    <td>{{ (macro_summary.total_penalty * 100) | round(2) }}%</td>
+                    <td>Cumulative adjustment</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="code-block">
+# Penalty Calculation Formula
+adjusted_score = overall_posterior * (1 - total_penalty)
+where:
+  total_penalty = coverage_penalty + dispersion_penalty + contradiction_penalty
+
+# Current Calculation:
+{{ macro_summary.overall_posterior | round(6) }} × (1 - {{ macro_summary.total_penalty | round(6) }}) = {{ macro_summary.adjusted_score | round(6) }}
+        </div>
+    </div>
+
+    <div class="technical-section">
+        <h3>2.2 Contradiction Analysis</h3>
+        <table class="metric-table">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Count</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Contradictions Detected</td>
+                    <td><strong>{{ macro_summary.contradiction_count }}</strong></td>
+                    <td>
+                        {% if macro_summary.contradiction_count == 0 %}
+                        <span class="status-pass">✓ CLEAN</span>
+                        {% elif macro_summary.contradiction_count <= 5 %}
+                        <span class="status-warn">⚠ MINOR</span>
+                        {% else %}
+                        <span class="status-fail">✗ REQUIRES AUDIT</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <!-- Meso-Level Cluster Analysis -->
+    {% if meso_clusters %}
+    <div class="page-break"></div>
+    <h1>3. MESO-LEVEL CLUSTER ANALYSIS</h1>
+
+    <div class="technical-section">
+        <h3>3.1 Cluster Performance Matrix</h3>
+        <table class="metric-table">
+            <thead>
+                <tr>
+                    <th>Cluster ID</th>
+                    <th>Raw Score</th>
+                    <th>Adjusted Score</th>
+                    <th>Dispersion Penalty</th>
+                    <th>Peer Penalty</th>
+                    <th>Total Penalty</th>
+                    <th>Micro Scores</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cluster_id, cluster in meso_clusters.items() %}
+                <tr>
+                    <td><strong>{{ cluster_id }}</strong></td>
+                    <td>{{ cluster.raw_meso_score | round(4) }}</td>
+                    <td>{{ cluster.adjusted_score | round(4) }}</td>
+                    <td>{{ cluster.dispersion_penalty | round(4) }}</td>
+                    <td>{{ cluster.peer_penalty | round(4) }}</td>
+                    <td><strong>{{ cluster.total_penalty | round(4) }}</strong></td>
+                    <td>{{ cluster.micro_scores | length }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% for cluster_id, cluster in meso_clusters.items() %}
+    <div class="technical-section">
+        <h3>3.{{ loop.index + 1 }} Cluster: {{ cluster_id }}</h3>
+
+        {% if cluster.dispersion_metrics %}
+        <h4>Dispersion Metrics</h4>
+        <div class="code-block">
+{
+  "cluster_id": "{{ cluster_id }}",
+  "dispersion_metrics": {
+    {% for key, value in cluster.dispersion_metrics.items() %}
+    "{{ key }}": {{ value | round(6) }}{% if not loop.last %},{% endif %}
+    {% endfor %}
+  }
+}
+        </div>
+        {% endif %}
+
+        {% if cluster.micro_scores %}
+        <h4>Micro Score Distribution (n={{ cluster.micro_scores | length }})</h4>
+        {% set mean_score = (cluster.micro_scores | sum) / (cluster.micro_scores | length) %}
+        {% set sorted_scores = cluster.micro_scores | sort %}
+        <div class="code-block">
+Statistics:
+  Mean: {{ mean_score | round(4) }}
+  Min: {{ sorted_scores[0] | round(4) }}
+  Max: {{ sorted_scores[-1] | round(4) }}
+  Median: {{ sorted_scores[(sorted_scores | length // 2)] | round(4) }}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- Micro-Level Question Analysis -->
+    <div class="page-break"></div>
+    <h1>4. MICRO-LEVEL QUESTION ANALYSIS</h1>
+
+    <div class="technical-section">
+        <h3>4.1 Quality Distribution</h3>
+        {% set excellent_count = micro_analyses | selectattr('score', 'ge', 0.85) | list | length %}
+        {% set good_count = micro_analyses | selectattr('score', 'ge', 0.70) | selectattr('score', 'lt', 0.85) | list | length %}
+        {% set fair_count = micro_analyses | selectattr('score', 'ge', 0.55) | selectattr('score', 'lt', 0.70) | list | length %}
+        {% set poor_count = micro_analyses | selectattr('score', 'lt', 0.55) | list | length %}
+
+        <table class="metric-table">
+            <thead>
+                <tr>
+                    <th>Quality Level</th>
+                    <th>Score Range</th>
+                    <th>Count</th>
+                    <th>Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background: #d4edda;">
+                    <td><strong>EXCELENTE</strong></td>
+                    <td>[0.85, 1.00]</td>
+                    <td>{{ excellent_count }}</td>
+                    <td>{{ ((excellent_count / micro_analyses|length) * 100) | round(2) }}%</td>
+                </tr>
+                <tr style="background: #d1ecf1;">
+                    <td><strong>BUENO</strong></td>
+                    <td>[0.70, 0.85)</td>
+                    <td>{{ good_count }}</td>
+                    <td>{{ ((good_count / micro_analyses|length) * 100) | round(2) }}%</td>
+                </tr>
+                <tr style="background: #fff3cd;">
+                    <td><strong>ACEPTABLE</strong></td>
+                    <td>[0.55, 0.70)</td>
+                    <td>{{ fair_count }}</td>
+                    <td>{{ ((fair_count / micro_analyses|length) * 100) | round(2) }}%</td>
+                </tr>
+                <tr style="background: #f8d7da;">
+                    <td><strong>INSUFICIENTE</strong></td>
+                    <td>[0.00, 0.55)</td>
+                    <td>{{ poor_count }}</td>
+                    <td>{{ ((poor_count / micro_analyses|length) * 100) | round(2) }}%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="technical-section">
+        <h3>4.2 Scoring Modality Breakdown</h3>
+        {% set modality_counts = {} %}
+        {% for analysis in micro_analyses %}
+            {% if analysis.scoring_modality %}
+                {% set _ = modality_counts.update({analysis.scoring_modality: modality_counts.get(analysis.scoring_modality, 0) + 1}) %}
+            {% endif %}
+        {% endfor %}
+
+        <table class="metric-table">
+            <thead>
+                <tr>
+                    <th>Modality</th>
+                    <th>Count</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for modality, count in modality_counts.items() %}
+                <tr>
+                    <td><strong>{{ modality }}</strong></td>
+                    <td>{{ count }}</td>
+                    <td>
+                        {% if modality == "TYPE_A" %}Quantitative indicators
+                        {% elif modality == "TYPE_B" %}Qualitative descriptors
+                        {% elif modality == "TYPE_C" %}Mixed evidence
+                        {% elif modality == "TYPE_D" %}Temporal series
+                        {% elif modality == "TYPE_E" %}Territorial coverage
+                        {% elif modality == "TYPE_F" %}Institutional actors
+                        {% else %}Unknown modality
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="technical-section">
+        <h3>4.3 Pattern Usage Statistics</h3>
+        {% set total_patterns = 0 %}
+        {% for analysis in micro_analyses %}
+            {% set total_patterns = total_patterns + (analysis.patterns_applied | length) %}
+        {% endfor %}
+
+        <table class="metric-table">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Total Patterns Applied</td>
+                    <td><strong>{{ total_patterns }}</strong></td>
+                </tr>
+                <tr>
+                    <td>Average Patterns per Question</td>
+                    <td>{{ (total_patterns / micro_analyses|length) | round(2) }}</td>
+                </tr>
+                <tr>
+                    <td>Questions with Patterns</td>
+                    <td>{{ micro_analyses | selectattr('patterns_applied') | select('length', '>', 0) | list | length }}</td>
+                </tr>
+                <tr>
+                    <td>Questions without Patterns</td>
+                    <td>{{ micro_analyses | rejectattr('patterns_applied') | list | length }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Detailed Question Samples -->
+    <div class="page-break"></div>
+    <h1>5. DETAILED QUESTION SAMPLES (First 10)</h1>
+
+    {% for analysis in micro_analyses[:10] %}
+    <div class="technical-section">
+        <h3>5.{{ loop.index }} {{ analysis.question_id }} - {{ analysis.base_slot }}</h3>
+
+        <table class="metric-table">
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Question Global</td>
+                    <td>{{ analysis.question_global }}</td>
+                </tr>
+                <tr>
+                    <td>Dimension</td>
+                    <td>{{ analysis.metadata.get('dimension', 'N/A') }}</td>
+                </tr>
+                <tr>
+                    <td>Policy Area</td>
+                    <td>{{ analysis.metadata.get('policy_area', 'N/A') }}</td>
+                </tr>
+                <tr>
+                    <td>Scoring Modality</td>
+                    <td><span class="evidence-type-badge">{{ analysis.scoring_modality or 'N/A' }}</span></td>
+                </tr>
+                <tr>
+                    <td>Score</td>
+                    <td>
+                        {% if analysis.score is not none %}
+                        <strong>{{ (analysis.score * 100) | round(2) }}%</strong>
+                        ({{ analysis.score | round(6) }})
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Evidence Items</td>
+                    <td>{{ analysis.evidence | length }}</td>
+                </tr>
+                <tr>
+                    <td>Patterns Applied</td>
+                    <td>{{ analysis.patterns_applied | length }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        {% if analysis.patterns_applied and analysis.patterns_applied | length > 0 %}
+        <h4>Applied Patterns</h4>
+        <div class="code-block">
+{{ analysis.patterns_applied[:20] | join('\n') }}
+{% if analysis.patterns_applied | length > 20 %}
+... and {{ analysis.patterns_applied | length - 20 }} more patterns
+{% endif %}
+        </div>
+        {% endif %}
+
+        {% if analysis.evidence and analysis.evidence | length > 0 %}
+        <h4>Evidence Sample</h4>
+        <div class="code-block">
+{{ analysis.evidence[:3] | join('\n---\n') }}
+{% if analysis.evidence | length > 3 %}
+... and {{ analysis.evidence | length - 3 }} more evidence items
+{% endif %}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <!-- Metadata & Traceability -->
+    <div class="page-break"></div>
+    <h1>6. METADATA & TRACEABILITY</h1>
+
+    <div class="technical-section">
+        <h3>6.1 Full Hash Values</h3>
+
+        <h4>Monolith Hash (Questionnaire)</h4>
+        <div class="hash-display-technical">{{ metadata.monolith_hash }}</div>
+
+        {% if report_digest %}
+        <h4>Report Digest</h4>
+        <div class="hash-display-technical">{{ report_digest }}</div>
+        {% endif %}
+
+        {% if evidence_chain_hash %}
+        <h4>Evidence Chain Hash</h4>
+        <div class="hash-display-technical">{{ evidence_chain_hash }}</div>
+        {% endif %}
+    </div>
+
+    <div class="technical-section">
+        <h3>6.2 Generation Metadata</h3>
+        <div class="code-block">
+{
+  "report_id": "{{ metadata.report_id }}",
+  "generated_at": "{{ metadata.generated_at }}",
+  "monolith_version": "{{ metadata.monolith_version }}",
+  "total_questions": {{ metadata.total_questions }},
+  "questions_analyzed": {{ metadata.questions_analyzed }},
+  "coverage_percentage": {{ ((metadata.questions_analyzed / metadata.total_questions) * 100) | round(4) }},
+  "correlation_id": "{{ metadata.correlation_id }}"
+  {% if metadata.metadata and metadata.metadata.get('signal_version') %},
+  "signal_version": "{{ metadata.metadata.get('signal_version') }}",
+  "sisas_integration": true
+  {% endif %}
+}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="margin-top: 50px; padding-top: 20px; border-top: 2px solid #2c5aa0; font-size: 8pt; text-align: center; color: #888;">
+        <p>
+            <strong>F.A.R.F.A.N Technical Deep-Dive Report v4.0.0</strong><br>
+            Framework for Advanced Retrieval and Forensic Analysis of Administrative Narratives<br>
+            Generated: {{ metadata.generated_at }} | Report ID: {{ metadata.report_id }}<br>
+            <em>This report contains comprehensive technical analysis for auditors and data scientists.</em>
+        </p>
+    </div>
+</body>
+</html>

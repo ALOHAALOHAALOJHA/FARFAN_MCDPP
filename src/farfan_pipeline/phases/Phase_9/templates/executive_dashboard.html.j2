@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Dashboard - {{ metadata.plan_name }}</title>
+    <style>
+        /* ============================================================================
+           EXECUTIVE DASHBOARD TEMPLATE
+           ============================================================================
+
+           Purpose: High-level executive summary with visual KPIs
+           Audience: C-level executives, policy makers, strategic decision makers
+           Format: Single-page dashboard with maximum information density
+           Features:
+           - KPI cards with trend indicators
+           - Risk matrix visualization
+           - Policy area heatmap
+           - Top recommendations
+           - Quality distribution charts
+        ============================================================================ */
+
+        @page {
+            size: A4 landscape;
+            margin: 1cm;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 9pt;
+            line-height: 1.4;
+            color: #1a1a1a;
+            background: #f5f7fa;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: auto 1fr 1fr;
+            gap: 15px;
+            padding: 15px;
+            height: 100vh;
+        }
+
+        /* Header */
+        .dashboard-header {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #1e3c72, #2c5aa0);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-title {
+            font-size: 20pt;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .header-subtitle {
+            font-size: 10pt;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .header-meta {
+            text-align: right;
+            font-size: 8pt;
+            opacity: 0.8;
+        }
+
+        /* KPI Cards */
+        .kpi-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .kpi-label {
+            font-size: 8pt;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            font-size: 32pt;
+            font-weight: 700;
+            color: #2c5aa0;
+            line-height: 1;
+            margin: 10px 0;
+        }
+
+        .kpi-subtitle {
+            font-size: 8pt;
+            color: #666;
+        }
+
+        .kpi-trend {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 9pt;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .trend-up { color: #28a745; }
+        .trend-down { color: #dc3545; }
+        .trend-neutral { color: #6c757d; }
+
+        /* Risk Matrix */
+        .risk-matrix {
+            grid-column: span 4;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .matrix-title {
+            font-size: 12pt;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2c5aa0;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .matrix-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 11pt;
+            color: white;
+        }
+
+        .risk-critical { background: #dc3545; }
+        .risk-high { background: #fd7e14; }
+        .risk-medium { background: #ffc107; color: #1a1a1a; }
+        .risk-low { background: #28a745; }
+
+        /* Recommendations Panel */
+        .recommendations-panel {
+            grid-column: span 4;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .panel-title {
+            font-size: 12pt;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2c5aa0;
+        }
+
+        .recommendation-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px;
+            margin: 8px 0;
+            border-left: 4px solid #2c5aa0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 8pt;
+        }
+
+        .rec-icon {
+            font-size: 12pt;
+            line-height: 1;
+        }
+
+        .rec-content {
+            flex: 1;
+        }
+
+        .rec-type {
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .rec-description {
+            line-height: 1.5;
+            color: #4a4a4a;
+        }
+
+        /* Policy Area Heatmap */
+        .heatmap-container {
+            grid-column: span 4;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 8pt;
+            text-align: center;
+            color: white;
+        }
+
+        .heatmap-cell-id {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .heatmap-cell-score {
+            font-size: 14pt;
+            font-weight: 700;
+        }
+
+        /* Quality Distribution */
+        .quality-dist {
+            grid-column: span 8;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .dist-bar-container {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            height: 150px;
+            margin-top: 15px;
+        }
+
+        .dist-bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dist-bar-fill {
+            width: 100%;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 12pt;
+            padding-bottom: 10px;
+        }
+
+        .dist-label {
+            font-size: 8pt;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .color-excellent { background: #28a745; }
+        .color-good { background: #17a2b8; }
+        .color-fair { background: #ffc107; }
+        .color-poor { background: #dc3545; }
+
+        /* Cluster Performance */
+        .cluster-performance {
+            grid-column: span 4;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .cluster-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .cluster-id {
+            font-weight: 700;
+            color: #2c5aa0;
+        }
+
+        .cluster-score {
+            font-size: 16pt;
+            font-weight: 700;
+        }
+
+        .cluster-bar {
+            height: 6px;
+            background: #2c5aa0;
+            border-radius: 3px;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div>
+                <div class="header-title">📊 Executive Dashboard</div>
+                <div class="header-subtitle">{{ metadata.plan_name }}</div>
+            </div>
+            <div class="header-meta">
+                Report ID: {{ metadata.report_id }}<br>
+                Generated: {{ metadata.generated_at }}<br>
+                Questions: {{ metadata.questions_analyzed }} / {{ metadata.total_questions }}
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-card" style="grid-column: span 3;">
+            <div class="kpi-label">Overall Score</div>
+            {% if macro_summary %}
+            <div class="kpi-value">{{ (macro_summary.adjusted_score * 100) | round(1) }}</div>
+            <div class="kpi-subtitle">Adjusted posterior (post-penalties)</div>
+            <div class="kpi-trend {% if macro_summary.adjusted_score >= 0.7 %}trend-up{% elif macro_summary.adjusted_score >= 0.5 %}trend-neutral{% else %}trend-down{% endif %}">
+                {% if macro_summary.adjusted_score >= 0.7 %}↑ Excelente/Bueno
+                {% elif macro_summary.adjusted_score >= 0.5 %}→ Aceptable
+                {% else %}↓ Requiere intervención
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="kpi-value">N/A</div>
+            {% endif %}
+        </div>
+
+        <div class="kpi-card" style="grid-column: span 3;">
+            <div class="kpi-label">Contradicciones</div>
+            {% if macro_summary %}
+            <div class="kpi-value">{{ macro_summary.contradiction_count }}</div>
+            <div class="kpi-subtitle">Evidencia conflictiva detectada</div>
+            <div class="kpi-trend {% if macro_summary.contradiction_count == 0 %}trend-up{% elif macro_summary.contradiction_count <= 5 %}trend-neutral{% else %}trend-down{% endif %}">
+                {% if macro_summary.contradiction_count == 0 %}✓ Sin conflictos
+                {% elif macro_summary.contradiction_count <= 5 %}⚠ Conflictos menores
+                {% else %}⚠ Requiere auditoría
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="kpi-value">N/A</div>
+            {% endif %}
+        </div>
+
+        <div class="kpi-card" style="grid-column: span 3;">
+            <div class="kpi-label">Cobertura</div>
+            <div class="kpi-value">{{ ((metadata.questions_analyzed / metadata.total_questions) * 100) | round(0) }}%</div>
+            <div class="kpi-subtitle">{{ metadata.questions_analyzed }} de {{ metadata.total_questions }} preguntas</div>
+            <div class="kpi-trend {% if (metadata.questions_analyzed / metadata.total_questions) >= 0.95 %}trend-up{% elif (metadata.questions_analyzed / metadata.total_questions) >= 0.8 %}trend-neutral{% else %}trend-down{% endif %}">
+                {% if (metadata.questions_analyzed / metadata.total_questions) >= 0.95 %}✓ Cobertura completa
+                {% elif (metadata.questions_analyzed / metadata.total_questions) >= 0.8 %}⚠ Cobertura parcial
+                {% else %}⚠ Cobertura insuficiente
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="kpi-card" style="grid-column: span 3;">
+            <div class="kpi-label">Penalización Total</div>
+            {% if macro_summary %}
+            <div class="kpi-value">{{ (macro_summary.total_penalty * 100) | round(1) }}%</div>
+            <div class="kpi-subtitle">Ajuste acumulado al score</div>
+            <div class="kpi-trend {% if macro_summary.total_penalty <= 0.1 %}trend-up{% elif macro_summary.total_penalty <= 0.25 %}trend-neutral{% else %}trend-down{% endif %}">
+                {% if macro_summary.total_penalty <= 0.1 %}↓ Ajuste bajo
+                {% elif macro_summary.total_penalty <= 0.25 %}→ Ajuste moderado
+                {% else %}↑ Ajuste significativo
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="kpi-value">N/A</div>
+            {% endif %}
+        </div>
+
+        <!-- Risk Matrix -->
+        <div class="risk-matrix">
+            <div class="matrix-title">🎯 Matriz de Riesgo</div>
+            <div class="matrix-grid">
+                {% if macro_summary %}
+                <div class="matrix-cell {% if macro_summary.contradiction_count > 10 %}risk-critical{% elif macro_summary.contradiction_count > 5 %}risk-high{% elif macro_summary.contradiction_count > 0 %}risk-medium{% else %}risk-low{% endif %}">
+                    {{ macro_summary.contradiction_count }}
+                </div>
+                <div class="matrix-cell {% if macro_summary.coverage_penalty > 0.3 %}risk-critical{% elif macro_summary.coverage_penalty > 0.15 %}risk-high{% elif macro_summary.coverage_penalty > 0.05 %}risk-medium{% else %}risk-low{% endif %}">
+                    COV
+                </div>
+                <div class="matrix-cell {% if macro_summary.dispersion_penalty > 0.3 %}risk-critical{% elif macro_summary.dispersion_penalty > 0.15 %}risk-high{% elif macro_summary.dispersion_penalty > 0.05 %}risk-medium{% else %}risk-low{% endif %}">
+                    DIS
+                </div>
+                {% else %}
+                <div class="matrix-cell risk-low">N/A</div>
+                <div class="matrix-cell risk-low">N/A</div>
+                <div class="matrix-cell risk-low">N/A</div>
+                {% endif %}
+            </div>
+            <div style="margin-top: 15px; font-size: 7pt; color: #888;">
+                <strong>COV:</strong> Coverage Penalty | <strong>DIS:</strong> Dispersion Penalty<br>
+                🔴 Critical | 🟠 High | 🟡 Medium | 🟢 Low
+            </div>
+        </div>
+
+        <!-- Top Recommendations -->
+        <div class="recommendations-panel">
+            <div class="panel-title">🎯 Top Recomendaciones</div>
+            {% if macro_summary and macro_summary.recommendations %}
+            {% for rec in macro_summary.recommendations[:5] %}
+            <div class="recommendation-item">
+                <div class="rec-icon">
+                    {% if rec.severity == "CRITICAL" %}🔴
+                    {% elif rec.severity == "HIGH" %}🟠
+                    {% elif rec.severity == "MEDIUM" %}🟡
+                    {% else %}🔵{% endif %}
+                </div>
+                <div class="rec-content">
+                    <div class="rec-type">{{ rec.type }} - {{ rec.severity }}</div>
+                    <div class="rec-description">{{ rec.description[:120] }}{% if rec.description|length > 120 %}...{% endif %}</div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p style="text-align: center; color: #888; padding: 40px 0;">No hay recomendaciones disponibles</p>
+            {% endif %}
+        </div>
+
+        <!-- Cluster Performance -->
+        <div class="cluster-performance">
+            <div class="panel-title">🔷 Rendimiento de Clústeres</div>
+            {% if meso_clusters %}
+            {% for cluster_id, cluster in meso_clusters.items() %}
+            <div class="cluster-item">
+                <div>
+                    <div class="cluster-id">{{ cluster_id }}</div>
+                    <div class="cluster-bar" style="width: {{ (cluster.adjusted_score * 100) }}%; max-width: 200px;"></div>
+                </div>
+                <div class="cluster-score" style="color: {% if cluster.adjusted_score >= 0.75 %}#28a745{% elif cluster.adjusted_score >= 0.5 %}#17a2b8{% elif cluster.adjusted_score >= 0.3 %}#ffc107{% else %}#dc3545{% endif %}">
+                    {{ (cluster.adjusted_score * 100) | round(0) }}
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p style="text-align: center; color: #888; padding: 40px 0;">Sin datos de clústeres</p>
+            {% endif %}
+        </div>
+
+        <!-- Quality Distribution -->
+        <div class="quality-dist">
+            <div class="panel-title">📊 Distribución de Calidad (Micro Questions)</div>
+            {% set excellent_count = micro_analyses | selectattr('score', 'ge', 0.85) | list | length %}
+            {% set good_count = micro_analyses | selectattr('score', 'ge', 0.70) | selectattr('score', 'lt', 0.85) | list | length %}
+            {% set fair_count = micro_analyses | selectattr('score', 'ge', 0.55) | selectattr('score', 'lt', 0.70) | list | length %}
+            {% set poor_count = micro_analyses | selectattr('score', 'lt', 0.55) | list | length %}
+            {% set total_with_score = excellent_count + good_count + fair_count + poor_count %}
+
+            <div class="dist-bar-container">
+                <div class="dist-bar">
+                    <div class="dist-bar-fill color-excellent" style="height: {% if total_with_score > 0 %}{{ (excellent_count / total_with_score * 100) }}%{% else %}0%{% endif %};">
+                        {{ excellent_count }}
+                    </div>
+                    <div class="dist-label">EXCELENTE<br>(≥85%)</div>
+                </div>
+                <div class="dist-bar">
+                    <div class="dist-bar-fill color-good" style="height: {% if total_with_score > 0 %}{{ (good_count / total_with_score * 100) }}%{% else %}0%{% endif %};">
+                        {{ good_count }}
+                    </div>
+                    <div class="dist-label">BUENO<br>(70-85%)</div>
+                </div>
+                <div class="dist-bar">
+                    <div class="dist-bar-fill color-fair" style="height: {% if total_with_score > 0 %}{{ (fair_count / total_with_score * 100) }}%{% else %}0%{% endif %};">
+                        {{ fair_count }}
+                    </div>
+                    <div class="dist-label">ACEPTABLE<br>(55-70%)</div>
+                </div>
+                <div class="dist-bar">
+                    <div class="dist-bar-fill color-poor" style="height: {% if total_with_score > 0 %}{{ (poor_count / total_with_score * 100) }}%{% else %}0%{% endif %};">
+                        {{ poor_count }}
+                    </div>
+                    <div class="dist-label">INSUFICIENTE<br>(&lt;55%)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Policy Area Heatmap (placeholder - would need policy area grouping) -->
+        <div class="heatmap-container">
+            <div class="panel-title">🗺️ Mapa de Calor (Policy Areas)</div>
+            <div class="heatmap-grid">
+                {% for i in range(1, 11) %}
+                {% set area_id = "PA%02d"|format(i) %}
+                {% set area_scores = micro_analyses | selectattr('metadata.policy_area', 'equalto', area_id) | map(attribute='score') | select('number') | list %}
+                {% if area_scores %}
+                {% set avg_score = (area_scores | sum / area_scores | length) %}
+                <div class="heatmap-cell" style="background: {% if avg_score >= 0.75 %}#28a745{% elif avg_score >= 0.5 %}#17a2b8{% elif avg_score >= 0.3 %}#ffc107{% else %}#dc3545{% endif %}">
+                    <div class="heatmap-cell-id">{{ area_id }}</div>
+                    <div class="heatmap-cell-score">{{ (avg_score * 100) | round(0) }}</div>
+                </div>
+                {% else %}
+                <div class="heatmap-cell" style="background: #e9ecef; color: #888;">
+                    <div class="heatmap-cell-id">{{ area_id }}</div>
+                    <div class="heatmap-cell-score">-</div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
