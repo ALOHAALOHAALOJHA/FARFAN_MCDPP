@@ -10,7 +10,7 @@ Tests verify that:
 import asyncio
 import pytest
 from unittest.mock import Mock, MagicMock
-from src.farfan_pipeline.orchestration.orchestrator import (
+from farfan_pipeline.orchestration.orchestrator import (
     run_async_safely,
     run_async_safely_async,
 )
@@ -109,7 +109,7 @@ class TestOrchestratorBoundaryGuards:
     
     def test_process_development_plan_from_sync_context(self):
         """Test that process_development_plan works from sync context."""
-        from src.farfan_pipeline.orchestration.orchestrator import Orchestrator
+        from farfan_pipeline.orchestration.orchestrator import Orchestrator
         
         # We can't easily test full orchestrator without dependencies,
         # but we can test the guard logic
@@ -279,7 +279,7 @@ class TestRegressionNoDeadlocks:
     @pytest.mark.asyncio
     async def test_abort_signal_thread_safe(self):
         """Test that abort signal works correctly across threads."""
-        from src.farfan_pipeline.orchestration.orchestrator import AbortSignal
+        from farfan_pipeline.orchestration.orchestrator import AbortSignal
         
         signal = AbortSignal()
         

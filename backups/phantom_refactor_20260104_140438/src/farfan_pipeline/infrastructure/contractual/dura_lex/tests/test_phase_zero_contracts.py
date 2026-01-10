@@ -24,20 +24,20 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from canonic_phases.Phase_zero.phase0_50_00_boot_checks import BootCheckError
-from canonic_phases.Phase_zero.phase0_20_02_determinism import (
+from farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks import BootCheckError
+from farfan_pipeline.phases.Phase_zero.phase0_20_02_determinism import (
     MANDATORY_SEEDS,
     apply_seeds_to_rngs,
     initialize_determinism_from_registry,
     validate_seed_application,
 )
-from canonic_phases.Phase_zero.phase0_50_01_exit_gates import (
+from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import (
     check_all_gates,
     check_bootstrap_gate,
     check_determinism_gate,
 )
-from canonic_phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-from canonic_phases.Phase_zero.phase0_90_01_verified_pipeline_runner import VerifiedPipelineRunner
+from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+from farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner import VerifiedPipelineRunner
 
 
 # ============================================================================
@@ -232,7 +232,7 @@ def test_contract_08_prod_mode_must_fail_on_boot_check_error():
     Precondition: runtime_config.mode = "prod"
     Postcondition: BootCheckError raised, error appended
     """
-    from canonic_phases.Phase_zero.phase0_50_00_boot_checks import run_boot_checks
+    from farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks import run_boot_checks
     
     config = MagicMock()
     config.mode.value = "prod"

@@ -9,7 +9,7 @@ import pytest
 
 def test_irrigation_synchronizer_imports():
     """Test that IrrigationSynchronizer can import JOIN table components."""
-    from canonic_phases.Phase_two.irrigation_synchronizer import (
+    from farfan_pipeline.phases.Phase_two.irrigation_synchronizer import (
         IrrigationSynchronizer,
         SYNCHRONIZER_AVAILABLE,
     )
@@ -28,7 +28,7 @@ def test_irrigation_synchronizer_imports():
 
 def test_irrigation_synchronizer_with_join_table_disabled():
     """Test IrrigationSynchronizer with JOIN table disabled (default)."""
-    from canonic_phases.Phase_two.irrigation_synchronizer import IrrigationSynchronizer
+    from farfan_pipeline.phases.Phase_two.irrigation_synchronizer import IrrigationSynchronizer
     
     # Create minimal questionnaire
     questionnaire = {
@@ -58,7 +58,7 @@ def test_irrigation_synchronizer_with_join_table_disabled():
 
 def test_irrigation_synchronizer_with_join_table_enabled_no_contracts():
     """Test IrrigationSynchronizer with JOIN table enabled but no contracts."""
-    from canonic_phases.Phase_two.irrigation_synchronizer import IrrigationSynchronizer
+    from farfan_pipeline.phases.Phase_two.irrigation_synchronizer import IrrigationSynchronizer
     
     # Create minimal questionnaire
     questionnaire = {
@@ -89,7 +89,7 @@ def test_irrigation_synchronizer_with_join_table_enabled_no_contracts():
 
 def test_find_contract_for_question():
     """Test _find_contract_for_question method."""
-    from canonic_phases.Phase_two.irrigation_synchronizer import IrrigationSynchronizer
+    from farfan_pipeline.phases.Phase_two.irrigation_synchronizer import IrrigationSynchronizer
     
     questionnaire = {
         "blocks": {
@@ -137,7 +137,7 @@ def test_find_contract_for_question():
 
 def test_filter_patterns_from_contract():
     """Test _filter_patterns_from_contract method."""
-    from canonic_phases.Phase_two.irrigation_synchronizer import IrrigationSynchronizer
+    from farfan_pipeline.phases.Phase_two.irrigation_synchronizer import IrrigationSynchronizer
     
     questionnaire = {"blocks": {}}
     
@@ -166,7 +166,7 @@ def test_filter_patterns_from_contract():
 
 def test_filter_patterns_from_contract_empty():
     """Test _filter_patterns_from_contract with empty patterns."""
-    from canonic_phases.Phase_two.irrigation_synchronizer import IrrigationSynchronizer
+    from farfan_pipeline.phases.Phase_two.irrigation_synchronizer import IrrigationSynchronizer
     
     questionnaire = {"blocks": {}}
     
@@ -188,7 +188,7 @@ def test_filter_patterns_from_contract_empty():
 
 def test_build_join_table_if_enabled_disabled():
     """Test _build_join_table_if_enabled when disabled."""
-    from canonic_phases.Phase_two.irrigation_synchronizer import IrrigationSynchronizer
+    from farfan_pipeline.phases.Phase_two.irrigation_synchronizer import IrrigationSynchronizer
     
     questionnaire = {"blocks": {}}
     
@@ -205,7 +205,7 @@ def test_build_join_table_if_enabled_disabled():
 
 def test_join_table_integration_feature_flag():
     """Test that JOIN table integration respects feature flag."""
-    from canonic_phases.Phase_two.irrigation_synchronizer import (
+    from farfan_pipeline.phases.Phase_two.irrigation_synchronizer import (
         IrrigationSynchronizer,
         SYNCHRONIZER_AVAILABLE,
     )

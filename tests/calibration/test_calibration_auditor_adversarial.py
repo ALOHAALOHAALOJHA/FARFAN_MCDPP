@@ -5,17 +5,17 @@ Tests N3-AUD veto and drift detection for calibration manifest.
 """
 import pytest
 from datetime import datetime, timezone, timedelta
-from src.farfan_pipeline.infrastructure.calibration.calibration_manifest import (
+from farfan_pipeline.infrastructure.calibration.calibration_manifest import (
     CalibrationManifest, ManifestBuilder, CalibrationDecision
 )
-from src.farfan_pipeline.infrastructure.calibration.calibration_core import (
+from farfan_pipeline.infrastructure.calibration.calibration_core import (
     CalibrationLayer, CalibrationPhase, CalibrationParameter,
     ClosedInterval, EvidenceReference
 )
-from src.farfan_pipeline.infrastructure.calibration.calibration_auditor import (
+from farfan_pipeline.infrastructure.calibration.calibration_auditor import (
     CalibrationAuditor, AuditResult
 )
-from src.farfan_pipeline.infrastructure.calibration.unit_of_analysis import (
+from farfan_pipeline.infrastructure.calibration.unit_of_analysis import (
     UnitOfAnalysis, MunicipalityCategory, FiscalContext
 )
 
