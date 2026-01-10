@@ -73,6 +73,22 @@ Example:
     ...     assert not config.allow_dev_ingestion_fallbacks
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 0
+__stage__ = 10
+__order__ = 1
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "CRITICAL"
+__execution_pattern__ = "On-Demand"
+
+
+
 import os
 from dataclasses import dataclass
 from enum import Enum

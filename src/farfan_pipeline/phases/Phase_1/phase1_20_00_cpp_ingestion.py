@@ -52,6 +52,22 @@ Version: CPP-2025.1
 Last Updated: 2025-12-11 - Weight contract enhancement
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 1
+__stage__ = 20
+__order__ = 0
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "MEDIUM"
+__execution_pattern__ = "On-Demand"
+
+
+
 from __future__ import annotations
 
 import hashlib

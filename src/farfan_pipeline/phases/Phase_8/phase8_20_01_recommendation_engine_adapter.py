@@ -14,6 +14,22 @@ from the analysis module. This adapter follows the Ports and Adapters pattern,
 allowing the orchestrator to depend on abstractions rather than concrete implementations.
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 8
+__stage__ = 20
+__order__ = 1
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "MEDIUM"
+__execution_pattern__ = "On-Demand"
+
+
+
 import logging
 from pathlib import Path
 from typing import Any

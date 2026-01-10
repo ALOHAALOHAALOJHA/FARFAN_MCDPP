@@ -9,6 +9,22 @@ This module contains fixes for three critical runtime errors:
 These fixes are applied defensively to prevent crashes in production.
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 0
+__stage__ = 0
+__order__ = 2
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "LOW"
+__execution_pattern__ = "On-Demand"
+
+
+
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:

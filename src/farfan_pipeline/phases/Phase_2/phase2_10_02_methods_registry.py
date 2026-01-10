@@ -13,6 +13,22 @@ This module is part of Phase 2: Analysis & Question Execution.
 All files in Phase_2/ must contain PHASE_LABEL: Phase 2.
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 10
+__order__ = 2
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "CRITICAL"
+__execution_pattern__ = "On-Demand"
+
+
+
 from __future__ import annotations
 
 import json

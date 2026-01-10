@@ -51,7 +51,23 @@ logger = logging.getLogger(__name__)
 
 
 class FuzzyMeasureViolationError(RuntimeError):
-    """Raised when fuzzy measure violates monotonicity or boundary constraints."""
+    """
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 4
+__stage__ = 10
+__order__ = 0
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "CRITICAL"
+__execution_pattern__ = "On-Demand"
+
+Raised when fuzzy measure violates monotonicity or boundary constraints."""
 
     pass
 

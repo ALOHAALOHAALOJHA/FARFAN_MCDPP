@@ -27,6 +27,22 @@ This refactored version uses:
 Result: 300 lines vs 1,289 lines (77% reduction) with exponential performance benefits.
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 8
+__stage__ = 20
+__order__ = 4
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "CRITICAL"
+__execution_pattern__ = "Singleton"
+
+
+
 from __future__ import annotations
 
 import logging

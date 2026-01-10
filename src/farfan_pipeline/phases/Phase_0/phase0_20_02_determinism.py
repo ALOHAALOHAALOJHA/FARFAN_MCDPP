@@ -17,6 +17,22 @@ Version: 2.0.0
 Specification: P00-EN v2.0 Section 3.4
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 0
+__stage__ = 20
+__order__ = 2
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "MEDIUM"
+__execution_pattern__ = "On-Demand"
+
+
+
 from __future__ import annotations
 
 import hashlib

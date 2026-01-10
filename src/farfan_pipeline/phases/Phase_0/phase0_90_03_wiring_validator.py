@@ -20,6 +20,22 @@ Version: 1.0.0
 Specification: WiringValidator SOTA Spec v1.0
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 0
+__stage__ = 90
+__order__ = 3
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "LOW"
+__execution_pattern__ = "Per-Task"
+
+
+
 from __future__ import annotations
 
 import hashlib

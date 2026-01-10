@@ -5,6 +5,22 @@ Sequence: M
 
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 60
+__order__ = 3
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "HIGH"
+__execution_pattern__ = "Per-Task"
+
+
+
 """
 Runtime Signature Validation for Chain Layer
 

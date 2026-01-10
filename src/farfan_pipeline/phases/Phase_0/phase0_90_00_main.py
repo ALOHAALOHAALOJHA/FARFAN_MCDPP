@@ -24,6 +24,22 @@ Version: 3.0.0
 Specification: P00-EN v2.0
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 0
+__stage__ = 90
+__order__ = 0
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "LOW"
+__execution_pattern__ = "Singleton"
+
+
+
 from __future__ import annotations
 
 import argparse

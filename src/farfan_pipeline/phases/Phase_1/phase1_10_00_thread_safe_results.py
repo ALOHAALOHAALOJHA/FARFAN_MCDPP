@@ -6,6 +6,22 @@ Owner Module: Phase 1 CPP Ingestion
 Lifecycle State: ACTIVE
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 1
+__stage__ = 10
+__order__ = 0
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "CRITICAL"
+__execution_pattern__ = "On-Demand"
+
+
+
 import threading
 from collections import UserDict
 from collections.abc import Iterator
