@@ -1,83 +1,118 @@
 {
   "$schema": "../schema.json",
   "_schema_version": "2.0.0",
-  
+  "_last_updated": "2026-01-09",
+  "_calibration_source": "../_calibration/extractor_calibration.json",
   "criterion_id": "MC04",
   "name": "Programmatic Hierarchy",
   "description_es": "Detecta jerarquía programática: Eje → Programa → Subprograma → Meta",
   "description_en": "Detects programmatic hierarchy: Axis → Program → Subprogram → Goal",
-  
   "signal_type": "PROGRAMMATIC_HIERARCHY",
   "implementation_status": "PARTIAL",
   "extractor_class": "HierarchyExtractor",
-  
   "detection": {
     "primary_method": "COMPOUND_PATTERN",
-    "_source": "corpus_empirico_calibracion_extractores.json",
-    
+    "_calibration_reference": "extractor_calibration.json/signal_type_catalog/PROGRAMMATIC_HIERARCHY",
     "components": [
       {
         "component_id": "PH-EJE",
         "name": "eje_pattern",
+        "level": 1,
         "detection": {
           "type": "REGEX",
           "pattern": "Eje\\s+(?:Estratégico\\s+)?(\\d+|[IVX]+)[:\\s.-]+(.*?)(?=\\n|Eje|Programa|$)",
           "examples": [
             "Eje 1: Desarrollo Social",
-            "Eje Estratégico II: Infraestructura"
+            "Eje Estratégico II: Infraestructura",
+            "Eje III: Sostenibilidad Ambiental"
           ]
         },
-        "confidence_base": 0.91,
-        "level": 1
+        "confidence_base": 0.91
       },
       {
         "component_id": "PH-PROGRAMA",
         "name": "programa_pattern",
+        "level": 2,
         "detection": {
           "type": "REGEX",
           "pattern": "Programa\\s+(\\d+)[:\\s.-]+(.*?)(?=\\n|Programa|Subprograma|$)",
-          "examples": ["Programa 1: Educación de Calidad"]
+          "examples": [
+            "Programa 1: Educación de Calidad",
+            "Programa 03: Salud para Todos"
+          ]
         },
-        "confidence_base": 0.89,
-        "level": 2
+        "confidence_base": 0.89
       },
       {
         "component_id": "PH-SUBPROGRAMA",
         "name": "subprograma_pattern",
+        "level": 3,
         "detection": {
           "type": "REGEX",
           "pattern": "Subprograma\\s+(\\d+(?:\\.\\d+)?)[:\\s.-]+(.*?)(?=\\n|$)",
-          "examples": ["Subprograma 1.1: Primera Infancia"]
+          "examples": [
+            "Subprograma 1.1: Primera Infancia",
+            "Subprograma 3.2: Atención Primaria"
+          ]
         },
-        "confidence_base": 0.85,
-        "level": 3
+        "confidence_base": 0.85
       },
       {
         "component_id": "PH-META",
         "name": "meta_pattern",
+        "level": 4,
         "detection": {
           "type": "REGEX",
           "pattern": "Meta\\s+(\\d+(?:\\.\\d+)?)[:\\s.-]+(.*?)(?=\\n|$)",
-          "examples": ["Meta 1.1.1: Aumentar cobertura a 85%"]
+          "examples": [
+            "Meta 1.1.1: Aumentar cobertura a 85%",
+            "Meta 03: Reducir mortalidad infantil"
+          ]
         },
-        "confidence_base": 0.87,
-        "level": 4
+        "confidence_base": 0.87
       }
     ],
-    
+    "empirical_frequency": {
+      "_source": "extractor_calibration.json (14 planes PDT Colombia 2024-2027)",
+      "ejes_per_plan": {
+        "mean": 5,
+        "min": 3,
+        "max": 7,
+        "std": 1
+      },
+      "programas_per_plan": {
+        "mean": 28,
+        "min": 14,
+        "max": 57,
+        "std": 12
+      },
+      "metas_per_plan": {
+        "mean": 145,
+        "min": 100,
+        "max": 352,
+        "std": 65
+      }
+    },
     "hierarchy_templates": [
       {
         "plan": "Bosconia",
         "structure": "7 Ejes → 57 Programas → 352 Metas",
+        "depth": 3,
         "coding": "Numeric (1, 2, 3...)"
       },
       {
         "plan": "Corinto",
         "structure": "4 Títulos → 37 Programas → 184 Metas",
+        "depth": 3,
         "coding": "Mixed (T1, P1, M1.1)"
+      },
+      {
+        "plan": "Caldono",
+        "structure": "4 Líneas → 14 Programas → 200 Indicadores",
+        "depth": 3,
+        "coding": "Alphanumeric (L1-P01-I001)"
       }
     ],
-    
     "consistency_rules": {
       "parent_child": "Every PROGRAMA must have parent EJE",
       "naming": "No duplicate names at same level",
@@ -85,13 +120,12 @@
       "orphans": "Zero orphan nodes allowed"
     }
   },
-  
   "dimension_mapping": {
+    "_note": "Mapping between programmatic levels and dimensions",
     "DIM02_ACTIVIDADES": "PROGRAMA",
     "DIM03_PRODUCTOS": "SUBPROGRAMA",
     "DIM04_RESULTADOS": "META"
   },
-  
   "scoring_impact": {
     "dimension_boost": {
       "DIM02": 0.15,
@@ -99,21 +133,73 @@
       "DIM06": 0.15
     }
   },
-  
+  "dimension_binding": {
+    "_reference": "../_bindings/mc_to_dimensions.json",
+    "primary_dimensions": [
+      "DIM02",
+      "DIM03",
+      "DIM06"
+    ]
+  },
+  "question_binding": {
+    "_reference": "../_bindings/mc_to_questions.json",
+    "questions_mapped": 78,
+    "coverage": 0.26,
+    "applies_to_slots": [
+      "D2-Q1",
+      "D2-Q2",
+      "D3-Q1"
+    ],
+    "primary_questions": [
+      "Q006",
+      "Q036",
+      "Q066",
+      "Q096",
+      "Q126",
+      "Q156",
+      "Q186",
+      "Q216",
+      "Q246",
+      "Q276",
+      "Q007",
+      "Q037",
+      "Q067",
+      "Q097",
+      "Q127",
+      "Q157",
+      "Q187",
+      "Q217",
+      "Q247",
+      "Q277"
+    ]
+  },
+  "scoring_layer_binding": {
+    "_reference": "../_bindings/mc_to_scoring.json",
+    "scoring_layers": {
+      "layer_u_smip": {
+        "weight": 0.15
+      },
+      "layer_d_dimension": {
+        "weight": 0.50
+      },
+      "layer_chain_causal": {
+        "weight": 0.30
+      }
+    },
+    "required_for": [
+      "layer_u_smip",
+      "layer_d_dimension"
+    ]
+  },
   "required_capabilities": [],
-  "optional_capabilities": ["GRAPH_CONSTRUCTION"],
-  
+  "optional_capabilities": [
+    "GRAPH_CONSTRUCTION"
+  ],
   "testing": {
     "test_file": "tests/membership_criteria/test_mc04_hierarchy.py",
     "expected_precision": 0.89,
     "expected_recall": 0.87,
-    "source": "corpus_thresholds_weights.json"
-  },
-  
-  "empirical_data": {
-    "source": "corpus_empirico_calibracion_extractores.json",
-    "ejes_per_plan": {"mean": 5, "min": 3, "max": 7},
-    "programas_per_plan": {"mean": 28, "min": 14, "max": 57},
-    "metas_per_plan": {"mean": 145, "min": 100, "max": 352}
+    "gold_standard_plan": "Bosconia",
+    "gold_standard_reason": "Highest programmatic depth (57 programas, 352 metas)"
   }
 }

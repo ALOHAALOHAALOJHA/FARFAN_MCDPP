@@ -1,20 +1,19 @@
 {
   "$schema": "../schema.json",
   "_schema_version": "2.0.0",
-  
+  "_last_updated": "2026-01-09",
+  "_calibration_source": "../_calibration/extractor_calibration.json",
   "criterion_id": "MC05",
   "name": "Financial Chains",
   "description_es": "Detecta y valida cadenas presupuestales: Monto → Fuente → Programa",
   "description_en": "Detects and validates budgetary chains: Amount → Source → Program",
-  
   "signal_type": "FINANCIAL_CHAIN",
   "implementation_status": "MISSING",
   "extractor_class": "FinancialChainExtractor",
   "_priority": "HIGH",
-  
   "detection": {
     "primary_method": "COMPOUND_PATTERN",
-    
+    "_calibration_reference": "extractor_calibration.json/signal_type_catalog/FINANCIAL_CHAIN",
     "components": [
       {
         "component_id": "FC-MONTO",
@@ -23,16 +22,33 @@
         "detection": {
           "type": "REGEX",
           "patterns": [
-            "\\$\\s*([\\d.,]+)\\s*(millones?|mil\\s+millones?|MM|M)?",
+            "\\$\\s*([\\d.,]+)\\s*(millones?|mil\\s+millones?|billones?|MM|M)?",
             "([\\d.,]+)\\s*(millones?\\s+de\\s+pesos|COP)"
           ],
           "captures": {
-            "1": {"name": "valor", "type": "numeric"},
-            "2": {"name": "unidad", "type": "string", "optional": true}
-          }
+            "1": {
+              "name": "valor",
+              "type": "numeric"
+            },
+            "2": {
+              "name": "unidad",
+              "type": "string",
+              "optional": true
+            }
+          },
+          "normalization": {
+            "millones": "* 1000000",
+            "mil millones": "* 1000000000",
+            "billones": "* 1000000000000"
+          },
+          "examples": [
+            "$288,087 millones",
+            "$1.625 billones",
+            "$16,624,484,812"
+          ]
         },
         "required": true,
-        "confidence_base": 0.80
+        "confidence_base": 0.90
       },
       {
         "component_id": "FC-FUENTE",
@@ -41,16 +57,43 @@
         "detection": {
           "type": "KEYWORD_SET",
           "sets": {
-            "SGP": ["SGP", "Sistema General de Participaciones", "participaciones"],
-            "PROPIOS": ["recursos propios", "ingresos corrientes", "tributarios"],
-            "SGR": ["SGR", "Sistema General de Regalías", "regalías"],
-            "CREDITO": ["crédito", "endeudamiento", "empréstito"],
-            "COFINANCIACION": ["cofinanciación", "nación", "departamento"],
-            "COOPERACION": ["cooperación internacional", "donaciones"]
+            "SGP": [
+              "SGP",
+              "Sistema General de Participaciones",
+              "participaciones"
+            ],
+            "PROPIOS": [
+              "recursos propios",
+              "ingresos corrientes",
+              "tributarios"
+            ],
+            "SGR": [
+              "SGR",
+              "Sistema General de Regalías",
+              "regalías"
+            ],
+            "CREDITO": [
+              "crédito",
+              "endeudamiento",
+              "empréstito"
+            ],
+            "COFINANCIACION": [
+              "cofinanciación",
+              "nación",
+              "departamento"
+            ],
+            "COOPERACION": [
+              "cooperación internacional",
+              "donaciones"
+            ],
+            "ADRES": [
+              "ADRES",
+              "Administradora de los Recursos del Sistema General de Seguridad Social en Salud"
+            ]
           }
         },
         "required": true,
-        "confidence_base": 0.85
+        "confidence_base": 0.92
       },
       {
         "component_id": "FC-PROGRAMA",
@@ -80,26 +123,152 @@
         "confidence_bonus": 0.10
       }
     ],
-    
     "aggregation_rules": {
       "window_type": "TABLE_ROW_OR_PARAGRAPH",
       "require_minimum_components": 2,
       "require_all_required": true,
       "max_span_lines": 10
     },
-    
-    "table_extraction": {
-      "from_ppi_table": {
-        "min_confidence": 0.92,
-        "conditions": "table_type=PPI AND sum_validation_pass"
+    "empirical_frequency": {
+      "_source": "extractor_calibration.json (14 planes PDT Colombia 2024-2027)",
+      "montos_per_plan": {
+        "mean": 285,
+        "min": 20,
+        "max": 377,
+        "std": 98
       },
-      "validated_closure": {
-        "boost": 1.20,
-        "conditions": "sum(fuentes) == PPI_total within 1%"
+      "fuentes_per_plan": {
+        "mean": 7,
+        "min": 5,
+        "max": 13,
+        "std": 2
+      },
+      "ppi_total_avg": 324000000000,
+      "ppi_total_range": [
+        16624484812,
+        1625386763479
+      ]
+    },
+    "fuente_distribution_baseline": {
+      "_note": "Typical distribution of funding sources in municipal plans",
+      "SGP": {
+        "mean_pct": 0.73,
+        "std": 0.12,
+        "note": "Dominado por Salud (60-70%)"
+      },
+      "Propios": {
+        "mean_pct": 0.04,
+        "std": 0.02,
+        "note": "Baja capacidad fiscal"
+      },
+      "SGR": {
+        "mean_pct": 0.12,
+        "std": 0.08,
+        "note": "Variable por municipio"
+      },
+      "Crédito": {
+        "mean_pct": 0.02,
+        "std": 0.04,
+        "note": "Bajo uso en muestra"
+      },
+      "Otros": {
+        "mean_pct": 0.09,
+        "std": 0.06
       }
-    }
+    },
+    "sectoral_distribution_baseline": {
+      "Salud": {
+        "mean_pct": 0.73,
+        "range": [
+          0.63,
+          0.80
+        ]
+      },
+      "Educación": {
+        "mean_pct": 0.054,
+        "range": [
+          0.044,
+          0.068
+        ]
+      },
+      "Agua Potable": {
+        "mean_pct": 0.059,
+        "range": [
+          0.054,
+          0.072
+        ]
+      },
+      "Infraestructura": {
+        "mean_pct": 0.08,
+        "range": [
+          0.04,
+          0.15
+        ]
+      },
+      "Otros": {
+        "mean_pct": 0.077,
+        "range": [
+          0.05,
+          0.12
+        ]
+      }
+    },
+    "risk_thresholds": {
+      "credito_max_pct": 0.20,
+      "propios_min_pct": 0.03,
+      "sgp_dependencia_max": 0.85,
+      "salud_dominancia_max": 0.80
+    },
+    "ppi_table_detection": {
+      "required_headers": [
+        "Fuente",
+        "Monto"
+      ],
+      "optional_headers": [
+        "Programa",
+        "Sector",
+        "Eje",
+        "Porcentaje",
+        "2024",
+        "2025",
+        "2026",
+        "2027"
+      ],
+      "confidence": 0.95,
+      "validation": "sum(fuentes) == PPI_TOTAL within 1% tolerance"
+    },
+    "gold_standard_examples": [
+      {
+        "plan": "Cajibío",
+        "ppi_total": 288087496180,
+        "per_capita": 6227110,
+        "distribution": {
+          "SGP": {
+            "monto": 43263476000,
+            "pct": 0.15
+          },
+          "ADRES": {
+            "monto": 181675692000,
+            "pct": 0.63
+          },
+          "Propios": {
+            "monto": 18098820000,
+            "pct": 0.0628
+          },
+          "SGR": {
+            "monto": 35000000000,
+            "pct": 0.12
+          },
+          "Otros": {
+            "monto": 10049508180,
+            "pct": 0.035
+          }
+        },
+        "consistency_check": "PASS",
+        "confidence": 0.97
+      }
+    ]
   },
-  
   "validation": {
     "rules": [
       {
@@ -120,10 +289,15 @@
         "name": "valid_period",
         "condition": "periodo.inicio <= periodo.fin",
         "severity": "ERROR"
+      },
+      {
+        "rule_id": "FC-VAL-004",
+        "name": "sum_validation",
+        "condition": "sum(fuentes) == ppi_total within 1%",
+        "severity": "WARNING"
       }
     ]
   },
-  
   "scoring_impact": {
     "dimension_boost": {
       "DIM01": 0.10,
@@ -134,20 +308,77 @@
       "CC_SOSTENIBILIDAD_PRESUPUESTAL": 0.30
     }
   },
-  
+  "dimension_binding": {
+    "_reference": "../_bindings/mc_to_dimensions.json",
+    "primary_dimensions": [
+      "DIM01",
+      "DIM02",
+      "DIM03"
+    ]
+  },
+  "question_binding": {
+    "_reference": "../_bindings/mc_to_questions.json",
+    "questions_mapped": 52,
+    "coverage": 0.17,
+    "applies_to_slots": [
+      "D1-Q3",
+      "D3-Q3"
+    ],
+    "primary_questions": [
+      "Q003",
+      "Q033",
+      "Q063",
+      "Q093",
+      "Q123",
+      "Q153",
+      "Q183",
+      "Q213",
+      "Q243",
+      "Q273",
+      "Q013",
+      "Q043",
+      "Q073",
+      "Q103",
+      "Q133",
+      "Q163",
+      "Q193",
+      "Q223",
+      "Q253",
+      "Q283"
+    ]
+  },
+  "scoring_layer_binding": {
+    "_reference": "../_bindings/mc_to_scoring.json",
+    "scoring_layers": {
+      "layer_q_quality": {
+        "weight": 0.30
+      },
+      "layer_chain_causal": {
+        "weight": 0.20
+      },
+      "layer_C_crosscutting": {
+        "weight": 0.25
+      }
+    },
+    "required_for": [
+      "layer_chain_causal"
+    ]
+  },
   "post_processing": {
     "normalize_currency": true,
     "aggregate_by_fuente": true,
     "link_to_ppi_table": true,
     "compute_totals": true
   },
-  
-  "required_capabilities": ["NUMERIC_PARSING", "FINANCIAL_ANALYSIS"],
-  
+  "required_capabilities": [
+    "NUMERIC_PARSING",
+    "FINANCIAL_ANALYSIS"
+  ],
   "testing": {
     "test_file": "tests/membership_criteria/test_mc05_financial.py",
     "expected_precision": 0.94,
     "expected_recall": 0.90,
-    "source": "corpus_thresholds_weights.json"
+    "gold_standard_plan": "Corinto",
+    "gold_standard_reason": "Best PPI structure (52 fuentes, consistencia 100%)"
   }
 }

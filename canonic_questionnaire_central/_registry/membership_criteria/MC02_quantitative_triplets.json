@@ -1,20 +1,18 @@
 {
   "$schema": "../schema.json",
   "_schema_version": "2.0.0",
-  
+  "_last_updated": "2026-01-09",
+  "_calibration_source": "../_calibration/extractor_calibration.json",
   "criterion_id": "MC02",
   "name": "Quantitative Triplets",
   "description_es": "Detecta triplets cuantitativos: Indicador + Línea Base + Meta con años",
   "description_en": "Detects quantitative triplets: Indicator + Baseline + Target with years",
-  
   "signal_type": "QUANTITATIVE_TRIPLET",
   "implementation_status": "IMPLEMENTED",
   "extractor_class": "QuantitativeTripletExtractor",
-  
   "detection": {
     "primary_method": "COMPOUND_PATTERN",
-    "_source": "corpus_empirico_calibracion_extractores.json",
-    
+    "_calibration_reference": "extractor_calibration.json/signal_type_catalog/QUANTITATIVE_TRIPLET",
     "components": [
       {
         "component_id": "QT-BASELINE",
@@ -24,6 +22,10 @@
           "patterns": [
             "l[íi]nea\\s+base[:\\s]+(\\d+[.,]?\\d*)\\s*%?\\s*\\((\\d{4})\\)",
             "Línea\\s+Base\\s+(\\d{4})[:\\s]+(\\d+[.,]?\\d*)"
+          ],
+          "examples": [
+            "línea base: 45.2% (2023)",
+            "Línea Base 2023: 38.5"
           ],
           "confidence": 0.75
         },
@@ -38,6 +40,10 @@
             "meta\\s+(\\d{4})[:\\s]+(\\d+[.,]?\\d*)\\s*%?",
             "Meta\\s+cuatrienio[:\\s]+(\\d+[.,]?\\d*)"
           ],
+          "examples": [
+            "meta 2027: 65.0%",
+            "Meta cuatrienio: 80"
+          ],
           "confidence": 0.78
         },
         "required": true
@@ -47,54 +53,173 @@
         "name": "table_extraction",
         "detection": {
           "type": "TABLE_EXTRACTION",
-          "required_headers": ["Indicador", "Línea Base", "Meta"],
-          "optional_headers": ["Año", "Fuente", "Fórmula", "Responsable"],
+          "required_headers": [
+            "Indicador",
+            "Línea Base",
+            "Meta"
+          ],
+          "optional_headers": [
+            "Año",
+            "Fuente",
+            "Fórmula",
+            "Responsable"
+          ],
+          "row_parser": {
+            "indicator": "column[0]",
+            "baseline_value": "extract_number(column[1])",
+            "baseline_year": "extract_year(column[1] or context)",
+            "target_value": "extract_number(column[2])",
+            "target_year": "2027 or extract_year(column[2])",
+            "unit": "detect_unit(column[1], column[2])"
+          },
           "confidence": 0.95
         },
         "required": false
       }
     ],
-    
+    "empirical_frequency": {
+      "_source": "extractor_calibration.json (14 planes PDT Colombia 2024-2027)",
+      "porcentajes_per_plan": {
+        "mean": 485,
+        "min": 201,
+        "max": 890,
+        "std": 195
+      },
+      "montos_per_plan": {
+        "mean": 285,
+        "min": 20,
+        "max": 377,
+        "std": 98
+      },
+      "triplets_completos": {
+        "mean": 78,
+        "min": 25,
+        "max": 155,
+        "std": 35
+      }
+    },
     "completeness_scoring": {
       "COMPLETO": {
         "value": 1.0,
-        "requires": ["indicator", "baseline_value", "baseline_year", "target_value", "target_year", "source"]
+        "requires": [
+          "indicator",
+          "baseline_value",
+          "baseline_year",
+          "target_value",
+          "target_year",
+          "source"
+        ]
       },
       "ALTO": {
         "value": 0.85,
-        "requires": ["indicator", "baseline_value", "baseline_year", "target_value", "target_year"]
+        "requires": [
+          "indicator",
+          "baseline_value",
+          "baseline_year",
+          "target_value",
+          "target_year"
+        ]
       },
       "MEDIO": {
         "value": 0.66,
-        "requires": ["indicator", "baseline_value", "target_value"]
+        "requires": [
+          "indicator",
+          "baseline_value",
+          "target_value"
+        ]
       },
       "BAJO": {
         "value": 0.33,
-        "requires": ["indicator", "target_value"]
+        "requires": [
+          "indicator",
+          "target_value"
+        ]
       }
-    }
+    },
+    "gold_standard_examples": [
+      {
+        "plan": "Corinto",
+        "indicator_name": "Tasa de cobertura educativa neta",
+        "baseline": {
+          "value": 45.2,
+          "year": 2023,
+          "source": "DANE"
+        },
+        "target": {
+          "value": 65.0,
+          "year": 2027
+        },
+        "unit": "PORCENTAJE",
+        "formula": "(Matriculados / Población edad escolar) * 100",
+        "responsible": "Secretaría de Educación",
+        "completeness": 1.0,
+        "confidence": 0.98
+      },
+      {
+        "plan": "Bosconia",
+        "indicator_name": "Niños con esquema completo de vacunación",
+        "baseline": {
+          "value": 5420,
+          "year": 2023,
+          "source": "Secretaría de Salud"
+        },
+        "target": {
+          "value": 7800,
+          "year": 2027
+        },
+        "unit": "CANTIDAD",
+        "completeness": 0.85,
+        "confidence": 0.95
+      }
+    ]
   },
-  
   "validation": {
     "rules": [
       {
         "rule_id": "QT-VAL-001",
+        "name": "positive_baseline",
         "condition": "baseline_value >= 0",
         "severity": "ERROR"
       },
       {
         "rule_id": "QT-VAL-002",
+        "name": "valid_baseline_year",
         "condition": "baseline_year >= 2020 AND baseline_year <= 2024",
         "severity": "WARNING"
       },
       {
         "rule_id": "QT-VAL-003",
+        "name": "valid_target_year",
         "condition": "target_year >= 2024 AND target_year <= 2027",
         "severity": "WARNING"
+      },
+      {
+        "rule_id": "QT-VAL-004",
+        "name": "temporal_consistency",
+        "condition": "target_year > baseline_year",
+        "severity": "ERROR"
+      },
+      {
+        "rule_id": "QT-VAL-005",
+        "name": "logical_direction",
+        "condition": "IF 'aumentar' in indicator THEN target > baseline",
+        "severity": "WARNING"
+      },
+      {
+        "rule_id": "QT-VAL-006",
+        "name": "reasonable_change",
+        "condition": "ABS(target - baseline) / baseline <= 3.0",
+        "severity": "WARNING",
+        "note": "Change exceeding 300% may indicate data quality issues"
+      },
+      {
+        "rule_id": "QT-VAL-007",
+        "name": "unit_consistency",
+        "condition": "baseline_unit == target_unit",
+        "severity": "ERROR"
       }
     ]
   },
-  
   "scoring_impact": {
     "dimension_boost": {
       "DIM01": 0.15,
@@ -105,27 +230,107 @@
       "CC_MECANISMOS_SEGUIMIENTO": 0.15
     }
   },
-  
-  "unit_detection": {
-    "PORCENTAJE": ["%, porcentaje, tasa"],
-    "CANTIDAD": ["personas, habitantes, beneficiarios, estudiantes"],
-    "MONTO": ["$, pesos, millones, COP"],
-    "TASA": ["por mil, por 100.000, tasa de"],
-    "INDICE": ["índice, índice de, puntos"]
+  "dimension_binding": {
+    "_reference": "../_bindings/mc_to_dimensions.json",
+    "primary_dimensions": [
+      "DIM01",
+      "DIM03",
+      "DIM04"
+    ]
   },
-  
-  "required_capabilities": ["NUMERIC_PARSING"],
-  
+  "question_binding": {
+    "_reference": "../_bindings/mc_to_questions.json",
+    "questions_mapped": 94,
+    "coverage": 0.31,
+    "applies_to_slots": [
+      "D1-Q1",
+      "D1-Q2",
+      "D3-Q1",
+      "D3-Q2",
+      "D4-Q1"
+    ],
+    "primary_questions": [
+      "Q001",
+      "Q031",
+      "Q061",
+      "Q091",
+      "Q121",
+      "Q151",
+      "Q181",
+      "Q211",
+      "Q241",
+      "Q271",
+      "Q002",
+      "Q032",
+      "Q062",
+      "Q092",
+      "Q122",
+      "Q152",
+      "Q182",
+      "Q212",
+      "Q242",
+      "Q272",
+      "Q011",
+      "Q041",
+      "Q071",
+      "Q101",
+      "Q131",
+      "Q161",
+      "Q191",
+      "Q221",
+      "Q251",
+      "Q281"
+    ],
+    "highest_coverage_mc": true
+  },
+  "scoring_layer_binding": {
+    "_reference": "../_bindings/mc_to_scoring.json",
+    "scoring_layers": {
+      "layer_b_baseline": {
+        "weight": 0.70,
+        "sub_weights": {
+          "present": 0.70,
+          "complete": 0.20,
+          "recent": 0.10
+        }
+      },
+      "layer_q_quality": {
+        "weight": 0.30
+      },
+      "layer_d_dimension": {
+        "weight": 0.30
+      }
+    },
+    "required_for": [
+      "layer_b_baseline",
+      "layer_q_quality"
+    ]
+  },
+  "unit_detection": {
+    "PORCENTAJE": [
+      "%, porcentaje, tasa"
+    ],
+    "CANTIDAD": [
+      "personas, habitantes, beneficiarios, estudiantes"
+    ],
+    "MONTO": [
+      "$, pesos, millones, COP"
+    ],
+    "TASA": [
+      "por mil, por 100.000, tasa de"
+    ],
+    "INDICE": [
+      "índice, índice de, puntos"
+    ]
+  },
+  "required_capabilities": [
+    "NUMERIC_PARSING"
+  ],
   "testing": {
     "test_file": "tests/membership_criteria/test_mc02_quantitative.py",
     "expected_precision": 0.91,
     "expected_recall": 0.88,
-    "source": "corpus_thresholds_weights.json"
-  },
-  
-  "empirical_data": {
-    "source": "corpus_empirico_calibracion_extractores.json",
-    "porcentajes_per_plan": {"mean": 485, "min": 201, "max": 890},
-    "triplets_completos": {"mean": 78, "min": 25, "max": 155}
+    "gold_standard_plan": "Corinto",
+    "gold_standard_reason": "Best PPI structure with 52 fuentes and 100% consistency"
   }
 }

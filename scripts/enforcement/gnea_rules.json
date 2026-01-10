@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema_version": "2.0.0",
+  "policy_document": "FPN-GNEA-001",
+  "last_updated": "2025-01-09",
+  "enforcement_levels": {
+    "L0_ADVISORY": {
+      "name": "Advisory",
+      "description": "Report violations without enforcement",
+      "auto_fix_enabled": false,
+      "block_commits": false
+    },
+    "L1_GUIDED": {
+      "name": "Guided",
+      "description": "Report violations with suggestions",
+      "auto_fix_enabled": true,
+      "block_commits": false
+    },
+    "L2_ENFORCED": {
+      "name": "Enforced",
+      "description": "Block commits on violations",
+      "auto_fix_enabled": true,
+      "block_commits": true
+    },
+    "L3_SEALED": {
+      "name": "Sealed",
+      "description": "Forensic-level compliance tracking",
+      "auto_fix_enabled": false,
+      "block_commits": true
+    },
+    "L4_FORENSIC": {
+      "name": "Forensic",
+      "description": "Complete historical analysis",
+      "auto_fix_enabled": false,
+      "block_commits": true
+    }
+  },
+  "naming_rules": {
+    "phase_modules": {
+      "pattern": "^phase(?P<phase>[0-9])_(?P<stage>\\d{2})_(?P<order>\\d{2})_(?P<name>[a-z][a-z0-9_]*).py$",
+      "description": "Phase module files must follow phase{N}_{SS}_{OO}_{name}.py pattern",
+      "severity": "ERROR",
+      "components": {
+        "phase": {
+          "description": "Phase number (0-9)",
+          "valid_range": [0, 9],
+          "padding": 1
+        },
+        "stage": {
+          "description": "Stage number (00-99)",
+          "valid_values": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99],
+          "padding": 2
+        },
+        "order": {
+          "description": "Order within stage",
+          "padding": 2
+        },
+        "name": {
+          "description": "Descriptive name in lowercase with underscores",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "max_length": 50
+        }
+      },
+      "required_metadata": [
+        "__version__",
+        "__phase__",
+        "__stage__",
+        "__order__",
+        "__author__",
+        "__created__",
+        "__modified__",
+        "__criticality__",
+        "__execution_pattern__"
+      ]
+    },
+    "phase_directories": {
+      "pattern": "^Phase_(?P<number>[0-9])$",
+      "description": "Phase directories must be Phase_0 through Phase_9",
+      "severity": "ERROR",
+      "valid_names": [
+        "Phase_0",
+        "Phase_1",
+        "Phase_2",
+        "Phase_3",
+        "Phase_4",
+        "Phase_5",
+        "Phase_6",
+        "Phase_7",
+        "Phase_8",
+        "Phase_9"
+      ]
+    },
+    "contracts": {
+      "pattern": "^Q(?P<number>\\d{3})_(?P<policy_area>[a-z][a-z0-9_]*)_executor_contract.json$",
+      "description": "Contract files must follow Q{NNN}_{area}_executor_contract.json pattern",
+      "severity": "WARNING",
+      "components": {
+        "number": {
+          "description": "Question number (001-300)",
+          "valid_range": [1, 300],
+          "padding": 3
+        },
+        "policy_area": {
+          "description": "Policy area identifier",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        }
+      },
+      "sequential_validation": {
+        "enabled": true,
+        "allow_gaps": false,
+        "require_placeholder_for_gaps": false
+      }
+    },
+    "documentation": {
+      "formal_pattern": "^[A-Z][A-Z0-9_]+\\.md$",
+      "informal_pattern": "^[a-z][a-z0-9-]+\\.md$",
+      "description": "Documentation files must follow naming conventions",
+      "severity": "WARNING",
+      "special_files": [
+        "README.md",
+        "CHANGELOG.md",
+        "CONTRIBUTING.md",
+        "LICENSE.md"
+      ]
+    }
+  },
+  "forbidden_directories": {
+    "names": [
+      "temp",
+      "tmp",
+      "backup",
+      "old",
+      "misc",
+      "legacy",
+      "deprecated",
+      "archive",
+      "staging",
+      "dev",
+      "test"
+    ],
+    "severity": "ERROR",
+    "description": "Directories with these names are forbidden"
+  },
+  "hierarchy_rules": {
+    "max_depth": 5,
+    "depth_from": "src",
+    "severity": "WARNING",
+    "description": "Maximum hierarchy depth from src/ directory"
+  },
+  "metadata_requirements": {
+    "phase_modules": {
+      "docstring": {
+        "required": true,
+        "format": "Multi-line with module metadata",
+        "fields": ["Module", "Purpose", "Owner", "Lifecycle", "Version", "Effective-Date"]
+      },
+      "module_level_vars": {
+        "__version__": {
+          "required": true,
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "__phase__": {
+          "required": true,
+          "type": "int",
+          "valid_range": [0, 9]
+        },
+        "__stage__": {
+          "required": true,
+          "type": "int",
+          "valid_values": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99]
+        },
+        "__order__": {
+          "required": true,
+          "type": "int"
+        },
+        "__author__": {
+          "required": true,
+          "type": "string"
+        },
+        "__created__": {
+          "required": true,
+          "type": "string",
+          "format": "ISO8601"
+        },
+        "__modified__": {
+          "required": true,
+          "type": "string",
+          "format": "ISO8601"
+        },
+        "__criticality__": {
+          "required": true,
+          "type": "string",
+          "valid_values": ["CRITICAL", "HIGH", "MEDIUM", "LOW"]
+        },
+        "__execution_pattern__": {
+          "required": true,
+          "type": "string",
+          "valid_values": ["Singleton", "Per-Task", "Continuous", "On-Demand", "Parallel"]
+        }
+      }
+    }
+  },
+  "compliance_thresholds": {
+    "passing_score": 99.5,
+    "warning_score": 95.0,
+    "failing_score": 0.0,
+    "description": "Compliance score thresholds for PASS/WARNING/FAIL status"
+  },
+  "exclusions": {
+    "directories": [
+      ".git",
+      ".venv",
+      "__pycache__",
+      ".pytest_cache",
+      ".ruff_cache",
+      ".mypy_cache",
+      "node_modules",
+      ".tox",
+      "dist",
+      "build",
+      "*.egg-info"
+    ],
+    "file_patterns": [
+      "*.pyc",
+      "*.pyo",
+      "*.pyd",
+      ".DS_Store",
+      "*.swp",
+      "*.swo",
+      "*~"
+    ]
+  },
+  "auto_fix_rules": {
+    "enabled": true,
+    "safe_operations": [
+      "rename_file",
+      "add_metadata",
+      "update_imports"
+    ],
+    "dangerous_operations": [
+      "delete_file",
+      "merge_content",
+      "split_file"
+    ],
+    "require_confirmation": true,
+    "backup_before_changes": true
+  },
+  "transition_certificates": {
+    "required": true,
+    "format": "TRANSITION_CERTIFICATE_{M}_TO_{N}.json",
+    "phases": [
+      ["0", "1"],
+      ["1", "2"],
+      ["2", "3"],
+      ["3", "4"],
+      ["4", "5"],
+      ["5", "6"],
+      ["6", "7"],
+      ["7", "8"],
+      ["8", "9"]
+    ]
+  }
+}
