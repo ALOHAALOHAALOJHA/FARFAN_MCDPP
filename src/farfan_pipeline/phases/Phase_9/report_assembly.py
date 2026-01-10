@@ -75,7 +75,7 @@ class ReportAssemblyException(Exception):
     def __init__(
         self,
         message: str,
-        details: dict[str, Any] | None = None,
+        details: dict[str, object] | None = None,
         stage: str | None = None,
         recoverable: bool = False,
         event_id: str | None = None,
@@ -98,7 +98,7 @@ class ReportAssemblyException(Exception):
             parts.append(f"Details: {json.dumps(self.details, indent=2)}")
         return " ".join(parts)
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self) -> dict[str, object]:
         """Convert exception to structured dictionary."""
         return {
             "error_type": self.__class__.__name__,
@@ -133,7 +133,7 @@ class ReportExportError(ReportAssemblyException):
 # ============================================================================
 
 
-def compute_content_digest(content: str | bytes | dict[str, Any]) -> str:
+def compute_content_digest(content: str | bytes | dict[str, object]) -> str:
     """
     Compute SHA-256 digest of content in a deterministic way.
 
@@ -200,7 +200,7 @@ class ReportMetadata(BaseModel):
     plan_name: str = Field(..., description="Development plan name", min_length=1)
     total_questions: int = Field(..., description="Total number of questions", ge=0)
     questions_analyzed: int = Field(..., description="Number of questions analyzed", ge=0)
-    metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
+    metadata: dict[str, object] = Field(default_factory=dict, description="Additional metadata")
     correlation_id: str = Field(
         default_factory=lambda: str(uuid.uuid4()), description="UUID for request correlation"
     )
@@ -224,7 +224,7 @@ class ReportMetadata(BaseModel):
 
     @field_validator("questions_analyzed")
     @classmethod
-    def validate_analyzed_count(cls, v: int, info) -> int:
+    def validate_analyzed_count(cls, v: int, info: object) -> int:
         """Validate analyzed count doesn't exceed total."""
         # Note: 'total_questions' may not be available yet during construction
         # This is validated in post_init if needed
@@ -257,7 +257,7 @@ class QuestionAnalysis(BaseModel):
     human_answer: str | None = Field(
         default=None, description="Carver-synthesized human-readable answer"
     )
-    metadata: dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
+    metadata: dict[str, object] = Field(default_factory=dict, description="Additional metadata")
 
     @field_validator("score")
     @classmethod
@@ -273,7 +273,6 @@ class QuestionAnalysis(BaseModel):
                     stage="question_validation",
                 )
             # Round to avoid floating point precision issues
-            return round(v, 6)
             return round(v, 6)
         return v
 
@@ -333,7 +332,7 @@ class MesoCluster(BaseModel):
     dispersion_metrics: dict[str, float] = Field(default_factory=dict)
     micro_scores: list[float] = Field(default_factory=list)
 
-    metadata: dict[str, Any] = Field(default_factory=dict)
+    metadata: dict[str, object] = Field(default_factory=dict)
 
 
 class MacroSummary(BaseModel):
@@ -356,7 +355,7 @@ class MacroSummary(BaseModel):
     # Recommendations
     recommendations: list[Recommendation] = Field(default_factory=list)
 
-    metadata: dict[str, Any] = Field(default_factory=dict)
+    metadata: dict[str, object] = Field(default_factory=dict)
 
 
 class AnalysisReport(BaseModel):
@@ -382,9 +381,9 @@ class AnalysisReport(BaseModel):
     )
 
     @calibrated_method("farfan_core.analysis.report_assembly.AnalysisReport.to_dict")
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self) -> dict[str, object]:
         """Convert report to dictionary for JSON serialization."""
-        report_dict = {
+        report_dict: dict[str, object] = {
             "metadata": self.metadata.model_dump(),
             "micro_analyses": [q.model_dump() for q in self.micro_analyses],
             "meso_clusters": {k: v.model_dump() for k, v in self.meso_clusters.items()},
@@ -398,7 +397,7 @@ class AnalysisReport(BaseModel):
     def compute_digest(self) -> str:
         """Compute cryptographic digest of report content."""
         # Create deterministic representation without the digest field
-        content = {
+        content: dict[str, object] = {
             "metadata": self.metadata.model_dump(),
             "micro_analyses": [q.model_dump() for q in self.micro_analyses],
             "meso_clusters": {k: v.model_dump() for k, v in self.meso_clusters.items()},
@@ -413,7 +412,7 @@ class AnalysisReport(BaseModel):
         if self.report_digest is None:
             return False
         computed = self.compute_digest()
-        return computed == self.report_digest
+        return bool(computed == self.report_digest)
 
 
 # ============================================================================
@@ -430,10 +429,15 @@ class ReportLogger:
         self.logger.setLevel(logging.INFO)
 
     def log_operation(
-        self, operation: str, correlation_id: str, success: bool, latency_ms: float, **kwargs: Any
+        self,
+        operation: str,
+        correlation_id: str,
+        success: bool,
+        latency_ms: float,
+        **kwargs: object,
     ) -> None:
         """Log operation event with structured data."""
-        log_entry = {
+        log_entry: dict[str, object] = {
             "event": "report_operation",
             "operation": operation,
             "correlation_id": correlation_id,
@@ -451,10 +455,10 @@ class ReportLogger:
         correlation_id: str,
         success: bool,
         error: str | None = None,
-        **kwargs: Any,
+        **kwargs: object,
     ) -> None:
         """Log validation event."""
-        log_entry = {
+        log_entry: dict[str, object] = {
             "event": "report_validation",
             "item_type": item_type,
             "correlation_id": correlation_id,
@@ -488,7 +492,11 @@ class ReportAssembler:
     """
 
     def __init__(
-        self, questionnaire_provider, evidence_registry=None, qmcm_recorder=None, orchestrator=None
+        self,
+        questionnaire_provider: object,
+        evidence_registry: object = None,
+        qmcm_recorder: object = None,
+        orchestrator: object = None,
     ) -> None:
         """
         Initialize report assembler.
@@ -521,9 +529,9 @@ class ReportAssembler:
     def assemble_report(
         self,
         plan_name: str,
-        execution_results: dict[str, Any],
+        execution_results: dict[str, object],
         report_id: str | None = None,
-        enriched_packs: dict[str, Any] | None = None,
+        enriched_packs: dict[str, object] | None = None,
     ) -> AnalysisReport:
         """
         Assemble complete analysis report.
@@ -725,8 +733,8 @@ class ReportAssembler:
     )
     def _assemble_micro_analyses(
         self,
-        micro_questions: list[dict[str, Any]],
-        execution_results: dict[str, Any],
+        micro_questions: list[dict[str, object]],
+        execution_results: dict[str, object],
         correlation_id: str,
     ) -> list[QuestionAnalysis]:
         """Assemble micro-level question analyses with validation."""
@@ -745,37 +753,34 @@ class ReportAssembler:
                 logger.warning(f"Skipping invalid question entry: {type(question).__name__}")
                 continue
 
-            question_id = question.get("question_id", "")
+            question_id = str(question.get("question_id", ""))
             if not question_id:
                 logger.warning("Skipping question with missing question_id")
                 continue
 
-            result = question_results.get(question_id, {})
+            result = cast(dict[str, object], question_results.get(question_id, {}))
 
             # Extract patterns applied using QuestionnaireResourceProvider
-            patterns = self.questionnaire_provider.get_patterns_by_question(question_id)
-            pattern_names = [p.get("pattern_id", "") for p in patterns] if patterns else []
+            patterns = cast(Any, self.questionnaire_provider).get_patterns_by_question(question_id)
+            pattern_names = [str(p.get("pattern_id", "")) for p in patterns] if patterns else []
 
             try:
                 # Pydantic validation
+                scoring = question.get("scoring")
+                modality = None
+                if isinstance(scoring, dict):
+                    modality = scoring.get("modality")
+
                 analysis = QuestionAnalysis(
                     question_id=question_id,
-                    question_global=question.get("question_global", 0),
-                    base_slot=question.get("base_slot", ""),
-                    scoring_modality=(
-                        question.get("scoring", {}).get("modality")
-                        if isinstance(question.get("scoring"), dict)
-                        else None
-                    ),
-                    score=result.get("score"),
-                    evidence=(
-                        result.get("evidence", [])
-                        if isinstance(result.get("evidence"), list)
-                        else []
-                    ),
+                    question_global=int(cast(Any, question.get("question_global", 0))),
+                    base_slot=str(question.get("base_slot", "")),
+                    scoring_modality=str(modality) if modality else None,
+                    score=float(cast(Any, result.get("score"))) if result.get("score") is not None else None,
+                    evidence=cast(list[str], result.get("evidence", [])),
                     patterns_applied=pattern_names,
-                    recommendation=result.get("recommendation"),
-                    human_answer=result.get("human_answer"),
+                    recommendation=str(result.get("recommendation")) if result.get("recommendation") else None,
+                    human_answer=str(result.get("human_answer")) if result.get("human_answer") else None,
                     metadata={
                         "dimension": question.get("dimension"),
                         "policy_area": question.get("policy_area"),
@@ -806,17 +811,14 @@ class ReportAssembler:
     @calibrated_method(
         "farfan_core.analysis.report_assembly.ReportAssembler._assemble_meso_clusters"
     )
-    @calibrated_method(
-        "farfan_core.analysis.report_assembly.ReportAssembler._assemble_meso_clusters"
-    )
-    def _assemble_meso_clusters(self, execution_results: dict[str, Any]) -> dict[str, MesoCluster]:
+    def _assemble_meso_clusters(self, execution_results: dict[str, object]) -> dict[str, MesoCluster]:
         """Assemble meso-level cluster analyses with strict validation."""
         raw_clusters = execution_results.get("meso_clusters", {})
 
         # Handle list format from Bayesian orchestrator
         if isinstance(raw_clusters, list):
             # Convert list of objects to dict keyed by cluster_id
-            cluster_dict = {}
+            cluster_dict: dict[str, object] = {}
             for item in raw_clusters:
                 # Handle both dicts and objects (if coming from dataclasses)
                 if hasattr(item, "__dict__"):
@@ -828,7 +830,7 @@ class ReportAssembler:
 
                 c_id = data.get("cluster_id")
                 if c_id:
-                    cluster_dict[c_id] = data
+                    cluster_dict[str(c_id)] = data
             raw_clusters = cluster_dict
 
         if not isinstance(raw_clusters, dict):
@@ -847,14 +849,14 @@ class ReportAssembler:
 
                 cluster = MesoCluster(
                     cluster_id=str(data.get("cluster_id", cluster_id)),
-                    raw_meso_score=float(data.get("raw_meso_score", 0.0)),
-                    adjusted_score=float(data.get("adjusted_score", 0.0)),
-                    dispersion_penalty=float(data.get("dispersion_penalty", 0.0)),
-                    peer_penalty=float(data.get("peer_penalty", 0.0)),
-                    total_penalty=float(data.get("total_penalty", 0.0)),
-                    dispersion_metrics=data.get("dispersion_metrics", {}),
-                    micro_scores=data.get("micro_scores", []),
-                    metadata=data.get("metadata", {}),
+                    raw_meso_score=float(cast(Any, data.get("raw_meso_score", 0.0))),
+                    adjusted_score=float(cast(Any, data.get("adjusted_score", 0.0))),
+                    dispersion_penalty=float(cast(Any, data.get("dispersion_penalty", 0.0))),
+                    peer_penalty=float(cast(Any, data.get("peer_penalty", 0.0))),
+                    total_penalty=float(cast(Any, data.get("total_penalty", 0.0))),
+                    dispersion_metrics=cast(dict[str, float], data.get("dispersion_metrics", {})),
+                    micro_scores=cast(list[float], data.get("micro_scores", [])),
+                    metadata=cast(dict[str, object], data.get("metadata", {})),
                 )
                 validated_clusters[cluster_id] = cluster
             except Exception as e:
@@ -865,7 +867,7 @@ class ReportAssembler:
     @calibrated_method(
         "farfan_core.analysis.report_assembly.ReportAssembler._assemble_macro_summary"
     )
-    def _assemble_macro_summary(self, execution_results: dict[str, Any]) -> MacroSummary | None:
+    def _assemble_macro_summary(self, execution_results: dict[str, object]) -> MacroSummary | None:
         """Assemble macro-level summary with strict validation and recommendation wiring."""
         raw_macro = execution_results.get("macro_summary", {})
 
@@ -879,7 +881,7 @@ class ReportAssembler:
 
         try:
             # Parse recommendations
-            raw_recs = raw_macro.get("recommendations", [])
+            raw_recs = cast(list[object], raw_macro.get("recommendations", []))
             validated_recs = []
             for rec in raw_recs:
                 if isinstance(rec, str):
@@ -892,15 +894,15 @@ class ReportAssembler:
                         pass
 
             return MacroSummary(
-                overall_posterior=float(raw_macro.get("overall_posterior", 0.0)),
-                adjusted_score=float(raw_macro.get("adjusted_score", 0.0)),
-                coverage_penalty=float(raw_macro.get("coverage_penalty", 0.0)),
-                dispersion_penalty=float(raw_macro.get("dispersion_penalty", 0.0)),
-                contradiction_penalty=float(raw_macro.get("contradiction_penalty", 0.0)),
-                total_penalty=float(raw_macro.get("total_penalty", 0.0)),
-                contradiction_count=int(raw_macro.get("contradiction_count", 0)),
+                overall_posterior=float(cast(Any, raw_macro.get("overall_posterior", 0.0))),
+                adjusted_score=float(cast(Any, raw_macro.get("adjusted_score", 0.0))),
+                coverage_penalty=float(cast(Any, raw_macro.get("coverage_penalty", 0.0))),
+                dispersion_penalty=float(cast(Any, raw_macro.get("dispersion_penalty", 0.0))),
+                contradiction_penalty=float(cast(Any, raw_macro.get("contradiction_penalty", 0.0))),
+                total_penalty=float(cast(Any, raw_macro.get("total_penalty", 0.0))),
+                contradiction_count=int(cast(Any, raw_macro.get("contradiction_count", 0))),
                 recommendations=validated_recs,
-                metadata=raw_macro.get("metadata", {}),
+                metadata=cast(dict[str, object], raw_macro.get("metadata", {})),
             )
         except Exception as e:
             logger.error(f"Failed to validate macro summary: {e}")
