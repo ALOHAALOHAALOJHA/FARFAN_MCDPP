@@ -59,18 +59,10 @@ except ImportError:
     ResourceExhausted = Exception  # type: ignore[misc, assignment]
     PSUTIL_AVAILABLE = False
 
-<<<<<<< HEAD
-import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import CONFIG_DIR
-from farfan_pipeline.phases.Phase_2.phase2_10_00_factory import CanonicalQuestionnaire
-from farfan_pipeline.phases.Phase_2.phase2_60_02_arg_router import ExtendedArgRouter
-from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import build_class_registry
-from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
-=======
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
     AccessLevel,
     get_access_audit,
 )
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
     InMemorySignalSource,
     SignalClient,
