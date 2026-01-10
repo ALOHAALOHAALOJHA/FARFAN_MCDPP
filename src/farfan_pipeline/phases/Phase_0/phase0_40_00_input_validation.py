@@ -71,9 +71,8 @@ except ImportError as e:
     ) from e
 
 # Phase protocol from Phase Zero Infrastructure
-from farfan_pipeline.phases.Phase_zero.phase0_00_03_protocols import (
+import farfan_pipeline.phases.Phase_0.phase0_00_03_protocols import (
     ContractValidationResult,
-    PhaseContract,
 )
 
 # Dura Lex Contract System - ACTUAL USAGE FOR MAXIMUM PERFORMANCE
@@ -472,7 +471,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
         questionnaire_path = input_data.questionnaire_path
         if questionnaire_path is None:
             # Use the new Modular Manifest Entry Point
-            from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import QUESTIONNAIRE_ENTRY_POINT
+            import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import QUESTIONNAIRE_ENTRY_POINT
 
             questionnaire_path = QUESTIONNAIRE_ENTRY_POINT
             warnings.append(

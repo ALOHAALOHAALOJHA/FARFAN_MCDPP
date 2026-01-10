@@ -191,7 +191,7 @@ class ComprehensiveSignalAuditor:
     def _initialize_components(self) -> None:
         """Initialize questionnaire and signal registry."""
         try:
-            from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+            import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
             
             if self.questionnaire_path is None:
                 # Default questionnaire path
@@ -535,7 +535,7 @@ class ComprehensiveSignalAuditor:
 
 def main() -> None:
     """Main entry point for comprehensive audit."""
-    from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+    import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
     
     output_dir = PROJECT_ROOT / "artifacts" / "comprehensive_signal_audit"
     output_dir.mkdir(parents=True, exist_ok=True)

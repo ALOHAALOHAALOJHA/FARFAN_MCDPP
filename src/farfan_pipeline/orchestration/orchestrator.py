@@ -32,10 +32,10 @@ from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
 if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_two.phase2_10_00_factory import CanonicalQuestionnaire
 
-from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
-from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import safe_join
-from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
-from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import GateResult
+import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
+import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import safe_join
+import farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import RuntimeConfig
+import farfan_pipeline.phases.Phase_0.phase0_50_01_exit_gates import GateResult
 
 # Define RULES_DIR locally (not exported from paths)
 RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"

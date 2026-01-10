@@ -13,7 +13,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_two.irrigation_synchronizer import ChunkRoutingResult
+    import farfan_pipeline.phases.Phase_2.irrigation_synchronizer import ChunkRoutingResult
 
 logger = logging.getLogger(__name__)
 

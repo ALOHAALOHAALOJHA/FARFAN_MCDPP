@@ -28,7 +28,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Protocol, Any
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig
+    import farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import RuntimeConfig
 
 
 class Phase0Runner(Protocol):
@@ -451,7 +451,7 @@ def check_method_registry_gate(runner: Phase0Runner) -> GateResult:
     
     # In PROD mode, no failed classes allowed
     if runner.runtime_config and hasattr(runner.runtime_config, "mode"):
-        from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeMode
+        import farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import RuntimeMode
         if runner.runtime_config.mode == RuntimeMode.PROD and failed_count > 0:
             failed_names = stats.get("failed_class_names", [])
             return GateResult(
@@ -539,7 +539,7 @@ def check_smoke_tests_gate(runner: Phase0Runner) -> GateResult:
     if failed_tests:
         # In PROD mode, any smoke test failure is fatal
         if runner.runtime_config and hasattr(runner.runtime_config, "mode"):
-            from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeMode
+            import farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import RuntimeMode
             if runner.runtime_config.mode == RuntimeMode.PROD:
                 return GateResult(
                     passed=False,

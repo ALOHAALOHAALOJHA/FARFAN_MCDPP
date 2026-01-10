@@ -116,14 +116,8 @@ def load_generator_modules() -> dict:
     """
     # Try package imports first (when running as module)
     try:
-        from farfan_pipeline.phases.Phase_two.contract_generator import (
-            chain_composer,
-            contract_assembler,
-            contract_generator,
-            contract_validator,
-            input_registry,
-            json_emitter,
-            method_expander,
+        import farfan_pipeline.phases.Phase_2.contract_generator import (
+                    chain_composer,
         )
         logger.debug("Loaded modules via package imports")
         return {

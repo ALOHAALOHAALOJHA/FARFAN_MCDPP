@@ -222,15 +222,13 @@ from farfan_pipeline.validators.phase1_output_validator import Phase1OutputValid
 from farfan_pipeline.core.types import PreprocessedDocument
 
 # Phase 0 integration
-from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import (
+import farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import (
     RuntimeConfig,
-    RuntimeMode,
-    get_runtime_config,
 )
-from farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner import (
+import farfan_pipeline.phases.Phase_0.phase0_90_01_verified_pipeline_runner import (
     VerifiedPipelineRunner,
 )
-from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import (
+import farfan_pipeline.phases.Phase_0.phase0_50_01_exit_gates import (
     check_all_gates,
 )
 

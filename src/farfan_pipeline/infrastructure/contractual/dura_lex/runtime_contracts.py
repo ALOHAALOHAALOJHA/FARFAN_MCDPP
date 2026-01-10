@@ -96,7 +96,7 @@ class GraphMetricsInfo:
 
 # Re-export FallbackCategory from runtime_config for convenience
 try:
-    from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import FallbackCategory
+    import farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import FallbackCategory
 except ImportError:
     # Fallback definition if runtime_config not available
     class FallbackCategory(Enum):

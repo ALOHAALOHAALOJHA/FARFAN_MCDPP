@@ -48,7 +48,7 @@ except ImportError:
     NUMPY_AVAILABLE = False
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_zero.phase0_90_02_bootstrap import WiringComponents
+    import farfan_pipeline.phases.Phase_0.phase0_90_02_bootstrap import WiringComponents
 
 
 # =============================================================================

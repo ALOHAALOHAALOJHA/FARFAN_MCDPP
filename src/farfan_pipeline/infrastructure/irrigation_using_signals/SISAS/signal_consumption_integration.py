@@ -32,7 +32,7 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consum
 )
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
+    import farfan_pipeline.phases.Phase_2.executors.base_executor_with_contract import BaseExecutorWithContract
 
 
 @dataclass

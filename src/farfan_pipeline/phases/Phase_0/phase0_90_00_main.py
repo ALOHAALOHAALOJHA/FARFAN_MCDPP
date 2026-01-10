@@ -32,16 +32,14 @@ import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import (
+import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import (
     PROJECT_ROOT,
-    QUESTIONNAIRE_FILE,
 )
-from farfan_pipeline.phases.Phase_zero.phase0_90_01_verified_pipeline_runner import (
+import farfan_pipeline.phases.Phase_0.phase0_90_01_verified_pipeline_runner import (
     VerifiedPipelineRunner,
 )
-from farfan_pipeline.phases.Phase_zero.phase0_90_02_bootstrap import (
+import farfan_pipeline.phases.Phase_0.phase0_90_02_bootstrap import (
     WiringBootstrap,
-    WiringComponents,
 )
 
 if TYPE_CHECKING:

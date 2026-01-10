@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 from typing import Optional
 
-from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+import farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import RuntimeConfig
 
 
 class BootCheckError(Exception):
@@ -72,7 +72,7 @@ def check_wiring_validator_available(config: RuntimeConfig) -> bool:
         BootCheckError: If validator unavailable in strict PROD mode
     """
     try:
-        from farfan_pipeline.phases.Phase_zero.phase0_90_03_wiring_validator import WiringValidator
+        import farfan_pipeline.phases.Phase_0.phase0_90_03_wiring_validator import WiringValidator
         return True
     except ImportError as e:
         if config.mode == RuntimeMode.PROD and not config.allow_validator_disable:

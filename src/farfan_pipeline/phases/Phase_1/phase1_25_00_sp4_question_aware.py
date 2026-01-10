@@ -39,41 +39,18 @@ except ImportError:
     STRUCTLOG_AVAILABLE = False
 
 # Import Phase 1 models
-from farfan_pipeline.phases.Phase_one.phase1_10_00_models import (
+import farfan_pipeline.phases.Phase_1.phase1_10_00_models import (
     Chunk,
-    PreprocessedDoc,
-    StructureData,
-    KnowledgeGraph,
 )
 
 # Import questionnaire mapper
-from farfan_pipeline.phases.Phase_one.phase1_15_00_questionnaire_mapper import (
+import farfan_pipeline.phases.Phase_1.phase1_15_00_questionnaire_mapper import (
     QuestionSpec,
-    QuestionnaireMap,
-    load_questionnaire_map,
-    invoke_method_set,
-    verify_expected_elements,
-    create_chunk_id_for_question,
-    parse_question_id,
-    TOTAL_QUESTIONS,
-    QUESTIONS_PER_DIMENSION,
-    NUM_POLICY_AREAS,
-    NUM_DIMENSIONS,
 )
 
 # Import Phase 1 constants
-from farfan_pipeline.phases.Phase_one.PHASE_1_CONSTANTS import (
+import farfan_pipeline.phases.Phase_1.PHASE_1_CONSTANTS import (
     POLICY_AREA_COUNT,
-    DIMENSION_COUNT,
-    QUESTIONS_PER_DIMENSION as QUESTIONS_PER_SLOT,
-    TOTAL_CHUNK_COMBINATIONS,
-    CHUNK_ID_PATTERN,
-    SEMANTIC_SCORE_MAX_EXPECTED,
-    ASSIGNMENT_METHOD_SEMANTIC,
-    ASSIGNMENT_METHOD_FALLBACK,
-    VALID_ASSIGNMENT_METHODS,
-    REQUIRED_ELEMENT_VERIFICATION,
-    MIN_REQUIRED_ELEMENTS_PRESENT,
 )
 
 # Try to import canonical types

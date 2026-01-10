@@ -14,7 +14,3 @@ black>=24.0.0
 # Security Scanning
 pip-audit>=2.0.0
 bandit>=1.7.0
-
-# Dependency Analysis
-pipdeptree>=2.0.0
-pip-licenses>=4.0.0

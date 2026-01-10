@@ -71,12 +71,12 @@ from enum import Enum
 # Core pipeline imports - REAL PATHS based on actual project structure
 # Phase 0/1 models from same directory
 try:
-    from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput
+    import farfan_pipeline.phases.Phase_0.phase0_40_00_input_validation import CanonicalInput
 except ImportError:
     # Fallback if farfan_pipeline is not in path directly but src is?
     # Or keep the old one just in case but it seems broken.
     # I'll try the absolute one first.
-    from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput
+    import farfan_pipeline.phases.Phase_0.phase0_40_00_input_validation import CanonicalInput
 
 from .phase1_10_00_models import (
     LanguageData, PreprocessedDoc, StructureData, KnowledgeGraph, KGNode, KGEdge,
@@ -3486,7 +3486,7 @@ class Phase1CPPIngestionFullContract:
         """
         try:
             # Use centralized path management
-            from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+            import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
             base_path = PROJECT_ROOT
             spec_path = base_path / "artifacts/data/canonic_description_unit_analysis.json"
             

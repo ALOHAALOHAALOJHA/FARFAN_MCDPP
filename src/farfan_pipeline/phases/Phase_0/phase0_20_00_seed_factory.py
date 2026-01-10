@@ -15,6 +15,20 @@ except ImportError:
     NUMPY_AVAILABLE = False
     np = None  # type: ignore
 
+try:
+    import torch
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
+    torch = None  # type: ignore
+
+try:
+    import tensorflow as tf
+    TENSORFLOW_AVAILABLE = True
+except ImportError:
+    TENSORFLOW_AVAILABLE = False
+    tf = None  # type: ignore
+
 class SeedFactory:
     """
     Factory for generating deterministic seeds
@@ -93,10 +107,16 @@ class SeedFactory:
         Sets:
         - Python random module
         - NumPy random state
-        - (Add torch, tensorflow if needed)
+        - PyTorch (manual_seed, CUDA, deterministic)
+        - TensorFlow (random.set_seed)
 
         Args:
             seed: Deterministic seed
+
+        Note:
+            PyTorch and TensorFlow operations will be deterministic when
+            these frameworks are available. This ensures reproducibility
+            across all stochastic operations in the pipeline.
         """
 
         # Python random module
@@ -106,8 +126,26 @@ class SeedFactory:
         if NUMPY_AVAILABLE and np is not None:
             np.random.seed(seed)
 
-        # TODO: Add torch.manual_seed(seed) if PyTorch is used
-        # TODO: Add tf.random.set_seed(seed) if TensorFlow is used
+        # PyTorch: Set seed for CPU and CUDA operations
+        if TORCH_AVAILABLE and torch is not None:
+            torch.manual_seed(seed)
+            if torch.cuda.is_available():
+                torch.cuda.manual_seed(seed)
+                torch.cuda.manual_seed_all(seed)  # For all GPU devices
+            # Enable deterministic algorithms (may impact performance)
+            torch.backends.cudnn.deterministic = True
+            torch.backends.cudnn.benchmark = False
+
+        # TensorFlow: Set global random seed
+        if TENSORFLOW_AVAILABLE and tf is not None:
+            tf.random.set_seed(seed)
+            # For TensorFlow 2.x, also configure graph-level operations
+            try:
+                # Ensure deterministic behavior for TF ops
+                tf.config.experimental.enable_op_determinism()
+            except AttributeError:
+                # Older TensorFlow versions may not have this
+                pass
 
 class DeterministicContext:
     """
@@ -134,6 +172,8 @@ class DeterministicContext:
         self.seed: int | None = None
         self.previous_random_state = None
         self.previous_numpy_state = None
+        self.previous_torch_state = None
+        self.previous_cuda_state = None
 
     def __enter__(self) -> int:
         """Enter deterministic context"""
@@ -150,6 +190,12 @@ class DeterministicContext:
         if NUMPY_AVAILABLE and np is not None:
             self.previous_numpy_state = np.random.get_state()
 
+        # Save PyTorch state
+        if TORCH_AVAILABLE and torch is not None:
+            self.previous_torch_state = torch.get_rng_state()
+            if torch.cuda.is_available():
+                self.previous_cuda_state = torch.cuda.get_rng_state_all()
+
         # Configure with deterministic seed
         self.factory.configure_global_random_state(self.seed)
 
@@ -164,6 +210,12 @@ class DeterministicContext:
 
         if NUMPY_AVAILABLE and np is not None and self.previous_numpy_state:
             np.random.set_state(self.previous_numpy_state)
+
+        # Restore PyTorch state
+        if TORCH_AVAILABLE and torch is not None and self.previous_torch_state is not None:
+            torch.set_rng_state(self.previous_torch_state)
+            if torch.cuda.is_available() and self.previous_cuda_state is not None:
+                torch.cuda.set_rng_state_all(self.previous_cuda_state)
 
         return False
 

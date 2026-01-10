@@ -42,7 +42,7 @@ except ImportError:
     ResourceExhausted = Exception  # type: ignore[misc, assignment]
     PSUTIL_AVAILABLE = False
 
-from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import CONFIG_DIR, DATA_DIR
+import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import CONFIG_DIR
 from farfan_pipeline.phases.Phase_two.phase2_10_00_factory import CanonicalQuestionnaire
 from farfan_pipeline.phases.Phase_two.phase2_60_02_arg_router import ExtendedArgRouter
 from farfan_pipeline.phases.Phase_two.phase2_10_01_class_registry import build_class_registry
@@ -253,12 +253,8 @@ _DEFAULT_CALIBRATION_CONFIG = None  # type: ignore[assignment]
 _HAS_CALIBRATION = False
 
 # Import wiring support from consolidated module
-from farfan_pipeline.phases.Phase_zero.phase0_90_03_wiring_validator import (
+import farfan_pipeline.phases.Phase_0.phase0_90_03_wiring_validator import (
     MissingDependencyError,
-    WiringInitializationError,
-    WiringFeatureFlags,
-    Phase0Validator,
-    WiringValidator,
 )
 
 logger = structlog.get_logger(__name__)

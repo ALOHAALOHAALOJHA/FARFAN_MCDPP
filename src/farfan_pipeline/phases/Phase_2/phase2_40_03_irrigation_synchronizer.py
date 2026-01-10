@@ -39,20 +39,16 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from orchestration.task_planner import ExecutableTask
-from farfan_pipeline.phases.Phase_two.phase2_40_02_schema_validation import (
+import farfan_pipeline.phases.Phase_2.phase2_40_02_schema_validation import (
     validate_phase6_schema_compatibility,
 )
 from farfan_pipeline.calibracion_parametrizacion.types import ChunkData, PreprocessedDocument
-from farfan_pipeline.phases.Phase_two.phase2_40_00_synchronization import ChunkMatrix
+import farfan_pipeline.phases.Phase_2.phase2_40_00_synchronization import ChunkMatrix
 
 # Import executor-chunk synchronizer for JOIN table
 try:
-    from farfan_pipeline.phases.Phase_two.phase2_40_01_executor_chunk_synchronizer import (
-        ExecutorChunkBinding,
-        build_join_table,
-        generate_verification_manifest,
-        save_verification_manifest,
-        ExecutorChunkSynchronizationError,
+    import farfan_pipeline.phases.Phase_2.phase2_40_01_executor_chunk_synchronizer import (
+            ExecutorChunkBinding,
     )
     SYNCHRONIZER_AVAILABLE = True
 except ImportError as e:

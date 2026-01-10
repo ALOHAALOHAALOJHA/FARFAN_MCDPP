@@ -34,8 +34,8 @@ if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import (
         ExecutorConfig,
     )
-    from farfan_pipeline.phases.Phase_zero.phase0_10_00_canonical_questionnaire import (
-        CanonicalQuestionnaire,
+    import farfan_pipeline.phases.Phase_0.phase0_10_00_canonical_questionnaire import (
+            CanonicalQuestionnaire,
     )
     from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import (
         CalibrationPolicy,
