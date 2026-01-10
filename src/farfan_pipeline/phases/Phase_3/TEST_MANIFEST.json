@@ -1,0 +1,46 @@
+{
+  "test_suite_version": "1.0.0",
+  "phase": 3,
+  "phase_name": "Phase_3",
+  "generated_at": "2026-01-10T20:22:39.567800",
+  "test_framework": "pytest",
+  "modules": [
+    {
+      "module": "phase3_10_00_phase3_score_extraction",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase3/test_phase3_10_00_phase3_score_extraction.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase3_10_00_phase3_validation",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase3/test_phase3_10_00_phase3_validation.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase3_10_00_phase3_signal_enriched_scoring",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase3/test_phase3_10_00_phase3_signal_enriched_scoring.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    }
+  ],
+  "stages": {
+    "total": 1,
+    "stage_counts": {
+      "10": 3
+    }
+  },
+  "integration_tests": [],
+  "coverage_threshold": 80.0,
+  "quality_gates": {
+    "min_coverage": 80.0,
+    "max_violations": 0,
+    "require_docstrings": true
+  }
+}

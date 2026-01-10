@@ -1,0 +1,134 @@
+{
+  "test_suite_version": "1.0.0",
+  "phase": 1,
+  "phase_name": "Phase_1",
+  "generated_at": "2026-01-10T20:22:39.554996",
+  "test_framework": "pytest",
+  "modules": [
+    {
+      "module": "phase1_10_00_models",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase1/test_phase1_10_00_models.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase1_30_00_adapter",
+      "stage": 30,
+      "order": 0,
+      "test_file": "tests/phases/phase1/test_phase1_30_00_adapter.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase1_40_00_circuit_breaker",
+      "stage": 40,
+      "order": 0,
+      "test_file": "tests/phases/phase1/test_phase1_40_00_circuit_breaker.py",
+      "coverage_target": 0.8,
+      "criticality": "HIGH"
+    },
+    {
+      "module": "phase1_50_00_dependency_validator",
+      "stage": 50,
+      "order": 0,
+      "test_file": "tests/phases/phase1/test_phase1_50_00_dependency_validator.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase1_10_00_phase_protocol",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase1/test_phase1_10_00_phase_protocol.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase1_15_00_questionnaire_mapper",
+      "stage": 15,
+      "order": 0,
+      "test_file": "tests/phases/phase1/test_phase1_15_00_questionnaire_mapper.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase1_60_00_signal_enrichment",
+      "stage": 60,
+      "order": 0,
+      "test_file": "tests/phases/phase1/test_phase1_60_00_signal_enrichment.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase1_20_00_cpp_ingestion",
+      "stage": 20,
+      "order": 0,
+      "test_file": "tests/phases/phase1/test_phase1_20_00_cpp_ingestion.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase1_25_00_sp4_question_aware",
+      "stage": 25,
+      "order": 0,
+      "test_file": "tests/phases/phase1/test_phase1_25_00_sp4_question_aware.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase1_70_00_structural",
+      "stage": 70,
+      "order": 0,
+      "test_file": "tests/phases/phase1/test_phase1_70_00_structural.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase1_10_00_phase_1_constants",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase1/test_phase1_10_00_phase_1_constants.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase1_10_00_cpp_models",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase1/test_phase1_10_00_cpp_models.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase1_10_00_thread_safe_results",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase1/test_phase1_10_00_thread_safe_results.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    }
+  ],
+  "stages": {
+    "total": 9,
+    "stage_counts": {
+      "10": 5,
+      "30": 1,
+      "40": 1,
+      "50": 1,
+      "15": 1,
+      "60": 1,
+      "20": 1,
+      "25": 1,
+      "70": 1
+    }
+  },
+  "integration_tests": [],
+  "coverage_threshold": 80.0,
+  "quality_gates": {
+    "min_coverage": 80.0,
+    "max_violations": 0,
+    "require_docstrings": true
+  }
+}

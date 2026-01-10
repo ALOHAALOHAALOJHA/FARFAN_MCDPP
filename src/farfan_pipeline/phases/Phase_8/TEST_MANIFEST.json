@@ -1,0 +1,89 @@
+{
+  "test_suite_version": "1.0.0",
+  "phase": 8,
+  "phase_name": "Phase_8",
+  "generated_at": "2026-01-10T20:22:39.603730",
+  "test_framework": "pytest",
+  "modules": [
+    {
+      "module": "phase8_00_00_data_models",
+      "stage": 0,
+      "order": 0,
+      "test_file": "tests/phases/phase8/test_phase8_00_00_data_models.py",
+      "coverage_target": 0.8,
+      "criticality": "LOW"
+    },
+    {
+      "module": "phase8_30_00_signal_enriched_recommendations",
+      "stage": 30,
+      "order": 0,
+      "test_file": "tests/phases/phase8/test_phase8_30_00_signal_enriched_recommendations.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase8_20_02_generic_rule_engine",
+      "stage": 20,
+      "order": 2,
+      "test_file": "tests/phases/phase8/test_phase8_20_02_generic_rule_engine.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase8_20_00_recommendation_engine",
+      "stage": 20,
+      "order": 0,
+      "test_file": "tests/phases/phase8/test_phase8_20_00_recommendation_engine.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase8_20_01_recommendation_engine_adapter",
+      "stage": 20,
+      "order": 1,
+      "test_file": "tests/phases/phase8/test_phase8_20_01_recommendation_engine_adapter.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase8_20_03_template_compiler",
+      "stage": 20,
+      "order": 3,
+      "test_file": "tests/phases/phase8/test_phase8_20_03_template_compiler.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    },
+    {
+      "module": "phase8_10_00_schema_validation",
+      "stage": 10,
+      "order": 0,
+      "test_file": "tests/phases/phase8/test_phase8_10_00_schema_validation.py",
+      "coverage_target": 0.8,
+      "criticality": "CRITICAL"
+    },
+    {
+      "module": "phase8_20_04_recommendation_engine_orchestrator",
+      "stage": 20,
+      "order": 4,
+      "test_file": "tests/phases/phase8/test_phase8_20_04_recommendation_engine_orchestrator.py",
+      "coverage_target": 0.8,
+      "criticality": "MEDIUM"
+    }
+  ],
+  "stages": {
+    "total": 4,
+    "stage_counts": {
+      "0": 1,
+      "30": 1,
+      "20": 5,
+      "10": 1
+    }
+  },
+  "integration_tests": [],
+  "coverage_threshold": 80.0,
+  "quality_gates": {
+    "min_coverage": 80.0,
+    "max_violations": 0,
+    "require_docstrings": true
+  }
+}
