@@ -287,10 +287,11 @@ def test_missing_metrics_files_detectable() -> None:
     If metrics persistence fails, CI should be able to detect the absence
     of expected files.
     """
+    import tempfile
     from pathlib import Path
-    
+
     # Simulate a failed run where metrics weren't persisted
-    fake_artifacts_dir = Path("/tmp/fake_artifacts_dir_that_does_not_exist")
+    fake_artifacts_dir = Path(tempfile.gettempdir()) / "fake_artifacts_dir_that_does_not_exist"
     
     expected_files = [
         fake_artifacts_dir / "phase_metrics.json",

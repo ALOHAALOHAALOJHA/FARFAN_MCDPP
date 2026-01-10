@@ -5,7 +5,6 @@ from pathlib import Path
 # from deepdiff import DeepDiff  # You might not have this, so I'll write a simple recursive comparator
 
 # Add src to pythonpath
-sys.path.append(str(Path(__file__).resolve().parents[1] / "src"))
 
 from farfan_pipeline.infrastructure.questionnaire.modular_resolver import QuestionnaireModularResolver
 

@@ -2859,15 +2859,14 @@ class Phase1CPPIngestionFullContract:
         Returns the 'reporte_unit_of_analysis' dictionary.
         """
         try:
-            # Assuming file is relative to project root
-            # The context says project root is /Users/recovered/Downloads/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL
-            base_path = Path("/Users/recovered/Downloads/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL")
-            spec_path = base_path / "artifacts/data/canonic_description_unit_analysis.json"
-            
+            # Use centralized path management
+            from farfan_pipeline.utils.paths import PROJECT_ROOT
+            spec_path = PROJECT_ROOT / "artifacts/data/canonic_description_unit_analysis.json"
+
             if not spec_path.exists():
                 logger.warning(f"Unit of analysis spec not found at {spec_path}")
                 return {}
-                
+
             with open(spec_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 return data.get('reporte_unit_of_analysis', {})

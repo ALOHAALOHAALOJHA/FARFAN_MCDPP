@@ -1,7 +1,6 @@
 
 import sys
 import os
-sys.path.append(os.getcwd())
 
 try:
     from farfan_pipeline.infrastructure.calibration.calibration_core import create_calibration_parameter

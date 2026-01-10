@@ -1210,7 +1210,8 @@ def main():
     
     # 4. Exportar resultados
     print("\n[4/4] Exportando resultados...")
-    output_dir = Path("/home/claude/farfan_method_analyzer/output")
+    from farfan_pipeline.utils.paths import PROJECT_ROOT
+    output_dir = PROJECT_ROOT / "artifacts" / "method_analyzer_output"
     output_dir.mkdir(parents=True, exist_ok=True)
     
     ResultsExporter.export_classified_methods(

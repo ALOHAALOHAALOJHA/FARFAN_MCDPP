@@ -531,12 +531,15 @@ class CrystallizationCheckpoint:
     def __init__(self, checkpoint_dir: Path | None = None):
         """
         Initialize crystallization checkpoint manager.
-        
+
         Args:
             checkpoint_dir: Directory to store checkpoint files.
-                            If None, uses temp directory.
+                            If None, uses project temp directory.
         """
-        self.checkpoint_dir = checkpoint_dir or Path("/tmp/farfan_checkpoints")
+        if checkpoint_dir is None:
+            from farfan_pipeline.utils.paths import get_tmpdir
+            checkpoint_dir = get_tmpdir() / "farfan_checkpoints"
+        self.checkpoint_dir = checkpoint_dir
         self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
         self.crystals: Dict[int, Dict[str, Any]] = {}
     

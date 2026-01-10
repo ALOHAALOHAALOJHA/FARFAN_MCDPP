@@ -9,7 +9,7 @@ to maximize accuracy in mapping Colombian Development Plans to the CQC.
 INTEGRATION:
 - Uses EvidenceTypeMapper from phase2_80_00_evidence_nexus.py
 - Uses ExpectedElement schema from phase2_90_00_carver.py
-- Scans /Users/recovered/FARFAN_MPP/data/plans
+- Scans data/plans (relative to project root)
 - Reads Canonic Questionnaire Central (Dimensions, Policy Areas, Cross-cutting)
 
 METHODOLOGY (SOTA V3.1):
@@ -47,11 +47,29 @@ warnings.filterwarnings('ignore')
 # =============================================================================
 # PATH CONFIGURATION
 # =============================================================================
-ROOT = Path("/Users/recovered/FARFAN_MPP")
-CQC_ROOT = ROOT / "canonic_questionnaire_central"
-PLANS_ROOT = ROOT / "data" / "plans"
-OUTPUT_DIR = ROOT / "artifacts" / "audit_reports"
+# Detect project root dynamically
+_SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT = _SCRIPT_DIR.parent.parent  # Go up to project root
 
+# Verify we found the correct root by checking for pyproject.toml
+if not (ROOT / "pyproject.toml").exists():
+    # Fallback: try to import from farfan_pipeline
+    try:
+        import sys
+        sys.path.insert(0, str(ROOT / "src"))
+        from farfan_pipeline.utils.paths import PROJECT_ROOT, CONFIG_DIR, DATA_DIR
+        ROOT = PROJECT_ROOT
+        CQC_ROOT = CONFIG_DIR
+        PLANS_ROOT = DATA_DIR / "plans"
+    except ImportError:
+        # Last resort: use detected path
+        CQC_ROOT = ROOT / "canonic_questionnaire_central"
+        PLANS_ROOT = ROOT / "data" / "plans"
+else:
+    CQC_ROOT = ROOT / "canonic_questionnaire_central"
+    PLANS_ROOT = ROOT / "data" / "plans"
+
+OUTPUT_DIR = ROOT / "artifacts" / "audit_reports"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # =============================================================================

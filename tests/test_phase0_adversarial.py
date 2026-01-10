@@ -398,11 +398,11 @@ class TestContractViolationAdversarial:
             CanonicalInput(
                 document_id="test",
                 run_id="test_run",
-                pdf_path=Path("/tmp/test.pdf"),
+                pdf_path=Path(tempfile.gettempdir()) / "test.pdf"),
                 pdf_sha256="a" * 64,
                 pdf_size_bytes=1024,
                 pdf_page_count=10,
-                questionnaire_path=Path("/tmp/q.json"),
+                questionnaire_path=Path(tempfile.gettempdir()) / "q.json"),
                 questionnaire_sha256="b" * 64,
                 created_at=None,  # Should be datetime
                 phase0_version=PHASE0_VERSION,
@@ -417,11 +417,11 @@ class TestContractViolationAdversarial:
             CanonicalInput(
                 document_id=long_string,
                 run_id="test_run",
-                pdf_path=Path("/tmp/test.pdf"),
+                pdf_path=Path(tempfile.gettempdir()) / "test.pdf"),
                 pdf_sha256="a" * 64,
                 pdf_size_bytes=1024,
                 pdf_page_count=10,
-                questionnaire_path=Path("/tmp/q.json"),
+                questionnaire_path=Path(tempfile.gettempdir()) / "q.json"),
                 questionnaire_sha256="b" * 64,
                 created_at=None,  # Will fail due to None
                 phase0_version=PHASE0_VERSION,
@@ -617,11 +617,11 @@ class TestIntegrationAdversarial:
             bad_input = CanonicalInput(
                 document_id="test",
                 run_id="test_run",
-                pdf_path=Path("/tmp/test.pdf"),
+                pdf_path=Path(tempfile.gettempdir()) / "test.pdf"),
                 pdf_sha256="a" * 64,
                 pdf_size_bytes=1024,
                 pdf_page_count=10,
-                questionnaire_path=Path("/tmp/q.json"),
+                questionnaire_path=Path(tempfile.gettempdir()) / "q.json"),
                 questionnaire_sha256="b" * 64,
                 created_at=None,  # This will cause an issue
                 phase0_version=PHASE0_VERSION,

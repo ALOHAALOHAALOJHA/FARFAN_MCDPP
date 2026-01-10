@@ -13,7 +13,6 @@ from datetime import datetime
 from typing import Dict, List, Any
 
 # Add src to path to import the reference data
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from farfan_pipeline.dashboard_atroz_.pdet_colombia_data import (
     PDET_MUNICIPALITIES,

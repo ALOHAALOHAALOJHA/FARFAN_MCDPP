@@ -184,7 +184,7 @@ class TestPhase0InputContract:
     
     def test_phase0_input_creation(self):
         """Test Phase0Input dataclass creation."""
-        pdf_path = Path("/tmp/test.pdf")
+        pdf_path = Path(tempfile.gettempdir()) / "test.pdf")
         input_data = Phase0Input(
             pdf_path=pdf_path,
             run_id="20251210_120000",
@@ -249,11 +249,11 @@ class TestCanonicalInputContract:
         output = CanonicalInput(
             document_id="Plan_1",
             run_id="20251210_120000",
-            pdf_path=Path("/tmp/Plan_1.pdf"),
+            pdf_path=Path(tempfile.gettempdir()) / "Plan_1.pdf"),
             pdf_sha256="a" * 64,
             pdf_size_bytes=1024,
             pdf_page_count=10,
-            questionnaire_path=Path("/tmp/questionnaire.json"),
+            questionnaire_path=Path(tempfile.gettempdir()) / "questionnaire.json"),
             questionnaire_sha256="b" * 64,
             created_at=datetime.now(timezone.utc),
             phase0_version=PHASE0_VERSION,
