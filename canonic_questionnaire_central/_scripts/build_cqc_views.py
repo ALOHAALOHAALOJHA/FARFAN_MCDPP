@@ -35,7 +35,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Paths
-CQC_ROOT = Path(__file__).parent.parent
+CQC_ROOT = Path(__file__).resolve().parent.parent
 REGISTRY = CQC_ROOT / "_registry"
 DIMENSIONS = CQC_ROOT / "dimensions"
 POLICY_AREAS = CQC_ROOT / "policy_areas"

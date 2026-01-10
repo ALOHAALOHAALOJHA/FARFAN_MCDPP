@@ -83,8 +83,8 @@ try:
     # Import directly from module files, not through package __init__
     import sys
     from pathlib import Path
-    dura_lex_path = Path(__file__).parent.parent.parent / "farfan_pipeline/infrastructure" / "contractual" / "dura_lex"
-    sys.path.insert(0, str(dura_lex_path))
+    dura_lex_path = Path(__file__).resolve().parent.parent.parent / "farfan_pipeline/infrastructure" / "contractual" / "dura_lex"
+    sys.path.insert(0, str(dura_lex_path))  # noqa: E501 - workaround for broken __init__.py
     
     from idempotency_dedup import IdempotencyContract, EvidenceStore
     from traceability import TraceabilityContract, MerkleTree

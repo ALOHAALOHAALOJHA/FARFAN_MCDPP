@@ -362,7 +362,7 @@ class SignalEnhancementIntegrator:
     def _load_cross_cutting_themes(self) -> dict[str, Any]:
         """Load cross-cutting themes from canonical questionnaire (R-W2)."""
         themes_path = (
-            Path(__file__).parent.parent.parent.parent.parent.parent
+            Path(__file__).resolve().parent.parent.parent.parent.parent.parent
             / "canonic_questionnaire_central"
             / "cross_cutting"
             / "cross_cutting_themes.json"
@@ -382,7 +382,7 @@ class SignalEnhancementIntegrator:
     def _load_interdependency_mapping(self) -> dict[str, Any]:
         """Load interdependency mapping from canonical questionnaire (R-W3)."""
         mapping_path = (
-            Path(__file__).parent.parent.parent.parent.parent.parent
+            Path(__file__).resolve().parent.parent.parent.parent.parent.parent
             / "canonic_questionnaire_central"
             / "validations"
             / "interdependency_mapping.json"

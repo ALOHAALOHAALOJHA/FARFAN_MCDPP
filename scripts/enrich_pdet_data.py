@@ -13,7 +13,8 @@ from datetime import datetime
 from typing import Dict, List, Any
 
 # Add src to path to import the reference data
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+# Standalone script path setup (not needed if package installed with pip install -e .)  # noqa: E501
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))  # noqa: E501
 
 from farfan_pipeline.dashboard_atroz_.pdet_colombia_data import (
     PDET_MUNICIPALITIES,
@@ -430,7 +431,7 @@ def main():
     print(f"Total municipalities in reference: {len(PDET_MUNICIPALITIES)}")
     
     # Load current JSON template
-    json_path = Path(__file__).parent.parent / "canonic_questionnaire_central" / "colombia_context" / "pdet_municipalities.json"
+    json_path = Path(__file__).resolve().parent.parent / "canonic_questionnaire_central" / "colombia_context" / "pdet_municipalities.json"
     
     with open(json_path, 'r', encoding='utf-8') as f:
         current_data = json.load(f)

@@ -4,11 +4,8 @@ Verifies: Top-K is deterministic hash of query+filters+index
 Deterministic retrieval guarantee
 """
 import pytest
-import sys
 from pathlib import Path
 from typing import Any
-
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 from cross_cutting_infrastructure.contractual.dura_lex.retriever_contract import (
     RetrieverContract,

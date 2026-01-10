@@ -21,7 +21,7 @@ from typing import Any, Dict, List, Set, Tuple
 from datetime import datetime
 import importlib.util
 
-REPO_ROOT = Path(__file__).parent
+REPO_ROOT = Path(__file__).resolve().parent
 SRC_ROOT = REPO_ROOT / "src"
 
 class ContractUpdateValidator:

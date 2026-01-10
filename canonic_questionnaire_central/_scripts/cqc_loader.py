@@ -16,7 +16,7 @@ class CQCLoader:
     
     def __init__(self, cqc_root: Optional[Path] = None):
         if cqc_root is None:
-            cqc_root = Path(__file__).parent.parent
+            cqc_root = Path(__file__).resolve().parent.parent
         self.cqc_root = Path(cqc_root)
         self._structure_version = self._detect_structure()
         

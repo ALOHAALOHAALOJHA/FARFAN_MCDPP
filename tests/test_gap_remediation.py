@@ -217,7 +217,7 @@ class TestKeywordsIrrigation:
 
     def test_keywords_loaded_from_policy_area(self):
         """Verify keywords are loaded from canonical policy area (modular structure)."""
-        base_path = Path(__file__).parent.parent
+        base_path = Path(__file__).resolve().parent.parent
         pa_path = base_path / "canonic_questionnaire_central" / "policy_areas" / "PA01_mujeres_genero" / "questions.json"
 
         if pa_path.exists():
@@ -236,7 +236,7 @@ class TestCrossCuttingThemesIntegration:
 
     def test_enhancement_integrator_loads_themes(self):
         """Verify cross-cutting themes file exists in modular structure."""
-        base_path = Path(__file__).parent.parent
+        base_path = Path(__file__).resolve().parent.parent
         themes_path = base_path / "canonic_questionnaire_central" / "cross_cutting" / "cross_cutting_themes.json"
 
         if themes_path.exists():
@@ -273,7 +273,7 @@ class TestInterdependencyValidationIntegration:
 
     def test_interdependency_mapping_exists(self):
         """Verify interdependency mapping file exists in modular structure."""
-        base_path = Path(__file__).parent.parent
+        base_path = Path(__file__).resolve().parent.parent
         mapping_path = base_path / "canonic_questionnaire_central" / "validations" / "interdependency_mapping.json"
 
         if mapping_path.exists():
@@ -306,7 +306,7 @@ class TestDynamicSectorLoading:
 
     def test_sector_loading_from_canonical(self):
         """Verify sectors are loaded from canonical questionnaire (modular structure)."""
-        base_path = Path(__file__).parent.parent
+        base_path = Path(__file__).resolve().parent.parent
         pa_base = base_path / "canonic_questionnaire_central" / "policy_areas"
 
         if pa_base.exists():

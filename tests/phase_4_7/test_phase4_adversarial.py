@@ -14,14 +14,10 @@ Version: 1.0.0
 
 import math
 import pytest
-import sys
 from pathlib import Path
 from dataclasses import dataclass, replace
 from typing import Any, List
 from unittest.mock import Mock, patch, MagicMock
-
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
-
 
 # =============================================================================
 # FIXTURES - Test Data Construction

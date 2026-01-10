@@ -7,9 +7,6 @@ import sys
 from pathlib import Path
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
-
-
 def test_no_stub_in_report_generator():
     """Verify report_generator has no stub responses."""
     code = Path("src/farfan_pipeline/phases/Phase_nine/report_generator.py").read_text()

@@ -172,9 +172,6 @@ class BayesianSamplingEngine:
 
         Raises:
             ValueError: If prior parameters are not positive
-
-        Raises:
-            ValueError: If prior parameters are not positive
         """
         # CRITICAL VALIDATION: Prior parameters must be positive for Beta distribution
         # Validate BEFORE checking PyMC availability (fail fast principle)
@@ -281,7 +278,7 @@ class BayesianSamplingEngine:
         obs_array = np.asarray(observations, dtype=np.float64)
 
         try:
-            with pm.Model() as model:
+            with pm.Model():
                 # Prior: Normal distribution for mean
                 mu = pm.Normal("mu", mu=prior_mu, sigma=prior_sigma)
 
@@ -289,7 +286,7 @@ class BayesianSamplingEngine:
                 obs_std = float(np.std(obs_array, ddof=1) if len(obs_array) > 1 else 1.0)
 
                 # Likelihood: Normal with estimated std
-                y = pm.Normal("y", mu=mu, sigma=obs_std, observed=obs_array)
+                pm.Normal("y", mu=mu, sigma=obs_std, observed=obs_array)
 
                 # Sample posterior
                 with warnings.catch_warnings():
@@ -432,8 +429,7 @@ class BayesianSamplingEngine:
                 # Compute HDI manually for group
                 theta_values = theta_g.values.flatten()
                 hdi = az.hdi(theta_values, hdi_prob=0.95)
-                hdi_lower = float(hdi[0]) if hasattr(hdi, "__getitem__") else float(hdi)
-                hdi_upper = float(hdi[1]) if hasattr(hdi, "__getitem__") else float(hdi)
+                hdi_lower, hdi_upper = self._extract_hdi_bounds(hdi)
 
                 # Convergence diagnostics (group-level)
                 rhat = float(az.rhat(trace, var_names=["theta"]).to_array().mean().item())
@@ -483,6 +479,20 @@ class BayesianSamplingEngine:
             self.logger.error(f"Error in hierarchical sampling: {e}")
             return [self._null_result("sampling_error", str(e)) for _ in group_data]
 
+    def _extract_hdi_bounds(self, hdi: Any) -> tuple[float, float]:
+        """
+        Extract HDI lower and upper bounds from ArviZ HDI output.
+
+        Args:
+            hdi: HDI data from az.hdi()
+
+        Returns:
+            Tuple of (lower_bound, upper_bound)
+        """
+        hdi_lower = float(hdi[0]) if hasattr(hdi, "__getitem__") else float(hdi)
+        hdi_upper = float(hdi[1]) if hasattr(hdi, "__getitem__") else float(hdi)
+        return hdi_lower, hdi_upper
+
     def _extract_diagnostics(self, trace: Any, param: str) -> SamplingResult:
         """
         Extract comprehensive diagnostics from PyMC trace.
@@ -502,8 +512,7 @@ class BayesianSamplingEngine:
 
         # HDI (Highest Density Interval) - 95%
         hdi = az.hdi(trace, hdi_prob=0.95)[param].values
-        hdi_lower = float(hdi[0]) if hasattr(hdi, "__len__") else float(hdi)
-        hdi_upper = float(hdi[1]) if hasattr(hdi, "__len__") else float(hdi)
+        hdi_lower, hdi_upper = self._extract_hdi_bounds(hdi)
 
         # Convergence diagnostics
         rhat = float(az.rhat(trace, var_names=[param])[param].item())

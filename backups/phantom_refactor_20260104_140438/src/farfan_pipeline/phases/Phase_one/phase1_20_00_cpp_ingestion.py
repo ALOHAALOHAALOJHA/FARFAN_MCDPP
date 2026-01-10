@@ -75,7 +75,7 @@ except ImportError:
     # Fallback if farfan_pipeline is not in path directly but src is?
     # Or keep the old one just in case but it seems broken.
     # I'll try the absolute one first.
-    from canonic_phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput
+    from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput
 
 from .phase1_10_00_models import (
     LanguageData, PreprocessedDoc, StructureData, KnowledgeGraph, KGNode, KGEdge,

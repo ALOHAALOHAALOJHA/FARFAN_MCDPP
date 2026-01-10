@@ -3485,9 +3485,9 @@ class Phase1CPPIngestionFullContract:
         Returns the 'reporte_unit_of_analysis' dictionary.
         """
         try:
-            # Assuming file is relative to project root
-            # The context says project root is /Users/recovered/Downloads/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL
-            base_path = Path("/Users/recovered/Downloads/F.A.R.F.A.N-MECHANISTIC_POLICY_PIPELINE_FINAL")
+            # Use centralized path management
+            from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import PROJECT_ROOT
+            base_path = PROJECT_ROOT
             spec_path = base_path / "artifacts/data/canonic_description_unit_analysis.json"
             
             if not spec_path.exists():

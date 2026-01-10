@@ -10,8 +10,6 @@ from dataclasses import dataclass, field
 from typing import Any
 
 # Add src to path for imports
-repo_root = Path(__file__).parent.parent
-sys.path.insert(0, str(repo_root / "src"))
 
 
 @dataclass
@@ -41,7 +39,7 @@ def test_validation_performance():
     Note: Validation adds explicit checks that improve correctness.
     The overhead is acceptable given the value added (preventing silent failures).
     """
-    from canonic_phases.Phase_three.validation import (
+    from farfan_pipeline.phases.Phase_three.validation import (
         validate_micro_results_input,
         validate_evidence_presence,
         validate_and_clamp_score,
@@ -143,7 +141,7 @@ def test_validation_performance():
 
 def test_validation_scales_linearly():
     """Test validation time scales linearly with question count."""
-    from canonic_phases.Phase_three.validation import (
+    from farfan_pipeline.phases.Phase_three.validation import (
         validate_micro_results_input,
         validate_evidence_presence,
         validate_and_clamp_score,

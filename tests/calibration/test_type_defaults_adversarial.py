@@ -6,7 +6,7 @@ These tests verify type-specific calibration defaults and prohibited operations.
 Schema Version: 2.0.0
 """
 import pytest
-from src.farfan_pipeline.infrastructure.calibration import (
+from farfan_pipeline.infrastructure.calibration import (
     get_type_defaults,
     is_operation_prohibited,
     PROHIBITED_OPERATIONS,
@@ -47,7 +47,7 @@ class TestTypeDefaultsLoading:
 
     def test_unknown_type_raises(self) -> None:
         """Unknown contract type must raise UnknownContractTypeError."""
-        from src.farfan_pipeline.infrastructure.calibration.type_defaults import UnknownContractTypeError
+        from farfan_pipeline.infrastructure.calibration.type_defaults import UnknownContractTypeError
         with pytest.raises(UnknownContractTypeError, match="Unknown contract type"):
             get_type_defaults("TYPE_INVALID")
 

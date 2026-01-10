@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 from pathlib import Path
 
 # Read README for long description
-readme_file = Path(__file__).parent / "README.ES.md"
+readme_file = Path(__file__).resolve().parent / "README.ES.md"
 long_description = readme_file.read_text(encoding="utf-8") if readme_file.exists() else ""
 
 setup(

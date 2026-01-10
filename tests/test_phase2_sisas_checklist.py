@@ -35,8 +35,6 @@ import pytest
 # PATH SETUP - Ensure imports work from project root
 # ============================================================================
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 # ============================================================================
 # CONDITIONAL IMPORTS - Handle missing dependencies gracefully
@@ -145,7 +143,7 @@ except ImportError:
 # If not found, try canonic_phases.Phase_zero (bootstrap location)
 if not QUESTIONNAIRE_LOADER_AVAILABLE:
     try:
-        from canonic_phases.Phase_zero.phase0_90_02_bootstrap import load_questionnaire
+        from farfan_pipeline.phases.Phase_zero.phase0_90_02_bootstrap import load_questionnaire
         QUESTIONNAIRE_LOADER_AVAILABLE = True
     except ImportError:
         pass

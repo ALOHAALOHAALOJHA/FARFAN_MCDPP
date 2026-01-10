@@ -1,14 +1,11 @@
 from __future__ import annotations
 
-import sys
 from dataclasses import dataclass, fields
 from pathlib import Path
 
 import pytest
 
 # Keep consistent with the rest of the repo's tests
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
-
 from classification.hash_utils import compute_classification_hash, decision_payload_for_hash
 
 

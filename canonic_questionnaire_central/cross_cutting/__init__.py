@@ -54,7 +54,7 @@ PolicyAreaId = str
 DimensionId = str
 
 # Path to cross-cutting themes configuration
-_CROSS_CUTTING_DIR = Path(__file__).parent
+_CROSS_CUTTING_DIR = Path(__file__).resolve().parent
 _THEMES_FILE = _CROSS_CUTTING_DIR / "cross_cutting_themes.json"
 
 

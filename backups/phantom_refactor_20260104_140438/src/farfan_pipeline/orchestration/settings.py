@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file
 # Look for .env in the repository root
-REPO_ROOT: Final[Path] = Path(__file__).parent.parent
+REPO_ROOT: Final[Path] = Path(__file__).resolve().parent.parent
 ENV_FILE: Final[Path] = REPO_ROOT / ".env"
 
 if ENV_FILE.exists():

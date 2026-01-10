@@ -139,4 +139,5 @@ Thumbs.db
 tmp/
 temp/
 *.tmp
+*.bak
 continue

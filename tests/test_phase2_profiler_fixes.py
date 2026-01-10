@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import importlib.util
 import logging
-import sys
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -25,7 +24,7 @@ import pytest
 # Import directly to avoid syntax errors in other Phase_two files
 spec = importlib.util.spec_from_file_location(
     "executor_profiler",
-    Path(__file__).parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "executor_profiler.py"
+    Path(__file__).resolve().parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "executor_profiler.py"
 )
 assert spec is not None and spec.loader is not None
 executor_profiler_module = importlib.util.module_from_spec(spec)

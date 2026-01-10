@@ -777,7 +777,7 @@ def get_executor_config(
             import sys
             from pathlib import Path as ImportPath
             
-            config_module_path = ImportPath(__file__).parent / "phase2_10_03_executor_config.py"
+            config_module_path = ImportPath(__file__).resolve().parent / "phase2_10_03_executor_config.py"
             import importlib.util
             spec = importlib.util.spec_from_file_location(
                 "phase2_10_03_executor_config", config_module_path

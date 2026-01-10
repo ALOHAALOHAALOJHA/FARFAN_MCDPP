@@ -61,7 +61,7 @@ class CapabilityValidator:
     def _load_config(self, config_path: Optional[Path]) -> None:
         """Carga el mapeo signal→capabilities."""
         if config_path is None:
-            config_path = Path(__file__).parent.parent.parent / \
+            config_path = Path(__file__).resolve().parent.parent.parent / \
                          "_registry/capabilities/signal_capability_map.json"
         
         if config_path.exists():

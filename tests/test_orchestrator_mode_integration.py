@@ -11,16 +11,13 @@ Date: 2025-12-17
 import hashlib
 import json
 import os
-import sys
 from pathlib import Path
 from types import MappingProxyType
 from typing import Any
 
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
-
 import pytest
 
-from canonic_phases.Phase_zero.phase0_10_01_runtime_config import (
+from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import (
     RuntimeConfig,
     RuntimeMode,
     reset_runtime_config,

@@ -19,7 +19,7 @@ import re
 import shutil
 import sys
 from pathlib import Path
-from typing import Dict, List
+from typing import Any, Dict, List
 
 
 class PathRepairer:
@@ -43,11 +43,18 @@ class PathRepairer:
             'from farfan_pipeline.phases.',
     }
 
-    def __init__(self, root: Path, dry_run: bool = True, backup: bool = False, verbose: bool = False):
+    # Path operator replacements
+    PATH_OPERATOR_REPLACEMENTS = {
+        # os.path.join to Path operator
+        r'os\.path\.join\(([^,]+),\s*([^)]+)\)': r'\1 / \2',
+    }
+
+    def __init__(self, root: Path, dry_run: bool = True, backup: bool = False, verbose: bool = False, aggressive: bool = False):
         self.root = root
         self.dry_run = dry_run
         self.backup = backup
         self.verbose = verbose
+        self.aggressive = aggressive  # Enable more aggressive repairs
         self.changes: List[Dict[str, Any]] = []
 
     def repair_imports(self, py_file: Path) -> int:
@@ -90,20 +97,25 @@ class PathRepairer:
 
         return changes_made
 
-    def analyze_hardcoded_paths(self, py_file: Path) -> List[Dict[str, any]]:
+    def analyze_hardcoded_paths(self, py_file: Path) -> List[Dict[str, Any]]:
         """Analyze hardcoded paths and suggest fixes (manual review required)."""
         suggestions = []
 
         try:
-            content = py_file.read_text(encoding="utf-8", errors="ignore")
+            content = py_file.read_text(encoding="utf-8", errors="replace")
         except Exception as e:
             return suggestions
 
         lines = content.split("\n")
 
+        project_dir_pattern = re.escape(self.project_dir_name)
+
         for i, line in enumerate(lines, 1):
             # Look for common hardcoded path patterns
-            unix_match = re.search(r'Path\(["\']/(Users|home)/([^/]+)/FARFAN_MPP["\']', line)
+            unix_match = re.search(
+                rf'Path\(["\']/(Users|home)/([^/]+)/{project_dir_pattern}["\']',
+                line,
+            )
             if unix_match:
                 suggestions.append({
                     "file": str(py_file.relative_to(self.root)),
@@ -115,6 +127,101 @@ class PathRepairer:
 
         return suggestions
 
+    def repair_os_path_join(self, py_file: Path) -> int:
+        """Replace os.path.join with Path / operator if aggressive mode is enabled.
+        
+        NOTE: This only handles simple cases like os.path.join(var, "string") → var / "string".
+        Complex cases with multiple arguments or nested calls require manual review.
+        """
+        if not self.aggressive:
+            return 0
+
+        try:
+            content = py_file.read_text(encoding="utf-8")
+        except Exception as e:
+            if self.verbose:
+                print(f"Warning: Could not read {py_file}: {e}")
+            return 0
+
+        changes_made = 0
+
+        # Simple os.path.join replacements (be conservative)
+        # This is a basic implementation; complex cases need manual review
+        lines = content.split("\n")
+        modified = False
+
+        for i, line in enumerate(lines):
+            if "os.path.join" in line and "# noqa" not in line:
+                # Only handle simple cases: var / "string"
+                match = re.search(r'os\.path\.join\((\w+),\s*["\']([^"\']+)["\']\)', line)
+                if match:
+                    base_var = match.group(1)
+                    path_part = match.group(2)
+                    new_line = line.replace(
+                        match.group(0),
+                        f'{base_var} / "{path_part}"'
+                    )
+                    lines[i] = new_line
+                    modified = True
+                    changes_made += 1
+
+        if modified and changes_made > 0:
+            content = "\n".join(lines)
+
+            if not self.dry_run:
+                if self.backup:
+                    backup_path = py_file.with_suffix(py_file.suffix + ".bak")
+                    shutil.copy2(py_file, backup_path)
+
+                py_file.write_text(content, encoding="utf-8")
+
+            self.changes.append({
+                "file": str(py_file.relative_to(self.root)),
+                "type": "os_path_join_fix",
+                "count": changes_made
+            })
+
+        return changes_made
+
+    def repair_unresolved_file(self, py_file: Path) -> int:
+        """Add .resolve() to Path(__file__) usage if aggressive mode is enabled."""
+        if not self.aggressive:
+            return 0
+
+        try:
+            content = py_file.read_text(encoding="utf-8")
+        except Exception as e:
+            if self.verbose:
+                print(f"Warning: Could not read {py_file}: {e}")
+            return 0
+
+        changes_made = 0
+
+        # Replace Path(__file__) with Path(__file__).resolve()
+        # But only if resolve() is not already present
+        pattern = r'Path\(__file__\)(?!\.resolve\(\))'
+        if re.search(pattern, content):
+            new_content = re.sub(pattern, r'Path(__file__).resolve()', content)
+            
+            if new_content != content:
+                # Count how many Path(__file__) patterns were replaced
+                changes_made = len(re.findall(pattern, content))
+                
+                if not self.dry_run:
+                    if self.backup:
+                        backup_path = py_file.with_suffix(py_file.suffix + ".bak")
+                        shutil.copy2(py_file, backup_path)
+
+                    py_file.write_text(new_content, encoding="utf-8")
+
+                self.changes.append({
+                    "file": str(py_file.relative_to(self.root)),
+                    "type": "resolve_file_fix",
+                    "count": changes_made
+                })
+
+        return changes_made
+
     def repair_directory(self) -> None:
         """Repair all Python files in the directory tree."""
         total_files = 0
@@ -122,7 +229,7 @@ class PathRepairer:
 
         for py_file in self.root.rglob("*.py"):
             # Skip virtual environments and cache directories
-            if any(part in py_file.parts for part in [".venv", "venv", "__pycache__", ".git", "node_modules"]):
+            if any(part in py_file.parts for part in self.EXCLUDED_DIRS):
                 continue
 
             # Skip backup files
@@ -134,11 +241,28 @@ class PathRepairer:
             if self.verbose:
                 print(f"Processing: {py_file.relative_to(self.root)}")
 
+            file_modified = False
+
             # Repair imports
             changes = self.repair_imports(py_file)
             if changes > 0:
-                files_modified += 1
+                file_modified = True
                 print(f"  {'[DRY RUN] Would fix' if self.dry_run else 'Fixed'} {changes} import(s) in {py_file.relative_to(self.root)}")
+
+            # Repair os.path.join (aggressive mode only)
+            if self.aggressive:
+                changes = self.repair_os_path_join(py_file)
+                if changes > 0:
+                    file_modified = True
+                    print(f"  {'[DRY RUN] Would fix' if self.dry_run else 'Fixed'} {changes} os.path.join call(s)")
+
+                changes = self.repair_unresolved_file(py_file)
+                if changes > 0:
+                    file_modified = True
+                    print(f"  {'[DRY RUN] Would fix' if self.dry_run else 'Fixed'} {changes} unresolved __file__ usage(s)")
+
+            if file_modified:
+                files_modified += 1
 
             # Analyze hardcoded paths (suggestions only)
             suggestions = self.analyze_hardcoded_paths(py_file)
@@ -216,6 +340,11 @@ def main():
         help="Create .bak files before modifying"
     )
     parser.add_argument(
+        "--aggressive",
+        action="store_true",
+        help="Enable aggressive repairs (os.path.join, Path(__file__).resolve())"
+    )
+    parser.add_argument(
         "--verbose", "-v",
         action="store_true",
         help="Enable verbose output"
@@ -248,18 +377,28 @@ def main():
         print("=" * 80)
         print("DRY RUN MODE - No changes will be applied")
         print("Use --fix to apply changes")
+        if args.aggressive:
+            print("Note: --aggressive flag will be active when using --fix")
         print("=" * 80 + "\n")
     else:
         print("=" * 80)
         print("REPAIR MODE - Changes will be applied")
         if args.backup:
             print("Backup files will be created (.bak)")
+        if args.aggressive:
+            print("AGGRESSIVE MODE: Will also fix os.path.join and Path(__file__).resolve() issues")
         print("=" * 80 + "\n")
 
     if args.verbose:
         print(f"Processing directory: {root}\n")
 
-    repairer = PathRepairer(root, dry_run=dry_run, backup=args.backup, verbose=args.verbose)
+    repairer = PathRepairer(
+        root,
+        dry_run=dry_run,
+        backup=args.backup,
+        verbose=args.verbose,
+        aggressive=args.aggressive
+    )
     repairer.repair_directory()
     repairer.print_report()
 

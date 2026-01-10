@@ -233,7 +233,7 @@ class CanonicalQuestionnaireResolver:
                         If False, log warnings and continue.
             cache_enabled: If True, cache assembled payload.
         """
-        self._root = root or Path(__file__).parent
+        self._root = root or Path(__file__).resolve().parent
         self._strict_mode = strict_mode
         self._cache_enabled = cache_enabled
 

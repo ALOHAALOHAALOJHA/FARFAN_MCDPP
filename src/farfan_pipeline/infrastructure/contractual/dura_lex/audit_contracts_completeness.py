@@ -580,7 +580,7 @@ class ContractAuditor:
 def main():
     """Main entry point."""
     # Find contracts directory
-    script_dir = Path(__file__).parent
+    script_dir = Path(__file__).resolve().parent
     contracts_dir = (
         script_dir / 
         "src" / 

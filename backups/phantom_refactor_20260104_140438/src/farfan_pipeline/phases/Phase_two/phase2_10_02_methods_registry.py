@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 # Canonical inventory path
 _CANONICAL_INVENTORY_PATH = (
-    Path(__file__).parent / "json_files_phase_two" / "canonical_methods_triangulated.json"
+    Path(__file__).resolve().parent / "json_files_phase_two" / "canonical_methods_triangulated.json"
 )
 
 # Mother file to module mapping
