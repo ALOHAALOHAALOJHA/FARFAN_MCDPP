@@ -9,14 +9,13 @@ Uso:
     python epistemological_contract_validator_v4.py <contract.json> --report=detailed.md
 """
 
-import json
-import sys
 import argparse
+import json
 import re
-from typing import Dict, List, Tuple, Any, Optional, Set
+import sys
 from dataclasses import dataclass, field
 from enum import Enum
-from pathlib import Path
+from typing import Any
 
 
 class Severity(Enum):
@@ -37,9 +36,9 @@ class ValidationResult:
     severity: Severity
     message: str
     section: str
-    expected: Optional[Any] = None
-    actual: Optional[Any] = None
-    path: Optional[str] = None  # JSON path al campo
+    expected: Any | None = None
+    actual: Any | None = None
+    path: str | None = None  # JSON path al campo
 
 
 @dataclass
@@ -52,7 +51,7 @@ class SectionReport:
     passed_checks: int
     failed_checks: int
     critical_failures: int
-    results: List[ValidationResult] = field(default_factory=list)
+    results: list[ValidationResult] = field(default_factory=list)
 
     @property
     def pass_rate(self) -> float:
@@ -263,14 +262,14 @@ class ContractValidator:
         "deriva",
     ]
 
-    def __init__(self, contract: Dict, strict_mode: bool = False):
+    def __init__(self, contract: dict, strict_mode: bool = False):
         self.contract = contract
         self.strict_mode = strict_mode
-        self.results: List[ValidationResult] = []
-        self.sections: List[SectionReport] = []
-        self.contract_type: Optional[str] = None
+        self.results: list[ValidationResult] = []
+        self.sections: list[SectionReport] = []
+        self.contract_type: str | None = None
 
-    def validate_all(self) -> Tuple[bool, List[SectionReport]]:
+    def validate_all(self) -> tuple[bool, list[SectionReport]]:
         """Ejecuta todas las validaciones"""
         print("🔍 Iniciando validación epistemológica V4...")
         print("=" * 80)
@@ -397,7 +396,7 @@ class ContractValidator:
             "1.1.1",
             Severity.CRITICAL,
             contract_type in self.TYPE_DEFINITIONS,
-            f"contract_type es válido (TYPE_A/B/C/D/E)",
+            "contract_type es válido (TYPE_A/B/C/D/E)",
             expected="TYPE_A|TYPE_B|TYPE_C|TYPE_D|TYPE_E",
             actual=contract_type,
             path="identity.contract_type",
@@ -616,7 +615,7 @@ class ContractValidator:
         for idx, method in enumerate(methods):
             self._validate_n1_method(section, method, idx)
 
-    def _validate_n1_method(self, section: SectionReport, method: Dict, idx: int):
+    def _validate_n1_method(self, section: SectionReport, method: dict, idx: int):
         """Valida un método individual de N1"""
         prefix = f"2.4.{idx}"
 
@@ -760,7 +759,7 @@ class ContractValidator:
         for idx, method in enumerate(methods):
             self._validate_n2_method(section, method, idx)
 
-    def _validate_n2_method(self, section: SectionReport, method: Dict, idx: int):
+    def _validate_n2_method(self, section: SectionReport, method: dict, idx: int):
         """Valida un método individual de N2"""
         prefix = f"2.6.{idx}"
 
@@ -893,7 +892,7 @@ class ContractValidator:
         for idx, method in enumerate(methods):
             self._validate_n3_method(section, method, idx)
 
-    def _validate_n3_method(self, section: SectionReport, method: Dict, idx: int):
+    def _validate_n3_method(self, section: SectionReport, method: dict, idx: int):
         """Valida un método individual de N3"""
         prefix = f"2.8.{idx}"
 
@@ -1003,7 +1002,7 @@ class ContractValidator:
             "2.9.1",
             Severity.CRITICAL,
             declared_count == actual_count,
-            f"method_count = suma de métodos en fases",
+            "method_count = suma de métodos en fases",
             expected=actual_count,
             actual=declared_count,
         )
@@ -1198,7 +1197,7 @@ class ContractValidator:
         # R4: Synthesis
         self._validate_rule_r4(section, rules[3])
 
-    def _validate_rule_r1(self, section: SectionReport, r1: Dict):
+    def _validate_rule_r1(self, section: SectionReport, r1: dict):
         """Valida R1 específicamente"""
         self._add_check(
             section,
@@ -1240,7 +1239,7 @@ class ContractValidator:
             actual=f"Faltan: {missing}" if missing else "Cobertura 100%",
         )
 
-    def _validate_rule_r2(self, section: SectionReport, r2: Dict):
+    def _validate_rule_r2(self, section: SectionReport, r2: dict):
         """Valida R2 según tipo de contrato"""
         self._add_check(
             section,
@@ -1309,7 +1308,7 @@ class ContractValidator:
                 actual=r2.get("merge_strategy"),
             )
 
-    def _validate_rule_r3(self, section: SectionReport, r3: Dict):
+    def _validate_rule_r3(self, section: SectionReport, r3: dict):
         """Valida R3 - veto gate universal"""
         self._add_check(
             section,
@@ -1370,7 +1369,7 @@ class ContractValidator:
             "Al menos UNA condición tiene confidence_multiplier < 0.5",
         )
 
-    def _validate_rule_r4(self, section: SectionReport, r4: Dict):
+    def _validate_rule_r4(self, section: SectionReport, r4: dict):
         """Valida R4 - synthesis universal"""
         self._add_check(
             section,
@@ -1781,7 +1780,7 @@ class ContractValidator:
 
         self.sections.append(section)
 
-    def _validate_section_s1(self, section: SectionReport, s1: Dict):
+    def _validate_section_s1(self, section: SectionReport, s1: dict):
         """Valida S1 - Veredicto"""
         self._add_check(
             section, "6.3.2", Severity.CRITICAL, s1.get("layer") == "N4", "S1.layer = 'N4'"
@@ -1822,7 +1821,7 @@ class ContractValidator:
                 f"S1.template.placeholders contiene '{ph}'",
             )
 
-    def _validate_section_s2(self, section: SectionReport, s2: Dict):
+    def _validate_section_s2(self, section: SectionReport, s2: dict):
         """Valida S2 - Evidencia Empírica"""
         self._add_check(
             section, "6.4.2", Severity.CRITICAL, s2.get("layer") == "N1", "S2.layer = 'N1'"
@@ -1854,7 +1853,7 @@ class ContractValidator:
             "S2.epistemological_note.include_in_output = true",
         )
 
-    def _validate_section_s3(self, section: SectionReport, s3: Dict):
+    def _validate_section_s3(self, section: SectionReport, s3: dict):
         """Valida S3 - Robustez (CRÍTICA)"""
         self._add_check(
             section, "6.5.2", Severity.CRITICAL, s3.get("layer") == "N3", "S3.layer = 'N3'"
@@ -1925,7 +1924,7 @@ class ContractValidator:
             "if_veto_triggered.template contiene 'ALERTA' o 'INVÁLIDO' (MAYÚSCULAS)",
         )
 
-    def _validate_section_s4(self, section: SectionReport, s4: Dict):
+    def _validate_section_s4(self, section: SectionReport, s4: dict):
         """Valida S4 - Gaps"""
         self._add_check(
             section, "6.6.2", Severity.HIGH, s4.get("layer") == "N4-META", "S4.layer = 'N4-META'"
@@ -1939,7 +1938,7 @@ class ContractValidator:
             "S4.argumentative_role = 'META_TRACEABILITY'",
         )
 
-    def _validate_argumentative_roles(self, section: SectionReport, has: Dict):
+    def _validate_argumentative_roles(self, section: SectionReport, has: dict):
         """Valida argumentative_roles"""
         roles = has.get("argumentative_roles", {})
 
@@ -1972,7 +1971,7 @@ class ContractValidator:
             "N3_roles contiene 'REFUTATIONAL_SIGNAL'",
         )
 
-    def _validate_confidence_interpretation(self, section: SectionReport, has: Dict):
+    def _validate_confidence_interpretation(self, section: SectionReport, has: dict):
         """Valida confidence_interpretation - 4 rangos"""
         ci = has.get("confidence_interpretation", {})
 
@@ -2748,7 +2747,7 @@ class ContractValidator:
                     "canonic_questionnaire_central/questionnaire_monolith.json"
                 )
                 if questionnaire_path.exists():
-                    with open(questionnaire_path, "r", encoding="utf-8") as f:
+                    with open(questionnaire_path, encoding="utf-8") as f:
                         questionnaire = json.load(f)
                     # Buscar la pregunta en el questionnaire
                     questions = questionnaire.get("questions", [])
@@ -2808,10 +2807,9 @@ class ContractValidator:
             for kw in alien_keywords:
                 kw_lower = kw.lower()
                 # Verificar si el token completo está en la lista normalizada
-                if kw_lower in all_tokens:
-                    found_aliens.append(kw)
-                # También verificar con word boundaries para compatibilidad
-                elif re.search(r"\b" + re.escape(kw_lower) + r"\b", full_text):
+                if kw_lower in all_tokens or re.search(
+                    r"\b" + re.escape(kw_lower) + r"\b", full_text
+                ):
                     found_aliens.append(kw)
 
             # MODIFICACIÓN 2: Separación explícita por capa
@@ -3027,7 +3025,7 @@ class ContractValidator:
                 return default
         return value
 
-    def _collect_all_provides(self) -> List[str]:
+    def _collect_all_provides(self) -> list[str]:
         """Recolecta todos los provides de todos los métodos"""
         provides = []
         phases = self._get_path("method_binding.execution_phases", {})
@@ -3038,7 +3036,7 @@ class ContractValidator:
                     provides.append(method["provides"])
         return provides
 
-    def _get_phase_provides(self, phase: str) -> Set[str]:
+    def _get_phase_provides(self, phase: str) -> set[str]:
         """Obtiene provides de una fase específica"""
         phase_map = {
             "A": "phase_A_construction",
@@ -3049,7 +3047,7 @@ class ContractValidator:
         methods = self._get_path(f"method_binding.execution_phases.{phase_key}.methods", [])
         return set(m.get("provides", "") for m in methods if m.get("provides"))
 
-    def _get_all_methods(self) -> List[Dict]:
+    def _get_all_methods(self) -> list[dict]:
         """Obtiene todos los métodos de todas las fases"""
         methods = []
         phases = self._get_path("method_binding.execution_phases", {})
@@ -3194,7 +3192,7 @@ def main():
 
     # Cargar contrato
     try:
-        with open(args.contract_file, "r", encoding="utf-8") as f:
+        with open(args.contract_file, encoding="utf-8") as f:
             contract_data = json.load(f)
     except Exception as e:
         print(f"❌ Error cargando contrato: {e}")

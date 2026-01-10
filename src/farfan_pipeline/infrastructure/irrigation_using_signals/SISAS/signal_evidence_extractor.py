@@ -22,7 +22,6 @@ Refactoring: Surgical #5 - Full monolith integration
 """
 
 import re
-from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -424,4 +423,4 @@ def compute_completeness(
 
 
 # Public API
-__all__ = ["extract_structured_evidence", "EvidenceExtractionResult"]
+__all__ = ["EvidenceExtractionResult", "extract_structured_evidence"]

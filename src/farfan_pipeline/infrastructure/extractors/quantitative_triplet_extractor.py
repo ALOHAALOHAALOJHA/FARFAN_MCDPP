@@ -26,14 +26,13 @@ Version: 1.0.0
 Date: 2026-01-07
 """
 
+import logging
 import re
-from typing import Dict, List, Any, Optional, Tuple
+from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-import logging
-from collections import defaultdict
 
-from .empirical_extractor_base import PatternBasedExtractor, ExtractionResult
+from .empirical_extractor_base import ExtractionResult, PatternBasedExtractor
 
 logger = logging.getLogger(__name__)
 
@@ -42,14 +41,14 @@ logger = logging.getLogger(__name__)
 class QuantitativeTriplet:
     """Represents a detected quantitative triplet."""
 
-    linea_base: Optional[str]  # Baseline value
-    linea_base_normalized: Optional[float]  # Normalized numeric value
+    linea_base: str | None  # Baseline value
+    linea_base_normalized: float | None  # Normalized numeric value
     value_type: str  # percentage, currency, integer, decimal
-    ano: Optional[int]  # Year
-    fuente: Optional[str]  # Source citation
+    ano: int | None  # Year
+    fuente: str | None  # Source citation
     completeness: float  # 0.0 - 1.0 (count of non-null / 3)
     confidence: float
-    text_span: Tuple[int, int]
+    text_span: tuple[int, int]
     context: str
 
 
@@ -71,7 +70,7 @@ class QuantitativeTripletExtractor(PatternBasedExtractor):
     YEAR_MIN = 1990
     YEAR_MAX = 2030
 
-    def __init__(self, calibration_file: Optional[Path] = None):
+    def __init__(self, calibration_file: Path | None = None):
         super().__init__(
             signal_type="QUANTITATIVE_TRIPLET",  # Must match integration_map key
             calibration_file=calibration_file,
@@ -150,7 +149,7 @@ class QuantitativeTripletExtractor(PatternBasedExtractor):
         self._compiled_year_patterns = [re.compile(p, re.IGNORECASE) for p in self.year_patterns]
         self._compiled_source_patterns = [re.compile(p) for p in self.source_patterns]
 
-    def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
+    def extract(self, text: str, context: dict | None = None) -> ExtractionResult:
         """
         Extract quantitative triplets from text.
 
@@ -232,7 +231,7 @@ class QuantitativeTripletExtractor(PatternBasedExtractor):
 
         return result
 
-    def _extract_values(self, text: str) -> List[Dict]:
+    def _extract_values(self, text: str) -> list[dict]:
         """Extract all quantitative values from text."""
         values = []
 
@@ -257,7 +256,7 @@ class QuantitativeTripletExtractor(PatternBasedExtractor):
         values = self._deduplicate_by_position(values)
         return values
 
-    def _extract_years(self, text: str) -> List[Dict]:
+    def _extract_years(self, text: str) -> list[dict]:
         """Extract all years from text."""
         years = []
 
@@ -288,7 +287,7 @@ class QuantitativeTripletExtractor(PatternBasedExtractor):
 
         return unique_years
 
-    def _extract_sources(self, text: str) -> List[Dict]:
+    def _extract_sources(self, text: str) -> list[dict]:
         """Extract all source citations from text."""
         sources = []
 
@@ -311,8 +310,8 @@ class QuantitativeTripletExtractor(PatternBasedExtractor):
         return sources
 
     def _link_components(
-        self, text: str, values: List[Dict], years: List[Dict], sources: List[Dict]
-    ) -> List[QuantitativeTriplet]:
+        self, text: str, values: list[dict], years: list[dict], sources: list[dict]
+    ) -> list[QuantitativeTriplet]:
         """Link components by proximity to form triplets."""
         triplets = []
         used_values = set()
@@ -362,9 +361,7 @@ class QuantitativeTripletExtractor(PatternBasedExtractor):
 
         return triplets
 
-    def _find_nearest(
-        self, value: Dict, candidates: List[Dict], max_distance: int
-    ) -> Optional[Dict]:
+    def _find_nearest(self, value: dict, candidates: list[dict], max_distance: int) -> dict | None:
         """Find the nearest candidate within max_distance."""
         val_center = (value["start"] + value["end"]) / 2
 
@@ -381,7 +378,7 @@ class QuantitativeTripletExtractor(PatternBasedExtractor):
 
         return nearest
 
-    def _normalize_value(self, raw: str, value_type: str) -> Optional[float]:
+    def _normalize_value(self, raw: str, value_type: str) -> float | None:
         """Normalize a raw value to a float."""
         try:
             # Remove thousands separators and normalize decimal point
@@ -390,7 +387,7 @@ class QuantitativeTripletExtractor(PatternBasedExtractor):
         except ValueError:
             return None
 
-    def _deduplicate_by_position(self, items: List[Dict]) -> List[Dict]:
+    def _deduplicate_by_position(self, items: list[dict]) -> list[dict]:
         """Remove duplicate items that overlap in position."""
         if not items:
             return items
@@ -415,7 +412,7 @@ class QuantitativeTripletExtractor(PatternBasedExtractor):
 
         return result
 
-    def _validate_extraction(self, result: ExtractionResult) -> Dict:
+    def _validate_extraction(self, result: ExtractionResult) -> dict:
         """Validate extraction against calibration thresholds."""
         # From integration_map: completeness_threshold: 0.8, triplets_completos mean: 78
         complete_ratio = result.metadata.get("complete_triplets", 0) / max(

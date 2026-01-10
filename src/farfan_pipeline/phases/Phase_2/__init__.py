@@ -51,6 +51,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+# Executor configuration and base class
+from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_2.phase2_60_00_base_executor_with_contract import (
+    BaseExecutorWithContract,
+)
+
 # Evidence processing - EvidenceNexus for causal graph construction
 from farfan_pipeline.phases.Phase_2.phase2_80_00_evidence_nexus import (
     EvidenceNexus,
@@ -64,12 +70,6 @@ from farfan_pipeline.phases.Phase_2.phase2_90_00_carver import (
 # Contract Hydrator - V4 to Carver-compatible adapter
 from farfan_pipeline.phases.Phase_2.phase2_95_00_contract_hydrator import (
     ContractHydrator,
-)
-
-# Executor configuration and base class
-from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
-from farfan_pipeline.phases.Phase_2.phase2_60_00_base_executor_with_contract import (
-    BaseExecutorWithContract,
 )
 
 __all__ = [

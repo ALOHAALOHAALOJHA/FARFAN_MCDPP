@@ -176,30 +176,20 @@ import re
 import statistics
 from abc import ABC, abstractmethod
 from collections import defaultdict
+from collections.abc import Sequence
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from enum import Enum, auto
+from datetime import UTC, datetime
+from enum import Enum
 from functools import cached_property, lru_cache
 from typing import (
     Any,
     ClassVar,
-    Dict,
     Final,
-    FrozenSet,
-    Iterator,
-    List,
     Literal,
-    Mapping,
     NamedTuple,
-    Optional,
     Protocol,
-    Sequence,
-    Set,
-    Tuple,
     TypeAlias,
     TypedDict,
-    Union,
-    cast,
     runtime_checkable,
 )
 
@@ -289,7 +279,7 @@ class QualityLevel(Enum):
     NO_APLICABLE = "NO_APLICABLE"
 
     @classmethod
-    def from_score(cls, score: float) -> "QualityLevel":
+    def from_score(cls, score: float) -> QualityLevel:
         """Determine quality level from score."""
         if score >= THRESHOLD_EXCELENTE:
             return cls.EXCELENTE
@@ -312,7 +302,7 @@ class Dimension(Enum):
     D6_CAUSALIDAD = "DIM06"  # Causality: logic, M&E, adaptation
 
     @classmethod
-    def from_id(cls, dim_id: str) -> "Dimension":
+    def from_id(cls, dim_id: str) -> Dimension:
         """Get dimension from ID string."""
         for dim in cls:
             if dim.value == dim_id:
@@ -330,7 +320,7 @@ class EvidenceStrength(Enum):
     ABSENT = 1  # Not found
 
     @classmethod
-    def from_confidence(cls, conf: float) -> "EvidenceStrength":
+    def from_confidence(cls, conf: float) -> EvidenceStrength:
         """Derive strength from confidence score."""
         if conf >= 0.95:
             return cls.DEFINITIVE
@@ -404,7 +394,7 @@ class ExpectedElement:
     weight: float  # [0, 1] relative importance
 
     @classmethod
-    def from_contract(cls, elem: Dict[str, Any]) -> "ExpectedElement":
+    def from_contract(cls, elem: dict[str, Any]) -> ExpectedElement:
         """Factory from contract expected_elements."""
         elem_type = elem.get("type", "unknown")
         required = elem.get("required", False)
@@ -451,7 +441,7 @@ class EvidenceItem:
     confidence: float
     source_method: str
     source_level: str  # N1-EMP, N2-INF, N3-AUD
-    document_location: Optional[str] = None
+    document_location: str | None = None
 
     @cached_property
     def strength(self) -> EvidenceStrength:
@@ -495,11 +485,11 @@ class ToulminArgument:
     """Structured Toulmin argument."""
 
     claim: str
-    data: Tuple[str, ...]  # Evidence grounds
+    data: tuple[str, ...]  # Evidence grounds
     warrant: str  # Why data supports claim
-    backing: Optional[str] = None
-    qualifier: Optional[str] = None
-    rebuttal: Optional[str] = None
+    backing: str | None = None
+    qualifier: str | None = None
+    rebuttal: str | None = None
     strength: float = 0.5
 
     def render(self) -> str:
@@ -567,7 +557,7 @@ class Citation:
     summary: str
     source_method: str
     confidence: float
-    page_reference: Optional[str] = None
+    page_reference: str | None = None
 
     def render_inline(self) -> str:
         """Render as inline citation."""
@@ -583,22 +573,22 @@ class MethodEpistemology:
     priority: int
     role: str
     paradigm: str
-    theoretical_framework: Tuple[str, ...]
+    theoretical_framework: tuple[str, ...]
     justification: str
-    limitations: Tuple[str, ...]
-    assumptions: Tuple[str, ...]
+    limitations: tuple[str, ...]
+    assumptions: tuple[str, ...]
 
 
 @dataclass(frozen=True, slots=True)
 class MethodologicalDepth:
     """Complete methodological depth from contract v4."""
 
-    methods: Tuple[MethodEpistemology, ...]
+    methods: tuple[MethodEpistemology, ...]
     total_methods: int
-    paradigms_used: FrozenSet[str]
-    theoretical_references: FrozenSet[str]
-    all_limitations: FrozenSet[str]
-    all_assumptions: FrozenSet[str]
+    paradigms_used: frozenset[str]
+    theoretical_references: frozenset[str]
+    all_limitations: frozenset[str]
+    all_assumptions: frozenset[str]
 
 
 # =============================================================================
@@ -612,12 +602,12 @@ class NexusOutputProtocol(Protocol):
 
     direct_answer: str
     overall_confidence: float
-    calibrated_interval: Tuple[float, float]
-    gaps: List[str]
-    primary_citations: List[Any]
-    supporting_citations: List[Any]
+    calibrated_interval: tuple[float, float]
+    gaps: list[str]
+    primary_citations: list[Any]
+    supporting_citations: list[Any]
     evidence_graph_hash: str
-    synthesis_trace: Dict[str, Any]
+    synthesis_trace: dict[str, Any]
 
 
 # =============================================================================
@@ -630,7 +620,7 @@ class ScoringMetadata(TypedDict):
 
     modality: str
     threshold: float
-    confidence_interval: List[float]
+    confidence_interval: list[float]
     evidence_count: int
     gap_count: int
     critical_gaps: int
@@ -644,8 +634,8 @@ class DoctoralAnswerDict(TypedDict):
     quality_level: str
     human_answer: str
     scoring_metadata: ScoringMetadata
-    evidence_summary: Dict[str, int]
-    gaps: List[Dict[str, Any]]
+    evidence_summary: dict[str, int]
+    gaps: list[dict[str, Any]]
     synthesis_timestamp: str
     carver_version: str
 
@@ -667,7 +657,7 @@ class ContractInterpreter:
     """
 
     # Dimension-specific evaluation requirements
-    DIMENSION_REQUIREMENTS: ClassVar[Dict[Dimension, Dict[str, Any]]] = {
+    DIMENSION_REQUIREMENTS: ClassVar[dict[Dimension, dict[str, Any]]] = {
         Dimension.D1_INSUMOS: {
             "primary_need": "datos cuantitativos verificables",
             "evidence_type": "quantitative",
@@ -701,7 +691,7 @@ class ContractInterpreter:
     }
 
     @classmethod
-    def extract_dimension(cls, contract: Dict[str, Any]) -> Dimension:
+    def extract_dimension(cls, contract: dict[str, Any]) -> Dimension:
         """Extract dimension from contract identity.
 
         Handles v4 format with space ("DIM 1") by normalizing to "DIM01".
@@ -738,13 +728,13 @@ class ContractInterpreter:
         return Dimension.D1_INSUMOS  # Default
 
     @classmethod
-    def extract_question_id(cls, contract: Dict[str, Any]) -> str:
+    def extract_question_id(cls, contract: dict[str, Any]) -> str:
         """Extract question ID."""
         identity = contract.get("identity", {})
         return identity.get("question_id", identity.get("base_slot", "UNKNOWN"))
 
     @classmethod
-    def extract_policy_area(cls, contract: Dict[str, Any]) -> str:
+    def extract_policy_area(cls, contract: dict[str, Any]) -> str:
         """Extract policy area ID.
 
         Handles field name differences between contract versions:
@@ -763,13 +753,13 @@ class ContractInterpreter:
         )
 
     @classmethod
-    def extract_contract_type(cls, contract: Dict[str, Any]) -> str:
+    def extract_contract_type(cls, contract: dict[str, Any]) -> str:
         """Extract contract type (TYPE_A through TYPE_E)."""
         identity = contract.get("identity", {})
         return identity.get("contract_type", "TYPE_A")
 
     @classmethod
-    def extract_expected_elements(cls, contract: Dict[str, Any]) -> Tuple[ExpectedElement, ...]:
+    def extract_expected_elements(cls, contract: dict[str, Any]) -> tuple[ExpectedElement, ...]:
         """Extract expected elements with semantic enrichment."""
         question_context = contract.get("question_context", {})
         raw_elements = question_context.get("expected_elements", [])
@@ -777,7 +767,7 @@ class ContractInterpreter:
         return tuple(ExpectedElement.from_contract(elem) for elem in raw_elements)
 
     @classmethod
-    def extract_question_text(cls, contract: Dict[str, Any]) -> str:
+    def extract_question_text(cls, contract: dict[str, Any]) -> str:
         """Extract question text.
 
         Handles field name differences between contract versions:
@@ -790,7 +780,7 @@ class ContractInterpreter:
         )
 
     @classmethod
-    def extract_scoring_modality(cls, contract: Dict[str, Any]) -> ScoringModality:
+    def extract_scoring_modality(cls, contract: dict[str, Any]) -> ScoringModality:
         """Extract scoring modality from contract type."""
         contract_type = cls.extract_contract_type(contract)
         try:
@@ -799,9 +789,7 @@ class ContractInterpreter:
             return ScoringModality.TYPE_A
 
     @classmethod
-    def extract_methodological_depth(
-        cls, contract: Dict[str, Any]
-    ) -> Optional[MethodologicalDepth]:
+    def extract_methodological_depth(cls, contract: dict[str, Any]) -> MethodologicalDepth | None:
         """Extract full methodological depth from method_binding."""
         method_binding = contract.get("method_binding", {})
         depth_raw = method_binding.get("methodological_depth")
@@ -815,11 +803,11 @@ class ContractInterpreter:
             return None
 
         methods_raw = depth_raw.get("methods", [])
-        methods: List[MethodEpistemology] = []
-        all_paradigms: Set[str] = set()
-        all_refs: Set[str] = set()
-        all_limitations: Set[str] = set()
-        all_assumptions: Set[str] = set()
+        methods: list[MethodEpistemology] = []
+        all_paradigms: set[str] = set()
+        all_refs: set[str] = set()
+        all_limitations: set[str] = set()
+        all_assumptions: set[str] = set()
 
         for m in methods_raw:
             epi = m.get("epistemological_foundation", {})
@@ -862,13 +850,13 @@ class ContractInterpreter:
         )
 
     @classmethod
-    def extract_human_answer_sections(cls, contract: Dict[str, Any]) -> Dict[str, Any]:
+    def extract_human_answer_sections(cls, contract: dict[str, Any]) -> dict[str, Any]:
         """Extract human answer structure sections."""
         human_answer = contract.get("human_answer_structure", {})
         return human_answer.get("sections", {})
 
     @classmethod
-    def get_dimension_requirements(cls, dimension: Dimension) -> Dict[str, Any]:
+    def get_dimension_requirements(cls, dimension: Dimension) -> dict[str, Any]:
         """Get evaluation requirements for dimension."""
         return cls.DIMENSION_REQUIREMENTS.get(dimension, {})
 
@@ -891,10 +879,10 @@ class NexusOutputAdapter:
     @classmethod
     def extract_evidence_items(
         cls,
-        nexus_output: Dict[str, Any],
-    ) -> Tuple[EvidenceItem, ...]:
+        nexus_output: dict[str, Any],
+    ) -> tuple[EvidenceItem, ...]:
         """Extract evidence items from Nexus output."""
-        items: List[EvidenceItem] = []
+        items: list[EvidenceItem] = []
 
         # Extract from evidence dict (legacy format)
         evidence = nexus_output.get("evidence", {})
@@ -933,10 +921,10 @@ class NexusOutputAdapter:
     @classmethod
     def extract_citations(
         cls,
-        nexus_output: Dict[str, Any],
-    ) -> Tuple[Citation, ...]:
+        nexus_output: dict[str, Any],
+    ) -> tuple[Citation, ...]:
         """Extract citations from Nexus output."""
-        citations: List[Citation] = []
+        citations: list[Citation] = []
 
         synth = nexus_output.get("synthesized_answer", {})
         if isinstance(synth, dict):
@@ -967,7 +955,7 @@ class NexusOutputAdapter:
         return tuple(citations)
 
     @classmethod
-    def extract_overall_confidence(cls, nexus_output: Dict[str, Any]) -> float:
+    def extract_overall_confidence(cls, nexus_output: dict[str, Any]) -> float:
         """Extract overall confidence from Nexus output."""
         synth = nexus_output.get("synthesized_answer", {})
         if isinstance(synth, dict):
@@ -980,7 +968,7 @@ class NexusOutputAdapter:
         return 0.5
 
     @classmethod
-    def extract_gaps_from_nexus(cls, nexus_output: Dict[str, Any]) -> List[str]:
+    def extract_gaps_from_nexus(cls, nexus_output: dict[str, Any]) -> list[str]:
         """Extract gap descriptions from Nexus output."""
         synth = nexus_output.get("synthesized_answer", {})
         if isinstance(synth, dict):
@@ -1005,9 +993,9 @@ class EvidenceAnalyzer:
     """
 
     @staticmethod
-    def count_by_type(items: Sequence[EvidenceItem]) -> Dict[str, int]:
+    def count_by_type(items: Sequence[EvidenceItem]) -> dict[str, int]:
         """Count items by element type."""
-        counts: Dict[str, int] = defaultdict(int)
+        counts: dict[str, int] = defaultdict(int)
         for item in items:
             counts[item.element_type] += 1
         return dict(counts)
@@ -1015,9 +1003,9 @@ class EvidenceAnalyzer:
     @staticmethod
     def group_by_type(
         items: Sequence[EvidenceItem],
-    ) -> Dict[str, List[EvidenceItem]]:
+    ) -> dict[str, list[EvidenceItem]]:
         """Group items by element type."""
-        groups: Dict[str, List[EvidenceItem]] = defaultdict(list)
+        groups: dict[str, list[EvidenceItem]] = defaultdict(list)
         for item in items:
             groups[item.element_type].append(item)
         return dict(groups)
@@ -1025,9 +1013,9 @@ class EvidenceAnalyzer:
     @staticmethod
     def analyze_strength_distribution(
         items: Sequence[EvidenceItem],
-    ) -> Dict[str, int]:
+    ) -> dict[str, int]:
         """Analyze distribution of evidence strength."""
-        distribution: Dict[str, int] = defaultdict(int)
+        distribution: dict[str, int] = defaultdict(int)
         for item in items:
             distribution[item.strength.name] += 1
         return dict(distribution)
@@ -1035,9 +1023,9 @@ class EvidenceAnalyzer:
     @staticmethod
     def find_corroborations(
         items: Sequence[EvidenceItem],
-    ) -> List[Tuple[EvidenceItem, EvidenceItem]]:
+    ) -> list[tuple[EvidenceItem, EvidenceItem]]:
         """Find pairs of corroborating evidence."""
-        corroborations: List[Tuple[EvidenceItem, EvidenceItem]] = []
+        corroborations: list[tuple[EvidenceItem, EvidenceItem]] = []
         groups = EvidenceAnalyzer.group_by_type(items)
 
         for elem_type, group_items in groups.items():
@@ -1054,9 +1042,9 @@ class EvidenceAnalyzer:
     @staticmethod
     def find_contradictions(
         items: Sequence[EvidenceItem],
-    ) -> List[Tuple[EvidenceItem, EvidenceItem, str]]:
+    ) -> list[tuple[EvidenceItem, EvidenceItem, str]]:
         """Find contradicting evidence pairs."""
-        contradictions: List[Tuple[EvidenceItem, EvidenceItem, str]] = []
+        contradictions: list[tuple[EvidenceItem, EvidenceItem, str]] = []
         groups = EvidenceAnalyzer.group_by_type(items)
 
         for elem_type, group_items in groups.items():
@@ -1065,7 +1053,7 @@ class EvidenceAnalyzer:
 
             numeric_items = [i for i in group_items if i.is_quantitative]
             if len(numeric_items) >= 2:
-                values: List[Tuple[EvidenceItem, float]] = []
+                values: list[tuple[EvidenceItem, float]] = []
                 for item in numeric_items:
                     try:
                         val_str = str(item.value)
@@ -1096,7 +1084,7 @@ class GapAnalyzer:
     """
 
     # Implications by element type
-    GAP_IMPLICATIONS: ClassVar[Dict[str, Tuple[str, str]]] = {
+    GAP_IMPLICATIONS: ClassVar[dict[str, tuple[str, str]]] = {
         "fuentes_oficiales": (
             "Sin fuentes oficiales, la credibilidad es cuestionable.",
             "Citar fuentes como DANE, Medicina Legal, ICBF.",
@@ -1131,11 +1119,11 @@ class GapAnalyzer:
     def identify_gaps(
         cls,
         expected: Sequence[ExpectedElement],
-        found_counts: Dict[str, int],
+        found_counts: dict[str, int],
         dimension: Dimension,
-    ) -> Tuple[EvidenceGap, ...]:
+    ) -> tuple[EvidenceGap, ...]:
         """Identify gaps with severity calibrated by dimension."""
-        gaps: List[EvidenceGap] = []
+        gaps: list[EvidenceGap] = []
         dim_req = ContractInterpreter.get_dimension_requirements(dimension)
 
         for elem in expected:
@@ -1176,7 +1164,7 @@ class GapAnalyzer:
         cls,
         elem: ExpectedElement,
         found: int,
-        dim_req: Dict[str, Any],
+        dim_req: dict[str, Any],
     ) -> GapSeverity:
         """Compute gap severity based on context."""
         # Critical if required and completely missing
@@ -1223,8 +1211,8 @@ class BayesianConfidenceEngine:
         cls,
         items: Sequence[EvidenceItem],
         gaps: Sequence[EvidenceGap],
-        corroborations: Sequence[Tuple[EvidenceItem, EvidenceItem]],
-        contradictions: Sequence[Tuple[EvidenceItem, EvidenceItem, str]],
+        corroborations: Sequence[tuple[EvidenceItem, EvidenceItem]],
+        contradictions: Sequence[tuple[EvidenceItem, EvidenceItem, str]],
     ) -> BayesianConfidence:
         """Compute calibrated Bayesian confidence."""
         if not items:
@@ -1447,7 +1435,7 @@ class D6CausalidadStrategy(DimensionStrategy):
 @lru_cache(maxsize=6)
 def get_dimension_strategy(dimension: Dimension) -> DimensionStrategy:
     """Factory for dimension strategies (cached)."""
-    strategies: Dict[Dimension, DimensionStrategy] = {
+    strategies: dict[Dimension, DimensionStrategy] = {
         Dimension.D1_INSUMOS: D1InsumosStrategy(),
         Dimension.D2_ACTIVIDADES: D2ActividadesStrategy(),
         Dimension.D3_PRODUCTOS: D3ProductosStrategy(),
@@ -1492,7 +1480,7 @@ class ToulminArgumentBuilder:
         claim = strategy.verdict_prefix(has_critical)
 
         # Data (evidence grounds)
-        data: List[str] = []
+        data: list[str] = []
         if items:
             count = len(items)
             strong = sum(1 for i in items if i.strength.value >= 4)
@@ -1539,10 +1527,10 @@ class ToulminArgumentBuilder:
     def build_evidence_arguments(
         cls,
         items: Sequence[EvidenceItem],
-        found_counts: Dict[str, int],
-    ) -> Tuple[ToulminArgument, ...]:
+        found_counts: dict[str, int],
+    ) -> tuple[ToulminArgument, ...]:
         """Build evidence summary arguments."""
-        arguments: List[ToulminArgument] = []
+        arguments: list[ToulminArgument] = []
 
         # Sort by count (most common first)
         sorted_types = sorted(found_counts.items(), key=lambda x: x[1], reverse=True)
@@ -1583,12 +1571,12 @@ class ToulminArgumentBuilder:
 class ReadabilityMetrics:
     """Readability metrics for Carver style enforcement."""
 
-    flesch_reading_ease: Optional[float] = None
-    flesch_kincaid_grade: Optional[float] = None
-    avg_sentence_length: Optional[float] = None
-    avg_word_length: Optional[float] = None
+    flesch_reading_ease: float | None = None
+    flesch_kincaid_grade: float | None = None
+    avg_sentence_length: float | None = None
+    avg_word_length: float | None = None
     passes_carver_standards: bool = True
-    issues: List[str] = field(default_factory=list)
+    issues: list[str] = field(default_factory=list)
 
 
 class ReadabilityChecker:
@@ -1663,7 +1651,7 @@ class CarverProseRenderer:
     """
 
     # Type labels for human-readable element names
-    TYPE_LABELS: ClassVar[Dict[str, str]] = {
+    TYPE_LABELS: ClassVar[dict[str, str]] = {
         "fuentes_oficiales": "fuentes oficiales",
         "indicadores_cuantitativos": "indicadores numéricos",
         "series_temporales_años": "series temporales",
@@ -1723,7 +1711,7 @@ class CarverProseRenderer:
     def render_evidence_section(
         cls,
         items: Sequence[EvidenceItem],
-        found_counts: Dict[str, int],
+        found_counts: dict[str, int],
         citations: Sequence[Citation],
     ) -> str:
         """Render evidence section.  Facts only."""
@@ -1826,7 +1814,7 @@ class CarverProseRenderer:
     @classmethod
     def render_limitations_section(
         cls,
-        depth: Optional[MethodologicalDepth],
+        depth: MethodologicalDepth | None,
     ) -> str:
         """Render methodological limitations.  Max 5."""
         if not depth or not depth.all_limitations:
@@ -1842,7 +1830,7 @@ class CarverProseRenderer:
     @classmethod
     def render_assumptions_section(
         cls,
-        depth: Optional[MethodologicalDepth],
+        depth: MethodologicalDepth | None,
     ) -> str:
         """Render methodological assumptions. Max 4."""
         if not depth or not depth.all_assumptions:
@@ -1858,7 +1846,7 @@ class CarverProseRenderer:
     @classmethod
     def render_epistemology_section(
         cls,
-        depth: Optional[MethodologicalDepth],
+        depth: MethodologicalDepth | None,
     ) -> str:
         """Render epistemological foundations."""
         if not depth:
@@ -1883,7 +1871,7 @@ class CarverProseRenderer:
     @classmethod
     def render_methodology_note(
         cls,
-        depth: Optional[MethodologicalDepth],
+        depth: MethodologicalDepth | None,
         modality: ScoringModality,
     ) -> str:
         """Render discrete methodology note."""
@@ -1917,17 +1905,17 @@ class CarverProseRenderer:
         confidence: BayesianConfidence,
         strategy: DimensionStrategy,
         items: Sequence[EvidenceItem],
-        found_counts: Dict[str, int],
+        found_counts: dict[str, int],
         citations: Sequence[Citation],
         gaps: Sequence[EvidenceGap],
-        depth: Optional[MethodologicalDepth],
+        depth: MethodologicalDepth | None,
         modality: ScoringModality,
         score: float,
         quality_level: QualityLevel,
         question_text: str,
     ) -> str:
         """Render complete doctoral answer in Carver style."""
-        sections: List[str] = []
+        sections: list[str] = []
 
         # Question context
         sections.append(f"**Pregunta**: {question_text}\n")
@@ -2012,11 +2000,11 @@ class DoctoralHumanAnswer:
 
     # Evidence summary
     evidence_count: int
-    evidence_by_type: Dict[str, int]
-    citations: Tuple[Citation, ...]
+    evidence_by_type: dict[str, int]
+    citations: tuple[Citation, ...]
 
     # Gaps
-    gaps: Tuple[EvidenceGap, ...]
+    gaps: tuple[EvidenceGap, ...]
     critical_gap_count: int
 
     # Confidence
@@ -2025,11 +2013,11 @@ class DoctoralHumanAnswer:
     # Methodology
     dimension: Dimension
     modality: ScoringModality
-    methodological_depth: Optional[MethodologicalDepth]
+    methodological_depth: MethodologicalDepth | None
 
     # Trace
     synthesis_timestamp: str
-    synthesis_trace: Dict[str, Any]
+    synthesis_trace: dict[str, Any]
     carver_version: str = "4.0.0"
 
     def to_dict(self) -> DoctoralAnswerDict:
@@ -2054,7 +2042,7 @@ class DoctoralHumanAnswer:
             "carver_version": self.carver_version,
         }
 
-    def to_phase3_output(self) -> Dict[str, Any]:
+    def to_phase3_output(self) -> dict[str, Any]:
         """Convert to full Phase 3 output format."""
         return {
             "question_id": self.question_id,
@@ -2138,8 +2126,8 @@ class DoctoralCarverSynthesizer:
 
     def synthesize(
         self,
-        nexus_output: Dict[str, Any],
-        contract: Dict[str, Any],
+        nexus_output: dict[str, Any],
+        contract: dict[str, Any],
     ) -> DoctoralHumanAnswer:
         """
         Synthesize doctoral answer from Nexus output and contract.
@@ -2151,7 +2139,7 @@ class DoctoralCarverSynthesizer:
         Returns:
             DoctoralHumanAnswer with score, quality_level, and human_answer
         """
-        start_time = datetime.now(timezone.utc)
+        start_time = datetime.now(UTC)
 
         # 1. Interpret contract
         question_id = ContractInterpreter.extract_question_id(contract)
@@ -2242,7 +2230,7 @@ class DoctoralCarverSynthesizer:
             "nexus_confidence": nexus_confidence,
         }
 
-        end_time = datetime.now(timezone.utc)
+        end_time = datetime.now(UTC)
         synthesis_timestamp = end_time.isoformat()
 
         logger.info(
@@ -2316,8 +2304,8 @@ class DoctoralCarverSynthesizer:
 
     def synthesize_batch(
         self,
-        question_results: List[Tuple[Dict[str, Any], Dict[str, Any]]],
-    ) -> List[DoctoralHumanAnswer]:
+        question_results: list[tuple[dict[str, Any], dict[str, Any]]],
+    ) -> list[DoctoralHumanAnswer]:
         """
         Synthesize answers for multiple questions.
 
@@ -2327,7 +2315,7 @@ class DoctoralCarverSynthesizer:
         Returns:
             List of DoctoralHumanAnswer objects
         """
-        answers: List[DoctoralHumanAnswer] = []
+        answers: list[DoctoralHumanAnswer] = []
 
         for nexus_output, contract in question_results:
             try:
@@ -2362,7 +2350,7 @@ class MesoAggregator:
         cls,
         micro_answers: Sequence[DoctoralHumanAnswer],
         cluster_id: str,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Aggregate micro answers into meso cluster score."""
         if not micro_answers:
             return {
@@ -2418,9 +2406,9 @@ class MacroAggregator:
     @classmethod
     def aggregate_holistic(
         cls,
-        meso_results: Sequence[Dict[str, Any]],
-        pa_dim_matrix: Optional[Dict[Tuple[str, str], float]] = None,
-    ) -> Dict[str, Any]:
+        meso_results: Sequence[dict[str, Any]],
+        pa_dim_matrix: dict[tuple[str, str], float] | None = None,
+    ) -> dict[str, Any]:
         """
         Aggregate meso results into macro holistic score.
 
@@ -2517,8 +2505,8 @@ def create_synthesizer(
 
 
 def synthesize_answer(
-    nexus_output: Dict[str, Any],
-    contract: Dict[str, Any],
+    nexus_output: dict[str, Any],
+    contract: dict[str, Any],
 ) -> DoctoralHumanAnswer:
     """
     Convenience function for one-shot synthesis.
@@ -2535,8 +2523,8 @@ def synthesize_answer(
 
 
 def synthesize_to_markdown(
-    nexus_output: Dict[str, Any],
-    contract: Dict[str, Any],
+    nexus_output: dict[str, Any],
+    contract: dict[str, Any],
 ) -> str:
     """
     Convenience function to get just the markdown answer.
@@ -2553,9 +2541,9 @@ def synthesize_to_markdown(
 
 
 def synthesize_to_phase3(
-    nexus_output: Dict[str, Any],
-    contract: Dict[str, Any],
-) -> Dict[str, Any]:
+    nexus_output: dict[str, Any],
+    contract: dict[str, Any],
+) -> dict[str, Any]:
     """
     Convenience function to get Phase 3 compatible output.
 

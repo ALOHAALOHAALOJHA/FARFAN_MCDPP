@@ -2,8 +2,8 @@
 """
 CLI tool for Total Ordering Contract (TOC) sort sanity
 """
-import sys
 import json
+
 from farfan_pipeline.contracts.total_ordering import TotalOrderingContract
 
 

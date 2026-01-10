@@ -54,7 +54,7 @@ import pickle
 import time
 from collections import defaultdict
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -115,7 +115,7 @@ class MethodCallMetrics:
     call_count: int = 1
     success: bool = True
     error: str | None = None
-    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
     @property
     def is_dispensary_method(self) -> bool:
@@ -152,7 +152,7 @@ class ExecutorMetrics:
     call_count: int = 1
     success: bool = True
     error: str | None = None
-    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
     metadata: dict[str, Any] = field(default_factory=dict)
 
     @property
@@ -781,7 +781,7 @@ class ExecutorProfiler:
             dispensary_analytics = self.get_dispensary_usage_stats()
 
         return PerformanceReport(
-            timestamp=datetime.now(timezone.utc).isoformat(),
+            timestamp=datetime.now(UTC).isoformat(),
             total_executors=len(self.metrics),
             total_execution_time_ms=total_execution_time,
             total_memory_mb=total_memory,
@@ -1217,11 +1217,11 @@ class ProfilerContext:
 
 
 __all__ = [
-    "ExecutorProfiler",
-    "ProfilerContext",
+    "KNOWN_DISPENSARY_CLASSES",
     "ExecutorMetrics",
+    "ExecutorProfiler",
     "MethodCallMetrics",
     "PerformanceRegression",
     "PerformanceReport",
-    "KNOWN_DISPENSARY_CLASSES",
+    "ProfilerContext",
 ]

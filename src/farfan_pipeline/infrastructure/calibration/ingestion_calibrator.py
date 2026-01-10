@@ -41,7 +41,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime
 from typing import Final, Protocol
 
 from .calibration_core import (
@@ -49,14 +49,13 @@ from .calibration_core import (
     CalibrationParameter,
     CalibrationPhase,
     ClosedInterval,
-    EvidenceReference,
     create_calibration_parameter,
 )
 from .type_defaults import (
     VALID_CONTRACT_TYPES,
+    ContractTypeDefaults,
     UnknownContractTypeError,
     get_type_defaults,
-    ContractTypeDefaults,
 )
 from .unit_of_analysis import UnitOfAnalysis
 
@@ -338,7 +337,7 @@ class IngestionCalibrator:
         # Get type-specific defaults
         type_defaults = get_type_defaults(contract_type_code)
 
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         validity_days = unit.data_validity_days
 
         # Compute chunk size parameter
@@ -504,9 +503,9 @@ class IngestionCalibrator:
 
 
 __all__ = [
-    "CalibrationStrategy",
-    "StandardCalibrationStrategy",
     "AggressiveCalibrationStrategy",
+    "CalibrationStrategy",
     "ConservativeCalibrationStrategy",
     "IngestionCalibrator",
+    "StandardCalibrationStrategy",
 ]

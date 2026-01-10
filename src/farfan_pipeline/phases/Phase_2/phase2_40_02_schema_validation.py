@@ -88,7 +88,7 @@ def _extract_and_classify_schemas(
     question: dict[str, Any],
     chunk_expected_elements: list[dict[str, Any]] | dict[str, Any] | None,
     question_id: str,
-) -> tuple[int, Any, Any, str, str]:  # noqa: ANN401
+) -> tuple[int, Any, Any, str, str]:
     """Phase 6.1: Extract question_global and expected_elements, classify types.
 
     Extracts question_global via bracket notation (question["question_global"])
@@ -495,9 +495,9 @@ def validate_phase6_schema_compatibility(
 
 
 __all__ = [
-    "validate_phase6_schema_compatibility",
-    "_extract_and_classify_schemas",
-    "_validate_structural_compatibility",
-    "_validate_semantic_constraints",
     "_classify_expected_elements_type",
+    "_extract_and_classify_schemas",
+    "_validate_semantic_constraints",
+    "_validate_structural_compatibility",
+    "validate_phase6_schema_compatibility",
 ]

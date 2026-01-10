@@ -26,14 +26,14 @@ Date: 2026-01-06
 """
 
 import json
+import logging
 import re
-from typing import Dict, List, Any, Optional, Tuple, Set
+from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-import logging
-from collections import defaultdict
+from typing import Any
 
-from .empirical_extractor_base import PatternBasedExtractor, ExtractionResult
+from .empirical_extractor_base import ExtractionResult, PatternBasedExtractor
 
 logger = logging.getLogger(__name__)
 
@@ -48,9 +48,9 @@ class InstitutionalEntity:
     entity_type: str  # institution, normative, etc.
     level: str  # NATIONAL, DEPARTAMENTAL, etc.
     confidence: float
-    text_span: Tuple[int, int]
-    context: Optional[str] = None
-    scoring_boost: Optional[Dict] = None
+    text_span: tuple[int, int]
+    context: str | None = None
+    scoring_boost: dict | None = None
 
 
 class InstitutionalNERExtractor(PatternBasedExtractor):
@@ -64,7 +64,7 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
     4. Territorial entities
     """
 
-    def __init__(self, calibration_file: Optional[Path] = None):
+    def __init__(self, calibration_file: Path | None = None):
         super().__init__(
             signal_type="INSTITUTIONAL_NETWORK",  # Aligned with integration_map key
             calibration_file=calibration_file,
@@ -143,7 +143,7 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
 
             self.entity_patterns[entity_id] = patterns
 
-    def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
+    def extract(self, text: str, context: dict | None = None) -> ExtractionResult:
         """
         Extract institutional entities from text.
 
@@ -306,11 +306,11 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
 
     def get_entities_by_type(
         self, extraction_result: ExtractionResult, entity_type: str
-    ) -> List[Dict]:
+    ) -> list[dict]:
         """Filter extracted entities by type."""
         return [m for m in extraction_result.matches if m["entity_type"] == entity_type]
 
-    def get_scoring_boosts(self, extraction_result: ExtractionResult) -> Dict[str, List[float]]:
+    def get_scoring_boosts(self, extraction_result: ExtractionResult) -> dict[str, list[float]]:
         """Extract scoring boosts for dimensions and policy areas."""
         dimension_boosts = defaultdict(list)
         pa_boosts = defaultdict(list)
@@ -338,21 +338,21 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
 # Convenience functions
 
 
-def extract_institutional_entities(text: str, context: Optional[Dict] = None) -> ExtractionResult:
+def extract_institutional_entities(text: str, context: dict | None = None) -> ExtractionResult:
     """Convenience function to extract institutional entities."""
     extractor = InstitutionalNERExtractor()
     return extractor.extract(text, context)
 
 
-def get_entity_info(entity_id: str) -> Optional[Dict[str, Any]]:
+def get_entity_info(entity_id: str) -> dict[str, Any] | None:
     """Get full information for an entity from registry."""
     extractor = InstitutionalNERExtractor()
     return extractor.entity_registry.get(entity_id)
 
 
 __all__ = [
-    "InstitutionalNERExtractor",
     "InstitutionalEntity",
+    "InstitutionalNERExtractor",
     "extract_institutional_entities",
     "get_entity_info",
 ]

@@ -21,7 +21,7 @@ from typing import Any, TypedDict
 try:
     from typing import NotRequired  # Python 3.11+
 except ImportError:
-    from typing_extensions import NotRequired  # Python 3.9-3.10
+    from typing import NotRequired  # Python 3.9-3.10
 
 # ============================================================================
 # ANALYZER_ONE.PY CONTRACTS

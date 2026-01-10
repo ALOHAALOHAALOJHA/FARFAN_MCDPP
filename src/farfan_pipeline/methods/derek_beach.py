@@ -43,9 +43,9 @@ try:
     import pandas as pd
     import spacy
     import yaml
-    from rapidfuzz import fuzz, process
     from pydantic import BaseModel, Field, ValidationError, validator
     from pydot import Dot, Edge, Node
+    from rapidfuzz import fuzz, process
     from scipy.spatial.distance import cosine
     from scipy.special import rel_entr
 except ImportError as e:
@@ -86,21 +86,11 @@ logging.basicConfig(
 # ============================================================================
 
 from farfan_pipeline.core.canonical_specs import (
-    MICRO_LEVELS,
     ALIGNMENT_THRESHOLD,
-    RISK_THRESHOLDS,
     CANON_POLICY_AREAS,
-    CANON_DIMENSIONS,
     CAUSAL_CHAIN_VOCABULARY,
-    CAUSAL_CHAIN_ORDER,
-    CDAF_CALIBRATION_PARAMS,
-    CDAF_DOMAIN_WEIGHTS,
-    TRIANGULATION_ACTIVE_DOMAINS_THRESHOLD,
-    TRIANGULATION_BONUS,
-    BAYES_FACTORS,
-    PDT_SECTION_PATTERNS,
-    PDT_STRATEGIC_PATTERNS,
-    PDT_FINANCIAL_PATTERNS,
+    MICRO_LEVELS,
+    RISK_THRESHOLDS,
 )
 
 # ============================================================================
@@ -2563,7 +2553,7 @@ class ConfigLoader:
     def _load_config(self) -> None:
         """Load YAML configuration file"""
         try:
-            with open(self.config_path, "r", encoding="utf-8") as f:
+            with open(self.config_path, encoding="utf-8") as f:
                 self.config = yaml.safe_load(f)
             self.logger.info(f"Configuración cargada desde {self.config_path}")
         except FileNotFoundError:
@@ -2802,7 +2792,7 @@ class ConfigLoader:
             history_records = []
             if history_path.exists():
                 try:
-                    with open(history_path, "r", encoding="utf-8") as f:
+                    with open(history_path, encoding="utf-8") as f:
                         existing_data = json.load(f)
                     if isinstance(existing_data, list):
                         history_records = existing_data
@@ -2862,7 +2852,7 @@ class ConfigLoader:
         try:
             history_path = Path(self.validated_config.self_reflection.prior_history_path)
             if history_path.exists():
-                with open(history_path, "r", encoding="utf-8") as f:
+                with open(history_path, encoding="utf-8") as f:
                     history_data = json.load(f)
                 if isinstance(history_data, dict) and "history" in history_data:
                     # Extract uncertainty from each record

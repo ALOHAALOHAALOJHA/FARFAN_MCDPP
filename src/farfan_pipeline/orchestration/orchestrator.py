@@ -16,29 +16,51 @@ import asyncio
 import hashlib
 import inspect
 import json
-import logging
 import os
 import statistics
 import threading
-import structlog
 import time
 from collections import deque
-from dataclasses import dataclass, field, asdict
+from collections.abc import Callable
+from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from types import MappingProxyType
-from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
+from typing import TYPE_CHECKING, Any, ParamSpec, TypedDict, TypeVar
+
+import structlog
 
 if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_2.phase2_10_00_factory import CanonicalQuestionnaire
 
-from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
-from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import safe_join
+from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT, safe_join
 from farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import RuntimeConfig
 from farfan_pipeline.phases.Phase_0.phase0_50_01_exit_gates import GateResult
 
 # Define RULES_DIR locally (not exported from paths)
 RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"
+from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import ClassRegistryError
+from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer import (
+    ExecutionPlan,
+    IrrigationSynchronizer,
+)
+from farfan_pipeline.phases.Phase_2.phase2_60_00_base_executor_with_contract import (
+    DynamicContractExecutor,
+)
+from farfan_pipeline.phases.Phase_2.phase2_60_02_arg_router import (
+    ArgRouterError,
+    ArgumentValidationError,
+    ExtendedArgRouter,
+)
+from farfan_pipeline.phases.Phase_3.phase3_signal_enriched_scoring import SignalEnrichedScorer
+from farfan_pipeline.phases.Phase_3.phase3_validation import (
+    ValidationCounters,
+    validate_and_clamp_score,
+    validate_evidence_presence,
+    validate_micro_results_input,
+    validate_quality_level,
+)
 from farfan_pipeline.phases.Phase_4.aggregation import (
     AggregationSettings,
     AreaPolicyAggregator,
@@ -50,42 +72,15 @@ from farfan_pipeline.phases.Phase_4.aggregation import (
     MacroAggregator,
     MacroScore,
     ScoredResult,
-    group_by,
-    validate_scored_results,
+)
+from farfan_pipeline.phases.Phase_4.aggregation_enhancements import (
+    enhance_aggregator,
 )
 from farfan_pipeline.phases.Phase_4.aggregation_validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,
     validate_phase7_output,
-    enforce_validation_or_fail,
-)
-from farfan_pipeline.phases.Phase_4.aggregation_enhancements import (
-    enhance_aggregator,
-    EnhancedDimensionAggregator,
-    EnhancedAreaAggregator,
-    EnhancedClusterAggregator,
-    EnhancedMacroAggregator,
-)
-from farfan_pipeline.phases.Phase_2.phase2_60_00_base_executor_with_contract import DynamicContractExecutor
-from farfan_pipeline.phases.Phase_2.phase2_60_02_arg_router import (
-    ArgRouterError,
-    ArgumentValidationError,
-    ExtendedArgRouter,
-)
-from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import ClassRegistryError
-from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
-from farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer import (
-    IrrigationSynchronizer,
-    ExecutionPlan,
-)
-from farfan_pipeline.phases.Phase_3.phase3_signal_enriched_scoring import SignalEnrichedScorer
-from farfan_pipeline.phases.Phase_3.phase3_validation import (
-    ValidationCounters,
-    validate_micro_results_input,
-    validate_and_clamp_score,
-    validate_quality_level,
-    validate_evidence_presence,
 )
 
 logger = structlog.get_logger(__name__)
@@ -1124,7 +1119,7 @@ async def _execute_once(
         )
         return result
 
-    except asyncio.TimeoutError:
+    except TimeoutError:
         elapsed = time.perf_counter() - start
         logger.error(
             f"Phase {phase_id} ({phase_name}) timed out",
@@ -1227,7 +1222,10 @@ class MethodExecutor:
                 self._method_registry = MethodRegistry(class_paths={})
 
         try:
-            from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import build_class_registry
+            from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import (
+                build_class_registry,
+            )
+
             registry = build_class_registry()
         except (ClassRegistryError, ModuleNotFoundError, ImportError) as exc:
             self.degraded_mode = True
@@ -1250,7 +1248,7 @@ class MethodExecutor:
     def execute(self, class_name: str, method_name: str, **kwargs: Any) -> Any:
         """Execute method."""
         from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import MethodRegistryError
-        
+
         try:
             method = self._method_registry.get_method(class_name, method_name)
         except MethodRegistryError as exc:
@@ -2093,7 +2091,7 @@ class Orchestrator:
         role: str,
         context: dict[str, Any] | None = None,
         pdt_structure: dict[str, Any] | None = None,
-    ) -> "CalibrationResult | None":
+    ) -> CalibrationResult | None:
         """
         Calibrate a method using the injected CalibrationOrchestrator.
 
@@ -2115,11 +2113,11 @@ class Orchestrator:
             ValueError: If role is invalid or inputs malformed.
         """
         from farfan_pipeline.orchestration.calibration_types import (
-            CalibrationSubject,
+            ROLE_LAYER_REQUIREMENTS,
             CalibrationEvidenceContext,
             CalibrationResult,
+            CalibrationSubject,
             LayerId,
-            ROLE_LAYER_REQUIREMENTS,
         )
 
         if self.calibration_orchestrator is None:
@@ -2177,11 +2175,11 @@ class Orchestrator:
                         layer_scores[layer_id] = min(1.0, base_score * 1.05)
                     elif layer_id == LayerId.UNIT:
                         layer_scores[layer_id] = evidence_context.completeness
-                    elif layer_id == LayerId.QUESTION:
-                        layer_scores[layer_id] = base_score
-                    elif layer_id == LayerId.DIMENSION:
-                        layer_scores[layer_id] = base_score
-                    elif layer_id == LayerId.POLICY:
+                    elif (
+                        layer_id == LayerId.QUESTION
+                        or layer_id == LayerId.DIMENSION
+                        or layer_id == LayerId.POLICY
+                    ):
                         layer_scores[layer_id] = base_score
                     elif layer_id == LayerId.CONGRUENCE:
                         layer_scores[layer_id] = min(1.0, base_score * 0.95)
@@ -2192,7 +2190,6 @@ class Orchestrator:
 
                 # Aggregate via geometric mean (approximation of Choquet integral)
                 if layer_scores:
-                    import math
 
                     product = 1.0
                     for score in layer_scores.values():
@@ -2202,7 +2199,7 @@ class Orchestrator:
                     final_score = 0.5
             else:
                 # Fallback: default scores if orchestrator lacks expected interface
-                layer_scores = {layer_id: 0.5 for layer_id in active_layer_ids}
+                layer_scores = dict.fromkeys(active_layer_ids, 0.5)
                 final_score = 0.5
 
             # Clamp final_score to [0.0, 1.0]
@@ -2572,13 +2569,14 @@ class Orchestrator:
         document_id = os.path.splitext(os.path.basename(pdf_path))[0] or "doc_1"
 
         try:
+            import hashlib
+            from pathlib import Path
+
             from farfan_pipeline.phases.Phase_1 import (
                 CanonicalInput,
-                execute_phase_1_with_full_contract,
                 CanonPolicyPackage,
+                execute_phase_1_with_full_contract,
             )
-            from pathlib import Path
-            import hashlib
 
             questionnaire_path = (
                 self._canonical_questionnaire.source_path
@@ -2892,7 +2890,7 @@ class Orchestrator:
                     logger.error(f"Task {task_id}: Executor {base_slot} failed: {e}", exc_info=True)
                     task_status[task_id] = "failed"
                     tasks_failed.add(task_id)
-                    instrumentation.record_error("execution", f"{task_id}: {str(e)}")
+                    instrumentation.record_error("execution", f"{task_id}: {e!s}")
 
                     results.append(
                         MicroQuestionRun(
@@ -3074,7 +3072,7 @@ class Orchestrator:
                         scoring_signals = signal_registry.get_scoring_signals(
                             micro_result.question_id
                         )
-                    except Exception as e:
+                    except Exception:
                         pass
 
                 # Extract metadata and evidence
@@ -3606,10 +3604,6 @@ class Orchestrator:
         try:
             from farfan_pipeline.phases.Phase_9.report_assembly import (
                 ReportAssembler,
-                ReportMetadata,
-            )
-            from farfan_pipeline.phases.Phase_9.report_generator import (
-                ReportGenerator,
             )
 
             # Get questionnaire provider from config
@@ -3763,15 +3757,15 @@ class Orchestrator:
 # ============================================================================
 
 __all__ = [
-    "Orchestrator",
-    "MethodExecutor",
-    "AbortSignal",
     "AbortRequested",
-    "ResourceLimits",
-    "PhaseInstrumentation",
-    "PhaseResult",
-    "MicroQuestionRun",
-    "ScoredMicroQuestion",
+    "AbortSignal",
     "Evidence",
     "MacroEvaluation",
+    "MethodExecutor",
+    "MicroQuestionRun",
+    "Orchestrator",
+    "PhaseInstrumentation",
+    "PhaseResult",
+    "ResourceLimits",
+    "ScoredMicroQuestion",
 ]

@@ -19,10 +19,10 @@ logger = logging.getLogger(__name__)
 __all__ = [
     "VALID_QUALITY_LEVELS",
     "ValidationCounters",
-    "validate_micro_results_input",
     "validate_and_clamp_score",
-    "validate_quality_level",
     "validate_evidence_presence",
+    "validate_micro_results_input",
+    "validate_quality_level",
 ]
 
 
@@ -149,7 +149,7 @@ def validate_and_clamp_score(
         logger.error(
             f"Phase 3 score validation failed: unconvertible type, "
             f"question_id={question_id}, question_global={question_global}, "
-            f"score_type={type(score).__name__}, score_value={str(score)}, error={str(e)}"
+            f"score_type={type(score).__name__}, score_value={score!s}, error={e!s}"
         )
         return 0.0
 

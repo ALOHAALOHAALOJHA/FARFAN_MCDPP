@@ -27,8 +27,6 @@ Refactored Solution:
 
 from __future__ import annotations
 
-from typing import Dict
-
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -85,13 +83,13 @@ class MechanisticEvidenceSystem(BaseModel):
         default_factory=StabilityControls,
         description="Stability controls for evidence accumulation",
     )
-    source_quality_weights: Dict[str, float] = Field(
+    source_quality_weights: dict[str, float] = Field(
         default_factory=dict, description="Quality weights for different evidence sources"
     )
 
     @field_validator("source_quality_weights")
     @classmethod
-    def validate_weights(cls, v: Dict[str, float]) -> Dict[str, float]:
+    def validate_weights(cls, v: dict[str, float]) -> dict[str, float]:
         """Ensure all weights are non-negative floats."""
         return {str(k): float(val) for k, val in v.items() if isinstance(val, (int, float))}
 
@@ -130,16 +128,16 @@ class HierarchicalContextPriors(BaseModel):
         municipio_tamano_multipliers: Multipliers by municipality size
     """
 
-    sector_multipliers: Dict[str, float] = Field(
+    sector_multipliers: dict[str, float] = Field(
         default_factory=dict, description="Multipliers by economic sector"
     )
-    municipio_tamano_multipliers: Dict[str, float] = Field(
+    municipio_tamano_multipliers: dict[str, float] = Field(
         default_factory=dict, description="Multipliers by municipality size category"
     )
 
     @field_validator("sector_multipliers", "municipio_tamano_multipliers")
     @classmethod
-    def validate_multipliers(cls, v: Dict[str, float]) -> Dict[str, float]:
+    def validate_multipliers(cls, v: dict[str, float]) -> dict[str, float]:
         """Ensure all multipliers are non-negative floats with lowercase keys."""
         return {str(k).lower(): float(val) for k, val in v.items() if isinstance(val, (int, float))}
 
@@ -178,7 +176,7 @@ class BayesianInferenceConfig(BaseModel):
     )
 
     @classmethod
-    def from_calibration_dict(cls, calibration: dict | None) -> "BayesianInferenceConfig":
+    def from_calibration_dict(cls, calibration: dict | None) -> BayesianInferenceConfig:
         """
         Create configuration from calibration dictionary.
 
@@ -204,12 +202,12 @@ class BayesianInferenceConfig(BaseModel):
 
 
 __all__ = [
-    "StabilityControls",
-    "SourceQualityWeights",
-    "MechanisticEvidenceSystem",
-    "SectorMultipliers",
-    "MunicipioTamanoMultipliers",
-    "HierarchicalContextPriors",
-    "TheoreticallyGroundedPriors",
     "BayesianInferenceConfig",
+    "HierarchicalContextPriors",
+    "MechanisticEvidenceSystem",
+    "MunicipioTamanoMultipliers",
+    "SectorMultipliers",
+    "SourceQualityWeights",
+    "StabilityControls",
+    "TheoreticallyGroundedPriors",
 ]

@@ -23,9 +23,9 @@ Run with: pytest tests/ -v --tb=long
 """
 
 __all__ = [
-    "test_contract_integrity",
-    "test_architecture_compliance",
-    "test_execution_flow",
-    "test_end_to_end",
     "test_adversarial_edge_cases",
+    "test_architecture_compliance",
+    "test_contract_integrity",
+    "test_end_to_end",
+    "test_execution_flow",
 ]

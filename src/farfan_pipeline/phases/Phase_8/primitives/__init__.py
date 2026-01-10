@@ -16,64 +16,62 @@ prevent duplication.
 """
 
 from .PHASE_8_CONSTANTS import (
-    # Phase identification
-    PHASE_NUMBER,
-    PHASE_NAME,
-    PHASE_LABEL,
-    PHASE_CODENAME,
-    # Stage definitions
-    STAGE_BASE,
-    STAGE_INIT,
-    STAGE_ENGINE,
-    STAGE_ENRICHMENT,
-    VALID_STAGES,
-    STAGE_METADATA,
-    # Module types
-    TYPE_ENGINE,
-    TYPE_ADAPTER,
-    TYPE_ENRICHER,
-    TYPE_UTILITY,
-    VALID_MODULE_TYPES,
     # Criticality levels
     CRITICALITY_CRITICAL,
     CRITICALITY_HIGH,
     CRITICALITY_MEDIUM,
-    VALID_CRITICALITY_LEVELS,
-    # Execution patterns
-    PATTERN_ON_DEMAND,
-    PATTERN_STREAMING,
-    VALID_EXECUTION_PATTERNS,
+    # Determinism
+    DEFAULT_SEED,
     # Recommendation constants
     MAX_RECOMMENDATIONS_PER_AREA,
     MIN_CONFIDENCE_THRESHOLD,
-    SIGNAL_WEIGHT_DEFAULT,
-    # Determinism
-    DEFAULT_SEED,
+    # Execution patterns
+    PATTERN_ON_DEMAND,
+    PATTERN_STREAMING,
+    PHASE_CODENAME,
+    PHASE_LABEL,
+    PHASE_NAME,
+    # Phase identification
+    PHASE_NUMBER,
     SEED_STRATEGY,
+    SIGNAL_WEIGHT_DEFAULT,
+    # Stage definitions
+    STAGE_BASE,
+    STAGE_ENGINE,
+    STAGE_ENRICHMENT,
+    STAGE_INIT,
+    STAGE_METADATA,
+    TYPE_ADAPTER,
+    # Module types
+    TYPE_ENGINE,
+    TYPE_ENRICHER,
+    TYPE_UTILITY,
+    VALID_CRITICALITY_LEVELS,
+    VALID_EXECUTION_PATTERNS,
+    VALID_MODULE_TYPES,
+    VALID_STAGES,
 )
-
+from .PHASE_8_ENUMS import (
+    HorizonType,
+    Level,
+    QualityLevel,
+    ScoreBand,
+    VarianceLevel,
+    VerificationFormat,
+)
 from .PHASE_8_TYPES import (
     # Input types
     AnalysisResultsInput,
-    PolicyContextInput,
-    SignalDataInput,
+    ClusterKey,
     # Score types
     MicroScoreKey,
-    ClusterKey,
-    # Threshold types
-    ScoreThreshold,
+    PolicyContextInput,
     # Recommendation types
     RecommendationLevel,
+    # Threshold types
+    ScoreThreshold,
+    SignalDataInput,
     VerificationType,
-)
-
-from .PHASE_8_ENUMS import (
-    Level,
-    ScoreBand,
-    VarianceLevel,
-    QualityLevel,
-    HorizonType,
-    VerificationFormat,
 )
 
 __all__ = [

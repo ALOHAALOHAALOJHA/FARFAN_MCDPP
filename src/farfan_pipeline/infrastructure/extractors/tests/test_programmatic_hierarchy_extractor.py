@@ -20,20 +20,17 @@ import string
 import tempfile
 import time
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 import pytest
 
 from farfan_pipeline.infrastructure.extractors.programmatic_hierarchy_extractor import (
     CSVSourceAdapter,
     DictSourceAdapter,
-    HierarchyError,
     HierarchyErrorType,
-    HierarchyNode,
     JSONFileSourceAdapter,
     ProgrammaticHierarchyExtractor,
 )
-
 
 # =============================================================================
 # Fixtures
@@ -47,7 +44,7 @@ def extractor() -> ProgrammaticHierarchyExtractor:
 
 
 @pytest.fixture
-def simple_hierarchy() -> List[Dict[str, Any]]:
+def simple_hierarchy() -> list[dict[str, Any]]:
     """A simple 3-level hierarchy."""
     return [
         {"id": "root", "parent_id": None, "name": "Root Program", "level": 0},
@@ -60,7 +57,7 @@ def simple_hierarchy() -> List[Dict[str, Any]]:
 
 
 @pytest.fixture
-def hierarchy_with_missing_parent() -> List[Dict[str, Any]]:
+def hierarchy_with_missing_parent() -> list[dict[str, Any]]:
     return [
         {"id": "root", "parent_id": None, "name": "Root", "level": 0},
         {"id": "child1", "parent_id": "root", "name": "Child 1", "level": 1},
@@ -69,7 +66,7 @@ def hierarchy_with_missing_parent() -> List[Dict[str, Any]]:
 
 
 @pytest.fixture
-def hierarchy_multi_root() -> List[Dict[str, Any]]:
+def hierarchy_multi_root() -> list[dict[str, Any]]:
     return [
         {"id": "root1", "parent_id": None, "name": "Root 1", "level": 0},
         {"id": "root2", "parent_id": None, "name": "Root 2", "level": 0},
@@ -83,7 +80,7 @@ def hierarchy_multi_root() -> List[Dict[str, Any]]:
 # =============================================================================
 
 
-def generate_binary_tree(depth: int) -> List[Dict[str, Any]]:
+def generate_binary_tree(depth: int) -> list[dict[str, Any]]:
     """Generate a complete binary tree of given depth (0-indexed)."""
     nodes = []
     total = (2 ** (depth + 1)) - 1
@@ -97,14 +94,14 @@ def generate_binary_tree(depth: int) -> List[Dict[str, Any]]:
     return nodes
 
 
-def generate_linear_chain(length: int) -> List[Dict[str, Any]]:
+def generate_linear_chain(length: int) -> list[dict[str, Any]]:
     return [
         {"id": f"node_{i}", "parent_id": f"node_{i-1}" if i > 0 else None, "name": f"Node {i}"}
         for i in range(length)
     ]
 
 
-def generate_wide_tree(num_children: int) -> List[Dict[str, Any]]:
+def generate_wide_tree(num_children: int) -> list[dict[str, Any]]:
     nodes = [{"id": "root", "parent_id": None, "name": "Root"}]
     nodes.extend(
         [
@@ -115,7 +112,7 @@ def generate_wide_tree(num_children: int) -> List[Dict[str, Any]]:
     return nodes
 
 
-def generate_nary_tree(branching_factor: int, depth: int) -> List[Dict[str, Any]]:
+def generate_nary_tree(branching_factor: int, depth: int) -> list[dict[str, Any]]:
     nodes = [{"id": "node_0", "parent_id": None, "name": "Root", "level": 0}]
     node_id = 1
     current_level = ["node_0"]
@@ -135,7 +132,7 @@ def generate_nary_tree(branching_factor: int, depth: int) -> List[Dict[str, Any]
 
 def generate_random_dag(
     num_nodes: int, seed: int, root_probability: float = 0.1
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     random.seed(seed)
     nodes = []
     for i in range(num_nodes):
@@ -151,7 +148,7 @@ def generate_random_dag(
 
 def generate_dag_with_cycle(
     num_nodes: int, cycle_start: int, cycle_end: int
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     """Generate a DAG with an intentional cycle by making an early node point to a later one."""
     nodes = generate_linear_chain(num_nodes)
     # Create cycle: make cycle_start's parent point to cycle_end (creates back edge)
@@ -160,7 +157,7 @@ def generate_dag_with_cycle(
     return nodes
 
 
-def generate_forest(num_trees: int, nodes_per_tree: int) -> List[Dict[str, Any]]:
+def generate_forest(num_trees: int, nodes_per_tree: int) -> list[dict[str, Any]]:
     nodes = []
     for tree in range(num_trees):
         tree_prefix = f"tree{tree}_"

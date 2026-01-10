@@ -37,9 +37,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal, Protocol, TypedDict
 
 import numpy as np
-from sentence_transformers import CrossEncoder, SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
-
 from farfan_pipeline.core.canonical_notation import (
     CANONICAL_DIMENSIONS,
     CANONICAL_POLICY_AREAS,
@@ -47,6 +44,8 @@ from farfan_pipeline.core.canonical_notation import (
     get_dimension_info,
     get_policy_description,
 )
+from sentence_transformers import CrossEncoder, SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 
 if TYPE_CHECKING:
     from collections.abc import Iterable

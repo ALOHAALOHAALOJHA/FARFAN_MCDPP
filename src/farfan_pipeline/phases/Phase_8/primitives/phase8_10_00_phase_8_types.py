@@ -12,7 +12,7 @@ and documentation purposes.
 
 from __future__ import annotations
 
-from typing import Any, TypedDict, NewType, Literal
+from typing import Any, Literal, NewType, TypedDict
 
 # ============================================================================
 # NEW TYPES (Semantic Type Aliases)
@@ -70,8 +70,8 @@ class AnalysisResultsInput(TypedDict, total=True):
     """
 
     micro_scores: dict[str, float]  # PA##-DIM## -> score (0.0-3.0)
-    cluster_data: dict[str, "ClusterDataEntry"]
-    macro_data: "MacroDataEntry"
+    cluster_data: dict[str, ClusterDataEntry]
+    macro_data: MacroDataEntry
 
 
 class ClusterDataEntry(TypedDict, total=False):
@@ -140,8 +140,8 @@ class ResponsibleSpec(TypedDict, total=False):
     role: str
     partners: list[str]
     legal_mandate: str
-    approval_chain: list["ApprovalLevel"]
-    escalation_path: "EscalationPath"
+    approval_chain: list[ApprovalLevel]
+    escalation_path: EscalationPath
 
 
 class ApprovalLevel(TypedDict, total=True):
@@ -168,7 +168,7 @@ class HorizonSpec(TypedDict, total=False):
     end: str
     start_type: str
     duration_months: int
-    milestones: list["Milestone"]
+    milestones: list[Milestone]
     dependencies: list[str]
     critical_path: bool
 
@@ -213,7 +213,7 @@ class BudgetSpec(TypedDict, total=False):
 
     estimated_cost_cop: int
     cost_breakdown: dict[str, int]
-    funding_sources: list["FundingSource"]
+    funding_sources: list[FundingSource]
     fiscal_year: int
 
 

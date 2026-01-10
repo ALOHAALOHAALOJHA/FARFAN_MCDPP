@@ -31,10 +31,11 @@ from __future__ import annotations
 import json
 import logging
 from collections import deque
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Callable, Dict, List, Optional, ClassVar
+from typing import ClassVar
 
 logger = logging.getLogger(__name__)
 
@@ -72,9 +73,9 @@ class MigrationResult:
     original_version: str
     target_version: str
     original_path: Path
-    new_path: Optional[Path] = None
-    error: Optional[str] = None
-    migration_path: List[str] = field(default_factory=list)
+    new_path: Path | None = None
+    error: str | None = None
+    migration_path: list[str] = field(default_factory=list)
 
 
 # Type alias for migration functions
@@ -117,10 +118,10 @@ class ContractMigrator:
     """
 
     # Registry of migrations: (from_version, to_version) -> migration_func
-    MIGRATIONS: ClassVar[Dict[tuple, MigrationFunc]] = {}
+    MIGRATIONS: ClassVar[dict[tuple, MigrationFunc]] = {}
 
     # Schema registry for validation
-    SCHEMAS: ClassVar[Dict[str, dict]] = {}
+    SCHEMAS: ClassVar[dict[str, dict]] = {}
 
     def __init__(self, output_suffix: str = ".migrated"):
         """
@@ -157,7 +158,7 @@ class ContractMigrator:
         logger.debug(f"Registered schema for version: {version}")
 
     def migrate_contract(
-        self, contract_path: Path, target_version: str, output_dir: Optional[Path] = None
+        self, contract_path: Path, target_version: str, output_dir: Path | None = None
     ) -> MigrationResult:
         """
         Migrate a contract file to the target version.
@@ -177,7 +178,7 @@ class ContractMigrator:
 
         try:
             # Load contract
-            with open(contract_path, "r") as f:
+            with open(contract_path) as f:
                 contract = json.load(f)
 
             original_version = contract.get("version", "unknown")
@@ -260,9 +261,9 @@ class ContractMigrator:
         self,
         directory: Path,
         target_version: str,
-        output_dir: Optional[Path] = None,
+        output_dir: Path | None = None,
         pattern: str = "*.json",
-    ) -> List[MigrationResult]:
+    ) -> list[MigrationResult]:
         """
         Migrate all contracts in a directory.
 
@@ -293,7 +294,7 @@ class ContractMigrator:
 
         return results
 
-    def _find_migration_path(self, current: str, target: str) -> Optional[List[str]]:
+    def _find_migration_path(self, current: str, target: str) -> list[str] | None:
         """
         Find the shortest migration path using BFS.
 
@@ -365,7 +366,7 @@ class ContractMigrator:
         """
         return self._find_migration_path(from_version, to_version) is not None
 
-    def get_migration_path(self, from_version: str, to_version: str) -> List[str]:
+    def get_migration_path(self, from_version: str, to_version: str) -> list[str]:
         """
         Get the migration path between versions.
 
@@ -388,7 +389,6 @@ class ContractMigrator:
 # === BUILT-IN MIGRATIONS ===
 
 import copy
-from datetime import datetime, timezone
 
 
 def migrate_v2_to_v3(contract: dict) -> dict:
@@ -408,7 +408,7 @@ def migrate_v2_to_v3(contract: dict) -> dict:
     # Add metadata
     result.setdefault("metadata", {})
     result["metadata"]["migrated_from"] = "v2"
-    result["metadata"]["migration_date"] = datetime.now(timezone.utc).isoformat()
+    result["metadata"]["migration_date"] = datetime.now(UTC).isoformat()
 
     return result
 
@@ -550,7 +550,7 @@ def migrate_contract(
 
 def migrate_all_contracts(
     directory: str | Path, target_version: str, output_dir: str | Path | None = None
-) -> List[MigrationResult]:
+) -> list[MigrationResult]:
     """
     Migrate all contracts in a directory (convenience function).
 

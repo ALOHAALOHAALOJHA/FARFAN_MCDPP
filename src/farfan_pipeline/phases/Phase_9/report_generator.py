@@ -22,10 +22,9 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
-import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_9.report_assembly import AnalysisReport
@@ -34,11 +33,11 @@ logger = logging.getLogger(__name__)
 
 __all__ = [
     "ReportGenerator",
-    "generate_markdown_report",
-    "generate_html_report",
-    "generate_pdf_report",
-    "generate_charts",
     "compute_file_sha256",
+    "generate_charts",
+    "generate_html_report",
+    "generate_markdown_report",
+    "generate_pdf_report",
 ]
 
 
@@ -177,7 +176,7 @@ class ReportGenerator:
             Manifest dictionary
         """
         manifest: dict[str, Any] = {
-            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "generated_at": datetime.now(UTC).isoformat(),
             "plan_name": self.plan_name,
             "report_id": report.metadata.report_id,
             "artifacts": {},
@@ -229,13 +228,13 @@ def generate_markdown_report(report: AnalysisReport) -> str:
         score_pct = report.macro_summary.adjusted_score * 100
         lines.extend(
             [
-                f"\n### Evaluación General\n",
+                "\n### Evaluación General\n",
                 f"**Puntuación Global:** {score_pct:.2f}%\n",
-                f"\n#### Métricas Clave\n",
+                "\n#### Métricas Clave\n",
                 f"- Posterior Global: {report.macro_summary.overall_posterior:.4f}\n",
                 f"- Puntuación Ajustada: {report.macro_summary.adjusted_score:.4f}\n",
                 f"- Contradicciones Detectadas: {report.macro_summary.contradiction_count}\n",
-                f"\n#### Penalizaciones\n",
+                "\n#### Penalizaciones\n",
                 f"- Cobertura: {report.macro_summary.coverage_penalty:.4f}\n",
                 f"- Dispersión: {report.macro_summary.dispersion_penalty:.4f}\n",
                 f"- Contradicciones: {report.macro_summary.contradiction_penalty:.4f}\n",
@@ -303,7 +302,7 @@ def generate_markdown_report(report: AnalysisReport) -> str:
         if analysis.human_answer:
             lines.append(f"\n**Respuesta:**\n\n{analysis.human_answer}\n")
         else:
-            lines.append(f"\n*Respuesta no disponible*\n")
+            lines.append("\n*Respuesta no disponible*\n")
 
         # Show patterns if any
         if analysis.patterns_applied:
@@ -461,7 +460,7 @@ def generate_pdf_report(html_content: str, output_path: Path) -> None:
         ReportGenerationError: If PDF generation fails
     """
     try:
-        from weasyprint import HTML, CSS
+        from weasyprint import CSS, HTML
     except ImportError as e:
         raise ReportGenerationError("WeasyPrint not installed. Run: pip install weasyprint") from e
 

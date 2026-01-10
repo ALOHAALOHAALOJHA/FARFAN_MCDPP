@@ -10,21 +10,18 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple
-from enum import Enum
+from typing import Any
 
 from .PHASE_1_CONSTANTS import (
-    VALID_ASSIGNMENT_METHODS,
-    ASSIGNMENT_METHOD_SEMANTIC,
-    ASSIGNMENT_METHOD_FALLBACK,
     CHUNK_ID_PATTERN,
     CHUNK_ID_PATTERN_LEGACY,
+    VALID_ASSIGNMENT_METHODS,
 )
 
 # CANONICAL TYPE IMPORTS from farfan_pipeline.core.types
 # These provide the authoritative PolicyArea and DimensionCausal enums
 try:
-    from farfan_pipeline.core.types import PolicyArea, DimensionCausal
+    from farfan_pipeline.core.types import DimensionCausal, PolicyArea
 
     CANONICAL_TYPES_AVAILABLE = True
 except ImportError:
@@ -40,10 +37,10 @@ class LanguageData:
     """
 
     primary_language: str
-    secondary_languages: List[str]
-    confidence_scores: Dict[str, float]
+    secondary_languages: list[str]
+    confidence_scores: dict[str, float]
     detection_method: str
-    normalized_text: Optional[str] = None
+    normalized_text: str | None = None
     _sealed: bool = False
 
 
@@ -53,11 +50,11 @@ class PreprocessedDoc:
     Output of SP1 - Advanced Preprocessing.
     """
 
-    tokens: List[Any] = field(default_factory=list)
-    sentences: List[Any] = field(default_factory=list)
-    paragraphs: List[Any] = field(default_factory=list)
+    tokens: list[Any] = field(default_factory=list)
+    sentences: list[Any] = field(default_factory=list)
+    paragraphs: list[Any] = field(default_factory=list)
     normalized_text: str = ""
-    original_to_normalized_mapping: Dict[Tuple[int, int], Tuple[int, int]] = field(
+    original_to_normalized_mapping: dict[tuple[int, int], tuple[int, int]] = field(
         default_factory=dict
     )
     _hash: str = ""
@@ -69,15 +66,15 @@ class StructureData:
     Output of SP2 - Structural Analysis.
     """
 
-    sections: List[Any] = field(default_factory=list)
-    hierarchy: Dict[str, Optional[str]] = field(default_factory=dict)
-    paragraph_mapping: Dict[int, str] = field(default_factory=dict)
-    unassigned_paragraphs: List[int] = field(default_factory=list)
-    tables: List[Any] = field(default_factory=list)
-    lists: List[Any] = field(default_factory=list)
+    sections: list[Any] = field(default_factory=list)
+    hierarchy: dict[str, str | None] = field(default_factory=dict)
+    paragraph_mapping: dict[int, str] = field(default_factory=dict)
+    unassigned_paragraphs: list[int] = field(default_factory=list)
+    tables: list[Any] = field(default_factory=list)
+    lists: list[Any] = field(default_factory=list)
 
     @property
-    def paragraph_to_section(self) -> Dict[int, str]:
+    def paragraph_to_section(self) -> dict[int, str]:
         """Alias for paragraph_mapping per FORCING ROUTE [EXEC-SP2-005]."""
         return self.paragraph_mapping
 
@@ -89,9 +86,9 @@ class KGNode:
     id: str
     type: str
     text: str
-    signal_tags: List[str] = field(default_factory=list)
+    signal_tags: list[str] = field(default_factory=list)
     signal_importance: float = 0.0
-    policy_area_relevance: Dict[str, float] = field(default_factory=dict)
+    policy_area_relevance: dict[str, float] = field(default_factory=dict)
 
 
 @dataclass
@@ -110,18 +107,18 @@ class KnowledgeGraph:
     Output of SP3 - Knowledge Graph Construction.
     """
 
-    nodes: List[KGNode] = field(default_factory=list)
-    edges: List[KGEdge] = field(default_factory=list)
-    span_to_node_mapping: Dict[Tuple[int, int], str] = field(default_factory=dict)
+    nodes: list[KGNode] = field(default_factory=list)
+    edges: list[KGEdge] = field(default_factory=list)
+    span_to_node_mapping: dict[tuple[int, int], str] = field(default_factory=dict)
 
 
 @dataclass
 class CausalGraph:
     """Local causal graph for a chunk."""
 
-    events: List[Any] = field(default_factory=list)
-    causes: List[Any] = field(default_factory=list)
-    effects: List[Any] = field(default_factory=list)
+    events: list[Any] = field(default_factory=list)
+    causes: list[Any] = field(default_factory=list)
+    effects: list[Any] = field(default_factory=list)
 
 
 @dataclass
@@ -150,30 +147,30 @@ class Chunk:
     text: str = ""
 
     # Type-safe enum fields for value aggregation in CPP cycle
-    policy_area: Optional[Any] = None  # PolicyArea enum when available
-    dimension: Optional[Any] = None  # DimensionCausal enum when available
+    policy_area: Any | None = None  # PolicyArea enum when available
+    dimension: Any | None = None  # DimensionCausal enum when available
 
-    text_spans: List[Tuple[int, int]] = field(default_factory=list)
-    sentence_ids: List[int] = field(default_factory=list)
-    paragraph_ids: List[int] = field(default_factory=list)
+    text_spans: list[tuple[int, int]] = field(default_factory=list)
+    sentence_ids: list[int] = field(default_factory=list)
+    paragraph_ids: list[int] = field(default_factory=list)
 
-    signal_tags: List[str] = field(default_factory=list)
-    signal_scores: Dict[str, float] = field(default_factory=dict)
+    signal_tags: list[str] = field(default_factory=list)
+    signal_scores: dict[str, float] = field(default_factory=dict)
 
     # Traceability fields (SPEC-002)
     assignment_method: str = "semantic"
     semantic_confidence: float = 0.0
 
     overlap_flag: bool = False
-    segmentation_metadata: Dict[str, Any] = field(default_factory=dict)
+    segmentation_metadata: dict[str, Any] = field(default_factory=dict)
 
     # Enrichment fields (populated in SP5-SP10)
-    causal_graph: Optional[CausalGraph] = None
-    arguments: Optional[Dict[str, Any]] = None
-    temporal_markers: Optional[Dict[str, Any]] = None
+    causal_graph: CausalGraph | None = None
+    arguments: dict[str, Any] | None = None
+    temporal_markers: dict[str, Any] | None = None
     discourse_mode: str = ""
-    rhetorical_strategies: List[str] = field(default_factory=list)
-    signal_patterns: List[str] = field(default_factory=list)
+    rhetorical_strategies: list[str] = field(default_factory=list)
+    signal_patterns: list[str] = field(default_factory=list)
 
     signal_weighted_importance: float = 0.0
     policy_area_priority: float = 0.0
@@ -181,15 +178,15 @@ class Chunk:
 
     # Questionnaire-specific fields (NEW - addresses audit findings 2.3, 2.4)
     # Stores patterns from questionnaire for this specific question
-    question_patterns: List[Dict[str, Any]] = field(default_factory=list)
+    question_patterns: list[dict[str, Any]] = field(default_factory=list)
     # Stores method_sets from questionnaire for this specific question
-    question_method_sets: List[Dict[str, Any]] = field(default_factory=list)
+    question_method_sets: list[dict[str, Any]] = field(default_factory=list)
     # Stores expected_elements from questionnaire for verification
-    expected_elements: List[Dict[str, Any]] = field(default_factory=list)
+    expected_elements: list[dict[str, Any]] = field(default_factory=list)
     # Verification result for expected_elements
-    elements_verification: Dict[str, bool] = field(default_factory=dict)
+    elements_verification: dict[str, bool] = field(default_factory=dict)
     # Method invocation results (tracks which methods were called)
-    method_invocation_results: Dict[str, Any] = field(default_factory=dict)
+    method_invocation_results: dict[str, Any] = field(default_factory=dict)
     governance_threshold: float = 0.0
 
     def __post_init__(self) -> None:
@@ -219,12 +216,12 @@ class Chunk:
 class CausalChains:
     """Output of SP5."""
 
-    chains: List[Any] = field(default_factory=list)
-    mechanisms: List[str] = field(default_factory=list)
-    per_chunk_causal: Dict[str, Any] = field(default_factory=dict)
+    chains: list[Any] = field(default_factory=list)
+    mechanisms: list[str] = field(default_factory=list)
+    per_chunk_causal: dict[str, Any] = field(default_factory=dict)
 
     @property
-    def causal_chains(self) -> List[Any]:
+    def causal_chains(self) -> list[Any]:
         """Alias per FORCING ROUTE [EXEC-SP5-002]."""
         return self.chains
 
@@ -235,7 +232,7 @@ class IntegratedCausal:
 
     global_graph: Any = None
     validated_hierarchy: bool = False
-    cross_chunk_links: List[Any] = field(default_factory=list)
+    cross_chunk_links: list[Any] = field(default_factory=list)
     teoria_cambio_status: str = ""
 
     @property
@@ -248,16 +245,16 @@ class IntegratedCausal:
 class Arguments:
     """Output of SP7."""
 
-    premises: List[Any] = field(default_factory=list)
-    conclusions: List[Any] = field(default_factory=list)
-    reasoning: List[Any] = field(default_factory=list)
-    per_chunk_args: Dict[str, Any] = field(default_factory=dict)
+    premises: list[Any] = field(default_factory=list)
+    conclusions: list[Any] = field(default_factory=list)
+    reasoning: list[Any] = field(default_factory=list)
+    per_chunk_args: dict[str, Any] = field(default_factory=dict)
 
     # Legacy field kept for backward compatibility (some modules expect a dict map).
-    arguments_map: Dict[str, Any] = field(default_factory=dict)
+    arguments_map: dict[str, Any] = field(default_factory=dict)
 
     @property
-    def argumentative_structure(self) -> Dict[str, Any]:
+    def argumentative_structure(self) -> dict[str, Any]:
         """Alias per FORCING ROUTE [EXEC-SP7-002]."""
         if self.arguments_map:
             return self.arguments_map
@@ -273,13 +270,13 @@ class Arguments:
 class Temporal:
     """Output of SP8."""
 
-    time_markers: List[Any] = field(default_factory=list)
-    sequences: List[Any] = field(default_factory=list)
-    durations: List[Any] = field(default_factory=list)
-    per_chunk_temporal: Dict[str, Any] = field(default_factory=dict)
+    time_markers: list[Any] = field(default_factory=list)
+    sequences: list[Any] = field(default_factory=list)
+    durations: list[Any] = field(default_factory=list)
+    per_chunk_temporal: dict[str, Any] = field(default_factory=dict)
 
     @property
-    def temporal_markers(self) -> List[Any]:
+    def temporal_markers(self) -> list[Any]:
         """Alias per FORCING ROUTE [EXEC-SP8-002]."""
         return self.time_markers
 
@@ -288,13 +285,13 @@ class Temporal:
 class Discourse:
     """Output of SP9."""
 
-    markers: List[Any] = field(default_factory=list)
-    patterns: List[Any] = field(default_factory=list)
-    coherence: Dict[str, Any] = field(default_factory=dict)
-    per_chunk_discourse: Dict[str, Any] = field(default_factory=dict)
+    markers: list[Any] = field(default_factory=list)
+    patterns: list[Any] = field(default_factory=list)
+    coherence: dict[str, Any] = field(default_factory=dict)
+    per_chunk_discourse: dict[str, Any] = field(default_factory=dict)
 
     @property
-    def discourse_structure(self) -> Dict[str, Any]:
+    def discourse_structure(self) -> dict[str, Any]:
         """Alias per FORCING ROUTE [EXEC-SP9-002]."""
         return {
             "markers": self.markers,
@@ -308,13 +305,13 @@ class Discourse:
 class Strategic:
     """Output of SP10."""
 
-    strategic_rank: Dict[str, int] = field(default_factory=dict)
-    priorities: List[Any] = field(default_factory=list)
-    integrated_view: Dict[str, Any] = field(default_factory=dict)
-    strategic_scores: Dict[str, Any] = field(default_factory=dict)
+    strategic_rank: dict[str, int] = field(default_factory=dict)
+    priorities: list[Any] = field(default_factory=list)
+    integrated_view: dict[str, Any] = field(default_factory=dict)
+    strategic_scores: dict[str, Any] = field(default_factory=dict)
 
     @property
-    def strategic_integration(self) -> Dict[str, float]:
+    def strategic_integration(self) -> dict[str, float]:
         """Alias per FORCING ROUTE [EXEC-SP10-002]."""
         # Prefer integrated view if present; otherwise fall back to scores.
         return self.integrated_view or self.strategic_scores  # type: ignore[return-value]
@@ -333,7 +330,7 @@ class SmartChunk:
     chunk_id: str
     text: str = ""
     chunk_type: str = "semantic"
-    source_page: Optional[int] = None
+    source_page: int | None = None
     chunk_index: int = -1
 
     # Accept explicit IDs for compatibility/tests; they are validated/overridden from chunk_id.
@@ -341,20 +338,18 @@ class SmartChunk:
     dimension_id: str = ""
 
     # Type-safe enum fields for value aggregation in CPP cycle
-    policy_area: Optional[Any] = field(default=None, init=False)  # PolicyArea enum when available
-    dimension: Optional[Any] = field(
-        default=None, init=False
-    )  # DimensionCausal enum when available
+    policy_area: Any | None = field(default=None, init=False)  # PolicyArea enum when available
+    dimension: Any | None = field(default=None, init=False)  # DimensionCausal enum when available
 
     causal_graph: CausalGraph = field(default_factory=CausalGraph)
-    temporal_markers: Dict[str, Any] = field(default_factory=dict)
-    arguments: Dict[str, Any] = field(default_factory=dict)
+    temporal_markers: dict[str, Any] = field(default_factory=dict)
+    arguments: dict[str, Any] = field(default_factory=dict)
     discourse_mode: str = "unknown"
     strategic_rank: int = 0
-    irrigation_links: List[Any] = field(default_factory=list)
+    irrigation_links: list[Any] = field(default_factory=list)
 
-    signal_tags: List[str] = field(default_factory=list)
-    signal_scores: Dict[str, float] = field(default_factory=dict)
+    signal_tags: list[str] = field(default_factory=list)
+    signal_scores: dict[str, float] = field(default_factory=dict)
     signal_version: str = "v1.0.0"
 
     # Traceability fields (SPEC-002)
@@ -432,5 +427,5 @@ class ValidationResult:
     chunk_count: int = 0
     checked_count: int = 0
     passed_count: int = 0
-    violations: List[str] = field(default_factory=list)
+    violations: list[str] = field(default_factory=list)
     pa_dim_coverage: str = "INCOMPLETE"

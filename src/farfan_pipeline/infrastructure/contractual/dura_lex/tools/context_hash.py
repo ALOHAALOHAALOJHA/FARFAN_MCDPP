@@ -1,8 +1,11 @@
 # farfan_core/farfan_core/contracts/tools/context_hash.py
 from __future__ import annotations
 
-import argparse, json, sys, pathlib
-from typing import Any, Dict, Tuple
+import argparse
+import json
+import pathlib
+import sys
+from typing import Any
 
 # Robust import of the frozen QuestionContext and the canonical digester
 try:
@@ -15,7 +18,7 @@ from farfan_pipeline.contracts.context_immutability import (
 )
 
 
-def load_json_file(path: str | None) -> Dict[str, Any]:
+def load_json_file(path: str | None) -> dict[str, Any]:
     if not path:
         return {}
     p = pathlib.Path(path).expanduser().resolve()
@@ -24,7 +27,7 @@ def load_json_file(path: str | None) -> Dict[str, Any]:
     return json.loads(p.read_text(encoding="utf-8"))
 
 
-def parse_csv_tuple(s: str | None) -> Tuple[str, ...]:
+def parse_csv_tuple(s: str | None) -> tuple[str, ...]:
     if not s:
         return tuple()
     return tuple(x.strip() for x in s.split(",") if x.strip())

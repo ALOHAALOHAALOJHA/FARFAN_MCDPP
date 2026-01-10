@@ -10,14 +10,14 @@ Date: 2026-01-09
 import json
 import time
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any
 
 from phase2_30_05_distributed_cache import IntelligentCache, cached_method
 from phase2_50_02_batch_optimizer import SmartBatchOptimizer
 from phase2_95_05_execution_predictor import PredictiveProfiler
 
 
-def load_sample_contracts(count: int = 30) -> List[Dict[str, Any]]:
+def load_sample_contracts(count: int = 30) -> list[dict[str, Any]]:
     """Load sample contracts for benchmarking."""
     contracts_dir = Path("src/farfan_pipeline/phases/Phase_2/generated_contracts")
     contracts = []
@@ -29,7 +29,7 @@ def load_sample_contracts(count: int = 30) -> List[Dict[str, Any]]:
     return contracts
 
 
-def simulate_contract_execution(contract: Dict[str, Any]) -> float:
+def simulate_contract_execution(contract: dict[str, Any]) -> float:
     """Simulate contract execution (returns time in ms)."""
     identity = contract.get("identity", {})
     method_binding = contract.get("method_binding", {})
@@ -62,7 +62,7 @@ def benchmark_cache_performance():
     print("\n[Optimized] With intelligent cache:")
 
     @cached_method(ttl=60.0, cache_instance=cache)
-    def cached_execution(contract_id: str, contract: Dict[str, Any]) -> float:
+    def cached_execution(contract_id: str, contract: dict[str, Any]) -> float:
         return simulate_contract_execution(contract)
 
     start = time.time()
@@ -78,7 +78,7 @@ def benchmark_cache_performance():
     improvement = (1 - optimized_time / baseline_time) * 100
 
     stats = cache.get_statistics()
-    print(f"\n[Results]")
+    print("\n[Results]")
     print(f"  Speedup: {speedup:.2f}x")
     print(f"  Improvement: {improvement:.1f}%")
     print(f"  Cache hit rate: {stats.hit_rate:.1%}")
@@ -131,7 +131,7 @@ def benchmark_batch_optimization():
     speedup = result.parallelization_factor
     improvement = (1 - 1 / speedup) * 100
 
-    print(f"\n[Results]")
+    print("\n[Results]")
     print(f"  Parallelization factor: {speedup:.2f}x")
     print(f"  Estimated improvement: {improvement:.1f}%")
     print(f"  Optimization overhead: {result.optimization_time_ms:.1f}ms")

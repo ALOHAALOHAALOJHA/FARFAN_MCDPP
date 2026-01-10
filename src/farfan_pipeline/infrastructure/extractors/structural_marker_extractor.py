@@ -26,15 +26,15 @@ Version: 1.0.0
 Date: 2026-01-07
 """
 
-import re
-from typing import Dict, List, Any, Optional, Tuple, Set
-from dataclasses import dataclass
-from pathlib import Path
 import logging
+import re
 from collections import defaultdict
+from dataclasses import dataclass
 from enum import Enum
+from pathlib import Path
+from typing import Any
 
-from .empirical_extractor_base import PatternBasedExtractor, ExtractionResult
+from .empirical_extractor_base import ExtractionResult, PatternBasedExtractor
 
 logger = logging.getLogger(__name__)
 
@@ -58,14 +58,14 @@ class StructuralMarker:
 
     structure_type: StructureType
     content_preview: str  # First N chars of content
-    row_count: Optional[int]  # For tables
-    column_count: Optional[int]  # For tables
-    header_level: Optional[int]  # For section headers
+    row_count: int | None  # For tables
+    column_count: int | None  # For tables
+    header_level: int | None  # For section headers
     has_numeric_data: bool
     has_percentage_data: bool
     confidence: float
-    text_span: Tuple[int, int]
-    metadata: Dict[str, Any]
+    text_span: tuple[int, int]
+    metadata: dict[str, Any]
 
 
 class StructuralMarkerExtractor(PatternBasedExtractor):
@@ -113,7 +113,7 @@ class StructuralMarkerExtractor(PatternBasedExtractor):
         "fuente de verificación",
     ]
 
-    def __init__(self, calibration_file: Optional[Path] = None):
+    def __init__(self, calibration_file: Path | None = None):
         super().__init__(
             signal_type="STRUCTURAL_MARKER",  # Must match integration_map key
             calibration_file=calibration_file,
@@ -179,14 +179,14 @@ class StructuralMarkerExtractor(PatternBasedExtractor):
         ]
         self._compiled_list_patterns = [re.compile(p, re.MULTILINE) for p in self.list_patterns]
 
-    def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
+    def extract(self, text: str, context: dict | None = None) -> ExtractionResult:
         """
         Extract structural markers from text.
         """
         if not text or not text.strip():
             return self._empty_result()
 
-        markers: List[StructuralMarker] = []
+        markers: list[StructuralMarker] = []
 
         # Detect tables
         table_markers = self._detect_tables(text)
@@ -253,7 +253,7 @@ class StructuralMarkerExtractor(PatternBasedExtractor):
 
         return result
 
-    def _detect_tables(self, text: str) -> List[StructuralMarker]:
+    def _detect_tables(self, text: str) -> list[StructuralMarker]:
         """Detect tables in text."""
         markers = []
 
@@ -302,7 +302,7 @@ class StructuralMarkerExtractor(PatternBasedExtractor):
 
         return markers
 
-    def _classify_table(self, table_text: str) -> Tuple[StructureType, float]:
+    def _classify_table(self, table_text: str) -> tuple[StructureType, float]:
         """Classify a table by its content."""
         text_lower = table_text.lower()
 
@@ -323,7 +323,7 @@ class StructuralMarkerExtractor(PatternBasedExtractor):
 
         return StructureType.GENERIC_TABLE, 0.7
 
-    def _count_table_dimensions(self, table_text: str) -> Tuple[Optional[int], Optional[int]]:
+    def _count_table_dimensions(self, table_text: str) -> tuple[int | None, int | None]:
         """Count rows and columns in a table."""
         lines = table_text.strip().split("\n")
         rows = len(lines)
@@ -340,7 +340,7 @@ class StructuralMarkerExtractor(PatternBasedExtractor):
 
         return rows if rows > 0 else None, cols
 
-    def _detect_headers(self, text: str) -> List[StructuralMarker]:
+    def _detect_headers(self, text: str) -> list[StructuralMarker]:
         """Detect section headers."""
         markers = []
 
@@ -372,7 +372,7 @@ class StructuralMarkerExtractor(PatternBasedExtractor):
 
         return markers
 
-    def _detect_lists(self, text: str) -> List[StructuralMarker]:
+    def _detect_lists(self, text: str) -> list[StructuralMarker]:
         """Detect list structures."""
         markers = []
 
@@ -432,7 +432,7 @@ class StructuralMarkerExtractor(PatternBasedExtractor):
         """Check if text contains percentage data."""
         return bool(re.search(r"\d+[.,]?\d*\s*%", text))
 
-    def _validate_extraction(self, result: ExtractionResult) -> Dict:
+    def _validate_extraction(self, result: ExtractionResult) -> dict:
         """Validate extraction."""
         return {
             "ppi_detection_adequate": result.metadata.get("ppi_tables_detected", 0) >= 1,

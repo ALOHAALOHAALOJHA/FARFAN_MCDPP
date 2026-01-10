@@ -24,17 +24,16 @@ Author: Farfan Pipeline Team
 
 from __future__ import annotations
 
-import hashlib
-import time
-import json
-import sys
-import logging
 import concurrent.futures
-from pathlib import Path
+import hashlib
+import json
+import logging
+import sys
+import time
 from collections import defaultdict
 from dataclasses import dataclass, field
-from functools import lru_cache
-from typing import TYPE_CHECKING, Any, Literal
+from pathlib import Path
+from typing import Any, Literal
 
 try:
     import blake3
@@ -84,20 +83,18 @@ except ImportError:
 
 stdlib_logger = logging.getLogger(__name__)
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
 from farfan_pipeline.infrastructure.irrigation_using_signals.ports import (
     QuestionnairePort,
-    SignalRegistryPort,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_enhancement_integrator import (
+    create_enhancement_integrator,
 )
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
     PolicyArea,
     SignalPack,
 )
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_enhancement_integrator import (
-    create_enhancement_integrator,
-    SignalEnhancementIntegrator,
-)
-
 
 # ============================================================================
 # EXCEPTIONS
@@ -1687,7 +1684,7 @@ class QuestionnaireSignalRegistry:
             return []
 
         try:
-            with open(questions_file, "r", encoding="utf-8") as f:
+            with open(questions_file, encoding="utf-8") as f:
                 data = json.load(f)
 
             metadata = data.get("policy_area_metadata", {})
@@ -1980,7 +1977,7 @@ class QuestionnaireSignalRegistry:
                         reason="QuestionNotFoundError",
                     )
                 except SignalExtractionError as e:
-                    q_issues.append(f"micro_answering: extraction error - {str(e)}")
+                    q_issues.append(f"micro_answering: extraction error - {e!s}")
                     signal_coverage["micro_answering"]["failed"] += 1
                     logger.error(
                         "signal_lookup_failed",
@@ -2024,7 +2021,7 @@ class QuestionnaireSignalRegistry:
                         reason="QuestionNotFoundError",
                     )
                 except SignalExtractionError as e:
-                    q_issues.append(f"validation: extraction error - {str(e)}")
+                    q_issues.append(f"validation: extraction error - {e!s}")
                     signal_coverage["validation"]["failed"] += 1
                     logger.error(
                         "signal_lookup_failed",
@@ -2068,7 +2065,7 @@ class QuestionnaireSignalRegistry:
                         reason="QuestionNotFoundError",
                     )
                 except SignalExtractionError as e:
-                    q_issues.append(f"scoring: extraction error - {str(e)}")
+                    q_issues.append(f"scoring: extraction error - {e!s}")
                     signal_coverage["scoring"]["failed"] += 1
                     logger.error(
                         "signal_lookup_failed",
@@ -2263,7 +2260,7 @@ class QuestionnaireSignalRegistry:
                     violations.append(f"Question {q_id}: No patterns defined")
 
             except Exception as e:
-                violations.append(f"Question {q_id}: {str(e)}")
+                violations.append(f"Question {q_id}: {e!s}")
 
         return {
             "status": "clean" if not violations else "violations_found",

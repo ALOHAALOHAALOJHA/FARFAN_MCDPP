@@ -18,10 +18,11 @@ from __future__ import annotations
 
 import hashlib
 import logging
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from enum import Enum, auto
-from typing import Callable, Final, Iterator
+from collections.abc import Callable, Iterator
+from dataclasses import dataclass
+from datetime import UTC, datetime
+from enum import Enum
+from typing import Final
 
 logger = logging.getLogger(__name__)
 
@@ -253,6 +254,6 @@ class FactFactory:
             source_method=source_method,
             content=content,
             epistemic_level=epistemic_level,
-            timestamp=datetime.now(timezone.utc),
+            timestamp=datetime.now(UTC),
             dependencies=dependencies or frozenset(),
         )

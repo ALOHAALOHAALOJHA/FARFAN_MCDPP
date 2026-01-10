@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import ClassVar, Optional
+from typing import ClassVar
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -50,11 +50,11 @@ class RuntimeConfigSchema(BaseModel):
     )
 
     # Path Configuration
-    project_root_override: Optional[str] = Field(default=None)
-    data_dir_override: Optional[str] = Field(default=None)
-    output_dir_override: Optional[str] = Field(default=None)
-    cache_dir_override: Optional[str] = Field(default=None)
-    logs_dir_override: Optional[str] = Field(default=None)
+    project_root_override: str | None = Field(default=None)
+    data_dir_override: str | None = Field(default=None)
+    output_dir_override: str | None = Field(default=None)
+    cache_dir_override: str | None = Field(default=None)
+    logs_dir_override: str | None = Field(default=None)
 
     # External Dependencies
     hf_online: bool = Field(default=False)
@@ -75,7 +75,7 @@ class RuntimeConfigSchema(BaseModel):
     }
 
     @model_validator(mode="after")
-    def validate_prod_constraints(self) -> "RuntimeConfigSchema":
+    def validate_prod_constraints(self) -> RuntimeConfigSchema:
         """Enforce PROD mode constraints."""
         if self.mode == RuntimeMode.PROD:
             violations = []
@@ -90,7 +90,7 @@ class RuntimeConfigSchema(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def validate_processing_config(self) -> "RuntimeConfigSchema":
+    def validate_processing_config(self) -> RuntimeConfigSchema:
         """Validate processing configuration parameters."""
         if self.expected_question_count <= 0:
             raise ValueError("expected_question_count must be positive")

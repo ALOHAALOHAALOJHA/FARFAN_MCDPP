@@ -32,7 +32,7 @@ Author: F.A.R.F.A.N Pipeline
 Date: 2025-12-03
 """
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 try:
@@ -96,7 +96,7 @@ def get_patterns_with_validation(
         )
         document_context = {}
 
-    validation_timestamp = datetime.now(timezone.utc).isoformat()
+    validation_timestamp = datetime.now(UTC).isoformat()
 
     pre_filter_count = len(enriched_pack.patterns) if hasattr(enriched_pack, "patterns") else 0
 
@@ -367,7 +367,7 @@ def create_precision_tracking_session(
         >>> # Use session throughout analysis...
         >>> results = finalize_precision_tracking_session(session)
     """
-    from datetime import datetime, timezone
+    from datetime import datetime
     from uuid import uuid4
 
     if session_id is None:
@@ -375,7 +375,7 @@ def create_precision_tracking_session(
 
     session = {
         "session_id": session_id,
-        "start_timestamp": datetime.now(timezone.utc).isoformat(),
+        "start_timestamp": datetime.now(UTC).isoformat(),
         "enriched_pack": enriched_pack,
         "measurements": [],
         "measurement_count": 0,
@@ -462,13 +462,13 @@ def finalize_precision_tracking_session(
         >>> results = finalize_precision_tracking_session(session)
         >>> print(results['summary'])
     """
-    from datetime import datetime, timezone
+    from datetime import datetime
 
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
         generate_precision_improvement_report,
     )
 
-    end_timestamp = datetime.now(timezone.utc).isoformat()
+    end_timestamp = datetime.now(UTC).isoformat()
     session["end_timestamp"] = end_timestamp
     session["status"] = "FINALIZED"
 
@@ -654,9 +654,9 @@ def export_precision_metrics_for_monitoring(
         >>> metrics = export_precision_metrics_for_monitoring(measurements, 'json')
     """
     import json
-    from datetime import datetime, timezone
+    from datetime import datetime
 
-    timestamp = datetime.now(timezone.utc).isoformat()
+    timestamp = datetime.now(UTC).isoformat()
 
     if not measurements:
         if output_format == "json":
@@ -711,7 +711,7 @@ def export_precision_metrics_for_monitoring(
                     "metric": "farfan.precision.target_achievement_rate",
                     "points": [
                         [
-                            int(datetime.now(timezone.utc).timestamp()),
+                            int(datetime.now(UTC).timestamp()),
                             meets_target / total,
                         ]
                     ],
@@ -720,13 +720,13 @@ def export_precision_metrics_for_monitoring(
                 },
                 {
                     "metric": "farfan.precision.avg_fp_reduction",
-                    "points": [[int(datetime.now(timezone.utc).timestamp()), avg_fp_reduction]],
+                    "points": [[int(datetime.now(UTC).timestamp()), avg_fp_reduction]],
                     "type": "gauge",
                     "tags": ["component:context_filtering"],
                 },
                 {
                     "metric": "farfan.precision.measurement_count",
-                    "points": [[int(datetime.now(timezone.utc).timestamp()), total]],
+                    "points": [[int(datetime.now(UTC).timestamp()), total]],
                     "type": "count",
                     "tags": ["component:context_filtering"],
                 },
@@ -738,12 +738,12 @@ def export_precision_metrics_for_monitoring(
 
 
 __all__ = [
+    "PRECISION_TARGET_THRESHOLD",
+    "add_measurement_to_session",
+    "compare_precision_across_policy_areas",
+    "create_precision_tracking_session",
+    "export_precision_metrics_for_monitoring",
+    "finalize_precision_tracking_session",
     "get_patterns_with_validation",
     "validate_filter_integration",
-    "create_precision_tracking_session",
-    "add_measurement_to_session",
-    "finalize_precision_tracking_session",
-    "compare_precision_across_policy_areas",
-    "export_precision_metrics_for_monitoring",
-    "PRECISION_TARGET_THRESHOLD",
 ]

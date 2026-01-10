@@ -1,4 +1,4 @@
-"""
+r"""
 Choquet Adapter - Production Integration Layer for Non-Linear Aggregation
 State-of-the-Art Mathematical Framework
 
@@ -36,14 +36,12 @@ from __future__ import annotations
 import logging
 import math
 from dataclasses import dataclass, field
-from typing import Any, Sequence, Dict, Set, Tuple, List, Callable, Optional, TYPE_CHECKING
-from itertools import combinations, chain
-from collections import defaultdict, Counter
+from itertools import combinations
+from typing import TYPE_CHECKING, Any
 
 # Cross-module integration with Uncertainty Quantification
 from farfan_pipeline.phases.Phase_4.uncertainty_quantification import (
     UncertaintyMetrics,
-    BootstrapAggregator,
 )
 
 if TYPE_CHECKING:
@@ -77,9 +75,9 @@ class InteractionStructure:
         variance_explained: Proportion of variance explained by this order
     """
 
-    mobius_transform: Dict[frozenset, float] = field(default_factory=dict)
-    shapley_values: Dict[str, float] = field(default_factory=dict)
-    interaction_indices: Dict[frozenset, float] = field(default_factory=dict)
+    mobius_transform: dict[frozenset, float] = field(default_factory=dict)
+    shapley_values: dict[str, float] = field(default_factory=dict)
+    interaction_indices: dict[frozenset, float] = field(default_factory=dict)
     order: int = 1
     variance_explained: float = 0.0
 
@@ -99,20 +97,20 @@ class ChoquetConfig:
         capacity_uncertainty: Optional uncertainty quantification for v(A)
     """
 
-    fuzzy_measure: Dict[frozenset, float]
-    mobius_transform: Dict[frozenset, float]
-    shapley_values: Dict[str, float]
-    criteria: List[str]
+    fuzzy_measure: dict[frozenset, float]
+    mobius_transform: dict[frozenset, float]
+    shapley_values: dict[str, float]
+    criteria: list[str]
     k_additive_order: int
-    constitutional_bounds: Dict[str, Tuple[float, float]]
-    capacity_uncertainty: Optional[UncertaintyMetrics] = None
+    constitutional_bounds: dict[str, tuple[float, float]]
+    capacity_uncertainty: UncertaintyMetrics | None = None
 
-    def get_capacity(self, subset: Set[str]) -> float:
+    def get_capacity(self, subset: set[str]) -> float:
         """Retrieve capacity value v(A) for any subset."""
         key = frozenset(subset)
         return self.fuzzy_measure.get(key, 0.0)
 
-    def is_valid(self) -> Tuple[bool, List[str]]:
+    def is_valid(self) -> tuple[bool, list[str]]:
         """
         Comprehensive validation of fuzzy measure constraints.
 
@@ -176,11 +174,11 @@ class CalibrationResult:
 
     final_score: float
     choquet_integral_value: float
-    fuzzy_measure: Dict[frozenset, float]
-    shapley_contributions: Dict[str, float]
-    interaction_effects: Dict[frozenset, float]
-    uncertainty_quantification: Optional[UncertaintyMetrics]
-    constitutional_compliance: Tuple[bool, List[str]]
+    fuzzy_measure: dict[frozenset, float]
+    shapley_contributions: dict[str, float]
+    interaction_effects: dict[frozenset, float]
+    uncertainty_quantification: UncertaintyMetrics | None
+    constitutional_compliance: tuple[bool, list[str]]
     computational_trace: str
 
 
@@ -195,12 +193,12 @@ class FuzzyMeasureGenerator:
     4. Interaction mining from historical signals
     """
 
-    def __init__(self, criteria: List[str]):
+    def __init__(self, criteria: list[str]):
         self.criteria = sorted(criteria)
         self.n = len(criteria)
-        self._subset_cache: Dict[int, List[frozenset]] = {}
+        self._subset_cache: dict[int, list[frozenset]] = {}
 
-    def _get_all_subsets(self, max_size: int = None) -> List[frozenset]:
+    def _get_all_subsets(self, max_size: int = None) -> list[frozenset]:
         """Generate all subsets up to specified size."""
         if max_size is None:
             max_size = self.n
@@ -217,8 +215,8 @@ class FuzzyMeasureGenerator:
 
     def generate_shapley_proportional(
         self,
-        raw_weights: Dict[str, float],
-        constitutional_bounds: Dict[str, Tuple[float, float]],
+        raw_weights: dict[str, float],
+        constitutional_bounds: dict[str, tuple[float, float]],
         interaction_strength: float = 0.0,
     ) -> ChoquetConfig:
         """
@@ -240,7 +238,7 @@ class FuzzyMeasureGenerator:
         # Step 1: Normalize to Shapley proportions
         total = sum(raw_weights.values())
         if total <= 0:
-            shapley_values = {c: 1.0 / self.n for c in self.criteria}
+            shapley_values = dict.fromkeys(self.criteria, 1.0 / self.n)
         else:
             shapley_values = {c: raw_weights.get(c, 0.0) / total for c in self.criteria}
 
@@ -255,7 +253,7 @@ class FuzzyMeasureGenerator:
             shapley_values = {c: v / total_shapley for c, v in shapley_values.items()}
 
         # Step 3: Initialize capacity for all subsets
-        fuzzy_measure: Dict[frozenset, float] = {}
+        fuzzy_measure: dict[frozenset, float] = {}
         all_subsets = self._get_all_subsets()
 
         # Singletons: v({i}) = φ_i - (n-1) * λ * I_avg
@@ -303,7 +301,7 @@ class FuzzyMeasureGenerator:
             capacity_uncertainty=None,
         )
 
-    def _enforce_monotonicity(self, measure: Dict[frozenset, float]) -> Dict[frozenset, float]:
+    def _enforce_monotonicity(self, measure: dict[frozenset, float]) -> dict[frozenset, float]:
         """Apply isotonic regression to enforce monotonicity constraints."""
         # For each subset, ensure it's ≤ all supersets
         # A simple pass: v(A) = min(v(B) for B ⊇ A) is not sufficient,
@@ -323,8 +321,7 @@ class FuzzyMeasureGenerator:
                 sub = subset - {item}
                 lower_bound = max(lower_bound, measure.get(sub, 0.0))
 
-            if measure[subset] < lower_bound:
-                measure[subset] = lower_bound
+            measure[subset] = max(measure[subset], lower_bound)
 
         # Also ensure v(A) <= 1.0
         for subset in measure:
@@ -332,7 +329,7 @@ class FuzzyMeasureGenerator:
 
         return measure
 
-    def _ensure_boundaries(self, measure: Dict[frozenset, float]) -> Dict[frozenset, float]:
+    def _ensure_boundaries(self, measure: dict[frozenset, float]) -> dict[frozenset, float]:
         """Ensure v(∅)=0 and v(N)=1."""
         all_criteria = frozenset(self.criteria)
         empty_set = frozenset()
@@ -354,9 +351,9 @@ class FuzzyMeasureGenerator:
         measure[all_criteria] = 1.0
         return measure
 
-    def _compute_mobius_transform(self, measure: Dict[frozenset, float]) -> Dict[frozenset, float]:
-        """Compute Möbius transform m(A) = Σ_{B⊆A} (-1)^(|A\B|) v(B)."""
-        mobius: Dict[frozenset, float] = {}
+    def _compute_mobius_transform(self, measure: dict[frozenset, float]) -> dict[frozenset, float]:
+        r"""Compute Möbius transform m(A) = Σ_{B⊆A} (-1)^(|A\B|) v(B)."""
+        mobius: dict[frozenset, float] = {}
         all_subsets = self._get_all_subsets()
 
         for subset in all_subsets:
@@ -375,14 +372,14 @@ class FuzzyMeasureGenerator:
         return mobius
 
     def _compute_shapley_interaction_indices(
-        self, mobius: Dict[frozenset, float]
-    ) -> Dict[frozenset, float]:
-        """
+        self, mobius: dict[frozenset, float]
+    ) -> dict[frozenset, float]:
+        r"""
         Compute Shapley interaction indices I(A) for all subsets.
 
         I(A) = Σ_{B⊆N\A} [|B|!(n-|B|-|A|)!/(n-|A|+1)!] * m(A∪B)
         """
-        indices: Dict[frozenset, float] = {}
+        indices: dict[frozenset, float] = {}
         n = self.n
 
         for subset in self._get_all_subsets():
@@ -412,8 +409,8 @@ class FuzzyMeasureGenerator:
         return indices
 
     def _compute_capacity_from_mobius(
-        self, mobius: Dict[frozenset, float]
-    ) -> Dict[frozenset, float]:
+        self, mobius: dict[frozenset, float]
+    ) -> dict[frozenset, float]:
         """Reconstruct capacity v from Möbius m: v(A) = sum_{B ⊆ A} m(B)."""
         capacity = {}
         all_subsets = self._get_all_subsets()
@@ -448,7 +445,7 @@ class ChoquetAggregator:
             raise FuzzyMeasureViolationError(f"Invalid fuzzy measure: {'; '.join(violations)}")
 
     def aggregate(
-        self, subject: str, layer_scores: Dict[str, float], metadata: Dict[str, Any] | None = None
+        self, subject: str, layer_scores: dict[str, float], metadata: dict[str, Any] | None = None
     ) -> CalibrationResult:
         """
         Execute Choquet integral aggregation with full provenance.
@@ -551,14 +548,14 @@ class ChoquetProcessingAdapter:
 
     def __init__(self, settings: AggregationSettings):
         self.settings = settings
-        self._aggregator_cache: Dict[str, ChoquetAggregator] = {}
+        self._aggregator_cache: dict[str, ChoquetAggregator] = {}
         # macro_clusters not in settings? assuming 'cluster_group_by_keys' or derived
         # Check settings structure from earlier read
         clusters = sorted(settings.macro_cluster_weights.keys())
         self._generator = FuzzyMeasureGenerator(clusters)
         self._constitutional_bounds = self._extract_constitutional_bounds()
 
-    def _extract_constitutional_bounds(self) -> Dict[str, Tuple[float, float]]:
+    def _extract_constitutional_bounds(self) -> dict[str, tuple[float, float]]:
         """
         Extract constitutional bounds from AggregationSettings.
         """
@@ -679,7 +676,7 @@ class ChoquetProcessingAdapter:
         return bic
 
     def process_macro_score(
-        self, cluster_scores: Dict[str, float], metadata: Dict[str, Any] | None = None
+        self, cluster_scores: dict[str, float], metadata: dict[str, Any] | None = None
     ) -> CalibrationResult:
         """
         Execute macro-level aggregation with full provenance and validation.

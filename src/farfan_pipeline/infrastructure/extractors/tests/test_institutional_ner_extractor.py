@@ -9,6 +9,7 @@ Date: 2026-01-06
 """
 
 import pytest
+
 from farfan_pipeline.infrastructure.extractors import (
     InstitutionalNERExtractor,
     extract_institutional_entities,

@@ -18,9 +18,10 @@ from __future__ import annotations
 
 import json
 import logging
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any
 
 try:
     import structlog
@@ -63,16 +64,16 @@ class QuestionSpec:
     scoring_modality: str = ""
 
     # Patterns for matching
-    patterns: List[Dict[str, Any]] = field(default_factory=list)
+    patterns: list[dict[str, Any]] = field(default_factory=list)
 
     # Method sets to invoke
-    method_sets: List[Dict[str, Any]] = field(default_factory=list)
+    method_sets: list[dict[str, Any]] = field(default_factory=list)
 
     # Expected elements for verification
-    expected_elements: List[Dict[str, Any]] = field(default_factory=list)
+    expected_elements: list[dict[str, Any]] = field(default_factory=list)
 
     # Failure contract
-    failure_contract: Dict[str, Any] = field(default_factory=dict)
+    failure_contract: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -87,22 +88,22 @@ class QuestionnaireMap:
     - Expected elements verification
     """
 
-    questions_by_id: Dict[str, QuestionSpec] = field(default_factory=dict)
-    questions_by_pa_dim: Dict[tuple[str, str], List[QuestionSpec]] = field(default_factory=dict)
+    questions_by_id: dict[str, QuestionSpec] = field(default_factory=dict)
+    questions_by_pa_dim: dict[tuple[str, str], list[QuestionSpec]] = field(default_factory=dict)
 
     # Method registry for invoking methods
-    method_registry: Optional[Any] = None
+    method_registry: Any | None = None
 
-    def get_question(self, question_id: str) -> Optional[QuestionSpec]:
+    def get_question(self, question_id: str) -> QuestionSpec | None:
         """Get question specification by ID."""
         return self.questions_by_id.get(question_id)
 
-    def get_questions_for_pa_dim(self, policy_area: str, dimension: str) -> List[QuestionSpec]:
+    def get_questions_for_pa_dim(self, policy_area: str, dimension: str) -> list[QuestionSpec]:
         """Get all questions for a specific PA×DIM combination."""
         key = (policy_area, dimension)
         return self.questions_by_pa_dim.get(key, [])
 
-    def get_all_question_ids(self) -> List[str]:
+    def get_all_question_ids(self) -> list[str]:
         """Get all question IDs sorted."""
         return sorted(self.questions_by_id.keys())
 
@@ -209,8 +210,8 @@ def invoke_method_set(
     chunk_text: str,
     question_spec: QuestionSpec,
     method_registry: Any,
-    method_filter: Optional[Callable[[Dict[str, Any]], bool]] = None,
-) -> Dict[str, Any]:
+    method_filter: Callable[[dict[str, Any]], bool] | None = None,
+) -> dict[str, Any]:
     """
     Invoke all method sets defined for a question.
 
@@ -290,7 +291,7 @@ def invoke_method_set(
     return results
 
 
-def verify_expected_elements(chunk_text: str, question_spec: QuestionSpec) -> Dict[str, bool]:
+def verify_expected_elements(chunk_text: str, question_spec: QuestionSpec) -> dict[str, bool]:
     """
     Verify expected elements for a question.
 
@@ -418,15 +419,15 @@ def parse_question_id(question_id: str) -> tuple[str, str, int]:
 
 
 __all__ = [
+    "NUM_DIMENSIONS",
+    "NUM_POLICY_AREAS",
+    "QUESTIONS_PER_DIMENSION",
+    "TOTAL_QUESTIONS",
     "QuestionSpec",
     "QuestionnaireMap",
-    "load_questionnaire_map",
-    "invoke_method_set",
-    "verify_expected_elements",
     "create_chunk_id_for_question",
+    "invoke_method_set",
+    "load_questionnaire_map",
     "parse_question_id",
-    "TOTAL_QUESTIONS",
-    "QUESTIONS_PER_DIMENSION",
-    "NUM_POLICY_AREAS",
-    "NUM_DIMENSIONS",
+    "verify_expected_elements",
 ]

@@ -35,8 +35,7 @@ import hashlib
 import math
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import Final, FrozenSet
-
+from typing import Final
 
 # =============================================================================
 # ENUMERATIONS
@@ -146,7 +145,7 @@ class UnitOfAnalysis:
     # Document characteristics
     plan_period_start: int  # Year, e.g., 2024
     plan_period_end: int  # Year, e.g., 2027
-    policy_area_codes: FrozenSet[str]  # e.g., {"PA01", "PA02", "PA05"}
+    policy_area_codes: frozenset[str]  # e.g., {"PA01", "PA02", "PA05"}
 
     # Data quality indicators
     data_validity_days: int = 365  # How long extracted data remains valid

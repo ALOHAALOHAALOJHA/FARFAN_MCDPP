@@ -24,7 +24,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -424,14 +424,14 @@ class MethodExpander:
         Args:
             timestamp:  ISO timestamp para trazabilidad.  Si None, se genera automáticamente.
         """
-        self.expansion_timestamp = timestamp or datetime.now(timezone.utc).isoformat()
+        self.expansion_timestamp = timestamp or datetime.now(UTC).isoformat()
         self._expansion_count = 0
 
         logger.info(f"MethodExpander initialized, version {EXPANDER_VERSION}")
 
     def expand_method(
         self,
-        assignment: "MethodAssignment",
+        assignment: MethodAssignment,
         context: dict[str, Any],
     ) -> ExpandedMethodUnit:
         """
@@ -575,7 +575,7 @@ class MethodExpander:
 
     def _derive_constraints(
         self,
-        assignment: "MethodAssignment",
+        assignment: MethodAssignment,
         context: dict[str, Any],
     ) -> tuple[str, ...]:
         """
@@ -618,7 +618,7 @@ class MethodExpander:
 
     def _derive_interaction_notes(
         self,
-        assignment: "MethodAssignment",
+        assignment: MethodAssignment,
         context: dict[str, Any],
     ) -> str:
         """
@@ -683,7 +683,7 @@ class MethodExpander:
 
     def _derive_veto_conditions(
         self,
-        assignment: "MethodAssignment",
+        assignment: MethodAssignment,
         context: dict[str, Any],
     ) -> dict[str, dict[str, Any]]:
         """

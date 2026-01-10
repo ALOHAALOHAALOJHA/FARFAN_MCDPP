@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Literal
-
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
@@ -79,7 +77,7 @@ class ProcessorConfigSchema(BaseModel):
         return v
 
     @model_validator(mode="after")
-    def validate_config_coherence(self) -> "ProcessorConfigSchema":
+    def validate_config_coherence(self) -> ProcessorConfigSchema:
         """Validate configuration coherence."""
         if self.min_sentence_length >= self.max_sentence_length:
             raise ValueError("min_sentence_length must be less than max_sentence_length")

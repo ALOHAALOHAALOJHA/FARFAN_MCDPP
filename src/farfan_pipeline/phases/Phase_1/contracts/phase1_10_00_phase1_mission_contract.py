@@ -13,7 +13,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict
 
 
 class WeightTier(Enum):
@@ -37,7 +36,7 @@ class SubphaseWeight:
 
 
 # Phase 1 Subphase Weight Specification
-PHASE1_SUBPHASE_WEIGHTS: Dict[str, SubphaseWeight] = {
+PHASE1_SUBPHASE_WEIGHTS: dict[str, SubphaseWeight] = {
     "SP0": SubphaseWeight("SP0", 900, WeightTier.STANDARD, 1.0, False, "Input validation"),
     "SP1": SubphaseWeight("SP1", 2500, WeightTier.STANDARD, 1.0, False, "Language preprocessing"),
     "SP2": SubphaseWeight("SP2", 3000, WeightTier.STANDARD, 1.0, False, "Structural analysis"),
@@ -91,8 +90,8 @@ def validate_mission_contract() -> bool:
 
 
 __all__ = [
-    "WeightTier",
-    "SubphaseWeight",
     "PHASE1_SUBPHASE_WEIGHTS",
+    "SubphaseWeight",
+    "WeightTier",
     "validate_mission_contract",
 ]

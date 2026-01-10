@@ -6,8 +6,7 @@ Owner Module: Phase 1 CPP Ingestion
 Lifecycle State: ACTIVE
 """
 
-from typing import TypedDict, List, Dict, Any, Tuple, Optional
-from typing_extensions import NotRequired
+from typing import Any, NotRequired, TypedDict
 
 
 class TruncationAuditDict(TypedDict):
@@ -38,6 +37,6 @@ class ChunkTraceability(TypedDict):
 
 
 # Type aliases
-SpanMapping = Dict[Tuple[int, int], Tuple[int, int]]
-SignalScores = Dict[str, float]
-PolicyAreaRelevance = Dict[str, float]
+SpanMapping = dict[tuple[int, int], tuple[int, int]]
+SignalScores = dict[str, float]
+PolicyAreaRelevance = dict[str, float]

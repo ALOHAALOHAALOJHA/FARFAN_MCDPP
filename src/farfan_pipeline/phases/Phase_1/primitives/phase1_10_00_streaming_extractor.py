@@ -9,8 +9,8 @@ SPEC-001: Enforces character limit with audit trail.
 SPEC-003: Streaming extraction minimizes memory footprint.
 """
 
-from typing import Generator, Tuple
 import logging
+from collections.abc import Generator
 from pathlib import Path
 
 from ..PHASE_1_CONSTANTS import PDF_EXTRACTION_CHAR_LIMIT, PHASE1_LOGGER_NAME
@@ -65,7 +65,7 @@ class StreamingPDFExtractor:
 
     def extract_with_limit(
         self, char_limit: int = PDF_EXTRACTION_CHAR_LIMIT
-    ) -> Tuple[str, int, int]:
+    ) -> tuple[str, int, int]:
         """
         Extract text up to a character limit.
 

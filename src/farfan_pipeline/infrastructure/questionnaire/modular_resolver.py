@@ -16,10 +16,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Iterable, Iterator, Sequence
+from typing import Any
 
 
 class ModularQuestionnaireError(Exception):
@@ -159,7 +160,7 @@ class QuestionnaireModularResolver:
                 "assembled_from": "modular",
                 "manifest_path": str(self.manifest_path),
                 "index_path": str(self.index_path),
-                "assembly_timestamp": datetime.now(timezone.utc).isoformat(),
+                "assembly_timestamp": datetime.now(UTC).isoformat(),
             },
         }
 
@@ -270,12 +271,12 @@ class QuestionnaireModularResolver:
 
 
 __all__ = [
-    "QuestionnaireModularResolver",
-    "QuestionnaireSlice",
     "AggregatePayload",
-    "ModularQuestionnaireError",
-    "ManifestValidationError",
-    "IndexValidationError",
     "CountMismatchError",
     "IdMismatchError",
+    "IndexValidationError",
+    "ManifestValidationError",
+    "ModularQuestionnaireError",
+    "QuestionnaireModularResolver",
+    "QuestionnaireSlice",
 ]

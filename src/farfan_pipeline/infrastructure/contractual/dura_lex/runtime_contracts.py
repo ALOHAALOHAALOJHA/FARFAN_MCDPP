@@ -8,9 +8,9 @@ This module was created to support flux/phases.py and analysis imports.
 Note: FallbackCategory is re-exported from core.runtime_config for convenience.
 """
 
-from enum import Enum, auto
 from dataclasses import dataclass
-from typing import Any, Optional
+from enum import Enum, auto
+from typing import Any
 
 
 class SegmentationMethod(Enum):
@@ -96,7 +96,7 @@ class GraphMetricsInfo:
 
     computed: bool
     networkx_available: bool
-    reason: Optional[str] = None
+    reason: str | None = None
 
 
 # Re-export FallbackCategory from runtime_config for convenience
@@ -116,10 +116,10 @@ except ImportError:
 
 
 __all__ = [
-    "SegmentationMethod",
-    "SegmentationInfo",
-    "GraphMetricsInfo",
     "CalibrationMode",
     "DocumentIdSource",
     "FallbackCategory",
+    "GraphMetricsInfo",
+    "SegmentationInfo",
+    "SegmentationMethod",
 ]

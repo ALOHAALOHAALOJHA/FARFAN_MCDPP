@@ -15,14 +15,12 @@ from __future__ import annotations
 import hashlib
 import re
 import time
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from dataclasses import dataclass
+from datetime import UTC, datetime
 from enum import Enum
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple, TypedDict, Union
+from typing import Any, TypedDict
 
 import numpy as np
-from numpy.typing import NDArray
 
 # ============================================================================
 # TYPE DEFINITIONS
@@ -82,7 +80,7 @@ class PDTQualityMetrics(TypedDict):
     boost_factor: float  # Multiplicative boost for high-quality sections
     U_total: float  # Total unit score (sum of S+M+I+P)
     I_struct: float  # Structural integrity index (0-1)
-    metadata: Dict[str, Any]  # Computation metadata
+    metadata: dict[str, Any]  # Computation metadata
 
 
 # ============================================================================
@@ -236,7 +234,7 @@ class PatternCatalog:
     ]
 
     @classmethod
-    def get_all_patterns(cls) -> Dict[MetricType, List[PatternDefinition]]:
+    def get_all_patterns(cls) -> dict[MetricType, list[PatternDefinition]]:
         """Get all patterns organized by metric type."""
         return {
             MetricType.STRUCTURE: cls.STRUCTURE_PATTERNS,
@@ -257,7 +255,7 @@ class MatchResult:
 
     metric_type: MetricType
     pattern_id: str
-    matches: List[Tuple[str, int, int]]  # (text, start, end)
+    matches: list[tuple[str, int, int]]  # (text, start, end)
     confidence: float
     weight: float
 
@@ -272,9 +270,9 @@ class PatternMatcher:
     """
 
     def __init__(self):
-        self._compiled_patterns: Dict[str, re.Pattern] = {}
-        self._pattern_defs: Dict[str, PatternDefinition] = {}
-        self._cache: Dict[str, List[MatchResult]] = {}
+        self._compiled_patterns: dict[str, re.Pattern] = {}
+        self._pattern_defs: dict[str, PatternDefinition] = {}
+        self._cache: dict[str, list[MatchResult]] = {}
         self._compile_all_patterns()
 
     def _compile_all_patterns(self) -> None:
@@ -287,7 +285,7 @@ class PatternMatcher:
                 )
                 self._pattern_defs[pattern_id] = pattern_def
 
-    def match_text(self, text: str, metric_type: Optional[MetricType] = None) -> List[MatchResult]:
+    def match_text(self, text: str, metric_type: MetricType | None = None) -> list[MatchResult]:
         """
         Match text against patterns.
 
@@ -305,7 +303,7 @@ class PatternMatcher:
         if cache_key in self._cache:
             return self._cache[cache_key]
 
-        results: List[MatchResult] = []
+        results: list[MatchResult] = []
 
         for pattern_id, compiled_pattern in self._compiled_patterns.items():
             pattern_def = self._pattern_defs[pattern_id]
@@ -343,7 +341,7 @@ class PatternMatcher:
         return results
 
     @staticmethod
-    def _calculate_confidence(matches: List[Tuple[str, int, int]], text_length: int) -> float:
+    def _calculate_confidence(matches: list[tuple[str, int, int]], text_length: int) -> float:
         """
         Calculate confidence score for matches.
 
@@ -398,7 +396,7 @@ class ScoringEngine:
 
     @classmethod
     def compute_metric_score(
-        cls, match_results: List[MatchResult], text_length: int, metric_type: MetricType
+        cls, match_results: list[MatchResult], text_length: int, metric_type: MetricType
     ) -> float:
         """
         Compute individual metric score using log-squash normalization.
@@ -491,7 +489,7 @@ class AnalysisMetadata:
     cache_hits: int
     version: str = "2.0.0"
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "timestamp": self.timestamp,
             "text_length": self.text_length,
@@ -568,7 +566,7 @@ class PDTQualityAnalyzer:
         # Create metadata
         end_time = time.perf_counter()
         metadata = AnalysisMetadata(
-            timestamp=datetime.now(timezone.utc).isoformat(),
+            timestamp=datetime.now(UTC).isoformat(),
             text_length=len(section_content),
             processing_time_ms=(end_time - start_time) * 1000,
             pattern_matches_total=sum(r.match_count for r in all_matches),
@@ -633,7 +631,7 @@ class PDTQualityAnalyzer:
             metadata={
                 "section_name": section_name,
                 "reason": reason,
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
             },
         )
 
@@ -651,7 +649,7 @@ class BoostStatistics:
     boosted_count: int
     avg_boost_factor: float
     section_metrics: PDTQualityMetrics
-    boost_distribution: Dict[str, int]  # quality_level -> count
+    boost_distribution: dict[str, int]  # quality_level -> count
 
 
 class PatternBooster:
@@ -664,10 +662,10 @@ class PatternBooster:
     @classmethod
     def apply_boost(
         cls,
-        patterns: List[Dict[str, Any]],
-        quality_map: Dict[str, PDTQualityMetrics],
-        context: Dict[str, Any],
-    ) -> Tuple[List[Dict[str, Any]], BoostStatistics]:
+        patterns: list[dict[str, Any]],
+        quality_map: dict[str, PDTQualityMetrics],
+        context: dict[str, Any],
+    ) -> tuple[list[dict[str, Any]], BoostStatistics]:
         """
         Apply quality boosting to patterns based on section quality.
 
@@ -694,7 +692,7 @@ class PatternBooster:
 
         # Apply boosting
         boosted_patterns = []
-        boost_distribution: Dict[str, int] = {}
+        boost_distribution: dict[str, int] = {}
 
         for pattern in patterns:
             boosted = pattern.copy() if isinstance(pattern, dict) else pattern
@@ -721,7 +719,7 @@ class PatternBooster:
 
     @staticmethod
     def _create_no_boost_stats(
-        pattern_count: int, reason: str, metrics: Optional[PDTQualityMetrics] = None
+        pattern_count: int, reason: str, metrics: PDTQualityMetrics | None = None
     ) -> BoostStatistics:
         """Create statistics for no-boost scenario."""
         return BoostStatistics(
@@ -758,7 +756,7 @@ class CorrelationMetrics:
     quality_correlation: float  # Point-biserial correlation
     high_quality_patterns_count: int
     retained_high_quality_count: int
-    quality_score_distribution: Dict[str, int]
+    quality_score_distribution: dict[str, int]
 
 
 class CorrelationAnalyzer:
@@ -771,9 +769,9 @@ class CorrelationAnalyzer:
     @classmethod
     def analyze_correlation(
         cls,
-        all_patterns: List[Dict[str, Any]],
-        filtered_patterns: List[Dict[str, Any]],
-        quality_map: Dict[str, PDTQualityMetrics],
+        all_patterns: list[dict[str, Any]],
+        filtered_patterns: list[dict[str, Any]],
+        quality_map: dict[str, PDTQualityMetrics],
     ) -> CorrelationMetrics:
         """
         Analyze if filtered patterns correlate with higher quality sections.
@@ -790,9 +788,9 @@ class CorrelationAnalyzer:
         # Analyze each pattern
         high_quality_total = 0
         high_quality_retained = 0
-        quality_scores: List[float] = []
-        retention_labels: List[float] = []
-        distribution: Dict[str, int] = {}
+        quality_scores: list[float] = []
+        retention_labels: list[float] = []
+        distribution: dict[str, int] = {}
 
         for pattern in all_patterns:
             quality_score = cls._get_pattern_quality(pattern, quality_map)
@@ -829,7 +827,7 @@ class CorrelationAnalyzer:
 
     @staticmethod
     def _get_pattern_quality(
-        pattern: Dict[str, Any], quality_map: Dict[str, PDTQualityMetrics]
+        pattern: dict[str, Any], quality_map: dict[str, PDTQualityMetrics]
     ) -> float:
         """Extract quality score for a pattern."""
         # Check if quality context was injected
@@ -858,7 +856,7 @@ class CorrelationAnalyzer:
             return "poor"
 
     @staticmethod
-    def _compute_correlation(quality_scores: List[float], retention_labels: List[float]) -> float:
+    def _compute_correlation(quality_scores: list[float], retention_labels: list[float]) -> float:
         """
         Compute point-biserial correlation.
 
@@ -901,8 +899,8 @@ class CorrelationAnalyzer:
 class BatchAnalysisResult:
     """Result of batch analysis operation."""
 
-    section_metrics: Dict[str, PDTQualityMetrics]
-    summary_statistics: Dict[str, Any]
+    section_metrics: dict[str, PDTQualityMetrics]
+    summary_statistics: dict[str, Any]
     processing_time_ms: float
     timestamp: str
 
@@ -915,7 +913,7 @@ class BatchAnalyzer:
     def __init__(self):
         self.analyzer = PDTQualityAnalyzer()
 
-    def analyze_sections(self, sections: Dict[str, str]) -> BatchAnalysisResult:
+    def analyze_sections(self, sections: dict[str, str]) -> BatchAnalysisResult:
         """
         Analyze multiple sections in batch.
 
@@ -927,7 +925,7 @@ class BatchAnalyzer:
         """
         start_time = time.perf_counter()
 
-        section_metrics: Dict[str, PDTQualityMetrics] = {}
+        section_metrics: dict[str, PDTQualityMetrics] = {}
 
         for section_id, section_text in sections.items():
             metrics = self.analyzer.analyze_section(section_text, section_id)
@@ -942,11 +940,11 @@ class BatchAnalyzer:
             section_metrics=section_metrics,
             summary_statistics=summary,
             processing_time_ms=(end_time - start_time) * 1000,
-            timestamp=datetime.now(timezone.utc).isoformat(),
+            timestamp=datetime.now(UTC).isoformat(),
         )
 
     @staticmethod
-    def _compute_summary_statistics(metrics: Dict[str, PDTQualityMetrics]) -> Dict[str, Any]:
+    def _compute_summary_statistics(metrics: dict[str, PDTQualityMetrics]) -> dict[str, Any]:
         """Compute aggregate statistics across all sections."""
         if not metrics:
             return {}
@@ -1002,14 +1000,14 @@ class MetricsExporter:
     """
 
     @staticmethod
-    def to_dict(metrics: PDTQualityMetrics) -> Dict[str, Any]:
+    def to_dict(metrics: PDTQualityMetrics) -> dict[str, Any]:
         """Convert metrics to dictionary."""
         return dict(metrics)
 
     @staticmethod
     def to_summary_dict(
         metrics: PDTQualityMetrics, include_metadata: bool = False
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Convert metrics to summary dictionary."""
         summary = {
             "quality_level": metrics["quality_level"],
@@ -1036,21 +1034,21 @@ class MetricsExporter:
     def format_report(metrics: PDTQualityMetrics, verbose: bool = False) -> str:
         """Format metrics as human-readable report."""
         report_lines = [
-            f"PDT Quality Analysis Report",
-            f"=" * 60,
+            "PDT Quality Analysis Report",
+            "=" * 60,
             f"Section: {metrics['metadata'].get('section_name', 'unknown')}",
-            f"",
+            "",
             f"Quality Level: {metrics['quality_level'].upper()}",
             f"Aggregate Score: {metrics['aggregate_quality']:.3f}",
             f"Boost Factor: {metrics['boost_factor']:.3f}x",
-            f"",
-            f"Individual Scores:",
+            "",
+            "Individual Scores:",
             f"  Structure (S):  {metrics['structure_score']:.3f}",
             f"  Mechanics (M):  {metrics['mechanics_score']:.3f}",
             f"  Integrity (I):  {metrics['integrity_score']:.3f}",
             f"  Precision (P):  {metrics['precision_score']:.3f}",
-            f"",
-            f"Derived Metrics:",
+            "",
+            "Derived Metrics:",
             f"  U_total:   {metrics['U_total']:.3f}",
             f"  I_struct:  {metrics['I_struct']:.3f}",
         ]
@@ -1059,8 +1057,8 @@ class MetricsExporter:
             meta = metrics["metadata"]
             report_lines.extend(
                 [
-                    f"",
-                    f"Analysis Metadata:",
+                    "",
+                    "Analysis Metadata:",
                     f"  Text Length: {meta.get('text_length', 0):,} chars",
                     f"  Processing Time: {meta.get('processing_time_ms', 0):.2f} ms",
                     f"  Pattern Matches: {meta.get('pattern_matches_total', 0)}",
@@ -1096,10 +1094,10 @@ def compute_pdt_section_quality(
 
 
 def apply_pdt_quality_boost(
-    patterns: List[Dict[str, Any]],
-    quality_map: Dict[str, PDTQualityMetrics],
-    context: Dict[str, Any],
-) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    patterns: list[dict[str, Any]],
+    quality_map: dict[str, PDTQualityMetrics],
+    context: dict[str, Any],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
     """
     Apply quality boosting to patterns based on section quality.
 
@@ -1129,11 +1127,11 @@ def apply_pdt_quality_boost(
 
 
 def track_pdt_precision_correlation(
-    all_patterns: List[Dict[str, Any]],
-    filtered_patterns: List[Dict[str, Any]],
-    quality_map: Dict[str, PDTQualityMetrics],
-    stats: Dict[str, Any],
-) -> Dict[str, float]:
+    all_patterns: list[dict[str, Any]],
+    filtered_patterns: list[dict[str, Any]],
+    quality_map: dict[str, PDTQualityMetrics],
+    stats: dict[str, Any],
+) -> dict[str, float]:
     """
     Analyze if filtered patterns come from higher quality sections.
 
@@ -1171,7 +1169,7 @@ class QualityValidator:
     """
 
     @staticmethod
-    def validate_metrics(metrics: PDTQualityMetrics) -> Tuple[bool, List[str]]:
+    def validate_metrics(metrics: PDTQualityMetrics) -> tuple[bool, list[str]]:
         """
         Validate quality metrics structure and values.
 
@@ -1236,7 +1234,7 @@ class QualityValidator:
         return len(errors) == 0, errors
 
     @staticmethod
-    def check_consistency(metrics: PDTQualityMetrics) -> Tuple[bool, List[str]]:
+    def check_consistency(metrics: PDTQualityMetrics) -> tuple[bool, list[str]]:
         """
         Check internal consistency of metrics.
 

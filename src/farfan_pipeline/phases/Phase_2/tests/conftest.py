@@ -11,10 +11,9 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
-from typing import Any, Generator
+from typing import Any
 
 import pytest
-
 
 # Directory constants
 PHASE_TWO_DIR = Path(__file__).resolve().parent.parent
@@ -66,7 +65,7 @@ def sample_contract_content() -> dict[str, Any] | None:
     if not contracts:
         return None
 
-    with open(contracts[0], "r", encoding="utf-8") as f:
+    with open(contracts[0], encoding="utf-8") as f:
         return json.load(f)
 
 

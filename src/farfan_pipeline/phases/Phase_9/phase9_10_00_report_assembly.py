@@ -29,7 +29,7 @@ import hashlib
 import json
 import logging
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -164,7 +164,7 @@ def utc_now_iso() -> str:
     Returns:
         ISO-8601 timestamp string (UTC timezone)
     """
-    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    return datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
 
 # ============================================================================
@@ -205,7 +205,7 @@ class ReportMetadata(BaseModel):
         try:
             dt = datetime.fromisoformat(v.replace("Z", "+00:00"))
             # Ensure UTC
-            if dt.tzinfo is None or dt.utcoffset() != timezone.utc.utcoffset(None):
+            if dt.tzinfo is None or dt.utcoffset() != UTC.utcoffset(None):
                 raise ValueError("Timestamp must be UTC")
             return v
         except (ValueError, AttributeError) as e:
@@ -284,7 +284,7 @@ class Recommendation(BaseModel):
     )
 
     @classmethod
-    def from_string(cls, text: str, source: str = "macro") -> "Recommendation":
+    def from_string(cls, text: str, source: str = "macro") -> Recommendation:
         """Parse recommendation string into structured object."""
         # Expected format: "TYPE_LEVEL: Description"
         # e.g., "CRITICAL_RISK: Immediate intervention required"
@@ -554,7 +554,7 @@ class ReportAssembler:
 
         # Generate report ID if not provided
         if report_id is None:
-            timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+            timestamp = datetime.now(UTC).strftime("%Y%m%d_%H%M%S")
             report_id = f"report_{plan_name}_{timestamp}"
 
         correlation_id = str(uuid.uuid4())
@@ -640,7 +640,6 @@ class ReportAssembler:
                 # Add to metadata
                 if metadata.metadata is None:
                     # metadata.metadata is immutable, need to recreate
-                    from dataclasses import replace
 
                     new_metadata_dict = {
                         "signal_version": "1.0.0",
@@ -708,7 +707,7 @@ class ReportAssembler:
         except Exception as e:
             # Wrap unexpected exceptions
             raise ReportAssemblyException(
-                f"Unexpected error during report assembly: {str(e)}",
+                f"Unexpected error during report assembly: {e!s}",
                 details={"error_type": type(e).__name__, "error": str(e)},
                 stage="assembly",
                 recoverable=False,
@@ -956,7 +955,7 @@ class ReportAssembler:
             raise
         except Exception as e:
             raise ReportExportError(
-                f"Failed to export report: {str(e)}",
+                f"Failed to export report: {e!s}",
                 details={"output_path": str(output_path), "format": format, "error": str(e)},
                 stage="export",
                 recoverable=True,

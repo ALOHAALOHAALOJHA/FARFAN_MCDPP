@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID
 
@@ -85,7 +85,7 @@ class SSEHub:
             except TimeoutError:
                 yield {
                     "event": "heartbeat",
-                    "data": json.dumps({"timestamp": datetime.now(timezone.utc).isoformat()}),
+                    "data": json.dumps({"timestamp": datetime.now(UTC).isoformat()}),
                 }
 
 
@@ -163,7 +163,7 @@ async def ingest_data(
                     "type": "region",
                     "id": region_id,
                     "data": region.model_dump(mode="json"),
-                    "timestamp": payload.timestamp.astimezone(timezone.utc).isoformat(),
+                    "timestamp": payload.timestamp.astimezone(UTC).isoformat(),
                 }
             )
 
@@ -186,7 +186,7 @@ async def ingest_data(
                 "municipalityId": municipality_id,
                 "regionId": region_id,
                 "runId": payload.run_id,
-                "timestamp": payload.timestamp.astimezone(timezone.utc).isoformat(),
+                "timestamp": payload.timestamp.astimezone(UTC).isoformat(),
             },
         )
 

@@ -44,15 +44,14 @@ import re
 import statistics
 import time
 from collections import defaultdict
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
 from typing import (
     Any,
     ClassVar,
-    Dict,
     Protocol,
-    Sequence,
     TypeAlias,
 )
 
@@ -146,7 +145,7 @@ class EvidenceTypeMapper:
     """
 
     # Singular (Nexus) -> Plural (Contract)
-    SINGULAR_TO_PLURAL: ClassVar[Dict[str, str]] = {
+    SINGULAR_TO_PLURAL: ClassVar[dict[str, str]] = {
         "indicador_cuantitativo": "indicadores_cuantitativos",
         "serie_temporal": "series_temporales_años",
         "monto_presupuestario": "montos_presupuestarios",
@@ -167,7 +166,7 @@ class EvidenceTypeMapper:
     }
 
     # Plural (Contract) -> Singular (Nexus)
-    PLURAL_TO_SINGULAR: ClassVar[Dict[str, str]] = {v: k for k, v in SINGULAR_TO_PLURAL.items()}
+    PLURAL_TO_SINGULAR: ClassVar[dict[str, str]] = {v: k for k, v in SINGULAR_TO_PLURAL.items()}
 
     @classmethod
     def to_contract_format(cls, evidence_type: str) -> str:
@@ -180,7 +179,7 @@ class EvidenceTypeMapper:
         return cls.PLURAL_TO_SINGULAR.get(contract_type, contract_type)
 
     @classmethod
-    def normalize_dict_keys(cls, counts: Dict[str, int]) -> Dict[str, int]:
+    def normalize_dict_keys(cls, counts: dict[str, int]) -> dict[str, int]:
         """Convert Nexus enum keys to contract format for gap detection.
 
         Example:
@@ -598,16 +597,16 @@ class EvidenceGraph:
     """
 
     __slots__ = (
-        "_nodes",
-        "_edges",
         "_adjacency",
-        "_reverse_adjacency",
-        "_type_index",
-        "_source_index",
+        "_belief_mass_adjustments",
+        "_confidence_adjustments",
+        "_edges",
         "_hash_chain",
         "_last_hash",
-        "_confidence_adjustments",
-        "_belief_mass_adjustments",
+        "_nodes",
+        "_reverse_adjacency",
+        "_source_index",
+        "_type_index",
     )
 
     def __init__(self) -> None:
@@ -930,7 +929,7 @@ class EvidenceGraph:
 
     def _topological_sort(self) -> list[EvidenceID]:
         """Topological sort of nodes (Kahn's algorithm)."""
-        in_degree: dict[EvidenceID, int] = {nid: 0 for nid in self._nodes}
+        in_degree: dict[EvidenceID, int] = dict.fromkeys(self._nodes, 0)
 
         for edge in self._edges.values():
             in_degree[edge.target_id] += 1
@@ -1348,7 +1347,7 @@ class ConsistencyRule:
                         finding_id=f"CONTRA_{edge.edge_id}",
                         severity=ValidationSeverity.WARNING,
                         code=self.code,
-                        message=f"Contradiction detected between evidence nodes",
+                        message="Contradiction detected between evidence nodes",
                         affected_nodes=[source.node_id, target.node_id],
                         remediation="Review contradictory evidence for resolution",
                     )
@@ -1418,7 +1417,7 @@ class GraphIntegrityRule:
                         finding_id=f"ORPHAN_EDGE_{edge.edge_id}",
                         severity=ValidationSeverity.ERROR,
                         code=self.code,
-                        message=f"Edge references non-existent node",
+                        message="Edge references non-existent node",
                         affected_nodes=[],
                         remediation="Remove orphan edge or add missing nodes",
                     )
@@ -1456,7 +1455,7 @@ class ColombianContextRule:
         """Load colombian_context.json file for validation."""
         try:
             if self._context_path.exists():
-                with open(self._context_path, "r", encoding="utf-8") as f:
+                with open(self._context_path, encoding="utf-8") as f:
                     self._colombian_context_data = json.load(f)
                 logger.info(
                     "colombian_context_loaded",
@@ -2655,8 +2654,8 @@ class NarrativeSynthesizer:
                         f"lo que sugiere información incompleta o ambigua."
                     )
             return (
-                f"**No se encontró evidencia explícita** que responda afirmativamente.  "
-                f"El documento analizado no contiene los elementos requeridos."
+                "**No se encontró evidencia explícita** que responda afirmativamente.  "
+                "El documento analizado no contiene los elementos requeridos."
             )
 
         elif answer_type == "quantitative":

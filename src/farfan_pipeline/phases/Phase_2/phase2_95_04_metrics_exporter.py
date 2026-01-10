@@ -31,7 +31,6 @@ from __future__ import annotations
 import logging
 import threading
 from dataclasses import dataclass
-from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +73,7 @@ class TaskMetricEvent:
     epistemic_level: str
     success: bool
     execution_time_ms: float
-    error: Optional[str] = None
+    error: str | None = None
 
 
 @dataclass
@@ -116,9 +115,9 @@ class MockMetric:
     """Mock metric for when prometheus_client is not available."""
 
     def __init__(self, *args, **kwargs):
-        self._values: Dict[tuple, float] = {}
+        self._values: dict[tuple, float] = {}
 
-    def labels(self, **kwargs) -> "MockMetric":
+    def labels(self, **kwargs) -> MockMetric:
         return self
 
     def inc(self, amount: float = 1) -> None:
@@ -458,7 +457,7 @@ class MetricsExporter:
 
 # === SINGLETON EXPORTER INSTANCE ===
 
-_metrics_exporter: Optional[MetricsExporter] = None
+_metrics_exporter: MetricsExporter | None = None
 _exporter_lock = threading.Lock()
 
 
@@ -488,7 +487,7 @@ def record_task_completion(
     epistemic_level: str,
     success: bool,
     execution_time_ms: float,
-    error: Optional[str] = None,
+    error: str | None = None,
 ) -> None:
     """
     Record task completion metrics (convenience function).

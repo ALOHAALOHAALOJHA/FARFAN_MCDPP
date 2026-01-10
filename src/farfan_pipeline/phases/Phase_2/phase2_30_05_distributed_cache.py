@@ -30,9 +30,10 @@ import logging
 import threading
 import time
 from collections import OrderedDict
-from dataclasses import dataclass, field
+from collections.abc import Callable
+from dataclasses import dataclass
 from functools import wraps
-from typing import Any, Callable, Optional, TypeVar, Generic
+from typing import Any, Generic, TypeVar
 
 logger = logging.getLogger(__name__)
 
@@ -168,7 +169,7 @@ class IntelligentCache:
         method_name: str,
         args: tuple = (),
         kwargs: dict | None = None,
-    ) -> Optional[Any]:
+    ) -> Any | None:
         """
         Retrieve value from cache.
 
@@ -338,7 +339,7 @@ class IntelligentCache:
 
 
 # Global cache instance (singleton)
-_global_cache: Optional[IntelligentCache] = None
+_global_cache: IntelligentCache | None = None
 _cache_lock = threading.Lock()
 
 

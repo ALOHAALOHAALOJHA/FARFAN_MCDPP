@@ -43,96 +43,85 @@ Version: 2.0.0
 Date: 2026-01-06
 """
 
+from .causal_verb_extractor import CausalLink, CausalVerbExtractor, extract_causal_links
 from .empirical_extractor_base import (
     EmpiricallyCalibrated,
-    PatternBasedExtractor,
     ExtractionPattern,
     ExtractionResult,
-    load_all_extractors_from_calibration,
+    PatternBasedExtractor,
     generate_test_suite,
+    load_all_extractors_from_calibration,
 )
-
+from .extractor_validator import ExtractorValidator, ValidationMetrics
 from .financial_chain_extractor import (
-    FinancialChainExtractor,
     FinancialChain,
+    FinancialChainExtractor,
     extract_financial_chains,
 )
-
-from .causal_verb_extractor import CausalVerbExtractor, CausalLink, extract_causal_links
-
 from .institutional_ner_extractor import (
-    InstitutionalNERExtractor,
     InstitutionalEntity,
+    InstitutionalNERExtractor,
 )
-
-from .quantitative_triplet_extractor import (
-    QuantitativeTripletExtractor,
-    QuantitativeTriplet,
-)
-
 from .normative_reference_extractor import (
-    NormativeReferenceExtractor,
     NormativeReference,
+    NormativeReferenceExtractor,
 )
-
-from .structural_marker_extractor import (
-    StructuralMarkerExtractor,
-    StructuralMarker,
-    StructureType,
-)
-
-from .extractor_validator import ExtractorValidator, ValidationMetrics
-
-from .programmatic_hierarchy_extractor import (
-    ProgrammaticHierarchyExtractor,
-    HierarchySourceAdapter,
-    DictSourceAdapter,
-    JSONFileSourceAdapter,
-    CSVSourceAdapter,
-    HierarchyNode,
-    HierarchyError,
-    HierarchyErrorType,
-)
-
 from .population_disaggregation_extractor import (
-    PopulationDisaggregationExtractor,
-    PopulationSourceAdapter,
-    DictPopulationAdapter,
     CSVPopulationAdapter,
-    JSONPopulationAdapter,
+    DictPopulationAdapter,
     DisaggregationAxis,
     DisaggregationError,
     DisaggregationErrorType,
     DisaggregationReport,
+    JSONPopulationAdapter,
+    PopulationDisaggregationExtractor,
     PopulationGroup,
+    PopulationSourceAdapter,
 )
-
-from .temporal_consistency_extractor import (
-    TemporalConsistencyExtractor,
-    TemporalSourceAdapter,
-    DictTemporalAdapter,
-    CSVTemporalAdapter,
-    JSONTemporalAdapter,
-    TemporalError,
-    TemporalErrorType,
-    TimeInterval,
-    TemporalGap,
-    TemporalOverlap,
-    ConsistencyReport,
+from .programmatic_hierarchy_extractor import (
+    CSVSourceAdapter,
+    DictSourceAdapter,
+    HierarchyError,
+    HierarchyErrorType,
+    HierarchyNode,
+    HierarchySourceAdapter,
+    JSONFileSourceAdapter,
+    ProgrammaticHierarchyExtractor,
 )
-
+from .quantitative_triplet_extractor import (
+    QuantitativeTriplet,
+    QuantitativeTripletExtractor,
+)
 from .semantic_relationship_extractor import (
-    SemanticRelationshipExtractor,
-    RelationshipSourceAdapter,
-    DictRelationshipAdapter,
     CSVRelationshipAdapter,
+    DictRelationshipAdapter,
     JSONRelationshipAdapter,
-    RelationshipType,
+    RelationshipCluster,
     RelationshipError,
     RelationshipErrorType,
-    SemanticRelationship,
-    RelationshipCluster,
     RelationshipReport,
+    RelationshipSourceAdapter,
+    RelationshipType,
+    SemanticRelationship,
+    SemanticRelationshipExtractor,
+)
+from .structural_marker_extractor import (
+    StructuralMarker,
+    StructuralMarkerExtractor,
+    StructureType,
+)
+from .temporal_consistency_extractor import (
+    ConsistencyReport,
+    CSVTemporalAdapter,
+    DictTemporalAdapter,
+    JSONTemporalAdapter,
+    TemporalConsistencyExtractor,
+    TemporalError,
+    TemporalErrorType,
+    TemporalGap,
+    TemporalOverlap,
+    TemporalSourceAdapter,
+    TimeInterval,
 )
 
 __version__ = "2.0.0"

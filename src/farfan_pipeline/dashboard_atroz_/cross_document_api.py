@@ -9,15 +9,14 @@ from __future__ import annotations
 
 import logging
 
-from flask import Blueprint, jsonify, request
-from pydantic import BaseModel, Field, ValidationError
-
 from farfan_pipeline.analysis.cross_document_comparative import (
     AggregationMethod,
     ComparisonDimension,
     ComparisonOperator,
     CrossDocumentAnalyzer,
 )
+from flask import Blueprint, jsonify, request
+from pydantic import BaseModel, Field, ValidationError
 
 logger = logging.getLogger(__name__)
 

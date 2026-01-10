@@ -21,18 +21,17 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
 
 from ..PHASE_4_7_CONSTANTS import (
-    QUALITY_LEVEL_EXCELENTE,
-    QUALITY_LEVEL_BUENO,
-    QUALITY_LEVEL_ACEPTABLE,
-    QUALITY_LEVEL_INSUFICIENTE,
-    QUALITY_THRESHOLD_EXCELENTE_MIN,
-    QUALITY_THRESHOLD_BUENO_MIN,
-    QUALITY_THRESHOLD_ACEPTABLE_MIN,
-    MIN_SCORE,
     MAX_SCORE,
+    MIN_SCORE,
+    QUALITY_LEVEL_ACEPTABLE,
+    QUALITY_LEVEL_BUENO,
+    QUALITY_LEVEL_EXCELENTE,
+    QUALITY_LEVEL_INSUFICIENTE,
+    QUALITY_THRESHOLD_ACEPTABLE_MIN,
+    QUALITY_THRESHOLD_BUENO_MIN,
+    QUALITY_THRESHOLD_EXCELENTE_MIN,
 )
 
 logger = logging.getLogger(__name__)
@@ -111,7 +110,7 @@ DEFAULT_THRESHOLDS = QualityLevelThresholds()
 
 def determine_quality_level(
     score: float,
-    thresholds: Optional[QualityLevelThresholds] = None,
+    thresholds: QualityLevelThresholds | None = None,
 ) -> QualityLevel:
     """
     Determine quality level from aggregated score.
@@ -150,7 +149,7 @@ def determine_quality_level(
 
 def determine_quality_level_str(
     score: float,
-    thresholds: Optional[QualityLevelThresholds] = None,
+    thresholds: QualityLevelThresholds | None = None,
 ) -> str:
     """
     Determine quality level as string from aggregated score.
@@ -168,7 +167,7 @@ def determine_quality_level_str(
 def get_quality_score_delta(
     score: float,
     target_level: QualityLevel,
-    thresholds: Optional[QualityLevelThresholds] = None,
+    thresholds: QualityLevelThresholds | None = None,
 ) -> float:
     """
     Calculate the delta between score and target quality level threshold.
@@ -202,8 +201,8 @@ def get_quality_score_delta(
 def get_quality_improvement_needed(
     score: float,
     target_level: QualityLevel,
-    thresholds: Optional[QualityLevelThresholds] = None,
-) -> Optional[float]:
+    thresholds: QualityLevelThresholds | None = None,
+) -> float | None:
     """
     Calculate improvement needed to reach target quality level.
 
@@ -225,8 +224,8 @@ def get_quality_improvement_needed(
 
 def format_quality_report(
     score: float,
-    quality_level: Optional[QualityLevel] = None,
-    thresholds: Optional[QualityLevelThresholds] = None,
+    quality_level: QualityLevel | None = None,
+    thresholds: QualityLevelThresholds | None = None,
 ) -> str:
     """
     Format a human-readable quality report.
@@ -256,12 +255,12 @@ def format_quality_report(
 
 # Export all public functions and classes
 __all__ = [
+    "DEFAULT_THRESHOLDS",
     "QualityLevel",
     "QualityLevelThresholds",
-    "DEFAULT_THRESHOLDS",
     "determine_quality_level",
     "determine_quality_level_str",
-    "get_quality_score_delta",
-    "get_quality_improvement_needed",
     "format_quality_report",
+    "get_quality_improvement_needed",
+    "get_quality_score_delta",
 ]

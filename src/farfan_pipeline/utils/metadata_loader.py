@@ -6,14 +6,14 @@ Implements fail-fast validation with version pinning, checksum verification, and
 import hashlib
 import json
 import logging
-from pathlib import Path
 from collections.abc import Callable
+from datetime import UTC
+from pathlib import Path
 from typing import Any, ParamSpec, TypeVar
 
 import yaml
 
 from farfan_pipeline.utils.paths import proj_root
-from farfan_pipeline.core.parameters import ParameterLoaderV2
 
 P = ParamSpec("P")
 R = TypeVar("R")
@@ -271,10 +271,10 @@ class MetadataLoader:
     @calibrated_method("farfan_core.utils.metadata_loader.MetadataLoader._log_error")
     def _log_error(self, rule_id: str, file_path: str, **kwargs) -> None:
         """Structured error logging"""
-        from datetime import datetime, timezone
+        from datetime import datetime
 
         log_entry = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
             "level": "ERROR",
             "rule_id": rule_id,
             "file_path": file_path,

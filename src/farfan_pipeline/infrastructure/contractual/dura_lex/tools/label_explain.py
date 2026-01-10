@@ -2,9 +2,9 @@
 """
 CLI tool for Monotone Compliance Contract (MCC) label explain
 """
-import sys
 import json
-from farfan_pipeline.contracts.monotone_compliance import MonotoneComplianceContract, Label
+
+from farfan_pipeline.contracts.monotone_compliance import Label, MonotoneComplianceContract
 
 
 def main():
