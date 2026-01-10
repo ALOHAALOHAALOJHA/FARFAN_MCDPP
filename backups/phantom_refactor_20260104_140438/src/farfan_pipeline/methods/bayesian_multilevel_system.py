@@ -39,8 +39,7 @@ from scipy import stats
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -48,35 +47,44 @@ logger = logging.getLogger(__name__)
 # ENUMERATIONS AND TYPE DEFINITIONS
 # ============================================================================
 
+
 class ValidatorType(Enum):
     """Types of validators for reconciliation layer"""
+
     RANGE = auto()
     UNIT = auto()
     PERIOD = auto()
     ENTITY = auto()
 
+
 class ProbativeTestType(Enum):
     """Taxonomy of probative tests for Bayesian updating"""
+
     STRAW_IN_WIND = "straw_in_wind"  # Weak confirmation
     HOOP_TEST = "hoop_test"  # Necessary but not sufficient
     SMOKING_GUN = "smoking_gun"  # Sufficient but not necessary
     DOUBLY_DECISIVE = "doubly_decisive"  # Both necessary and sufficient
 
+
 class PenaltyCategory(Enum):
     """Categories of penalties applied to scores"""
+
     VALIDATION_FAILURE = "validation_failure"
     DISPERSION_HIGH = "dispersion_high"
     COVERAGE_GAP = "coverage_gap"
     CONTRADICTION = "contradiction"
     PEER_DEVIATION = "peer_deviation"
 
+
 # ============================================================================
 # MICRO LEVEL: RECONCILIATION LAYER
 # ============================================================================
 
+
 @dataclass
 class ValidationRule:
     """Definition of a validation rule"""
+
     validator_type: ValidatorType
     field_name: str
     expected_range: tuple[float, float] | None = None
@@ -85,15 +93,18 @@ class ValidationRule:
     expected_entity: str | None = None
     penalty_factor: float = 0.1  # Penalty multiplier for violations
 
+
 @dataclass
 class ValidationResult:
     """Result of a validation check"""
+
     rule: ValidationRule
     passed: bool
     observed_value: Any
     expected_value: Any
     violation_severity: float  # 0.0 (no violation) to 1.0 (severe)
     penalty_applied: float
+
 
 class ReconciliationValidator:
     """
@@ -105,13 +116,16 @@ class ReconciliationValidator:
         self.rules = validation_rules
         self.logger = logging.getLogger(self.__class__.__name__)
 
-    
     def validate_range(self, value: float, rule: ValidationRule) -> ValidationResult:
         """Validate numeric value is within expected range"""
         if rule.expected_range is None:
             return ValidationResult(
-                rule=rule, passed=True, observed_value=value,
-                expected_value=None, violation_severity=0.0, penalty_applied=0.0
+                rule=rule,
+                passed=True,
+                observed_value=value,
+                expected_value=None,
+                violation_severity=0.0,
+                penalty_applied=0.0,
             )
 
         min_val, max_val = rule.expected_range
@@ -124,23 +138,29 @@ class ReconciliationValidator:
             else:
                 violation_severity = min(1.0, (value - max_val) / max(abs(max_val), 1.0))
         else:
-            violation_severity = 0.0 # Refactored
+            violation_severity = 0.0  # Refactored
 
         penalty = violation_severity * rule.penalty_factor if not passed else 0.0
 
         return ValidationResult(
-            rule=rule, passed=passed, observed_value=value,
-            expected_value=rule.expected_range, violation_severity=violation_severity,
-            penalty_applied=penalty
+            rule=rule,
+            passed=passed,
+            observed_value=value,
+            expected_value=rule.expected_range,
+            violation_severity=violation_severity,
+            penalty_applied=penalty,
         )
 
-    
     def validate_unit(self, unit: str, rule: ValidationRule) -> ValidationResult:
         """Validate unit matches expected unit"""
         if rule.expected_unit is None:
             return ValidationResult(
-                rule=rule, passed=True, observed_value=unit,
-                expected_value=None, violation_severity=0.0, penalty_applied=0.0
+                rule=rule,
+                passed=True,
+                observed_value=unit,
+                expected_value=None,
+                violation_severity=0.0,
+                penalty_applied=0.0,
             )
 
         passed = unit.lower() == rule.expected_unit.lower()
@@ -148,18 +168,24 @@ class ReconciliationValidator:
         penalty = violation_severity * rule.penalty_factor if not passed else 0.0
 
         return ValidationResult(
-            rule=rule, passed=passed, observed_value=unit,
-            expected_value=rule.expected_unit, violation_severity=violation_severity,
-            penalty_applied=penalty
+            rule=rule,
+            passed=passed,
+            observed_value=unit,
+            expected_value=rule.expected_unit,
+            violation_severity=violation_severity,
+            penalty_applied=penalty,
         )
 
-    
     def validate_period(self, period: str, rule: ValidationRule) -> ValidationResult:
         """Validate temporal period matches expected period"""
         if rule.expected_period is None:
             return ValidationResult(
-                rule=rule, passed=True, observed_value=period,
-                expected_value=None, violation_severity=0.0, penalty_applied=0.0
+                rule=rule,
+                passed=True,
+                observed_value=period,
+                expected_value=None,
+                violation_severity=0.0,
+                penalty_applied=0.0,
             )
 
         passed = period.lower() == rule.expected_period.lower()
@@ -167,18 +193,24 @@ class ReconciliationValidator:
         penalty = violation_severity * rule.penalty_factor if not passed else 0.0
 
         return ValidationResult(
-            rule=rule, passed=passed, observed_value=period,
-            expected_value=rule.expected_period, violation_severity=violation_severity,
-            penalty_applied=penalty
+            rule=rule,
+            passed=passed,
+            observed_value=period,
+            expected_value=rule.expected_period,
+            violation_severity=violation_severity,
+            penalty_applied=penalty,
         )
 
-    
     def validate_entity(self, entity: str, rule: ValidationRule) -> ValidationResult:
         """Validate entity matches expected entity"""
         if rule.expected_entity is None:
             return ValidationResult(
-                rule=rule, passed=True, observed_value=entity,
-                expected_value=None, violation_severity=0.0, penalty_applied=0.0
+                rule=rule,
+                passed=True,
+                observed_value=entity,
+                expected_value=None,
+                violation_severity=0.0,
+                penalty_applied=0.0,
             )
 
         passed = entity.lower() == rule.expected_entity.lower()
@@ -186,12 +218,14 @@ class ReconciliationValidator:
         penalty = violation_severity * rule.penalty_factor if not passed else 0.0
 
         return ValidationResult(
-            rule=rule, passed=passed, observed_value=entity,
-            expected_value=rule.expected_entity, violation_severity=violation_severity,
-            penalty_applied=penalty
+            rule=rule,
+            passed=passed,
+            observed_value=entity,
+            expected_value=rule.expected_entity,
+            violation_severity=violation_severity,
+            penalty_applied=penalty,
         )
 
-    
     def validate_data(self, data: dict[str, Any]) -> list[ValidationResult]:
         """Validate data against all rules"""
         results = []
@@ -217,24 +251,25 @@ class ReconciliationValidator:
 
         return results
 
-    
     def calculate_total_penalty(self, validation_results: list[ValidationResult]) -> float:
         """Calculate total penalty from validation results"""
         return sum(r.penalty_applied for r in validation_results)
+
 
 # ============================================================================
 # MICRO LEVEL: BAYESIAN UPDATER
 # ============================================================================
 
+
 @dataclass
 class ProbativeTest:
     """Definition of a probative test"""
+
     test_type: ProbativeTestType
     test_name: str
     evidence_strength: float  # How strong the evidence if test passes
     prior_probability: float  # Prior belief before test
 
-    
     def calculate_likelihood_ratio(self, test_passed: bool) -> float:
         """
         Calculate Bayesian likelihood ratio
@@ -255,15 +290,18 @@ class ProbativeTest:
         else:
             return 1.0
 
+
 @dataclass
 class BayesianUpdate:
     """Result of Bayesian updating"""
+
     test: ProbativeTest
     test_passed: bool
     prior: float
     likelihood_ratio: float
     posterior: float
     evidence_weight: float
+
 
 class BayesianUpdater:
     """
@@ -275,7 +313,6 @@ class BayesianUpdater:
         self.logger = logging.getLogger(self.__class__.__name__)
         self.updates: list[BayesianUpdate] = []
 
-    
     def update(self, prior: float, test: ProbativeTest, test_passed: bool) -> float:
         """
         Perform Bayesian update using probative test
@@ -310,7 +347,7 @@ class BayesianUpdater:
             prior=prior,
             likelihood_ratio=lr,
             posterior=posterior,
-            evidence_weight=evidence_weight
+            evidence_weight=evidence_weight,
         )
         self.updates.append(update)
 
@@ -322,9 +359,7 @@ class BayesianUpdater:
         return posterior
 
     def sequential_update(
-        self,
-        initial_prior: float,
-        tests: list[tuple[ProbativeTest, bool]]
+        self, initial_prior: float, tests: list[tuple[ProbativeTest, bool]]
     ) -> float:
         """Sequentially update belief through multiple tests"""
         current_belief = initial_prior
@@ -334,7 +369,6 @@ class BayesianUpdater:
 
         return current_belief
 
-    
     def _calculate_evidence_weight(self, prior: float, posterior: float) -> float:
         """Calculate evidence weight using KL divergence"""
         # Avoid log(0)
@@ -342,46 +376,54 @@ class BayesianUpdater:
         posterior = max(1e-10, min(1 - 1e-10, posterior))
 
         # KL divergence: D_KL(posterior || prior)
-        kl_div = (
-            posterior * np.log(posterior / prior) +
-            (1 - posterior) * np.log((1 - posterior) / (1 - prior))
+        kl_div = posterior * np.log(posterior / prior) + (1 - posterior) * np.log(
+            (1 - posterior) / (1 - prior)
         )
 
         return abs(kl_div)
 
-    
     def export_to_csv(self, output_path: Path) -> None:
         """Export posterior table to CSV"""
         # Delegate to factory for I/O operation
         from farfan_pipeline.analysis.factory import write_csv
 
         headers = [
-            'test_name', 'test_type', 'test_passed', 'prior',
-            'likelihood_ratio', 'posterior', 'evidence_weight'
+            "test_name",
+            "test_type",
+            "test_passed",
+            "prior",
+            "likelihood_ratio",
+            "posterior",
+            "evidence_weight",
         ]
 
         rows = []
         for update in self.updates:
-            rows.append([
-                update.test.test_name,
-                update.test.test_type.value,
-                update.test_passed,
-                f"{update.prior:.4f}",
-                f"{update.likelihood_ratio:.4f}",
-                f"{update.posterior:.4f}",
-                f"{update.evidence_weight:.4f}"
-            ])
+            rows.append(
+                [
+                    update.test.test_name,
+                    update.test.test_type.value,
+                    update.test_passed,
+                    f"{update.prior:.4f}",
+                    f"{update.likelihood_ratio:.4f}",
+                    f"{update.posterior:.4f}",
+                    f"{update.evidence_weight:.4f}",
+                ]
+            )
 
         write_csv(rows, output_path, headers=headers)
         self.logger.info(f"Exported {len(self.updates)} Bayesian updates to {output_path}")
+
 
 # ============================================================================
 # MICRO LEVEL: INTEGRATION
 # ============================================================================
 
+
 @dataclass
 class MicroLevelAnalysis:
     """Complete micro-level analysis with reconciliation and Bayesian updating"""
+
     question_id: str
     raw_score: float
     validation_results: list[ValidationResult]
@@ -391,9 +433,11 @@ class MicroLevelAnalysis:
     adjusted_score: float
     metadata: dict[str, Any] = field(default_factory=dict)
 
+
 # ============================================================================
 # MESO LEVEL: DISPERSION ENGINE
 # ============================================================================
+
 
 class DispersionEngine:
     """
@@ -405,7 +449,6 @@ class DispersionEngine:
         self.dispersion_threshold = dispersion_threshold
         self.logger = logging.getLogger(self.__class__.__name__)
 
-    
     def calculate_cv(self, scores: list[float]) -> float:
         """Calculate Coefficient of Variation (CV = std / mean)"""
         if not scores or len(scores) < 2:
@@ -420,18 +463,16 @@ class DispersionEngine:
         cv = std_score / mean_score
         return cv
 
-    
     def calculate_max_gap(self, scores: list[float]) -> float:
         """Calculate maximum gap between adjacent scores"""
         if not scores or len(scores) < 2:
             return 0.0
 
         sorted_scores = sorted(scores)
-        gaps = [sorted_scores[i+1] - sorted_scores[i] for i in range(len(sorted_scores) - 1)]
+        gaps = [sorted_scores[i + 1] - sorted_scores[i] for i in range(len(sorted_scores) - 1)]
 
         return max(gaps) if gaps else 0.0
 
-    
     def calculate_gini(self, scores: list[float]) -> float:
         """
         Calculate Gini coefficient
@@ -450,7 +491,6 @@ class DispersionEngine:
 
         return gini
 
-    
     def calculate_dispersion_penalty(self, scores: list[float]) -> tuple[float, dict[str, float]]:
         """
         Calculate dispersion penalty based on CV, max_gap, and Gini
@@ -469,13 +509,13 @@ class DispersionEngine:
         total_penalty = min(1.0, cv_penalty + gap_penalty + gini_penalty)
 
         metrics = {
-            'cv': cv,
-            'max_gap': max_gap,
-            'gini': gini,
-            'cv_penalty': cv_penalty,
-            'gap_penalty': gap_penalty,
-            'gini_penalty': gini_penalty,
-            'total_penalty': total_penalty
+            "cv": cv,
+            "max_gap": max_gap,
+            "gini": gini,
+            "cv_penalty": cv_penalty,
+            "gap_penalty": gap_penalty,
+            "gini_penalty": gini_penalty,
+            "total_penalty": total_penalty,
         }
 
         self.logger.debug(
@@ -485,21 +525,26 @@ class DispersionEngine:
 
         return total_penalty, metrics
 
+
 # ============================================================================
 # MESO LEVEL: PEER CALIBRATION
 # ============================================================================
 
+
 @dataclass
 class PeerContext:
     """Peer context for comparison"""
+
     peer_id: str
     peer_name: str
     scores: dict[str, float]  # dimension -> score
     metadata: dict[str, Any] = field(default_factory=dict)
 
+
 @dataclass
 class PeerComparison:
     """Result of peer comparison"""
+
     target_score: float
     peer_mean: float
     peer_std: float
@@ -507,6 +552,7 @@ class PeerComparison:
     percentile: float
     deviation_penalty: float
     narrative: str
+
 
 class PeerCalibrator:
     """
@@ -519,17 +565,12 @@ class PeerCalibrator:
         self.logger = logging.getLogger(self.__class__.__name__)
 
     def compare_to_peers(
-        self,
-        target_score: float,
-        peer_contexts: list[PeerContext],
-        dimension: str
+        self, target_score: float, peer_contexts: list[PeerContext], dimension: str
     ) -> PeerComparison:
         """Compare target score to peer contexts"""
         # Extract peer scores for this dimension
         peer_scores = [
-            peer.scores.get(dimension, 0.0)
-            for peer in peer_contexts
-            if dimension in peer.scores
+            peer.scores.get(dimension, 0.0) for peer in peer_contexts if dimension in peer.scores
         ]
 
         if not peer_scores:
@@ -540,7 +581,7 @@ class PeerCalibrator:
                 z_score=0.0,
                 percentile=0.5,
                 deviation_penalty=0.0,
-                narrative="No peer data available for comparison"
+                narrative="No peer data available for comparison",
             )
 
         # Calculate peer statistics
@@ -558,9 +599,7 @@ class PeerCalibrator:
         deviation_penalty = min(0.5, deviation_penalty)
 
         # Generate narrative
-        narrative = self._generate_narrative(
-            target_score, peer_mean, peer_std, z_score, percentile
-        )
+        narrative = self._generate_narrative(target_score, peer_mean, peer_std, z_score, percentile)
 
         return PeerComparison(
             target_score=target_score,
@@ -569,16 +608,11 @@ class PeerCalibrator:
             z_score=z_score,
             percentile=percentile,
             deviation_penalty=deviation_penalty,
-            narrative=narrative
+            narrative=narrative,
         )
 
     def _generate_narrative(
-        self,
-        score: float,
-        peer_mean: float,
-        peer_std: float,
-        z_score: float,
-        percentile: float
+        self, score: float, peer_mean: float, peer_std: float, z_score: float, percentile: float
     ) -> str:
         """Generate narrative hook for peer comparison"""
         # Determine performance relative to peers
@@ -613,13 +647,16 @@ class PeerCalibrator:
 
         return narrative
 
+
 # ============================================================================
 # MESO LEVEL: BAYESIAN ROLL-UP
 # ============================================================================
 
+
 @dataclass
 class MesoLevelAnalysis:
     """Complete meso-level analysis with dispersion and peer calibration"""
+
     cluster_id: str
     micro_scores: list[float]
     raw_meso_score: float
@@ -631,6 +668,7 @@ class MesoLevelAnalysis:
     final_posterior: float
     adjusted_score: float
     metadata: dict[str, Any] = field(default_factory=dict)
+
 
 class BayesianRollUp:
     """
@@ -645,7 +683,7 @@ class BayesianRollUp:
         micro_analyses: list[MicroLevelAnalysis],
         dispersion_penalty: float = 0.0,
         peer_penalty: float = 0.0,
-        additional_penalties: dict[str, float] | None = None
+        additional_penalties: dict[str, float] | None = None,
     ) -> float:
         """
         Aggregate micro-level posteriors to meso-level posterior
@@ -681,48 +719,53 @@ class BayesianRollUp:
 
         return adjusted_posterior
 
-    def export_to_csv(
-        self,
-        meso_analyses: list[MesoLevelAnalysis],
-        output_path: Path
-    ) -> None:
+    def export_to_csv(self, meso_analyses: list[MesoLevelAnalysis], output_path: Path) -> None:
         """Export meso posterior table to CSV"""
         # Delegate to factory for I/O operation
         from farfan_pipeline.analysis.factory import write_csv
 
         headers = [
-            'cluster_id', 'raw_meso_score', 'dispersion_penalty',
-            'peer_penalty', 'total_penalty', 'adjusted_score',
-            'cv', 'max_gap', 'gini'
+            "cluster_id",
+            "raw_meso_score",
+            "dispersion_penalty",
+            "peer_penalty",
+            "total_penalty",
+            "adjusted_score",
+            "cv",
+            "max_gap",
+            "gini",
         ]
 
         rows = []
         for analysis in meso_analyses:
-            rows.append([
-                analysis.cluster_id,
-                f"{analysis.raw_meso_score:.4f}",
-                f"{analysis.dispersion_penalty:.4f}",
-                f"{analysis.peer_penalty:.4f}",
-                f"{analysis.total_penalty:.4f}",
-                f"{analysis.adjusted_score:.4f}",
-                f"{analysis.dispersion_metrics.get('cv', 0.0):.4f}",
-                f"{analysis.dispersion_metrics.get('max_gap', 0.0):.4f}",
-                f"{analysis.dispersion_metrics.get('gini', 0.0):.4f}"
-            ])
+            rows.append(
+                [
+                    analysis.cluster_id,
+                    f"{analysis.raw_meso_score:.4f}",
+                    f"{analysis.dispersion_penalty:.4f}",
+                    f"{analysis.peer_penalty:.4f}",
+                    f"{analysis.total_penalty:.4f}",
+                    f"{analysis.adjusted_score:.4f}",
+                    f"{analysis.dispersion_metrics.get('cv', 0.0):.4f}",
+                    f"{analysis.dispersion_metrics.get('max_gap', 0.0):.4f}",
+                    f"{analysis.dispersion_metrics.get('gini', 0.0):.4f}",
+                ]
+            )
 
         write_csv(rows, output_path, headers=headers)
 
-        self.logger.info(
-            f"Exported {len(meso_analyses)} meso analyses to {output_path}"
-        )
+        self.logger.info(f"Exported {len(meso_analyses)} meso analyses to {output_path}")
+
 
 # ============================================================================
 # MACRO LEVEL: CONTRADICTION SCANNER
 # ============================================================================
 
+
 @dataclass
 class ContradictionDetection:
     """Detected contradiction between levels"""
+
     level_a: str  # e.g., "micro:Q001"
     level_b: str  # e.g., "meso:CL01"
     score_a: float
@@ -730,6 +773,7 @@ class ContradictionDetection:
     discrepancy: float
     severity: float  # 0.0-1.0
     description: str
+
 
 class ContradictionScanner:
     """
@@ -742,9 +786,7 @@ class ContradictionScanner:
         self.contradictions: list[ContradictionDetection] = []
 
     def scan_micro_meso(
-        self,
-        micro_analyses: list[MicroLevelAnalysis],
-        meso_analysis: MesoLevelAnalysis
+        self, micro_analyses: list[MicroLevelAnalysis], meso_analysis: MesoLevelAnalysis
     ) -> list[ContradictionDetection]:
         """Scan for contradictions between micro and meso levels"""
         contradictions = []
@@ -763,9 +805,9 @@ class ContradictionScanner:
                     discrepancy=discrepancy,
                     severity=severity,
                     description=f"Micro question {micro.question_id} score "
-                               f"({micro.adjusted_score:.2f}) differs significantly from "
-                               f"meso cluster {meso_analysis.cluster_id} "
-                               f"({meso_analysis.adjusted_score:.2f})"
+                    f"({micro.adjusted_score:.2f}) differs significantly from "
+                    f"meso cluster {meso_analysis.cluster_id} "
+                    f"({meso_analysis.adjusted_score:.2f})",
                 )
 
                 contradictions.append(contradiction)
@@ -774,9 +816,7 @@ class ContradictionScanner:
         return contradictions
 
     def scan_meso_macro(
-        self,
-        meso_analyses: list[MesoLevelAnalysis],
-        macro_score: float
+        self, meso_analyses: list[MesoLevelAnalysis], macro_score: float
     ) -> list[ContradictionDetection]:
         """Scan for contradictions between meso and macro levels"""
         contradictions = []
@@ -795,8 +835,8 @@ class ContradictionScanner:
                     discrepancy=discrepancy,
                     severity=severity,
                     description=f"Meso cluster {meso.cluster_id} score "
-                               f"({meso.adjusted_score:.2f}) differs significantly from "
-                               f"macro overall ({macro_score:.2f})"
+                    f"({meso.adjusted_score:.2f}) differs significantly from "
+                    f"macro overall ({macro_score:.2f})",
                 )
 
                 contradictions.append(contradiction)
@@ -804,7 +844,6 @@ class ContradictionScanner:
 
         return contradictions
 
-    
     def calculate_contradiction_penalty(self) -> float:
         """Calculate penalty based on detected contradictions"""
         if not self.contradictions:
@@ -818,13 +857,16 @@ class ContradictionScanner:
 
         return penalty
 
+
 # ============================================================================
 # MACRO LEVEL: BAYESIAN PORTFOLIO COMPOSER
 # ============================================================================
 
+
 @dataclass
 class MacroLevelAnalysis:
     """Complete macro-level portfolio analysis"""
+
     overall_posterior: float
     coverage_score: float
     coverage_penalty: float
@@ -838,6 +880,7 @@ class MacroLevelAnalysis:
     recommendations: list[str]
     metadata: dict[str, Any] = field(default_factory=dict)
 
+
 class BayesianPortfolioComposer:
     """
     Macro Bayesian Portfolio Composer:
@@ -848,9 +891,7 @@ class BayesianPortfolioComposer:
         self.logger = logging.getLogger(self.__class__.__name__)
 
     def calculate_coverage(
-        self,
-        questions_answered: int,
-        total_questions: int
+        self, questions_answered: int, total_questions: int
     ) -> tuple[float, float]:
         """
         Calculate coverage score and penalty
@@ -860,7 +901,7 @@ class BayesianPortfolioComposer:
 
         # Penalty increases sharply below 70% coverage
         if coverage >= 0.9:
-            penalty = 0.0 # Refactored
+            penalty = 0.0  # Refactored
         elif coverage >= 0.7:
             penalty = (0.9 - coverage) * 0.5
         else:
@@ -874,7 +915,7 @@ class BayesianPortfolioComposer:
         self,
         meso_analyses: list[MesoLevelAnalysis],
         total_questions: int,
-        contradiction_scanner: ContradictionScanner
+        contradiction_scanner: ContradictionScanner,
     ) -> MacroLevelAnalysis:
         """
         Compose macro-level portfolio from meso analyses
@@ -891,7 +932,7 @@ class BayesianPortfolioComposer:
                 total_penalty=1.0,
                 adjusted_score=0.0,
                 cluster_scores={},
-                recommendations=["No meso-level data available"]
+                recommendations=["No meso-level data available"],
             )
 
         # Calculate raw overall posterior (mean of meso scores)
@@ -906,7 +947,9 @@ class BayesianPortfolioComposer:
 
         # Calculate portfolio-level dispersion
         dispersion_engine = DispersionEngine()
-        dispersion_penalty, dispersion_metrics = dispersion_engine.calculate_dispersion_penalty(meso_scores)
+        dispersion_penalty, dispersion_metrics = dispersion_engine.calculate_dispersion_penalty(
+            meso_scores
+        )
         dispersion_score = 1.0 - dispersion_penalty
 
         # Get contradiction penalty
@@ -926,8 +969,12 @@ class BayesianPortfolioComposer:
 
         # Generate recommendations
         recommendations = self._generate_recommendations(
-            coverage_score, dispersion_score, contradiction_count,
-            coverage_penalty, dispersion_penalty, contradiction_penalty
+            coverage_score,
+            dispersion_score,
+            contradiction_count,
+            coverage_penalty,
+            dispersion_penalty,
+            contradiction_penalty,
         )
 
         self.logger.info(
@@ -951,10 +998,10 @@ class BayesianPortfolioComposer:
             cluster_scores=cluster_scores,
             recommendations=recommendations,
             metadata={
-                'dispersion_metrics': dispersion_metrics,
-                'questions_answered': questions_answered,
-                'total_questions': total_questions
-            }
+                "dispersion_metrics": dispersion_metrics,
+                "questions_answered": questions_answered,
+                "total_questions": total_questions,
+            },
         )
 
     def _generate_recommendations(
@@ -964,7 +1011,7 @@ class BayesianPortfolioComposer:
         contradiction_count: int,
         coverage_penalty: float,
         dispersion_penalty: float,
-        contradiction_penalty: float
+        contradiction_penalty: float,
     ) -> list[str]:
         """Generate strategic recommendations based on portfolio analysis"""
         recommendations = []
@@ -995,56 +1042,54 @@ class BayesianPortfolioComposer:
 
         return recommendations
 
-    def export_to_csv(
-        self,
-        macro_analysis: MacroLevelAnalysis,
-        output_path: Path
-    ) -> None:
+    def export_to_csv(self, macro_analysis: MacroLevelAnalysis, output_path: Path) -> None:
         """Export macro posterior table to CSV"""
         # Delegate to factory for I/O operation
         from farfan_pipeline.analysis.factory import write_csv
 
-        headers = ['metric', 'value', 'penalty', 'description']
+        headers = ["metric", "value", "penalty", "description"]
 
         rows = [
             [
-                'overall_posterior',
+                "overall_posterior",
                 f"{macro_analysis.overall_posterior:.4f}",
                 f"{macro_analysis.total_penalty:.4f}",
-                'Raw overall score before penalties'
+                "Raw overall score before penalties",
             ],
             [
-                'coverage',
+                "coverage",
                 f"{macro_analysis.coverage_score:.4f}",
                 f"{macro_analysis.coverage_penalty:.4f}",
-                'Question coverage ratio'
+                "Question coverage ratio",
             ],
             [
-                'dispersion',
+                "dispersion",
                 f"{macro_analysis.dispersion_score:.4f}",
                 f"{macro_analysis.dispersion_penalty:.4f}",
-                'Portfolio dispersion score'
+                "Portfolio dispersion score",
             ],
             [
-                'contradictions',
+                "contradictions",
                 str(macro_analysis.contradiction_count),
                 f"{macro_analysis.contradiction_penalty:.4f}",
-                'Number of detected contradictions'
+                "Number of detected contradictions",
             ],
             [
-                'adjusted_score',
+                "adjusted_score",
                 f"{macro_analysis.adjusted_score:.4f}",
-                '0.0000',
-                'Final penalty-adjusted score'
-            ]
+                "0.0000",
+                "Final penalty-adjusted score",
+            ],
         ]
 
         write_csv(rows, output_path, headers=headers)
         self.logger.info(f"Exported macro analysis to {output_path}")
 
+
 # ============================================================================
 # ORCHESTRATOR: COMPLETE MULTI-LEVEL PIPELINE
 # ============================================================================
+
 
 class MultiLevelBayesianOrchestrator:
     """
@@ -1054,7 +1099,7 @@ class MultiLevelBayesianOrchestrator:
     def __init__(
         self,
         validation_rules: list[ValidationRule],
-        output_dir: Path = Path("data/bayesian_outputs")
+        output_dir: Path = Path("data/bayesian_outputs"),
     ) -> None:
         self.validation_rules = validation_rules
         self.output_dir = output_dir
@@ -1076,7 +1121,7 @@ class MultiLevelBayesianOrchestrator:
         micro_data: list[dict[str, Any]],
         cluster_mapping: dict[str, list[str]],  # cluster_id -> question_ids
         peer_contexts: list[PeerContext] | None = None,
-        total_questions: int = 300
+        total_questions: int = 300,
     ) -> tuple[list[MicroLevelAnalysis], list[MesoLevelAnalysis], MacroLevelAnalysis]:
         """
         Run complete multi-level Bayesian analysis
@@ -1092,32 +1137,24 @@ class MultiLevelBayesianOrchestrator:
         micro_analyses = self._run_micro_level(micro_data)
 
         # Export micro posteriors
-        self.bayesian_updater.export_to_csv(
-            self.output_dir / "posterior_table_micro.csv"
-        )
+        self.bayesian_updater.export_to_csv(self.output_dir / "posterior_table_micro.csv")
 
         # MESO LEVEL
         self.logger.info("\n[2/3] MESO LEVEL: Dispersion + Peer Calibration + Roll-Up")
-        meso_analyses = self._run_meso_level(
-            micro_analyses, cluster_mapping, peer_contexts
-        )
+        meso_analyses = self._run_meso_level(micro_analyses, cluster_mapping, peer_contexts)
 
         # Export meso posteriors
         self.bayesian_rollup.export_to_csv(
-            meso_analyses,
-            self.output_dir / "posterior_table_meso.csv"
+            meso_analyses, self.output_dir / "posterior_table_meso.csv"
         )
 
         # MACRO LEVEL
         self.logger.info("\n[3/3] MACRO LEVEL: Contradiction Scan + Portfolio Composition")
-        macro_analysis = self._run_macro_level(
-            micro_analyses, meso_analyses, total_questions
-        )
+        macro_analysis = self._run_macro_level(micro_analyses, meso_analyses, total_questions)
 
         # Export macro posteriors
         self.portfolio_composer.export_to_csv(
-            macro_analysis,
-            self.output_dir / "posterior_table_macro.csv"
+            macro_analysis, self.output_dir / "posterior_table_macro.csv"
         )
 
         self.logger.info("\n" + "=" * 80)
@@ -1128,16 +1165,13 @@ class MultiLevelBayesianOrchestrator:
 
         return micro_analyses, meso_analyses, macro_analysis
 
-    def _run_micro_level(
-        self,
-        micro_data: list[dict[str, Any]]
-    ) -> list[MicroLevelAnalysis]:
+    def _run_micro_level(self, micro_data: list[dict[str, Any]]) -> list[MicroLevelAnalysis]:
         """Run micro-level analysis"""
         micro_analyses = []
 
         for data in micro_data:
-            question_id = data.get('question_id', 'UNKNOWN')
-            raw_score = data.get('raw_score', 0.0)
+            question_id = data.get("question_id", "UNKNOWN")
+            raw_score = data.get("raw_score", 0.0)
 
             # Reconciliation validation
             validation_results = self.reconciliation_validator.validate_data(data)
@@ -1146,12 +1180,10 @@ class MultiLevelBayesianOrchestrator:
             )
 
             # Bayesian updating (using probative tests)
-            tests = data.get('probative_tests', [])
+            tests = data.get("probative_tests", [])
             if tests:
                 initial_prior = raw_score
-                final_posterior = self.bayesian_updater.sequential_update(
-                    initial_prior, tests
-                )
+                final_posterior = self.bayesian_updater.sequential_update(initial_prior, tests)
             else:
                 final_posterior = raw_score
 
@@ -1164,9 +1196,9 @@ class MultiLevelBayesianOrchestrator:
                 raw_score=raw_score,
                 validation_results=validation_results,
                 validation_penalty=validation_penalty,
-                bayesian_updates=self.bayesian_updater.updates[-len(tests):] if tests else [],
+                bayesian_updates=self.bayesian_updater.updates[-len(tests) :] if tests else [],
                 final_posterior=final_posterior,
-                adjusted_score=adjusted_score
+                adjusted_score=adjusted_score,
             )
 
             micro_analyses.append(analysis)
@@ -1178,17 +1210,14 @@ class MultiLevelBayesianOrchestrator:
         self,
         micro_analyses: list[MicroLevelAnalysis],
         cluster_mapping: dict[str, list[str]],
-        peer_contexts: list[PeerContext] | None
+        peer_contexts: list[PeerContext] | None,
     ) -> list[MesoLevelAnalysis]:
         """Run meso-level analysis"""
         meso_analyses = []
 
         for cluster_id, question_ids in cluster_mapping.items():
             # Get micro analyses for this cluster
-            cluster_micros = [
-                m for m in micro_analyses
-                if m.question_id in question_ids
-            ]
+            cluster_micros = [m for m in micro_analyses if m.question_id in question_ids]
 
             if not cluster_micros:
                 continue
@@ -1204,7 +1233,7 @@ class MultiLevelBayesianOrchestrator:
             # Peer calibration
             raw_meso_score = np.mean(micro_scores)
             peer_comparison = None
-            peer_penalty = 0.0 # Refactored
+            peer_penalty = 0.0  # Refactored
 
             if peer_contexts:
                 peer_comparison = self.peer_calibrator.compare_to_peers(
@@ -1214,9 +1243,7 @@ class MultiLevelBayesianOrchestrator:
 
             # Bayesian roll-up
             adjusted_score = self.bayesian_rollup.aggregate_micro_to_meso(
-                cluster_micros,
-                dispersion_penalty,
-                peer_penalty
+                cluster_micros, dispersion_penalty, peer_penalty
             )
 
             total_penalty = dispersion_penalty + peer_penalty
@@ -1232,7 +1259,7 @@ class MultiLevelBayesianOrchestrator:
                 total_penalty=total_penalty,
                 final_posterior=adjusted_score,
                 adjusted_score=adjusted_score,
-                metadata={'question_ids': question_ids}  # Add question_ids to metadata
+                metadata={"question_ids": question_ids},  # Add question_ids to metadata
             )
 
             meso_analyses.append(analysis)
@@ -1244,20 +1271,17 @@ class MultiLevelBayesianOrchestrator:
         self,
         micro_analyses: list[MicroLevelAnalysis],
         meso_analyses: list[MesoLevelAnalysis],
-        total_questions: int
+        total_questions: int,
     ) -> MacroLevelAnalysis:
         """Run macro-level analysis"""
         # Scan for contradictions
         for meso in meso_analyses:
             # Get question_ids for this meso cluster from metadata or empty list
-            meso_question_ids = meso.metadata.get('question_ids', [])
+            meso_question_ids = meso.metadata.get("question_ids", [])
             if not isinstance(meso_question_ids, list):
                 meso_question_ids = []
 
-            cluster_micros = [
-                m for m in micro_analyses
-                if m.question_id in meso_question_ids
-            ]
+            cluster_micros = [m for m in micro_analyses if m.question_id in meso_question_ids]
             self.contradiction_scanner.scan_micro_meso(cluster_micros, meso)
 
         # Calculate provisional macro score
@@ -1267,9 +1291,7 @@ class MultiLevelBayesianOrchestrator:
 
         # Compose final macro portfolio
         macro_analysis = self.portfolio_composer.compose_macro_portfolio(
-            meso_analyses,
-            total_questions,
-            self.contradiction_scanner
+            meso_analyses, total_questions, self.contradiction_scanner
         )
 
         self.logger.info(f"  Detected {macro_analysis.contradiction_count} contradictions")
@@ -1277,9 +1299,11 @@ class MultiLevelBayesianOrchestrator:
 
         return macro_analysis
 
+
 # ============================================================================
 # PRIORITY 1: N1-EMP BAYESIAN EVIDENCE EXTRACTOR
 # ============================================================================
+
 
 class BayesianEvidenceExtractor:
     """
@@ -1309,27 +1333,29 @@ class BayesianEvidenceExtractor:
 
     # Patterns for detecting prior belief statements
     PRIOR_INDICATORS = [
-        r'(?:se\s+espera|se\s+asume|se\s+presume|se\s+considera)',
-        r'(?:bas[eé]ndose|con\s+base|partiendo|tomando)',
-        r'(?:inicialmente|originalmente|al\s+inicio)',
-        r'(?:hip[óo]tesis|supuesto|asunci[óo]n)',
-        r'(?:prior|a\s+priori)',
+        r"(?:se\s+espera|se\s+asume|se\s+presume|se\s+considera)",
+        r"(?:bas[eé]ndose|con\s+base|partiendo|tomando)",
+        r"(?:inicialmente|originalmente|al\s+inicio)",
+        r"(?:hip[óo]tesis|supuesto|asunci[óo]n)",
+        r"(?:prior|a\s+priori)",
     ]
 
     # Patterns for detecting likelihood evidence
     LIKELIHOOD_INDICATORS = [
-        r'(?:seg[úu]n|conforme|de\s+acuerdo)',
-        r'(?:datos|estad[íi]sticas|indicadores)',
-        r'(?:medici[óo]n|registro|reporte)',
-        r'(?:muestra|poblaci[óo]n|casos)',
-        r'(?:observado|observaci[óo]n)',
+        r"(?:seg[úu]n|conforme|de\s+acuerdo)",
+        r"(?:datos|estad[íi]sticas|indicadores)",
+        r"(?:medici[óo]n|registro|reporte)",
+        r"(?:muestra|poblaci[óo]n|casos)",
+        r"(?:observado|observaci[óo]n)",
     ]
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(self.__class__.__name__)
         # Compile regex patterns for efficiency
         self._prior_patterns = [re.compile(p, re.IGNORECASE) for p in self.PRIOR_INDICATORS]
-        self._likelihood_patterns = [re.compile(p, re.IGNORECASE) for p in self.LIKELIHOOD_INDICATORS]
+        self._likelihood_patterns = [
+            re.compile(p, re.IGNORECASE) for p in self.LIKELIHOOD_INDICATORS
+        ]
 
     def extract_prior_beliefs(self, document: dict) -> list[dict]:
         """
@@ -1365,12 +1391,14 @@ class BayesianEvidenceExtractor:
                 if pattern.search(line_stripped):
                     # Extract the prior statement
                     prior_prob = self._extract_probability(line_stripped)
-                    prior_beliefs.append({
-                        "statement": line_stripped,
-                        "prior_probability": prior_prob,
-                        "source_line": str(i),
-                        "context": self._get_context(lines, i - 1)
-                    })
+                    prior_beliefs.append(
+                        {
+                            "statement": line_stripped,
+                            "prior_probability": prior_prob,
+                            "source_line": str(i),
+                            "context": self._get_context(lines, i - 1),
+                        }
+                    )
                     break  # Only match first pattern per line
 
         self.logger.info(f"Extracted {len(prior_beliefs)} prior beliefs from document")
@@ -1413,13 +1441,15 @@ class BayesianEvidenceExtractor:
                     measurement_unit = self._extract_measurement_unit(line_stripped)
                     sample_size = self._extract_sample_size(line_stripped)
 
-                    likelihood_evidence.append({
-                        "observation": line_stripped,
-                        "likelihood_value": likelihood_val,
-                        "measurement_unit": measurement_unit,
-                        "sample_size": sample_size,
-                        "source_line": str(i)
-                    })
+                    likelihood_evidence.append(
+                        {
+                            "observation": line_stripped,
+                            "likelihood_value": likelihood_val,
+                            "measurement_unit": measurement_unit,
+                            "sample_size": sample_size,
+                            "source_line": str(i),
+                        }
+                    )
                     break  # Only match first pattern per line
 
         self.logger.info(f"Extracted {len(likelihood_evidence)} likelihood observations")
@@ -1438,7 +1468,7 @@ class BayesianEvidenceExtractor:
                 "sample_size": 0,
                 "variance": 0.0,
                 "confidence_interval": (0.0, 0.0),
-                "data_quality_score": 0.0
+                "data_quality_score": 0.0,
             }
 
         # Extract sample sizes from evidence
@@ -1461,7 +1491,7 @@ class BayesianEvidenceExtractor:
             ci_half_width = 1.96 * np.sqrt(variance / max(len(likelihood_values), 1))
             confidence_interval = (
                 max(0.0, mean_likelihood - ci_half_width),
-                min(1.0, mean_likelihood + ci_half_width)
+                min(1.0, mean_likelihood + ci_half_width),
             )
         else:
             confidence_interval = (0.0, 0.0)
@@ -1475,22 +1505,22 @@ class BayesianEvidenceExtractor:
             "sample_size": total_sample_size,
             "variance": variance,
             "confidence_interval": confidence_interval,
-            "data_quality_score": data_quality_score
+            "data_quality_score": data_quality_score,
         }
 
     def _extract_probability(self, text: str) -> float:
         """Extract prior probability from text."""
         # Look for percentage patterns
-        pct_match = re.search(r'(\d+(?:\.\d+)?)\s*%', text)
+        pct_match = re.search(r"(\d+(?:\.\d+)?)\s*%", text)
         if pct_match:
             return min(1.0, max(0.0, float(pct_match.group(1)) / 100.0))
 
         # Look for probability keywords
-        if re.search(r'(?:alta|probable|seguro|cierto)', text, re.IGNORECASE):
+        if re.search(r"(?:alta|probable|seguro|cierto)", text, re.IGNORECASE):
             return 0.75
-        elif re.search(r'(?:media|moderada|posible)', text, re.IGNORECASE):
+        elif re.search(r"(?:media|moderada|posible)", text, re.IGNORECASE):
             return 0.50
-        elif re.search(r'(?:baja|improbable|incierto|dudoso)', text, re.IGNORECASE):
+        elif re.search(r"(?:baja|improbable|incierto|dudoso)", text, re.IGNORECASE):
             return 0.25
 
         # Default neutral prior
@@ -1499,18 +1529,18 @@ class BayesianEvidenceExtractor:
     def _extract_likelihood_value(self, text: str) -> float:
         """Extract likelihood value from text."""
         # Look for percentage patterns
-        pct_match = re.search(r'(\d+(?:\.\d+)?)\s*%', text)
+        pct_match = re.search(r"(\d+(?:\.\d+)?)\s*%", text)
         if pct_match:
             return min(1.0, max(0.0, float(pct_match.group(1)) / 100.0))
 
         # Look for ratio patterns (e.g., "3 de cada 5")
-        ratio_match = re.search(r'(\d+)\s*(?:de|del?|de\s+los)\s*(\d+)', text, re.IGNORECASE)
+        ratio_match = re.search(r"(\d+)\s*(?:de|del?|de\s+los)\s*(\d+)", text, re.IGNORECASE)
         if ratio_match:
             num, denom = float(ratio_match.group(1)), float(ratio_match.group(2))
             return min(1.0, max(0.0, num / max(denom, 1.0)))
 
         # Look for decimal patterns
-        dec_match = re.search(r'(\d+(?:\.\d+)?)', text)
+        dec_match = re.search(r"(\d+(?:\.\d+)?)", text)
         if dec_match:
             val = float(dec_match.group(1))
             if val <= 1.0:
@@ -1523,27 +1553,27 @@ class BayesianEvidenceExtractor:
     def _extract_measurement_unit(self, text: str) -> str:
         """Extract measurement unit from text."""
         unit_patterns = [
-            (r'\$|COP|pesos|millones|miles', 'COP'),
-            (r'%|porcentaje|por\s+ciento', '%'),
-            (r'personas|individuos|habitantes|poblaci[óo]n', 'personas'),
-            (r'unidades|items|elementos', 'unidades'),
-            (r'años|meses|d[íi]as', 'tiempo'),
+            (r"\$|COP|pesos|millones|miles", "COP"),
+            (r"%|porcentaje|por\s+ciento", "%"),
+            (r"personas|individuos|habitantes|poblaci[óo]n", "personas"),
+            (r"unidades|items|elementos", "unidades"),
+            (r"años|meses|d[íi]as", "tiempo"),
         ]
 
         for pattern, unit in unit_patterns:
             if re.search(pattern, text, re.IGNORECASE):
                 return unit
 
-        return 'dimensionless'
+        return "dimensionless"
 
     def _extract_sample_size(self, text: str) -> int:
         """Extract sample size from text."""
         # Look for explicit sample size mentions
         patterns = [
-            r'muestra\s+(?:de\s+)?(\d+)',
-            r'n\s*=\s*(\d+)',
-            r'(\d+)\s*(?:casos|registros|observaciones|encuestados)',
-            r'poblaci[óo]n\s+(?:de\s+)?(\d+)',
+            r"muestra\s+(?:de\s+)?(\d+)",
+            r"n\s*=\s*(\d+)",
+            r"(\d+)\s*(?:casos|registros|observaciones|encuestados)",
+            r"poblaci[óo]n\s+(?:de\s+)?(\d+)",
         ]
 
         for pattern in patterns:
@@ -1560,11 +1590,7 @@ class BayesianEvidenceExtractor:
         return " ".join(lines[start:end]).strip()
 
     def _calculate_data_quality_score(
-        self,
-        sample_size: int,
-        variance: float,
-        confidence_interval: tuple,
-        evidence_count: int
+        self, sample_size: int, variance: float, confidence_interval: tuple, evidence_count: int
     ) -> float:
         """
         Calculate data quality score based on multiple factors.
@@ -1599,6 +1625,7 @@ class BayesianEvidenceExtractor:
 # PRIORITY 2: N3-AUD STATISTICAL GATE AUDITOR
 # ============================================================================
 
+
 class StatisticalGateAuditor:
     """
     N3-AUD statistical veto gate for TYPE_B contracts.
@@ -1627,7 +1654,7 @@ class StatisticalGateAuditor:
         self,
         p_value_threshold: float = 0.05,
         min_sample_size: int = 30,
-        confidence_level: float = 0.95
+        confidence_level: float = 0.95,
     ) -> None:
         self.p_value_threshold = p_value_threshold
         self.min_sample_size = min_sample_size
@@ -1664,7 +1691,7 @@ class StatisticalGateAuditor:
                 "test_statistic": 0.0,
                 "critical_value": 0.0,
                 "veto_applied": True,
-                "rationale": "Insufficient sample size for significance testing"
+                "rationale": "Insufficient sample size for significance testing",
             }
 
         # Calculate z-statistic
@@ -1689,7 +1716,7 @@ class StatisticalGateAuditor:
             "test_statistic": z_statistic,
             "critical_value": critical_value,
             "veto_applied": veto_applied,
-            "rationale": f"p-value {p_value:.4f} {'<' if is_significant else '>='} threshold {alpha:.2f}"
+            "rationale": f"p-value {p_value:.4f} {'<' if is_significant else '>='} threshold {alpha:.2f}",
         }
 
     def validate_sample_size(self, data: dict, min_size: int = 30) -> dict:
@@ -1720,7 +1747,7 @@ class StatisticalGateAuditor:
             "is_valid": is_valid,
             "veto_applied": veto_applied,
             "shortfall": shortfall,
-            "rationale": f"Sample size {sample_size} {'>=' if is_valid else '<'} minimum {min_size}"
+            "rationale": f"Sample size {sample_size} {'>=' if is_valid else '<'} minimum {min_size}",
         }
 
     def apply_statistical_veto(self, results: dict) -> dict:
@@ -1757,16 +1784,16 @@ class StatisticalGateAuditor:
         combined_confidence = 1.0
         if significance_result:
             p_value = significance_result.get("p_value", 1.0)
-            combined_confidence *= (1 - p_value)
+            combined_confidence *= 1 - p_value
         if sample_result:
             is_valid = sample_result.get("is_valid", True)
-            combined_confidence *= (1.0 if is_valid else 0.0)
+            combined_confidence *= 1.0 if is_valid else 0.0
 
         return {
             "veto_applied": veto_applied,
             "overall_status": "INVALID" if veto_applied else "VALID",
             "veto_reasons": veto_reasons,
-            "combined_confidence": combined_confidence
+            "combined_confidence": combined_confidence,
         }
 
 

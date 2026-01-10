@@ -4,6 +4,7 @@ PHASE_LABEL: Phase 2
 Sequence: X
 
 """
+
 """Dynamic class registry for orchestrator method execution."""
 from __future__ import annotations
 
@@ -13,8 +14,10 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from collections.abc import Mapping
 
+
 class ClassRegistryError(RuntimeError):
     """Raised when one or more classes cannot be loaded."""
+
 
 # Map of orchestrator-facing class names to their import paths.
 # CORRECTED: Changed from non-existent 'farfan_core' to actual 'methods_dispensary' package
@@ -23,12 +26,10 @@ _CLASS_PATHS: Mapping[str, str] = {
     "IndustrialPolicyProcessor": "methods_dispensary.policy_processor.IndustrialPolicyProcessor",
     "PolicyTextProcessor": "methods_dispensary.policy_processor.PolicyTextProcessor",
     "BayesianEvidenceScorer": "methods_dispensary.policy_processor.BayesianEvidenceScorer",
-    
     # Contradiction Detection
     "PolicyContradictionDetector": "methods_dispensary.contradiction_deteccion.PolicyContradictionDetector",
     "TemporalLogicVerifier": "methods_dispensary.contradiction_deteccion.TemporalLogicVerifier",
     "BayesianConfidenceCalculator": "methods_dispensary.contradiction_deteccion.BayesianConfidenceCalculator",
-    
     # Financial Analysis (derek_beach.py)
     "PDETMunicipalPlanAnalyzer": "methods_dispensary.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer",
     "CDAFFramework": "methods_dispensary.derek_beach.CDAFFramework",
@@ -37,7 +38,6 @@ _CLASS_PATHS: Mapping[str, str] = {
     "FinancialAuditor": "methods_dispensary.derek_beach.FinancialAuditor",
     "BayesianMechanismInference": "methods_dispensary.derek_beach.BayesianMechanismInference",
     "BayesianCounterfactualAuditor": "methods_dispensary.derek_beach.BayesianCounterfactualAuditor",
-    
     # Embedding & Semantic Processing
     "BayesianNumericalAnalyzer": "methods_dispensary.embedding_policy.BayesianNumericalAnalyzer",
     "PolicyAnalysisEmbedder": "methods_dispensary.embedding_policy.PolicyAnalysisEmbedder",
@@ -47,18 +47,15 @@ _CLASS_PATHS: Mapping[str, str] = {
     "SemanticChunker": "methods_dispensary.embedding_policy.AdvancedSemanticChunker",
     "SemanticProcessor": "methods_dispensary.semantic_chunking_policy.SemanticProcessor",
     "SemanticChunkingProducer": "methods_dispensary.semantic_chunking_policy.SemanticChunkingProducer",
-    
     # Analyzer One
     "SemanticAnalyzer": "methods_dispensary.analyzer_one.SemanticAnalyzer",
     "PerformanceAnalyzer": "methods_dispensary.analyzer_one.PerformanceAnalyzer",
     "TextMiningEngine": "methods_dispensary.analyzer_one.TextMiningEngine",
     "MunicipalOntology": "methods_dispensary.analyzer_one.MunicipalOntology",
-    
     # Teoria de Cambio
     "TeoriaCambio": "methods_dispensary.teoria_cambio.TeoriaCambio",
     "AdvancedDAGValidator": "methods_dispensary.teoria_cambio.AdvancedDAGValidator",
     "IndustrialGradeValidator": "methods_dispensary.teoria_cambio.IndustrialGradeValidator",
-    
     # Derek Beach - Additional Classes
     "BeachEvidentialTest": "methods_dispensary.derek_beach.BeachEvidentialTest",
     "ConfigLoader": "methods_dispensary.derek_beach.ConfigLoader",
@@ -67,18 +64,16 @@ _CLASS_PATHS: Mapping[str, str] = {
     "BayesFactorTable": "methods_dispensary.derek_beach.BayesFactorTable",
     "AdaptivePriorCalculator": "methods_dispensary.derek_beach.AdaptivePriorCalculator",
     "HierarchicalGenerativeModel": "methods_dispensary.derek_beach.HierarchicalGenerativeModel",
-    
     # Evidence Nexus (replaced EvidenceAssembler)
     "EvidenceNexus": "canonic_phases.Phase_two.evidence_nexus.EvidenceNexus",
     "EvidenceAssembler": "canonic_phases.Phase_two.evidence_nexus.EvidenceNexus",  # Alias for backwards compatibility
-    
     # Executors (in canonic_phases/Phase_two/executors.py)
     # D1_Q1_QuantitativeBaselineExtractor and D1_Q2_ProblemDimensioningAnalyzer removed (Legacy)
-    
     # Additional classes that may be referenced in contracts
     "MechanismPartExtractor": "methods_dispensary.derek_beach.MechanismPartExtractor",
     "CausalInferenceSetup": "methods_dispensary.derek_beach.CausalInferenceSetup",
 }
+
 
 def build_class_registry() -> dict[str, type[object]]:
     """Return a mapping of class names to loaded types, validating availability.
@@ -101,9 +96,17 @@ def build_class_registry() -> dict[str, type[object]]:
             exc_str = str(exc)
             # Check if this is an optional dependency error
             optional_deps = [
-                "torch", "tensorflow", "pyarrow", "camelot",
-                "sentence_transformers", "transformers", "spacy",
-                "pymc", "arviz", "dowhy", "econml"
+                "torch",
+                "tensorflow",
+                "pyarrow",
+                "camelot",
+                "sentence_transformers",
+                "transformers",
+                "spacy",
+                "pymc",
+                "arviz",
+                "dowhy",
+                "econml",
             ]
             if any(opt_dep in exc_str for opt_dep in optional_deps):
                 # Mark as skipped optional rather than missing
@@ -124,6 +127,7 @@ def build_class_registry() -> dict[str, type[object]]:
     # Log skipped optional dependencies
     if skipped_optional:
         import logging
+
         logger = logging.getLogger(__name__)
         logger.info(
             f"Skipped {len(skipped_optional)} optional classes due to missing dependencies: "
@@ -134,6 +138,7 @@ def build_class_registry() -> dict[str, type[object]]:
         formatted = ", ".join(f"{name}: {reason}" for name, reason in missing.items())
         raise ClassRegistryError(f"Failed to load orchestrator classes: {formatted}")
     return resolved
+
 
 def get_class_paths() -> Mapping[str, str]:
     """Expose the raw class path mapping for diagnostics."""

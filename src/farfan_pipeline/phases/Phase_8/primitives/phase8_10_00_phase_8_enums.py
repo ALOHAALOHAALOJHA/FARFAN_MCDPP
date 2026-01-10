@@ -9,6 +9,7 @@ Effective-Date: 2026-01-05
 This module provides enumeration types for Phase 8, ensuring type safety
 and preventing invalid values.
 """
+
 from __future__ import annotations
 
 from enum import Enum, auto, unique

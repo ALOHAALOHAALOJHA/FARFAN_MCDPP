@@ -83,12 +83,18 @@ try:
     # Import directly from module files, not through package __init__
     import sys
     from pathlib import Path
-    dura_lex_path = Path(__file__).resolve().parent.parent.parent / "cross_cutting_infrastructure" / "contractual" / "dura_lex"
+
+    dura_lex_path = (
+        Path(__file__).resolve().parent.parent.parent
+        / "cross_cutting_infrastructure"
+        / "contractual"
+        / "dura_lex"
+    )
     sys.path.insert(0, str(dura_lex_path))
-    
+
     from idempotency_dedup import IdempotencyContract, EvidenceStore
     from traceability import TraceabilityContract, MerkleTree
-    
+
     DURA_LEX_AVAILABLE = True
 except ImportError:
     DURA_LEX_AVAILABLE = False
@@ -122,32 +128,30 @@ class Phase0Input:
 class Phase0InputValidator(BaseModel):
     """
     Runtime validator for Phase0Input contract - Dura Lex StrictModel Pattern.
-    
+
     Uses pydantic for strict runtime validation following the dura_lex contract system.
     This ensures maximum performance and deterministic execution with zero tolerance
     for invalid inputs.
-    
+
     Configuration follows dura_lex/contracts_runtime.py StrictModel pattern:
     - extra='forbid': Refuse unknown fields
     - validate_assignment=True: Validate on assignment
     - str_strip_whitespace=True: Auto-strip strings
     - validate_default=True: Validate default values
     """
-    
+
     # Strict configuration per dura_lex contract system
     model_config = {
-        'extra': 'forbid',  # Refuse unknown fields - zero tolerance
-        'validate_assignment': True,  # Validate on assignment
-        'str_strip_whitespace': True,  # Auto-strip whitespace
-        'validate_default': True,  # Validate defaults
-        'frozen': False,  # Allow mutation for validation
+        "extra": "forbid",  # Refuse unknown fields - zero tolerance
+        "validate_assignment": True,  # Validate on assignment
+        "str_strip_whitespace": True,  # Auto-strip whitespace
+        "validate_default": True,  # Validate defaults
+        "frozen": False,  # Allow mutation for validation
     }
 
     pdf_path: str = Field(min_length=1, description="Path to input PDF")
     run_id: str = Field(min_length=1, description="Unique run identifier")
-    questionnaire_path: str | None = Field(
-        default=None, description="Optional questionnaire path"
-    )
+    questionnaire_path: str | None = Field(default=None, description="Optional questionnaire path")
 
     @field_validator("pdf_path")
     @classmethod
@@ -164,7 +168,7 @@ class Phase0InputValidator(BaseModel):
         if not v or not v.strip():
             raise ValueError("[PRE-002] FATAL: run_id cannot be empty")
         # Ensure run_id is filesystem-safe and deterministic
-        if any(char in v for char in ['/', '\\', ':', '*', '?', '"', '<', '>', '|']):
+        if any(char in v for char in ["/", "\\", ":", "*", "?", '"', "<", ">", "|"]):
             raise ValueError(
                 "[PRE-002] FATAL: run_id contains invalid characters (must be filesystem-safe)"
             )
@@ -226,13 +230,11 @@ class CanonicalInputValidator(BaseModel):
     validation_errors: list[str] = Field(default_factory=list)
     validation_warnings: list[str] = Field(default_factory=list)
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def validate_consistency(self) -> "CanonicalInputValidator":
         """Ensure validation_passed is True and consistent with errors."""
         if not self.validation_passed:
-            raise ValueError(
-                "validation_passed must be True for valid CanonicalInput"
-            )
+            raise ValueError("validation_passed must be True for valid CanonicalInput")
         if self.validation_errors:
             raise ValueError(
                 f"validation_passed is True but validation_errors is not empty: {self.validation_errors}"
@@ -326,9 +328,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
 
         # Type check
         if not isinstance(input_data, Phase0Input):
-            errors.append(
-                f"Expected Phase0Input, got {type(input_data).__name__}"
-            )
+            errors.append(f"Expected Phase0Input, got {type(input_data).__name__}")
             return ContractValidationResult(
                 passed=False,
                 contract_type="input",
@@ -342,9 +342,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
                 pdf_path=str(input_data.pdf_path),
                 run_id=input_data.run_id,
                 questionnaire_path=(
-                    str(input_data.questionnaire_path)
-                    if input_data.questionnaire_path
-                    else None
+                    str(input_data.questionnaire_path) if input_data.questionnaire_path else None
                 ),
             )
         except Exception as e:
@@ -373,9 +371,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
 
         # Type check
         if not isinstance(output_data, CanonicalInput):
-            errors.append(
-                f"Expected CanonicalInput, got {type(output_data).__name__}"
-            )
+            errors.append(f"Expected CanonicalInput, got {type(output_data).__name__}")
             return ContractValidationResult(
                 passed=False,
                 contract_type="output",
@@ -434,9 +430,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
             from farfan_pipeline.phases.Phase_zero.phase0_10_00_paths import QUESTIONNAIRE_FILE
 
             questionnaire_path = QUESTIONNAIRE_FILE
-            warnings.append(
-                f"questionnaire_path not provided, using default: {questionnaire_path}"
-            )
+            warnings.append(f"questionnaire_path not provided, using default: {questionnaire_path}")
 
         # 2. Validate PDF exists
         if not input_data.pdf_path.exists():

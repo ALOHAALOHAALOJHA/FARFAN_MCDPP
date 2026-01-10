@@ -31,6 +31,7 @@ class PatternLevel:
     4. Slot (D1-Q1, D1-Q2, etc.)
     5. Question (Q001, Q002, etc.)
     """
+
     level_id: str
     level_type: str  # "empirical_base", "cluster", "pa", "dim", "slot", "question"
     patterns: Dict[str, List[str]] = field(default_factory=dict)
@@ -100,7 +101,7 @@ class PatternResolver:
         self.policy_areas = self._load_policy_areas()
         self.dimensions = self._load_dimensions()
         self.slots = self._load_slots()
-        
+
         # Instance-level cache to avoid memory leaks from @lru_cache on methods
         self._resolution_cache: Dict[str, List[str]] = {}
 
@@ -114,13 +115,18 @@ class PatternResolver:
         These are patterns validated across 14 PDT plans.
         Serve as foundation for all inheritance.
         """
-        calibration_path = self.registry_path / "membership_criteria" / "_calibration" / "extractor_calibration.json"
+        calibration_path = (
+            self.registry_path
+            / "membership_criteria"
+            / "_calibration"
+            / "extractor_calibration.json"
+        )
 
         if not calibration_path.exists():
             return PatternLevel("EMPIRICAL_BASE", "empirical_base")
 
         try:
-            with open(calibration_path, 'r', encoding='utf-8') as f:
+            with open(calibration_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             signal_catalog = data.get("signal_type_catalog", {})
@@ -149,7 +155,7 @@ class PatternResolver:
                 level_id="EMPIRICAL_BASE",
                 level_type="empirical_base",
                 patterns=patterns,
-                metadata={"source": "extractor_calibration.json", "plans_analyzed": 14}
+                metadata={"source": "extractor_calibration.json", "plans_analyzed": 14},
             )
 
         except Exception as e:
@@ -172,14 +178,14 @@ class PatternResolver:
             patterns_file = cluster_dir / "patterns.json"
             if patterns_file.exists():
                 try:
-                    with open(patterns_file, 'r', encoding='utf-8') as f:
+                    with open(patterns_file, "r", encoding="utf-8") as f:
                         data = json.load(f)
 
                     clusters[cluster_dir.name] = PatternLevel(
                         level_id=cluster_dir.name,
                         level_type="cluster",
                         patterns=data.get("shared_patterns", {}),
-                        metadata=data.get("metadata", {})
+                        metadata=data.get("metadata", {}),
                     )
                 except Exception as e:
                     print(f"Error loading cluster {cluster_dir.name}: {e}")
@@ -202,18 +208,18 @@ class PatternResolver:
             patterns_file = pa_subdir / "patterns.json"
             if patterns_file.exists():
                 try:
-                    with open(patterns_file, 'r', encoding='utf-8') as f:
+                    with open(patterns_file, "r", encoding="utf-8") as f:
                         data = json.load(f)
 
                     # Extract PA ID from dirname (e.g., PA01_mujeres_genero → PA01)
-                    pa_id = pa_subdir.name.split('_')[0]
+                    pa_id = pa_subdir.name.split("_")[0]
 
                     policy_areas[pa_id] = PatternLevel(
                         level_id=pa_id,
                         level_type="pa",
                         patterns=data.get("additional_patterns", {}),
                         inherits_from=data.get("inherits_from", []),
-                        metadata=data.get("metadata", {})
+                        metadata=data.get("metadata", {}),
                     )
                 except Exception as e:
                     print(f"Error loading PA {pa_subdir.name}: {e}")
@@ -236,17 +242,17 @@ class PatternResolver:
             patterns_file = dim_subdir / "patterns.json"
             if patterns_file.exists():
                 try:
-                    with open(patterns_file, 'r', encoding='utf-8') as f:
+                    with open(patterns_file, "r", encoding="utf-8") as f:
                         data = json.load(f)
 
                     # Extract DIM ID
-                    dim_id = dim_subdir.name.split('_')[0]
+                    dim_id = dim_subdir.name.split("_")[0]
 
                     dimensions[dim_id] = PatternLevel(
                         level_id=dim_id,
                         level_type="dim",
                         patterns=data.get("shared_patterns", {}),
-                        metadata=data.get("metadata", {})
+                        metadata=data.get("metadata", {}),
                     )
                 except Exception as e:
                     print(f"Error loading DIM {dim_subdir.name}: {e}")
@@ -268,7 +274,7 @@ class PatternResolver:
 
         for slot_file in slots_dir.glob("*.json"):
             try:
-                with open(slot_file, 'r', encoding='utf-8') as f:
+                with open(slot_file, "r", encoding="utf-8") as f:
                     data = json.load(f)
 
                 slot_id = data.get("slot")
@@ -278,7 +284,7 @@ class PatternResolver:
                         level_type="slot",
                         patterns=data.get("slot_patterns", {}),
                         inherits_from=data.get("inherits_from", []),
-                        metadata=data.get("metadata", {})
+                        metadata=data.get("metadata", {}),
                     )
             except Exception as e:
                 print(f"Error loading slot {slot_file.name}: {e}")
@@ -410,15 +416,19 @@ class PatternResolver:
         # Validate input format
         if not question_id or not isinstance(question_id, str):
             raise ValueError(f"Invalid question_id: {question_id!r}. Expected non-empty string.")
-        
-        if not question_id.startswith('Q') or len(question_id) < 2:
-            raise ValueError(f"Invalid question_id format: {question_id!r}. Expected format: Q### (e.g., Q001)")
-        
+
+        if not question_id.startswith("Q") or len(question_id) < 2:
+            raise ValueError(
+                f"Invalid question_id format: {question_id!r}. Expected format: Q### (e.g., Q001)"
+            )
+
         try:
             q_num = int(question_id[1:])  # Q001 → 1
         except ValueError:
-            raise ValueError(f"Invalid question_id format: {question_id!r}. Expected numeric portion after 'Q'.")
-        
+            raise ValueError(
+                f"Invalid question_id format: {question_id!r}. Expected numeric portion after 'Q'."
+            )
+
         if q_num < 1:
             raise ValueError(f"Invalid question number: {q_num}. Must be positive.")
 
@@ -439,18 +449,20 @@ class PatternResolver:
 
         # Map PA to cluster (simplified)
         pa_to_cluster = {
-            "PA01": "CL02", "PA05": "CL02", "PA06": "CL02",  # Grupos poblacionales
-            "PA02": "CL01", "PA08": "CL01", "PA09": "CL01",  # Seguridad y paz
-            "PA03": "CL03", "PA04": "CL03", "PA07": "CL03", "PA10": "CL03"  # Territorio
+            "PA01": "CL02",
+            "PA05": "CL02",
+            "PA06": "CL02",  # Grupos poblacionales
+            "PA02": "CL01",
+            "PA08": "CL01",
+            "PA09": "CL01",  # Seguridad y paz
+            "PA03": "CL03",
+            "PA04": "CL03",
+            "PA07": "CL03",
+            "PA10": "CL03",  # Territorio
         }
         cluster_id = pa_to_cluster.get(pa_id, "CL04")
 
-        return {
-            "pa_id": pa_id,
-            "dim_id": dim_id,
-            "cluster_id": cluster_id,
-            "slot": slot_id
-        }
+        return {"pa_id": pa_id, "dim_id": dim_id, "cluster_id": cluster_id, "slot": slot_id}
 
     def get_pattern_origin(self, pattern_id: str, question_id: str) -> Optional[str]:
         """
@@ -530,7 +542,7 @@ class PatternResolver:
             "empirical_base": {
                 "id": "EMPIRICAL_BASE",
                 "patterns": sum(len(p) for p in self.empirical_base.patterns.values()),
-                "clusters": {}
+                "clusters": {},
             }
         }
 
@@ -538,12 +550,12 @@ class PatternResolver:
             tree["empirical_base"]["clusters"][cluster_id] = {
                 "id": cluster_id,
                 "patterns": sum(len(p) for p in cluster.patterns.values()),
-                "policy_areas": {}
+                "policy_areas": {},
             }
 
         # Add PAs, DIMs, etc. (simplified for demo)
 
-        with open(output_path, 'w', encoding='utf-8') as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             json.dump(tree, f, indent=2, ensure_ascii=False)
 
     def __repr__(self) -> str:

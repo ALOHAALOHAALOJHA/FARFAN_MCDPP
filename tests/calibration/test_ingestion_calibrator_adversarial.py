@@ -15,6 +15,7 @@ ADVERSARIAL STRATEGY:
     - Test invalid inputs that should raise
     - Verify output bounds are always satisfied
 """
+
 from __future__ import annotations
 
 import pytest
@@ -227,16 +228,12 @@ class TestUnitOfAnalysisComplexityScore:
             policy_area_codes=frozenset({f"PA{i:02d}" for i in range(1, 11)}),
         )
 
-    def test_complexity_score_always_bounded_minimal(
-        self, minimal_unit: UnitOfAnalysis
-    ) -> None:
+    def test_complexity_score_always_bounded_minimal(self, minimal_unit: UnitOfAnalysis) -> None:
         """INV-UOA-006: Complexity score must be in [0, 1]."""
         score = minimal_unit.complexity_score()
         assert 0.0 <= score <= 1.0, f"Score {score} out of bounds [0, 1]"
 
-    def test_complexity_score_always_bounded_maximal(
-        self, maximal_unit: UnitOfAnalysis
-    ) -> None:
+    def test_complexity_score_always_bounded_maximal(self, maximal_unit: UnitOfAnalysis) -> None:
         """INV-UOA-006: Complexity score must be in [0, 1]."""
         score = maximal_unit.complexity_score()
         assert 0.0 <= score <= 1.0, f"Score {score} out of bounds [0, 1]"
@@ -489,14 +486,10 @@ class TestIngestionCalibratorBoundaries:
         layer1 = calibrator.calibrate(minimal_unit, "TYPE_A")
         layer2 = calibrator.calibrate(minimal_unit, "TYPE_A")
 
-        assert (
-            layer1.get_parameter_value("chunk_size")
-            == layer2.get_parameter_value("chunk_size")
-        )
-        assert (
-            layer1.get_parameter_value("extraction_coverage_target")
-            == layer2.get_parameter_value("extraction_coverage_target")
-        )
+        assert layer1.get_parameter_value("chunk_size") == layer2.get_parameter_value("chunk_size")
+        assert layer1.get_parameter_value(
+            "extraction_coverage_target"
+        ) == layer2.get_parameter_value("extraction_coverage_target")
 
 
 # =============================================================================
@@ -557,9 +550,7 @@ class TestCalibrationStrategies:
 
         assert conservative_size <= standard_size
 
-    def test_all_strategies_respect_bounds(
-        self, standard_unit: UnitOfAnalysis
-    ) -> None:
+    def test_all_strategies_respect_bounds(self, standard_unit: UnitOfAnalysis) -> None:
         """All strategies must respect chunk size bounds."""
         strategies = [
             StandardCalibrationStrategy(),
@@ -574,9 +565,7 @@ class TestCalibrationStrategies:
             assert 256 <= chunk_size <= 2048, f"{strategy} chunk_size out of bounds"
             assert 0.80 <= coverage <= 1.0, f"{strategy} coverage out of bounds"
 
-    def test_calibrator_uses_provided_strategy(
-        self, standard_unit: UnitOfAnalysis
-    ) -> None:
+    def test_calibrator_uses_provided_strategy(self, standard_unit: UnitOfAnalysis) -> None:
         """Calibrator should use the provided strategy."""
         aggressive = AggressiveCalibrationStrategy()
         calibrator = IngestionCalibrator(strategy=aggressive)

@@ -29,21 +29,11 @@ if src_path not in sys.path:
 
 def pytest_configure(config: Any) -> None:
     """Configure pytest with custom markers."""
-    config.addinivalue_line(
-        "markers", "severe: Tests that MUST pass for architecture compliance"
-    )
-    config.addinivalue_line(
-        "markers", "contract: Tests related to 300 JSON contracts"
-    )
-    config.addinivalue_line(
-        "markers", "legacy: Tests for legacy code elimination"
-    )
-    config.addinivalue_line(
-        "markers", "determinism: Tests for execution determinism"
-    )
-    config.addinivalue_line(
-        "markers", "security: Security-related tests"
-    )
+    config.addinivalue_line("markers", "severe: Tests that MUST pass for architecture compliance")
+    config.addinivalue_line("markers", "contract: Tests related to 300 JSON contracts")
+    config.addinivalue_line("markers", "legacy: Tests for legacy code elimination")
+    config.addinivalue_line("markers", "determinism: Tests for execution determinism")
+    config.addinivalue_line("markers", "security: Security-related tests")
 
 
 @pytest.fixture(scope="session")
@@ -71,11 +61,11 @@ def sample_contract_content() -> dict[str, Any] | None:
     """Load first contract as sample."""
     if not GENERATED_CONTRACTS_DIR.exists():
         return None
-    
+
     contracts = list(GENERATED_CONTRACTS_DIR.glob("Q*_PA*_contract_v4.json"))
     if not contracts:
         return None
-    
+
     with open(contracts[0], "r", encoding="utf-8") as f:
         return json.load(f)
 
@@ -129,14 +119,14 @@ def pytest_collection_modifyitems(config: Any, items: list) -> None:
         if "legacy" in item.name.lower() or "no_legacy" in item.name.lower():
             item.add_marker(pytest.mark.legacy)
             item.add_marker(pytest.mark.severe)
-        
+
         if "contract" in item.name.lower():
             item.add_marker(pytest.mark.contract)
-        
+
         if "determinism" in item.name.lower() or "deterministic" in item.name.lower():
             item.add_marker(pytest.mark.determinism)
             item.add_marker(pytest.mark.severe)
-        
+
         if "security" in item.name.lower() or "credential" in item.name.lower():
             item.add_marker(pytest.mark.security)
             item.add_marker(pytest.mark.severe)
@@ -146,16 +136,16 @@ def pytest_collection_modifyitems(config: Any, items: list) -> None:
 def assert_no_legacy_patterns():
     """Fixture providing assertion function for legacy pattern detection."""
     import re
-    
+
     def _assert_no_legacy(content: str, filename: str = "") -> None:
         patterns = [
             (r"class\s+D\d+Q\d+_Executor", "Legacy executor class definition"),
             (r"from\s+\.executors\s+import", "Import from deprecated executors"),
             (r"executors\.py", "Reference to deprecated executors.py"),
         ]
-        
+
         for pattern, description in patterns:
             matches = re.findall(pattern, content)
             assert not matches, f"LEGACY PATTERN in {filename}: {description} ({matches})"
-    
+
     return _assert_no_legacy

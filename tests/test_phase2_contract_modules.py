@@ -6,6 +6,7 @@ These tests verify the basic functionality of the contract enforcement mechanism
 - Concurrency Determinism
 - Runtime Contracts (precondition, postcondition, invariant)
 """
+
 from __future__ import annotations
 
 from pathlib import Path

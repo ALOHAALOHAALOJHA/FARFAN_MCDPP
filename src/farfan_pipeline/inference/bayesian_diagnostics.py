@@ -360,8 +360,12 @@ class BayesianDiagnostics:
                 results.append(
                     {
                         "prior_config": config,
-                        "posterior_mean": {var: float(summary.loc[var, "mean"]) for var in summary.index},
-                        "posterior_sd": {var: float(summary.loc[var, "sd"]) for var in summary.index},
+                        "posterior_mean": {
+                            var: float(summary.loc[var, "mean"]) for var in summary.index
+                        },
+                        "posterior_sd": {
+                            var: float(summary.loc[var, "sd"]) for var in summary.index
+                        },
                     }
                 )
 
@@ -379,16 +383,20 @@ class BayesianDiagnostics:
                 sensitivity[var] = {
                     "mean_range": (min(means), max(means)),
                     "variance": float(np.var(means, ddof=1)),
-                    "coefficient_of_variation": float(np.std(means, ddof=1) / abs(np.mean(means)))
-                    if np.mean(means) != 0
-                    else float("inf"),
+                    "coefficient_of_variation": (
+                        float(np.std(means, ddof=1) / abs(np.mean(means)))
+                        if np.mean(means) != 0
+                        else float("inf")
+                    ),
                 }
 
             return {"results": results, "sensitivity": sensitivity, "n_configs": len(results)}
         else:
             return {"results": results, "n_configs": len(results)}
 
-    def plot_diagnostics(self, trace: Any, var_names: list[str] | None = None, output_path: str | None = None) -> bool:
+    def plot_diagnostics(
+        self, trace: Any, var_names: list[str] | None = None, output_path: str | None = None
+    ) -> bool:
         """
         Generate diagnostic plots for MCMC sampling.
 

@@ -10,6 +10,7 @@ import os
 import json
 from typing import Dict, List, Any
 
+
 class MethodSourceValidator:
     def __init__(self, base_path: str = "src/farfan_pipeline"):
         self.base_path = base_path
@@ -31,7 +32,7 @@ class MethodSourceValidator:
                                     for item in node.body:
                                         if isinstance(item, ast.FunctionDef):
                                             methods.append(item.name)
-                                    
+
                                     if class_name in class_map:
                                         # In case of duplicate class names, we might need a more robust way
                                         # to handle this, but for now we'll just overwrite.
@@ -46,7 +47,10 @@ class MethodSourceValidator:
                             print(f"Error parsing {file_path}: {e}")
         return class_map
 
-    def validate_executor_methods(self, executor_methods_path: str = "src/farfan_pipeline/core/orchestrator/executors_methods.json") -> Dict[str, List[str]]:
+    def validate_executor_methods(
+        self,
+        executor_methods_path: str = "src/farfan_pipeline/core/orchestrator/executors_methods.json",
+    ) -> Dict[str, List[str]]:
         with open(executor_methods_path, "r") as f:
             executor_data = json.load(f)
 
@@ -60,12 +64,12 @@ class MethodSourceValidator:
 
         valid = []
         missing = []
-        
+
         for method_fqn in declared_methods:
             if "." not in method_fqn:
                 # Assuming methods are always Class.method
                 continue
-            
+
             class_name, method_name = method_fqn.split(".", 1)
 
             if class_name not in self.source_map:
@@ -78,12 +82,11 @@ class MethodSourceValidator:
             else:
                 valid.append(method_fqn)
 
-        # Phantom methods would be those in source but not declared. 
+        # Phantom methods would be those in source but not declared.
         # The user's request seems to focus on missing/valid from declaration.
         # "phantom" is defined by user as "executors call fantasy methods"
         # which is covered by "missing"
         return {"valid": valid, "missing": missing, "phantom": []}
-
 
     def generate_source_truth_map(self) -> Dict[str, Dict[str, Any]]:
         source_truth = {}
@@ -97,7 +100,7 @@ class MethodSourceValidator:
                             if isinstance(item, ast.FunctionDef):
                                 method_name = item.name
                                 fqn = f"{class_name}.{method_name}"
-                                
+
                                 # Basic signature extraction
                                 args = [arg.arg for arg in item.args.args]
                                 signature = f"({', '.join(args)})"
@@ -111,9 +114,10 @@ class MethodSourceValidator:
                                 }
         return source_truth
 
+
 if __name__ == "__main__":
-    validator = MethodSourceValidator() 
-    
+    validator = MethodSourceValidator()
+
     # 1. Generate the ground-truth map
     source_truth_map = validator.generate_source_truth_map()
     output_path = "method_source_truth.json"
@@ -127,11 +131,11 @@ if __name__ == "__main__":
     with open(report_path, "w") as f:
         json.dump(validation_report, f, indent=4)
     print(f"Validation report generated at {report_path}")
-    
+
     print("\nValidation Summary:")
     print(f"  - Valid methods: {len(validation_report['valid'])}")
     print(f"  - Missing methods: {len(validation_report['missing'])}")
-    if validation_report['missing']:
+    if validation_report["missing"]:
         print("\nMissing methods:")
-        for method in validation_report['missing']:
+        for method in validation_report["missing"]:
             print(f"  - {method}")

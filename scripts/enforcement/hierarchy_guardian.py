@@ -20,6 +20,7 @@ from typing import Dict, List, Optional, Set, Tuple
 
 class HierarchyViolation(Enum):
     """Types of hierarchy violations."""
+
     MAX_DEPTH_EXCEEDED = "MAX_DEPTH_EXCEEDED"
     FORBIDDEN_DIRECTORY = "FORBIDDEN_DIRECTORY"
     EMPTY_DIRECTORY = "EMPTY_DIRECTORY"
@@ -31,6 +32,7 @@ class HierarchyViolation(Enum):
 @dataclass
 class HierarchyIssue:
     """Represents a hierarchy structure violation."""
+
     path: Path
     violation_type: HierarchyViolation
     message: str
@@ -43,6 +45,7 @@ class HierarchyIssue:
 @dataclass
 class DirectoryStats:
     """Statistics for a directory."""
+
     path: Path
     total_files: int = 0
     total_dirs: int = 0
@@ -66,36 +69,39 @@ class HierarchyGuardian:
 
     # Forbidden directory names
     FORBIDDEN_DIRS = {
-        'temp', 'tmp', 'backup', 'old', 'misc', 'legacy',
-        'deprecated', 'archive', 'staging', 'dev', 'test'
+        "temp",
+        "tmp",
+        "backup",
+        "old",
+        "misc",
+        "legacy",
+        "deprecated",
+        "archive",
+        "staging",
+        "dev",
+        "test",
     }
 
     # Maximum hierarchy depth from src/
     MAX_DEPTH = 5
 
     # Required subdirectories for each phase
-    PHASE_REQUIRED_SUBDIRS = [
-        'tests',
-        'contracts',
-        'transitions',
-        'docs',
-        'validation'
-    ]
+    PHASE_REQUIRED_SUBDIRS = ["tests", "contracts", "transitions", "docs", "validation"]
 
     # Optional but recommended subdirectories
     PHASE_OPTIONAL_SUBDIRS = [
-        'stage_00_components',
-        'stage_10_components',
-        'stage_20_components',
-        'stage_30_components',
-        'stage_40_components',
-        'stage_50_components',
-        'stage_60_components',
-        'stage_70_components',
-        'stage_80_components',
-        'stage_90_components',
-        'stage_95_components',
-        'stage_99_components',
+        "stage_00_components",
+        "stage_10_components",
+        "stage_20_components",
+        "stage_30_components",
+        "stage_40_components",
+        "stage_50_components",
+        "stage_60_components",
+        "stage_70_components",
+        "stage_80_components",
+        "stage_90_components",
+        "stage_95_components",
+        "stage_99_components",
     ]
 
     def __init__(self, repo_root: Optional[Path] = None, max_depth: int = MAX_DEPTH):
@@ -113,7 +119,7 @@ class HierarchyGuardian:
 
         # Validate each phase directory
         for phase_dir in phases_dir.iterdir():
-            if not phase_dir.is_dir() or phase_dir.name.startswith('.'):
+            if not phase_dir.is_dir() or phase_dir.name.startswith("."):
                 continue
 
             self.issues.extend(self._validate_phase_directory(phase_dir))
@@ -132,42 +138,48 @@ class HierarchyGuardian:
 
         # Check for required files
         required_files = {
-            'PHASE_{N}_MANIFEST.json': self._get_manifest_name(phase_dir),
-            'PHASE_{N}_CONSTANTS.py': self._get_constants_name(phase_dir),
-            'README.md': 'README.md',
-            '__init__.py': '__init__.py',
+            "PHASE_{N}_MANIFEST.json": self._get_manifest_name(phase_dir),
+            "PHASE_{N}_CONSTANTS.py": self._get_constants_name(phase_dir),
+            "README.md": "README.md",
+            "__init__.py": "__init__.py",
         }
 
         for file_type, filename in required_files.items():
             if not (phase_dir / filename).exists():
-                issues.append(HierarchyIssue(
-                    path=phase_dir,
-                    violation_type=HierarchyViolation.MISSING_REQUIRED_STRUCTURE,
-                    message=f"Missing required file: {filename}",
-                    severity="ERROR",
-                    suggestion=f"Create {filename} in {phase_dir.name}"
-                ))
+                issues.append(
+                    HierarchyIssue(
+                        path=phase_dir,
+                        violation_type=HierarchyViolation.MISSING_REQUIRED_STRUCTURE,
+                        message=f"Missing required file: {filename}",
+                        severity="ERROR",
+                        suggestion=f"Create {filename} in {phase_dir.name}",
+                    )
+                )
 
         # Check for required subdirectories
         for subdir in self.PHASE_REQUIRED_SUBDIRS:
             subdir_path = phase_dir / subdir
             if not subdir_path.exists():
-                issues.append(HierarchyIssue(
-                    path=phase_dir,
-                    violation_type=HierarchyViolation.MISSING_REQUIRED_STRUCTURE,
-                    message=f"Missing required subdirectory: {subdir}/",
-                    severity="WARNING",
-                    suggestion=f"Create {subdir}/ directory in {phase_dir.name}"
-                ))
+                issues.append(
+                    HierarchyIssue(
+                        path=phase_dir,
+                        violation_type=HierarchyViolation.MISSING_REQUIRED_STRUCTURE,
+                        message=f"Missing required subdirectory: {subdir}/",
+                        severity="WARNING",
+                        suggestion=f"Create {subdir}/ directory in {phase_dir.name}",
+                    )
+                )
 
         # Check for empty directories
         if self._is_directory_empty(phase_dir, ignore_dunder=True):
-            issues.append(HierarchyIssue(
-                path=phase_dir,
-                violation_type=HierarchyViolation.EMPTY_DIRECTORY,
-                message=f"Phase directory is empty or contains only dunder files",
-                severity="WARNING"
-            ))
+            issues.append(
+                HierarchyIssue(
+                    path=phase_dir,
+                    violation_type=HierarchyViolation.EMPTY_DIRECTORY,
+                    message=f"Phase directory is empty or contains only dunder files",
+                    severity="WARNING",
+                )
+            )
 
         return issues
 
@@ -189,15 +201,17 @@ class HierarchyGuardian:
                 depth = len(rel_path.parts)
 
                 if depth > self.max_depth:
-                    issues.append(HierarchyIssue(
-                        path=file_path,
-                        violation_type=HierarchyViolation.MAX_DEPTH_EXCEEDED,
-                        message=f"File at depth {depth} exceeds maximum depth of {self.max_depth}",
-                        severity="WARNING",
-                        actual_depth=depth,
-                        expected_depth=self.max_depth,
-                        suggestion=f"Consider reorganizing: {rel_path}"
-                    ))
+                    issues.append(
+                        HierarchyIssue(
+                            path=file_path,
+                            violation_type=HierarchyViolation.MAX_DEPTH_EXCEEDED,
+                            message=f"File at depth {depth} exceeds maximum depth of {self.max_depth}",
+                            severity="WARNING",
+                            actual_depth=depth,
+                            expected_depth=self.max_depth,
+                            suggestion=f"Consider reorganizing: {rel_path}",
+                        )
+                    )
             except ValueError:
                 # File not under src/ - skip
                 continue
@@ -215,13 +229,15 @@ class HierarchyGuardian:
         for root, dirs, _ in self._walk(phases_dir):
             for dir_name in dirs:
                 if dir_name.lower() in self.FORBIDDEN_DIRS:
-                    issues.append(HierarchyIssue(
-                        path=Path(root) / dir_name,
-                        violation_type=HierarchyViolation.FORBIDDEN_DIRECTORY,
-                        message=f"Forbidden directory name: {dir_name}",
-                        severity="ERROR",
-                        suggestion="Rename to a compliant name"
-                    ))
+                    issues.append(
+                        HierarchyIssue(
+                            path=Path(root) / dir_name,
+                            violation_type=HierarchyViolation.FORBIDDEN_DIRECTORY,
+                            message=f"Forbidden directory name: {dir_name}",
+                            severity="ERROR",
+                            suggestion="Rename to a compliant name",
+                        )
+                    )
 
         return issues
 
@@ -231,42 +247,42 @@ class HierarchyGuardian:
         name = phase_dir.name
 
         # Handle Phase_N pattern
-        if name.startswith('Phase_'):
+        if name.startswith("Phase_"):
             phase_num = name[6:]  # After 'Phase_'
             return f"PHASE_{phase_num}_MANIFEST.json"
 
         # Handle old-style names (Phase_zero, etc.)
         phase_map = {
-            'Phase_zero': 'PHASE_0_MANIFEST.json',
-            'Phase_one': 'PHASE_1_MANIFEST.json',
-            'Phase_two': 'PHASE_2_MANIFEST.json',
-            'Phase_three': 'PHASE_3_MANIFEST.json',
-            'Phase_eight': 'PHASE_8_MANIFEST.json',
-            'Phase_nine': 'PHASE_9_MANIFEST.json',
+            "Phase_zero": "PHASE_0_MANIFEST.json",
+            "Phase_one": "PHASE_1_MANIFEST.json",
+            "Phase_two": "PHASE_2_MANIFEST.json",
+            "Phase_three": "PHASE_3_MANIFEST.json",
+            "Phase_eight": "PHASE_8_MANIFEST.json",
+            "Phase_nine": "PHASE_9_MANIFEST.json",
         }
 
-        return phase_map.get(name, 'PHASE_N_MANIFEST.json')
+        return phase_map.get(name, "PHASE_N_MANIFEST.json")
 
     def _get_constants_name(self, phase_dir: Path) -> str:
         """Get the expected constants filename for a phase."""
         name = phase_dir.name
 
         # Handle Phase_N pattern
-        if name.startswith('Phase_'):
+        if name.startswith("Phase_"):
             phase_num = name[6:]
             return f"PHASE_{phase_num}_CONSTANTS.py"
 
         # Handle old-style names
         phase_map = {
-            'Phase_zero': 'PHASE_0_CONSTANTS.py',
-            'Phase_one': 'PHASE_1_CONSTANTS.py',
-            'Phase_two': 'PHASE_2_CONSTANTS.py',
-            'Phase_three': 'PHASE_3_CONSTANTS.py',
-            'Phase_eight': 'PHASE_8_CONSTANTS.py',
-            'Phase_nine': 'PHASE_9_CONSTANTS.py',
+            "Phase_zero": "PHASE_0_CONSTANTS.py",
+            "Phase_one": "PHASE_1_CONSTANTS.py",
+            "Phase_two": "PHASE_2_CONSTANTS.py",
+            "Phase_three": "PHASE_3_CONSTANTS.py",
+            "Phase_eight": "PHASE_8_CONSTANTS.py",
+            "Phase_nine": "PHASE_9_CONSTANTS.py",
         }
 
-        return phase_map.get(name, 'PHASE_N_CONSTANTS.py')
+        return phase_map.get(name, "PHASE_N_CONSTANTS.py")
 
     def _is_directory_empty(self, dir_path: Path, ignore_dunder: bool = True) -> bool:
         """Check if directory is empty (optionally ignoring dunder files)."""
@@ -275,7 +291,7 @@ class HierarchyGuardian:
 
         items = list(dir_path.iterdir())
         if ignore_dunder:
-            items = [i for i in items if not i.name.startswith('__')]
+            items = [i for i in items if not i.name.startswith("__")]
 
         return len(items) == 0
 
@@ -293,11 +309,7 @@ class HierarchyGuardian:
             "validation_timestamp": Path(__file__).stat().st_mtime,
             "max_depth_allowed": self.max_depth,
             "phases": {},
-            "summary": {
-                "total_issues": len(self.issues),
-                "by_severity": {},
-                "by_type": {}
-            }
+            "summary": {"total_issues": len(self.issues), "by_severity": {}, "by_type": {}},
         }
 
         if not phases_dir.exists():
@@ -305,7 +317,7 @@ class HierarchyGuardian:
 
         # Collect phase statistics
         for phase_dir in phases_dir.iterdir():
-            if not phase_dir.is_dir() or phase_dir.name.startswith('.'):
+            if not phase_dir.is_dir() or phase_dir.name.startswith("."):
                 continue
 
             phase_stats = self._collect_directory_stats(phase_dir)
@@ -316,15 +328,17 @@ class HierarchyGuardian:
                 "has_init": phase_stats.has_init,
                 "has_readme": phase_stats.has_readme,
                 "has_manifest": phase_stats.has_manifest,
-                "file_types": phase_stats.file_types
+                "file_types": phase_stats.file_types,
             }
 
         # Summarize issues
         for issue in self.issues:
-            report["summary"]["by_severity"][issue.severity] = \
+            report["summary"]["by_severity"][issue.severity] = (
                 report["summary"]["by_severity"].get(issue.severity, 0) + 1
-            report["summary"]["by_type"][issue.violation_type.value] = \
+            )
+            report["summary"]["by_type"][issue.violation_type.value] = (
                 report["summary"]["by_type"].get(issue.violation_type.value, 0) + 1
+            )
 
         return report
 
@@ -422,33 +436,15 @@ def main():
         description="Hierarchy Guardian - Validate directory structure compliance"
     )
 
-    parser.add_argument(
-        '--path',
-        type=Path,
-        default=None,
-        help='Path to repository root'
-    )
+    parser.add_argument("--path", type=Path, default=None, help="Path to repository root")
 
-    parser.add_argument(
-        '--max-depth',
-        type=int,
-        default=5,
-        help='Maximum allowed hierarchy depth'
-    )
+    parser.add_argument("--max-depth", type=int, default=5, help="Maximum allowed hierarchy depth")
 
-    parser.add_argument(
-        '--output',
-        type=Path,
-        default=None,
-        help='Output JSON report file'
-    )
+    parser.add_argument("--output", type=Path, default=None, help="Output JSON report file")
 
     args = parser.parse_args()
 
-    guardian = HierarchyGuardian(
-        repo_root=args.path,
-        max_depth=args.max_depth
-    )
+    guardian = HierarchyGuardian(repo_root=args.path, max_depth=args.max_depth)
 
     guardian.validate_repository()
     guardian.print_report()
@@ -458,10 +454,12 @@ def main():
 
     # Exit with error code if issues found
     import sys
+
     error_count = sum(1 for i in guardian.issues if i.severity == "ERROR")
     sys.exit(1 if error_count > 0 else 0)
 
 
 if __name__ == "__main__":
     import os
+
     main()

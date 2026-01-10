@@ -51,9 +51,7 @@ from pathlib import Path
 from typing import Any, Generic, TypeVar, List, Optional
 
 # Use primitives from our new module
-from farfan_pipeline.phases.Phase_0.phase0_00_03_primitives import (
-    HashStr
-)
+from farfan_pipeline.phases.Phase_0.phase0_00_03_primitives import HashStr
 
 # Type variables for generic phase contracts
 TInput = TypeVar("TInput")
@@ -277,9 +275,7 @@ class PhaseContract(ABC, Generic[TInput, TOutput]):
         finally:
             finished_at = datetime.now(timezone.utc)
             metadata.finished_at = Timestamp(finished_at.isoformat())
-            metadata.duration_ms = (
-                finished_at - started_at
-            ).total_seconds() * 1000
+            metadata.duration_ms = (finished_at - started_at).total_seconds() * 1000
             self.metadata = metadata
 
 
@@ -368,12 +364,8 @@ class PhaseManifestBuilder:
         return {
             "phases": self.phases,
             "total_phases": len(self.phases),
-            "successful_phases": sum(
-                1 for p in self.phases.values() if p["status"] == "success"
-            ),
-            "failed_phases": sum(
-                1 for p in self.phases.values() if p["status"] == "failed"
-            ),
+            "successful_phases": sum(1 for p in self.phases.values() if p["status"] == "success"),
+            "failed_phases": sum(1 for p in self.phases.values() if p["status"] == "failed"),
         }
 
     def save(self, output_path: Path) -> None:

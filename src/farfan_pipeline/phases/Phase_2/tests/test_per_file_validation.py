@@ -40,9 +40,9 @@ class TestPhase2Factory:
 
     def test_has_analysis_pipeline_factory_class(self, factory_content: str) -> None:
         """FAIL if AnalysisPipelineFactory class missing."""
-        assert "class AnalysisPipelineFactory" in factory_content, (
-            "Factory MUST define AnalysisPipelineFactory class"
-        )
+        assert (
+            "class AnalysisPipelineFactory" in factory_content
+        ), "Factory MUST define AnalysisPipelineFactory class"
 
     def test_has_create_orchestrator_method(self, factory_content: str) -> None:
         """FAIL if create_orchestrator missing."""
@@ -100,7 +100,10 @@ class TestPhase2MethodsRegistry:
 
     def test_has_lazy_loading(self, methods_registry_content: str) -> None:
         """FAIL if doesn't implement lazy loading."""
-        assert "lazy" in methods_registry_content.lower() or "cache" in methods_registry_content.lower()
+        assert (
+            "lazy" in methods_registry_content.lower()
+            or "cache" in methods_registry_content.lower()
+        )
 
 
 class TestPhase2ExecutorConfig:
@@ -152,7 +155,9 @@ class TestPhase2TaskExecutor:
 
     def test_supports_dry_run(self, task_executor_content: str) -> None:
         """FAIL if no dry_run support."""
-        assert "dry_run" in task_executor_content.lower() or "dry-run" in task_executor_content.lower()
+        assert (
+            "dry_run" in task_executor_content.lower() or "dry-run" in task_executor_content.lower()
+        )
 
 
 class TestPhase2BaseExecutor:
@@ -317,7 +322,9 @@ class TestPhase2IrrigationSynchronizer:
 
     def test_builds_execution_plan(self, irrigation_content: str) -> None:
         """FAIL if doesn't build ExecutionPlan."""
-        assert "ExecutionPlan" in irrigation_content or "execution_plan" in irrigation_content.lower()
+        assert (
+            "ExecutionPlan" in irrigation_content or "execution_plan" in irrigation_content.lower()
+        )
 
     def test_transforms_60_to_300(self, irrigation_content: str) -> None:
         """FAIL if doesn't handle 60→300 transformation."""
@@ -369,16 +376,15 @@ class TestAllModulesHavePhaseLabel:
     def test_all_phase2_modules_labeled(self) -> None:
         """FAIL if any module lacks PHASE_LABEL."""
         unlabeled = []
-        
+
         for py_file in PHASE_TWO_DIR.glob("phase2_*.py"):
             content = py_file.read_text(encoding="utf-8", errors="ignore")
             # Check first 3000 chars for PHASE_LABEL
             if "PHASE_LABEL" not in content[:3000]:
                 unlabeled.append(py_file.name)
-        
-        assert not unlabeled, (
-            f"MODULES WITHOUT PHASE_LABEL:\n"
-            + "\n".join(f"  {m}" for m in unlabeled)
+
+        assert not unlabeled, f"MODULES WITHOUT PHASE_LABEL:\n" + "\n".join(
+            f"  {m}" for m in unlabeled
         )
 
 
@@ -389,32 +395,29 @@ class TestNoLegacyPatternsInAnyModule:
         """FAIL if any module has legacy executor patterns."""
         legacy_pattern = re.compile(r"class\s+D\d+[_]?Q\d+[_]?(?:PA\d+)?[_]?Executor")
         violations = []
-        
+
         for py_file in PHASE_TWO_DIR.glob("phase2_*.py"):
             content = py_file.read_text(encoding="utf-8", errors="ignore")
             matches = legacy_pattern.findall(content)
             if matches:
                 violations.append((py_file.name, matches))
-        
-        assert not violations, (
-            f"LEGACY EXECUTOR CLASSES in:\n"
-            + "\n".join(f"  {name}: {classes}" for name, classes in violations)
+
+        assert not violations, f"LEGACY EXECUTOR CLASSES in:\n" + "\n".join(
+            f"  {name}: {classes}" for name, classes in violations
         )
 
     def test_no_executors_module_import(self) -> None:
         """FAIL if any module imports from deprecated executors."""
         violations = []
-        
+
         for py_file in PHASE_TWO_DIR.glob("phase2_*.py"):
             content = py_file.read_text(encoding="utf-8", errors="ignore")
-            
+
             # Check for imports from executors module
             if re.search(r"from\s+\.executors\s+import|from\s+executors\s+import", content):
                 violations.append(py_file.name)
-        
-        assert not violations, (
-            f"DEPRECATED executors IMPORT in: {violations}"
-        )
+
+        assert not violations, f"DEPRECATED executors IMPORT in: {violations}"
 
 
 if __name__ == "__main__":

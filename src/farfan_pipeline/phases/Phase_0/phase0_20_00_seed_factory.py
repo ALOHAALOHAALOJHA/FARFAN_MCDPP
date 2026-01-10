@@ -10,6 +10,7 @@ from typing import Any
 
 try:
     import numpy as np
+
     NUMPY_AVAILABLE = True
 except ImportError:
     NUMPY_AVAILABLE = False
@@ -17,6 +18,7 @@ except ImportError:
 
 try:
     import torch
+
     TORCH_AVAILABLE = True
 except ImportError:
     TORCH_AVAILABLE = False
@@ -24,10 +26,12 @@ except ImportError:
 
 try:
     import tensorflow as tf
+
     TENSORFLOW_AVAILABLE = True
 except ImportError:
     TENSORFLOW_AVAILABLE = False
     tf = None  # type: ignore
+
 
 class SeedFactory:
     """
@@ -49,7 +53,7 @@ class SeedFactory:
         self,
         correlation_id: str,
         file_checksums: dict[str, str] | None = None,
-        context: dict[str, Any] | None = None
+        context: dict[str, Any] | None = None,
     ) -> int:
         """
         Generate deterministic seed from correlation ID and context
@@ -85,18 +89,14 @@ class SeedFactory:
                 components.append(f"{key}={value}")
 
         # Combine with deterministic separator
-        seed_input = "|".join(components).encode('utf-8')
+        seed_input = "|".join(components).encode("utf-8")
 
         # HMAC-SHA256 for cryptographic quality
-        seed_hmac = hmac.new(
-            key=self.salt,
-            msg=seed_input,
-            digestmod=hashlib.sha256
-        )
+        seed_hmac = hmac.new(key=self.salt, msg=seed_input, digestmod=hashlib.sha256)
 
         # Convert to 32-bit integer
         seed_bytes = seed_hmac.digest()[:4]  # First 4 bytes
-        seed_int = int.from_bytes(seed_bytes, byteorder='big')
+        seed_int = int.from_bytes(seed_bytes, byteorder="big")
 
         return seed_int
 
@@ -147,6 +147,7 @@ class SeedFactory:
                 # Older TensorFlow versions may not have this
                 pass
 
+
 class DeterministicContext:
     """
     Context manager for deterministic execution
@@ -162,7 +163,7 @@ class DeterministicContext:
         correlation_id: str,
         file_checksums: dict[str, str] | None = None,
         context: dict[str, Any] | None = None,
-        fixed_salt: bytes | None = None
+        fixed_salt: bytes | None = None,
     ) -> None:
         self.correlation_id = correlation_id
         self.file_checksums = file_checksums
@@ -182,7 +183,7 @@ class DeterministicContext:
         self.seed = self.factory.create_deterministic_seed(
             correlation_id=self.correlation_id,
             file_checksums=self.file_checksums,
-            context=self.context
+            context=self.context,
         )
 
         # Save current random states
@@ -219,10 +220,9 @@ class DeterministicContext:
 
         return False
 
+
 def create_deterministic_seed(
-    correlation_id: str,
-    file_checksums: dict[str, str] | None = None,
-    **context_kwargs
+    correlation_id: str, file_checksums: dict[str, str] | None = None, **context_kwargs
 ) -> int:
     """
     Convenience function for creating deterministic seed
@@ -246,5 +246,5 @@ def create_deterministic_seed(
     return factory.create_deterministic_seed(
         correlation_id=correlation_id,
         file_checksums=file_checksums,
-        context=context_kwargs if context_kwargs else None
+        context=context_kwargs if context_kwargs else None,
     )

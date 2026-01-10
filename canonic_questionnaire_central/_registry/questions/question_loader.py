@@ -28,6 +28,7 @@ class Question:
 
     Lightweight representation for caching and serialization.
     """
+
     question_id: str
     base_slot: str
     dimension_id: str
@@ -49,6 +50,7 @@ class Question:
 @dataclass
 class LoaderMetrics:
     """Performance metrics for question loading."""
+
     cache_hits: int = 0
     cache_misses: int = 0
     total_loads: int = 0
@@ -109,7 +111,7 @@ class LRUCache:
             "total_requests": total,
             "hit_rate": hit_rate,
             "current_size": len(self.cache),
-            "max_size": self.maxsize
+            "max_size": self.maxsize,
         }
 
 
@@ -226,9 +228,8 @@ class LazyQuestionRegistry:
         load_time = (time.time() - start) * 1000  # ms
         self.metrics.total_loads += 1
         self.metrics.avg_load_time_ms = (
-            (self.metrics.avg_load_time_ms * (self.metrics.total_loads - 1) + load_time)
-            / self.metrics.total_loads
-        )
+            self.metrics.avg_load_time_ms * (self.metrics.total_loads - 1) + load_time
+        ) / self.metrics.total_loads
 
         return question
 
@@ -247,7 +248,7 @@ class LazyQuestionRegistry:
             return None
 
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             return Question(
@@ -262,7 +263,7 @@ class LazyQuestionRegistry:
                 patterns=data.get("patterns", []),
                 scoring_modality=data.get("scoring_modality", "TYPE_A"),
                 weight=data.get("weight", 1.0),
-                metadata=data.get("metadata", {})
+                metadata=data.get("metadata", {}),
             )
         except Exception as e:
             print(f"Error loading {question_id}: {e}")
@@ -314,8 +315,7 @@ class LazyQuestionRegistry:
         if uncached_ids:
             with ThreadPoolExecutor(max_workers=max_workers) as executor:
                 future_to_qid = {
-                    executor.submit(self._load_single_question, qid): qid
-                    for qid in uncached_ids
+                    executor.submit(self._load_single_question, qid): qid for qid in uncached_ids
                 }
 
                 for future in as_completed(future_to_qid):
@@ -380,7 +380,7 @@ class LazyQuestionRegistry:
             "cache_misses": cache_stats["misses"],
             "cache_hit_rate": cache_stats["hit_rate"],
             "total_loads": self.metrics.total_loads,
-            "avg_load_time_ms": self.metrics.avg_load_time_ms
+            "avg_load_time_ms": self.metrics.avg_load_time_ms,
         }
 
     def clear_cache(self) -> None:
@@ -424,7 +424,7 @@ class EagerQuestionRegistry:
 
         for file_path in self.questions_dir.glob("Q???.json"):
             try:
-                with open(file_path, 'r', encoding='utf-8') as f:
+                with open(file_path, "r", encoding="utf-8") as f:
                     data = json.load(f)
 
                 question = Question(
@@ -439,7 +439,7 @@ class EagerQuestionRegistry:
                     patterns=data.get("patterns", []),
                     scoring_modality=data.get("scoring_modality", "TYPE_A"),
                     weight=data.get("weight", 1.0),
-                    metadata=data.get("metadata", {})
+                    metadata=data.get("metadata", {}),
                 )
                 self.questions[data["question_id"]] = question
             except Exception as e:

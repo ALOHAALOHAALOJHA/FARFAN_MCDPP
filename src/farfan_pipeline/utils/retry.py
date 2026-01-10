@@ -19,18 +19,20 @@ import random
 import time
 import logging
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 logger = logging.getLogger(__name__)
 
 
 class TransientError(Exception):
     """Exception indicating a temporary failure that can be retried."""
+
     pass
 
 
 class PermanentError(Exception):
     """Exception indicating a fatal failure that should not be retried."""
+
     pass
 
 
@@ -68,7 +70,7 @@ class RetryConfig:
         max_delay_seconds: float = 60.0,
         jitter_factor: float = 0.1,
         retryable_exceptions: Sequence[Type[Exception]] = (Exception, TransientError),
-        on_retry: Callable[[Exception, int, float], None] | None = None
+        on_retry: Callable[[Exception, int, float], None] | None = None,
     ):
         # Degradation metadata
         self.degradation_instance = "RETRY_PATTERN_7"
@@ -84,7 +86,7 @@ class RetryConfig:
             raise ValueError(f"max_delay_seconds must be non-negative, got {max_delay_seconds}")
         if not (0.0 <= jitter_factor <= 1.0):
             raise ValueError(f"jitter_factor must be between 0.0 and 1.0, got {jitter_factor}")
-        
+
         self.max_retries = max_retries
         self.base_delay_seconds = base_delay_seconds
         self.multiplier = multiplier
@@ -107,13 +109,12 @@ class RetryConfig:
             "successful_chunks": self.successful_chunks,
             "failed_chunks": self.failed_chunks,
             "total_retries": self.total_retries,
-            "total_time_ms": self.total_time_ms
+            "total_time_ms": self.total_time_ms,
         }
 
 
 def with_exponential_backoff(
-    config: RetryConfig | None = None,
-    **kwargs
+    config: RetryConfig | None = None, **kwargs
 ) -> Callable[[Callable[..., T]], Callable[..., T]]:
     """
     Decorator implementing exponential backoff with jitter and metrics.
@@ -154,10 +155,10 @@ def with_exponential_backoff(
                         raise
 
                     retry_config.total_retries += 1
-                    
+
                     delay = min(
-                        retry_config.base_delay_seconds * (retry_config.multiplier ** attempt),
-                        retry_config.max_delay_seconds
+                        retry_config.base_delay_seconds * (retry_config.multiplier**attempt),
+                        retry_config.max_delay_seconds,
                     )
 
                     # Apply jitter
@@ -182,6 +183,7 @@ def with_exponential_backoff(
             raise RuntimeError(f"Retry wrapper for {func.__name__} reached unexpected state.")
 
         return wrapper
+
     return decorator
 
 
@@ -198,7 +200,7 @@ class RetryPolicy:
         """Generator yielding retry attempt contexts."""
         self._start_time = time.perf_counter()
         self.config.total_chunks += 1
-        
+
         for attempt_num in range(self.config.max_retries + 1):
             yield RetryAttempt(attempt_num, self.config, self._start_time)
 
@@ -229,10 +231,10 @@ class RetryAttempt:
             raise exception
 
         self.config.total_retries += 1
-        
+
         delay = min(
-            self.config.base_delay_seconds * (self.config.multiplier ** self.attempt_num),
-            self.config.max_delay_seconds
+            self.config.base_delay_seconds * (self.config.multiplier**self.attempt_num),
+            self.config.max_delay_seconds,
         )
         jitter_amount = delay * self.config.jitter_factor * random.random()
         total_delay = delay + jitter_amount

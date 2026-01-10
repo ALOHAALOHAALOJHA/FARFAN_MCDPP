@@ -146,9 +146,7 @@ class TestTypeSafetyInvariants:
 
         def strict_elements_validator(elements: Any) -> list[dict[str, Any]]:
             if not isinstance(elements, list):
-                raise TypeError(
-                    f"elements must be list, got {type(elements).__name__}"
-                )
+                raise TypeError(f"elements must be list, got {type(elements).__name__}")
             return elements
 
         assert strict_elements_validator([]) == []
@@ -168,9 +166,7 @@ class TestTypeSafetyInvariants:
             if not isinstance(hash_value, str):
                 raise TypeError(f"hash must be str, got {type(hash_value).__name__}")
             if len(hash_value) != expected_length:
-                raise ValueError(
-                    f"hash must be {expected_length} chars, got {len(hash_value)}"
-                )
+                raise ValueError(f"hash must be {expected_length} chars, got {len(hash_value)}")
             if not all(c in "0123456789abcdef" for c in hash_value):
                 raise ValueError("hash must be lowercase hex")
             return hash_value
@@ -373,9 +369,7 @@ class TestDeterminismInvariants:
         def process(item: dict[str, Any]) -> dict[str, Any]:
             return {
                 "id": item["id"],
-                "hash": hashlib.sha256(
-                    json.dumps(item, sort_keys=True).encode()
-                ).hexdigest()[:16],
+                "hash": hashlib.sha256(json.dumps(item, sort_keys=True).encode()).hexdigest()[:16],
             }
 
         items = [{"id": f"Q{i:03d}", "data": f"data_{i}"} for i in range(100)]
@@ -688,7 +682,16 @@ class TestContractBindingInvariants:
 
     def test_contract_007_assembly_rules_valid_strategies(self) -> None:
         """CONTRACT-007 [FATAL]: assembly_rules MUST use valid merge strategies."""
-        valid_strategies = {"concat", "first", "last", "mean", "max", "min", "weighted_mean", "majority"}
+        valid_strategies = {
+            "concat",
+            "first",
+            "last",
+            "mean",
+            "max",
+            "min",
+            "weighted_mean",
+            "majority",
+        }
 
         rules = [
             {"target": "elements", "sources": ["a", "b"], "merge_strategy": "concat"},
@@ -1127,19 +1130,14 @@ class TestFullFlowVerification:
                     "evidence_count": (i % 10) + 1,
                 }
                 results.append(result)
-            return hashlib.sha256(
-                json.dumps(results, sort_keys=True).encode()
-            ).hexdigest()
+            return hashlib.sha256(json.dumps(results, sort_keys=True).encode()).hexdigest()
 
         hashes = {simulate_pipeline() for _ in range(10)}
         assert len(hashes) == 1, "Pipeline must be deterministic"
 
     def test_integration_004_idempotent_rerun(self) -> None:
         """INTEGRATION-004 [FATAL]: Pipeline rerun MUST produce identical results."""
-        evidence_batch = [
-            {"question_id": f"Q{i:03d}", "data": f"data_{i}"}
-            for i in range(1, 101)
-        ]
+        evidence_batch = [{"question_id": f"Q{i:03d}", "data": f"data_{i}"} for i in range(1, 101)]
 
         result1 = IdempotencyContract.verify_idempotency(evidence_batch)
         result2 = IdempotencyContract.verify_idempotency(evidence_batch)
@@ -1171,10 +1169,7 @@ class TestFullFlowVerification:
             {"started", "intermediate", "complete"},
         ]
 
-        labels = [
-            MonotoneComplianceContract.evaluate(e, rules)
-            for e in evidence_progression
-        ]
+        labels = [MonotoneComplianceContract.evaluate(e, rules) for e in evidence_progression]
 
         # Labels must be non-decreasing
         for i in range(1, len(labels)):

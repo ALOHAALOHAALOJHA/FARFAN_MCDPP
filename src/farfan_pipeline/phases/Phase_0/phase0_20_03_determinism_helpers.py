@@ -55,14 +55,14 @@ def _seed_from(*parts: Any) -> int:
 @dataclass(frozen=True)
 class Seeds:
     """Container for seeds used in deterministic execution."""
+
     py: int
     np: int
 
 
 @contextmanager
 def deterministic(
-    policy_unit_id: str | None = None,
-    correlation_id: str | None = None
+    policy_unit_id: str | None = None, correlation_id: str | None = None
 ) -> Iterator[Seeds]:
     """
     Context manager for deterministic execution.
@@ -136,9 +136,9 @@ if __name__ == "__main__":
     doctest.testmod(verbose=True)
 
     # Integration tests
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("Determinism Integration Tests")
-    print("="*60)
+    print("=" * 60)
 
     print("\n1. Testing seed derivation:")
     s1 = _seed_from("PU_123", "corr-1")
@@ -187,6 +187,6 @@ if __name__ == "__main__":
     print(f"      corr-A: {val_a:.6f}")
     print(f"      corr-B: {val_b:.6f}")
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("Determinism doctest OK - All tests passed!")
-    print("="*60)
+    print("=" * 60)

@@ -40,22 +40,18 @@ class StabilityControls(BaseModel):
         duplicate_gamma: Duplicate evidence dampening factor (>= 0.0)
         cross_type_floor: Minimum cross-type evidence floor (0.0 - 1.0)
     """
+
     epsilon_clip: float = Field(
         default=0.02,
         ge=0.0,
         le=0.45,
-        description="Minimum/maximum clipping threshold for Bayesian updates"
+        description="Minimum/maximum clipping threshold for Bayesian updates",
     )
     duplicate_gamma: float = Field(
-        default=1.0,
-        ge=0.0,
-        description="Duplicate evidence dampening factor"
+        default=1.0, ge=0.0, description="Duplicate evidence dampening factor"
     )
     cross_type_floor: float = Field(
-        default=0.0,
-        ge=0.0,
-        le=1.0,
-        description="Minimum cross-type evidence floor"
+        default=0.0, ge=0.0, le=1.0, description="Minimum cross-type evidence floor"
     )
 
     @field_validator("epsilon_clip")
@@ -70,6 +66,7 @@ class SourceQualityWeights(BaseModel):
 
     All weights must be non-negative floats.
     """
+
     model_config = {"extra": "allow"}  # Allow additional source types
 
     # Common source types (can be extended)
@@ -83,13 +80,13 @@ class MechanisticEvidenceSystem(BaseModel):
         stability_controls: Controls for evidence stability and dampening
         source_quality_weights: Quality weights per evidence source type
     """
+
     stability_controls: StabilityControls = Field(
         default_factory=StabilityControls,
-        description="Stability controls for evidence accumulation"
+        description="Stability controls for evidence accumulation",
     )
     source_quality_weights: Dict[str, float] = Field(
-        default_factory=dict,
-        description="Quality weights for different evidence sources"
+        default_factory=dict, description="Quality weights for different evidence sources"
     )
 
     @field_validator("source_quality_weights")
@@ -106,6 +103,7 @@ class SectorMultipliers(BaseModel):
         default: Default multiplier for unlisted sectors
         Additional sector multipliers can be added dynamically
     """
+
     model_config = {"extra": "allow"}  # Allow additional sectors
 
     default: float = Field(default=1.0, ge=0.0)
@@ -118,6 +116,7 @@ class MunicipioTamanoMultipliers(BaseModel):
         default: Default multiplier for unlisted municipality sizes
         Additional size category multipliers can be added dynamically
     """
+
     model_config = {"extra": "allow"}  # Allow additional size categories
 
     default: float = Field(default=1.0, ge=0.0)
@@ -130,13 +129,12 @@ class HierarchicalContextPriors(BaseModel):
         sector_multipliers: Multipliers by economic sector
         municipio_tamano_multipliers: Multipliers by municipality size
     """
+
     sector_multipliers: Dict[str, float] = Field(
-        default_factory=dict,
-        description="Multipliers by economic sector"
+        default_factory=dict, description="Multipliers by economic sector"
     )
     municipio_tamano_multipliers: Dict[str, float] = Field(
-        default_factory=dict,
-        description="Multipliers by municipality size category"
+        default_factory=dict, description="Multipliers by municipality size category"
     )
 
     @field_validator("sector_multipliers", "municipio_tamano_multipliers")
@@ -152,9 +150,9 @@ class TheoreticallyGroundedPriors(BaseModel):
     Attributes:
         hierarchical_context_priors: Context-specific priors by hierarchy
     """
+
     hierarchical_context_priors: HierarchicalContextPriors = Field(
-        default_factory=HierarchicalContextPriors,
-        description="Hierarchical context priors"
+        default_factory=HierarchicalContextPriors, description="Hierarchical context priors"
     )
 
 
@@ -169,13 +167,14 @@ class BayesianInferenceConfig(BaseModel):
         mechanistic_evidence_system: Evidence accumulation configuration
         theoretically_grounded_priors: Theoretically-grounded prior configuration
     """
+
     mechanistic_evidence_system: MechanisticEvidenceSystem = Field(
         default_factory=MechanisticEvidenceSystem,
-        description="Mechanistic evidence system configuration"
+        description="Mechanistic evidence system configuration",
     )
     theoretically_grounded_priors: TheoreticallyGroundedPriors = Field(
         default_factory=TheoreticallyGroundedPriors,
-        description="Theoretically-grounded prior configuration"
+        description="Theoretically-grounded prior configuration",
     )
 
     @classmethod

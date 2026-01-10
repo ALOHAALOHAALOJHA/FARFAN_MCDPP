@@ -25,26 +25,31 @@ from typing import Final
 # Custom exception types for path errors
 class PathError(Exception):
     """Base exception for path-related errors."""
+
     pass
 
 
 class PathTraversalError(PathError):
     """Raised when a path attempts to escape workspace boundaries."""
+
     pass
 
 
 class PathNotFoundError(PathError):
     """Raised when a required path does not exist."""
+
     pass
 
 
 class PathOutsideWorkspaceError(PathError):
     """Raised when a path is outside the allowed workspace."""
+
     pass
 
 
 class UnnormalizedPathError(PathError):
     """Raised when a path is not properly normalized."""
+
     pass
 
 
@@ -88,9 +93,9 @@ def _detect_project_root() -> Path:
         if (parent / "pyproject.toml").exists():
             return parent
         if (
-            ((parent / "src" / "farfan_pipeline").exists() or (parent / "src" / "farfan_core").exists())
-            and (parent / "setup.py").exists()
-        ):
+            (parent / "src" / "farfan_pipeline").exists()
+            or (parent / "src" / "farfan_core").exists()
+        ) and (parent / "setup.py").exists():
             return parent
 
     # Fallback: if we can't find it, assume we're in src/<package>/utils
@@ -323,7 +328,7 @@ def resources(package: str, *path_parts: str) -> Path:
             pkg_path = pkg_path.joinpath(part)
 
         # Convert to Path - files() returns Traversable
-        if hasattr(pkg_path, '__fspath__'):
+        if hasattr(pkg_path, "__fspath__"):
             return Path(pkg_path)
         else:
             # Fallback for Traversable that doesn't support __fspath__
@@ -398,6 +403,7 @@ def validate_write_path(path: Path, allow_source_tree: bool = False) -> None:
 
 
 # Environment variable accessors (typed and safe)
+
 
 def get_env_path(key: str, default: Path | None = None) -> Path | None:
     """

@@ -92,7 +92,7 @@ class BayesianSamplingEngine:
 
         # Configuration loading with explicit None handling
         # This preserves zero as a valid value while defaulting only on None
-        if hasattr(config, 'get'):
+        if hasattr(config, "get"):
             bayesian_thresholds = config.get("bayesian_thresholds", {})
         else:
             bayesian_thresholds = {}
@@ -117,19 +117,13 @@ class BayesianSamplingEngine:
 
         # RIGOROUS VALIDATION: MCMC parameters must be valid
         if n_samples_parsed < 1:
-            self.logger.warning(
-                f"mcmc_samples={n_samples_parsed} invalid, using minimum 100"
-            )
+            self.logger.warning(f"mcmc_samples={n_samples_parsed} invalid, using minimum 100")
             n_samples_parsed = 100
         if n_chains_parsed < 1:
-            self.logger.warning(
-                f"mcmc_chains={n_chains_parsed} invalid, using minimum 1"
-            )
+            self.logger.warning(f"mcmc_chains={n_chains_parsed} invalid, using minimum 1")
             n_chains_parsed = 1
         if not 0.0 < target_accept_parsed < 1.0:
-            self.logger.warning(
-                f"target_accept={target_accept_parsed} outside (0,1), using 0.9"
-            )
+            self.logger.warning(f"target_accept={target_accept_parsed} outside (0,1), using 0.9")
             target_accept_parsed = 0.9
 
         self.n_samples: int = n_samples_parsed
@@ -180,13 +174,9 @@ class BayesianSamplingEngine:
         if not isinstance(prior_beta, (int, float)) or not np.isfinite(prior_beta):
             raise ValueError(f"prior_beta must be finite numeric, got {prior_beta}")
         if prior_alpha <= 0:
-            raise ValueError(
-                f"prior_alpha must be > 0 for Beta distribution, got {prior_alpha}"
-            )
+            raise ValueError(f"prior_alpha must be > 0 for Beta distribution, got {prior_alpha}")
         if prior_beta <= 0:
-            raise ValueError(
-                f"prior_beta must be > 0 for Beta distribution, got {prior_beta}"
-            )
+            raise ValueError(f"prior_beta must be > 0 for Beta distribution, got {prior_beta}")
 
         if not PYMC_AVAILABLE:
             self.logger.error("PyMC not available for Beta-Binomial sampling")
@@ -199,9 +189,7 @@ class BayesianSamplingEngine:
 
         # Handle degenerate case: n_trials = 0 produces uninformative update
         if n_trials == 0:
-            self.logger.warning(
-                "n_trials=0 produces degenerate posterior equal to prior"
-            )
+            self.logger.warning("n_trials=0 produces degenerate posterior equal to prior")
 
         try:
             with pm.Model():
@@ -368,7 +356,9 @@ class BayesianSamplingEngine:
                 if not isinstance(trials, (int, np.integer)):
                     raise TypeError(f"group_data[{i}][1] (trials) must be integer")
                 if successes < 0:
-                    raise ValueError(f"group_data[{i}][0] (successes) must be >= 0, got {successes}")
+                    raise ValueError(
+                        f"group_data[{i}][0] (successes) must be >= 0, got {successes}"
+                    )
                 if trials < 0:
                     raise ValueError(f"group_data[{i}][1] (trials) must be >= 0, got {trials}")
                 if successes > trials:
@@ -387,7 +377,9 @@ class BayesianSamplingEngine:
         n_groups = len(group_data)
         for i, (successes, trials) in enumerate(group_data):
             if trials == 0:
-                self.logger.warning(f"group_data[{i}] has trials=0, will produce uninformative update")
+                self.logger.warning(
+                    f"group_data[{i}] has trials=0, will produce uninformative update"
+                )
 
         successes_array = np.array([s for s, _ in group_data], dtype=np.int64)
         trials_array = np.array([t for _, t in group_data], dtype=np.int64)

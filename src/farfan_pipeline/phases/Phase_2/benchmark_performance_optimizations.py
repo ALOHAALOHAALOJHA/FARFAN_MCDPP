@@ -179,13 +179,15 @@ def benchmark_predictive_profiling():
         error = abs(actual_time - prediction.predicted_time_ms)
         error_pct = (error / actual_time * 100) if actual_time > 0 else 0
 
-        predictions.append({
-            "contract": prediction.contract_id,
-            "predicted": prediction.predicted_time_ms,
-            "actual": actual_time,
-            "error_pct": error_pct,
-            "confidence": prediction.confidence_level,
-        })
+        predictions.append(
+            {
+                "contract": prediction.contract_id,
+                "predicted": prediction.predicted_time_ms,
+                "actual": actual_time,
+                "error_pct": error_pct,
+                "confidence": prediction.confidence_level,
+            }
+        )
 
         total_error += error_pct
 
@@ -222,9 +224,7 @@ def benchmark_predictive_profiling():
         method_count = contract.get("method_binding", {}).get("method_count", 0)
         actual_memory = 50.0 + method_count * 10.0
 
-        is_anomaly, description = profiler.detect_anomaly(
-            prediction, actual_time, actual_memory
-        )
+        is_anomaly, description = profiler.detect_anomaly(prediction, actual_time, actual_memory)
 
         if is_anomaly:
             anomaly_count += 1
@@ -258,6 +258,7 @@ def main():
     except Exception as e:
         print(f"\n❌ Benchmark failed: {e}")
         import traceback
+
         traceback.print_exc()
 
 

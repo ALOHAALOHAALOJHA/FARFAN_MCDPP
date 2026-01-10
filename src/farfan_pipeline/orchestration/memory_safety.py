@@ -193,9 +193,7 @@ class FallbackStrategy:
     """Fallback strategies for handling objects exceeding size limits."""
 
     @staticmethod
-    def sample_list(
-        items: list[T], max_elements: int, *, preserve_order: bool = True
-    ) -> list[T]:
+    def sample_list(items: list[T], max_elements: int, *, preserve_order: bool = True) -> list[T]:
         """Sample list to max_elements using systematic sampling.
 
         Args:
@@ -330,8 +328,7 @@ class MemorySafetyGuard:
         elements_before = self._count_elements(obj)
 
         under_pressure = (
-            pressure_pct is not None
-            and pressure_pct >= self.config.memory_pressure_threshold_pct
+            pressure_pct is not None and pressure_pct >= self.config.memory_pressure_threshold_pct
         )
 
         if obj_size > limit_bytes or json_size > limit_bytes or under_pressure:
@@ -354,9 +351,7 @@ class MemorySafetyGuard:
             )
 
             if self.config.enable_auto_truncation:
-                obj, was_truncated = FallbackStrategy.apply_recursive_truncation(
-                    obj, self.config
-                )
+                obj, was_truncated = FallbackStrategy.apply_recursive_truncation(obj, self.config)
                 fallback_strategy = "truncation"
 
                 obj_size = ObjectSizeEstimator.estimate_object_size(obj)
@@ -414,10 +409,8 @@ class MemorySafetyGuard:
             "avg_json_size_mb": sum(m.json_size_bytes for m in self.metrics)
             / len(self.metrics)
             / (1024 * 1024),
-            "max_object_size_mb": max(m.object_size_bytes for m in self.metrics)
-            / (1024 * 1024),
-            "max_json_size_mb": max(m.json_size_bytes for m in self.metrics)
-            / (1024 * 1024),
+            "max_object_size_mb": max(m.object_size_bytes for m in self.metrics) / (1024 * 1024),
+            "max_json_size_mb": max(m.json_size_bytes for m in self.metrics) / (1024 * 1024),
             "pressure_samples": [
                 m.pressure_pct for m in self.metrics if m.pressure_pct is not None
             ],

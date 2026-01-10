@@ -35,22 +35,23 @@ pytestmark = pytest.mark.integration
 # FIXTURES
 # ============================================================================
 
+
 @pytest.fixture
 def temp_questionnaire_file():
     """Create a temporary questionnaire file."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         questionnaire_data = {
             "blocks": {
                 "micro_questions": [{"id": f"Q{i:03d}"} for i in range(1, 301)],
                 "meso_questions": [{"id": f"M{i:03d}"} for i in range(1, 5)],
-                "macro_question": {"id": "MACRO"}
+                "macro_question": {"id": "MACRO"},
             }
         }
         json.dump(questionnaire_data, f)
         temp_path = Path(f.name)
-    
+
     yield temp_path
-    
+
     # Cleanup
     if temp_path.exists():
         temp_path.unlink()
@@ -59,12 +60,12 @@ def temp_questionnaire_file():
 @pytest.fixture
 def corrupted_questionnaire_file():
     """Create a corrupted questionnaire file (invalid JSON)."""
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         f.write("{ invalid json content ][")
         temp_path = Path(f.name)
-    
+
     yield temp_path
-    
+
     # Cleanup
     if temp_path.exists():
         temp_path.unlink()
@@ -75,7 +76,7 @@ def questionnaire_with_wrong_hash(temp_questionnaire_file):
     """Get questionnaire file with computed hash, but set wrong expected hash."""
     actual_hash = hashlib.sha256(temp_questionnaire_file.read_bytes()).hexdigest()
     wrong_hash = "f" * 64  # Intentionally wrong
-    
+
     return temp_questionnaire_file, actual_hash, wrong_hash
 
 
@@ -83,43 +84,38 @@ def questionnaire_with_wrong_hash(temp_questionnaire_file):
 # TEST SUITE 1: Corrupted Questionnaire Detection
 # ============================================================================
 
+
 @pytest.mark.skipif(
     "SKIP_INTEGRATION_TESTS" in os.environ,
-    reason="Integration tests require full dependency installation"
+    reason="Integration tests require full dependency installation",
 )
 class TestCorruptedQuestionnaireDetection:
     """Test Phase 0 detection of corrupted questionnaires."""
-    
+
     def test_orchestrator_rejects_corrupted_questionnaire(self, corrupted_questionnaire_file):
         """Test that orchestrator rejects corrupted questionnaire during Phase 0."""
         pytest.skip("Requires full orchestrator dependencies - implement after environment setup")
-        
+
         # This test would:
         # 1. Try to initialize orchestrator with corrupted questionnaire
         # 2. Expect Phase0ValidationResult to fail
         # 3. Verify error message mentions "questionnaire" corruption
         # 4. Ensure orchestrator.__init__ raises RuntimeError
-    
-    def test_phase0_runner_detects_invalid_questionnaire_hash(
-        self,
-        questionnaire_with_wrong_hash
-    ):
+
+    def test_phase0_runner_detects_invalid_questionnaire_hash(self, questionnaire_with_wrong_hash):
         """Test that Phase 0 runner detects questionnaire hash mismatch."""
         pytest.skip("Requires Phase 0 runner setup - implement after environment ready")
-        
+
         # This test would:
         # 1. Configure EXPECTED_QUESTIONNAIRE_SHA256 to wrong hash
         # 2. Run Phase 0 validation
         # 3. Expect gate 5 (questionnaire_integrity) to fail
         # 4. Verify fail-fast stops at gate 5
-    
-    def test_dev_mode_logs_but_continues_with_hash_mismatch(
-        self,
-        questionnaire_with_wrong_hash
-    ):
+
+    def test_dev_mode_logs_but_continues_with_hash_mismatch(self, questionnaire_with_wrong_hash):
         """Test that DEV mode logs questionnaire mismatch but doesn't block."""
         pytest.skip("Requires full environment - implement when dependencies available")
-        
+
         # This test would:
         # 1. Set RuntimeMode to DEV
         # 2. Configure wrong expected hash
@@ -132,37 +128,38 @@ class TestCorruptedQuestionnaireDetection:
 # TEST SUITE 2: Missing Methods Detection
 # ============================================================================
 
+
 @pytest.mark.skipif(
     "SKIP_INTEGRATION_TESTS" in os.environ,
-    reason="Integration tests require full dependency installation"
+    reason="Integration tests require full dependency installation",
 )
 class TestMissingMethodsDetection:
     """Test Phase 0 detection of missing methods."""
-    
+
     def test_orchestrator_rejects_insufficient_method_count(self):
         """Test that orchestrator rejects when method count below threshold."""
         pytest.skip("Requires method registry mocking - implement after setup")
-        
+
         # This test would:
         # 1. Mock MethodRegistry.get_stats() to return count < 416
         # 2. Try to initialize orchestrator
         # 3. Expect Phase0ValidationResult gate 6 to fail
         # 4. Verify orchestrator.__init__ raises RuntimeError in PROD mode
-    
+
     def test_prod_mode_rejects_failed_method_classes(self):
         """Test that PROD mode rejects any failed method classes."""
         pytest.skip("Requires full orchestrator setup")
-        
+
         # This test would:
         # 1. Mock MethodRegistry with some failed classes
         # 2. Set RuntimeMode to PROD
         # 3. Run Phase 0 validation
         # 4. Expect gate 6 to fail with failed_classes reason
-    
+
     def test_dev_mode_allows_degraded_method_registry(self):
         """Test that DEV mode allows degraded method registry with warnings."""
         pytest.skip("Requires full orchestrator setup")
-        
+
         # This test would:
         # 1. Mock MethodRegistry with some failed classes
         # 2. Set RuntimeMode to DEV
@@ -175,44 +172,45 @@ class TestMissingMethodsDetection:
 # TEST SUITE 3: Failed Smoke Tests Detection
 # ============================================================================
 
+
 @pytest.mark.skipif(
     "SKIP_INTEGRATION_TESTS" in os.environ,
-    reason="Integration tests require full dependency installation"
+    reason="Integration tests require full dependency installation",
 )
 class TestFailedSmokeTestsDetection:
     """Test Phase 0 smoke test failures."""
-    
+
     def test_orchestrator_rejects_missing_ingest_methods(self):
         """Test that orchestrator rejects when ingest category methods missing."""
         pytest.skip("Requires method executor mocking")
-        
+
         # This test would:
         # 1. Mock MethodExecutor with missing PDFChunkExtractor
         # 2. Run Phase 0 validation
         # 3. Expect gate 7 to fail with "ingest" in reason
-    
+
     def test_orchestrator_rejects_missing_scoring_methods(self):
         """Test that orchestrator rejects when scoring category methods missing."""
         pytest.skip("Requires method executor mocking")
-        
+
         # This test would:
         # 1. Mock MethodExecutor with missing SemanticAnalyzer
         # 2. Run Phase 0 validation
         # 3. Expect gate 7 to fail with "scoring" in reason
-    
+
     def test_orchestrator_rejects_missing_aggregation_methods(self):
         """Test that orchestrator rejects when aggregation methods missing."""
         pytest.skip("Requires method executor mocking")
-        
+
         # This test would:
         # 1. Mock MethodExecutor with missing DimensionAggregator
         # 2. Run Phase 0 validation
         # 3. Expect gate 7 to fail with "aggregation" in reason
-    
+
     def test_dev_mode_allows_failed_smoke_tests(self):
         """Test that DEV mode allows failed smoke tests with warnings."""
         pytest.skip("Requires full setup")
-        
+
         # This test would:
         # 1. Mock MethodExecutor with missing smoke test methods
         # 2. Set RuntimeMode to DEV
@@ -225,47 +223,48 @@ class TestFailedSmokeTestsDetection:
 # TEST SUITE 4: End-to-End Orchestrator Initialization
 # ============================================================================
 
+
 @pytest.mark.skipif(
     "SKIP_INTEGRATION_TESTS" in os.environ,
-    reason="Integration tests require full dependency installation"
+    reason="Integration tests require full dependency installation",
 )
 class TestOrchestratorInitializationWithDamagedArtifacts:
     """Test end-to-end orchestrator initialization with damaged artifacts."""
-    
+
     def test_orchestrator_refuses_construction_without_phase0_validation(self):
         """Test that orchestrator refuses construction without Phase0ValidationResult."""
         pytest.skip("Requires full orchestrator dependencies")
-        
+
         # This test would:
         # 1. Try to construct Orchestrator with phase0_validation=None
         # 2. In PROD mode, expect initialization to proceed (legacy compatibility)
         # 3. Verify warning is logged about missing validation
-    
+
     def test_orchestrator_refuses_construction_with_failed_phase0(self):
         """Test that orchestrator refuses construction when Phase 0 failed."""
         pytest.skip("Requires full dependencies")
-        
+
         # This test would:
         # 1. Create Phase0ValidationResult with all_passed=False
         # 2. Try to construct Orchestrator
         # 3. Expect RuntimeError with specific failed gate names
         # 4. Verify no partial initialization occurred
-    
+
     def test_orchestrator_load_configuration_validates_all_prerequisites(self):
         """Test that _load_configuration re-validates all prerequisites."""
         pytest.skip("Requires full environment")
-        
+
         # This test would:
         # 1. Construct Orchestrator with passing Phase0ValidationResult
         # 2. Call _load_configuration
         # 3. Verify it re-checks questionnaire hash
         # 4. Verify it re-checks method count
         # 5. Ensure all checks pass before returning config
-    
+
     def test_full_pipeline_abort_on_phase0_failure(self):
         """Test that full pipeline execution aborts if Phase 0 fails."""
         pytest.skip("Requires full pipeline setup")
-        
+
         # This test would:
         # 1. Set up damaged artifacts (wrong hash, missing methods)
         # 2. Try to run full pipeline
@@ -278,28 +277,29 @@ class TestOrchestratorInitializationWithDamagedArtifacts:
 # TEST SUITE 5: CI/CD Integration
 # ============================================================================
 
+
 @pytest.mark.skipif(
     "SKIP_INTEGRATION_TESTS" in os.environ,
-    reason="Integration tests require full dependency installation"
+    reason="Integration tests require full dependency installation",
 )
 class TestCICDIntegration:
     """Test CI/CD integration for Phase 0 validation."""
-    
+
     def test_machine_readable_validation_report_generation(self):
         """Test that validation failures produce machine-readable reports."""
         pytest.skip("Requires full environment")
-        
+
         # This test would:
         # 1. Trigger various Phase 0 failures
         # 2. Collect GateResult.to_dict() outputs
         # 3. Verify JSON structure is valid
         # 4. Check all required fields present (passed, gate_name, gate_id, reason)
         # 5. Validate can be parsed by CI tools
-    
+
     def test_validation_errors_logged_to_structured_format(self):
         """Test that all validation errors are logged in structured format."""
         pytest.skip("Requires logging infrastructure")
-        
+
         # This test would:
         # 1. Capture structured logs during Phase 0 failures
         # 2. Verify logs contain machine-readable fields

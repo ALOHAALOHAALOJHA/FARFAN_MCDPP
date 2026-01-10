@@ -30,13 +30,14 @@ logger = logging.getLogger(__name__)
 @dataclass
 class CalibrationMetrics:
     """Runtime metrics captured during executor execution.
-    
+
     Attributes:
         runtime_ms: Execution time in milliseconds
         memory_mb: Memory usage in megabytes
         methods_executed: Total number of methods called
         methods_succeeded: Number of methods that completed successfully
     """
+
     runtime_ms: float
     memory_mb: float
     methods_executed: int
@@ -46,7 +47,7 @@ class CalibrationMetrics:
 @dataclass
 class CalibrationResult:
     """Result of calibration instrumentation with quality scores.
-    
+
     Attributes:
         quality_score: Aggregated quality score [0,1]
         layer_scores: Per-layer quality scores
@@ -54,6 +55,7 @@ class CalibrationResult:
         aggregation_method: Method used to aggregate layer scores
         metrics: Runtime metrics captured during execution
     """
+
     quality_score: float
     layer_scores: dict[str, float] = field(default_factory=dict)
     layers_used: list[str] = field(default_factory=list)
@@ -70,11 +72,11 @@ def instrument_executor(
     methods_succeeded: int,
 ) -> CalibrationResult:
     """Instrument executor execution with calibration data.
-    
+
     This is a stub implementation that returns neutral calibration scores.
     Full calibration integration should be implemented when the calibration
     system is fully operational.
-    
+
     Args:
         executor_id: Unique executor identifier
         context: Execution context
@@ -82,10 +84,10 @@ def instrument_executor(
         memory_mb: Memory usage in megabytes
         methods_executed: Total number of methods called
         methods_succeeded: Number of methods that completed successfully
-    
+
     Returns:
         CalibrationResult with quality scores and metrics
-        
+
     Preconditions:
         - executor_id is non-empty string
         - runtime_ms >= 0
@@ -93,7 +95,7 @@ def instrument_executor(
         - methods_executed >= 0
         - methods_succeeded >= 0
         - methods_succeeded <= methods_executed
-    
+
     Postconditions:
         - quality_score in [0, 1]
         - metrics match input values
@@ -113,24 +115,24 @@ def instrument_executor(
             f"methods_succeeded ({methods_succeeded}) cannot exceed "
             f"methods_executed ({methods_executed})"
         )
-    
+
     metrics = CalibrationMetrics(
         runtime_ms=runtime_ms,
         memory_mb=memory_mb,
         methods_executed=methods_executed,
         methods_succeeded=methods_succeeded,
     )
-    
+
     # Stub implementation: return neutral quality score
     # TODO: Integrate with full calibration system
     quality_score = 0.75  # Neutral baseline
-    
+
     logger.debug(
         f"Calibration stub called for {executor_id}: "
         f"runtime={runtime_ms:.1f}ms, memory={memory_mb:.1f}MB, "
         f"methods={methods_executed}/{methods_succeeded}"
     )
-    
+
     return CalibrationResult(
         quality_score=quality_score,
         layer_scores={},
@@ -146,24 +148,24 @@ def get_executor_config(
     question: str,
 ) -> dict[str, Any]:
     """Get runtime configuration for executor.
-    
+
     This is a stub implementation that returns conservative defaults.
     Full configuration loading should be implemented when the configuration
     system is fully operational.
-    
+
     Args:
         executor_id: Unique executor identifier
         dimension: Dimension identifier (e.g., "D1")
         question: Question identifier (e.g., "Q1")
-    
+
     Returns:
         Runtime configuration dictionary with HOW parameters
-        
+
     Preconditions:
         - executor_id is non-empty string
         - dimension is non-empty string
         - question is non-empty string
-    
+
     Postconditions:
         - Returns valid configuration dict
         - All required keys present with conservative defaults
@@ -174,12 +176,11 @@ def get_executor_config(
         raise ValueError("dimension cannot be empty")
     if not question:
         raise ValueError("question cannot be empty")
-    
+
     logger.debug(
-        f"Config stub called for {executor_id} "
-        f"(dimension={dimension}, question={question})"
+        f"Config stub called for {executor_id} " f"(dimension={dimension}, question={question})"
     )
-    
+
     # Stub implementation: return conservative defaults
     # TODO: Load from actual configuration files
     return {

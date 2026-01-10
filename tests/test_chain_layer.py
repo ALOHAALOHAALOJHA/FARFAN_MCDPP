@@ -8,7 +8,7 @@ from orchestration.chain_layer import (
     ChainLayerEvaluator,
     MethodSignature,
     UpstreamOutputs,
-    create_default_chain_config
+    create_default_chain_config,
 )
 
 
@@ -18,13 +18,13 @@ class TestChainLayerConfig:
             validation_config={
                 "strict_mode": False,
                 "allow_missing_optional": True,
-                "penalize_warnings": True
+                "penalize_warnings": True,
             },
             score_missing_required=0.0,
             score_missing_critical=0.3,
             score_missing_optional=0.6,
             score_warnings=0.8,
-            score_perfect=1.0
+            score_perfect=1.0,
         )
         assert config.score_missing_required == 0.0
         assert config.score_missing_critical == 0.3
@@ -36,13 +36,13 @@ class TestChainLayerConfig:
                 validation_config={
                     "strict_mode": False,
                     "allow_missing_optional": True,
-                    "penalize_warnings": True
+                    "penalize_warnings": True,
                 },
                 score_missing_required=-0.1,
                 score_missing_critical=0.3,
                 score_missing_optional=0.6,
                 score_warnings=0.8,
-                score_perfect=1.0
+                score_perfect=1.0,
             )
 
     def test_config_scores_ordering_validation(self):
@@ -51,13 +51,13 @@ class TestChainLayerConfig:
                 validation_config={
                     "strict_mode": False,
                     "allow_missing_optional": True,
-                    "penalize_warnings": True
+                    "penalize_warnings": True,
                 },
                 score_missing_required=0.0,
                 score_missing_critical=0.6,
                 score_missing_optional=0.3,
                 score_warnings=0.8,
-                score_perfect=1.0
+                score_perfect=1.0,
             )
 
     def test_default_config(self):
@@ -80,11 +80,10 @@ class TestSignatureValidation:
             optional_inputs=["context"],
             critical_optional=[],
             output_type="dict",
-            output_range=None
+            output_range=None,
         )
         upstream = UpstreamOutputs(
-            available_outputs={"policy_text", "dimension_id", "metadata"},
-            output_types={}
+            available_outputs={"policy_text", "dimension_id", "metadata"}, output_types={}
         )
 
         result = evaluator.validate_signature_against_upstream(signature, upstream)
@@ -101,12 +100,9 @@ class TestSignatureValidation:
             optional_inputs=["context"],
             critical_optional=[],
             output_type="dict",
-            output_range=None
+            output_range=None,
         )
-        upstream = UpstreamOutputs(
-            available_outputs={"policy_text"},
-            output_types={}
-        )
+        upstream = UpstreamOutputs(available_outputs={"policy_text"}, output_types={})
 
         result = evaluator.validate_signature_against_upstream(signature, upstream)
         assert result["score"] == 0.0
@@ -122,12 +118,9 @@ class TestSignatureValidation:
             optional_inputs=["context", "metadata"],
             critical_optional=["context"],
             output_type="dict",
-            output_range=None
+            output_range=None,
         )
-        upstream = UpstreamOutputs(
-            available_outputs={"policy_text", "metadata"},
-            output_types={}
-        )
+        upstream = UpstreamOutputs(available_outputs={"policy_text", "metadata"}, output_types={})
 
         result = evaluator.validate_signature_against_upstream(signature, upstream)
         assert result["score"] == 0.3
@@ -143,12 +136,9 @@ class TestSignatureValidation:
             optional_inputs=["context", "metadata"],
             critical_optional=[],
             output_type="dict",
-            output_range=None
+            output_range=None,
         )
-        upstream = UpstreamOutputs(
-            available_outputs={"policy_text"},
-            output_types={}
-        )
+        upstream = UpstreamOutputs(available_outputs={"policy_text"}, output_types={})
 
         result = evaluator.validate_signature_against_upstream(signature, upstream)
         assert result["score"] == 1.0
@@ -160,13 +150,13 @@ class TestSignatureValidation:
             validation_config={
                 "strict_mode": False,
                 "allow_missing_optional": False,
-                "penalize_warnings": True
+                "penalize_warnings": True,
             },
             score_missing_required=0.0,
             score_missing_critical=0.3,
             score_missing_optional=0.6,
             score_warnings=0.8,
-            score_perfect=1.0
+            score_perfect=1.0,
         )
         evaluator = ChainLayerEvaluator(config)
 
@@ -175,12 +165,9 @@ class TestSignatureValidation:
             optional_inputs=["context", "metadata"],
             critical_optional=[],
             output_type="dict",
-            output_range=None
+            output_range=None,
         )
-        upstream = UpstreamOutputs(
-            available_outputs={"policy_text"},
-            output_types={}
-        )
+        upstream = UpstreamOutputs(available_outputs={"policy_text"}, output_types={})
 
         result = evaluator.validate_signature_against_upstream(signature, upstream)
         assert result["score"] == 0.6
@@ -195,12 +182,9 @@ class TestSignatureValidation:
             optional_inputs=["context", "metadata"],
             critical_optional=[],
             output_type="dict",
-            output_range=None
+            output_range=None,
         )
-        upstream = UpstreamOutputs(
-            available_outputs={"policy_text", "context"},
-            output_types={}
-        )
+        upstream = UpstreamOutputs(available_outputs={"policy_text", "context"}, output_types={})
 
         result = evaluator.validate_signature_against_upstream(signature, upstream)
         assert result["available_ratio"] == 0.5
@@ -216,11 +200,11 @@ class TestChainLayerEvaluation:
             optional_inputs=["metadata"],
             critical_optional=[],
             output_type="dict",
-            output_range=None
+            output_range=None,
         )
         upstream = UpstreamOutputs(
             available_outputs={"policy_text", "metadata"},
-            output_types={"policy_text": "str", "metadata": "dict"}
+            output_types={"policy_text": "str", "metadata": "dict"},
         )
 
         result = evaluator.evaluate(signature, upstream)
@@ -238,12 +222,9 @@ class TestChainLayerEvaluation:
             optional_inputs=[],
             critical_optional=[],
             output_type="dict",
-            output_range=None
+            output_range=None,
         )
-        upstream = UpstreamOutputs(
-            available_outputs={"metadata"},
-            output_types={}
-        )
+        upstream = UpstreamOutputs(available_outputs={"metadata"}, output_types={})
 
         result = evaluator.evaluate(signature, upstream)
         assert result["chain_score"] == 0.0
@@ -259,12 +240,9 @@ class TestChainLayerEvaluation:
             optional_inputs=["context", "metadata"],
             critical_optional=[],
             output_type="dict",
-            output_range=None
+            output_range=None,
         )
-        upstream = UpstreamOutputs(
-            available_outputs={"policy_text"},
-            output_types={}
-        )
+        upstream = UpstreamOutputs(available_outputs={"policy_text"}, output_types={})
 
         result = evaluator.evaluate(signature, upstream)
         assert "config" in result
@@ -278,27 +256,36 @@ class TestChainSequenceEvaluation:
         evaluator = ChainLayerEvaluator(config)
 
         signatures = [
-            ("method1", MethodSignature(
-                required_inputs=["input_data"],
-                optional_inputs=[],
-                critical_optional=[],
-                output_type="dict",
-                output_range=None
-            )),
-            ("method2", MethodSignature(
-                required_inputs=["method1"],
-                optional_inputs=[],
-                critical_optional=[],
-                output_type="dict",
-                output_range=None
-            )),
-            ("method3", MethodSignature(
-                required_inputs=["method1", "method2"],
-                optional_inputs=[],
-                critical_optional=[],
-                output_type="dict",
-                output_range=None
-            ))
+            (
+                "method1",
+                MethodSignature(
+                    required_inputs=["input_data"],
+                    optional_inputs=[],
+                    critical_optional=[],
+                    output_type="dict",
+                    output_range=None,
+                ),
+            ),
+            (
+                "method2",
+                MethodSignature(
+                    required_inputs=["method1"],
+                    optional_inputs=[],
+                    critical_optional=[],
+                    output_type="dict",
+                    output_range=None,
+                ),
+            ),
+            (
+                "method3",
+                MethodSignature(
+                    required_inputs=["method1", "method2"],
+                    optional_inputs=[],
+                    critical_optional=[],
+                    output_type="dict",
+                    output_range=None,
+                ),
+            ),
         ]
         initial_inputs = {"input_data"}
 
@@ -315,20 +302,26 @@ class TestChainSequenceEvaluation:
         evaluator = ChainLayerEvaluator(config)
 
         signatures = [
-            ("method1", MethodSignature(
-                required_inputs=["missing_input"],
-                optional_inputs=[],
-                critical_optional=[],
-                output_type="dict",
-                output_range=None
-            )),
-            ("method2", MethodSignature(
-                required_inputs=["method1"],
-                optional_inputs=[],
-                critical_optional=[],
-                output_type="dict",
-                output_range=None
-            ))
+            (
+                "method1",
+                MethodSignature(
+                    required_inputs=["missing_input"],
+                    optional_inputs=[],
+                    critical_optional=[],
+                    output_type="dict",
+                    output_range=None,
+                ),
+            ),
+            (
+                "method2",
+                MethodSignature(
+                    required_inputs=["method1"],
+                    optional_inputs=[],
+                    critical_optional=[],
+                    output_type="dict",
+                    output_range=None,
+                ),
+            ),
         ]
         initial_inputs = {"input_data"}
 
@@ -341,34 +334,46 @@ class TestChainSequenceEvaluation:
         evaluator = ChainLayerEvaluator(config)
 
         signatures = [
-            ("method1", MethodSignature(
-                required_inputs=["input_data"],
-                optional_inputs=[],
-                critical_optional=[],
-                output_type="dict",
-                output_range=None
-            )),
-            ("method2a", MethodSignature(
-                required_inputs=["method1"],
-                optional_inputs=[],
-                critical_optional=[],
-                output_type="dict",
-                output_range=None
-            )),
-            ("method2b", MethodSignature(
-                required_inputs=["method1"],
-                optional_inputs=[],
-                critical_optional=[],
-                output_type="dict",
-                output_range=None
-            )),
-            ("method3", MethodSignature(
-                required_inputs=["method2a", "method2b"],
-                optional_inputs=[],
-                critical_optional=[],
-                output_type="dict",
-                output_range=None
-            ))
+            (
+                "method1",
+                MethodSignature(
+                    required_inputs=["input_data"],
+                    optional_inputs=[],
+                    critical_optional=[],
+                    output_type="dict",
+                    output_range=None,
+                ),
+            ),
+            (
+                "method2a",
+                MethodSignature(
+                    required_inputs=["method1"],
+                    optional_inputs=[],
+                    critical_optional=[],
+                    output_type="dict",
+                    output_range=None,
+                ),
+            ),
+            (
+                "method2b",
+                MethodSignature(
+                    required_inputs=["method1"],
+                    optional_inputs=[],
+                    critical_optional=[],
+                    output_type="dict",
+                    output_range=None,
+                ),
+            ),
+            (
+                "method3",
+                MethodSignature(
+                    required_inputs=["method2a", "method2b"],
+                    optional_inputs=[],
+                    critical_optional=[],
+                    output_type="dict",
+                    output_range=None,
+                ),
+            ),
         ]
         initial_inputs = {"input_data"}
 
@@ -382,20 +387,26 @@ class TestChainSequenceEvaluation:
         evaluator = ChainLayerEvaluator(config)
 
         signatures = [
-            ("method1", MethodSignature(
-                required_inputs=["input_data"],
-                optional_inputs=["context"],
-                critical_optional=["context"],
-                output_type="dict",
-                output_range=None
-            )),
-            ("method2", MethodSignature(
-                required_inputs=["method1"],
-                optional_inputs=[],
-                critical_optional=[],
-                output_type="dict",
-                output_range=None
-            ))
+            (
+                "method1",
+                MethodSignature(
+                    required_inputs=["input_data"],
+                    optional_inputs=["context"],
+                    critical_optional=["context"],
+                    output_type="dict",
+                    output_range=None,
+                ),
+            ),
+            (
+                "method2",
+                MethodSignature(
+                    required_inputs=["method1"],
+                    optional_inputs=[],
+                    critical_optional=[],
+                    output_type="dict",
+                    output_range=None,
+                ),
+            ),
         ]
         initial_inputs = {"input_data"}
 

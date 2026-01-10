@@ -69,14 +69,16 @@ assert ALIGNMENT_THRESHOLD == 0.625, "Alignment threshold must be 0.625"
 # Rationale: Risk is inverse of quality
 RISK_THRESHOLDS: Final[dict[str, float]] = {
     "excellent": 1.0 - MICRO_LEVELS["EXCELENTE"],  # 0.15
-    "good": 1.0 - MICRO_LEVELS["BUENO"],           # 0.30
+    "good": 1.0 - MICRO_LEVELS["BUENO"],  # 0.30
     "acceptable": 1.0 - MICRO_LEVELS["ACEPTABLE"],  # 0.45
 }
 
 # Quality gates for thresholds
 assert MICRO_LEVELS["EXCELENTE"] > MICRO_LEVELS["BUENO"], "Monotonicity: EXCELENTE > BUENO"
 assert MICRO_LEVELS["BUENO"] > MICRO_LEVELS["ACEPTABLE"], "Monotonicity: BUENO > ACEPTABLE"
-assert MICRO_LEVELS["ACEPTABLE"] > MICRO_LEVELS["INSUFICIENTE"], "Monotonicity: ACEPTABLE > INSUFICIENTE"
+assert (
+    MICRO_LEVELS["ACEPTABLE"] > MICRO_LEVELS["INSUFICIENTE"]
+), "Monotonicity: ACEPTABLE > INSUFICIENTE"
 
 # ============================================================================
 # DIMENSIONS - 6 Canonical Dimensions (DIM01-DIM06)
@@ -123,16 +125,16 @@ SCORING_MODALITIES: Final[dict[str, str]] = {
 
 CDAF_CALIBRATION_PARAMS: Final[dict[str, float]] = {
     "alpha": -2.0,  # Intercept - shifts baseline probability
-    "beta": 4.0,    # Slope - controls sensitivity to score changes
+    "beta": 4.0,  # Slope - controls sensitivity to score changes
 }
 
 # Domain weights for evidence triangulation
 # Source: derek_beach.py CDAFFramework (lines 6581-6586)
 # Normalized to sum to 1.0
 CDAF_DOMAIN_WEIGHTS: Final[dict[str, float]] = {
-    "semantic": 0.35,    # Text analysis weight
-    "temporal": 0.25,    # Time-series weight
-    "financial": 0.25,   # Budget/finance weight
+    "semantic": 0.35,  # Text analysis weight
+    "temporal": 0.25,  # Time-series weight
+    "financial": 0.25,  # Budget/finance weight
     "structural": 0.15,  # Organizational weight
 }
 
@@ -150,10 +152,10 @@ TRIANGULATION_BONUS: Final[float] = 0.05
 # ============================================================================
 
 BAYES_FACTORS: Final[dict[str, tuple[float, float]]] = {
-    "straw": (2.0, 4.0),      # Weak necessity, weak sufficiency
-    "hoop": (8.0, 12.0),      # Strong necessity, weak sufficiency
-    "smoking": (8.0, 12.0),   # Weak necessity, strong sufficiency
-    "doubly": (20.0, 30.0),   # Strong necessity, strong sufficiency
+    "straw": (2.0, 4.0),  # Weak necessity, weak sufficiency
+    "hoop": (8.0, 12.0),  # Strong necessity, weak sufficiency
+    "smoking": (8.0, 12.0),  # Weak necessity, strong sufficiency
+    "doubly": (20.0, 30.0),  # Strong necessity, strong sufficiency
 }
 
 # ============================================================================
@@ -164,10 +166,10 @@ BAYES_FACTORS: Final[dict[str, tuple[float, float]]] = {
 
 # Chapter/section delimiters (markdown-style or numbered)
 PDT_SECTION_PATTERNS: Final[list[str]] = [
-    r"^#{1,3}\s+",                           # Markdown headers (# ## ###)
-    r"^\d+\.\s+[A-ZÑÁÉÍÓÚ]",                # Numbered sections (1. SECTION)
-    r"^[IVX]+\.\s+[A-ZÑÁÉÍÓÚ]",            # Roman numerals (I. SECTION)
-    r"^(CAPÍTULO|SECCIÓN|TÍTULO)\s+\d+",   # Explicit labels
+    r"^#{1,3}\s+",  # Markdown headers (# ## ###)
+    r"^\d+\.\s+[A-ZÑÁÉÍÓÚ]",  # Numbered sections (1. SECTION)
+    r"^[IVX]+\.\s+[A-ZÑÁÉÍÓÚ]",  # Roman numerals (I. SECTION)
+    r"^(CAPÍTULO|SECCIÓN|TÍTULO)\s+\d+",  # Explicit labels
 ]
 
 # Strategic line indicators
@@ -180,9 +182,9 @@ PDT_STRATEGIC_PATTERNS: Final[list[str]] = [
 
 # Financial/program identifiers
 PDT_FINANCIAL_PATTERNS: Final[list[str]] = [
-    r"PPI[\s-]?\d+",          # Investment projects
-    r"BPIN[\s-]?\d+",         # National investment bank code
-    r"\$\s*[\d,\.]+",         # Currency amounts
+    r"PPI[\s-]?\d+",  # Investment projects
+    r"BPIN[\s-]?\d+",  # National investment bank code
+    r"\$\s*[\d,\.]+",  # Currency amounts
     r"presupuesto",
     r"costo",
     r"inversi[óo]n",
@@ -210,14 +212,16 @@ CAUSAL_CHAIN_ORDER: Final[dict[str, int]] = {
 }
 
 # Quality gate: Order is sequential
-assert list(CAUSAL_CHAIN_ORDER.values()) == list(range(len(CAUSAL_CHAIN_ORDER))), \
-    "Causal chain order must be sequential starting from 0"
+assert list(CAUSAL_CHAIN_ORDER.values()) == list(
+    range(len(CAUSAL_CHAIN_ORDER))
+), "Causal chain order must be sequential starting from 0"
 
 # ==========================================================================
 # PDT/PDM PATTERN SUITE - Precompiled Regexes
 # Source: Consolidated from policy_processor.py and derek_beach.py
 # Provides section, strategic, financial, and coding markers for PDM/PDT docs
 # ==========================================================================
+
 
 def _compile_union(patterns: list[str], flags: int = 0) -> re.Pattern[str]:
     joined = "|".join(f"(?:{p})" for p in patterns)
@@ -381,7 +385,8 @@ TERRITORIAL_REFERENCES_PATTERN: Final[re.Pattern[str]] = re.compile(
 PDT_PATTERNS: Final[dict[str, re.Pattern[str]]] = {
     "section_delimiters": SECTION_DELIMITERS_PATTERN,
     "strategic_markers": _compile_union(
-        PDT_STRATEGIC_PATTERNS + [
+        PDT_STRATEGIC_PATTERNS
+        + [
             r"Parte\s+Estrat[ée]gica|Componente\s+estrat[ée]gico|"
             r"objetivos?|metas?|indicadores?|"
             r"apuestas|priorizaci[óo]n|"
@@ -409,40 +414,43 @@ PDT_PATTERNS: Final[dict[str, re.Pattern[str]]] = {
 # These ensure constants maintain expected properties
 # ============================================================================
 
+
 def validate_canonical_specs() -> dict[str, bool]:
     """Run quality gates on all canonical specifications.
-    
+
     Returns:
         dict mapping check name to pass/fail status
     """
     checks: dict[str, bool] = {}
-    
+
     # Policy areas
     checks["policy_areas_count"] = len(CANON_POLICY_AREAS) == 10
     checks["policy_areas_format"] = all(k.startswith("PA") for k in CANON_POLICY_AREAS)
-    
+
     # Dimensions
     checks["dimensions_count"] = len(CANON_DIMENSIONS) == 6
     checks["dimensions_format"] = all(k.startswith("DIM") for k in CANON_DIMENSIONS)
-    
+
     # Micro levels monotonicity
     checks["micro_levels_monotonic"] = (
-        MICRO_LEVELS["EXCELENTE"] > MICRO_LEVELS["BUENO"] > 
-        MICRO_LEVELS["ACEPTABLE"] > MICRO_LEVELS["INSUFICIENTE"]
+        MICRO_LEVELS["EXCELENTE"]
+        > MICRO_LEVELS["BUENO"]
+        > MICRO_LEVELS["ACEPTABLE"]
+        > MICRO_LEVELS["INSUFICIENTE"]
     )
-    
+
     # Derived values
     checks["alignment_threshold"] = abs(ALIGNMENT_THRESHOLD - 0.625) < 1e-9
     checks["total_questions"] = TOTAL_BASE_QUESTIONS == 30
-    
+
     # Domain weights
     checks["domain_weights_sum"] = abs(sum(CDAF_DOMAIN_WEIGHTS.values()) - 1.0) < 1e-9
-    
+
     # Causal chain
-    checks["causal_chain_sequential"] = (
-        list(CAUSAL_CHAIN_ORDER.values()) == list(range(len(CAUSAL_CHAIN_ORDER)))
+    checks["causal_chain_sequential"] = list(CAUSAL_CHAIN_ORDER.values()) == list(
+        range(len(CAUSAL_CHAIN_ORDER))
     )
-    
+
     return checks
 
 

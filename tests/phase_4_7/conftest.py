@@ -33,6 +33,7 @@ import pytest
 # PATH FIXTURES
 # =============================================================================
 
+
 @pytest.fixture(scope="session")
 def cqc_base_path() -> Path:
     """Base path to the modularized canonical questionnaire central."""
@@ -67,18 +68,16 @@ def modular_manifest_path(cqc_base_path: Path) -> Path:
 # MODULAR FIXTURES - MEANINGFUL STRUCTURAL RELATIONSHIPS
 # =============================================================================
 
+
 @pytest.fixture(scope="session")
 def modular_manifest(modular_manifest_path: Path) -> dict:
     """Load the modular manifest - master structure definition."""
-    with open(modular_manifest_path, 'r', encoding='utf-8') as f:
+    with open(modular_manifest_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
 @pytest.fixture(scope="session")
-def cluster_metadata(
-    clusters_path: Path,
-    modular_manifest: dict
-) -> dict[str, dict]:
+def cluster_metadata(clusters_path: Path, modular_manifest: dict) -> dict[str, dict]:
     """
     Load ALL cluster metadata from modular structure.
 
@@ -92,16 +91,13 @@ def cluster_metadata(
         cluster_id = item["id"]
         folder = item["folder"]
         metadata_path = clusters_path / folder / "metadata.json"
-        with open(metadata_path, 'r', encoding='utf-8') as f:
+        with open(metadata_path, "r", encoding="utf-8") as f:
             clusters[cluster_id] = json.load(f)
     return clusters
 
 
 @pytest.fixture(scope="session")
-def policy_area_metadata(
-    policy_areas_path: Path,
-    modular_manifest: dict
-) -> dict[str, dict]:
+def policy_area_metadata(policy_areas_path: Path, modular_manifest: dict) -> dict[str, dict]:
     """
     Load ALL policy area metadata from modular structure.
 
@@ -115,16 +111,13 @@ def policy_area_metadata(
         pa_id = item["id"]
         folder = item["folder"]
         metadata_path = policy_areas_path / folder / "metadata.json"
-        with open(metadata_path, 'r', encoding='utf-8') as f:
+        with open(metadata_path, "r", encoding="utf-8") as f:
             policy_areas[pa_id] = json.load(f)
     return policy_areas
 
 
 @pytest.fixture(scope="session")
-def dimension_metadata(
-    dimensions_path: Path,
-    modular_manifest: dict
-) -> dict[str, dict]:
+def dimension_metadata(dimensions_path: Path, modular_manifest: dict) -> dict[str, dict]:
     """
     Load ALL dimension metadata from modular structure.
 
@@ -138,7 +131,7 @@ def dimension_metadata(
         dim_id = item["id"]
         folder = item["folder"]
         metadata_path = dimensions_path / folder / "metadata.json"
-        with open(metadata_path, 'r', encoding='utf-8') as f:
+        with open(metadata_path, "r", encoding="utf-8") as f:
             dimensions[dim_id] = json.load(f)
     return dimensions
 
@@ -146,6 +139,7 @@ def dimension_metadata(
 # =============================================================================
 # RELATIONSHIP MAPPINGS - MEANINGFUL STRUCTURAL CONSTRAINTS
 # =============================================================================
+
 
 @pytest.fixture(scope="session")
 def cluster_to_pas_mapping(cluster_metadata: dict) -> dict[str, list[str]]:
@@ -171,10 +165,7 @@ def cluster_to_pas_mapping(cluster_metadata: dict) -> dict[str, list[str]]:
 
 
 @pytest.fixture(scope="session")
-def pa_to_cluster_mapping(
-    policy_area_metadata: dict,
-    modular_manifest: dict
-) -> dict[str, str]:
+def pa_to_cluster_mapping(policy_area_metadata: dict, modular_manifest: dict) -> dict[str, str]:
     """
     Map policy areas to their clusters - MEANINGFUL STRUCTURAL RELATIONSHIP.
 
@@ -214,6 +205,7 @@ def cluster_policy_area_counts(cluster_to_pas_mapping: dict) -> dict[str, int]:
 # TEST DATA GENERATORS - EQUIPPED TO ADD VALUE
 # =============================================================================
 
+
 @pytest.fixture
 def generate_scored_result_for_pa(pa_to_cluster_mapping: dict):
     """
@@ -225,12 +217,8 @@ def generate_scored_result_for_pa(pa_to_cluster_mapping: dict):
         - Create realistic test data that respects structural constraints
         - Verify aggregation uses correct cluster_id
     """
-    def _generate(
-        pa_id: str,
-        question_id: int,
-        score: float = 2.0,
-        quality_level: str = "BUENO"
-    ):
+
+    def _generate(pa_id: str, question_id: int, score: float = 2.0, quality_level: str = "BUENO"):
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import ScoredResult
 
         cluster_id = pa_to_cluster_mapping.get(pa_id, "UNKNOWN")
@@ -248,7 +236,7 @@ def generate_scored_result_for_pa(pa_to_cluster_mapping: dict):
             score=score,
             quality_level=quality_level,
             evidence={},
-            raw_results={}
+            raw_results={},
         )
 
     return _generate
@@ -265,11 +253,12 @@ def generate_dimension_score_for_pa():
         - Proper validation flags
         - Realistic metadata
     """
+
     def _generate(
         pa_id: str,
         dimension: str,
         score: float = 2.0,
-        contributing_questions: list[int] | None = None
+        contributing_questions: list[int] | None = None,
     ):
         from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import DimensionScore
 
@@ -282,8 +271,8 @@ def generate_dimension_score_for_pa():
             validation_passed=True,
             validation_details={
                 "coverage": {"valid": True, "count": 5},
-                "weights": {"valid": True, "weights": "equal"}
-            }
+                "weights": {"valid": True, "weights": "equal"},
+            },
         )
 
     return _generate
@@ -292,6 +281,7 @@ def generate_dimension_score_for_pa():
 # =============================================================================
 # ASSERTION HELPERS - EQUIPPED TO VALIDATE MEANINGFUL CONSTRAINTS
 # =============================================================================
+
 
 @pytest.fixture
 def assert_hermeticity_for_cluster(cluster_policy_area_counts: dict):
@@ -309,6 +299,7 @@ def assert_hermeticity_for_cluster(cluster_policy_area_counts: dict):
         - CL02 must have exactly 3 PAs: PA01, PA05, PA06
         - etc.
     """
+
     def _assert(cluster_id: str, area_scores: list):
         expected_count = cluster_policy_area_counts[cluster_id]
         actual_pa_ids = {score.area_id for score in area_scores}
@@ -336,6 +327,7 @@ def assert_pa_cluster_assignment(pa_to_cluster_mapping: dict):
     EQUIPPED WITH:
         - Real PA→Cluster mappings from modular structure
     """
+
     def _assert(pa_id: str, expected_cluster_id: str, area_score):
         actual_cluster = area_score.cluster_id
 
@@ -360,6 +352,7 @@ def assert_pa_cluster_assignment(pa_to_cluster_mapping: dict):
 # LEGACY MONOLITH FIXTURES - For backward compatibility
 # =============================================================================
 
+
 @pytest.fixture(scope="session")
 def questionnaire_monolith(cqc_base_path: Path) -> dict:
     """
@@ -368,7 +361,7 @@ def questionnaire_monolith(cqc_base_path: Path) -> dict:
     DEPRECATED: Use modular fixtures above for meaningful tests.
     """
     monolith_path = cqc_base_path / "questionnaire_monolith.json"
-    with open(monolith_path, 'r', encoding='utf-8') as f:
+    with open(monolith_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -377,7 +370,7 @@ def monolith_from_modular(
     cluster_metadata: dict,
     policy_area_metadata: dict,
     dimension_metadata: dict,
-    modular_manifest: dict
+    modular_manifest: dict,
 ) -> dict[str, Any]:
     """
     Construct a monolith-like structure from modular pieces.
@@ -393,7 +386,7 @@ def monolith_from_modular(
             "cluster_id": cluster_id,
             "i18n": metadata.get("i18n", {}),
             "policy_area_ids": metadata.get("policy_area_ids", []),
-            "rationale": metadata.get("rationale", "")
+            "rationale": metadata.get("rationale", ""),
         }
         clusters_list.append(cluster_dict)
 
@@ -405,20 +398,20 @@ def monolith_from_modular(
             "i18n": metadata.get("i18n", {}),
             # Get cluster from manifest since metadata might not have it
             "cluster_id": next(
-                (item["cluster"] for item in modular_manifest["structure"]["policy_areas"]["items"]
-                if item["id"] == pa_id),
-                ""
-            )
+                (
+                    item["cluster"]
+                    for item in modular_manifest["structure"]["policy_areas"]["items"]
+                    if item["id"] == pa_id
+                ),
+                "",
+            ),
         }
         policy_areas_list.append(pa_dict)
 
     # Convert dimension metadata to monolith format
     dimensions_list = []
     for dim_id, metadata in dimension_metadata.items():
-        dim_dict = {
-            "dimension_id": dim_id,
-            "i18n": metadata.get("i18n", {})
-        }
+        dim_dict = {"dimension_id": dim_id, "i18n": metadata.get("i18n", {})}
         dimensions_list.append(dim_dict)
 
     # Construct monolith-like structure
@@ -427,10 +420,10 @@ def monolith_from_modular(
             "niveles_abstraccion": {
                 "clusters": clusters_list,
                 "policy_areas": policy_areas_list,
-                "dimensions": dimensions_list
+                "dimensions": dimensions_list,
             },
-            "scoring": {}
+            "scoring": {},
         },
         "_modular_source": True,
-        "_manifest_version": modular_manifest.get("_manifest_version")
+        "_manifest_version": modular_manifest.get("_manifest_version"),
     }

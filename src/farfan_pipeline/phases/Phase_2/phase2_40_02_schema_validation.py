@@ -280,9 +280,7 @@ def _validate_semantic_constraints(
 
     # Iterate deterministically via enumerate-zip for lists
     if question_type == "list" and chunk_type == "list":
-        for idx, (q_elem, c_elem) in enumerate(
-            zip(question_schema, chunk_schema, strict=True)
-        ):
+        for idx, (q_elem, c_elem) in enumerate(zip(question_schema, chunk_schema, strict=True)):
             if not isinstance(q_elem, dict) or not isinstance(c_elem, dict):
                 continue
 
@@ -457,9 +455,7 @@ def validate_phase6_schema_compatibility(
     if question_schema is not None:
         if isinstance(question_schema, list):
             has_required_fields = any(
-                elem.get("required", False)
-                for elem in question_schema
-                if isinstance(elem, dict)
+                elem.get("required", False) for elem in question_schema if isinstance(elem, dict)
             )
             has_minimum_thresholds = any(
                 "minimum" in elem for elem in question_schema if isinstance(elem, dict)
@@ -471,9 +467,7 @@ def validate_phase6_schema_compatibility(
                 if isinstance(elem, dict)
             )
             has_minimum_thresholds = any(
-                "minimum" in elem
-                for elem in question_schema.values()
-                if isinstance(elem, dict)
+                "minimum" in elem for elem in question_schema.values() if isinstance(elem, dict)
             )
 
     logger.debug(

@@ -17,6 +17,7 @@ It guarantees:
     - Wiring integrity verification
     - Boot sequence orchestration
 """
+
 from __future__ import annotations
 
 from typing import Final
@@ -75,33 +76,43 @@ STAGE_20_DESCRIPTION: Final[str] = "Seed management, hash computation, determini
 # Stage 30: Resource Control - Limits, watchdog, kernel enforcement, metrics
 STAGE_RESOURCES: Final[int] = 30
 STAGE_30_NAME: Final[str] = "Resource Control"
-STAGE_30_DESCRIPTION: Final[str] = "Hard resource limits, memory watchdog, kernel enforcement, performance metrics"
+STAGE_30_DESCRIPTION: Final[str] = (
+    "Hard resource limits, memory watchdog, kernel enforcement, performance metrics"
+)
 
 # Stage 40: Validation - Input, schema, signature validation
 STAGE_VALIDATION: Final[int] = 40
 STAGE_40_NAME: Final[str] = "Validation"
-STAGE_40_DESCRIPTION: Final[str] = "Input validation, schema monitoring, signature verification with security hardening"
+STAGE_40_DESCRIPTION: Final[str] = (
+    "Input validation, schema monitoring, signature verification with security hardening"
+)
 
 # Stage 50: Boot Sequence - Checks, gates, wiring verification
 STAGE_BOOT: Final[int] = 50
 STAGE_50_NAME: Final[str] = "Boot Sequence"
-STAGE_50_DESCRIPTION: Final[str] = "Boot checks, exit gates, wiring verification with security handoff"
+STAGE_50_DESCRIPTION: Final[str] = (
+    "Boot checks, exit gates, wiring verification with security handoff"
+)
 
 # Stage 90: Integration - Main entry, runner, bootstrap orchestration
 STAGE_INTEGRATION: Final[int] = 90
 STAGE_90_NAME: Final[str] = "Integration"
-STAGE_90_DESCRIPTION: Final[str] = "Main entry point, pipeline runner, and bootstrap orchestration with secure handoff"
+STAGE_90_DESCRIPTION: Final[str] = (
+    "Main entry point, pipeline runner, and bootstrap orchestration with secure handoff"
+)
 
 # All valid stages
-VALID_STAGES: Final[frozenset[int]] = frozenset({
-    STAGE_INFRASTRUCTURE,
-    STAGE_ENVIRONMENT,
-    STAGE_DETERMINISM,
-    STAGE_RESOURCES,
-    STAGE_VALIDATION,
-    STAGE_BOOT,
-    STAGE_INTEGRATION,
-})
+VALID_STAGES: Final[frozenset[int]] = frozenset(
+    {
+        STAGE_INFRASTRUCTURE,
+        STAGE_ENVIRONMENT,
+        STAGE_DETERMINISM,
+        STAGE_RESOURCES,
+        STAGE_VALIDATION,
+        STAGE_BOOT,
+        STAGE_INTEGRATION,
+    }
+)
 
 # Stage metadata dictionary
 STAGE_METADATA: Final[dict[int, dict[str, str]]] = {
@@ -126,15 +137,17 @@ TYPE_UTILITY: Final[str] = "UTIL"
 TYPE_ORCHESTRATOR: Final[str] = "ORCH"
 TYPE_ENTRY: Final[str] = "ENTRY"
 
-VALID_MODULE_TYPES: Final[frozenset[str]] = frozenset({
-    TYPE_INFRASTRUCTURE,
-    TYPE_CONFIG,
-    TYPE_VALIDATOR,
-    TYPE_ENFORCER,
-    TYPE_UTILITY,
-    TYPE_ORCHESTRATOR,
-    TYPE_ENTRY,
-})
+VALID_MODULE_TYPES: Final[frozenset[str]] = frozenset(
+    {
+        TYPE_INFRASTRUCTURE,
+        TYPE_CONFIG,
+        TYPE_VALIDATOR,
+        TYPE_ENFORCER,
+        TYPE_UTILITY,
+        TYPE_ORCHESTRATOR,
+        TYPE_ENTRY,
+    }
+)
 
 # =============================================================================
 # CRITICALITY LEVELS
@@ -145,12 +158,14 @@ CRITICALITY_HIGH: Final[str] = "HIGH"
 CRITICALITY_MEDIUM: Final[str] = "MEDIUM"
 CRITICALITY_LOW: Final[str] = "LOW"
 
-VALID_CRITICALITY_LEVELS: Final[frozenset[str]] = frozenset({
-    CRITICALITY_CRITICAL,
-    CRITICALITY_HIGH,
-    CRITICALITY_MEDIUM,
-    CRITICALITY_LOW,
-})
+VALID_CRITICALITY_LEVELS: Final[frozenset[str]] = frozenset(
+    {
+        CRITICALITY_CRITICAL,
+        CRITICALITY_HIGH,
+        CRITICALITY_MEDIUM,
+        CRITICALITY_LOW,
+    }
+)
 
 # =============================================================================
 # EXECUTION PATTERNS
@@ -161,12 +176,14 @@ PATTERN_ON_DEMAND: Final[str] = "On-Demand"
 PATTERN_BOOT_ONCE: Final[str] = "Boot-Once"
 PATTERN_CONTINUOUS: Final[str] = "Continuous"
 
-VALID_EXECUTION_PATTERNS: Final[frozenset[str]] = frozenset({
-    PATTERN_SINGLETON,
-    PATTERN_ON_DEMAND,
-    PATTERN_BOOT_ONCE,
-    PATTERN_CONTINUOUS,
-})
+VALID_EXECUTION_PATTERNS: Final[frozenset[str]] = frozenset(
+    {
+        PATTERN_SINGLETON,
+        PATTERN_ON_DEMAND,
+        PATTERN_BOOT_ONCE,
+        PATTERN_CONTINUOUS,
+    }
+)
 
 # =============================================================================
 # RESOURCE LIMITS (Phase 0 Defaults)
@@ -212,36 +229,44 @@ MODULE_MANIFEST: Final[tuple[tuple[int, int, str, str, str, str], ...]] = (
     (0, 1, "domain_errors", "domain_errors", TYPE_INFRASTRUCTURE, CRITICALITY_HIGH),
     (0, 2, "runtime_error_fixes", "runtime_error_fixes", TYPE_INFRASTRUCTURE, CRITICALITY_MEDIUM),
     (0, 3, "protocols", None, TYPE_INFRASTRUCTURE, CRITICALITY_CRITICAL),
-    
     # Stage 10: Environment Configuration
     (10, 0, "paths", "paths", TYPE_CONFIG, CRITICALITY_CRITICAL),
     (10, 1, "runtime_config", "runtime_config", TYPE_CONFIG, CRITICALITY_CRITICAL),
     (10, 2, "json_logger", "json_logger", TYPE_CONFIG, CRITICALITY_HIGH),
-    
     # Stage 20: Determinism Enforcement
     (20, 0, "seed_factory", "seed_factory", TYPE_ENFORCER, CRITICALITY_CRITICAL),
     (20, 1, "hash_utils", "hash_utils", TYPE_UTILITY, CRITICALITY_HIGH),
     (20, 2, "determinism", "determinism", TYPE_ENFORCER, CRITICALITY_CRITICAL),
     (20, 3, "determinism_helpers", "determinism_helpers", TYPE_UTILITY, CRITICALITY_HIGH),
-    (20, 4, "deterministic_execution", "deterministic_execution", TYPE_ENFORCER, CRITICALITY_CRITICAL),
-    
+    (
+        20,
+        4,
+        "deterministic_execution",
+        "deterministic_execution",
+        TYPE_ENFORCER,
+        CRITICALITY_CRITICAL,
+    ),
     # Stage 30: Resource Control
     (30, 0, "resource_controller", "resource_controller", TYPE_ENFORCER, CRITICALITY_CRITICAL),
     (30, 1, "performance_metrics", None, TYPE_UTILITY, CRITICALITY_MEDIUM),
-    
     # Stage 40: Validation
     (40, 0, "input_validation", "phase0_input_validation", TYPE_VALIDATOR, CRITICALITY_CRITICAL),
     (40, 1, "schema_monitor", "schema_monitor", TYPE_VALIDATOR, CRITICALITY_HIGH),
     (40, 2, "signature_validator", "signature_validator", TYPE_VALIDATOR, CRITICALITY_HIGH),
     (40, 3, "coverage_gate", "coverage_gate", TYPE_VALIDATOR, CRITICALITY_MEDIUM),
-    
     # Stage 50: Boot Sequence
     (50, 0, "boot_checks", "boot_checks", TYPE_ORCHESTRATOR, CRITICALITY_CRITICAL),
     (50, 1, "exit_gates", "exit_gates", TYPE_ORCHESTRATOR, CRITICALITY_HIGH),
-    
     # Stage 90: Integration
     (90, 0, "main", "main", TYPE_ENTRY, CRITICALITY_CRITICAL),
-    (90, 1, "verified_pipeline_runner", "verified_pipeline_runner", TYPE_ORCHESTRATOR, CRITICALITY_CRITICAL),
+    (
+        90,
+        1,
+        "verified_pipeline_runner",
+        "verified_pipeline_runner",
+        TYPE_ORCHESTRATOR,
+        CRITICALITY_CRITICAL,
+    ),
     (90, 2, "bootstrap", "bootstrap", TYPE_ORCHESTRATOR, CRITICALITY_CRITICAL),
     (90, 3, "wiring_validator", None, TYPE_VALIDATOR, CRITICALITY_CRITICAL),
 )
@@ -249,6 +274,7 @@ MODULE_MANIFEST: Final[tuple[tuple[int, int, str, str, str, str], ...]] = (
 # =============================================================================
 # HELPER FUNCTIONS
 # =============================================================================
+
 
 def get_canonical_filename(stage: int, order: int, name: str) -> str:
     """Generate canonical filename from stage, order, and name."""
@@ -263,7 +289,8 @@ def get_stage_modules(stage: int) -> list[tuple[int, int, str, str, str, str]]:
 def validate_module_name(filename: str) -> bool:
     """Validate that a filename follows the canonical format."""
     import re
-    pattern = r'^phase0_\d{2}_\d{2}_[a-z][a-z0-9_]+\.py$'
+
+    pattern = r"^phase0_\d{2}_\d{2}_[a-z][a-z0-9_]+\.py$"
     return bool(re.match(pattern, filename))
 
 

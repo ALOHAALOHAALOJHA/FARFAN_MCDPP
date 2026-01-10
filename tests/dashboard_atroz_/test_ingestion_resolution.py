@@ -19,7 +19,9 @@ class _Document:
 
 def test_resolve_municipality_by_dane_code_in_document_id() -> None:
     context = {
-        "document": _Document(input_data=_InputData(document_id="pdt_19050", pdf_path="/tmp/whatever.pdf")),
+        "document": _Document(
+            input_data=_InputData(document_id="pdt_19050", pdf_path="/tmp/whatever.pdf")
+        ),
     }
     municipality = _resolve_municipality_from_context(context)
     assert municipality is not None
@@ -29,10 +31,11 @@ def test_resolve_municipality_by_dane_code_in_document_id() -> None:
 
 def test_resolve_municipality_by_dane_code_in_pdf_path() -> None:
     context = {
-        "document": _Document(input_data=_InputData(document_id="doc_x", pdf_path="/tmp/pdt_81794.pdf")),
+        "document": _Document(
+            input_data=_InputData(document_id="doc_x", pdf_path="/tmp/pdt_81794.pdf")
+        ),
     }
     municipality = _resolve_municipality_from_context(context)
     assert municipality is not None
     assert municipality.dane_code == "81794"
     assert municipality.name.lower() == "tame"
-

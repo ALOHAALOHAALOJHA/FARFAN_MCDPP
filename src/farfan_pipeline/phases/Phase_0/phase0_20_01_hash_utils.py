@@ -35,7 +35,5 @@ def compute_hash(data: dict[str, Any]) -> str:
         >>> hash1 == hash2
         True
     """
-    canonical_json = json.dumps(
-        data, sort_keys=True, ensure_ascii=True, separators=(",", ":")
-    )
+    canonical_json = json.dumps(data, sort_keys=True, ensure_ascii=True, separators=(",", ":"))
     return hashlib.sha256(canonical_json.encode("utf-8")).hexdigest()

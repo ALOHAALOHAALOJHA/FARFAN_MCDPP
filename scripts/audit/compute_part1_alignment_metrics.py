@@ -175,20 +175,22 @@ DETECTORS: dict[str, list[re.Pattern[str]]] = {
     "desagregacion_territorial": [
         compile_regex(r"\b(urbano|rural|cabecera|corregimiento|vereda|resguardo|comuna|barrio)\b"),
     ],
-
     # Official sources
     "fuentes_oficiales": [
         compile_regex(r"\b(DANE|DNP|SISBEN|SISBÉN|SISPT|SGR|SGP|OCAD|ART|ICBF|SIVIGILA|RUV|SUI)\b"),
-        compile_regex(r"\b(ministerio|minsalud|mineducación|mineducacion|minambiente|policía|policia)\b"),
+        compile_regex(
+            r"\b(ministerio|minsalud|mineducación|mineducacion|minambiente|policía|policia)\b"
+        ),
         compile_regex(r"\b(registro\s+único\s+de\s+víctimas|registro\s+unico\s+de\s+victimas)\b"),
     ],
     "official_stats": [
         compile_regex(r"\b(DANE|DNP)\b"),
     ],
     "official_documents": [
-        compile_regex(r"\b(ley\s+\d+|decreto\s+\d+|conpes|acuerdo\s+no\.?|acto\s+administrativo)\b"),
+        compile_regex(
+            r"\b(ley\s+\d+|decreto\s+\d+|conpes|acuerdo\s+no\.?|acto\s+administrativo)\b"
+        ),
     ],
-
     # Quant indicators / baselines / targets
     "indicadores_cuantitativos": [
         compile_regex(r"\b(indicador(?:es)?|tasa|porcentaje|%|índice|indice|ratio|cobertura)\b"),
@@ -206,15 +208,18 @@ DETECTORS: dict[str, list[re.Pattern[str]]] = {
         compile_regex(r"\b(meta(?:s)?|objetivo(?:s)?)\b"),
     ],
     "meta_cuatrienio": [
-        compile_regex(r"\b(meta\s+cuatrienio|cuatrienio\s+\(20\d{2}-20\d{2}\)|20\d{2}\s*[-–]\s*20\d{2})\b"),
+        compile_regex(
+            r"\b(meta\s+cuatrienio|cuatrienio\s+\(20\d{2}-20\d{2}\)|20\d{2}\s*[-–]\s*20\d{2})\b"
+        ),
     ],
     "unidad_medida": [
-        compile_regex(r"\b(unidad\s+de\s+medida|unidad(?:es)?|km|hect[aá]rea(?:s)?|vivienda(?:s)?|persona(?:s)?|familia(?:s)?)\b"),
+        compile_regex(
+            r"\b(unidad\s+de\s+medida|unidad(?:es)?|km|hect[aá]rea(?:s)?|vivienda(?:s)?|persona(?:s)?|familia(?:s)?)\b"
+        ),
     ],
     "fuente_verificacion": [
         compile_regex(r"\b(fuente\s+de\s+verificaci[oó]n|fuente)\b"),
     ],
-
     # Temporal series
     "series_temporales_años": [
         compile_regex(r"\b(19\d{2}|20\d{2})\b"),
@@ -222,25 +227,26 @@ DETECTORS: dict[str, list[re.Pattern[str]]] = {
     "año_referencia": [
         compile_regex(r"\b(19\d{2}|20\d{2})\b"),
     ],
-
     # Budget / financing / traceability
     "recursos_identificados": [
-        compile_regex(r"\b(presupuesto|financiaci[oó]n|recursos|inversi[oó]n|fuente(?:s)?\s+de\s+financiaci[oó]n)\b"),
+        compile_regex(
+            r"\b(presupuesto|financiaci[oó]n|recursos|inversi[oó]n|fuente(?:s)?\s+de\s+financiaci[oó]n)\b"
+        ),
         compile_regex(r"\b(PPI|plan\s+plurianual\s+de\s+inversiones|marco\s+fiscal)\b"),
         compile_regex(r"\b(SGP|SGR|regal[ií]as)\b"),
     ],
     "trazabilidad_presupuestal": [
         compile_regex(r"\b(PPI|plan\s+plurianual\s+de\s+inversiones)\b"),
     ],
-
     # Participation / governance
     "participacion_efectiva": [
-        compile_regex(r"\b(participaci[oó]n\s+ciudadana|mesa(?:s)?\s+de\s+trabajo|audiencia(?:s)?\s+p[uú]blica(?:s)?)\b"),
+        compile_regex(
+            r"\b(participaci[oó]n\s+ciudadana|mesa(?:s)?\s+de\s+trabajo|audiencia(?:s)?\s+p[uú]blica(?:s)?)\b"
+        ),
     ],
     "responsable_medicion": [
         compile_regex(r"\b(responsable|secretar[ií]a|dependencia|entidad)\b"),
     ],
-
     # Causal / theory of change
     "supuestos_clave": [
         compile_regex(r"\b(supuesto(?:s)?|riesgo(?:s)?)\b"),
@@ -264,7 +270,13 @@ def count_distinct_years(text_norm: str) -> int:
 
 
 def count_distinct_institutions(text_norm: str) -> int:
-    inst = set(re.findall(r"\b(DANE|DNP|SISBEN|SISBÉN|SISPT|SGR|SGP|OCAD|ART|ICBF|SIVIGILA|RUV|SUI)\b", text_norm, flags=re.IGNORECASE))
+    inst = set(
+        re.findall(
+            r"\b(DANE|DNP|SISBEN|SISBÉN|SISPT|SGR|SGP|OCAD|ART|ICBF|SIVIGILA|RUV|SUI)\b",
+            text_norm,
+            flags=re.IGNORECASE,
+        )
+    )
     return len(inst)
 
 
@@ -282,7 +294,9 @@ def element_score(element: ExpectedElementSpec, text_norm: str) -> tuple[float, 
 
     # For "línea base cuantitativa", require co-occurrence within a window
     if element.type == "linea_base_cuantitativa":
-        pat = re.compile(r"(l[ií]nea\s+base.{0,80}\d|\d.{0,80}l[ií]nea\s+base)", re.IGNORECASE | re.MULTILINE)
+        pat = re.compile(
+            r"(l[ií]nea\s+base.{0,80}\d|\d.{0,80}l[ií]nea\s+base)", re.IGNORECASE | re.MULTILINE
+        )
         hits = len(pat.findall(text_norm))
         minimum = max(1, element.minimum)
         return (min(hits / minimum, 1.0), hits, "OK")
@@ -420,7 +434,9 @@ def main() -> int:
             question_scores[q.question_id] = q_score
 
             # Canonical question score: include unknown expected_elements as 0.
-            q_score_canonical = mean(element_scores_canonical) if element_scores_canonical else math.nan
+            q_score_canonical = (
+                mean(element_scores_canonical) if element_scores_canonical else math.nan
+            )
             question_scores_canonical[q.question_id] = q_score_canonical
 
             dim_scores.setdefault(q.dimension_id, []).append(q_score)
@@ -432,7 +448,9 @@ def main() -> int:
                 "base_slot": q.base_slot,
                 "expected_elements": element_details,
                 "question_score": None if math.isnan(q_score) else round(q_score, 4),
-                "question_score_canonical": None if math.isnan(q_score_canonical) else round(q_score_canonical, 4),
+                "question_score_canonical": (
+                    None if math.isnan(q_score_canonical) else round(q_score_canonical, 4)
+                ),
             }
 
         # Keyword coverage per PA
@@ -453,11 +471,18 @@ def main() -> int:
             "question_score_p10": round(pctl(q_values, 0.10), 4) if q_values else None,
             "question_score_min": round(min(q_values), 4) if q_values else None,
             "question_score_std": round(pstdev(q_values), 4) if len(q_values) > 1 else 0.0,
-
-            "question_score_canonical_mean": round(mean(q_values_canonical), 4) if q_values_canonical else None,
-            "question_score_canonical_p10": round(pctl(q_values_canonical, 0.10), 4) if q_values_canonical else None,
-            "question_score_canonical_min": round(min(q_values_canonical), 4) if q_values_canonical else None,
-            "question_score_canonical_std": round(pstdev(q_values_canonical), 4) if len(q_values_canonical) > 1 else 0.0,
+            "question_score_canonical_mean": (
+                round(mean(q_values_canonical), 4) if q_values_canonical else None
+            ),
+            "question_score_canonical_p10": (
+                round(pctl(q_values_canonical, 0.10), 4) if q_values_canonical else None
+            ),
+            "question_score_canonical_min": (
+                round(min(q_values_canonical), 4) if q_values_canonical else None
+            ),
+            "question_score_canonical_std": (
+                round(pstdev(q_values_canonical), 4) if len(q_values_canonical) > 1 else 0.0
+            ),
         }
 
         # Dimension / PA summaries
@@ -481,21 +506,17 @@ def main() -> int:
             "by_policy_area": pa_summary,
             "by_policy_area_keywords": pa_keyword,
             "worst_questions": [{"question_id": qid, "score": round(sc, 4)} for qid, sc in worst],
-            "worst_questions_canonical": [{"question_id": qid, "score": round(sc, 4)} for qid, sc in worst_canonical],
+            "worst_questions_canonical": [
+                {"question_id": qid, "score": round(sc, 4)} for qid, sc in worst_canonical
+            ],
             "per_question": per_question,
-            "element_type_summary": {
-                et: summarize(xs) for et, xs in element_type_scores.items()
-            },
+            "element_type_summary": {et: summarize(xs) for et, xs in element_type_scores.items()},
         }
         per_plan_question_scores[plan_name] = {
-            qid: sc
-            for qid, sc in question_scores.items()
-            if not math.isnan(sc)
+            qid: sc for qid, sc in question_scores.items() if not math.isnan(sc)
         }
         per_plan_question_scores_canonical[plan_name] = {
-            qid: sc
-            for qid, sc in question_scores_canonical.items()
-            if not math.isnan(sc)
+            qid: sc for qid, sc in question_scores_canonical.items() if not math.isnan(sc)
         }
 
     # Convergence across plans (only questions that have scores everywhere)
@@ -506,7 +527,9 @@ def main() -> int:
 
     per_q_mean = {qid: mean(vs) for qid, vs in common_scores_matrix.items()}
     per_q_min = {qid: min(vs) for qid, vs in common_scores_matrix.items()}
-    per_q_std = {qid: (pstdev(vs) if len(vs) > 1 else 0.0) for qid, vs in common_scores_matrix.items()}
+    per_q_std = {
+        qid: (pstdev(vs) if len(vs) > 1 else 0.0) for qid, vs in common_scores_matrix.items()
+    }
 
     means = list(per_q_mean.values())
     mins = list(per_q_min.values())
@@ -546,7 +569,10 @@ def main() -> int:
         ]
     per_q_mean_c = {qid: mean(vs) for qid, vs in common_scores_matrix_canonical.items()}
     per_q_min_c = {qid: min(vs) for qid, vs in common_scores_matrix_canonical.items()}
-    per_q_std_c = {qid: (pstdev(vs) if len(vs) > 1 else 0.0) for qid, vs in common_scores_matrix_canonical.items()}
+    per_q_std_c = {
+        qid: (pstdev(vs) if len(vs) > 1 else 0.0)
+        for qid, vs in common_scores_matrix_canonical.items()
+    }
     means_c = list(per_q_mean_c.values())
     mins_c = list(per_q_min_c.values())
     results["convergence_canonical"] = {

@@ -18,8 +18,6 @@ import pytest
 from farfan_pipeline.methods.causal_structure_learning import CausalStructureLearner
 
 
-
-
 @pytest.fixture
 def mock_config() -> Mock:
     """Fixture for mock configuration"""
@@ -139,9 +137,7 @@ class TestCausalStructureLearner:
         not CausalStructureLearner().is_available(),
         reason="CausalNex not available",
     )
-    def test_query_distribution_no_inference_engine(
-        self, learner: CausalStructureLearner
-    ) -> None:
+    def test_query_distribution_no_inference_engine(self, learner: CausalStructureLearner) -> None:
         """Test query distribution without inference engine"""
         result = learner.query_distribution("X", evidence={})
 
@@ -184,9 +180,7 @@ class TestCausalStructureLearner:
         not CausalStructureLearner().is_available(),
         reason="CausalNex not available",
     )
-    def test_get_structure_summary_no_structure(
-        self, learner: CausalStructureLearner
-    ) -> None:
+    def test_get_structure_summary_no_structure(self, learner: CausalStructureLearner) -> None:
         """Test structure summary without structure"""
         summary = learner.get_structure_summary()
         assert "error" in summary

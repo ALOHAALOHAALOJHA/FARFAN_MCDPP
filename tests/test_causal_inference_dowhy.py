@@ -171,14 +171,20 @@ class TestDoWhyCausalAnalyzer:
 
         analyzer = DoWhyCausalAnalyzer(graph)
         estimate = analyzer.estimate_effect(
-            data, treatment="T", outcome="Y", method="backdoor.linear_regression", common_causes=["Z"]
+            data,
+            treatment="T",
+            outcome="Y",
+            method="backdoor.linear_regression",
+            common_causes=["Z"],
         )
 
         assert isinstance(estimate, CausalEffectEstimate)
         if estimate.identified:
             # Should estimate effect around 3.0
             assert 2.0 < estimate.value < 4.0
-            assert estimate.confidence_interval[0] < estimate.value < estimate.confidence_interval[1]
+            assert (
+                estimate.confidence_interval[0] < estimate.value < estimate.confidence_interval[1]
+            )
 
     @pytest.mark.skipif(not DOWHY_AVAILABLE, reason="DoWhy not installed")
     def test_refute_estimate(self):
@@ -202,7 +208,11 @@ class TestDoWhyCausalAnalyzer:
 
         if estimate.identified:
             refutations = analyzer.refute_estimate(
-                data, treatment="T", outcome="Y", estimate=estimate, methods=["placebo_treatment_refuter"]
+                data,
+                treatment="T",
+                outcome="Y",
+                estimate=estimate,
+                methods=["placebo_treatment_refuter"],
             )
 
             assert isinstance(refutations, dict)
@@ -312,7 +322,11 @@ class TestCausalEffectEstimate:
     def test_custom_initialization(self):
         """Test with custom values"""
         estimate = CausalEffectEstimate(
-            value=2.5, confidence_interval=(2.0, 3.0), standard_error=0.25, method="backdoor.linear_regression", identified=True
+            value=2.5,
+            confidence_interval=(2.0, 3.0),
+            standard_error=0.25,
+            method="backdoor.linear_regression",
+            identified=True,
         )
 
         assert estimate.value == 2.5
@@ -335,7 +349,13 @@ class TestRefutationResult:
 
     def test_custom_initialization(self):
         """Test with custom values"""
-        result = RefutationResult(method="placebo_treatment_refuter", refuted=False, p_value=0.85, passed=True, summary="Test passed")
+        result = RefutationResult(
+            method="placebo_treatment_refuter",
+            refuted=False,
+            p_value=0.85,
+            passed=True,
+            summary="Test passed",
+        )
 
         assert result.method == "placebo_treatment_refuter"
         assert result.refuted is False
@@ -377,7 +397,10 @@ class TestDoWhyIntegration:
 
         # Step 1: Identify effect
         identification = analyzer.identify_effect(
-            data, treatment="Intervencion", outcome="Resultado", common_causes=["ContextoSocioeconomico"]
+            data,
+            treatment="Intervencion",
+            outcome="Resultado",
+            common_causes=["ContextoSocioeconomico"],
         )
 
         assert identification.identified
@@ -385,7 +408,11 @@ class TestDoWhyIntegration:
 
         # Step 2: Estimate effect
         estimate = analyzer.estimate_effect(
-            data, treatment="Intervencion", outcome="Resultado", method="backdoor.linear_regression", common_causes=["ContextoSocioeconomico"]
+            data,
+            treatment="Intervencion",
+            outcome="Resultado",
+            method="backdoor.linear_regression",
+            common_causes=["ContextoSocioeconomico"],
         )
 
         assert estimate.identified
@@ -393,7 +420,9 @@ class TestDoWhyIntegration:
         assert 1.0 < estimate.value < 2.0
 
         # Step 3: Refute estimate
-        refutations = analyzer.refute_estimate(data, treatment="Intervencion", outcome="Resultado", estimate=estimate)
+        refutations = analyzer.refute_estimate(
+            data, treatment="Intervencion", outcome="Resultado", estimate=estimate
+        )
 
         assert len(refutations) > 0
         # At least one refutation should pass

@@ -3,6 +3,7 @@ Test ReC - Retriever Determinism Contract
 Verifies: Top-K is deterministic hash of query+filters+index
 Deterministic retrieval guarantee
 """
+
 import pytest
 from pathlib import Path
 from typing import Any
@@ -58,9 +59,7 @@ class TestRetrieverDeterminismContract:
         results2 = RetrieverContract.retrieve("query_b", filters, index_hash)
         assert results1 != results2
 
-    def test_rec_004_different_filters_different_results(
-        self, query: str, index_hash: str
-    ) -> None:
+    def test_rec_004_different_filters_different_results(self, query: str, index_hash: str) -> None:
         """ReC-004: Different filters produce different results."""
         filters1 = {"policy_area": "PA01"}
         filters2 = {"policy_area": "PA02"}

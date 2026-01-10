@@ -1,8 +1,10 @@
 """
 Permutation-Invariance Contract (PIC) - Implementation
 """
+
 import hashlib
 from typing import List, Any, Callable
+
 
 class PermutationInvarianceContract:
     @staticmethod
@@ -13,12 +15,12 @@ class PermutationInvarianceContract:
         """
         # ψ(x) = transform(x)
         transformed = [transform(x) for x in items]
-        
+
         # Σ ψ(x) - Sum is order-independent (within floating point limits, usually)
         # For strict bitwise invariance with floats, we might need to sort or use exact arithmetic.
         # But the requirement asks for "numerical tolerance".
         total = sum(transformed)
-        
+
         # ϕ(x) = identity (for this example)
         return total
 

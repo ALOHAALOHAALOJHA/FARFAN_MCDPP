@@ -51,8 +51,10 @@ logger = logging.getLogger(__name__)
 # Type Definitions & Enums
 # -----------------------------------------------------------------------------
 
+
 class TemporalErrorType(Enum):
     """Types of temporal anomalies detected."""
+
     GAP_DETECTED = "gap_detected"
     OVERLAP_DETECTED = "overlap_detected"
     OUT_OF_ORDER = "out_of_order"
@@ -67,6 +69,7 @@ class TemporalErrorType(Enum):
 @dataclass(frozen=True)
 class TemporalError:
     """Immutable record of a temporal anomaly."""
+
     error_type: TemporalErrorType
     record_ids: Tuple[str, ...]
     message: str
@@ -90,6 +93,7 @@ class TemporalError:
 @dataclass(frozen=True)
 class TimeInterval:
     """Represents a time interval with start and end."""
+
     start: datetime
     end: datetime
     record_id: str = ""
@@ -128,6 +132,7 @@ class TimeInterval:
 @dataclass(frozen=True)
 class TemporalGap:
     """Represents a gap in temporal coverage."""
+
     start: datetime
     end: datetime
     duration: timedelta
@@ -139,6 +144,7 @@ class TemporalGap:
 @dataclass(frozen=True)
 class TemporalOverlap:
     """Represents an overlap between intervals."""
+
     start: datetime
     end: datetime
     duration: timedelta
@@ -148,6 +154,7 @@ class TemporalOverlap:
 @dataclass
 class ConsistencyReport:
     """Report from temporal consistency validation."""
+
     is_valid: bool
     total_intervals: int
     time_span: timedelta
@@ -173,6 +180,7 @@ class ConsistencyReport:
 # Protocol: TemporalSourceAdapter
 # -----------------------------------------------------------------------------
 
+
 @runtime_checkable
 class TemporalSourceAdapter(Protocol):
     """
@@ -193,6 +201,7 @@ class TemporalSourceAdapter(Protocol):
 # Built-in Source Adapters
 # -----------------------------------------------------------------------------
 
+
 class DictTemporalAdapter:
     """Adapter for in-memory list of dictionaries."""
 
@@ -202,7 +211,7 @@ class DictTemporalAdapter:
         start_field: str = "start",
         end_field: str = "end",
         id_field: str = "id",
-        source_name: str = "in_memory"
+        source_name: str = "in_memory",
     ):
         self._data = data
         self._start_field = start_field
@@ -234,7 +243,7 @@ class CSVTemporalAdapter:
         end_field: str = "end",
         id_field: str = "id",
         encoding: str = "utf-8",
-        **kwargs
+        **kwargs,
     ):
         self._file_path = Path(file_path)
         self._start_field = start_field
@@ -272,7 +281,7 @@ class JSONTemporalAdapter:
         end_field: str = "end",
         id_field: str = "id",
         record_path: str = "records",
-        encoding: str = "utf-8"
+        encoding: str = "utf-8",
     ):
         self._file_path = Path(file_path)
         self._start_field = start_field
@@ -308,6 +317,7 @@ class JSONTemporalAdapter:
 # -----------------------------------------------------------------------------
 # Core: TemporalConsistencyExtractor
 # -----------------------------------------------------------------------------
+
 
 class TemporalConsistencyExtractor:
     """
@@ -377,7 +387,9 @@ class TemporalConsistencyExtractor:
         self._reset()
         self._source_metadata = source.get_source_metadata()
 
-        logger.info(f"Ingesting temporal data from {self._source_metadata.get('source_type', 'unknown')}")
+        logger.info(
+            f"Ingesting temporal data from {self._source_metadata.get('source_type', 'unknown')}"
+        )
 
         # Phase 1: Load all records
         for raw_record in source.fetch_records():
@@ -393,7 +405,7 @@ class TemporalConsistencyExtractor:
                     TemporalErrorType.MALFORMED_TIMESTAMP,
                     (),
                     f"Failed to parse record: {e}",
-                    severity="warning"
+                    severity="warning",
                 )
 
         # Phase 2: Sort intervals by start time
@@ -406,8 +418,7 @@ class TemporalConsistencyExtractor:
 
         self._ingested = True
         logger.info(
-            f"Ingestion complete: {len(self._intervals)} intervals, "
-            f"{len(self._errors)} errors"
+            f"Ingestion complete: {len(self._intervals)} intervals, " f"{len(self._errors)} errors"
         )
 
     def validate(self) -> ConsistencyReport:
@@ -422,49 +433,59 @@ class TemporalConsistencyExtractor:
         out_of_order: List[Tuple[str, str]] = []
 
         # Clear previous errors (keep parsing errors)
-        validation_errors = [e for e in self._errors if e.error_type == TemporalErrorType.MALFORMED_TIMESTAMP]
+        validation_errors = [
+            e for e in self._errors if e.error_type == TemporalErrorType.MALFORMED_TIMESTAMP
+        ]
 
         # Check each interval for validity
         for interval in self._intervals:
             if not interval.is_valid:
-                validation_errors.append(TemporalError(
-                    error_type=TemporalErrorType.END_BEFORE_START,
-                    record_ids=(interval.record_id,),
-                    message=f"Interval end ({interval.end}) before start ({interval.start})",
-                    severity="error"
-                ))
+                validation_errors.append(
+                    TemporalError(
+                        error_type=TemporalErrorType.END_BEFORE_START,
+                        record_ids=(interval.record_id,),
+                        message=f"Interval end ({interval.end}) before start ({interval.start})",
+                        severity="error",
+                    )
+                )
 
         # Detect gaps
         gaps = self._detect_gaps()
         for gap in gaps:
             if self._allowed_gap is None or gap.duration > self._allowed_gap:
-                validation_errors.append(TemporalError(
-                    error_type=TemporalErrorType.GAP_DETECTED,
-                    record_ids=(gap.previous_record_id, gap.next_record_id),
-                    message=f"Gap of {gap.duration} detected between {gap.previous_record_id} and {gap.next_record_id}",
-                    severity="warning"
-                ))
+                validation_errors.append(
+                    TemporalError(
+                        error_type=TemporalErrorType.GAP_DETECTED,
+                        record_ids=(gap.previous_record_id, gap.next_record_id),
+                        message=f"Gap of {gap.duration} detected between {gap.previous_record_id} and {gap.next_record_id}",
+                        severity="warning",
+                    )
+                )
 
         # Detect overlaps
         overlaps = self._detect_overlaps()
         for overlap in overlaps:
             if self._allowed_overlap is None or overlap.duration > self._allowed_overlap:
-                validation_errors.append(TemporalError(
-                    error_type=TemporalErrorType.OVERLAP_DETECTED,
-                    record_ids=overlap.record_ids,
-                    message=f"Overlap of {overlap.duration} detected between {len(overlap.record_ids)} records",
-                    severity="warning"
-                ))
+                validation_errors.append(
+                    TemporalError(
+                        error_type=TemporalErrorType.OVERLAP_DETECTED,
+                        record_ids=overlap.record_ids,
+                        message=f"Overlap of {overlap.duration} detected between {len(overlap.record_ids)} records",
+                        severity="warning",
+                    )
+                )
 
         # Detect out-of-order
         out_of_order = self._detect_out_of_order()
         for prev_id, next_id in out_of_order:
-            validation_errors.append(TemporalError(
-                error_type=TemporalErrorType.OUT_OF_ORDER,
-                record_ids=(prev_id, next_id),
-                message=f"Records {prev_id} and {next_id} are out of temporal order",
-                severity="warning"
-            ))
+            validation_errors.append(
+                TemporalError(
+                    error_type=TemporalErrorType.OUT_OF_ORDER,
+                    record_ids=(prev_id, next_id),
+                    message=f"Records {prev_id} and {next_id} are out of temporal order",
+                    severity="warning",
+                )
+            )
 
         # Check periodicity
         if self._strict_periodicity and self._expected_periodicity:
@@ -492,10 +513,7 @@ class TemporalConsistencyExtractor:
 
         return report
 
-    def query_gaps(
-        self,
-        min_duration: Optional[timedelta] = None
-    ) -> List[TemporalGap]:
+    def query_gaps(self, min_duration: Optional[timedelta] = None) -> List[TemporalGap]:
         """
         Query for gaps in temporal coverage.
 
@@ -515,10 +533,7 @@ class TemporalConsistencyExtractor:
 
         return gaps
 
-    def query_overlaps(
-        self,
-        min_duration: Optional[timedelta] = None
-    ) -> List[TemporalOverlap]:
+    def query_overlaps(self, min_duration: Optional[timedelta] = None) -> List[TemporalOverlap]:
         """
         Query for overlaps between intervals.
 
@@ -538,11 +553,7 @@ class TemporalConsistencyExtractor:
 
         return overlaps
 
-    def get_next_interval(
-        self,
-        record_id: str,
-        allow_gap: bool = True
-    ) -> Optional[TimeInterval]:
+    def get_next_interval(self, record_id: str, allow_gap: bool = True) -> Optional[TimeInterval]:
         """
         Get the next interval after a given record.
 
@@ -561,16 +572,14 @@ class TemporalConsistencyExtractor:
         current = self._intervals_by_id[record_id]
         idx = self._intervals.index(current)
 
-        for interval in self._intervals[idx + 1:]:
+        for interval in self._intervals[idx + 1 :]:
             if allow_gap or interval.start <= current.end + (self._allowed_gap or timedelta(0)):
                 return interval
 
         return None
 
     def get_previous_interval(
-        self,
-        record_id: str,
-        allow_gap: bool = True
+        self, record_id: str, allow_gap: bool = True
     ) -> Optional[TimeInterval]:
         """
         Get the previous interval before a given record.
@@ -643,7 +652,7 @@ class TemporalConsistencyExtractor:
                 TemporalErrorType.MISSING_START,
                 (record_id,),
                 f"Record '{record_id}' missing start field '{self._start_field}'",
-                severity="error"
+                severity="error",
             )
             return None
 
@@ -653,7 +662,7 @@ class TemporalConsistencyExtractor:
                 TemporalErrorType.MALFORMED_TIMESTAMP,
                 (record_id,),
                 f"Failed to parse start timestamp: {start_value}",
-                severity="error"
+                severity="error",
             )
             return None
 
@@ -669,7 +678,7 @@ class TemporalConsistencyExtractor:
                     TemporalErrorType.MALFORMED_TIMESTAMP,
                     (record_id,),
                     f"Failed to parse end timestamp: {end_value}",
-                    severity="error"
+                    severity="error",
                 )
                 return None
 
@@ -677,7 +686,11 @@ class TemporalConsistencyExtractor:
             start=start,
             end=end,
             record_id=record_id,
-            metadata={k: v for k, v in raw.items() if k not in (self._start_field, self._end_field, self._id_field)}
+            metadata={
+                k: v
+                for k, v in raw.items()
+                if k not in (self._start_field, self._end_field, self._id_field)
+            },
         )
 
     def _parse_timestamp(self, value: Any) -> Optional[datetime]:
@@ -728,14 +741,16 @@ class TemporalConsistencyExtractor:
 
             gap = current.gap_to(next_interval)
             if gap is not None and gap > timedelta(0):
-                gaps.append(TemporalGap(
-                    start=current.end,
-                    end=next_interval.start,
-                    duration=gap,
-                    previous_record_id=current.record_id,
-                    next_record_id=next_interval.record_id,
-                    expected_gap=self._expected_periodicity,
-                ))
+                gaps.append(
+                    TemporalGap(
+                        start=current.end,
+                        end=next_interval.start,
+                        duration=gap,
+                        previous_record_id=current.record_id,
+                        next_record_id=next_interval.record_id,
+                        expected_gap=self._expected_periodicity,
+                    )
+                )
 
         return gaps
 
@@ -753,12 +768,14 @@ class TemporalConsistencyExtractor:
                     overlap_end = min(current.end, other.end)
                     duration = overlap_end - overlap_start
 
-                    overlaps.append(TemporalOverlap(
-                        start=overlap_start,
-                        end=overlap_end,
-                        duration=duration,
-                        record_ids=(current.record_id, other.record_id),
-                    ))
+                    overlaps.append(
+                        TemporalOverlap(
+                            start=overlap_start,
+                            end=overlap_end,
+                            duration=duration,
+                            record_ids=(current.record_id, other.record_id),
+                        )
+                    )
 
         return overlaps
 
@@ -786,19 +803,21 @@ class TemporalConsistencyExtractor:
             current = self._intervals[i]
             next_interval = self._intervals[i + 1]
 
-            actual_gap = (next_interval.start - current.start)
+            actual_gap = next_interval.start - current.start
             deviation = abs(actual_gap - self._expected_periodicity)
 
             # Allow small deviation (1% of expected period)
             tolerance = self._expected_periodicity * 0.01
 
             if deviation > tolerance:
-                errors.append(TemporalError(
-                    error_type=TemporalErrorType.INVALID_PERIODICITY,
-                    record_ids=(current.record_id, next_interval.record_id),
-                    message=f"Periodicity violation: expected {self._expected_periodicity}, got {actual_gap} (deviation: {deviation})",
-                    severity="warning"
-                ))
+                errors.append(
+                    TemporalError(
+                        error_type=TemporalErrorType.INVALID_PERIODICITY,
+                        record_ids=(current.record_id, next_interval.record_id),
+                        message=f"Periodicity violation: expected {self._expected_periodicity}, got {actual_gap} (deviation: {deviation})",
+                        severity="warning",
+                    )
+                )
 
         return errors
 
@@ -898,12 +917,14 @@ class TemporalConsistencyExtractor:
 
         # Data
         for i in self._intervals:
-            writer.writerow([
-                i.record_id,
-                i.start.isoformat(),
-                i.end.isoformat(),
-                i.duration.total_seconds(),
-            ])
+            writer.writerow(
+                [
+                    i.record_id,
+                    i.start.isoformat(),
+                    i.end.isoformat(),
+                    i.duration.total_seconds(),
+                ]
+            )
 
         return output.getvalue()
 
@@ -933,12 +954,14 @@ class TemporalConsistencyExtractor:
         severity: Literal["warning", "error", "fatal"] = "error",
     ) -> None:
         """Add an error to the error list."""
-        self._errors.append(TemporalError(
-            error_type=error_type,
-            record_ids=record_ids,
-            message=message,
-            severity=severity,
-        ))
+        self._errors.append(
+            TemporalError(
+                error_type=error_type,
+                record_ids=record_ids,
+                message=message,
+                severity=severity,
+            )
+        )
         logger.warning(f"Temporal anomaly: {error_type.value} - {message}")
 
     def _count_errors_by_type(self) -> Dict[str, int]:

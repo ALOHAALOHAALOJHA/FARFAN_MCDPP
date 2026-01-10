@@ -33,4 +33,3 @@ def api_error_response(exc: AtrozAPIException) -> JSONResponse:
         headers["Retry-After"] = str(exc.retry_after)
 
     return JSONResponse(status_code=exc.status, content=payload, headers=headers)
-

@@ -39,11 +39,13 @@ logger = logging.getLogger(__name__)
 
 class FuzzyMeasureViolationError(RuntimeError):
     """Raised when fuzzy measure violates monotonicity or boundary constraints."""
+
     pass
 
 
 class CapacityIdentificationError(RuntimeError):
     """Raised when capacity cannot be identified from provided data."""
+
     pass
 
 
@@ -59,6 +61,7 @@ class InteractionStructure:
         order: K-additivity order (max interaction order considered)
         variance_explained: Proportion of variance explained by this order
     """
+
     mobius_transform: Dict[frozenset, float] = field(default_factory=dict)
     shapley_values: Dict[str, float] = field(default_factory=dict)
     interaction_indices: Dict[frozenset, float] = field(default_factory=dict)
@@ -80,6 +83,7 @@ class ChoquetConfig:
         constitutional_bounds: Absolute bounds on each criterion's contribution
         capacity_uncertainty: Optional uncertainty quantification for v(A)
     """
+
     fuzzy_measure: Dict[frozenset, float]
     mobius_transform: Dict[frozenset, float]
     shapley_values: Dict[str, float]
@@ -154,6 +158,7 @@ class CalibrationResult:
         constitutional_compliance: Tuple(bool, list of violations)
         computational_trace: Step-by-step calculation for audit
     """
+
     final_score: float
     choquet_integral_value: float
     fuzzy_measure: Dict[frozenset, float]
@@ -199,7 +204,7 @@ class FuzzyMeasureGenerator:
         self,
         raw_weights: Dict[str, float],
         constitutional_bounds: Dict[str, Tuple[float, float]],
-        interaction_strength: float = 0.0
+        interaction_strength: float = 0.0,
     ) -> ChoquetConfig:
         """
         Generate fuzzy measure proportional to Shapley values.
@@ -276,7 +281,7 @@ class FuzzyMeasureGenerator:
             criteria=self.criteria,
             k_additive_order=2 if interaction_strength > 0 else 1,
             constitutional_bounds=constitutional_bounds,
-            capacity_uncertainty=None
+            capacity_uncertainty=None,
         )
 
     def _enforce_monotonicity(self, measure: Dict[frozenset, float]) -> Dict[frozenset, float]:
@@ -341,7 +346,9 @@ class FuzzyMeasureGenerator:
 
         return mobius
 
-    def _compute_shapley_interaction_indices(self, mobius: Dict[frozenset, float]) -> Dict[frozenset, float]:
+    def _compute_shapley_interaction_indices(
+        self, mobius: Dict[frozenset, float]
+    ) -> Dict[frozenset, float]:
         """
         Compute Shapley interaction indices I(A) for all subsets.
 
@@ -372,7 +379,9 @@ class FuzzyMeasureGenerator:
 
         return indices
 
-    def _compute_capacity_from_mobius(self, mobius: Dict[frozenset, float]) -> Dict[frozenset, float]:
+    def _compute_capacity_from_mobius(
+        self, mobius: Dict[frozenset, float]
+    ) -> Dict[frozenset, float]:
         """Reconstruct capacity v from Möbius m: v(A) = sum_{B ⊆ A} m(B)."""
         capacity = {}
         all_subsets = self._get_all_subsets()
@@ -404,15 +413,10 @@ class ChoquetAggregator:
         """Validate configuration at initialization."""
         is_valid, violations = self.config.is_valid()
         if not is_valid:
-            raise FuzzyMeasureViolationError(
-                f"Invalid fuzzy measure: {'; '.join(violations)}"
-            )
+            raise FuzzyMeasureViolationError(f"Invalid fuzzy measure: {'; '.join(violations)}")
 
     def aggregate(
-        self,
-        subject: str,
-        layer_scores: Dict[str, float],
-        metadata: Dict[str, Any] | None = None
+        self, subject: str, layer_scores: Dict[str, float], metadata: Dict[str, Any] | None = None
     ) -> CalibrationResult:
         """
         Execute Choquet integral aggregation with full provenance.
@@ -432,9 +436,7 @@ class ChoquetAggregator:
 
         # Step 1: Sort scores in descending order
         sorted_scores = sorted(
-            [(c, layer_scores[c]) for c in self.config.criteria],
-            key=lambda x: x[1],
-            reverse=True
+            [(c, layer_scores[c]) for c in self.config.criteria], key=lambda x: x[1], reverse=True
         )
         values = [score for _, score in sorted_scores]
         order = [criterion for criterion, _ in sorted_scores]
@@ -446,7 +448,7 @@ class ChoquetAggregator:
 
         for i in range(len(values)):
             diff = values[i] - (values[i + 1] if i + 1 < len(values) else 0.0)
-            subset = frozenset(order[:i + 1])
+            subset = frozenset(order[: i + 1])
             capacity_val = self.config.get_capacity(subset)
 
             contribution = diff * capacity_val
@@ -462,7 +464,8 @@ class ChoquetAggregator:
 
         # Step 4: Extract interaction effects
         interaction_effects = {
-            subset: idx for subset, idx in self.config.interaction_indices.items()
+            subset: idx
+            for subset, idx in self.config.interaction_indices.items()
             if len(subset) >= 2 and abs(idx) > 1e-6
         }
 
@@ -480,7 +483,7 @@ class ChoquetAggregator:
             interaction_effects=interaction_effects,
             uncertainty_quantification=uncertainty,
             constitutional_compliance=compliance,
-            computational_trace="\n".join(trace_steps)
+            computational_trace="\n".join(trace_steps),
         )
 
     def _normalize_score(self, choquet_value: float) -> float:

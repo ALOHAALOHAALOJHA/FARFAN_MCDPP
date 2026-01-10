@@ -15,4 +15,3 @@ def slugify(value: str) -> str:
     lowered = ascii_value.lower()
     slug = _NON_ALNUM_RE.sub("-", lowered).strip("-")
     return slug
-

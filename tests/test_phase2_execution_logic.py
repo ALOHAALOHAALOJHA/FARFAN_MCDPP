@@ -40,25 +40,21 @@ from farfan_pipeline.orchestration.task_planner import ExecutableTask
 
 class TestPhase2ExecutionPlan:
     """Test Phase 2 uses execution plan instead of questionnaire questions."""
-    
+
     @pytest.mark.asyncio
     async def test_execution_plan_required(self):
         """Test that Phase 2 requires execution plan to be set."""
         mock_executor = Mock()
         mock_executor.signal_registry = Mock()
         mock_executor.instances = {"test": Mock()}
-        
+
         mock_questionnaire = Mock()
         mock_questionnaire.data = {
-            "blocks": {
-                "micro_questions": [],
-                "meso_questions": [],
-                "macro_question": {}
-            }
+            "blocks": {"micro_questions": [], "meso_questions": [], "macro_question": {}}
         }
-        
+
         mock_config = Mock()
-        
+
         with patch("orchestration.questionnaire_validation._validate_questionnaire_structure"):
             orchestrator = Orchestrator(
                 method_executor=mock_executor,
@@ -67,31 +63,31 @@ class TestPhase2ExecutionPlan:
             )
         orchestrator._phase_instrumentation[2] = PhaseInstrumentation(2, "Phase 2")
         orchestrator._execution_plan = None
-        
+
         document = Mock()
         config = {}
-        
+
         with pytest.raises(RuntimeError, match="Execution plan missing"):
             await orchestrator._execute_micro_questions_async(document, config)
-    
+
     @pytest.mark.asyncio
     async def test_uses_execution_plan_tasks(self):
         """Test that Phase 2 iterates over execution plan tasks, not questions."""
         mock_executor = Mock()
         mock_executor.signal_registry = Mock()
         mock_executor.instances = {"test": Mock()}
-        
+
         mock_questionnaire = Mock()
         mock_questionnaire.data = {
             "blocks": {
                 "micro_questions": [{"id": "Q001"}],  # Should be ignored
                 "meso_questions": [],
-                "macro_question": {}
+                "macro_question": {},
             }
         }
-        
+
         mock_config = Mock()
-        
+
         with patch("orchestration.questionnaire_validation._validate_questionnaire_structure"):
             orchestrator = Orchestrator(
                 method_executor=mock_executor,
@@ -103,7 +99,7 @@ class TestPhase2ExecutionPlan:
         orchestrator.executor_config = mock_config
         orchestrator.calibration_orchestrator = None
         orchestrator._enriched_packs = {}
-        
+
         task1 = ExecutableTask(
             task_id="T001",
             question_id="Q001",
@@ -115,37 +111,37 @@ class TestPhase2ExecutionPlan:
             signals={},
             creation_timestamp="2024-01-01T00:00:00Z",
             expected_elements=[],
-            metadata={"base_slot": "D1-Q1", "cluster_id": "C1"}
+            metadata={"base_slot": "D1-Q1", "cluster_id": "C1"},
         )
-        
+
         mock_plan = Mock()
         mock_plan.tasks = [task1]
         mock_plan.plan_id = "PLAN001"
         mock_plan.chunk_count = 60
         mock_plan.question_count = 305
-        
+
         orchestrator._execution_plan = mock_plan
-        
+
         mock_executor_class = Mock()
         mock_instance = Mock()
         mock_executor_class.return_value = mock_instance
-        
+
         mock_instance.execute.return_value = {
             "metadata": {"test": "data"},
             "evidence": Evidence(
                 modality="text",
                 elements=["test evidence"],
-                raw_results={"confidence": 0.9, "source": "test"}
-            )
+                raw_results={"confidence": 0.9, "source": "test"},
+            ),
         }
-        
+
         orchestrator.executors = {"D1-Q1": mock_executor_class}
-        
+
         document = Mock()
         config = {}
-        
+
         results = await orchestrator._execute_micro_questions_async(document, config)
-        
+
         assert len(results) == 1
         assert results[0].question_id == "Q001"
         assert results[0].question_global == 1
@@ -157,25 +153,21 @@ class TestPhase2ExecutionPlan:
 
 class TestPhase2RetryLogic:
     """Test retry logic for transient executor failures."""
-    
+
     @pytest.mark.asyncio
     async def test_retry_on_transient_failure(self):
         """Test that executor failures trigger retries."""
         mock_executor = Mock()
         mock_executor.signal_registry = Mock()
         mock_executor.instances = {"test": Mock()}
-        
+
         mock_questionnaire = Mock()
         mock_questionnaire.data = {
-            "blocks": {
-                "micro_questions": [],
-                "meso_questions": [],
-                "macro_question": {}
-            }
+            "blocks": {"micro_questions": [], "meso_questions": [], "macro_question": {}}
         }
-        
+
         mock_config = Mock()
-        
+
         with patch("orchestration.questionnaire_validation._validate_questionnaire_structure"):
             orchestrator = Orchestrator(
                 method_executor=mock_executor,
@@ -187,7 +179,7 @@ class TestPhase2RetryLogic:
         orchestrator.executor_config = mock_config
         orchestrator.calibration_orchestrator = None
         orchestrator._enriched_packs = {}
-        
+
         task1 = ExecutableTask(
             task_id="T001",
             question_id="Q001",
@@ -199,22 +191,23 @@ class TestPhase2RetryLogic:
             signals={},
             creation_timestamp="2024-01-01T00:00:00Z",
             expected_elements=[],
-            metadata={"base_slot": "D1-Q1", "cluster_id": "C1"}
+            metadata={"base_slot": "D1-Q1", "cluster_id": "C1"},
         )
-        
+
         mock_plan = Mock()
         mock_plan.tasks = [task1]
         mock_plan.plan_id = "PLAN001"
         mock_plan.chunk_count = 60
         mock_plan.question_count = 305
-        
+
         orchestrator._execution_plan = mock_plan
-        
+
         mock_executor_class = Mock()
         mock_instance = Mock()
         mock_executor_class.return_value = mock_instance
-        
+
         call_count = 0
+
         def execute_with_retries(*args, **kwargs):
             nonlocal call_count
             call_count += 1
@@ -225,45 +218,41 @@ class TestPhase2RetryLogic:
                 "evidence": Evidence(
                     modality="text",
                     elements=["success after retry"],
-                    raw_results={"confidence": 0.9, "source": "test"}
-                )
+                    raw_results={"confidence": 0.9, "source": "test"},
+                ),
             }
-        
+
         mock_instance.execute.side_effect = execute_with_retries
         orchestrator.executors = {"D1-Q1": mock_executor_class}
-        
+
         document = Mock()
         config = {}
-        
+
         start = time.time()
         results = await orchestrator._execute_micro_questions_async(document, config)
         duration = time.time() - start
-        
+
         assert len(results) == 1
         assert results[0].evidence is not None
         assert results[0].error is None
         assert results[0].metadata["attempts"] == 3
         assert call_count == 3
         assert duration > 1.0
-    
+
     @pytest.mark.asyncio
     async def test_max_retries_exceeded(self):
         """Test that failures after max retries are recorded as errors."""
         mock_executor = Mock()
         mock_executor.signal_registry = Mock()
         mock_executor.instances = {"test": Mock()}
-        
+
         mock_questionnaire = Mock()
         mock_questionnaire.data = {
-            "blocks": {
-                "micro_questions": [],
-                "meso_questions": [],
-                "macro_question": {}
-            }
+            "blocks": {"micro_questions": [], "meso_questions": [], "macro_question": {}}
         }
-        
+
         mock_config = Mock()
-        
+
         with patch("orchestration.questionnaire_validation._validate_questionnaire_structure"):
             orchestrator = Orchestrator(
                 method_executor=mock_executor,
@@ -275,7 +264,7 @@ class TestPhase2RetryLogic:
         orchestrator.executor_config = mock_config
         orchestrator.calibration_orchestrator = None
         orchestrator._enriched_packs = {}
-        
+
         task1 = ExecutableTask(
             task_id="T001",
             question_id="Q001",
@@ -287,29 +276,29 @@ class TestPhase2RetryLogic:
             signals={},
             creation_timestamp="2024-01-01T00:00:00Z",
             expected_elements=[],
-            metadata={"base_slot": "D1-Q1", "cluster_id": "C1"}
+            metadata={"base_slot": "D1-Q1", "cluster_id": "C1"},
         )
-        
+
         mock_plan = Mock()
         mock_plan.tasks = [task1]
         mock_plan.plan_id = "PLAN001"
         mock_plan.chunk_count = 60
         mock_plan.question_count = 305
-        
+
         orchestrator._execution_plan = mock_plan
-        
+
         mock_executor_class = Mock()
         mock_instance = Mock()
         mock_executor_class.return_value = mock_instance
         mock_instance.execute.side_effect = RuntimeError("Persistent error")
-        
+
         orchestrator.executors = {"D1-Q1": mock_executor_class}
-        
+
         document = Mock()
         config = {}
-        
+
         results = await orchestrator._execute_micro_questions_async(document, config)
-        
+
         assert len(results) == 1
         assert results[0].evidence is None
         assert results[0].error is not None
@@ -320,25 +309,21 @@ class TestPhase2RetryLogic:
 
 class TestPhase2EvidenceValidation:
     """Test evidence validation and null evidence handling."""
-    
+
     @pytest.mark.asyncio
     async def test_null_evidence_logged(self):
         """Test that null evidence is logged as a warning."""
         mock_executor = Mock()
         mock_executor.signal_registry = Mock()
         mock_executor.instances = {"test": Mock()}
-        
+
         mock_questionnaire = Mock()
         mock_questionnaire.data = {
-            "blocks": {
-                "micro_questions": [],
-                "meso_questions": [],
-                "macro_question": {}
-            }
+            "blocks": {"micro_questions": [], "meso_questions": [], "macro_question": {}}
         }
-        
+
         mock_config = Mock()
-        
+
         with patch("orchestration.questionnaire_validation._validate_questionnaire_structure"):
             orchestrator = Orchestrator(
                 method_executor=mock_executor,
@@ -350,7 +335,7 @@ class TestPhase2EvidenceValidation:
         orchestrator.executor_config = mock_config
         orchestrator.calibration_orchestrator = None
         orchestrator._enriched_packs = {}
-        
+
         task1 = ExecutableTask(
             task_id="T001",
             question_id="Q001",
@@ -362,65 +347,58 @@ class TestPhase2EvidenceValidation:
             signals={},
             creation_timestamp="2024-01-01T00:00:00Z",
             expected_elements=[],
-            metadata={"base_slot": "D1-Q1", "cluster_id": "C1"}
+            metadata={"base_slot": "D1-Q1", "cluster_id": "C1"},
         )
-        
+
         mock_plan = Mock()
         mock_plan.tasks = [task1]
         mock_plan.plan_id = "PLAN001"
         mock_plan.chunk_count = 60
         mock_plan.question_count = 305
-        
+
         orchestrator._execution_plan = mock_plan
-        
+
         mock_executor_class = Mock()
         mock_instance = Mock()
         mock_executor_class.return_value = mock_instance
         mock_instance.execute.return_value = {
             "metadata": {"test": "data"},
-            "evidence": None  # Null evidence
+            "evidence": None,  # Null evidence
         }
-        
+
         orchestrator.executors = {"D1-Q1": mock_executor_class}
-        
+
         document = Mock()
         config = {}
-        
+
         with patch("farfan_pipeline.orchestration.orchestrator.logger") as mock_logger:
             results = await orchestrator._execute_micro_questions_async(document, config)
-            
+
             mock_logger.warning.assert_any_call(
-                "executor_returned_null_evidence",
-                task_id="T001",
-                base_slot="D1-Q1",
-                attempt=1
+                "executor_returned_null_evidence", task_id="T001", base_slot="D1-Q1", attempt=1
             )
-        
+
         assert len(results) == 1
         assert results[0].evidence is None
 
 
 class TestPhase2Integration:
     """Integration tests for full Phase 2 execution."""
-    
+
     @pytest.mark.asyncio
     async def test_multiple_tasks_executed(self):
         """Test that multiple tasks are executed correctly."""
         mock_executor = Mock()
         mock_executor.signal_registry = Mock()
         mock_executor.instances = {"test": Mock()}
-        
+
         mock_questionnaire = Mock()
         mock_questionnaire.data = {
-            "blocks": {
-                "micro_questions": [],
-                "meso_questions": [],
-                "macro_question": {}
-            }
+            "blocks": {"micro_questions": [], "meso_questions": [], "macro_question": {}}
         }
-        
+
         mock_config = Mock()
-        
+
         with patch("orchestration.questionnaire_validation._validate_questionnaire_structure"):
             orchestrator = Orchestrator(
                 method_executor=mock_executor,
@@ -432,7 +410,7 @@ class TestPhase2Integration:
         orchestrator.executor_config = mock_config
         orchestrator.calibration_orchestrator = None
         orchestrator._enriched_packs = {}
-        
+
         tasks = []
         for i in range(10):
             task = ExecutableTask(
@@ -446,22 +424,22 @@ class TestPhase2Integration:
                 signals={},
                 creation_timestamp="2024-01-01T00:00:00Z",
                 expected_elements=[],
-                metadata={"base_slot": f"D{(i % 6) + 1}-Q{(i % 5) + 1}", "cluster_id": "C1"}
+                metadata={"base_slot": f"D{(i % 6) + 1}-Q{(i % 5) + 1}", "cluster_id": "C1"},
             )
             tasks.append(task)
-        
+
         mock_plan = Mock()
         mock_plan.tasks = tasks
         mock_plan.plan_id = "PLAN001"
         mock_plan.chunk_count = 60
         mock_plan.question_count = 305
-        
+
         orchestrator._execution_plan = mock_plan
-        
+
         mock_executor_class = Mock()
         mock_instance = Mock()
         mock_executor_class.return_value = mock_instance
-        
+
         def execute_mock(*args, **kwargs):
             q_context = kwargs.get("question_context", {})
             return {
@@ -469,12 +447,12 @@ class TestPhase2Integration:
                 "evidence": Evidence(
                     modality="text",
                     elements=[f"evidence for {q_context.get('task_id')}"],
-                    raw_results={"confidence": 0.9, "source": "test"}
-                )
+                    raw_results={"confidence": 0.9, "source": "test"},
+                ),
             }
-        
+
         mock_instance.execute.side_effect = execute_mock
-        
+
         orchestrator.executors = {
             "D1-Q1": mock_executor_class,
             "D1-Q2": mock_executor_class,
@@ -507,12 +485,12 @@ class TestPhase2Integration:
             "D6-Q4": mock_executor_class,
             "D6-Q5": mock_executor_class,
         }
-        
+
         document = Mock()
         config = {}
-        
+
         results = await orchestrator._execute_micro_questions_async(document, config)
-        
+
         assert len(results) == 10
         assert all(r.evidence is not None for r in results)
         assert all(r.error is None for r in results)

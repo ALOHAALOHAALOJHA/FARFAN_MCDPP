@@ -1,4 +1,5 @@
 """Pytest configuration for F.A.R.F.A.N test suite."""
+
 import sys
 from pathlib import Path
 
@@ -9,4 +10,3 @@ _SRC_DIR = _REPO_ROOT / "src"
 
 if str(_SRC_DIR) not in sys.path:
     sys.path.insert(0, str(_SRC_DIR))
-

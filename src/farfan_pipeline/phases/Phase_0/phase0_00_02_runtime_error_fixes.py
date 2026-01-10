@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     import numpy as np
+
     NumpyArray = np.ndarray
 else:
     NumpyArray = Any  # type: ignore[misc]
@@ -21,6 +22,7 @@ try:
     HAS_NUMPY = True
 except ImportError:
     HAS_NUMPY = False
+
 
 def ensure_list_return(value: Any) -> list[Any]:
     """
@@ -44,6 +46,7 @@ def ensure_list_return(value: Any) -> list[Any]:
     except (TypeError, ValueError):
         return []
 
+
 def safe_text_extract(obj: Any) -> str:
     """
     Safely extract text from object that might be str or have .text attribute.
@@ -61,7 +64,7 @@ def safe_text_extract(obj: Any) -> str:
         return obj
 
     # If it has a .text attribute, extract it
-    if hasattr(obj, 'text'):
+    if hasattr(obj, "text"):
         text_value = obj.text
         if isinstance(text_value, str):
             return text_value
@@ -69,7 +72,10 @@ def safe_text_extract(obj: Any) -> str:
     # Fallback: convert to string
     return str(obj)
 
-def safe_weighted_multiply(items: list[float] | NumpyArray, weight: float) -> list[float] | NumpyArray:
+
+def safe_weighted_multiply(
+    items: list[float] | NumpyArray, weight: float
+) -> list[float] | NumpyArray:
     """
     Safely multiply a list or array by a weight.
 
@@ -83,8 +89,9 @@ def safe_weighted_multiply(items: list[float] | NumpyArray, weight: float) -> li
         New list/array with each element multiplied by weight
     """
     # If it's a numpy array, use numpy multiplication
-    if HAS_NUMPY and hasattr(items, '__array_interface__'):
+    if HAS_NUMPY and hasattr(items, "__array_interface__"):
         import numpy as np  # Import here for runtime use
+
         if isinstance(items, np.ndarray):
             return items * weight
 
@@ -98,6 +105,7 @@ def safe_weighted_multiply(items: list[float] | NumpyArray, weight: float) -> li
     except (TypeError, ValueError):
         # If multiplication fails, return empty list
         return []
+
 
 def safe_list_iteration(value: Any) -> list[Any]:
     """

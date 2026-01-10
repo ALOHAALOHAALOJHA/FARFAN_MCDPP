@@ -68,7 +68,9 @@ def _resolve_municipality_from_context(context: Mapping[str, Any]) -> PDETMunici
         if len(matches) == 1:
             return matches[0]
         if len(matches) > 1:
-            raise ValueError(f"Ambiguous DANE code match for {dane_code}: {len(matches)} candidates")
+            raise ValueError(
+                f"Ambiguous DANE code match for {dane_code}: {len(matches)} candidates"
+            )
 
     candidate_text = Path(pdf_path).stem if pdf_path else doc_id
     cleaned = slugify(candidate_text.replace("_", " ").replace("-", " "))
@@ -87,7 +89,9 @@ def _resolve_municipality_from_context(context: Mapping[str, Any]) -> PDETMunici
     if len(name_candidates) == 1:
         return name_candidates[0]
     if len(name_candidates) > 1:
-        raise ValueError(f"Ambiguous municipality match for '{candidate_text}': {len(name_candidates)} candidates")
+        raise ValueError(
+            f"Ambiguous municipality match for '{candidate_text}': {len(name_candidates)} candidates"
+        )
 
     names = [slugify(m.name) for m in PDET_MUNICIPALITIES]
     fuzzy = get_close_matches(cleaned, names, n=1, cutoff=0.85)
@@ -134,7 +138,10 @@ class DashboardIngester:
 
         document = context.get("document")
         input_data = getattr(document, "input_data", None) if document is not None else None
-        run_id = str(getattr(input_data, "run_id", "") or "") or f"run_unknown_{int(datetime.now().timestamp())}"
+        run_id = (
+            str(getattr(input_data, "run_id", "") or "")
+            or f"run_unknown_{int(datetime.now().timestamp())}"
+        )
 
         selector = MunicipalitySelector(
             id=_municipality_id(municipality),
@@ -172,7 +179,9 @@ class DashboardIngester:
             municipality=selector,
             macro_result=_jsonable(macro_result) if macro_result is not None else None,
             cluster_scores=_jsonable(cluster_scores) if cluster_scores is not None else None,
-            policy_area_scores=_jsonable(policy_area_scores) if policy_area_scores is not None else None,
+            policy_area_scores=(
+                _jsonable(policy_area_scores) if policy_area_scores is not None else None
+            ),
             dimension_scores=_jsonable(dimension_scores) if dimension_scores is not None else None,
             scored_results=_jsonable(scored_results) if scored_results is not None else None,
             micro_results=minimal_micro_results,

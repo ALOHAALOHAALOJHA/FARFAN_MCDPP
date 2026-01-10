@@ -14,4 +14,3 @@ def test_pdet_reference_counts() -> None:
 def test_pdet_reference_unique_name_department_pairs() -> None:
     pairs = {(m.name.strip().lower(), m.department.strip().lower()) for m in PDET_MUNICIPALITIES}
     assert len(pairs) == 170
-

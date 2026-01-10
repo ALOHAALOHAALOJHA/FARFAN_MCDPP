@@ -1,0 +1,60 @@
+rules:
+  - id: fix-phase-zero-import
+    pattern-regex: from farfan_pipeline\.phases\.Phase_zero\.(\w+) import
+    fix-regex: from farfan_pipeline.phases.Phase_0.\1 import
+    languages: [python]
+    message: "Fix Phase_zero to Phase_0"
+    severity: WARNING
+    paths:
+      include:
+        - "*.py"
+
+  - id: fix-phase-one-import
+    pattern-regex: from farfan_pipeline\.phases\.Phase_one\.(\w+) import
+    fix-regex: from farfan_pipeline.phases.Phase_1.\1 import
+    languages: [python]
+    message: "Fix Phase_one to Phase_1"
+    severity: WARNING
+    paths:
+      include:
+        - "*.py"
+
+  - id: fix-phase-two-import
+    pattern-regex: from farfan_pipeline\.phases\.Phase_two\.(\w+) import
+    fix-regex: from farfan_pipeline.phases.Phase_2.\1 import
+    languages: [python]
+    message: "Fix Phase_two to Phase_2"
+    severity: WARNING
+    paths:
+      include:
+        - "*.py"
+
+  - id: fix-phase-three-import
+    pattern-regex: from farfan_pipeline\.phases\.Phase_three\.(\w+) import
+    fix-regex: from farfan_pipeline.phases.Phase_3.\1 import
+    languages: [python]
+    message: "Fix Phase_three to Phase_3"
+    severity: WARNING
+    paths:
+      include:
+        - "*.py"
+
+  - id: fix-phase-four-import
+    pattern-regex: from farfan_pipeline\.phases\.Phase_four_five_six_seven\.(\w+) import
+    fix-regex: from farfan_pipeline.phases.Phase_4.\1 import
+    languages: [python]
+    message: "Fix Phase_four_five_six_seven to Phase_4"
+    severity: WARNING
+    paths:
+      include:
+        - "*.py"
+
+  - id: fix-phase-nine-import
+    pattern-regex: from farfan_pipeline\.phases\.Phase_nine\.(\w+) import
+    fix-regex: from farfan_pipeline.phases.Phase_9.\1 import
+    languages: [python]
+    message: "Fix Phase_nine to Phase_9"
+    severity: WARNING
+    paths:
+      include:
+        - "*.py"

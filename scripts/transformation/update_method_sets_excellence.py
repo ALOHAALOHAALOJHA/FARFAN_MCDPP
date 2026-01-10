@@ -15,7 +15,10 @@ method_sets_file = assets_path / "method_sets_by_question.json"
 classified_file = assets_path / "classified_methods.json"
 
 # Backup
-backup_file = assets_path / f"method_sets_by_question_backup_{json.load(open(method_sets_file))['metadata']['version']}.json"
+backup_file = (
+    assets_path
+    / f"method_sets_by_question_backup_{json.load(open(method_sets_file))['metadata']['version']}.json"
+)
 
 print("=" * 80)
 print("ACTUALIZANDO method_sets_by_question.json - VERSIÓN EXCELENCIA")
@@ -27,7 +30,7 @@ print("1. Creando backup...")
 with open(method_sets_file) as f:
     data = json.load(f)
 
-with open(backup_file, 'w') as f:
+with open(backup_file, "w") as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
 print(f"   ✅ Backup creado: {backup_file}")
 print()
@@ -78,7 +81,6 @@ additions = {
             "verify_temporal_consistency",
         ]
     },
-
     # DIM02_ACTIVIDADES (D2)
     "D2_Q1": {
         "phase_a_N1": [
@@ -107,7 +109,6 @@ additions = {
             "detect_any_contradiction",
         ]
     },
-
     # DIM03_PRODUCTOS (D3)
     "D3_Q1": {
         "phase_b_N2": [
@@ -136,7 +137,6 @@ additions = {
             "_assess_financial_sustainability",
         ]
     },
-
     # DIM04_RESULTADOS (D4)
     "D4_Q1": {
         "phase_c_N3": [
@@ -166,7 +166,6 @@ additions = {
             "bayesian_counterfactual_audit",
         ]
     },
-
     # DIM05_IMPACTOS (D5)
     "D5_Q1": {
         "phase_b_N2": [
@@ -196,7 +195,6 @@ additions = {
             "_assess_financial_sustainability",
         ]
     },
-
     # DIM06_CAUSALIDAD (D6)
     "D6_Q1": {
         "phase_c_N3": [
@@ -279,7 +277,9 @@ print("4. Actualizando metadata...")
 data["metadata"]["version"] = "1.1.0-excellence"
 data["metadata"]["total_questions"] = 30
 data["metadata"]["generation_date"] = "2026-01-02"
-data["metadata"]["update_notes"] = "Excellence version: Added ~50 verified methods from dispensary for enhanced epistemic quality"
+data["metadata"][
+    "update_notes"
+] = "Excellence version: Added ~50 verified methods from dispensary for enhanced epistemic quality"
 print(f"   ✅ Versión actualizada: {data['metadata']['version']}")
 print()
 
@@ -301,13 +301,15 @@ for q_id, q_data in data["method_sets"].items():
 print("   Distribución después de actualización:")
 for key in ["N1", "N2", "N3", "total"]:
     values = stats_after[key]
-    print(f"      {key}: min={min(values)}, max={max(values)}, promedio={sum(values)/len(values):.1f}")
+    print(
+        f"      {key}: min={min(values)}, max={max(values)}, promedio={sum(values)/len(values):.1f}"
+    )
 print()
 
 # 7. Guardar archivo actualizado
 print("6. Guardando archivo actualizado...")
 output_file = method_sets_file
-with open(output_file, 'w') as f:
+with open(output_file, "w") as f:
     json.dump(data, f, indent=2, ensure_ascii=False)
 
 print(f"   ✅ Archivo actualizado: {output_file}")

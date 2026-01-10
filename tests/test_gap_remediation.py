@@ -33,9 +33,7 @@ class TestColombianContextRule:
 
         contract = {
             "validation_rules": {
-                "colombian_context": {
-                    "required_regulatory_refs": ["Ley 1448 de 2011"]
-                }
+                "colombian_context": {"required_regulatory_refs": ["Ley 1448 de 2011"]}
             }
         }
         graph = EvidenceGraph()
@@ -57,9 +55,7 @@ class TestColombianContextRule:
 
         contract = {
             "validation_rules": {
-                "colombian_context": {
-                    "required_regulatory_refs": ["Ley 1448 de 2011"]
-                }
+                "colombian_context": {"required_regulatory_refs": ["Ley 1448 de 2011"]}
             }
         }
         graph = EvidenceGraph()
@@ -218,7 +214,13 @@ class TestKeywordsIrrigation:
     def test_keywords_loaded_from_policy_area(self):
         """Verify keywords are loaded from canonical policy area (modular structure)."""
         base_path = Path(__file__).resolve().parent.parent
-        pa_path = base_path / "canonic_questionnaire_central" / "policy_areas" / "PA01_mujeres_genero" / "questions.json"
+        pa_path = (
+            base_path
+            / "canonic_questionnaire_central"
+            / "policy_areas"
+            / "PA01_mujeres_genero"
+            / "questions.json"
+        )
 
         if pa_path.exists():
             with open(pa_path, "r", encoding="utf-8") as f:
@@ -237,7 +239,12 @@ class TestCrossCuttingThemesIntegration:
     def test_enhancement_integrator_loads_themes(self):
         """Verify cross-cutting themes file exists in modular structure."""
         base_path = Path(__file__).resolve().parent.parent
-        themes_path = base_path / "canonic_questionnaire_central" / "cross_cutting" / "cross_cutting_themes.json"
+        themes_path = (
+            base_path
+            / "canonic_questionnaire_central"
+            / "cross_cutting"
+            / "cross_cutting_themes.json"
+        )
 
         if themes_path.exists():
             with open(themes_path, "r", encoding="utf-8") as f:
@@ -274,7 +281,12 @@ class TestInterdependencyValidationIntegration:
     def test_interdependency_mapping_exists(self):
         """Verify interdependency mapping file exists in modular structure."""
         base_path = Path(__file__).resolve().parent.parent
-        mapping_path = base_path / "canonic_questionnaire_central" / "validations" / "interdependency_mapping.json"
+        mapping_path = (
+            base_path
+            / "canonic_questionnaire_central"
+            / "validations"
+            / "interdependency_mapping.json"
+        )
 
         if mapping_path.exists():
             with open(mapping_path, "r", encoding="utf-8") as f:

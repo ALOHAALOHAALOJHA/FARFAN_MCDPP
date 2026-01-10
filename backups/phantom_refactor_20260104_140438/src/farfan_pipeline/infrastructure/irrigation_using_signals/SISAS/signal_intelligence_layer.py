@@ -440,9 +440,7 @@ class EnrichedSignalPack:
             )
 
         # INTEGRATION: Call filter_patterns_by_context from signal_context_scoper
-        filtered, base_stats = filter_patterns_by_context(
-            patterns_to_filter, document_context
-        )
+        filtered, base_stats = filter_patterns_by_context(patterns_to_filter, document_context)
 
         end_time = time.perf_counter()
         filtering_duration_ms = (end_time - start_time) * 1000
@@ -450,17 +448,13 @@ class EnrichedSignalPack:
         post_filter_count = len(filtered)
 
         if track_precision_improvement:
-            precision_stats = compute_precision_improvement_stats(
-                base_stats, document_context
-            )
+            precision_stats = compute_precision_improvement_stats(base_stats, document_context)
 
             comprehensive_stats = precision_stats.to_dict()
 
             comprehensive_stats["pre_filter_count"] = pre_filter_count
             comprehensive_stats["post_filter_count"] = post_filter_count
-            comprehensive_stats["filtering_duration_ms"] = round(
-                filtering_duration_ms, 2
-            )
+            comprehensive_stats["filtering_duration_ms"] = round(filtering_duration_ms, 2)
             comprehensive_stats["context_complexity"] = context_complexity
             comprehensive_stats["pattern_distribution"] = pattern_distribution
             comprehensive_stats["meets_60_percent_target"] = (
@@ -469,8 +463,7 @@ class EnrichedSignalPack:
             comprehensive_stats["timestamp"] = timestamp
 
             comprehensive_stats["filtering_validation"] = {
-                "pre_count_matches_total": pre_filter_count
-                == base_stats["total_patterns"],
+                "pre_count_matches_total": pre_filter_count == base_stats["total_patterns"],
                 "post_count_matches_passed": post_filter_count == base_stats["passed"],
                 "no_patterns_gained": post_filter_count <= pre_filter_count,
                 "filter_sum_correct": (
@@ -503,9 +496,7 @@ class EnrichedSignalPack:
 
             comprehensive_stats["performance_metrics"] = {
                 "throughput_patterns_per_ms": (
-                    pre_filter_count / filtering_duration_ms
-                    if filtering_duration_ms > 0
-                    else 0.0
+                    pre_filter_count / filtering_duration_ms if filtering_duration_ms > 0 else 0.0
                 ),
                 "avg_time_per_pattern_us": (
                     (filtering_duration_ms * 1000) / pre_filter_count
@@ -541,9 +532,7 @@ class EnrichedSignalPack:
 
                 logger.info(
                     "pdt_quality_correlation_tracked",
-                    high_quality_retention=pdt_correlation.get(
-                        "high_quality_retention_rate", 0.0
-                    ),
+                    high_quality_retention=pdt_correlation.get("high_quality_retention_rate", 0.0),
                     quality_correlation=pdt_correlation.get("quality_correlation", 0.0),
                 )
 
@@ -560,9 +549,7 @@ class EnrichedSignalPack:
             comprehensive_stats = {**base_stats}
             comprehensive_stats["pre_filter_count"] = pre_filter_count
             comprehensive_stats["post_filter_count"] = post_filter_count
-            comprehensive_stats["filtering_duration_ms"] = round(
-                filtering_duration_ms, 2
-            )
+            comprehensive_stats["filtering_duration_ms"] = round(filtering_duration_ms, 2)
             comprehensive_stats["timestamp"] = timestamp
 
             if enable_pdt_boost and self._pdt_quality_map:
@@ -725,13 +712,9 @@ class EnrichedSignalPack:
         """
         # Semantic expansion metrics
         semantic_multiplier = (
-            self._expansion_metrics.get("multiplier", 1.0)
-            if self._expansion_metrics
-            else 1.0
+            self._expansion_metrics.get("multiplier", 1.0) if self._expansion_metrics else 1.0
         )
-        semantic_target_met = (
-            semantic_multiplier >= SEMANTIC_EXPANSION_TARGET_MULTIPLIER
-        )
+        semantic_target_met = semantic_multiplier >= SEMANTIC_EXPANSION_TARGET_MULTIPLIER
 
         # Context filtering metrics
         if context_stats:
@@ -761,9 +744,7 @@ class EnrichedSignalPack:
         if validation_result:
             validation_passed = validation_result.passed
             validation_failures = len(validation_result.failures_detailed)
-            error_codes = (
-                [validation_result.error_code] if validation_result.error_code else []
-            )
+            error_codes = [validation_result.error_code] if validation_result.error_code else []
         else:
             validation_passed = False
             validation_failures = 0
@@ -776,9 +757,7 @@ class EnrichedSignalPack:
             if semantic_target_met
             else (semantic_multiplier / SEMANTIC_EXPANSION_TARGET_MULTIPLIER) * 25.0
         )
-        precision_contribution = (
-            25.0 if precision_target_met else (fp_reduction / 0.60) * 25.0
-        )
+        precision_contribution = 25.0 if precision_target_met else (fp_reduction / 0.60) * 25.0
         evidence_contribution = evidence_completeness * 25.0
         validation_contribution = 25.0 if validation_passed else 0.0
 
@@ -819,9 +798,7 @@ class EnrichedSignalPack:
             all_integrations_validated=all_validated,
         )
 
-    def set_pdt_quality_map(
-        self, pdt_quality_map: dict[str, PDTQualityMetrics]
-    ) -> None:
+    def set_pdt_quality_map(self, pdt_quality_map: dict[str, PDTQualityMetrics]) -> None:
         """
         Set or update PDT quality map for pattern boosting.
 
@@ -852,9 +829,7 @@ class EnrichedSignalPack:
         Returns:
             Computed PDTQualityMetrics for the section
         """
-        metrics = compute_pdt_section_quality(
-            section_name, pdt_structure, unit_layer_scores
-        )
+        metrics = compute_pdt_section_quality(section_name, pdt_structure, unit_layer_scores)
         self._pdt_quality_map[section_name] = metrics
 
         logger.info(
@@ -896,9 +871,7 @@ class EnrichedSignalPack:
                 }
             )
             total_I_struct += metrics.I_struct
-            quality_counts[metrics.quality_level] = (
-                quality_counts.get(metrics.quality_level, 0) + 1
-            )
+            quality_counts[metrics.quality_level] = quality_counts.get(metrics.quality_level, 0) + 1
 
         avg_I_struct = total_I_struct / len(self._pdt_quality_map)
 
@@ -945,9 +918,7 @@ def create_enriched_signal_pack(
     Returns:
         EnrichedSignalPack with 4 refactoring integrations + PDT quality
     """
-    return EnrichedSignalPack(
-        base_signal_pack, enable_semantic_expansion, pdt_quality_map
-    )
+    return EnrichedSignalPack(base_signal_pack, enable_semantic_expansion, pdt_quality_map)
 
 
 def analyze_with_intelligence_layer(

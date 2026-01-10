@@ -4,7 +4,6 @@ import sys
 from pathlib import Path
 
 
-
 from farfan_pipeline.phases.Phase_two.contract_validator_cqvr import CQVRValidator  # noqa: E402
 
 
@@ -35,7 +34,9 @@ def test_batch6_contracts_are_production_ready() -> None:
         contract = json.loads(contract_path.read_text(encoding="utf-8"))
         decision = validator.validate_contract(contract)
         if not decision.is_production_ready():
-            failing.append(f"Q{q_num:03d} score={decision.score.total_score:.1f} tier1={decision.score.tier1_score:.1f}")
+            failing.append(
+                f"Q{q_num:03d} score={decision.score.total_score:.1f} tier1={decision.score.tier1_score:.1f}"
+            )
     assert not failing, f"Non-production contracts: {failing}"
 
 
@@ -96,7 +97,9 @@ def test_batch6_validation_rules_cover_required_expected_elements() -> None:
                 for item in should_contain:
                     if isinstance(item, dict):
                         should.update([e for e in item.get("elements", []) if isinstance(e, str)])
-        assert required.issubset(must | should), f"Q{q_num:03d} missing required validation coverage"
+        assert required.issubset(
+            must | should
+        ), f"Q{q_num:03d} missing required validation coverage"
 
 
 def test_batch6_methodological_depth_is_non_boilerplate() -> None:
@@ -113,7 +116,9 @@ def test_batch6_methodological_depth_is_non_boilerplate() -> None:
 
         technical = methods[0].get("technical_approach", {}) if isinstance(methods[0], dict) else {}
         steps = technical.get("steps", [])
-        assert steps, f"Q{q_num:03d} missing methodological_depth.methods[0].technical_approach.steps"
+        assert (
+            steps
+        ), f"Q{q_num:03d} missing methodological_depth.methods[0].technical_approach.steps"
 
         step_descs = [s.get("description", "") for s in steps if isinstance(s, dict)]
         assert all(
@@ -125,7 +130,8 @@ def test_batch6_methodological_depth_is_non_boilerplate() -> None:
 
         assumptions = technical.get("assumptions", [])
         assert all(
-            not any(pat in str(a).lower() for pat in generic_assumption_patterns) for a in assumptions
+            not any(pat in str(a).lower() for pat in generic_assumption_patterns)
+            for a in assumptions
         )
 
 
@@ -136,4 +142,3 @@ def test_batch6_traceability_source_hash_set() -> None:
         contract = json.loads(contract_path.read_text(encoding="utf-8"))
         source_hash = contract.get("traceability", {}).get("source_hash", "")
         assert source_hash == expected_hash
-

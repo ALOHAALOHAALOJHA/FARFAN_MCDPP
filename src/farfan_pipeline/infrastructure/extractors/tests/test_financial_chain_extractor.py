@@ -11,7 +11,7 @@ Date: 2026-01-06
 import pytest
 from farfan_pipeline.infrastructure.extractors import (
     FinancialChainExtractor,
-    extract_financial_chains
+    extract_financial_chains,
 )
 
 
@@ -56,12 +56,14 @@ class TestFinancialChainExtractor:
 
         # Allow 1% tolerance for normalization
         tolerance = expected * 0.01
-        assert abs(actual - expected) <= tolerance, \
-            f"Expected ~{expected:,.0f} pesos, got {actual:,.0f}"
+        assert (
+            abs(actual - expected) <= tolerance
+        ), f"Expected ~{expected:,.0f} pesos, got {actual:,.0f}"
 
         # Verify high confidence
-        assert main_chain["confidence"] >= 0.90, \
-            f"Expected confidence >= 0.90, got {main_chain['confidence']}"
+        assert (
+            main_chain["confidence"] >= 0.90
+        ), f"Expected confidence >= 0.90, got {main_chain['confidence']}"
 
     def test_cajibio_sgp_fuente_extraction(self, extractor):
         """
@@ -89,8 +91,9 @@ class TestFinancialChainExtractor:
             actual = sgp_chain.get("monto_normalizado", 0)
 
             tolerance = expected * 0.01
-            assert abs(actual - expected) <= tolerance, \
-                f"SGP amount: expected ~{expected:,.0f}, got {actual:,.0f}"
+            assert (
+                abs(actual - expected) <= tolerance
+            ), f"SGP amount: expected ~{expected:,.0f}, got {actual:,.0f}"
 
     def test_cajibio_adres_fuente_extraction(self, extractor):
         """
@@ -108,7 +111,9 @@ class TestFinancialChainExtractor:
         assert len(result.matches) > 0, "Should extract ADRES funding"
 
         # Verify large amounts are extracted
-        large_amounts = [m for m in result.matches if m.get("monto_normalizado", 0) > 180_000_000_000]
+        large_amounts = [
+            m for m in result.matches if m.get("monto_normalizado", 0) > 180_000_000_000
+        ]
         assert len(large_amounts) > 0, "Should extract ADRES amount (>180 billion)"
 
     # ========================================================================
@@ -132,8 +137,9 @@ class TestFinancialChainExtractor:
             if result.matches:
                 actual = result.matches[0].get("monto_normalizado", 0)
                 tolerance = expected * 0.01
-                assert abs(actual - expected) <= tolerance, \
-                    f"Text '{text}': expected {expected:,}, got {actual:,}"
+                assert (
+                    abs(actual - expected) <= tolerance
+                ), f"Text '{text}': expected {expected:,}, got {actual:,}"
 
     def test_currency_normalization_billones(self, extractor):
         """
@@ -149,8 +155,7 @@ class TestFinancialChainExtractor:
         if result.matches:
             actual = result.matches[0].get("monto_normalizado", 0)
             tolerance = expected * 0.01
-            assert abs(actual - expected) <= tolerance, \
-                f"Expected {expected:,}, got {actual:,}"
+            assert abs(actual - expected) <= tolerance, f"Expected {expected:,}, got {actual:,}"
 
     def test_currency_normalization_raw_numbers(self, extractor):
         """
@@ -181,7 +186,7 @@ class TestFinancialChainExtractor:
         test_cases = [
             "Recursos del SGP por $100 millones",
             "Sistema General de Participaciones: $200 millones",
-            "SGP - Salud: $500 millones"
+            "SGP - Salud: $500 millones",
         ]
 
         for text in test_cases:
@@ -210,7 +215,7 @@ class TestFinancialChainExtractor:
         """
         test_cases = [
             "SGR (Sistema General de Regalías): $80 millones",
-            "Recursos de regalías: $120 millones"
+            "Recursos de regalías: $120 millones",
         ]
 
         for text in test_cases:
@@ -279,9 +284,10 @@ class TestFinancialChainExtractor:
 
         if result.matches:
             # Complete chains should have higher confidence
-            avg_confidence = sum(m.get("confidence", 0) for m in result.matches) / len(result.matches)
-            assert avg_confidence >= 0.65, \
-                f"Expected avg confidence >= 0.65, got {avg_confidence}"
+            avg_confidence = sum(m.get("confidence", 0) for m in result.matches) / len(
+                result.matches
+            )
+            assert avg_confidence >= 0.65, f"Expected avg confidence >= 0.65, got {avg_confidence}"
 
     def test_confidence_scoring_partial_chain(self, extractor):
         """
@@ -311,7 +317,7 @@ class TestFinancialChainExtractor:
         result = extractor.extract(text)
 
         # Auto-validation should run
-        assert hasattr(result, 'validation_passed'), "Should have validation_passed attribute"
+        assert hasattr(result, "validation_passed"), "Should have validation_passed attribute"
 
     def test_metadata_generation(self, extractor):
         """
@@ -387,8 +393,7 @@ class TestFinancialChainExtractor:
         result = extractor.extract(text)
 
         # Should extract multiple amounts
-        assert len(result.matches) >= 3, \
-            f"Should extract 3+ chains, got {len(result.matches)}"
+        assert len(result.matches) >= 3, f"Should extract 3+ chains, got {len(result.matches)}"
 
     def test_decimal_separator_variations(self, extractor):
         """
@@ -432,10 +437,12 @@ class TestFinancialChainEmpiricalValidation:
         signal_data = calibration_data["signal_type_catalog"]["FINANCIAL_CHAIN"]
         empirical_freq = signal_data["empirical_frequency"]
 
-        assert empirical_freq["montos_per_plan"]["mean"] == 285, \
-            "Extractor should be calibrated with mean=285 montos/plan"
-        assert empirical_freq["fuentes_per_plan"]["mean"] == 7, \
-            "Extractor should be calibrated with mean=7 fuentes/plan"
+        assert (
+            empirical_freq["montos_per_plan"]["mean"] == 285
+        ), "Extractor should be calibrated with mean=285 montos/plan"
+        assert (
+            empirical_freq["fuentes_per_plan"]["mean"] == 7
+        ), "Extractor should be calibrated with mean=7 fuentes/plan"
 
     def test_confidence_threshold_alignment(self, extractor, calibration_data):
         """
@@ -446,5 +453,6 @@ class TestFinancialChainEmpiricalValidation:
         patterns = signal_data["extraction_patterns"]
 
         monto_confidence = patterns["monto"]["confidence"]
-        assert monto_confidence == 0.90, \
-            f"Expected monto pattern confidence=0.90, got {monto_confidence}"
+        assert (
+            monto_confidence == 0.90
+        ), f"Expected monto pattern confidence=0.90, got {monto_confidence}"

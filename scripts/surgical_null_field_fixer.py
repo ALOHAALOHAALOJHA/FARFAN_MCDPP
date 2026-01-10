@@ -28,7 +28,7 @@ class NullFieldPopulator:
             "patterns_fixed": 0,
             "validation_rules_added": 0,
             "context_requirements_added": 0,
-            "semantic_expansions_added": 0
+            "semantic_expansions_added": 0,
         }
 
     def generate_validation_rule(self, pattern: Dict[str, Any]) -> Optional[str]:
@@ -122,7 +122,9 @@ class NullFieldPopulator:
         # Default
         return "within_relevant_section"
 
-    def generate_semantic_expansion(self, pattern: Dict[str, Any]) -> Optional[Dict[str, List[str]]]:
+    def generate_semantic_expansion(
+        self, pattern: Dict[str, Any]
+    ) -> Optional[Dict[str, List[str]]]:
         """
         Generate semantic_expansion for patterns with known entities or terms.
 
@@ -153,12 +155,12 @@ class NullFieldPopulator:
             expansion = {}
             for entity in entities[:5]:  # Limit to first 5 entities
                 # Clean entity (remove regex chars)
-                clean_entity = re.sub(r'[\\()?.*+\[\]]', '', entity).strip()
+                clean_entity = re.sub(r"[\\()?.*+\[\]]", "", entity).strip()
 
                 if len(clean_entity) > 3:  # Only for meaningful entities
                     expansion[clean_entity] = [
                         f"referencia a {clean_entity}",
-                        f"mención de {clean_entity}"
+                        f"mención de {clean_entity}",
                     ]
 
             return expansion if expansion else None
@@ -206,7 +208,7 @@ class NullFieldPopulator:
         """Process a single questions.json file."""
         print(f"📄 Processing: {file_path.relative_to(file_path.parents[3])}")
 
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         patterns_fixed = 0
@@ -219,7 +221,7 @@ class NullFieldPopulator:
                     patterns_fixed += 1
 
         # Write back
-        with open(file_path, 'w', encoding='utf-8') as f:
+        with open(file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
 
         self.stats["files_processed"] += 1

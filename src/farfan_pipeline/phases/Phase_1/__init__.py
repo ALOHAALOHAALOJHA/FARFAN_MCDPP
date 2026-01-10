@@ -19,6 +19,7 @@ Version: 2.0.0 - Question-Aware Architecture
 # Core executor (may have optional dependencies)
 try:
     from .phase1_20_00_cpp_ingestion import Phase1MissionContract as Phase1Executor
+
     PHASE1_EXECUTOR_AVAILABLE = True
 except ImportError as e:
     Phase1Executor = None
@@ -81,6 +82,7 @@ try:
         NUM_POLICY_AREAS,
         NUM_DIMENSIONS,
     )
+
     QUESTIONNAIRE_MAPPER_AVAILABLE = True
 except ImportError as e:
     QuestionSpec = None
@@ -101,6 +103,7 @@ try:
         execute_sp4_question_aware,
         TOTAL_CHUNK_COMBINATIONS as SP4_TOTAL_CHUNKS,
     )
+
     SP4_QUESTION_AWARE_AVAILABLE = True
 except ImportError as e:
     execute_sp4_question_aware = None
@@ -109,54 +112,54 @@ except ImportError as e:
 
 __all__ = [
     # Executor
-    'Phase1Executor',
+    "Phase1Executor",
     # Models
-    'SmartChunk',
-    'Chunk',
-    'LanguageData',
-    'PreprocessedDoc',
-    'StructureData',
-    'KnowledgeGraph',
-    'KGNode',
-    'KGEdge',
-    'CausalChains',
-    'IntegratedCausal',
-    'Arguments',
-    'Temporal',
-    'Discourse',
-    'Strategic',
-    'ValidationResult',
+    "SmartChunk",
+    "Chunk",
+    "LanguageData",
+    "PreprocessedDoc",
+    "StructureData",
+    "KnowledgeGraph",
+    "KGNode",
+    "KGEdge",
+    "CausalChains",
+    "IntegratedCausal",
+    "Arguments",
+    "Temporal",
+    "Discourse",
+    "Strategic",
+    "ValidationResult",
     # Primitives
-    'TruncationAudit',
-    'StreamingPDFExtractor',
+    "TruncationAudit",
+    "StreamingPDFExtractor",
     # Utilities
-    'ThreadSafeResults',
+    "ThreadSafeResults",
     # Constants
-    'PDF_EXTRACTION_CHAR_LIMIT',
-    'SEMANTIC_SCORE_MAX_EXPECTED',
-    'ASSIGNMENT_METHOD_SEMANTIC',
-    'ASSIGNMENT_METHOD_FALLBACK',
-    'VALID_ASSIGNMENT_METHODS',
-    'CHUNK_ID_PATTERN',
-    'POLICY_AREA_COUNT',
-    'DIMENSION_COUNT',
-    'TOTAL_CHUNK_COMBINATIONS',
-    'SUBPHASE_COUNT',
-    'PHASE1_LOGGER_NAME',
-    'RANDOM_SEED',
+    "PDF_EXTRACTION_CHAR_LIMIT",
+    "SEMANTIC_SCORE_MAX_EXPECTED",
+    "ASSIGNMENT_METHOD_SEMANTIC",
+    "ASSIGNMENT_METHOD_FALLBACK",
+    "VALID_ASSIGNMENT_METHODS",
+    "CHUNK_ID_PATTERN",
+    "POLICY_AREA_COUNT",
+    "DIMENSION_COUNT",
+    "TOTAL_CHUNK_COMBINATIONS",
+    "SUBPHASE_COUNT",
+    "PHASE1_LOGGER_NAME",
+    "RANDOM_SEED",
     # Question-aware architecture (v2.0) - NEW
-    'QuestionSpec',
-    'QuestionnaireMap',
-    'load_questionnaire_map',
-    'invoke_method_set',
-    'verify_expected_elements',
-    'create_chunk_id_for_question',
-    'parse_question_id',
-    'TOTAL_QUESTIONS',
-    'QUESTIONS_PER_DIMENSION',
-    'NUM_POLICY_AREAS',
-    'NUM_DIMENSIONS',
-    'execute_sp4_question_aware',
-    'QUESTIONNAIRE_MAPPER_AVAILABLE',
-    'SP4_QUESTION_AWARE_AVAILABLE',
+    "QuestionSpec",
+    "QuestionnaireMap",
+    "load_questionnaire_map",
+    "invoke_method_set",
+    "verify_expected_elements",
+    "create_chunk_id_for_question",
+    "parse_question_id",
+    "TOTAL_QUESTIONS",
+    "QUESTIONS_PER_DIMENSION",
+    "NUM_POLICY_AREAS",
+    "NUM_DIMENSIONS",
+    "execute_sp4_question_aware",
+    "QUESTIONNAIRE_MAPPER_AVAILABLE",
+    "SP4_QUESTION_AWARE_AVAILABLE",
 ]

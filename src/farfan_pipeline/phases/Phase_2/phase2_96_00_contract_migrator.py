@@ -41,6 +41,7 @@ logger = logging.getLogger(__name__)
 # Try to import jsonschema for validation
 try:
     import jsonschema
+
     JSONSCHEMA_AVAILABLE = True
 except ImportError:
     JSONSCHEMA_AVAILABLE = False
@@ -51,6 +52,7 @@ except ImportError:
 
 
 # === DATA MODELS ===
+
 
 @dataclass
 class MigrationResult:
@@ -65,6 +67,7 @@ class MigrationResult:
         error: Error message if migration failed
         migration_path: List of versions traversed during migration
     """
+
     success: bool
     original_version: str
     target_version: str
@@ -80,17 +83,21 @@ MigrationFunc = Callable[[dict], dict]
 
 # === EXCEPTIONS ===
 
+
 class MigrationError(Exception):
     """Raised when migration fails."""
+
     pass
 
 
 class ValidationError(Exception):
     """Raised when schema validation fails."""
+
     pass
 
 
 # === CONTRACT MIGRATOR ===
+
 
 class ContractMigrator:
     """
@@ -125,12 +132,7 @@ class ContractMigrator:
         self.output_suffix = output_suffix
 
     @classmethod
-    def register_migration(
-        cls,
-        from_version: str,
-        to_version: str,
-        func: MigrationFunc
-    ) -> None:
+    def register_migration(cls, from_version: str, to_version: str, func: MigrationFunc) -> None:
         """
         Register a migration function.
 
@@ -155,10 +157,7 @@ class ContractMigrator:
         logger.debug(f"Registered schema for version: {version}")
 
     def migrate_contract(
-        self,
-        contract_path: Path,
-        target_version: str,
-        output_dir: Optional[Path] = None
+        self, contract_path: Path, target_version: str, output_dir: Optional[Path] = None
     ) -> MigrationResult:
         """
         Migrate a contract file to the target version.
@@ -210,9 +209,7 @@ class ContractMigrator:
 
                 migrator = self.MIGRATIONS.get((from_v, to_v))
                 if not migrator:
-                    raise MigrationError(
-                        f"Missing migration: {from_v} → {to_v}"
-                    )
+                    raise MigrationError(f"Missing migration: {from_v} → {to_v}")
 
                 # Apply pure migration function
                 contract = migrator(contract)
@@ -264,7 +261,7 @@ class ContractMigrator:
         directory: Path,
         target_version: str,
         output_dir: Optional[Path] = None,
-        pattern: str = "*.json"
+        pattern: str = "*.json",
     ) -> List[MigrationResult]:
         """
         Migrate all contracts in a directory.
@@ -296,11 +293,7 @@ class ContractMigrator:
 
         return results
 
-    def _find_migration_path(
-        self,
-        current: str,
-        target: str
-    ) -> Optional[List[str]]:
+    def _find_migration_path(self, current: str, target: str) -> Optional[List[str]]:
         """
         Find the shortest migration path using BFS.
 
@@ -321,7 +314,7 @@ class ContractMigrator:
             version, path = queue.popleft()
 
             # Find all versions we can migrate to from current version
-            for (from_v, to_v) in self.MIGRATIONS.keys():
+            for from_v, to_v in self.MIGRATIONS.keys():
                 if from_v == version and to_v not in visited:
                     new_path = path + [to_v]
 
@@ -396,6 +389,7 @@ class ContractMigrator:
 
 import copy
 from datetime import datetime, timezone
+
 
 def migrate_v2_to_v3(contract: dict) -> dict:
     """
@@ -502,7 +496,7 @@ SCHEMA_V3 = {
         "contract_id": {"type": "string"},
         "params": {"type": "object"},
         "metadata": {"type": "object"},
-    }
+    },
 }
 
 SCHEMA_V4 = {
@@ -512,14 +506,9 @@ SCHEMA_V4 = {
         "version": {"type": "string", "pattern": "^v4$"},
         "contract_id": {"type": "string"},
         "schema_version": {"type": "string"},
-        "configuration": {
-            "type": "object",
-            "properties": {
-                "parameters": {"type": "object"}
-            }
-        },
+        "configuration": {"type": "object", "properties": {"parameters": {"type": "object"}}},
         "metadata": {"type": "object"},
-    }
+    },
 }
 
 
@@ -538,10 +527,9 @@ ContractMigrator.register_schema("v4", SCHEMA_V4)
 
 # === CONVENIENCE FUNCTIONS ===
 
+
 def migrate_contract(
-    contract_path: str | Path,
-    target_version: str,
-    output_dir: str | Path | None = None
+    contract_path: str | Path, target_version: str, output_dir: str | Path | None = None
 ) -> MigrationResult:
     """
     Migrate a single contract file (convenience function).
@@ -556,16 +544,12 @@ def migrate_contract(
     """
     migrator = ContractMigrator()
     return migrator.migrate_contract(
-        Path(contract_path),
-        target_version,
-        Path(output_dir) if output_dir else None
+        Path(contract_path), target_version, Path(output_dir) if output_dir else None
     )
 
 
 def migrate_all_contracts(
-    directory: str | Path,
-    target_version: str,
-    output_dir: str | Path | None = None
+    directory: str | Path, target_version: str, output_dir: str | Path | None = None
 ) -> List[MigrationResult]:
     """
     Migrate all contracts in a directory (convenience function).
@@ -580,9 +564,7 @@ def migrate_all_contracts(
     """
     migrator = ContractMigrator()
     return migrator.migrate_directory(
-        Path(directory),
-        target_version,
-        Path(output_dir) if output_dir else None
+        Path(directory), target_version, Path(output_dir) if output_dir else None
     )
 
 

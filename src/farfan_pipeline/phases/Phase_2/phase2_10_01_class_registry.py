@@ -4,6 +4,7 @@ Module: phase2_10_01_class_registry
 PHASE_LABEL: Phase 2
 Sequence: X
 """
+
 from __future__ import annotations
 
 from importlib import import_module
@@ -12,8 +13,10 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from collections.abc import Mapping
 
+
 class ClassRegistryError(RuntimeError):
     """Raised when one or more classes cannot be loaded."""
+
 
 # Map of orchestrator-facing class names to their import paths.
 # CORRECTED: Using actual package path farfan_pipeline.methods
@@ -23,7 +26,6 @@ _CLASS_PATHS: Mapping[str, str] = {
     "PolicyTextProcessor": "farfan_pipeline.methods.policy_processor.PolicyTextProcessor",
     "BayesianEvidenceScorer": "farfan_pipeline.methods.policy_processor.BayesianEvidenceScorer",
     "_FallbackTemporalVerifier": "farfan_pipeline.methods.policy_processor._FallbackTemporalVerifier",
-    
     # Contradiction Detection
     "PolicyContradictionDetector": "farfan_pipeline.methods.contradiction_deteccion.PolicyContradictionDetector",
     "TemporalLogicVerifier": "farfan_pipeline.methods.contradiction_deteccion.TemporalLogicVerifier",
@@ -31,11 +33,9 @@ _CLASS_PATHS: Mapping[str, str] = {
     "SemanticValidator": "farfan_pipeline.methods.contradiction_deteccion.SemanticValidator",
     "ContradictionDominator": "farfan_pipeline.methods.contradiction_deteccion.ContradictionDominator",
     "LogicalConsistencyChecker": "farfan_pipeline.methods.contradiction_deteccion.LogicalConsistencyChecker",
-    
     # Financial Analysis
     "PDETMunicipalPlanAnalyzer": "farfan_pipeline.methods.financiero_viabilidad_tablas.PDETMunicipalPlanAnalyzer",
     "FinancialAggregator": "farfan_pipeline.methods.financiero_viabilidad_tablas.FinancialAggregator",
-    
     # Derek Beach
     "CDAFFramework": "farfan_pipeline.methods.derek_beach.CDAFFramework",
     "CausalExtractor": "farfan_pipeline.methods.derek_beach.CausalExtractor",
@@ -53,44 +53,39 @@ _CLASS_PATHS: Mapping[str, str] = {
     "MechanismPartExtractor": "farfan_pipeline.methods.derek_beach.MechanismPartExtractor",
     "CausalInferenceSetup": "farfan_pipeline.methods.derek_beach.CausalInferenceSetup",
     "DerekBeachProducer": "farfan_pipeline.methods.derek_beach.DerekBeachProducer",
-    
     # Embedding & Semantic Processing
     "BayesianNumericalAnalyzer": "farfan_pipeline.methods.embedding_policy.BayesianNumericalAnalyzer",
     "PolicyAnalysisEmbedder": "farfan_pipeline.methods.embedding_policy.PolicyAnalysisEmbedder",
     "AdvancedSemanticChunker": "farfan_pipeline.methods.embedding_policy.AdvancedSemanticChunker",
     "EmbeddingPolicyProducer": "farfan_pipeline.methods.embedding_policy.EmbeddingPolicyProducer",
     "SemanticChunker": "farfan_pipeline.methods.embedding_policy.AdvancedSemanticChunker",
-    
     # Semantic Chunking
     "SemanticProcessor": "farfan_pipeline.methods.semantic_chunking_policy.SemanticProcessor",
     "SemanticChunkingProducer": "farfan_pipeline.methods.semantic_chunking_policy.SemanticChunkingProducer",
     "PolicyDocumentAnalyzer": "farfan_pipeline.methods.semantic_chunking_policy.PolicyDocumentAnalyzer",
     "BayesianEvidenceIntegrator": "farfan_pipeline.methods.semantic_chunking_policy.BayesianEvidenceIntegrator",
-    
     # Analyzer One
     "SemanticAnalyzer": "farfan_pipeline.methods.analyzer_one.SemanticAnalyzer",
     "PerformanceAnalyzer": "farfan_pipeline.methods.analyzer_one.PerformanceAnalyzer",
     "TextMiningEngine": "farfan_pipeline.methods.analyzer_one.TextMiningEngine",
     "MunicipalOntology": "farfan_pipeline.methods.analyzer_one.MunicipalOntology",
     "DocumentProcessor": "farfan_pipeline.methods.analyzer_one.DocumentProcessor",
-    
     # Teoria de Cambio
     "TeoriaCambio": "farfan_pipeline.methods.teoria_cambio.TeoriaCambio",
     "AdvancedDAGValidator": "farfan_pipeline.methods.teoria_cambio.AdvancedDAGValidator",
     "IndustrialGradeValidator": "farfan_pipeline.methods.teoria_cambio.IndustrialGradeValidator",
     "DAGCycleDetector": "farfan_pipeline.methods.teoria_cambio.DAGCycleDetector",
-    
     # Bayesian Multilevel System
     "DispersionEngine": "farfan_pipeline.methods.bayesian_multilevel_system.DispersionEngine",
     "PeerCalibrator": "farfan_pipeline.methods.bayesian_multilevel_system.PeerCalibrator",
     "ContradictionScanner": "farfan_pipeline.methods.bayesian_multilevel_system.ContradictionScanner",
     "BayesianPortfolioComposer": "farfan_pipeline.methods.bayesian_multilevel_system.BayesianPortfolioComposer",
     "BayesianEvidenceExtractor": "farfan_pipeline.methods.bayesian_multilevel_system.BayesianEvidenceExtractor",
-    
     # Evidence Nexus (Phase Two)
     "EvidenceNexus": "farfan_pipeline.phases.Phase_two.evidence_nexus.EvidenceNexus",
     "EvidenceAssembler": "farfan_pipeline.phases.Phase_two.evidence_nexus.EvidenceNexus",
 }
+
 
 def build_class_registry() -> dict[str, type[object]]:
     """Return a mapping of class names to loaded types, validating availability.
@@ -113,9 +108,17 @@ def build_class_registry() -> dict[str, type[object]]:
             exc_str = str(exc)
             # Check if this is an optional dependency error
             optional_deps = [
-                "torch", "tensorflow", "pyarrow", "camelot",
-                "sentence_transformers", "transformers", "spacy",
-                "pymc", "arviz", "dowhy", "econml"
+                "torch",
+                "tensorflow",
+                "pyarrow",
+                "camelot",
+                "sentence_transformers",
+                "transformers",
+                "spacy",
+                "pymc",
+                "arviz",
+                "dowhy",
+                "econml",
             ]
             if any(opt_dep in exc_str for opt_dep in optional_deps):
                 # Mark as skipped optional rather than missing
@@ -136,6 +139,7 @@ def build_class_registry() -> dict[str, type[object]]:
     # Log skipped optional dependencies
     if skipped_optional:
         import logging
+
         logger = logging.getLogger(__name__)
         logger.info(
             f"Skipped {len(skipped_optional)} optional classes due to missing dependencies: "
@@ -146,6 +150,7 @@ def build_class_registry() -> dict[str, type[object]]:
         formatted = ", ".join(f"{name}: {reason}" for name, reason in missing.items())
         raise ClassRegistryError(f"Failed to load orchestrator classes: {formatted}")
     return resolved
+
 
 def get_class_paths() -> Mapping[str, str]:
     """Expose the raw class path mapping for diagnostics."""

@@ -26,6 +26,7 @@ INVARIANTS ENFORCED:
 
 Schema Version: 2.0.0
 """
+
 from .calibration_core import (
     CalibrationError,
     CalibrationLayer,
@@ -137,7 +138,6 @@ __all__ = [
     # Factory functions
     "create_calibration_parameter",
     "create_default_bounds",
-    
     # =========================================================================
     # EXCEPTIONS
     # =========================================================================
@@ -149,7 +149,6 @@ __all__ = [
     "UnknownContractTypeError",
     "CanonicalSourceError",
     "ConfigurationError",
-    
     # =========================================================================
     # TYPE DEFAULTS (Flyweight cached)
     # =========================================================================
@@ -170,14 +169,12 @@ __all__ = [
     "PRIOR_STRENGTH_MAX",
     "ContractTypeDefaults",
     "EpistemicLayerRatios",
-    
     # =========================================================================
     # UNIT OF ANALYSIS
     # =========================================================================
     "FiscalContext",
     "MunicipalityCategory",
     "UnitOfAnalysis",
-    
     # =========================================================================
     # INGESTION CALIBRATOR (N1-EMP)
     # =========================================================================
@@ -186,7 +183,6 @@ __all__ = [
     "StandardCalibrationStrategy",
     "AggressiveCalibrationStrategy",
     "ConservativeCalibrationStrategy",
-    
     # =========================================================================
     # METHOD BINDING VALIDATOR
     # =========================================================================
@@ -195,13 +191,11 @@ __all__ = [
     "MethodBindingValidator",
     "ValidationResult",
     "ValidationSeverity",
-    
     # =========================================================================
     # PHASE-2 CALIBRATOR (N2-INF)
     # =========================================================================
     "Phase2CalibrationResult",
     "Phase2Calibrator",
-    
     # =========================================================================
     # CALIBRATION MANIFEST (Audit Trail)
     # =========================================================================
@@ -210,7 +204,6 @@ __all__ = [
     "ManifestBuilder",
     "DriftIndicator",
     "DriftReport",
-    
     # =========================================================================
     # CALIBRATION AUDITOR (N3-AUD Veto Gate)
     # =========================================================================
@@ -221,7 +214,6 @@ __all__ = [
     "PriorStrengthSpecification",
     "VetoThresholdSpecification",
     "FusionStrategySpecification",
-    
     # =========================================================================
     # INTERACTION GOVERNOR (Bounded Fusion, Veto Cascade)
     # =========================================================================
@@ -236,7 +228,6 @@ __all__ = [
     "InteractionViolation",
     "InteractionViolationType",
     "bounded_multiplicative_fusion",
-    
     # =========================================================================
     # FACT REGISTRY (Deduplication, Verbosity)
     # =========================================================================

@@ -27,12 +27,7 @@ from enum import Enum
 
 
 # Cluster identifiers (4 total)
-CLUSTERS = [
-    "CLUSTER_MESO_1",
-    "CLUSTER_MESO_2",
-    "CLUSTER_MESO_3",
-    "CLUSTER_MESO_4"
-]
+CLUSTERS = ["CLUSTER_MESO_1", "CLUSTER_MESO_2", "CLUSTER_MESO_3", "CLUSTER_MESO_4"]
 
 # Expected output count for Phase 6
 EXPECTED_CLUSTER_SCORE_COUNT = 4
@@ -42,7 +37,7 @@ CLUSTER_COMPOSITION = {
     "CLUSTER_MESO_1": ["PA01", "PA02", "PA03"],
     "CLUSTER_MESO_2": ["PA04", "PA05", "PA06"],
     "CLUSTER_MESO_3": ["PA07", "PA08"],
-    "CLUSTER_MESO_4": ["PA09", "PA10"]
+    "CLUSTER_MESO_4": ["PA09", "PA10"],
 }
 
 # Score bounds (3-point scale)
@@ -51,10 +46,10 @@ MAX_SCORE = 3.0
 
 # Dispersion metrics thresholds
 DISPERSION_THRESHOLDS = {
-    "CV_CONVERGENCE": 0.2,      # Coefficient of variation < 0.2 = convergence
-    "CV_MODERATE": 0.4,          # CV < 0.4 = moderate dispersion
-    "CV_HIGH": 0.6,              # CV < 0.6 = high dispersion
-    "CV_EXTREME": 1.0            # CV >= 0.6 = extreme dispersion
+    "CV_CONVERGENCE": 0.2,  # Coefficient of variation < 0.2 = convergence
+    "CV_MODERATE": 0.4,  # CV < 0.4 = moderate dispersion
+    "CV_HIGH": 0.6,  # CV < 0.6 = high dispersion
+    "CV_EXTREME": 1.0,  # CV >= 0.6 = extreme dispersion
 }
 
 # Adaptive penalty weights
@@ -67,6 +62,7 @@ COHERENCE_THRESHOLD_HIGH = 0.8
 
 class DispersionScenario(Enum):
     """Dispersion classification scenarios."""
+
     CONVERGENCE = "convergence"
     MODERATE = "moderate"
     HIGH = "high"

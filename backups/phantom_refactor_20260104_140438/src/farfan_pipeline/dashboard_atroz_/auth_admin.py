@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class AdminSession:
     """Represents an active admin session"""
+
     session_id: str
     username: str
     created_at: datetime
@@ -53,7 +54,7 @@ class AdminAuthenticator:
         self.users = {
             "admin": {
                 "password_hash": self._hash_password("atroz_admin_2024"),
-                "role": "administrator"
+                "role": "administrator",
             }
         }
 
@@ -61,13 +62,15 @@ class AdminAuthenticator:
 
     def _hash_password(self, password: str) -> bytes:
         """Hash password using bcrypt (industry-standard password hashing)"""
-        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
 
     def _generate_session_id(self) -> str:
         """Generate secure random session ID"""
         return secrets.token_urlsafe(32)
 
-    def _check_rate_limit(self, ip_address: str, max_attempts: int = 5, window_minutes: int = 15) -> bool:
+    def _check_rate_limit(
+        self, ip_address: str, max_attempts: int = 5, window_minutes: int = 15
+    ) -> bool:
         """Check if IP has exceeded login attempt rate limit"""
         now = time.time()
         window_seconds = window_minutes * 60
@@ -77,7 +80,8 @@ class AdminAuthenticator:
 
         # Remove old attempts outside window
         self.login_attempts[ip_address] = [
-            timestamp for timestamp in self.login_attempts[ip_address]
+            timestamp
+            for timestamp in self.login_attempts[ip_address]
             if now - timestamp < window_seconds
         ]
 
@@ -119,10 +123,7 @@ class AdminAuthenticator:
 
         # Verify password using bcrypt
         try:
-            password_valid = bcrypt.checkpw(
-                password.encode('utf-8'),
-                user["password_hash"]
-            )
+            password_valid = bcrypt.checkpw(password.encode("utf-8"), user["password_hash"])
         except (ValueError, TypeError):
             logger.warning(f"Invalid password hash format for user: {username}")
             return None
@@ -138,7 +139,7 @@ class AdminAuthenticator:
             username=username,
             created_at=datetime.now(),
             last_activity=datetime.now(),
-            ip_address=ip_address
+            ip_address=ip_address,
         )
 
         logger.info(f"Successful login for user: {username} from IP: {ip_address}")
@@ -191,7 +192,8 @@ class AdminAuthenticator:
     def cleanup_expired_sessions(self) -> None:
         """Remove all expired sessions (should be called periodically)"""
         expired = [
-            sid for sid, session in self.sessions.items()
+            sid
+            for sid, session in self.sessions.items()
             if session.is_expired(self.session_timeout)
         ]
 
@@ -205,10 +207,7 @@ class AdminAuthenticator:
         """Add new user (admin function)"""
         password_hash = self._hash_password(password)
 
-        self.users[username] = {
-            "password_hash": password_hash,
-            "role": role
-        }
+        self.users[username] = {"password_hash": password_hash, "role": role}
 
         logger.info(f"New user added: {username} with role: {role}")
 
@@ -221,10 +220,7 @@ class AdminAuthenticator:
 
         # Verify old password using bcrypt
         try:
-            old_password_valid = bcrypt.checkpw(
-                old_password.encode('utf-8'),
-                user["password_hash"]
-            )
+            old_password_valid = bcrypt.checkpw(old_password.encode("utf-8"), user["password_hash"])
         except (ValueError, TypeError):
             logger.warning(f"Invalid password hash format for user: {username}")
             return False
@@ -262,9 +258,9 @@ def require_auth(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        session_id = request.cookies.get('atroz_session')
+        session_id = request.cookies.get("atroz_session")
         if not session_id:
-            session_id = request.headers.get('X-Session-ID')
+            session_id = request.headers.get("X-Session-ID")
 
         if not session_id:
             return jsonify({"error": "Authentication required"}), 401
