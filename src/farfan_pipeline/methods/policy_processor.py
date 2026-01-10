@@ -48,6 +48,7 @@ except Exception:  # pragma: no cover - local fallback for standalone import
         except (TypeError, ValueError):
             return []
 
+
 try:
     from methods_dispensary.financiero_viabilidad_tablas import (  # type: ignore[attr-defined]
         PDETAnalysisException,
@@ -70,10 +71,12 @@ except Exception:  # pragma: no cover - lightweight fallback for hermetic import
         confidence_interval: tuple[float, float]
         evidence: dict[str, Any]
 
+
 try:
     from farfan_pipeline.analysis.contradiction_deteccion import (
         PolicyDimension as ContradictionPolicyDimension,
     )
+
     CONTRADICTION_MODULE_AVAILABLE = True
 except Exception as import_error:
     CONTRADICTION_MODULE_AVAILABLE = False
@@ -100,14 +103,10 @@ except Exception as import_error:
 # ADR: No runtime questionnaire dependency - all constants frozen at module import
 # Source: src/farfan_pipeline/core/canonical_specs.py
 from farfan_pipeline.core.canonical_specs import (
-    MICRO_LEVELS,
     CANON_DIMENSIONS,
     CANON_POLICY_AREAS,
-    PDT_SECTION_PATTERNS,
-    PDT_STRATEGIC_PATTERNS,
-    PDT_FINANCIAL_PATTERNS,
+    MICRO_LEVELS,
     PDT_PATTERNS,
-    CAUSAL_CHAIN_VOCABULARY,
 )
 
 # DEPRECATED: ParametrizationLoader removed per canonical refactoring
@@ -132,17 +131,17 @@ CONFIDENCE_THRESHOLD = round(CONFIDENCE_THRESHOLD, 2)  # 0.625
 COHERENCE_THRESHOLD = MICRO_LEVELS["ACEPTABLE"]  # 0.55
 
 # Formula: (ACEPTABLE + BUENO) / 2
-# Source: MICRO_LEVELS from canonical_specs.py  
+# Source: MICRO_LEVELS from canonical_specs.py
 # Rationale: Alignment scoring threshold (same as confidence)
 ALIGNMENT_THRESHOLD = (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2.0  # 0.625
 
 # Risk thresholds (inverse quality)
 # Source: Derived from quality standards
 RISK_THRESHOLDS = {
-    "excellent": 0.15,   # Low risk = high quality
+    "excellent": 0.15,  # Low risk = high quality
     "good": 0.30,
     "acceptable": 0.50,
-    "insufficient": 0.80  # High risk = low quality
+    "insufficient": 0.80,  # High risk = low quality
 }
 
 # CANONICAL DIMENSIONS - Import from canonical_specs
@@ -457,7 +456,11 @@ SCORING_MODALITIES: dict[str, dict[str, Any]] = {
         "name": "Binary Evidence Detection",
         "description": "Verifica presencia/ausencia de elementos específicos",
         "scoring_function": "binary_threshold",
-        "required_elements": ["cobertura_territorial", "fuentes_oficiales", "indicadores_cuantitativos"],
+        "required_elements": [
+            "cobertura_territorial",
+            "fuentes_oficiales",
+            "indicadores_cuantitativos",
+        ],
         "threshold": CONFIDENCE_THRESHOLD,
     },
     "TYPE_B": {
@@ -493,11 +496,19 @@ SCORING_MODALITIES: dict[str, dict[str, Any]] = {
 # Method Class Mappings from Questionnaire
 METHOD_CLASSES: dict[str, list[str]] = {
     "TextMiningEngine": ["diagnose_critical_links", "_analyze_link_text"],
-    "IndustrialPolicyProcessor": ["process", "_match_patterns_in_sentences", "_extract_point_evidence"],
+    "IndustrialPolicyProcessor": [
+        "process",
+        "_match_patterns_in_sentences",
+        "_extract_point_evidence",
+    ],
     "CausalExtractor": ["_extract_goals", "_parse_goal_context"],
     "FinancialAuditor": ["_parse_amount", "trace_financial_allocation", "_detect_allocation_gaps"],
     "PDETMunicipalPlanAnalyzer": ["_extract_financial_amounts", "_extract_from_budget_table"],
-    "PolicyContradictionDetector": ["_extract_quantitative_claims", "_parse_number", "_statistical_significance_test"],
+    "PolicyContradictionDetector": [
+        "_extract_quantitative_claims",
+        "_parse_number",
+        "_statistical_significance_test",
+    ],
     "BayesianNumericalAnalyzer": ["evaluate_policy_metric", "compare_policies"],
     "SemanticProcessor": ["chunk_text", "embed_single"],
     "OperationalizationAuditor": ["_audit_direct_evidence", "_audit_systemic_risk"],
@@ -515,7 +526,10 @@ VALIDATION_RULES: dict[str, dict[str, Any]] = {
             r"\d{1,3}(\.\d{3})*(,\d{1,2})?\s*%",
             r"\d+\s*(por|cada)\s*(100|mil|100\.000)",
         ],
-        "proximity_validation": {"require_near": ["año", "periodo", "vigencia"], "max_distance": 30},
+        "proximity_validation": {
+            "require_near": ["año", "periodo", "vigencia"],
+            "max_distance": 30,
+        },
     },
     "verificar_fuentes": {
         "minimum_required": 2,
@@ -534,19 +548,19 @@ VALIDATION_RULES: dict[str, dict[str, Any]] = {
 # PDT/PDM Document Structure Patterns
 PDT_PATTERNS: dict[str, re.Pattern[str]] = {
     "section_delimiters": re.compile(
-        r'^(?:CAP[IÍ]TULO\s+[IVX\d]+|T[IÍ]TULO\s+[IVX\d]+|PARTE\s+[IVX\d]+|'
-        r'L[IÍ]NEA\s+ESTRAT[EÉ]GICA\s*\d*|EJE\s+\d+|SECTOR:\s*[\w\s]+|'
-        r'PROGRAMA:\s*[\w\s]+|SUBPROGRAMA:\s*[\w\s]+|\#{3,5}\s*\d+\.\d+|\d+\.\d+\. ?\s+)',
+        r"^(?:CAP[IÍ]TULO\s+[IVX\d]+|T[IÍ]TULO\s+[IVX\d]+|PARTE\s+[IVX\d]+|"
+        r"L[IÍ]NEA\s+ESTRAT[EÉ]GICA\s*\d*|EJE\s+\d+|SECTOR:\s*[\w\s]+|"
+        r"PROGRAMA:\s*[\w\s]+|SUBPROGRAMA:\s*[\w\s]+|\#{3,5}\s*\d+\.\d+|\d+\.\d+\. ?\s+)",
         re.MULTILINE | re.IGNORECASE,
     ),
     "product_codes": re.compile(
-        r'(?:\b\d{7}\b|C[oó]d\.\s*(?:Producto|Indicador):\s*[\w\-]+|'
-        r'BPIN\s*:\s*\d{10,13}|KPT\d{6})',
+        r"(?:\b\d{7}\b|C[oó]d\.\s*(?:Producto|Indicador):\s*[\w\-]+|"
+        r"BPIN\s*:\s*\d{10,13}|KPT\d{6})",
         re.IGNORECASE,
     ),
     "meta_indicators": re.compile(
-        r'(?:Meta\s+(?:de\s+)?(?:producto|resultado|bienestar):\s*[\d\.,]+|'
-        r'Indicador\s+(?:de\s+)?(?:producto|resultado|impacto):\s*[^\. ]+)',
+        r"(?:Meta\s+(?:de\s+)?(?:producto|resultado|bienestar):\s*[\d\.,]+|"
+        r"Indicador\s+(?:de\s+)?(?:producto|resultado|impacto):\s*[^\. ]+)",
         re.IGNORECASE,
     ),
 }
@@ -557,7 +571,11 @@ POLICY_CLUSTERS: dict[str, dict[str, Any]] = {
         "name": "Seguridad y Paz",
         "policy_areas": ["PA02", "PA03", "PA07"],
         "legacy_ids": ["P2", "P3", "P7"],
-        "integration_keywords": ["seguridad territorial", "paz ambiental", "ordenamiento para la paz"],
+        "integration_keywords": [
+            "seguridad territorial",
+            "paz ambiental",
+            "ordenamiento para la paz",
+        ],
     },
     "CL02": {
         "name": "Grupos Poblacionales",
@@ -569,7 +587,11 @@ POLICY_CLUSTERS: dict[str, dict[str, Any]] = {
         "name": "Territorio-Ambiente",
         "policy_areas": ["PA04", "PA08"],
         "legacy_ids": ["P4", "P8"],
-        "integration_keywords": ["desarrollo territorial", "sostenibilidad", "derechos territoriales"],
+        "integration_keywords": [
+            "desarrollo territorial",
+            "sostenibilidad",
+            "derechos territoriales",
+        ],
     },
     "CL04": {
         "name": "Derechos Sociales & Crisis",
@@ -659,9 +681,8 @@ def _validate_pattern_match(match_text: str, validation_rule: str) -> bool:
         if isinstance(pattern, str):
             if re.search(pattern, text, flags=re.IGNORECASE):
                 return True
-        else:
-            if re.search(pattern, text, flags=re.IGNORECASE):
-                return True
+        elif re.search(pattern, text, flags=re.IGNORECASE):
+            return True
     return False
 
 
@@ -683,8 +704,9 @@ class _FallbackBayesianCalculator:
 class _FallbackTemporalVerifier:
     """Fallback temporal verifier providing graceful degradation."""
 
-    
-    def verify_temporal_consistency(self, statements: list[Any]) -> tuple[bool, list[dict[str, Any]]]:
+    def verify_temporal_consistency(
+        self, statements: list[Any]
+    ) -> tuple[bool, list[dict[str, Any]]]:
         return True, []
 
 
@@ -708,9 +730,9 @@ class _FallbackContradictionDetector:
             "knowledge_graph_stats": {"nodes": 0, "edges": 0, "components": 0},
         }
 
-    
     def _extract_policy_statements(self, text: str, dimension: Any) -> list[Any]:
         return []
+
 
 # ============================================================================
 # LOGGING CONFIGURATION
@@ -723,6 +745,7 @@ logger = logging.getLogger(__name__)
 # CAUSAL DIMENSION TAXONOMY (DECALOGO Framework)
 # ============================================================================
 
+
 class CausalDimension(Enum):
     """Six-dimensional causal framework taxonomy aligned with DECALOGO."""
 
@@ -732,6 +755,7 @@ class CausalDimension(Enum):
     D4_RESULTADOS = "d4_resultados"
     D5_IMPACTOS = "d5_impactos"
     D6_CAUSALIDAD = "d6_causalidad"
+
 
 # ============================================================================
 # ENHANCED PATTERN LIBRARY WITH SEMANTIC HIERARCHIES
@@ -893,6 +917,7 @@ CAUSAL_PATTERN_TAXONOMY: dict[CausalDimension, dict[str, list[str]]] = {
 # CONFIGURATION ARCHITECTURE
 # ============================================================================
 
+
 @dataclass(frozen=True)
 class ProcessorConfig:
     """Immutable configuration for policy plan processing."""
@@ -953,7 +978,7 @@ class ProcessorConfig:
     }
 
     @classmethod
-    def from_legacy(cls, **kwargs: Any) -> "ProcessorConfig":
+    def from_legacy(cls, **kwargs: Any) -> ProcessorConfig:
         """Construct configuration from legacy parameter names."""
         normalized = {}
         for key, value in kwargs.items():
@@ -961,7 +986,6 @@ class ProcessorConfig:
             normalized[canonical] = value
         return cls(**normalized)
 
-    
     def validate(self) -> None:
         """Validate configuration parameters."""
         if not 0.0 <= self.confidence_threshold <= 1.0:
@@ -976,18 +1000,16 @@ class ProcessorConfig:
             raise ValueError("bayesian_entropy_weight must be in [0, 1]")
         for dimension, threshold in self.minimum_dimension_scores.items():
             if not 0.0 <= threshold <= 1.0:
-                raise ValueError(
-                    f"minimum_dimension_scores[{dimension}] must be in [0, 1]"
-                )
+                raise ValueError(f"minimum_dimension_scores[{dimension}] must be in [0, 1]")
         for dimension, threshold in self.critical_dimension_overrides.items():
             if not 0.0 <= threshold <= 1.0:
-                raise ValueError(
-                    f"critical_dimension_overrides[{dimension}] must be in [0, 1]"
-                )
+                raise ValueError(f"critical_dimension_overrides[{dimension}] must be in [0, 1]")
+
 
 # ============================================================================
 # MATHEMATICAL SCORING ENGINE
 # ============================================================================
+
 
 class BayesianEvidenceScorer:
     """
@@ -1020,7 +1042,6 @@ class BayesianEvidenceScorer:
 
         self._configure_from_calibration()
 
-    
     def _configure_from_calibration(self) -> None:
         """
         RECOMMENDATION 2 IMPLEMENTATION: Pydantic-based configuration loading.
@@ -1062,7 +1083,7 @@ class BayesianEvidenceScorer:
         matches: list[str],
         total_corpus_size: int,
         pattern_specificity: float = 0.8,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> float:
         """
         Compute probabilistic confidence score for evidence matches.
@@ -1099,9 +1120,7 @@ class BayesianEvidenceScorer:
         )
 
         # Entropy-weighted adjustment
-        final_score = (1 - self.entropy_weight) * posterior + self.entropy_weight * (
-            1 - entropy
-        )
+        final_score = (1 - self.entropy_weight) * posterior + self.entropy_weight * (1 - entropy)
 
         # Apply duplicate penalty if provided by caller
         if kwargs.get("duplicate_penalty"):
@@ -1111,17 +1130,23 @@ class BayesianEvidenceScorer:
         if self.source_quality_weights:
             source_quality = kwargs.get("source_quality")
             if source_quality is not None:
-                weight = self._lookup_weight(self.source_quality_weights, source_quality, default=1.0)
+                weight = self._lookup_weight(
+                    self.source_quality_weights, source_quality, default=1.0
+                )
                 final_score *= weight
 
         # Context multipliers (sector / municipality)
         sector = kwargs.get("sector") or kwargs.get("policy_sector")
         if self.sector_multipliers:
-            final_score *= self._lookup_weight(self.sector_multipliers, sector, default=self.sector_default)
+            final_score *= self._lookup_weight(
+                self.sector_multipliers, sector, default=self.sector_default
+            )
 
         municipio = kwargs.get("municipio_tamano") or kwargs.get("municipio_size")
         if self.municipio_multipliers:
-            final_score *= self._lookup_weight(self.municipio_multipliers, municipio, default=self.municipio_default)
+            final_score *= self._lookup_weight(
+                self.municipio_multipliers, municipio, default=self.municipio_default
+            )
 
         return np.clip(final_score, 0.0, 1.0)
 
@@ -1165,9 +1190,11 @@ class BayesianEvidenceScorer:
                     return value
         return mapping.get("default", default)
 
+
 # ============================================================================
 # ADVANCED TEXT PROCESSOR
 # ============================================================================
+
 
 class PolicyTextProcessor:
     """
@@ -1175,20 +1202,18 @@ class PolicyTextProcessor:
     coherence-preserving normalization for policy document analysis.
     """
 
-    def __init__(self, config: ProcessorConfig, *, calibration: dict[str, Any] | None = None) -> None:
+    def __init__(
+        self, config: ProcessorConfig, *, calibration: dict[str, Any] | None = None
+    ) -> None:
         self.config = config
         self.calibration = calibration or {}
         self._compiled_patterns: dict[str, re.Pattern] = {}
-        self._sentence_boundaries = re.compile(
-            r"(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ])|(?<=\n\n)"
-        )
+        self._sentence_boundaries = re.compile(r"(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ])|(?<=\n\n)")
 
-    
     def normalize_unicode(self, text: str) -> str:
         """Apply canonical Unicode normalization (NFC/NFKC)."""
         return unicodedata.normalize(self.config.utf8_normalization_form, text)
 
-    
     def segment_into_sentences(self, text: str, **kwargs: Any) -> list[str]:
         """
         Segment text into sentences with context-aware boundary detection.
@@ -1217,14 +1242,10 @@ class PolicyTextProcessor:
         return [
             s.strip()
             for s in sentences
-            if self.config.min_sentence_length
-            <= len(s.strip())
-            <= self.config.max_sentence_length
+            if self.config.min_sentence_length <= len(s.strip()) <= self.config.max_sentence_length
         ]
 
-    def extract_contextual_window(
-        self, text: str, match_position: int, window_size: int
-    ) -> str:
+    def extract_contextual_window(self, text: str, match_position: int, window_size: int) -> str:
         """Extract semantically coherent context window around a match."""
         start = max(0, match_position - window_size // 2)
         end = min(len(text), match_position + window_size // 2)
@@ -1238,14 +1259,15 @@ class PolicyTextProcessor:
         return text[start:end].strip()
 
     @lru_cache(maxsize=256)
-    
     def compile_pattern(self, pattern_str: str) -> re.Pattern:
         """Cache and compile regex patterns for performance."""
         return re.compile(pattern_str, re.IGNORECASE | re.UNICODE)
 
+
 # ============================================================================
 # CORE INDUSTRIAL PROCESSOR
 # ============================================================================
+
 
 @dataclass
 class EvidenceBundle:
@@ -1258,7 +1280,6 @@ class EvidenceBundle:
     context_windows: list[str] = field(default_factory=list)
     match_positions: list[int] = field(default_factory=list)
 
-    
     def to_dict(self) -> dict[str, Any]:
         return {
             "dimension": self.dimension.value,
@@ -1268,6 +1289,7 @@ class EvidenceBundle:
             "evidence_samples": self.matches[:3],
             "context_preview": self.context_windows[:2],
         }
+
 
 class IndustrialPolicyProcessor:
     """
@@ -1304,27 +1326,32 @@ class IndustrialPolicyProcessor:
         if ontology is None or semantic_analyzer is None or performance_analyzer is None:
             from orchestration.wiring.analysis_factory import (
                 create_municipal_ontology,
-                create_semantic_analyzer,
                 create_performance_analyzer,
+                create_semantic_analyzer,
             )
+
             ontology = ontology or create_municipal_ontology()
             semantic_analyzer = semantic_analyzer or create_semantic_analyzer(ontology)
             performance_analyzer = performance_analyzer or create_performance_analyzer(ontology)
 
         if contradiction_detector is None:
             from orchestration.wiring.analysis_factory import create_contradiction_detector
+
             contradiction_detector = create_contradiction_detector()
 
         if temporal_verifier is None:
             from orchestration.wiring.analysis_factory import create_temporal_logic_verifier
+
             temporal_verifier = create_temporal_logic_verifier()
 
         if confidence_calculator is None:
             from orchestration.wiring.analysis_factory import create_bayesian_confidence_calculator
+
             confidence_calculator = create_bayesian_confidence_calculator()
 
         if municipal_analyzer is None:
             from orchestration.wiring.analysis_factory import create_municipal_analyzer
+
             municipal_analyzer = create_municipal_analyzer()
 
         self.ontology = ontology
@@ -1344,17 +1371,16 @@ class IndustrialPolicyProcessor:
         # Processing statistics
         self.statistics: dict[str, Any] = defaultdict(int)
 
-    
     def _load_questionnaire(self) -> dict[str, Any]:
         """
         DEPRECATED: Questionnaire loading removed per canonical refactoring.
-        
+
         CANONICAL REFACTORING (2025-12-17): This method no longer loads questionnaire_monolith.json
         All constants are now imported from canonical_specs.py (Extract → Normalize → Freeze pattern)
-        
+
         This method is kept for backward compatibility but returns empty data.
         Modern SPC pipeline handles questionnaire injection separately.
-        
+
         ADR: No runtime questionnaire dependency
         """
         logger.warning(
@@ -1363,7 +1389,6 @@ class IndustrialPolicyProcessor:
         )
         return {"questions": []}
 
-    
     def _compile_pattern_registry(self) -> dict[CausalDimension, dict[str, list[re.Pattern]]]:
         """Compile all causal patterns into efficient regex objects."""
         registry = {}
@@ -1400,11 +1425,20 @@ class IndustrialPolicyProcessor:
         """Determine appropriate scoring modality for dimension/category."""
         normalized_dim = (dimension or "").upper()
         if normalized_dim.startswith("DIM"):
-            normalized_dim = CANONICAL_DIMENSIONS.get(normalized_dim, {}).get("code", normalized_dim)
-        if normalized_dim.startswith("D") and len(normalized_dim) >= 2 and normalized_dim[1].isdigit():
+            normalized_dim = CANONICAL_DIMENSIONS.get(normalized_dim, {}).get(
+                "code", normalized_dim
+            )
+        if (
+            normalized_dim.startswith("D")
+            and len(normalized_dim) >= 2
+            and normalized_dim[1].isdigit()
+        ):
             normalized_dim = normalized_dim[:2]
 
-        if normalized_dim in ["D1", "DIM01"] and category in ["diagnostico_cuantitativo", "recursos_asignados"]:
+        if normalized_dim in ["D1", "DIM01"] and category in [
+            "diagnostico_cuantitativo",
+            "recursos_asignados",
+        ]:
             return "TYPE_A"
         if normalized_dim in ["D2", "DIM02"] and category == "poblacion_focalizada":
             return "TYPE_B"
@@ -1429,11 +1463,12 @@ class IndustrialPolicyProcessor:
         # Apply minimum requirements
         min_required = int(rule.get("minimum_required", 0))
         if len(validated) < min_required:
-            logger.warning(f"Validation {rule_name}: found {len(validated)}, required {min_required}")
+            logger.warning(
+                f"Validation {rule_name}: found {len(validated)}, required {min_required}"
+            )
 
         return validated
 
-    
     def _build_point_patterns(self) -> None:
         """
         LEGACY: Build patterns from canonical vocabulary.
@@ -1442,7 +1477,6 @@ class IndustrialPolicyProcessor:
         """
         self.point_patterns = self._build_canonical_point_patterns()
 
-    
     def process(self, raw_text: str, **kwargs: Any) -> dict[str, Any]:
         """
         Execute comprehensive policy plan analysis.
@@ -1470,9 +1504,7 @@ class IndustrialPolicyProcessor:
         # Evidence extraction by policy point
         point_evidence = {}
         for point_code in sorted(self.point_patterns.keys()):
-            evidence = self._extract_point_evidence(
-                normalized, sentences, point_code
-            )
+            evidence = self._extract_point_evidence(normalized, sentences, point_code)
             if evidence:
                 point_evidence[point_code] = evidence
 
@@ -1481,9 +1513,7 @@ class IndustrialPolicyProcessor:
 
         # Semantic diagnostics and performance evaluation
         semantic_cube = self.semantic_analyzer.extract_semantic_cube(sentences)
-        performance_analysis = self.performance_analyzer.analyze_performance(
-            semantic_cube
-        )
+        performance_analysis = self.performance_analyzer.analyze_performance(semantic_cube)
 
         try:
             contradiction_bundle = self._run_contradiction_analysis(normalized, metadata)
@@ -1588,7 +1618,7 @@ class IndustrialPolicyProcessor:
         matches: list[str],
         positions: list[int],
         confidence: float,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> dict[str, Any]:
         """
         Assemble evidence bundle from matched patterns and computed confidence.
@@ -1613,9 +1643,7 @@ class IndustrialPolicyProcessor:
         )
         return bundle.to_dict()
 
-    def _run_contradiction_analysis(
-        self, text: str, metadata: dict[str, Any]
-    ) -> dict[str, Any]:
+    def _run_contradiction_analysis(self, text: str, metadata: dict[str, Any]) -> dict[str, Any]:
         """Execute contradiction and temporal diagnostics across all dimensions."""
 
         if not self.contradiction_detector:
@@ -1708,9 +1736,7 @@ class IndustrialPolicyProcessor:
                     "overall_risk": "high" if total_contradictions > 3 else "medium",
                     "risk_factors": keywords,
                 }
-                intervention_recommendations[dimension.value] = report.get(
-                    "recommendations", []
-                )
+                intervention_recommendations[dimension.value] = report.get("recommendations", [])
 
         return {
             "reports": reports,
@@ -1736,18 +1762,14 @@ class IndustrialPolicyProcessor:
         overall_score = float(np.mean(bayesian_values)) if bayesian_values else 0.0
 
         def _dimension_confidence(key: CausalDimension) -> float:
-            return float(
-                dimension_analysis.get(key.value, {}).get("dimension_confidence", 0.0)
-            )
+            return float(dimension_analysis.get(key.value, {}).get("dimension_confidence", 0.0))
 
         temporal_flags = contradiction_bundle.get("temporal_assessments", {})
         temporal_values = [
             1.0 if assessment.get("is_consistent", True) else 0.0
             for assessment in temporal_flags.values()
         ]
-        temporal_consistency = (
-            float(np.mean(temporal_values)) if temporal_values else 1.0
-        )
+        temporal_consistency = float(np.mean(temporal_values)) if temporal_values else 1.0
 
         reports = contradiction_bundle.get("reports", {})
         coherence_scores = [
@@ -1895,9 +1917,11 @@ class IndustrialPolicyProcessor:
                 "categories": category_results,
                 "total_matches": total_matches,
                 "dimension_confidence": round(
-                    np.mean([c["confidence"] for c in category_results.values()])
-                    if category_results
-                    else 0.0,
+                    (
+                        np.mean([c["confidence"] for c in category_results.values()])
+                        if category_results
+                        else 0.0
+                    ),
                     4,
                 ),
             }
@@ -1945,7 +1969,6 @@ class IndustrialPolicyProcessor:
         ]
         return round(np.mean(confidences), 4) if confidences else 0.0
 
-    
     def _empty_result(self) -> dict[str, Any]:
         """Return structure for failed/empty processing."""
         return {
@@ -1962,9 +1985,7 @@ class IndustrialPolicyProcessor:
             "error": "Insufficient input for analysis",
         }
 
-    def export_results(
-        self, results: dict[str, Any], output_path: str | Path
-    ) -> None:
+    def export_results(self, results: dict[str, Any], output_path: str | Path) -> None:
         """Export analysis results to JSON with formatted output."""
         # Delegate to factory for I/O operation
         from farfan_pipeline.processing.factory import save_json
@@ -1972,9 +1993,11 @@ class IndustrialPolicyProcessor:
         save_json(results, output_path)
         logger.info(f"Results exported to {output_path}")
 
+
 # ============================================================================
 # ENHANCED SANITIZER WITH STRUCTURE PRESERVATION
 # ============================================================================
+
 
 class AdvancedTextSanitizer:
     """
@@ -1991,7 +2014,6 @@ class AdvancedTextSanitizer:
             "citation": ("__CITE_START__", "__CITE_END__"),
         }
 
-    
     def sanitize(self, raw_text: str) -> str:
         """
         Execute comprehensive text sanitization pipeline.
@@ -2019,8 +2041,7 @@ class AdvancedTextSanitizer:
 
         # Stage 4: Remove control characters (except newlines/tabs)
         text = "".join(
-            char for char in text
-            if unicodedata.category(char)[0] != "C" or char in "\n\t"
+            char for char in text if unicodedata.category(char)[0] != "C" or char in "\n\t"
         )
 
         # Stage 5: Restore protected elements
@@ -2029,7 +2050,6 @@ class AdvancedTextSanitizer:
 
         return text.strip()
 
-    
     def _protect_structure(self, text: str) -> str:
         """Mark structural elements for protection during sanitization."""
         protected = text
@@ -2061,7 +2081,6 @@ class AdvancedTextSanitizer:
 
         return protected
 
-    
     def _restore_structure(self, text: str) -> str:
         """Remove protection markers after sanitization."""
         restored = text
@@ -2070,9 +2089,11 @@ class AdvancedTextSanitizer:
             restored = restored.replace(end_mark, "")
         return restored
 
+
 # ============================================================================
 # INTEGRATED FILE HANDLING WITH RESILIENCE
 # ============================================================================
+
 
 class ResilientFileHandler:
     """
@@ -2112,9 +2133,11 @@ class ResilientFileHandler:
 
         write_text_file(content, file_path)
 
+
 # ============================================================================
 # UNIFIED ORCHESTRATOR
 # ============================================================================
+
 
 class PolicyAnalysisPipeline:
     """
@@ -2134,14 +2157,14 @@ class PolicyAnalysisPipeline:
         from orchestration.wiring.analysis_factory import create_analysis_components
 
         components = create_analysis_components()
-        self.document_loader = components['document_loader']
-        self.ontology = components['ontology']
-        self.semantic_analyzer = components['semantic_analyzer']
-        self.performance_analyzer = components['performance_analyzer']
-        self.temporal_verifier = components['temporal_verifier']
-        self.confidence_calculator = components['confidence_calculator']
-        self.contradiction_detector = components['contradiction_detector']
-        self.municipal_analyzer = components['municipal_analyzer']
+        self.document_loader = components["document_loader"]
+        self.ontology = components["ontology"]
+        self.semantic_analyzer = components["semantic_analyzer"]
+        self.performance_analyzer = components["performance_analyzer"]
+        self.temporal_verifier = components["temporal_verifier"]
+        self.confidence_calculator = components["confidence_calculator"]
+        self.contradiction_detector = components["contradiction_detector"]
+        self.municipal_analyzer = components["municipal_analyzer"]
 
         self.processor = IndustrialPolicyProcessor(
             self.config,
@@ -2206,7 +2229,6 @@ class PolicyAnalysisPipeline:
         logger.info(f"Analysis complete: {results['processing_status']}")
         return results
 
-    
     def analyze_text(self, raw_text: str) -> dict[str, Any]:
         """
         Execute analysis pipeline on raw text input.
@@ -2220,9 +2242,11 @@ class PolicyAnalysisPipeline:
         sanitized_text = self.sanitizer.sanitize(raw_text)
         return self.processor.process(sanitized_text)
 
+
 # ============================================================================
 # FACTORY FUNCTIONS FOR BACKWARD COMPATIBILITY
 # ============================================================================
+
 
 def create_policy_processor(
     preserve_structure: bool = True,
@@ -2250,9 +2274,11 @@ def create_policy_processor(
     )
     return PolicyAnalysisPipeline(config=config)
 
+
 # ============================================================================
 # COMMAND-LINE INTERFACE
 # ============================================================================
+
 
 def main() -> None:
     """Command-line interface for policy plan analysis."""
@@ -2262,9 +2288,7 @@ def main() -> None:
         description="Industrial-Grade Policy Plan Processor for Colombian Local Development Plans"
     )
     parser.add_argument("input_file", type=str, help="Input policy document path")
-    parser.add_argument(
-        "-o", "--output", type=str, help="Output JSON file path", default=None
-    )
+    parser.add_argument("-o", "--output", type=str, help="Output JSON file path", default=None)
     parser.add_argument(
         "-t",
         "--threshold",
@@ -2272,9 +2296,7 @@ def main() -> None:
         default=0.65,
         help="Confidence threshold (0-1)",
     )
-    parser.add_argument(
-        "-v", "--verbose", action="store_true", help="Enable verbose logging"
-    )
+    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose logging")
 
     args = parser.parse_args()
 
@@ -2321,22 +2343,25 @@ def _run_quality_gates() -> dict[str, bool]:
     results["dimensions_6"] = len(CANONICAL_DIMENSIONS) == 6
 
     # Verify derived thresholds consistency
-    results["alignment_threshold"] = abs(
-        ALIGNMENT_THRESHOLD - (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2
-    ) < 1e-9
+    results["alignment_threshold"] = (
+        abs(ALIGNMENT_THRESHOLD - (MICRO_LEVELS["ACEPTABLE"] + MICRO_LEVELS["BUENO"]) / 2) < 1e-9
+    )
     results["confidence_threshold"] = (
-        CONFIDENCE_THRESHOLD > MICRO_LEVELS["ACEPTABLE"] and CONFIDENCE_THRESHOLD < MICRO_LEVELS["BUENO"]
+        MICRO_LEVELS["ACEPTABLE"] < CONFIDENCE_THRESHOLD
+        and MICRO_LEVELS["BUENO"] > CONFIDENCE_THRESHOLD
     )
 
     # Verify risk thresholds ordering
-    results["risk_order"] = RISK_THRESHOLDS["excellent"] < RISK_THRESHOLDS["good"] < RISK_THRESHOLDS["acceptable"]
+    results["risk_order"] = (
+        RISK_THRESHOLDS["excellent"] < RISK_THRESHOLDS["good"] < RISK_THRESHOLDS["acceptable"]
+    )
 
     # Verify pattern compilation
     try:
         for pattern_dict in [PDT_PATTERNS, QUESTIONNAIRE_PATTERNS]:
             if isinstance(pattern_dict, dict):
                 for key in pattern_dict:
-                    if hasattr(pattern_dict[key], 'pattern'):
+                    if hasattr(pattern_dict[key], "pattern"):
                         _ = pattern_dict[key].pattern
         results["patterns_compile"] = True
     except Exception:

@@ -2,13 +2,14 @@
 Failure & Fallback Contract (FFC) - Implementation
 """
 
-from typing import Callable, Any, Dict, Type, Tuple
+from collections.abc import Callable
+from typing import Any
 
 
 class FailureFallbackContract:
     @staticmethod
     def execute_with_fallback(
-        func: Callable, fallback_value: Any, expected_exceptions: Tuple[Type[Exception], ...]
+        func: Callable, fallback_value: Any, expected_exceptions: tuple[type[Exception], ...]
     ) -> Any:
         """
         Executes func. If it raises an expected exception, returns fallback_value.
@@ -21,7 +22,7 @@ class FailureFallbackContract:
 
     @staticmethod
     def verify_fallback_determinism(
-        func: Callable, fallback_value: Any, exception_type: Type[Exception]
+        func: Callable, fallback_value: Any, exception_type: type[Exception]
     ) -> bool:
         """
         Verifies that repeated failures produce identical fallback values.

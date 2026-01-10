@@ -30,10 +30,10 @@ if TYPE_CHECKING:
     pass
 
 try:
+    from causalnex.inference import InferenceEngine
+    from causalnex.network import BayesianNetwork
     from causalnex.structure import StructureModel
     from causalnex.structure.notears import from_pandas
-    from causalnex.network import BayesianNetwork
-    from causalnex.inference import InferenceEngine
 
     CAUSALNEX_AVAILABLE = True
 except ImportError:

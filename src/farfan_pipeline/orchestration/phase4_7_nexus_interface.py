@@ -12,7 +12,6 @@ Phase 7: Macro Evaluation
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, List, Optional
 
 
 class NexusDirection(str, Enum):
@@ -73,7 +72,7 @@ class Phase4_7NexusInterface:
     """
 
     # Define all nodes
-    NODES: Dict[str, NexusNode] = {
+    NODES: dict[str, NexusNode] = {
         # Phase 4: Dimension Aggregation
         "phase4_dimension_aggregation_input": NexusNode(
             node_id="phase4_dimension_aggregation_input",
@@ -207,7 +206,7 @@ class Phase4_7NexusInterface:
     ]
 
     @classmethod
-    def get_node(cls, node_id: str) -> Optional[NexusNode]:
+    def get_node(cls, node_id: str) -> NexusNode | None:
         """
         Get a node by its ID.
 
@@ -220,7 +219,7 @@ class Phase4_7NexusInterface:
         return cls.NODES.get(node_id)
 
     @classmethod
-    def get_nodes_by_phase(cls, phase: int) -> List[NexusNode]:
+    def get_nodes_by_phase(cls, phase: int) -> list[NexusNode]:
         """
         Get all nodes for a specific phase.
 
@@ -233,7 +232,7 @@ class Phase4_7NexusInterface:
         return [node for node in cls.NODES.values() if node.phase == phase]
 
     @classmethod
-    def get_relationships_from_node(cls, node_id: str) -> List[NexusRelationship]:
+    def get_relationships_from_node(cls, node_id: str) -> list[NexusRelationship]:
         """
         Get all relationships where the specified node is the source.
 
@@ -246,7 +245,7 @@ class Phase4_7NexusInterface:
         return [rel for rel in cls.RELATIONSHIPS if rel.from_node.node_id == node_id]
 
     @classmethod
-    def get_relationships_to_node(cls, node_id: str) -> List[NexusRelationship]:
+    def get_relationships_to_node(cls, node_id: str) -> list[NexusRelationship]:
         """
         Get all relationships where the specified node is the destination.
 
@@ -259,7 +258,7 @@ class Phase4_7NexusInterface:
         return [rel for rel in cls.RELATIONSHIPS if rel.to_node.node_id == node_id]
 
     @classmethod
-    def validate_data_flow(cls) -> tuple[bool, List[str]]:
+    def validate_data_flow(cls) -> tuple[bool, list[str]]:
         """
         Validate that the data flow is properly connected.
 
@@ -364,7 +363,7 @@ def get_nexus_interface() -> Phase4_7NexusInterface:
     return Phase4_7NexusInterface()
 
 
-def validate_nexus_connections() -> tuple[bool, List[str]]:
+def validate_nexus_connections() -> tuple[bool, list[str]]:
     """
     Validate all nexus connections.
 
@@ -385,6 +384,6 @@ __all__ = [
     "NexusRelationship",
     "Phase4_7NexusInterface",
     "get_nexus_interface",
-    "validate_nexus_connections",
     "print_nexus_flow",
+    "validate_nexus_connections",
 ]

@@ -4,14 +4,14 @@ Alignment Stability Contract (ASC) - Implementation
 
 import hashlib
 import json
-from typing import List, Dict, Any
+from typing import Any
 
 
 class AlignmentStabilityContract:
     @staticmethod
     def compute_alignment(
-        sections: List[str], standards: List[str], params: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        sections: list[str], standards: list[str], params: dict[str, Any]
+    ) -> dict[str, Any]:
         """
         Simulates Optimal Transport (EGW) alignment.
         In a real system, this would use POT (Python Optimal Transport).
@@ -31,7 +31,7 @@ class AlignmentStabilityContract:
         return {"plan_digest": plan_digest, "cost": cost, "unmatched_mass": unmatched_mass}
 
     @staticmethod
-    def verify_stability(sections: List[str], standards: List[str], params: Dict[str, Any]) -> bool:
+    def verify_stability(sections: list[str], standards: list[str], params: dict[str, Any]) -> bool:
         """
         Verifies reproducibility with fixed hyperparameters.
         """

@@ -7,10 +7,9 @@ parameterization specification.
 
 import ast
 import json
-from pathlib import Path
 from collections.abc import Callable
+from pathlib import Path
 from typing import Any, ParamSpec, TypeVar
-from farfan_pipeline.core.parameters import ParameterLoaderV2
 
 P = ParamSpec("P")
 R = TypeVar("R")

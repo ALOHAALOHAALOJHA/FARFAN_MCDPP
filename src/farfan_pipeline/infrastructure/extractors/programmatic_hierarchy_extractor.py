@@ -25,26 +25,18 @@ Date: 2026-01-07
 from __future__ import annotations
 
 import json
-import unicodedata
 import logging
-from abc import ABC, abstractmethod
+import unicodedata
 from collections import defaultdict, deque
+from collections.abc import Iterator, Sequence
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from pathlib import Path
 from typing import (
     Any,
-    Dict,
-    Iterator,
-    List,
     Literal,
-    Optional,
     Protocol,
-    Sequence,
-    Set,
-    Tuple,
-    TypeVar,
     runtime_checkable,
 )
 
@@ -73,10 +65,10 @@ class HierarchyError:
     """Immutable record of a hierarchy anomaly."""
 
     error_type: HierarchyErrorType
-    node_ids: Tuple[str, ...]
+    node_ids: tuple[str, ...]
     message: str
     severity: Literal["warning", "error", "fatal"] = "error"
-    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
     def __str__(self) -> str:
         return f"[{self.severity.upper()}] {self.error_type.value}: {self.message} (nodes: {self.node_ids})"
@@ -89,9 +81,9 @@ class HierarchyNode:
     node_id: str
     name: str
     level: int
-    parent_id: Optional[str] = None
-    metadata: Dict[str, Any] = field(default_factory=dict)
-    raw_data: Optional[Dict[str, Any]] = None
+    parent_id: str | None = None
+    metadata: dict[str, Any] = field(default_factory=dict)
+    raw_data: dict[str, Any] | None = None
 
     def __hash__(self) -> int:
         return hash(self.node_id)
@@ -114,11 +106,11 @@ class HierarchySourceAdapter(Protocol):
     Abstracts CSV, SQL, API, or any other source.
     """
 
-    def fetch_nodes(self) -> Iterator[Dict[str, Any]]:
+    def fetch_nodes(self) -> Iterator[dict[str, Any]]:
         """Yield raw node dictionaries from the source."""
         ...
 
-    def get_source_metadata(self) -> Dict[str, Any]:
+    def get_source_metadata(self) -> dict[str, Any]:
         """Return metadata about the source (type, version, etc.)."""
         ...
 
@@ -131,14 +123,14 @@ class HierarchySourceAdapter(Protocol):
 class DictSourceAdapter:
     """Adapter for in-memory list of dictionaries."""
 
-    def __init__(self, data: List[Dict[str, Any]], source_name: str = "in_memory"):
+    def __init__(self, data: list[dict[str, Any]], source_name: str = "in_memory"):
         self._data = data
         self._source_name = source_name
 
-    def fetch_nodes(self) -> Iterator[Dict[str, Any]]:
+    def fetch_nodes(self) -> Iterator[dict[str, Any]]:
         yield from self._data
 
-    def get_source_metadata(self) -> Dict[str, Any]:
+    def get_source_metadata(self) -> dict[str, Any]:
         return {
             "source_type": "dict",
             "source_name": self._source_name,
@@ -154,7 +146,7 @@ class JSONFileSourceAdapter:
         self._node_path = node_path
         self._encoding = encoding
 
-    def fetch_nodes(self) -> Iterator[Dict[str, Any]]:
+    def fetch_nodes(self) -> Iterator[dict[str, Any]]:
         with open(self._file_path, encoding=self._encoding) as f:
             data = json.load(f)
 
@@ -167,7 +159,7 @@ class JSONFileSourceAdapter:
         if isinstance(nodes, list):
             yield from nodes
 
-    def get_source_metadata(self) -> Dict[str, Any]:
+    def get_source_metadata(self) -> dict[str, Any]:
         return {
             "source_type": "json_file",
             "source_path": str(self._file_path),
@@ -194,7 +186,7 @@ class CSVSourceAdapter:
         self._level_column = level_column
         self._encoding = encoding
 
-    def fetch_nodes(self) -> Iterator[Dict[str, Any]]:
+    def fetch_nodes(self) -> Iterator[dict[str, Any]]:
         import csv
 
         with open(self._file_path, encoding=self._encoding, newline="") as f:
@@ -208,7 +200,7 @@ class CSVSourceAdapter:
                     "raw": dict(row),
                 }
 
-    def get_source_metadata(self) -> Dict[str, Any]:
+    def get_source_metadata(self) -> dict[str, Any]:
         return {
             "source_type": "csv_file",
             "source_path": str(self._file_path),
@@ -255,12 +247,12 @@ class ProgrammaticHierarchyExtractor:
         self._strict_keys = strict_keys
 
         # Internal state
-        self._nodes: Dict[str, HierarchyNode] = {}
-        self._children: Dict[str, List[str]] = defaultdict(list)
-        self._roots: List[str] = []
-        self._errors: List[HierarchyError] = []
-        self._topological_order: List[str] = []
-        self._source_metadata: Dict[str, Any] = {}
+        self._nodes: dict[str, HierarchyNode] = {}
+        self._children: dict[str, list[str]] = defaultdict(list)
+        self._roots: list[str] = []
+        self._errors: list[HierarchyError] = []
+        self._topological_order: list[str] = []
+        self._source_metadata: dict[str, Any] = {}
         self._ingested = False
 
     # -------------------------------------------------------------------------
@@ -334,7 +326,7 @@ class ProgrammaticHierarchyExtractor:
             f"{len(self._roots)} roots, {len(self._errors)} errors"
         )
 
-    def get_ancestors(self, node_id: str) -> List[str]:
+    def get_ancestors(self, node_id: str) -> list[str]:
         """
         Get all ancestors of a node (parent, grandparent, etc.).
 
@@ -349,7 +341,7 @@ class ProgrammaticHierarchyExtractor:
         ancestors = []
         current = self._nodes[node_id].parent_id
 
-        visited: Set[str] = set()
+        visited: set[str] = set()
         while current and current in self._nodes:
             if current in visited:
                 break  # Cycle protection
@@ -359,7 +351,7 @@ class ProgrammaticHierarchyExtractor:
 
         return ancestors
 
-    def get_descendants(self, node_id: str) -> List[str]:
+    def get_descendants(self, node_id: str) -> list[str]:
         """
         Get all descendants of a node (children, grandchildren, etc.).
 
@@ -369,14 +361,14 @@ class ProgrammaticHierarchyExtractor:
         node_id = self._normalize_key(node_id)
         return self._get_descendants_internal(node_id)
 
-    def _get_descendants_internal(self, node_id: str) -> List[str]:
+    def _get_descendants_internal(self, node_id: str) -> list[str]:
         """Internal method to get descendants without checking ingested flag."""
         if node_id not in self._nodes:
             return []
 
         descendants = []
         queue = deque(self._children.get(node_id, []))
-        visited: Set[str] = {node_id}
+        visited: set[str] = {node_id}
 
         while queue:
             current = queue.popleft()
@@ -388,7 +380,7 @@ class ProgrammaticHierarchyExtractor:
 
         return descendants
 
-    def get_subtree(self, root_id: str) -> Dict[str, Any]:
+    def get_subtree(self, root_id: str) -> dict[str, Any]:
         """
         Get the full subtree rooted at the given node.
 
@@ -400,7 +392,7 @@ class ProgrammaticHierarchyExtractor:
         if root_id not in self._nodes:
             return {}
 
-        def build_subtree(nid: str, visited: Set[str]) -> Dict[str, Any]:
+        def build_subtree(nid: str, visited: set[str]) -> dict[str, Any]:
             if nid in visited:
                 return {"error": "cycle_detected", "node_id": nid}
             visited.add(nid)
@@ -431,17 +423,17 @@ class ProgrammaticHierarchyExtractor:
 
         return to_id in self.get_descendants(from_id)
 
-    def get_node(self, node_id: str) -> Optional[HierarchyNode]:
+    def get_node(self, node_id: str) -> HierarchyNode | None:
         """Get a single node by ID."""
         self._ensure_ingested()
         return self._nodes.get(self._normalize_key(node_id))
 
-    def get_roots(self) -> List[str]:
+    def get_roots(self) -> list[str]:
         """Get all root node IDs."""
         self._ensure_ingested()
         return list(self._roots)
 
-    def get_all_nodes(self) -> List[HierarchyNode]:
+    def get_all_nodes(self) -> list[HierarchyNode]:
         """Get all nodes in topological order (if available)."""
         self._ensure_ingested()
         if self._topological_order:
@@ -452,7 +444,7 @@ class ProgrammaticHierarchyExtractor:
         """Return all errors and anomalies detected during ingestion."""
         return [str(e) for e in self._errors]
 
-    def get_errors(self) -> List[HierarchyError]:
+    def get_errors(self) -> list[HierarchyError]:
         """Return all HierarchyError objects."""
         return list(self._errors)
 
@@ -472,7 +464,7 @@ class ProgrammaticHierarchyExtractor:
         else:
             raise ValueError(f"Unsupported format: {fmt}")
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get hierarchy metrics and statistics."""
         self._ensure_ingested()
 
@@ -492,7 +484,7 @@ class ProgrammaticHierarchyExtractor:
     # Private: Normalization
     # -------------------------------------------------------------------------
 
-    def _normalize_node(self, raw: Dict[str, Any]) -> Optional[HierarchyNode]:
+    def _normalize_node(self, raw: dict[str, Any]) -> HierarchyNode | None:
         """Normalize a raw node dictionary into a HierarchyNode."""
         node_id = self._normalize_key(raw.get(self._id_field, ""))
         if not node_id:
@@ -598,7 +590,7 @@ class ProgrammaticHierarchyExtractor:
             )
 
         # Identify orphans (nodes not reachable from any root)
-        reachable: Set[str] = set()
+        reachable: set[str] = set()
         for root in self._roots:
             reachable.add(root)
             reachable.update(self._get_descendants_internal(root))
@@ -616,7 +608,7 @@ class ProgrammaticHierarchyExtractor:
     # Private: Cycle Detection (Tarjan's SCC Algorithm - Iterative)
     # -------------------------------------------------------------------------
 
-    def _detect_cycles_tarjan(self) -> List[List[str]]:
+    def _detect_cycles_tarjan(self) -> list[list[str]]:
         """
         Detect cycles using Tarjan's Strongly Connected Components algorithm.
 
@@ -624,11 +616,11 @@ class ProgrammaticHierarchyExtractor:
         Returns list of cycles (SCCs with size > 1 indicate cycles).
         """
         index_counter = 0
-        stack: List[str] = []
-        lowlink: Dict[str, int] = {}
-        index: Dict[str, int] = {}
-        on_stack: Set[str] = set()
-        sccs: List[List[str]] = []
+        stack: list[str] = []
+        lowlink: dict[str, int] = {}
+        index: dict[str, int] = {}
+        on_stack: set[str] = set()
+        sccs: list[list[str]] = []
 
         for start_node in self._nodes:
             if start_node in index:
@@ -637,7 +629,7 @@ class ProgrammaticHierarchyExtractor:
             # Iterative DFS using explicit call stack
             # Each frame: (node, child_iterator, phase)
             # phase 0: first visit, phase 1: processing children, phase 2: post-visit
-            call_stack: List[Tuple[str, Iterator[str], int]] = []
+            call_stack: list[tuple[str, Iterator[str], int]] = []
             call_stack.append((start_node, iter(self._children.get(start_node, [])), 0))
 
             while call_stack:
@@ -683,7 +675,7 @@ class ProgrammaticHierarchyExtractor:
 
                     # If node is root of an SCC
                     if lowlink[node] == index[node]:
-                        scc: List[str] = []
+                        scc: list[str] = []
                         while True:
                             w = stack.pop()
                             on_stack.discard(w)
@@ -707,14 +699,14 @@ class ProgrammaticHierarchyExtractor:
     # Private: Topological Sort (Kahn's Algorithm)
     # -------------------------------------------------------------------------
 
-    def _topological_sort_kahn(self) -> List[str]:
+    def _topological_sort_kahn(self) -> list[str]:
         """
         Perform topological sort using Kahn's algorithm.
 
         Returns nodes in topological order (parents before children).
         """
         # Compute in-degrees
-        in_degree: Dict[str, int] = {nid: 0 for nid in self._nodes}
+        in_degree: dict[str, int] = dict.fromkeys(self._nodes, 0)
 
         for children in self._children.values():
             for child in children:
@@ -723,7 +715,7 @@ class ProgrammaticHierarchyExtractor:
 
         # Start with nodes that have no incoming edges (roots or no valid parent)
         queue = deque([nid for nid, deg in in_degree.items() if deg == 0])
-        result: List[str] = []
+        result: list[str] = []
 
         while queue:
             node = queue.popleft()
@@ -745,7 +737,7 @@ class ProgrammaticHierarchyExtractor:
         """Export hierarchy as JSON."""
         data = {
             "metadata": {
-                "exported_at": datetime.now(timezone.utc).isoformat(),
+                "exported_at": datetime.now(UTC).isoformat(),
                 "source": self._source_metadata,
                 "metrics": self.get_metrics(),
             },
@@ -812,7 +804,7 @@ class ProgrammaticHierarchyExtractor:
     def _add_error(
         self,
         error_type: HierarchyErrorType,
-        node_ids: Tuple[str, ...],
+        node_ids: tuple[str, ...],
         message: str,
         severity: Literal["warning", "error", "fatal"] = "error",
     ) -> None:
@@ -827,18 +819,18 @@ class ProgrammaticHierarchyExtractor:
         )
         logger.warning(f"Hierarchy anomaly: {error_type.value} - {message}")
 
-    def _count_errors_by_type(self) -> Dict[str, int]:
+    def _count_errors_by_type(self) -> dict[str, int]:
         """Count errors grouped by type."""
-        counts: Dict[str, int] = defaultdict(int)
+        counts: dict[str, int] = defaultdict(int)
         for error in self._errors:
             counts[error.error_type.value] += 1
         return dict(counts)
 
-    def _compute_depths(self) -> Dict[str, int]:
+    def _compute_depths(self) -> dict[str, int]:
         """Compute depth of each node from root."""
-        depths: Dict[str, int] = {}
+        depths: dict[str, int] = {}
 
-        def compute_depth(node_id: str, visited: Set[str]) -> int:
+        def compute_depth(node_id: str, visited: set[str]) -> int:
             if node_id in depths:
                 return depths[node_id]
             if node_id in visited:
@@ -864,12 +856,12 @@ class ProgrammaticHierarchyExtractor:
 # -----------------------------------------------------------------------------
 
 __all__ = [
-    "ProgrammaticHierarchyExtractor",
-    "HierarchySourceAdapter",
-    "DictSourceAdapter",
-    "JSONFileSourceAdapter",
     "CSVSourceAdapter",
-    "HierarchyNode",
+    "DictSourceAdapter",
     "HierarchyError",
     "HierarchyErrorType",
+    "HierarchyNode",
+    "HierarchySourceAdapter",
+    "JSONFileSourceAdapter",
+    "ProgrammaticHierarchyExtractor",
 ]

@@ -3,7 +3,6 @@
 Verification Script for 15-Contract Suite
 Runs all tests and tools, then validates certificates.
 """
-import glob
 import json
 import os
 import subprocess

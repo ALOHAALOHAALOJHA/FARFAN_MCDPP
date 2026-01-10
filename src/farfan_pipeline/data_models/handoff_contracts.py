@@ -4,8 +4,6 @@ Description: Data models for Phase 1 -> Phase 2 handoff contracts.
 """
 
 from dataclasses import dataclass, field
-from datetime import datetime
-from typing import Optional
 
 
 @dataclass

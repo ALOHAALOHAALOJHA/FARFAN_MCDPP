@@ -3,19 +3,17 @@ Traceability Contract (TC) - Implementation
 """
 
 import hashlib
-import json
-from typing import List, Any
 
 
 class MerkleTree:
-    def __init__(self, items: List[str]):
+    def __init__(self, items: list[str]):
         self.leaves = [self._hash(item) for item in items]
         self.root = self._build_tree(self.leaves)
 
     def _hash(self, data: str) -> str:
         return hashlib.blake2b(data.encode()).hexdigest()
 
-    def _build_tree(self, nodes: List[str]) -> str:
+    def _build_tree(self, nodes: list[str]) -> str:
         if not nodes:
             return ""
         if len(nodes) == 1:
@@ -33,7 +31,7 @@ class MerkleTree:
 
 class TraceabilityContract:
     @staticmethod
-    def verify_trace(items: List[str], expected_root: str) -> bool:
+    def verify_trace(items: list[str], expected_root: str) -> bool:
         """
         Verifies that the items reconstruct the exact Merkle root.
         """

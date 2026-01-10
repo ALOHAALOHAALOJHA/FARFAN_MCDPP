@@ -170,8 +170,7 @@ def compute_signal_quality_metrics(
     # Check temporal bounds
     has_temporal_bounds = bool(
         signal_pack.metadata.get("valid_from")
-        or hasattr(signal_pack, "valid_from")
-        and signal_pack.valid_from  # type: ignore
+        or (hasattr(signal_pack, "valid_from") and signal_pack.valid_from)  # type: ignore
     )
 
     # Estimate pattern density (patterns per 100 tokens)

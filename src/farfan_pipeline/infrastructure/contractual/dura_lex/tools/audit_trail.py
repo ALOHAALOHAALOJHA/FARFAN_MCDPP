@@ -2,9 +2,9 @@
 """
 CLI tool for Traceability Contract (TC) audit trail
 """
-import sys
 import json
-from farfan_pipeline.contracts.traceability import TraceabilityContract, MerkleTree
+
+from farfan_pipeline.contracts.traceability import MerkleTree, TraceabilityContract
 
 
 def main():

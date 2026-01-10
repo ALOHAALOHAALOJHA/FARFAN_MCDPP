@@ -5,7 +5,6 @@ from __future__ import annotations
 import re
 import unicodedata
 
-
 _NON_ALNUM_RE = re.compile(r"[^a-z0-9]+")
 
 

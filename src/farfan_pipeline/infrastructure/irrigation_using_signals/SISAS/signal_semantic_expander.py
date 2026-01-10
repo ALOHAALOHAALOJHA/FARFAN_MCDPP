@@ -689,9 +689,9 @@ def validate_expansion_result(
 # === EXPORTS ===
 
 __all__ = [
-    "extract_core_term",
-    "expand_pattern_semantically",
-    "expand_all_patterns",
     "adjust_spanish_agreement",
+    "expand_all_patterns",
+    "expand_pattern_semantically",
+    "extract_core_term",
     "validate_expansion_result",
 ]

@@ -254,7 +254,7 @@ class BayesianDiagnostics:
             return PosteriorPredictiveCheck(
                 test_statistic=test_statistic,
                 passed=False,
-                message=f"Error: {str(e)}",
+                message=f"Error: {e!s}",
             )
 
     def check_convergence(self, trace: Any, var_names: list[str] | None = None) -> dict[str, Any]:

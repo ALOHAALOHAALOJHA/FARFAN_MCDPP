@@ -24,11 +24,10 @@ import time
 import uuid
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 import numpy as np
-
 from farfan_pipeline.utils.enhanced_contracts import StructuredLogger, utc_now_iso
 
 # ============================================================================
@@ -280,7 +279,7 @@ def enforce_utc_now() -> datetime:
         >>> dt.tzinfo is not None
         True
     """
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 def parse_utc_timestamp(timestamp_str: str) -> datetime:
@@ -304,7 +303,7 @@ def parse_utc_timestamp(timestamp_str: str) -> datetime:
     dt = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00"))
 
     # Enforce UTC
-    if dt.tzinfo is None or dt.utcoffset() != timezone.utc.utcoffset(None):
+    if dt.tzinfo is None or dt.utcoffset() != UTC.utcoffset(None):
         raise ValueError(f"Timestamp must be UTC: {timestamp_str}")
 
     return dt

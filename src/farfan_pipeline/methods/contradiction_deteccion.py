@@ -25,19 +25,15 @@ from typing import Any
 import networkx as nx
 import numpy as np
 import torch
-from scipy import stats
-from scipy.spatial.distance import cosine
-from scipy.stats import beta
-from sentence_transformers import SentenceTransformer
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-from transformers import AutoModelForSequenceClassification, DebertaV2Tokenizer, pipeline
 
 # Check dependency lockdown
 from farfan_pipeline.core.dependency_lockdown import get_dependency_lockdown
 
 # Import runtime error fixes for defensive programming
-from farfan_pipeline.utils.runtime_error_fixes import ensure_list_return, safe_text_extract
+from farfan_pipeline.utils.runtime_error_fixes import ensure_list_return
+from scipy.stats import beta
+from sentence_transformers import SentenceTransformer
+from transformers import AutoModelForSequenceClassification, DebertaV2Tokenizer, pipeline
 
 _lockdown = get_dependency_lockdown()
 
@@ -800,8 +796,8 @@ class ContradictionDominator:
             veto_report = self._generate_veto_report_from_facts(facts)
 
             self.logger.warning(
-                f"CONTRADICTION DOMINANCE VETO APPLIED: "
-                f"contradiction(s) detected -> confidence = 0.0"
+                "CONTRADICTION DOMINANCE VETO APPLIED: "
+                "contradiction(s) detected -> confidence = 0.0"
             )
 
             return {

@@ -1124,7 +1124,7 @@ class DAGCycleDetector:
         Perform topological sort using Kahn's algorithm.
         Returns None if graph has cycles (should not happen here).
         """
-        in_degree = {node: 0 for node in nodes}
+        in_degree = dict.fromkeys(nodes, 0)
         for node in nodes:
             for neighbor in adjacency.get(node, []):
                 if neighbor in in_degree:

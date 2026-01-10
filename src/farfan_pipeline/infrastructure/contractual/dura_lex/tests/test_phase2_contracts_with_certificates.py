@@ -13,12 +13,12 @@ This test validates the 15 contracts by:
 Run with: python test_phase2_contracts_with_certificates.py
 """
 
+import hashlib
 import json
 import sys
+from datetime import UTC, datetime
 from pathlib import Path
-from datetime import datetime, timezone
-from typing import Dict, Any, List
-import hashlib
+from typing import Any
 
 print("=" * 90)
 print(" " * 15 + "PHASE 2 CONTRACT INTEGRATION TEST")
@@ -26,14 +26,16 @@ print(" " * 20 + "WITH CERTIFICATE GENERATION")
 print("=" * 90)
 
 # Configuration
-CONTRACT_DIR = Path('src/farfan_pipeline/phases/Phase_2/json_files_phase_two/executor_contracts/specialized')
-OUTPUT_DIR = Path('test_output/certificates')
+CONTRACT_DIR = Path(
+    "src/farfan_pipeline/phases/Phase_2/json_files_phase_two/executor_contracts/specialized"
+)
+OUTPUT_DIR = Path("test_output/certificates")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Test first 15 contracts
 contracts_to_test = sorted(CONTRACT_DIR.glob("*.v3.json"))[:15]
 
-print(f"\n📊 Configuration:")
+print("\n📊 Configuration:")
 print(f"   Contracts to test: {len(contracts_to_test)}")
 print(f"   Output directory: {OUTPUT_DIR}")
 print(f"   Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -41,7 +43,7 @@ print(f"   Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 # === MOCK DATA GENERATORS ===
 
 
-def generate_mock_document() -> Dict[str, Any]:
+def generate_mock_document() -> dict[str, Any]:
     """Generate mock preprocessed document."""
     return {
         "document_id": "MOCK_PDM_001",
@@ -50,12 +52,12 @@ def generate_mock_document() -> Dict[str, Any]:
         "metadata": {
             "year": 2024,
             "pages": 100,
-            "preprocessed_at": datetime.now(timezone.utc).isoformat(),
+            "preprocessed_at": datetime.now(UTC).isoformat(),
         },
     }
 
 
-def generate_mock_method_outputs(method_count: int) -> List[Dict[str, Any]]:
+def generate_mock_method_outputs(method_count: int) -> list[dict[str, Any]]:
     """Generate mock outputs from methods."""
     outputs = []
     for i in range(method_count):
@@ -73,7 +75,7 @@ def generate_mock_method_outputs(method_count: int) -> List[Dict[str, Any]]:
     return outputs
 
 
-def generate_mock_layer_scores() -> Dict[str, float]:
+def generate_mock_layer_scores() -> dict[str, float]:
     """Generate mock calibration layer scores."""
     return {
         "@b": 0.88,  # Base theory
@@ -87,17 +89,17 @@ def generate_mock_layer_scores() -> Dict[str, float]:
     }
 
 
-def calculate_choquet_integral(layer_scores: Dict[str, float]) -> float:
+def calculate_choquet_integral(layer_scores: dict[str, float]) -> float:
     """Simple Choquet integral approximation."""
     return sum(layer_scores.values()) / len(layer_scores)
 
 
 def generate_certificate(
-    contract: Dict[str, Any],
-    method_outputs: List[Dict[str, Any]],
-    layer_scores: Dict[str, float],
+    contract: dict[str, Any],
+    method_outputs: list[dict[str, Any]],
+    layer_scores: dict[str, float],
     calibrated_score: float,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Generate calibration certificate."""
 
     identity = contract["identity"]
@@ -109,7 +111,7 @@ def generate_certificate(
     certificate = {
         "certificate_version": "1.0.0",
         "certificate_type": "executor_calibration",
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "executor_identity": {
             "base_slot": identity["base_slot"],
             "question_id": identity["question_id"],
@@ -170,7 +172,7 @@ for i, contract_file in enumerate(contracts_to_test, 1):
 
     try:
         # Load contract
-        with open(contract_file, "r") as f:
+        with open(contract_file) as f:
             contract = json.load(f)
 
         # Extract info
@@ -216,7 +218,7 @@ executed = len(test_results["executed"])
 certificates = len(test_results["certificates_generated"])
 failed = len(test_results["failed"])
 
-print(f"\n📊 Execution Results:")
+print("\n📊 Execution Results:")
 print(f"   Total contracts: {total}")
 print(f"   Successfully executed: {executed}")
 print(f"   Certificates generated: {certificates}")
@@ -225,7 +227,7 @@ print(f"   Failed: {failed}")
 if certificates > 0:
     print(f"\n✅ SUCCESS: Generated {certificates} calibration certificates!")
     print(f"\n📁 Certificates saved to: {OUTPUT_DIR}/")
-    print(f"\nSample certificates:")
+    print("\nSample certificates:")
     for cert_path in list(test_results["certificates_generated"])[:5]:
         print(f"   • {Path(cert_path).name}")
     if len(test_results["certificates_generated"]) > 5:
@@ -245,7 +247,7 @@ print("=" * 90)
 if certificates > 0:
     # Validate first certificate structure
     sample_cert_path = test_results["certificates_generated"][0]
-    with open(sample_cert_path, "r") as f:
+    with open(sample_cert_path) as f:
         sample_cert = json.load(f)
 
     required_fields = [
@@ -279,7 +281,7 @@ if executed == total and certificates == total:
     print("🎉 ALL TESTS PASSED!")
     print(f"   • {total} contracts validated")
     print(f"   • {certificates} certificates generated")
-    print(f"   • All certificates have valid structure")
+    print("   • All certificates have valid structure")
     exit_code = 0
 else:
     print("⚠️  SOME TESTS FAILED")

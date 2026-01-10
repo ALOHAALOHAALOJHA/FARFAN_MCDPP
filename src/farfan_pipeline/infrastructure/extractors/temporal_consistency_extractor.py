@@ -24,23 +24,16 @@ from __future__ import annotations
 
 import json
 import logging
-from abc import ABC, abstractmethod
 from collections import defaultdict
+from collections.abc import Iterator, Sequence
 from dataclasses import dataclass, field
-from datetime import datetime, timezone, timedelta
+from datetime import UTC, datetime, timedelta
 from enum import Enum
 from pathlib import Path
 from typing import (
     Any,
-    Dict,
-    Iterator,
-    List,
     Literal,
-    Optional,
     Protocol,
-    Sequence,
-    Set,
-    Tuple,
     runtime_checkable,
 )
 
@@ -71,11 +64,11 @@ class TemporalError:
     """Immutable record of a temporal anomaly."""
 
     error_type: TemporalErrorType
-    record_ids: Tuple[str, ...]
+    record_ids: tuple[str, ...]
     message: str
     severity: Literal["warning", "error", "fatal"] = "error"
-    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
-    detected_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
+    detected_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
     def __str__(self) -> str:
         return f"[{self.severity.upper()}] {self.error_type.value}: {self.message}"
@@ -97,7 +90,7 @@ class TimeInterval:
     start: datetime
     end: datetime
     record_id: str = ""
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     @property
     def duration(self) -> timedelta:
@@ -107,11 +100,11 @@ class TimeInterval:
     def is_valid(self) -> bool:
         return self.end >= self.start
 
-    def overlaps(self, other: "TimeInterval") -> bool:
+    def overlaps(self, other: TimeInterval) -> bool:
         """Check if this interval overlaps with another."""
         return not (self.end <= other.start or self.start >= other.end)
 
-    def gap_to(self, other: "TimeInterval") -> Optional[timedelta]:
+    def gap_to(self, other: TimeInterval) -> timedelta | None:
         """Get the gap between this interval and another."""
         if self.end <= other.start:
             return other.start - self.end
@@ -138,7 +131,7 @@ class TemporalGap:
     duration: timedelta
     previous_record_id: str
     next_record_id: str
-    expected_gap: Optional[timedelta] = None
+    expected_gap: timedelta | None = None
 
 
 @dataclass(frozen=True)
@@ -148,7 +141,7 @@ class TemporalOverlap:
     start: datetime
     end: datetime
     duration: timedelta
-    record_ids: Tuple[str, ...]
+    record_ids: tuple[str, ...]
 
 
 @dataclass
@@ -158,11 +151,11 @@ class ConsistencyReport:
     is_valid: bool
     total_intervals: int
     time_span: timedelta
-    gaps_detected: List[TemporalGap]
-    overlaps_detected: List[TemporalOverlap]
-    out_of_order_detected: List[Tuple[str, str]]
-    errors: List[TemporalError]
-    metrics: Dict[str, Any]
+    gaps_detected: list[TemporalGap]
+    overlaps_detected: list[TemporalOverlap]
+    out_of_order_detected: list[tuple[str, str]]
+    errors: list[TemporalError]
+    metrics: dict[str, Any]
 
     def __repr__(self) -> str:
         return (
@@ -188,11 +181,11 @@ class TemporalSourceAdapter(Protocol):
     Abstracts CSV, JSON, SQL, API, or any other source.
     """
 
-    def fetch_records(self) -> Iterator[Dict[str, Any]]:
+    def fetch_records(self) -> Iterator[dict[str, Any]]:
         """Yield raw record dictionaries from the source."""
         ...
 
-    def get_source_metadata(self) -> Dict[str, Any]:
+    def get_source_metadata(self) -> dict[str, Any]:
         """Return metadata about the source (type, version, etc.)."""
         ...
 
@@ -207,7 +200,7 @@ class DictTemporalAdapter:
 
     def __init__(
         self,
-        data: List[Dict[str, Any]],
+        data: list[dict[str, Any]],
         start_field: str = "start",
         end_field: str = "end",
         id_field: str = "id",
@@ -219,10 +212,10 @@ class DictTemporalAdapter:
         self._id_field = id_field
         self._source_name = source_name
 
-    def fetch_records(self) -> Iterator[Dict[str, Any]]:
+    def fetch_records(self) -> Iterator[dict[str, Any]]:
         yield from self._data
 
-    def get_source_metadata(self) -> Dict[str, Any]:
+    def get_source_metadata(self) -> dict[str, Any]:
         return {
             "source_type": "dict",
             "source_name": self._source_name,
@@ -252,7 +245,7 @@ class CSVTemporalAdapter:
         self._encoding = encoding
         self._kwargs = kwargs
 
-    def fetch_records(self) -> Iterator[Dict[str, Any]]:
+    def fetch_records(self) -> Iterator[dict[str, Any]]:
         import csv
 
         with open(self._file_path, encoding=self._encoding, newline="") as f:
@@ -260,7 +253,7 @@ class CSVTemporalAdapter:
             for row in reader:
                 yield dict(row)
 
-    def get_source_metadata(self) -> Dict[str, Any]:
+    def get_source_metadata(self) -> dict[str, Any]:
         return {
             "source_type": "csv_file",
             "source_path": str(self._file_path),
@@ -290,7 +283,7 @@ class JSONTemporalAdapter:
         self._record_path = record_path
         self._encoding = encoding
 
-    def fetch_records(self) -> Iterator[Dict[str, Any]]:
+    def fetch_records(self) -> Iterator[dict[str, Any]]:
         with open(self._file_path, encoding=self._encoding) as f:
             data = json.load(f)
 
@@ -303,7 +296,7 @@ class JSONTemporalAdapter:
         if isinstance(records, list):
             yield from records
 
-    def get_source_metadata(self) -> Dict[str, Any]:
+    def get_source_metadata(self) -> dict[str, Any]:
         return {
             "source_type": "json_file",
             "source_path": str(self._file_path),
@@ -337,10 +330,10 @@ class TemporalConsistencyExtractor:
         start_field: str = "start",
         end_field: str = "end",
         id_field: str = "id",
-        allowed_gap: Optional[timedelta] = None,
-        allowed_overlap: Optional[timedelta] = None,
+        allowed_gap: timedelta | None = None,
+        allowed_overlap: timedelta | None = None,
         strict_periodicity: bool = False,
-        expected_periodicity: Optional[timedelta] = None,
+        expected_periodicity: timedelta | None = None,
         timezone_aware: bool = True,
     ):
         """
@@ -366,12 +359,12 @@ class TemporalConsistencyExtractor:
         self._timezone_aware = timezone_aware
 
         # Internal state
-        self._intervals: List[TimeInterval] = []
-        self._intervals_by_id: Dict[str, TimeInterval] = {}
-        self._errors: List[TemporalError] = []
-        self._source_metadata: Dict[str, Any] = {}
+        self._intervals: list[TimeInterval] = []
+        self._intervals_by_id: dict[str, TimeInterval] = {}
+        self._errors: list[TemporalError] = []
+        self._source_metadata: dict[str, Any] = {}
         self._ingested = False
-        self._last_report: Optional[ConsistencyReport] = None
+        self._last_report: ConsistencyReport | None = None
 
     # -------------------------------------------------------------------------
     # Public Interface
@@ -428,9 +421,9 @@ class TemporalConsistencyExtractor:
         Returns:
             ConsistencyReport with validation results
         """
-        gaps: List[TemporalGap] = []
-        overlaps: List[TemporalOverlap] = []
-        out_of_order: List[Tuple[str, str]] = []
+        gaps: list[TemporalGap] = []
+        overlaps: list[TemporalOverlap] = []
+        out_of_order: list[tuple[str, str]] = []
 
         # Clear previous errors (keep parsing errors)
         validation_errors = [
@@ -513,7 +506,7 @@ class TemporalConsistencyExtractor:
 
         return report
 
-    def query_gaps(self, min_duration: Optional[timedelta] = None) -> List[TemporalGap]:
+    def query_gaps(self, min_duration: timedelta | None = None) -> list[TemporalGap]:
         """
         Query for gaps in temporal coverage.
 
@@ -533,7 +526,7 @@ class TemporalConsistencyExtractor:
 
         return gaps
 
-    def query_overlaps(self, min_duration: Optional[timedelta] = None) -> List[TemporalOverlap]:
+    def query_overlaps(self, min_duration: timedelta | None = None) -> list[TemporalOverlap]:
         """
         Query for overlaps between intervals.
 
@@ -553,7 +546,7 @@ class TemporalConsistencyExtractor:
 
         return overlaps
 
-    def get_next_interval(self, record_id: str, allow_gap: bool = True) -> Optional[TimeInterval]:
+    def get_next_interval(self, record_id: str, allow_gap: bool = True) -> TimeInterval | None:
         """
         Get the next interval after a given record.
 
@@ -578,9 +571,7 @@ class TemporalConsistencyExtractor:
 
         return None
 
-    def get_previous_interval(
-        self, record_id: str, allow_gap: bool = True
-    ) -> Optional[TimeInterval]:
+    def get_previous_interval(self, record_id: str, allow_gap: bool = True) -> TimeInterval | None:
         """
         Get the previous interval before a given record.
 
@@ -609,7 +600,7 @@ class TemporalConsistencyExtractor:
         """Return all errors as strings."""
         return [str(e) for e in self._errors]
 
-    def get_errors(self) -> List[TemporalError]:
+    def get_errors(self) -> list[TemporalError]:
         """Return all TemporalError objects."""
         return list(self._errors)
 
@@ -629,7 +620,7 @@ class TemporalConsistencyExtractor:
         else:
             raise ValueError(f"Unsupported format: {fmt}")
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get detailed metrics."""
         self._ensure_ingested()
         return self._compute_metrics()
@@ -638,7 +629,7 @@ class TemporalConsistencyExtractor:
     # Private: Record Processing
     # -------------------------------------------------------------------------
 
-    def _parse_record(self, raw: Dict[str, Any]) -> Optional[TimeInterval]:
+    def _parse_record(self, raw: dict[str, Any]) -> TimeInterval | None:
         """Parse a raw record into a TimeInterval."""
         # Get record ID
         record_id = str(raw.get(self._id_field, ""))
@@ -693,17 +684,17 @@ class TemporalConsistencyExtractor:
             },
         )
 
-    def _parse_timestamp(self, value: Any) -> Optional[datetime]:
+    def _parse_timestamp(self, value: Any) -> datetime | None:
         """Parse a timestamp from various formats."""
         if isinstance(value, datetime):
             # Ensure timezone-aware if required
             if self._timezone_aware and value.tzinfo is None:
-                return value.replace(tzinfo=timezone.utc)
+                return value.replace(tzinfo=UTC)
             return value
 
         if isinstance(value, (int, float)):
             # Unix timestamp
-            return datetime.fromtimestamp(value, tz=timezone.utc)
+            return datetime.fromtimestamp(value, tz=UTC)
 
         if isinstance(value, str):
             # Try ISO 8601 format
@@ -724,14 +715,14 @@ class TemporalConsistencyExtractor:
                 try:
                     dt = datetime.strptime(value, fmt)
                     if self._timezone_aware and dt.tzinfo is None:
-                        dt = dt.replace(tzinfo=timezone.utc)
+                        dt = dt.replace(tzinfo=UTC)
                     return dt
                 except ValueError:
                     continue
 
         return None
 
-    def _detect_gaps(self) -> List[TemporalGap]:
+    def _detect_gaps(self) -> list[TemporalGap]:
         """Detect gaps between consecutive intervals."""
         gaps = []
 
@@ -754,7 +745,7 @@ class TemporalConsistencyExtractor:
 
         return gaps
 
-    def _detect_overlaps(self) -> List[TemporalOverlap]:
+    def _detect_overlaps(self) -> list[TemporalOverlap]:
         """Detect overlaps between intervals."""
         overlaps = []
 
@@ -779,7 +770,7 @@ class TemporalConsistencyExtractor:
 
         return overlaps
 
-    def _detect_out_of_order(self) -> List[Tuple[str, str]]:
+    def _detect_out_of_order(self) -> list[tuple[str, str]]:
         """Detect out-of-order sequences."""
         out_of_order = []
 
@@ -792,7 +783,7 @@ class TemporalConsistencyExtractor:
 
         return out_of_order
 
-    def _validate_periodicity(self) -> List[TemporalError]:
+    def _validate_periodicity(self) -> list[TemporalError]:
         """Validate that intervals follow expected periodicity."""
         errors = []
 
@@ -821,7 +812,7 @@ class TemporalConsistencyExtractor:
 
         return errors
 
-    def _compute_metrics(self) -> Dict[str, Any]:
+    def _compute_metrics(self) -> dict[str, Any]:
         """Compute detailed metrics."""
         metrics = {
             "total_intervals": len(self._intervals),
@@ -856,7 +847,7 @@ class TemporalConsistencyExtractor:
         """Export as JSON."""
         data = {
             "metadata": {
-                "exported_at": datetime.now(timezone.utc).isoformat(),
+                "exported_at": datetime.now(UTC).isoformat(),
                 "source": self._source_metadata,
                 "metrics": self.get_metrics(),
             },
@@ -949,7 +940,7 @@ class TemporalConsistencyExtractor:
     def _add_error(
         self,
         error_type: TemporalErrorType,
-        record_ids: Tuple[str, ...],
+        record_ids: tuple[str, ...],
         message: str,
         severity: Literal["warning", "error", "fatal"] = "error",
     ) -> None:
@@ -964,9 +955,9 @@ class TemporalConsistencyExtractor:
         )
         logger.warning(f"Temporal anomaly: {error_type.value} - {message}")
 
-    def _count_errors_by_type(self) -> Dict[str, int]:
+    def _count_errors_by_type(self) -> dict[str, int]:
         """Count errors grouped by type."""
-        counts: Dict[str, int] = defaultdict(int)
+        counts: dict[str, int] = defaultdict(int)
         for error in self._errors:
             counts[error.error_type.value] += 1
         return dict(counts)
@@ -977,15 +968,15 @@ class TemporalConsistencyExtractor:
 # -----------------------------------------------------------------------------
 
 __all__ = [
-    "TemporalConsistencyExtractor",
-    "TemporalSourceAdapter",
-    "DictTemporalAdapter",
     "CSVTemporalAdapter",
+    "ConsistencyReport",
+    "DictTemporalAdapter",
     "JSONTemporalAdapter",
+    "TemporalConsistencyExtractor",
     "TemporalError",
     "TemporalErrorType",
-    "TimeInterval",
     "TemporalGap",
     "TemporalOverlap",
-    "ConsistencyReport",
+    "TemporalSourceAdapter",
+    "TimeInterval",
 ]

@@ -1,13 +1,11 @@
+import logging
 import os
 import time
-import json
-import logging
-from typing import Dict, Any, List
-from flask import Flask, jsonify, request, send_from_directory
+
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from werkzeug.utils import secure_filename
-from orchestration.orchestrator import Orchestrator
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -159,13 +157,13 @@ EVIDENCE_STREAM = [
     },
 ]
 
-from flask import Flask, jsonify, request, Response
+from flask import Flask, Response
 
 
 @app.route("/")
 def index():
     dashboard_path = PROJECT_ROOT / "dashboard.html"
-    with open(dashboard_path, "r", encoding="utf-8") as f:
+    with open(dashboard_path, encoding="utf-8") as f:
         return Response(f.read(), mimetype="text/html")
 
 

@@ -18,8 +18,8 @@ Architecture Decision Record (ADR):
 
 from __future__ import annotations
 
-from typing import Final
 import re
+from typing import Final
 
 # ============================================================================
 # POLICY AREAS - Canonical 10 Areas (PA01-PA10)
@@ -480,24 +480,24 @@ if not all(_validation_results.values()):
 # p_mechanism = 1.0 / (1.0 + exp(-(alpha + beta * score)))
 
 __all__ = [
-    "CANON_POLICY_AREAS",
-    "CANON_DIMENSIONS",
-    "MICRO_LEVELS",
     "ALIGNMENT_THRESHOLD",
-    "RISK_THRESHOLDS",
-    "SCORING_MODALITIES",
+    "BASE_QUESTIONS_PER_DIMENSION",
+    "BAYES_FACTORS",
+    "CANON_DIMENSIONS",
+    "CANON_POLICY_AREAS",
+    "CAUSAL_CHAIN_ORDER",
+    "CAUSAL_CHAIN_VOCABULARY",
     "CDAF_CALIBRATION_PARAMS",
     "CDAF_DOMAIN_WEIGHTS",
-    "TRIANGULATION_ACTIVE_DOMAINS_THRESHOLD",
-    "TRIANGULATION_BONUS",
-    "BAYES_FACTORS",
-    "PDT_SECTION_PATTERNS",
-    "PDT_STRATEGIC_PATTERNS",
+    "MICRO_LEVELS",
     "PDT_FINANCIAL_PATTERNS",
     "PDT_PATTERNS",
-    "CAUSAL_CHAIN_VOCABULARY",
-    "CAUSAL_CHAIN_ORDER",
-    "BASE_QUESTIONS_PER_DIMENSION",
+    "PDT_SECTION_PATTERNS",
+    "PDT_STRATEGIC_PATTERNS",
+    "RISK_THRESHOLDS",
+    "SCORING_MODALITIES",
     "TOTAL_BASE_QUESTIONS",
+    "TRIANGULATION_ACTIVE_DOMAINS_THRESHOLD",
+    "TRIANGULATION_BONUS",
     "validate_canonical_specs",
 ]

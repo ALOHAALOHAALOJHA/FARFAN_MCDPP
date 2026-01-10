@@ -14,20 +14,18 @@ VETO CAPABILITY:
 
 from __future__ import annotations
 
-import json
 import logging
-import re
+from collections.abc import Sequence
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Final, Protocol, Sequence
+from datetime import UTC, datetime
+from typing import Final, Protocol
 
 from .calibration_manifest import CalibrationManifest, DriftIndicator, DriftReport
 from .type_defaults import (
+    PRIOR_STRENGTH_MAX,
+    PRIOR_STRENGTH_MIN,
     PROHIBITED_OPERATIONS,
     get_type_defaults,
-    PRIOR_STRENGTH_MIN,
-    PRIOR_STRENGTH_MAX,
 )
 
 logger = logging.getLogger(__name__)
@@ -205,7 +203,7 @@ class CalibrationAuditor:
             violations=violations,
             veto_triggered=veto_triggered,
             auditor_id=self._AUDITOR_ID,
-            timestamp=datetime.now(timezone.utc),
+            timestamp=datetime.now(UTC),
             manifest_hash=manifest.compute_hash(),
         )
 
@@ -235,7 +233,7 @@ class CalibrationAuditor:
                     actual_value=actual_coverage,
                     deviation=deviation,
                     severity=severity,
-                    detection_timestamp=datetime.now(timezone.utc),
+                    detection_timestamp=datetime.now(UTC),
                 )
             )
 
@@ -256,7 +254,7 @@ class CalibrationAuditor:
                         actual_value=actual_width,
                         deviation=deviation,
                         severity=severity,
-                        detection_timestamp=datetime.now(timezone.utc),
+                        detection_timestamp=datetime.now(UTC),
                     )
                 )
 

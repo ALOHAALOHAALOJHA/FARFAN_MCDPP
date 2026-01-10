@@ -17,11 +17,10 @@ Date: 2026-01-06
 """
 
 import json
-from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
+import logging
 from dataclasses import dataclass, field
 from datetime import datetime
-import logging
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +38,7 @@ class ValidationMetrics:
     f1_score: float = 0.0
     avg_confidence: float = 0.0
     execution_time_ms: float = 0.0
-    failures: List[Dict] = field(default_factory=list)
+    failures: list[dict] = field(default_factory=list)
 
     @property
     def pass_rate(self) -> float:
@@ -49,7 +48,7 @@ class ValidationMetrics:
 class ExtractorValidator:
     """Validates extractors against empirical gold standards."""
 
-    def __init__(self, calibration_file: Optional[Path] = None):
+    def __init__(self, calibration_file: Path | None = None):
         if calibration_file is None:
             calibration_file = (
                 Path(__file__).resolve().parent.parent.parent.parent
@@ -63,7 +62,7 @@ class ExtractorValidator:
         self.calibration_file = calibration_file
         self.calibration_data = self._load_calibration()
 
-    def _load_calibration(self) -> Dict:
+    def _load_calibration(self) -> dict:
         """Load calibration data."""
         if not self.calibration_file.exists():
             logger.warning(f"Calibration file not found: {self.calibration_file}")
@@ -169,10 +168,10 @@ class ExtractorValidator:
 
         return metrics
 
-    def validate_all_extractors(self) -> Dict[str, ValidationMetrics]:
+    def validate_all_extractors(self) -> dict[str, ValidationMetrics]:
         """Validate all implemented extractors."""
-        from .financial_chain_extractor import FinancialChainExtractor
         from .causal_verb_extractor import CausalVerbExtractor
+        from .financial_chain_extractor import FinancialChainExtractor
         from .institutional_ner_extractor import InstitutionalNERExtractor
 
         extractors = {
@@ -198,7 +197,7 @@ class ExtractorValidator:
         return results
 
     def generate_report(
-        self, results: Dict[str, ValidationMetrics], output_path: Optional[Path] = None
+        self, results: dict[str, ValidationMetrics], output_path: Path | None = None
     ) -> str:
         """Generate validation report."""
         report_lines = [
@@ -230,7 +229,7 @@ class ExtractorValidator:
         for signal_type, metrics in results.items():
             report_lines.extend(
                 [
-                    f"",
+                    "",
                     f"{metrics.extractor_name} ({signal_type})",
                     f"  Tests: {metrics.total_tests}",
                     f"  Pass rate: {metrics.pass_rate:.1%}",

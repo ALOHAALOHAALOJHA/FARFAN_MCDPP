@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import json
 import logging
+from collections.abc import Iterable, Sequence
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Iterable, Sequence
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -118,7 +119,7 @@ class DashboardDataService:
             if not path or not path.exists():
                 continue
             try:
-                with open(path, "r", encoding="utf-8") as handle:
+                with open(path, encoding="utf-8") as handle:
                     payload = json.load(handle)
                 if isinstance(payload, dict):
                     report = payload.get("report") if "report" in payload else payload

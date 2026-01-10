@@ -6,14 +6,15 @@ import hashlib
 import json
 import threading
 import time
-from typing import List, Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 
 class ConcurrencyDeterminismContract:
     @staticmethod
     def execute_concurrently(
-        func: Callable[[Any], Any], inputs: List[Any], workers: int
-    ) -> List[Any]:
+        func: Callable[[Any], Any], inputs: list[Any], workers: int
+    ) -> list[Any]:
         """
         Simulates concurrent execution.
         To ensure determinism, results must be sorted or indexed by input ID.
@@ -42,7 +43,7 @@ class ConcurrencyDeterminismContract:
         return results
 
     @staticmethod
-    def verify_determinism(func: Callable[[Any], Any], inputs: List[Any]) -> bool:
+    def verify_determinism(func: Callable[[Any], Any], inputs: list[Any]) -> bool:
         """
         Verifies that 1 worker vs N workers produces hash-equal outputs.
         """

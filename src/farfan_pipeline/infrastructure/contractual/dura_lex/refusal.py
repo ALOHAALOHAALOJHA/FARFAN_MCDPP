@@ -2,7 +2,7 @@
 Refusal Contract (RefC) - Implementation
 """
 
-from typing import Dict, Any
+from typing import Any
 
 
 class RefusalError(Exception):
@@ -11,7 +11,7 @@ class RefusalError(Exception):
 
 class RefusalContract:
     @staticmethod
-    def check_prerequisites(context: Dict[str, Any]):
+    def check_prerequisites(context: dict[str, Any]):
         """
         Confirma que ante prerequisitos fallidos el sistema rehúsa con motivo tipado.
         """
@@ -25,7 +25,7 @@ class RefusalContract:
             raise RefusalError("Sigma absent")
 
     @staticmethod
-    def verify_refusal(context: Dict[str, Any]) -> str:
+    def verify_refusal(context: dict[str, Any]) -> str:
         try:
             RefusalContract.check_prerequisites(context)
             return "OK"

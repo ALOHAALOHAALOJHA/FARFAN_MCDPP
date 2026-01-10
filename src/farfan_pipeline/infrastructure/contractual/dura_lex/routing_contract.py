@@ -4,17 +4,16 @@ Routing Contract (RC) - Implementation
 
 import hashlib
 import json
-import sys
-from typing import Any, List, Dict
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
 class RoutingInput:
     context_hash: str
-    theta: Dict[str, Any]  # System parameters
-    sigma: Dict[str, Any]  # State
-    budgets: Dict[str, float]
+    theta: dict[str, Any]  # System parameters
+    sigma: dict[str, Any]  # State
+    budgets: dict[str, float]
     seed: int
 
     def to_bytes(self) -> bytes:
@@ -30,7 +29,7 @@ class RoutingInput:
 
 class RoutingContract:
     @staticmethod
-    def compute_route(inputs: RoutingInput) -> List[str]:
+    def compute_route(inputs: RoutingInput) -> list[str]:
         """
         Deterministic routing logic A*.
         Returns list of step IDs.
@@ -55,6 +54,6 @@ class RoutingContract:
         return sorted(steps)  # Enforce lexicographical order for ties
 
     @staticmethod
-    def verify(inputs: RoutingInput, route: List[str]) -> bool:
+    def verify(inputs: RoutingInput, route: list[str]) -> bool:
         expected = RoutingContract.compute_route(inputs)
         return route == expected

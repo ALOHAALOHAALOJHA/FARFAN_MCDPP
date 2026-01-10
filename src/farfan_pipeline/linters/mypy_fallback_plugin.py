@@ -13,7 +13,7 @@ Usage in mypy.ini:
 
 from __future__ import annotations
 
-from typing import Callable, Optional, Type
+from collections.abc import Callable
 
 from mypy.plugin import FunctionContext, Plugin
 from mypy.types import Type as MypyType
@@ -22,7 +22,7 @@ from mypy.types import Type as MypyType
 class FailureFallbackPlugin(Plugin):
     """Mypy plugin for FailureFallbackContract validation."""
 
-    def get_function_hook(self, fullname: str) -> Optional[Callable[[FunctionContext], MypyType]]:
+    def get_function_hook(self, fullname: str) -> Callable[[FunctionContext], MypyType] | None:
         if fullname == (
             "farfan_pipeline.infrastructure.contractual.dura_lex."
             "failure_fallback.FailureFallbackContract.execute_with_fallback"

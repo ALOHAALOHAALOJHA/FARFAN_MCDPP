@@ -25,9 +25,6 @@ if TYPE_CHECKING:
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
     )
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_context_scoper import (
-        create_document_context,
-    )
 
 
 # ============================================================================

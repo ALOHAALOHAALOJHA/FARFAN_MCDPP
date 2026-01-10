@@ -16,8 +16,8 @@ import hmac
 import json
 import logging
 import traceback
-from dataclasses import dataclass, field, asdict
-from datetime import datetime, timezone
+from dataclasses import asdict, dataclass, field
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -184,7 +184,7 @@ def generate_manifest(
     Returns:
         VerificationManifest with HMAC signature
     """
-    timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    timestamp = datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
     calibration_score_objs = {
         method_id: CalibrationScore(
@@ -372,7 +372,7 @@ class StructuredAuditLogger:
 
     def _get_date_suffix(self) -> str:
         """Get date suffix for log rotation"""
-        return datetime.now(timezone.utc).strftime("%Y%m%d")
+        return datetime.now(UTC).strftime("%Y%m%d")
 
     def log(self, level: str, message: str, metadata: dict[str, Any] | None = None) -> None:
         """
@@ -384,7 +384,7 @@ class StructuredAuditLogger:
             metadata: Optional metadata dictionary
         """
         entry = {
-            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "timestamp": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
             "level": level,
             "component": self.component,
             "message": message,
@@ -483,7 +483,7 @@ class TraceGenerator:
             inputs=inputs,
             output=output,
             stack_trace=stack_trace,
-            timestamp=datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            timestamp=datetime.now(UTC).isoformat().replace("+00:00", "Z"),
         )
 
         self.traces.append(trace)
@@ -496,7 +496,7 @@ class TraceGenerator:
         """Clear all traces"""
         self.traces.clear()
 
-    def __enter__(self) -> "TraceGenerator":
+    def __enter__(self) -> TraceGenerator:
         """Context manager entry"""
         self.clear()
         return self
