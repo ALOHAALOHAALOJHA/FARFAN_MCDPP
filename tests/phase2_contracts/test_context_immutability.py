@@ -10,7 +10,6 @@ from dataclasses import dataclass, FrozenInstanceError
 from types import MappingProxyType
 from typing import Any
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 from cross_cutting_infrastructure.contractual.dura_lex.context_immutability import (
     ContextImmutabilityContract,

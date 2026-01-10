@@ -382,7 +382,6 @@ class TestMacroAuditTool:
         """Test that audit tool can be imported and run."""
         try:
             import sys
-            sys.path.insert(0, str(Path(__file__).parent.parent))
             
             from audit_macro_level_divergence import MacroLevelAuditor, MacroLevelAuditReport
             

@@ -26,7 +26,6 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 # Add src to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 import pytest
 

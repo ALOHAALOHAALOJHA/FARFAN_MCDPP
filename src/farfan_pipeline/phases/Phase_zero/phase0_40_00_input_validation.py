@@ -77,20 +77,23 @@ from farfan_pipeline.phases.Phase_zero.phase0_00_03_protocols import (
 )
 
 # Dura Lex Contract System - ACTUAL USAGE FOR MAXIMUM PERFORMANCE
-# Import specific modules directly (bypass __init__.py which has broken imports)
+# Import specific modules directly using absolute imports
 # These tools ensure idempotency and full traceability per FORCING ROUTE
 try:
-    # Import directly from module files, not through package __init__
-    import sys
-    from pathlib import Path
-    dura_lex_path = Path(__file__).parent.parent.parent / "farfan_pipeline/infrastructure" / "contractual" / "dura_lex"
-    sys.path.insert(0, str(dura_lex_path))
-    
-    from idempotency_dedup import IdempotencyContract, EvidenceStore
-    from traceability import TraceabilityContract, MerkleTree
-    
+    from farfan_pipeline.infrastructure.contractual.dura_lex.idempotency_dedup import (
+        IdempotencyContract,
+        EvidenceStore,
+    )
+    from farfan_pipeline.infrastructure.contractual.dura_lex.traceability import (
+        TraceabilityContract,
+        MerkleTree,
+    )
+
     DURA_LEX_AVAILABLE = True
-except ImportError:
+except ImportError as e:
+    # Fallback if dura_lex modules are not available
+    import warnings
+    warnings.warn(f"Dura Lex contracts unavailable: {e}", ImportWarning)
     DURA_LEX_AVAILABLE = False
     IdempotencyContract = None
     EvidenceStore = None

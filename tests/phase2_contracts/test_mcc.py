@@ -8,7 +8,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 from cross_cutting_infrastructure.contractual.dura_lex.monotone_compliance import (
     MonotoneComplianceContract,

@@ -15,7 +15,6 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 # Add src to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # Test markers
 pytestmark = [pytest.mark.updated]

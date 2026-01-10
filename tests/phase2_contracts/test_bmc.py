@@ -7,7 +7,6 @@ import pytest
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 from cross_cutting_infrastructure.contractual.dura_lex.budget_monotonicity import (
     BudgetMonotonicityContract,

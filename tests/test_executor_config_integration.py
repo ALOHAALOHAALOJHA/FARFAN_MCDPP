@@ -18,7 +18,6 @@ from unittest.mock import patch
 import pytest
 
 # Import the module under test
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from farfan_pipeline.phases.Phase_two.phase2_95_03_executor_calibration_integration import (
     get_executor_config,

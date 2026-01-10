@@ -47,25 +47,23 @@ warnings.filterwarnings('ignore')
 # =============================================================================
 # PATH CONFIGURATION
 # =============================================================================
-# Detect project root dynamically
-_SCRIPT_DIR = Path(__file__).resolve().parent
-ROOT = _SCRIPT_DIR.parent.parent  # Go up to project root
-
-# Verify we found the correct root by checking for pyproject.toml
-if not (ROOT / "pyproject.toml").exists():
-    # Fallback: try to import from farfan_pipeline
-    try:
-        import sys
-        sys.path.insert(0, str(ROOT / "src"))
-        from farfan_pipeline.utils.paths import PROJECT_ROOT, CONFIG_DIR, DATA_DIR
-        ROOT = PROJECT_ROOT
-        CQC_ROOT = CONFIG_DIR
-        PLANS_ROOT = DATA_DIR / "plans"
-    except ImportError:
-        # Last resort: use detected path
-        CQC_ROOT = ROOT / "canonic_questionnaire_central"
-        PLANS_ROOT = ROOT / "data" / "plans"
-else:
+# Use centralized path management (requires package installation: pip install -e .)
+try:
+    from farfan_pipeline.utils.paths import PROJECT_ROOT, CONFIG_DIR, DATA_DIR
+    ROOT = PROJECT_ROOT
+    CQC_ROOT = CONFIG_DIR
+    PLANS_ROOT = DATA_DIR / "plans"
+except ImportError as e:
+    # Fallback: detect from script location
+    logger.warning(f"Could not import farfan_pipeline paths module: {e}")
+    logger.warning("Please install package with: pip install -e .")
+    logger.info("Using fallback path detection...")
+    _SCRIPT_DIR = Path(__file__).resolve().parent
+    ROOT = _SCRIPT_DIR.parent.parent  # Go up to project root
+    if not (ROOT / "pyproject.toml").exists():
+        raise RuntimeError(
+            "Could not detect project root. Please run from the repository root or install the package."
+        )
     CQC_ROOT = ROOT / "canonic_questionnaire_central"
     PLANS_ROOT = ROOT / "data" / "plans"
 

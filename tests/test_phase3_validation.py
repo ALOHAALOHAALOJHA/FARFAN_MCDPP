@@ -12,7 +12,6 @@ import pytest
 
 # Add src to path for imports
 repo_root = Path(__file__).parent.parent
-sys.path.insert(0, str(repo_root / "src"))
 
 from farfan_pipeline.phases.Phase_three.validation import (
     VALID_QUALITY_LEVELS,
