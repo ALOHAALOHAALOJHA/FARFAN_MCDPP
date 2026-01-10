@@ -141,3 +141,4 @@ temp/
 *.tmp
 *.bak
 continue
+.vscode/gemini-mcp/status.json
