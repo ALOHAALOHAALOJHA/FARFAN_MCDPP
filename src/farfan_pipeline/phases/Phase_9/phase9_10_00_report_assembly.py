@@ -944,7 +944,16 @@ class ReportAssembler:
 
         try:
             # Delegate to factory for I/O
-            from farfan_pipeline.analysis.factory import save_json, write_text_file
+            try:
+                from farfan_pipeline.analysis.factory import save_json, write_text_file
+            except ImportError:
+                # Fallback implementation if factory not available
+                def save_json(data: dict[str, object], path: str) -> None:
+                    with open(path, "w") as f:
+                        json.dump(data, f, indent=2)
+                def write_text_file(text: str, path: str) -> None:
+                    with open(path, "w") as f:
+                        f.write(text)
 
             if format == "json":
                 save_json(report.to_dict(), str(output_path))
@@ -975,7 +984,7 @@ class ReportAssembler:
             raise
         except Exception as e:
             raise ReportExportError(
-                f"Failed to export report: {e!s}",
+                f"Failed to export report: {str(e)}",
                 details={"output_path": str(output_path), "format": format, "error": str(e)},
                 stage="export",
                 recoverable=True,
@@ -1002,24 +1011,24 @@ class ReportAssembler:
             f"**Report ID:** {report.metadata.report_id}\n",
             f"**Generated:** {report.metadata.generated_at}\n",
             f"**Monolith Version:** {report.metadata.monolith_version}\n",
-            f"**Monolith Hash:** {report.metadata.monolith_hash[:hash_preview_length]}...\n",
+            f"**Monolith Hash:** {report.metadata.monolith_hash[:int(cast(Any, hash_preview_length))]}...\n",
             f"**Questions Analyzed:** {report.metadata.questions_analyzed}/{report.metadata.total_questions}\n",
         ]
 
         if report.report_digest:
-            lines.append(f"**Report Digest:** {report.report_digest[:hash_preview_length]}...\n")
+            lines.append(f"**Report Digest:** {report.report_digest[:int(cast(Any, hash_preview_length))]}...\n")
 
         lines.append("\n## Micro-Level Analyses\n")
 
-        for analysis in report.micro_analyses[:preview_count]:
+        for analysis in report.micro_analyses[:int(cast(Any, preview_count))]:
             lines.append(f"\n### {analysis.question_id}\n")
             lines.append(f"- **Slot:** {analysis.base_slot}\n")
             lines.append(f"- **Score:** {analysis.score}\n")
             lines.append(f"- **Patterns:** {', '.join(analysis.patterns_applied)}\n")
 
-        if len(report.micro_analyses) > preview_count:
+        if len(report.micro_analyses) > int(cast(Any, preview_count)):
             lines.append(
-                f"\n_...and {len(report.micro_analyses) - preview_count} more questions_\n"
+                f"\n_...and {len(report.micro_analyses) - int(cast(Any, preview_count))} more questions_\n"
             )
 
         lines.append("\n## Meso-Level Clusters\n")
@@ -1049,14 +1058,14 @@ class ReportAssembler:
 
         if report.evidence_chain_hash:
             lines.append(
-                f"\n**Evidence Chain Hash:** {report.evidence_chain_hash[:hash_preview_length]}...\n"
+                f"\n**Evidence Chain Hash:** {report.evidence_chain_hash[:int(cast(Any, hash_preview_length))]}...\n"
             )
 
         return "".join(lines)
 
     def _compute_signal_usage_summary(
-        self, execution_results: dict[str, Any], enriched_packs: dict[str, Any]
-    ) -> dict[str, Any]:
+        self, execution_results: dict[str, object], enriched_packs: dict[str, object]
+    ) -> dict[str, object]:
         """
         Compute signal usage summary for report provenance (JOBFRONT 9).
 
@@ -1067,40 +1076,41 @@ class ReportAssembler:
         Returns:
             Signal usage summary with patterns, completeness, validation failures
         """
-        micro_results = execution_results.get("micro_results", {})
+        micro_results = cast(dict[str, dict[str, object]], execution_results.get("micro_results", {}))
 
-        total_patterns_available = sum(len(pack.patterns) for pack in enriched_packs.values())
+        total_patterns_available = sum(len(cast(Any, pack).patterns) for pack in enriched_packs.values())
         total_patterns_used = 0
-        by_policy_area = {}
+        by_policy_area: dict[str, dict[str, object]] = {}
         completeness_scores = []
         validation_failures = []
 
         for question_id, result in micro_results.items():
-            policy_area = result.get("policy_area_id")
+            policy_area = str(result.get("policy_area_id", ""))
             if not policy_area or policy_area not in enriched_packs:
                 continue
 
-            patterns_used = result.get("patterns_used", [])
-            completeness = result.get("completeness", 1.0)
-            validation = result.get("validation", {})
+            patterns_used = cast(list[object], result.get("patterns_used", []))
+            completeness = float(cast(Any, result.get("completeness", 1.0)))
+            validation = cast(dict[str, object], result.get("validation", {}))
 
             total_patterns_used += len(patterns_used)
             completeness_scores.append(completeness)
 
             # Track validation failures
             if validation.get("status") == "failed" or validation.get("contract_failed"):
+                val_errors = cast(list[dict[str, object]], validation.get("errors", []))
                 validation_failures.append(
                     {
                         "question_id": question_id,
                         "policy_area": policy_area,
                         "error_code": (
-                            validation.get("errors", [{}])[0].get("error_code")
-                            if validation.get("errors")
+                            val_errors[0].get("error_code")
+                            if val_errors
                             else None
                         ),
                         "remediation": (
-                            validation.get("errors", [{}])[0].get("remediation")
-                            if validation.get("errors")
+                            val_errors[0].get("remediation")
+                            if val_errors
                             else None
                         ),
                     }
@@ -1109,19 +1119,19 @@ class ReportAssembler:
             # Aggregate by policy area
             if policy_area not in by_policy_area:
                 by_policy_area[policy_area] = {
-                    "patterns_available": len(enriched_packs[policy_area].patterns),
+                    "patterns_available": len(cast(Any, enriched_packs[policy_area]).patterns),
                     "patterns_used": 0,
                     "questions_analyzed": 0,
                     "avg_completeness": 0.0,
                 }
 
-            by_policy_area[policy_area]["patterns_used"] += len(patterns_used)
-            by_policy_area[policy_area]["questions_analyzed"] += 1
+            by_policy_area[policy_area]["patterns_used"] = cast(int, by_policy_area[policy_area]["patterns_used"]) + len(patterns_used)
+            by_policy_area[policy_area]["questions_analyzed"] = cast(int, by_policy_area[policy_area]["questions_analyzed"]) + 1
 
         # Compute averages
         for pa_id, summary in by_policy_area.items():
-            pa_results = [r for r in micro_results.values() if r.get("policy_area_id") == pa_id]
-            completeness_values = [r.get("completeness", 1.0) for r in pa_results]
+            pa_results = [r for r in micro_results.values() if str(r.get("policy_area_id")) == pa_id]
+            completeness_values = [float(cast(Any, r.get("completeness", 1.0))) for r in pa_results]
             summary["avg_completeness"] = (
                 sum(completeness_values) / len(completeness_values) if completeness_values else 0.0
             )
@@ -1143,7 +1153,10 @@ class ReportAssembler:
 
 
 def create_report_assembler(
-    questionnaire_provider, evidence_registry=None, qmcm_recorder=None, orchestrator=None
+    questionnaire_provider: object,
+    evidence_registry: object = None,
+    qmcm_recorder: object = None,
+    orchestrator: object = None,
 ) -> ReportAssembler:
     """
     Factory function to create ReportAssembler with dependencies.

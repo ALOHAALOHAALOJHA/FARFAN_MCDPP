@@ -13,6 +13,8 @@ Integrates AdaptiveResourceManager with MethodExecutor to provide:
 - Memory and timing instrumentation
 """
 
+from __future__ import annotations
+
 # =============================================================================
 # METADATA
 # =============================================================================
@@ -27,9 +29,6 @@ __modified__ = "2026-01-10"
 __criticality__ = "MEDIUM"
 __execution_pattern__ = "On-Demand"
 
-
-
-from __future__ import annotations
 
 import asyncio
 import logging
