@@ -20,7 +20,6 @@ from farfan_pipeline.methods.heterogeneous_treatment_effects import (
 )
 
 
-
 @pytest.fixture
 def mock_config() -> Mock:
     """Fixture for mock configuration"""
@@ -272,9 +271,7 @@ class TestHeterogeneousTreatmentAnalyzer:
         X, T, Y = treatment_data
         X_numeric = X[["income_num", "education_num", "region_num"]]
 
-        sensitivity = analyzer.sensitivity_analysis(
-            X=X_numeric, T=T, Y=Y, confounder_strength=0.2
-        )
+        sensitivity = analyzer.sensitivity_analysis(X=X_numeric, T=T, Y=Y, confounder_strength=0.2)
 
         assert "baseline_cate" in sensitivity
         assert "confounded_cate" in sensitivity
@@ -310,17 +307,13 @@ class TestHeterogeneousTreatmentIntegration:
         assert cate_estimate.point_estimate > 0
 
         # Step 2: Analyze heterogeneity
-        heterogeneity = analyzer.analyze_heterogeneity(
-            X=X, T=T, Y=Y, subgroup_columns=["income"]
-        )
+        heterogeneity = analyzer.analyze_heterogeneity(X=X, T=T, Y=Y, subgroup_columns=["income"])
 
         assert heterogeneity.heterogeneity_score >= 0
         assert len(heterogeneity.subgroup_effects) > 0
 
         # Step 3: Recommend policy
-        policy = analyzer.recommend_optimal_policy(
-            X=X_numeric, T=T, Y=Y, benefit_threshold=1.0
-        )
+        policy = analyzer.recommend_optimal_policy(X=X_numeric, T=T, Y=Y, benefit_threshold=1.0)
 
         assert policy.expected_value >= 0
         assert len(policy.treatment_assignment) >= 0

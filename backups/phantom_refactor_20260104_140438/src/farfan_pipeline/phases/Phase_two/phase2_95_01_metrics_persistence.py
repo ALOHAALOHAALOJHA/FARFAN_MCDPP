@@ -4,6 +4,7 @@ PHASE_LABEL: Phase 2
 Sequence: H
 
 """
+
 """Metrics persistence for PhaseInstrumentation telemetry.
 
 This module provides functions to persist Orchestrator metrics and telemetry
@@ -18,9 +19,7 @@ from typing import Any
 
 
 def persist_phase_metrics(
-    metrics_data: dict[str, Any],
-    output_dir: Path,
-    filename: str = "phase_metrics.json"
+    metrics_data: dict[str, Any], output_dir: Path, filename: str = "phase_metrics.json"
 ) -> Path:
     """Persist full PhaseInstrumentation metrics for each phase.
 
@@ -42,16 +41,14 @@ def persist_phase_metrics(
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / filename
 
-    with output_path.open('w', encoding='utf-8') as f:
+    with output_path.open("w", encoding="utf-8") as f:
         json.dump(metrics_data, f, indent=2, sort_keys=True, ensure_ascii=False)
 
     return output_path
 
 
 def persist_resource_usage(
-    usage_history: list[dict[str, float]],
-    output_dir: Path,
-    filename: str = "resource_usage.jsonl"
+    usage_history: list[dict[str, float]], output_dir: Path, filename: str = "resource_usage.jsonl"
 ) -> Path:
     """Persist ResourceLimits usage history as JSONL.
 
@@ -75,18 +72,16 @@ def persist_resource_usage(
     output_dir.mkdir(parents=True, exist_ok=True)
     output_path = output_dir / filename
 
-    with output_path.open('w', encoding='utf-8') as f:
+    with output_path.open("w", encoding="utf-8") as f:
         for entry in usage_history:
             json.dump(entry, f, ensure_ascii=False)
-            f.write('\n')
+            f.write("\n")
 
     return output_path
 
 
 def persist_latency_histograms(
-    phase_metrics: dict[str, Any],
-    output_dir: Path,
-    filename: str = "latency_histograms.json"
+    phase_metrics: dict[str, Any], output_dir: Path, filename: str = "latency_histograms.json"
 ) -> Path:
     """Extract and persist per-phase latency percentiles.
 
@@ -119,16 +114,13 @@ def persist_latency_histograms(
                 "throughput": phase_data.get("throughput"),
             }
 
-    with output_path.open('w', encoding='utf-8') as f:
+    with output_path.open("w", encoding="utf-8") as f:
         json.dump(histograms, f, indent=2, sort_keys=True, ensure_ascii=False)
 
     return output_path
 
 
-def persist_all_metrics(
-    orchestrator_metrics: dict[str, Any],
-    output_dir: Path
-) -> dict[str, Path]:
+def persist_all_metrics(orchestrator_metrics: dict[str, Any], output_dir: Path) -> dict[str, Path]:
     """Persist all orchestrator metrics to output directory.
 
     This is the main entry point for persisting metrics. It writes:
@@ -156,21 +148,15 @@ def persist_all_metrics(
     written_files = {}
 
     written_files["phase_metrics"] = persist_phase_metrics(
-        phase_metrics,
-        output_dir,
-        "phase_metrics.json"
+        phase_metrics, output_dir, "phase_metrics.json"
     )
 
     written_files["resource_usage"] = persist_resource_usage(
-        resource_usage,
-        output_dir,
-        "resource_usage.jsonl"
+        resource_usage, output_dir, "resource_usage.jsonl"
     )
 
     written_files["latency_histograms"] = persist_latency_histograms(
-        phase_metrics,
-        output_dir,
-        "latency_histograms.json"
+        phase_metrics, output_dir, "latency_histograms.json"
     )
 
     return written_files
@@ -206,8 +192,12 @@ def validate_metrics_schema(metrics_data: dict[str, Any]) -> list[str]:
                     continue
 
                 required_phase_keys = [
-                    "phase_id", "name", "duration_ms", "items_processed",
-                    "items_total", "latency_histogram"
+                    "phase_id",
+                    "name",
+                    "duration_ms",
+                    "items_processed",
+                    "items_total",
+                    "latency_histogram",
                 ]
                 for key in required_phase_keys:
                     if key not in phase_data:

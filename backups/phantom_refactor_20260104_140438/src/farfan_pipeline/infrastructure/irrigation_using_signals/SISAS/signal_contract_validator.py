@@ -203,9 +203,11 @@ from typing import Any
 
 try:
     import structlog
+
     logger = structlog.get_logger(__name__)
 except ImportError:
     import logging
+
     logger = logging.getLogger(__name__)
 
 
@@ -285,8 +287,7 @@ class ValidationResult:
 
 
 def check_failure_condition(
-    result: dict[str, Any],
-    condition: str
+    result: dict[str, Any], condition: str
 ) -> tuple[bool, ValidationFailure | None]:
     """
     Check if a failure condition is met with detailed diagnostics.
@@ -298,24 +299,24 @@ def check_failure_condition(
     Returns:
         Tuple of (condition_met, failure_details)
     """
-    if condition.startswith('missing_'):
+    if condition.startswith("missing_"):
         field = condition[8:]
         is_missing = field not in result or result.get(field) is None
         if is_missing:
             failure = ValidationFailure(
-                failure_type='missing_field',
+                failure_type="missing_field",
                 field_name=field,
-                expected='non-null value',
+                expected="non-null value",
                 actual=result.get(field),
-                severity='error',
+                severity="error",
                 message=f"Required field '{field}' is missing or null",
                 remediation=f"Extract {field} from source document. Check pattern matching rules for {field} extraction.",
-                context={'condition': condition, 'available_fields': list(result.keys())}
+                context={"condition": condition, "available_fields": list(result.keys())},
             )
             return True, failure
         return False, None
 
-    elif condition.startswith('negative_'):
+    elif condition.startswith("negative_"):
         field = condition[9:]
         value = result.get(field)
         if value is None:
@@ -324,100 +325,100 @@ def check_failure_condition(
             is_negative = float(value) < 0
             if is_negative:
                 failure = ValidationFailure(
-                    failure_type='invalid_value',
+                    failure_type="invalid_value",
                     field_name=field,
-                    expected='positive value',
+                    expected="positive value",
                     actual=value,
-                    severity='error',
+                    severity="error",
                     message=f"Field '{field}' has negative value: {value}",
                     remediation=f"Verify {field} extraction logic. Negative values may indicate parsing error or incorrect pattern matching.",
-                    context={'condition': condition, 'parsed_value': value}
+                    context={"condition": condition, "parsed_value": value},
                 )
                 return True, failure
         except (ValueError, TypeError) as e:
             failure = ValidationFailure(
-                failure_type='type_error',
+                failure_type="type_error",
                 field_name=field,
-                expected='numeric value',
+                expected="numeric value",
                 actual=value,
-                severity='error',
+                severity="error",
                 message=f"Field '{field}' cannot be converted to number: {e}",
                 remediation=f"Check {field} format in source document. Ensure numeric extraction patterns are correct.",
-                context={'condition': condition, 'error': str(e)}
+                context={"condition": condition, "error": str(e)},
             )
             return True, failure
         return False, None
 
-    elif condition.startswith('empty_'):
+    elif condition.startswith("empty_"):
         field = condition[6:]
         value = result.get(field)
         is_empty = not value or (isinstance(value, list | dict | str) and len(value) == 0)
         if is_empty:
             failure = ValidationFailure(
-                failure_type='empty_field',
+                failure_type="empty_field",
                 field_name=field,
-                expected='non-empty value',
+                expected="non-empty value",
                 actual=value,
-                severity='warning',
+                severity="warning",
                 message=f"Field '{field}' is empty",
                 remediation=f"No data extracted for {field}. Verify pattern matching or check if field exists in source document.",
-                context={'condition': condition, 'value_type': type(value).__name__}
+                context={"condition": condition, "value_type": type(value).__name__},
             )
             return True, failure
         return False, None
 
-    elif condition == 'invalid_format':
-        is_invalid = result.get('format_valid', True) is False
+    elif condition == "invalid_format":
+        is_invalid = result.get("format_valid", True) is False
         if is_invalid:
             failure = ValidationFailure(
-                failure_type='format_validation',
-                field_name='format_valid',
+                failure_type="format_validation",
+                field_name="format_valid",
                 expected=True,
                 actual=False,
-                severity='error',
+                severity="error",
                 message="Data format validation failed",
                 remediation="Review extraction logic and validate against expected format. Check pattern matching rules.",
-                context={'condition': condition}
+                context={"condition": condition},
             )
             return True, failure
         return False, None
 
-    elif condition == 'low_confidence':
-        confidence = result.get('confidence', 1.0)
+    elif condition == "low_confidence":
+        confidence = result.get("confidence", 1.0)
         is_low = confidence < 0.5
         if is_low:
             failure = ValidationFailure(
-                failure_type='low_confidence',
-                field_name='confidence',
-                expected='≥0.5',
+                failure_type="low_confidence",
+                field_name="confidence",
+                expected="≥0.5",
                 actual=confidence,
-                severity='warning',
+                severity="warning",
                 message=f"Pattern match confidence ({confidence:.2f}) below threshold",
                 remediation=f"Review source quality and pattern matching. Confidence {confidence:.2f} suggests weak evidence. Consider manual review.",
-                context={'condition': condition, 'threshold': 0.5}
+                context={"condition": condition, "threshold": 0.5},
             )
             return True, failure
         return False, None
 
-    elif condition.startswith('threshold_'):
-        parts = condition.split('_', 2)
+    elif condition.startswith("threshold_"):
+        parts = condition.split("_", 2)
         if len(parts) >= 3:
             field = parts[2]
             value = result.get(field)
             if value is not None:
                 try:
-                    threshold = result.get(f'{field}_threshold', 0.7)
+                    threshold = result.get(f"{field}_threshold", 0.7)
                     is_below = float(value) < float(threshold)
                     if is_below:
                         failure = ValidationFailure(
-                            failure_type='threshold_violation',
+                            failure_type="threshold_violation",
                             field_name=field,
-                            expected=f'≥{threshold}',
+                            expected=f"≥{threshold}",
                             actual=value,
-                            severity='warning',
+                            severity="warning",
                             message=f"Field '{field}' ({value}) below threshold ({threshold})",
                             remediation=f"Improve {field} quality or adjust threshold. Current value suggests weak evidence.",
-                            context={'condition': condition, 'threshold': threshold}
+                            context={"condition": condition, "threshold": threshold},
                         )
                         return True, failure
                 except (ValueError, TypeError):
@@ -429,9 +430,7 @@ def check_failure_condition(
 
 
 def execute_failure_contract(
-    result: dict[str, Any],
-    failure_contract: dict[str, Any],
-    question_id: str | None = None
+    result: dict[str, Any], failure_contract: dict[str, Any], question_id: str | None = None
 ) -> ValidationResult:
     """
     Execute failure contract checks on analysis result with detailed diagnostics.
@@ -449,9 +448,9 @@ def execute_failure_contract(
     Returns:
         ValidationResult with comprehensive failure details
     """
-    abort_conditions = failure_contract.get('abort_if', [])
-    error_code = failure_contract.get('emit_code', 'ERR_UNKNOWN')
-    severity = failure_contract.get('severity', 'error')
+    abort_conditions = failure_contract.get("abort_if", [])
+    error_code = failure_contract.get("emit_code", "ERR_UNKNOWN")
+    severity = failure_contract.get("severity", "error")
 
     detailed_failures = []
     violated_conditions = []
@@ -468,7 +467,7 @@ def execute_failure_contract(
                 error_code=error_code,
                 field=failure_detail.field_name,
                 question_id=question_id,
-                remediation=failure_detail.remediation
+                remediation=failure_detail.remediation,
             )
 
     if detailed_failures:
@@ -476,57 +475,67 @@ def execute_failure_contract(
         all_remediations = [f.remediation for f in detailed_failures]
         combined_remediation = (
             f"Contract {error_code} violated. "
-            f"{len(detailed_failures)} condition(s) failed:\n" +
-            "\n".join([f"  - {f.message}" for f in detailed_failures]) +
-            "\n\nRemediation steps:\n" +
-            "\n".join([f"  {i+1}. {r}" for i, r in enumerate(all_remediations)])
+            f"{len(detailed_failures)} condition(s) failed:\n"
+            + "\n".join([f"  - {f.message}" for f in detailed_failures])
+            + "\n\nRemediation steps:\n"
+            + "\n".join([f"  {i+1}. {r}" for i, r in enumerate(all_remediations)])
         )
 
         diagnostics = {
-            'total_conditions_checked': len(abort_conditions),
-            'conditions_failed': len(violated_conditions),
-            'conditions_passed': len(abort_conditions) - len(violated_conditions),
-            'severity': severity,
-            'question_id': question_id,
-            'failure_summary': {
-                'missing_fields': [f.field_name for f in detailed_failures if f.failure_type == 'missing_field'],
-                'invalid_values': [f.field_name for f in detailed_failures if f.failure_type == 'invalid_value'],
-                'empty_fields': [f.field_name for f in detailed_failures if f.failure_type == 'empty_field'],
-                'other_failures': [f.field_name for f in detailed_failures if f.failure_type not in ['missing_field', 'invalid_value', 'empty_field']]
-            }
+            "total_conditions_checked": len(abort_conditions),
+            "conditions_failed": len(violated_conditions),
+            "conditions_passed": len(abort_conditions) - len(violated_conditions),
+            "severity": severity,
+            "question_id": question_id,
+            "failure_summary": {
+                "missing_fields": [
+                    f.field_name for f in detailed_failures if f.failure_type == "missing_field"
+                ],
+                "invalid_values": [
+                    f.field_name for f in detailed_failures if f.failure_type == "invalid_value"
+                ],
+                "empty_fields": [
+                    f.field_name for f in detailed_failures if f.failure_type == "empty_field"
+                ],
+                "other_failures": [
+                    f.field_name
+                    for f in detailed_failures
+                    if f.failure_type not in ["missing_field", "invalid_value", "empty_field"]
+                ],
+            },
         }
 
         return ValidationResult(
-            status='failed',
+            status="failed",
             passed=False,
             error_code=error_code,
-            condition_violated=', '.join(violated_conditions),
+            condition_violated=", ".join(violated_conditions),
             validation_failures=[f.message for f in detailed_failures],
             remediation=combined_remediation,
             details=result,
             failures_detailed=detailed_failures,
             diagnostics=diagnostics,
             execution_metadata={
-                'contract_type': 'failure_contract',
-                'conditions_evaluated': abort_conditions,
-                'severity': severity
-            }
+                "contract_type": "failure_contract",
+                "conditions_evaluated": abort_conditions,
+                "severity": severity,
+            },
         )
 
     return ValidationResult(
-        status='success',
+        status="success",
         passed=True,
         diagnostics={
-            'total_conditions_checked': len(abort_conditions),
-            'conditions_failed': 0,
-            'conditions_passed': len(abort_conditions),
-            'severity': severity,
-            'question_id': question_id
+            "total_conditions_checked": len(abort_conditions),
+            "conditions_failed": 0,
+            "conditions_passed": len(abort_conditions),
+            "severity": severity,
+            "question_id": question_id,
         },
         execution_metadata={
-            'contract_type': 'failure_contract',
-            'conditions_evaluated': abort_conditions
-        }
+            "contract_type": "failure_contract",
+            "conditions_evaluated": abort_conditions,
+        },
     )
 
 
@@ -541,32 +550,32 @@ def suggest_remediation(condition: str, result: dict[str, Any]) -> str:
     Returns:
         Human-readable remediation suggestion
     """
-    if condition.startswith('missing_'):
+    if condition.startswith("missing_"):
         field = condition[8:]
         return f"Check source document for {field} field. May require manual extraction."
 
-    elif condition.startswith('negative_'):
+    elif condition.startswith("negative_"):
         field = condition[9:]
         return f"Verify {field} value. Negative values may indicate parsing error."
 
-    elif condition.startswith('empty_'):
+    elif condition.startswith("empty_"):
         field = condition[6:]
         return f"No data extracted for {field}. Check pattern matching or source quality."
 
-    elif condition == 'invalid_format':
+    elif condition == "invalid_format":
         return "Data format validation failed. Review extraction logic."
 
-    elif condition == 'low_confidence':
-        confidence = result.get('confidence', 0)
-        return f"Pattern match confidence ({confidence:.2f}) below threshold. Consider manual review."
+    elif condition == "low_confidence":
+        confidence = result.get("confidence", 0)
+        return (
+            f"Pattern match confidence ({confidence:.2f}) below threshold. Consider manual review."
+        )
 
     return "Review analysis result and source document."
 
 
 def execute_validations(
-    result: dict[str, Any],
-    validations: dict[str, Any],
-    question_id: str | None = None
+    result: dict[str, Any], validations: dict[str, Any], question_id: str | None = None
 ) -> dict[str, Any]:
     """
     Execute validation rules on result with detailed diagnostics.
@@ -588,72 +597,92 @@ def execute_validations(
     detailed_failures = []
     passed_checks = []
 
-    required_fields = validations.get('required_fields', [])
+    required_fields = validations.get("required_fields", [])
     for field in required_fields:
         if field not in result or result[field] is None:
             msg = f"Required field missing: {field}"
             failures.append(msg)
-            detailed_failures.append(ValidationFailure(
-                failure_type='missing_required_field',
-                field_name=field,
-                expected='non-null value',
-                actual=result.get(field),
-                severity='error',
-                message=msg,
-                remediation=f"Ensure {field} is extracted from source document. Check extraction patterns for {field}.",
-                context={'validation_type': 'required_field', 'question_id': question_id}
-            ))
+            detailed_failures.append(
+                ValidationFailure(
+                    failure_type="missing_required_field",
+                    field_name=field,
+                    expected="non-null value",
+                    actual=result.get(field),
+                    severity="error",
+                    message=msg,
+                    remediation=f"Ensure {field} is extracted from source document. Check extraction patterns for {field}.",
+                    context={"validation_type": "required_field", "question_id": question_id},
+                )
+            )
         else:
             passed_checks.append(f"Required field present: {field}")
 
-    thresholds = validations.get('thresholds', {})
+    thresholds = validations.get("thresholds", {})
     for key, min_value in thresholds.items():
         actual_value = result.get(key)
         if actual_value is None:
             msg = f"Threshold field missing: {key}"
             failures.append(msg)
-            detailed_failures.append(ValidationFailure(
-                failure_type='missing_threshold_field',
-                field_name=key,
-                expected=f'value ≥ {min_value}',
-                actual=None,
-                severity='error',
-                message=msg,
-                remediation=f"Field {key} required for threshold check. Ensure it is included in result.",
-                context={'validation_type': 'threshold', 'threshold': min_value, 'question_id': question_id}
-            ))
+            detailed_failures.append(
+                ValidationFailure(
+                    failure_type="missing_threshold_field",
+                    field_name=key,
+                    expected=f"value ≥ {min_value}",
+                    actual=None,
+                    severity="error",
+                    message=msg,
+                    remediation=f"Field {key} required for threshold check. Ensure it is included in result.",
+                    context={
+                        "validation_type": "threshold",
+                        "threshold": min_value,
+                        "question_id": question_id,
+                    },
+                )
+            )
         else:
             try:
                 if float(actual_value) < float(min_value):
                     msg = f"{key} ({actual_value}) below threshold ({min_value})"
                     failures.append(msg)
-                    detailed_failures.append(ValidationFailure(
-                        failure_type='threshold_violation',
-                        field_name=key,
-                        expected=f'≥ {min_value}',
-                        actual=actual_value,
-                        severity='warning',
-                        message=msg,
-                        remediation=f"Improve {key} quality to meet threshold {min_value}. Current: {actual_value}",
-                        context={'validation_type': 'threshold', 'threshold': min_value, 'question_id': question_id}
-                    ))
+                    detailed_failures.append(
+                        ValidationFailure(
+                            failure_type="threshold_violation",
+                            field_name=key,
+                            expected=f"≥ {min_value}",
+                            actual=actual_value,
+                            severity="warning",
+                            message=msg,
+                            remediation=f"Improve {key} quality to meet threshold {min_value}. Current: {actual_value}",
+                            context={
+                                "validation_type": "threshold",
+                                "threshold": min_value,
+                                "question_id": question_id,
+                            },
+                        )
+                    )
                 else:
                     passed_checks.append(f"Threshold met: {key} ({actual_value}) ≥ {min_value}")
             except (ValueError, TypeError) as e:
                 msg = f"Invalid value for {key}: {actual_value}"
                 failures.append(msg)
-                detailed_failures.append(ValidationFailure(
-                    failure_type='type_error',
-                    field_name=key,
-                    expected='numeric value',
-                    actual=actual_value,
-                    severity='error',
-                    message=msg,
-                    remediation=f"Ensure {key} is properly formatted as a number. Current type: {type(actual_value).__name__}",
-                    context={'validation_type': 'threshold', 'error': str(e), 'question_id': question_id}
-                ))
+                detailed_failures.append(
+                    ValidationFailure(
+                        failure_type="type_error",
+                        field_name=key,
+                        expected="numeric value",
+                        actual=actual_value,
+                        severity="error",
+                        message=msg,
+                        remediation=f"Ensure {key} is properly formatted as a number. Current type: {type(actual_value).__name__}",
+                        context={
+                            "validation_type": "threshold",
+                            "error": str(e),
+                            "question_id": question_id,
+                        },
+                    )
+                )
 
-    rules = validations.get('rules', [])
+    rules = validations.get("rules", [])
     for rule in rules:
         rule_passed, rule_failure = validate_rule_detailed(rule, result, question_id)
         if not rule_passed and rule_failure:
@@ -665,19 +694,19 @@ def execute_validations(
     total_checks = len(required_fields) + len(thresholds) + len(rules)
 
     return {
-        'all_passed': len(failures) == 0,
-        'passed_count': len(passed_checks),
-        'failed_count': len(failures),
-        'failures': failures,
-        'detailed_failures': detailed_failures,
-        'passed_checks': passed_checks,
-        'diagnostics': {
-            'total_checks': total_checks,
-            'required_fields_checked': len(required_fields),
-            'thresholds_checked': len(thresholds),
-            'rules_checked': len(rules),
-            'question_id': question_id
-        }
+        "all_passed": len(failures) == 0,
+        "passed_count": len(passed_checks),
+        "failed_count": len(failures),
+        "failures": failures,
+        "detailed_failures": detailed_failures,
+        "passed_checks": passed_checks,
+        "diagnostics": {
+            "total_checks": total_checks,
+            "required_fields_checked": len(required_fields),
+            "thresholds_checked": len(thresholds),
+            "rules_checked": len(rules),
+            "question_id": question_id,
+        },
     }
 
 
@@ -697,9 +726,7 @@ def validate_rule(rule: str, result: dict[str, Any]) -> bool:
 
 
 def validate_rule_detailed(
-    rule: str,
-    result: dict[str, Any],
-    question_id: str | None = None
+    rule: str, result: dict[str, Any], question_id: str | None = None
 ) -> tuple[bool, ValidationFailure | None]:
     """
     Validate a specific rule with detailed diagnostics.
@@ -712,106 +739,106 @@ def validate_rule_detailed(
     Returns:
         Tuple of (rule_passed, failure_detail)
     """
-    if rule == 'currency_present':
-        currency = result.get('currency')
-        passed = currency is not None and currency != ''
+    if rule == "currency_present":
+        currency = result.get("currency")
+        passed = currency is not None and currency != ""
         if not passed:
             return False, ValidationFailure(
-                failure_type='rule_validation',
-                field_name='currency',
-                expected='non-empty currency code',
+                failure_type="rule_validation",
+                field_name="currency",
+                expected="non-empty currency code",
                 actual=currency,
-                severity='error',
+                severity="error",
                 message="Rule 'currency_present' failed: currency is missing or empty",
                 remediation="Extract currency code from budget information. Check for ISO 4217 codes (USD, EUR, COP, etc.).",
-                context={'rule': rule, 'question_id': question_id}
+                context={"rule": rule, "question_id": question_id},
             )
         return True, None
 
-    elif rule == 'amount_positive':
-        amount = result.get('amount')
+    elif rule == "amount_positive":
+        amount = result.get("amount")
         if amount is None:
             return False, ValidationFailure(
-                failure_type='rule_validation',
-                field_name='amount',
-                expected='positive number',
+                failure_type="rule_validation",
+                field_name="amount",
+                expected="positive number",
                 actual=None,
-                severity='error',
+                severity="error",
                 message="Rule 'amount_positive' failed: amount is missing",
                 remediation="Extract numeric amount from document. Verify extraction patterns capture monetary values.",
-                context={'rule': rule, 'question_id': question_id}
+                context={"rule": rule, "question_id": question_id},
             )
         try:
             passed = float(amount) > 0
             if not passed:
                 return False, ValidationFailure(
-                    failure_type='rule_validation',
-                    field_name='amount',
-                    expected='positive number',
+                    failure_type="rule_validation",
+                    field_name="amount",
+                    expected="positive number",
                     actual=amount,
-                    severity='error',
+                    severity="error",
                     message=f"Rule 'amount_positive' failed: amount ({amount}) is not positive",
                     remediation="Verify amount extraction. Negative/zero values indicate parsing errors or invalid source data.",
-                    context={'rule': rule, 'question_id': question_id}
+                    context={"rule": rule, "question_id": question_id},
                 )
             return True, None
         except (ValueError, TypeError) as e:
             return False, ValidationFailure(
-                failure_type='rule_validation',
-                field_name='amount',
-                expected='numeric value',
+                failure_type="rule_validation",
+                field_name="amount",
+                expected="numeric value",
                 actual=amount,
-                severity='error',
+                severity="error",
                 message=f"Rule 'amount_positive' failed: cannot convert amount to number - {e}",
                 remediation=f"Ensure amount is numeric. Current type: {type(amount).__name__}. Check extraction format.",
-                context={'rule': rule, 'error': str(e), 'question_id': question_id}
+                context={"rule": rule, "error": str(e), "question_id": question_id},
             )
 
-    elif rule == 'date_valid':
-        date = result.get('date')
+    elif rule == "date_valid":
+        date = result.get("date")
         passed = date is not None and len(str(date)) >= 4
         if not passed:
             return False, ValidationFailure(
-                failure_type='rule_validation',
-                field_name='date',
-                expected='valid date string (≥4 chars)',
+                failure_type="rule_validation",
+                field_name="date",
+                expected="valid date string (≥4 chars)",
                 actual=date,
-                severity='warning',
+                severity="warning",
                 message="Rule 'date_valid' failed: date is missing or too short",
                 remediation="Extract date from document. Look for YYYY, YYYY-MM-DD, or other standard formats.",
-                context={'rule': rule, 'question_id': question_id}
+                context={"rule": rule, "question_id": question_id},
             )
         return True, None
 
-    elif rule == 'confidence_high':
-        confidence = result.get('confidence', 0)
+    elif rule == "confidence_high":
+        confidence = result.get("confidence", 0)
         passed = confidence >= 0.8
         if not passed:
             return False, ValidationFailure(
-                failure_type='rule_validation',
-                field_name='confidence',
-                expected='≥0.8',
+                failure_type="rule_validation",
+                field_name="confidence",
+                expected="≥0.8",
                 actual=confidence,
-                severity='warning',
+                severity="warning",
                 message=f"Rule 'confidence_high' failed: confidence ({confidence}) below 0.8",
                 remediation=f"Low confidence ({confidence}) suggests weak evidence. Review source quality and pattern matching.",
-                context={'rule': rule, 'threshold': 0.8, 'question_id': question_id}
+                context={"rule": rule, "threshold": 0.8, "question_id": question_id},
             )
         return True, None
 
-    elif rule == 'completeness_check':
-        completeness = result.get('completeness', 0)
+    elif rule == "completeness_check":
+        completeness = result.get("completeness", 0)
         passed = completeness >= 0.7
         if not passed:
             return False, ValidationFailure(
-                failure_type='rule_validation',
-                field_name='completeness',
-                expected='≥0.7',
+                failure_type="rule_validation",
+                field_name="completeness",
+                expected="≥0.7",
                 actual=completeness,
-                severity='warning',
+                severity="warning",
                 message=f"Rule 'completeness_check' failed: completeness ({completeness}) below 0.7",
                 remediation=f"Result incomplete ({completeness:.1%}). Check missing_elements field for details on what's lacking.",
-                context={'rule': rule, 'threshold': 0.7, 'question_id': question_id}
+                context={"rule": rule, "threshold": 0.7, "question_id": question_id},
             )
         return True, None
 
@@ -819,10 +846,7 @@ def validate_rule_detailed(
     return True, None
 
 
-def validate_with_contract(
-    result: dict[str, Any],
-    signal_node: dict[str, Any]
-) -> ValidationResult:
+def validate_with_contract(result: dict[str, Any], signal_node: dict[str, Any]) -> ValidationResult:
     """
     Full validation using both failure_contract and validations with comprehensive diagnostics.
 
@@ -857,10 +881,10 @@ def validate_with_contract(
         >>> print(validation.remediation)
         Contract ERR_BUDGET_001 violated...
     """
-    question_id = signal_node.get('id', 'UNKNOWN')
+    question_id = signal_node.get("id", "UNKNOWN")
     all_detailed_failures = []
 
-    failure_contract = signal_node.get('failure_contract')
+    failure_contract = signal_node.get("failure_contract")
     if failure_contract:
         contract_result = execute_failure_contract(result, failure_contract, question_id)
         if not contract_result.passed:
@@ -869,73 +893,70 @@ def validate_with_contract(
                 question_id=question_id,
                 error_code=contract_result.error_code,
                 conditions_violated=contract_result.condition_violated,
-                failures_count=len(contract_result.failures_detailed)
+                failures_count=len(contract_result.failures_detailed),
             )
             return contract_result
         all_detailed_failures.extend(contract_result.failures_detailed)
 
-    validations = signal_node.get('validations')
+    validations = signal_node.get("validations")
     if validations:
         validation_results = execute_validations(result, validations, question_id)
 
-        if not validation_results['all_passed']:
-            all_detailed_failures.extend(validation_results.get('detailed_failures', []))
+        if not validation_results["all_passed"]:
+            all_detailed_failures.extend(validation_results.get("detailed_failures", []))
 
             remediation_steps = []
-            for failure in validation_results.get('detailed_failures', []):
+            for failure in validation_results.get("detailed_failures", []):
                 remediation_steps.append(f"- {failure.remediation}")
 
             combined_remediation = (
                 f"Validation failed for question {question_id}.\n"
-                f"{validation_results['failed_count']} check(s) failed:\n" +
-                "\n".join([f"  - {msg}" for msg in validation_results['failures'][:5]]) +
-                "\n\nRemediation steps:\n" +
-                "\n".join(remediation_steps[:5])
+                f"{validation_results['failed_count']} check(s) failed:\n"
+                + "\n".join([f"  - {msg}" for msg in validation_results["failures"][:5]])
+                + "\n\nRemediation steps:\n"
+                + "\n".join(remediation_steps[:5])
             )
 
             logger.warning(
                 "validation_checks_failed",
                 question_id=question_id,
-                failed_count=validation_results['failed_count'],
-                passed_count=validation_results['passed_count']
+                failed_count=validation_results["failed_count"],
+                passed_count=validation_results["passed_count"],
             )
 
             return ValidationResult(
-                status='invalid',
+                status="invalid",
                 passed=False,
-                validation_failures=validation_results['failures'],
+                validation_failures=validation_results["failures"],
                 remediation=combined_remediation,
                 details=result,
-                failures_detailed=validation_results.get('detailed_failures', []),
-                diagnostics=validation_results.get('diagnostics', {}),
+                failures_detailed=validation_results.get("detailed_failures", []),
+                diagnostics=validation_results.get("diagnostics", {}),
                 execution_metadata={
-                    'contract_type': 'validations',
-                    'question_id': question_id,
-                    'total_checks': validation_results['diagnostics']['total_checks']
-                }
+                    "contract_type": "validations",
+                    "question_id": question_id,
+                    "total_checks": validation_results["diagnostics"]["total_checks"],
+                },
             )
 
     logger.info(
         "contract_validation_passed",
         question_id=question_id,
         failure_contract_checked=failure_contract is not None,
-        validations_checked=validations is not None
+        validations_checked=validations is not None,
     )
 
     return ValidationResult(
-        status='success',
+        status="success",
         passed=True,
         details=result,
         diagnostics={
-            'question_id': question_id,
-            'failure_contract_checked': failure_contract is not None,
-            'validations_checked': validations is not None,
-            'all_checks_passed': True
+            "question_id": question_id,
+            "failure_contract_checked": failure_contract is not None,
+            "validations_checked": validations is not None,
+            "all_checks_passed": True,
         },
-        execution_metadata={
-            'question_id': question_id,
-            'validation_complete': True
-        }
+        execution_metadata={"question_id": question_id, "validation_complete": True},
     )
 
 
@@ -990,15 +1011,14 @@ class ValidationOrchestrator:
     def start_orchestration(self) -> None:
         """Mark the start of validation orchestration."""
         import time
+
         self._start_time = time.perf_counter()
-        logger.info(
-            "validation_orchestration_started",
-            expected_questions=self.total_questions
-        )
+        logger.info("validation_orchestration_started", expected_questions=self.total_questions)
 
     def complete_orchestration(self) -> None:
         """Mark the completion of validation orchestration."""
         import time
+
         self._end_time = time.perf_counter()
         duration = (self._end_time - self._start_time) if self._start_time else 0.0
 
@@ -1010,14 +1030,12 @@ class ValidationOrchestrator:
             invalid=self.invalid_count,
             skipped=self.skipped_count,
             duration_s=duration,
-            completion_rate=self.validated_count / self.total_questions if self.total_questions > 0 else 0
+            completion_rate=(
+                self.validated_count / self.total_questions if self.total_questions > 0 else 0
+            ),
         )
 
-    def register_validation(
-        self,
-        question_id: str,
-        validation_result: ValidationResult
-    ) -> None:
+    def register_validation(self, question_id: str, validation_result: ValidationResult) -> None:
         """
         Register a validation result for tracking.
 
@@ -1030,7 +1048,7 @@ class ValidationOrchestrator:
                 "validation_duplicate_registration",
                 question_id=question_id,
                 previous_status=self.validation_registry[question_id].status,
-                new_status=validation_result.status
+                new_status=validation_result.status,
             )
 
         self.validation_registry[question_id] = validation_result
@@ -1039,13 +1057,13 @@ class ValidationOrchestrator:
 
         if validation_result.passed:
             self.passed_count += 1
-        elif validation_result.status == 'failed':
+        elif validation_result.status == "failed":
             self.failed_count += 1
-        elif validation_result.status == 'invalid':
+        elif validation_result.status == "invalid":
             self.invalid_count += 1
-        elif validation_result.status == 'error':
+        elif validation_result.status == "error":
             self.error_count += 1
-        elif validation_result.status == 'skipped':
+        elif validation_result.status == "skipped":
             self.skipped_count += 1
 
         logger.debug(
@@ -1053,14 +1071,10 @@ class ValidationOrchestrator:
             question_id=question_id,
             status=validation_result.status,
             passed=validation_result.passed,
-            error_code=validation_result.error_code
+            error_code=validation_result.error_code,
         )
 
-    def register_skipped(
-        self,
-        question_id: str,
-        reason: str
-    ) -> None:
+    def register_skipped(self, question_id: str, reason: str) -> None:
         """
         Register a skipped question with reason.
 
@@ -1069,17 +1083,14 @@ class ValidationOrchestrator:
             reason: Reason for skipping
         """
         skipped_result = ValidationResult(
-            status='skipped',
+            status="skipped",
             passed=False,
-            diagnostics={'skip_reason': reason, 'question_id': question_id}
+            diagnostics={"skip_reason": reason, "question_id": question_id},
         )
         self.register_validation(question_id, skipped_result)
 
     def register_error(
-        self,
-        question_id: str,
-        error: Exception,
-        context: dict[str, Any] | None = None
+        self, question_id: str, error: Exception, context: dict[str, Any] | None = None
     ) -> None:
         """
         Register a validation error.
@@ -1090,23 +1101,21 @@ class ValidationOrchestrator:
             context: Additional context information
         """
         error_result = ValidationResult(
-            status='error',
+            status="error",
             passed=False,
-            error_code='VALIDATION_ERROR',
+            error_code="VALIDATION_ERROR",
             remediation=f"Validation failed with error: {str(error)}. Check signal node configuration and result format.",
             diagnostics={
-                'question_id': question_id,
-                'error_type': type(error).__name__,
-                'error_message': str(error),
-                'context': context or {}
-            }
+                "question_id": question_id,
+                "error_type": type(error).__name__,
+                "error_message": str(error),
+                "context": context or {},
+            },
         )
         self.register_validation(question_id, error_result)
 
     def validate_and_register(
-        self,
-        result: dict[str, Any],
-        signal_node: dict[str, Any]
+        self, result: dict[str, Any], signal_node: dict[str, Any]
     ) -> ValidationResult:
         """
         Validate a result and register it in one step.
@@ -1119,7 +1128,7 @@ class ValidationOrchestrator:
             ValidationResult
         """
         validation_result = validate_with_contract(result, signal_node)
-        question_id = signal_node.get('id', 'UNKNOWN')
+        question_id = signal_node.get("id", "UNKNOWN")
         self.register_validation(question_id, validation_result)
         return validation_result
 
@@ -1131,81 +1140,95 @@ class ValidationOrchestrator:
             Summary dict with statistics and failed validations
         """
         failed_validations = {
-            qid: result for qid, result in self.validation_registry.items()
-            if not result.passed
+            qid: result for qid, result in self.validation_registry.items() if not result.passed
         }
 
         failure_breakdown = {
-            'missing_fields': [],
-            'invalid_values': [],
-            'empty_fields': [],
-            'threshold_violations': [],
-            'rule_failures': [],
-            'other': []
+            "missing_fields": [],
+            "invalid_values": [],
+            "empty_fields": [],
+            "threshold_violations": [],
+            "rule_failures": [],
+            "other": [],
         }
 
         error_code_frequency: dict[str, int] = {}
-        severity_counts: dict[str, int] = {'error': 0, 'warning': 0, 'info': 0}
+        severity_counts: dict[str, int] = {"error": 0, "warning": 0, "info": 0}
 
         for qid, result in failed_validations.items():
             if result.error_code:
-                error_code_frequency[result.error_code] = error_code_frequency.get(result.error_code, 0) + 1
+                error_code_frequency[result.error_code] = (
+                    error_code_frequency.get(result.error_code, 0) + 1
+                )
 
             for failure in result.failures_detailed:
                 entry = {
-                    'question_id': qid,
-                    'field': failure.field_name,
-                    'message': failure.message,
-                    'severity': failure.severity,
-                    'remediation': failure.remediation
+                    "question_id": qid,
+                    "field": failure.field_name,
+                    "message": failure.message,
+                    "severity": failure.severity,
+                    "remediation": failure.remediation,
                 }
 
                 severity_counts[failure.severity] = severity_counts.get(failure.severity, 0) + 1
 
                 if failure.failure_type in ("missing_field", "missing_required_field"):
-                    failure_breakdown['missing_fields'].append(entry)
+                    failure_breakdown["missing_fields"].append(entry)
                 elif failure.failure_type in ("invalid_value", "type_error"):
-                    failure_breakdown['invalid_values'].append(entry)
-                elif failure.failure_type == 'empty_field':
-                    failure_breakdown['empty_fields'].append(entry)
-                elif failure.failure_type == 'threshold_violation':
-                    failure_breakdown['threshold_violations'].append(entry)
-                elif failure.failure_type == 'rule_validation':
-                    failure_breakdown['rule_failures'].append(entry)
+                    failure_breakdown["invalid_values"].append(entry)
+                elif failure.failure_type == "empty_field":
+                    failure_breakdown["empty_fields"].append(entry)
+                elif failure.failure_type == "threshold_violation":
+                    failure_breakdown["threshold_violations"].append(entry)
+                elif failure.failure_type == "rule_validation":
+                    failure_breakdown["rule_failures"].append(entry)
                 else:
-                    failure_breakdown['other'].append(entry)
+                    failure_breakdown["other"].append(entry)
 
-        duration = (self._end_time - self._start_time) if (self._start_time and self._end_time) else None
+        duration = (
+            (self._end_time - self._start_time) if (self._start_time and self._end_time) else None
+        )
 
         return {
-            'total_questions_expected': self.total_questions,
-            'validated_count': self.validated_count,
-            'passed_count': self.passed_count,
-            'failed_count': self.failed_count,
-            'invalid_count': self.invalid_count,
-            'skipped_count': self.skipped_count,
-            'error_count': self.error_count,
-            'completion_rate': self.validated_count / self.total_questions if self.total_questions > 0 else 0,
-            'success_rate': self.passed_count / self.validated_count if self.validated_count > 0 else 0,
-            'failure_rate': self.failed_count / self.validated_count if self.validated_count > 0 else 0,
-            'failed_validations': {qid: result.error_code for qid, result in failed_validations.items()},
-            'failure_breakdown': failure_breakdown,
-            'error_code_frequency': error_code_frequency,
-            'severity_counts': severity_counts,
-            'validation_registry_size': len(self.validation_registry),
-            'execution_order': self._execution_order,
-            'duration_seconds': duration,
-            'validations_per_second': self.validated_count / duration if duration and duration > 0 else None
+            "total_questions_expected": self.total_questions,
+            "validated_count": self.validated_count,
+            "passed_count": self.passed_count,
+            "failed_count": self.failed_count,
+            "invalid_count": self.invalid_count,
+            "skipped_count": self.skipped_count,
+            "error_count": self.error_count,
+            "completion_rate": (
+                self.validated_count / self.total_questions if self.total_questions > 0 else 0
+            ),
+            "success_rate": (
+                self.passed_count / self.validated_count if self.validated_count > 0 else 0
+            ),
+            "failure_rate": (
+                self.failed_count / self.validated_count if self.validated_count > 0 else 0
+            ),
+            "failed_validations": {
+                qid: result.error_code for qid, result in failed_validations.items()
+            },
+            "failure_breakdown": failure_breakdown,
+            "error_code_frequency": error_code_frequency,
+            "severity_counts": severity_counts,
+            "validation_registry_size": len(self.validation_registry),
+            "execution_order": self._execution_order,
+            "duration_seconds": duration,
+            "validations_per_second": (
+                self.validated_count / duration if duration and duration > 0 else None
+            ),
         }
 
     def get_failed_questions(self) -> dict[str, ValidationResult]:
         """Get all questions that failed validation."""
         return {
-            qid: result for qid, result in self.validation_registry.items()
-            if not result.passed
+            qid: result for qid, result in self.validation_registry.items() if not result.passed
         }
 
-    def get_remediation_report(self, include_all_details: bool = True, max_failures_per_question: int = 5) -> str:
+    def get_remediation_report(
+        self, include_all_details: bool = True, max_failures_per_question: int = 5
+    ) -> str:
         """
         Generate a comprehensive remediation report for all failures.
 
@@ -1230,7 +1253,7 @@ class ValidationOrchestrator:
                 "",
                 "✓ ALL VALIDATIONS PASSED - NO REMEDIATION NEEDED",
                 "",
-                "=" * 80
+                "=" * 80,
             ]
             return "\n".join(report_lines)
 
@@ -1248,51 +1271,48 @@ class ValidationOrchestrator:
             "",
             f"Success Rate: {summary['success_rate']:.1%}",
             f"Completion Rate: {summary['completion_rate']:.1%}",
-            ""
+            "",
         ]
 
-        if summary['duration_seconds']:
+        if summary["duration_seconds"]:
             report_lines.append(f"Duration: {summary['duration_seconds']:.2f}s")
-            report_lines.append(f"Throughput: {summary['validations_per_second']:.1f} validations/sec")
+            report_lines.append(
+                f"Throughput: {summary['validations_per_second']:.1f} validations/sec"
+            )
             report_lines.append("")
 
-        report_lines.extend([
-            "=" * 80,
-            "FAILURE BREAKDOWN BY TYPE:",
-            "=" * 80,
-            f"  Missing Fields: {len(summary['failure_breakdown']['missing_fields'])}",
-            f"  Invalid Values: {len(summary['failure_breakdown']['invalid_values'])}",
-            f"  Empty Fields: {len(summary['failure_breakdown']['empty_fields'])}",
-            f"  Threshold Violations: {len(summary['failure_breakdown']['threshold_violations'])}",
-            f"  Rule Failures: {len(summary['failure_breakdown']['rule_failures'])}",
-            f"  Other: {len(summary['failure_breakdown']['other'])}",
-            ""
-        ])
+        report_lines.extend(
+            [
+                "=" * 80,
+                "FAILURE BREAKDOWN BY TYPE:",
+                "=" * 80,
+                f"  Missing Fields: {len(summary['failure_breakdown']['missing_fields'])}",
+                f"  Invalid Values: {len(summary['failure_breakdown']['invalid_values'])}",
+                f"  Empty Fields: {len(summary['failure_breakdown']['empty_fields'])}",
+                f"  Threshold Violations: {len(summary['failure_breakdown']['threshold_violations'])}",
+                f"  Rule Failures: {len(summary['failure_breakdown']['rule_failures'])}",
+                f"  Other: {len(summary['failure_breakdown']['other'])}",
+                "",
+            ]
+        )
 
-        if summary['error_code_frequency']:
-            report_lines.extend([
-                "ERROR CODE FREQUENCY:",
-                ""
-            ])
-            for error_code, count in sorted(summary['error_code_frequency'].items(), key=lambda x: x[1], reverse=True)[:10]:
+        if summary["error_code_frequency"]:
+            report_lines.extend(["ERROR CODE FREQUENCY:", ""])
+            for error_code, count in sorted(
+                summary["error_code_frequency"].items(), key=lambda x: x[1], reverse=True
+            )[:10]:
                 report_lines.append(f"  {error_code}: {count} occurrences")
             report_lines.append("")
 
-        if summary['severity_counts']:
-            report_lines.extend([
-                "SEVERITY DISTRIBUTION:",
-                ""
-            ])
-            for severity, count in sorted(summary['severity_counts'].items(), key=lambda x: x[1], reverse=True):
+        if summary["severity_counts"]:
+            report_lines.extend(["SEVERITY DISTRIBUTION:", ""])
+            for severity, count in sorted(
+                summary["severity_counts"].items(), key=lambda x: x[1], reverse=True
+            ):
                 report_lines.append(f"  {severity.upper()}: {count}")
             report_lines.append("")
 
-        report_lines.extend([
-            "=" * 80,
-            "FAILED VALIDATIONS (Detailed):",
-            "=" * 80,
-            ""
-        ])
+        report_lines.extend(["=" * 80, "FAILED VALIDATIONS (Detailed):", "=" * 80, ""])
 
         for qid, result in sorted(failed.items()):
             report_lines.append(f"Question: {qid}")
@@ -1321,7 +1341,7 @@ class ValidationOrchestrator:
 
             if result.remediation:
                 report_lines.append("  Remediation:")
-                for line in result.remediation.split('\n'):
+                for line in result.remediation.split("\n"):
                     if line.strip():
                         report_lines.append(f"    {line.strip()}")
                 report_lines.append("")
@@ -1329,28 +1349,20 @@ class ValidationOrchestrator:
             if result.diagnostics and include_all_details:
                 report_lines.append("  Diagnostics:")
                 for key, value in result.diagnostics.items():
-                    if key not in ['question_id']:
+                    if key not in ["question_id"]:
                         report_lines.append(f"    {key}: {value}")
                 report_lines.append("")
 
             report_lines.append("-" * 80)
             report_lines.append("")
 
-        report_lines.extend([
-            "=" * 80,
-            "REMEDIATION PRIORITIES:",
-            "=" * 80,
-            ""
-        ])
+        report_lines.extend(["=" * 80, "REMEDIATION PRIORITIES:", "=" * 80, ""])
 
         priorities = self._generate_remediation_priorities(summary)
         for priority in priorities:
             report_lines.append(f"  • {priority}")
 
-        report_lines.extend([
-            "",
-            "=" * 80
-        ])
+        report_lines.extend(["", "=" * 80])
 
         return "\n".join(report_lines)
 
@@ -1365,39 +1377,39 @@ class ValidationOrchestrator:
             List of prioritized remediation recommendations
         """
         priorities = []
-        fb = summary['failure_breakdown']
+        fb = summary["failure_breakdown"]
 
-        if len(fb['missing_fields']) > 10:
+        if len(fb["missing_fields"]) > 10:
             priorities.append(
                 f"HIGH PRIORITY: {len(fb['missing_fields'])} missing field failures. "
                 "Review extraction patterns and ensure all required fields are extracted."
             )
 
-        if len(fb['invalid_values']) > 10:
+        if len(fb["invalid_values"]) > 10:
             priorities.append(
                 f"HIGH PRIORITY: {len(fb['invalid_values'])} invalid value failures. "
                 "Verify data type conversions and format parsing logic."
             )
 
-        if len(fb['threshold_violations']) > 5:
+        if len(fb["threshold_violations"]) > 5:
             priorities.append(
                 f"MEDIUM PRIORITY: {len(fb['threshold_violations'])} threshold violations. "
                 "Consider adjusting confidence thresholds or improving pattern quality."
             )
 
-        if len(fb['rule_failures']) > 5:
+        if len(fb["rule_failures"]) > 5:
             priorities.append(
                 f"MEDIUM PRIORITY: {len(fb['rule_failures'])} rule validation failures. "
                 "Review validation rules for appropriateness and adjust as needed."
             )
 
-        if len(fb['empty_fields']) > 5:
+        if len(fb["empty_fields"]) > 5:
             priorities.append(
                 f"LOW PRIORITY: {len(fb['empty_fields'])} empty field warnings. "
                 "These may be acceptable if fields are truly absent in source documents."
             )
 
-        error_codes = summary.get('error_code_frequency', {})
+        error_codes = summary.get("error_code_frequency", {})
         if error_codes:
             most_frequent = max(error_codes.items(), key=lambda x: x[1])
             if most_frequent[1] > 5:
@@ -1407,7 +1419,9 @@ class ValidationOrchestrator:
                 )
 
         if not priorities:
-            priorities.append("All failures are unique. Review individual remediation suggestions above.")
+            priorities.append(
+                "All failures are unique. Review individual remediation suggestions above."
+            )
 
         return priorities
 
@@ -1447,12 +1461,14 @@ class ValidationOrchestrator:
                 missing_count=len(missing),
                 expected_count=len(expected_ids),
                 validated_count=len(validated_ids),
-                missing_sample=list(missing)[:10]
+                missing_sample=list(missing)[:10],
             )
 
         return sorted(missing)
 
-    def get_validation_coverage_report(self, expected_question_ids: list[str] | None = None) -> dict[str, Any]:
+    def get_validation_coverage_report(
+        self, expected_question_ids: list[str] | None = None
+    ) -> dict[str, Any]:
         """
         Generate a coverage report showing which questions were validated.
 
@@ -1465,21 +1481,27 @@ class ValidationOrchestrator:
         missing = self.get_missing_questions(expected_question_ids)
 
         return {
-            'total_expected': len(expected_question_ids) if expected_question_ids else self.total_questions,
-            'total_validated': len(self.validation_registry),
-            'missing_count': len(missing),
-            'missing_questions': missing,
-            'coverage_percentage': (len(self.validation_registry) / len(expected_question_ids) * 100) if expected_question_ids else 0,
-            'validation_statuses': {
-                'passed': self.passed_count,
-                'failed': self.failed_count,
-                'invalid': self.invalid_count,
-                'skipped': self.skipped_count,
-                'error': self.error_count
-            }
+            "total_expected": (
+                len(expected_question_ids) if expected_question_ids else self.total_questions
+            ),
+            "total_validated": len(self.validation_registry),
+            "missing_count": len(missing),
+            "missing_questions": missing,
+            "coverage_percentage": (
+                (len(self.validation_registry) / len(expected_question_ids) * 100)
+                if expected_question_ids
+                else 0
+            ),
+            "validation_statuses": {
+                "passed": self.passed_count,
+                "failed": self.failed_count,
+                "invalid": self.invalid_count,
+                "skipped": self.skipped_count,
+                "error": self.error_count,
+            },
         }
 
-    def export_validation_results(self, format: str = 'json') -> str | dict[str, Any]:
+    def export_validation_results(self, format: str = "json") -> str | dict[str, Any]:
         """
         Export validation results in specified format.
 
@@ -1489,11 +1511,11 @@ class ValidationOrchestrator:
         Returns:
             Formatted export string or dict
         """
-        if format == 'json':
+        if format == "json":
             return self._export_json()
-        elif format == 'csv':
+        elif format == "csv":
             return self._export_csv()
-        elif format == 'markdown':
+        elif format == "markdown":
             return self._export_markdown()
         else:
             raise ValueError(f"Unsupported export format: {format}")
@@ -1501,48 +1523,46 @@ class ValidationOrchestrator:
     def _export_json(self) -> dict[str, Any]:
         """Export validation results as JSON-serializable dict."""
         return {
-            'summary': self.get_validation_summary(),
-            'validations': {
+            "summary": self.get_validation_summary(),
+            "validations": {
                 qid: {
-                    'status': result.status,
-                    'passed': result.passed,
-                    'error_code': result.error_code,
-                    'condition_violated': result.condition_violated,
-                    'validation_failures': result.validation_failures,
-                    'remediation': result.remediation,
-                    'diagnostics': result.diagnostics,
-                    'failure_count': len(result.failures_detailed),
-                    'failures': [
+                    "status": result.status,
+                    "passed": result.passed,
+                    "error_code": result.error_code,
+                    "condition_violated": result.condition_violated,
+                    "validation_failures": result.validation_failures,
+                    "remediation": result.remediation,
+                    "diagnostics": result.diagnostics,
+                    "failure_count": len(result.failures_detailed),
+                    "failures": [
                         {
-                            'type': f.failure_type,
-                            'field': f.field_name,
-                            'message': f.message,
-                            'severity': f.severity,
-                            'remediation': f.remediation,
-                            'expected': str(f.expected),
-                            'actual': str(f.actual)
+                            "type": f.failure_type,
+                            "field": f.field_name,
+                            "message": f.message,
+                            "severity": f.severity,
+                            "remediation": f.remediation,
+                            "expected": str(f.expected),
+                            "actual": str(f.actual),
                         }
                         for f in result.failures_detailed
-                    ]
+                    ],
                 }
                 for qid, result in self.validation_registry.items()
-            }
+            },
         }
 
     def _export_csv(self) -> str:
         """Export validation results as CSV string."""
-        lines = [
-            "question_id,status,passed,error_code,failure_count,severity,condition_violated"
-        ]
+        lines = ["question_id,status,passed,error_code,failure_count,severity,condition_violated"]
 
         for qid, result in sorted(self.validation_registry.items()):
-            severity = 'none'
+            severity = "none"
             if result.failures_detailed:
                 severities = [f.severity for f in result.failures_detailed]
-                if 'error' in severities:
-                    severity = 'error'
-                elif 'warning' in severities:
-                    severity = 'warning'
+                if "error" in severities:
+                    severity = "error"
+                elif "warning" in severities:
+                    severity = "warning"
 
             lines.append(
                 f"{qid},{result.status},{result.passed},{result.error_code or ''},"
@@ -1563,19 +1583,27 @@ class ValidationOrchestrator:
             f"- **Passed**: {self.passed_count}",
             f"- **Failed**: {self.failed_count}",
             f"- **Invalid**: {self.invalid_count}",
-            f"- **Success Rate**: {self.passed_count / self.validated_count * 100:.1f}%" if self.validated_count > 0 else "- **Success Rate**: N/A",
+            (
+                f"- **Success Rate**: {self.passed_count / self.validated_count * 100:.1f}%"
+                if self.validated_count > 0
+                else "- **Success Rate**: N/A"
+            ),
             "",
             "## Failed Validations",
             "",
             "| Question ID | Status | Error Code | Failures | Remediation |",
-            "|-------------|--------|------------|----------|-------------|"
+            "|-------------|--------|------------|----------|-------------|",
         ]
 
         failed = self.get_failed_questions()
         for qid, result in sorted(failed.items()):
             failure_count = len(result.failures_detailed)
-            error_code = result.error_code or 'N/A'
-            remediation = (result.remediation or 'None')[:50] + '...' if result.remediation and len(result.remediation) > 50 else (result.remediation or 'None')
+            error_code = result.error_code or "N/A"
+            remediation = (
+                (result.remediation or "None")[:50] + "..."
+                if result.remediation and len(result.remediation) > 50
+                else (result.remediation or "None")
+            )
 
             lines.append(
                 f"| {qid} | {result.status} | {error_code} | {failure_count} | {remediation} |"
@@ -1588,7 +1616,7 @@ def validate_result_with_orchestrator(
     result: dict[str, Any],
     signal_node: dict[str, Any],
     orchestrator: ValidationOrchestrator | None = None,
-    auto_register: bool = True
+    auto_register: bool = True,
 ) -> ValidationResult:
     """
     Validate a result and optionally register it with the orchestrator.
@@ -1620,7 +1648,7 @@ def validate_result_with_orchestrator(
         >>> orchestrator.complete_orchestration()
         >>> print(orchestrator.get_remediation_report())
     """
-    question_id = signal_node.get('id', 'UNKNOWN')
+    question_id = signal_node.get("id", "UNKNOWN")
 
     try:
         validation_result = validate_with_contract(result, signal_node)
@@ -1632,22 +1660,19 @@ def validate_result_with_orchestrator(
 
     except Exception as e:
         logger.error(
-            "validation_execution_error",
-            question_id=question_id,
-            error=str(e),
-            exc_info=True
+            "validation_execution_error", question_id=question_id, error=str(e), exc_info=True
         )
 
         error_result = ValidationResult(
-            status='error',
+            status="error",
             passed=False,
-            error_code='VALIDATION_EXECUTION_ERROR',
+            error_code="VALIDATION_EXECUTION_ERROR",
             remediation=f"Validation execution failed: {str(e)}",
             diagnostics={
-                'question_id': question_id,
-                'error_type': type(e).__name__,
-                'error_message': str(e)
-            }
+                "question_id": question_id,
+                "error_type": type(e).__name__,
+                "error_message": str(e),
+            },
         )
 
         if orchestrator and auto_register:
@@ -1659,7 +1684,7 @@ def validate_result_with_orchestrator(
 def validate_batch_results(
     results: list[tuple[dict[str, Any], dict[str, Any]]],
     orchestrator: ValidationOrchestrator | None = None,
-    continue_on_error: bool = True
+    continue_on_error: bool = True,
 ) -> list[ValidationResult]:
     """
     Validate a batch of results with their corresponding signal nodes.
@@ -1698,31 +1723,28 @@ def validate_batch_results(
                 result=result,
                 signal_node=signal_node,
                 orchestrator=orchestrator,
-                auto_register=True
+                auto_register=True,
             )
             validation_results.append(validation)
         except Exception as e:
             if not continue_on_error:
                 raise
 
-            question_id = signal_node.get('id', 'UNKNOWN')
+            question_id = signal_node.get("id", "UNKNOWN")
             logger.error(
-                "batch_validation_error",
-                question_id=question_id,
-                error=str(e),
-                exc_info=True
+                "batch_validation_error", question_id=question_id, error=str(e), exc_info=True
             )
 
             error_result = ValidationResult(
-                status='error',
+                status="error",
                 passed=False,
-                error_code='BATCH_VALIDATION_ERROR',
+                error_code="BATCH_VALIDATION_ERROR",
                 remediation=f"Batch validation error: {str(e)}",
                 diagnostics={
-                    'question_id': question_id,
-                    'error_type': type(e).__name__,
-                    'error_message': str(e)
-                }
+                    "question_id": question_id,
+                    "error_type": type(e).__name__,
+                    "error_message": str(e),
+                },
             )
             validation_results.append(error_result)
 
@@ -1733,8 +1755,7 @@ def validate_batch_results(
 
 
 def ensure_complete_validation_coverage(
-    expected_question_ids: list[str],
-    orchestrator: ValidationOrchestrator
+    expected_question_ids: list[str], orchestrator: ValidationOrchestrator
 ) -> dict[str, Any]:
     """
     Ensure all expected questions have been validated.
@@ -1762,27 +1783,26 @@ def ensure_complete_validation_coverage(
     """
     coverage = orchestrator.get_validation_coverage_report(expected_question_ids)
 
-    if coverage['missing_count'] > 0:
+    if coverage["missing_count"] > 0:
         logger.warning(
             "incomplete_validation_coverage",
-            expected=coverage['total_expected'],
-            validated=coverage['total_validated'],
-            missing=coverage['missing_count'],
-            coverage_pct=coverage['coverage_percentage'],
-            missing_sample=coverage['missing_questions'][:20]
+            expected=coverage["total_expected"],
+            validated=coverage["total_validated"],
+            missing=coverage["missing_count"],
+            coverage_pct=coverage["coverage_percentage"],
+            missing_sample=coverage["missing_questions"][:20],
         )
 
         # Register skipped entries for missing questions
-        for question_id in coverage['missing_questions']:
+        for question_id in coverage["missing_questions"]:
             orchestrator.register_skipped(
-                question_id=question_id,
-                reason="Question was not processed or executed"
+                question_id=question_id, reason="Question was not processed or executed"
             )
     else:
         logger.info(
             "complete_validation_coverage",
-            total_validated=coverage['total_validated'],
-            coverage_pct=100.0
+            total_validated=coverage["total_validated"],
+            coverage_pct=100.0,
         )
 
     return coverage
@@ -1791,19 +1811,19 @@ def ensure_complete_validation_coverage(
 # === EXPORTS ===
 
 __all__ = [
-    'ValidationFailure',
-    'ValidationResult',
-    'ValidationOrchestrator',
-    'check_failure_condition',
-    'execute_failure_contract',
-    'execute_validations',
-    'validate_with_contract',
-    'validate_rule',
-    'validate_rule_detailed',
-    'validate_result_with_orchestrator',
-    'validate_batch_results',
-    'ensure_complete_validation_coverage',
-    'get_global_validation_orchestrator',
-    'set_global_validation_orchestrator',
-    'reset_global_validation_orchestrator',
+    "ValidationFailure",
+    "ValidationResult",
+    "ValidationOrchestrator",
+    "check_failure_condition",
+    "execute_failure_contract",
+    "execute_validations",
+    "validate_with_contract",
+    "validate_rule",
+    "validate_rule_detailed",
+    "validate_result_with_orchestrator",
+    "validate_batch_results",
+    "ensure_complete_validation_coverage",
+    "get_global_validation_orchestrator",
+    "set_global_validation_orchestrator",
+    "reset_global_validation_orchestrator",
 ]

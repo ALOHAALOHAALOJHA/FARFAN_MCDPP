@@ -20,18 +20,24 @@ from typing import Any
 
 try:
     import blake3
+
     BLAKE3_AVAILABLE = True
 except ImportError:
     BLAKE3_AVAILABLE = False
 
 try:
     import structlog
+
     logger = structlog.get_logger(__name__)
 except ImportError:
     import logging
+
     logger = logging.getLogger(__name__)
 
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import SignalManifest, generate_signal_manifests
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+    SignalManifest,
+    generate_signal_manifests,
+)
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import SignalPack
 from farfan_pipeline.infrastructure.irrigation_using_signals.ports import QuestionnairePort
 
@@ -47,7 +53,7 @@ def compute_fingerprint(content: str | bytes) -> str:
         Hex string of hash
     """
     if isinstance(content, str):
-        content = content.encode('utf-8')
+        content = content.encode("utf-8")
 
     if BLAKE3_AVAILABLE:
         return blake3.blake3(content).hexdigest()
@@ -59,9 +65,7 @@ def compute_fingerprint(content: str | bytes) -> str:
 # Do NOT create additional implementations - this is the single source
 
 
-def extract_patterns_by_policy_area(
-    monolith: dict[str, Any]
-) -> dict[str, list[dict[str, Any]]]:
+def extract_patterns_by_policy_area(monolith: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
     """
     Extract patterns grouped by policy area.
 
@@ -71,12 +75,12 @@ def extract_patterns_by_policy_area(
     Returns:
         Dict mapping policy_area_id to list of patterns
     """
-    questions = monolith.get('blocks', {}).get('micro_questions', [])
+    questions = monolith.get("blocks", {}).get("micro_questions", [])
 
     patterns_by_pa = {}
     for question in questions:
-        policy_area = question.get('policy_area_id', 'PA01')
-        patterns = question.get('patterns', [])
+        policy_area = question.get("policy_area_id", "PA01")
+        patterns = question.get("patterns", [])
 
         if policy_area not in patterns_by_pa:
             patterns_by_pa[policy_area] = []
@@ -92,9 +96,7 @@ def extract_patterns_by_policy_area(
     return patterns_by_pa
 
 
-def categorize_patterns(
-    patterns: list[dict[str, Any]]
-) -> dict[str, list[str]]:
+def categorize_patterns(patterns: list[dict[str, Any]]) -> dict[str, list[str]]:
     """
     Categorize patterns by their category field.
 
@@ -109,35 +111,35 @@ def categorize_patterns(
         - temporal: TEMPORAL patterns
     """
     categorized = {
-        'all_patterns': [],
-        'indicators': [],
-        'sources': [],
-        'temporal': [],
-        'entities': [],
+        "all_patterns": [],
+        "indicators": [],
+        "sources": [],
+        "temporal": [],
+        "entities": [],
     }
 
     for pattern_obj in patterns:
-        pattern_str = pattern_obj.get('pattern', '')
-        category = pattern_obj.get('category', '')
+        pattern_str = pattern_obj.get("pattern", "")
+        category = pattern_obj.get("category", "")
 
         if not pattern_str:
             continue
 
         # All non-temporal patterns
-        if category != 'TEMPORAL':
-            categorized['all_patterns'].append(pattern_str)
+        if category != "TEMPORAL":
+            categorized["all_patterns"].append(pattern_str)
 
         # Category-specific
-        if category == 'INDICADOR':
-            categorized['indicators'].append(pattern_str)
-        elif category == 'FUENTE_OFICIAL':
-            categorized['sources'].append(pattern_str)
+        if category == "INDICADOR":
+            categorized["indicators"].append(pattern_str)
+        elif category == "FUENTE_OFICIAL":
+            categorized["sources"].append(pattern_str)
             # Sources are also entities
             # Extract entity names from pattern (simplified)
-            parts = pattern_str.split('|')
-            categorized['entities'].extend(p.strip() for p in parts if p.strip())
-        elif category == 'TEMPORAL':
-            categorized['temporal'].append(pattern_str)
+            parts = pattern_str.split("|")
+            categorized["entities"].extend(p.strip() for p in parts if p.strip())
+        elif category == "TEMPORAL":
+            categorized["temporal"].append(pattern_str)
 
     # Deduplicate
     for key in categorized:
@@ -157,9 +159,7 @@ def extract_thresholds(patterns: list[dict[str, Any]]) -> dict[str, float]:
         Dict with threshold values
     """
     confidence_weights = [
-        p.get('confidence_weight', 0.85)
-        for p in patterns
-        if 'confidence_weight' in p
+        p.get("confidence_weight", 0.85) for p in patterns if "confidence_weight" in p
     ]
 
     if confidence_weights:
@@ -172,10 +172,10 @@ def extract_thresholds(patterns: list[dict[str, Any]]) -> dict[str, float]:
         avg_confidence = 0.85
 
     return {
-        'min_confidence': round(min_confidence, 2),
-        'max_confidence': round(max_confidence, 2),
-        'avg_confidence': round(avg_confidence, 2),
-        'min_evidence': 0.70,  # Derived from scoring requirements
+        "min_confidence": round(min_confidence, 2),
+        "max_confidence": round(max_confidence, 2),
+        "avg_confidence": round(avg_confidence, 2),
+        "min_evidence": 0.70,  # Derived from scoring requirements
     }
 
 
@@ -188,9 +188,11 @@ def get_git_sha() -> str:
     """
     try:
         import subprocess
+
         result = subprocess.run(
-            ['git', 'rev-parse', '--short', 'HEAD'],
-            check=False, capture_output=True,
+            ["git", "rev-parse", "--short", "HEAD"],
+            check=False,
+            capture_output=True,
             text=True,
             timeout=2,
         )
@@ -199,7 +201,7 @@ def get_git_sha() -> str:
     except Exception:
         pass
 
-    return 'unknown'
+    return "unknown"
 
 
 def build_signal_pack_from_monolith(
@@ -229,7 +231,6 @@ def build_signal_pack_from_monolith(
         >>> print(f"Patterns: {len(pack.patterns)}")
         >>> print(f"Indicators: {len(pack.indicators)}")
     """
-
 
     if monolith is not None:
         monolith_data = monolith
@@ -277,7 +278,7 @@ def build_signal_pack_from_monolith(
     version = "1.0.0"
 
     # Regex patterns are all patterns (for now)
-    regex_patterns = categorized['all_patterns'][:100]  # Limit for performance
+    regex_patterns = categorized["all_patterns"][:100]  # Limit for performance
 
     # Map policy area to PolicyArea type (using fiscal as default)
     # The SignalPack PolicyArea type is limited, so we use fiscal as a placeholder
@@ -287,21 +288,19 @@ def build_signal_pack_from_monolith(
     signal_pack = SignalPack(
         version=version,
         policy_area=policy_area_type,
-        patterns=categorized['all_patterns'][:200],  # Limit for performance
-        indicators=categorized['indicators'][:50],
+        patterns=categorized["all_patterns"][:200],  # Limit for performance
+        indicators=categorized["indicators"][:50],
         regex=regex_patterns,
-        entities=categorized['entities'][:100],
+        entities=categorized["entities"][:100],
         thresholds=thresholds,
         ttl_s=86400,  # 24 hours
         source_fingerprint=source_fingerprint[:32],  # Truncate for readability
         metadata={
-            'original_policy_area': policy_area,
-            'total_raw_patterns': len(raw_patterns),
-            'categorized_counts': {
-                key: len(val) for key, val in categorized.items()
-            },
-            'git_sha': git_sha,
-        }
+            "original_policy_area": policy_area,
+            "total_raw_patterns": len(raw_patterns),
+            "categorized_counts": {key: len(val) for key, val in categorized.items()},
+            "git_sha": git_sha,
+        },
     )
 
     logger.info(
@@ -337,7 +336,6 @@ def build_all_signal_packs(
         >>> packs = build_all_signal_packs(questionnaire=canonical)
         >>> print(f"Built {len(packs)} signal packs")
     """
-
 
     if monolith is None and questionnaire is None:
         raise ValueError("Questionnaire data is required to build signal packs")
@@ -381,14 +379,13 @@ def build_signal_manifests(
         >>> print(f"Built {len(manifests)} manifests")
     """
 
-
     if monolith is not None:
         monolith_data = monolith
     elif questionnaire is not None:
         monolith_data = dict(questionnaire.data)
     else:
         raise ValueError("Questionnaire data is required to build signal manifests")
-    
+
     manifests = generate_signal_manifests(monolith_data, None)
 
     logger.info(

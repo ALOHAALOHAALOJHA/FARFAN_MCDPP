@@ -27,10 +27,7 @@ from enum import Enum
 
 
 # Policy Area identifiers (10 total)
-POLICY_AREAS = [
-    "PA01", "PA02", "PA03", "PA04", "PA05",
-    "PA06", "PA07", "PA08", "PA09", "PA10"
-]
+POLICY_AREAS = ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
 
 # Expected output count for Phase 5
 EXPECTED_AREA_SCORE_COUNT = 10
@@ -46,7 +43,7 @@ CLUSTER_ASSIGNMENTS = {
     "CLUSTER_MESO_1": ["PA01", "PA02", "PA03"],
     "CLUSTER_MESO_2": ["PA04", "PA05", "PA06"],
     "CLUSTER_MESO_3": ["PA07", "PA08"],
-    "CLUSTER_MESO_4": ["PA09", "PA10"]
+    "CLUSTER_MESO_4": ["PA09", "PA10"],
 }
 
 # Score bounds (3-point scale)
@@ -59,6 +56,7 @@ HERMETICITY_TOLERANCE = 1e-6
 
 class QualityLevel(Enum):
     """Quality levels for area scores."""
+
     EXCELENTE = "EXCELENTE"
     BUENO = "BUENO"
     ACEPTABLE = "ACEPTABLE"
@@ -66,12 +64,7 @@ class QualityLevel(Enum):
 
 
 # Quality level thresholds (normalized)
-QUALITY_THRESHOLDS = {
-    "EXCELENTE": 0.85,
-    "BUENO": 0.70,
-    "ACEPTABLE": 0.55,
-    "INSUFICIENTE": 0.0
-}
+QUALITY_THRESHOLDS = {"EXCELENTE": 0.85, "BUENO": 0.70, "ACEPTABLE": 0.55, "INSUFICIENTE": 0.0}
 
 
 # Phase 5 validation invariants

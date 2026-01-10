@@ -8,7 +8,9 @@ import json
 from pathlib import Path
 
 contracts_dir = Path("src/farfan_pipeline/phases/Phase_two/generated_contracts")
-audit_script = Path("src/farfan_pipeline/phases/Phase_two/epistemological_assets/audit_v4_rigorous.py")
+audit_script = Path(
+    "src/farfan_pipeline/phases/Phase_two/epistemological_assets/audit_v4_rigorous.py"
+)
 
 contract_files = sorted(contracts_dir.glob("D*_Q*_contract_v4.json"))
 
@@ -17,22 +19,14 @@ print(f"AUDIT V4 RIGUROUS - {len(contract_files)} CONTRATOS")
 print("=" * 80)
 print()
 
-results = {
-    "total_audited": 0,
-    "passed": 0,
-    "failed": 0,
-    "errors": [],
-    "summary_by_contract": {}
-}
+results = {"total_audited": 0, "passed": 0, "failed": 0, "errors": [], "summary_by_contract": {}}
 
 for contract_file in contract_files:
     contract_name = contract_file.name
 
     # Run audit
     result = subprocess.run(
-        ["python3", str(audit_script), str(contract_file)],
-        capture_output=True,
-        text=True
+        ["python3", str(audit_script), str(contract_file)], capture_output=True, text=True
     )
 
     # Parse output
@@ -47,13 +41,20 @@ for contract_file in contract_files:
     if result.returncode != 0 or "HARD FAILURE" in output:
         results["failed"] += 1
         results["errors"].append(contract_name)
-        results["summary_by_contract"][contract_name] = {"status": "FAILED", "failures": failure_count}
+        results["summary_by_contract"][contract_name] = {
+            "status": "FAILED",
+            "failures": failure_count,
+        }
     elif failure_count == 0:
         results["passed"] += 1
         results["summary_by_contract"][contract_name] = {"status": "PASSED", "checks": pass_count}
     else:
         results["failed"] += 1
-        results["summary_by_contract"][contract_name] = {"status": "WARNINGS", "failures": failure_count, "checks": pass_count}
+        results["summary_by_contract"][contract_name] = {
+            "status": "WARNINGS",
+            "failures": failure_count,
+            "checks": pass_count,
+        }
 
     # Show progress
     status = "✅ PASS" if failure_count == 0 else f"⚠️  {failure_count} issues"

@@ -1,6 +1,7 @@
 """
 Dashboard Configuration
 """
+
 import os
 
 # Database Configuration

@@ -285,6 +285,7 @@ VALIDATION_ERROR_ZERO_MACRO = "ZERO_MACRO"
 # UTILITY FUNCTIONS
 # =============================================================================
 
+
 def get_quality_level(score: float) -> str:
     """
     Determine quality level from macro score.
@@ -409,8 +410,7 @@ __all__ = [
     "COHERENCE_GOOD",
     "COHERENCE_ACCEPTABLE",
     "COHERENCE_POOR",
-    "Uncertainty quantification"
-    "BOOTSTRAP_DEFAULT_ITERATIONS",
+    "Uncertainty quantification" "BOOTSTRAP_DEFAULT_ITERATIONS",
     "CONFIDENCE_LEVEL_DEFAULT",
     # Constitutional bounds
     "CONSTITUTIONAL_BOUNDS",

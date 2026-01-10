@@ -28,15 +28,19 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, TypeVar
 
+
 # Calibration removed - stub placeholders
 def get_parameter_loader() -> Any:
     """Stub: Calibration parameter loader removed."""
     return None
 
+
 def calibrated_method(method_path: str) -> Any:
     """Stub decorator: Calibration removed."""
+
     def decorator(func: Any) -> Any:
         return func
+
     return decorator
 
 
@@ -56,15 +60,17 @@ from farfan_pipeline.phases.Phase_4.choquet_adapter import (
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import QuestionnaireSignalRegistry
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+        QuestionnaireSignalRegistry,
+    )
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 @dataclass(frozen=True)
 class AggregationSettings:
     """Resolved aggregation settings derived from the questionnaire monolith.
-    
+
     SISAS: Now supports construction from signal registry for deterministic irrigation.
     """
 
@@ -88,35 +94,35 @@ class AggregationSettings:
         level: str = "MACRO_1",
     ) -> "AggregationSettings":
         """SISAS: Build aggregation settings from signal registry.
-        
+
         This method provides deterministic, signal-driven aggregation by:
         1. Using AssemblySignalPack for canonical weights
         2. Tracking source_hash for byte-reproducibility
         3. Ensuring single source of truth from registry
-        
+
         Args:
             registry: SISAS signal registry with assembly signals
             level: Assembly level (MESO_1, MESO_2, MACRO_1)
-            
+
         Returns:
             AggregationSettings with signal-derived weights
-            
+
         Raises:
             SignalExtractionError: If assembly signals cannot be retrieved
         """
         logger.info(f"SISAS: Building AggregationSettings from registry (level={level})")
-        
+
         try:
             # Get assembly signals from registry
             # Note: Using "meso" as the canonical level for aggregation assembly signals
             assembly_pack = registry.get_assembly_signals("meso")
-            source_hash = getattr(assembly_pack, 'source_hash', None)
-            
+            source_hash = getattr(assembly_pack, "source_hash", None)
+
             # Extract weights from assembly pack
-            cluster_policy_areas = getattr(assembly_pack, 'cluster_policy_areas', {})
-            dimension_weights = getattr(assembly_pack, 'dimension_weights', {})
-            aggregation_methods = getattr(assembly_pack, 'aggregation_methods', {})
-            
+            cluster_policy_areas = getattr(assembly_pack, "cluster_policy_areas", {})
+            dimension_weights = getattr(assembly_pack, "dimension_weights", {})
+            aggregation_methods = getattr(assembly_pack, "aggregation_methods", {})
+
             # Build cluster weights from cluster_policy_areas mapping
             cluster_policy_area_weights: dict[str, dict[str, float]] = {}
             for cluster_id, area_ids in cluster_policy_areas.items():
@@ -125,14 +131,14 @@ class AggregationSettings:
                     cluster_policy_area_weights[cluster_id] = {
                         area_id: equal_weight for area_id in area_ids
                     }
-            
+
             # Build macro weights (equal across clusters)
             cluster_ids = list(cluster_policy_areas.keys())
             macro_cluster_weights: dict[str, float] = {}
             if cluster_ids:
                 equal_weight = 1.0 / len(cluster_ids)
                 macro_cluster_weights = {cid: equal_weight for cid in cluster_ids}
-            
+
             settings = cls(
                 dimension_group_by_keys=["policy_area", "dimension"],
                 area_group_by_keys=["area_id"],
@@ -146,14 +152,14 @@ class AggregationSettings:
                 source_hash=source_hash,
                 sisas_source="sisas_registry",
             )
-            
+
             logger.info(
                 f"SISAS: AggregationSettings built from registry - "
                 f"clusters={len(cluster_policy_area_weights)}, source_hash={source_hash[:16] if source_hash else 'N/A'}..."
             )
-            
+
             return settings
-            
+
         except Exception as e:
             logger.warning(
                 "SISAS: Failed to build from registry (%s); falling back to legacy empty weights "
@@ -289,18 +295,18 @@ class AggregationSettings:
         level: str = "MACRO_1",
     ) -> "AggregationSettings":
         """SISAS: Transition method - prefer registry, fallback to monolith.
-        
+
         This method enables gradual migration from legacy monolith-based
         configuration to SISAS signal-driven configuration.
-        
+
         Args:
             monolith: Legacy questionnaire monolith (fallback)
             registry: SISAS signal registry (preferred)
             level: Assembly level for registry (MESO_1, MESO_2, MACRO_1)
-            
+
         Returns:
             AggregationSettings from registry if available, else from monolith
-            
+
         Raises:
             ValueError: If neither registry nor monolith provided
         """
@@ -445,11 +451,14 @@ class AggregationSettings:
             if normalized:
                 return normalized
 
-        cluster_ids = [cluster.get("cluster_id") for cluster in clusters if cluster.get("cluster_id")]
+        cluster_ids = [
+            cluster.get("cluster_id") for cluster in clusters if cluster.get("cluster_id")
+        ]
         if not cluster_ids:
             return {}
         equal = 1.0 / len(cluster_ids)
         return {cluster_id: equal for cluster_id in cluster_ids}
+
 
 def group_by(items: Iterable[T], key_func: Callable[[T], tuple]) -> dict[tuple, list[T]]:
     """
@@ -491,6 +500,7 @@ def group_by(items: Iterable[T], key_func: Callable[[T], tuple]) -> dict[tuple, 
         grouped[key_func(item)].append(item)
     return dict(grouped)
 
+
 def validate_scored_results(results: list[dict[str, Any]]) -> list[ScoredResult]:
     """
     Validates a list of dictionaries and converts them to ScoredResult objects.
@@ -518,9 +528,7 @@ def validate_scored_results(results: list[dict[str, Any]]) -> list[ScoredResult]
     for i, res_dict in enumerate(results):
         missing_keys = set(required_keys) - set(res_dict)
         if missing_keys:
-            raise ValidationError(
-                f"Invalid ScoredResult at index {i}: missing keys {missing_keys}"
-            )
+            raise ValidationError(f"Invalid ScoredResult at index {i}: missing keys {missing_keys}")
 
         normalized = dict(res_dict)
         qid = normalized["question_global"]
@@ -564,6 +572,7 @@ def validate_scored_results(results: list[dict[str, Any]]) -> list[ScoredResult]
             raise ValidationError(f"Invalid ScoredResult at index {i}: {e}") from e
     return validated_results
 
+
 def _normalize_question_node_id(question_id: int | str) -> str:
     if isinstance(question_id, int):
         return f"Q{question_id:03d}"
@@ -574,18 +583,22 @@ def _normalize_question_node_id(question_id: int | str) -> str:
         return f"Q{int(suffix):03d}"
     return question_id_str
 
+
 # Import canonical notation for validation
 try:
     from farfan_pipeline.core.canonical_notation import get_all_dimensions, get_all_policy_areas
+
     HAS_CANONICAL_NOTATION = True
 except ImportError:
     HAS_CANONICAL_NOTATION = False
 
 logger = logging.getLogger(__name__)
 
+
 @dataclass
 class ScoredResult:
     """Represents a single, scored micro-question, forming the input for aggregation."""
+
     question_global: int | str
     base_slot: str
     policy_area: str
@@ -595,16 +608,18 @@ class ScoredResult:
     evidence: dict[str, Any]
     raw_results: dict[str, Any]
 
+
 @dataclass
 class DimensionScore:
     """
     Aggregated score for a single dimension within a policy area.
-    
+
     SOTA Extensions:
     - Uncertainty quantification (mean, std, CI)
     - Provenance tracking (DAG node ID)
     - Aggregation method recording
     """
+
     dimension_id: str
     area_id: str
     score: float
@@ -612,26 +627,28 @@ class DimensionScore:
     contributing_questions: list[int | str]
     validation_passed: bool = True
     validation_details: dict[str, Any] = field(default_factory=dict)
-    
+
     # SOTA: Uncertainty quantification
     score_std: float = 0.0
     confidence_interval_95: tuple[float, float] = field(default_factory=lambda: (0.0, 0.0))
     epistemic_uncertainty: float = 0.0
     aleatoric_uncertainty: float = 0.0
-    
+
     # SOTA: Provenance tracking
     provenance_node_id: str = ""
     aggregation_method: str = "weighted_average"
+
 
 @dataclass
 class AreaScore:
     """
     Aggregated score for a policy area, based on its constituent dimensions.
-    
+
     SOTA Extensions:
     - Uncertainty quantification
     - Provenance tracking
     """
+
     area_id: str
     area_name: str
     score: float
@@ -640,24 +657,26 @@ class AreaScore:
     validation_passed: bool = True
     validation_details: dict[str, Any] = field(default_factory=dict)
     cluster_id: str | None = None
-    
+
     # SOTA: Uncertainty quantification
     score_std: float = 0.0
     confidence_interval_95: tuple[float, float] = field(default_factory=lambda: (0.0, 0.0))
-    
+
     # SOTA: Provenance tracking
     provenance_node_id: str = ""
     aggregation_method: str = "weighted_average"
+
 
 @dataclass
 class ClusterScore:
     """
     Aggregated score for a MESO cluster, based on its policy areas.
-    
+
     SOTA Extensions:
     - Uncertainty quantification
     - Provenance tracking
     """
+
     cluster_id: str
     cluster_name: str
     areas: list[str]
@@ -668,18 +687,20 @@ class ClusterScore:
     area_scores: list[AreaScore]
     validation_passed: bool = True
     validation_details: dict[str, Any] = field(default_factory=dict)
-    
+
     # SOTA: Uncertainty quantification
     score_std: float = 0.0
     confidence_interval_95: tuple[float, float] = field(default_factory=lambda: (0.0, 0.0))
-    
+
     # SOTA: Provenance tracking
     provenance_node_id: str = ""
     aggregation_method: str = "weighted_average"
 
+
 @dataclass
 class MacroScore:
     """Represents the final, holistic macro evaluation score for the entire system."""
+
     score: float
     quality_level: str
     cross_cutting_coherence: float  # Coherence across all clusters
@@ -689,29 +710,42 @@ class MacroScore:
     validation_passed: bool = True
     validation_details: dict[str, Any] = field(default_factory=dict)
 
+
 class AggregationError(Exception):
     """Base exception for aggregation errors."""
+
     pass
+
 
 class ValidationError(AggregationError):
     """Raised when validation fails."""
+
     pass
+
 
 class WeightValidationError(ValidationError):
     """Raised when weight validation fails."""
+
     pass
+
 
 class ThresholdValidationError(ValidationError):
     """Raised when threshold validation fails."""
+
     pass
+
 
 class HermeticityValidationError(ValidationError):
     """Raised when hermeticity validation fails."""
+
     pass
+
 
 class CoverageError(AggregationError):
     """Raised when coverage requirements are not met."""
+
     pass
+
 
 def calculate_weighted_average(scores: list[float], weights: list[float] | None = None) -> float:
     if not scores:
@@ -734,6 +768,7 @@ def calculate_weighted_average(scores: list[float], weights: list[float] | None 
         raise WeightValidationError(msg)
 
     return sum(score * weight for score, weight in zip(scores, weights, strict=False))
+
 
 class DimensionAggregator:
     """
@@ -771,23 +806,22 @@ class DimensionAggregator:
         self.monolith = monolith
         self.abort_on_insufficient = abort_on_insufficient
         self._signal_registry = signal_registry  # SISAS: Cache for signal-driven config
-        
+
         # SISAS: Use transition method for automatic detection
         # Handle case where both are None gracefully
         if aggregation_settings is not None:
             self.aggregation_settings = aggregation_settings
         elif signal_registry is not None or monolith is not None:
             self.aggregation_settings = AggregationSettings.from_monolith_or_registry(
-                monolith=monolith,
-                registry=signal_registry,
-                level="MACRO_1"
+                monolith=monolith, registry=signal_registry, level="MACRO_1"
             )
         else:
             # Both None - use empty settings (legacy fallback)
             self.aggregation_settings = AggregationSettings.from_monolith(None)
-        self.dimension_group_by_keys = (
-            self.aggregation_settings.dimension_group_by_keys or ["policy_area", "dimension"]
-        )
+        self.dimension_group_by_keys = self.aggregation_settings.dimension_group_by_keys or [
+            "policy_area",
+            "dimension",
+        ]
         self.enable_sota_features = enable_sota_features
 
         # Extract configuration if monolith provided
@@ -820,7 +854,9 @@ class DimensionAggregator:
             except Exception as e:
                 logger.warning(f"Could not load canonical notation: {e}")
 
-    @calibrated_method("farfan_core.processing.aggregation.DimensionAggregator.validate_dimension_id")
+    @calibrated_method(
+        "farfan_core.processing.aggregation.DimensionAggregator.validate_dimension_id"
+    )
     def validate_dimension_id(self, dimension_id: str) -> bool:
         """
         Validate dimension ID against canonical notation.
@@ -854,7 +890,9 @@ class DimensionAggregator:
             logger.warning(f"Could not validate dimension ID: {e}")
             return True  # Don't fail if validation can't be performed
 
-    @calibrated_method("farfan_core.processing.aggregation.DimensionAggregator.validate_policy_area_id")
+    @calibrated_method(
+        "farfan_core.processing.aggregation.DimensionAggregator.validate_policy_area_id"
+    )
     def validate_policy_area_id(self, area_id: str) -> bool:
         """
         Validate policy area ID against canonical notation.
@@ -877,7 +915,9 @@ class DimensionAggregator:
             if area_id in canonical_areas:
                 return True
 
-            msg = f"Invalid policy area ID: {area_id}. Valid codes: {sorted(canonical_areas.keys())}"
+            msg = (
+                f"Invalid policy area ID: {area_id}. Valid codes: {sorted(canonical_areas.keys())}"
+            )
             logger.error(msg)
             if self.abort_on_insufficient:
                 raise ValidationError(msg)
@@ -922,9 +962,7 @@ class DimensionAggregator:
         return True, "Weights valid"
 
     def validate_coverage(
-        self,
-        results: list[ScoredResult],
-        expected_count: int = 5
+        self, results: list[ScoredResult], expected_count: int = 5
     ) -> tuple[bool, str]:
         """
         Checks if the number of results meets a minimum expectation.
@@ -955,9 +993,7 @@ class DimensionAggregator:
         return True, "Coverage sufficient"
 
     def calculate_weighted_average(
-        self,
-        scores: list[float],
-        weights: list[float] | None = None
+        self, scores: list[float], weights: list[float] | None = None
     ) -> float:
         """
         Calculates a weighted average, defaulting to an equal weighting if none provided.
@@ -990,28 +1026,28 @@ class DimensionAggregator:
     ) -> tuple[float, UncertaintyMetrics | None]:
         """
         SOTA aggregation with Choquet integral and uncertainty quantification.
-        
+
         This method provides:
         1. Non-linear aggregation via Choquet integral (captures synergies)
         2. Bayesian uncertainty quantification via bootstrap
         3. Full reproducibility with fixed random seed
-        
+
         Args:
             scores: Input scores to aggregate
             weights: Optional weights (default: uniform)
             method: Aggregation method ("choquet" or "weighted_average")
             compute_uncertainty: Whether to compute uncertainty metrics
-        
+
         Returns:
             Tuple of (aggregated_score, uncertainty_metrics)
             If compute_uncertainty=False, uncertainty_metrics is None
-        
+
         Raises:
             ValueError: If scores is empty or method invalid
         """
         if not scores:
             raise ValueError("Cannot aggregate empty score list")
-        
+
         if method == "choquet":
             # Use Choquet integral for non-linear aggregation
             choquet_adapter = create_default_choquet_adapter(len(scores))
@@ -1022,7 +1058,7 @@ class DimensionAggregator:
             score = self.calculate_weighted_average(scores, weights)
         else:
             raise ValueError(f"Unknown aggregation method: {method}")
-        
+
         # Compute uncertainty if requested
         uncertainty = None
         if compute_uncertainty and self.bootstrap_aggregator:
@@ -1034,13 +1070,11 @@ class DimensionAggregator:
                 f"std={uncertainty.std:.4f}, "
                 f"CI95={uncertainty.confidence_interval_95}"
             )
-        
+
         return score, uncertainty
 
     def apply_rubric_thresholds(
-        self,
-        score: float,
-        thresholds: dict[str, float] | None = None
+        self, score: float, thresholds: dict[str, float] | None = None
     ) -> str:
         """
         Apply rubric thresholds to determine quality level.
@@ -1061,13 +1095,13 @@ class DimensionAggregator:
 
         # Use provided thresholds or defaults
         if thresholds:
-            excellent_threshold = thresholds.get('EXCELENTE', 0.85)
-            good_threshold = thresholds.get('BUENO', 0.70)
-            acceptable_threshold = thresholds.get('ACEPTABLE', 0.55)
+            excellent_threshold = thresholds.get("EXCELENTE", 0.85)
+            good_threshold = thresholds.get("BUENO", 0.70)
+            acceptable_threshold = thresholds.get("ACEPTABLE", 0.55)
         else:
-            excellent_threshold = 0.85 # Refactored
-            good_threshold = 0.7 # Refactored
-            acceptable_threshold = 0.55 # Refactored
+            excellent_threshold = 0.85  # Refactored
+            good_threshold = 0.7  # Refactored
+            acceptable_threshold = 0.55  # Refactored
 
         # Apply thresholds
         if normalized_score >= excellent_threshold:
@@ -1127,7 +1161,7 @@ class DimensionAggregator:
             validation_details["coverage"] = {
                 "valid": coverage_valid,
                 "message": coverage_msg,
-                "count": len(dim_results)
+                "count": len(dim_results),
             }
         except CoverageError as e:
             logger.error(f"Coverage validation failed for {dimension_id}/{area_id}: {e}")
@@ -1139,7 +1173,7 @@ class DimensionAggregator:
                 quality_level="INSUFICIENTE",
                 contributing_questions=[],
                 validation_passed=False,
-                validation_details={"error": str(e), "type": "coverage"}
+                validation_details={"error": str(e), "type": "coverage"},
             )
 
         if not dim_results:
@@ -1151,7 +1185,7 @@ class DimensionAggregator:
                 quality_level="INSUFICIENTE",
                 contributing_questions=[],
                 validation_passed=False,
-                validation_details={"error": "No results", "type": "empty"}
+                validation_details={"error": "No results", "type": "empty"},
             )
 
         raw_scores = [r.score for r in dim_results]
@@ -1173,7 +1207,7 @@ class DimensionAggregator:
 
         # Calculate weighted average with SOTA features
         resolved_weights = weights or self._resolve_dimension_weights(dimension_id, dim_results)
-        
+
         # SOTA: Use Choquet + uncertainty if enabled
         if self.enable_sota_features and len(scores) >= 3:
             try:
@@ -1197,19 +1231,16 @@ class DimensionAggregator:
             avg_score = self.calculate_weighted_average(scores, resolved_weights)
             uncertainty = None
             validation_details["aggregation"] = {"method": "weighted_average"}
-        
+
         validation_details["weights"] = {
             "valid": True,
             "weights": resolved_weights if resolved_weights else "equal",
-            "score": avg_score
+            "score": avg_score,
         }
 
         # Apply rubric thresholds
         quality_level = self.apply_rubric_thresholds(avg_score)
-        validation_details["rubric"] = {
-            "score": avg_score,
-            "quality_level": quality_level
-        }
+        validation_details["rubric"] = {"score": avg_score, "quality_level": quality_level}
         validation_details["score_max"] = 3.0
 
         # SOTA: Add provenance tracking
@@ -1228,7 +1259,7 @@ class DimensionAggregator:
                 },
             )
             self.provenance_dag.add_node(dim_node)
-            
+
             # Add aggregation edges from questions to dimension
             question_node_ids = [_normalize_question_node_id(qid) for qid in question_ids]
             for qid_str, score_value in zip(question_node_ids, scores, strict=False):
@@ -1241,7 +1272,7 @@ class DimensionAggregator:
                         quality_level="UNKNOWN",
                     )
                     self.provenance_dag.add_node(q_node)
-            
+
             # Record aggregation operation
             self.provenance_dag.add_aggregation_edge(
                 source_ids=question_node_ids,
@@ -1250,8 +1281,10 @@ class DimensionAggregator:
                 weights=resolved_weights or [1.0 / len(question_ids)] * len(question_ids),
                 metadata={"dimension": dimension_id, "area": area_id},
             )
-            
-            logger.debug(f"Provenance recorded: {len(question_node_ids)} questions → {provenance_node_id}")
+
+            logger.debug(
+                f"Provenance recorded: {len(question_node_ids)} questions → {provenance_node_id}"
+            )
 
         logger.info(
             f"✓ Dimension {dimension_id}/{area_id}: "
@@ -1269,17 +1302,21 @@ class DimensionAggregator:
             validation_details=validation_details,
             # SOTA fields
             score_std=uncertainty.std if uncertainty else 0.0,
-            confidence_interval_95=uncertainty.confidence_interval_95 if uncertainty else (0.0, 0.0),
+            confidence_interval_95=(
+                uncertainty.confidence_interval_95 if uncertainty else (0.0, 0.0)
+            ),
             epistemic_uncertainty=uncertainty.epistemic_uncertainty if uncertainty else 0.0,
             aleatoric_uncertainty=uncertainty.aleatoric_uncertainty if uncertainty else 0.0,
             provenance_node_id=provenance_node_id if self.enable_sota_features else "",
-            aggregation_method="choquet" if (self.enable_sota_features and len(scores) >= 3) else "weighted_average",
+            aggregation_method=(
+                "choquet"
+                if (self.enable_sota_features and len(scores) >= 3)
+                else "weighted_average"
+            ),
         )
 
     def run(
-        self,
-        scored_results: list[ScoredResult],
-        group_by_keys: list[str]
+        self, scored_results: list[ScoredResult], group_by_keys: list[str]
     ) -> list[DimensionScore]:
         """
         Run the dimension aggregation process.
@@ -1291,8 +1328,10 @@ class DimensionAggregator:
         Returns:
             A list of DimensionScore objects.
         """
+
         def key_func(r):
             return tuple(getattr(r, key) for key in group_by_keys)
+
         grouped_results = group_by(scored_results, key_func)
 
         dimension_scores = []
@@ -1303,7 +1342,9 @@ class DimensionAggregator:
 
         return dimension_scores
 
-    @calibrated_method("farfan_core.processing.aggregation.DimensionAggregator._expected_question_count")
+    @calibrated_method(
+        "farfan_core.processing.aggregation.DimensionAggregator._expected_question_count"
+    )
     def _expected_question_count(self, area_id: str, dimension_id: str) -> int | None:
         if not self.aggregation_settings.dimension_expected_counts:
             return None
@@ -1336,10 +1377,11 @@ class DimensionAggregator:
             return None
         return [w / total for w in weights]
 
+
 def run_aggregation_pipeline(
     scored_results: list[dict[str, Any]],
     monolith: dict[str, Any],
-    abort_on_insufficient: bool = True
+    abort_on_insufficient: bool = True,
 ) -> list[ClusterScore]:
     """
     Orchestrates the end-to-end aggregation pipeline.
@@ -1396,12 +1438,10 @@ def run_aggregation_pipeline(
         aggregation_settings=aggregation_settings,
     )
     cluster_definitions = monolith["blocks"]["niveles_abstraccion"]["clusters"]
-    cluster_scores = cluster_aggregator.run(
-        area_scores,
-        cluster_definitions
-    )
+    cluster_scores = cluster_aggregator.run(area_scores, cluster_definitions)
 
     return cluster_scores
+
 
 class AreaPolicyAggregator:
     """
@@ -1432,7 +1472,9 @@ class AreaPolicyAggregator:
         """
         self.monolith = monolith
         self.abort_on_insufficient = abort_on_insufficient
-        self.aggregation_settings = aggregation_settings or AggregationSettings.from_monolith(monolith)
+        self.aggregation_settings = aggregation_settings or AggregationSettings.from_monolith(
+            monolith
+        )
         self.area_group_by_keys = self.aggregation_settings.area_group_by_keys or ["area_id"]
 
         # Extract configuration if monolith provided
@@ -1450,9 +1492,7 @@ class AreaPolicyAggregator:
         logger.info("AreaPolicyAggregator initialized")
 
     def validate_hermeticity(
-        self,
-        dimension_scores: list[DimensionScore],
-        area_id: str
+        self, dimension_scores: list[DimensionScore], area_id: str
     ) -> tuple[bool, str]:
         """
         Validate hermeticity (no dimension overlap/gaps).
@@ -1478,10 +1518,7 @@ class AreaPolicyAggregator:
             return False, f"No monolith data available for hermeticity validation of area {area_id}"
 
         # Get expected dimensions for this specific policy area
-        area_def = next(
-            (a for a in self.policy_areas if a["policy_area_id"] == area_id),
-            None
-        )
+        area_def = next((a for a in self.policy_areas if a["policy_area_id"] == area_id), None)
 
         if area_def and "dimension_ids" in area_def:
             expected_dimension_ids = set(area_def["dimension_ids"])
@@ -1496,10 +1533,7 @@ class AreaPolicyAggregator:
         # Check for missing dimensions
         missing_dims = expected_dimension_ids - actual_dimension_ids
         if missing_dims:
-            msg = (
-                f"Hermeticity violation for area {area_id}: "
-                f"missing dimensions {missing_dims}"
-            )
+            msg = f"Hermeticity violation for area {area_id}: " f"missing dimensions {missing_dims}"
             logger.error(msg)
             if self.abort_on_insufficient:
                 raise HermeticityValidationError(msg)
@@ -1509,8 +1543,7 @@ class AreaPolicyAggregator:
         extra_dims = actual_dimension_ids - expected_dimension_ids
         if extra_dims:
             msg = (
-                f"Hermeticity violation for area {area_id}: "
-                f"unexpected dimensions {extra_dims}"
+                f"Hermeticity violation for area {area_id}: " f"unexpected dimensions {extra_dims}"
             )
             logger.error(msg)
             if self.abort_on_insufficient:
@@ -1543,16 +1576,16 @@ class AreaPolicyAggregator:
         normalized = []
         for d in dimension_scores:
             # Extract max_expected from validation_details or default to 3.0
-            max_expected = d.validation_details.get('score_max', 3.0) if d.validation_details else 3.0
+            max_expected = (
+                d.validation_details.get("score_max", 3.0) if d.validation_details else 3.0
+            )
             normalized.append(max(0.0, min(max_expected, d.score)) / max_expected)
 
         logger.debug(f"Scores normalized: {normalized}")
         return normalized
 
     def apply_rubric_thresholds(
-        self,
-        score: float,
-        thresholds: dict[str, float] | None = None
+        self, score: float, thresholds: dict[str, float] | None = None
     ) -> str:
         """
         Apply area-level rubric thresholds.
@@ -1573,13 +1606,13 @@ class AreaPolicyAggregator:
 
         # Use provided thresholds or defaults
         if thresholds:
-            excellent_threshold = thresholds.get('EXCELENTE', 0.85)
-            good_threshold = thresholds.get('BUENO', 0.70)
-            acceptable_threshold = thresholds.get('ACEPTABLE', 0.55)
+            excellent_threshold = thresholds.get("EXCELENTE", 0.85)
+            good_threshold = thresholds.get("BUENO", 0.70)
+            acceptable_threshold = thresholds.get("ACEPTABLE", 0.55)
         else:
-            excellent_threshold = 0.85 # Refactored
-            good_threshold = 0.7 # Refactored
-            acceptable_threshold = 0.55 # Refactored
+            excellent_threshold = 0.85  # Refactored
+            good_threshold = 0.7  # Refactored
+            acceptable_threshold = 0.55  # Refactored
 
         # Apply thresholds
         if normalized_score >= excellent_threshold:
@@ -1632,7 +1665,7 @@ class AreaPolicyAggregator:
             validation_details["hermeticity"] = {
                 "valid": hermetic_valid,
                 "message": hermetic_msg,
-                "dimension_count": len(area_dim_scores)
+                "dimension_count": len(area_dim_scores),
             }
         except HermeticityValidationError as e:
             logger.error(f"Hermeticity validation failed for area {area_id}: {e}")
@@ -1648,7 +1681,7 @@ class AreaPolicyAggregator:
                 dimension_scores=[],
                 validation_passed=False,
                 validation_details={"error": str(e), "type": "hermeticity"},
-                cluster_id=cluster_id
+                cluster_id=cluster_id,
             )
 
         if not area_dim_scores:
@@ -1664,14 +1697,14 @@ class AreaPolicyAggregator:
                 dimension_scores=[],
                 validation_passed=False,
                 validation_details={"error": "No dimensions", "type": "empty"},
-                cluster_id=cluster_id
+                cluster_id=cluster_id,
             )
 
         # Normalize scores
         normalized = self.normalize_scores(area_dim_scores)
         validation_details["normalization"] = {
             "original": [d.score for d in area_dim_scores],
-            "normalized": normalized
+            "normalized": normalized,
         }
 
         # Calculate weighted average score
@@ -1681,24 +1714,22 @@ class AreaPolicyAggregator:
 
         # Apply rubric thresholds
         quality_level = self.apply_rubric_thresholds(avg_score)
-        validation_details["rubric"] = {
-            "score": avg_score,
-            "quality_level": quality_level
-        }
+        validation_details["rubric"] = {"score": avg_score, "quality_level": quality_level}
 
         # Get area name
         area_name = next(
-            (a["i18n"]["keys"]["label_es"] for a in self.policy_areas
-             if a["policy_area_id"] == area_id),
-            area_id
+            (
+                a["i18n"]["keys"]["label_es"]
+                for a in self.policy_areas
+                if a["policy_area_id"] == area_id
+            ),
+            area_id,
         )
 
         # Get cluster_id from modular metadata - MEANINGFUL CONNECTION
         # This ensures AreaScore.cluster_id reflects the real PA→Cluster mapping
         cluster_id = next(
-            (a.get("cluster_id") for a in self.policy_areas
-             if a["policy_area_id"] == area_id),
-            None
+            (a.get("cluster_id") for a in self.policy_areas if a["policy_area_id"] == area_id), None
         )
 
         logger.info(
@@ -1716,13 +1747,11 @@ class AreaPolicyAggregator:
             # This ensures AreaScore.validation_passed matches the real structural validation
             validation_passed=validation_details.get("hermeticity", {}).get("valid", True),
             validation_details=validation_details,
-            cluster_id=cluster_id  # Populate from modular metadata
+            cluster_id=cluster_id,  # Populate from modular metadata
         )
 
     def run(
-        self,
-        dimension_scores: list[DimensionScore],
-        group_by_keys: list[str]
+        self, dimension_scores: list[DimensionScore], group_by_keys: list[str]
     ) -> list[AreaScore]:
         """
         Run the area aggregation process.
@@ -1734,8 +1763,10 @@ class AreaPolicyAggregator:
         Returns:
             A list of AreaScore objects.
         """
+
         def key_func(d):
             return tuple(getattr(d, key) for key in group_by_keys)
+
         grouped_scores = group_by(dimension_scores, key_func)
 
         area_scores = []
@@ -1772,6 +1803,7 @@ class AreaPolicyAggregator:
             return None
         return [w / total for w in weights]
 
+
 class ClusterAggregator:
     """
     Aggregates policy area scores into cluster scores (MESO level).
@@ -1804,8 +1836,12 @@ class ClusterAggregator:
         """
         self.monolith = monolith
         self.abort_on_insufficient = abort_on_insufficient
-        self.aggregation_settings = aggregation_settings or AggregationSettings.from_monolith(monolith)
-        self.cluster_group_by_keys = self.aggregation_settings.cluster_group_by_keys or ["cluster_id"]
+        self.aggregation_settings = aggregation_settings or AggregationSettings.from_monolith(
+            monolith
+        )
+        self.cluster_group_by_keys = self.aggregation_settings.cluster_group_by_keys or [
+            "cluster_id"
+        ]
 
         # Extract configuration if monolith provided
         if monolith is not None:
@@ -1820,9 +1856,7 @@ class ClusterAggregator:
         logger.info("ClusterAggregator initialized")
 
     def validate_cluster_hermeticity(
-        self,
-        cluster_def: dict[str, Any],
-        area_scores: list[AreaScore]
+        self, cluster_def: dict[str, Any], area_scores: list[AreaScore]
     ) -> tuple[bool, str]:
         """
         Validate cluster hermeticity.
@@ -1879,9 +1913,7 @@ class ClusterAggregator:
         return True, "Cluster hermeticity validated"
 
     def apply_cluster_weights(
-        self,
-        area_scores: list[AreaScore],
-        weights: list[float] | None = None
+        self, area_scores: list[AreaScore], weights: list[float] | None = None
     ) -> float:
         """
         Apply cluster-specific weights to area scores.
@@ -1955,7 +1987,7 @@ class ClusterAggregator:
 
         # Calculate standard deviation
         variance = sum((s - mean) ** 2 for s in scores) / len(scores)
-        std_dev = variance ** 0.5
+        std_dev = variance**0.5
 
         # Convert to coherence (inverse relationship)
         # Normalize by max possible std dev (3.0 for 0-3 range)
@@ -1995,9 +2027,7 @@ class ClusterAggregator:
         validation_details = {}
 
         # Get cluster definition
-        cluster_def = next(
-            (c for c in self.clusters if c["cluster_id"] == cluster_id), None
-        )
+        cluster_def = next((c for c in self.clusters if c["cluster_id"] == cluster_id), None)
 
         if not cluster_def:
             logger.error(f"Cluster definition not found: {cluster_id}")
@@ -2023,13 +2053,9 @@ class ClusterAggregator:
         # Validate hermeticity
         try:
             hermetic_valid, hermetic_msg = self.validate_cluster_hermeticity(
-                cluster_def,
-                cluster_area_scores
+                cluster_def, cluster_area_scores
             )
-            validation_details["hermeticity"] = {
-                "valid": hermetic_valid,
-                "message": hermetic_msg
-            }
+            validation_details["hermeticity"] = {"valid": hermetic_valid, "message": hermetic_msg}
         except HermeticityValidationError as e:
             logger.error(f"Cluster hermeticity validation failed: {e}")
             return ClusterScore(
@@ -2042,7 +2068,7 @@ class ClusterAggregator:
                 weakest_area=None,
                 area_scores=[],
                 validation_passed=False,
-                validation_details={"error": str(e), "type": "hermeticity"}
+                validation_details={"error": str(e), "type": "hermeticity"},
             )
 
         if not cluster_area_scores:
@@ -2057,7 +2083,7 @@ class ClusterAggregator:
                 weakest_area=None,
                 area_scores=[],
                 validation_passed=False,
-                validation_details={"error": "No areas", "type": "empty"}
+                validation_details={"error": "No areas", "type": "empty"},
             )
 
         # Apply cluster weights
@@ -2067,7 +2093,7 @@ class ClusterAggregator:
             validation_details["weights"] = {
                 "valid": True,
                 "weights": resolved_weights if resolved_weights else "equal",
-                "score": weighted_score
+                "score": weighted_score,
             }
         except WeightValidationError as e:
             logger.error(f"Cluster weight validation failed: {e}")
@@ -2081,7 +2107,7 @@ class ClusterAggregator:
                 weakest_area=None,
                 area_scores=cluster_area_scores,
                 validation_passed=False,
-                validation_details={"error": str(e), "type": "weights"}
+                validation_details={"error": str(e), "type": "weights"},
             )
 
         # Analyze coherence and variance metrics
@@ -2091,17 +2117,17 @@ class ClusterAggregator:
             mean_score = sum(scores_array) / len(scores_array)
             variance = sum((score - mean_score) ** 2 for score in scores_array) / len(scores_array)
         else:
-            variance = 0.0 # Refactored
+            variance = 0.0  # Refactored
         weakest_area = min(cluster_area_scores, key=lambda a: a.score, default=None)
 
-        std_dev = variance ** 0.5
+        std_dev = variance**0.5
         normalized_std = min(std_dev / self.MAX_SCORE, 1.0) if std_dev > 0 else 0.0
         penalty_factor = 1.0 - (normalized_std * self.PENALTY_WEIGHT)
         adjusted_score = weighted_score * penalty_factor
 
         validation_details["coherence"] = {
             "value": coherence,
-            "interpretation": "high" if coherence > 0.8 else "medium" if coherence > 0.6 else "low"
+            "interpretation": "high" if coherence > 0.8 else "medium" if coherence > 0.6 else "low",
         }
         validation_details["variance"] = variance
         if weakest_area:
@@ -2130,13 +2156,11 @@ class ClusterAggregator:
             # MEANINGFUL CONNECTION: validation_passed reflects actual hermeticity state
             # This ensures ClusterScore.validation_passed matches the real structural validation
             validation_passed=validation_details.get("hermeticity", {}).get("valid", True),
-            validation_details=validation_details
+            validation_details=validation_details,
         )
 
     def run(
-        self,
-        area_scores: list[AreaScore],
-        cluster_definitions: list[dict[str, Any]]
+        self, area_scores: list[AreaScore], cluster_definitions: list[dict[str, Any]]
     ) -> list[ClusterScore]:
         """
         Run the cluster aggregation process.
@@ -2161,7 +2185,7 @@ class ClusterAggregator:
         def key_func(area_score: AreaScore) -> tuple:
             return tuple(getattr(area_score, key) for key in self.cluster_group_by_keys)
 
-        grouped_scores = group_by([s for s in area_scores if hasattr(s, 'cluster_id')], key_func)
+        grouped_scores = group_by([s for s in area_scores if hasattr(s, "cluster_id")], key_func)
 
         cluster_scores = []
         for group_key, scores in grouped_scores.items():
@@ -2197,6 +2221,7 @@ class ClusterAggregator:
             return None
         return [w / total for w in weights]
 
+
 class MacroAggregator:
     """
     Performs holistic macro evaluation (Q305).
@@ -2226,7 +2251,9 @@ class MacroAggregator:
         """
         self.monolith = monolith
         self.abort_on_insufficient = abort_on_insufficient
-        self.aggregation_settings = aggregation_settings or AggregationSettings.from_monolith(monolith)
+        self.aggregation_settings = aggregation_settings or AggregationSettings.from_monolith(
+            monolith
+        )
 
         # Extract configuration if monolith provided
         if monolith is not None:
@@ -2238,10 +2265,7 @@ class MacroAggregator:
 
         logger.info("MacroAggregator initialized")
 
-    def calculate_cross_cutting_coherence(
-        self,
-        cluster_scores: list[ClusterScore]
-    ) -> float:
+    def calculate_cross_cutting_coherence(self, cluster_scores: list[ClusterScore]) -> float:
         """
         Calculate cross-cutting coherence across all clusters.
 
@@ -2261,7 +2285,7 @@ class MacroAggregator:
 
         # Calculate standard deviation
         variance = sum((s - mean) ** 2 for s in scores) / len(scores)
-        std_dev = variance ** 0.5
+        std_dev = variance**0.5
 
         # Convert to coherence
         max_std = 3.0
@@ -2274,10 +2298,7 @@ class MacroAggregator:
 
         return coherence
 
-    def identify_systemic_gaps(
-        self,
-        area_scores: list[AreaScore]
-    ) -> list[str]:
+    def identify_systemic_gaps(self, area_scores: list[AreaScore]) -> list[str]:
         """
         Identify systemic gaps (areas with INSUFICIENTE quality).
 
@@ -2297,9 +2318,7 @@ class MacroAggregator:
         return gaps
 
     def assess_strategic_alignment(
-        self,
-        cluster_scores: list[ClusterScore],
-        dimension_scores: list[DimensionScore]
+        self, cluster_scores: list[ClusterScore], dimension_scores: list[DimensionScore]
     ) -> float:
         """
         Assess strategic alignment across all levels.
@@ -2314,7 +2333,8 @@ class MacroAggregator:
         # Calculate average cluster coherence
         cluster_coherence = (
             sum(c.coherence for c in cluster_scores) / len(cluster_scores)
-            if cluster_scores else 0.0
+            if cluster_scores
+            else 0.0
         )
 
         # Calculate dimension validation rate
@@ -2332,9 +2352,7 @@ class MacroAggregator:
         return alignment
 
     def apply_rubric_thresholds(
-        self,
-        score: float,
-        thresholds: dict[str, float] | None = None
+        self, score: float, thresholds: dict[str, float] | None = None
     ) -> str:
         """
         Apply macro-level rubric thresholds.
@@ -2355,13 +2373,13 @@ class MacroAggregator:
 
         # Use provided thresholds or defaults
         if thresholds:
-            excellent_threshold = thresholds.get('EXCELENTE', 0.85)
-            good_threshold = thresholds.get('BUENO', 0.70)
-            acceptable_threshold = thresholds.get('ACEPTABLE', 0.55)
+            excellent_threshold = thresholds.get("EXCELENTE", 0.85)
+            good_threshold = thresholds.get("BUENO", 0.70)
+            acceptable_threshold = thresholds.get("ACEPTABLE", 0.55)
         else:
-            excellent_threshold = 0.85 # Refactored
-            good_threshold = 0.7 # Refactored
-            acceptable_threshold = 0.55 # Refactored
+            excellent_threshold = 0.85  # Refactored
+            good_threshold = 0.7  # Refactored
+            acceptable_threshold = 0.55  # Refactored
 
         # Apply thresholds
         if normalized_score >= excellent_threshold:
@@ -2384,7 +2402,7 @@ class MacroAggregator:
         self,
         cluster_scores: list[ClusterScore],
         area_scores: list[AreaScore],
-        dimension_scores: list[DimensionScore]
+        dimension_scores: list[DimensionScore],
     ) -> MacroScore:
         """
         Perform holistic macro evaluation (Q305).
@@ -2411,41 +2429,30 @@ class MacroAggregator:
                 strategic_alignment=0.0,
                 cluster_scores=[],
                 validation_passed=False,
-                validation_details={"error": "No clusters", "type": "empty"}
+                validation_details={"error": "No clusters", "type": "empty"},
             )
 
         # Calculate cross-cutting coherence
         cross_cutting_coherence = self.calculate_cross_cutting_coherence(cluster_scores)
         validation_details["coherence"] = {
             "value": cross_cutting_coherence,
-            "clusters": len(cluster_scores)
+            "clusters": len(cluster_scores),
         }
 
         # Identify systemic gaps
         systemic_gaps = self.identify_systemic_gaps(area_scores)
-        validation_details["gaps"] = {
-            "count": len(systemic_gaps),
-            "areas": systemic_gaps
-        }
+        validation_details["gaps"] = {"count": len(systemic_gaps), "areas": systemic_gaps}
 
         # Assess strategic alignment
-        strategic_alignment = self.assess_strategic_alignment(
-            cluster_scores,
-            dimension_scores
-        )
-        validation_details["alignment"] = {
-            "value": strategic_alignment
-        }
+        strategic_alignment = self.assess_strategic_alignment(cluster_scores, dimension_scores)
+        validation_details["alignment"] = {"value": strategic_alignment}
 
         # Calculate overall macro score (weighted average of clusters)
         macro_score = self._calculate_macro_score(cluster_scores)
 
         # Apply quality rubric
         quality_level = self.apply_rubric_thresholds(macro_score)
-        validation_details["rubric"] = {
-            "score": macro_score,
-            "quality_level": quality_level
-        }
+        validation_details["rubric"] = {"score": macro_score, "quality_level": quality_level}
 
         logger.info(
             f"✓ Macro evaluation (Q305): score={macro_score:.4f}, "
@@ -2461,7 +2468,7 @@ class MacroAggregator:
             strategic_alignment=strategic_alignment,
             cluster_scores=cluster_scores,
             validation_passed=True,
-            validation_details=validation_details
+            validation_details=validation_details,
         )
 
     @calibrated_method("farfan_core.processing.aggregation.MacroAggregator._calculate_macro_score")

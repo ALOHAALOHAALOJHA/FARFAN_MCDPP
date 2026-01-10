@@ -13,7 +13,7 @@ class TestQueryResultTotalCount:
     def test_total_count_with_limit_pagination(self):
         """
         Test that total_count reports pre-LIMIT count, not post-LIMIT count.
-        
+
         Validates that when 5 nodes exist and a LIMIT 2 query is executed:
         - result.nodes has 2 items (paginated)
         - result.total_count is 5 (total matches before LIMIT)
@@ -40,7 +40,7 @@ class TestQueryResultTotalCount:
         # Assertions
         assert len(result.nodes) == 2, "Should return 2 paginated nodes"
         assert result.total_count == 5, "Total count should be 5 (all matches before LIMIT)"
-        
+
     def test_total_count_with_offset_and_limit(self):
         """Test total_count with both OFFSET and LIMIT."""
         # Setup: Create nexus with 10 nodes
@@ -88,7 +88,9 @@ class TestQueryResultTotalCount:
 
         # Only 5 nodes match the filter, but we limit to 2
         assert len(result.nodes) == 2, "Should return 2 paginated nodes"
-        assert result.total_count == 5, "Total count should be 5 (matches after filter, before LIMIT)"
+        assert (
+            result.total_count == 5
+        ), "Total count should be 5 (matches after filter, before LIMIT)"
 
     def test_total_count_no_limit(self):
         """Test that total_count equals result count when no LIMIT is specified."""

@@ -251,9 +251,7 @@ class PenaltyCalculation(TypedDict):
 # Constants for validation
 REQUIRED_SIGNATURE_FIELDS = {"required_inputs", "output_type"}
 RECOMMENDED_SIGNATURE_FIELDS = {"optional_inputs", "critical_optional", "output_range"}
-ALL_SIGNATURE_FIELDS = (
-    REQUIRED_SIGNATURE_FIELDS | RECOMMENDED_SIGNATURE_FIELDS | {"description"}
-)
+ALL_SIGNATURE_FIELDS = REQUIRED_SIGNATURE_FIELDS | RECOMMENDED_SIGNATURE_FIELDS | {"description"}
 VALID_OUTPUT_TYPES = {"float", "int", "dict", "list", "str", "bool", "tuple", "Any"}
 
 # Penalty constants

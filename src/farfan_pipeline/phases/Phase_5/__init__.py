@@ -33,7 +33,7 @@ from .PHASE_5_CONSTANTS import (
     MAX_SCORE,
     QualityLevel,
     QUALITY_THRESHOLDS,
-    Phase5Invariants
+    Phase5Invariants,
 )
 
 __all__ = [
@@ -46,5 +46,5 @@ __all__ = [
     "MAX_SCORE",
     "QualityLevel",
     "QUALITY_THRESHOLDS",
-    "Phase5Invariants"
+    "Phase5Invariants",
 ]

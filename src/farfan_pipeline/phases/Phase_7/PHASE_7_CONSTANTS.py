@@ -27,12 +27,7 @@ from enum import Enum
 
 
 # Input clusters (4 total)
-INPUT_CLUSTERS = [
-    "CLUSTER_MESO_1",
-    "CLUSTER_MESO_2",
-    "CLUSTER_MESO_3",
-    "CLUSTER_MESO_4"
-]
+INPUT_CLUSTERS = ["CLUSTER_MESO_1", "CLUSTER_MESO_2", "CLUSTER_MESO_3", "CLUSTER_MESO_4"]
 
 # Expected output count for Phase 7
 EXPECTED_MACRO_SCORE_COUNT = 1
@@ -54,6 +49,7 @@ ALIGNMENT_THRESHOLD_LOW = 0.4
 
 class QualityLevel(Enum):
     """Quality levels for macro evaluation."""
+
     EXCELENTE = "EXCELENTE"
     BUENO = "BUENO"
     ACEPTABLE = "ACEPTABLE"
@@ -61,12 +57,7 @@ class QualityLevel(Enum):
 
 
 # Quality level thresholds (normalized to [0,1])
-QUALITY_THRESHOLDS = {
-    "EXCELENTE": 0.85,
-    "BUENO": 0.70,
-    "ACEPTABLE": 0.55,
-    "INSUFICIENTE": 0.0
-}
+QUALITY_THRESHOLDS = {"EXCELENTE": 0.85, "BUENO": 0.70, "ACEPTABLE": 0.55, "INSUFICIENTE": 0.0}
 
 
 # Systemic gap identifiers
@@ -114,7 +105,7 @@ CLUSTER_WEIGHTS = {
     "CLUSTER_MESO_1": 0.25,
     "CLUSTER_MESO_2": 0.25,
     "CLUSTER_MESO_3": 0.25,
-    "CLUSTER_MESO_4": 0.25
+    "CLUSTER_MESO_4": 0.25,
 }
 
 

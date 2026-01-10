@@ -176,9 +176,9 @@ if __name__ == "__main__":
     doctest.testmod(verbose=True)
 
     # Integration tests
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("JSON Logger Integration Tests")
-    print("="*60)
+    print("=" * 60)
 
     print("\n1. Testing JSON formatter:")
     logger = get_json_logger("demo")
@@ -219,15 +219,12 @@ if __name__ == "__main__":
         from farfan_pipeline.utils.contract_io import ContractEnvelope
 
         lg = get_json_logger("demo")
-        out = ContractEnvelope.wrap(
-            {"ok": True},
-            policy_unit_id="PU_123",
-            correlation_id="corr-1"
-        )
+        out = ContractEnvelope.wrap({"ok": True}, policy_unit_id="PU_123", correlation_id="corr-1")
 
         # Capture the log output
         import io
         import sys
+
         old_stdout = sys.stdout
         sys.stdout = buffer = io.StringIO()
 
@@ -236,7 +233,7 @@ if __name__ == "__main__":
             phase="normalize",
             envelope_in=None,
             envelope_out=out,
-            started_monotonic=time.monotonic()
+            started_monotonic=time.monotonic(),
         )
 
         sys.stdout = old_stdout
@@ -254,6 +251,6 @@ if __name__ == "__main__":
     else:
         print("   ⊘ Skipped (ContractEnvelope not available)")
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("JSON logger doctest OK - All tests passed!")
-    print("="*60)
+    print("=" * 60)

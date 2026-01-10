@@ -6,11 +6,12 @@ Lifecycle: ACTIVE
 Version: 1.0.0
 Effective-Date: 2026-01-05
 
-This module centralizes all constants for Phase 8 following the GNEA 
+This module centralizes all constants for Phase 8 following the GNEA
 (Global Nomenclature Enforcement Architecture) standards.
 
 All constants are immutable (Final) and organized by category.
 """
+
 from __future__ import annotations
 
 from typing import Final
@@ -36,12 +37,14 @@ STAGE_INIT: Final[int] = 10
 STAGE_ENGINE: Final[int] = 20
 STAGE_ENRICHMENT: Final[int] = 30
 
-VALID_STAGES: Final[frozenset[int]] = frozenset({
-    STAGE_BASE,
-    STAGE_INIT,
-    STAGE_ENGINE,
-    STAGE_ENRICHMENT,
-})
+VALID_STAGES: Final[frozenset[int]] = frozenset(
+    {
+        STAGE_BASE,
+        STAGE_INIT,
+        STAGE_ENGINE,
+        STAGE_ENRICHMENT,
+    }
+)
 
 STAGE_METADATA: Final[dict[int, dict[str, str]]] = {
     0: {"name": "Base", "description": "Package init and types"},
@@ -61,14 +64,16 @@ TYPE_UTILITY: Final[str] = "UTIL"
 TYPE_VALIDATOR: Final[str] = "VAL"
 TYPE_INTERFACE: Final[str] = "INTF"
 
-VALID_MODULE_TYPES: Final[frozenset[str]] = frozenset({
-    TYPE_ENGINE,
-    TYPE_ADAPTER,
-    TYPE_ENRICHER,
-    TYPE_UTILITY,
-    TYPE_VALIDATOR,
-    TYPE_INTERFACE,
-})
+VALID_MODULE_TYPES: Final[frozenset[str]] = frozenset(
+    {
+        TYPE_ENGINE,
+        TYPE_ADAPTER,
+        TYPE_ENRICHER,
+        TYPE_UTILITY,
+        TYPE_VALIDATOR,
+        TYPE_INTERFACE,
+    }
+)
 
 # ============================================================================
 # CRITICALITY LEVELS
@@ -79,12 +84,14 @@ CRITICALITY_HIGH: Final[str] = "HIGH"
 CRITICALITY_MEDIUM: Final[str] = "MEDIUM"
 CRITICALITY_LOW: Final[str] = "LOW"
 
-VALID_CRITICALITY_LEVELS: Final[frozenset[str]] = frozenset({
-    CRITICALITY_CRITICAL,
-    CRITICALITY_HIGH,
-    CRITICALITY_MEDIUM,
-    CRITICALITY_LOW,
-})
+VALID_CRITICALITY_LEVELS: Final[frozenset[str]] = frozenset(
+    {
+        CRITICALITY_CRITICAL,
+        CRITICALITY_HIGH,
+        CRITICALITY_MEDIUM,
+        CRITICALITY_LOW,
+    }
+)
 
 # ============================================================================
 # EXECUTION PATTERNS
@@ -94,11 +101,13 @@ PATTERN_ON_DEMAND: Final[str] = "On-Demand"
 PATTERN_STREAMING: Final[str] = "Streaming"
 PATTERN_BATCH: Final[str] = "Batch"
 
-VALID_EXECUTION_PATTERNS: Final[frozenset[str]] = frozenset({
-    PATTERN_ON_DEMAND,
-    PATTERN_STREAMING,
-    PATTERN_BATCH,
-})
+VALID_EXECUTION_PATTERNS: Final[frozenset[str]] = frozenset(
+    {
+        PATTERN_ON_DEMAND,
+        PATTERN_STREAMING,
+        PATTERN_BATCH,
+    }
+)
 
 # ============================================================================
 # RECOMMENDATION CONSTANTS
@@ -137,11 +146,13 @@ LEVEL_MICRO: Final[str] = "MICRO"
 LEVEL_MESO: Final[str] = "MESO"
 LEVEL_MACRO: Final[str] = "MACRO"
 
-VALID_LEVELS: Final[frozenset[str]] = frozenset({
-    LEVEL_MICRO,
-    LEVEL_MESO,
-    LEVEL_MACRO,
-})
+VALID_LEVELS: Final[frozenset[str]] = frozenset(
+    {
+        LEVEL_MICRO,
+        LEVEL_MESO,
+        LEVEL_MACRO,
+    }
+)
 
 # ============================================================================
 # SCORE BANDS (MESO/MACRO)
@@ -153,13 +164,15 @@ BAND_ALTO: Final[str] = "ALTO"
 BAND_SATISFACTORIO: Final[str] = "SATISFACTORIO"
 BAND_INSUFICIENTE: Final[str] = "INSUFICIENTE"
 
-VALID_SCORE_BANDS: Final[frozenset[str]] = frozenset({
-    BAND_BAJO,
-    BAND_MEDIO,
-    BAND_ALTO,
-    BAND_SATISFACTORIO,
-    BAND_INSUFICIENTE,
-})
+VALID_SCORE_BANDS: Final[frozenset[str]] = frozenset(
+    {
+        BAND_BAJO,
+        BAND_MEDIO,
+        BAND_ALTO,
+        BAND_SATISFACTORIO,
+        BAND_INSUFICIENTE,
+    }
+)
 
 # ============================================================================
 # VARIANCE LEVELS
@@ -169,11 +182,13 @@ VARIANCE_BAJA: Final[str] = "BAJA"
 VARIANCE_MEDIA: Final[str] = "MEDIA"
 VARIANCE_ALTA: Final[str] = "ALTA"
 
-VALID_VARIANCE_LEVELS: Final[frozenset[str]] = frozenset({
-    VARIANCE_BAJA,
-    VARIANCE_MEDIA,
-    VARIANCE_ALTA,
-})
+VALID_VARIANCE_LEVELS: Final[frozenset[str]] = frozenset(
+    {
+        VARIANCE_BAJA,
+        VARIANCE_MEDIA,
+        VARIANCE_ALTA,
+    }
+)
 
 # ============================================================================
 # HORIZON TYPES
@@ -184,12 +199,14 @@ HORIZON_T1: Final[str] = "T1"
 HORIZON_T2: Final[str] = "T2"
 HORIZON_T3: Final[str] = "T3"
 
-VALID_HORIZONS: Final[frozenset[str]] = frozenset({
-    HORIZON_T0,
-    HORIZON_T1,
-    HORIZON_T2,
-    HORIZON_T3,
-})
+VALID_HORIZONS: Final[frozenset[str]] = frozenset(
+    {
+        HORIZON_T0,
+        HORIZON_T1,
+        HORIZON_T2,
+        HORIZON_T3,
+    }
+)
 
 # ============================================================================
 # VERIFICATION TYPES
@@ -200,12 +217,14 @@ VERIFICATION_SYSTEM_STATE: Final[str] = "SYSTEM_STATE"
 VERIFICATION_METRIC: Final[str] = "METRIC"
 VERIFICATION_ATTESTATION: Final[str] = "ATTESTATION"
 
-VALID_VERIFICATION_TYPES: Final[frozenset[str]] = frozenset({
-    VERIFICATION_DOCUMENT,
-    VERIFICATION_SYSTEM_STATE,
-    VERIFICATION_METRIC,
-    VERIFICATION_ATTESTATION,
-})
+VALID_VERIFICATION_TYPES: Final[frozenset[str]] = frozenset(
+    {
+        VERIFICATION_DOCUMENT,
+        VERIFICATION_SYSTEM_STATE,
+        VERIFICATION_METRIC,
+        VERIFICATION_ATTESTATION,
+    }
+)
 
 # ============================================================================
 # CLUSTER IDENTIFIERS
@@ -216,12 +235,14 @@ CLUSTER_CL02: Final[str] = "CL02"
 CLUSTER_CL03: Final[str] = "CL03"
 CLUSTER_CL04: Final[str] = "CL04"
 
-VALID_CLUSTERS: Final[frozenset[str]] = frozenset({
-    CLUSTER_CL01,
-    CLUSTER_CL02,
-    CLUSTER_CL03,
-    CLUSTER_CL04,
-})
+VALID_CLUSTERS: Final[frozenset[str]] = frozenset(
+    {
+        CLUSTER_CL01,
+        CLUSTER_CL02,
+        CLUSTER_CL03,
+        CLUSTER_CL04,
+    }
+)
 
 # ============================================================================
 # POLICY AREA CONSTANTS
@@ -236,15 +257,17 @@ TOTAL_MICRO_QUESTIONS: Final[int] = POLICY_AREAS_COUNT * QUESTIONS_PER_PA  # 300
 # ENHANCED FEATURES (v2.0 Rules)
 # ============================================================================
 
-REQUIRED_ENHANCED_FEATURES: Final[frozenset[str]] = frozenset({
-    "template_parameterization",
-    "execution_logic",
-    "measurable_indicators",
-    "unambiguous_time_horizons",
-    "testable_verification",
-    "cost_tracking",
-    "authority_mapping",
-})
+REQUIRED_ENHANCED_FEATURES: Final[frozenset[str]] = frozenset(
+    {
+        "template_parameterization",
+        "execution_logic",
+        "measurable_indicators",
+        "unambiguous_time_horizons",
+        "testable_verification",
+        "cost_tracking",
+        "authority_mapping",
+    }
+)
 
 # ============================================================================
 # SIGNAL ENRICHMENT CONSTANTS

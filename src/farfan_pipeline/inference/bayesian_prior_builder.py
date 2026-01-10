@@ -125,9 +125,7 @@ class BayesianPriorBuilder:
         if not np.isfinite(rarity):
             raise ValueError(f"rarity must be finite, got {rarity}")
         if not 0.0 <= rarity <= 1.0:
-            raise ValueError(
-                f"rarity must be in [0, 1] (0=common, 1=rare), got {rarity}"
-            )
+            raise ValueError(f"rarity must be in [0, 1] (0=common, 1=rare), got {rarity}")
 
         # Base priors per Beach (2017, 2024)
         base_priors = {
@@ -238,13 +236,9 @@ class BayesianPriorBuilder:
         # RIGOROUS VALIDATION: All group sizes must be non-negative integers
         for i, size in enumerate(group_sizes):
             if not isinstance(size, (int, np.integer)):
-                raise TypeError(
-                    f"group_sizes[{i}] must be integer, got {type(size).__name__}"
-                )
+                raise TypeError(f"group_sizes[{i}] must be integer, got {type(size).__name__}")
             if size < 0:
-                raise ValueError(
-                    f"group_sizes[{i}] must be non-negative, got {size}"
-                )
+                raise ValueError(f"group_sizes[{i}] must be non-negative, got {size}")
 
         # Compute total with guaranteed non-negative result
         total_size = sum(group_sizes)
@@ -330,9 +324,7 @@ class BayesianPriorBuilder:
         if not np.isfinite(confidence):
             raise ValueError(f"confidence must be finite, got {confidence}")
         if not 0.0 <= confidence <= 1.0:
-            raise ValueError(
-                f"confidence must be in [0, 1], got {confidence}"
-            )
+            raise ValueError(f"confidence must be in [0, 1], got {confidence}")
 
         if historical_data is None or len(historical_data) == 0:
             self.logger.info("No historical data, using default prior")
@@ -350,9 +342,7 @@ class BayesianPriorBuilder:
         finite_mask = np.isfinite(data)
         n_invalid = np.sum(~finite_mask)
         if n_invalid > 0:
-            self.logger.warning(
-                f"Filtered {n_invalid} non-finite values from historical data"
-            )
+            self.logger.warning(f"Filtered {n_invalid} non-finite values from historical data")
             data = data[finite_mask]
 
         if len(data) == 0:
@@ -389,7 +379,7 @@ class BayesianPriorBuilder:
         # var = (alpha * beta) / ((alpha + beta)^2 * (alpha + beta + 1))
         # Solving: common = mean * (1 - mean) / var - 1
         # alpha = mean * common, beta = (1 - mean) * common
-        
+
         fallback_reason = None
         alpha_final = self.default_alpha
         beta_final = self.default_beta
@@ -407,13 +397,9 @@ class BayesianPriorBuilder:
                 if alpha_empirical > 0 and beta_empirical > 0:
                     # Blend with default prior using confidence weight
                     alpha_final = (
-                        confidence * alpha_empirical
-                        + (1 - confidence) * self.default_alpha
+                        confidence * alpha_empirical + (1 - confidence) * self.default_alpha
                     )
-                    beta_final = (
-                        confidence * beta_empirical
-                        + (1 - confidence) * self.default_beta
-                    )
+                    beta_final = confidence * beta_empirical + (1 - confidence) * self.default_beta
                 else:
                     fallback_reason = "computed_params_non_positive"
             else:
@@ -454,7 +440,9 @@ class BayesianPriorBuilder:
 
         return prior
 
-    def build_weakly_informative_prior(self, center: float = 0.5, concentration: float = 2.0) -> PriorParameters:
+    def build_weakly_informative_prior(
+        self, center: float = 0.5, concentration: float = 2.0
+    ) -> PriorParameters:
         """
         Build weakly informative prior (Gelman recommendation).
 

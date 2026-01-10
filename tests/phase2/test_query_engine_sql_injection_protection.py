@@ -12,6 +12,8 @@ from farfan_pipeline.phases.Phase_two.phase2_80_01_evidence_query_engine import 
     SecureQueryParser,
     create_query_engine,
 )
+
+
 class TestSQLInjectionProtection:
     """Security tests for SQL injection prevention."""
 
@@ -34,7 +36,7 @@ class TestSQLInjectionProtection:
                 "source": "test_source",
                 "confidence": 0.7,
                 "timestamp": "2026-01-06T01:00:00Z",
-            }
+            },
         ]
         return create_query_engine(nodes=nodes)
 
@@ -43,29 +45,37 @@ class TestSQLInjectionProtection:
         """Create standalone security parser."""
         return SecureQueryParser()
 
-    @pytest.mark.parametrize("malicious_input", [
-        "'; DROP TABLE evidence; --",
-        "1 OR 1=1",
-        "1; DELETE FROM evidence WHERE 1=1",
-        "' UNION SELECT * FROM users --",
-        "1'; EXEC xp_cmdshell('dir'); --",
-        "SELECT * FROM evidence WHERE 1=1--",
-        "SELECT * FROM evidence /* comment */ WHERE 1=1",
-        "node_id = '1' OR '1'='1",
-    ])
+    @pytest.mark.parametrize(
+        "malicious_input",
+        [
+            "'; DROP TABLE evidence; --",
+            "1 OR 1=1",
+            "1; DELETE FROM evidence WHERE 1=1",
+            "' UNION SELECT * FROM users --",
+            "1'; EXEC xp_cmdshell('dir'); --",
+            "SELECT * FROM evidence WHERE 1=1--",
+            "SELECT * FROM evidence /* comment */ WHERE 1=1",
+            "node_id = '1' OR '1'='1",
+        ],
+    )
     def test_malicious_input_rejected(self, engine, malicious_input):
         """Verify malicious inputs are rejected."""
         with pytest.raises(QueryValidationError) as exc_info:
             engine.query(f"SELECT * FROM evidence WHERE {malicious_input}")
 
-        assert "injection" in str(exc_info.value).lower() or "rejected" in str(exc_info.value).lower()
+        assert (
+            "injection" in str(exc_info.value).lower() or "rejected" in str(exc_info.value).lower()
+        )
 
-    @pytest.mark.parametrize("safe_query,expected_count", [
-        ("SELECT * FROM evidence WHERE node_id = 'node_001'", 1),
-        ("SELECT * FROM evidence WHERE confidence > 0.8", 1),
-        ("SELECT * FROM evidence WHERE source = 'test_source'", 2),
-        ("SELECT * FROM evidence WHERE timestamp > '2026-01-01'", 2),
-    ])
+    @pytest.mark.parametrize(
+        "safe_query,expected_count",
+        [
+            ("SELECT * FROM evidence WHERE node_id = 'node_001'", 1),
+            ("SELECT * FROM evidence WHERE confidence > 0.8", 1),
+            ("SELECT * FROM evidence WHERE source = 'test_source'", 2),
+            ("SELECT * FROM evidence WHERE timestamp > '2026-01-01'", 2),
+        ],
+    )
     def test_safe_input_allowed(self, engine, safe_query, expected_count):
         """Verify legitimate queries are processed."""
         result = engine.query(safe_query)
@@ -186,6 +196,7 @@ class TestSQLInjectionProtection:
     def test_security_logging(self, engine, caplog):
         """Verify rejected queries are logged."""
         import logging
+
         caplog.set_level(logging.WARNING)
 
         malicious_query = "SELECT * FROM evidence; DROP TABLE evidence"

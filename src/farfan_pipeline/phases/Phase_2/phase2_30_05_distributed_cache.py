@@ -36,7 +36,7 @@ from typing import Any, Callable, Optional, TypeVar, Generic
 
 logger = logging.getLogger(__name__)
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 @dataclass
@@ -128,8 +128,7 @@ class IntelligentCache:
         self._stats = CacheStatistics()
 
         logger.info(
-            f"IntelligentCache initialized: max_size={max_size}, "
-            f"default_ttl={default_ttl}s"
+            f"IntelligentCache initialized: max_size={max_size}, " f"default_ttl={default_ttl}s"
         )
 
     def _compute_key(
@@ -325,10 +324,7 @@ class IntelligentCache:
             Number of entries removed
         """
         with self._lock:
-            expired_keys = [
-                key for key, entry in self._cache.items()
-                if entry.is_expired()
-            ]
+            expired_keys = [key for key, entry in self._cache.items() if entry.is_expired()]
 
             for key in expired_keys:
                 del self._cache[key]
@@ -381,6 +377,7 @@ def cached_method(
     Returns:
         Decorated function
     """
+
     def decorator(func: Callable) -> Callable:
         cache = cache_instance or get_global_cache()
 

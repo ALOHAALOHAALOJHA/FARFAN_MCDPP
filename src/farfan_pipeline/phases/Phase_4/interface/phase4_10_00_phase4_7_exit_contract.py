@@ -45,6 +45,7 @@ logger = logging.getLogger(__name__)
 
 class ExitContractViolationError(RuntimeError):
     """Raised when exit contract validation fails."""
+
     pass
 
 
@@ -113,9 +114,7 @@ class Phase4_7ExitContract:
         if macro_score is None:
             violations.append("Output is None: No macro score produced")
             if strict_mode:
-                raise ExitContractViolationError(
-                    f"Exit contract violation: {violations[0]}"
-                )
+                raise ExitContractViolationError(f"Exit contract violation: {violations[0]}")
             return False, violations, metadata
 
         # Check required fields
@@ -127,9 +126,7 @@ class Phase4_7ExitContract:
         if hasattr(macro_score, "score"):
             score = getattr(macro_score, "score")
             if not (MIN_SCORE <= score <= MAX_SCORE):
-                violations.append(
-                    f"Score {score} outside valid range [{MIN_SCORE}, {MAX_SCORE}]"
-                )
+                violations.append(f"Score {score} outside valid range [{MIN_SCORE}, {MAX_SCORE}]")
             metadata["score"] = score
         else:
             violations.append("Missing 'score' field")
@@ -155,9 +152,7 @@ class Phase4_7ExitContract:
         if hasattr(macro_score, "cross_cutting_coherence"):
             coherence = getattr(macro_score, "cross_cutting_coherence")
             if not (0.0 <= coherence <= 1.0):
-                violations.append(
-                    f"Cross-cutting coherence {coherence} outside valid range [0, 1]"
-                )
+                violations.append(f"Cross-cutting coherence {coherence} outside valid range [0, 1]")
             metadata["cross_cutting_coherence"] = coherence
         else:
             violations.append("Missing 'cross_cutting_coherence' field")
@@ -166,9 +161,7 @@ class Phase4_7ExitContract:
         if hasattr(macro_score, "strategic_alignment"):
             alignment = getattr(macro_score, "strategic_alignment")
             if not (0.0 <= alignment <= 1.0):
-                violations.append(
-                    f"Strategic alignment {alignment} outside valid range [0, 1]"
-                )
+                violations.append(f"Strategic alignment {alignment} outside valid range [0, 1]")
             metadata["strategic_alignment"] = alignment
         else:
             violations.append("Missing 'strategic_alignment' field")
@@ -198,9 +191,7 @@ class Phase4_7ExitContract:
 
         # Log validation result
         if is_valid:
-            logger.info(
-                f"Exit contract validation passed: MacroScore ready for Phase 8"
-            )
+            logger.info(f"Exit contract validation passed: MacroScore ready for Phase 8")
         else:
             logger.warning(
                 f"Exit contract validation failed: {len(violations)} violations detected"
@@ -209,8 +200,8 @@ class Phase4_7ExitContract:
         # Raise exception in strict mode
         if not is_valid and strict_mode:
             raise ExitContractViolationError(
-                f"Exit contract validation failed with {len(violations)} violations:\n" +
-                "\n".join(violations)
+                f"Exit contract validation failed with {len(violations)} violations:\n"
+                + "\n".join(violations)
             )
 
         return is_valid, violations, metadata

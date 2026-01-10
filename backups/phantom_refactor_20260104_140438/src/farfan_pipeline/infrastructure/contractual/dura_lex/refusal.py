@@ -1,10 +1,13 @@
 """
 Refusal Contract (RefC) - Implementation
 """
+
 from typing import Dict, Any
+
 
 class RefusalError(Exception):
     pass
+
 
 class RefusalContract:
     @staticmethod
@@ -14,10 +17,10 @@ class RefusalContract:
         """
         if "mandatory" not in context:
             raise RefusalError("Missing mandatory field")
-            
+
         if context.get("alpha", 1.0) > 0.5:
-             raise RefusalError("Alpha violation")
-             
+            raise RefusalError("Alpha violation")
+
         if "sigma" not in context:
             raise RefusalError("Sigma absent")
 

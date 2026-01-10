@@ -1,7 +1,9 @@
 """
 Total Ordering Contract (TOC) - Implementation
 """
+
 from typing import List, Any, Tuple
+
 
 class TotalOrderingContract:
     @staticmethod
@@ -12,7 +14,7 @@ class TotalOrderingContract:
         """
         # Python's sort is stable.
         # We enforce total ordering by using a tuple key: (primary_score, secondary_tie_breaker)
-        return sorted(items, key=lambda x: (key(x), x.get('content_hash', '')))
+        return sorted(items, key=lambda x: (key(x), x.get("content_hash", "")))
 
     @staticmethod
     def verify_order(items: List[dict], key: Any) -> bool:

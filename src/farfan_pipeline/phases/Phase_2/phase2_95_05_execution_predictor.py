@@ -234,18 +234,13 @@ class PredictiveProfiler:
                     has_bayesian = True
 
         avg_confidence = (
-            statistics.mean(confidence_scores)
-            if confidence_scores
-            else DEFAULT_CONFIDENCE_SCORE
+            statistics.mean(confidence_scores) if confidence_scores else DEFAULT_CONFIDENCE_SCORE
         )
 
         # Complexity score (heuristic)
         # Higher = more complex
         complexity_score = (
-            0.3 * method_count +
-            0.2 * len(unique_classes) +
-            0.2 * n2_methods +
-            0.3 * n3_methods
+            0.3 * method_count + 0.2 * len(unique_classes) + 0.2 * n2_methods + 0.3 * n3_methods
         )
 
         return ContractFeatures(
@@ -366,23 +361,20 @@ class PredictiveProfiler:
         if similar_metrics:
             # Weighted average based on similarity
             total_weight = sum(sim for sim, _ in similar_metrics)
-            predicted_time = sum(
-                sim * metric.execution_time_ms for sim, metric in similar_metrics
-            ) / total_weight
-            predicted_memory = sum(
-                sim * metric.memory_mb for sim, metric in similar_metrics
-            ) / total_weight
+            predicted_time = (
+                sum(sim * metric.execution_time_ms for sim, metric in similar_metrics)
+                / total_weight
+            )
+            predicted_memory = (
+                sum(sim * metric.memory_mb for sim, metric in similar_metrics) / total_weight
+            )
 
             # Confidence intervals
             time_values = [m.execution_time_ms for _, m in similar_metrics]
             memory_values = [m.memory_mb for _, m in similar_metrics]
 
-            time_interval = self.compute_wilson_interval(
-                time_values, self.confidence_level
-            )
-            memory_interval = self.compute_wilson_interval(
-                memory_values, self.confidence_level
-            )
+            time_interval = self.compute_wilson_interval(time_values, self.confidence_level)
+            memory_interval = self.compute_wilson_interval(memory_values, self.confidence_level)
 
             confidence = min(1.0, total_weight / len(similar_metrics))
             uncertainty = 1.0 - confidence
@@ -396,12 +388,11 @@ class PredictiveProfiler:
             )
 
             predicted_time = (
-                features.method_count * baseline["time_per_method"] *
-                (1.0 + features.complexity_score / 100.0)
+                features.method_count
+                * baseline["time_per_method"]
+                * (1.0 + features.complexity_score / 100.0)
             )
-            predicted_memory = (
-                50.0 + features.method_count * baseline["memory_per_method"]
-            )
+            predicted_memory = 50.0 + features.method_count * baseline["memory_per_method"]
 
             # Wide confidence intervals (no historical data)
             time_interval = (predicted_time * 0.5, predicted_time * 2.0)
@@ -495,7 +486,7 @@ class PredictiveProfiler:
                     True,
                     f"Time anomaly: {actual_time_ms:.0f}ms "
                     f"(expected {time_mean:.0f}±{time_std:.0f}ms, "
-                    f"z-score={time_z_score:.2f})"
+                    f"z-score={time_z_score:.2f})",
                 )
 
         # Check memory anomaly
@@ -510,7 +501,7 @@ class PredictiveProfiler:
                     True,
                     f"Memory anomaly: {actual_memory_mb:.0f}MB "
                     f"(expected {memory_mean:.0f}±{memory_std:.0f}MB, "
-                    f"z-score={memory_z_score:.2f})"
+                    f"z-score={memory_z_score:.2f})",
                 )
 
         # Check prediction accuracy
@@ -522,7 +513,7 @@ class PredictiveProfiler:
                 True,
                 f"Prediction error: {time_error_pct:.0f}% "
                 f"(predicted {predicted.predicted_time_ms:.0f}ms, "
-                f"actual {actual_time_ms:.0f}ms)"
+                f"actual {actual_time_ms:.0f}ms)",
             )
 
         return (False, "No anomaly detected")
@@ -568,9 +559,7 @@ if __name__ == "__main__":
     profiler.record_execution(contract, actual_time, actual_memory)
 
     # Check for anomalies
-    is_anomaly, description = profiler.detect_anomaly(
-        prediction, actual_time, actual_memory
-    )
+    is_anomaly, description = profiler.detect_anomaly(prediction, actual_time, actual_memory)
     print(f"\nAnomaly: {is_anomaly} - {description}")
 
     # Statistics

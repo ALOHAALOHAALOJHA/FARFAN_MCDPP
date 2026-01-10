@@ -26,15 +26,17 @@ from typing import Any, TypeVar, get_type_hints
 logger = logging.getLogger(__name__)
 
 # Type variable for decorated functions
-F = TypeVar('F', bound=Callable[..., Any])
+F = TypeVar("F", bound=Callable[..., Any])
 
 # ============================================================================
 # SIGNATURE METADATA STORAGE
 # ============================================================================
 
+
 @dataclass
 class FunctionSignature:
     """Stores metadata about a function's signature"""
+
     module: str
     class_name: str | None
     function_name: str
@@ -46,6 +48,7 @@ class FunctionSignature:
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
+
 
 class SignatureRegistry:
     """
@@ -74,25 +77,22 @@ class SignatureRegistry:
         # Get type hints if available
         try:
             type_hints = get_type_hints(func)
-            parameter_types = {
-                name: str(type_hints.get(name, 'Any'))
-                for name in parameters
-            }
-            return_type = str(type_hints.get('return', 'Any'))
+            parameter_types = {name: str(type_hints.get(name, "Any")) for name in parameters}
+            return_type = str(type_hints.get("return", "Any"))
         except (TypeError, AttributeError, NameError) as e:
             # get_type_hints can fail for various reasons:
             # - TypeError: if func is not a callable
             # - AttributeError: if func doesn't have required attributes
             # - NameError: if type hints reference undefined names
             logger.debug(f"Could not extract type hints for {func.__name__}: {e}")
-            parameter_types = dict.fromkeys(parameters, 'Any')
-            return_type = 'Any'
+            parameter_types = dict.fromkeys(parameters, "Any")
+            return_type = "Any"
 
         # Get module and class information
-        module = func.__module__ if hasattr(func, '__module__') else 'unknown'
+        module = func.__module__ if hasattr(func, "__module__") else "unknown"
         class_name = None
-        if hasattr(func, '__qualname__') and '.' in func.__qualname__:
-            class_name = func.__qualname__.rsplit('.', 1)[0]
+        if hasattr(func, "__qualname__") and "." in func.__qualname__:
+            class_name = func.__qualname__.rsplit(".", 1)[0]
 
         signature_hash = self.compute_signature_hash(func)
 
@@ -103,7 +103,7 @@ class SignatureRegistry:
             parameters=parameters,
             parameter_types=parameter_types,
             return_type=return_type,
-            signature_hash=signature_hash
+            signature_hash=signature_hash,
         )
 
         # Store in registry
@@ -118,17 +118,21 @@ class SignatureRegistry:
             return f"{module}.{class_name}.{func_name}"
         return f"{module}.{func_name}"
 
-    def get_signature(self, module: str, class_name: str | None, func_name: str) -> FunctionSignature | None:
+    def get_signature(
+        self, module: str, class_name: str | None, func_name: str
+    ) -> FunctionSignature | None:
         """Retrieve a stored signature"""
         key = self._get_function_key(module, class_name, func_name)
         return self.signatures.get(key)
 
-    def has_signature_changed(self, func: Callable) -> tuple[bool, FunctionSignature | None, FunctionSignature | None]:
+    def has_signature_changed(
+        self, func: Callable
+    ) -> tuple[bool, FunctionSignature | None, FunctionSignature | None]:
         """Check if a function's signature has changed from the registered version"""
-        module = func.__module__ if hasattr(func, '__module__') else 'unknown'
+        module = func.__module__ if hasattr(func, "__module__") else "unknown"
         class_name = None
-        if hasattr(func, '__qualname__') and '.' in func.__qualname__:
-            class_name = func.__qualname__.rsplit('.', 1)[0]
+        if hasattr(func, "__qualname__") and "." in func.__qualname__:
+            class_name = func.__qualname__.rsplit(".", 1)[0]
 
         old_sig = self.get_signature(module, class_name, func.__name__)
         if old_sig is None:
@@ -143,12 +147,9 @@ class SignatureRegistry:
         """Save registry to disk"""
         self.registry_path.parent.mkdir(parents=True, exist_ok=True)
 
-        registry_data = {
-            key: sig.to_dict()
-            for key, sig in self.signatures.items()
-        }
+        registry_data = {key: sig.to_dict() for key, sig in self.signatures.items()}
 
-        with open(self.registry_path, 'w') as f:
+        with open(self.registry_path, "w") as f:
             json.dump(registry_data, f, indent=2)
 
         logger.info(f"Saved {len(self.signatures)} signatures to {self.registry_path}")
@@ -164,13 +165,13 @@ class SignatureRegistry:
                 registry_data = json.load(f)
 
             self.signatures = {
-                key: FunctionSignature(**data)
-                for key, data in registry_data.items()
+                key: FunctionSignature(**data) for key, data in registry_data.items()
             }
 
             logger.info(f"Loaded {len(self.signatures)} signatures from {self.registry_path}")
         except Exception as e:
             logger.error(f"Failed to load registry: {e}")
+
 
 # Global registry instance
 _signature_registry = SignatureRegistry()
@@ -178,6 +179,7 @@ _signature_registry = SignatureRegistry()
 # ============================================================================
 # RUNTIME VALIDATION DECORATOR
 # ============================================================================
+
 
 def validate_signature(enforce: bool = True, track: bool = True):
     """
@@ -192,6 +194,7 @@ def validate_signature(enforce: bool = True, track: bool = True):
         def my_function(arg1: str, arg2: int) -> bool:
             return True
     """
+
     def decorator(func: F) -> F:
         # Register function signature if tracking is enabled
         if track:
@@ -226,6 +229,7 @@ def validate_signature(enforce: bool = True, track: bool = True):
 
     return decorator
 
+
 def validate_call_signature(func: Callable, *args, **kwargs) -> bool:
     """
     Validate that a function call matches the expected signature without actually calling it
@@ -245,13 +249,16 @@ def validate_call_signature(func: Callable, *args, **kwargs) -> bool:
     except TypeError:
         return False
 
+
 # ============================================================================
 # STATIC SIGNATURE AUDITOR
 # ============================================================================
 
+
 @dataclass
 class SignatureMismatch:
     """Represents a detected signature mismatch"""
+
     caller_module: str
     caller_function: str
     caller_line: int
@@ -262,6 +269,7 @@ class SignatureMismatch:
     actual_call: str
     severity: str  # 'high', 'medium', 'low'
     description: str
+
 
 class SignatureAuditor:
     """
@@ -286,14 +294,16 @@ class SignatureAuditor:
         logger.info(f"Auditing module: {module_path}")
 
         # Skip test files, virtual environments, and build directories
-        exclude_patterns = ['test', 'venv', '.venv', '__pycache__', '.git', 'build', 'dist']
-        if any(module_path.match(f'*/{pattern}/*') or module_path.match(f'*/{pattern}')
-               for pattern in exclude_patterns):
+        exclude_patterns = ["test", "venv", ".venv", "__pycache__", ".git", "build", "dist"]
+        if any(
+            module_path.match(f"*/{pattern}/*") or module_path.match(f"*/{pattern}")
+            for pattern in exclude_patterns
+        ):
             logger.debug(f"Skipping excluded path: {module_path}")
             return []
 
         try:
-            with open(module_path, encoding='utf-8') as f:
+            with open(module_path, encoding="utf-8") as f:
                 source_code = f.read()
 
             tree = ast.parse(source_code, filename=str(module_path))
@@ -315,7 +325,9 @@ class SignatureAuditor:
             logger.error(f"Failed to audit {module_path}: {e}")
             return []
 
-    def _extract_function_definitions(self, tree: ast.AST, module_name: str) -> dict[str, ast.FunctionDef]:
+    def _extract_function_definitions(
+        self, tree: ast.AST, module_name: str
+    ) -> dict[str, ast.FunctionDef]:
         """Extract all function definitions from AST"""
         functions = {}
 
@@ -327,7 +339,9 @@ class SignatureAuditor:
 
         return functions
 
-    def _extract_function_calls(self, tree: ast.AST, module_name: str) -> list[tuple[str, int, ast.Call]]:
+    def _extract_function_calls(
+        self, tree: ast.AST, module_name: str
+    ) -> list[tuple[str, int, ast.Call]]:
         """Extract all function calls from AST"""
         calls = []
 
@@ -348,7 +362,7 @@ class SignatureAuditor:
     def _cross_validate(
         self,
         function_defs: dict[str, ast.FunctionDef],
-        function_calls: list[tuple[str, int, ast.Call]]
+        function_calls: list[tuple[str, int, ast.Call]],
     ) -> list[SignatureMismatch]:
         """Cross-validate function calls against definitions"""
         mismatches = []
@@ -365,23 +379,25 @@ class SignatureAuditor:
         report = {
             "audit_timestamp": datetime.now().isoformat(),
             "total_mismatches": len(self.mismatches),
-            "mismatches": [asdict(m) for m in self.mismatches]
+            "mismatches": [asdict(m) for m in self.mismatches],
         }
 
-        with open(output_path, 'w') as f:
+        with open(output_path, "w") as f:
             json.dump(report, f, indent=2)
 
         logger.info(f"Exported audit report to {output_path}")
+
 
 # ============================================================================
 # COMPATIBILITY LAYER
 # ============================================================================
 
+
 def create_adapter(
     func: Callable,
     old_params: list[str],
     new_params: list[str],
-    param_mapping: dict[str, str] | None = None
+    param_mapping: dict[str, str] | None = None,
 ) -> Callable:
     """
     Create a backward-compatible adapter for a function with changed signature
@@ -409,9 +425,11 @@ def create_adapter(
 
     return adapter
 
+
 # ============================================================================
 # MODULE INITIALIZATION
 # ============================================================================
+
 
 def initialize_signature_registry(project_root: Path) -> None:
     """
@@ -430,7 +448,10 @@ def initialize_signature_registry(project_root: Path) -> None:
 
     _signature_registry.save()
 
-def audit_project_signatures(project_root: Path, output_path: Path | None = None) -> list[SignatureMismatch]:
+
+def audit_project_signatures(
+    project_root: Path, output_path: Path | None = None
+) -> list[SignatureMismatch]:
     """
     Audit all Python files in a project for signature mismatches
 
@@ -447,13 +468,15 @@ def audit_project_signatures(project_root: Path, output_path: Path | None = None
     logger.info(f"Auditing {len(python_files)} Python files")
 
     # Define patterns to exclude
-    exclude_patterns = ['test', 'venv', '.venv', '__pycache__', '.git', 'build', 'dist']
+    exclude_patterns = ["test", "venv", ".venv", "__pycache__", ".git", "build", "dist"]
 
     all_mismatches = []
     for py_file in python_files:
         # Skip excluded patterns
-        if any(py_file.match(f'*/{pattern}/*') or py_file.match(f'*/{pattern}')
-               for pattern in exclude_patterns):
+        if any(
+            py_file.match(f"*/{pattern}/*") or py_file.match(f"*/{pattern}")
+            for pattern in exclude_patterns
+        ):
             continue
 
         mismatches = auditor.audit_module(py_file)
@@ -465,6 +488,7 @@ def audit_project_signatures(project_root: Path, output_path: Path | None = None
     logger.info(f"Audit complete: {len(all_mismatches)} mismatches detected")
 
     return all_mismatches
+
 
 # ============================================================================
 # CLI INTERFACE

@@ -46,6 +46,7 @@ try:
         resolve_questionnaire,
         get_resolver,
     )
+
     MODULAR_RESOLVER_AVAILABLE = True
 except ImportError as e:
     MODULAR_RESOLVER_AVAILABLE = False
@@ -61,6 +62,7 @@ try:
         QuestionnaireLoadError,
         CanonicalQuestionnaire as FactoryCanonicalQuestionnaire,
     )
+
     FACTORY_AVAILABLE = True
 except ImportError as e:
     FACTORY_AVAILABLE = False
@@ -74,6 +76,7 @@ try:
     from farfan_pipeline.infrastructure.irrigation_using_signals.ports import (
         QuestionnairePort as SignalQuestionnairePort,
     )
+
     SISAS_AVAILABLE = True
 except ImportError as e:
     SISAS_AVAILABLE = False
@@ -94,24 +97,30 @@ def test_data_dir(tmp_path: Path) -> Path:
         dim_dir = dimensions_dir / f"DIM{i:02d}"
         dim_dir.mkdir()
         # Create metadata
-        (dim_dir / "metadata.json").write_text(json.dumps({
-            "dimension_id": f"DIM{i:02d}",
-            "name": f"Dimension {i}",
-        }))
+        (dim_dir / "metadata.json").write_text(
+            json.dumps(
+                {
+                    "dimension_id": f"DIM{i:02d}",
+                    "name": f"Dimension {i}",
+                }
+            )
+        )
         # Create questions (5 questions per dimension × 10 policy areas = 300 total)
         questions = []
         for j in range(1, 11):
             for k in range(1, 6):
                 q_num = (i - 1) * 50 + (j - 1) * 5 + k
-                questions.append({
-                    "question_id": f"Q{q_num:03d}",
-                    "dimension_id": f"DIM{i:02d}",
-                    "policy_area_id": f"PA{j:02d}",
-                    "text": f"Test question {q_num}",
-                    "scoring_modality": "TYPE_A",
-                    "patterns": [],
-                    "expected_elements": [],
-                })
+                questions.append(
+                    {
+                        "question_id": f"Q{q_num:03d}",
+                        "dimension_id": f"DIM{i:02d}",
+                        "policy_area_id": f"PA{j:02d}",
+                        "text": f"Test question {q_num}",
+                        "scoring_modality": "TYPE_A",
+                        "patterns": [],
+                        "expected_elements": [],
+                    }
+                )
         (dim_dir / "questions.json").write_text(json.dumps(questions))
 
     policy_areas_dir = tmp_path / "policy_areas"
@@ -120,29 +129,35 @@ def test_data_dir(tmp_path: Path) -> Path:
         pa_dir = policy_areas_dir / f"PA{i:02d}_test"
         pa_dir.mkdir()
         # Create metadata
-        (pa_dir / "metadata.json").write_text(json.dumps({
-            "policy_area_id": f"PA{i:02d}",
-            "name": f"Policy Area {i}",
-        }))
+        (pa_dir / "metadata.json").write_text(
+            json.dumps(
+                {
+                    "policy_area_id": f"PA{i:02d}",
+                    "name": f"Policy Area {i}",
+                }
+            )
+        )
 
     clusters_dir = tmp_path / "clusters"
     clusters_dir.mkdir()
     for i in range(1, 5):
         cluster_dir = clusters_dir / f"CL{i:02d}_test"
         cluster_dir.mkdir()
-        (cluster_dir / "metadata.json").write_text(json.dumps({
-            "cluster_id": f"CL{i:02d}",
-            "name": f"Cluster {i}",
-            "policy_area_ids": [f"PA{j:02d}" for j in range((i-1)*3+1, i*3+1)],
-        }))
+        (cluster_dir / "metadata.json").write_text(
+            json.dumps(
+                {
+                    "cluster_id": f"CL{i:02d}",
+                    "name": f"Cluster {i}",
+                    "policy_area_ids": [f"PA{j:02d}" for j in range((i - 1) * 3 + 1, i * 3 + 1)],
+                }
+            )
+        )
 
     governance_dir = tmp_path / "governance"
     governance_dir.mkdir()
     (governance_dir / "integrity.json").write_text(json.dumps({}))
     (governance_dir / "observability.json").write_text(json.dumps({}))
-    (governance_dir / "versioning.json").write_text(json.dumps({
-        "current_version": "1.0.0"
-    }))
+    (governance_dir / "versioning.json").write_text(json.dumps({"current_version": "1.0.0"}))
 
     scoring_dir = tmp_path / "scoring"
     scoring_dir.mkdir()
@@ -164,10 +179,14 @@ def test_data_dir(tmp_path: Path) -> Path:
     (cross_cutting_dir / "themes.json").write_text(json.dumps({}))
     (cross_cutting_dir / "interdependencies.json").write_text(json.dumps({}))
 
-    (tmp_path / "canonical_notation.json").write_text(json.dumps({
-        "dimensions": {},
-        "policy_areas": {},
-    }))
+    (tmp_path / "canonical_notation.json").write_text(
+        json.dumps(
+            {
+                "dimensions": {},
+                "policy_areas": {},
+            }
+        )
+    )
     (tmp_path / "meso_questions.json").write_text(json.dumps([]))
     (tmp_path / "macro_question.json").write_text(json.dumps({}))
 
@@ -248,11 +267,11 @@ class TestCanonicalQuestionnaireResolver:
         questionnaire = resolver.resolve()
 
         # Verify QuestionnairePort protocol
-        assert hasattr(questionnaire, 'data')
-        assert hasattr(questionnaire, 'version')
-        assert hasattr(questionnaire, 'sha256')
-        assert hasattr(questionnaire, 'micro_questions')
-        assert hasattr(questionnaire, '__iter__')
+        assert hasattr(questionnaire, "data")
+        assert hasattr(questionnaire, "version")
+        assert hasattr(questionnaire, "sha256")
+        assert hasattr(questionnaire, "micro_questions")
+        assert hasattr(questionnaire, "__iter__")
 
         # Verify types
         assert isinstance(questionnaire.data, dict)
@@ -302,15 +321,15 @@ class TestCanonicalQuestionnaireResolver:
         questionnaire = resolver.resolve()
 
         # Check provenance exists
-        assert hasattr(questionnaire, 'provenance')
+        assert hasattr(questionnaire, "provenance")
         provenance = questionnaire.provenance
 
         # Check all required fields
-        assert hasattr(provenance, 'assembly_timestamp')
-        assert hasattr(provenance, 'resolver_version')
-        assert hasattr(provenance, 'source_file_count')
-        assert hasattr(provenance, 'source_paths')
-        assert hasattr(provenance, 'assembly_duration_ms')
+        assert hasattr(provenance, "assembly_timestamp")
+        assert hasattr(provenance, "resolver_version")
+        assert hasattr(provenance, "source_file_count")
+        assert hasattr(provenance, "source_paths")
+        assert hasattr(provenance, "assembly_duration_ms")
 
         # Verify all source paths exist
         for path in provenance.source_paths:
@@ -339,6 +358,7 @@ class TestCanonicalQuestionnaireResolver:
         dim_dir = test_data_dir / "dimensions" / "DIM01"
         if dim_dir.exists():
             import shutil
+
             shutil.rmtree(dim_dir)
 
         resolver = CanonicalQuestionnaireResolver(
@@ -355,6 +375,7 @@ class TestCanonicalQuestionnaireResolver:
         dim_dir = test_data_dir / "dimensions" / "DIM01"
         if dim_dir.exists():
             import shutil
+
             shutil.rmtree(dim_dir)
 
         resolver = CanonicalQuestionnaireResolver(
@@ -398,6 +419,7 @@ class TestFactoryMigration:
         """
         # Patch the CANONICAL_QUESTIONNAIRE_PATH to use test data
         import farfan_pipeline.phases.Phase_two.phase2_10_00_factory as factory_module
+
         original_path = factory_module.CANONICAL_QUESTIONNAIRE_PATH
 
         # Create a test monolith at the expected location
@@ -413,7 +435,7 @@ class TestFactoryMigration:
         }
         test_monolith.write_text(json.dumps(test_data))
 
-        with patch.object(factory_module, 'CANONICAL_QUESTIONNAIRE_PATH', test_monolith):
+        with patch.object(factory_module, "CANONICAL_QUESTIONNAIRE_PATH", test_monolith):
             # The _USE_MODULAR_RESOLVER flag should be True by default
             assert factory_module._USE_MODULAR_RESOLVER is True
 
@@ -443,7 +465,7 @@ class TestFactoryMigration:
         }
         test_monolith.write_text(json.dumps(test_data))
 
-        with patch.object(factory_module, 'CANONICAL_QUESTIONNAIRE_PATH', test_monolith):
+        with patch.object(factory_module, "CANONICAL_QUESTIONNAIRE_PATH", test_monolith):
             # First load
             q1 = factory_module.load_questionnaire()
             assert factory_module.AnalysisPipelineFactory._questionnaire_loaded is True
@@ -521,7 +543,9 @@ class TestSisasValidation:
 # =============================================================================
 
 
-@pytest.mark.skipif(not (MODULAR_RESOLVER_AVAILABLE and SISAS_AVAILABLE), reason="Dependencies not available")
+@pytest.mark.skipif(
+    not (MODULAR_RESOLVER_AVAILABLE and SISAS_AVAILABLE), reason="Dependencies not available"
+)
 class TestIntegration:
     """Integration tests for complete pipeline."""
 

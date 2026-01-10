@@ -14,14 +14,14 @@ from .phase1_types import (
 )
 
 __all__ = [
-    'PDFExtractorProtocol',
-    'TruncationAuditProtocol',
-    'ChunkProtocol',
-    'Phase1ExecutorProtocol',
-    'TruncationAuditDict',
-    'SubphaseResultDict',
-    'ChunkTraceability',
-    'SpanMapping',
-    'SignalScores',
-    'PolicyAreaRelevance',
+    "PDFExtractorProtocol",
+    "TruncationAuditProtocol",
+    "ChunkProtocol",
+    "Phase1ExecutorProtocol",
+    "TruncationAuditDict",
+    "SubphaseResultDict",
+    "ChunkTraceability",
+    "SpanMapping",
+    "SignalScores",
+    "PolicyAreaRelevance",
 ]

@@ -22,6 +22,7 @@ from typing import Dict, List, Optional, Set, Tuple
 
 class SemanticIssue(Enum):
     """Types of semantic validation issues."""
+
     MISLEADING_NAME = "MISLEADING_NAME"
     INCONSISTENT_TERMINOLOGY = "INCONSISTENT_TERMINOLOGY"
     ABBREVIATION_WITHOUT_DEFINITION = "ABBREVIATION_WITHOUT_DEFINITION"
@@ -33,6 +34,7 @@ class SemanticIssue(Enum):
 @dataclass
 class SemanticViolation:
     """Represents a semantic naming violation."""
+
     filepath: Path
     issue_type: SemanticIssue
     name: str
@@ -54,55 +56,82 @@ class SemanticValidator:
 
     # Domain-specific terminology dictionary
     DOMAIN_TERMS = {
-        'phase': ['phase', 'stage', 'step', 'portion'],
-        'executor': ['executor', 'runner', 'handler', 'processor'],
-        'contract': ['contract', 'agreement', 'specification', 'schema'],
-        'validation': ['validation', 'validator', 'verify', 'check'],
-        'factory': ['factory', 'creator', 'builder', 'maker'],
-        'registry': ['registry', 'register', 'catalog', 'index'],
-        'nexus': ['nexus', 'hub', 'center', 'core'],
-        'router': ['router', 'dispatcher', 'director', 'switch'],
-        'config': ['config', 'configuration', 'settings', 'options'],
+        "phase": ["phase", "stage", "step", "portion"],
+        "executor": ["executor", "runner", "handler", "processor"],
+        "contract": ["contract", "agreement", "specification", "schema"],
+        "validation": ["validation", "validator", "verify", "check"],
+        "factory": ["factory", "creator", "builder", "maker"],
+        "registry": ["registry", "register", "catalog", "index"],
+        "nexus": ["nexus", "hub", "center", "core"],
+        "router": ["router", "dispatcher", "director", "switch"],
+        "config": ["config", "configuration", "settings", "options"],
     }
 
     # Common abbreviations that should be avoided or documented
     PROBLEMATIC_ABBREVIATIONS = {
-        'cfg': 'config',
-        'ctx': 'context',
-        'env': 'environment',
-        'msg': 'message',
-        'obj': 'object',
-        'param': 'parameter',
-        'proc': 'process',
-        'resp': 'response',
-        'req': 'request',
-        'tmp': 'temporary',
-        'val': 'value',
-        'var': 'variable',
+        "cfg": "config",
+        "ctx": "context",
+        "env": "environment",
+        "msg": "message",
+        "obj": "object",
+        "param": "parameter",
+        "proc": "process",
+        "resp": "response",
+        "req": "request",
+        "tmp": "temporary",
+        "val": "value",
+        "var": "variable",
     }
 
     # Vague or generic names to avoid
     VAGUE_NAMES = {
-        'data',
-        'info',
-        'item',
-        'thing',
-        'stuff',
-        'manager',
-        'helper',
-        'util',
-        'utils',
-        'handler',
-        'processor',
+        "data",
+        "info",
+        "item",
+        "thing",
+        "stuff",
+        "manager",
+        "helper",
+        "util",
+        "utils",
+        "handler",
+        "processor",
     }
 
     # Verbs that should be used for functions
     FUNCTION_VERBS = {
-        'get', 'set', 'add', 'remove', 'create', 'delete', 'update',
-        'fetch', 'load', 'save', 'store', 'find', 'search', 'filter',
-        'validate', 'verify', 'check', 'test', 'run', 'execute',
-        'process', 'handle', 'transform', 'convert', 'parse', 'format',
-        'calculate', 'compute', 'derive', 'generate', 'build', 'construct',
+        "get",
+        "set",
+        "add",
+        "remove",
+        "create",
+        "delete",
+        "update",
+        "fetch",
+        "load",
+        "save",
+        "store",
+        "find",
+        "search",
+        "filter",
+        "validate",
+        "verify",
+        "check",
+        "test",
+        "run",
+        "execute",
+        "process",
+        "handle",
+        "transform",
+        "convert",
+        "parse",
+        "format",
+        "calculate",
+        "compute",
+        "derive",
+        "generate",
+        "build",
+        "construct",
     }
 
     def __init__(self, repo_root: Optional[Path] = None):
@@ -148,61 +177,71 @@ class SemanticValidator:
 
         # Check for vague names
         if name.lower() in self.VAGUE_NAMES:
-            violations.append(SemanticViolation(
-                filepath=filepath,
-                issue_type=SemanticIssue.VAGUE_NAME,
-                name=name,
-                message=f"Class name '{name}' is too vague or generic",
-                suggestion="Use a more specific, descriptive name",
-                line_number=node.lineno
-            ))
+            violations.append(
+                SemanticViolation(
+                    filepath=filepath,
+                    issue_type=SemanticIssue.VAGUE_NAME,
+                    name=name,
+                    message=f"Class name '{name}' is too vague or generic",
+                    suggestion="Use a more specific, descriptive name",
+                    line_number=node.lineno,
+                )
+            )
 
         # Check for noun confusion (classes should be nouns)
         if self._looks_like_verb(name):
-            violations.append(SemanticViolation(
-                filepath=filepath,
-                issue_type=SemanticIssue.NOUN_VERB_CONFUSION,
-                name=name,
-                message=f"Class name '{name}' appears to be a verb (classes should be nouns)",
-                suggestion="Use noun form for class names",
-                line_number=node.lineno
-            ))
+            violations.append(
+                SemanticViolation(
+                    filepath=filepath,
+                    issue_type=SemanticIssue.NOUN_VERB_CONFUSION,
+                    name=name,
+                    message=f"Class name '{name}' appears to be a verb (classes should be nouns)",
+                    suggestion="Use noun form for class names",
+                    line_number=node.lineno,
+                )
+            )
 
         # Track terminology usage
         self._track_term_usage(name.lower())
 
         return violations
 
-    def _validate_function_name(self, filepath: Path, node: ast.FunctionDef) -> List[SemanticViolation]:
+    def _validate_function_name(
+        self, filepath: Path, node: ast.FunctionDef
+    ) -> List[SemanticViolation]:
         """Validate function name for semantic issues."""
         violations = []
         name = node.name
 
         # Skip private/dunder methods
-        if name.startswith('__') or name.startswith('_'):
+        if name.startswith("__") or name.startswith("_"):
             return violations
 
         # Check for vague names
         if name.lower() in self.VAGUE_NAMES:
-            violations.append(SemanticViolation(
-                filepath=filepath,
-                issue_type=SemanticIssue.VAGUE_NAME,
-                name=name,
-                message=f"Function name '{name}' is too vague or generic",
-                suggestion="Use a more specific, descriptive name",
-                line_number=node.lineno
-            ))
+            violations.append(
+                SemanticViolation(
+                    filepath=filepath,
+                    issue_type=SemanticIssue.VAGUE_NAME,
+                    name=name,
+                    message=f"Function name '{name}' is too vague or generic",
+                    suggestion="Use a more specific, descriptive name",
+                    line_number=node.lineno,
+                )
+            )
 
         # Check for verb usage (functions should be verbs)
         if not self._starts_with_verb(name):
-            violations.append(SemanticViolation(
-                filepath=filepath,
-                issue_type=SemanticIssue.NOUN_VERB_CONFUSION,
-                name=name,
-                message=f"Function name '{name}' should start with a verb",
-                suggestion=f"Consider: get_{name}, set_{name}, is_{name}, validate_{name}",
-                line_number=node.lineno
-            ))
+            violations.append(
+                SemanticViolation(
+                    filepath=filepath,
+                    issue_type=SemanticIssue.NOUN_VERB_CONFUSION,
+                    name=name,
+                    message=f"Function name '{name}' should start with a verb",
+                    suggestion=f"Consider: get_{name}, set_{name}, is_{name}, validate_{name}",
+                    line_number=node.lineno,
+                )
+            )
 
         # Track terminology usage
         self._track_term_usage(name.lower())
@@ -224,14 +263,16 @@ class SemanticValidator:
                 # Check for problematic abbreviations
                 for abbrev, full_form in self.PROBLEMATIC_ABBREVIATIONS.items():
                     if abbrev in name.lower() and name.lower() != full_form:
-                        violations.append(SemanticViolation(
-                            filepath=filepath,
-                            issue_type=SemanticIssue.ABBREVIATION_WITHOUT_DEFINITION,
-                            name=name,
-                            message=f"Abbreviation '{abbrev}' in '{name}' should be expanded",
-                            suggestion=f"Consider using '{full_form}' instead of '{abbrev}'",
-                            line_number=node.lineno
-                        ))
+                        violations.append(
+                            SemanticViolation(
+                                filepath=filepath,
+                                issue_type=SemanticIssue.ABBREVIATION_WITHOUT_DEFINITION,
+                                name=name,
+                                message=f"Abbreviation '{abbrev}' in '{name}' should be expanded",
+                                suggestion=f"Consider using '{full_form}' instead of '{abbrev}'",
+                                line_number=node.lineno,
+                            )
+                        )
 
         return violations
 
@@ -239,14 +280,14 @@ class SemanticValidator:
         """Check if a name looks like a verb."""
         # Remove common prefixes/suffixes
         base = name.lower()
-        for prefix in ['get', 'set', 'is', 'has', 'can', 'should']:
+        for prefix in ["get", "set", "is", "has", "can", "should"]:
             if base.startswith(prefix):
                 return True
         return base in self.FUNCTION_VERBS
 
     def _starts_with_verb(self, name: str) -> bool:
         """Check if a function name starts with a verb."""
-        parts = name.split('_')
+        parts = name.split("_")
         if not parts:
             return False
         return parts[0] in self.FUNCTION_VERBS
@@ -265,13 +306,15 @@ class SemanticValidator:
         # Check for inconsistent terminology usage
         for term, usages in self.term_usage.items():
             if len(set(usages)) > 1:
-                violations.append(SemanticViolation(
-                    filepath=Path.cwd(),  # Repository-level issue
-                    issue_type=SemanticIssue.INCONSISTENT_TERMINOLOGY,
-                    name=term,
-                    message=f"Inconsistent use of '{term}' across different contexts: {set(usages)}",
-                    suggestion="Standardize on a single term for this concept"
-                ))
+                violations.append(
+                    SemanticViolation(
+                        filepath=Path.cwd(),  # Repository-level issue
+                        issue_type=SemanticIssue.INCONSISTENT_TERMINOLOGY,
+                        name=term,
+                        message=f"Inconsistent use of '{term}' across different contexts: {set(usages)}",
+                        suggestion="Standardize on a single term for this concept",
+                    )
+                )
 
         return violations
 

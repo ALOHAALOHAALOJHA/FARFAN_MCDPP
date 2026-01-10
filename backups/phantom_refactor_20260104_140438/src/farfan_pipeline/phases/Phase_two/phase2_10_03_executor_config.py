@@ -33,13 +33,13 @@ from typing import Any, Dict, Optional
 class ExecutorConfig:
     """
     Runtime configuration for executor execution (HOW parameters only).
-    
+
     This dataclass contains ONLY execution parameters that control HOW
     executors run, NOT calibration values that define WHAT quality we measure.
-    
+
     Loading Hierarchy:
         CLI args > ENV vars > environment file > executor config file > defaults
-    
+
     Attributes:
         timeout_s: Maximum execution time in seconds
         retry: Number of retry attempts on failure
@@ -76,8 +76,14 @@ class ExecutorConfig:
     def from_dict(cls, config_dict: Dict[str, Any]) -> ExecutorConfig:
         """Create ExecutorConfig from dictionary."""
         valid_fields = {
-            "timeout_s", "retry", "temperature", "max_tokens",
-            "memory_limit_mb", "enable_profiling", "seed", "extra"
+            "timeout_s",
+            "retry",
+            "temperature",
+            "max_tokens",
+            "memory_limit_mb",
+            "enable_profiling",
+            "seed",
+            "extra",
         }
         filtered = {k: v for k, v in config_dict.items() if k in valid_fields}
         return cls(**filtered)
@@ -87,42 +93,42 @@ class ExecutorConfig:
         cls,
         executor_id: str,
         environment: str = "production",
-        cli_overrides: Optional[Dict[str, Any]] = None
+        cli_overrides: Optional[Dict[str, Any]] = None,
     ) -> ExecutorConfig:
         """
         Load ExecutorConfig from multiple sources with proper hierarchy.
-        
+
         Loading order (highest to lowest priority):
         1. CLI arguments (passed via cli_overrides)
         2. Environment variables (FARFAN_*)
         3. Environment file (system/config/environments/{env}.json)
         4. Executor config file (executor_configs/{executor_id}.json)
         5. Conservative defaults
-        
+
         Args:
             executor_id: Executor identifier (e.g., "Q001" or legacy "D3_Q2_TargetProportionalityAnalyzer")
             environment: Environment name (development, staging, production)
             cli_overrides: CLI argument overrides
-        
+
         Returns:
             ExecutorConfig with merged configuration
         """
         config = cls._get_conservative_defaults()
-        
+
         executor_config = cls._load_executor_config_file(executor_id)
         if executor_config:
             config.update(executor_config)
-        
+
         env_config = cls._load_environment_file(environment)
         if env_config and "executor" in env_config:
             config.update(env_config["executor"])
-        
+
         env_vars = cls._load_environment_variables()
         config.update(env_vars)
-        
+
         if cli_overrides:
             config.update(cli_overrides)
-        
+
         return cls.from_dict(config)
 
     @staticmethod
@@ -142,10 +148,10 @@ class ExecutorConfig:
     def _load_executor_config_file(executor_id: str) -> Optional[Dict[str, Any]]:
         """Load executor-specific config file."""
         config_file = Path(__file__).resolve().parent / "executor_configs" / f"{executor_id}.json"
-        
+
         if not config_file.exists():
             return None
-        
+
         try:
             with open(config_file) as f:
                 data = json.load(f)
@@ -156,12 +162,17 @@ class ExecutorConfig:
     @staticmethod
     def _load_environment_file(environment: str) -> Optional[Dict[str, Any]]:
         """Load environment-specific config file."""
-        base_path = Path(__file__).resolve().parent.parent.parent.parent / "system" / "config" / "environments"
+        base_path = (
+            Path(__file__).resolve().parent.parent.parent.parent
+            / "system"
+            / "config"
+            / "environments"
+        )
         env_file = base_path / f"{environment}.json"
-        
+
         if not env_file.exists():
             return None
-        
+
         try:
             with open(env_file) as f:
                 return json.load(f)
@@ -172,7 +183,7 @@ class ExecutorConfig:
     def _load_environment_variables() -> Dict[str, Any]:
         """Load configuration from environment variables."""
         config = {}
-        
+
         if "FARFAN_TIMEOUT_S" in os.environ:
             config["timeout_s"] = float(os.environ["FARFAN_TIMEOUT_S"])
         if "FARFAN_RETRY" in os.environ:
@@ -185,13 +196,14 @@ class ExecutorConfig:
             config["memory_limit_mb"] = int(os.environ["FARFAN_MEMORY_LIMIT_MB"])
         if "FARFAN_SEED" in os.environ:
             config["seed"] = int(os.environ["FARFAN_SEED"])
-        
+
         return config
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary, excluding None values."""
         return {
-            k: v for k, v in {
+            k: v
+            for k, v in {
                 "timeout_s": self.timeout_s,
                 "retry": self.retry,
                 "temperature": self.temperature,
@@ -200,7 +212,8 @@ class ExecutorConfig:
                 "enable_profiling": self.enable_profiling,
                 "seed": self.seed,
                 "extra": self.extra,
-            }.items() if v is not None
+            }.items()
+            if v is not None
         }
 
 

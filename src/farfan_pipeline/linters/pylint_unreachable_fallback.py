@@ -76,7 +76,7 @@ class UnreachableFallbackChecker(BaseChecker):
             "unreachable-fallback-handler",
             "Fallback handler will never execute.",
         ),
-        "W9002":  (
+        "W9002": (
             "Suspicious fallback for '%s': function may not raise %s",
             "suspicious-fallback-handler",
             "Fallback may be dead code.",
@@ -125,9 +125,7 @@ class UnreachableFallbackChecker(BaseChecker):
                 )
             else:
                 # Check if expected exceptions match raised exceptions
-                unmatched = self._find_unmatched_exceptions(
-                    expected_exceptions, raised_exceptions
-                )
+                unmatched = self._find_unmatched_exceptions(expected_exceptions, raised_exceptions)
                 if unmatched:
                     self.add_message(
                         "unreachable-fallback-handler",
@@ -218,9 +216,7 @@ class UnreachableFallbackChecker(BaseChecker):
         else:
             return "<unknown>"
 
-    def _analyze_function_exceptions(
-        self, func_arg: astroid.NodeNG
-    ) -> set[str] | None:
+    def _analyze_function_exceptions(self, func_arg: astroid.NodeNG) -> set[str] | None:
         """
         Analyze function to determine which exceptions it can raise.
 
@@ -243,9 +239,7 @@ class UnreachableFallbackChecker(BaseChecker):
             try:
                 # Try to infer the function definition
                 inferred = list(func_arg.infer())
-                if len(inferred) == 1 and isinstance(
-                    inferred[0], astroid.FunctionDef
-                ):
+                if len(inferred) == 1 and isinstance(inferred[0], astroid.FunctionDef):
                     func_def = inferred[0]
                     self._collect_raised_exceptions(func_def, raised_exceptions)
 
@@ -291,8 +285,10 @@ class UnreachableFallbackChecker(BaseChecker):
                             raised_exceptions.update(called_exceptions)
                         elif isinstance(inferred_func, astroid.BoundMethod):
                             # Handle method calls
-                            if inferred_func.type == 'method' and inferred_func.parent:
-                                called_exceptions = self._analyze_call_chain(inferred_func.parent, depth - 1)
+                            if inferred_func.type == "method" and inferred_func.parent:
+                                called_exceptions = self._analyze_call_chain(
+                                    inferred_func.parent, depth - 1
+                                )
                                 raised_exceptions.update(called_exceptions)
                 except (astroid.InferenceError, astroid.NameInferenceError, AttributeError):
                     # Cannot infer callee, continue to next call
@@ -300,9 +296,7 @@ class UnreachableFallbackChecker(BaseChecker):
 
         return raised_exceptions
 
-    def _collect_raised_exceptions(
-        self, node: astroid.NodeNG, exceptions: set[str]
-    ) -> None:
+    def _collect_raised_exceptions(self, node: astroid.NodeNG, exceptions: set[str]) -> None:
         """
         Recursively collect exception types raised in node.
 
@@ -342,9 +336,7 @@ class UnreachableFallbackChecker(BaseChecker):
 
         return None
 
-    def _find_unmatched_exceptions(
-        self, expected: list[str], raised: set[str]
-    ) -> list[str]:
+    def _find_unmatched_exceptions(self, expected: list[str], raised: set[str]) -> list[str]:
         """
         Find expected exceptions that are not raised by the function.
 

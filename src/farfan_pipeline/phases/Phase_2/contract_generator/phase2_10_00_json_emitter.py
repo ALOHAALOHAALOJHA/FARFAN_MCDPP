@@ -22,7 +22,7 @@ ESTRUCTURA DE SALIDA:
     ├── contracts/
     │   ├── Q001_PA01_contract_v4.json
     │   ├── Q001_PA02_contract_v4.json
-    │   ├── ... 
+    │   ├── ...
     │   └── Q030_PA10_contract_v4.json
     ├── validation/
     │   └── validation_reports. json
@@ -41,7 +41,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from . contract_assembler import GeneratedContract
+    from .contract_assembler import GeneratedContract
     from .contract_validator import ValidationReport
 
 logger = logging.getLogger(__name__)
@@ -97,7 +97,7 @@ class JSONEmitter:
         Args:
             output_path: Directorio base de salida
 
-        Crea la estructura de directorios: 
+        Crea la estructura de directorios:
             output_path/
             ├── contracts/
             └── validation/
@@ -177,7 +177,7 @@ class JSONEmitter:
         """
         Prepara diccionario del contrato con información de validación.
 
-        Añade: 
+        Añade:
         - audit_checklist en audit_annotations
         - emission_metadata
         """
@@ -203,7 +203,7 @@ class JSONEmitter:
             "emission_timestamp": datetime.now(timezone.utc).isoformat(),
             "output_format": "json",
             "encoding": "utf-8",
-            "deterministic":  True,
+            "deterministic": True,
         }
 
         return contract_dict
@@ -214,7 +214,7 @@ class JSONEmitter:
 
     def emit_generation_manifest(
         self,
-        contracts:  list["GeneratedContract"],
+        contracts: list["GeneratedContract"],
         reports: list["ValidationReport"],
         timestamp: str,
         generator_version: str,
@@ -230,7 +230,7 @@ class JSONEmitter:
         - Resumen por sector
         - Resumen por tipo de contrato
 
-        Args: 
+        Args:
             contracts: Lista de todos los contratos generados
             reports: Lista de reportes de validación (mismo orden)
             timestamp: ISO timestamp de inicio de generación
@@ -277,15 +277,15 @@ class JSONEmitter:
             },
             "by_sector": sector_stats,
             "by_contract_type": type_stats,
-            "contracts":  [
+            "contracts": [
                 self._contract_summary(c, r, i + 1)
                 for i, (c, r) in enumerate(zip(contracts, reports))
             ],
-            "input_hashes":  input_hashes,
+            "input_hashes": input_hashes,
             "output_structure": {
                 "contracts_directory": str(self.contracts_dir),
-                "validation_directory":  str(self.validation_dir),
-                "manifest_file":  MANIFEST_FILENAME,
+                "validation_directory": str(self.validation_dir),
+                "manifest_file": MANIFEST_FILENAME,
             },
         }
 
@@ -318,20 +318,24 @@ class JSONEmitter:
             "base_slot": contract.identity.get("base_slot"),
             "sector_id": contract.identity.get("sector_id"),
             "sector_name": contract.identity.get("sector_name", "")[:50],
-            "contract_type":  contract.identity.get("contract_type"),
+            "contract_type": contract.identity.get("contract_type"),
             "method_count": contract.method_binding.get("method_count"),
             "efficiency_score": round(contract.method_binding.get("efficiency_score", 0), 4),
-            "validation":  {
+            "validation": {
                 "is_valid": report.is_valid,
                 "pass_rate": round(report.pass_rate, 4),
                 "checks_total": report.total_checks,
-                "checks_passed":  report.passed_checks,
+                "checks_passed": report.passed_checks,
                 "critical_failures": report.critical_failures,
-                "high_failures":  report.high_failures,
+                "high_failures": report.high_failures,
             },
-            "filename": CONTRACT_FILENAME_TEMPLATE.format(
-                contract_id=contract.identity.get("contract_id", "UNKNOWN")
-            ) if report.is_valid else None,
+            "filename": (
+                CONTRACT_FILENAME_TEMPLATE.format(
+                    contract_id=contract.identity.get("contract_id", "UNKNOWN")
+                )
+                if report.is_valid
+                else None
+            ),
         }
 
     def _compute_sector_stats(
@@ -340,7 +344,7 @@ class JSONEmitter:
         reports: list["ValidationReport"],
     ) -> dict[str, dict[str, Any]]:
         """Computa estadísticas por sector."""
-        stats:  dict[str, dict[str, Any]] = {}
+        stats: dict[str, dict[str, Any]] = {}
 
         for contract, report in zip(contracts, reports):
             sector_id = contract.identity.get("sector_id", "UNKNOWN")
@@ -348,7 +352,7 @@ class JSONEmitter:
             if sector_id not in stats:
                 stats[sector_id] = {
                     "sector_name": contract.identity.get("sector_name", ""),
-                    "total":  0,
+                    "total": 0,
                     "valid": 0,
                     "invalid": 0,
                     "avg_efficiency": 0.0,
@@ -358,7 +362,7 @@ class JSONEmitter:
             stats[sector_id]["total"] += 1
             if report.is_valid:
                 stats[sector_id]["valid"] += 1
-            else: 
+            else:
                 stats[sector_id]["invalid"] += 1
 
             efficiency = contract.method_binding.get("efficiency_score", 0)
@@ -366,7 +370,7 @@ class JSONEmitter:
 
         # Calcular promedios
         for sector_id, data in stats.items():
-            scores = data. pop("efficiency_scores")
+            scores = data.pop("efficiency_scores")
             data["avg_efficiency"] = round(sum(scores) / len(scores), 4) if scores else 0
 
         return stats
@@ -392,7 +396,7 @@ class JSONEmitter:
             stats[type_code]["total"] += 1
             if report.is_valid:
                 stats[type_code]["valid"] += 1
-            else: 
+            else:
                 stats[type_code]["invalid"] += 1
 
         return stats
@@ -406,7 +410,7 @@ class JSONEmitter:
         reports: list["ValidationReport"],
     ) -> Path:
         """
-        Emite todos los reportes de validación en un archivo. 
+        Emite todos los reportes de validación en un archivo.
 
         Args:
             reports:  Lista de reportes
@@ -440,7 +444,7 @@ class JSONEmitter:
     def _emit_invalid_contracts_list(
         self,
         contracts: list["GeneratedContract"],
-        reports:  list["ValidationReport"],
+        reports: list["ValidationReport"],
     ) -> Path:
         """
         Emite lista de contratos inválidos con detalles de fallos.
@@ -458,32 +462,36 @@ class JSONEmitter:
             if not report.is_valid:
                 # Extraer fallos críticos y high
                 critical_failures = [
-                    r. to_dict() for r in report.results
-                    if not r.passed and r.severity. value == "CRITICAL"
+                    r.to_dict()
+                    for r in report.results
+                    if not r.passed and r.severity.value == "CRITICAL"
                 ]
                 high_failures = [
-                    r.to_dict() for r in report.results
-                    if not r.passed and r.severity. value == "HIGH"
+                    r.to_dict()
+                    for r in report.results
+                    if not r.passed and r.severity.value == "HIGH"
                 ]
 
-                invalid_list.append({
-                    "contract_id":  report.contract_id,
-                    "question_id": report.question_id,
-                    "sector_id": report.sector_id,
-                    "contract_number": report.contract_number,
-                    "critical_failures_count": report.critical_failures,
-                    "high_failures_count": report.high_failures,
-                    "pass_rate": round(report.pass_rate, 4),
-                    "critical_failures": critical_failures,
-                    "high_failures": high_failures,
-                })
+                invalid_list.append(
+                    {
+                        "contract_id": report.contract_id,
+                        "question_id": report.question_id,
+                        "sector_id": report.sector_id,
+                        "contract_number": report.contract_number,
+                        "critical_failures_count": report.critical_failures,
+                        "high_failures_count": report.high_failures,
+                        "pass_rate": round(report.pass_rate, 4),
+                        "critical_failures": critical_failures,
+                        "high_failures": high_failures,
+                    }
+                )
 
         invalid_data = {
             "metadata": {
                 "timestamp": datetime.now(timezone.utc).isoformat(),
-                "total_invalid":  len(invalid_list),
+                "total_invalid": len(invalid_list),
             },
-            "invalid_contracts":  invalid_list,
+            "invalid_contracts": invalid_list,
         }
 
         output_file = self.validation_dir / INVALID_CONTRACTS_FILENAME

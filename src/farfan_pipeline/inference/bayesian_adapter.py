@@ -146,9 +146,7 @@ class BayesianEngineAdapter:
 
         # CRITICAL: Check for empty observations
         if obs_array.size == 0:
-            raise ValueError(
-                f"{method_name}: observations array is empty"
-            )
+            raise ValueError(f"{method_name}: observations array is empty")
 
         # CRITICAL: Filter NaN values
         nan_mask = np.isnan(obs_array)
@@ -168,9 +166,7 @@ class BayesianEngineAdapter:
 
         # Check if anything remains after filtering
         if obs_array.size == 0:
-            raise ValueError(
-                f"{method_name}: all observations were NaN or Inf"
-            )
+            raise ValueError(f"{method_name}: all observations were NaN or Inf")
 
         # VALIDATION: Check for non-binary values (warn but proceed)
         non_binary_mask = ~np.isin(obs_array, [0.0, 1.0])
@@ -185,9 +181,7 @@ class BayesianEngineAdapter:
         # VALIDATION: Check for negative values
         n_negative = int(np.sum(obs_array < 0))
         if n_negative > 0:
-            raise ValueError(
-                f"{method_name}: {n_negative} negative values in observations"
-            )
+            raise ValueError(f"{method_name}: {n_negative} negative values in observations")
 
         # Convert to successes/trials
         n_successes = int(np.sum(obs_array))
@@ -515,7 +509,7 @@ class BayesianEngineAdapter:
         # Compute overall mechanism strength (average across levels)
         posterior_means = [r.posterior_mean for r in results]
         overall_mean = float(np.mean(posterior_means))
-        
+
         if len(results) <= 1:
             overall_std = 0.0
         else:
@@ -590,11 +584,7 @@ class BayesianEngineAdapter:
         # Convergence check
         convergence = self.diagnostics.check_convergence(trace)
 
-        overall_valid = (
-            ppc_mean.passed
-            and ppc_std.passed
-            and convergence.get("converged", False)
-        )
+        overall_valid = ppc_mean.passed and ppc_std.passed and convergence.get("converged", False)
 
         return {
             "ppc_mean": {

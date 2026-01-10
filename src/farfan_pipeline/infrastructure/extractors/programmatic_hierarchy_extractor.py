@@ -55,8 +55,10 @@ logger = logging.getLogger(__name__)
 # Type Definitions & Enums
 # -----------------------------------------------------------------------------
 
+
 class HierarchyErrorType(Enum):
     """Types of hierarchy anomalies detected."""
+
     CYCLE_DETECTED = "cycle_detected"
     MISSING_PARENT = "missing_parent"
     MULTI_ROOT = "multi_root"
@@ -69,6 +71,7 @@ class HierarchyErrorType(Enum):
 @dataclass(frozen=True)
 class HierarchyError:
     """Immutable record of a hierarchy anomaly."""
+
     error_type: HierarchyErrorType
     node_ids: Tuple[str, ...]
     message: str
@@ -82,6 +85,7 @@ class HierarchyError:
 @dataclass
 class HierarchyNode:
     """Represents a single node in the programmatic hierarchy."""
+
     node_id: str
     name: str
     level: int
@@ -102,6 +106,7 @@ class HierarchyNode:
 # Protocol: HierarchySourceAdapter
 # -----------------------------------------------------------------------------
 
+
 @runtime_checkable
 class HierarchySourceAdapter(Protocol):
     """
@@ -121,6 +126,7 @@ class HierarchySourceAdapter(Protocol):
 # -----------------------------------------------------------------------------
 # Built-in Source Adapters
 # -----------------------------------------------------------------------------
+
 
 class DictSourceAdapter:
     """Adapter for in-memory list of dictionaries."""
@@ -143,12 +149,7 @@ class DictSourceAdapter:
 class JSONFileSourceAdapter:
     """Adapter for JSON file sources."""
 
-    def __init__(
-        self,
-        file_path: Path,
-        node_path: str = "nodes",
-        encoding: str = "utf-8"
-    ):
+    def __init__(self, file_path: Path, node_path: str = "nodes", encoding: str = "utf-8"):
         self._file_path = Path(file_path)
         self._node_path = node_path
         self._encoding = encoding
@@ -184,7 +185,7 @@ class CSVSourceAdapter:
         parent_column: str = "parent_id",
         name_column: str = "name",
         level_column: str = "level",
-        encoding: str = "utf-8"
+        encoding: str = "utf-8",
     ):
         self._file_path = Path(file_path)
         self._id_column = id_column
@@ -223,6 +224,7 @@ class CSVSourceAdapter:
 # -----------------------------------------------------------------------------
 # Core: ProgrammaticHierarchyExtractor
 # -----------------------------------------------------------------------------
+
 
 class ProgrammaticHierarchyExtractor:
     """
@@ -278,7 +280,9 @@ class ProgrammaticHierarchyExtractor:
         self._reset()
         self._source_metadata = source.get_source_metadata()
 
-        logger.info(f"Ingesting hierarchy from {self._source_metadata.get('source_type', 'unknown')}")
+        logger.info(
+            f"Ingesting hierarchy from {self._source_metadata.get('source_type', 'unknown')}"
+        )
 
         # Phase 1: Load and normalize all nodes
         for raw_node in source.fetch_nodes():
@@ -290,7 +294,7 @@ class ProgrammaticHierarchyExtractor:
                             HierarchyErrorType.DUPLICATE_NODE,
                             (node.node_id,),
                             f"Duplicate node ID: {node.node_id}",
-                            severity="warning"
+                            severity="warning",
                         )
                     else:
                         self._nodes[node.node_id] = node
@@ -300,7 +304,7 @@ class ProgrammaticHierarchyExtractor:
                     HierarchyErrorType.ENCODING_ERROR,
                     (node_id,),
                     f"Failed to normalize node: {e}",
-                    severity="warning"
+                    severity="warning",
                 )
 
         logger.info(f"Loaded {len(self._nodes)} nodes")
@@ -314,7 +318,7 @@ class ProgrammaticHierarchyExtractor:
             self._add_error(
                 HierarchyErrorType.CYCLE_DETECTED,
                 tuple(cycle),
-                f"Cycle detected involving nodes: {' -> '.join(cycle)}"
+                f"Cycle detected involving nodes: {' -> '.join(cycle)}",
             )
 
         # Phase 4: Build topological order (if no cycles)
@@ -572,7 +576,7 @@ class ProgrammaticHierarchyExtractor:
                     self._add_error(
                         HierarchyErrorType.MISSING_PARENT,
                         (node_id, node.parent_id),
-                        f"Node '{node_id}' references missing parent '{node.parent_id}'"
+                        f"Node '{node_id}' references missing parent '{node.parent_id}'",
                     )
 
     def _identify_roots_and_orphans(self) -> None:
@@ -590,7 +594,7 @@ class ProgrammaticHierarchyExtractor:
                 HierarchyErrorType.MULTI_ROOT,
                 tuple(self._roots),
                 f"Multiple roots detected: {', '.join(self._roots[:5])}{'...' if len(self._roots) > 5 else ''}",
-                severity="warning"
+                severity="warning",
             )
 
         # Identify orphans (nodes not reachable from any root)
@@ -605,7 +609,7 @@ class ProgrammaticHierarchyExtractor:
                 HierarchyErrorType.ORPHAN_NODE,
                 (orphan,),
                 f"Orphan node '{orphan}' not reachable from any root",
-                severity="warning"
+                severity="warning",
             )
 
     # -------------------------------------------------------------------------
@@ -615,7 +619,7 @@ class ProgrammaticHierarchyExtractor:
     def _detect_cycles_tarjan(self) -> List[List[str]]:
         """
         Detect cycles using Tarjan's Strongly Connected Components algorithm.
-        
+
         Iterative implementation to avoid stack overflow on deep hierarchies.
         Returns list of cycles (SCCs with size > 1 indicate cycles).
         """
@@ -762,8 +766,8 @@ class ProgrammaticHierarchyExtractor:
         """Export hierarchy as Graphviz DOT format."""
         lines = [
             "digraph ProgrammaticHierarchy {",
-            '  rankdir=TB;',
-            '  node [shape=box];',
+            "  rankdir=TB;",
+            "  node [shape=box];",
             "",
         ]
 
@@ -813,12 +817,14 @@ class ProgrammaticHierarchyExtractor:
         severity: Literal["warning", "error", "fatal"] = "error",
     ) -> None:
         """Add an error to the error list."""
-        self._errors.append(HierarchyError(
-            error_type=error_type,
-            node_ids=node_ids,
-            message=message,
-            severity=severity,
-        ))
+        self._errors.append(
+            HierarchyError(
+                error_type=error_type,
+                node_ids=node_ids,
+                message=message,
+                severity=severity,
+            )
+        )
         logger.warning(f"Hierarchy anomaly: {error_type.value} - {message}")
 
     def _count_errors_by_type(self) -> Dict[str, int]:

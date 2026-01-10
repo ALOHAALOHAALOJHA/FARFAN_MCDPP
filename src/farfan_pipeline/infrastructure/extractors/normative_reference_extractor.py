@@ -34,10 +34,7 @@ from pathlib import Path
 import logging
 from collections import defaultdict
 
-from .empirical_extractor_base import (
-    PatternBasedExtractor,
-    ExtractionResult
-)
+from .empirical_extractor_base import PatternBasedExtractor, ExtractionResult
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +42,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class NormativeReference:
     """Represents a detected normative reference."""
+
     entity_id: Optional[str]  # From registry, if matched
     canonical_name: str  # Official/canonical name
     detected_as: str  # How it appeared in text
@@ -59,7 +57,7 @@ class NormativeReference:
 class NormativeReferenceExtractor(PatternBasedExtractor):
     """
     Extractor for Colombian normative references.
-    
+
     Recognizes:
     1. Laws: Ley NNN de YYYY
     2. Decrees: Decreto NNN de YYYY
@@ -77,15 +75,15 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
         super().__init__(
             signal_type="NORMATIVE_REFERENCE",  # Must match integration_map key
             calibration_file=calibration_file,
-            auto_validate=True
+            auto_validate=True,
         )
-        
+
         # Load entity registry
         self._load_entity_registry()
-        
+
         # Build extraction patterns
         self._build_patterns()
-        
+
         logger.info(
             f"NormativeReferenceExtractor initialized with "
             f"{len(self.entity_registry)} entities from registry"
@@ -95,99 +93,104 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
         """Load normative entities from _registry/entities/normative.json."""
         self.entity_registry: Dict[str, Dict] = {}
         self.alias_to_entity: Dict[str, str] = {}  # Quick lookup by alias
-        
-        registry_path = Path(__file__).resolve().parent.parent.parent.parent / \
-                       "canonic_questionnaire_central" / "_registry" / "entities" / "normative.json"
-        
+
+        registry_path = (
+            Path(__file__).resolve().parent.parent.parent.parent
+            / "canonic_questionnaire_central"
+            / "_registry"
+            / "entities"
+            / "normative.json"
+        )
+
         if not registry_path.exists():
             logger.warning(f"Normative entity registry not found at {registry_path}")
             return
-        
+
         try:
-            with open(registry_path, 'r', encoding='utf-8') as f:
+            with open(registry_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
-            
+
             entities = data.get("entities", {})
             for entity_id, entity in entities.items():
                 self.entity_registry[entity_id] = entity
-                
+
                 # Build alias lookup
                 for alias in entity.get("aliases", []):
                     normalized = alias.lower().strip()
                     self.alias_to_entity[normalized] = entity_id
-                
+
                 # Also add canonical name
                 canonical = entity.get("canonical_name", "").lower().strip()
                 if canonical:
                     self.alias_to_entity[canonical] = entity_id
-                
+
                 # And acronym
                 acronym = entity.get("acronym", "").lower().strip()
                 if acronym:
                     self.alias_to_entity[acronym] = entity_id
-                    
+
         except Exception as e:
             logger.error(f"Failed to load normative registry: {e}")
 
     def _build_patterns(self):
         """Build regex patterns for normative reference extraction."""
-        
+
         self.reference_patterns = {
-            'ley': [
+            "ley": [
                 # Ley 1448 de 2011
-                r'[Ll]ey\s+(\d+)\s+de\s+(\d{4})',
+                r"[Ll]ey\s+(\d+)\s+de\s+(\d{4})",
                 # Ley 1448
-                r'[Ll]ey\s+(\d+)(?!\s+de)',
+                r"[Ll]ey\s+(\d+)(?!\s+de)",
                 # Leyes with names: Ley de Víctimas
-                r'[Ll]ey\s+de\s+([A-Za-záéíóúñ\s]{3,40})',
+                r"[Ll]ey\s+de\s+([A-Za-záéíóúñ\s]{3,40})",
             ],
-            'decreto': [
+            "decreto": [
                 # Decreto 893 de 2017
-                r'[Dd]ecreto\s+(\d+)\s+de\s+(\d{4})',
+                r"[Dd]ecreto\s+(\d+)\s+de\s+(\d{4})",
                 # Decreto 893
-                r'[Dd]ecreto\s+(\d+)(?!\s+de)',
+                r"[Dd]ecreto\s+(\d+)(?!\s+de)",
                 # Decreto-Ley 890 de 2017
-                r'[Dd]ecreto[- ][Ll]ey\s+(\d+)(?:\s+de\s+(\d{4}))?',
+                r"[Dd]ecreto[- ][Ll]ey\s+(\d+)(?:\s+de\s+(\d{4}))?",
             ],
-            'conpes': [
+            "conpes": [
                 # CONPES 3918, CONPES Social 150
-                r'CONPES(?:\s+[Ss]ocial)?\s+(\d+)',
+                r"CONPES(?:\s+[Ss]ocial)?\s+(\d+)",
             ],
-            'acuerdo': [
+            "acuerdo": [
                 # Acuerdo Municipal 123 de 2020
-                r'[Aa]cuerdo\s+(?:Municipal|Departamental)?\s*(\d+)(?:\s+de\s+(\d{4}))?',
+                r"[Aa]cuerdo\s+(?:Municipal|Departamental)?\s*(\d+)(?:\s+de\s+(\d{4}))?",
                 # Acuerdo Final de Paz (special case)
-                r'[Aa]cuerdo\s+[Ff]inal(?:\s+de\s+[Pp]az)?',
-                r'[Aa]cuerdo\s+de\s+(?:La\s+)?[Hh]abana',
-                r'[Aa]cuerdo\s+de\s+[Pp]az',
+                r"[Aa]cuerdo\s+[Ff]inal(?:\s+de\s+[Pp]az)?",
+                r"[Aa]cuerdo\s+de\s+(?:La\s+)?[Hh]abana",
+                r"[Aa]cuerdo\s+de\s+[Pp]az",
             ],
-            'resolucion': [
+            "resolucion": [
                 # Resolución 123 de 2020
-                r'[Rr]esolución\s+(\d+)(?:\s+de\s+(\d{4}))?',
+                r"[Rr]esolución\s+(\d+)(?:\s+de\s+(\d{4}))?",
             ],
-            'ordenanza': [
+            "ordenanza": [
                 # Ordenanza 123 de 2020
-                r'[Oo]rdenanza\s+(\d+)(?:\s+de\s+(\d{4}))?',
+                r"[Oo]rdenanza\s+(\d+)(?:\s+de\s+(\d{4}))?",
             ],
-            'circular': [
+            "circular": [
                 # Circular 123 de 2020
-                r'[Cc]ircular\s+(\d+)(?:\s+de\s+(\d{4}))?',
+                r"[Cc]ircular\s+(\d+)(?:\s+de\s+(\d{4}))?",
             ],
-            'sentencia': [
+            "sentencia": [
                 # Sentencia T-025 de 2004
-                r'[Ss]entencia\s+([A-Z]-?\d+)(?:\s+de\s+(\d{4}))?',
+                r"[Ss]entencia\s+([A-Z]-?\d+)(?:\s+de\s+(\d{4}))?",
             ],
-            'special': [
+            "special": [
                 # PDET
-                r'\bPDET\b',
-                r'[Pp]rograma(?:s)?\s+de\s+[Dd]esarrollo\s+con\s+[Ee]nfoque\s+[Tt]erritorial',
+                r"\bPDET\b",
+                r"[Pp]rograma(?:s)?\s+de\s+[Dd]esarrollo\s+con\s+[Ee]nfoque\s+[Tt]erritorial",
                 # Plan Nacional de Desarrollo
-                r'[Pp]lan\s+[Nn]acional\s+de\s+[Dd]esarrollo',
+                r"[Pp]lan\s+[Nn]acional\s+de\s+[Dd]esarrollo",
                 # PNUD, ODS
-                r'\bPNUD\b|\bODS\b',
+                r"\bPNUD\b|\bODS\b",
             ],
         }
-        
+
         # Compile patterns
         self._compiled_patterns = {
             ref_type: [re.compile(p) for p in patterns]
@@ -197,7 +200,7 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
     def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
         """
         Extract normative references from text.
-        
+
         Cross-references with entity registry to provide:
         - Canonical names
         - Scoring boosts
@@ -205,10 +208,10 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
         """
         if not text or not text.strip():
             return self._empty_result()
-        
+
         references = []
         seen_positions: Set[Tuple[int, int]] = set()
-        
+
         for ref_type, patterns in self._compiled_patterns.items():
             for pattern in patterns:
                 for match in pattern.finditer(text):
@@ -217,14 +220,14 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
                     if pos in seen_positions:
                         continue
                     seen_positions.add(pos)
-                    
+
                     ref = self._process_match(match, ref_type, text)
                     if ref:
                         references.append(ref)
-        
+
         # Sort by position
         references.sort(key=lambda r: r.text_span[0])
-        
+
         # Build matches
         matches = []
         for ref in references:
@@ -241,16 +244,18 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
                 "scoring_boost": ref.scoring_boost,
             }
             matches.append(match)
-        
+
         # Calculate overall confidence
         avg_confidence = sum(m["confidence"] for m in matches) / len(matches) if matches else 0.0
-        registry_match_rate = sum(1 for m in matches if m["entity_id"]) / len(matches) if matches else 0.0
-        
+        registry_match_rate = (
+            sum(1 for m in matches if m["entity_id"]) / len(matches) if matches else 0.0
+        )
+
         # Build metadata
         by_type = defaultdict(int)
         for m in matches:
             by_type[m["reference_type"]] += 1
-        
+
         result = ExtractionResult(
             extractor_id="NormativeReferenceExtractor",
             signal_type="NORMATIVE_REFERENCE",
@@ -262,25 +267,27 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
                 "registry_match_rate": round(registry_match_rate, 3),
                 "unique_entities": len(set(m["entity_id"] for m in matches if m["entity_id"])),
                 "references_with_year": sum(1 for m in matches if m["year"]),
-            }
+            },
         )
-        
+
         # Validate
         if self.auto_validate:
             validation = self._validate_extraction(result)
             result.metadata["validation"] = validation
-        
+
         return result
 
-    def _process_match(self, match: re.Match, ref_type: str, text: str) -> Optional[NormativeReference]:
+    def _process_match(
+        self, match: re.Match, ref_type: str, text: str
+    ) -> Optional[NormativeReference]:
         """Process a regex match into a NormativeReference."""
         detected_as = match.group(0)
-        
+
         # Extract number and year from groups
         groups = match.groups()
         number = None
         year = None
-        
+
         if groups:
             # First group is usually the number
             if groups[0] and groups[0].isdigit():
@@ -293,17 +300,19 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
                         year = y
                 except ValueError:
                     pass
-        
+
         # Try to match to registry
-        entity_id, canonical_name, scoring_boost = self._match_to_registry(detected_as, ref_type, number, year)
-        
+        entity_id, canonical_name, scoring_boost = self._match_to_registry(
+            detected_as, ref_type, number, year
+        )
+
         # If no registry match, build canonical name from detected text
         if not canonical_name:
             canonical_name = self._build_canonical_name(ref_type, number, year, detected_as)
-        
+
         # Calculate confidence
         confidence = self._calculate_confidence(entity_id, number, year)
-        
+
         return NormativeReference(
             entity_id=entity_id,
             canonical_name=canonical_name,
@@ -317,17 +326,13 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
         )
 
     def _match_to_registry(
-        self, 
-        detected: str, 
-        ref_type: str, 
-        number: Optional[str], 
-        year: Optional[int]
+        self, detected: str, ref_type: str, number: Optional[str], year: Optional[int]
     ) -> Tuple[Optional[str], Optional[str], Optional[Dict]]:
         """Try to match detected reference to entity registry."""
-        
+
         # Normalize detected text for lookup
         normalized = detected.lower().strip()
-        
+
         # Direct alias match
         if normalized in self.alias_to_entity:
             entity_id = self.alias_to_entity[normalized]
@@ -337,7 +342,7 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
                 entity.get("canonical_name"),
                 entity.get("scoring_context", {}).get("boost_policy_areas"),
             )
-        
+
         # Try building a lookup key
         if number and year:
             lookup_keys = [
@@ -355,7 +360,7 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
                         entity.get("canonical_name"),
                         entity.get("scoring_context", {}).get("boost_policy_areas"),
                     )
-        
+
         # Partial match for special cases
         special_keywords = {
             "pdet": "ENT-NORM-005",
@@ -364,7 +369,7 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
             "habana": "ENT-NORM-002",
             "víctimas": "ENT-NORM-001",
         }
-        
+
         for keyword, entity_id in special_keywords.items():
             if keyword in normalized:
                 entity = self.entity_registry.get(entity_id, {})
@@ -374,19 +379,15 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
                         entity.get("canonical_name"),
                         entity.get("scoring_context", {}).get("boost_policy_areas"),
                     )
-        
+
         return None, None, None
 
     def _build_canonical_name(
-        self, 
-        ref_type: str, 
-        number: Optional[str], 
-        year: Optional[int],
-        detected: str
+        self, ref_type: str, number: Optional[str], year: Optional[int], detected: str
     ) -> str:
         """Build a canonical name when no registry match."""
         ref_type_cap = ref_type.capitalize()
-        
+
         if number and year:
             return f"{ref_type_cap} {number} de {year}"
         elif number:
@@ -395,26 +396,23 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
             return detected
 
     def _calculate_confidence(
-        self, 
-        entity_id: Optional[str], 
-        number: Optional[str], 
-        year: Optional[int]
+        self, entity_id: Optional[str], number: Optional[str], year: Optional[int]
     ) -> float:
         """Calculate confidence for a reference."""
         base = 0.6
-        
+
         # Registry match bonus
         if entity_id:
             base += 0.2
-        
+
         # Having number
         if number:
             base += 0.1
-        
+
         # Having year
         if year:
             base += 0.1
-        
+
         return min(1.0, base)
 
     def _validate_extraction(self, result: ExtractionResult) -> Dict:
@@ -438,5 +436,5 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
                 "registry_match_rate": 0.0,
                 "unique_entities": 0,
                 "references_with_year": 0,
-            }
+            },
         )

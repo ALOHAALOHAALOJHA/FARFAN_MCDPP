@@ -48,7 +48,7 @@ logger = logging.getLogger(__name__)
 
 class SignalPackProtocol(Protocol):
     """Protocol defining expected signal pack interface."""
-    
+
     question_text: str
     question_type: str
     dimension_id: str
@@ -61,7 +61,7 @@ class SignalPackProtocol(Protocol):
 
 class SignalRegistryProtocol(Protocol):
     """Protocol for SignalRegistry dependency injection."""
-    
+
     def get_micro_answering_signals(self, question_id: str) -> SignalPackProtocol:
         """Retrieve complete signal pack for a micro question."""
         ...
@@ -70,13 +70,13 @@ class SignalRegistryProtocol(Protocol):
 @dataclass(frozen=True)
 class HydrationResult:
     """Result of contract hydration with metadata."""
-    
+
     contract: Dict[str, Any]
     was_hydrated: bool
     source_question_id: str
     fields_injected: tuple[str, ...]
     overrides_applied: tuple[str, ...]
-    
+
     def __post_init__(self) -> None:
         """Validate hydration result."""
         if self.was_hydrated and not self.source_question_id:
@@ -85,7 +85,7 @@ class HydrationResult:
 
 class ContractHydrationError(Exception):
     """Raised when contract hydration fails."""
-    
+
     def __init__(
         self,
         message: str,
@@ -100,14 +100,14 @@ class ContractHydrationError(Exception):
 class ContractHydrator:
     """
     Hydrates v4 contracts to Carver-compatible interface.
-    
+
     V4 contracts store only:
       - question_context.monolith_ref (e.g., "Q230")
       - question_context.overrides (optional)
       - question_context.failure_contract
-    
+
     This hydrator injects irrigated fields at runtime from SignalRegistry.
-    
+
     Usage
     -----
     ```python
@@ -116,21 +116,21 @@ class ContractHydrator:
     
     signal_registry = QuestionnaireSignalRegistry(questionnaire)
     hydrator = ContractHydrator(signal_registry)
-    
+
     # Hydrate v4 contract
     hydrated = hydrator.hydrate(v4_contract)
-    
+
     # Now Carver can consume it
     synthesizer = DoctoralCarverSynthesizer()
     answer = synthesizer.synthesize(evidence, hydrated)
     ```
-    
+
     Thread Safety
     -------------
     This class is thread-safe. The hydrate() method creates new dicts
     and never mutates inputs.
     """
-    
+
     CARVER_REQUIRED_FIELDS: tuple[str, ...] = (
         "question_text",
         "question_type",
@@ -139,7 +139,7 @@ class ContractHydrator:
         "scoring_modality",
         "modality",
     )
-    
+
     IDENTITY_FIELDS: tuple[str, ...] = (
         "dimension_id",
         "policy_area_id",
@@ -169,47 +169,47 @@ class ContractHydrator:
             "total_methods": "method_binding.method_count",
             "empty_methods_details": "execution_stats.empty_methods_list",
             "missing_elements_list": "gap_analysis.missing_expected.list",
-            "gap_impact_assessment": "gap_analysis.impact_statement"
+            "gap_impact_assessment": "gap_analysis.impact_statement",
         }
     }
-    
+
     def __init__(self, signal_registry: SignalRegistryProtocol) -> None:
         """
         Initialize with signal registry.
-        
+
         Args:
             signal_registry: Registry providing micro_answering_signals
         """
         self._signal_registry = signal_registry
         logger.debug("ContractHydrator initialized")
-    
+
     def hydrate(self, contract: Dict[str, Any]) -> Dict[str, Any]:
         """
         Hydrate v4 contract to Carver-compatible interface.
-        
+
         This method is idempotent: calling it on an already-hydrated
         or v3 contract returns the contract unchanged.
-        
+
         Args:
             contract: V4 contract with monolith_ref, or v3 contract
-            
+
         Returns:
             Hydrated contract with all fields Carver expects
-            
+
         Raises:
             ContractHydrationError: If contract lacks required references
         """
         if self._is_already_hydrated(contract):
             logger.debug("Contract already hydrated, returning as-is")
             return contract
-        
+
         question_id = self._extract_question_id(contract)
         if not question_id:
             raise ContractHydrationError(
                 "Contract must have question_context.monolith_ref or identity.question_id",
                 contract_id=contract.get("identity", {}).get("base_slot"),
             )
-        
+
         try:
             signals = self._signal_registry.get_micro_answering_signals(question_id)
         except Exception as e:
@@ -217,18 +217,18 @@ class ContractHydrator:
                 f"Failed to fetch signals for {question_id}: {e}",
                 contract_id=question_id,
             ) from e
-        
+
         hydrated = copy.deepcopy(contract)
-        
+
         question_context = hydrated.get("question_context", {})
         overrides = question_context.get("overrides") or {}
-        
+
         fields_injected: List[str] = []
         overrides_applied: List[str] = []
-        
+
         for field in self.CARVER_REQUIRED_FIELDS:
             override_value = overrides.get(field)
-            
+
             if override_value is not None:
                 question_context[field] = override_value
                 overrides_applied.append(field)
@@ -237,9 +237,9 @@ class ContractHydrator:
                 if signal_value is not None:
                     question_context[field] = signal_value
                     fields_injected.append(field)
-        
+
         hydrated["question_context"] = question_context
-        
+
         identity = hydrated.get("identity", {})
         for field in self.IDENTITY_FIELDS:
             if not identity.get(field):
@@ -248,14 +248,14 @@ class ContractHydrator:
                     identity[field] = signal_value
                     fields_injected.append(f"identity.{field}")
         hydrated["identity"] = identity
-        
+
         # Inject template bindings for Carver v3.0 compatibility
         human_answer = hydrated.get("human_answer_structure", {})
         if "template_variable_bindings" not in human_answer:
             human_answer["template_variable_bindings"] = self.DEFAULT_TEMPLATE_BINDINGS
             fields_injected.append("human_answer_structure.template_variable_bindings")
         hydrated["human_answer_structure"] = human_answer
-        
+
         hydrated["_hydration_metadata"] = {
             "was_hydrated": True,
             "source_question_id": question_id,
@@ -263,14 +263,14 @@ class ContractHydrator:
             "overrides_applied": overrides_applied,
             "hydrator_version": "1.0.0",
         }
-        
+
         logger.debug(
             f"Hydrated {question_id}: injected {len(fields_injected)} fields, "
             f"applied {len(overrides_applied)} overrides"
         )
-        
+
         return hydrated
-    
+
     def _extract_signal_value(
         self, signals: SignalPackProtocol, field: str, question_id: str
     ) -> Any:
@@ -285,7 +285,7 @@ class ContractHydrator:
             return self._serialize_items(patterns)
         else:
             return getattr(signals, field, None)
-    
+
     def _serialize_items(self, items: List[Any]) -> List[Any]:
         """Serialize Pydantic models to dicts."""
         result = []
@@ -297,16 +297,16 @@ class ContractHydrator:
             else:
                 result.append(item)
         return result
-    
+
     def hydrate_with_result(self, contract: Dict[str, Any]) -> HydrationResult:
         """
         Hydrate contract and return detailed result.
-        
+
         Use this when you need metadata about the hydration process.
-        
+
         Args:
             contract: Contract to hydrate
-            
+
         Returns:
             HydrationResult with hydrated contract and metadata
         """
@@ -318,10 +318,10 @@ class ContractHydrator:
                 fields_injected=(),
                 overrides_applied=(),
             )
-        
+
         hydrated = self.hydrate(contract)
         metadata = hydrated.get("_hydration_metadata", {})
-        
+
         return HydrationResult(
             contract=hydrated,
             was_hydrated=metadata.get("was_hydrated", True),
@@ -329,76 +329,76 @@ class ContractHydrator:
             fields_injected=tuple(metadata.get("fields_injected", [])),
             overrides_applied=tuple(metadata.get("overrides_applied", [])),
         )
-    
+
     def _is_already_hydrated(self, contract: Dict[str, Any]) -> bool:
         """Check if contract is already hydrated or is v3 format."""
         if contract.get("_hydration_metadata", {}).get("was_hydrated"):
             return True
-        
+
         question_context = contract.get("question_context", {})
-        
+
         for field in self.CARVER_REQUIRED_FIELDS:
             value = question_context.get(field)
             if value is None or value == "" or value == []:
                 return False
-        
+
         return True
-    
+
     def _extract_question_id(self, contract: Dict[str, Any]) -> Optional[str]:
         """Extract question ID from contract."""
         question_context = contract.get("question_context", {})
         monolith_ref = question_context.get("monolith_ref")
         if monolith_ref:
             return monolith_ref
-        
+
         identity = contract.get("identity", {})
         return identity.get("question_id")
-    
+
     def is_v4_contract(self, contract: Dict[str, Any]) -> bool:
         """
         Check if contract is v4 format (streamlined).
-        
+
         V4 contracts have:
           - question_context.monolith_ref present
           - question_context.question_text absent or empty
-        
+
         Args:
             contract: Contract to check
-            
+
         Returns:
             True if v4 format, False if v3 or already hydrated
         """
         question_context = contract.get("question_context", {})
-        
+
         has_monolith_ref = bool(question_context.get("monolith_ref"))
         lacks_question_text = not question_context.get("question_text")
         lacks_expected_elements = not question_context.get("expected_elements")
-        
+
         return has_monolith_ref and (lacks_question_text or lacks_expected_elements)
-    
+
     def validate_hydrated_contract(self, contract: Dict[str, Any]) -> List[str]:
         """
         Validate that hydrated contract has all fields Carver needs.
-        
+
         Args:
             contract: Contract to validate
-            
+
         Returns:
             List of missing or invalid fields (empty if valid)
         """
         issues: List[str] = []
         question_context = contract.get("question_context", {})
-        
+
         for field in self.CARVER_REQUIRED_FIELDS:
             value = question_context.get(field)
             if value is None:
                 issues.append(f"Missing: question_context.{field}")
             elif value == "" or value == []:
                 issues.append(f"Empty: question_context.{field}")
-        
+
         identity = contract.get("identity", {})
         for field in self.IDENTITY_FIELDS:
             if not identity.get(field):
                 issues.append(f"Missing: identity.{field}")
-        
+
         return issues

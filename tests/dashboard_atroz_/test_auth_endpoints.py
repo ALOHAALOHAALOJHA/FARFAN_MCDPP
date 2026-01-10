@@ -18,14 +18,14 @@ def client():
 def test_credentials():
     """
     Test credentials fixture.
-    
+
     Loads credentials from environment variables to avoid exposing them in code.
     Falls back to defaults only in testing environments.
-    
+
     Environment variables:
     - TEST_ADMIN_USERNAME: Test admin username
     - TEST_ADMIN_PASSWORD: Test admin password
-    
+
     Production systems should:
     1. Change default credentials on first deployment
     2. Use environment variables for all credentials
@@ -34,16 +34,13 @@ def test_credentials():
     # Load from environment or use safe test defaults
     return {
         "username": os.getenv("TEST_ADMIN_USERNAME", "admin"),
-        "password": os.getenv("TEST_ADMIN_PASSWORD", "atroz_admin_2024")
+        "password": os.getenv("TEST_ADMIN_PASSWORD", "atroz_admin_2024"),
     }
 
 
 def test_login_success(client, test_credentials):
     """Test successful login with default credentials."""
-    response = client.post(
-        "/auth/login",
-        json=test_credentials
-    )
+    response = client.post("/auth/login", json=test_credentials)
 
     assert response.status_code == 200
     data = response.json()
@@ -55,13 +52,7 @@ def test_login_success(client, test_credentials):
 
 def test_login_invalid_credentials(client):
     """Test login with invalid credentials."""
-    response = client.post(
-        "/auth/login",
-        json={
-            "username": "admin",
-            "password": "wrong_password"
-        }
-    )
+    response = client.post("/auth/login", json={"username": "admin", "password": "wrong_password"})
 
     assert response.status_code == 401
     data = response.json()
@@ -71,13 +62,7 @@ def test_login_invalid_credentials(client):
 
 def test_login_nonexistent_user(client):
     """Test login with non-existent user."""
-    response = client.post(
-        "/auth/login",
-        json={
-            "username": "nonexistent",
-            "password": "password"
-        }
-    )
+    response = client.post("/auth/login", json={"username": "nonexistent", "password": "password"})
 
     assert response.status_code == 401
 
@@ -85,10 +70,7 @@ def test_login_nonexistent_user(client):
 def test_logout(client, test_credentials):
     """Test logout endpoint."""
     # First login
-    login_response = client.post(
-        "/auth/login",
-        json=test_credentials
-    )
+    login_response = client.post("/auth/login", json=test_credentials)
     assert login_response.status_code == 200
 
     # Then logout
@@ -101,18 +83,12 @@ def test_logout(client, test_credentials):
 def test_session_validation_valid(client, test_credentials):
     """Test session validation with valid session."""
     # First login
-    login_response = client.post(
-        "/auth/login",
-        json=test_credentials
-    )
+    login_response = client.post("/auth/login", json=test_credentials)
     assert login_response.status_code == 200
     session_id = login_response.json()["session_id"]
 
     # Validate session using header
-    session_response = client.get(
-        "/auth/session",
-        headers={"X-Session-ID": session_id}
-    )
+    session_response = client.get("/auth/session", headers={"X-Session-ID": session_id})
     assert session_response.status_code == 200
     data = session_response.json()
     assert data["valid"] is True
@@ -121,10 +97,7 @@ def test_session_validation_valid(client, test_credentials):
 
 def test_session_validation_invalid(client):
     """Test session validation with invalid session."""
-    response = client.get(
-        "/auth/session",
-        headers={"X-Session-ID": "invalid_session_id"}
-    )
+    response = client.get("/auth/session", headers={"X-Session-ID": "invalid_session_id"})
     assert response.status_code == 200
     data = response.json()
     assert data["valid"] is False
@@ -142,10 +115,7 @@ def test_session_validation_no_session(client):
 def test_change_password_success(client, test_credentials):
     """Test successful password change."""
     # First login
-    login_response = client.post(
-        "/auth/login",
-        json=test_credentials
-    )
+    login_response = client.post("/auth/login", json=test_credentials)
     assert login_response.status_code == 200
     session_id = login_response.json()["session_id"]
 
@@ -154,28 +124,22 @@ def test_change_password_success(client, test_credentials):
         "/auth/change-password",
         json={
             "old_password": test_credentials["password"],
-            "new_password": "new_secure_password_123"
+            "new_password": "new_secure_password_123",
         },
-        headers={"X-Session-ID": session_id}
+        headers={"X-Session-ID": session_id},
     )
     assert change_response.status_code == 200
     data = change_response.json()
     assert data["success"] is True
 
     # Verify old password no longer works
-    old_login = client.post(
-        "/auth/login",
-        json=test_credentials
-    )
+    old_login = client.post("/auth/login", json=test_credentials)
     assert old_login.status_code == 401
 
     # Verify new password works
     new_login = client.post(
         "/auth/login",
-        json={
-            "username": test_credentials["username"],
-            "password": "new_secure_password_123"
-        }
+        json={"username": test_credentials["username"], "password": "new_secure_password_123"},
     )
     assert new_login.status_code == 200
 
@@ -185,20 +149,16 @@ def test_change_password_success(client, test_credentials):
         "/auth/change-password",
         json={
             "old_password": "new_secure_password_123",
-            "new_password": test_credentials["password"]
+            "new_password": test_credentials["password"],
         },
-        headers={"X-Session-ID": new_session_id}
+        headers={"X-Session-ID": new_session_id},
     )
 
 
 def test_change_password_no_session(client):
     """Test password change without authentication."""
     response = client.post(
-        "/auth/change-password",
-        json={
-            "old_password": "old",
-            "new_password": "new"
-        }
+        "/auth/change-password", json={"old_password": "old", "new_password": "new"}
     )
     assert response.status_code == 401
 
@@ -206,21 +166,15 @@ def test_change_password_no_session(client):
 def test_change_password_wrong_old_password(client, test_credentials):
     """Test password change with incorrect old password."""
     # First login
-    login_response = client.post(
-        "/auth/login",
-        json=test_credentials
-    )
+    login_response = client.post("/auth/login", json=test_credentials)
     assert login_response.status_code == 200
     session_id = login_response.json()["session_id"]
 
     # Try to change with wrong old password
     change_response = client.post(
         "/auth/change-password",
-        json={
-            "old_password": "wrong_password",
-            "new_password": "new_password"
-        },
-        headers={"X-Session-ID": session_id}
+        json={"old_password": "wrong_password", "new_password": "new_password"},
+        headers={"X-Session-ID": session_id},
     )
     assert change_response.status_code == 400
     data = change_response.json()

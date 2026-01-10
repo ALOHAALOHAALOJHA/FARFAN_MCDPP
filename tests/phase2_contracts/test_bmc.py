@@ -3,6 +3,7 @@ Test BMC - Budget Monotonicity Contract
 Verifies: S*(B1) ⊆ S*(B2) for B1 < B2
 Resource allocation ordering guarantee
 """
+
 import pytest
 from pathlib import Path
 
@@ -35,9 +36,7 @@ class TestBudgetMonotonicityContract:
         budgets = [25.0, 50.0, 100.0, 200.0, 500.0]
         assert BudgetMonotonicityContract.verify_monotonicity(sample_items, budgets)
 
-    def test_bmc_002_knapsack_deterministic(
-        self, sample_items: dict[str, float]
-    ) -> None:
+    def test_bmc_002_knapsack_deterministic(self, sample_items: dict[str, float]) -> None:
         """BMC-002: Same budget always selects same items."""
         budget = 75.0
         result1 = BudgetMonotonicityContract.solve_knapsack(sample_items, budget)

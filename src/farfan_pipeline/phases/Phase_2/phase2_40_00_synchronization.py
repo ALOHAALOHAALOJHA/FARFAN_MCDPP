@@ -12,6 +12,7 @@ License: Proprietary
 This module is part of Phase 2: Analysis & Question Execution.
 All files in Phase_2/ must contain PHASE_LABEL: Phase 2.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -280,9 +281,7 @@ class ChunkMatrix:
             for pa in range(1, 11)
         }
         chunks_per_dimension = {
-            f"DIM{dim:02d}": sum(
-                1 for (_, dim_id) in chunk_matrix if dim_id == f"DIM{dim:02d}"
-            )
+            f"DIM{dim:02d}": sum(1 for (_, dim_id) in chunk_matrix if dim_id == f"DIM{dim:02d}")
             for dim in range(1, 7)
         }
 
@@ -300,7 +299,7 @@ class ChunkMatrix:
 
     def _compute_integrity_hash(self) -> str:
         payload = []
-        for (pa_id, dim_id) in self._matrix_keys_sorted:
+        for pa_id, dim_id in self._matrix_keys_sorted:
             chunk = self._chunk_matrix[(pa_id, dim_id)]
             text_hash = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
             payload.append(
@@ -317,4 +316,3 @@ class ChunkMatrix:
 
 
 __all__ = ["ChunkMatrix", "SmartPolicyChunk"]
-

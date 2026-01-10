@@ -31,10 +31,7 @@ from dataclasses import dataclass
 from pathlib import Path
 import logging
 
-from .empirical_extractor_base import (
-    PatternBasedExtractor,
-    ExtractionResult
-)
+from .empirical_extractor_base import PatternBasedExtractor, ExtractionResult
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +39,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class CausalLink:
     """Represents a causal relationship."""
+
     link_id: str
     verb: str
     verb_lemma: str
@@ -72,25 +70,50 @@ class CausalVerbExtractor(PatternBasedExtractor):
     # Empirically validated causal verb taxonomy
     CAUSAL_VERBS = {
         "strong": [
-            "implementar", "desarrollar", "crear", "construir", "establecer",
-            "generar", "producir", "lograr", "alcanzar", "garantizar"
+            "implementar",
+            "desarrollar",
+            "crear",
+            "construir",
+            "establecer",
+            "generar",
+            "producir",
+            "lograr",
+            "alcanzar",
+            "garantizar",
         ],
         "medium": [
-            "fortalecer", "mejorar", "promover", "impulsar", "fomentar",
-            "apoyar", "facilitar", "contribuir", "incrementar", "aumentar",
-            "potenciar", "optimizar", "consolidar"
+            "fortalecer",
+            "mejorar",
+            "promover",
+            "impulsar",
+            "fomentar",
+            "apoyar",
+            "facilitar",
+            "contribuir",
+            "incrementar",
+            "aumentar",
+            "potenciar",
+            "optimizar",
+            "consolidar",
         ],
         "weak": [
-            "buscar", "procurar", "intentar", "propender", "propiciar",
-            "tender", "orientar", "encaminar", "dirigir"
-        ]
+            "buscar",
+            "procurar",
+            "intentar",
+            "propender",
+            "propiciar",
+            "tender",
+            "orientar",
+            "encaminar",
+            "dirigir",
+        ],
     }
 
     def __init__(self, calibration_file: Optional[Path] = None):
         super().__init__(
             signal_type="CAUSAL_VERBS",  # Aligned with integration_map key
             calibration_file=calibration_file,
-            auto_validate=True
+            auto_validate=True,
         )
 
         # Build verb patterns
@@ -99,7 +122,9 @@ class CausalVerbExtractor(PatternBasedExtractor):
         # Argument extraction patterns
         self._build_argument_patterns()
 
-        logger.info(f"CausalVerbExtractor initialized with {self._total_verbs()} empirical causal verbs")
+        logger.info(
+            f"CausalVerbExtractor initialized with {self._total_verbs()} empirical causal verbs"
+        )
 
     def _total_verbs(self) -> int:
         """Count total causal verbs."""
@@ -118,7 +143,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
                 variants = self._get_verb_variants(verb)
                 verb_alternatives.extend(variants)
 
-            pattern_str = r'\b(' + '|'.join(verb_alternatives) + r')\b'
+            pattern_str = r"\b(" + "|".join(verb_alternatives) + r")\b"
             self.verb_patterns[strength] = re.compile(pattern_str, re.IGNORECASE)
 
     def _get_verb_variants(self, verb: str) -> List[str]:
@@ -126,36 +151,28 @@ class CausalVerbExtractor(PatternBasedExtractor):
         variants = [verb]  # infinitive
 
         # Common Spanish verb endings
-        if verb.endswith('ar'):
+        if verb.endswith("ar"):
             root = verb[:-2]
-            variants.extend([
-                root + 'a',      # 3rd person present
-                root + 'ará',    # future
-                root + 'ando',   # gerund
-                root + 'ado',    # past participle
-                root + 'arán',   # 3rd plural future
-                root + 'an'      # 3rd plural present
-            ])
-        elif verb.endswith('er'):
+            variants.extend(
+                [
+                    root + "a",  # 3rd person present
+                    root + "ará",  # future
+                    root + "ando",  # gerund
+                    root + "ado",  # past participle
+                    root + "arán",  # 3rd plural future
+                    root + "an",  # 3rd plural present
+                ]
+            )
+        elif verb.endswith("er"):
             root = verb[:-2]
-            variants.extend([
-                root + 'e',
-                root + 'erá',
-                root + 'iendo',
-                root + 'ido',
-                root + 'erán',
-                root + 'en'
-            ])
-        elif verb.endswith('ir'):
+            variants.extend(
+                [root + "e", root + "erá", root + "iendo", root + "ido", root + "erán", root + "en"]
+            )
+        elif verb.endswith("ir"):
             root = verb[:-2]
-            variants.extend([
-                root + 'e',
-                root + 'irá',
-                root + 'iendo',
-                root + 'ido',
-                root + 'irán',
-                root + 'en'
-            ])
+            variants.extend(
+                [root + "e", root + "irá", root + "iendo", root + "ido", root + "irán", root + "en"]
+            )
 
         return variants
 
@@ -163,22 +180,18 @@ class CausalVerbExtractor(PatternBasedExtractor):
         """Build patterns for extracting verb arguments."""
         # Object pattern: verb + [la|el|los|las] + [0-20 words] + [noun]
         self.object_pattern = re.compile(
-            r'(?:la|el|los|las|al|del|de|a)\s+((?:\w+\s+){0,10}\w+)',
-            re.IGNORECASE
+            r"(?:la|el|los|las|al|del|de|a)\s+((?:\w+\s+){0,10}\w+)", re.IGNORECASE
         )
 
         # Outcome pattern: "para" + [infinitive or noun phrase]
-        self.outcome_pattern = re.compile(
-            r'para\s+((?:\w+\s+){0,15}\w+)',
-            re.IGNORECASE
-        )
+        self.outcome_pattern = re.compile(r"para\s+((?:\w+\s+){0,15}\w+)", re.IGNORECASE)
 
         # Subject pattern: preceding noun phrase (simplified)
         self.subject_pattern = re.compile(
-            r'((?:\w+\s+){1,5})\b(?:' + '|'.join([
-                verb for verbs in self.CAUSAL_VERBS.values() for verb in verbs
-            ]) + r')\b',
-            re.IGNORECASE
+            r"((?:\w+\s+){1,5})\b(?:"
+            + "|".join([verb for verbs in self.CAUSAL_VERBS.values() for verb in verbs])
+            + r")\b",
+            re.IGNORECASE,
         )
 
     def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
@@ -229,7 +242,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
                     causal_strength=strength,
                     confidence=confidence,
                     text_span=(span_start, span_end),
-                    chain_length=self._calculate_chain_length(obj, outcome)
+                    chain_length=self._calculate_chain_length(obj, outcome),
                 )
 
                 if link.object:  # Only include links with at least an object
@@ -250,7 +263,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
                 "confidence": link.confidence,
                 "chain_length": link.chain_length,
                 "is_complete": link.is_complete(),
-                "text_span": link.text_span
+                "text_span": link.text_span,
             }
             matches.append(match)
 
@@ -268,10 +281,10 @@ class CausalVerbExtractor(PatternBasedExtractor):
                 "by_strength": {
                     "strong": sum(1 for l in links if l.causal_strength == "strong"),
                     "medium": sum(1 for l in links if l.causal_strength == "medium"),
-                    "weak": sum(1 for l in links if l.causal_strength == "weak")
+                    "weak": sum(1 for l in links if l.causal_strength == "weak"),
                 },
-                "avg_chain_length": sum(l.chain_length for l in links) / len(links) if links else 0
-            }
+                "avg_chain_length": sum(l.chain_length for l in links) / len(links) if links else 0,
+            },
         )
 
         # Validate
@@ -299,13 +312,10 @@ class CausalVerbExtractor(PatternBasedExtractor):
     def _extract_subject(self, text: str, verb_pos: int, context: str) -> Optional[Dict]:
         """Extract subject (entity performing the action)."""
         # Look backwards from verb position
-        preceding_text = text[max(0, verb_pos - 100):verb_pos]
+        preceding_text = text[max(0, verb_pos - 100) : verb_pos]
 
         # Simple noun phrase extraction (can be enhanced with spaCy)
-        subject_pattern = re.compile(
-            r'((?:el|la|los|las)\s+(?:\w+\s+){0,3}\w+)',
-            re.IGNORECASE
-        )
+        subject_pattern = re.compile(r"((?:el|la|los|las)\s+(?:\w+\s+){0,3}\w+)", re.IGNORECASE)
 
         matches = list(subject_pattern.finditer(preceding_text))
         if matches:
@@ -313,7 +323,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
             return {
                 "text": last_match.group(1).strip(),
                 "start": verb_pos - len(preceding_text) + last_match.start(),
-                "end": verb_pos - len(preceding_text) + last_match.end()
+                "end": verb_pos - len(preceding_text) + last_match.end(),
             }
 
         return None
@@ -321,44 +331,37 @@ class CausalVerbExtractor(PatternBasedExtractor):
     def _extract_object(self, text: str, verb_end: int, context: str) -> Optional[Dict]:
         """Extract object (what is being acted upon)."""
         # Look forward from verb
-        following_text = text[verb_end:verb_end + 200]
+        following_text = text[verb_end : verb_end + 200]
 
         match = self.object_pattern.search(following_text)
         if match:
             return {
                 "text": match.group(1).strip(),
                 "start": verb_end + match.start(),
-                "end": verb_end + match.end()
+                "end": verb_end + match.end(),
             }
 
         return None
 
     def _extract_outcome(self, text: str, verb_end: int, context: str) -> Optional[Dict]:
         """Extract outcome (desired result)."""
-        following_text = text[verb_end:verb_end + 300]
+        following_text = text[verb_end : verb_end + 300]
 
         match = self.outcome_pattern.search(following_text)
         if match:
             return {
                 "text": match.group(1).strip(),
                 "start": verb_end + match.start(),
-                "end": verb_end + match.end()
+                "end": verb_end + match.end(),
             }
 
         return None
 
     def _calculate_confidence(
-        self,
-        strength: str,
-        obj: Optional[Dict],
-        outcome: Optional[Dict]
+        self, strength: str, obj: Optional[Dict], outcome: Optional[Dict]
     ) -> float:
         """Calculate confidence based on causal strength and completeness."""
-        base_confidence = {
-            "strong": 0.80,
-            "medium": 0.70,
-            "weak": 0.60
-        }[strength]
+        base_confidence = {"strong": 0.80, "medium": 0.70, "weak": 0.60}[strength]
 
         # Boost for complete chains
         if obj and outcome:
@@ -380,10 +383,11 @@ class CausalVerbExtractor(PatternBasedExtractor):
 
 # Convenience functions
 
+
 def extract_causal_links(text: str, context: Optional[Dict] = None) -> ExtractionResult:
     """Convenience function to extract causal links."""
     extractor = CausalVerbExtractor()
     return extractor.extract(text, context)
 
 
-__all__ = ['CausalVerbExtractor', 'CausalLink', 'extract_causal_links']
+__all__ = ["CausalVerbExtractor", "CausalLink", "extract_causal_links"]

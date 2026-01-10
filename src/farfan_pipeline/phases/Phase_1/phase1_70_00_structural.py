@@ -8,19 +8,24 @@ from typing import Any
 
 # Provide calibrated_method stub if not available
 try:
-    from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.decorators import calibrated_method
+    from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.decorators import (
+        calibrated_method,
+    )
 except ImportError:
     # Stub decorator that does nothing
     def calibrated_method(name: str):
         def decorator(func):
             return func
+
         return decorator
 
 
 class StructuralNormalizer:
     """Policy-aware structural normalizer."""
 
-    @calibrated_method("farfan_core.processing.spc_ingestion.structural.StructuralNormalizer.normalize")
+    @calibrated_method(
+        "farfan_core.processing.spc_ingestion.structural.StructuralNormalizer.normalize"
+    )
     def normalize(self, raw_objects: dict[str, Any]) -> dict[str, Any]:
         """
         Normalize document structure with policy awareness.
@@ -70,7 +75,9 @@ class StructuralNormalizer:
 
         return policy_graph
 
-    @calibrated_method("farfan_core.processing.spc_ingestion.structural.StructuralNormalizer._detect_policy_units")
+    @calibrated_method(
+        "farfan_core.processing.spc_ingestion.structural.StructuralNormalizer._detect_policy_units"
+    )
     def _detect_policy_units(self, text: str) -> list[dict[str, Any]]:
         """Detect policy units in text."""
         units = []
@@ -87,14 +94,18 @@ class StructuralNormalizer:
         for unit_type, keywords_list in keywords.items():
             for keyword in keywords_list:
                 if keyword.lower() in text.lower():
-                    units.append({
-                        "type": unit_type,
-                        "name": f"{keyword.capitalize()} detected",
-                    })
+                    units.append(
+                        {
+                            "type": unit_type,
+                            "name": f"{keyword.capitalize()} detected",
+                        }
+                    )
 
         return units
 
-    @calibrated_method("farfan_core.processing.spc_ingestion.structural.StructuralNormalizer._extract_title")
+    @calibrated_method(
+        "farfan_core.processing.spc_ingestion.structural.StructuralNormalizer._extract_title"
+    )
     def _extract_title(self, text: str) -> str:
         """Extract title from text."""
         # Simple: first line or first N characters

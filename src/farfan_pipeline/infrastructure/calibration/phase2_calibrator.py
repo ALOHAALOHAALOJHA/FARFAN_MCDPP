@@ -18,6 +18,7 @@ Purpose: Phase-2 calibration for N2-INF methods
 Lifecycle State: DESIGN-TIME FROZEN, RUNTIME IMMUTABLE
 Schema Version: 2.0.0
 """
+
 from __future__ import annotations
 
 import logging
@@ -122,9 +123,7 @@ class Phase2Calibrator:
         # Step 1: Validate bindings (raises on FATAL)
         validation_results = self._validator.validate(binding_set)
         warnings = tuple(
-            r.message
-            for r in validation_results
-            if r.severity == ValidationSeverity.WARNING
+            r.message for r in validation_results if r.severity == ValidationSeverity.WARNING
         )
 
         # Step 2: Get fusion strategy (MUST match TYPE)

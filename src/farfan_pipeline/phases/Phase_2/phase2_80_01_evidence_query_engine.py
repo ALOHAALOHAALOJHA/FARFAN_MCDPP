@@ -55,22 +55,24 @@ logger = logging.getLogger(__name__)
 # === SECURITY LAYER ===
 
 # Security: Allowlisted queryable fields
-ALLOWED_QUERY_FIELDS = frozenset({
-    'evidence_id',
-    'node_id',
-    'claim_type',
-    'status',
-    'created_at',
-    'updated_at',
-    'category',
-    'source',
-    'confidence',
-    'confidence_score',
-    'timestamp',
-})
+ALLOWED_QUERY_FIELDS = frozenset(
+    {
+        "evidence_id",
+        "node_id",
+        "claim_type",
+        "status",
+        "created_at",
+        "updated_at",
+        "category",
+        "source",
+        "confidence",
+        "confidence_score",
+        "timestamp",
+    }
+)
 
 # Security: Allowed operators
-ALLOWED_OPERATORS = frozenset({'=', '!=', '<', '>', '<=', '>=', 'LIKE', 'IN', 'CONTAINS'})
+ALLOWED_OPERATORS = frozenset({"=", "!=", "<", ">", "<=", ">=", "LIKE", "IN", "CONTAINS"})
 
 # Security: Maximum query complexity
 MAX_CONDITIONS = 10
@@ -79,6 +81,7 @@ MAX_QUERY_LENGTH = 1000
 
 class QueryValidationError(ValueError):
     """Raised when query validation fails."""
+
     pass
 
 
@@ -109,14 +112,11 @@ class SecureQueryParser:
     def __init__(
         self,
         allowed_fields: frozenset[str] = ALLOWED_QUERY_FIELDS,
-        allowed_operators: frozenset[str] = ALLOWED_OPERATORS
+        allowed_operators: frozenset[str] = ALLOWED_OPERATORS,
     ):
         self.allowed_fields = allowed_fields
         self.allowed_operators = allowed_operators
-        self._injection_regex = re.compile(
-            '|'.join(self.INJECTION_PATTERNS),
-            re.IGNORECASE
-        )
+        self._injection_regex = re.compile("|".join(self.INJECTION_PATTERNS), re.IGNORECASE)
 
     def validate_query(self, user_input: str) -> None:
         """
@@ -149,7 +149,7 @@ class SecureQueryParser:
         if field_name not in self.allowed_fields:
             self._reject_query(
                 field_name,
-                f"Field '{field_name}' not in allowed fields: {sorted(self.allowed_fields)}"
+                f"Field '{field_name}' not in allowed fields: {sorted(self.allowed_fields)}",
             )
 
     def validate_operator(self, operator: str) -> None:
@@ -165,25 +165,24 @@ class SecureQueryParser:
         if operator not in self.allowed_operators:
             self._reject_query(
                 operator,
-                f"Operator '{operator}' not in allowed operators: {sorted(self.allowed_operators)}"
+                f"Operator '{operator}' not in allowed operators: {sorted(self.allowed_operators)}",
             )
 
     def _reject_query(self, query: str, reason: str) -> None:
         """Log and reject a query."""
         logger.warning(
             f"Query rejected: {reason}",
-            extra={
-                "query_preview": query[:100],
-                "rejection_reason": reason
-            }
+            extra={"query_preview": query[:100], "rejection_reason": reason},
         )
         raise QueryValidationError(f"Query rejected: {reason}")
 
 
 # === ENUMS AND TYPES ===
 
+
 class QueryOperator(Enum):
     """Operators for query conditions."""
+
     EQ = "="
     NE = "!="
     GT = ">"
@@ -198,12 +197,14 @@ class QueryOperator(Enum):
 
 class TraversalDirection(Enum):
     """Direction for causal chain traversal."""
+
     DOWNSTREAM = "downstream"  # Follow children
-    UPSTREAM = "upstream"      # Follow parents
-    BOTH = "both"              # Follow both directions
+    UPSTREAM = "upstream"  # Follow parents
+    BOTH = "both"  # Follow both directions
 
 
 # === DATA MODELS ===
+
 
 @dataclass
 class QueryCondition:
@@ -214,6 +215,7 @@ class QueryCondition:
         operator: Comparison operator
         value: Value to compare against
     """
+
     field: str
     operator: QueryOperator
     value: Any
@@ -231,6 +233,7 @@ class QueryAST:
         limit: Maximum results to return
         offset: Number of results to skip
     """
+
     select_fields: List[str]
     conditions: List[QueryCondition] = field(default_factory=list)
     order_by: Optional[str] = None
@@ -255,6 +258,7 @@ class EvidenceNode:
         merkle_hash: Merkle DAG hash
         tags: Set of tags
     """
+
     node_id: str
     claim_type: str
     content: Dict[str, Any]
@@ -277,6 +281,7 @@ class CausalEdge:
         relationship_type: Type of relationship
         weight: Edge weight
     """
+
     from_id: str
     to_id: str
     relationship_type: str
@@ -292,6 +297,7 @@ class CausalGraph:
         nodes: All nodes in the graph
         edges: All edges in the graph
     """
+
     root_node: Optional[EvidenceNode]
     nodes: Dict[str, EvidenceNode]
     edges: List[CausalEdge]
@@ -307,6 +313,7 @@ class QueryResult:
         query: Original query string
         execution_time_ms: Query execution time
     """
+
     nodes: List[EvidenceNode]
     total_count: int
     query: str
@@ -314,6 +321,7 @@ class QueryResult:
 
 
 # === EVIDENCE NEXUS PROTOCOL ===
+
 
 class EvidenceNexusProtocol(Protocol):
     """Protocol for Evidence Nexus interface."""
@@ -336,6 +344,7 @@ class EvidenceNexusProtocol(Protocol):
 
 
 # === SIMPLE IN-MEMORY NEXUS FOR STANDALONE USE ===
+
 
 class SimpleEvidenceNexus:
     """Simple in-memory evidence store for standalone query engine use."""
@@ -377,6 +386,7 @@ class SimpleEvidenceNexus:
 
 # === QUERY ENGINE ===
 
+
 class EvidenceQueryEngine:
     """
     SQL-like query interface for Evidence Nexus.
@@ -393,9 +403,9 @@ class EvidenceQueryEngine:
     Security Considerations:
         This is an INTERNAL query engine designed for trusted code paths only.
         Query parsing uses simple regex patterns and does NOT sanitize against
-        SQL injection or malicious input. DO NOT expose this interface to 
+        SQL injection or malicious input. DO NOT expose this interface to
         untrusted user input without adding proper input validation and sanitization.
-        
+
         For production use with external input, implement:
         - Whitelist validation for field names
         - Type checking and bounds validation for values
@@ -408,9 +418,7 @@ class EvidenceQueryEngine:
     """
 
     def __init__(
-        self,
-        nexus: EvidenceNexusProtocol | SimpleEvidenceNexus,
-        enable_security: bool = True
+        self, nexus: EvidenceNexusProtocol | SimpleEvidenceNexus, enable_security: bool = True
     ):
         """
         Initialize query engine.
@@ -440,6 +448,7 @@ class EvidenceQueryEngine:
             QueryValidationError: If security validation fails
         """
         import time
+
         start_time = time.perf_counter()
 
         # Security validation
@@ -456,12 +465,12 @@ class EvidenceQueryEngine:
                     f"Query exceeds maximum conditions limit ({MAX_CONDITIONS}). "
                     f"Got {len(ast.conditions)} conditions."
                 )
-            
+
             # Validate WHERE clause fields and operators
             for condition in ast.conditions:
                 self.security_parser.validate_field(condition.field)
                 self.security_parser.validate_operator(condition.operator.value)
-            
+
             # Validate SELECT clause fields (except wildcard '*')
             if ast.select_fields:
                 for field in ast.select_fields:
@@ -475,7 +484,6 @@ class EvidenceQueryEngine:
                 self.security_parser.validate_field(order_field)
 
         paginated_results, total_count = self._execute_query(ast)
- 
 
         execution_time_ms = (time.perf_counter() - start_time) * 1000
 
@@ -490,7 +498,7 @@ class EvidenceQueryEngine:
         self,
         root_node_id: str,
         max_depth: int = 5,
-        direction: str | TraversalDirection = "downstream"
+        direction: str | TraversalDirection = "downstream",
     ) -> CausalGraph:
         """
         Follow causal links from a root claim.
@@ -533,11 +541,13 @@ class EvidenceQueryEngine:
                 rel_type = "related_to"
 
             for next_id in next_ids:
-                edges.append(CausalEdge(
-                    from_id=node_id,
-                    to_id=next_id,
-                    relationship_type=rel_type,
-                ))
+                edges.append(
+                    CausalEdge(
+                        from_id=node_id,
+                        to_id=next_id,
+                        relationship_type=rel_type,
+                    )
+                )
                 traverse(next_id, depth + 1)
 
         root_node = self.nexus.get_node(root_node_id)
@@ -560,9 +570,7 @@ class EvidenceQueryEngine:
         Returns:
             List of contradicting nodes.
         """
-        return self.query(
-            f"SELECT * FROM evidence WHERE contradicts(node_id='{node_id}')"
-        ).nodes
+        return self.query(f"SELECT * FROM evidence WHERE contradicts(node_id='{node_id}')").nodes
 
     def find_supporting(self, node_id: str) -> List[EvidenceNode]:
         """
@@ -574,9 +582,7 @@ class EvidenceQueryEngine:
         Returns:
             List of supporting nodes.
         """
-        return self.query(
-            f"SELECT * FROM evidence WHERE supports(node_id='{node_id}')"
-        ).nodes
+        return self.query(f"SELECT * FROM evidence WHERE supports(node_id='{node_id}')").nodes
 
     def _parse_query(self, query_string: str) -> QueryAST:
         """
@@ -601,14 +607,18 @@ class EvidenceQueryEngine:
 
         # Extract WHERE conditions (EQ-02)
         conditions = []
-        where_match = re.search(r"WHERE\s+(.+?)(?:\s+ORDER|\s+LIMIT|$)", query_string, re.IGNORECASE)
+        where_match = re.search(
+            r"WHERE\s+(.+?)(?:\s+ORDER|\s+LIMIT|$)", query_string, re.IGNORECASE
+        )
         if where_match:
             conditions = self._parse_conditions(where_match.group(1))
 
         # Extract ORDER BY (EQ-03)
         order_by = None
         order_direction = "ASC"
-        order_match = re.search(r"ORDER\s+BY\s+(\w+)(?:\s+(ASC|DESC))?", query_string, re.IGNORECASE)
+        order_match = re.search(
+            r"ORDER\s+BY\s+(\w+)(?:\s+(ASC|DESC))?", query_string, re.IGNORECASE
+        )
         if order_match:
             order_by = order_match.group(1)
             order_direction = (order_match.group(2) or "ASC").upper()
@@ -678,7 +688,9 @@ class EvidenceQueryEngine:
             )
 
         # Handle CONTAINS
-        contains_match = re.match(r"(\w+)\s+CONTAINS\s+['\"](.+?)['\"]", condition_str, re.IGNORECASE)
+        contains_match = re.match(
+            r"(\w+)\s+CONTAINS\s+['\"](.+?)['\"]", condition_str, re.IGNORECASE
+        )
         if contains_match:
             return QueryCondition(
                 field=contains_match.group(1),
@@ -721,8 +733,9 @@ class EvidenceQueryEngine:
             Parsed value (str, int, float, or bool).
         """
         # Remove quotes
-        if (value_str.startswith("'") and value_str.endswith("'")) or \
-           (value_str.startswith('"') and value_str.endswith('"')):
+        if (value_str.startswith("'") and value_str.endswith("'")) or (
+            value_str.startswith('"') and value_str.endswith('"')
+        ):
             return value_str[1:-1]
 
         # Try boolean
@@ -761,8 +774,7 @@ class EvidenceQueryEngine:
         if ast.order_by:
             reverse = ast.order_direction == "DESC"
             filtered_results.sort(
-                key=lambda n: self._get_field_value(n, ast.order_by) or "",
-                reverse=reverse
+                key=lambda n: self._get_field_value(n, ast.order_by) or "", reverse=reverse
             )
 
         # Store total count before pagination
@@ -771,19 +783,15 @@ class EvidenceQueryEngine:
         # Apply OFFSET
         paginated_results = filtered_results
         if ast.offset > 0:
-            paginated_results = paginated_results[ast.offset:]
+            paginated_results = paginated_results[ast.offset :]
 
         # Apply LIMIT (EQ-03)
         if ast.limit is not None:
-            paginated_results = paginated_results[:ast.limit]
+            paginated_results = paginated_results[: ast.limit]
 
         return paginated_results, total_count
 
-    def _matches_conditions(
-        self,
-        node: EvidenceNode,
-        conditions: List[QueryCondition]
-    ) -> bool:
+    def _matches_conditions(self, node: EvidenceNode, conditions: List[QueryCondition]) -> bool:
         """
         Check if a node matches all conditions.
 
@@ -865,9 +873,8 @@ class EvidenceQueryEngine:
 
 # === CONVENIENCE FUNCTIONS ===
 
-def create_query_engine(
-    nodes: List[Dict[str, Any]] | None = None
-) -> EvidenceQueryEngine:
+
+def create_query_engine(nodes: List[Dict[str, Any]] | None = None) -> EvidenceQueryEngine:
     """
     Create a query engine with optional initial nodes.
 

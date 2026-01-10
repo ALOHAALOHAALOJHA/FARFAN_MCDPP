@@ -26,9 +26,11 @@ if TYPE_CHECKING:
 
 try:
     import structlog
+
     logger = structlog.get_logger(__name__)
 except ImportError:
     import logging
+
     logger = logging.getLogger(__name__)
 
 
@@ -51,6 +53,7 @@ class SignalQualityMetrics:
         fingerprint: Source fingerprint
         metadata: Additional metadata
     """
+
     policy_area_id: str
     pattern_count: int
     indicator_count: int
@@ -118,6 +121,7 @@ class CoverageGapAnalysis:
         gap_severity: Classification of gap severity
         recommendations: List of recommended actions
     """
+
     high_coverage_pas: list[str]
     low_coverage_pas: list[str]
     coverage_delta: float
@@ -165,8 +169,9 @@ def compute_signal_quality_metrics(
 
     # Check temporal bounds
     has_temporal_bounds = bool(
-        signal_pack.metadata.get("valid_from") or
-        hasattr(signal_pack, 'valid_from') and signal_pack.valid_from  # type: ignore
+        signal_pack.metadata.get("valid_from")
+        or hasattr(signal_pack, "valid_from")
+        and signal_pack.valid_from  # type: ignore
     )
 
     # Estimate pattern density (patterns per 100 tokens)
@@ -207,9 +212,7 @@ def compute_signal_quality_metrics(
     return metrics
 
 
-def analyze_coverage_gaps(
-    metrics_by_pa: dict[str, SignalQualityMetrics]
-) -> CoverageGapAnalysis:
+def analyze_coverage_gaps(metrics_by_pa: dict[str, SignalQualityMetrics]) -> CoverageGapAnalysis:
     """
     Analyze coverage gaps between PA groups (PA01-PA06 vs PA07-PA10).
 
@@ -232,12 +235,8 @@ def analyze_coverage_gaps(
     pa01_pa06 = [f"PA{i:02d}" for i in range(1, 7)]
     pa07_pa10 = [f"PA{i:02d}" for i in range(7, 11)]
 
-    high_coverage_metrics = [
-        metrics_by_pa[pa] for pa in pa01_pa06 if pa in metrics_by_pa
-    ]
-    low_coverage_metrics = [
-        metrics_by_pa[pa] for pa in pa07_pa10 if pa in metrics_by_pa
-    ]
+    high_coverage_metrics = [metrics_by_pa[pa] for pa in pa01_pa06 if pa in metrics_by_pa]
+    low_coverage_metrics = [metrics_by_pa[pa] for pa in pa07_pa10 if pa in metrics_by_pa]
 
     if not high_coverage_metrics or not low_coverage_metrics:
         return CoverageGapAnalysis(
@@ -250,13 +249,21 @@ def analyze_coverage_gaps(
         )
 
     # Compute average pattern counts
-    high_avg_patterns = sum(m.pattern_count for m in high_coverage_metrics) / len(high_coverage_metrics)
-    low_avg_patterns = sum(m.pattern_count for m in low_coverage_metrics) / len(low_coverage_metrics)
+    high_avg_patterns = sum(m.pattern_count for m in high_coverage_metrics) / len(
+        high_coverage_metrics
+    )
+    low_avg_patterns = sum(m.pattern_count for m in low_coverage_metrics) / len(
+        low_coverage_metrics
+    )
     coverage_delta = high_avg_patterns - low_avg_patterns
 
     # Compute average confidence thresholds
-    high_avg_confidence = sum(m.threshold_min_confidence for m in high_coverage_metrics) / len(high_coverage_metrics)
-    low_avg_confidence = sum(m.threshold_min_confidence for m in low_coverage_metrics) / len(low_coverage_metrics)
+    high_avg_confidence = sum(m.threshold_min_confidence for m in high_coverage_metrics) / len(
+        high_coverage_metrics
+    )
+    low_avg_confidence = sum(m.threshold_min_confidence for m in low_coverage_metrics) / len(
+        low_coverage_metrics
+    )
     threshold_delta = high_avg_confidence - low_avg_confidence
 
     # Classify gap severity
@@ -282,10 +289,7 @@ def analyze_coverage_gaps(
         recommendations.append("Review confidence thresholds for consistency")
 
     # Identify specific low-coverage PAs
-    sparse_pas = [
-        m.policy_area_id for m in low_coverage_metrics
-        if m.coverage_tier == "SPARSE"
-    ]
+    sparse_pas = [m.policy_area_id for m in low_coverage_metrics if m.coverage_tier == "SPARSE"]
     if sparse_pas:
         recommendations.append(f"Boost pattern extraction for: {', '.join(sparse_pas)}")
 
@@ -308,9 +312,7 @@ def analyze_coverage_gaps(
     return analysis
 
 
-def generate_quality_report(
-    metrics_by_pa: dict[str, SignalQualityMetrics]
-) -> dict[str, Any]:
+def generate_quality_report(metrics_by_pa: dict[str, SignalQualityMetrics]) -> dict[str, Any]:
     """
     Generate comprehensive quality report for all policy areas.
 
@@ -335,12 +337,14 @@ def generate_quality_report(
     total_indicators = sum(m.indicator_count for m in metrics_by_pa.values())
     total_entities = sum(m.entity_count for m in metrics_by_pa.values())
 
-    avg_confidence = sum(m.threshold_min_confidence for m in metrics_by_pa.values()) / len(metrics_by_pa)
-    avg_evidence = sum(m.threshold_min_evidence for m in metrics_by_pa.values()) / len(metrics_by_pa)
+    avg_confidence = sum(m.threshold_min_confidence for m in metrics_by_pa.values()) / len(
+        metrics_by_pa
+    )
+    avg_evidence = sum(m.threshold_min_evidence for m in metrics_by_pa.values()) / len(
+        metrics_by_pa
+    )
 
-    high_quality_pas = [
-        pa for pa, m in metrics_by_pa.items() if m.is_high_quality
-    ]
+    high_quality_pas = [pa for pa, m in metrics_by_pa.items() if m.is_high_quality]
 
     # Coverage tier distribution
     tier_distribution = {}

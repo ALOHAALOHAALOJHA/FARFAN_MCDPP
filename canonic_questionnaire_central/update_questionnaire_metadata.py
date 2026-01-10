@@ -70,6 +70,7 @@ DEPENDENCIAS_MAP = {
     },
 }
 
+
 def assign_specificity(group_name: str) -> str:
     name = group_name.lower()
     if any(keyword in name for keyword in SPECIFICITY_HIGH_KEYWORDS):
@@ -77,6 +78,7 @@ def assign_specificity(group_name: str) -> str:
     if any(keyword in name for keyword in SPECIFICITY_MEDIUM_KEYWORDS):
         return "MEDIUM"
     return "MEDIUM"
+
 
 def normalize_scoring(scoring: dict[str, Any]) -> dict[str, Any]:
     normalized: dict[str, Any] = {}
@@ -95,6 +97,7 @@ def normalize_scoring(scoring: dict[str, Any]) -> dict[str, Any]:
             normalized[level] = entry
     return normalized
 
+
 def update_verification_blocks(question: dict[str, Any]) -> bool:
     updated = False
     for key, value in list(question.items()):
@@ -108,6 +111,7 @@ def update_verification_blocks(question: dict[str, Any]) -> bool:
                         group_data["specificity"] = specificity
                         updated = True
     return updated
+
 
 def apply_updates(path: Path) -> bool:
     if not path.exists():
@@ -142,6 +146,7 @@ def apply_updates(path: Path) -> bool:
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return changed
 
+
 def main() -> None:
     any_changed = False
     for file_path in QUESTIONNAIRE_FILES:
@@ -152,6 +157,7 @@ def main() -> None:
             print(f"No changes required for {file_path.relative_to(ROOT)}")
     if not any_changed:
         print("No updates were necessary")
+
 
 if __name__ == "__main__":
     main()

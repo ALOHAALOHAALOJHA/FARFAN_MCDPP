@@ -97,7 +97,11 @@ class QualityLevelThresholds:
             True if thresholds are valid (min < aceptable < bueno < excelente < max)
         """
         return (
-            self.min_score < self.aceptable_min < self.bueno_min < self.excelente_min < self.max_score
+            self.min_score
+            < self.aceptable_min
+            < self.bueno_min
+            < self.excelente_min
+            < self.max_score
         )
 
 

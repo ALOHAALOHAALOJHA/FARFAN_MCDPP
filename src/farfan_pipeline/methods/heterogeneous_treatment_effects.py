@@ -608,9 +608,7 @@ class HeterogeneousTreatmentAnalyzer:
                 ),
             }
 
-            self.logger.info(
-                f"Sensitivity analysis: bias={bias:.4f}, robustness={robustness:.3f}"
-            )
+            self.logger.info(f"Sensitivity analysis: bias={bias:.4f}, robustness={robustness:.3f}")
 
             return result
 

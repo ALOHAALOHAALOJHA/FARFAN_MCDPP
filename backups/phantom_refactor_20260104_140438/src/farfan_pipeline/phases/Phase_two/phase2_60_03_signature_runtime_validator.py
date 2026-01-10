@@ -4,6 +4,7 @@ PHASE_LABEL: Phase 2
 Sequence: M
 
 """
+
 """
 Runtime Signature Validation for Chain Layer
 
@@ -53,9 +54,7 @@ class SignatureRuntimeValidator:
         penalty_for_missing_critical: float = 0.1,
     ) -> None:
         if signatures_path is None:
-            signatures_path = Path(
-                "config/json_files_ no_schemas/method_signatures.json"
-            )
+            signatures_path = Path("config/json_files_ no_schemas/method_signatures.json")
 
         self.validator = MethodSignatureValidator(signatures_path)
         self.validator.load_signatures()
@@ -63,9 +62,7 @@ class SignatureRuntimeValidator:
         self.penalty_for_missing_critical = penalty_for_missing_critical
         self._validation_stats: dict[str, dict[str, int]] = {}
 
-    def validate_inputs(
-        self, method_id: str, provided_inputs: dict[str, Any]
-    ) -> ValidationResult:
+    def validate_inputs(self, method_id: str, provided_inputs: dict[str, Any]) -> ValidationResult:
         """
         Validate that provided inputs match method signature requirements.
 
@@ -112,10 +109,7 @@ class SignatureRuntimeValidator:
         # Check critical optional inputs
         critical_optional = signature.get("critical_optional", [])
         for critical_input in critical_optional:
-            if (
-                critical_input not in provided_inputs
-                or provided_inputs[critical_input] is None
-            ):
+            if critical_input not in provided_inputs or provided_inputs[critical_input] is None:
                 missing_critical_optional.append(critical_input)
                 soft_failures.append(
                     f"Critical optional input '{critical_input}' missing for method {method_id} "
@@ -175,9 +169,7 @@ class SignatureRuntimeValidator:
 
         signature = self.validator.get_method_signature(method_id)
         if signature is None:
-            warnings.append(
-                f"Method signature not found for output validation: {method_id}"
-            )
+            warnings.append(f"Method signature not found for output validation: {method_id}")
             return ValidationResult(
                 passed=True,
                 hard_failures=[],

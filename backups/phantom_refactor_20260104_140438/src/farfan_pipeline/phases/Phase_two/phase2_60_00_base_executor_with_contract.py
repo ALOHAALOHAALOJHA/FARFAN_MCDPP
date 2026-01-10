@@ -32,14 +32,24 @@ except ImportError:
     from farfan_pipeline.phases.Phase_two.phase2_90_00_carver import DoctoralCarverSynthesizer
 
 try:
-    from farfan_pipeline.phases.Phase_two.calibration_policy import CalibrationPolicy, create_default_policy
+    from farfan_pipeline.phases.Phase_two.calibration_policy import (
+        CalibrationPolicy,
+        create_default_policy,
+    )
 except ImportError:
     try:
-        from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import CalibrationPolicy, create_default_policy
+        from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import (
+            CalibrationPolicy,
+            create_default_policy,
+        )
     except ImportError:
-        from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import CalibrationPolicy
+        from farfan_pipeline.phases.Phase_two.phase2_60_04_calibration_policy import (
+            CalibrationPolicy,
+        )
+
         def create_default_policy():
             return CalibrationPolicy()
+
 
 if TYPE_CHECKING:
     from orchestration.orchestrator import MethodExecutor
@@ -132,15 +142,14 @@ class BaseExecutorWithContract(ABC):
                 "verified_contracts": list(cls._contract_cache.keys()),
             }
 
-        base_slots = [
-            f"D{d}-Q{q}" for d in range(1, 7) for q in range(1, 6)
-        ]
+        base_slots = [f"D{d}-Q{q}" for d in range(1, 7) for q in range(1, 6)]
 
         if class_registry is None:
             try:
                 from orchestration.class_registry import (
                     build_class_registry,
                 )
+
                 class_registry = build_class_registry()
             except Exception as exc:
                 cls._factory_verification_errors.append(
@@ -157,12 +166,8 @@ class BaseExecutorWithContract(ABC):
                 if result["passed"]:
                     verified_contracts.append(base_slot)
                 else:
-                    errors.extend(
-                        f"[{base_slot}] {err}" for err in result["errors"]
-                    )
-                warnings.extend(
-                    f"[{base_slot}] {warn}" for warn in result.get("warnings", [])
-                )
+                    errors.extend(f"[{base_slot}] {err}" for err in result["errors"])
+                warnings.extend(f"[{base_slot}] {warn}" for warn in result.get("warnings", []))
             except Exception as exc:
                 errors.append(f"[{base_slot}] Unexpected error during verification: {exc}")
 
@@ -203,7 +208,15 @@ class BaseExecutorWithContract(ABC):
         q_number = (dimension - 1) * 5 + question
         q_id = f"Q{q_number:03d}"
 
-        contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts"
+        contracts_dir = (
+            PROJECT_ROOT
+            / "src"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_two"
+            / "json_files_phase_two"
+            / "executor_contracts"
+        )
 
         v3_path = contracts_dir / f"{base_slot}.v3.json"
         v2_path = contracts_dir / f"{base_slot}.json"
@@ -382,7 +395,9 @@ class BaseExecutorWithContract(ABC):
 
             if orchestration_mode == "multi_method_pipeline":
                 if "methods" not in method_binding:
-                    errors.append("method_binding missing 'methods' array for multi_method_pipeline mode")
+                    errors.append(
+                        "method_binding missing 'methods' array for multi_method_pipeline mode"
+                    )
                 elif not isinstance(method_binding["methods"], list):
                     errors.append("method_binding.methods must be a list")
                 else:
@@ -458,10 +473,7 @@ class BaseExecutorWithContract(ABC):
             # Fallback for schema path (user reported misconfiguration)
             if version == "v3":
                 schema_path = (
-                    PROJECT_ROOT
-                    / "config"
-                    / "schemas"
-                    / "executor_contract.v3.schema.json"
+                    PROJECT_ROOT / "config" / "schemas" / "executor_contract.v3.schema.json"
                 )
             else:
                 schema_path = PROJECT_ROOT / "config" / "executor_contract.schema.json"
@@ -479,13 +491,16 @@ class BaseExecutorWithContract(ABC):
                 if local_path.exists():
                     schema_path = local_path
                 else:
-                     # Attempt to construct minimal schema in memory if files missing
-                     # to prevent crashing if schema assets are misplaced
-                     import logging
-                     logging.warning(f"Schema file missing at {schema_path} and {local_path}. Using minimal fallback.")
-                     minimal_schema = {"type": "object", "additionalProperties": True}
-                     cls._schema_validators[version] = Draft7Validator(minimal_schema)
-                     return cls._schema_validators[version]
+                    # Attempt to construct minimal schema in memory if files missing
+                    # to prevent crashing if schema assets are misplaced
+                    import logging
+
+                    logging.warning(
+                        f"Schema file missing at {schema_path} and {local_path}. Using minimal fallback."
+                    )
+                    minimal_schema = {"type": "object", "additionalProperties": True}
+                    cls._schema_validators[version] = Draft7Validator(minimal_schema)
+                    return cls._schema_validators[version]
 
             if not schema_path.exists():
                 raise FileNotFoundError(f"Contract schema not found: {schema_path}")
@@ -531,7 +546,15 @@ class BaseExecutorWithContract(ABC):
         if cache_key in cls._contract_cache:
             return cls._contract_cache[cache_key]
 
-        contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts"
+        contracts_dir = (
+            PROJECT_ROOT
+            / "src"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_two"
+            / "json_files_phase_two"
+            / "executor_contracts"
+        )
 
         v3_path = contracts_dir / f"{base_slot}.v3.json"
         v2_path = contracts_dir / f"{base_slot}.json"
@@ -641,9 +664,7 @@ class BaseExecutorWithContract(ABC):
                     )
 
     @staticmethod
-    def _set_nested_value(
-        target_dict: dict[str, Any], key_path: str, value: Any
-    ) -> None:
+    def _set_nested_value(target_dict: dict[str, Any], key_path: str, value: Any) -> None:
         """Set a value in a nested dict using dot-notation key path.
 
         Args:
@@ -684,9 +705,9 @@ class BaseExecutorWithContract(ABC):
 
         for condition in abort_conditions:
             # Example condition check. This could be made more sophisticated.
-            if condition == "missing_required_element" and evidence.get(
-                "validation", {}
-            ).get("errors"):
+            if condition == "missing_required_element" and evidence.get("validation", {}).get(
+                "errors"
+            ):
                 # This logic assumes errors from the validator imply a missing required element,
                 # which is true with our new validator.
                 raise ValueError(
@@ -707,23 +728,23 @@ class BaseExecutorWithContract(ABC):
         validate_schema: bool = True,
     ) -> list[dict[str, Any]]:
         """Load all 300 specialized contracts from directory.
-        
+
         Batch loads Q001.v3.json through Q300.v3.json with validation and caching.
         Leverages existing _load_contract() infrastructure for consistency.
-        
+
         Args:
             contracts_dir: Directory containing specialized contracts.
                           Defaults to PROJECT_ROOT/../executor_contracts/specialized/
             version: Contract version to load ("v2" or "v3")
             validate_schema: Whether to validate contracts against JSON schema
-        
+
         Returns:
             List of 300 contract dicts, ordered by question_id (Q001-Q300)
-        
+
         Raises:
             FileNotFoundError: If contracts directory does not exist
             ValueError: If any contract fails to load or validate
-        
+
         Example:
             >>> contracts = BaseExecutorWithContract.load_all_contracts()
             >>> len(contracts)
@@ -732,19 +753,17 @@ class BaseExecutorWithContract(ABC):
             'Q001'
         """
         from pathlib import Path
-        
+
         if contracts_dir is None:
             contracts_dir = str(PROJECT_ROOT / ".." / "executor_contracts" / "specialized")
-        
+
         contracts_path = Path(contracts_dir)
         if not contracts_path.exists():
-            raise FileNotFoundError(
-                f"Contracts directory not found: {contracts_dir}"
-            )
-        
+            raise FileNotFoundError(f"Contracts directory not found: {contracts_dir}")
+
         contracts = []
         failed_loads = []
-        
+
         for q_num in range(1, 301):
             question_id = f"Q{q_num:03d}"
             try:
@@ -753,87 +772,76 @@ class BaseExecutorWithContract(ABC):
                     question_id=question_id,
                     contracts_dir=contracts_dir,
                     version=version,
-                    validate_schema=validate_schema
+                    validate_schema=validate_schema,
                 )
                 contracts.append(contract)
             except Exception as e:
                 failed_loads.append(f"{question_id}: {str(e)}")
-        
+
         if failed_loads:
-            error_msg = (
-                f"Failed to load {len(failed_loads)} contracts:\n"
-                + "\n".join(failed_loads[:10])
+            error_msg = f"Failed to load {len(failed_loads)} contracts:\n" + "\n".join(
+                failed_loads[:10]
             )
             if len(failed_loads) > 10:
                 error_msg += f"\n... and {len(failed_loads) - 10} more"
             raise ValueError(error_msg)
-        
+
         return contracts
 
     @classmethod
     def _load_contract_from_file(
-        cls,
-        question_id: str,
-        contracts_dir: str,
-        version: str = "v3",
-        validate_schema: bool = True
+        cls, question_id: str, contracts_dir: str, version: str = "v3", validate_schema: bool = True
     ) -> dict[str, Any]:
         """Load a single contract from file with caching and validation.
-        
+
         Helper method for load_all_contracts() that handles individual contract loading.
         Integrates with existing _contract_cache infrastructure.
-        
+
         Args:
             question_id: Question identifier (e.g., "Q001")
             contracts_dir: Directory containing contract files
             version: Contract version ("v2" or "v3")
             validate_schema: Whether to validate against JSON schema
-        
+
         Returns:
             Contract dictionary
-        
+
         Raises:
             FileNotFoundError: If contract file does not exist
             json.JSONDecodeError: If contract JSON is invalid
             ValueError: If contract fails schema validation
         """
         from pathlib import Path
-        
+
         cache_key = f"{question_id}_{version}_{contracts_dir}"
-        
+
         if cache_key in cls._contract_cache:
             return cls._contract_cache[cache_key]
-        
+
         contracts_path = Path(contracts_dir)
         ext = f".{version}.json" if version == "v3" else ".json"
         contract_file = contracts_path / f"{question_id}{ext}"
-        
+
         if not contract_file.exists():
-            raise FileNotFoundError(
-                f"Contract file not found: {contract_file}"
-            )
-        
+            raise FileNotFoundError(f"Contract file not found: {contract_file}")
+
         with open(contract_file, "r", encoding="utf-8") as f:
             contract = json.load(f)
-        
+
         if validate_schema and version == "v3":
             cls._validate_contract_schema(contract, question_id)
-        
+
         cls._contract_cache[cache_key] = contract
         return contract
 
     @classmethod
-    def _validate_contract_schema(
-        cls,
-        contract: dict[str, Any],
-        question_id: str
-    ) -> None:
+    def _validate_contract_schema(cls, contract: dict[str, Any], question_id: str) -> None:
         """Validate contract against v3 JSON schema.
-        
+
         Args:
             contract: Contract dictionary to validate
             question_id: Question identifier for error messages
-        
+
         Raises:
             ValueError: If contract fails schema validation
         """
@@ -843,15 +851,13 @@ class BaseExecutorWithContract(ABC):
             "method_binding",
             "question_context",
             "evidence_assembly",
-            "output_contract"
+            "output_contract",
         ]
-        
+
         missing_keys = [key for key in required_v3_keys if key not in contract]
         if missing_keys:
-            raise ValueError(
-                f"Contract {question_id} missing required v3 keys: {missing_keys}"
-            )
-        
+            raise ValueError(f"Contract {question_id} missing required v3 keys: {missing_keys}")
+
         identity = contract.get("identity", {})
         if identity.get("question_id") != question_id:
             raise ValueError(
@@ -862,7 +868,7 @@ class BaseExecutorWithContract(ABC):
     @classmethod
     def clear_contract_cache(cls) -> None:
         """Clear the contract cache.
-        
+
         Useful for testing or when contracts are updated on disk.
         """
         cls._contract_cache.clear()
@@ -870,7 +876,7 @@ class BaseExecutorWithContract(ABC):
     @classmethod
     def get_cached_contract_count(cls) -> int:
         """Get number of contracts currently in cache.
-        
+
         Returns:
             Number of cached contracts
         """
@@ -884,9 +890,7 @@ class BaseExecutorWithContract(ABC):
         question_context: dict[str, Any],
     ) -> dict[str, Any]:
         if method_executor is not self.method_executor:
-            raise RuntimeError(
-                "Mismatched MethodExecutor instance for contract executor"
-            )
+            raise RuntimeError("Mismatched MethodExecutor instance for contract executor")
 
         base_slot = self.get_base_slot()
         if question_context.get("base_slot") != base_slot:
@@ -939,7 +943,7 @@ class BaseExecutorWithContract(ABC):
                 section=doc_metadata.get("section"),
                 chapter=doc_metadata.get("chapter"),
                 page=doc_metadata.get("page"),
-                policy_area=policy_area_id
+                policy_area=policy_area_id,
             )
 
             # Get context-filtered patterns (REFACTORING #6: context scoping)
@@ -947,14 +951,20 @@ class BaseExecutorWithContract(ABC):
 
             # Expand patterns semantically (REFACTORING #2: semantic expansion)
             if applicable_patterns and isinstance(applicable_patterns[0], dict):
-                pattern_strings = [p.get('pattern', p) if isinstance(p, dict) else p for p in applicable_patterns]
+                pattern_strings = [
+                    p.get("pattern", p) if isinstance(p, dict) else p for p in applicable_patterns
+                ]
             else:
                 pattern_strings = applicable_patterns
 
             expanded_patterns = enriched_pack.expand_patterns(pattern_strings)
             applicable_patterns = expanded_patterns
 
-        elif self.signal_registry is not None and hasattr(self.signal_registry, "get") and policy_area_id:
+        elif (
+            self.signal_registry is not None
+            and hasattr(self.signal_registry, "get")
+            and policy_area_id
+        ):
             # Fallback to legacy signal registry
             signal_pack = self.signal_registry.get(policy_area_id)
 
@@ -978,13 +988,11 @@ class BaseExecutorWithContract(ABC):
         method_outputs: dict[str, Any] = {}
         method_inputs = contract.get("method_inputs", [])
         indexed = list(enumerate(method_inputs))
-        sorted_inputs = sorted(
-            indexed, key=lambda pair: (pair[1].get("priority", 2), pair[0])
-        )
-        
+        sorted_inputs = sorted(indexed, key=lambda pair: (pair[1].get("priority", 2), pair[0]))
+
         calibration_results = {}
         calibration_weights = {}
-        
+
         for _, entry in sorted_inputs:
             class_name = entry["class"]
             method_name = entry["method"]
@@ -992,44 +1000,42 @@ class BaseExecutorWithContract(ABC):
             extra_args = entry.get("args", {})
 
             payload = {**common_kwargs, **extra_args}
-            
+
             method_id = f"{class_name}.{method_name}"
             calibration_score = None
-            
+
             if self.calibration_orchestrator:
                 try:
                     from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
                         MethodBelowThresholdError,
                     )
-                    
+
                     calibration_result = self.calibration_orchestrator.calibrate(
-                        method_id=method_id,
-                        context=payload,
-                        evidence=None
+                        method_id=method_id, context=payload, evidence=None
                     )
-                    
+
                     calibration_score = calibration_result.final_score
                     calibration_results[method_id] = calibration_result.to_dict()
-                    
+
                     import logging
+
                     logger = logging.getLogger(__name__)
                     logger.info(
                         f"[{base_slot}] Calibration: {method_id} -> {calibration_score:.3f}"
                     )
-                    
+
                 except MethodBelowThresholdError as e:
                     import logging
+
                     logger = logging.getLogger(__name__)
                     calibration_score = e.score
-                    
+
                     should_execute, reason = self.calibration_policy.should_execute_method(
                         method_id, calibration_score
                     )
-                    
+
                     if not should_execute:
-                        logger.error(
-                            f"[{base_slot}] Method {method_id} SKIPPED: {reason}"
-                        )
+                        logger.error(f"[{base_slot}] Method {method_id} SKIPPED: {reason}")
                         continue
                     else:
                         logger.warning(
@@ -1037,19 +1043,21 @@ class BaseExecutorWithContract(ABC):
                         )
                 except Exception as e:
                     import logging
+
                     logger = logging.getLogger(__name__)
                     logger.warning(f"[{base_slot}] Calibration error for {method_id}: {e}")
-            
+
             should_execute, exec_reason = self.calibration_policy.should_execute_method(
                 method_id, calibration_score
             )
-            
+
             if not should_execute:
                 import logging
+
                 logger = logging.getLogger(__name__)
                 logger.warning(f"[{base_slot}] Skipping {method_id}: {exec_reason}")
                 continue
-            
+
             base_weight = entry.get("weight", 1.0)
             weight_info = self.calibration_policy.compute_adjusted_weight(
                 base_weight=base_weight,
@@ -1057,7 +1065,7 @@ class BaseExecutorWithContract(ABC):
                 method_id=method_id,
             )
             calibration_weights[method_id] = weight_info.to_dict()
-            
+
             self.calibration_policy.record_influence(
                 phase_id=2,
                 method_id=method_id,
@@ -1073,7 +1081,7 @@ class BaseExecutorWithContract(ABC):
                 method_name=method_name,
                 **payload,
             )
-            
+
             if "_calibration_weight" not in result or not isinstance(result, dict):
                 if isinstance(result, dict):
                     result["_calibration_weight"] = weight_info.adjusted_weight
@@ -1098,7 +1106,7 @@ class BaseExecutorWithContract(ABC):
                     method_outputs[key] = result
 
         assembly_rules = contract.get("assembly_rules", [])
-        
+
         # NEW: Use EvidenceNexus instead of legacy EvidenceAssembler
         nexus_result = process_evidence(
             method_outputs=method_outputs,
@@ -1115,7 +1123,7 @@ class BaseExecutorWithContract(ABC):
             signal_pack=signal_pack,  # SISAS: Enable signal provenance
             contract=contract,
         )
-        
+
         evidence = nexus_result["evidence"]
         trace = nexus_result["trace"]
         validation = nexus_result["validation"]
@@ -1131,14 +1139,14 @@ class BaseExecutorWithContract(ABC):
                 "id": question_id,
                 "expected_elements": expected_elements,
                 "patterns": applicable_patterns,
-                "validations": contract.get("validation_rules", [])
+                "validations": contract.get("validation_rules", []),
             }
 
             # Extract structured evidence (REFACTORING #5: evidence structure)
             evidence_result = enriched_pack.extract_evidence(
                 text=getattr(document, "raw_text", ""),
                 signal_node=signal_node,
-                document_context=document_context
+                document_context=document_context,
             )
 
             # Merge structured evidence into result
@@ -1151,8 +1159,9 @@ class BaseExecutorWithContract(ABC):
 
             # Track patterns used (for confidence calculation)
             if isinstance(applicable_patterns, list):
-                patterns_used = [p.get('id', p) if isinstance(p, dict) else p
-                               for p in applicable_patterns[:10]]  # Top 10
+                patterns_used = [
+                    p.get("id", p) if isinstance(p, dict) else p for p in applicable_patterns[:10]
+                ]  # Top 10
 
         # Note: Validation is now handled by EvidenceNexus above
         error_handling = contract.get("error_handling", {})
@@ -1165,7 +1174,7 @@ class BaseExecutorWithContract(ABC):
                 "id": question_id,
                 "failure_contract": error_handling.get("failure_contract", {}),
                 "validations": validation_rules,
-                "expected_elements": expected_elements
+                "expected_elements": expected_elements,
             }
 
             # Validate with contracts (REFACTORING #4: contract validation)
@@ -1176,34 +1185,38 @@ class BaseExecutorWithContract(ABC):
             contract_validation = validate_result_with_orchestrator(
                 result=evidence,
                 signal_node=signal_node_for_validation,
-                orchestrator=self.validation_orchestrator if self._use_validation_orchestrator else None,
-                auto_register=self._use_validation_orchestrator
+                orchestrator=(
+                    self.validation_orchestrator if self._use_validation_orchestrator else None
+                ),
+                auto_register=self._use_validation_orchestrator,
             )
 
             # Merge contract validation into standard validation
             if not contract_validation.passed:
                 validation["status"] = "failed"
                 validation["errors"] = validation.get("errors", [])
-                validation["errors"].append({
-                    "error_code": contract_validation.error_code,
-                    "condition_violated": contract_validation.condition_violated,
-                    "remediation": contract_validation.remediation,
-                    "failures_detailed": [
-                        {
-                            "type": f.failure_type,
-                            "field": f.field_name,
-                            "message": f.message,
-                            "severity": f.severity,
-                            "remediation": f.remediation
-                        }
-                        for f in contract_validation.failures_detailed[:5]
-                    ]
-                })
+                validation["errors"].append(
+                    {
+                        "error_code": contract_validation.error_code,
+                        "condition_violated": contract_validation.condition_violated,
+                        "remediation": contract_validation.remediation,
+                        "failures_detailed": [
+                            {
+                                "type": f.failure_type,
+                                "field": f.field_name,
+                                "message": f.message,
+                                "severity": f.severity,
+                                "remediation": f.remediation,
+                            }
+                            for f in contract_validation.failures_detailed[:5]
+                        ],
+                    }
+                )
                 validation["contract_failed"] = True
                 validation["contract_validation_details"] = {
                     "error_code": contract_validation.error_code,
                     "diagnostics": contract_validation.diagnostics,
-                    "total_failures": len(contract_validation.failures_detailed)
+                    "total_failures": len(contract_validation.failures_detailed),
                 }
         elif self._use_validation_orchestrator:
             # Even without enriched pack, use validation orchestrator with basic validation
@@ -1215,14 +1228,14 @@ class BaseExecutorWithContract(ABC):
                 "id": question_id,
                 "failure_contract": error_handling.get("failure_contract", {}),
                 "validations": {"rules": validation_rules},
-                "expected_elements": expected_elements
+                "expected_elements": expected_elements,
             }
 
             contract_validation = validate_result_with_orchestrator(
                 result=evidence,
                 signal_node=signal_node_for_validation,
                 orchestrator=self.validation_orchestrator,
-                auto_register=True
+                auto_register=True,
             )
         if error_handling:
             evidence_with_validation = {**evidence, "validation": validation}
@@ -1260,8 +1273,10 @@ class BaseExecutorWithContract(ABC):
                 "enabled": contract_validation is not None,
                 "passed": contract_validation.passed if contract_validation else None,
                 "error_code": contract_validation.error_code if contract_validation else None,
-                "failure_count": len(contract_validation.failures_detailed) if contract_validation else 0,
-                "orchestrator_registered": self._use_validation_orchestrator
+                "failure_count": (
+                    len(contract_validation.failures_detailed) if contract_validation else 0
+                ),
+                "orchestrator_registered": self._use_validation_orchestrator,
             },
             # CALIBRATION: Add calibration metadata
             "calibration_metadata": {
@@ -1270,21 +1285,22 @@ class BaseExecutorWithContract(ABC):
                 "weights": calibration_weights,
                 "summary": {
                     "total_methods": len(calibration_results),
-                    "average_score": sum(
-                        cr["final_score"] for cr in calibration_results.values()
-                    ) / len(calibration_results) if calibration_results else 0.0,
+                    "average_score": (
+                        sum(cr["final_score"] for cr in calibration_results.values())
+                        / len(calibration_results)
+                        if calibration_results
+                        else 0.0
+                    ),
                     "min_score": min(
-                        (cr["final_score"] for cr in calibration_results.values()),
-                        default=0.0
+                        (cr["final_score"] for cr in calibration_results.values()), default=0.0
                     ),
                     "max_score": max(
-                        (cr["final_score"] for cr in calibration_results.values()),
-                        default=0.0
+                        (cr["final_score"] for cr in calibration_results.values()), default=0.0
                     ),
                     "methods_executed": len(method_outputs),
                     "methods_skipped": len(method_inputs) - len(method_outputs),
-                }
-            }
+                },
+            },
         }
 
         return result
@@ -1312,13 +1328,16 @@ class BaseExecutorWithContract(ABC):
         calibration_status = calibration.get("status", "placeholder")
         if calibration_status == "placeholder":
             import logging
+
             logging.info(
                 f"Contract {base_slot} has placeholder calibration. "
                 "Injecting live calibration parameters from UnitOfAnalysisLoader..."
             )
             # Override status to enable execution with alive parameters
             calibration["status"] = "calibrated_alive"
-            calibration["note"] = "Live parameters injected from canonic_description_unit_analysis.json"
+            calibration["note"] = (
+                "Live parameters injected from canonic_description_unit_analysis.json"
+            )
 
         # Extract question context from contract (source of truth for v3)
         question_context = contract["question_context"]
@@ -1374,9 +1393,7 @@ class BaseExecutorWithContract(ABC):
         # SIGNAL REQUIREMENTS VALIDATION: Verify signal requirements from contract
         signal_requirements = contract.get("signal_requirements", {})
         if signal_requirements:
-            self._validate_signal_requirements(
-                signal_pack, signal_requirements, base_slot
-            )
+            self._validate_signal_requirements(signal_pack, signal_requirements, base_slot)
 
         # Extract method binding
         method_binding = contract["method_binding"]
@@ -1420,31 +1437,31 @@ class BaseExecutorWithContract(ABC):
                 method_name = method_spec["method_name"]
                 provides = method_spec.get("provides", f"{class_name}.{method_name}")
                 priority = method_spec.get("priority", 99)
-                
+
                 method_id = f"{class_name}.{method_name}"
-                
+
                 if self.calibration_orchestrator:
                     try:
                         from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
                             MethodBelowThresholdError,
                         )
-                        
+
                         calibration_result = self.calibration_orchestrator.calibrate(
-                            method_id=method_id,
-                            context=common_kwargs,
-                            evidence=None
+                            method_id=method_id, context=common_kwargs, evidence=None
                         )
-                        
+
                         calibration_results[method_id] = calibration_result.to_dict()
-                        
+
                         import logging
+
                         logger = logging.getLogger(__name__)
                         logger.info(
                             f"[{base_slot}] Calibration: {method_id} -> {calibration_result.final_score:.3f}"
                         )
-                        
+
                     except MethodBelowThresholdError as e:
                         import logging
+
                         logger = logging.getLogger(__name__)
                         logger.error(
                             f"[{base_slot}] Method {method_id} FAILED calibration: "
@@ -1455,6 +1472,7 @@ class BaseExecutorWithContract(ABC):
                         ) from e
                     except Exception as e:
                         import logging
+
                         logger = logging.getLogger(__name__)
                         logger.warning(f"[{base_slot}] Calibration error for {method_id}: {e}")
 
@@ -1520,41 +1538,40 @@ class BaseExecutorWithContract(ABC):
                 raise ValueError(
                     f"Invalid method_binding for {base_slot}: missing class_name or method_name"
                 )
-            
+
             method_id = f"{class_name}.{method_name}"
-            
+
             if self.calibration_orchestrator:
                 try:
                     from cross_cutting_infrastructure.capaz_calibration_parmetrization.calibration_orchestrator import (
                         MethodBelowThresholdError,
                     )
-                    
+
                     calibration_result = self.calibration_orchestrator.calibrate(
-                        method_id=method_id,
-                        context=common_kwargs,
-                        evidence=None
+                        method_id=method_id, context=common_kwargs, evidence=None
                     )
-                    
+
                     calibration_results[method_id] = calibration_result.to_dict()
-                    
+
                     import logging
+
                     logger = logging.getLogger(__name__)
                     logger.info(
                         f"[{base_slot}] Calibration: {method_id} -> {calibration_result.final_score:.3f}"
                     )
-                    
+
                 except MethodBelowThresholdError as e:
                     import logging
+
                     logger = logging.getLogger(__name__)
                     logger.error(
                         f"[{base_slot}] Method {method_id} FAILED calibration: "
                         f"score={e.score:.3f}, threshold={e.threshold:.3f}"
                     )
-                    raise RuntimeError(
-                        f"Method {method_id} failed calibration threshold"
-                    ) from e
+                    raise RuntimeError(f"Method {method_id} failed calibration threshold") from e
                 except Exception as e:
                     import logging
+
                     logger = logging.getLogger(__name__)
                     logger.warning(f"[{base_slot}] Calibration error for {method_id}: {e}")
 
@@ -1582,7 +1599,7 @@ class BaseExecutorWithContract(ABC):
         # NEW: Evidence assembly and validation using EvidenceNexus
         # Note: EvidenceNexus extracts assembly_rules and validation_rules from contract directly
         validation_rules_section = contract.get("validation_rules", {})
-        
+
         nexus_result = process_evidence(
             method_outputs=method_outputs,
             question_context={
@@ -1602,14 +1619,14 @@ class BaseExecutorWithContract(ABC):
             signal_pack=signal_pack,  # SISAS: Enable signal provenance
             contract=contract,
         )
-        
+
         evidence = nexus_result["evidence"]
         trace = nexus_result["trace"]
         validation = nexus_result["validation"]
-        
+
         # Get error_handling for subsequent validation orchestrator
         error_handling = contract.get("error_handling", {})
-        
+
         # Reconstruct validation_rules_object for compatibility with ValidationOrchestrator
         validation_rules = validation_rules_section.get("rules", [])
         na_policy = validation_rules_section.get("na_policy", "abort_on_critical")
@@ -1626,14 +1643,14 @@ class BaseExecutorWithContract(ABC):
                 "id": question_id,
                 "failure_contract": error_handling.get("failure_contract", {}),
                 "validations": validation_rules_object,
-                "expected_elements": expected_elements
+                "expected_elements": expected_elements,
             }
 
             contract_validation = validate_result_with_orchestrator(
                 result=evidence,
                 signal_node=signal_node_for_validation,
                 orchestrator=self.validation_orchestrator,
-                auto_register=True
+                auto_register=True,
             )
 
             # Merge contract validation failures into standard validation
@@ -1646,7 +1663,7 @@ class BaseExecutorWithContract(ABC):
                         "type": f.failure_type,
                         "field": f.field_name,
                         "message": f.message,
-                        "severity": f.severity
+                        "severity": f.severity,
                     }
                     for f in contract_validation.failures_detailed[:10]
                 ]
@@ -1689,8 +1706,10 @@ class BaseExecutorWithContract(ABC):
                 "enabled": contract_validation is not None,
                 "passed": contract_validation.passed if contract_validation else None,
                 "error_code": contract_validation.error_code if contract_validation else None,
-                "failure_count": len(contract_validation.failures_detailed) if contract_validation else 0,
-                "orchestrator_registered": self._use_validation_orchestrator
+                "failure_count": (
+                    len(contract_validation.failures_detailed) if contract_validation else 0
+                ),
+                "orchestrator_registered": self._use_validation_orchestrator,
             },
             # CALIBRATION METADATA
             "calibration_metadata": {
@@ -1698,26 +1717,27 @@ class BaseExecutorWithContract(ABC):
                 "results": calibration_results,
                 "summary": {
                     "total_methods": len(calibration_results),
-                    "average_score": sum(
-                        cr["final_score"] for cr in calibration_results.values()
-                    ) / len(calibration_results) if calibration_results else 0.0,
+                    "average_score": (
+                        sum(cr["final_score"] for cr in calibration_results.values())
+                        / len(calibration_results)
+                        if calibration_results
+                        else 0.0
+                    ),
                     "min_score": min(
-                        (cr["final_score"] for cr in calibration_results.values()),
-                        default=0.0
+                        (cr["final_score"] for cr in calibration_results.values()), default=0.0
                     ),
                     "max_score": max(
-                        (cr["final_score"] for cr in calibration_results.values()),
-                        default=0.0
+                        (cr["final_score"] for cr in calibration_results.values()), default=0.0
                     ),
-                }
-            }
+                },
+            },
         }
 
         # NEW: Record evidence provenance in EvidenceNexus internal store (if available in nexus_result)
         if "provenance_record" in nexus_result:
             # Provenance is now handled internally by EvidenceNexus
             result_data["provenance"] = nexus_result["provenance_record"]
-        
+
         # NEW: Add EvidenceNexus scoring fields for Phase 3
         # These are essential for Phase 3 to extract scores for aggregation
         if "overall_confidence" in nexus_result:
@@ -1732,16 +1752,14 @@ class BaseExecutorWithContract(ABC):
         # Validate output against output_contract schema if present
         output_contract = contract.get("output_contract", {})
         if output_contract and "schema" in output_contract:
-            self._validate_output_contract(
-                result_data, output_contract["schema"], base_slot
-            )
+            self._validate_output_contract(result_data, output_contract["schema"], base_slot)
 
         # NEW: Generate doctoral-level narrative using Carver synthesizer
         human_readable_config = output_contract.get("human_readable_output", {})
         if human_readable_config or nexus_result.get("graph"):
             # Use Carver to generate PhD-level narrative from evidence graph
             carver = DoctoralCarverSynthesizer()
-            
+
             try:
                 # Use synthesize_structured for full object access
                 carver_answer = carver.synthesize_structured(evidence, contract)
@@ -1750,6 +1768,7 @@ class BaseExecutorWithContract(ABC):
                     result_data["carver_metrics"] = carver_answer.synthesis_trace
             except Exception as e:
                 import logging
+
                 logging.error(f"Carver synthesis failed: {e}", exc_info=True)
                 # Fallback to basic template if Carver fails
                 result_data["human_readable_output"] = self._generate_human_readable_output(
@@ -1778,9 +1797,7 @@ class BaseExecutorWithContract(ABC):
             validate(instance=result, schema=schema)
         except ValidationError as e:
             # Enhanced error message with JSON path
-            path = (
-                ".".join(str(p) for p in e.absolute_path) if e.absolute_path else "root"
-            )
+            path = ".".join(str(p) for p in e.absolute_path) if e.absolute_path else "root"
             raise ValueError(
                 f"Output contract validation failed for {base_slot} at '{path}': {e.message}. "
                 f"Schema constraint: {e.schema}"
@@ -1824,25 +1841,19 @@ class BaseExecutorWithContract(ABC):
         # Title
         if "title" in template_config:
             sections.append(
-                self._render_template_string(
-                    template_config["title"], context, format_type
-                )
+                self._render_template_string(template_config["title"], context, format_type)
             )
 
         # Summary
         if "summary" in template_config:
             sections.append(
-                self._render_template_string(
-                    template_config["summary"], context, format_type
-                )
+                self._render_template_string(template_config["summary"], context, format_type)
             )
 
         # Score section
         if "score_section" in template_config:
             sections.append(
-                self._render_template_string(
-                    template_config["score_section"], context, format_type
-                )
+                self._render_template_string(template_config["score_section"], context, format_type)
             )
 
         # Elements section
@@ -1854,9 +1865,7 @@ class BaseExecutorWithContract(ABC):
             )
 
         # Details (list of items)
-        if "details" in template_config and isinstance(
-            template_config["details"], list
-        ):
+        if "details" in template_config and isinstance(template_config["details"], list):
             detail_items = [
                 self._render_template_string(item, context, format_type)
                 for item in template_config["details"]
@@ -1866,10 +1875,8 @@ class BaseExecutorWithContract(ABC):
         # Interpretation
         if "interpretation" in template_config:
             # Add methodological interpretation if available
-            context["methodological_interpretation"] = (
-                self._render_methodological_depth(
-                    methodological_depth_config, evidence, validation, format_type
-                )
+            context["methodological_interpretation"] = self._render_methodological_depth(
+                methodological_depth_config, evidence, validation, format_type
             )
             sections.append(
                 self._render_template_string(
@@ -1940,15 +1947,11 @@ class BaseExecutorWithContract(ABC):
         context["evidence"].setdefault("quantitative_indicators_count", 0)
         context["evidence"].setdefault("temporal_series_count", 0)
         context["evidence"].setdefault("territorial_coverage", "Not specified")
-        context["evidence"].setdefault(
-            "recommendations", "No specific recommendations available"
-        )
+        context["evidence"].setdefault("recommendations", "No specific recommendations available")
 
         # Add score and quality from validation or defaults
         context["score"] = validation.get("score", 0.0)
-        context["quality_level"] = self._determine_quality_level(
-            validation.get("score", 0.0)
-        )
+        context["quality_level"] = self._determine_quality_level(validation.get("score", 0.0))
 
         return context
 
@@ -2112,9 +2115,7 @@ class BaseExecutorWithContract(ABC):
             # Epistemological foundation
             epist = method_info.get("epistemological_foundation", {})
             if epist:
-                sections.append(
-                    self._render_epistemological_foundation(epist, format_type)
-                )
+                sections.append(self._render_epistemological_foundation(epist, format_type))
 
             # Technical approach
             technical = method_info.get("technical_approach", {})
@@ -2124,9 +2125,7 @@ class BaseExecutorWithContract(ABC):
             # Output interpretation
             output_interp = method_info.get("output_interpretation", {})
             if output_interp:
-                sections.append(
-                    self._render_output_interpretation(output_interp, format_type)
-                )
+                sections.append(self._render_output_interpretation(output_interp, format_type))
 
         # Method combination logic
         combination = config.get("method_combination_logic", {})
@@ -2173,9 +2172,7 @@ class BaseExecutorWithContract(ABC):
 
         return "\n".join(parts) if format_type != "html" else "<br>".join(parts)
 
-    def _render_technical_approach(
-        self, technical: dict[str, Any], format_type: str
-    ) -> str:
+    def _render_technical_approach(self, technical: dict[str, Any], format_type: str) -> str:
         """Render technical approach section.
 
         Args:
@@ -2246,9 +2243,7 @@ class BaseExecutorWithContract(ABC):
 
         return "\n".join(parts) if format_type != "html" else "<br>".join(parts)
 
-    def _render_method_combination(
-        self, combination: dict[str, Any], format_type: str
-    ) -> str:
+    def _render_method_combination(self, combination: dict[str, Any], format_type: str) -> str:
         """Render method combination logic section.
 
         Args:
@@ -2282,28 +2277,28 @@ class BaseExecutorWithContract(ABC):
 
 class DynamicContractExecutor(BaseExecutorWithContract):
     """Dynamic contract executor that accepts question_id at construction time.
-    
+
     This executor enables the 300-contract model where each question has its own
     contract (Q001.v3.json through Q300.v3.json). Instead of requiring 300 subclasses,
     this single class can execute any contract by accepting the question_id parameter.
-    
+
     The question_id is used to:
     1. Derive the base_slot (e.g., "Q001" -> "D1-Q1")
     2. Load the appropriate contract from executor_contracts/specialized/
     3. Execute the contract method_binding sequence
-    
+
     Architecture Note:
     ==================
     OLD (30-executor multiplier pattern):
         - 30 executor classes (D1Q1_Executor through D6Q5_Executor)
         - Each executor answering 10 questions (multiplier pattern)
         - Required executors.py with hardcoded class definitions
-        
+
     NEW (300-contract direct pattern):
         - Single DynamicContractExecutor class
         - 300 individual contracts (Q001.v3.json through Q300.v3.json)
         - Contract loaded dynamically by question_id
-    
+
     Example:
         >>> executor = DynamicContractExecutor(
         ...     question_id="Q001",
@@ -2314,10 +2309,10 @@ class DynamicContractExecutor(BaseExecutorWithContract):
         ... )
         >>> result = executor.execute(document, method_executor, question_context=ctx)
     """
-    
+
     # Class-level cache for question_id -> base_slot mapping
     _question_to_base_slot_cache: dict[str, str] = {}
-    
+
     def __init__(
         self,
         method_executor: MethodExecutor,
@@ -2331,7 +2326,7 @@ class DynamicContractExecutor(BaseExecutorWithContract):
         calibration_policy: CalibrationPolicy | None = None,
     ) -> None:
         """Initialize dynamic contract executor for a specific question.
-        
+
         Args:
             method_executor: MethodExecutor instance for method routing
             signal_registry: Signal registry for signal access
@@ -2355,86 +2350,94 @@ class DynamicContractExecutor(BaseExecutorWithContract):
         )
         self._question_id = question_id
         self._base_slot = self._derive_base_slot(question_id)
-    
+
     @classmethod
     def _derive_base_slot(cls, question_id: str) -> str:
         """Derive base_slot from question_id.
-        
+
         Conversion: Q001 -> D1-Q1, Q006 -> D2-Q1, Q031 -> D1-Q1 (for 6 dimensions x 5 questions per area)
-        
+
         Args:
             question_id: Question identifier (e.g., "Q001", "Q150")
-            
+
         Returns:
             Base slot string (e.g., "D1-Q1")
         """
         if question_id in cls._question_to_base_slot_cache:
             return cls._question_to_base_slot_cache[question_id]
-        
+
         # Extract numeric part of question_id (e.g., "Q001" -> 1)
         try:
             q_number = int(question_id[1:])
         except (ValueError, IndexError):
             # Fallback: try to load contract and get base_slot from identity
             return cls._derive_base_slot_from_contract(question_id)
-        
+
         # Calculate dimension and question within dimension
         # Assuming 6 dimensions x 5 questions per policy area x 10 policy areas = 300 questions
         # Pattern: D1-Q1 through D6-Q5, cycling through policy areas
-        
+
         # Each "slot" covers 10 questions (one per policy area)
         slot_index = (q_number - 1) % 30  # 0-29 for the 30 slots
         dimension = (slot_index // 5) + 1  # 1-6
         question_in_dimension = (slot_index % 5) + 1  # 1-5
-        
+
         base_slot = f"D{dimension}-Q{question_in_dimension}"
         cls._question_to_base_slot_cache[question_id] = base_slot
-        
+
         return base_slot
-    
+
     @classmethod
     def _derive_base_slot_from_contract(cls, question_id: str) -> str:
         """Fallback: derive base_slot by loading the contract identity.base_slot.
-        
+
         Args:
             question_id: Question identifier
-            
+
         Returns:
             Base slot from contract identity
-            
+
         Raises:
             FileNotFoundError: If contract not found
         """
-        contracts_dir = PROJECT_ROOT / "src" / "farfan_pipeline" / "phases" / "Phase_two" / "json_files_phase_two" / "executor_contracts"
-        
+        contracts_dir = (
+            PROJECT_ROOT
+            / "src"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_two"
+            / "json_files_phase_two"
+            / "executor_contracts"
+        )
+
         # Try specialized contract
         v3_path = contracts_dir / "specialized" / f"{question_id}.v3.json"
         v2_path = contracts_dir / "specialized" / f"{question_id}.json"
-        
+
         contract_path = v3_path if v3_path.exists() else v2_path
         if not contract_path.exists():
             raise FileNotFoundError(f"Contract not found for {question_id}")
-        
+
         contract = json.loads(contract_path.read_text(encoding="utf-8"))
         base_slot = contract.get("identity", {}).get("base_slot", "D1-Q1")
-        
+
         cls._question_to_base_slot_cache[question_id] = base_slot
         return base_slot
-    
+
     @classmethod
     def get_base_slot(cls) -> str:
         """Get base slot - required by ABC but should use instance _base_slot.
-        
+
         Note: This returns a default value for class-level operations.
         Instance-level operations should use self._base_slot.
         """
         # This is a slight hack - for dynamic executors, use instance._base_slot
         return "DYNAMIC"
-    
+
     def _get_instance_base_slot(self) -> str:
         """Get the actual base_slot for this instance."""
         return self._base_slot
-    
+
     def execute(
         self,
         document: PreprocessedDocument,
@@ -2443,18 +2446,17 @@ class DynamicContractExecutor(BaseExecutorWithContract):
         question_context: dict[str, Any],
     ) -> dict[str, Any]:
         """Execute the contract for this question.
-        
+
         Overrides base to load contract using instance question_id.
         """
         if method_executor is not self.method_executor:
-            raise RuntimeError(
-                "Mismatched MethodExecutor instance for contract executor"
-            )
+            raise RuntimeError("Mismatched MethodExecutor instance for contract executor")
 
         base_slot = self._base_slot
         if question_context.get("base_slot") and question_context.get("base_slot") != base_slot:
             # Allow mismatch if question_context uses the derived slot
             import logging
+
             logging.warning(
                 f"Question base_slot {question_context.get('base_slot')} "
                 f"differs from derived {base_slot}, using derived"

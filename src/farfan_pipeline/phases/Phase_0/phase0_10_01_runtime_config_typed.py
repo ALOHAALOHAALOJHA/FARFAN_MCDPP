@@ -170,6 +170,7 @@ class ProdRuntimeConfig:
             >>> bad_config = ProdRuntimeConfig(allow_dev_ingestion_fallbacks=True)
             >>> # mypy error: Literal[False] is not compatible with bool
         """
+
         def parse_bool(key: str, default: bool) -> bool:
             return os.getenv(key, str(default)).lower() in ("true", "1", "yes")
 
@@ -177,28 +178,23 @@ class ProdRuntimeConfig:
             # Category B - Quality (runtime-configurable)
             allow_networkx_fallback=parse_bool("ALLOW_NETWORKX_FALLBACK", False),
             allow_spacy_fallback=parse_bool("ALLOW_SPACY_FALLBACK", False),
-
             # Category D - Operational (runtime-configurable)
             allow_hash_fallback=parse_bool("ALLOW_HASH_FALLBACK", True),
             allow_pdfplumber_fallback=parse_bool("ALLOW_PDFPLUMBER_FALLBACK", False),
-
             # Model Configuration
             preferred_spacy_model=os.getenv("PREFERRED_SPACY_MODEL", "es_core_news_lg"),
             preferred_embedding_model=os.getenv(
                 "PREFERRED_EMBEDDING_MODEL",
-                "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+                "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
             ),
-
             # Path Configuration
             project_root_override=os.getenv("FARFAN_PROJECT_ROOT"),
             data_dir_override=os.getenv("FARFAN_DATA_DIR"),
             output_dir_override=os.getenv("FARFAN_OUTPUT_DIR"),
             cache_dir_override=os.getenv("FARFAN_CACHE_DIR"),
             logs_dir_override=os.getenv("FARFAN_LOGS_DIR"),
-
             # External Dependencies
             hf_online=parse_bool("HF_ONLINE", False),
-
             # Processing Configuration
             expected_question_count=int(os.getenv("EXPECTED_QUESTION_COUNT", "305")),
             expected_method_count=int(os.getenv("EXPECTED_METHOD_COUNT", "416")),
@@ -307,42 +303,34 @@ class DevRuntimeConfig:
 
         return cls(
             mode=mode,
-
             # Category A - Critical (allowed in DEV)
             allow_contradiction_fallback=parse_bool("ALLOW_CONTRADICTION_FALLBACK", False),
             allow_validator_disable=parse_bool("ALLOW_VALIDATOR_DISABLE", False),
             allow_execution_estimates=parse_bool("ALLOW_EXECUTION_ESTIMATES", False),
-
             # Category B - Quality
             allow_networkx_fallback=parse_bool("ALLOW_NETWORKX_FALLBACK", False),
             allow_spacy_fallback=parse_bool("ALLOW_SPACY_FALLBACK", False),
-
             # Category C - Development (allowed in DEV, default True)
             allow_dev_ingestion_fallbacks=parse_bool("ALLOW_DEV_INGESTION_FALLBACKS", True),
             allow_aggregation_defaults=parse_bool("ALLOW_AGGREGATION_DEFAULTS", True),
             allow_missing_base_weights=parse_bool("ALLOW_MISSING_BASE_WEIGHTS", True),
-
             # Category D - Operational
             allow_hash_fallback=parse_bool("ALLOW_HASH_FALLBACK", True),
             allow_pdfplumber_fallback=parse_bool("ALLOW_PDFPLUMBER_FALLBACK", False),
-
             # Model Configuration
             preferred_spacy_model=os.getenv("PREFERRED_SPACY_MODEL", "es_core_news_lg"),
             preferred_embedding_model=os.getenv(
                 "PREFERRED_EMBEDDING_MODEL",
-                "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+                "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
             ),
-
             # Path Configuration
             project_root_override=os.getenv("FARFAN_PROJECT_ROOT"),
             data_dir_override=os.getenv("FARFAN_DATA_DIR"),
             output_dir_override=os.getenv("FARFAN_OUTPUT_DIR"),
             cache_dir_override=os.getenv("FARFAN_CACHE_DIR"),
             logs_dir_override=os.getenv("FARFAN_LOGS_DIR"),
-
             # External Dependencies
             hf_online=parse_bool("HF_ONLINE", False),
-
             # Processing Configuration
             expected_question_count=int(os.getenv("EXPECTED_QUESTION_COUNT", "305")),
             expected_method_count=int(os.getenv("EXPECTED_METHOD_COUNT", "416")),
@@ -358,7 +346,7 @@ class DevRuntimeConfig:
 
 
 def create_runtime_config_typed(
-    mode: RuntimeMode | None = None
+    mode: RuntimeMode | None = None,
 ) -> ProdRuntimeConfig | DevRuntimeConfig:
     """
     Factory function to create appropriate typed configuration based on mode.

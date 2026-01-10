@@ -100,7 +100,11 @@ def test_method_signature_normalizes_none_to_empty_string() -> None:
         precheck=False,
     )
 
-    method_none = {"return_type": None, "docstring": None, "parameters": [{"name": None, "type": None}]}
+    method_none = {
+        "return_type": None,
+        "docstring": None,
+        "parameters": [{"name": None, "type": None}],
+    }
     method_empty = {"return_type": "", "docstring": "", "parameters": [{"name": "", "type": ""}]}
 
     h1 = compute_classification_hash(method_none, decision, method_name="extract")

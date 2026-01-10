@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ValidationMetrics:
     """Metrics for extractor validation."""
+
     extractor_name: str
     total_tests: int = 0
     passed: int = 0
@@ -50,10 +51,14 @@ class ExtractorValidator:
 
     def __init__(self, calibration_file: Optional[Path] = None):
         if calibration_file is None:
-            calibration_file = Path(__file__).resolve().parent.parent.parent.parent / \
-                              "canonic_questionnaire_central" / \
-                              "_registry" / "membership_criteria" / "_calibration" / \
-                              "extractor_calibration.json"
+            calibration_file = (
+                Path(__file__).resolve().parent.parent.parent.parent
+                / "canonic_questionnaire_central"
+                / "_registry"
+                / "membership_criteria"
+                / "_calibration"
+                / "extractor_calibration.json"
+            )
 
         self.calibration_file = calibration_file
         self.calibration_data = self._load_calibration()
@@ -67,11 +72,7 @@ class ExtractorValidator:
         with open(self.calibration_file) as f:
             return json.load(f)
 
-    def validate_extractor(
-        self,
-        extractor,
-        signal_type: str
-    ) -> ValidationMetrics:
+    def validate_extractor(self, extractor, signal_type: str) -> ValidationMetrics:
         """
         Validate an extractor against gold standards.
 
@@ -121,29 +122,33 @@ class ExtractorValidator:
                     true_positives += actual
                 else:
                     metrics.failed += 1
-                    metrics.failures.append({
-                        "example_id": i,
-                        "expected_min": expected_min,
-                        "expected_max": expected_max,
-                        "actual": actual,
-                        "text_preview": text[:150],
-                        "reason": "out_of_range"
-                    })
+                    metrics.failures.append(
+                        {
+                            "example_id": i,
+                            "expected_min": expected_min,
+                            "expected_max": expected_max,
+                            "actual": actual,
+                            "text_preview": text[:150],
+                            "reason": "out_of_range",
+                        }
+                    )
 
                     # Count false positives/negatives
                     if actual > expected_max:
-                        false_positives += (actual - expected_max)
+                        false_positives += actual - expected_max
                     elif actual < expected_min:
-                        false_negatives += (expected_min - actual)
+                        false_negatives += expected_min - actual
 
             except Exception as e:
                 metrics.failed += 1
-                metrics.failures.append({
-                    "example_id": i,
-                    "error": str(e),
-                    "text_preview": text[:150],
-                    "reason": "exception"
-                })
+                metrics.failures.append(
+                    {
+                        "example_id": i,
+                        "error": str(e),
+                        "text_preview": text[:150],
+                        "reason": "exception",
+                    }
+                )
 
         end_time = time.time()
         metrics.execution_time_ms = (end_time - start_time) * 1000
@@ -156,7 +161,9 @@ class ExtractorValidator:
             metrics.recall = true_positives / (true_positives + false_negatives)
 
         if metrics.precision + metrics.recall > 0:
-            metrics.f1_score = 2 * (metrics.precision * metrics.recall) / (metrics.precision + metrics.recall)
+            metrics.f1_score = (
+                2 * (metrics.precision * metrics.recall) / (metrics.precision + metrics.recall)
+            )
 
         metrics.avg_confidence = sum(confidences) / len(confidences) if confidences else 0.0
 
@@ -171,7 +178,7 @@ class ExtractorValidator:
         extractors = {
             "FINANCIAL_CHAIN": FinancialChainExtractor(),
             "CAUSAL_LINK": CausalVerbExtractor(),
-            "INSTITUTIONAL_ENTITY": InstitutionalNERExtractor()
+            "INSTITUTIONAL_ENTITY": InstitutionalNERExtractor(),
         }
 
         results = {}
@@ -191,9 +198,7 @@ class ExtractorValidator:
         return results
 
     def generate_report(
-        self,
-        results: Dict[str, ValidationMetrics],
-        output_path: Optional[Path] = None
+        self, results: Dict[str, ValidationMetrics], output_path: Optional[Path] = None
     ) -> str:
         """Generate validation report."""
         report_lines = [
@@ -211,27 +216,31 @@ class ExtractorValidator:
         total_passed = sum(m.passed for m in results.values())
         total_failed = sum(m.failed for m in results.values())
 
-        report_lines.extend([
-            f"Total tests: {total_tests}",
-            f"Passed: {total_passed} ({total_passed/total_tests:.1%})",
-            f"Failed: {total_failed} ({total_failed/total_tests:.1%})",
-            "",
-            "EXTRACTOR PERFORMANCE",
-            "-" * 80,
-        ])
+        report_lines.extend(
+            [
+                f"Total tests: {total_tests}",
+                f"Passed: {total_passed} ({total_passed/total_tests:.1%})",
+                f"Failed: {total_failed} ({total_failed/total_tests:.1%})",
+                "",
+                "EXTRACTOR PERFORMANCE",
+                "-" * 80,
+            ]
+        )
 
         for signal_type, metrics in results.items():
-            report_lines.extend([
-                f"",
-                f"{metrics.extractor_name} ({signal_type})",
-                f"  Tests: {metrics.total_tests}",
-                f"  Pass rate: {metrics.pass_rate:.1%}",
-                f"  Precision: {metrics.precision:.3f}",
-                f"  Recall: {metrics.recall:.3f}",
-                f"  F1 Score: {metrics.f1_score:.3f}",
-                f"  Avg Confidence: {metrics.avg_confidence:.3f}",
-                f"  Execution time: {metrics.execution_time_ms:.1f}ms",
-            ])
+            report_lines.extend(
+                [
+                    f"",
+                    f"{metrics.extractor_name} ({signal_type})",
+                    f"  Tests: {metrics.total_tests}",
+                    f"  Pass rate: {metrics.pass_rate:.1%}",
+                    f"  Precision: {metrics.precision:.3f}",
+                    f"  Recall: {metrics.recall:.3f}",
+                    f"  F1 Score: {metrics.f1_score:.3f}",
+                    f"  Avg Confidence: {metrics.avg_confidence:.3f}",
+                    f"  Execution time: {metrics.execution_time_ms:.1f}ms",
+                ]
+            )
 
             if metrics.failures:
                 report_lines.append(f"  Failures: {len(metrics.failures)}")
@@ -239,10 +248,12 @@ class ExtractorValidator:
                     reason = failure.get("reason", "unknown")
                     report_lines.append(f"    - Example {failure.get('example_id')}: {reason}")
 
-        report_lines.extend([
-            "",
-            "=" * 80,
-        ])
+        report_lines.extend(
+            [
+                "",
+                "=" * 80,
+            ]
+        )
 
         report = "\n".join(report_lines)
 
@@ -268,7 +279,9 @@ class ExtractorValidator:
 
     def _generate_financial_chain_tests(self, output_dir: Path):
         """Generate tests for FinancialChainExtractor."""
-        signal_config = self.calibration_data.get("signal_type_catalog", {}).get("FINANCIAL_CHAIN", {})
+        signal_config = self.calibration_data.get("signal_type_catalog", {}).get(
+            "FINANCIAL_CHAIN", {}
+        )
         gold_standards = signal_config.get("gold_standard_examples", [])
 
         test_code = '''"""
@@ -342,7 +355,9 @@ def test_causal_link_gold_{i}(extractor):
 
     def _generate_institutional_ner_tests(self, output_dir: Path):
         """Generate tests for InstitutionalNERExtractor."""
-        signal_config = self.calibration_data.get("signal_type_catalog", {}).get("INSTITUTIONAL_ENTITY", {})
+        signal_config = self.calibration_data.get("signal_type_catalog", {}).get(
+            "INSTITUTIONAL_ENTITY", {}
+        )
         gold_standards = signal_config.get("gold_standard_examples", [])
 
         test_code = '''"""
@@ -396,13 +411,16 @@ def pytest_configure(config):
 
 # CLI interface
 
+
 def main():
     """Run validation from command line."""
     import argparse
 
     parser = argparse.ArgumentParser(description="Validate extractors against gold standards")
     parser.add_argument("--generate-tests", action="store_true", help="Generate pytest suite")
-    parser.add_argument("--output-dir", type=Path, default=Path("tests/extractors"), help="Output directory")
+    parser.add_argument(
+        "--output-dir", type=Path, default=Path("tests/extractors"), help="Output directory"
+    )
     parser.add_argument("--report", type=Path, help="Save report to file")
 
     args = parser.parse_args()
@@ -422,4 +440,4 @@ if __name__ == "__main__":
     main()
 
 
-__all__ = ['ExtractorValidator', 'ValidationMetrics']
+__all__ = ["ExtractorValidator", "ValidationMetrics"]

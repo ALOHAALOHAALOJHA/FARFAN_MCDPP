@@ -146,9 +146,7 @@ class RecommendationEngineAdapter:
         if self._engine is None:
             raise RuntimeError("RecommendationEngine not initialized")
 
-        return self._engine.generate_micro_recommendations(
-            scores=scores, context=context
-        )
+        return self._engine.generate_micro_recommendations(scores=scores, context=context)
 
     def generate_meso_recommendations(
         self, cluster_data: dict[str, Any], context: dict[str, Any] | None = None
@@ -190,9 +188,7 @@ class RecommendationEngineAdapter:
         if self._engine is None:
             raise RuntimeError("RecommendationEngine not initialized")
 
-        return self._engine.generate_macro_recommendations(
-            macro_data=macro_data, context=context
-        )
+        return self._engine.generate_macro_recommendations(macro_data=macro_data, context=context)
 
     def reload_rules(self) -> None:
         """Reload recommendation rules from disk.
