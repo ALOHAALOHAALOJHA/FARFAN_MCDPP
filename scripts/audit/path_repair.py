@@ -66,7 +66,6 @@ class PathRepairer:
                 print(f"Warning: Could not read {py_file}: {e}")
             return 0
 
-        original_content = content
         changes_made = 0
 
         # Apply each replacement pattern

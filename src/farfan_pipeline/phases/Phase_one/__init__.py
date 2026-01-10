@@ -48,7 +48,7 @@ from .primitives.truncation_audit import TruncationAudit
 from .primitives.streaming_extractor import StreamingPDFExtractor
 
 # Thread-safe utilities
-from .thread_safe_results import ThreadSafeResults
+from .phase1_10_00_thread_safe_results import ThreadSafeResults
 
 # Constants
 from .PHASE_1_CONSTANTS import (
