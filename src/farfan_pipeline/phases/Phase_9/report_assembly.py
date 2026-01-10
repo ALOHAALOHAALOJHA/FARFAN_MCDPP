@@ -30,7 +30,7 @@ import json
 import logging
 import uuid
 from datetime import datetime, timezone
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast, Callable, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -41,12 +41,14 @@ except (ImportError, AttributeError):
     # Fallback: use explicit defaults if calibration system not available
     _PARAM_LOADER = None
 
+F = TypeVar("F", bound=Callable[..., Any])
+
 
 # Calibrated method decorator stub (calibration system not available)
-def calibrated_method(method_name: str):
+def calibrated_method(method_name: str) -> Callable[[F], F]:
     """No-op decorator stub for compatibility when calibration system unavailable."""
 
-    def decorator(func):
+    def decorator(func: F) -> F:
         return func
 
     return decorator

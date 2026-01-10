@@ -9,7 +9,7 @@ Lifecycle State:  DESIGN-TIME FROZEN, RUNTIME IMMUTABLE
 Schema Version: 2.0.0
 
 CANONICAL SOURCE:
-    src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json
+    src/farfan_pipeline/phases/Phase_2/epistemological_assets/contratos_clasificados.json
 
     Only authorized files from epistemological_assets directory are used.
     This module infers calibration bounds from the contract taxonomies and fusion strategies
@@ -74,7 +74,7 @@ from .calibration_core import (
 # =============================================================================
 
 _CONTRATOS_CLASIFICADOS_PATH: Final[Path] = Path(
-    "src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json"
+    "src/farfan_pipeline/phases/Phase_2/epistemological_assets/contratos_clasificados.json"
 )
 
 # Epistemic ratio sum tolerance (accounts for floating-point arithmetic)

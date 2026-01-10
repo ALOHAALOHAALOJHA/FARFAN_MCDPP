@@ -29,7 +29,7 @@ if TYPE_CHECKING:
             QuestionnaireSignalRegistry,
         )
     except ImportError:
-        QuestionnaireSignalRegistry = Any  # type: ignore
+        QuestionnaireSignalRegistry = object  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -85,8 +85,8 @@ class SignalEnrichedReporter:
         self,
         question_id: str,
         base_narrative: str,
-        score_data: dict[str, Any],
-    ) -> tuple[str, dict[str, Any]]:
+        score_data: dict[str, object],
+    ) -> tuple[str, dict[str, object]]:
         """Enrich narrative with signal-based contextual information.
 
         Uses signal patterns and indicators to add relevant context and
@@ -103,7 +103,7 @@ class SignalEnrichedReporter:
         if not self.enable_narrative_enrichment:
             return base_narrative, {"enrichment": "disabled"}
 
-        enrichment_details: dict[str, Any] = {
+        enrichment_details: dict[str, object] = {
             "question_id": question_id,
             "base_length": len(base_narrative),
             "additions": [],
@@ -122,11 +122,11 @@ class SignalEnrichedReporter:
 
                 # Add context about key indicators if score is low
                 score = score_data.get("score", 0.5)
-                if score < 0.5 and len(indicators) > 0:
+                if isinstance(score, (int, float)) and score < 0.5 and len(indicators) > 0:
                     key_indicators = indicators[:3]  # Top 3 indicators
-                    indicator_context = f"\n\nIndicadores clave no encontrados o insuficientes: {', '.join(key_indicators)}."
+                    indicator_context = f"\n\nIndicadores clave no encontrados o insuficientes: {', '.join(map(str, key_indicators))}."
                     enriched_narrative += indicator_context
-                    enrichment_details["additions"].append(
+                    cast(list[object], enrichment_details["additions"]).append(
                         {
                             "type": "missing_indicators",
                             "count": len(key_indicators),
@@ -135,11 +135,11 @@ class SignalEnrichedReporter:
                     )
 
                 # Add pattern-based guidance for improvement
-                if score < 0.5 and len(patterns) > 5:
+                if isinstance(score, (int, float)) and score < 0.5 and len(patterns) > 5:
                     pattern_count = len(patterns)
                     guidance = f"\n\nSe esperaban {pattern_count} patrones temáticos relacionados con esta dimensión."
                     enriched_narrative += guidance
-                    enrichment_details["additions"].append(
+                    cast(list[object], enrichment_details["additions"]).append(
                         {
                             "type": "pattern_guidance",
                             "pattern_count": pattern_count,
@@ -151,7 +151,7 @@ class SignalEnrichedReporter:
                 if quality_level == "INSUFICIENTE":
                     interpretation = "\n\nLa evidencia encontrada es insuficiente para responder la pregunta de manera completa."
                     enriched_narrative += interpretation
-                    enrichment_details["additions"].append(
+                    cast(list[object], enrichment_details["additions"]).append(
                         {
                             "type": "quality_interpretation",
                             "quality": quality_level,
@@ -160,7 +160,7 @@ class SignalEnrichedReporter:
                 elif quality_level == "EXCELENTE":
                     interpretation = "\n\nLa evidencia encontrada es completa y responde la pregunta de manera exhaustiva."
                     enriched_narrative += interpretation
-                    enrichment_details["additions"].append(
+                    cast(list[object], enrichment_details["additions"]).append(
                         {
                             "type": "quality_interpretation",
                             "quality": quality_level,
@@ -182,9 +182,9 @@ class SignalEnrichedReporter:
     def determine_section_emphasis(
         self,
         section_id: str,
-        section_data: dict[str, Any],
+        section_data: dict[str, object],
         policy_area: str,
-    ) -> tuple[float, dict[str, Any]]:
+    ) -> tuple[float, dict[str, object]]:
         """Determine section emphasis using signal-driven analysis.
 
         Analyzes section data and signal patterns to determine how much
@@ -201,7 +201,7 @@ class SignalEnrichedReporter:
         if not self.enable_section_selection:
             return 0.5, {"emphasis": "disabled"}
 
-        emphasis_details: dict[str, Any] = {
+        emphasis_details: dict[str, object] = {
             "section_id": section_id,
             "factors": [],
         }
@@ -211,72 +211,78 @@ class SignalEnrichedReporter:
         try:
             # Factor 1: Score distribution (low variance = low emphasis)
             scores = section_data.get("scores", [])
-            if len(scores) > 0:
-                mean_score = sum(scores) / len(scores)
-                variance = sum((s - mean_score) ** 2 for s in scores) / len(scores)
+            if isinstance(scores, list) and len(scores) > 0:
+                # Filter to ensure they are numbers
+                valid_scores = [float(s) for s in scores if isinstance(s, (int, float))]
+                if valid_scores:
+                    mean_score = sum(valid_scores) / len(valid_scores)
+                    variance = sum((s - mean_score) ** 2 for s in valid_scores) / len(valid_scores)
 
-                if variance < 0.05:  # Low variance
-                    emphasis_adjustment = -0.2
-                    emphasis_details["factors"].append(
-                        {
-                            "type": "low_variance",
-                            "variance": variance,
-                            "adjustment": emphasis_adjustment,
-                        }
-                    )
-                    emphasis_score += emphasis_adjustment
-                elif variance > 0.15:  # High variance (interesting)
-                    emphasis_adjustment = 0.3
-                    emphasis_details["factors"].append(
-                        {
-                            "type": "high_variance",
-                            "variance": variance,
-                            "adjustment": emphasis_adjustment,
-                        }
-                    )
-                    emphasis_score += emphasis_adjustment
+                    if variance < 0.05:  # Low variance
+                        emphasis_adjustment = -0.2
+                        emphasis_score += emphasis_adjustment
+                        cast(list[object], emphasis_details["factors"]).append(
+                            {
+                                "type": "low_variance",
+                                "variance": variance,
+                                "adjustment": emphasis_adjustment,
+                            }
+                        )
+                    elif variance > 0.15:  # High variance (interesting)
+                        emphasis_adjustment = 0.3
+                        emphasis_score += emphasis_adjustment
+                        cast(list[object], emphasis_details["factors"]).append(
+                            {
+                                "type": "high_variance",
+                                "variance": variance,
+                                "adjustment": emphasis_adjustment,
+                            }
+                        )
 
             # Factor 2: Presence of critical scores
-            critical_count = sum(1 for s in scores if s < 0.3)
-            if critical_count > 0:
-                emphasis_adjustment = 0.4  # High emphasis for critical issues
-                emphasis_details["factors"].append(
-                    {
-                        "type": "critical_scores",
-                        "count": critical_count,
-                        "adjustment": emphasis_adjustment,
-                    }
+            if isinstance(scores, list):
+                critical_count = sum(
+                    1 for s in scores if isinstance(s, (int, float)) and s < 0.3
                 )
-                emphasis_score += emphasis_adjustment
+                if critical_count > 0:
+                    emphasis_adjustment = 0.4  # High emphasis for critical issues
+                    emphasis_score += emphasis_adjustment
+                    cast(list[object], emphasis_details["factors"]).append(
+                        {
+                            "type": "critical_scores",
+                            "count": critical_count,
+                            "adjustment": emphasis_adjustment,
+                        }
+                    )
 
             # Factor 3: Signal-based pattern density for policy area
             if self.signal_registry:
                 try:
                     # Get aggregated pattern count for policy area
                     # (In production, aggregate across questions in section)
-                    signal_pack = self.signal_registry.get_micro_answering_signals(
-                        section_data.get("representative_question", "Q001")
-                    )
+                    rep_q = section_data.get("representative_question", "Q001")
+                    if isinstance(rep_q, str):
+                        signal_pack = self.signal_registry.get_micro_answering_signals(rep_q)
 
-                    pattern_count = (
-                        len(signal_pack.patterns) if hasattr(signal_pack, "patterns") else 0
-                    )
-                    indicator_count = (
-                        len(signal_pack.indicators) if hasattr(signal_pack, "indicators") else 0
-                    )
-
-                    # High signal density suggests importance
-                    if pattern_count > 15 or indicator_count > 10:
-                        emphasis_adjustment = 0.2
-                        emphasis_details["factors"].append(
-                            {
-                                "type": "high_signal_density",
-                                "pattern_count": pattern_count,
-                                "indicator_count": indicator_count,
-                                "adjustment": emphasis_adjustment,
-                            }
+                        pattern_count = (
+                            len(signal_pack.patterns) if hasattr(signal_pack, "patterns") else 0
                         )
-                        emphasis_score += emphasis_adjustment
+                        indicator_count = (
+                            len(signal_pack.indicators) if hasattr(signal_pack, "indicators") else 0
+                        )
+
+                        # High signal density suggests importance
+                        if pattern_count > 15 or indicator_count > 10:
+                            emphasis_adjustment = 0.2
+                            emphasis_score += emphasis_adjustment
+                            cast(list[object], emphasis_details["factors"]).append(
+                                {
+                                    "type": "high_signal_density",
+                                    "pattern_count": pattern_count,
+                                    "indicator_count": indicator_count,
+                                    "adjustment": emphasis_adjustment,
+                                }
+                            )
 
                 except Exception as e:
                     logger.debug(f"Signal-based emphasis failed: {e}")
@@ -295,8 +301,8 @@ class SignalEnrichedReporter:
     def highlight_evidence_patterns(
         self,
         question_id: str,
-        evidence_list: list[dict[str, Any]],
-    ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+        evidence_list: list[dict[str, object]],
+    ) -> tuple[list[dict[str, object]], dict[str, object]]:
         """Highlight evidence items that match signal patterns.
 
         Analyzes evidence and marks items that match questionnaire patterns
@@ -312,14 +318,14 @@ class SignalEnrichedReporter:
         if not self.enable_evidence_highlighting:
             return evidence_list, {"highlighting": "disabled"}
 
-        highlighting_details: dict[str, Any] = {
+        highlighting_details: dict[str, object] = {
             "question_id": question_id,
             "total_items": len(evidence_list),
             "highlighted_items": 0,
             "patterns_matched": [],
         }
 
-        highlighted_evidence = []
+        highlighted_evidence: list[dict[str, object]] = []
 
         try:
             if self.signal_registry:
@@ -335,7 +341,7 @@ class SignalEnrichedReporter:
                     matched_indicators = []
 
                     # Check evidence text against patterns
-                    evidence_text = evidence_item.get("text", "").lower()
+                    evidence_text = str(evidence_item.get("text", "")).lower()
 
                     # Pattern matching with word boundaries to avoid false positives
                     for pattern in patterns[:20]:  # Check top 20 patterns
@@ -367,8 +373,12 @@ class SignalEnrichedReporter:
                             "matched_indicators": matched_indicators,
                             "highlight_level": len(matched_patterns) + len(matched_indicators),
                         }
-                        highlighting_details["highlighted_items"] += 1
-                        highlighting_details["patterns_matched"].extend(matched_patterns)
+                        highlighting_details["highlighted_items"] = cast(
+                            int, highlighting_details["highlighted_items"]
+                        ) + 1
+                        cast(list[object], highlighting_details["patterns_matched"]).extend(
+                            matched_patterns
+                        )
 
                     highlighted_evidence.append(enhanced_item)
             else:
@@ -385,11 +395,11 @@ class SignalEnrichedReporter:
 
     def enrich_report_metadata(
         self,
-        base_metadata: dict[str, Any],
-        narrative_enrichments: list[dict[str, Any]],
-        section_emphasis: list[dict[str, Any]],
-        evidence_highlighting: list[dict[str, Any]],
-    ) -> dict[str, Any]:
+        base_metadata: dict[str, object],
+        narrative_enrichments: list[dict[str, object]],
+        section_emphasis: list[dict[str, object]],
+        evidence_highlighting: list[dict[str, object]],
+    ) -> dict[str, object]:
         """Enrich report metadata with signal provenance.
 
         Adds comprehensive signal-based metadata to report for full
@@ -412,19 +422,25 @@ class SignalEnrichedReporter:
                 "narrative_enrichments": {
                     "count": len(narrative_enrichments),
                     "total_additions": sum(
-                        len(e.get("additions", [])) for e in narrative_enrichments
+                        len(cast(list[object], e.get("additions", [])))
+                        for e in narrative_enrichments
                     ),
                 },
                 "section_emphasis": {
                     "sections_analyzed": len(section_emphasis),
                     "high_emphasis_count": sum(
-                        1 for e in section_emphasis if e.get("final_emphasis", 0) > 0.7
+                        1
+                        for e in section_emphasis
+                        if isinstance(e.get("final_emphasis"), (int, float))
+                        and cast(float, e.get("final_emphasis")) > 0.7
                     ),
                 },
                 "evidence_highlighting": {
-                    "total_evidence": sum(e.get("total_items", 0) for e in evidence_highlighting),
+                    "total_evidence": sum(
+                        cast(int, e.get("total_items", 0)) for e in evidence_highlighting
+                    ),
                     "highlighted_items": sum(
-                        e.get("highlighted_items", 0) for e in evidence_highlighting
+                        cast(int, e.get("highlighted_items", 0)) for e in evidence_highlighting
                     ),
                 },
             },
@@ -437,8 +453,8 @@ def enrich_narrative(
     signal_registry: QuestionnaireSignalRegistry | None,
     question_id: str,
     base_narrative: str,
-    score_data: dict[str, Any],
-) -> tuple[str, dict[str, Any]]:
+    score_data: dict[str, object],
+) -> tuple[str, dict[str, object]]:
     """Convenience function for signal-based narrative enrichment.
 
     Creates a temporary SignalEnrichedReporter and enriches narrative.
@@ -462,9 +478,9 @@ def enrich_narrative(
 
 def select_report_sections(
     signal_registry: QuestionnaireSignalRegistry | None,
-    sections: list[dict[str, Any]],
+    sections: list[dict[str, object]],
     policy_area: str,
-) -> list[tuple[dict[str, Any], float, dict[str, Any]]]:
+) -> list[tuple[dict[str, object], float, dict[str, object]]]:
     """Determine section emphasis for report sections using signals.
 
     Args:
@@ -477,10 +493,10 @@ def select_report_sections(
     """
     reporter = SignalEnrichedReporter(signal_registry=signal_registry)
 
-    emphasized_sections = []
+    emphasized_sections: list[tuple[dict[str, object], float, dict[str, object]]] = []
     for section in sections:
         emphasis_score, emphasis_details = reporter.determine_section_emphasis(
-            section_id=section.get("section_id", ""),
+            section_id=str(section.get("section_id", "")),
             section_data=section,
             policy_area=policy_area,
         )

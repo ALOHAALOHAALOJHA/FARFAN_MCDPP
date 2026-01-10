@@ -1058,7 +1058,7 @@ class DynamicContractExecutor:
         - Simplified execution for canonical Phase 2 pipeline
         - Full MethodRegistry integration available via orchestrator
         - See: farfan_pipeline/orchestration/method_registry.py
-        - See: farfan_pipeline/phases/Phase_two/calibration_policy.py
+        - See: farfan_pipeline/phases/Phase_2/calibration_policy.py
         """
         # Simplified execution - full integration via orchestrator's MethodRegistry
         return {

@@ -120,7 +120,7 @@ SUBPHASE_METADATA_KEYS: Final[tuple[str, ...]] = (
 # SPEC-005: Logging Configuration
 # =============================================================================
 
-PHASE1_LOGGER_NAME: Final[str] = "farfan_pipeline.phases.Phase_one"
+PHASE1_LOGGER_NAME: Final[str] = "farfan_pipeline.phases.Phase_1"
 
 # =============================================================================
 # SPEC-006: Determinism

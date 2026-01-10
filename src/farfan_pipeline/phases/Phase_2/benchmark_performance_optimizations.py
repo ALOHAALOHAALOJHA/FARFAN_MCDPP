@@ -19,7 +19,7 @@ from phase2_95_05_execution_predictor import PredictiveProfiler
 
 def load_sample_contracts(count: int = 30) -> List[Dict[str, Any]]:
     """Load sample contracts for benchmarking."""
-    contracts_dir = Path("src/farfan_pipeline/phases/Phase_two/generated_contracts")
+    contracts_dir = Path("src/farfan_pipeline/phases/Phase_2/generated_contracts")
     contracts = []
 
     for contract_file in list(contracts_dir.glob("Q*_PA*_contract_v4.json"))[:count]:

@@ -17,7 +17,7 @@ Primitives Defined:
 
 Usage:
 ------
-from farfan_pipeline.phases.Phase_zero.phase0_00_03_primitives import HashStr, PolicyAreaID
+from farfan_pipeline.phases.Phase_0.phase0_00_03_primitives import HashStr, PolicyAreaID
 
 def validate_hash(h: HashStr) -> bool: ...
 

@@ -82,8 +82,8 @@ _CLASS_PATHS: Mapping[str, str] = {
     "BayesianPortfolioComposer": "farfan_pipeline.methods.bayesian_multilevel_system.BayesianPortfolioComposer",
     "BayesianEvidenceExtractor": "farfan_pipeline.methods.bayesian_multilevel_system.BayesianEvidenceExtractor",
     # Evidence Nexus (Phase Two)
-    "EvidenceNexus": "farfan_pipeline.phases.Phase_two.evidence_nexus.EvidenceNexus",
-    "EvidenceAssembler": "farfan_pipeline.phases.Phase_two.evidence_nexus.EvidenceNexus",
+    "EvidenceNexus": "farfan_pipeline.phases.Phase_2.evidence_nexus.EvidenceNexus",
+    "EvidenceAssembler": "farfan_pipeline.phases.Phase_2.evidence_nexus.EvidenceNexus",
 }
 
 

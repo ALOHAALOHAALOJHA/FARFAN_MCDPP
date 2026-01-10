@@ -2,7 +2,7 @@
 Módulo:  contract_assembler.py
 Propósito: Ensamblar contrato completo desde cadena epistémica
 
-Ubicación: src/farfan_pipeline/phases/Phase_two/contract_generator/contract_assembler.py
+Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/contract_assembler.py
 
 RESPONSABILIDADES:
 1. Transformar EpistemicChain en GeneratedContract
@@ -468,7 +468,7 @@ class ContractAssembler:
 
         return {
             "executor_class": f"{q_id}_{sector.sector_id}_Executor",
-            "executor_module": "farfan_pipeline.phases.Phase_two.executors",
+            "executor_module": "farfan_pipeline.phases.Phase_2.executors",
             "contract_number": contract_number,
         }
 

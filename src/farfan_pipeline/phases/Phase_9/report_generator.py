@@ -28,7 +28,7 @@ from pathlib import Path
 from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_nine.report_assembly import AnalysisReport
+    from farfan_pipeline.phases.Phase_9.report_assembly import AnalysisReport
 
 logger = logging.getLogger(__name__)
 

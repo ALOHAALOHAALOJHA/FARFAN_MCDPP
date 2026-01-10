@@ -202,11 +202,11 @@ except ImportError as e:
 
 # Methods Dispensary via factory/registry (no direct module imports)
 try:
-    from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry import MethodRegistry, MethodRegistryError
+    from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import MethodRegistry, MethodRegistryError
 except ImportError:
     # If import fails, raise with clear message
     raise ImportError(
-        "Cannot import MethodRegistry from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry. "
+        "Cannot import MethodRegistry from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry. "
         "Ensure Phase_two module is properly installed and accessible."
     )
 

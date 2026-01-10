@@ -45,16 +45,16 @@ def calibrated_method(method_path: str) -> Any:
 
 
 # SOTA imports
-from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_provenance import (
+from farfan_pipeline.phases.Phase_4.aggregation_provenance import (
     AggregationDAG,
     ProvenanceNode,
 )
-from farfan_pipeline.phases.Phase_four_five_six_seven.uncertainty_quantification import (
+from farfan_pipeline.phases.Phase_4.uncertainty_quantification import (
     BootstrapAggregator,
     UncertaintyMetrics,
     aggregate_with_uncertainty,
 )
-from farfan_pipeline.phases.Phase_four_five_six_seven.choquet_adapter import (
+from farfan_pipeline.phases.Phase_4.choquet_adapter import (
     create_default_choquet_adapter,
 )
 

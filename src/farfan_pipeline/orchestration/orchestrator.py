@@ -30,7 +30,7 @@ from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Callable, TypeVar, ParamSpec, TypedDict
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_two.phase2_10_00_factory import CanonicalQuestionnaire
+    from farfan_pipeline.phases.Phase_2.phase2_10_00_factory import CanonicalQuestionnaire
 
 from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import PROJECT_ROOT
 from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import safe_join
@@ -39,7 +39,7 @@ from farfan_pipeline.phases.Phase_0.phase0_50_01_exit_gates import GateResult
 
 # Define RULES_DIR locally (not exported from paths)
 RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"
-from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
+from farfan_pipeline.phases.Phase_4.aggregation import (
     AggregationSettings,
     AreaPolicyAggregator,
     AreaScore,
@@ -53,36 +53,36 @@ from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
     group_by,
     validate_scored_results,
 )
-from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_validation import (
+from farfan_pipeline.phases.Phase_4.aggregation_validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,
     validate_phase7_output,
     enforce_validation_or_fail,
 )
-from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_enhancements import (
+from farfan_pipeline.phases.Phase_4.aggregation_enhancements import (
     enhance_aggregator,
     EnhancedDimensionAggregator,
     EnhancedAreaAggregator,
     EnhancedClusterAggregator,
     EnhancedMacroAggregator,
 )
-from farfan_pipeline.phases.Phase_two.phase2_60_00_base_executor_with_contract import (
+from farfan_pipeline.phases.Phase_2.phase2_60_00_base_executor_with_contract import (
     DynamicContractExecutor,
 )
-from farfan_pipeline.phases.Phase_two.phase2_60_02_arg_router import (
+from farfan_pipeline.phases.Phase_2.phase2_60_02_arg_router import (
     ArgRouterError,
     ArgumentValidationError,
     ExtendedArgRouter,
 )
-from farfan_pipeline.phases.Phase_two.phase2_10_01_class_registry import ClassRegistryError
-from farfan_pipeline.phases.Phase_two.phase2_10_03_executor_config import ExecutorConfig
-from farfan_pipeline.phases.Phase_two.phase2_40_03_irrigation_synchronizer import (
+from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import ClassRegistryError
+from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer import (
     IrrigationSynchronizer,
     ExecutionPlan,
 )
-from farfan_pipeline.phases.Phase_three.phase3_signal_enriched_scoring import SignalEnrichedScorer
-from farfan_pipeline.phases.Phase_three.phase3_validation import (
+from farfan_pipeline.phases.Phase_3.phase3_signal_enriched_scoring import SignalEnrichedScorer
+from farfan_pipeline.phases.Phase_3.phase3_validation import (
     ValidationCounters,
     validate_micro_results_input,
     validate_and_clamp_score,
@@ -138,7 +138,7 @@ class Phase0ValidationResult:
         input_pdf_sha256: SHA256 of validated input PDF
 
     Example:
-        >>> from farfan_pipeline.phases.Phase_zero.phase0_50_01_exit_gates import check_all_gates
+        >>> from farfan_pipeline.phases.Phase_0.phase0_50_01_exit_gates import check_all_gates
         >>> all_passed, gates = check_all_gates(runner)
         >>> validation = Phase0ValidationResult(
         ...     all_passed=all_passed,
@@ -1205,7 +1205,7 @@ class MethodExecutor:
         signal_registry: Any | None = None,
         method_registry: Any | None = None,
     ) -> None:
-        from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry import (
+        from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import (
             MethodRegistry,
             setup_default_instantiation_rules,
         )
@@ -1229,7 +1229,7 @@ class MethodExecutor:
                 self._method_registry = MethodRegistry(class_paths={})
 
         try:
-            from farfan_pipeline.phases.Phase_two.phase2_10_01_class_registry import (
+            from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import (
                 build_class_registry,
             )
 
@@ -1254,7 +1254,7 @@ class MethodExecutor:
 
     def execute(self, class_name: str, method_name: str, **kwargs: Any) -> Any:
         """Execute method."""
-        from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry import (
+        from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import (
             MethodRegistryError,
         )
 
@@ -2579,7 +2579,7 @@ class Orchestrator:
         document_id = os.path.splitext(os.path.basename(pdf_path))[0] or "doc_1"
 
         try:
-            from farfan_pipeline.phases.Phase_one import (
+            from farfan_pipeline.phases.Phase_1 import (
                 CanonicalInput,
                 execute_phase_1_with_full_contract,
                 CanonPolicyPackage,
@@ -3611,11 +3611,11 @@ class Orchestrator:
         instrumentation.start(items_total=1)
 
         try:
-            from farfan_pipeline.phases.Phase_nine.report_assembly import (
+            from farfan_pipeline.phases.Phase_9.report_assembly import (
                 ReportAssembler,
                 ReportMetadata,
             )
-            from farfan_pipeline.phases.Phase_nine.report_generator import (
+            from farfan_pipeline.phases.Phase_9.report_generator import (
                 ReportGenerator,
             )
 
@@ -3714,7 +3714,7 @@ class Orchestrator:
                 raise
 
         try:
-            from farfan_pipeline.phases.Phase_nine.report_generator import (
+            from farfan_pipeline.phases.Phase_9.report_generator import (
                 ReportGenerator,
             )
 

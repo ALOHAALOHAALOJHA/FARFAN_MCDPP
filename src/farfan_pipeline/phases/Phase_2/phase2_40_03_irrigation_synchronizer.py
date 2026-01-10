@@ -59,25 +59,25 @@ except ImportError as e:
     class ExecutorChunkBinding:  # type: ignore
         def __init__(self, *args: Any, **kwargs: Any) -> None:
             raise ImportError(
-                "farfan_pipeline.phases.Phase_two.executor_chunk_synchronizer is not available. "
+                "farfan_pipeline.phases.Phase_2.executor_chunk_synchronizer is not available. "
                 "Please ensure the dependency is installed and importable."
             ) from _import_error
     
     def build_join_table(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
-            "farfan_pipeline.phases.Phase_two.executor_chunk_synchronizer is not available. "
+            "farfan_pipeline.phases.Phase_2.executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
     
     def generate_verification_manifest(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
-            "farfan_pipeline.phases.Phase_two.executor_chunk_synchronizer is not available. "
+            "farfan_pipeline.phases.Phase_2.executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
     
     def save_verification_manifest(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
-            "farfan_pipeline.phases.Phase_two.executor_chunk_synchronizer is not available. "
+            "farfan_pipeline.phases.Phase_2.executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
     
