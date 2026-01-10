@@ -24,8 +24,8 @@
     "third_party_research"
   ],
   "pdet_enrichment": {
-    "_pdet_enrichment_version": "2.0.0",
-    "_enrichment_date": "2026-01-09T23:41:03.705825",
+    "_pdet_enrichment_version": "2.1.0",
+    "_enrichment_date": "2026-01-10T00:16:08.989104",
     "_validation_gates": {
       "gate_1_scope": {
         "required_scope": "pdet_context",
@@ -37,14 +37,16 @@
         "policy_area_relevance": "MEDIUM"
       },
       "gate_2_value_add": {
-        "estimated_value_add": 0.30000000000000004,
+        "estimated_value_add": 0.45,
         "enables": [
           "territorial_targeting",
           "resource_allocation",
           "subregion_analysis",
           "granular_analysis",
           "multi_indicator_validation",
-          "comprehensive_monitoring"
+          "comprehensive_monitoring",
+          "terridata_integration",
+          "evidence_based_monitoring"
         ],
         "optimizes": [
           "policy_alignment",
@@ -88,14 +90,18 @@
       ],
       "subregion_count": 6,
       "key_indicators": [
-        "defenders_security",
-        "justice_access",
-        "human_rights_violations",
-        "defender_killings",
-        "protection_mechanisms",
-        "early_warning_systems",
-        "civic_space_restrictions",
-        "impunity_rate"
+        "leaders_killings_rate",
+        "threats_against_leaders",
+        "protection_mechanisms_coverage",
+        "early_warning_system_effectiveness",
+        "civic_space_index",
+        "civil_society_organizations",
+        "leader_protection_measures",
+        "impunity_rate_leader_crimes",
+        "risk_level_assessment",
+        "collective_protection_routes",
+        "access_to_justice",
+        "security_guarantees_index"
       ],
       "pdet_pillars": [
         "pillar_6",
@@ -144,7 +150,13 @@
           "gini_coefficient",
           "income_per_capita"
         ]
-      }
+      },
+      "terridata_fields": [
+        "violence_conflict.homicide_rate",
+        "institutional.capacity.transparency_index",
+        "institutional.capacity.municipal_performance_index",
+        "socioeconomic.education.literacy_rate"
+      ]
     },
     "data_sources": [
       "Decreto Ley 893 de 2017",

@@ -24,8 +24,8 @@
     "third_party_research"
   ],
   "pdet_enrichment": {
-    "_pdet_enrichment_version": "2.0.0",
-    "_enrichment_date": "2026-01-09T23:41:03.703603",
+    "_pdet_enrichment_version": "2.1.0",
+    "_enrichment_date": "2026-01-10T00:16:08.986378",
     "_validation_gates": {
       "gate_1_scope": {
         "required_scope": "pdet_context",
@@ -37,14 +37,16 @@
         "policy_area_relevance": "HIGH"
       },
       "gate_2_value_add": {
-        "estimated_value_add": 0.35,
+        "estimated_value_add": 0.45,
         "enables": [
           "territorial_targeting",
           "resource_allocation",
           "subregion_analysis",
           "granular_analysis",
           "multi_indicator_validation",
-          "comprehensive_monitoring"
+          "comprehensive_monitoring",
+          "terridata_integration",
+          "evidence_based_monitoring"
         ],
         "optimizes": [
           "policy_alignment",
@@ -99,13 +101,17 @@
       "subregion_count": 16,
       "key_indicators": [
         "homicide_rate",
-        "displacement",
-        "armed_actors_presence",
-        "security_force_presence",
-        "conflict_events",
-        "civilian_casualties",
-        "illegal_armed_groups",
-        "territorial_control_disputes"
+        "forced_displacement_victims",
+        "armed_confrontations",
+        "land_mines_accidents",
+        "massacres",
+        "conflict_intensity_index",
+        "security_forces_presence",
+        "kidnapping_rate",
+        "territorial_control_disputes",
+        "victims_registry",
+        "early_warning_alerts",
+        "post_conflict_indicators"
       ],
       "pdet_pillars": [
         "pillar_6",
@@ -154,7 +160,15 @@
           "gini_coefficient",
           "income_per_capita"
         ]
-      }
+      },
+      "terridata_fields": [
+        "violence_conflict.homicide_rate",
+        "violence_conflict.forced_displacement_victims",
+        "violence_conflict.armed_confrontations",
+        "violence_conflict.land_mines_accidents",
+        "violence_conflict.conflict_intensity_index",
+        "institutional.capacity.municipal_performance_index"
+      ]
     },
     "data_sources": [
       "Decreto Ley 893 de 2017",

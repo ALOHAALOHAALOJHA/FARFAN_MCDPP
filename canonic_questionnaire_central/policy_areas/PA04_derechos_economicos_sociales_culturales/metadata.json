@@ -24,8 +24,8 @@
     "third_party_research"
   ],
   "pdet_enrichment": {
-    "_pdet_enrichment_version": "2.0.0",
-    "_enrichment_date": "2026-01-09T23:41:03.704414",
+    "_pdet_enrichment_version": "2.1.0",
+    "_enrichment_date": "2026-01-10T00:16:08.987295",
     "_validation_gates": {
       "gate_1_scope": {
         "required_scope": "pdet_context",
@@ -37,14 +37,16 @@
         "policy_area_relevance": "HIGH"
       },
       "gate_2_value_add": {
-        "estimated_value_add": 0.35,
+        "estimated_value_add": 0.45,
         "enables": [
           "territorial_targeting",
           "resource_allocation",
           "subregion_analysis",
           "granular_analysis",
           "multi_indicator_validation",
-          "comprehensive_monitoring"
+          "comprehensive_monitoring",
+          "terridata_integration",
+          "evidence_based_monitoring"
         ],
         "optimizes": [
           "policy_alignment",
@@ -95,14 +97,19 @@
       ],
       "subregion_count": 13,
       "key_indicators": [
-        "formal_enterprises",
-        "agricultural_productivity",
-        "market_access",
-        "rural_credit_access",
-        "cooperative_membership",
-        "value_chain_integration",
-        "rural_employment_rate",
-        "income_diversification"
+        "multidimensional_poverty_rate",
+        "nbi_total",
+        "gini_coefficient",
+        "unemployment_rate",
+        "informal_employment_rate",
+        "per_capita_income",
+        "literacy_rate",
+        "health_coverage_pct",
+        "housing_deficit",
+        "utilities_coverage",
+        "food_security_index",
+        "social_protection_coverage",
+        "credit_access_rate"
       ],
       "pdet_pillars": [
         "pillar_4",
@@ -152,7 +159,17 @@
           "gini_coefficient",
           "income_per_capita"
         ]
-      }
+      },
+      "terridata_fields": [
+        "socioeconomic.poverty.multidimensional_poverty_rate",
+        "socioeconomic.poverty.nbi_total",
+        "socioeconomic.inequality.gini_coefficient",
+        "economic.employment.unemployment_rate",
+        "socioeconomic.education.literacy_rate",
+        "socioeconomic.health.health_coverage_pct",
+        "infrastructure.housing.deficit_quantitative",
+        "infrastructure.utilities.electricity_coverage"
+      ]
     },
     "data_sources": [
       "Decreto Ley 893 de 2017",
