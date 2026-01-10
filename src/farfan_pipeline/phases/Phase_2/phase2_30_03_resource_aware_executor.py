@@ -41,23 +41,14 @@ from functools import wraps
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-<<<<<<< HEAD
     from farfan_pipeline.orchestration.orchestrator import MethodExecutor
-    from farfan_pipeline.phases.Phase_2.phase2_30_00_resource_manager import (
-        AdaptiveResourceManager,
-=======
     from farfan_pipeline.phases.Phase_0.phase0_10_00_canonical_questionnaire import (
         CanonicalQuestionnaire,
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
     )
 
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
     )
-<<<<<<< HEAD
-=======
-    from farfan_pipeline.orchestration.orchestrator import MethodExecutor
->>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
     from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import (
         ExecutorConfig,
     )
