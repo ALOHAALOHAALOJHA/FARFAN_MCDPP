@@ -17,7 +17,10 @@ class TestRuntimeConfigSchema:
         )
         assert config.mode == RuntimeMode.DEV
         assert config.expected_question_count == 305
-    
+        assert config.allow_contradiction_fallback is False
+        assert config.expected_method_count == 416
+        assert config.phase_timeout_seconds == 300
+
     def test_prod_mode_constraints(self):
         # Valid PROD config
         config = RuntimeConfigSchema(
