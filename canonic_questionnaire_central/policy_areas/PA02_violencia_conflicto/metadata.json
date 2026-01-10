@@ -24,8 +24,8 @@
     "third_party_research"
   ],
   "pdet_enrichment": {
-    "_pdet_enrichment_version": "2.1.0",
-    "_enrichment_date": "2026-01-10T00:16:08.986378",
+    "_pdet_enrichment_version": "2.2.0",
+    "_enrichment_date": "2026-01-10T00:37:13.030191",
     "_validation_gates": {
       "gate_1_scope": {
         "required_scope": "pdet_context",
@@ -37,16 +37,14 @@
         "policy_area_relevance": "HIGH"
       },
       "gate_2_value_add": {
-        "estimated_value_add": 0.45,
+        "estimated_value_add": 0.35,
         "enables": [
           "territorial_targeting",
           "resource_allocation",
           "subregion_analysis",
           "granular_analysis",
           "multi_indicator_validation",
-          "comprehensive_monitoring",
-          "terridata_integration",
-          "evidence_based_monitoring"
+          "comprehensive_monitoring"
         ],
         "optimizes": [
           "policy_alignment",
@@ -101,17 +99,13 @@
       "subregion_count": 16,
       "key_indicators": [
         "homicide_rate",
-        "forced_displacement_victims",
-        "armed_confrontations",
-        "land_mines_accidents",
-        "massacres",
-        "conflict_intensity_index",
-        "security_forces_presence",
-        "kidnapping_rate",
-        "territorial_control_disputes",
-        "victims_registry",
-        "early_warning_alerts",
-        "post_conflict_indicators"
+        "displacement",
+        "armed_actors_presence",
+        "security_force_presence",
+        "conflict_events",
+        "civilian_casualties",
+        "illegal_armed_groups",
+        "territorial_control_disputes"
       ],
       "pdet_pillars": [
         "pillar_6",
@@ -161,11 +155,10 @@
           "income_per_capita"
         ]
       },
-      "terridata_fields": [
+      "manual_terridata_fields": [
         "violence_conflict.homicide_rate",
         "violence_conflict.forced_displacement_victims",
         "violence_conflict.armed_confrontations",
-        "violence_conflict.land_mines_accidents",
         "violence_conflict.conflict_intensity_index",
         "institutional.capacity.municipal_performance_index"
       ]
@@ -182,6 +175,10 @@
       "gate_compliance_verified": true,
       "all_gates_passed": true,
       "compliance_score": 1.0
+    },
+    "_metadata": {
+      "terridata_enrichment_method": "manual_estimation",
+      "terridata_enrichment_note": "References manual TerriData enrichment based on realistic Colombian municipal patterns. Values should be validated with actual TerriData API when available."
     }
   }
 }

@@ -24,8 +24,8 @@
     "third_party_research"
   ],
   "pdet_enrichment": {
-    "_pdet_enrichment_version": "2.1.0",
-    "_enrichment_date": "2026-01-10T00:16:08.989949",
+    "_pdet_enrichment_version": "2.2.0",
+    "_enrichment_date": "2026-01-10T00:37:13.033640",
     "_validation_gates": {
       "gate_1_scope": {
         "required_scope": "pdet_context",
@@ -37,16 +37,14 @@
         "policy_area_relevance": "MEDIUM"
       },
       "gate_2_value_add": {
-        "estimated_value_add": 0.45,
+        "estimated_value_add": 0.30000000000000004,
         "enables": [
           "territorial_targeting",
           "resource_allocation",
           "subregion_analysis",
           "granular_analysis",
           "multi_indicator_validation",
-          "comprehensive_monitoring",
-          "terridata_integration",
-          "evidence_based_monitoring"
+          "comprehensive_monitoring"
         ],
         "optimizes": [
           "policy_alignment",
@@ -88,18 +86,14 @@
       ],
       "subregion_count": 4,
       "key_indicators": [
-        "migrant_population",
+        "border_cooperation",
+        "migration",
+        "international_assistance",
+        "cross_border_trade",
         "refugee_population",
-        "border_crossing_points",
-        "migration_services_coverage",
-        "cross_border_trade_volume",
-        "binational_cooperation_index",
-        "migrant_integration_index",
-        "humanitarian_assistance_coverage",
-        "regularization_rate",
-        "migrant_labor_integration",
-        "education_access_migrants",
-        "health_access_migrants"
+        "international_ngos_presence",
+        "binational_projects",
+        "regional_integration"
       ],
       "pdet_pillars": [
         "pillar_2",
@@ -150,7 +144,7 @@
           "income_per_capita"
         ]
       },
-      "terridata_fields": [
+      "manual_terridata_fields": [
         "demographic.population_projection_2025",
         "economic.employment.informal_employment_rate",
         "socioeconomic.health.health_coverage_pct",
@@ -170,6 +164,10 @@
       "gate_compliance_verified": true,
       "all_gates_passed": true,
       "compliance_score": 1.0
+    },
+    "_metadata": {
+      "terridata_enrichment_method": "manual_estimation",
+      "terridata_enrichment_note": "References manual TerriData enrichment based on realistic Colombian municipal patterns. Values should be validated with actual TerriData API when available."
     }
   }
 }

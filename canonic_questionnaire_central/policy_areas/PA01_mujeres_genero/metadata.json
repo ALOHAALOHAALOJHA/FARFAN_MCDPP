@@ -24,8 +24,8 @@
     "third_party_research"
   ],
   "pdet_enrichment": {
-    "_pdet_enrichment_version": "2.1.0",
-    "_enrichment_date": "2026-01-10T00:16:08.985825",
+    "_pdet_enrichment_version": "2.2.0",
+    "_enrichment_date": "2026-01-10T00:37:13.029627",
     "_validation_gates": {
       "gate_1_scope": {
         "required_scope": "pdet_context",
@@ -37,16 +37,14 @@
         "policy_area_relevance": "HIGH"
       },
       "gate_2_value_add": {
-        "estimated_value_add": 0.45,
+        "estimated_value_add": 0.35,
         "enables": [
           "territorial_targeting",
           "resource_allocation",
           "subregion_analysis",
           "granular_analysis",
           "multi_indicator_validation",
-          "comprehensive_monitoring",
-          "terridata_integration",
-          "evidence_based_monitoring"
+          "comprehensive_monitoring"
         ],
         "optimizes": [
           "policy_alignment",
@@ -95,16 +93,12 @@
       "key_indicators": [
         "women_labor_participation",
         "gender_wage_gap",
-        "women_land_ownership",
-        "maternal_mortality_rate",
-        "girls_education_parity",
-        "gender_violence_rate",
-        "women_political_representation",
-        "reproductive_health_coverage",
-        "women_economic_autonomy_index",
-        "gender_digital_divide",
-        "teenage_pregnancy_rate",
-        "women_time_poverty"
+        "political_representation",
+        "women_headed_households",
+        "gender_based_violence_rate",
+        "womens_access_to_land",
+        "womens_economic_autonomy",
+        "gender_parity_education"
       ],
       "pdet_pillars": [
         "pillar_4",
@@ -154,12 +148,12 @@
           "income_per_capita"
         ]
       },
-      "terridata_fields": [
+      "manual_terridata_fields": [
         "socioeconomic.health.maternal_mortality_rate",
-        "socioeconomic.education.coverage_secondary",
+        "socioeconomic.education.literacy_rate",
         "economic.employment.unemployment_rate",
         "infrastructure.utilities.water_coverage_rural",
-        "violence_conflict.homicide_rate"
+        "demographic.ethnic_groups.indigena_pct"
       ]
     },
     "data_sources": [
@@ -174,6 +168,10 @@
       "gate_compliance_verified": true,
       "all_gates_passed": true,
       "compliance_score": 1.0
+    },
+    "_metadata": {
+      "terridata_enrichment_method": "manual_estimation",
+      "terridata_enrichment_note": "References manual TerriData enrichment based on realistic Colombian municipal patterns. Values should be validated with actual TerriData API when available."
     }
   }
 }
