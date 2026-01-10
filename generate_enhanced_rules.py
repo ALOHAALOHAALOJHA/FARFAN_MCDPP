@@ -5,6 +5,24 @@ with comprehensive scoring scenarios
 """
 
 import json
+import os
+import argparse
+from datetime import datetime
+
+# Cost breakdown ratios
+PERSONAL_COST_RATIO = 0.5
+CONSULTANCY_COST_RATIO = 0.3
+TECHNOLOGY_COST_RATIO = 0.2
+
+# Funding source ratios
+SGP_FUNDING_RATIO = 0.6
+RECURSOS_PROPIOS_RATIO = 0.4
+
+# Default baseline measurement date (can be overridden)
+DEFAULT_BASELINE_DATE = "2024-01-01"
+
+# Default fiscal year (can be overridden)
+DEFAULT_FISCAL_YEAR = 2025
 
 # PA definitions with full names
 PAS = {
@@ -97,7 +115,7 @@ def generate_micro_rules_enhanced():
                             "unit": "score",
                             "formula": "AVG(dimension_scores)",
                             "acceptable_range": [threshold_data["max"], 3.0],
-                            "baseline_measurement_date": "2024-01-01",
+                            "baseline_measurement_date": DEFAULT_BASELINE_DATE,
                             "measurement_frequency": get_measurement_frequency(threshold_data["urgency"]),
                             "data_source": "Sistema de Seguimiento de Planes (SSP)",
                             "data_source_query": f"SELECT AVG(score) FROM dimension_scores WHERE pa_id = '{pa_id}' AND dim_id = '{dim_id}'",
@@ -121,7 +139,7 @@ def generate_micro_rules_enhanced():
                             "dependencies": [],
                             "critical_path": threshold_data["urgency"] in ["INMEDIATA", "ALTA"]
                         },
-                        "costs": generate_costs(threshold_data["urgency"], pa_id, dim_id),
+                        "costs": generate_costs(threshold_data["urgency"]),
                         "verification": {
                             "method": get_verification_method(dim_id),
                             "frequency": get_measurement_frequency(threshold_data["urgency"]),
@@ -160,15 +178,23 @@ def generate_intervention_by_threshold(pa_id, pa_name, dim_id, dim_name, thresho
                f"presenta nivel {threshold_data['label']} (< {threshold_data['max']}), "
                f"lo que {urgency_text[threshold_data['urgency']]} en {dim_focus[dim_id]}.")
 
-    intervention = generate_specific_intervention(pa_id, dim_id, threshold_key)
+    intervention = generate_specific_intervention(dim_id, threshold_key)
 
     return {
         "problem": problem,
         "intervention": intervention
     }
 
-def generate_specific_intervention(pa_id, dim_id, threshold_key):
-    """Generate specific interventions based on PA, DIM, and severity"""
+def generate_specific_intervention(dim_id, threshold_key):
+    """Generate specific interventions based on dimension and severity threshold
+    
+    Args:
+        dim_id: Dimension identifier (DIM01-DIM06)
+        threshold_key: Threshold severity key (CRITICO, DEFICIENTE, etc.)
+        
+    Returns:
+        Intervention text string for the given dimension and severity
+    """
 
     base_interventions = {
         "DIM01": {
@@ -589,7 +615,15 @@ def get_milestones(urgency):
             }
         ]
 
-def generate_costs(urgency, pa_id, dim_id):
+def generate_costs(urgency):
+    """Generate cost estimates based on urgency level
+    
+    Args:
+        urgency: Urgency level string
+        
+    Returns:
+        Dictionary with cost breakdown and funding sources
+    """
     base_cost = 500000000  # Base cost in COP
 
     urgency_multiplier = {
@@ -608,23 +642,23 @@ def generate_costs(urgency, pa_id, dim_id):
         "estimated_total": total,
         "currency": "COP",
         "breakdown": {
-            "personal": int(total * 0.5),
-            "consultancy": int(total * 0.3),
-            "technology": int(total * 0.2)
+            "personal": int(total * PERSONAL_COST_RATIO),
+            "consultancy": int(total * CONSULTANCY_COST_RATIO),
+            "technology": int(total * TECHNOLOGY_COST_RATIO)
         },
         "funding_sources": [
             {
                 "source": "SGP - Sistema General de Participaciones",
-                "amount": int(total * 0.6),
+                "amount": int(total * SGP_FUNDING_RATIO),
                 "confirmed": False
             },
             {
                 "source": "Recursos Propios",
-                "amount": int(total * 0.4),
+                "amount": int(total * RECURSOS_PROPIOS_RATIO),
                 "confirmed": False
             }
         ],
-        "fiscal_year": 2025
+        "fiscal_year": DEFAULT_FISCAL_YEAR
     }
 
 def get_verification_method(dim_id):
@@ -836,8 +870,40 @@ def generate_balance_template(balance_type):
         }
     }
 
+def parse_args():
+    """Parse command line arguments"""
+    parser = argparse.ArgumentParser(
+        description="Generate enhanced recommendation rules"
+    )
+    parser.add_argument(
+        "--output",
+        default=os.environ.get(
+            "OUTPUT_RULES_PATH",
+            "new_enhanced_rules.json"
+        ),
+        help="Path to output rules file"
+    )
+    parser.add_argument(
+        "--baseline-date",
+        default=os.environ.get("BASELINE_DATE", DEFAULT_BASELINE_DATE),
+        help=f"Baseline measurement date (default: {DEFAULT_BASELINE_DATE})"
+    )
+    parser.add_argument(
+        "--fiscal-year",
+        type=int,
+        default=int(os.environ.get("FISCAL_YEAR", DEFAULT_FISCAL_YEAR)),
+        help=f"Fiscal year for cost estimates (default: {DEFAULT_FISCAL_YEAR})"
+    )
+    return parser.parse_args()
+
 def main():
     """Generate all enhanced rules and save to JSON"""
+    args = parse_args()
+    
+    # Update global defaults based on arguments
+    global DEFAULT_BASELINE_DATE, DEFAULT_FISCAL_YEAR
+    DEFAULT_BASELINE_DATE = args.baseline_date
+    DEFAULT_FISCAL_YEAR = args.fiscal_year
 
     print("Generating enhanced MICRO rules...")
     micro_rules = generate_micro_rules_enhanced()
@@ -859,12 +925,21 @@ def main():
     print(f"  - MESO: {len(meso_rules)}")
     print(f"  - MACRO: {len(macro_rules)}")
 
-    # Save to temporary file for review
-    output_file = "/home/user/FARFAN_MPP/new_enhanced_rules.json"
-    with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(all_new_rules, f, indent=2, ensure_ascii=False)
+    # Save to output file with error handling
+    output_file = args.output
+    print(f"\nSaving rules to: {output_file}")
+    
+    try:
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump(all_new_rules, f, indent=2, ensure_ascii=False)
+        print("✓ Rules saved successfully")
+    except IOError as e:
+        print(f"Error: Cannot write to file {output_file}: {e}")
+        raise
+    except Exception as e:
+        print(f"Error: Failed to save rules: {e}")
+        raise
 
-    print(f"\nNew rules saved to: {output_file}")
     print("Ready to merge with existing rules.")
 
     return all_new_rules

@@ -4,27 +4,74 @@ Merge new enhanced rules with existing recommendation rules
 """
 
 import json
+import os
+import argparse
+import shutil
 from datetime import datetime
+from pathlib import Path
 
 def load_json_file(filepath):
-    """Load JSON file"""
-    with open(filepath, 'r', encoding='utf-8') as f:
-        return json.load(f)
+    """Load JSON file with error handling"""
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(f"Error: File not found: {filepath}")
+        raise
+    except json.JSONDecodeError as e:
+        print(f"Error: Invalid JSON in file {filepath}: {e}")
+        raise
 
 def save_json_file(filepath, data):
-    """Save JSON file with proper formatting"""
-    with open(filepath, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+    """Save JSON file with proper formatting and error handling"""
+    try:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+    except IOError as e:
+        print(f"Error: Cannot write to file {filepath}: {e}")
+        raise
+    except Exception as e:
+        print(f"Error: Failed to save JSON file {filepath}: {e}")
+        raise
+
+def parse_args():
+    """Parse command line arguments"""
+    parser = argparse.ArgumentParser(
+        description="Merge new enhanced rules with existing recommendation rules"
+    )
+    parser.add_argument(
+        "--existing",
+        default=os.environ.get(
+            "EXISTING_RULES_PATH",
+            "src/farfan_pipeline/phases/Phase_8/json_phase_eight/recommendation_rules_enhanced.json"
+        ),
+        help="Path to existing rules file"
+    )
+    parser.add_argument(
+        "--new",
+        default=os.environ.get(
+            "NEW_RULES_PATH",
+            "new_enhanced_rules.json"
+        ),
+        help="Path to new rules file"
+    )
+    parser.add_argument(
+        "--output",
+        default=None,
+        help="Path to output file (defaults to existing file path)"
+    )
+    return parser.parse_args()
 
 def merge_rules():
     """Merge existing and new rules"""
+    args = parse_args()
 
     print("Loading existing rules...")
-    existing_file = "/home/user/FARFAN_MPP/src/farfan_pipeline/phases/Phase_8/json_phase_eight/recommendation_rules_enhanced.json"
+    existing_file = args.existing
     existing_data = load_json_file(existing_file)
 
     print("Loading new rules...")
-    new_file = "/home/user/FARFAN_MPP/new_enhanced_rules.json"
+    new_file = args.new
     new_rules = load_json_file(new_file)
 
     # Get existing rule IDs for deduplication
@@ -86,7 +133,7 @@ def merge_rules():
             "MICRO": {
                 "description": "Specific PA-DIM combinations with detailed scoring thresholds",
                 "count": micro_count,
-                "coverage": "10 PAs × 6 DIMs × 6 scoring thresholds"
+                "coverage": "10 PAs x 6 DIMs x 6 scoring thresholds"
             },
             "MESO": {
                 "description": "Cluster-level rules with variance analysis and cross-cluster dependencies",
@@ -102,17 +149,23 @@ def merge_rules():
         "rules": combined_rules
     }
 
+    # Create backup of existing file BEFORE overwriting
+    backup_file = f"{existing_file}.backup.{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    print(f"\nCreating backup: {backup_file}")
+    try:
+        shutil.copy2(existing_file, backup_file)
+        print("✓ Backup created successfully")
+    except IOError as e:
+        print(f"Warning: Could not create backup: {e}")
+        print("Continuing without backup...")
+
     # Save enhanced file
-    output_file = "/home/user/FARFAN_MPP/src/farfan_pipeline/phases/Phase_8/json_phase_eight/recommendation_rules_enhanced.json"
+    output_file = args.output if args.output else existing_file
     print(f"\nSaving enhanced rules to: {output_file}")
 
     save_json_file(output_file, enhanced_data)
 
     print("✓ Rules merged successfully!")
-
-    # Create a backup of the original file
-    backup_file = f"{existing_file}.backup.{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-    print(f"\nBackup saved to: {backup_file}")
 
     return enhanced_data
 

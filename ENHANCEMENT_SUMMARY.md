@@ -243,10 +243,8 @@ Each rule now includes interventions tailored to:
 ## Files Generated
 
 - **Main file:** `recommendation_rules_enhanced.json` (Version 3.0)
-- **Backup:** `recommendation_rules_enhanced.json.backup.20260110_130737`
 - **Generator script:** `generate_enhanced_rules.py`
 - **Merge script:** `merge_rules.py`
-- **New rules temp:** `new_enhanced_rules.json`
 
 ## Conclusion
 

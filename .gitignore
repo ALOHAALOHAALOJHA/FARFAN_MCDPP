@@ -141,3 +141,7 @@ temp/
 *.tmp
 *.bak
 continue
+
+# Rule generation temporary files
+new_enhanced_rules.json
+*.backup.*
