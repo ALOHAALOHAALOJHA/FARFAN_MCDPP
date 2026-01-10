@@ -22,7 +22,7 @@ Version: 1.0.0
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List, Tuple, Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     try:
@@ -49,7 +49,7 @@ CV_HIGH_THRESHOLD = 0.60  # CV threshold for high dispersion
 # Utility: Select a representative question for a given dimension from the signal registry
 def get_representative_question_for_dimension(
     dimension_id: str,
-    signal_registry: "QuestionnaireSignalRegistry" | None,
+    signal_registry: QuestionnaireSignalRegistry | None,
 ) -> str | None:
     """
     Returns a representative question ID for the given dimension, or None if not found.
@@ -83,7 +83,7 @@ class SignalEnrichedAggregator:
 
     def __init__(
         self,
-        signal_registry: "QuestionnaireSignalRegistry" | None = None,
+        signal_registry: QuestionnaireSignalRegistry | None = None,
         enable_weight_adjustment: bool = True,
         enable_dispersion_analysis: bool = True,
     ) -> None:
@@ -108,12 +108,12 @@ class SignalEnrichedAggregator:
 
     def adjust_aggregation_weights(
         self,
-        base_weights: Dict[str, float],
+        base_weights: dict[str, float],
         dimension_id: str | None = None,
         policy_area: str | None = None,
         cluster_id: str | None = None,
-        score_data: Dict[str, float] | None = None,
-    ) -> Tuple[Dict[str, float], Dict[str, Any]]:
+        score_data: dict[str, float] | None = None,
+    ) -> tuple[dict[str, float], dict[str, Any]]:
         """
         Adjust aggregation weights using signal-based intelligence.
 
@@ -133,7 +133,7 @@ class SignalEnrichedAggregator:
         if not self.enable_weight_adjustment:
             return base_weights, {"adjustment": "disabled"}
 
-        adjustment_details: Dict[str, Any] = {
+        adjustment_details: dict[str, Any] = {
             "base_weights": base_weights.copy(),
             "adjustments": [],
         }
@@ -223,10 +223,10 @@ class SignalEnrichedAggregator:
 
     def analyze_score_dispersion(
         self,
-        scores: List[float],
+        scores: list[float],
         context: str,
         dimension_id: str | None = None,
-    ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
         """
         Analyze score dispersion with signal-driven interpretation.
 
@@ -244,8 +244,8 @@ class SignalEnrichedAggregator:
         if not self.enable_dispersion_analysis:
             return {}, {"analysis": "disabled"}
 
-        metrics: Dict[str, Any] = {}
-        interpretation: Dict[str, Any] = {
+        metrics: dict[str, Any] = {}
+        interpretation: dict[str, Any] = {
             "context": context,
             "insights": [],
         }
@@ -364,10 +364,10 @@ class SignalEnrichedAggregator:
 
     def select_aggregation_method(
         self,
-        scores: List[float],
-        dispersion_metrics: Dict[str, Any],
+        scores: list[float],
+        dispersion_metrics: dict[str, Any],
         context: str,
-    ) -> Tuple[str, Dict[str, Any]]:
+    ) -> tuple[str, dict[str, Any]]:
         """
         Select aggregation method based on signal-driven dispersion analysis.
 
@@ -382,7 +382,7 @@ class SignalEnrichedAggregator:
         Returns:
             Tuple of (method_name, selection_details)
         """
-        selection_details: Dict[str, Any] = {
+        selection_details: dict[str, Any] = {
             "context": context,
             "candidates": [],
         }
@@ -447,11 +447,11 @@ class SignalEnrichedAggregator:
 
     def enrich_aggregation_metadata(
         self,
-        base_metadata: Dict[str, Any],
-        weight_adjustments: Dict[str, Any],
-        dispersion_analysis: Dict[str, Any],
-        method_selection: Dict[str, Any],
-    ) -> Dict[str, Any]:
+        base_metadata: dict[str, Any],
+        weight_adjustments: dict[str, Any],
+        dispersion_analysis: dict[str, Any],
+        method_selection: dict[str, Any],
+    ) -> dict[str, Any]:
         """
         Enrich aggregation metadata with signal provenance.
 
@@ -483,11 +483,11 @@ class SignalEnrichedAggregator:
 
 # Convenience functions
 def adjust_weights(
-    signal_registry: "QuestionnaireSignalRegistry" | None,
-    base_weights: Dict[str, float],
-    score_data: Dict[str, float] | None = None,
+    signal_registry: QuestionnaireSignalRegistry | None,
+    base_weights: dict[str, float],
+    score_data: dict[str, float] | None = None,
     dimension_id: str | None = None,
-) -> Tuple[Dict[str, float], Dict[str, Any]]:
+) -> tuple[dict[str, float], dict[str, Any]]:
     """
     Convenience function for signal-based weight adjustment.
 
@@ -511,11 +511,11 @@ def adjust_weights(
 
 
 def interpret_dispersion(
-    signal_registry: "QuestionnaireSignalRegistry" | None,
-    scores: List[float],
+    signal_registry: QuestionnaireSignalRegistry | None,
+    scores: list[float],
     context: str,
     dimension_id: str | None = None,
-) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+) -> tuple[dict[str, Any], dict[str, Any]]:
     """
     Convenience function for signal-driven dispersion analysis.
 
@@ -541,6 +541,6 @@ def interpret_dispersion(
 __all__ = [
     "SignalEnrichedAggregator",
     "adjust_weights",
-    "interpret_dispersion",
     "get_representative_question_for_dimension",
+    "interpret_dispersion",
 ]

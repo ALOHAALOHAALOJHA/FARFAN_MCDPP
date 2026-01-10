@@ -54,7 +54,6 @@ Date: 2025-12-11
 from __future__ import annotations
 
 import math
-from typing import Any
 
 try:
     import structlog
@@ -452,7 +451,7 @@ def validate_scoring_invariants(
         "INV-SC-002_threshold_bounded": 0.0 <= quality_threshold <= 1.0,
         "INV-SC-003_ci_ordered": lower <= upper,
         "INV-SC-004_ci_contains_score": lower <= score <= upper,
-        "INV-SC-005_ci_bounded": 0.0 <= lower and upper <= 1.0,
+        "INV-SC-005_ci_bounded": lower >= 0.0 and upper <= 1.0,
     }
 
 

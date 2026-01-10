@@ -17,16 +17,15 @@ Version: SPC-2025.1
 from __future__ import annotations
 
 import hashlib
-import json
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum, auto
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 # CANONICAL TYPE IMPORTS from farfan_pipeline.core.types
 # These provide the authoritative PolicyArea and DimensionCausal enums
 try:
-    from farfan_pipeline.core.types import PolicyArea, DimensionCausal
+    from farfan_pipeline.core.types import DimensionCausal, PolicyArea
 
     CANONICAL_TYPES_AVAILABLE = True
 except ImportError:
@@ -36,13 +35,13 @@ except ImportError:
 
 # REAL SISAS imports for quality metrics calculation
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
-        SignalPack,
-    )
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_quality_metrics import (
         SignalQualityMetrics,
-        compute_signal_quality_metrics,
         analyze_coverage_gaps,
+        compute_signal_quality_metrics,
+    )
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
+        SignalPack,
     )
 
     SISAS_METRICS_AVAILABLE = True
@@ -117,8 +116,8 @@ class LegacyChunk:
     bytes_hash: str
     policy_area_id: str
     dimension_id: str
-    policy_area: Optional[Any] = None  # PolicyArea enum when available
-    dimension: Optional[Any] = None  # DimensionCausal enum when available
+    policy_area: Any | None = None  # PolicyArea enum when available
+    dimension: Any | None = None  # DimensionCausal enum when available
 
     def __post_init__(self):
         # Validate policy_area_id format
@@ -163,9 +162,9 @@ class ChunkGraph:
         _index_by_dim: Frozen index by dimension (computed at construction)
     """
 
-    chunks: Dict[str, Any] = field(default_factory=dict)
+    chunks: dict[str, Any] = field(default_factory=dict)
 
-    def get_by_policy_area(self, pa_id: str) -> List[Any]:
+    def get_by_policy_area(self, pa_id: str) -> list[Any]:
         """Get all chunks for a policy area."""
         return [
             c
@@ -173,7 +172,7 @@ class ChunkGraph:
             if hasattr(c, "policy_area_id") and c.policy_area_id == pa_id
         ]
 
-    def get_by_dimension(self, dim_id: str) -> List[Any]:
+    def get_by_dimension(self, dim_id: str) -> list[Any]:
         """Get all chunks for a dimension."""
         return [
             c
@@ -210,8 +209,8 @@ class QualityMetrics:
     provenance_completeness: float
     structural_consistency: float
     chunk_count: int
-    coverage_analysis: Optional[Dict[str, Any]] = None
-    signal_quality_by_pa: Optional[Dict[str, Dict[str, Any]]] = None
+    coverage_analysis: dict[str, Any] | None = None
+    signal_quality_by_pa: dict[str, dict[str, Any]] | None = None
 
     def __post_init__(self):
         # Validate SLA thresholds
@@ -229,9 +228,9 @@ class QualityMetrics:
     @classmethod
     def compute_from_sisas(
         cls,
-        signal_packs: Dict[str, SignalPack],
-        chunks: Dict[str, Any],
-    ) -> "QualityMetrics":
+        signal_packs: dict[str, SignalPack],
+        chunks: dict[str, Any],
+    ) -> QualityMetrics:
         """
         Compute quality metrics from REAL SISAS signal packs.
         This is the PRODUCTION implementation - no hardcoded values.
@@ -317,8 +316,8 @@ class IntegrityIndex:
     """
 
     blake2b_root: str
-    chunk_hashes: Optional[Tuple[str, ...]] = None
-    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat() + "Z")
+    chunk_hashes: tuple[str, ...] | None = None
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat() + "Z")
 
     def __post_init__(self):
         if not self.blake2b_root:
@@ -329,7 +328,7 @@ class IntegrityIndex:
                 raise ValueError(f"blake2b_root too short: {len(self.blake2b_root)}")
 
     @classmethod
-    def compute(cls, chunks: Dict[str, Any]) -> "IntegrityIndex":
+    def compute(cls, chunks: dict[str, Any]) -> IntegrityIndex:
         """
         Compute integrity index from chunk contents.
 
@@ -371,8 +370,8 @@ class PolicyManifest:
 
     questionnaire_version: str = "1.0.0"
     questionnaire_sha256: str = ""
-    policy_areas: Tuple[str, ...] = tuple(f"PA{i:02d}" for i in range(1, 11))
-    dimensions: Tuple[str, ...] = tuple(f"DIM{i:02d}" for i in range(1, 7))
+    policy_areas: tuple[str, ...] = tuple(f"PA{i:02d}" for i in range(1, 11))
+    dimensions: tuple[str, ...] = tuple(f"DIM{i:02d}" for i in range(1, 7))
 
 
 # =============================================================================
@@ -404,10 +403,10 @@ class CanonPolicyPackage:
     schema_version: str
     document_id: str
     chunk_graph: ChunkGraph
-    quality_metrics: Optional[QualityMetrics] = None
-    integrity_index: Optional[IntegrityIndex] = None
-    policy_manifest: Optional[PolicyManifest] = None
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    quality_metrics: QualityMetrics | None = None
+    integrity_index: IntegrityIndex | None = None
+    policy_manifest: PolicyManifest | None = None
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self):
         # [POST-005] Validate schema_version
@@ -425,7 +424,7 @@ class CanonPolicyPackage:
         if not self.document_id:
             raise ValueError("document_id must not be empty")
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """
         Serialize CPP to dictionary for JSON export.
         """

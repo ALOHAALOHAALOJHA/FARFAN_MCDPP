@@ -6,10 +6,11 @@ Owner Module: Phase 1 CPP Ingestion
 Lifecycle State:  ACTIVE
 """
 
-import pytest
-from pathlib import Path
 import tempfile
-from typing import Generator
+from collections.abc import Generator
+from pathlib import Path
+
+import pytest
 
 
 @pytest.fixture

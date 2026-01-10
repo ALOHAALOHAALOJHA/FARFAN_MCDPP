@@ -46,9 +46,9 @@ import hashlib
 import json
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Generic, TypeVar, List, Optional
+from typing import Any, Generic, TypeVar
 
 # Use primitives from our new module
 from farfan_pipeline.phases.Phase_0.phase0_00_03_primitives import HashStr
@@ -74,10 +74,10 @@ class PhaseMetadata:
 
     phase_name: str
     started_at: Timestamp
-    finished_at: Optional[Timestamp] = None
-    duration_ms: Optional[float] = None
+    finished_at: Timestamp | None = None
+    duration_ms: float | None = None
     success: bool = False
-    error: Optional[str] = None
+    error: str | None = None
 
 
 @dataclass
@@ -87,10 +87,10 @@ class ContractValidationResult:
     passed: bool
     contract_type: str  # "input" or "output"
     phase_name: str
-    errors: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
+    errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
     validation_timestamp: Timestamp = field(
-        default_factory=lambda: Timestamp(datetime.now(timezone.utc).isoformat())
+        default_factory=lambda: Timestamp(datetime.now(UTC).isoformat())
     )
 
 
@@ -116,8 +116,8 @@ class PhaseContract(ABC, Generic[TInput, TOutput]):
             phase_name: Canonical name of the phase (e.g., "phase0_input_validation")
         """
         self.phase_name = phase_name
-        self.invariants: List[PhaseInvariant] = []
-        self.metadata: Optional[PhaseMetadata] = None
+        self.invariants: list[PhaseInvariant] = []
+        self.metadata: PhaseMetadata | None = None
 
     @abstractmethod
     def validate_input(self, input_data: Any) -> ContractValidationResult:
@@ -187,7 +187,7 @@ class PhaseContract(ABC, Generic[TInput, TOutput]):
             )
         )
 
-    def check_invariants(self, data: Any) -> tuple[bool, List[str]]:
+    def check_invariants(self, data: Any) -> tuple[bool, list[str]]:
         """
         Check all invariants for this phase.
 
@@ -229,7 +229,7 @@ class PhaseContract(ABC, Generic[TInput, TOutput]):
             ValueError: If contract validation fails
             RuntimeError: If invariants fail or execution fails
         """
-        started_at = datetime.now(timezone.utc)
+        started_at = datetime.now(UTC)
         metadata = PhaseMetadata(
             phase_name=self.phase_name,
             started_at=Timestamp(started_at.isoformat()),
@@ -273,7 +273,7 @@ class PhaseContract(ABC, Generic[TInput, TOutput]):
             raise
 
         finally:
-            finished_at = datetime.now(timezone.utc)
+            finished_at = datetime.now(UTC)
             metadata.finished_at = Timestamp(finished_at.isoformat())
             metadata.duration_ms = (finished_at - started_at).total_seconds() * 1000
             self.metadata = metadata
@@ -311,8 +311,8 @@ class PhaseManifestBuilder:
         metadata: PhaseMetadata,
         input_validation: ContractValidationResult,
         output_validation: ContractValidationResult,
-        invariants_checked: List[str],
-        artifacts: List[PhaseArtifact],
+        invariants_checked: list[str],
+        artifacts: list[PhaseArtifact],
     ) -> None:
         """
         Record a phase execution in the manifest.
@@ -408,11 +408,11 @@ def compute_contract_hash(contract_data: Any) -> HashStr:
 
 
 __all__ = [
-    "PhaseContract",
-    "PhaseInvariant",
-    "PhaseMetadata",
     "ContractValidationResult",
     "PhaseArtifact",
+    "PhaseContract",
+    "PhaseInvariant",
     "PhaseManifestBuilder",
+    "PhaseMetadata",
     "compute_contract_hash",
 ]

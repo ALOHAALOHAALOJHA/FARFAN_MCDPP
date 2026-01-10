@@ -22,14 +22,11 @@ Version: 1.0.0
 from __future__ import annotations
 
 # Import core primitive modules
-from . import quality_levels
-from . import uncertainty_metrics
-from . import choquet_primitives
-from . import signal_enriched_primitives
+from . import choquet_primitives, quality_levels, signal_enriched_primitives, uncertainty_metrics
 
 __all__ = [
-    "quality_levels",
-    "uncertainty_metrics",
     "choquet_primitives",
+    "quality_levels",
     "signal_enriched_primitives",
+    "uncertainty_metrics",
 ]

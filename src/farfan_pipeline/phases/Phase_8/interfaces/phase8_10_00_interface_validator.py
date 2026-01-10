@@ -18,13 +18,10 @@ from __future__ import annotations
 import logging
 import re
 from dataclasses import dataclass, field
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_8.phase8_20_00_recommendation_engine import (
-        Recommendation,
-        RecommendationSet,
-    )
+    pass
 
 logger = logging.getLogger(__name__)
 
@@ -684,8 +681,8 @@ def validate_phase8_outputs(
 
 __all__ = [
     "Phase8InterfaceValidator",
-    "ValidationResult",
     "ValidationError",
+    "ValidationResult",
     "validate_phase8_inputs",
     "validate_phase8_outputs",
 ]

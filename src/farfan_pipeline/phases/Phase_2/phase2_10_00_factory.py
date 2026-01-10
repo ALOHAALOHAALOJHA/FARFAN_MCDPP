@@ -3,7 +3,7 @@ Module: phase2_10_00_factory
 PHASE_LABEL: Phase 2
 Sequence: W
 
-Factory module — canonical Dependency Injection (DI) and access control for F.A.R.F.A.N. 
+Factory module — canonical Dependency Injection (DI) and access control for F.A.R.F.A.N.
 
 This module is the SINGLE AUTHORITATIVE BOUNDARY for:
 - Canonical monolith access (CanonicalQuestionnaire) - loaded ONCE with integrity verification
@@ -70,30 +70,30 @@ Design Principles (Factory Pattern + DI):
 1. FACTORY PATTERN: AnalysisPipelineFactory is the ONLY place that instantiates:
    - Orchestrator, MethodExecutor, QuestionnaireSignalRegistry, BaseExecutor instances
    - NO other module should directly instantiate these classes
-   
+
 2. DEPENDENCY INJECTION: All components receive dependencies via __init__:
    - Orchestrator receives: questionnaire, method_executor, executor_config, validation_constants
    - MethodExecutor receives: method_registry, arg_router, signal_registry
    - BaseExecutor (30 classes) receive: enriched_signal_pack, method_executor, config
-   
+
 3. CANONICAL MONOLITH CONTROL:
    - load_questionnaire() called ONCE by factory only (singleton + integrity hash)
    - Orchestrator uses self.questionnaire object, NEVER file paths
    - Search codebase: NO other load_questionnaire() calls should exist
-   
+
 4. SIGNAL REGISTRY CONTROL:
    - create_signal_registry(questionnaire) - from canonical source ONLY
    - signal_loader.py MUST BE DELETED (legacy JSON loaders eliminated)
    - Registry injected into MethodExecutor, NOT accessed globally
-   
+
 5. ENRICHED SIGNAL PACK INJECTION:
    - Factory builds EnrichedSignalPack per executor (semantic expansion + context filtering)
    - Each BaseExecutor receives its specific pack, NOT full registry
-   
+
 6. DETERMINISM:
    - SeedRegistry singleton initialized by factory for reproducibility
    - ExecutorConfig encapsulates operational params (max_tokens, retries)
-   
+
 7. PHASE 1 HARD CONTRACTS:
    - Validation constants (P01_EXPECTED_CHUNK_COUNT=60, etc.) loaded by factory
    - Injected into Orchestrator for Phase 1 chunk validation
@@ -141,33 +141,28 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
-from datetime import datetime, timezone
-from pathlib import Path
 import time
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from typing import Any, TYPE_CHECKING
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import TYPE_CHECKING, Any
 
 # Phase 2 orchestration components
 from farfan_pipeline.phases.Phase_2.arg_router import ExtendedArgRouter
-from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import build_class_registry, get_class_paths
+from farfan_pipeline.phases.Phase_2.executors.base_executor_with_contract import (
+    BaseExecutorWithContract,
+)
 from farfan_pipeline.phases.Phase_2.executors.executor_config import ExecutorConfig
-from farfan_pipeline.phases.Phase_2.executors.base_executor_with_contract import BaseExecutorWithContract
+
+from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import (
+    build_class_registry,
+    get_class_paths,
+)
 
 # Core orchestration
 if TYPE_CHECKING:
     from farfan_pipeline.orchestration.orchestrator import MethodExecutor, Orchestrator
-from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import (
-    MethodRegistry,
-    setup_default_instantiation_rules,
-)
-
-# Canonical method injection (direct method access, no class instantiation)
-from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import (
-    inject_canonical_methods,
-    setup_registry_with_canonical_methods,
-)
-
 # SISAS - Signal Intelligence Layer (Nivel 2)
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
     EnrichedSignalPack,
@@ -179,23 +174,35 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_regist
 )
 from farfan_pipeline.infrastructure.questionnaire import QuestionnaireModularResolver
 
+# Canonical method injection (direct method access, no class instantiation)
+from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import (
+    MethodRegistry,
+    inject_canonical_methods,
+    setup_default_instantiation_rules,
+)
+
 # JOB FRONT 1: MODULAR RESOLVER MIGRATION
 # Import new CanonicalQuestionnaireResolver from canonic_questionnaire_central
 # This is the single source of truth for questionnaire assembly
 try:
     from canonic_questionnaire_central import (
-        CanonicalQuestionnaireResolver,
         CanonicalQuestionnaire,
+        CanonicalQuestionnaireResolver,
         resolve_questionnaire,
-        ResolverError as CanonicalResolverError,
+    )
+    from canonic_questionnaire_central import (
         IntegrityError as CanonicalIntegrityError,
     )
+    from canonic_questionnaire_central import (
+        ResolverError as CanonicalResolverError,
+    )
+
     MODULAR_RESOLVER_AVAILABLE = True
 except ImportError:
     MODULAR_RESOLVER_AVAILABLE = False
     logger.warning(
         "modular_resolver_unavailable",
-        message="CanonicalQuestionnaireResolver not available, using legacy loader"
+        message="CanonicalQuestionnaireResolver not available, using legacy loader",
     )
 
 # Phase 1 validation constants module
@@ -204,9 +211,11 @@ except ImportError:
 PHASE1_VALIDATION_CONSTANTS: dict[str, Any] = {}
 VALIDATION_CONSTANTS_AVAILABLE = False
 
+
 def load_validation_constants() -> dict[str, Any]:
     """Stub for validation constants loading (module not yet implemented)."""
     return PHASE1_VALIDATION_CONSTANTS
+
 
 # Optional: CoreModuleFactory for I/O helpers
 # NOTE: CoreModuleFactory does not exist in current architecture
@@ -215,21 +224,22 @@ CORE_MODULE_FACTORY_AVAILABLE = False
 
 # SeedRegistry for determinism
 from orchestration.seed_registry import SeedRegistry
+
 SEED_REGISTRY_AVAILABLE = True
 
 # CP-0.1 & CP-0.2: Phase 1 Validation
-from farfan_pipeline.validators.phase1_output_validator import Phase1OutputValidator
 from farfan_pipeline.core.types import PreprocessedDocument
+from farfan_pipeline.validators.phase1_output_validator import Phase1OutputValidator
 
 # Phase 0 integration
 from farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import (
     RuntimeConfig,
 )
-from farfan_pipeline.phases.Phase_0.phase0_90_01_verified_pipeline_runner import (
-    VerifiedPipelineRunner,
-)
 from farfan_pipeline.phases.Phase_0.phase0_50_01_exit_gates import (
     check_all_gates,
+)
+from farfan_pipeline.phases.Phase_0.phase0_90_01_verified_pipeline_runner import (
+    VerifiedPipelineRunner,
 )
 
 logger = logging.getLogger(__name__)
@@ -240,7 +250,9 @@ logger = logging.getLogger(__name__)
 # Según AGENTS.md - NO MODIFICAR sin actualizar documentación
 # ============================================================================
 _REPO_ROOT = Path(__file__).resolve().parents[2]
-CANONICAL_QUESTIONNAIRE_PATH = _REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
+CANONICAL_QUESTIONNAIRE_PATH = (
+    _REPO_ROOT / "canonic_questionnaire_central" / "questionnaire_monolith.json"
+)
 
 # ============================================================================
 # JOB FRONT 1: MODULAR RESOLVER MIGRATION FLAGS
@@ -260,6 +272,7 @@ class CanonicalQuestionnaire:
     CONSUMIDOR ÚNICO: AnalysisPipelineFactory (este archivo)
     PROHIBIDO: Instanciar directamente, usar load_questionnaire()
     """
+
     data: dict[str, Any]
     sha256: str
     version: str
@@ -294,11 +307,13 @@ class CanonicalQuestionnaire:
 
 class QuestionnaireLoadError(Exception):
     """Error al cargar el cuestionario."""
+
     pass
 
 
 class QuestionnaireIntegrityError(QuestionnaireLoadError):
     """Hash del cuestionario no coincide."""
+
     pass
 
 
@@ -335,9 +350,7 @@ def load_questionnaire(
         QuestionnaireIntegrityError: Hash no coincide
     """
     # Determine which loader to use
-    should_use_modular = (
-        use_modular if use_modular is not None else _USE_MODULAR_RESOLVER
-    )
+    should_use_modular = use_modular if use_modular is not None else _USE_MODULAR_RESOLVER
 
     if should_use_modular:
         return _load_from_modular_resolver(expected_hash)
@@ -372,13 +385,10 @@ def _load_from_modular_resolver(
         if _ALLOW_FALLBACK_TO_MONOLITH:
             return _load_from_legacy_monolith(None, expected_hash)
         else:
-            raise QuestionnaireLoadError(
-                "Modular resolver unavailable and fallback disabled"
-            )
+            raise QuestionnaireLoadError("Modular resolver unavailable and fallback disabled")
 
     try:
         # Use the new CanonicalQuestionnaireResolver (JF0)
-        from canonic_questionnaire_central.resolver import CanonicalQuestionnaire as ModularQuestionnaire
 
         resolver = CanonicalQuestionnaireResolver(
             root=_REPO_ROOT / "canonic_questionnaire_central",
@@ -433,17 +443,14 @@ def _load_from_legacy_monolith(
     questionnaire_path = path or CANONICAL_QUESTIONNAIRE_PATH
 
     if not questionnaire_path.exists():
-        raise QuestionnaireLoadError(
-            f"Questionnaire not found: {questionnaire_path}"
-        )
+        raise QuestionnaireLoadError(f"Questionnaire not found: {questionnaire_path}")
 
     content_bytes = questionnaire_path.read_bytes()
     computed_hash = hashlib.sha256(content_bytes).hexdigest()
 
     if expected_hash and computed_hash.lower() != expected_hash.lower():
         raise QuestionnaireIntegrityError(
-            f"Hash mismatch: expected {expected_hash[:16]}..., "
-            f"got {computed_hash[:16]}..."
+            f"Hash mismatch: expected {expected_hash[:16]}..., " f"got {computed_hash[:16]}..."
         )
 
     try:
@@ -469,7 +476,7 @@ def _load_from_legacy_monolith(
         data=content,
         sha256=computed_hash,
         version=version,
-        load_timestamp=datetime.now(timezone.utc).isoformat(),
+        load_timestamp=datetime.now(UTC).isoformat(),
         source_path=str(questionnaire_path.resolve()),
     )
 
@@ -497,7 +504,9 @@ def load_questionnaire_from_modular(
         ModularQuestionnaireError: For any resolver-level inconsistency.
     """
 
-    resolver = resolver or QuestionnaireModularResolver(root=_REPO_ROOT / "canonic_questionnaire_central")
+    resolver = resolver or QuestionnaireModularResolver(
+        root=_REPO_ROOT / "canonic_questionnaire_central"
+    )
     aggregate = resolver.build_monolith_payload()
 
     if expected_hash and aggregate.sha256.lower() != expected_hash.lower():
@@ -522,36 +531,43 @@ def load_questionnaire_from_modular(
 
 class FactoryError(Exception):
     """Base exception for factory construction failures."""
+
     pass
 
 
 class QuestionnaireValidationError(FactoryError):
     """Raised when questionnaire validation fails."""
+
     pass
 
 
 class IntegrityError(FactoryError):
     """Raised when questionnaire integrity check (SHA-256) fails."""
+
     pass
 
 
 class RegistryConstructionError(FactoryError):
     """Raised when signal registry construction fails."""
+
     pass
 
 
 class ExecutorConstructionError(FactoryError):
     """Raised when method executor construction fails."""
+
     pass
 
 
 class SingletonViolationError(FactoryError):
     """Raised when singleton pattern is violated."""
+
     pass
 
 
 class GovernanceViolationError(FactoryError):
     """Raised when questionnaire source validation fails."""
+
     pass
 
 
@@ -562,10 +578,10 @@ class GovernanceViolationError(FactoryError):
 
 @dataclass(frozen=True)
 class ProcessorBundle:
-    """Aggregated orchestrator dependencies built by the Factory. 
+    """Aggregated orchestrator dependencies built by the Factory.
 
     This is the COMPLETE DI container returned by AnalysisPipelineFactory.
-    
+
     Attributes:
         orchestrator: Fully configured Orchestrator (main entry point).
         method_executor: MethodExecutor with signal registry injected.
@@ -645,16 +661,16 @@ class ProcessorBundle:
 
 class AnalysisPipelineFactory:
     """Factory for constructing the complete analysis pipeline.
-    
+
     This is the ONLY class that should instantiate:
     - Orchestrator
-    - MethodExecutor  
+    - MethodExecutor
     - QuestionnaireSignalRegistry
     - BaseExecutor instances (30 executor classes)
-    
+
     CRITICAL: No other module should directly instantiate these classes.
     All dependencies are injected via constructor parameters.
-    
+
     Usage:
         factory = AnalysisPipelineFactory(
             questionnaire_path="path/to/questionnaire.json",
@@ -709,8 +725,7 @@ class AnalysisPipelineFactory:
             try:
                 self._runtime_config = get_runtime_config()
                 logger.info(
-                    "factory_runtime_config_loaded mode=%s",
-                    self._runtime_config.mode.value
+                    "factory_runtime_config_loaded mode=%s", self._runtime_config.mode.value
                 )
             except Exception as e:
                 if run_phase0_validation:
@@ -738,13 +753,13 @@ class AnalysisPipelineFactory:
 
     def create_orchestrator(self) -> ProcessorBundle:
         """Create fully configured Orchestrator with all dependencies injected.
-        
+
         This is the PRIMARY ENTRY POINT for the factory.
         Returns a complete ProcessorBundle with Orchestrator ready to use.
-        
+
         Returns:
             ProcessorBundle: Immutable bundle with all dependencies wired.
-            
+
         Raises:
             QuestionnaireValidationError: If questionnaire validation fails.
             IntegrityError: If questionnaire hash doesn't match expected.
@@ -761,10 +776,7 @@ class AnalysisPipelineFactory:
             phase0_validation = None
             if self._run_phase0:
                 phase0_validation = self._run_phase0_validation()
-                logger.info(
-                    "factory_phase0_complete passed=%s",
-                    phase0_validation.all_passed
-                )
+                logger.info("factory_phase0_complete passed=%s", phase0_validation.all_passed)
 
             # Step 1: Load canonical questionnaire (ONCE, with integrity check)
             self._load_canonical_questionnaire()
@@ -813,8 +825,12 @@ class AnalysisPipelineFactory:
                 "factory_class": "AnalysisPipelineFactory",
                 # Phase 0 metadata
                 "phase0_validation_ran": self._run_phase0,
-                "phase0_validation_passed": phase0_validation.all_passed if phase0_validation else None,
-                "phase0_gate_count": len(phase0_validation.gate_results) if phase0_validation else 0,
+                "phase0_validation_passed": (
+                    phase0_validation.all_passed if phase0_validation else None
+                ),
+                "phase0_gate_count": (
+                    len(phase0_validation.gate_results) if phase0_validation else 0
+                ),
                 "runtime_mode": self._runtime_config.mode.value if self._runtime_config else None,
             }
 
@@ -844,45 +860,44 @@ class AnalysisPipelineFactory:
             logger.error("factory_create_orchestrator_failed error=%s", str(e), exc_info=True)
             raise FactoryError(f"Failed to create orchestrator: {e}") from e
 
-    def validate_phase1_handoff(self, doc: PreprocessedDocument, artifacts_path: Path | None = None) -> bool:
+    def validate_phase1_handoff(
+        self, doc: PreprocessedDocument, artifacts_path: Path | None = None
+    ) -> bool:
         """
         CP-0.1 & CP-0.2: Validates the handoff from Phase 1.
-        
+
         Args:
             doc: The PreprocessedDocument to validate.
             artifacts_path: Optional path to artifacts directory for manifest validation.
-            
+
         Returns:
             bool: True if validation passes, False otherwise.
         """
         logger.info("phase1_handoff_validation_start document_id=%s", doc.document_id)
-        
+
         # 1. Validate Document Structure (Matrix 60x6)
         matrix_result = Phase1OutputValidator.validate_matrix_coordinates(doc)
         if not matrix_result.is_valid:
-            logger.error(
-                "phase1_handoff_validation_failed matrix_errors=%s",
-                matrix_result.errors
-            )
+            logger.error("phase1_handoff_validation_failed matrix_errors=%s", matrix_result.errors)
             if self._strict:
                 return False
         else:
-             logger.info(
+            logger.info(
                 "phase1_matrix_validation_passed score=%.2f%% integrity_hash=%s",
                 matrix_result.matrix_completeness_score,
-                matrix_result.integrity_hash
+                matrix_result.integrity_hash,
             )
 
         # 2. Validate Manifest (if path provided)
         if artifacts_path:
             manifest_valid = Phase1OutputValidator.validate_phase1_manifest(artifacts_path)
             if not manifest_valid:
-                 logger.error("phase1_manifest_validation_failed")
-                 if self._strict:
-                     return False
+                logger.error("phase1_manifest_validation_failed")
+                if self._strict:
+                    return False
             else:
                 logger.info("phase1_manifest_validation_passed")
-        
+
         return True
 
     # =========================================================================
@@ -891,13 +906,13 @@ class AnalysisPipelineFactory:
 
     def _load_canonical_questionnaire(self) -> None:
         """Load canonical questionnaire with singleton enforcement and integrity check.
-        
+
         CRITICAL REQUIREMENTS:
         1. This is the ONLY place in the codebase that calls load_questionnaire()
         2. Must enforce singleton pattern (only load once)
         3. Must verify SHA-256 hash for integrity
         4. Must raise IntegrityError if hash doesn't match
-        
+
         Raises:
             SingletonViolationError: If load_questionnaire() already called.
             IntegrityError: If questionnaire hash doesn't match expected.
@@ -942,16 +957,18 @@ class AnalysisPipelineFactory:
                 logger.warning(
                     "questionnaire_integrity_not_verified no_expected_hash_provided "
                     "actual_hash=%s",
-                    actual_hash[:16]
+                    actual_hash[:16],
                 )
 
             # Validate structure
-            if not hasattr(questionnaire, 'questions'):
+            if not hasattr(questionnaire, "questions"):
                 if self._strict:
-                    raise QuestionnaireValidationError("Questionnaire missing 'questions' attribute")
+                    raise QuestionnaireValidationError(
+                        "Questionnaire missing 'questions' attribute"
+                    )
                 logger.warning("questionnaire_validation_warning missing_questions_attribute")
 
-            questions = getattr(questionnaire, 'questions', [])
+            questions = getattr(questionnaire, "questions", [])
             if not questions:
                 if self._strict:
                     raise QuestionnaireValidationError("Questionnaire has no questions")
@@ -969,7 +986,9 @@ class AnalysisPipelineFactory:
             )
 
         except Exception as e:
-            if isinstance(e, (IntegrityError, SingletonViolationError, QuestionnaireValidationError)):
+            if isinstance(
+                e, (IntegrityError, SingletonViolationError, QuestionnaireValidationError)
+            ):
                 raise
             raise QuestionnaireValidationError(f"Failed to load questionnaire: {e}") from e
 
@@ -992,8 +1011,8 @@ class AnalysisPipelineFactory:
             GovernanceViolationError: If questionnaire source is unauthorized
         """
         # Extract source from questionnaire
-        source = getattr(questionnaire, 'source', None)
-        source_path = getattr(questionnaire, 'source_path', '')
+        source = getattr(questionnaire, "source", None)
+        source_path = getattr(questionnaire, "source_path", "")
 
         # Valid sources
         valid_sources = {"modular_resolver", "legacy_monolith"}
@@ -1004,9 +1023,8 @@ class AnalysisPipelineFactory:
         }
 
         # Check if source is valid
-        source_valid = (
-            source in valid_sources or
-            any(valid_path in source_path for valid_path in valid_source_paths)
+        source_valid = source in valid_sources or any(
+            valid_path in source_path for valid_path in valid_source_paths
         )
 
         if not source_valid:
@@ -1053,8 +1071,9 @@ class AnalysisPipelineFactory:
         Raises:
             FactoryError: If Phase 0 validation fails and strict_validation=True
         """
+        from datetime import datetime
+
         from farfan_pipeline.orchestration.orchestrator import Phase0ValidationResult
-        from datetime import datetime, timezone
 
         logger.info("factory_phase0_validation_start")
 
@@ -1079,6 +1098,7 @@ class AnalysisPipelineFactory:
         # Run Phase 0 (async method)
         try:
             import asyncio
+
             phase0_passed = asyncio.run(runner.run_phase_zero())
         except Exception as e:
             error_msg = f"Phase 0 execution failed: {e}"
@@ -1091,7 +1111,7 @@ class AnalysisPipelineFactory:
             return Phase0ValidationResult(
                 all_passed=False,
                 gate_results=[],
-                validation_time=datetime.now(timezone.utc).isoformat(),
+                validation_time=datetime.now(UTC).isoformat(),
             )
 
         # Check exit gates
@@ -1101,7 +1121,7 @@ class AnalysisPipelineFactory:
         validation_result = Phase0ValidationResult(
             all_passed=all_passed,
             gate_results=gate_results,
-            validation_time=datetime.now(timezone.utc).isoformat(),
+            validation_time=datetime.now(UTC).isoformat(),
         )
 
         # Log results
@@ -1125,12 +1145,12 @@ class AnalysisPipelineFactory:
 
     def _build_signal_registry(self) -> None:
         """Build signal registry from canonical questionnaire.
-        
+
         CRITICAL REQUIREMENTS:
         1. Use create_signal_registry(questionnaire) ONLY
         2. Pass self._canonical_questionnaire as ONLY argument
         3. NO other signal loading methods allowed (signal_loader.py DELETED)
-        
+
         Raises:
             RegistryConstructionError: If registry construction fails.
         """
@@ -1146,12 +1166,14 @@ class AnalysisPipelineFactory:
             registry = create_signal_registry(self._canonical_questionnaire)
 
             # Validate registry
-            if not hasattr(registry, 'get_all_policy_areas'):
+            if not hasattr(registry, "get_all_policy_areas"):
                 if self._strict:
                     raise RegistryConstructionError("Registry missing required methods")
                 logger.warning("registry_validation_warning missing_methods")
 
-            policy_areas = registry.get_all_policy_areas() if hasattr(registry, 'get_all_policy_areas') else []
+            policy_areas = (
+                registry.get_all_policy_areas() if hasattr(registry, "get_all_policy_areas") else []
+            )
 
             self._signal_registry = registry
 
@@ -1167,10 +1189,10 @@ class AnalysisPipelineFactory:
 
     def _build_enriched_signal_packs(self) -> None:
         """Build enriched signal packs for all policy areas.
-        
+
         Each BaseExecutor receives its own EnrichedSignalPack (NOT full registry).
         Pack includes semantic expansion and context filtering.
-        
+
         Raises:
             RegistryConstructionError: If pack construction fails in strict mode.
         """
@@ -1189,7 +1211,11 @@ class AnalysisPipelineFactory:
         enriched_packs: dict[str, EnrichedSignalPack] = {}
 
         try:
-            policy_areas = self._signal_registry.get_all_policy_areas() if hasattr(self._signal_registry, 'get_all_policy_areas') else []
+            policy_areas = (
+                self._signal_registry.get_all_policy_areas()
+                if hasattr(self._signal_registry, "get_all_policy_areas")
+                else []
+            )
 
             if not policy_areas:
                 logger.warning("enriched_packs_warning no_policy_areas_found")
@@ -1199,7 +1225,11 @@ class AnalysisPipelineFactory:
             for policy_area_id in policy_areas:
                 try:
                     # Get base pack from registry
-                    base_pack = self._signal_registry.get(policy_area_id) if hasattr(self._signal_registry, 'get') else None
+                    base_pack = (
+                        self._signal_registry.get(policy_area_id)
+                        if hasattr(self._signal_registry, "get")
+                        else None
+                    )
 
                     if base_pack is None:
                         logger.warning("base_pack_missing policy_area=%s", policy_area_id)
@@ -1228,7 +1258,11 @@ class AnalysisPipelineFactory:
                     msg = f"Failed to create enriched pack for {policy_area_id}: {e}"
                     if self._strict:
                         raise RegistryConstructionError(msg) from e
-                    logger.error("enriched_pack_creation_failed policy_area=%s", policy_area_id, exc_info=True)
+                    logger.error(
+                        "enriched_pack_creation_failed policy_area=%s",
+                        policy_area_id,
+                        exc_info=True,
+                    )
 
             self._enriched_packs = enriched_packs
 
@@ -1244,7 +1278,7 @@ class AnalysisPipelineFactory:
 
     def _initialize_seed_registry(self) -> bool:
         """Initialize SeedRegistry singleton for deterministic operations.
-        
+
         Returns:
             bool: True if seed registry was initialized, False otherwise.
         """
@@ -1266,30 +1300,30 @@ class AnalysisPipelineFactory:
 
     def _build_method_executor(self) -> None:
         """Build MethodExecutor with CANONICAL METHOD INJECTION.
-        
+
         CRITICAL INTEGRATION POINT - Direct Method Injection Pattern:
         ==============================================================
-        
+
         This method now uses CANONICAL METHOD INJECTION as the default operation.
         Instead of instantiating full classes to get methods, we:
-        
+
         1. Load canonical_methods_triangulated.json (348 verified methods)
         2. Import each method directly from its mother module
         3. Wrap methods with lazy class instantiation (only on first call)
         4. Inject wrapped methods into registry._direct_methods
-        
+
         Benefits:
         ---------
         - NO upfront class instantiation (faster startup)
         - Methods are verified to exist at load time
         - Lazy instantiation only when method is actually called
         - Single source of truth: canonical_methods_triangulated.json
-        
+
         Fallback:
         ---------
         If canonical injection fails, falls back to class_registry which
         loads classes on-demand via MethodRegistry._get_instance().
-        
+
         Architecture Flow:
         -----------------
         1. inject_canonical_methods(registry) pre-populates 348 methods
@@ -1298,10 +1332,10 @@ class AnalysisPipelineFactory:
         4. MethodExecutor.execute() calls registry.get_method() which:
            a. First checks _direct_methods (canonical, fast path)
            b. Falls back to _get_instance() if not found
-        
+
         Raises:
             ExecutorConstructionError: If executor construction fails.
-            
+
         See Also:
             - canonical_methods_triangulated.json: Verified method inventory
             - inject_canonical_methods(): Direct injection logic
@@ -1343,8 +1377,7 @@ class AnalysisPipelineFactory:
                     )
             except Exception as e:
                 logger.warning(
-                    "canonical_injection_failed falling_back_to_class_instantiation error=%s",
-                    e
+                    "canonical_injection_failed falling_back_to_class_instantiation error=%s", e
                 )
 
             # Step 3: Build class registry - FALLBACK for non-canonical methods
@@ -1352,25 +1385,28 @@ class AnalysisPipelineFactory:
             class_registry = build_class_registry()
 
             logger.info(
-                "class_registry_built dispensaries=%d fallback_mode=enabled",
-                len(class_registry)
+                "class_registry_built dispensaries=%d fallback_mode=enabled", len(class_registry)
             )
 
             # Step 4: Build extended arg router with special routes
             # Handles 30+ high-traffic method routes + generic routing
             arg_router = ExtendedArgRouter(class_registry)
 
-            special_routes = arg_router.get_special_route_coverage() if hasattr(arg_router, 'get_special_route_coverage') else 0
+            special_routes = (
+                arg_router.get_special_route_coverage()
+                if hasattr(arg_router, "get_special_route_coverage")
+                else 0
+            )
 
             logger.info(
-                "arg_router_built special_routes=%d generic_routing=enabled",
-                special_routes
+                "arg_router_built special_routes=%d generic_routing=enabled", special_routes
             )
 
             # Step 4: Build method executor WITH signal registry injected
             # This is the CORE integration point - executors call methods through this
             # Local import to avoid circular dependency
             from farfan_pipeline.orchestration.orchestrator import MethodExecutor
+
             method_executor = MethodExecutor(
                 method_registry=method_registry,
                 arg_router=arg_router,
@@ -1381,8 +1417,6 @@ class AnalysisPipelineFactory:
             # Verify all 30 base executor contracts (D1-Q1 through D6-Q5) before execution
             # This ensures contract integrity and method class availability at startup
             logger.info("contract_verification_start verifying_30_base_contracts")
-
-
 
             verification_result = BaseExecutorWithContract.verify_all_base_contracts(
                 class_registry=class_registry
@@ -1407,20 +1441,20 @@ class AnalysisPipelineFactory:
                 else:
                     logger.warning(
                         "contract_verification_failed_non_strict continuing_with_errors=%d",
-                        len(verification_result["errors"])
+                        len(verification_result["errors"]),
                     )
             else:
                 logger.info(
                     "contract_verification_passed verified=%d warnings=%d",
                     len(verification_result["verified_contracts"]),
-                    len(verification_result.get("warnings", []))
+                    len(verification_result.get("warnings", [])),
                 )
 
                 for warning in verification_result.get("warnings", [])[:5]:
                     logger.warning("contract_warning: %s", warning)
 
             # Validate construction
-            if not hasattr(method_executor, 'execute'):
+            if not hasattr(method_executor, "execute"):
                 if self._strict:
                     raise ExecutorConstructionError("MethodExecutor missing 'execute' method")
                 logger.warning("method_executor_validation_warning missing_execute")
@@ -1441,17 +1475,19 @@ class AnalysisPipelineFactory:
 
     def _load_validation_constants(self) -> dict[str, Any]:
         """Load Phase 1 validation constants (hard contracts).
-        
+
         These constants are injected into Orchestrator for Phase 1 validation:
         - P01_EXPECTED_CHUNK_COUNT = 60
         - P02_MIN_TABLE_COUNT = 5
         - etc.
-        
+
         Returns:
             dict[str, Any]: Validation constants.
         """
         if self._validation_constants is not None:
-            logger.info("validation_constants_using_provided count=%d", len(self._validation_constants))
+            logger.info(
+                "validation_constants_using_provided count=%d", len(self._validation_constants)
+            )
             return self._validation_constants
 
         if VALIDATION_CONSTANTS_AVAILABLE:
@@ -1534,12 +1570,13 @@ class AnalysisPipelineFactory:
             # Build orchestrator with FULL dependency injection
             # Local import to avoid circular dependency
             from farfan_pipeline.orchestration.orchestrator import Orchestrator
+
             orchestrator = Orchestrator(
-                method_executor=self._method_executor,       # 1st parameter - correct order
+                method_executor=self._method_executor,  # 1st parameter - correct order
                 questionnaire=self._canonical_questionnaire,  # 2nd parameter - correct order
-                executor_config=executor_config,              # 3rd parameter - correct order
-                runtime_config=runtime_config,                # 4th parameter - Phase 0 integration
-                phase0_validation=phase0_validation,          # 5th parameter - Phase 0 integration
+                executor_config=executor_config,  # 3rd parameter - correct order
+                runtime_config=runtime_config,  # 4th parameter - Phase 0 integration
+                phase0_validation=phase0_validation,  # 5th parameter - Phase 0 integration
                 # signal_registry is accessed via method_executor.signal_registry
                 # validation_constants NOT in Orchestrator signature
             )
@@ -1575,19 +1612,19 @@ class AnalysisPipelineFactory:
         """Compute deterministic SHA-256 hash of questionnaire content."""
         try:
             # Try to get JSON representation if available
-            if hasattr(questionnaire, 'to_dict'):
+            if hasattr(questionnaire, "to_dict"):
                 content = json.dumps(questionnaire.to_dict(), sort_keys=True)
-            elif hasattr(questionnaire, '__dict__'):
+            elif hasattr(questionnaire, "__dict__"):
                 content = json.dumps(questionnaire.__dict__, sort_keys=True, default=str)
             else:
                 content = str(questionnaire)
 
-            return hashlib.sha256(content.encode('utf-8')).hexdigest()
+            return hashlib.sha256(content.encode("utf-8")).hexdigest()
 
         except Exception as e:
             logger.warning("questionnaire_hash_computation_degraded error=%s", str(e))
             # Fallback to simple string hash
-            return hashlib.sha256(str(questionnaire).encode('utf-8')).hexdigest()
+            return hashlib.sha256(str(questionnaire).encode("utf-8")).hexdigest()
 
     def create_executor_instance(
         self,
@@ -1596,25 +1633,23 @@ class AnalysisPipelineFactory:
         **extra_kwargs: Any,
     ) -> Any:
         """Create BaseExecutor instance with EnrichedSignalPack injected.
-        
+
         This method is called for each of the ~30 BaseExecutor classes.
         Each executor receives its specific EnrichedSignalPack, NOT the full registry.
-        
+
         Args:
             executor_class: BaseExecutor subclass to instantiate.
             policy_area_id: Policy area identifier for signal pack selection.
             **extra_kwargs: Additional kwargs to pass to constructor.
-            
+
         Returns:
             BaseExecutor instance with dependencies injected.
-            
+
         Raises:
             ExecutorConstructionError: If executor instantiation fails.
         """
         if self._method_executor is None:
-            raise ExecutorConstructionError(
-                "Cannot create executor: method executor not built"
-            )
+            raise ExecutorConstructionError("Cannot create executor: method executor not built")
 
         # Get enriched signal pack for this policy area
         enriched_pack = self._enriched_packs.get(policy_area_id)
@@ -1725,16 +1760,17 @@ build_processor = create_analysis_pipeline
 
 def validate_factory_singleton() -> dict[str, Any]:
     """Validate that load_questionnaire() was called exactly once.
-    
+
     Returns:
         dict with validation results.
     """
     return {
         "questionnaire_loaded": AnalysisPipelineFactory._questionnaire_loaded,
-        "questionnaire_instance_exists": AnalysisPipelineFactory._questionnaire_instance is not None,
+        "questionnaire_instance_exists": AnalysisPipelineFactory._questionnaire_instance
+        is not None,
         "singleton_pattern_valid": (
-            AnalysisPipelineFactory._questionnaire_loaded and
-            AnalysisPipelineFactory._questionnaire_instance is not None
+            AnalysisPipelineFactory._questionnaire_loaded
+            and AnalysisPipelineFactory._questionnaire_instance is not None
         ),
     }
 
@@ -1762,9 +1798,9 @@ def validate_bundle(bundle: ProcessorBundle) -> dict[str, Any]:
         diagnostics["errors"].append("method_executor is None")
     else:
         diagnostics["components"]["method_executor"] = "present"
-        if hasattr(bundle.method_executor, 'arg_router'):
+        if hasattr(bundle.method_executor, "arg_router"):
             router = bundle.method_executor.arg_router
-            if hasattr(router, 'get_special_route_coverage'):
+            if hasattr(router, "get_special_route_coverage"):
                 diagnostics["metrics"]["special_routes"] = router.get_special_route_coverage()
 
     # Validate questionnaire
@@ -1773,7 +1809,7 @@ def validate_bundle(bundle: ProcessorBundle) -> dict[str, Any]:
         diagnostics["errors"].append("questionnaire is None")
     else:
         diagnostics["components"]["questionnaire"] = "present"
-        if hasattr(bundle.questionnaire, 'questions'):
+        if hasattr(bundle.questionnaire, "questions"):
             diagnostics["metrics"]["question_count"] = len(bundle.questionnaire.questions)
 
     # Validate signal registry
@@ -1782,8 +1818,10 @@ def validate_bundle(bundle: ProcessorBundle) -> dict[str, Any]:
         diagnostics["errors"].append("signal_registry is None")
     else:
         diagnostics["components"]["signal_registry"] = "present"
-        if hasattr(bundle.signal_registry, 'get_all_policy_areas'):
-            diagnostics["metrics"]["policy_areas"] = len(bundle.signal_registry.get_all_policy_areas())
+        if hasattr(bundle.signal_registry, "get_all_policy_areas"):
+            diagnostics["metrics"]["policy_areas"] = len(
+                bundle.signal_registry.get_all_policy_areas()
+            )
 
     # Validate enriched packs
     diagnostics["components"]["enriched_packs"] = len(bundle.enriched_signal_packs)
@@ -1827,12 +1865,13 @@ def get_bundle_info(bundle: ProcessorBundle) -> dict[str, Any]:
 
 def check_legacy_signal_loader_deleted() -> dict[str, Any]:
     """Check that signal_loader.py has been deleted.
-    
+
     Returns:
         dict with check results.
     """
     try:
         import farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_loader
+
         return {
             "legacy_loader_deleted": False,
             "error": "signal_loader.py still exists - must be deleted per architecture requirements",
@@ -1846,9 +1885,9 @@ def check_legacy_signal_loader_deleted() -> dict[str, Any]:
 
 def verify_single_questionnaire_load_point() -> dict[str, Any]:
     """Verify that only AnalysisPipelineFactory calls load_questionnaire().
-    
+
     This requires manual code search but provides guidance.
-    
+
     Returns:
         dict with verification instructions.
     """
@@ -1867,17 +1906,16 @@ def verify_single_questionnaire_load_point() -> dict[str, Any]:
 
 def get_method_dispensary_info() -> dict[str, Any]:
     """Get information about the method dispensary pattern.
-    
+
     Returns detailed statistics about:
     - Which monolith classes serve as dispensaries
     - How many methods each dispensary provides
     - Which executors use which dispensaries
     - Method reuse patterns
-    
+
     Returns:
         dict with dispensary statistics and usage patterns.
     """
-
 
     class_paths = get_class_paths()
 
@@ -1885,6 +1923,7 @@ def get_method_dispensary_info() -> dict[str, Any]:
     try:
         import json
         from pathlib import Path
+
         executors_methods_path = Path(__file__).resolve().parent / "executors_methods.json"
         if executors_methods_path.exists():
             with open(executors_methods_path) as f:
@@ -1924,9 +1963,7 @@ def get_method_dispensary_info() -> dict[str, Any]:
 
     # Sort by usage count
     sorted_dispensaries = sorted(
-        dispensaries.items(),
-        key=lambda x: x[1]["total_usage_count"],
-        reverse=True
+        dispensaries.items(), key=lambda x: x[1]["total_usage_count"], reverse=True
     )
 
     # Build summary statistics
@@ -1945,7 +1982,9 @@ def get_method_dispensary_info() -> dict[str, Any]:
                 "methods_count": len(info["methods_provided"]),
                 "executor_count": len(info["used_by_executors"]),
                 "total_calls": info["total_usage_count"],
-                "reuse_factor": round(info["total_usage_count"] / max(len(info["methods_provided"]), 1), 2),
+                "reuse_factor": round(
+                    info["total_usage_count"] / max(len(info["methods_provided"]), 1), 2
+                ),
             }
             for name, info in sorted_dispensaries[:10]  # Top 10
         },
@@ -1963,17 +2002,16 @@ def get_method_dispensary_info() -> dict[str, Any]:
 
 def validate_method_dispensary_pattern() -> dict[str, Any]:
     """Validate that the method dispensary pattern is correctly implemented.
-    
+
     Checks:
     1. All executor methods exist in class_registry
     2. No executor directly imports monolith classes
     3. All methods route through MethodExecutor
     4. Signal registry is injected (not globally accessed)
-    
+
     Returns:
         dict with validation results.
     """
-
 
     class_paths = get_class_paths()
     validation_results = {
@@ -1986,9 +2024,7 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
     # Check 1: Verify class_registry is populated
     if not class_paths:
         validation_results["pattern_valid"] = False
-        validation_results["errors"].append(
-            "class_registry is empty - no dispensaries registered"
-        )
+        validation_results["errors"].append("class_registry is empty - no dispensaries registered")
     else:
         validation_results["checks"]["dispensaries_registered"] = len(class_paths)
 
@@ -1996,6 +2032,7 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
     try:
         import json
         from pathlib import Path
+
         executors_methods_path = Path(__file__).resolve().parent / "executors_methods.json"
         if not executors_methods_path.exists():
             validation_results["warnings"].append(
@@ -2006,9 +2043,7 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
                 executors_methods = json.load(f)
             validation_results["checks"]["executor_method_mappings"] = len(executors_methods)
     except Exception as e:
-        validation_results["warnings"].append(
-            f"Failed to load executors_methods.json: {e}"
-        )
+        validation_results["warnings"].append(f"Failed to load executors_methods.json: {e}")
 
     # Check 3: Verify validation file exists
     try:
@@ -2020,14 +2055,15 @@ def validate_method_dispensary_pattern() -> dict[str, Any]:
         else:
             with open(validation_path) as f:
                 validation_data = json.load(f)
-            validation_results["checks"]["method_pairs_validated"] = validation_data.get("validated_against_catalog", 0)
-            validation_results["checks"]["validation_failures"] = len(validation_data.get("failures", []))
+            validation_results["checks"]["method_pairs_validated"] = validation_data.get(
+                "validated_against_catalog", 0
+            )
+            validation_results["checks"]["validation_failures"] = len(
+                validation_data.get("failures", [])
+            )
     except Exception as e:
         validation_results["warnings"].append(
             f"Failed to load executor_factory_validation.json: {e}"
         )
 
     return validation_results
-
-
-

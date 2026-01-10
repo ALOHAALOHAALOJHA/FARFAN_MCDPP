@@ -39,22 +39,25 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from orchestration.task_planner import ExecutableTask
+from datetime import UTC
+
+from farfan_pipeline.calibracion_parametrizacion.types import ChunkData, PreprocessedDocument
+from farfan_pipeline.phases.Phase_2.phase2_40_00_synchronization import ChunkMatrix
 from farfan_pipeline.phases.Phase_2.phase2_40_02_schema_validation import (
     validate_phase6_schema_compatibility,
 )
-from farfan_pipeline.calibracion_parametrizacion.types import ChunkData, PreprocessedDocument
-from farfan_pipeline.phases.Phase_2.phase2_40_00_synchronization import ChunkMatrix
 
 # Import executor-chunk synchronizer for JOIN table
 try:
     from farfan_pipeline.phases.Phase_2.phase2_40_01_executor_chunk_synchronizer import (
-            ExecutorChunkBinding,
+        ExecutorChunkBinding,
     )
+
     SYNCHRONIZER_AVAILABLE = True
 except ImportError as e:
     SYNCHRONIZER_AVAILABLE = False
     _import_error = e
-    
+
     # Provide clear error messages when attempting to use unavailable features
     class ExecutorChunkBinding:  # type: ignore
         def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -62,27 +65,28 @@ except ImportError as e:
                 "farfan_pipeline.phases.Phase_2.executor_chunk_synchronizer is not available. "
                 "Please ensure the dependency is installed and importable."
             ) from _import_error
-    
+
     def build_join_table(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
             "farfan_pipeline.phases.Phase_2.executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
-    
+
     def generate_verification_manifest(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
             "farfan_pipeline.phases.Phase_2.executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
-    
+
     def save_verification_manifest(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
             "farfan_pipeline.phases.Phase_2.executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
-    
+
     class ExecutorChunkSynchronizationError(Exception):  # type: ignore
         pass
+
 
 try:
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
@@ -111,6 +115,7 @@ SHA256_HEX_DIGEST_LENGTH = 64
 
 SKEW_THRESHOLD_CV = 0.3
 
+
 class SignalRegistry(Protocol):
     """Protocol for signal registry implementations.
 
@@ -118,9 +123,7 @@ class SignalRegistry(Protocol):
     use with IrrigationSynchronizer signal resolution.
     """
 
-    def get_signals_for_chunk(
-        self, chunk: ChunkData, requirements: list[str]
-    ) -> list[Any]:
+    def get_signals_for_chunk(self, chunk: ChunkData, requirements: list[str]) -> list[Any]:
         """Get signals for a chunk matching the given requirements.
 
         Args:
@@ -355,9 +358,7 @@ class IrrigationSynchronizer:
                     )
                 )
             except ValueError as e:
-                synchronization_failures.labels(
-                    error_type="chunk_matrix_validation"
-                ).inc()
+                synchronization_failures.labels(error_type="chunk_matrix_validation").inc()
                 logger.error(
                     json.dumps(
                         {
@@ -389,9 +390,7 @@ class IrrigationSynchronizer:
                 )
             )
         else:
-            raise ValueError(
-                "Either preprocessed_document or document_chunks must be provided"
-            )
+            raise ValueError("Either preprocessed_document or document_chunks must be provided")
 
     def _count_questions(self) -> int:
         """Count total questions across all dimensions."""
@@ -430,14 +429,10 @@ class IrrigationSynchronizer:
         dimension_id = question.get("dimension_id")
 
         if not policy_area_id:
-            raise ValueError(
-                f"Question {question_id} missing required field: policy_area_id"
-            )
+            raise ValueError(f"Question {question_id} missing required field: policy_area_id")
 
         if not dimension_id:
-            raise ValueError(
-                f"Question {question_id} missing required field: dimension_id"
-            )
+            raise ValueError(f"Question {question_id} missing required field: dimension_id")
 
         try:
             target_chunk = self.chunk_matrix.get_chunk(policy_area_id, dimension_id)
@@ -449,10 +444,7 @@ class IrrigationSynchronizer:
                     f"Chunk {chunk_id} has empty text content for question {question_id}"
                 )
 
-            if (
-                target_chunk.policy_area_id
-                and target_chunk.policy_area_id != policy_area_id
-            ):
+            if target_chunk.policy_area_id and target_chunk.policy_area_id != policy_area_id:
                 raise ValueError(
                     f"Chunk routing key mismatch for {question_id}: "
                     f"question policy_area={policy_area_id} but chunk has {target_chunk.policy_area_id}"
@@ -542,10 +534,10 @@ class IrrigationSynchronizer:
         # Fallback: Check if micro_questions is at root or directly in self.questionnaire
         micro_questions = blocks.get("micro_questions")
         if not micro_questions:
-             micro_questions = self.questionnaire.get("micro_questions")
-             if not micro_questions and isinstance(self.questionnaire, list):
-                 # Handle case where questionnaire IS the list of questions
-                 micro_questions = self.questionnaire
+            micro_questions = self.questionnaire.get("micro_questions")
+            if not micro_questions and isinstance(self.questionnaire, list):
+                # Handle case where questionnaire IS the list of questions
+                micro_questions = self.questionnaire
 
         if not blocks and not micro_questions:
             logger.warning("No 'blocks' found in questionnaire")
@@ -570,8 +562,7 @@ class IrrigationSynchronizer:
                     )
                 if not isinstance(dimension_id, str) or not dimension_id:
                     raise ValueError(
-                        "micro_question missing dimension_id or invalid type: "
-                        f"{dimension_id!r}"
+                        "micro_question missing dimension_id or invalid type: " f"{dimension_id!r}"
                     )
                 if not isinstance(question_global, int):
                     raise ValueError(
@@ -667,9 +658,7 @@ class IrrigationSynchronizer:
         excluded_ids = []
 
         for pattern in patterns:
-            pattern_id = (
-                pattern.get("id", "UNKNOWN") if isinstance(pattern, dict) else "UNKNOWN"
-            )
+            pattern_id = pattern.get("id", "UNKNOWN") if isinstance(pattern, dict) else "UNKNOWN"
 
             if isinstance(pattern, dict) and "policy_area_id" in pattern:
                 if pattern["policy_area_id"] == policy_area_id:
@@ -735,8 +724,10 @@ class IrrigationSynchronizer:
         if policy_area_id and dimension_id:
             for contract in self.executor_contracts:
                 identity = contract.get("identity", {})
-                if (identity.get("policy_area_id") == policy_area_id and
-                    identity.get("dimension_id") == dimension_id):
+                if (
+                    identity.get("policy_area_id") == policy_area_id
+                    and identity.get("dimension_id") == dimension_id
+                ):
                     # Multiple contracts may match, return first
                     # In production, should have unique mapping
                     return contract
@@ -934,9 +925,9 @@ class IrrigationSynchronizer:
             elif hasattr(signal, "signal_type"):
                 signals_dict[signal.signal_type] = signal
 
-        from datetime import datetime, timezone
+        from datetime import datetime
 
-        creation_timestamp = datetime.now(timezone.utc).isoformat()
+        creation_timestamp = datetime.now(UTC).isoformat()
 
         metadata = {
             "document_position": document_position,
@@ -953,17 +944,13 @@ class IrrigationSynchronizer:
         if question_global is None:
             raise ValueError("Task construction failure: question_global is None")
         if policy_area_id is None or not policy_area_id:
-            raise ValueError(
-                "Task construction failure: policy_area_id is None or empty"
-            )
+            raise ValueError("Task construction failure: policy_area_id is None or empty")
         if dimension_id is None or not dimension_id:
             raise ValueError("Task construction failure: dimension_id is None or empty")
         if chunk_id is None or not chunk_id:
             raise ValueError("Task construction failure: chunk_id is None or empty")
         if creation_timestamp is None or not creation_timestamp:
-            raise ValueError(
-                "Task construction failure: creation_timestamp is None or empty"
-            )
+            raise ValueError("Task construction failure: creation_timestamp is None or empty")
 
         try:
             task = ExecutableTask(
@@ -1070,9 +1057,9 @@ class IrrigationSynchronizer:
             for t in sorted_tasks
         ]
 
-        json_bytes = json.dumps(
-            task_serialization, sort_keys=True, separators=(",", ":")
-        ).encode("utf-8")
+        json_bytes = json.dumps(task_serialization, sort_keys=True, separators=(",", ":")).encode(
+            "utf-8"
+        )
 
         plan_id = hashlib.sha256(json_bytes).hexdigest()
 
@@ -1308,9 +1295,7 @@ class IrrigationSynchronizer:
                 parts = task.chunk_id.split("-")
                 if len(parts) >= 2:
                     dimension_id = parts[1]
-                    tasks_per_dimension[dimension_id] = (
-                        tasks_per_dimension.get(dimension_id, 0) + 1
-                    )
+                    tasks_per_dimension[dimension_id] = tasks_per_dimension.get(dimension_id, 0) + 1
             except (IndexError, ValueError):
                 pass
 
@@ -1486,9 +1471,7 @@ class IrrigationSynchronizer:
                                     "event": "task_construction_progress",
                                     "tasks_completed": idx,
                                     "total_questions": len(questions),
-                                    "progress_pct": round(
-                                        100 * idx / len(questions), 2
-                                    ),
+                                    "progress_pct": round(100 * idx / len(questions), 2),
                                     "correlation_id": self.correlation_id,
                                 }
                             )
@@ -1528,9 +1511,7 @@ class IrrigationSynchronizer:
                     f"Routing successes: {routing_successes}, failures: {routing_failures}"
                 )
 
-            tasks, plan_id = self._assemble_execution_plan(
-                tasks, questions, self.correlation_id
-            )
+            tasks, plan_id = self._assemble_execution_plan(tasks, questions, self.correlation_id)
 
             logger.info(
                 json.dumps(
@@ -1577,17 +1558,16 @@ class IrrigationSynchronizer:
             if self.join_table and SYNCHRONIZER_AVAILABLE:
                 try:
                     manifest = generate_verification_manifest(
-                        self.join_table,
-                        include_full_bindings=False  # Reduce size
+                        self.join_table, include_full_bindings=False  # Reduce size
                     )
-                    
+
                     # Save manifest if path available
                     manifest_dir = Path("artifacts/manifests")
                     manifest_dir.mkdir(parents=True, exist_ok=True)
                     manifest_path = manifest_dir / "executor_chunk_synchronization_manifest.json"
-                    
+
                     save_verification_manifest(manifest, manifest_path)
-                    
+
                     logger.info(
                         json.dumps(
                             {
@@ -1660,19 +1640,20 @@ class IrrigationSynchronizer:
 
     def _build_with_legacy_chunks(self) -> ExecutionPlan:
         """Build execution plan using legacy document_chunks list.
-        
+
         DEPRECATED: This method is deprecated and will be removed in a future version.
         All consumers should migrate to using PreprocessedDocument with ChunkMatrix validation.
         The legacy mode lacks the robust validation and deterministic routing of ChunkMatrix.
         """
         import warnings
+
         warnings.warn(
             "Legacy chunk mode is deprecated and will be removed in a future version. "
             "Please migrate to PreprocessedDocument with ChunkMatrix validation.",
             DeprecationWarning,
-            stacklevel=2
+            stacklevel=2,
         )
-        
+
         logger.warning(
             json.dumps(
                 {
@@ -1680,11 +1661,11 @@ class IrrigationSynchronizer:
                     "correlation_id": self.correlation_id,
                     "message": "Legacy chunk mode will be removed in future version",
                     "migration_guide": "Use PreprocessedDocument with ChunkMatrix",
-                    "timestamp": time.time()
+                    "timestamp": time.time(),
                 }
             )
         )
-        
+
         logger.info(
             json.dumps(
                 {
@@ -1884,9 +1865,7 @@ class IrrigationSynchronizer:
                 signal_requirements = []
 
         # Call signal_registry.get_signals_for_chunk
-        resolved_signals = signal_registry.get_signals_for_chunk(
-            target_chunk, signal_requirements
-        )
+        resolved_signals = signal_registry.get_signals_for_chunk(target_chunk, signal_requirements)
 
         # Validate return is list type (raise TypeError if None)
         if resolved_signals is None:
@@ -2077,7 +2056,7 @@ class IrrigationSynchronizer:
 
         try:
             storage_path.parent.mkdir(parents=True, exist_ok=True)
-        except IOError as e:
+        except OSError as e:
             raise ValueError(
                 f"Failed to create parent directories for plan_id={plan_id}, "
                 f"storage_path={storage_path}: {e}"
@@ -2085,7 +2064,7 @@ class IrrigationSynchronizer:
 
         try:
             storage_path.write_text(serialized_json, encoding="utf-8")
-        except IOError as e:
+        except OSError as e:
             raise ValueError(
                 f"Failed to write execution plan for plan_id={plan_id}, "
                 f"storage_path={storage_path}: {e}"
@@ -2095,11 +2074,11 @@ class IrrigationSynchronizer:
             read_content = storage_path.read_text(encoding="utf-8")
             if read_content != serialized_json:
                 storage_path.unlink()
-                raise IOError(
+                raise OSError(
                     f"Write verification failed for plan_id={plan_id}, "
                     f"storage_path={storage_path}: content mismatch after write"
                 )
-        except IOError as e:
+        except OSError:
             if storage_path.exists():
                 storage_path.unlink()
             raise
@@ -2117,7 +2096,7 @@ class IrrigationSynchronizer:
         try:
             with open(index_path, "a", encoding="utf-8") as f:
                 f.write(json.dumps(index_entry) + "\n")
-        except IOError as e:
+        except OSError as e:
             if storage_path.exists():
                 storage_path.unlink()
             raise ValueError(
@@ -2142,9 +2121,9 @@ class IrrigationSynchronizer:
 
 
 __all__ = [
-    "IrrigationSynchronizer",
-    "ExecutionPlan",
-    "Task",
     "ChunkRoutingResult",
+    "ExecutionPlan",
+    "IrrigationSynchronizer",
     "SignalRegistry",
+    "Task",
 ]

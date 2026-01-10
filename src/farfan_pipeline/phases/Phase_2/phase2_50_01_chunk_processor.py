@@ -12,15 +12,16 @@ from __future__ import annotations
 
 import logging
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Optional, TypeVar
+from typing import Any, TypeVar
 
 from farfan_pipeline.utils.retry import (
+    PermanentError,
     RetryConfig,
     RetryPolicy,
-    with_exponential_backoff,
     TransientError,
-    PermanentError,
+    with_exponential_backoff,
 )
 
 logger = logging.getLogger(__name__)
@@ -56,7 +57,7 @@ class Chunk:
 
     chunk_id: str
     content: str
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -75,7 +76,7 @@ class ChunkResult:
     chunk_id: str
     success: bool
     output: Any = None
-    error: Optional[str] = None
+    error: str | None = None
     attempts: int = 1
     total_time_ms: float = 0.0
 
@@ -140,7 +141,7 @@ class RetryableChunkProcessor:
             total_time_ms=total_time_ms,
         )
 
-    def process_chunks(self, chunks: List[Chunk]) -> List[ChunkResult]:
+    def process_chunks(self, chunks: list[Chunk]) -> list[ChunkResult]:
         """Process multiple chunks."""
         results = [self.process_chunk(chunk) for chunk in chunks]
         successful = sum(1 for r in results if r.success)
@@ -149,7 +150,7 @@ class RetryableChunkProcessor:
         )
         return results
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get processing metrics from shared config."""
         return self.config.get_metrics()
 
@@ -221,14 +222,14 @@ class AsyncRetryableChunkProcessor:
             total_time_ms=total_time_ms,
         )
 
-    async def process_chunks(self, chunks: List[Chunk]) -> List[ChunkResult]:
+    async def process_chunks(self, chunks: list[Chunk]) -> list[ChunkResult]:
         """Process multiple chunks concurrently."""
         import asyncio
 
         tasks = [self.process_chunk(chunk) for chunk in chunks]
         return await asyncio.gather(*tasks)
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get processing metrics."""
         return self.config.get_metrics()
 

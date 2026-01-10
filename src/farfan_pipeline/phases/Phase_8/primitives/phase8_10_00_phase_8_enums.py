@@ -12,7 +12,7 @@ and preventing invalid values.
 
 from __future__ import annotations
 
-from enum import Enum, auto, unique
+from enum import Enum, unique
 
 
 @unique
@@ -41,7 +41,7 @@ class ScoreBand(str, Enum):
         return self.value
 
     @classmethod
-    def from_score(cls, score: float, level: Level = Level.MESO) -> "ScoreBand":
+    def from_score(cls, score: float, level: Level = Level.MESO) -> ScoreBand:
         """
         Determine score band from numeric score.
 
@@ -62,14 +62,13 @@ class ScoreBand(str, Enum):
                 return cls.MEDIO
             else:
                 return cls.ALTO
+        # MESO/MACRO: 0-100 scale
+        elif score < 55:
+            return cls.BAJO
+        elif score < 75:
+            return cls.MEDIO
         else:
-            # MESO/MACRO: 0-100 scale
-            if score < 55:
-                return cls.BAJO
-            elif score < 75:
-                return cls.MEDIO
-            else:
-                return cls.ALTO
+            return cls.ALTO
 
 
 @unique
@@ -84,7 +83,7 @@ class VarianceLevel(str, Enum):
         return self.value
 
     @classmethod
-    def from_variance(cls, variance: float) -> "VarianceLevel":
+    def from_variance(cls, variance: float) -> VarianceLevel:
         """
         Determine variance level from numeric variance.
 
@@ -116,7 +115,7 @@ class QualityLevel(str, Enum):
         return self.value
 
     @classmethod
-    def from_score(cls, score: float) -> "QualityLevel":
+    def from_score(cls, score: float) -> QualityLevel:
         """
         Determine quality level from normalized score (0-1).
 
@@ -283,17 +282,17 @@ class Cluster(str, Enum):
 # ============================================================================
 
 __all__ = [
-    "Level",
-    "ScoreBand",
-    "VarianceLevel",
-    "QualityLevel",
-    "HorizonType",
-    "VerificationFormat",
-    "VerificationArtifactType",
-    "ModuleType",
+    "Cluster",
     "CriticalityLevel",
     "ExecutionPattern",
-    "Stage",
+    "HorizonType",
+    "Level",
+    "ModuleType",
+    "QualityLevel",
     "RuleLevel",
-    "Cluster",
+    "ScoreBand",
+    "Stage",
+    "VarianceLevel",
+    "VerificationArtifactType",
+    "VerificationFormat",
 ]

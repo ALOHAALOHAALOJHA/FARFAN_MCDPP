@@ -18,13 +18,11 @@ Enhancement Windows Identified:
 
 from __future__ import annotations
 
-import logging
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from farfan_pipeline.infrastructure.contractual.dura_lex.aggregation_contract import (
     create_aggregation_contract,
-    AggregationContractViolation,
 )
 
 
