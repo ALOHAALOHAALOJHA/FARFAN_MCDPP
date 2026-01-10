@@ -16,6 +16,7 @@ Usage:
     if not result["passed"]:
         print(f"Validation failed: {result['errors']}")
 """
+
 from __future__ import annotations
 
 import argparse
@@ -24,7 +25,9 @@ import logging
 import sys
 from typing import Any
 
-import farfan_pipeline.phases.Phase_2.executors.base_executor_with_contract import BaseExecutorWithContract
+from farfan_pipeline.phases.Phase_2.executors.base_executor_with_contract import (
+    BaseExecutorWithContract,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +68,7 @@ def verify_all_contracts(
             from orchestration.class_registry import (
                 build_class_registry,
             )
+
             class_registry = build_class_registry()
             logger.info(f"Class registry built with {len(class_registry)} classes")
         except Exception as exc:
@@ -73,9 +77,7 @@ def verify_all_contracts(
                 raise RuntimeError(f"Class registry construction failed: {exc}") from exc
             class_registry = None
 
-    result = BaseExecutorWithContract.verify_all_base_contracts(
-        class_registry=class_registry
-    )
+    result = BaseExecutorWithContract.verify_all_base_contracts(class_registry=class_registry)
 
     logger.info(
         f"Verification complete: passed={result['passed']}, "
@@ -141,6 +143,7 @@ def main() -> int:
             from orchestration.class_registry import (
                 build_class_registry,
             )
+
             class_registry = build_class_registry()
 
         result = verify_all_contracts(
@@ -156,7 +159,9 @@ def main() -> int:
             print("CONTRACT VERIFICATION RESULTS")
             print(f"{'='*60}")
             print(f"Status: {'PASSED' if result['passed'] else 'FAILED'}")
-            print(f"Verified: {len(result['verified_contracts'])}/{result['total_contracts']} contracts")
+            print(
+                f"Verified: {len(result['verified_contracts'])}/{result['total_contracts']} contracts"
+            )
             print(f"Errors: {len(result['errors'])}")
             print(f"Warnings: {len(result.get('warnings', []))}")
 

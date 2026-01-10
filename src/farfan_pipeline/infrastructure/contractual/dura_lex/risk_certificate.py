@@ -3,12 +3,11 @@ Risk Certificate Contract (RCC) - Implementation
 """
 
 import numpy as np
-from typing import List, Tuple, Dict
 
 
 class RiskCertificateContract:
     @staticmethod
-    def conformal_prediction(calibration_scores: List[float], alpha: float) -> float:
+    def conformal_prediction(calibration_scores: list[float], alpha: float) -> float:
         """
         Computes the quantile for conformal prediction.
         q = (1 - alpha) * (n + 1) / n corrected quantile
@@ -22,8 +21,8 @@ class RiskCertificateContract:
 
     @staticmethod
     def verify_risk(
-        calibration_data: List[float], holdout_data: List[float], alpha: float, seed: int
-    ) -> Dict[str, float]:
+        calibration_data: list[float], holdout_data: list[float], alpha: float, seed: int
+    ) -> dict[str, float]:
         """
         Verifies that empirical coverage is approx (1-alpha) and risk <= alpha.
         """

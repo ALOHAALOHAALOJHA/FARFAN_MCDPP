@@ -32,11 +32,12 @@ import logging
 import os
 import platform
 import sys
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -55,6 +56,7 @@ except Exception:  # pragma: no cover
 
 class CircuitState(Enum):
     """Circuit breaker states."""
+
     CLOSED = "closed"  # Normal operation - all checks passed
     OPEN = "open"  # Failure detected - execution blocked
     HALF_OPEN = "half_open"  # Testing recovery
@@ -62,6 +64,7 @@ class CircuitState(Enum):
 
 class FailureSeverity(Enum):
     """Failure severity levels."""
+
     CRITICAL = "critical"  # Must stop execution immediately
     HIGH = "high"  # Will likely cause constitutional invariant violation
     MEDIUM = "medium"  # May cause quality degradation
@@ -71,10 +74,11 @@ class FailureSeverity(Enum):
 @dataclass
 class DependencyCheck:
     """Result of a dependency check."""
+
     name: str
     available: bool
-    version: Optional[str] = None
-    error: Optional[str] = None
+    version: str | None = None
+    error: str | None = None
     severity: FailureSeverity = FailureSeverity.CRITICAL
     remediation: str = ""
 
@@ -82,6 +86,7 @@ class DependencyCheck:
 @dataclass
 class ResourceCheck:
     """Result of a resource availability check."""
+
     resource_type: str  # memory, disk, cpu
     available: float  # Available amount
     required: float  # Required amount
@@ -92,183 +97,191 @@ class ResourceCheck:
 @dataclass
 class PreflightResult:
     """Result of pre-flight checks."""
+
     passed: bool
     timestamp: str
-    dependency_checks: List[DependencyCheck] = field(default_factory=list)
-    resource_checks: List[ResourceCheck] = field(default_factory=list)
-    critical_failures: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
-    system_info: Dict[str, Any] = field(default_factory=dict)
+    dependency_checks: list[DependencyCheck] = field(default_factory=list)
+    resource_checks: list[ResourceCheck] = field(default_factory=list)
+    critical_failures: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+    system_info: dict[str, Any] = field(default_factory=dict)
 
 
 class Phase1CircuitBreaker:
     """
     Circuit breaker for Phase 1 with pre-flight checks.
-    
+
     This class ensures Phase 1 can ONLY execute when ALL critical
     conditions are met. No graceful degradation - fail fast.
     """
-    
+
     def __init__(self):
         """
         Initialize circuit breaker.
-        
+
         Note: This circuit breaker uses a singleton pattern with mutable state.
         It is not thread-safe. If concurrent Phase 1 execution is required,
         create separate circuit breaker instances per execution.
         """
         self.state = CircuitState.CLOSED
-        self.last_check: Optional[PreflightResult] = None
+        self.last_check: PreflightResult | None = None
         self.failure_count = 0
-        self.last_failure_time: Optional[datetime] = None
-    
+        self.last_failure_time: datetime | None = None
+
     def preflight_check(self) -> PreflightResult:
         """
         Execute comprehensive pre-flight checks.
-        
+
         Validates:
         1. All critical Python dependencies
         2. System resources (memory, disk)
         3. File system permissions
         4. Python version compatibility
-        
+
         Returns:
             PreflightResult with complete diagnostic information
         """
         logger.info("Phase 1 Circuit Breaker: Starting pre-flight checks")
-        
+
         result = PreflightResult(
             passed=True,
-            timestamp=datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z'),
-            system_info=self._collect_system_info()
+            timestamp=datetime.now(UTC).isoformat(timespec="milliseconds").replace("+00:00", "Z"),
+            system_info=self._collect_system_info(),
         )
-        
+
         # 1. Check Python version
         self._check_python_version(result)
-        
+
         # 2. Check critical dependencies
         self._check_dependencies(result)
-        
+
         # 3. Check system resources
         self._check_resources(result)
-        
+
         # 4. Check file system
         self._check_filesystem(result)
-        
+
         # Determine overall pass/fail
         result.passed = len(result.critical_failures) == 0
-        
+
         # Update circuit state
         if not result.passed:
             self.state = CircuitState.OPEN
             self.failure_count += 1
-            self.last_failure_time = datetime.now(timezone.utc)
-            logger.error(f"Phase 1 Circuit Breaker: OPEN - {len(result.critical_failures)} critical failures")
+            self.last_failure_time = datetime.now(UTC)
+            logger.error(
+                f"Phase 1 Circuit Breaker: OPEN - {len(result.critical_failures)} critical failures"
+            )
         else:
             self.state = CircuitState.CLOSED
             self.failure_count = 0
             logger.info("Phase 1 Circuit Breaker: CLOSED - All checks passed")
-        
+
         self.last_check = result
         return result
-    
-    def _collect_system_info(self) -> Dict[str, Any]:
+
+    def _collect_system_info(self) -> dict[str, Any]:
         """Collect system information for diagnostics."""
         return {
-            'platform': platform.platform(),
-            'python_version': sys.version,
-            'python_executable': sys.executable,
-            'cpu_count': os.cpu_count(),
-            'total_memory_gb': (psutil.virtual_memory().total / (1024**3) if psutil is not None else None),
+            "platform": platform.platform(),
+            "python_version": sys.version,
+            "python_executable": sys.executable,
+            "cpu_count": os.cpu_count(),
+            "total_memory_gb": (
+                psutil.virtual_memory().total / (1024**3) if psutil is not None else None
+            ),
         }
-    
+
     def _check_python_version(self, result: PreflightResult):
         """Check Python version meets minimum requirements."""
         major, minor = sys.version_info[:2]
         required_major, required_minor = 3, 10
-        
+
         if major < required_major or (major == required_major and minor < required_minor):
             result.critical_failures.append(
                 f"Python {major}.{minor} detected, but Python {required_major}.{required_minor}+ required"
             )
-            result.dependency_checks.append(DependencyCheck(
-                name="python",
-                available=False,
-                version=f"{major}.{minor}",
-                error=f"Version too old (need {required_major}.{required_minor}+)",
-                severity=FailureSeverity.CRITICAL,
-                remediation="Upgrade Python to 3.10 or higher"
-            ))
+            result.dependency_checks.append(
+                DependencyCheck(
+                    name="python",
+                    available=False,
+                    version=f"{major}.{minor}",
+                    error=f"Version too old (need {required_major}.{required_minor}+)",
+                    severity=FailureSeverity.CRITICAL,
+                    remediation="Upgrade Python to 3.10 or higher",
+                )
+            )
         else:
-            result.dependency_checks.append(DependencyCheck(
-                name="python",
-                available=True,
-                version=f"{major}.{minor}",
-                severity=FailureSeverity.CRITICAL
-            ))
-    
+            result.dependency_checks.append(
+                DependencyCheck(
+                    name="python",
+                    available=True,
+                    version=f"{major}.{minor}",
+                    severity=FailureSeverity.CRITICAL,
+                )
+            )
+
     def _check_dependencies(self, result: PreflightResult):
         """Check all critical dependencies."""
         # Core dependencies that MUST be available for any execution
         critical_deps = [
-            ('spacy', 'spacy', 'NLP processing for SP1/SP2/SP3'),
-            ('pydantic', 'pydantic', 'Contract validation'),
-            ('numpy', 'numpy', 'Numerical operations'),
+            ("spacy", "spacy", "NLP processing for SP1/SP2/SP3"),
+            ("pydantic", "pydantic", "Contract validation"),
+            ("numpy", "numpy", "Numerical operations"),
         ]
-        
+
         for import_name, package_name, description in critical_deps:
             check = self._check_single_dependency(import_name, package_name, description)
             result.dependency_checks.append(check)
-            
+
             if not check.available and check.severity == FailureSeverity.CRITICAL:
                 result.critical_failures.append(
                     f"Missing critical dependency: {package_name} ({description})"
                 )
-        
+
         # Check optional but important dependencies (HIGH severity - warning only)
         # These are needed for full functionality but tests can run without them
         optional_deps = [
-            ('langdetect', 'langdetect', 'Language detection for SP0'),
-            ('fitz', 'PyMuPDF', 'PDF extraction for SP0/SP1'),
-            ('farfan_pipeline/infrastructure.irrigation_using_signals.SISAS.signal_registry', 
-             'SISAS', 'Signal enrichment system'),
-            ('methods_dispensary.derek_beach', 'derek_beach', 'Causal analysis'),
-            ('methods_dispensary.teoria_cambio', 'teoria_cambio', 'DAG validation'),
+            ("langdetect", "langdetect", "Language detection for SP0"),
+            ("fitz", "PyMuPDF", "PDF extraction for SP0/SP1"),
+            (
+                "farfan_pipeline/infrastructure.irrigation_using_signals.SISAS.signal_registry",
+                "SISAS",
+                "Signal enrichment system",
+            ),
+            ("methods_dispensary.derek_beach", "derek_beach", "Causal analysis"),
+            ("methods_dispensary.teoria_cambio", "teoria_cambio", "DAG validation"),
         ]
-        
+
         for import_name, package_name, description in optional_deps:
             check = self._check_single_dependency(
-                import_name, package_name, description, 
-                severity=FailureSeverity.HIGH
+                import_name, package_name, description, severity=FailureSeverity.HIGH
             )
             result.dependency_checks.append(check)
-            
+
             if not check.available:
                 result.warnings.append(
                     f"Optional dependency missing: {package_name} ({description}). "
                     f"Some features will be limited."
                 )
-    
+
     def _check_single_dependency(
-        self, 
-        import_name: str, 
-        package_name: str, 
+        self,
+        import_name: str,
+        package_name: str,
         description: str,
-        severity: FailureSeverity = FailureSeverity.CRITICAL
+        severity: FailureSeverity = FailureSeverity.CRITICAL,
     ) -> DependencyCheck:
         """Check if a single dependency is available."""
         try:
-            module = __import__(import_name.split('.')[0])
+            module = __import__(import_name.split(".")[0])
             # Try to get version
             version = None
-            if hasattr(module, '__version__'):
+            if hasattr(module, "__version__"):
                 version = module.__version__
-            
+
             return DependencyCheck(
-                name=package_name,
-                available=True,
-                version=version,
-                severity=severity
+                name=package_name, available=True, version=version, severity=severity
             )
         except ImportError as e:
             return DependencyCheck(
@@ -276,9 +289,9 @@ class Phase1CircuitBreaker:
                 available=False,
                 error=str(e),
                 severity=severity,
-                remediation=f"Install with: pip install {package_name}"
+                remediation=f"Install with: pip install {package_name}",
             )
-    
+
     def _check_resources(self, result: PreflightResult):
         """Check system resource availability."""
         if psutil is None:
@@ -307,18 +320,18 @@ class Phase1CircuitBreaker:
             available=mem_available_gb,
             required=mem_required_gb,
             sufficient=mem_available_gb >= mem_required_gb,
-            unit="GB"
+            unit="GB",
         )
         result.resource_checks.append(mem_check)
-        
+
         if not mem_check.sufficient:
             result.critical_failures.append(
                 f"Insufficient memory: {mem_available_gb:.2f} GB available, "
                 f"{mem_required_gb:.2f} GB required"
             )
-        
+
         # Disk check - Need at least 1GB free for intermediate files
-        disk = psutil.disk_usage('/')
+        disk = psutil.disk_usage("/")
         disk_available_gb = disk.free / (1024**3)
         disk_required_gb = 1.0
         disk_check = ResourceCheck(
@@ -326,16 +339,16 @@ class Phase1CircuitBreaker:
             available=disk_available_gb,
             required=disk_required_gb,
             sufficient=disk_available_gb >= disk_required_gb,
-            unit="GB"
+            unit="GB",
         )
         result.resource_checks.append(disk_check)
-        
+
         if not disk_check.sufficient:
             result.critical_failures.append(
                 f"Insufficient disk space: {disk_available_gb:.2f} GB available, "
                 f"{disk_required_gb:.2f} GB required"
             )
-        
+
         # CPU check - Just informational
         cpu_percent = psutil.cpu_percent(interval=0.1)
         cpu_check = ResourceCheck(
@@ -343,60 +356,56 @@ class Phase1CircuitBreaker:
             available=100 - cpu_percent,
             required=20.0,  # Want at least 20% CPU available
             sufficient=cpu_percent < 80,
-            unit="percent"
+            unit="percent",
         )
         result.resource_checks.append(cpu_check)
-        
+
         if not cpu_check.sufficient:
-            result.warnings.append(
-                f"High CPU usage: {cpu_percent:.1f}%. Phase 1 may run slowly."
-            )
-    
+            result.warnings.append(f"High CPU usage: {cpu_percent:.1f}%. Phase 1 may run slowly.")
+
     def _check_filesystem(self, result: PreflightResult):
         """Check file system permissions and paths."""
         # Check write access to current directory
         try:
-            test_file = Path('.phase1_write_test')
-            test_file.write_text('test')
+            test_file = Path(".phase1_write_test")
+            test_file.write_text("test")
             test_file.unlink()
         except Exception as e:
-            result.critical_failures.append(
-                f"No write access to current directory: {e}"
+            result.critical_failures.append(f"No write access to current directory: {e}")
+            result.dependency_checks.append(
+                DependencyCheck(
+                    name="filesystem_write",
+                    available=False,
+                    error=str(e),
+                    severity=FailureSeverity.CRITICAL,
+                    remediation="Ensure write permissions in working directory",
+                )
             )
-            result.dependency_checks.append(DependencyCheck(
-                name="filesystem_write",
-                available=False,
-                error=str(e),
-                severity=FailureSeverity.CRITICAL,
-                remediation="Ensure write permissions in working directory"
-            ))
-    
+
     def can_execute(self) -> bool:
         """
         Check if Phase 1 can execute.
-        
+
         Returns:
             True if circuit is CLOSED, False otherwise
         """
         if self.state == CircuitState.OPEN:
-            logger.error(
-                "Phase 1 Circuit Breaker: Execution BLOCKED - Circuit is OPEN"
-            )
+            logger.error("Phase 1 Circuit Breaker: Execution BLOCKED - Circuit is OPEN")
             if self.last_check:
                 logger.error(f"Critical failures: {self.last_check.critical_failures}")
             return False
         return True
-    
+
     def get_diagnostic_report(self) -> str:
         """
         Generate human-readable diagnostic report.
-        
+
         Returns:
             Formatted diagnostic report
         """
         if not self.last_check:
             return "No pre-flight check has been run yet."
-        
+
         lines = [
             "=" * 80,
             "PHASE 1 CIRCUIT BREAKER - DIAGNOSTIC REPORT",
@@ -407,10 +416,10 @@ class Phase1CircuitBreaker:
             "",
             "SYSTEM INFORMATION:",
         ]
-        
+
         for key, value in self.last_check.system_info.items():
             lines.append(f"  {key}: {value}")
-        
+
         lines.append("")
         lines.append("DEPENDENCY CHECKS:")
         for dep in self.last_check.dependency_checks:
@@ -420,7 +429,7 @@ class Phase1CircuitBreaker:
             if not dep.available:
                 lines.append(f"      Error: {dep.error}")
                 lines.append(f"      Fix: {dep.remediation}")
-        
+
         lines.append("")
         lines.append("RESOURCE CHECKS:")
         for res in self.last_check.resource_checks:
@@ -430,56 +439,56 @@ class Phase1CircuitBreaker:
                 f"{res.available:.2f} {res.unit} available "
                 f"(need {res.required:.2f} {res.unit})"
             )
-        
+
         if self.last_check.critical_failures:
             lines.append("")
             lines.append("CRITICAL FAILURES:")
             for failure in self.last_check.critical_failures:
                 lines.append(f"  ✗ {failure}")
-        
+
         if self.last_check.warnings:
             lines.append("")
             lines.append("WARNINGS:")
             for warning in self.last_check.warnings:
                 lines.append(f"  ⚠ {warning}")
-        
+
         lines.append("=" * 80)
-        
+
         return "\n".join(lines)
 
 
 class SubphaseCheckpoint:
     """
     Checkpoint validator for subphases.
-    
+
     Ensures constitutional invariants are maintained at each subphase boundary.
     """
-    
+
     def __init__(self):
         """Initialize checkpoint validator."""
-        self.checkpoints: Dict[int, Dict[str, Any]] = {}
-    
+        self.checkpoints: dict[int, dict[str, Any]] = {}
+
     def validate_checkpoint(
-        self, 
-        subphase_num: int, 
+        self,
+        subphase_num: int,
         output: Any,
         expected_type: type,
-        validators: List[Callable[[Any], tuple[bool, str]]]
-    ) -> tuple[bool, List[str]]:
+        validators: list[Callable[[Any], tuple[bool, str]]],
+    ) -> tuple[bool, list[str]]:
         """
         Validate subphase output at checkpoint.
-        
+
         Args:
             subphase_num: Subphase number (0-15)
             output: Output from subphase
             expected_type: Expected type of output
             validators: List of validation functions
-        
+
         Returns:
             Tuple of (passed, error_messages)
         """
         errors = []
-        
+
         # Type check
         if not isinstance(output, expected_type):
             errors.append(
@@ -487,7 +496,7 @@ class SubphaseCheckpoint:
                 f"got {type(output).__name__}"
             )
             return False, errors
-        
+
         # Run validators
         for validator in validators:
             try:
@@ -496,82 +505,84 @@ class SubphaseCheckpoint:
                     errors.append(f"SP{subphase_num}: {message}")
             except Exception as e:
                 errors.append(f"SP{subphase_num}: Validator exception: {e}")
-        
+
         # Record checkpoint
         # Use a lightweight hash based on type and count rather than full serialization
         try:
-            output_len = len(output) if hasattr(output, '__len__') else 0
+            output_len = len(output) if hasattr(output, "__len__") else 0
         except (TypeError, AttributeError):
             output_len = 0
         output_summary = f"{type(output).__name__}:{output_len}"
         self.checkpoints[subphase_num] = {
-            'timestamp': datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z'),
-            'passed': len(errors) == 0,
-            'errors': errors,
-            'output_hash': hashlib.sha256(output_summary.encode()).hexdigest()[:16]
+            "timestamp": datetime.now(UTC)
+            .isoformat(timespec="milliseconds")
+            .replace("+00:00", "Z"),
+            "passed": len(errors) == 0,
+            "errors": errors,
+            "output_hash": hashlib.sha256(output_summary.encode()).hexdigest()[:16],
         }
-        
+
         return len(errors) == 0, errors
 
 
 class CrystallizationCheckpoint:
     """
     Enhanced checkpoint with state crystallization for resumability.
-    
+
     Crystallization = validate + serialize state to disk, enabling:
     1. Fail-fast: Abort immediately on constitutional violation
     2. Resumable: If SP8 crashes, resume from SP7 checkpoint
     3. Auditable: Each checkpoint emits a hash for verification
-    
+
     Critical subphases for crystallization:
     - SP4: PA×DIM grid complete (60 chunks)
     - SP7: Causal chains extracted
     - SP11: Smart chunks formed (300 questions mappable)
     """
-    
+
     CRYSTALLIZATION_POINTS = {
         4: "PA×DIM grid complete - 60 chunks exist",
         7: "Causal chains extracted - each chunk has events/causes/effects",
         11: "Smart chunks formed - all 300 questions mappable",
     }
-    
+
     def __init__(self, checkpoint_dir: Path | None = None):
         """
         Initialize crystallization checkpoint manager.
-        
+
         Args:
             checkpoint_dir: Directory to store checkpoint files.
                             If None, uses temp directory.
         """
-        import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import get_tmpdir
+        from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import get_tmpdir
+
         self.checkpoint_dir = checkpoint_dir or (get_tmpdir() / "farfan_checkpoints")
         self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
-        self.crystals: Dict[int, Dict[str, Any]] = {}
-    
+        self.crystals: dict[int, dict[str, Any]] = {}
+
     def crystallize(
         self,
         subphase_num: int,
         state: Any,
-        validators: List[Callable[[Any], tuple[bool, str]]] | None = None,
-        document_hash: str = ""
-    ) -> tuple[bool, str, List[str]]:
+        validators: list[Callable[[Any], tuple[bool, str]]] | None = None,
+        document_hash: str = "",
+    ) -> tuple[bool, str, list[str]]:
         """
         Validate and crystallize state at checkpoint.
-        
+
         Args:
             subphase_num: Subphase number (0-15)
             state: State to crystallize
             validators: Optional additional validators
             document_hash: Document identifier for checkpoint file naming
-        
+
         Returns:
             Tuple of (passed, crystal_hash, error_messages)
         """
-        import json
         import pickle
-        
+
         errors = []
-        
+
         # Run validators if provided
         if validators:
             for validator in validators:
@@ -581,11 +592,11 @@ class CrystallizationCheckpoint:
                         errors.append(f"SP{subphase_num}: {message}")
                 except Exception as e:
                     errors.append(f"SP{subphase_num}: Validator exception: {e}")
-        
+
         if errors:
             logger.error(f"SP{subphase_num} crystallization FAILED: {errors}")
             return False, "", errors
-        
+
         # Compute state hash
         try:
             # Try JSON serialization first (more portable)
@@ -595,104 +606,112 @@ class CrystallizationCheckpoint:
             # Fallback to pickle hash
             state_bytes = pickle.dumps(state)
             crystal_hash = hashlib.sha256(state_bytes).hexdigest()[:24]
-        
+
         # Store crystal metadata
         self.crystals[subphase_num] = {
-            'timestamp': datetime.now(timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z'),
-            'crystal_hash': crystal_hash,
-            'description': self.CRYSTALLIZATION_POINTS.get(subphase_num, f"SP{subphase_num} checkpoint"),
-            'document_hash': document_hash,
-            'state_size': len(state) if hasattr(state, '__len__') else 0,
+            "timestamp": datetime.now(UTC)
+            .isoformat(timespec="milliseconds")
+            .replace("+00:00", "Z"),
+            "crystal_hash": crystal_hash,
+            "description": self.CRYSTALLIZATION_POINTS.get(
+                subphase_num, f"SP{subphase_num} checkpoint"
+            ),
+            "document_hash": document_hash,
+            "state_size": len(state) if hasattr(state, "__len__") else 0,
         }
-        
+
         # Serialize to disk for resumability (only for crystallization points)
         if subphase_num in self.CRYSTALLIZATION_POINTS:
-            checkpoint_file = self.checkpoint_dir / f"crystal_sp{subphase_num}_{document_hash[:8]}_{crystal_hash[:8]}.pkl"
+            checkpoint_file = (
+                self.checkpoint_dir
+                / f"crystal_sp{subphase_num}_{document_hash[:8]}_{crystal_hash[:8]}.pkl"
+            )
             try:
-                with open(checkpoint_file, 'wb') as f:
-                    pickle.dump({
-                        'subphase': subphase_num,
-                        'state': state,
-                        'crystal_hash': crystal_hash,
-                        'timestamp': self.crystals[subphase_num]['timestamp'],
-                    }, f)
+                with open(checkpoint_file, "wb") as f:
+                    pickle.dump(
+                        {
+                            "subphase": subphase_num,
+                            "state": state,
+                            "crystal_hash": crystal_hash,
+                            "timestamp": self.crystals[subphase_num]["timestamp"],
+                        },
+                        f,
+                    )
                 logger.info(f"SP{subphase_num} crystallized to {checkpoint_file.name}")
             except Exception as e:
                 logger.warning(f"SP{subphase_num} crystallization to disk failed: {e}")
-        
+
         logger.info(
             f"✓ SP{subphase_num} CRYSTALLIZED: {self.crystals[subphase_num]['description']} "
             f"[hash={crystal_hash}]"
         )
-        
+
         return True, crystal_hash, []
-    
+
     def _serialize_state(self, state: Any) -> str:
         """Serialize state to JSON-like string for hashing."""
-        if hasattr(state, 'to_dict'):
+        if hasattr(state, "to_dict"):
             return json.dumps(state.to_dict(), sort_keys=True, default=str)
-        elif hasattr(state, '__dict__'):
+        elif hasattr(state, "__dict__"):
             return json.dumps(state.__dict__, sort_keys=True, default=str)
         elif isinstance(state, (list, tuple)):
-            return json.dumps([self._item_to_dict(item) for item in state], sort_keys=True, default=str)
+            return json.dumps(
+                [self._item_to_dict(item) for item in state], sort_keys=True, default=str
+            )
         elif isinstance(state, dict):
             return json.dumps(state, sort_keys=True, default=str)
         else:
             return str(state)
-    
+
     def _item_to_dict(self, item: Any) -> dict:
         """Convert item to dict for serialization."""
-        if hasattr(item, 'to_dict'):
+        if hasattr(item, "to_dict"):
             return item.to_dict()
-        elif hasattr(item, '__dict__'):
-            return {k: str(v) for k, v in item.__dict__.items() if not k.startswith('_')}
+        elif hasattr(item, "__dict__"):
+            return {k: str(v) for k, v in item.__dict__.items() if not k.startswith("_")}
         else:
-            return {'value': str(item)}
-    
-    def load_checkpoint(
-        self,
-        subphase_num: int,
-        document_hash: str
-    ) -> tuple[Any | None, str]:
+            return {"value": str(item)}
+
+    def load_checkpoint(self, subphase_num: int, document_hash: str) -> tuple[Any | None, str]:
         """
         Load checkpoint state from disk for resumption.
-        
+
         Args:
             subphase_num: Subphase to resume from
             document_hash: Document identifier
-        
+
         Returns:
             Tuple of (state, crystal_hash) or (None, "") if not found
         """
-        import pickle
         import glob
-        
+        import pickle
+
         pattern = str(self.checkpoint_dir / f"crystal_sp{subphase_num}_{document_hash[:8]}_*.pkl")
         matches = glob.glob(pattern)
-        
+
         if not matches:
             return None, ""
-        
+
         # Use most recent checkpoint
         latest = max(matches, key=os.path.getmtime)
-        
+
         try:
-            with open(latest, 'rb') as f:
+            with open(latest, "rb") as f:
                 data = pickle.load(f)
-            
+
             logger.info(f"SP{subphase_num} checkpoint loaded from {Path(latest).name}")
-            return data.get('state'), data.get('crystal_hash', '')
-        
+            return data.get("state"), data.get("crystal_hash", "")
+
         except Exception as e:
             logger.warning(f"Failed to load checkpoint {latest}: {e}")
             return None, ""
-    
-    def get_crystal_summary(self) -> Dict[str, Any]:
+
+    def get_crystal_summary(self) -> dict[str, Any]:
         """Get summary of all crystallization points."""
         return {
-            'crystals': self.crystals,
-            'total_checkpoints': len(self.crystals),
-            'all_passed': all(c.get('crystal_hash') for c in self.crystals.values()),
+            "crystals": self.crystals,
+            "total_checkpoints": len(self.crystals),
+            "all_passed": all(c.get("crystal_hash") for c in self.crystals.values()),
         }
 
 
@@ -711,7 +730,7 @@ def get_circuit_breaker() -> Phase1CircuitBreaker:
 def run_preflight_check() -> PreflightResult:
     """
     Run pre-flight check using global circuit breaker.
-    
+
     Returns:
         PreflightResult
     """
@@ -721,7 +740,7 @@ def run_preflight_check() -> PreflightResult:
 def ensure_can_execute():
     """
     Ensure Phase 1 can execute, raise exception if not.
-    
+
     Raises:
         RuntimeError: If circuit breaker is OPEN
     """
@@ -733,15 +752,15 @@ def ensure_can_execute():
 
 
 __all__ = [
-    'Phase1CircuitBreaker',
-    'CircuitState',
-    'FailureSeverity',
-    'DependencyCheck',
-    'ResourceCheck',
-    'PreflightResult',
-    'SubphaseCheckpoint',
-    'CrystallizationCheckpoint',
-    'get_circuit_breaker',
-    'run_preflight_check',
-    'ensure_can_execute',
+    "CircuitState",
+    "CrystallizationCheckpoint",
+    "DependencyCheck",
+    "FailureSeverity",
+    "Phase1CircuitBreaker",
+    "PreflightResult",
+    "ResourceCheck",
+    "SubphaseCheckpoint",
+    "ensure_can_execute",
+    "get_circuit_breaker",
+    "run_preflight_check",
 ]

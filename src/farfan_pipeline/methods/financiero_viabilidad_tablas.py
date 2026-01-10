@@ -48,11 +48,11 @@ import pymc as pm
 import spacy
 import tabula
 import torch
-from scipy import stats
 
 # === NLP Y TRANSFORMERS ===
 # Check dependency lockdown before importing transformers
 from farfan_pipeline.core.dependency_lockdown import get_dependency_lockdown
+from scipy import stats
 from sentence_transformers import SentenceTransformer, util
 from sklearn.cluster import DBSCAN, AgglomerativeClustering
 
@@ -62,10 +62,10 @@ from transformers import pipeline
 
 # === CANONICAL REFACTORING: Import from canonical_specs ===
 from farfan_pipeline.core.canonical_specs import (
-    MICRO_LEVELS,
     ALIGNMENT_THRESHOLD,
-    RISK_THRESHOLDS,
+    MICRO_LEVELS,
     PDT_PATTERNS,
+    RISK_THRESHOLDS,
 )
 
 _lockdown = get_dependency_lockdown()

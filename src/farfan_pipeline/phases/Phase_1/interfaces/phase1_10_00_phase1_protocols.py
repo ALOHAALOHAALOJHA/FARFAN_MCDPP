@@ -6,9 +6,9 @@ Owner Module: Phase 1 CPP Ingestion
 Lifecycle State:  ACTIVE
 """
 
-from typing import Protocol, Generator, Tuple, List, Dict, Any
+from collections.abc import Generator
 from pathlib import Path
-from dataclasses import dataclass
+from typing import Any, Protocol
 
 
 class PDFExtractorProtocol(Protocol):
@@ -18,7 +18,7 @@ class PDFExtractorProtocol(Protocol):
         """Yield text page by page."""
         ...
 
-    def extract_with_limit(self, char_limit: int) -> Tuple[str, int, int]:
+    def extract_with_limit(self, char_limit: int) -> tuple[str, int, int]:
         """
         Extract text up to character limit.
 
@@ -38,7 +38,7 @@ class TruncationAuditProtocol(Protocol):
     limit_applied: int
     was_truncated: bool
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Serialize to dictionary."""
         ...
 
@@ -61,6 +61,6 @@ class ChunkProtocol(Protocol):
 class Phase1ExecutorProtocol(Protocol):
     """Protocol for Phase 1 execution."""
 
-    def execute(self, pdf_path: Path) -> List[Any]:
+    def execute(self, pdf_path: Path) -> list[Any]:
         """Execute Phase 1 pipeline and return SmartChunks."""
         ...

@@ -34,11 +34,10 @@ import pickle
 from abc import ABC, abstractmethod
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
-from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any
 
 import numpy as np
 
@@ -47,8 +46,10 @@ logger = logging.getLogger(__name__)
 
 # === ENUMS ===
 
+
 class RelationshipType(Enum):
     """Types of relationships between evidence nodes."""
+
     CAUSES = "causes"
     ENABLES = "enables"
     REQUIRES = "requires"
@@ -61,6 +62,7 @@ class RelationshipType(Enum):
 
 class NodeStatus(Enum):
     """Status of an evidence node."""
+
     PENDING = "pending"
     VERIFIED = "verified"
     DISPUTED = "disputed"
@@ -69,6 +71,7 @@ class NodeStatus(Enum):
 
 
 # === DATA MODELS ===
+
 
 @dataclass
 class EvidenceNode:
@@ -89,18 +92,19 @@ class EvidenceNode:
         status: Node status
         metadata: Additional metadata
     """
+
     node_id: str
     claim_type: str
-    content: Dict[str, Any]
+    content: dict[str, Any]
     source: str
     confidence: float
     timestamp: str
-    parent_ids: List[str] = field(default_factory=list)
-    child_ids: List[str] = field(default_factory=list)
+    parent_ids: list[str] = field(default_factory=list)
+    child_ids: list[str] = field(default_factory=list)
     merkle_hash: str = ""
-    tags: Set[str] = field(default_factory=set)
+    tags: set[str] = field(default_factory=set)
     status: NodeStatus = NodeStatus.PENDING
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self):
         """Compute Merkle hash after initialization."""
@@ -144,17 +148,19 @@ class Relationship:
         evidence: Supporting evidence for this relationship
         timestamp: When relationship was asserted
     """
+
     from_id: str
     to_id: str
     relationship_type: RelationshipType
     confidence: float
     evidence: str = ""
-    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
 
 @dataclass
 class NexusStats:
     """Statistics for the Evidence Nexus."""
+
     total_nodes: int = 0
     total_relationships: int = 0
     contradiction_count: int = 0
@@ -165,6 +171,7 @@ class NexusStats:
 
 # === STORAGE BACKEND ===
 
+
 class NexusStorage(ABC):
     """Abstract base class for Evidence Nexus storage."""
 
@@ -174,7 +181,7 @@ class NexusStorage(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def load_node(self, node_id: str) -> Optional[EvidenceNode]:
+    def load_node(self, node_id: str) -> EvidenceNode | None:
         """Load a node from storage."""
         raise NotImplementedError()
 
@@ -184,16 +191,12 @@ class NexusStorage(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def load_relationships(
-        self,
-        node_id: str,
-        direction: str = "outgoing"
-    ) -> List[Relationship]:
+    def load_relationships(self, node_id: str, direction: str = "outgoing") -> list[Relationship]:
         """Load relationships for a node."""
         raise NotImplementedError()
 
     @abstractmethod
-    def get_all_nodes(self) -> List[EvidenceNode]:
+    def get_all_nodes(self) -> list[EvidenceNode]:
         """Get all nodes in storage."""
         raise NotImplementedError()
 
@@ -216,8 +219,8 @@ class FileSystemNexusStorage(NexusStorage):
         (self.storage_dir / "indices").mkdir(exist_ok=True)
 
         # In-memory caches
-        self._node_cache: Dict[str, EvidenceNode] = {}
-        self._relationship_cache: Dict[str, List[Relationship]] = defaultdict(list)
+        self._node_cache: dict[str, EvidenceNode] = {}
+        self._relationship_cache: dict[str, list[Relationship]] = defaultdict(list)
 
     def save_node(self, node: EvidenceNode) -> None:
         """Save node to file system."""
@@ -228,7 +231,7 @@ class FileSystemNexusStorage(NexusStorage):
 
         self._node_cache[node.node_id] = node
 
-    def load_node(self, node_id: str) -> Optional[EvidenceNode]:
+    def load_node(self, node_id: str) -> EvidenceNode | None:
         """Load node from file system."""
         # Check cache first
         if node_id in self._node_cache:
@@ -248,8 +251,9 @@ class FileSystemNexusStorage(NexusStorage):
     def save_relationship(self, rel: Relationship) -> None:
         """Save relationship to file system."""
         rel_file = (
-            self.storage_dir / "relationships" /
-            f"{rel.from_id}_{rel.to_id}_{rel.relationship_type.value}.pkl"
+            self.storage_dir
+            / "relationships"
+            / f"{rel.from_id}_{rel.to_id}_{rel.relationship_type.value}.pkl"
         )
 
         with open(rel_file, "wb") as f:
@@ -264,11 +268,7 @@ class FileSystemNexusStorage(NexusStorage):
             if rel.to_id not in self._node_cache[rel.from_id].child_ids:
                 self._node_cache[rel.from_id].child_ids.append(rel.to_id)
 
-    def load_relationships(
-        self,
-        node_id: str,
-        direction: str = "outgoing"
-    ) -> List[Relationship]:
+    def load_relationships(self, node_id: str, direction: str = "outgoing") -> list[Relationship]:
         """Load relationships for a node."""
         cache_key = f"{node_id}_out" if direction == "outgoing" else f"{node_id}_in"
 
@@ -287,7 +287,7 @@ class FileSystemNexusStorage(NexusStorage):
         self._relationship_cache[cache_key] = relationships
         return relationships
 
-    def get_all_nodes(self) -> List[EvidenceNode]:
+    def get_all_nodes(self) -> list[EvidenceNode]:
         """Get all nodes from storage."""
         nodes_dir = self.storage_dir / "nodes"
 
@@ -301,6 +301,7 @@ class FileSystemNexusStorage(NexusStorage):
 
 
 # === EVIDENCE NEXUS IMPLEMENTATION ===
+
 
 class SOTAEvidenceNexus:
     """
@@ -325,14 +326,12 @@ class SOTAEvidenceNexus:
         Args:
             storage: Storage backend (uses file system if None)
         """
-        self.storage = storage or FileSystemNexusStorage(
-            Path("artifacts/evidence_nexus")
-        )
+        self.storage = storage or FileSystemNexusStorage(Path("artifacts/evidence_nexus"))
 
         # Indexes for fast queries
-        self._contradiction_index: Set[Tuple[str, str]] = set()
-        self._support_index: Set[Tuple[str, str]] = set()
-        self._type_index: Dict[str, Set[str]] = defaultdict(set)
+        self._contradiction_index: set[tuple[str, str]] = set()
+        self._support_index: set[tuple[str, str]] = set()
+        self._type_index: dict[str, set[str]] = defaultdict(set)
 
         # Load existing indexes
         self._build_indexes()
@@ -364,7 +363,7 @@ class SOTAEvidenceNexus:
 
         logger.debug("node_added", node_id=node.node_id, type=node.claim_type)
 
-    def get_node(self, node_id: str) -> Optional[EvidenceNode]:
+    def get_node(self, node_id: str) -> EvidenceNode | None:
         """Get a node by ID.
 
         Args:
@@ -375,7 +374,7 @@ class SOTAEvidenceNexus:
         """
         return self.storage.load_node(node_id)
 
-    def get_all_nodes(self) -> List[EvidenceNode]:
+    def get_all_nodes(self) -> list[EvidenceNode]:
         """Get all nodes in the nexus.
 
         Returns:
@@ -450,7 +449,7 @@ class SOTAEvidenceNexus:
         # Check for transitive support
         return self._has_transitive_support(node_id_a, node_id_b)
 
-    def find_contradictions(self, node_id: str) -> List[str]:
+    def find_contradictions(self, node_id: str) -> list[str]:
         """Find all nodes that contradict a given node.
 
         Args:
@@ -469,7 +468,7 @@ class SOTAEvidenceNexus:
 
         return contradictions
 
-    def find_supporting(self, node_id: str) -> List[str]:
+    def find_supporting(self, node_id: str) -> list[str]:
         """Find all nodes that support a given node.
 
         Args:
@@ -493,7 +492,7 @@ class SOTAEvidenceNexus:
         self,
         node_id: str,
         max_depth: int = 10,
-    ) -> Set[str]:
+    ) -> set[str]:
         """Compute transitive closure from a node.
 
         Args:
@@ -579,15 +578,12 @@ class SOTAEvidenceNexus:
             ("never ", ""),
             ("none ", ""),
             ("without ", ""),
-        }
+        ]
 
         for pattern in negation_patterns:
             if pattern[0] in content_a and pattern[1] in content_b:
                 # Check if rest of content is similar
-                similarity = self._text_similarity(
-                    content_a.replace(pattern[0], ""),
-                    content_b
-                )
+                similarity = self._text_similarity(content_a.replace(pattern[0], ""), content_b)
                 if similarity > 0.7:
                     return True
 
@@ -595,9 +591,7 @@ class SOTAEvidenceNexus:
         if node_a.claim_type == node_b.claim_type:
             # Same claim type but different sources
             if node_a.source != node_b.source:
-                content_similarity = self._text_similarity(
-                    content_a, content_b
-                )
+                content_similarity = self._text_similarity(content_a, content_b)
                 if content_similarity < 0.3:
                     # Different content, same type -> potential contradiction
                     return True
@@ -608,7 +602,7 @@ class SOTAEvidenceNexus:
         self,
         node_id_a: str,
         node_id_b: str,
-        visited: Optional[Set[str]] = None,
+        visited: set[str] | None = None,
     ) -> bool:
         """Check for transitive support relationship.
 
@@ -647,8 +641,8 @@ class SOTAEvidenceNexus:
         node_id: str,
         depth: int = 0,
         max_depth: int = 5,
-        visited: Optional[Set[str]] = None,
-    ) -> List[str]:
+        visited: set[str] | None = None,
+    ) -> list[str]:
         """Find all transitive supporters of a node.
 
         Args:
@@ -677,10 +671,7 @@ class SOTAEvidenceNexus:
                     supporters.append(node.node_id)
                     supporters.extend(
                         self._find_transitive_supporters(
-                            node.node_id,
-                            depth + 1,
-                            max_depth,
-                            visited.copy()
+                            node.node_id, depth + 1, max_depth, visited.copy()
                         )
                     )
 
@@ -689,7 +680,7 @@ class SOTAEvidenceNexus:
     def _compute_node_depth(
         self,
         node_id: str,
-        visited: Optional[Set[str]] = None,
+        visited: set[str] | None = None,
     ) -> int:
         """Compute depth of a node in the DAG.
 
@@ -750,6 +741,7 @@ class SOTAEvidenceNexus:
 
 
 # === FACTORY FUNCTION ===
+
 
 def create_evidence_nexus(
     storage_dir: Path | str | None = None,

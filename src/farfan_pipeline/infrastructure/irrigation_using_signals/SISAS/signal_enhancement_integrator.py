@@ -43,18 +43,18 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_method
     MethodExecutionMetadata,
     extract_method_metadata,
 )
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_validation_specs import (
-    ValidationSpecifications,
-    extract_validation_specifications,
-)
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_scoring_context import (
     ScoringContext,
-    extract_scoring_context,
     create_default_scoring_context,
+    extract_scoring_context,
 )
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_semantic_context import (
     SemanticContext,
     extract_semantic_context,
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_validation_specs import (
+    ValidationSpecifications,
+    extract_validation_specifications,
 )
 
 if TYPE_CHECKING:
@@ -355,7 +355,7 @@ class SignalEnhancementIntegrator:
             return {"themes": [], "validation_rules": {}}
 
         try:
-            with open(themes_path, "r", encoding="utf-8") as f:
+            with open(themes_path, encoding="utf-8") as f:
                 return json.load(f)
         except (OSError, json.JSONDecodeError) as e:
             logger.error("cross_cutting_themes_load_failed", error=str(e), exc_info=True)
@@ -375,7 +375,7 @@ class SignalEnhancementIntegrator:
             return {"dimension_flow": {}, "cross_dimension_validation_rules": {}}
 
         try:
-            with open(mapping_path, "r", encoding="utf-8") as f:
+            with open(mapping_path, encoding="utf-8") as f:
                 return json.load(f)
         except (OSError, json.JSONDecodeError) as e:
             logger.error("interdependency_mapping_load_failed", error=str(e), exc_info=True)

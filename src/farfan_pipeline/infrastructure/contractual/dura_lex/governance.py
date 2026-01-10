@@ -2,11 +2,12 @@
 Contract Governance Utilities
 """
 
-from typing import Type, Any, Callable
 import functools
+from collections.abc import Callable
+from typing import Any
 
 
-def uses_contract(contract_class: Type[Any]) -> Callable:
+def uses_contract(contract_class: type[Any]) -> Callable:
     """
     Decorator to explicitly declare that a function or class relies on a specific contract.
     This serves as documentation and allows for static analysis of contract dependencies.

@@ -2,9 +2,9 @@
 """
 CLI tool for Routing Contract (RC) check
 """
-import sys
-import json
 import hashlib
+import json
+
 from farfan_pipeline.contracts.routing_contract import RoutingContract, RoutingInput
 
 

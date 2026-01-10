@@ -45,14 +45,12 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
-from typing import Literal, Optional
+from typing import Literal
 
 from .phase0_10_01_runtime_config import (
     ConfigurationError,
-    FallbackCategory,
     RuntimeMode,
 )
-
 
 # ====================================================================================
 # PROD CONFIGURATION - Type-Level Enforcement of Critical Constraints
@@ -133,11 +131,11 @@ class ProdRuntimeConfig:
     preferred_embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 
     # Path Configuration
-    project_root_override: Optional[str] = None
-    data_dir_override: Optional[str] = None
-    output_dir_override: Optional[str] = None
-    cache_dir_override: Optional[str] = None
-    logs_dir_override: Optional[str] = None
+    project_root_override: str | None = None
+    data_dir_override: str | None = None
+    output_dir_override: str | None = None
+    cache_dir_override: str | None = None
+    logs_dir_override: str | None = None
 
     # External Dependencies
     hf_online: bool = False
@@ -150,7 +148,7 @@ class ProdRuntimeConfig:
     batch_size: int = 100
 
     @classmethod
-    def from_env(cls) -> "ProdRuntimeConfig":
+    def from_env(cls) -> ProdRuntimeConfig:
         """
         Parse PROD configuration from environment variables.
 
@@ -264,11 +262,11 @@ class DevRuntimeConfig:
     preferred_embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
 
     # Path Configuration
-    project_root_override: Optional[str] = None
-    data_dir_override: Optional[str] = None
-    output_dir_override: Optional[str] = None
-    cache_dir_override: Optional[str] = None
-    logs_dir_override: Optional[str] = None
+    project_root_override: str | None = None
+    data_dir_override: str | None = None
+    output_dir_override: str | None = None
+    cache_dir_override: str | None = None
+    logs_dir_override: str | None = None
 
     # External Dependencies
     hf_online: bool = False
@@ -281,7 +279,7 @@ class DevRuntimeConfig:
     batch_size: int = 100
 
     @classmethod
-    def from_env(cls, mode: RuntimeMode = RuntimeMode.DEV) -> "DevRuntimeConfig":
+    def from_env(cls, mode: RuntimeMode = RuntimeMode.DEV) -> DevRuntimeConfig:
         """
         Parse DEV configuration from environment variables.
 
@@ -378,7 +376,7 @@ def create_runtime_config_typed(
 
 
 __all__ = [
-    "ProdRuntimeConfig",
     "DevRuntimeConfig",
+    "ProdRuntimeConfig",
     "create_runtime_config_typed",
 ]

@@ -25,12 +25,12 @@ from __future__ import annotations
 import logging
 import time
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from .method_expander import ExpandedMethodUnit, MethodExpander
-    from .input_registry import QuestionMethodSet, ContractClassification, MethodAssignment
+    from .input_registry import ContractClassification, QuestionMethodSet
+    from .method_expander import MethodExpander
 
 logger = logging.getLogger(__name__)
 
@@ -282,7 +282,7 @@ class ChainComposer:
         chain = composer.compose_chain(method_set, classification)
     """
 
-    def __init__(self, expander: "MethodExpander"):
+    def __init__(self, expander: MethodExpander):
         """
         Inicializa el composer con un expander de métodos.
 
@@ -302,8 +302,8 @@ class ChainComposer:
 
     def compose_chain(
         self,
-        method_set: "QuestionMethodSet",
-        contract_classification: "ContractClassification",
+        method_set: QuestionMethodSet,
+        contract_classification: ContractClassification,
     ) -> EpistemicChain:
         """
         Compone cadena epistémica para una pregunta.
@@ -418,8 +418,8 @@ class ChainComposer:
 
     def compose_chain_with_report(
         self,
-        method_set: "QuestionMethodSet",
-        contract_classification: "ContractClassification",
+        method_set: QuestionMethodSet,
+        contract_classification: ContractClassification,
     ) -> tuple[EpistemicChain, CompositionReport]:
         """
         Compone cadena y genera reporte de composición.
@@ -487,7 +487,7 @@ class ChainComposer:
     # MÉTODOS PRIVADOS - VALIDACIÓN
     # ══════════════════════════════════════════════════════════════════════════
 
-    def _validate_phase_level_coherence(self, method_set: "QuestionMethodSet") -> None:
+    def _validate_phase_level_coherence(self, method_set: QuestionMethodSet) -> None:
         """
         Valida que los métodos asignados a cada fase tengan el nivel correcto.
 
@@ -541,7 +541,7 @@ class ChainComposer:
             )
 
     def _validate_composed_chain(
-        self, chain: EpistemicChain, method_set: "QuestionMethodSet"
+        self, chain: EpistemicChain, method_set: QuestionMethodSet
     ) -> None:
         """
         Validación post-composición de la cadena.
@@ -582,8 +582,8 @@ class ChainComposer:
 
     def _build_expansion_context(
         self,
-        method_set: "QuestionMethodSet",
-        contract_classification: "ContractClassification",
+        method_set: QuestionMethodSet,
+        contract_classification: ContractClassification,
     ) -> dict[str, Any]:
         """
         Construye contexto para expansión de métodos.
@@ -671,7 +671,7 @@ class ChainComposer:
 
     def _get_timestamp(self) -> str:
         """Retorna timestamp ISO 8601 con timezone UTC."""
-        return datetime.now(timezone.utc).isoformat()
+        return datetime.now(UTC).isoformat()
 
     # ══════════════════════════════════════════════════════════════════════════
     # PROPIEDADES PÚBLICAS

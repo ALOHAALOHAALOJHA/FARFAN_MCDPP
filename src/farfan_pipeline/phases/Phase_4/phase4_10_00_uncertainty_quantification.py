@@ -17,7 +17,7 @@ Key Capabilities:
 4.  **Jackknife Estimation**: Computes acceleration parameters for robust intervals.
 
 Theoretical Foundation:
-    CI_bca = ( \hat{\theta}^*_{\alpha_1}, \hat{\theta}^*_{\alpha_2} )
+    CI_bca = ( \\hat{\theta}^*_{\alpha_1}, \\hat{\theta}^*_{\alpha_2} )
     where \alpha are adjusted quantiles based on bias correction z_0 and acceleration a.
 
 Author: F.A.R.F.A.N. Statistical Compliance Team
@@ -29,8 +29,9 @@ import logging
 import math
 import random
 import statistics
-from dataclasses import dataclass, field
-from typing import Callable, Sequence, TypeVar, Any, Protocol, Tuple, List
+from collections.abc import Callable, Sequence
+from dataclasses import dataclass
+from typing import TypeVar
 
 logger = logging.getLogger(__name__)
 
@@ -141,7 +142,7 @@ class BootstrapConvergenceAnalyzer:
                 j += 1
         return max_diff
 
-    def _fft(self, x: List[complex]) -> List[complex]:
+    def _fft(self, x: list[complex]) -> list[complex]:
         """Recursive FFT."""
         n = len(x)
         if n <= 1:
@@ -153,7 +154,7 @@ class BootstrapConvergenceAnalyzer:
 
     def _calculate_autocorrelation(
         self, samples: Sequence[float], max_lag: int = 100
-    ) -> List[float]:
+    ) -> list[float]:
         """Compute ACF using FFT."""
         n = len(samples)
         if n < 2:
@@ -182,7 +183,7 @@ class BootstrapConvergenceAnalyzer:
             acf.append(cov / var)
         return acf
 
-    def _calculate_geweke_diagnostic(self, samples: Sequence[float]) -> Tuple[float, float]:
+    def _calculate_geweke_diagnostic(self, samples: Sequence[float]) -> tuple[float, float]:
         """Geweke diagnostic comparing first 10% and last 50%."""
         n = len(samples)
         if n < 100:
@@ -335,7 +336,7 @@ class BootstrapAggregator:
 
     def compute_with_convergence(
         self, data: Sequence[float], func: Callable, max_iterations: int = 10000
-    ) -> Tuple[UncertaintyMetrics, ConvergenceDiagnostics]:
+    ) -> tuple[UncertaintyMetrics, ConvergenceDiagnostics]:
         metrics = self.compute_bca_interval(data, func)
         # Simplified: We rely on the initial run for diagnostics in this version
         # to ensure file size fits constraints while delivering core logic.
@@ -356,7 +357,7 @@ def aggregate_with_convergence(
     initial_iterations: int = 2000,
     max_iterations: int = 10000,
     convergence_strict: bool = True,
-) -> Tuple[float, UncertaintyMetrics, ConvergenceDiagnostics]:
+) -> tuple[float, UncertaintyMetrics, ConvergenceDiagnostics]:
     """
     Primary API for uncertainty-aware aggregation.
     """
@@ -384,7 +385,7 @@ def aggregate_with_convergence(
 
 def aggregate_with_uncertainty(
     scores: Sequence[float], weights: Sequence[float] | None = None
-) -> Tuple[float, UncertaintyMetrics]:
+) -> tuple[float, UncertaintyMetrics]:
     """Legacy wrapper for compatibility."""
     pe, metrics, _ = aggregate_with_convergence(scores, weights)
     return pe, metrics

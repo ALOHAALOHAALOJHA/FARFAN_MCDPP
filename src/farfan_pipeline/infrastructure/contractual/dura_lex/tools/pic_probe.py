@@ -2,8 +2,8 @@
 """
 CLI tool for Permutation-Invariance Contract (PIC) probe
 """
-import sys
 import json
+
 from farfan_pipeline.contracts.permutation_invariance import PermutationInvarianceContract
 
 

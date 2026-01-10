@@ -8,11 +8,12 @@ from __future__ import annotations
 
 import asyncio
 import re
+from collections.abc import Mapping
 from dataclasses import asdict, is_dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from difflib import get_close_matches
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
 from uuid import uuid4
 
 import httpx
@@ -37,7 +38,7 @@ def _jsonable(obj: Any) -> Any:
     if isinstance(obj, Path):
         return str(obj)
     if isinstance(obj, datetime):
-        return obj.astimezone(timezone.utc).isoformat()
+        return obj.astimezone(UTC).isoformat()
     if isinstance(obj, (str, int, float, bool)) or obj is None:
         return obj
     return str(obj)
@@ -175,7 +176,7 @@ class DashboardIngester:
 
         payload = DashboardIngestRequest(
             run_id=run_id,
-            timestamp=datetime.now(timezone.utc),
+            timestamp=datetime.now(UTC),
             municipality=selector,
             macro_result=_jsonable(macro_result) if macro_result is not None else None,
             cluster_scores=_jsonable(cluster_scores) if cluster_scores is not None else None,

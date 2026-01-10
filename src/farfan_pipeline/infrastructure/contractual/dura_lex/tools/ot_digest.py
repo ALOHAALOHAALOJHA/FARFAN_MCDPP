@@ -2,8 +2,8 @@
 """
 CLI tool for Alignment Stability Contract (ASC) digest
 """
-import sys
 import json
+
 from farfan_pipeline.contracts.alignment_stability import AlignmentStabilityContract
 
 

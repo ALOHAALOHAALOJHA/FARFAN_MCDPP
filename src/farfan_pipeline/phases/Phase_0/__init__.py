@@ -61,31 +61,31 @@ from .phase0_00_01_domain_errors import (
     SystemContractError,
 )
 from .phase0_00_03_primitives import (
-    HashStr,
-    Timestamp,
-    RunID,
-    PolicyAreaID,
     DimensionID,
+    HashStr,
+    PolicyAreaID,
+    RunID,
+    Timestamp,
     validate_hash_str,
 )
 from .phase0_00_03_protocols import (
-    PhaseContract,
-    PhaseInvariant,
-    PhaseMetadata,
     ContractValidationResult,
     PhaseArtifact,
+    PhaseContract,
+    PhaseInvariant,
     PhaseManifestBuilder,
+    PhaseMetadata,
     compute_contract_hash,
 )
 
 # Stage 30: Resource Control
 from .phase0_30_00_resource_controller import (
-    ResourceController,
-    ResourceLimits,
-    ResourceExhausted,
-    MemoryWatchdog,
-    EnforcementMetrics,
     PSUTIL_AVAILABLE,
+    EnforcementMetrics,
+    MemoryWatchdog,
+    ResourceController,
+    ResourceExhausted,
+    ResourceLimits,
 )
 
 # =============================================================================

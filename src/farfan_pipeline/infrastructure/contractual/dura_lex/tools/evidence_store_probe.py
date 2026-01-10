@@ -2,8 +2,8 @@
 """
 CLI tool for Idempotency & De-dup Contract (IDC) probe
 """
-import sys
 import json
+
 from farfan_pipeline.contracts.idempotency_dedup import IdempotencyContract
 
 

@@ -26,16 +26,14 @@ import argparse
 import subprocess
 import sys
 from pathlib import Path
-from typing import List
-
 
 TESTS_DIR = Path(__file__).resolve().parent
 PHASE_TWO_DIR = TESTS_DIR.parent
 
 
 def run_tests(
-    test_files: List[str] | None = None,
-    markers: List[str] | None = None,
+    test_files: list[str] | None = None,
+    markers: list[str] | None = None,
     verbose: bool = True,
     html_report: bool = False,
     stop_on_first: bool = False,

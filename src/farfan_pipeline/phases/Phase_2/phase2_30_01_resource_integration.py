@@ -250,8 +250,8 @@ def integrate_with_orchestrator(
         enable_alerts=enable_alerts,
     )
 
-    setattr(orchestrator, "_resource_manager", resource_manager)
-    setattr(orchestrator, "_alert_manager", alert_manager)
+    orchestrator._resource_manager = resource_manager
+    orchestrator._alert_manager = alert_manager
 
     logger.info("Resource management integrated with orchestrator")
 

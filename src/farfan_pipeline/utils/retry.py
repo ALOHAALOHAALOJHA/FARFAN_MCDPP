@@ -13,11 +13,12 @@ Features:
 - Both decorator and imperative API
 """
 
-from functools import wraps
-from typing import TypeVar, Callable, Type, Sequence, Dict, Any
+import logging
 import random
 import time
-import logging
+from collections.abc import Callable, Sequence
+from functools import wraps
+from typing import Any, TypeVar
 
 T = TypeVar("T")
 
@@ -69,7 +70,7 @@ class RetryConfig:
         multiplier: float = 2.0,
         max_delay_seconds: float = 60.0,
         jitter_factor: float = 0.1,
-        retryable_exceptions: Sequence[Type[Exception]] = (Exception, TransientError),
+        retryable_exceptions: Sequence[type[Exception]] = (Exception, TransientError),
         on_retry: Callable[[Exception, int, float], None] | None = None,
     ):
         # Degradation metadata
@@ -102,7 +103,7 @@ class RetryConfig:
         self.total_retries = 0
         self.total_time_ms = 0.0
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Return a snapshot of retry metrics."""
         return {
             "total_chunks": self.total_chunks,

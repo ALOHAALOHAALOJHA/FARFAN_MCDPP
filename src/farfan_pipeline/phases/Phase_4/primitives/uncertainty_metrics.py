@@ -12,7 +12,7 @@ statistical inference methods including:
 4. Jackknife Estimation for acceleration parameters
 
 Theoretical Foundation:
-    CI_bca = ( \hat{\theta}^*_{\alpha_1}, \hat{\theta}^*_{\alpha_2} )
+    CI_bca = ( \\hat{\theta}^*_{\alpha_1}, \\hat{\theta}^*_{\alpha_2} )
     where \alpha are adjusted quantiles based on bias correction z_0
     and acceleration a.
 
@@ -26,8 +26,9 @@ import logging
 import math
 import random
 import statistics
-from dataclasses import dataclass, field
-from typing import Callable, Sequence, TypeVar, Tuple, List
+from collections.abc import Callable, Sequence
+from dataclasses import dataclass
+from typing import TypeVar
 
 T = TypeVar("T")
 
@@ -151,7 +152,7 @@ class BootstrapConvergenceAnalyzer:
 
     def _calculate_autocorrelation(
         self, samples: Sequence[float], max_lag: int = 100
-    ) -> List[float]:
+    ) -> list[float]:
         """Compute ACF using discrete correlation."""
         n = len(samples)
         if n < 2:
@@ -169,7 +170,7 @@ class BootstrapConvergenceAnalyzer:
             acf.append(cov / var)
         return acf
 
-    def _calculate_geweke_diagnostic(self, samples: Sequence[float]) -> Tuple[float, float]:
+    def _calculate_geweke_diagnostic(self, samples: Sequence[float]) -> tuple[float, float]:
         """Geweke diagnostic comparing first 10% and last 50%."""
         n = len(samples)
         if n < 100:
@@ -341,7 +342,7 @@ class BootstrapAggregator:
 
     def compute_with_convergence(
         self, data: Sequence[float], func: Callable, max_iterations: int = 10000
-    ) -> Tuple[UncertaintyMetrics, ConvergenceDiagnostics]:
+    ) -> tuple[UncertaintyMetrics, ConvergenceDiagnostics]:
         """
         Compute BCa interval with convergence diagnostics.
 
@@ -368,7 +369,7 @@ def aggregate_with_convergence(
     initial_iterations: int = 2000,
     max_iterations: int = 10000,
     convergence_strict: bool = True,
-) -> Tuple[float, UncertaintyMetrics, ConvergenceDiagnostics]:
+) -> tuple[float, UncertaintyMetrics, ConvergenceDiagnostics]:
     """
     Primary API for uncertainty-aware aggregation.
 
@@ -405,7 +406,7 @@ def aggregate_with_convergence(
 
 def aggregate_with_uncertainty(
     scores: Sequence[float], weights: Sequence[float] | None = None
-) -> Tuple[float, UncertaintyMetrics]:
+) -> tuple[float, UncertaintyMetrics]:
     """
     Legacy wrapper for compatibility.
 
@@ -421,12 +422,12 @@ def aggregate_with_uncertainty(
 
 
 __all__ = [
-    "DistributionError",
-    "ConvergenceError",
-    "UncertaintyMetrics",
-    "ConvergenceDiagnostics",
-    "BootstrapConvergenceAnalyzer",
     "BootstrapAggregator",
+    "BootstrapConvergenceAnalyzer",
+    "ConvergenceDiagnostics",
+    "ConvergenceError",
+    "DistributionError",
+    "UncertaintyMetrics",
     "aggregate_with_convergence",
     "aggregate_with_uncertainty",
 ]

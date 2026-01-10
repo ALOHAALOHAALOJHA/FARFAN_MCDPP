@@ -6,9 +6,9 @@ Owner Module: Phase 1 CPP Ingestion
 Lifecycle State:  ACTIVE
 """
 
-from dataclasses import dataclass
-from typing import Dict, Any
 import logging
+from dataclasses import dataclass
+from typing import Any
 
 from ..PHASE_1_CONSTANTS import PHASE1_LOGGER_NAME
 
@@ -52,7 +52,7 @@ class TruncationAudit:
             was_truncated=was_truncated,
         )
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary for serialization."""
         return {
             "total_chars": self.total_chars,

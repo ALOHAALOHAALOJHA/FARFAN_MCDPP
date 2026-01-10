@@ -20,24 +20,24 @@ from __future__ import annotations
 
 import asyncio
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 
 import structlog
 from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
 from fastapi.exceptions import RequestValidationError
-from starlette.exceptions import HTTPException as StarletteHTTPException
-from sse_starlette.sse import EventSourceResponse
-
 from orchestration.factory import load_questionnaire
+from sse_starlette.sse import EventSourceResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
+from farfan_pipeline.dashboard_atroz_.api_v1_errors import AtrozAPIException, api_error_response
+from farfan_pipeline.dashboard_atroz_.api_v1_router import router as atroz_router
+from farfan_pipeline.dashboard_atroz_.auth_router import router as auth_router
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
     PolicyArea,
     SignalPack,
 )
-from farfan_pipeline.dashboard_atroz_.api_v1_errors import AtrozAPIException, api_error_response
-from farfan_pipeline.dashboard_atroz_.api_v1_router import router as atroz_router
-from farfan_pipeline.dashboard_atroz_.auth_router import router as auth_router
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
@@ -222,7 +222,7 @@ async def health_check() -> dict[str, str]:
     """
     return {
         "status": "healthy",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "signal_count": len(_signal_store),
     }
 
@@ -312,7 +312,7 @@ async def stream_signals(request: Request) -> EventSourceResponse:
                 "event": "heartbeat",
                 "data": json.dumps(
                     {
-                        "timestamp": datetime.now(timezone.utc).isoformat(),
+                        "timestamp": datetime.now(UTC).isoformat(),
                         "signal_count": len(_signal_store),
                     }
                 ),

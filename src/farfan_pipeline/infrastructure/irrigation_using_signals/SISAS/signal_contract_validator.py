@@ -198,8 +198,8 @@ Refactoring: Surgical #3 of 4
 Enhanced: 2025-12-02
 """
 
-from dataclasses import dataclass, field
 import time
+from dataclasses import dataclass, field
 from typing import Any
 
 try:
@@ -1105,7 +1105,7 @@ class ValidationOrchestrator:
             status="error",
             passed=False,
             error_code="VALIDATION_ERROR",
-            remediation=f"Validation failed with error: {str(error)}. Check signal node configuration and result format.",
+            remediation=f"Validation failed with error: {error!s}. Check signal node configuration and result format.",
             diagnostics={
                 "question_id": question_id,
                 "error_type": type(error).__name__,
@@ -1668,7 +1668,7 @@ def validate_result_with_orchestrator(
             status="error",
             passed=False,
             error_code="VALIDATION_EXECUTION_ERROR",
-            remediation=f"Validation execution failed: {str(e)}",
+            remediation=f"Validation execution failed: {e!s}",
             diagnostics={
                 "question_id": question_id,
                 "error_type": type(e).__name__,
@@ -1740,7 +1740,7 @@ def validate_batch_results(
                 status="error",
                 passed=False,
                 error_code="BATCH_VALIDATION_ERROR",
-                remediation=f"Batch validation error: {str(e)}",
+                remediation=f"Batch validation error: {e!s}",
                 diagnostics={
                     "question_id": question_id,
                     "error_type": type(e).__name__,

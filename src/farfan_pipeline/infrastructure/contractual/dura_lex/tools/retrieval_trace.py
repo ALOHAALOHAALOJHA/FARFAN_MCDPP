@@ -2,8 +2,8 @@
 """
 CLI tool for Retriever Contract (ReC) trace
 """
-import sys
 import json
+
 from farfan_pipeline.contracts.retriever_contract import RetrieverContract
 
 

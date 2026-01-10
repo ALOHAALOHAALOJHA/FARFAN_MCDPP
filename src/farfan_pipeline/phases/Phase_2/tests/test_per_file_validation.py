@@ -14,10 +14,8 @@ Each Phase 2 module is tested for:
 
 from __future__ import annotations
 
-import ast
 import re
 from pathlib import Path
-from typing import Any
 
 import pytest
 
@@ -383,7 +381,7 @@ class TestAllModulesHavePhaseLabel:
             if "PHASE_LABEL" not in content[:3000]:
                 unlabeled.append(py_file.name)
 
-        assert not unlabeled, f"MODULES WITHOUT PHASE_LABEL:\n" + "\n".join(
+        assert not unlabeled, "MODULES WITHOUT PHASE_LABEL:\n" + "\n".join(
             f"  {m}" for m in unlabeled
         )
 
@@ -402,7 +400,7 @@ class TestNoLegacyPatternsInAnyModule:
             if matches:
                 violations.append((py_file.name, matches))
 
-        assert not violations, f"LEGACY EXECUTOR CLASSES in:\n" + "\n".join(
+        assert not violations, "LEGACY EXECUTOR CLASSES in:\n" + "\n".join(
             f"  {name}: {classes}" for name, classes in violations
         )
 

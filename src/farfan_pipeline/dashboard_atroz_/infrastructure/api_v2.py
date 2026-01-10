@@ -4,9 +4,7 @@ High-performance endpoints serving data from the PostgreSQL aggregation pyramid.
 """
 
 from fastapi import APIRouter
-from typing import List, Optional, Dict
 from pydantic import BaseModel
-import uuid
 
 router = APIRouter(prefix="/api/v2", tags=["dashboard"])
 
@@ -15,13 +13,13 @@ router = APIRouter(prefix="/api/v2", tags=["dashboard"])
 class RegionSummary(BaseModel):
     id: str
     name: str
-    macro_score: Optional[float]
-    macro_band: Optional[str]
-    coordinates: Optional[Dict[str, float]] = None
+    macro_score: float | None
+    macro_band: str | None
+    coordinates: dict[str, float] | None = None
 
 
 class ComparisonRequest(BaseModel):
-    region_ids: List[str]
+    region_ids: list[str]
 
 
 # Dependency
@@ -34,8 +32,8 @@ def get_db():
     pass
 
 
-@router.get("/regions", response_model=List[RegionSummary])
-async def list_regions(subregion_id: Optional[str] = None):
+@router.get("/regions", response_model=list[RegionSummary])
+async def list_regions(subregion_id: str | None = None):
     """
     List all regions, optionally filtered by PDET subregion.
     Uses cached aggregation table.

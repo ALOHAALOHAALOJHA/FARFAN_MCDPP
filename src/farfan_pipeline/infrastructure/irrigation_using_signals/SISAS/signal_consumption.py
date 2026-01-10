@@ -15,10 +15,11 @@ from __future__ import annotations
 import hashlib
 import json
 import time
+from collections.abc import Sequence
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
-from typing import TYPE_CHECKING, Any, ClassVar, Sequence
+from typing import TYPE_CHECKING, Any, ClassVar
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -379,7 +380,7 @@ class QuestionnaireAccessAudit:
     ) -> None:
         """Registra un acceso al cuestionario."""
         record = AccessRecord(
-            timestamp=datetime.now(timezone.utc).isoformat(),
+            timestamp=datetime.now(UTC).isoformat(),
             level=level,
             accessor_module=accessor_module,
             accessor_class=accessor_class,
@@ -413,7 +414,7 @@ class QuestionnaireAccessAudit:
         """Registra una violación de nivel arquitectónico."""
         self._violations.append(
             {
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
                 "type": violation_type,
                 "accessor": accessor,
                 "expected_level": expected_level.name,

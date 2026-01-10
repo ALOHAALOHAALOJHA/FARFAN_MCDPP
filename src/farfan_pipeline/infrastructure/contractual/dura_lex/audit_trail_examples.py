@@ -5,13 +5,13 @@ Demonstrates usage of the audit trail system for calibration verification.
 """
 
 from audit_trail import (
-    generate_manifest,
-    verify_manifest,
-    reconstruct_score,
-    validate_determinism,
     StructuredAuditLogger,
     TraceGenerator,
     create_trace_example,
+    generate_manifest,
+    reconstruct_score,
+    validate_determinism,
+    verify_manifest,
 )
 
 

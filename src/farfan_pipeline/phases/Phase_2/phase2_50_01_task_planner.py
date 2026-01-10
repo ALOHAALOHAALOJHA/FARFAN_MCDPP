@@ -4,16 +4,17 @@ PHASE_LABEL: Phase 2
 Sequence: N
 
 """
+
 from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
-    import farfan_pipeline.phases.Phase_2.irrigation_synchronizer import ChunkRoutingResult
+    from farfan_pipeline.phases.Phase_2.irrigation_synchronizer import ChunkRoutingResult
 
 logger = logging.getLogger(__name__)
 
@@ -58,9 +59,7 @@ class MicroQuestionContext:
         object.__setattr__(self, "patterns", tuple(self.patterns))
         object.__setattr__(self, "signals", _freeze_immutable(self.signals))
         object.__setattr__(self, "expected_elements", tuple(self.expected_elements))
-        object.__setattr__(
-            self, "signal_requirements", _freeze_immutable(self.signal_requirements)
-        )
+        object.__setattr__(self, "signal_requirements", _freeze_immutable(self.signal_requirements))
 
 
 @dataclass(frozen=True, slots=True)
@@ -109,9 +108,7 @@ def _validate_element_compatibility(  # noqa: PLR0912
     validated_count = 0
 
     if isinstance(question_schema, list) and isinstance(chunk_schema, list):
-        for idx, (q_elem, c_elem) in enumerate(
-            zip(question_schema, chunk_schema, strict=True)
-        ):
+        for idx, (q_elem, c_elem) in enumerate(zip(question_schema, chunk_schema, strict=True)):
             if q_elem.get("type") is None:
                 raise ValueError(
                     f"Task {provisional_task_id}: Question element at index {idx} "
@@ -160,8 +157,7 @@ def _validate_element_compatibility(  # noqa: PLR0912
                 )
             if c_elem.get("type") is None:
                 raise ValueError(
-                    f"Task {provisional_task_id}: Chunk element '{key}' "
-                    f"has missing type field"
+                    f"Task {provisional_task_id}: Chunk element '{key}' " f"has missing type field"
                 )
 
             if q_elem["type"] != c_elem["type"]:
@@ -266,8 +262,7 @@ def _construct_task(
 
     if question_global is None:
         raise ValueError(
-            f"Task construction failure for {question_id}: "
-            "question_global field missing or None"
+            f"Task construction failure for {question_id}: " "question_global field missing or None"
         )
 
     if not isinstance(question_global, int):
@@ -322,7 +317,7 @@ def _construct_task(
         "schema_element_count": len(expected_elements_list),
     }
 
-    creation_timestamp = datetime.now(timezone.utc).isoformat()
+    creation_timestamp = datetime.now(UTC).isoformat()
 
     dimension_id = (
         routing_result.dimension_id
@@ -368,9 +363,7 @@ def _construct_task_legacy(
 ) -> ExecutableTask:
     question_global = question.get("question_global")
 
-    if not isinstance(question_global, int) or not (
-        0 <= question_global <= MAX_QUESTION_GLOBAL
-    ):
+    if not isinstance(question_global, int) or not (0 <= question_global <= MAX_QUESTION_GLOBAL):
         raise ValueError(
             f"Invalid question_global: {question_global}. "
             f"Must be an integer in range 0-{MAX_QUESTION_GLOBAL}."
@@ -395,13 +388,11 @@ def _construct_task_legacy(
 
     if task_id in generated_task_ids:
         question_id = question.get("question_id", "")
-        raise ValueError(
-            f"Duplicate task_id detected: {task_id} for question {question_id}"
-        )
+        raise ValueError(f"Duplicate task_id detected: {task_id} for question {question_id}")
 
     generated_task_ids.add(task_id)
 
-    creation_timestamp = datetime.now(timezone.utc).isoformat()
+    creation_timestamp = datetime.now(UTC).isoformat()
 
     expected_elements = question.get("expected_elements", [])
     expected_elements_list = (

@@ -18,9 +18,10 @@ from __future__ import annotations
 
 import logging
 import math
+from collections.abc import Iterator, Sequence
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import Final, Iterator, Sequence
+from typing import Final
 
 logger = logging.getLogger(__name__)
 

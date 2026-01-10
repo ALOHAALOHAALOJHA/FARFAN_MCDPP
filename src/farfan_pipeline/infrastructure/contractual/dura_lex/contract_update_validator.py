@@ -12,14 +12,14 @@ This tool implements a careful, phased approach to updating executor contracts:
 Respects the manual effort invested in contract drafting with granular validation.
 """
 
-import json
 import hashlib
-import inspect
-import sys
-from pathlib import Path
-from typing import Any, Dict, List, Set, Tuple
-from datetime import datetime
 import importlib.util
+import inspect
+import json
+import sys
+from datetime import datetime
+from pathlib import Path
+from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parent
 SRC_ROOT = REPO_ROOT / "src"
@@ -33,7 +33,7 @@ class ContractUpdateValidator:
             SRC_ROOT
             / "farfan_pipeline"
             / "phases"
-            / "Phase_two"
+            / "Phase_2"
             / "json_files_phase_two"
             / "executor_contracts"
             / "specialized"
@@ -42,7 +42,7 @@ class ContractUpdateValidator:
             SRC_ROOT
             / "farfan_pipeline"
             / "phases"
-            / "Phase_two"
+            / "Phase_2"
             / "json_files_phase_two"
             / "executors_methods.json"
         )
@@ -64,7 +64,7 @@ class ContractUpdateValidator:
 
     def validate_method_replacement(
         self, old_class: str, old_method: str, new_class: str, new_method: str
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Validate that replacement method signature is compatible"""
         print(f"\n🔍 Validating: {old_class}.{old_method} → {new_class}.{new_method}")
 
@@ -90,10 +90,10 @@ class ContractUpdateValidator:
                 if self._signatures_compatible(old_sig, new_sig):
                     result["compatible"] = True
                     result["notes"].append("✅ Signatures compatible")
-                    print(f"   ✅ Signatures compatible")
+                    print("   ✅ Signatures compatible")
                 else:
                     result["notes"].append("⚠️  Signatures differ - may require adapter")
-                    print(f"   ⚠️  Signatures differ - may require adapter")
+                    print("   ⚠️  Signatures differ - may require adapter")
             else:
                 if not old_sig:
                     result["notes"].append(f"⚠️  Could not inspect {old_class}.{old_method}")
@@ -144,7 +144,7 @@ class ContractUpdateValidator:
         # More sophisticated check would parse parameters
         return old_sig is not None and new_sig is not None
 
-    def find_affected_contracts(self, class_name: str, method_name: str) -> List[Path]:
+    def find_affected_contracts(self, class_name: str, method_name: str) -> list[Path]:
         """Find all contracts that use a specific method"""
         affected = []
 
@@ -172,8 +172,8 @@ class ContractUpdateValidator:
         return affected
 
     def create_change_manifest(
-        self, replacements: List[Tuple[str, str, str, str]]
-    ) -> Dict[str, Any]:
+        self, replacements: list[tuple[str, str, str, str]]
+    ) -> dict[str, Any]:
         """Create detailed manifest of all changes to be made"""
         print("\n" + "=" * 80)
         print("CREATING CHANGE MANIFEST")
@@ -218,7 +218,7 @@ class ContractUpdateValidator:
         new_class: str,
         new_method: str,
         dry_run: bool = True,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Update a single contract (with dry-run mode)"""
         result = {
             "file": contract_path.name,
@@ -308,7 +308,7 @@ class ContractUpdateValidator:
 
         return result
 
-    def generate_validation_report(self, manifest: Dict[str, Any]) -> None:
+    def generate_validation_report(self, manifest: dict[str, Any]) -> None:
         """Generate comprehensive validation report"""
         print("\n" + "=" * 80)
         print("VALIDATION REPORT")

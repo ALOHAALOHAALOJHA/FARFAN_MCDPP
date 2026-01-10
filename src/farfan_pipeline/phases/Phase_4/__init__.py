@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Phase 4-7 Aggregation Pipeline — Canonical Package
 
@@ -14,61 +13,56 @@ from __future__ import annotations
 # ==============================================================================
 # LOCAL IMPORTS — Files live in this directory
 # ==============================================================================
-
 # Core Aggregation Pipeline
 from farfan_pipeline.phases.Phase_4.aggregation import (
-    # Dataclasses
-    AggregationSettings,
-    ScoredResult,
-    DimensionScore,
-    AreaScore,
-    ClusterScore,
-    MacroScore,
-    # Aggregators
-    DimensionAggregator,
-    AreaPolicyAggregator,
-    ClusterAggregator,
-    MacroAggregator,
     # Provenance (integrated)
     AggregationDAG,
-    ProvenanceNode,
+    # Dataclasses
+    AggregationSettings,
+    AreaPolicyAggregator,
+    AreaScore,
     # Bootstrap
     BootstrapAggregator,
+    ClusterAggregator,
+    ClusterScore,
+    # Aggregators
+    DimensionAggregator,
+    DimensionScore,
+    MacroAggregator,
+    MacroScore,
+    ProvenanceNode,
+    ScoredResult,
     # Utilities
     group_by,
     validate_scored_results,
 )
 
+# Provenance (standalone re-export for explicit access)
+from farfan_pipeline.phases.Phase_4.aggregation_provenance import (
+    AggregationDAG as ProvenanceDAG,
+)
+from farfan_pipeline.phases.Phase_4.aggregation_provenance import (
+    ProvenanceNode as ProvenanceEntry,
+)
+
 # Choquet Integral Aggregator
 from farfan_pipeline.phases.Phase_4.choquet_aggregator import (
+    CalibrationResult,
     ChoquetAggregator,
     ChoquetConfig,
-    CalibrationResult,
 )
 
 # Enhanced Aggregation
 from farfan_pipeline.phases.Phase_4.enhancements import (
-    EnhancedDimensionAggregator,
     DispersionMetrics,
+    EnhancedDimensionAggregator,
     HermeticityDiagnosis,
     enhance_aggregator,
 )
 
-# Validation
-from farfan_pipeline.phases.Phase_4.validation import (
-    validate_phase4_output,
-    validate_phase5_output,
-    validate_phase6_output,
-    validate_phase7_output,
-    validate_full_aggregation_pipeline,
-    ValidationResult,
-    AggregationValidationError,
-)
-
-# Provenance (standalone re-export for explicit access)
-from farfan_pipeline.phases.Phase_4.aggregation_provenance import (
-    AggregationDAG as ProvenanceDAG,
-    ProvenanceNode as ProvenanceEntry,
+# Adaptive Meso Scoring
+from farfan_pipeline.phases.Phase_4.enhancements.adaptive_meso_scoring import (
+    AdaptiveMesoScoring,
 )
 
 # Signal-Enriched Aggregation
@@ -76,9 +70,15 @@ from farfan_pipeline.phases.Phase_4.enhancements.signal_enriched_aggregation imp
     SignalEnrichedAggregator,
 )
 
-# Adaptive Meso Scoring
-from farfan_pipeline.phases.Phase_4.enhancements.adaptive_meso_scoring import (
-    AdaptiveMesoScoring,
+# Validation
+from farfan_pipeline.phases.Phase_4.validation import (
+    AggregationValidationError,
+    ValidationResult,
+    validate_full_aggregation_pipeline,
+    validate_phase4_output,
+    validate_phase5_output,
+    validate_phase6_output,
+    validate_phase7_output,
 )
 
 # ==============================================================================

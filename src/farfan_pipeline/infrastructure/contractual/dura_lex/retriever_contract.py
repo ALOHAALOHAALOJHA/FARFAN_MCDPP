@@ -4,14 +4,14 @@ Retriever Contract (ReC) - Implementation
 
 import hashlib
 import json
-from typing import List, Dict, Any
+from typing import Any
 
 
 class RetrieverContract:
     @staticmethod
     def retrieve(
-        query: str, filters: Dict[str, Any], index_hash: str, top_k: int = 5
-    ) -> List[Dict[str, Any]]:
+        query: str, filters: dict[str, Any], index_hash: str, top_k: int = 5
+    ) -> list[dict[str, Any]]:
         """
         Simulates hybrid retrieval (patterns+dimension+σ+Θ).
         In a real system, this would call FAISS/Pyserini.
@@ -33,7 +33,7 @@ class RetrieverContract:
         return results
 
     @staticmethod
-    def verify_determinism(query: str, filters: Dict[str, Any], index_hash: str) -> str:
+    def verify_determinism(query: str, filters: dict[str, Any], index_hash: str) -> str:
         """
         Returns a digest of the top-K results to verify determinism.
         """

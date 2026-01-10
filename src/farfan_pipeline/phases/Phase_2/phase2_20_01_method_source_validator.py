@@ -6,9 +6,9 @@ Sequence: AA
 """
 
 import ast
-import os
 import json
-from typing import Dict, List, Any
+import os
+from typing import Any
 
 
 class MethodSourceValidator:
@@ -16,13 +16,13 @@ class MethodSourceValidator:
         self.base_path = base_path
         self.source_map = self._build_source_map()
 
-    def _build_source_map(self) -> Dict[str, Dict[str, Any]]:
+    def _build_source_map(self) -> dict[str, dict[str, Any]]:
         class_map = {}
         for root, _, files in os.walk(self.base_path):
             for file in files:
                 if file.endswith(".py"):
                     file_path = os.path.join(root, file)
-                    with open(file_path, "r", encoding="utf-8") as f:
+                    with open(file_path, encoding="utf-8") as f:
                         try:
                             tree = ast.parse(f.read(), filename=file_path)
                             for node in ast.walk(tree):
@@ -50,8 +50,8 @@ class MethodSourceValidator:
     def validate_executor_methods(
         self,
         executor_methods_path: str = "src/farfan_pipeline/core/orchestrator/executors_methods.json",
-    ) -> Dict[str, List[str]]:
-        with open(executor_methods_path, "r") as f:
+    ) -> dict[str, list[str]]:
+        with open(executor_methods_path) as f:
             executor_data = json.load(f)
 
         declared_methods = set()
@@ -88,11 +88,11 @@ class MethodSourceValidator:
         # which is covered by "missing"
         return {"valid": valid, "missing": missing, "phantom": []}
 
-    def generate_source_truth_map(self) -> Dict[str, Dict[str, Any]]:
+    def generate_source_truth_map(self) -> dict[str, dict[str, Any]]:
         source_truth = {}
         for class_name, info in self.source_map.items():
             file_path = info["file_path"]
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 tree = ast.parse(f.read(), filename=file_path)
                 for node in ast.walk(tree):
                     if isinstance(node, ast.ClassDef) and node.name == class_name:

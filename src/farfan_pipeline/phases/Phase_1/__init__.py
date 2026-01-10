@@ -21,70 +21,70 @@ try:
     from .phase1_20_00_cpp_ingestion import Phase1MissionContract as Phase1Executor
 
     PHASE1_EXECUTOR_AVAILABLE = True
-except ImportError as e:
+except ImportError:
     Phase1Executor = None
     PHASE1_EXECUTOR_AVAILABLE = False
 
 # Data models
 from .phase1_10_00_models import (
-    SmartChunk,
+    Arguments,
+    CausalChains,
     Chunk,
+    Discourse,
+    IntegratedCausal,
+    KGEdge,
+    KGNode,
+    KnowledgeGraph,
     LanguageData,
     PreprocessedDoc,
-    StructureData,
-    KnowledgeGraph,
-    KGNode,
-    KGEdge,
-    CausalChains,
-    IntegratedCausal,
-    Arguments,
-    Temporal,
-    Discourse,
+    SmartChunk,
     Strategic,
+    StructureData,
+    Temporal,
     ValidationResult,
 )
-
-# Primitives
-from .primitives.truncation_audit import TruncationAudit
-from .primitives.streaming_extractor import StreamingPDFExtractor
 
 # Thread-safe utilities
 from .phase1_10_00_thread_safe_results import ThreadSafeResults
 
 # Constants
 from .PHASE_1_CONSTANTS import (
-    PDF_EXTRACTION_CHAR_LIMIT,
-    SEMANTIC_SCORE_MAX_EXPECTED,
-    ASSIGNMENT_METHOD_SEMANTIC,
     ASSIGNMENT_METHOD_FALLBACK,
-    VALID_ASSIGNMENT_METHODS,
+    ASSIGNMENT_METHOD_SEMANTIC,
     CHUNK_ID_PATTERN,
-    POLICY_AREA_COUNT,
     DIMENSION_COUNT,
-    TOTAL_CHUNK_COMBINATIONS,
-    SUBPHASE_COUNT,
+    PDF_EXTRACTION_CHAR_LIMIT,
     PHASE1_LOGGER_NAME,
+    POLICY_AREA_COUNT,
     RANDOM_SEED,
+    SEMANTIC_SCORE_MAX_EXPECTED,
+    SUBPHASE_COUNT,
+    TOTAL_CHUNK_COMBINATIONS,
+    VALID_ASSIGNMENT_METHODS,
 )
+from .primitives.streaming_extractor import StreamingPDFExtractor
+
+# Primitives
+from .primitives.truncation_audit import TruncationAudit
 
 # Question-aware architecture (v2.0) - NEW
 try:
     from .phase1_15_00_questionnaire_mapper import (
-        QuestionSpec,
-        QuestionnaireMap,
-        load_questionnaire_map,
-        invoke_method_set,
-        verify_expected_elements,
-        create_chunk_id_for_question,
-        parse_question_id,
-        TOTAL_QUESTIONS,
-        QUESTIONS_PER_DIMENSION,
-        NUM_POLICY_AREAS,
         NUM_DIMENSIONS,
+        NUM_POLICY_AREAS,
+        QUESTIONS_PER_DIMENSION,
+        TOTAL_QUESTIONS,
+        QuestionnaireMap,
+        QuestionSpec,
+        create_chunk_id_for_question,
+        invoke_method_set,
+        load_questionnaire_map,
+        parse_question_id,
+        verify_expected_elements,
     )
 
     QUESTIONNAIRE_MAPPER_AVAILABLE = True
-except ImportError as e:
+except ImportError:
     QuestionSpec = None
     QuestionnaireMap = None
     load_questionnaire_map = None
@@ -100,12 +100,14 @@ except ImportError as e:
 
 try:
     from .phase1_25_00_sp4_question_aware import (
-        execute_sp4_question_aware,
         TOTAL_CHUNK_COMBINATIONS as SP4_TOTAL_CHUNKS,
+    )
+    from .phase1_25_00_sp4_question_aware import (
+        execute_sp4_question_aware,
     )
 
     SP4_QUESTION_AWARE_AVAILABLE = True
-except ImportError as e:
+except ImportError:
     execute_sp4_question_aware = None
     SP4_TOTAL_CHUNKS = 300
     SP4_QUESTION_AWARE_AVAILABLE = False

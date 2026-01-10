@@ -39,18 +39,14 @@ References:
 from __future__ import annotations
 
 import itertools
-import json
 import logging
-import math
 import random
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
-from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any
 
 import numpy as np
-from scipy import stats
 from scipy.optimize import linprog
 
 logger = logging.getLogger(__name__)
@@ -123,18 +119,18 @@ class Recommendation:
     title: str
     description: str
     target_cluster: str
-    target_areas: List[str]
+    target_areas: list[str]
     priority_score: float
     confidence: float
-    confidence_interval: Tuple[float, float]
+    confidence_interval: tuple[float, float]
     leverage_score: float
     expected_impact: float
-    required_resources: Dict[str, float]
-    constraints: List[ConstraintType]
+    required_resources: dict[str, float]
+    constraints: list[ConstraintType]
     rationale: str
-    evidence_sources: List[str]
-    dependencies: List[str] = field(default_factory=list)
-    alternatives: List[str] = field(default_factory=list)
+    evidence_sources: list[str]
+    dependencies: list[str] = field(default_factory=list)
+    alternatives: list[str] = field(default_factory=list)
     implementation_complexity: int = 3
     time_to_impact_months: int = 12
 
@@ -154,12 +150,12 @@ class RecommendationSet:
         algorithm_version: Algorithm version identifier
     """
 
-    recommendations: List[Recommendation]
+    recommendations: list[Recommendation]
     total_expected_impact: float
     total_required_budget: float
     budget_utilization: float
-    pareto_frontier: List[List[str]]
-    sensitivity_analysis: Dict[str, Any]
+    pareto_frontier: list[list[str]]
+    sensitivity_analysis: dict[str, Any]
     generation_timestamp: str
     algorithm_version: str = "1.0.0-sota"
 
@@ -178,11 +174,11 @@ class EvaluationContext:
     """
 
     macro_score: float
-    cluster_scores: Dict[str, float]
-    area_scores: Dict[str, float]
-    causal_links: Dict[str, List[str]]
-    historical_trends: Dict[str, List[float]]
-    external_factors: Dict[str, Any]
+    cluster_scores: dict[str, float]
+    area_scores: dict[str, float]
+    causal_links: dict[str, list[str]]
+    historical_trends: dict[str, list[float]]
+    external_factors: dict[str, Any]
 
 
 @dataclass
@@ -260,7 +256,7 @@ class SOTARecommendationsEngine:
     def generate_recommendations(
         self,
         context: EvaluationContext,
-        custom_weights: Dict[str, float] | None = None,
+        custom_weights: dict[str, float] | None = None,
     ) -> RecommendationSet:
         """
         Generate comprehensive recommendation set.
@@ -319,7 +315,7 @@ class SOTARecommendationsEngine:
             / max(self.constraints.total_budget, 1),
             pareto_frontier=pareto_frontier,
             sensitivity_analysis=sensitivity,
-            generation_timestamp=datetime.now(timezone.utc).isoformat(),
+            generation_timestamp=datetime.now(UTC).isoformat(),
         )
 
         logger.info(
@@ -335,7 +331,7 @@ class SOTARecommendationsEngine:
 
     def _identify_underperforming_areas(
         self, context: EvaluationContext
-    ) -> List[Tuple[str, float, str]]:
+    ) -> list[tuple[str, float, str]]:
         """Identify underperforming clusters and areas.
 
         Returns:
@@ -360,8 +356,8 @@ class SOTARecommendationsEngine:
         return underperforming
 
     def _generate_candidate_interventions(
-        self, underperforming: List[Tuple[str, float, str, float]], context: EvaluationContext
-    ) -> List[Dict[str, Any]]:
+        self, underperforming: list[tuple[str, float, str, float]], context: EvaluationContext
+    ) -> list[dict[str, Any]]:
         """Generate candidate interventions based on templates.
 
         Uses pattern matching to select appropriate intervention templates.
@@ -384,8 +380,8 @@ class SOTARecommendationsEngine:
         return candidates
 
     def _estimate_causal_leverage(
-        self, candidates: List[Dict[str, Any]], context: EvaluationContext
-    ) -> List[Dict[str, Any]]:
+        self, candidates: list[dict[str, Any]], context: EvaluationContext
+    ) -> list[dict[str, Any]]:
         """Estimate causal leverage using do-calculus inspired framework.
 
         Implements R-03.
@@ -421,10 +417,10 @@ class SOTARecommendationsEngine:
 
     def _apply_topsis_ranking(
         self,
-        candidates: List[Dict[str, Any]],
+        candidates: list[dict[str, Any]],
         context: EvaluationContext,
-        custom_weights: Dict[str, float] | None = None,
-    ) -> List[Dict[str, Any]]:
+        custom_weights: dict[str, float] | None = None,
+    ) -> list[dict[str, Any]]:
         """Apply TOPSIS for multi-criteria ranking.
 
         Implements R-02.
@@ -501,9 +497,9 @@ class SOTARecommendationsEngine:
 
     def _optimize_resource_allocation(
         self,
-        candidates: List[Dict[str, Any]],
+        candidates: list[dict[str, Any]],
         constraints: ResourceConstraints,
-    ) -> List[Recommendation]:
+    ) -> list[Recommendation]:
         """Optimize resource allocation using linear programming.
 
         Implements R-06.
@@ -562,9 +558,9 @@ class SOTARecommendationsEngine:
 
     def _add_explanations(
         self,
-        recommendations: List[Recommendation],
+        recommendations: list[Recommendation],
         context: EvaluationContext,
-    ) -> List[Recommendation]:
+    ) -> list[Recommendation]:
         """Add natural language explanations.
 
         Implements R-04 using SHAP-like attribution.
@@ -618,9 +614,9 @@ class SOTARecommendationsEngine:
 
     def _estimate_confidence(
         self,
-        recommendations: List[Recommendation],
+        recommendations: list[Recommendation],
         context: EvaluationContext,
-    ) -> List[Recommendation]:
+    ) -> list[Recommendation]:
         """Estimate confidence intervals using bootstrapping.
 
         Implements R-05.
@@ -651,7 +647,7 @@ class SOTARecommendationsEngine:
 
         return recommendations
 
-    def _compute_pareto_frontier(self, recommendations: List[Recommendation]) -> List[List[str]]:
+    def _compute_pareto_frontier(self, recommendations: list[Recommendation]) -> list[list[str]]:
         """Compute Pareto-optimal recommendation combinations.
 
         Returns list of recommendation ID sets on the frontier.
@@ -686,9 +682,9 @@ class SOTARecommendationsEngine:
 
     def _perform_sensitivity_analysis(
         self,
-        recommendations: List[Recommendation],
+        recommendations: list[Recommendation],
         context: EvaluationContext,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Perform Monte Carlo sensitivity analysis.
 
         Implements R-05.
@@ -731,7 +727,7 @@ class SOTARecommendationsEngine:
 
     # === HELPER METHODS ===
 
-    def _load_intervention_templates(self) -> List[Dict[str, Any]]:
+    def _load_intervention_templates(self) -> list[dict[str, Any]]:
         """Load intervention templates from knowledge base."""
         templates = []
 
@@ -798,12 +794,12 @@ class SOTARecommendationsEngine:
         return templates
 
     def _template_matches(
-        self, template: Dict[str, Any], target: str, target_type: str, context: EvaluationContext
+        self, template: dict[str, Any], target: str, target_type: str, context: EvaluationContext
     ) -> bool:
         """Check if template matches target."""
         return target_type in template.get("applicable_targets", [])
 
-    def _estimate_feasibility(self, candidate: Dict[str, Any], context: EvaluationContext) -> float:
+    def _estimate_feasibility(self, candidate: dict[str, Any], context: EvaluationContext) -> float:
         """Estimate implementation feasibility."""
         base_feasibility = 0.7
 
@@ -817,7 +813,7 @@ class SOTARecommendationsEngine:
         feasibility = base_feasibility - complexity_penalty + capacity_adjustment
         return max(0.0, min(1.0, feasibility))
 
-    def _estimate_resource_efficiency(self, candidate: Dict[str, Any]) -> float:
+    def _estimate_resource_efficiency(self, candidate: dict[str, Any]) -> float:
         """Estimate resource efficiency (impact per unit budget)."""
         budget = candidate["template"].get("budget", 100)
         impact = candidate["template"].get("impact_range", (0.1, 0.2))
@@ -826,7 +822,7 @@ class SOTARecommendationsEngine:
         return expected_impact / max(budget, 1)
 
     def _build_recommendation(
-        self, candidate: Dict[str, Any], context: EvaluationContext, index: int
+        self, candidate: dict[str, Any], context: EvaluationContext, index: int
     ) -> Recommendation:
         """Build Recommendation object from candidate."""
         template = candidate["template"]
@@ -837,7 +833,7 @@ class SOTARecommendationsEngine:
         gap = candidate["performance_gap"]
         expected_impact = gap * sum(impact_range) / 2
 
-        rec_id = f"rec_{target}_{index:04d}_{datetime.now(timezone.utc).strftime('%Y%m%d')}"
+        rec_id = f"rec_{target}_{index:04d}_{datetime.now(UTC).strftime('%Y%m%d')}"
 
         return Recommendation(
             recommendation_id=rec_id,
@@ -862,7 +858,7 @@ class SOTARecommendationsEngine:
             time_to_impact_months=template.get("time_months", 12),
         )
 
-    def _recommendation_to_dict(self, rec: Recommendation) -> Dict[str, Any]:
+    def _recommendation_to_dict(self, rec: Recommendation) -> dict[str, Any]:
         """Convert recommendation to candidate dict."""
         return {
             "template": {
@@ -901,7 +897,7 @@ class SOTARecommendationsEngine:
             external_factors=context.external_factors,
         )
 
-    def _calculate_ranking_stability(self, base: List[str], variations: List[List[str]]) -> float:
+    def _calculate_ranking_stability(self, base: list[str], variations: list[list[str]]) -> float:
         """Calculate ranking stability using Kendall's tau."""
         from scipy.stats import kendalltau
 
@@ -927,8 +923,8 @@ class SOTARecommendationsEngine:
 
 def generate_sota_recommendations(
     macro_score: float,
-    cluster_scores: Dict[str, float],
-    area_scores: Dict[str, float],
+    cluster_scores: dict[str, float],
+    area_scores: dict[str, float],
     budget: float,
     time_horizon_months: int = 12,
     n_bootstrap_samples: int = 1000,

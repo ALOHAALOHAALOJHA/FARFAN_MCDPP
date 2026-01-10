@@ -25,7 +25,6 @@ __execution_pattern__ = "Per-Task"
 
 from enum import Enum
 
-
 # Cluster identifiers (4 total)
 CLUSTERS = ["CLUSTER_MESO_1", "CLUSTER_MESO_2", "CLUSTER_MESO_3", "CLUSTER_MESO_4"]
 

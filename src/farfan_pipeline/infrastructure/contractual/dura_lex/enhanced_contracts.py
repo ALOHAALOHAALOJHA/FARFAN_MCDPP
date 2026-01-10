@@ -25,11 +25,11 @@ import hashlib
 import json
 import logging
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
 from farfan_pipeline.core.parameters import ParameterLoaderV2
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 # ============================================================================
 # DOMAIN-SPECIFIC EXCEPTIONS
@@ -138,7 +138,7 @@ def utc_now_iso() -> str:
         >>> 'T' in ts and 'Z' in ts
         True
     """
-    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    return datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
 
 # ============================================================================
@@ -185,7 +185,7 @@ class BaseContract(BaseModel):
         try:
             dt = datetime.fromisoformat(v.replace("Z", "+00:00"))
             # Ensure UTC
-            if dt.tzinfo is None or dt.utcoffset() != timezone.utc.utcoffset(None):
+            if dt.tzinfo is None or dt.utcoffset() != UTC.utcoffset(None):
                 raise ValueError("Timestamp must be UTC")
             return v
         except (ValueError, AttributeError) as e:

@@ -672,7 +672,7 @@ class ContractAssembler:
 
         return {
             "engine": "EVIDENCE_NEXUS",
-            "module": "farfan_pipeline. phases.Phase_two.evidence_nexus",
+            "module": "farfan_pipeline. phases.Phase_2.evidence_nexus",
             "class_name": "EvidenceNexus",
             "method_name": "assemble",
             "type_system": type_system,

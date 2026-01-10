@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_eight.phase8_30_00_signal_enriched_recommendations
+Module: src.farfan_pipeline.phases.Phase_8.phase8_30_00_signal_enriched_recommendations
 Purpose: Signal-based enhancement for recommendation engine
 Owner: phase8_core
 Stage: 30 (Enrichment)
@@ -28,7 +28,7 @@ Author: F.A.R.F.A.N Pipeline Team
 from __future__ import annotations
 
 import logging
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     try:

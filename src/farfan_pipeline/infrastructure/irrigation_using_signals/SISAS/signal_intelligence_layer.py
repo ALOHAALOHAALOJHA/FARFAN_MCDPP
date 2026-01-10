@@ -51,6 +51,7 @@ Integration: 4 Surgical Refactorings + PDT Quality Integration
 """
 
 from dataclasses import dataclass
+from datetime import UTC
 from typing import Any
 
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.pdt_quality_integration import (
@@ -416,10 +417,10 @@ class EnrichedSignalPack:
             Tuple of (filtered_patterns, comprehensive_stats)
         """
         import time
-        from datetime import datetime, timezone
+        from datetime import datetime
 
         start_time = time.perf_counter()
-        timestamp = datetime.now(timezone.utc).isoformat()
+        timestamp = datetime.now(UTC).isoformat()
 
         pre_filter_count = len(self.patterns)
 
@@ -999,16 +1000,16 @@ def analyze_with_intelligence_layer(
 # === EXPORTS ===
 
 __all__ = [
-    "EnrichedSignalPack",
-    "create_enriched_signal_pack",
-    "analyze_with_intelligence_layer",
-    "create_document_context",
-    "PrecisionImprovementStats",
-    "compute_precision_improvement_stats",
-    "IntelligenceMetrics",
+    "EXPECTED_CONTRACT_COUNT",
+    "EXPECTED_ELEMENT_COUNT",
     "PRECISION_TARGET_THRESHOLD",
     "SEMANTIC_EXPANSION_MIN_MULTIPLIER",
     "SEMANTIC_EXPANSION_TARGET_MULTIPLIER",
-    "EXPECTED_ELEMENT_COUNT",
-    "EXPECTED_CONTRACT_COUNT",
+    "EnrichedSignalPack",
+    "IntelligenceMetrics",
+    "PrecisionImprovementStats",
+    "analyze_with_intelligence_layer",
+    "compute_precision_improvement_stats",
+    "create_document_context",
+    "create_enriched_signal_pack",
 ]

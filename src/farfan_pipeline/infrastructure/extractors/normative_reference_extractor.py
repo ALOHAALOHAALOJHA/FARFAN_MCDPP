@@ -27,14 +27,13 @@ Date: 2026-01-07
 """
 
 import json
+import logging
 import re
-from typing import Dict, List, Any, Optional, Tuple, Set
+from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-import logging
-from collections import defaultdict
 
-from .empirical_extractor_base import PatternBasedExtractor, ExtractionResult
+from .empirical_extractor_base import ExtractionResult, PatternBasedExtractor
 
 logger = logging.getLogger(__name__)
 
@@ -43,15 +42,15 @@ logger = logging.getLogger(__name__)
 class NormativeReference:
     """Represents a detected normative reference."""
 
-    entity_id: Optional[str]  # From registry, if matched
+    entity_id: str | None  # From registry, if matched
     canonical_name: str  # Official/canonical name
     detected_as: str  # How it appeared in text
     reference_type: str  # ley, decreto, conpes, acuerdo, etc.
-    year: Optional[int]  # Year of enactment
-    number: Optional[str]  # Reference number (e.g., "1448" in Ley 1448)
+    year: int | None  # Year of enactment
+    number: str | None  # Reference number (e.g., "1448" in Ley 1448)
     confidence: float
-    text_span: Tuple[int, int]
-    scoring_boost: Optional[Dict] = None
+    text_span: tuple[int, int]
+    scoring_boost: dict | None = None
 
 
 class NormativeReferenceExtractor(PatternBasedExtractor):
@@ -71,7 +70,7 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
     YEAR_MIN = 1990
     YEAR_MAX = 2030
 
-    def __init__(self, calibration_file: Optional[Path] = None):
+    def __init__(self, calibration_file: Path | None = None):
         super().__init__(
             signal_type="NORMATIVE_REFERENCE",  # Must match integration_map key
             calibration_file=calibration_file,
@@ -91,8 +90,8 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
 
     def _load_entity_registry(self):
         """Load normative entities from _registry/entities/normative.json."""
-        self.entity_registry: Dict[str, Dict] = {}
-        self.alias_to_entity: Dict[str, str] = {}  # Quick lookup by alias
+        self.entity_registry: dict[str, dict] = {}
+        self.alias_to_entity: dict[str, str] = {}  # Quick lookup by alias
 
         registry_path = (
             Path(__file__).resolve().parent.parent.parent.parent
@@ -107,7 +106,7 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
             return
 
         try:
-            with open(registry_path, "r", encoding="utf-8") as f:
+            with open(registry_path, encoding="utf-8") as f:
                 data = json.load(f)
 
             entities = data.get("entities", {})
@@ -197,7 +196,7 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
             for ref_type, patterns in self.reference_patterns.items()
         }
 
-    def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
+    def extract(self, text: str, context: dict | None = None) -> ExtractionResult:
         """
         Extract normative references from text.
 
@@ -210,7 +209,7 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
             return self._empty_result()
 
         references = []
-        seen_positions: Set[Tuple[int, int]] = set()
+        seen_positions: set[tuple[int, int]] = set()
 
         for ref_type, patterns in self._compiled_patterns.items():
             for pattern in patterns:
@@ -279,7 +278,7 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
 
     def _process_match(
         self, match: re.Match, ref_type: str, text: str
-    ) -> Optional[NormativeReference]:
+    ) -> NormativeReference | None:
         """Process a regex match into a NormativeReference."""
         detected_as = match.group(0)
 
@@ -326,8 +325,8 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
         )
 
     def _match_to_registry(
-        self, detected: str, ref_type: str, number: Optional[str], year: Optional[int]
-    ) -> Tuple[Optional[str], Optional[str], Optional[Dict]]:
+        self, detected: str, ref_type: str, number: str | None, year: int | None
+    ) -> tuple[str | None, str | None, dict | None]:
         """Try to match detected reference to entity registry."""
 
         # Normalize detected text for lookup
@@ -383,7 +382,7 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
         return None, None, None
 
     def _build_canonical_name(
-        self, ref_type: str, number: Optional[str], year: Optional[int], detected: str
+        self, ref_type: str, number: str | None, year: int | None, detected: str
     ) -> str:
         """Build a canonical name when no registry match."""
         ref_type_cap = ref_type.capitalize()
@@ -396,7 +395,7 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
             return detected
 
     def _calculate_confidence(
-        self, entity_id: Optional[str], number: Optional[str], year: Optional[int]
+        self, entity_id: str | None, number: str | None, year: int | None
     ) -> float:
         """Calculate confidence for a reference."""
         base = 0.6
@@ -415,7 +414,7 @@ class NormativeReferenceExtractor(PatternBasedExtractor):
 
         return min(1.0, base)
 
-    def _validate_extraction(self, result: ExtractionResult) -> Dict:
+    def _validate_extraction(self, result: ExtractionResult) -> dict:
         """Validate extraction against calibration thresholds."""
         return {
             "passes_threshold": result.confidence >= 0.80,

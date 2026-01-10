@@ -21,12 +21,12 @@ Additional Types:
 - COHERENCE_SIGNAL
 """
 
-from enum import Enum
-from dataclasses import dataclass, field
-from typing import Any, Optional, Tuple, Dict, List
-from datetime import datetime
 import hashlib
 import json
+from dataclasses import dataclass, field
+from datetime import datetime
+from enum import Enum
+from typing import Any
 
 
 class SignalType(Enum):
@@ -71,7 +71,7 @@ class SignalType(Enum):
         }
         return mc_map.get(mc_id, cls.STRUCTURAL_MARKER)
 
-    def to_mc_id(self) -> Optional[str]:
+    def to_mc_id(self) -> str | None:
         """Convert signal type to membership criteria ID."""
         mc_map = {
             self.STRUCTURAL_MARKER: "MC01",
@@ -115,23 +115,23 @@ class Signal:
     source_chunk_id: str
     confidence: float
 
-    payload: Dict[str, Any]
+    payload: dict[str, Any]
 
     # Provenance
     producer_node: str
     produced_at: datetime = field(default_factory=datetime.now)
 
     # Capabilities required to process (Rule 3)
-    required_capabilities: Tuple[str, ...] = field(default_factory=tuple)
+    required_capabilities: tuple[str, ...] = field(default_factory=tuple)
 
     # Scope information (Rule 1)
-    scope_tags: Tuple[str, ...] = field(default_factory=tuple)
+    scope_tags: tuple[str, ...] = field(default_factory=tuple)
 
     # Value-add estimation (Rule 2)
     estimated_value_add: float = 0.5
 
     # Lineage
-    parent_signal_ids: Tuple[str, ...] = field(default_factory=tuple)
+    parent_signal_ids: tuple[str, ...] = field(default_factory=tuple)
 
     def __hash__(self):
         return hash(self.signal_id)
@@ -141,7 +141,7 @@ class Signal:
             return self.signal_id == other.signal_id
         return False
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert signal to dictionary for serialization."""
         return {
             "signal_id": self.signal_id,
@@ -162,7 +162,7 @@ class Signal:
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> "Signal":
+    def from_dict(cls, data: dict[str, Any]) -> "Signal":
         """Create signal from dictionary."""
         return cls(
             signal_id=data["signal_id"],
@@ -241,7 +241,7 @@ class SignalFactory:
     _counter = 0
 
     @classmethod
-    def _generate_id(cls, signal_type: SignalType, payload: Dict) -> str:
+    def _generate_id(cls, signal_type: SignalType, payload: dict) -> str:
         """Generate unique signal ID."""
         cls._counter += 1
         content = f"{signal_type.value}:{cls._counter}:{json.dumps(payload, sort_keys=True)}"
@@ -254,10 +254,10 @@ class SignalFactory:
         signal_type: SignalType,
         source_chunk_id: str,
         confidence: float,
-        payload: Dict[str, Any],
+        payload: dict[str, Any],
         producer_node: str,
-        scope_tags: Optional[Tuple[str, ...]] = None,
-        parent_signal_ids: Optional[Tuple[str, ...]] = None,
+        scope_tags: tuple[str, ...] | None = None,
+        parent_signal_ids: tuple[str, ...] | None = None,
     ) -> Signal:
         """Create a new signal with proper defaults.
 
@@ -296,7 +296,7 @@ class SignalFactory:
 
     @classmethod
     def _estimate_value_add(
-        cls, signal_type: SignalType, payload: Dict[str, Any], base_value: float
+        cls, signal_type: SignalType, payload: dict[str, Any], base_value: float
     ) -> float:
         """Estimate value-add based on signal type and payload completeness."""
 
@@ -329,6 +329,6 @@ class SignalFactory:
 
 
 # Type aliases for common signal collections
-SignalList = List[Signal]
-SignalDict = Dict[str, Signal]
-SignalsByType = Dict[SignalType, SignalList]
+SignalList = list[Signal]
+SignalDict = dict[str, Signal]
+SignalsByType = dict[SignalType, SignalList]

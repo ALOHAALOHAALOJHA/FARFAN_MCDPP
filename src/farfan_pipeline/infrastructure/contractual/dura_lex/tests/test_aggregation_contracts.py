@@ -10,13 +10,13 @@ Tests contract validation for all aggregation levels:
 """
 
 import pytest
+
 from farfan_pipeline.infrastructure.contractual.dura_lex.aggregation_contract import (
-    DimensionAggregationContract,
     AreaAggregationContract,
     ClusterAggregationContract,
+    DimensionAggregationContract,
     MacroAggregationContract,
     create_aggregation_contract,
-    AggregationContractViolation,
 )
 
 

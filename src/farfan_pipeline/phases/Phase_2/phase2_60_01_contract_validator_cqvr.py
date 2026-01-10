@@ -252,9 +252,7 @@ class CQVRValidator:
             )
             return 0.0
 
-        if mandatory_signals and threshold > 0:
-            score += 5.0
-        elif not mandatory_signals:
+        if (mandatory_signals and threshold > 0) or not mandatory_signals:
             score += 5.0
 
         if mandatory_signals and all(isinstance(s, str) for s in mandatory_signals):
@@ -689,8 +687,8 @@ class CQVRValidator:
 # === MODULE EXPORTS ===
 
 __all__ = [
-    "ContractValidatorCQVR",
-    "ValidationScore",
-    "ValidationResult",
     "ContractValidationError",
+    "ContractValidatorCQVR",
+    "ValidationResult",
+    "ValidationScore",
 ]

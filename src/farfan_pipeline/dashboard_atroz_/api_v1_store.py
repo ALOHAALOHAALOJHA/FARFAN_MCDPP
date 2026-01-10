@@ -11,7 +11,7 @@ import asyncio
 import hashlib
 from collections import deque
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any, Literal
 
 from .api_v1_schemas import (
@@ -33,8 +33,7 @@ from .api_v1_schemas import (
     TimelinePoint,
 )
 from .api_v1_utils import slugify
-from .pdet_colombia_data import PDETSubregion, PDET_MUNICIPALITIES, PDETMunicipality
-
+from .pdet_colombia_data import PDET_MUNICIPALITIES, PDETMunicipality, PDETSubregion
 
 ExpectedClusterKey = Literal["governance", "social", "economic", "environmental"]
 
@@ -549,7 +548,7 @@ class AtrozStore:
 
         points.append(
             TimelinePoint(
-                timestamp=timestamp.astimezone(timezone.utc).isoformat(),
+                timestamp=timestamp.astimezone(UTC).isoformat(),
                 scores={
                     "overall": region.scores.overall,
                     "governance": region.scores.governance,

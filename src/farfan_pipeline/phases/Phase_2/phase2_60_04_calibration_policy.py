@@ -10,7 +10,7 @@ Author: F.A.R.F.A.N Policy Pipeline
 License: Proprietary
 
 This module is part of Phase 2: Analysis & Question Execution.
-All files in Phase_two/ must contain PHASE_LABEL: Phase 2.
+All files in Phase_2/ must contain PHASE_LABEL: Phase 2.
 
 DESIGN PATTERN: Policy Facade
 - Provides high-level policy resolution for 300 JSON contracts
@@ -32,76 +32,58 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any, Final
 
 # ============================================================================
 # INFRASTRUCTURE IMPORTS - Core calibration types
 # ============================================================================
 from farfan_pipeline.infrastructure.calibration import (
-    # Core types
     CalibrationLayer,
     CalibrationParameter,
     CalibrationPhase,
-    ClosedInterval,
-    ValidityStatus,
-    # Type defaults
-    get_type_defaults,
-    is_operation_prohibited,
-    PROHIBITED_OPERATIONS,
+    FiscalContext,
     # Ingestion calibrator
     IngestionCalibrator,
-    CalibrationStrategy,
-    StandardCalibrationStrategy,
-    # Phase-2 calibrator
-    Phase2Calibrator,
-    Phase2CalibrationResult,
+    MethodBinding,
     # Method binding
     MethodBindingSet,
-    MethodBinding,
-    MethodBindingValidator,
-    EpistemicViolation,
-    ValidationSeverity,
-    # Unit of analysis
-    UnitOfAnalysis,
-    FiscalContext,
     MunicipalityCategory,
+    Phase2CalibrationResult,
+    # Phase-2 calibrator
+    Phase2Calibrator,
+    UnitOfAnalysis,
+    is_operation_prohibited,
+)
+from farfan_pipeline.infrastructure.calibration.calibration_auditor import (
+    AuditResult,
+    CalibrationAuditor,
 )
 
 # ============================================================================
 # EXTENDED INFRASTRUCTURE IMPORTS - For manifest, audit, governance
 # ============================================================================
 from farfan_pipeline.infrastructure.calibration.calibration_manifest import (
-    CalibrationManifest,
     CalibrationDecision,
-    ManifestBuilder,
-    DriftIndicator,
+    CalibrationManifest,
     DriftReport,
-)
-from farfan_pipeline.infrastructure.calibration.calibration_auditor import (
-    CalibrationAuditor,
-    AuditResult,
-    CalibrationViolation,
-    CalibrationSpecification,
-)
-from farfan_pipeline.infrastructure.calibration.interaction_governor import (
-    InteractionGovernor,
-    DependencyGraph,
-    MethodNode,
-    VetoCoordinator,
-    VetoResult,
-    VetoReport,
-    InteractionViolation,
-    InteractionViolationType,
-    bounded_multiplicative_fusion,
+    ManifestBuilder,
 )
 from farfan_pipeline.infrastructure.calibration.fact_registry import (
     CanonicalFactRegistry,
-    FactEntry,
-    FactFactory,
     EpistemologicalLevel,
-    DuplicateRecord,
+    FactFactory,
     RegistryStatistics,
+)
+from farfan_pipeline.infrastructure.calibration.interaction_governor import (
+    DependencyGraph,
+    InteractionGovernor,
+    InteractionViolation,
+    MethodNode,
+    VetoCoordinator,
+    VetoReport,
+    VetoResult,
+    bounded_multiplicative_fusion,
 )
 
 logger = logging.getLogger(__name__)
@@ -532,7 +514,7 @@ class CalibrationOrchestrator:
         )
 
         # Step 3: Build manifest
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         manifest = (
             ManifestBuilder(
                 contract_id=binding_set.contract_id,

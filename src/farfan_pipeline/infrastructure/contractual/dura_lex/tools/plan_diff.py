@@ -2,8 +2,8 @@
 """
 CLI tool for Budget & Monotonicity Contract (BMC) plan diff
 """
-import sys
 import json
+
 from farfan_pipeline.contracts.budget_monotonicity import BudgetMonotonicityContract
 
 

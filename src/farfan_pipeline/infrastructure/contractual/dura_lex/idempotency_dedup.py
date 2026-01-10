@@ -4,15 +4,15 @@ Idempotency & De-dup Contract (IDC) - Implementation
 
 import hashlib
 import json
-from typing import List, Dict, Any, Set
+from typing import Any
 
 
 class EvidenceStore:
     def __init__(self):
-        self.evidence: Dict[str, Any] = {}  # content_hash -> evidence
+        self.evidence: dict[str, Any] = {}  # content_hash -> evidence
         self.duplicates_blocked = 0
 
-    def add(self, item: Dict[str, Any]):
+    def add(self, item: dict[str, Any]):
         # Calculate content hash
         content_hash = hashlib.blake2b(json.dumps(item, sort_keys=True).encode()).hexdigest()
 
@@ -29,7 +29,7 @@ class EvidenceStore:
 
 class IdempotencyContract:
     @staticmethod
-    def verify_idempotency(items: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def verify_idempotency(items: list[dict[str, Any]]) -> dict[str, Any]:
         store = EvidenceStore()
         for item in items:
             store.add(item)

@@ -17,9 +17,10 @@ from __future__ import annotations
 import json
 import logging
 from collections import defaultdict
-from datetime import datetime, timedelta, timezone
+from collections.abc import Callable
+from datetime import UTC, datetime, timedelta
 from enum import Enum
-from typing import Any, Callable
+from typing import Any
 
 from orchestration.resource_manager import (
     ResourcePressureEvent,
@@ -63,7 +64,7 @@ class ResourceAlert:
         self.message = message
         self.event = event
         self.metadata = metadata or {}
-        self.timestamp = datetime.now(timezone.utc)
+        self.timestamp = datetime.now(UTC)
         self.alert_id = f"alert_{self.timestamp.isoformat()}_{id(self)}"
 
     def to_dict(self) -> dict[str, Any]:
@@ -303,7 +304,7 @@ class ResourceAlertManager:
 
     def _should_alert(self, alert_type: str, minutes: int = 5) -> bool:
         """Check if alert should be sent (with rate limiting)."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         last_time = self.last_alert_times.get(alert_type)
 
         if not last_time:
@@ -392,7 +393,7 @@ class ResourceAlertManager:
 
     def get_alert_summary(self) -> dict[str, Any]:
         """Get summary of alert history."""
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         hour_ago = now - timedelta(hours=1)
         day_ago = now - timedelta(days=1)
 

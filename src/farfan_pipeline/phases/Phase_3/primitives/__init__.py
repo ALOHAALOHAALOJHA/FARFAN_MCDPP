@@ -1,12 +1,12 @@
-from .scoring_modalities import apply_scoring, ScoredResult, ModalityConfig
-from .mathematical_foundation import wilson_score_interval, weighted_aggregation
+from .mathematical_foundation import weighted_aggregation, wilson_score_interval
 from .quality_levels import QualityLevel
+from .scoring_modalities import ModalityConfig, ScoredResult, apply_scoring
 
 __all__ = [
-    "apply_scoring",
-    "ScoredResult",
     "ModalityConfig",
-    "wilson_score_interval",
-    "weighted_aggregation",
     "QualityLevel",
+    "ScoredResult",
+    "apply_scoring",
+    "weighted_aggregation",
+    "wilson_score_interval",
 ]

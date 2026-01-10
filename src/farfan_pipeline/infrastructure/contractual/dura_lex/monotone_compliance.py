@@ -2,8 +2,8 @@
 Monotone Compliance Contract (MCC) - Implementation
 """
 
-from typing import Set, Dict, Any
 from enum import IntEnum
+from typing import Any
 
 
 class Label(IntEnum):
@@ -14,7 +14,7 @@ class Label(IntEnum):
 
 class MonotoneComplianceContract:
     @staticmethod
-    def evaluate(evidence: Set[str], rules: Dict[str, Any]) -> Label:
+    def evaluate(evidence: set[str], rules: dict[str, Any]) -> Label:
         """
         Evaluates label based on evidence and Horn-like clauses.
         Simple logic:
@@ -34,7 +34,7 @@ class MonotoneComplianceContract:
 
     @staticmethod
     def verify_monotonicity(
-        evidence_subset: Set[str], evidence_superset: Set[str], rules: Dict[str, Any]
+        evidence_subset: set[str], evidence_superset: set[str], rules: dict[str, Any]
     ) -> bool:
         """
         Verifies label(E') >= label(E) for E ⊆ E'.

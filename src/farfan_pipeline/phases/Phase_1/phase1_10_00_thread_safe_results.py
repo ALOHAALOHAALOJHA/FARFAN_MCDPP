@@ -6,9 +6,10 @@ Owner Module: Phase 1 CPP Ingestion
 Lifecycle State: ACTIVE
 """
 
-from collections import UserDict
 import threading
-from typing import Any, Dict, Optional, Iterator
+from collections import UserDict
+from collections.abc import Iterator
+from typing import Any
 
 
 class ThreadSafeResults(UserDict):
@@ -17,7 +18,7 @@ class ThreadSafeResults(UserDict):
     Inherits from UserDict to ensure compatibility with dict interfaces.
     """
 
-    def __init__(self, initial_data: Optional[Dict[Any, Any]] = None):
+    def __init__(self, initial_data: dict[Any, Any] | None = None):
         super().__init__(initial_data)
         self.lock = threading.Lock()
 
@@ -54,7 +55,7 @@ class ThreadSafeResults(UserDict):
         with self.lock:
             return ThreadSafeResults(self.data.copy())
 
-    def to_dict(self) -> Dict[Any, Any]:
+    def to_dict(self) -> dict[Any, Any]:
         """Return a copy as a standard dict."""
         with self.lock:
             return self.data.copy()

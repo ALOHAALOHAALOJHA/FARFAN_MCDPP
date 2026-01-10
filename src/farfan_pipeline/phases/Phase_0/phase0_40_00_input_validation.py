@@ -54,7 +54,7 @@ from __future__ import annotations
 
 import hashlib
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -71,7 +71,7 @@ except ImportError as e:
     ) from e
 
 # Phase protocol from Phase Zero Infrastructure
-import farfan_pipeline.phases.Phase_0.phase0_00_03_protocols import (
+from farfan_pipeline.phases.Phase_0.phase0_00_03_protocols import (
     ContractValidationResult,
 )
 
@@ -82,12 +82,18 @@ try:
     # Import directly from module files, not through package __init__
     import sys
     from pathlib import Path
-    dura_lex_path = Path(__file__).resolve().parent.parent.parent / "farfan_pipeline/infrastructure" / "contractual" / "dura_lex"
-    sys.path.insert(0, str(dura_lex_path))  # noqa: E501 - workaround for broken __init__.py
-    
-    from idempotency_dedup import IdempotencyContract, EvidenceStore
-    from traceability import TraceabilityContract, MerkleTree
-    
+
+    dura_lex_path = (
+        Path(__file__).resolve().parent.parent.parent
+        / "farfan_pipeline/infrastructure"
+        / "contractual"
+        / "dura_lex"
+    )
+    sys.path.insert(0, str(dura_lex_path))
+
+    from idempotency_dedup import EvidenceStore, IdempotencyContract
+    from traceability import MerkleTree, TraceabilityContract
+
     DURA_LEX_AVAILABLE = True
 except ImportError:
     DURA_LEX_AVAILABLE = False
@@ -116,7 +122,7 @@ class Phase0Input:
     pdf_path: Path
     run_id: str
     questionnaire_path: Path | None = None
-    
+
     def __post_init__(self) -> None:
         """Validate types at construction time."""
         if not isinstance(self.pdf_path, Path):
@@ -124,38 +130,38 @@ class Phase0Input:
         if not isinstance(self.run_id, str):
             raise TypeError(f"run_id must be str, got {type(self.run_id).__name__}")
         if self.questionnaire_path is not None and not isinstance(self.questionnaire_path, Path):
-            raise TypeError(f"questionnaire_path must be Path or None, got {type(self.questionnaire_path).__name__}")
+            raise TypeError(
+                f"questionnaire_path must be Path or None, got {type(self.questionnaire_path).__name__}"
+            )
 
 
 class Phase0InputValidator(BaseModel):
     """
     Runtime validator for Phase0Input contract - Dura Lex StrictModel Pattern.
-    
+
     Uses pydantic for strict runtime validation following the dura_lex contract system.
     This ensures maximum performance and deterministic execution with zero tolerance
     for invalid inputs.
-    
+
     Configuration follows dura_lex/contracts_runtime.py StrictModel pattern:
     - extra='forbid': Refuse unknown fields
     - validate_assignment=True: Validate on assignment
     - str_strip_whitespace=True: Auto-strip strings
     - validate_default=True: Validate default values
     """
-    
+
     # Strict configuration per dura_lex contract system
     model_config = {
-        'extra': 'forbid',  # Refuse unknown fields - zero tolerance
-        'validate_assignment': True,  # Validate on assignment
-        'str_strip_whitespace': True,  # Auto-strip whitespace
-        'validate_default': True,  # Validate defaults
-        'frozen': False,  # Allow mutation for validation
+        "extra": "forbid",  # Refuse unknown fields - zero tolerance
+        "validate_assignment": True,  # Validate on assignment
+        "str_strip_whitespace": True,  # Auto-strip whitespace
+        "validate_default": True,  # Validate defaults
+        "frozen": False,  # Allow mutation for validation
     }
 
     pdf_path: str = Field(min_length=1, description="Path to input PDF")
     run_id: str = Field(min_length=1, description="Unique run identifier")
-    questionnaire_path: str | None = Field(
-        default=None, description="Optional questionnaire path"
-    )
+    questionnaire_path: str | None = Field(default=None, description="Optional questionnaire path")
 
     @field_validator("pdf_path")
     @classmethod
@@ -164,10 +170,10 @@ class Phase0InputValidator(BaseModel):
         if not v or not v.strip():
             raise ValueError("[PRE-003] FATAL: pdf_path cannot be empty")
         # Security: Reject null bytes (truncation attack)
-        if '\x00' in v:
+        if "\x00" in v:
             raise ValueError("[PRE-003] FATAL: pdf_path contains null bytes")
         # Security: Reject path traversal attempts
-        if '..' in v:
+        if ".." in v:
             raise ValueError("[PRE-003] FATAL: pdf_path contains path traversal sequences")
         return v
 
@@ -178,7 +184,7 @@ class Phase0InputValidator(BaseModel):
         if not v or not v.strip():
             raise ValueError("[PRE-002] FATAL: run_id cannot be empty")
         # Ensure run_id is filesystem-safe and deterministic
-        if any(char in v for char in ['/', '\\', ':', '*', '?', '"', '<', '>', '|']):
+        if any(char in v for char in ["/", "\\", ":", "*", "?", '"', "<", ">", "|"]):
             raise ValueError(
                 "[PRE-002] FATAL: run_id contains invalid characters (must be filesystem-safe)"
             )
@@ -229,7 +235,7 @@ class CanonicalInput:
     validation_passed: bool
     validation_errors: list[str] = field(default_factory=list)
     validation_warnings: list[str] = field(default_factory=list)
-    
+
     def __post_init__(self) -> None:
         """Validate types at construction time."""
         if not isinstance(self.document_id, str):
@@ -241,7 +247,9 @@ class CanonicalInput:
         if not isinstance(self.created_at, datetime):
             raise TypeError(f"created_at must be datetime, got {type(self.created_at).__name__}")
         if not isinstance(self.validation_passed, bool):
-            raise TypeError(f"validation_passed must be bool, got {type(self.validation_passed).__name__}")
+            raise TypeError(
+                f"validation_passed must be bool, got {type(self.validation_passed).__name__}"
+            )
 
 
 class CanonicalInputValidator(BaseModel):
@@ -265,13 +273,11 @@ class CanonicalInputValidator(BaseModel):
     validation_errors: list[str] = Field(default_factory=list)
     validation_warnings: list[str] = Field(default_factory=list)
 
-    @model_validator(mode='after')
-    def validate_consistency(self) -> "CanonicalInputValidator":
+    @model_validator(mode="after")
+    def validate_consistency(self) -> CanonicalInputValidator:
         """Ensure validation_passed is True and consistent with errors."""
         if not self.validation_passed:
-            raise ValueError(
-                "validation_passed must be True for valid CanonicalInput"
-            )
+            raise ValueError("validation_passed must be True for valid CanonicalInput")
         if self.validation_errors:
             raise ValueError(
                 f"validation_passed is True but validation_errors is not empty: {self.validation_errors}"
@@ -365,9 +371,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
 
         # Type check
         if not isinstance(input_data, Phase0Input):
-            errors.append(
-                f"Expected Phase0Input, got {type(input_data).__name__}"
-            )
+            errors.append(f"Expected Phase0Input, got {type(input_data).__name__}")
             return ContractValidationResult(
                 passed=False,
                 contract_type="input",
@@ -381,9 +385,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
                 pdf_path=str(input_data.pdf_path),
                 run_id=input_data.run_id,
                 questionnaire_path=(
-                    str(input_data.questionnaire_path)
-                    if input_data.questionnaire_path
-                    else None
+                    str(input_data.questionnaire_path) if input_data.questionnaire_path else None
                 ),
             )
         except Exception as e:
@@ -412,9 +414,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
 
         # Type check
         if not isinstance(output_data, CanonicalInput):
-            errors.append(
-                f"Expected CanonicalInput, got {type(output_data).__name__}"
-            )
+            errors.append(f"Expected CanonicalInput, got {type(output_data).__name__}")
             return ContractValidationResult(
                 passed=False,
                 contract_type="output",
@@ -471,7 +471,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
         questionnaire_path = input_data.questionnaire_path
         if questionnaire_path is None:
             # Use the new Modular Manifest Entry Point
-            import farfan_pipeline.phases.Phase_0.phase0_10_00_paths import QUESTIONNAIRE_ENTRY_POINT
+            from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import QUESTIONNAIRE_ENTRY_POINT
 
             questionnaire_path = QUESTIONNAIRE_ENTRY_POINT
             warnings.append(
@@ -518,7 +518,7 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
             pdf_page_count=pdf_page_count,
             questionnaire_path=questionnaire_path,
             questionnaire_sha256=questionnaire_sha256,
-            created_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
             phase0_version=PHASE0_VERSION,
             validation_passed=len(errors) == 0,
             validation_errors=errors,
@@ -576,8 +576,8 @@ class Phase0ValidationContract(PhaseContract[Phase0Input, CanonicalInput]):
 
 
 __all__ = [
-    "Phase0Input",
-    "CanonicalInput",
-    "Phase0ValidationContract",
     "PHASE0_VERSION",
+    "CanonicalInput",
+    "Phase0Input",
+    "Phase0ValidationContract",
 ]

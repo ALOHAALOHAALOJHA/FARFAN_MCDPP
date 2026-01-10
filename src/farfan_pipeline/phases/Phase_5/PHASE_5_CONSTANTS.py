@@ -25,7 +25,6 @@ __execution_pattern__ = "Per-Task"
 
 from enum import Enum
 
-
 # Policy Area identifiers (10 total)
 POLICY_AREAS = ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]
 

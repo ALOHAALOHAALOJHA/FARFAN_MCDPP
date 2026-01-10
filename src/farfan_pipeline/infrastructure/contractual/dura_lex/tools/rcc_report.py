@@ -2,8 +2,8 @@
 """
 CLI tool for Risk Certificate Contract (RCC) report
 """
-import sys
 import json
+
 import numpy as np
 from farfan_pipeline.contracts.risk_certificate import RiskCertificateContract
 

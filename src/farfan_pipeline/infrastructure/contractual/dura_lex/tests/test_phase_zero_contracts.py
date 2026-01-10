@@ -24,23 +24,30 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
+<<<<<<< HEAD
 from farfan_pipeline.phases.Phase_0.phase0_50_00_boot_checks import BootCheckError
+=======
+from farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+>>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
 from farfan_pipeline.phases.Phase_0.phase0_20_02_determinism import (
     MANDATORY_SEEDS,
     apply_seeds_to_rngs,
-    initialize_determinism_from_registry,
-    validate_seed_application,
 )
+<<<<<<< HEAD
+=======
+from farfan_pipeline.phases.Phase_0.phase0_50_00_boot_checks import BootCheckError
+>>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
 from farfan_pipeline.phases.Phase_0.phase0_50_01_exit_gates import (
     check_all_gates,
     check_bootstrap_gate,
-    check_determinism_gate,
 )
+<<<<<<< HEAD
 from farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
+=======
+>>>>>>> 7fa31a6694a2d51fe0aae2c237f8642fca65e696
 from farfan_pipeline.phases.Phase_0.phase0_90_01_verified_pipeline_runner import (
     VerifiedPipelineRunner,
 )
-
 
 # ============================================================================
 # CONTRACT 1-3: Bootstrap Contracts (P0.0)

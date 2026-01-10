@@ -33,14 +33,15 @@ import logging
 import math
 import threading
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
 # === DATA MODELS ===
+
 
 @dataclass
 class CalibrationMetrics:
@@ -52,6 +53,7 @@ class CalibrationMetrics:
         methods_executed: Total number of methods called
         methods_succeeded: Number of methods that completed successfully
     """
+
     runtime_ms: float
     memory_mb: float
     methods_executed: int
@@ -70,12 +72,13 @@ class ExecutionMetrics:
         methods_succeeded: Number of methods that completed successfully
         per_method_times: Dictionary mapping method_name to execution time in ms
     """
+
     executor_id: str
     execution_time_ms: float
     peak_memory_mb: float
     methods_executed: int
     methods_succeeded: int
-    per_method_times: Dict[str, float] = field(default_factory=dict)
+    per_method_times: dict[str, float] = field(default_factory=dict)
 
 
 @dataclass
@@ -91,13 +94,14 @@ class ProfileBaseline:
         sample_count: Number of samples used to compute baseline
         last_updated: ISO timestamp of last update
     """
+
     executor_id: str
     avg_time_ms: float
     avg_memory_mb: float
     stddev_time_ms: float
     stddev_memory_mb: float
     sample_count: int
-    last_updated: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    last_updated: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
 
 @dataclass
@@ -115,18 +119,20 @@ class CalibrationResult:
         aggregation_method: Method used to aggregate layer scores
         metrics: Runtime metrics captured during execution
     """
+
     quality_score: float
     confidence: float = 0.5
-    method_weights: Dict[str, float] = field(default_factory=dict)
+    method_weights: dict[str, float] = field(default_factory=dict)
     regression_detected: bool = False
-    regression_details: Optional[str] = None
-    layer_scores: Dict[str, float] = field(default_factory=dict)
+    regression_details: str | None = None
+    layer_scores: dict[str, float] = field(default_factory=dict)
     layers_used: list[str] = field(default_factory=list)
     aggregation_method: str = "real_time"
     metrics: CalibrationMetrics = field(default_factory=lambda: CalibrationMetrics(0.0, 0.0, 0, 0))
 
 
 # === STORAGE INTERFACES ===
+
 
 class BaselineStore:
     """Stores and retrieves executor baselines.
@@ -142,10 +148,10 @@ class BaselineStore:
         """
         self.storage_dir = Path(storage_dir)
         self.storage_dir.mkdir(parents=True, exist_ok=True)
-        self._cache: Dict[str, ProfileBaseline] = {}
+        self._cache: dict[str, ProfileBaseline] = {}
         self._lock = threading.Lock()
 
-    def get_baseline(self, executor_id: str) -> Optional[ProfileBaseline]:
+    def get_baseline(self, executor_id: str) -> ProfileBaseline | None:
         """Retrieve baseline for an executor.
 
         Args:
@@ -165,7 +171,7 @@ class BaselineStore:
                 return None
 
             try:
-                with open(baseline_path, "r") as f:
+                with open(baseline_path) as f:
                     data = json.load(f)
                 baseline = ProfileBaseline(**data)
                 self._cache[executor_id] = baseline
@@ -206,18 +212,22 @@ class BaselineStore:
                 alpha = 0.1
                 n = existing.sample_count
 
-                new_avg_time = alpha * metrics.execution_time_ms + (1 - alpha) * existing.avg_time_ms
-                new_avg_memory = alpha * metrics.peak_memory_mb + (1 - alpha) * existing.avg_memory_mb
+                new_avg_time = (
+                    alpha * metrics.execution_time_ms + (1 - alpha) * existing.avg_time_ms
+                )
+                new_avg_memory = (
+                    alpha * metrics.peak_memory_mb + (1 - alpha) * existing.avg_memory_mb
+                )
 
                 # Update stddev using Welford's online algorithm approximation
                 time_diff = metrics.execution_time_ms - existing.avg_time_ms
                 new_stddev_time = math.sqrt(
-                    (1 - alpha) * (existing.stddev_time_ms ** 2) + alpha * (time_diff ** 2)
+                    (1 - alpha) * (existing.stddev_time_ms**2) + alpha * (time_diff**2)
                 )
 
                 memory_diff = metrics.peak_memory_mb - existing.avg_memory_mb
                 new_stddev_memory = math.sqrt(
-                    (1 - alpha) * (existing.stddev_memory_mb ** 2) + alpha * (memory_diff ** 2)
+                    (1 - alpha) * (existing.stddev_memory_mb**2) + alpha * (memory_diff**2)
                 )
 
                 baseline = ProfileBaseline(
@@ -249,7 +259,7 @@ class BaselineStore:
             "stddev_time_ms": baseline.stddev_time_ms,
             "stddev_memory_mb": baseline.stddev_memory_mb,
             "sample_count": baseline.sample_count,
-            "last_updated": datetime.now(timezone.utc).isoformat(),
+            "last_updated": datetime.now(UTC).isoformat(),
         }
         with open(baseline_path, "w") as f:
             json.dump(data, f, indent=2)
@@ -269,10 +279,10 @@ class WeightStore:
         """
         self.storage_dir = Path(storage_dir)
         self.storage_dir.mkdir(parents=True, exist_ok=True)
-        self._cache: Dict[str, Dict[str, float]] = {}
+        self._cache: dict[str, dict[str, float]] = {}
         self._lock = threading.Lock()
 
-    def get_weights(self, executor_id: str) -> Dict[str, float]:
+    def get_weights(self, executor_id: str) -> dict[str, float]:
         """Retrieve method weights for an executor.
 
         Args:
@@ -292,7 +302,7 @@ class WeightStore:
                 return {}
 
             try:
-                with open(weights_path, "r") as f:
+                with open(weights_path) as f:
                     data = json.load(f)
                 weights = data.get("weights", {})
                 self._cache[executor_id] = weights
@@ -301,7 +311,7 @@ class WeightStore:
                 logger.warning(f"Failed to load weights for {executor_id}: {e}")
                 return {}
 
-    def save_weights(self, executor_id: str, weights: Dict[str, float]) -> None:
+    def save_weights(self, executor_id: str, weights: dict[str, float]) -> None:
         """Persist method weights for an executor.
 
         Args:
@@ -315,7 +325,7 @@ class WeightStore:
             data = {
                 "executor_id": executor_id,
                 "weights": weights,
-                "last_updated": datetime.now(timezone.utc).isoformat(),
+                "last_updated": datetime.now(UTC).isoformat(),
             }
             with open(weights_path, "w") as f:
                 json.dump(data, f, indent=2)
@@ -343,10 +353,7 @@ class CalibrationResultStore:
         self._lock = threading.Lock()
 
     def save_result(
-        self,
-        executor_id: str,
-        result: CalibrationResult,
-        metrics: ExecutionMetrics
+        self, executor_id: str, result: CalibrationResult, metrics: ExecutionMetrics
     ) -> None:
         """Persist calibration result for audit.
 
@@ -359,7 +366,7 @@ class CalibrationResultStore:
             result_path = self.storage_dir / "calibration_history.jsonl"
 
             record = {
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
                 "executor_id": executor_id,
                 "quality_score": result.quality_score,
                 "confidence": result.confidence,
@@ -378,6 +385,7 @@ class CalibrationResultStore:
 
 # === REAL-TIME CALIBRATION ENGINE ===
 
+
 class RealTimeCalibrationEngine:
     """
     Computes calibration results based on actual execution metrics.
@@ -393,7 +401,7 @@ class RealTimeCalibrationEngine:
     """
 
     # Thresholds for regression detection (CA-02)
-    TIME_REGRESSION_THRESHOLD = 1.2   # 20% slower triggers regression
+    TIME_REGRESSION_THRESHOLD = 1.2  # 20% slower triggers regression
     MEMORY_REGRESSION_THRESHOLD = 1.3  # 30% more memory triggers regression
 
     def __init__(
@@ -417,10 +425,7 @@ class RealTimeCalibrationEngine:
         self.persist_results = persist_results
 
     def compute_calibration_result(
-        self,
-        executor_id: str,
-        metrics: ExecutionMetrics,
-        baseline: Optional[ProfileBaseline] = None
+        self, executor_id: str, metrics: ExecutionMetrics, baseline: ProfileBaseline | None = None
     ) -> CalibrationResult:
         """
         Compute calibration result from execution metrics.
@@ -473,9 +478,7 @@ class RealTimeCalibrationEngine:
 
             if regression_messages:
                 regression_details = "; ".join(regression_messages)
-                logger.warning(
-                    f"Regression detected for {executor_id}: {regression_details}"
-                )
+                logger.warning(f"Regression detected for {executor_id}: {regression_details}")
 
         quality_score = max(0.0, min(1.0, base_quality - quality_penalty))
 
@@ -526,9 +529,7 @@ class RealTimeCalibrationEngine:
         return result
 
     def _compute_confidence(
-        self,
-        metrics: ExecutionMetrics,
-        baseline: Optional[ProfileBaseline]
+        self, metrics: ExecutionMetrics, baseline: ProfileBaseline | None
     ) -> float:
         """
         Compute confidence score based on sample size and variance.
@@ -545,7 +546,7 @@ class RealTimeCalibrationEngine:
         """
         if not baseline or baseline.sample_count == 0:
             return 0.5  # Low confidence with no data
-        
+
         if baseline.sample_count < 5:
             return 0.5  # Low confidence with insufficient data
 
@@ -565,11 +566,7 @@ class RealTimeCalibrationEngine:
 
         return confidence
 
-    def _update_weights(
-        self,
-        executor_id: str,
-        metrics: ExecutionMetrics
-    ) -> Dict[str, float]:
+    def _update_weights(self, executor_id: str, metrics: ExecutionMetrics) -> dict[str, float]:
         """
         Update method weights based on per-method performance.
 
@@ -609,7 +606,7 @@ class RealTimeCalibrationEngine:
 
 # === SINGLETON ENGINE INSTANCE ===
 
-_calibration_engine: Optional[RealTimeCalibrationEngine] = None
+_calibration_engine: RealTimeCalibrationEngine | None = None
 _engine_lock = threading.Lock()
 
 
@@ -623,6 +620,7 @@ def get_calibration_engine() -> RealTimeCalibrationEngine:
 
 
 # === PUBLIC API (BACKWARD COMPATIBLE) ===
+
 
 def instrument_executor(
     executor_id: str,
@@ -708,7 +706,7 @@ def get_executor_config(
     dimension: str,
     question: str,
     environment: str = "production",
-    cli_overrides: Optional[Dict[str, Any]] = None,
+    cli_overrides: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Get runtime configuration for executor.
 
@@ -738,15 +736,15 @@ def get_executor_config(
     Postconditions:
         - Returns valid configuration dict
         - All required keys present
-        
+
     Success Criteria:
         - Configuration loaded successfully from appropriate sources
         - All values within valid ranges
-        
+
     Failure Modes:
         - ValueError if preconditions violated
         - ExecutorConfig validation errors if invalid config values
-        
+
     Verification Strategy:
         - Precondition checks enforce non-empty strings
         - ExecutorConfig.__post_init__ validates value ranges
@@ -768,17 +766,21 @@ def get_executor_config(
     # Module-level caching to avoid repeated imports
     if globals().get("_executor_config_module") is None:
         try:
-            import farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import (
-                            ExecutorConfig,
+            from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import (
+                ExecutorConfig,
             )
+
             globals()["_executor_config_module"] = {"ExecutorConfig": ExecutorConfig}
         except ModuleNotFoundError:
             # Fallback for when module is imported directly without package context
             import sys
             from pathlib import Path as ImportPath
-            
-            config_module_path = ImportPath(__file__).resolve().parent / "phase2_10_03_executor_config.py"
+
+            config_module_path = (
+                ImportPath(__file__).resolve().parent / "phase2_10_03_executor_config.py"
+            )
             import importlib.util
+
             spec = importlib.util.spec_from_file_location(
                 "phase2_10_03_executor_config", config_module_path
             )
@@ -789,8 +791,10 @@ def get_executor_config(
             # Dataclasses use sys.modules.get(cls.__module__) for type checking
             sys.modules["phase2_10_03_executor_config"] = executor_config_module
             spec.loader.exec_module(executor_config_module)
-            globals()["_executor_config_module"] = {"ExecutorConfig": executor_config_module.ExecutorConfig}
-    
+            globals()["_executor_config_module"] = {
+                "ExecutorConfig": executor_config_module.ExecutorConfig
+            }
+
     ExecutorConfig = globals()["_executor_config_module"]["ExecutorConfig"]
 
     # Load configuration from canonical source
