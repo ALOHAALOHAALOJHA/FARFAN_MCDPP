@@ -39,15 +39,18 @@ class TestRuntimeConfigSchema:
                 allow_dev_ingestion_fallbacks=True,  # Forbidden in PROD
             )
     
-    def test_processing_config_validation(self):
+    def test_question_count_must_be_positive(self):
         with pytest.raises(ValueError, match="expected_question_count must be positive"):
             RuntimeConfigSchema(expected_question_count=0)
-        
+
+    def test_phase_timeout_minimum(self):
         with pytest.raises(ValueError, match="phase_timeout_seconds must be at least 10"):
             RuntimeConfigSchema(phase_timeout_seconds=5)
-        
+
+    def test_max_workers_range(self):
         with pytest.raises(ValueError, match="max_workers must be between 1 and 64"):
             RuntimeConfigSchema(max_workers=100)
-        
+
+    def test_batch_size_must_be_positive(self):
         with pytest.raises(ValueError, match="batch_size must be positive"):
             RuntimeConfigSchema(batch_size=0)
