@@ -70,7 +70,7 @@ from farfan_pipeline.phases.Phase_9.report_generator import ReportGenerator
 generator = ReportGenerator(output_dir="./reports", plan_name="my_plan")
 artifacts = generator.generate_all(
     report=analysis_report,
-    template_name="report_enhanced"
+    template_name="report_enhanced.html.j2"
 )
 ```
 
