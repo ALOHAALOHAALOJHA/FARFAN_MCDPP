@@ -1373,23 +1373,30 @@ def generate_charts(report: AnalysisReport, output_dir: Path, plan_name: str = "
 
         # RADAR CHART for clusters (if we have multiple dimensions)
         if report.meso_clusters and len(report.meso_clusters) >= 3:
+            # TODO: Implement proper radar chart with actual cluster metrics
             # For radar, we need multiple dimensions per cluster
-            # This is a simplified example
+            # Currently using simplified aggregated scores as placeholder
             fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(polar=True), facecolor=colors['bg'])
             ax.set_facecolor(colors['bg'])
             
-            # Example data
-            categories = ['Gobernanza', 'Social', 'Económico', 'Ambiental', 'Implementación']
+            # Use actual cluster data instead of random
+            categories = list(report.meso_clusters.keys())[:5]  # Use first 5 clusters as categories
             N = len(categories)
             
-            # Example scores (in reality, get from cluster data)
-            values = np.random.rand(3, N)  # 3 clusters, N categories
+            # Extract real scores from clusters
+            cluster_items = list(report.meso_clusters.items())[:3]  # First 3 clusters
+            values = []
+            for _, cluster in cluster_items:
+                # Use actual adjusted_score, repeated for each category
+                # This is a placeholder until proper multi-dimensional metrics are available
+                values.append([cluster.adjusted_score] * N)
+            values = np.array(values)
             
             # Plot each cluster
             angles = np.linspace(0, 2 * np.pi, N, endpoint=False).tolist()
             angles += angles[:1]
             
-            for i in range(3):
+            for i in range(min(3, len(cluster_items))):
                 vals = values[i].tolist()
                 vals += vals[:1]
                 
