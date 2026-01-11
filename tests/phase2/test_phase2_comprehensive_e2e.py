@@ -156,6 +156,7 @@ def sample_preprocessed_document():
 
     return PreprocessedDocument(
         document_id="test_doc_001",
+        source_path="/test/sample_document.pdf",
         chunks=chunks,
         metadata={"source": "test", "created_at": datetime.now(UTC).isoformat()}
     )
