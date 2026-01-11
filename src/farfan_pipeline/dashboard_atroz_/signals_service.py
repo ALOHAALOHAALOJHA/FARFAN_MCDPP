@@ -45,6 +45,10 @@ if TYPE_CHECKING:
 
 logger = structlog.get_logger(__name__)
 
+# Check for blake3 availability at module level for performance
+import hashlib
+_HAS_BLAKE3 = hasattr(hashlib, "blake3")
+
 
 # In-memory signal store (would be database/file in production)
 _signal_store: dict[str, SignalPack] = {}
@@ -127,7 +131,6 @@ def _extract_sophisticated_signal_packs(cqc: Any) -> dict[str, SignalPack]:
     Returns:
         Dict mapping policy area to SignalPack
     """
-    import hashlib
     from datetime import UTC, datetime
 
     # Policy area mappings
@@ -169,7 +172,7 @@ def _extract_sophisticated_signal_packs(cqc: Any) -> dict[str, SignalPack]:
             # Compute source fingerprint
             content = f"{pa_code}{patterns}{indicators}".encode()
             # Uses blake3 if available (requires: pip install blake3), falls back to sha256
-            fingerprint = hashlib.blake3(content).hexdigest()[:32] if hasattr(hashlib, "blake3") else hashlib.sha256(content).hexdigest()[:32]
+            fingerprint = hashlib.blake3(content).hexdigest()[:32] if _HAS_BLAKE3 else hashlib.sha256(content).hexdigest()[:32]
 
             # Create signal pack
             pack = SignalPack(

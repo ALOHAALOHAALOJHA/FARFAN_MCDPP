@@ -84,6 +84,9 @@ class CQCLoader:
             config: CQCConfig object. If None, uses defaults (all optimizations ON).
         """
         self.config = config or CQCConfig()
+        
+        # Performance warning tracking (for fallback logging rate limiting)
+        self._fallback_warning_logged = False
 
         # Initialize question registry (Acupuncture Point 1)
         if self.config.lazy_load_questions:
@@ -261,11 +264,14 @@ class CQCLoader:
         else:
             # Fallback to linear search (slow) - iterates through all questions
             # This is O(n) vs O(1) for indexed routing
-            logging.warning(
-                "Using O(n) linear search fallback for signal routing. "
-                "Consider enabling SignalQuestionIndex for O(1) performance. "
-                f"signal_type={signal_type}"
-            )
+            # Log warning only once to avoid log noise in high-traffic scenarios
+            if not self._fallback_warning_logged:
+                logging.warning(
+                    "Using O(n) linear search fallback for signal routing. "
+                    "Consider enabling SignalQuestionIndex for O(1) performance. "
+                    "This warning will only be shown once per CQCLoader instance."
+                )
+                self._fallback_warning_logged = True
             
             result_set = set()
 
