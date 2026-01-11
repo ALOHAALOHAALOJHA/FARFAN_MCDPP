@@ -52,7 +52,6 @@ dependencies = [
     "sse-starlette>=2.0.0",
     "werkzeug>=3.0.0",
     "structlog>=24.1.0",
-    "camelot-py[cv]>=0.11.0",
     "tabula-py>=2.9.0",
     "typing_extensions>=4.10.0",
     "bcrypt>=4.0.0",
@@ -197,7 +196,6 @@ strict_equality = true
 
 [[tool.mypy.overrides]]
 module = [
-    "camelot.*",
     "tabula.*",
     "spacy.*",
     "sentence_transformers.*",

@@ -34,7 +34,14 @@ from pathlib import Path
 from typing import Any, Literal
 
 # === EXTRACCIÓN AVANZADA DE PDF Y TABLAS ===
-import camelot
+# NOTE: camelot-py removed due to incompatibility with pypdf>=6.0 (security requirement)
+# Try to import camelot if available, but it's optional
+try:
+    import camelot
+    CAMELOT_AVAILABLE = True
+except ImportError:
+    CAMELOT_AVAILABLE = False
+    camelot = None  # type: ignore[assignment]
 
 # === NETWORKING Y GRAFOS CAUSALES ===
 import networkx as nx
@@ -410,7 +417,7 @@ class ExtractedTable:
     df: pd.DataFrame
     page_number: int
     table_type: str | None
-    extraction_method: Literal["camelot_lattice", "camelot_stream", "tabula", "pdfplumber"]
+    extraction_method: Literal["camelot_lattice", "camelot_stream", "tabula", "pdfplumber"]  # camelot methods kept for backward compatibility but may not be available
     confidence_score: float
     is_fragmented: bool = False
     continuation_of: int | None = None
@@ -534,48 +541,54 @@ class PDETMunicipalPlanAnalyzer:
         all_tables: list[ExtractedTable] = []
         pdf_path_str = str(pdf_path)
 
-        # Camelot Lattice
-        try:
-            lattice_tables = camelot.read_pdf(
-                pdf_path_str,
-                pages="all",
-                flavor="lattice",
-                line_scale=40,
-                joint_tol=10,
-                edge_tol=50,
-            )
-            for idx, table in enumerate(lattice_tables):
-                if table.parsing_report["accuracy"] > 0.7:
-                    all_tables.append(
-                        ExtractedTable(
-                            df=self._clean_dataframe(table.df),
-                            page_number=table.page,
-                            table_type=None,
-                            extraction_method="camelot_lattice",
-                            confidence_score=table.parsing_report["accuracy"],
+        # Camelot Lattice (optional - requires camelot-py which conflicts with pypdf>=6.0)
+        if CAMELOT_AVAILABLE and camelot is not None:
+            try:
+                lattice_tables = camelot.read_pdf(
+                    pdf_path_str,
+                    pages="all",
+                    flavor="lattice",
+                    line_scale=40,
+                    joint_tol=10,
+                    edge_tol=50,
+                )
+                for idx, table in enumerate(lattice_tables):
+                    if table.parsing_report["accuracy"] > 0.7:
+                        all_tables.append(
+                            ExtractedTable(
+                                df=self._clean_dataframe(table.df),
+                                page_number=table.page,
+                                table_type=None,
+                                extraction_method="camelot_lattice",
+                                confidence_score=table.parsing_report["accuracy"],
+                            )
                         )
-                    )
-        except Exception as e:
-            print(f" ⚠️ Camelot Lattice: {str(e)[:50]}")
+            except Exception as e:
+                print(f" ⚠️ Camelot Lattice: {str(e)[:50]}")
+        else:
+            print(" ℹ️ Camelot not available (skipping lattice extraction)")
 
-        # Camelot Stream
-        try:
-            stream_tables = camelot.read_pdf(
-                pdf_path_str, pages="all", flavor="stream", edge_tol=500, row_tol=15, column_tol=10
-            )
-            for idx, table in enumerate(stream_tables):
-                if float(table.parsing_report["accuracy"]) > MIN_TABLE_ACCURACY:
-                    all_tables.append(
-                        ExtractedTable(
-                            df=self._clean_dataframe(table.df),
-                            page_number=table.page,
-                            table_type=None,
-                            extraction_method="camelot_stream",
-                            confidence_score=table.parsing_report["accuracy"],
+        # Camelot Stream (optional - requires camelot-py which conflicts with pypdf>=6.0)
+        if CAMELOT_AVAILABLE and camelot is not None:
+            try:
+                stream_tables = camelot.read_pdf(
+                    pdf_path_str, pages="all", flavor="stream", edge_tol=500, row_tol=15, column_tol=10
+                )
+                for idx, table in enumerate(stream_tables):
+                    if float(table.parsing_report["accuracy"]) > MIN_TABLE_ACCURACY:
+                        all_tables.append(
+                            ExtractedTable(
+                                df=self._clean_dataframe(table.df),
+                                page_number=table.page,
+                                table_type=None,
+                                extraction_method="camelot_stream",
+                                confidence_score=table.parsing_report["accuracy"],
+                            )
                         )
-                    )
-        except Exception as e:
-            print(f" ⚠️ Camelot Stream: {str(e)[:50]}")
+            except Exception as e:
+                print(f" ⚠️ Camelot Stream: {str(e)[:50]}")
+        else:
+            print(" ℹ️ Camelot not available (skipping stream extraction)")
 
         # Tabula
         try:
