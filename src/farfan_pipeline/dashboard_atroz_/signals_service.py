@@ -167,8 +167,8 @@ def _extract_sophisticated_signal_packs(cqc: Any) -> dict[str, SignalPack]:
             thresholds = _compute_thresholds_for_policy_area(pa_code)
 
             # Compute source fingerprint
-            # Uses blake3 if available (requires: pip install blake3), falls back to sha256
             content = f"{pa_code}{patterns}{indicators}".encode()
+            # Uses blake3 if available (requires: pip install blake3), falls back to sha256
             fingerprint = hashlib.blake3(content).hexdigest()[:32] if hasattr(hashlib, "blake3") else hashlib.sha256(content).hexdigest()[:32]
 
             # Create signal pack

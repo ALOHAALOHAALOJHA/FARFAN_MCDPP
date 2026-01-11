@@ -19,6 +19,7 @@ Date: 2026-01-06
 from pathlib import Path
 from typing import Optional, Dict, Set, List, Any
 from dataclasses import dataclass, field
+import logging
 
 
 @dataclass
@@ -260,7 +261,6 @@ class CQCLoader:
         else:
             # Fallback to linear search (slow) - iterates through all questions
             # This is O(n) vs O(1) for indexed routing
-            import logging
             logging.warning(
                 "Using O(n) linear search fallback for signal routing. "
                 "Consider enabling SignalQuestionIndex for O(1) performance. "
