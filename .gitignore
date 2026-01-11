@@ -153,3 +153,6 @@ new_enhanced_rules.json
 .vscode/gemini-mcp/status.json
 .vscode/gemini-mcp/status.json
 /.vscode/gemini-mcp
+# Temporary pip files with = prefix (from pip install --option=value)
+=*.txt
+=[0-9]*
