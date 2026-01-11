@@ -154,7 +154,7 @@ def _extract_sophisticated_signal_packs(cqc: Any) -> dict[str, SignalPack]:
             patterns = _mine_patterns_for_policy_area(cqc, pa_code, pa_name)
 
             # Extract indicators from questionnaire structure
-            indicators = _extract_indicators_for_policy_area(cqc, pa_code)
+            indicators = _extract_indicators_for_policy_area(pa_code)
 
             # Generate regex patterns for structured data extraction
             regex_patterns = _generate_regex_patterns_for_policy_area(pa_code)
@@ -284,12 +284,11 @@ def _mine_patterns_for_policy_area(cqc: Any, pa_code: str, pa_name: str) -> list
     return base_patterns + governance_patterns
 
 
-def _extract_indicators_for_policy_area(cqc: Any, pa_code: str) -> list[str]:
+def _extract_indicators_for_policy_area(pa_code: str) -> list[str]:
     """
     Extract key performance indicators for a policy area.
 
     Args:
-        cqc: CQCLoader instance
         pa_code: Policy area code
 
     Returns:
