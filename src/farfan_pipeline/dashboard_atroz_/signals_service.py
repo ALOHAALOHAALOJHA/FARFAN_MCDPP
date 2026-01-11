@@ -95,7 +95,7 @@ def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[
         )
 
         # Extract signal packs using sophisticated analysis
-        packs = _extract_sophisticated_signal_packs(cqc)
+        packs = _extract_sophisticated_signal_packs()
 
         logger.info(
             "signals_loaded_from_monolith",
@@ -111,7 +111,7 @@ def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[
         return _generate_synthetic_signal_packs()
 
 
-def _extract_sophisticated_signal_packs(cqc: Any) -> dict[str, SignalPack]:
+def _extract_sophisticated_signal_packs() -> dict[str, SignalPack]:
     """
     Extract signal packs using sophisticated NLP and pattern mining.
 
@@ -120,9 +120,6 @@ def _extract_sophisticated_signal_packs(cqc: Any) -> dict[str, SignalPack]:
     - POS tagging for verb extraction
     - Statistical analysis for threshold computation
     - Domain knowledge for entity identification
-
-    Args:
-        cqc: CQCLoader instance
 
     Returns:
         Dict mapping policy area to SignalPack
@@ -151,7 +148,7 @@ def _extract_sophisticated_signal_packs(cqc: Any) -> dict[str, SignalPack]:
     for pa_code, pa_name in policy_areas.items():
         try:
             # Extract patterns using sophisticated analysis
-            patterns = _mine_patterns_for_policy_area(cqc, pa_code, pa_name)
+            patterns = _mine_patterns_for_policy_area(pa_code, pa_name)
 
             # Extract indicators from questionnaire structure
             indicators = _extract_indicators_for_policy_area(pa_code)
@@ -212,12 +209,11 @@ def _extract_sophisticated_signal_packs(cqc: Any) -> dict[str, SignalPack]:
     return packs
 
 
-def _mine_patterns_for_policy_area(cqc: Any, pa_code: str, pa_name: str) -> list[str]:
+def _mine_patterns_for_policy_area(pa_code: str, pa_name: str) -> list[str]:
     """
     Mine text patterns for a policy area using TF-IDF and domain knowledge.
 
     Args:
-        cqc: CQCLoader instance
         pa_code: Policy area code (e.g., "PA01")
         pa_name: Policy area name
 
