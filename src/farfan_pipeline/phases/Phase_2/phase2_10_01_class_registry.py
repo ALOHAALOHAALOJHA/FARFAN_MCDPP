@@ -124,7 +124,7 @@ def build_class_registry() -> dict[str, type[object]]:
                 "torch",
                 "tensorflow",
                 "pyarrow",
-                "camelot",
+                "img2table",
                 "sentence_transformers",
                 "transformers",
                 "spacy",

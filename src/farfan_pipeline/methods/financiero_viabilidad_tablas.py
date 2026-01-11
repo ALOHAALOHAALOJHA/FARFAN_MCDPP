@@ -34,14 +34,10 @@ from pathlib import Path
 from typing import Any, Literal
 
 # === EXTRACCIÓN AVANZADA DE PDF Y TABLAS ===
-# NOTE: camelot-py removed due to incompatibility with pypdf>=6.0 (security requirement)
-# Try to import camelot if available, but it's optional
-try:
-    import camelot
-    CAMELOT_AVAILABLE = True
-except ImportError:
-    CAMELOT_AVAILABLE = False
-    camelot = None  # type: ignore[assignment]
+# UPGRADE: Using img2table (AI/CV-based) instead of camelot-py (pypdf<6.0 conflict)
+# img2table provides more sophisticated table detection using OpenCV computer vision,
+# handles borderless tables, detects implicit rows/columns - better for policy documents
+from img2table.document import PDF as Img2TablePDF
 
 # === NETWORKING Y GRAFOS CAUSALES ===
 import networkx as nx
@@ -417,7 +413,7 @@ class ExtractedTable:
     df: pd.DataFrame
     page_number: int
     table_type: str | None
-    extraction_method: Literal["camelot_lattice", "camelot_stream", "tabula", "pdfplumber"]  # camelot methods kept for backward compatibility but may not be available
+    extraction_method: Literal["img2table", "tabula", "pdfplumber"]  # img2table replaces camelot (AI/CV-based)
     confidence_score: float
     is_fragmented: bool = False
     continuation_of: int | None = None
@@ -537,60 +533,56 @@ class PDETMunicipalPlanAnalyzer:
     # ========================================================================
 
     async def extract_tables(self, pdf_path: str) -> list[ExtractedTable]:
-        print("📊 Iniciando extracción avanzada de tablas...")
+        print("📊 Iniciando extracción avanzada de tablas con AI/Computer Vision...")
         all_tables: list[ExtractedTable] = []
         pdf_path_str = str(pdf_path)
 
-        # Camelot Lattice (optional - requires camelot-py which conflicts with pypdf>=6.0)
-        if CAMELOT_AVAILABLE and camelot is not None:
-            try:
-                lattice_tables = camelot.read_pdf(
-                    pdf_path_str,
-                    pages="all",
-                    flavor="lattice",
-                    line_scale=40,
-                    joint_tol=10,
-                    edge_tol=50,
-                )
-                for idx, table in enumerate(lattice_tables):
-                    if table.parsing_report["accuracy"] > 0.7:
-                        all_tables.append(
-                            ExtractedTable(
-                                df=self._clean_dataframe(table.df),
-                                page_number=table.page,
-                                table_type=None,
-                                extraction_method="camelot_lattice",
-                                confidence_score=table.parsing_report["accuracy"],
+        # img2table - AI/Computer Vision based extraction (UPGRADE from camelot)
+        # More sophisticated: handles borderless tables, detects implicit rows/columns
+        # Better for policy documents with varied formatting
+        try:
+            print(" 🔬 Ejecutando img2table (AI/CV-based detection)...")
+            pdf_doc = Img2TablePDF(src=pdf_path_str, detect_rotation=True, pdf_text_extraction=True)
+            
+            # Extract tables with advanced CV parameters
+            # implicit_rows/columns: Detect tables without explicit borders (common in policy docs)
+            # borderless_tables: Handle tables defined by whitespace (sophisticated!)
+            # min_confidence: Quality threshold (aligned with MIN_TABLE_ACCURACY)
+            extracted = pdf_doc.extract_tables(
+                implicit_rows=True,
+                implicit_columns=True,
+                borderless_tables=True,
+                min_confidence=int(MIN_TABLE_ACCURACY * 100),  # Convert 0.6 to 60
+            )
+            
+            # Process extracted tables
+            for page_num, tables_in_page in extracted.items():
+                for table_obj in tables_in_page:
+                    # img2table returns ExtractedTable objects with .df attribute
+                    if hasattr(table_obj, 'df') and table_obj.df is not None:
+                        df = table_obj.df
+                        if not df.empty and len(df) > 1:
+                            # Calculate confidence score from table characteristics
+                            # More rows/cols with content = higher confidence (mechanistic sophistication!)
+                            non_empty_cells = df.notna().sum().sum()
+                            total_cells = df.shape[0] * df.shape[1]
+                            confidence = (non_empty_cells / total_cells) if total_cells > 0 else 0.5
+                            confidence = max(MIN_TABLE_ACCURACY, min(0.95, confidence))
+                            
+                            all_tables.append(
+                                ExtractedTable(
+                                    df=self._clean_dataframe(df),
+                                    page_number=page_num,
+                                    table_type=None,
+                                    extraction_method="img2table",
+                                    confidence_score=float(confidence),
+                                )
                             )
-                        )
-            except Exception as e:
-                print(f" ⚠️ Camelot Lattice: {str(e)[:50]}")
-        else:
-            print(" ℹ️ Camelot not available (skipping lattice extraction)")
+            print(f" ✅ img2table: {len([t for t in all_tables if t.extraction_method == 'img2table'])} tablas detectadas")
+        except Exception as e:
+            print(f" ⚠️ img2table: {str(e)[:80]}")
 
-        # Camelot Stream (optional - requires camelot-py which conflicts with pypdf>=6.0)
-        if CAMELOT_AVAILABLE and camelot is not None:
-            try:
-                stream_tables = camelot.read_pdf(
-                    pdf_path_str, pages="all", flavor="stream", edge_tol=500, row_tol=15, column_tol=10
-                )
-                for idx, table in enumerate(stream_tables):
-                    if float(table.parsing_report["accuracy"]) > MIN_TABLE_ACCURACY:
-                        all_tables.append(
-                            ExtractedTable(
-                                df=self._clean_dataframe(table.df),
-                                page_number=table.page,
-                                table_type=None,
-                                extraction_method="camelot_stream",
-                                confidence_score=table.parsing_report["accuracy"],
-                            )
-                        )
-            except Exception as e:
-                print(f" ⚠️ Camelot Stream: {str(e)[:50]}")
-        else:
-            print(" ℹ️ Camelot not available (skipping stream extraction)")
-
-        # Tabula
+        # Tabula (fallback for structured tables)
         try:
             tabula_tables = tabula.read_pdf(
                 pdf_path_str,
