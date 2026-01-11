@@ -282,6 +282,16 @@ logger = structlog.get_logger(__name__)
 
 
 @dataclass
+class CoreModuleFactory:
+    """Stub factory for core module instantiation.
+    
+    Note: This is a minimal stub. The full implementation is in
+    AnalysisPipelineFactory (phase2_10_00_factory.py).
+    """
+    data_dir: Path | None = None
+
+
+@dataclass
 class WiringComponents:
     """Container for all wired components.
 
