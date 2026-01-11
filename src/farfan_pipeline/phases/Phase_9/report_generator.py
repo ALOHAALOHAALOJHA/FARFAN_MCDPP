@@ -13,15 +13,16 @@ Python: 3.12+
 
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import logging
+import math
 import random
 from datetime import UTC, datetime
-from pathlib import Path
-from typing import TYPE_CHECKING, Any, List, Dict, Optional
-import base64
 from io import BytesIO
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_9.report_assembly import AnalysisReport
@@ -422,7 +423,7 @@ class ReportGenerator:
         generate_pdf: bool = True,
         generate_html: bool = True,
         generate_markdown: bool = True,
-        template_name: str = "report_atroz_enhanced.html.j2",
+        template_name: str = "report_enhanced.html.j2",
     ) -> dict[str, Path]:
         """Generate all report formats with AtroZ aesthetic."""
         artifacts: dict[str, Path] = {}
@@ -597,7 +598,7 @@ def generate_markdown_report(report: AnalysisReport) -> str:
 def generate_html_report(
     report: AnalysisReport,
     chart_paths: list[Path] | None = None,
-    template_name: str = "report_atroz.html.j2",
+    template_name: str = "report.html.j2",
     enable_animations: bool = True,
 ) -> str:
     """Generate HTML report with full AtroZ aesthetic including animations."""
@@ -1191,8 +1192,6 @@ def generate_charts(report: AnalysisReport, output_dir: Path, plan_name: str = "
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
         import numpy as np
-        from matplotlib.patches import Polygon
-        import matplotlib.cm as cm
     except ImportError:
         logger.warning("Matplotlib not available for AtroZ charts")
         return []
