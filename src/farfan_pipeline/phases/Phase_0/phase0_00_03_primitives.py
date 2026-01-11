@@ -24,6 +24,7 @@ def validate_hash(h: HashStr) -> bool: ...
 Author: F.A.R.F.A.N Architecture Team
 Date: 2026-01-07
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -38,10 +39,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "LOW"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import re
 from pathlib import Path

@@ -298,17 +298,14 @@ __execution_pattern__ = "{execution_pattern}"
         return self._execute_operation(op)
 
     def create_stage_directories(self, phase_dir: Path) -> bool:
-        """Create required stage component directories for a phase."""
-        stage_dirs = [
-            "stage_10_components",
-            "stage_20_components",
-            "stage_30_components",
-            "stage_40_components",
-            "stage_50_components",
-            "stage_60_components",
-            "stage_80_components",
-            "stage_90_components",
-        ]
+        """Legacy no-op.
+
+        Stage component directories (stage_*_components) are no longer required by
+        enforcement policies; phases can be organized directly with module files.
+        This method is retained for backward compatibility but intentionally does
+        not create any directories.
+        """
+        stage_dirs: list[str] = []
 
         success = True
         for stage_dir in stage_dirs:

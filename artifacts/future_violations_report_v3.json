@@ -1,0 +1,519 @@
+{
+  "timestamp": "2026-01-10T22:32:01.988186",
+  "total_violations": 72,
+  "by_severity": {
+    "high": 72,
+    "critical": 0,
+    "medium": 0,
+    "low": 0
+  },
+  "by_type": {
+    "after_statement": 72
+  },
+  "violations": [
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_00_03_primitives.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 44,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_00_03_protocols.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 59,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_10_00_paths.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 33,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_10_01_runtime_config_typed.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 60,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_10_02_json_logger.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 32,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_10_03_runtime_config_schema.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 19,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_20_02_determinism.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 36,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_20_03_determinism_helpers.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 31,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_30_00_resource_controller.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 59,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_40_00_input_validation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 69,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_40_01_schema_monitor.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 28,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_50_01_exit_gates.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 40,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_90_00_main.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 43,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_90_01_verified_pipeline_runner.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 58,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_90_02_bootstrap.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 33,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_90_03_wiring_validator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 39,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_10_00_cpp_models.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 33,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_10_00_models.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 25,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_10_00_phase_protocol.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 59,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_15_00_questionnaire_mapper.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 33,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_20_00_cpp_ingestion.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 71,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_25_00_sp4_question_aware.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 41,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_30_00_adapter.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 40,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_40_00_circuit_breaker.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 44,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_60_00_signal_enrichment.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 37,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_10_01_class_registry.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 24,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_10_02_methods_registry.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 32,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_10_03_executor_config.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 39,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_30_01_resource_integration.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 28,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_30_02_resource_alerts.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 31,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_30_04_circuit_breaker.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 37,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_40_00_synchronization.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 32,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_40_01_executor_chunk_synchronizer.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 32,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_40_02_schema_validation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 64,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_40_03_irrigation_synchronizer.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 38,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_50_00_task_executor.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 69,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_50_01_chunk_processor.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 27,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_50_01_task_planner.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 24,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_50_02_batch_optimizer.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 48,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_60_00_base_executor_with_contract.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 24,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_60_01_contract_validator_cqvr.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 24,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_60_02_arg_router.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 38,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_60_04_calibration_policy.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 47,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_60_05_executor_instrumentation_mixin.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 35,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_80_00_evidence_nexus.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 54,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_80_01_evidence_query_engine.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 60,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_85_00_evidence_nexus_sota_implementations.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 44,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_90_00_carver.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 187,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_95_00_contract_hydrator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 55,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_95_00_executor_profiler.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 64,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_95_01_metrics_persistence.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 28,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_95_03_executor_calibration_integration.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 44,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_95_04_metrics_exporter.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 45,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_95_05_execution_predictor.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 48,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_96_00_contract_migrator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 45,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_3/phase3_10_00_phase3_score_extraction.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 34,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_3/phase3_10_00_phase3_signal_enriched_scoring.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 36,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_3/phase3_10_00_phase3_validation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 27,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_adaptive_meso_scoring.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 48,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 40,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_enhancements.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 35,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_integration.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 29,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_provenance.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 38,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_validation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 29,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_choquet_aggregator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 45,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_phase_4_7_constants.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 36,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_signal_enriched_aggregation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 37,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_uncertainty_quantification.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 42,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/phase8_30_00_signal_enriched_recommendations.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 44,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_9/phase9_10_00_report_assembly.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 42,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_9/phase9_10_00_report_generator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 36,
+      "details": "After 9 statement(s) (likely metadata)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_9/phase9_10_00_signal_enriched_reporting.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 36,
+      "details": "After 9 statement(s) (likely metadata)"
+    }
+  ]
+}

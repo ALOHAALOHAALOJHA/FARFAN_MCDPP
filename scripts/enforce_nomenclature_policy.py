@@ -198,14 +198,6 @@ class GNEAComplianceEnforcer:
 
         # Check for required subdirectories
         required_dirs = [
-            "stage_10_components",
-            "stage_20_components",
-            "stage_30_components",
-            "stage_40_components",
-            "stage_50_components",
-            "stage_60_components",
-            "stage_80_components",
-            "stage_90_components",
             "tests",
             "contracts",
             "docs",

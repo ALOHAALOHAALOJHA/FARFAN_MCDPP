@@ -11,6 +11,7 @@ Version: 1.0.0
 
 from __future__ import annotations
 
+import os
 import json
 from dataclasses import dataclass, field
 from enum import Enum
@@ -88,21 +89,8 @@ class HierarchyGuardian:
     # Required subdirectories for each phase
     PHASE_REQUIRED_SUBDIRS = ["tests", "contracts", "transitions", "docs", "validation"]
 
-    # Optional but recommended subdirectories
-    PHASE_OPTIONAL_SUBDIRS = [
-        "stage_00_components",
-        "stage_10_components",
-        "stage_20_components",
-        "stage_30_components",
-        "stage_40_components",
-        "stage_50_components",
-        "stage_60_components",
-        "stage_70_components",
-        "stage_80_components",
-        "stage_90_components",
-        "stage_95_components",
-        "stage_99_components",
-    ]
+    # Optional but recommended subdirectories (legacy: stage_*_components removed)
+    PHASE_OPTIONAL_SUBDIRS: List[str] = []
 
     def __init__(self, repo_root: Optional[Path] = None, max_depth: int = MAX_DEPTH):
         self.repo_root = repo_root or Path.cwd()

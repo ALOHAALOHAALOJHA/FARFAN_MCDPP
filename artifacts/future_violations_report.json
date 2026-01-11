@@ -1,0 +1,1783 @@
+{
+  "timestamp": "2026-01-10T22:18:56.924986",
+  "total_violations": 252,
+  "by_severity": {
+    "critical": 6,
+    "high": 147,
+    "medium": 99,
+    "low": 0
+  },
+  "by_type": {
+    "after_import": 2,
+    "after_function_def": 2,
+    "after_class_def": 2,
+    "after_statement": 147,
+    "wrong_position": 99
+  },
+  "violations": [
+    {
+      "file": "src/farfan_pipeline/calibracion_parametrizacion/canonical_specs.py",
+      "type": "after_import",
+      "severity": "critical",
+      "line": 19,
+      "details": "After 1 import(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/contractual/dura_lex/verify_contracts.py",
+      "type": "after_import",
+      "severity": "critical",
+      "line": 20,
+      "details": "After 1 import(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/linters/pylint_unreachable_fallback.py",
+      "type": "after_function_def",
+      "severity": "critical",
+      "line": 50,
+      "details": "After function at line 12"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_00_03_primitives.py",
+      "type": "after_function_def",
+      "severity": "critical",
+      "line": 44,
+      "details": "After function at line 22"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_10_01_runtime_config_typed.py",
+      "type": "after_class_def",
+      "severity": "critical",
+      "line": 60,
+      "details": "After class at line 23"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_60_05_executor_instrumentation_mixin.py",
+      "type": "after_class_def",
+      "severity": "critical",
+      "line": 35,
+      "details": "After class at line 13"
+    },
+    {
+      "file": "src/farfan_pipeline/inference/__init__.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 26,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/inference/bayesian_adapter.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 29,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/inference/bayesian_diagnostics.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 21,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/inference/bayesian_sampling_engine.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 21,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/calibration/calibration_auditor.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 15,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/calibration/calibration_core.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 45,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/calibration/calibration_manifest.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 16,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/calibration/fact_registry.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 17,
+      "details": "After 2 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/calibration/ingestion_calibrator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 40,
+      "details": "After 2 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/calibration/interaction_governor.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 17,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/calibration/method_binding_validator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 18,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/calibration/phase2_calibrator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 22,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/calibration/type_defaults.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 58,
+      "details": "After 2 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/calibration/unit_of_analysis.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 32,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/contractual/dura_lex/aggregation_contract.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 26,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/contractual/dura_lex/contracts.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 22,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/contractual/dura_lex/determinism_helpers.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 15,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/contractual/dura_lex/enhanced_contracts.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 22,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/contractual/dura_lex/phase_zero_contracts.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 22,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/population_disaggregation_extractor.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 23,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/pdt_quality_integration.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 13,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_enhancement_integrator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 36,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_method_metadata.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 28,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_registry.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 25,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_scoring_context.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 29,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_semantic_context.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 29,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_validation_specs.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 28,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/ports.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 21,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/linters/mypy_fallback_plugin.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 14,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/bayesian_multilevel_system.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 28,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/causal_inference_dowhy.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 21,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/causal_structure_learning.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 20,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/config_schemas.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 28,
+      "details": "After 7 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/embedding_policy.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 28,
+      "details": "After 2 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/financiero_viabilidad_tablas.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 24,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/heterogeneous_treatment_effects.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 20,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/policy_processor.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 21,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/semantic_chunking_policy.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 28,
+      "details": "After 2 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/orchestration/calibration_types.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 32,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/__init__.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 38,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_00_03_protocols.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 59,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_10_00_paths.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 33,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_10_02_json_logger.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 32,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_10_03_runtime_config_schema.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 19,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_20_02_determinism.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 36,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_20_03_determinism_helpers.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 31,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_30_00_resource_controller.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 59,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_40_00_input_validation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 69,
+      "details": "After 11 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_40_01_schema_monitor.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 28,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_50_01_exit_gates.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 40,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_90_00_main.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 43,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_90_01_verified_pipeline_runner.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 58,
+      "details": "After 11 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_90_02_bootstrap.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 33,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_90_03_wiring_validator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 39,
+      "details": "After 11 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_10_00_cpp_models.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 33,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_10_00_models.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 25,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_10_00_phase_protocol.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 59,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_15_00_questionnaire_mapper.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 33,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_20_00_cpp_ingestion.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 71,
+      "details": "After 12 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_25_00_sp4_question_aware.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 41,
+      "details": "After 12 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_30_00_adapter.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 40,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_40_00_circuit_breaker.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 44,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/phase1_60_00_signal_enrichment.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 37,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/contract_generator/phase2_10_00_contract_generator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 31,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_10_00_factory.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 139,
+      "details": "After 16 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_10_01_class_registry.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 24,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_10_02_methods_registry.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 32,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_10_03_executor_config.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 39,
+      "details": "After 11 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_30_01_resource_integration.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 28,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_30_02_resource_alerts.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 31,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_30_04_circuit_breaker.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 37,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_40_00_synchronization.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 32,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_40_01_executor_chunk_synchronizer.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 32,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_40_02_schema_validation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 64,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_40_03_irrigation_synchronizer.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 38,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_50_00_task_executor.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 69,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_50_01_chunk_processor.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 27,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_50_01_task_planner.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 24,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_50_02_batch_optimizer.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 48,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_60_00_base_executor_with_contract.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 24,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_60_01_contract_validator_cqvr.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 24,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_60_02_arg_router.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 38,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_60_04_calibration_policy.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 47,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_80_00_evidence_nexus.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 54,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_80_01_evidence_query_engine.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 60,
+      "details": "After 12 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_85_00_evidence_nexus_sota_implementations.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 44,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_90_00_carver.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 187,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_95_00_contract_hydrator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 55,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_95_00_executor_profiler.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 64,
+      "details": "After 14 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_95_01_metrics_persistence.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 28,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_95_03_executor_calibration_integration.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 44,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_95_04_metrics_exporter.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 45,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_95_05_execution_predictor.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 48,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_96_00_contract_migrator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 45,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_nexus_interface_validator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 29,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_phase3_nexus_interface_validator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 29,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_3/phase3_10_00_phase3_score_extraction.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 34,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_3/phase3_10_00_phase3_signal_enriched_scoring.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 36,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_3/phase3_10_00_phase3_validation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 27,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_3/primitives/phase3_00_00_mathematical_foundation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 54,
+      "details": "After 3 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_3/primitives/phase3_00_00_scoring_modalities.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 85,
+      "details": "After 5 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_3/primitives/phase3_10_00_mathematical_foundation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 54,
+      "details": "After 3 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_3/primitives/phase3_10_00_scoring_modalities.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 85,
+      "details": "After 5 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/enhancements/phase4_10_00_adaptive_meso_scoring.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 32,
+      "details": "After 3 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/enhancements/phase4_95_00_adaptive_meso_scoring.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 32,
+      "details": "After 3 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/interface/__init__.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 21,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_7_entry_contract.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 25,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_7_exit_contract.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 26,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_phase4_7_entry_contract.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 25,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_phase4_7_exit_contract.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 26,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_adaptive_meso_scoring.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 48,
+      "details": "After 12 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 40,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_enhancements.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 35,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_integration.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 29,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_provenance.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 38,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation_validation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 29,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_choquet_adapter.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 34,
+      "details": "After 6 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_choquet_aggregator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 45,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_phase_4_7_constants.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 36,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_signal_enriched_aggregation.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 37,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_uncertainty_quantification.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 42,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/primitives/__init__.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 22,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/primitives/phase4_00_00_choquet_primitives.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 29,
+      "details": "After 5 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/primitives/phase4_00_00_quality_levels.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 19,
+      "details": "After 4 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/primitives/phase4_00_00_signal_enriched_primitives.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 22,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/primitives/phase4_00_00_uncertainty_metrics.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 23,
+      "details": "After 2 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/primitives/phase4_10_00_choquet_primitives.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 29,
+      "details": "After 5 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/primitives/phase4_10_00_quality_levels.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 19,
+      "details": "After 4 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/primitives/phase4_10_00_signal_enriched_primitives.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 22,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/primitives/phase4_10_00_uncertainty_metrics.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 23,
+      "details": "After 2 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/__init__.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 63,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/interfaces/phase8_10_00_interface_validator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 16,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/phase8_20_02_generic_rule_engine.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 32,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/phase8_20_03_template_compiler.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 30,
+      "details": "After 2 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/phase8_30_00_signal_enriched_recommendations.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 44,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_9/phase9_10_00_report_assembly.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 42,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_9/phase9_10_00_report_generator.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 36,
+      "details": "After 10 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_9/phase9_10_00_signal_enriched_reporting.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 36,
+      "details": "After 9 statement(s)"
+    },
+    {
+      "file": "tests/calibration/test_ingestion_calibrator_adversarial.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 19,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "tests/orchestration/test_calibration_types.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 14,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "tests/orchestration/test_orchestrator_calibration.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 18,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "tests/phase_4_7/test_phase4_adversarial_modular.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 18,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "tests/phase_4_7/test_phase4_comprehensive_adversarial.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 13,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "tests/test_phase1_question_aware_architecture.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 21,
+      "details": "After 2 statement(s)"
+    },
+    {
+      "file": "tests/test_phase2_execution_logic.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 18,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "tests/test_phase2_profiler_fixes.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 15,
+      "details": "After 1 statement(s)"
+    },
+    {
+      "file": "tests/test_phase2_sisas_checklist.py",
+      "type": "after_statement",
+      "severity": "high",
+      "line": 18,
+      "details": "After 2 statement(s)"
+    },
+    {
+      "file": "src/farfan_pipeline/calibracion_parametrizacion/types.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 30,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/dashboard_atroz_/api_v1_errors.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 3,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/dashboard_atroz_/api_v1_router.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 3,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/dashboard_atroz_/api_v1_schemas.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 8,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/dashboard_atroz_/api_v1_store.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 8,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/dashboard_atroz_/api_v1_utils.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 3,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/dashboard_atroz_/auth_router.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 7,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/dashboard_atroz_/cross_document_api.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 8,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/dashboard_atroz_/ingestion.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 7,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/dashboard_atroz_/signal_extraction_sota.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 22,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/dashboard_atroz_/signals_service.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 19,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/contractual/dura_lex/audit_trail.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 12,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/contractual/dura_lex/json_contract_loader.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 3,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/contractual/dura_lex/tools/context_hash.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 2,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/contractual/dura_lex/wiring_contracts.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 7,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/programmatic_hierarchy_extractor.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 25,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/semantic_relationship_extractor.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 23,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/extractors/temporal_consistency_extractor.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 23,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_consumption.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 13,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_consumption_integration.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 17,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_loader.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 23,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_quality_metrics.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 19,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_resolution.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_wiring_fixes.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 11,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signals.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 20,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/audit_signal_irrigation.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 14,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/comprehensive_signal_audit.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 18,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/irrigation_using_signals/visualization_generator.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/infrastructure/questionnaire/modular_resolver.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/analyzer_one.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/contradiction_deteccion.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 17,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/embedding_cache_sota.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 34,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/methods/processor_config_schema.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 3,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/orchestration/memory_safety.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 12,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/orchestration/orchestrator.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 13,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/orchestration/phase8_sota_recommendations_engine.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 39,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/orchestration/seed_registry.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 14,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/orchestration/verification_manifest.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 8,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_0/phase0_10_00_phase_0_constants.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 21,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/contracts/__init__.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 10,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/contracts/phase1_10_00_phase1_constitutional_contract.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 9,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/contracts/phase1_10_00_phase1_input_contract.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 14,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/contracts/phase1_10_00_phase1_mission_contract.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 12,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_1/contracts/phase1_10_00_phase1_output_contract.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/__init__.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 50,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/contract_generator/phase2_10_00_chain_composer.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 23,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/contract_generator/phase2_10_00_contract_assembler.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 24,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/contract_generator/phase2_10_00_contract_validator.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 27,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/contract_generator/phase2_10_00_input_registry.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 29,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/contract_generator/phase2_10_00_json_emitter.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 35,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/contract_generator/phase2_10_00_method_expander.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 23,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/contract_generator/phase2_10_00_run.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 46,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_10_00_phase_2_constants.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 10,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/phase2_30_03_resource_aware_executor.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 16,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/tests/phase2_10_00_conftest.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 9,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/tests/phase2_10_00_run_adversarial_tests.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 23,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/tests/phase2_10_00_test_adversarial_edge_cases.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 16,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/tests/phase2_10_00_test_architecture_compliance.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/tests/phase2_10_00_test_contract_integrity.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/tests/phase2_10_00_test_end_to_end.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 16,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/tests/phase2_10_00_test_execution_flow.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_2/tests/phase2_10_00_test_per_file_validation.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/__init__.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 11,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/enhancements/__init__.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 11,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/enhancements/phase4_10_00_enhanced_aggregators.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 19,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/enhancements/phase4_10_00_signal_enriched_aggregation.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 21,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/enhancements/phase4_95_00_enhanced_aggregators.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 19,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/enhancements/phase4_95_00_signal_enriched_aggregation.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 21,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/validation/__init__.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 11,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/validation/phase4_10_00_phase4_7_validation.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 13,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_4/validation/phase4_40_00_7_validation.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 13,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/phase8_00_00_data_models.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 19,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/phase8_10_00_schema_validation.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 31,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/phase8_20_04_recommendation_engine_orchestrator.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 30,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/primitives/phase8_00_00_phase_8_constants.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/primitives/phase8_00_00_phase_8_enums.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 13,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/primitives/phase8_00_00_phase_8_types.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 13,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/primitives/phase8_10_00_phase_8_constants.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/primitives/phase8_10_00_phase_8_enums.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 13,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/primitives/phase8_10_00_phase_8_types.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 13,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_8/tests/phase8_10_00_generative_testing.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 28,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/phases/Phase_9/phase9_10_00_phase_9_constants.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 10,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "src/farfan_pipeline/utils/paths.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 6,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/canonic_phases/phase_2/test_phase2_carver_300_delivery.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 7,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/canonic_phases/phase_2/test_phase2_router_contracts.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 7,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/choquet_tests.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 19,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/phase_4_7/conftest.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 23,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/phases/phase_two/test_phase2_95_00_contract_hydrator.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 14,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/test_causal_inference_dowhy.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 10,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/test_execution_plan_consumption.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 16,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/test_executor_config_integration.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 11,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/test_gap_remediation.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 17,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/test_phase2_calibration_stub.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 11,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/test_phase2_contract_modules.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 10,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/test_phase2_executor_tests.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/test_phase2_label_verifier.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 11,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/test_resource_limits_thread_safety.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 3,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/test_signal_irrigation_audit.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    },
+    {
+      "file": "tests/test_signal_irrigation_comprehensive_audit.py",
+      "type": "wrong_position",
+      "severity": "medium",
+      "line": 15,
+      "details": "Incorrect position"
+    }
+  ]
+}
