@@ -115,30 +115,6 @@ def sample_preprocessed_document():
         PolicyArea,
     )
 
-    # Dimension string to enum mapping
-    DIMENSION_MAP = {
-        "D1": DimensionCausal.DIM01_INSUMOS,
-        "D2": DimensionCausal.DIM02_ACTIVIDADES,
-        "D3": DimensionCausal.DIM03_PRODUCTOS,
-        "D4": DimensionCausal.DIM04_RESULTADOS,
-        "D5": DimensionCausal.DIM05_IMPACTOS,
-        "D6": DimensionCausal.DIM06_CAUSALIDAD,
-    }
-
-    # Policy area string to enum mapping
-    PA_MAP = {
-        "PA01": PolicyArea.PA01,
-        "PA02": PolicyArea.PA02,
-        "PA03": PolicyArea.PA03,
-        "PA04": PolicyArea.PA04,
-        "PA05": PolicyArea.PA05,
-        "PA06": PolicyArea.PA06,
-        "PA07": PolicyArea.PA07,
-        "PA08": PolicyArea.PA08,
-        "PA09": PolicyArea.PA09,
-        "PA10": PolicyArea.PA10,
-    }
-
     chunks = []
     for dim in ["D1", "D2", "D3", "D4", "D5", "D6"]:
         for pa in ["PA01", "PA02", "PA03", "PA04", "PA05", "PA06", "PA07", "PA08", "PA09", "PA10"]:
@@ -149,8 +125,8 @@ def sample_preprocessed_document():
                      "beneficiarias y otros elementos relevantes para el análisis.",
                 start_offset=0,
                 end_offset=200,
-                policy_area=PA_MAP.get(pa),
-                dimension_causal=DIMENSION_MAP.get(dim),
+                policy_area=PolicyArea(pa),
+                dimension_causal=DimensionCausal.from_legacy(dim),
                 metadata={}
             ))
 
