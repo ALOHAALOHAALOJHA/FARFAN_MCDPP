@@ -15,6 +15,7 @@ Enhancement Windows Identified:
     [EW-004] MacroAggregator: Strategic alignment with PA×DIM matrix
     [EW-005] All: Contract integration for dura lex enforcement
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -29,10 +30,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Any

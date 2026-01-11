@@ -4,6 +4,7 @@ PHASE_LABEL: Phase 2
 PHASE_COMPONENT: CQVR Validator
 PHASE_ROLE: Validates executor contracts using multi-tier quality scoring
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -18,10 +19,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "HIGH"
 __execution_pattern__ = "Per-Task"
-
-
-
-from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field

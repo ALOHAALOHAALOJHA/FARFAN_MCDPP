@@ -28,6 +28,7 @@ Author: F.A.R.F.A.N Pipeline - Performance Engineering
 Version: 1.0.0
 Date: 2026-01-09
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -42,10 +43,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "MEDIUM"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import json
 import logging

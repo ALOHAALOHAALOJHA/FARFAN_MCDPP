@@ -4,6 +4,7 @@ PHASE_LABEL: Phase 2
 PHASE_COMPONENT: Base Executor
 PHASE_ROLE: Abstract base class for contract-driven executors with method routing
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -18,10 +19,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "HIGH"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import json
 import logging

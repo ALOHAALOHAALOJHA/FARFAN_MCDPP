@@ -167,6 +167,7 @@ Author: F. A. R.F.A.N Pipeline
 Version: 4.0.0-SOTA
 Date: 2026-01-05
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -181,10 +182,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "LOW"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import hashlib
 import math

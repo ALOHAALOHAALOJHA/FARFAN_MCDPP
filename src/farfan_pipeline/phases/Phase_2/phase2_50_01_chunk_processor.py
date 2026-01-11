@@ -7,6 +7,7 @@ PHASE_ROLE: Process document chunks with retry and error handling
 Consolidated Implementation:
 Uses the shared retry utility in src/farfan_pipeline/utils/retry.py
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -21,10 +22,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import logging
 import time

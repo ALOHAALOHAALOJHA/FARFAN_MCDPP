@@ -20,6 +20,7 @@ Architecture:
 - _process_chunk:  Encapsulates per-chunk processing logic with strict validation
 - to_preprocessed_document:  Orchestrates conversion with 6-layer validation
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -34,10 +35,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "MEDIUM"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import logging
 from dataclasses import dataclass

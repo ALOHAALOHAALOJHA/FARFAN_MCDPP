@@ -24,6 +24,7 @@ Circuit Breaker States:
 Author: F.A.R.F.A.N Security Team
 Date: 2025-12-11
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -38,10 +39,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "HIGH"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import hashlib
 import logging

@@ -28,12 +28,23 @@ DOC_QUOTES = ('"""', "'''")
 def find_docstring_end(lines: list[str]) -> int | None:
     """Encuentra el índice de la línea donde termina el docstring inicial.
     
-    Retorna None si no hay docstring válido al inicio. 
+    Retorna None si no hay docstring válido al inicio.
+    Maneja shebangs y encoding declarations.
     """
     if not lines:
         return None
     
-    first_stripped = lines[0].lstrip()
+    # Saltar shebang y encoding si existen
+    start_idx = 0
+    if lines[0].startswith('#!'):
+        start_idx = 1
+    if start_idx < len(lines) and 'coding' in lines[start_idx].lower() and lines[start_idx].strip().startswith('#'):
+        start_idx += 1
+    
+    if start_idx >= len(lines):
+        return None
+    
+    first_stripped = lines[start_idx].lstrip()
     
     # Detectar qué tipo de comillas usa
     quote = None
@@ -49,10 +60,10 @@ def find_docstring_end(lines: list[str]) -> int | None:
     # Buscar el cierre después de la apertura
     after_open = first_stripped[len(quote):]
     if quote in after_open:
-        return 0
+        return start_idx
     
     # Caso: docstring multi-línea - buscar línea que termine con las comillas
-    for i in range(1, len(lines)):
+    for i in range(start_idx + 1, len(lines)):
         if lines[i].rstrip().endswith(quote):
             return i
     

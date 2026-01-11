@@ -34,6 +34,7 @@ Author: F.A.R.F.A.N Pipeline
 Version: 1.0.0
 Date: 2025-12-10
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -48,10 +49,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "MEDIUM"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import hashlib
 import json

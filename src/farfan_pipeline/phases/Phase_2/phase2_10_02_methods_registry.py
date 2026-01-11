@@ -12,6 +12,7 @@ License: Proprietary
 This module is part of Phase 2: Analysis & Question Execution.
 All files in Phase_2/ must contain PHASE_LABEL: Phase 2.
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -26,10 +27,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import json
 import logging

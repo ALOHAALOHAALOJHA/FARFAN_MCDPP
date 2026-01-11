@@ -8,6 +8,7 @@ Page when new keys appear or required keys vanish.
 
 Catches upstream changes (or LLM output drift) instantly.
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -22,10 +23,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "HIGH"
 __execution_pattern__ = "Continuous"
-
-
-
-from __future__ import annotations
 
 import json
 import logging

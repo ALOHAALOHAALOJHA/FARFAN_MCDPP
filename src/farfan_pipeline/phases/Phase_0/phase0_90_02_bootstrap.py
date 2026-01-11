@@ -13,6 +13,7 @@ RESOURCE ENFORCEMENT (Phase Zero Stability):
     When ENFORCE_RESOURCES=true, bootstrapping runs under hard kernel limits
     via resource.setrlimit(). This provides OOM protection at the OS level.
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -27,10 +28,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "LOW"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import json
 import os

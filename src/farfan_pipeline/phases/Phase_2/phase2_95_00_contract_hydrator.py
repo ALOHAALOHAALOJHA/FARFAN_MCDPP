@@ -35,6 +35,7 @@ Invariants
 Author: F.A.R.F.A.N Pipeline
 Version: 1.0.0
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -49,10 +50,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "HIGH"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import copy
 import logging

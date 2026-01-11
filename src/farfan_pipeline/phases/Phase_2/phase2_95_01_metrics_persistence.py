@@ -8,6 +8,7 @@ Metrics persistence for PhaseInstrumentation telemetry.
 This module provides functions to persist Orchestrator metrics and telemetry
 into artifacts/ directory for CI analysis and regression detection.
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -22,10 +23,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "MEDIUM"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import json
 from pathlib import Path

@@ -38,6 +38,7 @@ Author: Phase 0 Compliance Team
 Version: 2.0.1
 Specification: P00-EN v2.0
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -52,10 +53,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "LOW"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import json
 from datetime import datetime

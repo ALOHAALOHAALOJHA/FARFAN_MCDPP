@@ -18,6 +18,7 @@ Design Principles:
 - Full traceability of routing decisions
 - Zero tolerance for silent parameter drops
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -32,10 +33,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "MEDIUM"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import inspect
 import logging

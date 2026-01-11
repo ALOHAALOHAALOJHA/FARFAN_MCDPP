@@ -19,6 +19,7 @@ Author: Phase 0 Compliance Team
 Version: 1.0.0
 Specification: WiringValidator SOTA Spec v1.0
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -33,10 +34,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "LOW"
 __execution_pattern__ = "Per-Task"
-
-
-
-from __future__ import annotations
 
 import hashlib
 import importlib

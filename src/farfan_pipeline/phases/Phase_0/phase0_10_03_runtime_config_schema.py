@@ -1,4 +1,5 @@
 """Pydantic schema for RuntimeConfig with strict PROD mode validation."""
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -13,10 +14,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 from enum import Enum
 from typing import ClassVar

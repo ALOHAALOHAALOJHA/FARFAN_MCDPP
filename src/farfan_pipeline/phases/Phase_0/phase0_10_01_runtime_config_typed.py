@@ -40,6 +40,7 @@ Categorization (from phase0_10_01_runtime_config.py):
 - Category C (DEVELOPMENT): Must be False in PROD, type-enforced
 - Category D (OPERATIONAL): Can vary in PROD, runtime-configurable
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -54,10 +55,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import os
 from dataclasses import dataclass

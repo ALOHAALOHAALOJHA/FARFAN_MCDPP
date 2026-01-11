@@ -18,6 +18,7 @@ References:
 - Shapley values: Shapley, L.S. (1953). "A value for n-person games"
 - NetworkX: Hagberg et al. (2008). "Exploring network structure, dynamics, and function"
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -32,10 +33,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import hashlib
 import json

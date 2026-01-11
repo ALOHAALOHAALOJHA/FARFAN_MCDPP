@@ -40,6 +40,7 @@ Security Constraints:
     SQL injection protection. DO NOT expose this interface to untrusted user input.
     If external query access is needed, add input sanitization and validation.
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -54,10 +55,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "MEDIUM"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import logging
 import re

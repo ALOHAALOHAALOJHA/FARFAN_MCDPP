@@ -11,6 +11,7 @@ Provides comprehensive alerting and monitoring for resource management:
 - Integration with external monitoring systems
 - Historical trend analysis
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -25,10 +26,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "MEDIUM"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import json
 import logging

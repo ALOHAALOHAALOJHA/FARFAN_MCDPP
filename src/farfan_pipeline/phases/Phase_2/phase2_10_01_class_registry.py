@@ -4,6 +4,7 @@ Module: phase2_10_01_class_registry
 PHASE_LABEL: Phase 2
 Sequence: X
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -18,10 +19,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 from importlib import import_module
 from typing import TYPE_CHECKING

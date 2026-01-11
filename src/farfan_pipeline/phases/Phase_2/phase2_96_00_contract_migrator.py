@@ -25,6 +25,7 @@ Design Principles:
 - JSON Schema validation for target versions
 - Idempotent migrations
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -39,10 +40,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "HIGH"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import json
 import logging

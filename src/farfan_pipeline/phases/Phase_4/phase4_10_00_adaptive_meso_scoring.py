@@ -28,6 +28,7 @@ Where penalty_factor is computed adaptively using:
     sensitivity_multiplier: Adaptive [0.8-2.0] based on CV and DI
     shape_factor: Non-linear scaling [1.0-2.5] for extreme cases
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -42,10 +43,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import logging
 from dataclasses import dataclass

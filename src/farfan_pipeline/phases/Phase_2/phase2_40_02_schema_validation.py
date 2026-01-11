@@ -44,6 +44,7 @@ Parallelization:
     - Phase 6.2-6.3: Concurrency potential (independent validation layers)
     - Phase 6.4: Synchronization barrier (aggregates results)
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -58,10 +59,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "HIGH"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import logging
 from typing import Any

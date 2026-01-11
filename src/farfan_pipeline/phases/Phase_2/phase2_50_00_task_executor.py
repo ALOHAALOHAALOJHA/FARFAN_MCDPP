@@ -49,6 +49,7 @@ Phase 2.2 Process:
        e. Collect result
     3. Return list of 300 TaskResult objects
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -63,10 +64,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import hashlib
 import json

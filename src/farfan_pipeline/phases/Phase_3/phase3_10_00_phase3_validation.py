@@ -7,6 +7,7 @@ Provides strict validation for Phase 3 scoring pipeline to prevent:
 - Missing or null evidence
 - Silent score corruption
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -21,10 +22,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import logging
 from dataclasses import dataclass

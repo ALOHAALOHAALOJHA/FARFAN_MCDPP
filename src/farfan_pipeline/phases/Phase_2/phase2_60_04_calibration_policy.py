@@ -27,6 +27,7 @@ WIRING TO INFRASTRUCTURE:
             ↓
     THIS MODULE: Policy facade for contract execution
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -41,10 +42,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "MEDIUM"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field

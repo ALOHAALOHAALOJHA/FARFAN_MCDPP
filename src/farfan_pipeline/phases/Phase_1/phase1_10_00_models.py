@@ -5,6 +5,7 @@ Phase 1 Models - Strict Data Structures
 Data models for the Phase 1 SPC Ingestion Execution Contract.
 These models enforce strict typing and validation for the pipeline.
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -19,10 +20,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field

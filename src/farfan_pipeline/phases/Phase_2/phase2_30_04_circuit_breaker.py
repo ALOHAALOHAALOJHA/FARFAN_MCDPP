@@ -17,6 +17,7 @@ Circuit Breaker States:
     OPEN: Failures exceeded threshold, requests blocked
     HALF_OPEN: Testing recovery, limited requests allowed
 """
+from __future__ import annotations
 
 # =============================================================================
 # METADATA
@@ -31,10 +32,6 @@ __created__ = "2026-01-10"
 __modified__ = "2026-01-10"
 __criticality__ = "MEDIUM"
 __execution_pattern__ = "On-Demand"
-
-
-
-from __future__ import annotations
 
 import json
 import logging
