@@ -118,7 +118,11 @@ def generate_micro_rules_enhanced():
                             "baseline_measurement_date": DEFAULT_BASELINE_DATE,
                             "measurement_frequency": get_measurement_frequency(threshold_data["urgency"]),
                             "data_source": "Sistema de Seguimiento de Planes (SSP)",
-                            "data_source_query": f"SELECT AVG(score) FROM dimension_scores WHERE pa_id = '{pa_id}' AND dim_id = '{dim_id}'",
+                            "data_source_query": {
+                                "type": "avg_dimension_score",
+                                "pa_id": pa_id,
+                                "dim_id": dim_id,
+                            },
                             "responsible_measurement": "Oficina de Planeación Municipal",
                             "escalation_if_below": threshold_data["max"] * 0.9
                         },
