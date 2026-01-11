@@ -1,0 +1,74 @@
+================================================================================
+REPORTE DE AUDITORÍA - PURGA DE CONTRATOS
+================================================================================
+
+Timestamp: 2026-01-11T22:12:09.888847+00:00
+Items eliminados: 36
+Fallos: 0
+
+LOG DE EVENTOS:
+[2026-01-11T22:12:09.646385+00:00] ENUMERATION: Iniciando enumeración de artefactos contractuales
+[2026-01-11T22:12:09.646440+00:00] FOUND_DIR: Directorio encontrado: artifacts/data/contracts
+[2026-01-11T22:12:09.646630+00:00] DIR_CONTENT: Directorio contiene 2 archivos
+[2026-01-11T22:12:09.646670+00:00] FOUND_DIR: Directorio encontrado: src/farfan_pipeline/infrastructure/contractual
+[2026-01-11T22:12:09.647304+00:00] DIR_CONTENT: Directorio contiene 60 archivos
+[2026-01-11T22:12:09.647336+00:00] FOUND_DIR: Directorio encontrado: src/farfan_pipeline/phases/Phase_1/contracts
+[2026-01-11T22:12:09.647563+00:00] DIR_CONTENT: Directorio contiene 20 archivos
+[2026-01-11T22:12:09.647590+00:00] FOUND_DIR: Directorio encontrado: src/farfan_pipeline/phases/Phase_2/contract_generator
+[2026-01-11T22:12:09.647706+00:00] DIR_CONTENT: Directorio contiene 9 archivos
+[2026-01-11T22:12:09.647732+00:00] FOUND_DIR: Directorio encontrado: src/farfan_pipeline/phases/Phase_2/contracts
+[2026-01-11T22:12:09.647982+00:00] DIR_CONTENT: Directorio contiene 16 archivos
+[2026-01-11T22:12:09.648013+00:00] FOUND_DIR: Directorio encontrado: src/farfan_pipeline/phases/Phase_2/generated_contracts
+[2026-01-11T22:12:09.652518+00:00] DIR_CONTENT: Directorio contiene 604 archivos
+[2026-01-11T22:12:09.652550+00:00] FOUND_DIR: Directorio encontrado: src/farfan_pipeline/phases/Phase_3/contracts
+[2026-01-11T22:12:09.652748+00:00] DIR_CONTENT: Directorio contiene 15 archivos
+[2026-01-11T22:12:09.652775+00:00] FOUND_DIR: Directorio encontrado: src/farfan_pipeline/phases/Phase_4/contracts
+[2026-01-11T22:12:09.653101+00:00] DIR_CONTENT: Directorio contiene 15 archivos
+[2026-01-11T22:12:09.653138+00:00] FOUND_DIR: Directorio encontrado: tests/phase2_contracts
+[2026-01-11T22:12:09.653309+00:00] DIR_CONTENT: Directorio contiene 18 archivos
+[2026-01-11T22:12:09.653339+00:00] FOUND_FILE: Archivo encontrado: scripts/generation/run_contract_generator.py
+[2026-01-11T22:12:09.653362+00:00] FOUND_FILE: Archivo encontrado: scripts/enforcement/enforce_contracts.py
+[2026-01-11T22:12:09.653380+00:00] FOUND_FILE: Archivo encontrado: scripts/extract_300_contracts.py
+[2026-01-11T22:12:09.653397+00:00] FOUND_FILE: Archivo encontrado: scripts/validation/sync_contracts_from_questionnaire.py
+[2026-01-11T22:12:09.653414+00:00] FOUND_FILE: Archivo encontrado: scripts/validation/verify_contract_signal_wiring.py
+[2026-01-11T22:12:09.653418+00:00] DEEP_SCAN: Realizando escaneo profundo de archivos contract*
+[2026-01-11T22:12:09.888569+00:00] DEEP_SCAN_RESULT: Encontrados 22 archivos adicionales
+[2026-01-11T22:12:09.888593+00:00] ENUMERATION_COMPLETE: Enumeración completa: 9 directorios, 27 archivos
+[2026-01-11T22:12:09.888603+00:00] PURGE_MODE: MODO DRY-RUN - Simulación sin borrado real
+[2026-01-11T22:12:09.888616+00:00] DELETE_FILE: Archivo eliminado: run_contract_generator.py
+[2026-01-11T22:12:09.888625+00:00] DELETE_FILE: Archivo eliminado: enforce_contracts.py
+[2026-01-11T22:12:09.888631+00:00] DELETE_FILE: Archivo eliminado: extract_300_contracts.py
+[2026-01-11T22:12:09.888635+00:00] DELETE_FILE: Archivo eliminado: sync_contracts_from_questionnaire.py
+[2026-01-11T22:12:09.888640+00:00] DELETE_FILE: Archivo eliminado: verify_contract_signal_wiring.py
+[2026-01-11T22:12:09.888644+00:00] DELETE_FILE: Archivo eliminado: test_batch6_contracts_q126_q150.py
+[2026-01-11T22:12:09.888648+00:00] DELETE_FILE: Archivo eliminado: test_phase2_contract_modules.py
+[2026-01-11T22:12:09.888652+00:00] DELETE_FILE: Archivo eliminado: test_phase3_contracts.py
+[2026-01-11T22:12:09.888656+00:00] DELETE_FILE: Archivo eliminado: test_phase2_executor_contracts_cqvr_gate.py
+[2026-01-11T22:12:09.888659+00:00] DELETE_FILE: Archivo eliminado: test_contracts_and_certificates.py
+[2026-01-11T22:12:09.888663+00:00] DELETE_FILE: Archivo eliminado: test_phase2_95_00_contract_hydrator.py
+[2026-01-11T22:12:09.888667+00:00] DELETE_FILE: Archivo eliminado: test_phase2_router_contracts.py
+[2026-01-11T22:12:09.888670+00:00] DELETE_FILE: Archivo eliminado: handoff_contracts.py
+[2026-01-11T22:12:09.888674+00:00] DELETE_FILE: Archivo eliminado: phase2_96_00_contract_migrator.py
+[2026-01-11T22:12:09.888678+00:00] DELETE_FILE: Archivo eliminado: phase2_95_00_contract_hydrator.py
+[2026-01-11T22:12:09.888681+00:00] DELETE_FILE: Archivo eliminado: phase2_60_01_contract_validator_cqvr.py
+[2026-01-11T22:12:09.888685+00:00] DELETE_FILE: Archivo eliminado: phase2_60_00_base_executor_with_contract.py
+[2026-01-11T22:12:09.888689+00:00] DELETE_FILE: Archivo eliminado: phase4_10_00_phase4_7_exit_contract.py
+[2026-01-11T22:12:09.888693+00:00] DELETE_FILE: Archivo eliminado: phase4_10_00_7_entry_contract.py
+[2026-01-11T22:12:09.888733+00:00] DELETE_FILE: Archivo eliminado: phase4_10_00_phase4_7_entry_contract.py
+[2026-01-11T22:12:09.888743+00:00] DELETE_FILE: Archivo eliminado: phase4_10_00_7_exit_contract.py
+[2026-01-11T22:12:09.888751+00:00] DELETE_FILE: Archivo eliminado: phase3_10_00_phase3_entry_contract.py
+[2026-01-11T22:12:09.888758+00:00] DELETE_FILE: Archivo eliminado: phase3_10_00_exit_contract.py
+[2026-01-11T22:12:09.888764+00:00] DELETE_FILE: Archivo eliminado: phase3_10_00_phase3_exit_contract.py
+[2026-01-11T22:12:09.888771+00:00] DELETE_FILE: Archivo eliminado: phase3_10_00_entry_contract.py
+[2026-01-11T22:12:09.888779+00:00] DELETE_FILE: Archivo eliminado: phase2_10_00_test_contract_integrity.py
+[2026-01-11T22:12:09.888788+00:00] DELETE_FILE: Archivo eliminado: signal_contract_validator.py
+[2026-01-11T22:12:09.888796+00:00] DELETE_DIR: Directorio eliminado: contracts
+[2026-01-11T22:12:09.888802+00:00] DELETE_DIR: Directorio eliminado: contractual
+[2026-01-11T22:12:09.888807+00:00] DELETE_DIR: Directorio eliminado: contracts
+[2026-01-11T22:12:09.888812+00:00] DELETE_DIR: Directorio eliminado: contract_generator
+[2026-01-11T22:12:09.888817+00:00] DELETE_DIR: Directorio eliminado: contracts
+[2026-01-11T22:12:09.888821+00:00] DELETE_DIR: Directorio eliminado: generated_contracts
+[2026-01-11T22:12:09.888826+00:00] DELETE_DIR: Directorio eliminado: contracts
+[2026-01-11T22:12:09.888830+00:00] DELETE_DIR: Directorio eliminado: contracts
+[2026-01-11T22:12:09.888834+00:00] DELETE_DIR: Directorio eliminado: phase2_contracts
+[2026-01-11T22:12:09.889468+00:00] AUDIT_REPORT: Reporte generado: /home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/PURGE_AUDIT_REPORT.json
