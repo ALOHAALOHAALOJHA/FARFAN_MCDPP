@@ -1,66 +1,66 @@
 {
   "purge_execution": {
-    "timestamp": "2026-01-11T22:12:09.888847+00:00",
+    "timestamp": "2026-01-11T22:12:30.625592+00:00",
     "repo_root": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP",
-    "total_events": 64,
+    "total_events": 66,
     "deleted_items_count": 36,
     "failed_deletions_count": 0
   },
   "deleted_items": [
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/phase2_60_00_base_executor_with_contract.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_exit_contract.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/contractual",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/phase2_95_00_contract_hydrator.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_entry_contract.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/generation/run_contract_generator.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_7_entry_contract.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/generated_contracts",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/validation/sync_contracts_from_questionnaire.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_batch6_contracts_q126_q150.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_contracts_and_certificates.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/contracts",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/enforcement/enforce_contracts.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/extract_300_contracts.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/phase_2/test_phase2_router_contracts.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_1/contracts",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/contracts",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/phase2_96_00_contract_migrator.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase3_contracts.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/data_models/handoff_contracts.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_phase3_exit_contract.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phases/phase_two/test_phase2_95_00_contract_hydrator.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/validation/verify_contract_signal_wiring.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/contracts",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_contract_validator.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/tests/phase2_10_00_test_contract_integrity.py",
     "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase2_executor_contracts_cqvr_gate.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase2_contract_modules.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_phase4_7_exit_contract.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/contract_generator",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_phase4_7_entry_contract.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/artifacts/data/contracts",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase2_contracts",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_7_exit_contract.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/phase_2/test_phase2_router_contracts.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/phase2_95_00_contract_hydrator.py",
     "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/phase2_60_01_contract_validator_cqvr.py",
-    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_phase3_entry_contract.py"
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase2_contracts",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_phase4_7_exit_contract.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_contract_validator.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/validation/sync_contracts_from_questionnaire.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_phase4_7_entry_contract.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/phase2_96_00_contract_migrator.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase2_contract_modules.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_batch6_contracts_q126_q150.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_exit_contract.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/enforcement/enforce_contracts.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/contracts",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_phase3_entry_contract.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/generated_contracts",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/contracts",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/validation/verify_contract_signal_wiring.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/contract_generator",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/extract_300_contracts.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/contracts",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/contractual",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/data_models/handoff_contracts.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_7_entry_contract.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_contracts_and_certificates.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phases/phase_two/test_phase2_95_00_contract_hydrator.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/generation/run_contract_generator.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/artifacts/data/contracts",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase3_contracts.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_7_exit_contract.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_phase3_exit_contract.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/phase2_60_00_base_executor_with_contract.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_1/contracts",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_entry_contract.py",
+    "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/tests/phase2_10_00_test_contract_integrity.py"
   ],
   "failed_deletions": [],
   "audit_log": [
     {
-      "timestamp": "2026-01-11T22:12:09.646385+00:00",
+      "timestamp": "2026-01-11T22:12:30.321935+00:00",
       "event_type": "ENUMERATION",
       "status": "INFO",
       "message": "Iniciando enumeración de artefactos contractuales"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.646440+00:00",
+      "timestamp": "2026-01-11T22:12:30.322017+00:00",
       "event_type": "FOUND_DIR",
       "status": "INFO",
       "message": "Directorio encontrado: artifacts/data/contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/artifacts/data/contracts"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.646630+00:00",
+      "timestamp": "2026-01-11T22:12:30.322261+00:00",
       "event_type": "DIR_CONTENT",
       "status": "INFO",
       "message": "Directorio contiene 2 archivos",
@@ -70,14 +70,14 @@
       }
     },
     {
-      "timestamp": "2026-01-11T22:12:09.646670+00:00",
+      "timestamp": "2026-01-11T22:12:30.322337+00:00",
       "event_type": "FOUND_DIR",
       "status": "INFO",
       "message": "Directorio encontrado: src/farfan_pipeline/infrastructure/contractual",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/contractual"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.647304+00:00",
+      "timestamp": "2026-01-11T22:12:30.323072+00:00",
       "event_type": "DIR_CONTENT",
       "status": "INFO",
       "message": "Directorio contiene 60 archivos",
@@ -87,14 +87,14 @@
       }
     },
     {
-      "timestamp": "2026-01-11T22:12:09.647336+00:00",
+      "timestamp": "2026-01-11T22:12:30.323150+00:00",
       "event_type": "FOUND_DIR",
       "status": "INFO",
       "message": "Directorio encontrado: src/farfan_pipeline/phases/Phase_1/contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_1/contracts"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.647563+00:00",
+      "timestamp": "2026-01-11T22:12:30.323458+00:00",
       "event_type": "DIR_CONTENT",
       "status": "INFO",
       "message": "Directorio contiene 20 archivos",
@@ -104,14 +104,14 @@
       }
     },
     {
-      "timestamp": "2026-01-11T22:12:09.647590+00:00",
+      "timestamp": "2026-01-11T22:12:30.323524+00:00",
       "event_type": "FOUND_DIR",
       "status": "INFO",
       "message": "Directorio encontrado: src/farfan_pipeline/phases/Phase_2/contract_generator",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/contract_generator"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.647706+00:00",
+      "timestamp": "2026-01-11T22:12:30.323719+00:00",
       "event_type": "DIR_CONTENT",
       "status": "INFO",
       "message": "Directorio contiene 9 archivos",
@@ -121,14 +121,14 @@
       }
     },
     {
-      "timestamp": "2026-01-11T22:12:09.647732+00:00",
+      "timestamp": "2026-01-11T22:12:30.323798+00:00",
       "event_type": "FOUND_DIR",
       "status": "INFO",
       "message": "Directorio encontrado: src/farfan_pipeline/phases/Phase_2/contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/contracts"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.647982+00:00",
+      "timestamp": "2026-01-11T22:12:30.324121+00:00",
       "event_type": "DIR_CONTENT",
       "status": "INFO",
       "message": "Directorio contiene 16 archivos",
@@ -138,14 +138,14 @@
       }
     },
     {
-      "timestamp": "2026-01-11T22:12:09.648013+00:00",
+      "timestamp": "2026-01-11T22:12:30.324185+00:00",
       "event_type": "FOUND_DIR",
       "status": "INFO",
       "message": "Directorio encontrado: src/farfan_pipeline/phases/Phase_2/generated_contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/generated_contracts"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.652518+00:00",
+      "timestamp": "2026-01-11T22:12:30.328795+00:00",
       "event_type": "DIR_CONTENT",
       "status": "INFO",
       "message": "Directorio contiene 604 archivos",
@@ -155,14 +155,14 @@
       }
     },
     {
-      "timestamp": "2026-01-11T22:12:09.652550+00:00",
+      "timestamp": "2026-01-11T22:12:30.328863+00:00",
       "event_type": "FOUND_DIR",
       "status": "INFO",
       "message": "Directorio encontrado: src/farfan_pipeline/phases/Phase_3/contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/contracts"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.652748+00:00",
+      "timestamp": "2026-01-11T22:12:30.329136+00:00",
       "event_type": "DIR_CONTENT",
       "status": "INFO",
       "message": "Directorio contiene 15 archivos",
@@ -172,14 +172,14 @@
       }
     },
     {
-      "timestamp": "2026-01-11T22:12:09.652775+00:00",
+      "timestamp": "2026-01-11T22:12:30.329214+00:00",
       "event_type": "FOUND_DIR",
       "status": "INFO",
       "message": "Directorio encontrado: src/farfan_pipeline/phases/Phase_4/contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/contracts"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.653101+00:00",
+      "timestamp": "2026-01-11T22:12:30.329548+00:00",
       "event_type": "DIR_CONTENT",
       "status": "INFO",
       "message": "Directorio contiene 15 archivos",
@@ -189,14 +189,14 @@
       }
     },
     {
-      "timestamp": "2026-01-11T22:12:09.653138+00:00",
+      "timestamp": "2026-01-11T22:12:30.329612+00:00",
       "event_type": "FOUND_DIR",
       "status": "INFO",
       "message": "Directorio encontrado: tests/phase2_contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase2_contracts"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.653309+00:00",
+      "timestamp": "2026-01-11T22:12:30.329855+00:00",
       "event_type": "DIR_CONTENT",
       "status": "INFO",
       "message": "Directorio contiene 18 archivos",
@@ -206,48 +206,48 @@
       }
     },
     {
-      "timestamp": "2026-01-11T22:12:09.653339+00:00",
+      "timestamp": "2026-01-11T22:12:30.329940+00:00",
       "event_type": "FOUND_FILE",
       "status": "INFO",
       "message": "Archivo encontrado: scripts/generation/run_contract_generator.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/generation/run_contract_generator.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.653362+00:00",
+      "timestamp": "2026-01-11T22:12:30.330011+00:00",
       "event_type": "FOUND_FILE",
       "status": "INFO",
       "message": "Archivo encontrado: scripts/enforcement/enforce_contracts.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/enforcement/enforce_contracts.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.653380+00:00",
+      "timestamp": "2026-01-11T22:12:30.330072+00:00",
       "event_type": "FOUND_FILE",
       "status": "INFO",
       "message": "Archivo encontrado: scripts/extract_300_contracts.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/extract_300_contracts.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.653397+00:00",
+      "timestamp": "2026-01-11T22:12:30.330140+00:00",
       "event_type": "FOUND_FILE",
       "status": "INFO",
       "message": "Archivo encontrado: scripts/validation/sync_contracts_from_questionnaire.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/validation/sync_contracts_from_questionnaire.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.653414+00:00",
+      "timestamp": "2026-01-11T22:12:30.330205+00:00",
       "event_type": "FOUND_FILE",
       "status": "INFO",
       "message": "Archivo encontrado: scripts/validation/verify_contract_signal_wiring.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/validation/verify_contract_signal_wiring.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.653418+00:00",
+      "timestamp": "2026-01-11T22:12:30.330236+00:00",
       "event_type": "DEEP_SCAN",
       "status": "INFO",
       "message": "Realizando escaneo profundo de archivos contract*"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888569+00:00",
+      "timestamp": "2026-01-11T22:12:30.563979+00:00",
       "event_type": "DEEP_SCAN_RESULT",
       "status": "WARNING",
       "message": "Encontrados 22 archivos adicionales",
@@ -256,7 +256,7 @@
       }
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888593+00:00",
+      "timestamp": "2026-01-11T22:12:30.564028+00:00",
       "event_type": "ENUMERATION_COMPLETE",
       "status": "SUCCESS",
       "message": "Enumeración completa: 9 directorios, 27 archivos",
@@ -266,262 +266,274 @@
       }
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888603+00:00",
+      "timestamp": "2026-01-11T22:12:30.564071+00:00",
       "event_type": "PURGE_MODE",
       "status": "WARNING",
-      "message": "MODO DRY-RUN - Simulación sin borrado real"
+      "message": "MODO DESTRUCTIVO - Borrado permanente activado"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888616+00:00",
+      "timestamp": "2026-01-11T22:12:30.564198+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: run_contract_generator.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/generation/run_contract_generator.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888625+00:00",
+      "timestamp": "2026-01-11T22:12:30.564278+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: enforce_contracts.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/enforcement/enforce_contracts.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888631+00:00",
+      "timestamp": "2026-01-11T22:12:30.564367+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: extract_300_contracts.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/extract_300_contracts.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888635+00:00",
+      "timestamp": "2026-01-11T22:12:30.564455+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: sync_contracts_from_questionnaire.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/validation/sync_contracts_from_questionnaire.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888640+00:00",
+      "timestamp": "2026-01-11T22:12:30.564539+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: verify_contract_signal_wiring.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/scripts/validation/verify_contract_signal_wiring.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888644+00:00",
+      "timestamp": "2026-01-11T22:12:30.564647+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: test_batch6_contracts_q126_q150.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_batch6_contracts_q126_q150.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888648+00:00",
+      "timestamp": "2026-01-11T22:12:30.564763+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: test_phase2_contract_modules.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase2_contract_modules.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888652+00:00",
+      "timestamp": "2026-01-11T22:12:30.564851+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: test_phase3_contracts.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase3_contracts.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888656+00:00",
+      "timestamp": "2026-01-11T22:12:30.564958+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: test_phase2_executor_contracts_cqvr_gate.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/test_phase2_executor_contracts_cqvr_gate.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888659+00:00",
+      "timestamp": "2026-01-11T22:12:30.565047+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: test_contracts_and_certificates.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase_1/test_contracts_and_certificates.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888663+00:00",
+      "timestamp": "2026-01-11T22:12:30.565134+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: test_phase2_95_00_contract_hydrator.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phases/phase_two/test_phase2_95_00_contract_hydrator.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888667+00:00",
+      "timestamp": "2026-01-11T22:12:30.565221+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: test_phase2_router_contracts.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/canonic_phases/phase_2/test_phase2_router_contracts.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888670+00:00",
+      "timestamp": "2026-01-11T22:12:30.565303+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: handoff_contracts.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/data_models/handoff_contracts.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888674+00:00",
+      "timestamp": "2026-01-11T22:12:30.565405+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: phase2_96_00_contract_migrator.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/phase2_96_00_contract_migrator.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888678+00:00",
+      "timestamp": "2026-01-11T22:12:30.565491+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: phase2_95_00_contract_hydrator.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/phase2_95_00_contract_hydrator.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888681+00:00",
+      "timestamp": "2026-01-11T22:12:30.565578+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: phase2_60_01_contract_validator_cqvr.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/phase2_60_01_contract_validator_cqvr.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888685+00:00",
+      "timestamp": "2026-01-11T22:12:30.565683+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: phase2_60_00_base_executor_with_contract.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/phase2_60_00_base_executor_with_contract.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888689+00:00",
+      "timestamp": "2026-01-11T22:12:30.565768+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: phase4_10_00_phase4_7_exit_contract.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_phase4_7_exit_contract.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888693+00:00",
+      "timestamp": "2026-01-11T22:12:30.565851+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: phase4_10_00_7_entry_contract.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_7_entry_contract.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888733+00:00",
+      "timestamp": "2026-01-11T22:12:30.565955+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: phase4_10_00_phase4_7_entry_contract.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_phase4_7_entry_contract.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888743+00:00",
+      "timestamp": "2026-01-11T22:12:30.566038+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: phase4_10_00_7_exit_contract.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/interface/phase4_10_00_7_exit_contract.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888751+00:00",
+      "timestamp": "2026-01-11T22:12:30.566124+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: phase3_10_00_phase3_entry_contract.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_phase3_entry_contract.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888758+00:00",
+      "timestamp": "2026-01-11T22:12:30.566203+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: phase3_10_00_exit_contract.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_exit_contract.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888764+00:00",
+      "timestamp": "2026-01-11T22:12:30.566286+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: phase3_10_00_phase3_exit_contract.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_phase3_exit_contract.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888771+00:00",
+      "timestamp": "2026-01-11T22:12:30.566366+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: phase3_10_00_entry_contract.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/interface/phase3_10_00_entry_contract.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888779+00:00",
+      "timestamp": "2026-01-11T22:12:30.566461+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: phase2_10_00_test_contract_integrity.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/tests/phase2_10_00_test_contract_integrity.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888788+00:00",
+      "timestamp": "2026-01-11T22:12:30.566559+00:00",
       "event_type": "DELETE_FILE",
       "status": "SUCCESS",
       "message": "Archivo eliminado: signal_contract_validator.py",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_contract_validator.py"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888796+00:00",
+      "timestamp": "2026-01-11T22:12:30.567230+00:00",
       "event_type": "DELETE_DIR",
       "status": "SUCCESS",
       "message": "Directorio eliminado: contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/artifacts/data/contracts"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888802+00:00",
+      "timestamp": "2026-01-11T22:12:30.568952+00:00",
       "event_type": "DELETE_DIR",
       "status": "SUCCESS",
       "message": "Directorio eliminado: contractual",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/infrastructure/contractual"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888807+00:00",
+      "timestamp": "2026-01-11T22:12:30.569573+00:00",
       "event_type": "DELETE_DIR",
       "status": "SUCCESS",
       "message": "Directorio eliminado: contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_1/contracts"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888812+00:00",
+      "timestamp": "2026-01-11T22:12:30.569966+00:00",
       "event_type": "DELETE_DIR",
       "status": "SUCCESS",
       "message": "Directorio eliminado: contract_generator",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/contract_generator"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888817+00:00",
+      "timestamp": "2026-01-11T22:12:30.570485+00:00",
       "event_type": "DELETE_DIR",
       "status": "SUCCESS",
       "message": "Directorio eliminado: contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/contracts"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888821+00:00",
+      "timestamp": "2026-01-11T22:12:30.596936+00:00",
       "event_type": "DELETE_DIR",
       "status": "SUCCESS",
       "message": "Directorio eliminado: generated_contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_2/generated_contracts"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888826+00:00",
+      "timestamp": "2026-01-11T22:12:30.597468+00:00",
       "event_type": "DELETE_DIR",
       "status": "SUCCESS",
       "message": "Directorio eliminado: contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_3/contracts"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888830+00:00",
+      "timestamp": "2026-01-11T22:12:30.598046+00:00",
       "event_type": "DELETE_DIR",
       "status": "SUCCESS",
       "message": "Directorio eliminado: contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_4/contracts"
     },
     {
-      "timestamp": "2026-01-11T22:12:09.888834+00:00",
+      "timestamp": "2026-01-11T22:12:30.598612+00:00",
       "event_type": "DELETE_DIR",
       "status": "SUCCESS",
       "message": "Directorio eliminado: phase2_contracts",
       "path": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/tests/phase2_contracts"
+    },
+    {
+      "timestamp": "2026-01-11T22:12:30.598677+00:00",
+      "event_type": "VERIFICATION",
+      "status": "INFO",
+      "message": "Iniciando verificación de remoción completa"
+    },
+    {
+      "timestamp": "2026-01-11T22:12:30.625483+00:00",
+      "event_type": "VERIFICATION_SUCCESS",
+      "status": "SUCCESS",
+      "message": "NO QUEDAN ARCHIVOS NI CARPETAS RESTRINGIDAS"
     }
   ]
 }
