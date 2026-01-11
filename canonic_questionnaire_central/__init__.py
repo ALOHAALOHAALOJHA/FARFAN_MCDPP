@@ -150,7 +150,6 @@ class CQCLoader:
             Dict mapping question_id to question data
         """
         import json
-        from pathlib import Path
 
         registry = {}
         questions_dir = self._get_questions_dir()
