@@ -21,7 +21,6 @@ import random
 from datetime import UTC, datetime
 from html import escape as html_escape
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, List
 import base64
 
 if TYPE_CHECKING:
