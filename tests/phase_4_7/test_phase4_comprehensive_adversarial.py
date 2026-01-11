@@ -461,7 +461,7 @@ class TestBootstrapUncertaintyAdversarial:
 
     def test_bootstrap_aggregator_basic(self):
         """Test basic bootstrap aggregation."""
-        from farfan_pipeline.phases.Phase_4.uncertainty_quantification import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification import (
             BootstrapAggregator,
         )
 
@@ -482,7 +482,7 @@ class TestBootstrapUncertaintyAdversarial:
 
     def test_bootstrap_with_single_value(self):
         """Test bootstrap with single value (edge case)."""
-        from farfan_pipeline.phases.Phase_4.uncertainty_quantification import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification import (
             BootstrapAggregator,
         )
 
@@ -502,7 +502,7 @@ class TestBootstrapUncertaintyAdversarial:
 
     def test_bootstrap_with_extreme_variance(self):
         """Test bootstrap with extreme variance."""
-        from farfan_pipeline.phases.Phase_4.uncertainty_quantification import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification import (
             BootstrapAggregator,
         )
 
@@ -522,7 +522,7 @@ class TestBootstrapUncertaintyAdversarial:
 
     def test_convergence_diagnostics(self):
         """Test convergence diagnostics for bootstrap."""
-        from farfan_pipeline.phases.Phase_4.uncertainty_quantification import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification import (
             BootstrapAggregator,
         )
 
@@ -541,7 +541,7 @@ class TestBootstrapUncertaintyAdversarial:
 
     def test_aggregate_with_uncertainty_api(self):
         """Test the main API function for aggregation with uncertainty."""
-        from farfan_pipeline.phases.Phase_4.uncertainty_quantification import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification import (
             aggregate_with_uncertainty,
         )
 
@@ -564,7 +564,7 @@ class TestChoquetAggregatorAdversarial:
 
     def test_choquet_linear_aggregation_only(self):
         """Test Choquet with only linear weights (no interactions)."""
-        from farfan_pipeline.phases.Phase_4.choquet_aggregator import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_choquet_aggregator import (
             ChoquetAggregator,
             ChoquetConfig,
         )
@@ -587,7 +587,7 @@ class TestChoquetAggregatorAdversarial:
 
     def test_choquet_with_interaction_terms(self):
         """Test Choquet with interaction terms."""
-        from farfan_pipeline.phases.Phase_4.choquet_aggregator import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_choquet_aggregator import (
             ChoquetAggregator,
             ChoquetConfig,
         )
@@ -613,7 +613,7 @@ class TestChoquetAggregatorAdversarial:
 
     def test_choquet_boundedness_violation(self):
         """Test that boundedness violations are caught."""
-        from farfan_pipeline.phases.Phase_4.choquet_aggregator import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_choquet_aggregator import (
             ChoquetAggregator,
             ChoquetConfig,
             CalibrationConfigError,
@@ -637,7 +637,7 @@ class TestChoquetAggregatorAdversarial:
 
     def test_choquet_missing_layer(self):
         """Test that missing layers raise error."""
-        from farfan_pipeline.phases.Phase_4.choquet_aggregator import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_choquet_aggregator import (
             ChoquetAggregator,
             ChoquetConfig,
         )
@@ -654,7 +654,7 @@ class TestChoquetAggregatorAdversarial:
 
     def test_choquet_score_clamping(self):
         """Test that out-of-bounds scores are clamped."""
-        from farfan_pipeline.phases.Phase_4.choquet_aggregator import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_choquet_aggregator import (
             ChoquetAggregator,
             ChoquetConfig,
         )
@@ -682,7 +682,7 @@ class TestProvenanceDAGAdversarial:
 
     def test_dag_construction(self):
         """Test basic DAG construction with nodes and edges."""
-        from farfan_pipeline.phases.Phase_4.aggregation_provenance import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_provenance import (
             AggregationDAG,
             ProvenanceNode,
         )
@@ -710,7 +710,7 @@ class TestProvenanceDAGAdversarial:
 
     def test_dag_cycle_detection(self):
         """Test that cycles are detected and prevented."""
-        from farfan_pipeline.phases.Phase_4.aggregation_provenance import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_provenance import (
             AggregationDAG,
             ProvenanceNode,
         )
@@ -735,7 +735,7 @@ class TestProvenanceDAGAdversarial:
 
     def test_dag_lineage_tracing(self):
         """Test lineage tracing through DAG."""
-        from farfan_pipeline.phases.Phase_4.aggregation_provenance import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_provenance import (
             AggregationDAG,
             ProvenanceNode,
         )
@@ -769,7 +769,7 @@ class TestProvenanceDAGAdversarial:
 
     def test_shapley_attribution(self):
         """Test Shapley value attribution."""
-        from farfan_pipeline.phases.Phase_4.aggregation_provenance import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_provenance import (
             AggregationDAG,
             ProvenanceNode,
         )
@@ -799,7 +799,7 @@ class TestProvenanceDAGAdversarial:
 
     def test_critical_path_identification(self):
         """Test critical path identification."""
-        from farfan_pipeline.phases.Phase_4.aggregation_provenance import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_provenance import (
             AggregationDAG,
             ProvenanceNode,
         )
@@ -892,7 +892,7 @@ class TestAggregationIntegrationAdversarial:
 
     def test_aggregate_dimensions_async(self):
         """Test async dimension aggregation integration."""
-        from farfan_pipeline.phases.Phase_4.aggregation_integration import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_integration import (
             aggregate_dimensions_async,
         )
 
@@ -926,7 +926,7 @@ class TestAggregationIntegrationAdversarial:
 
     def test_aggregate_policy_areas_async(self):
         """Test async area aggregation integration."""
-        from farfan_pipeline.phases.Phase_4.aggregation_integration import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_integration import (
             aggregate_policy_areas_async,
             DimensionScore,
         )
@@ -957,7 +957,7 @@ class TestAggregationIntegrationAdversarial:
 
     def test_aggregate_clusters_integration(self):
         """Test cluster aggregation integration."""
-        from farfan_pipeline.phases.Phase_4.aggregation_integration import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_integration import (
             aggregate_clusters,
             AreaScore,
         )
@@ -985,7 +985,7 @@ class TestAggregationIntegrationAdversarial:
 
     def test_evaluate_macro_integration(self):
         """Test macro evaluation integration."""
-        from farfan_pipeline.phases.Phase_4.aggregation_integration import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_integration import (
             evaluate_macro,
             DimensionScore,
             AreaScore,
@@ -1052,7 +1052,7 @@ class TestPhase4EndToEndFlow:
 
     def test_full_flow_phase3_to_phase5(self):
         """Test complete flow from micro-questions to area scores."""
-        from farfan_pipeline.phases.Phase_4.aggregation_integration import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_integration import (
             aggregate_dimensions_async,
             aggregate_policy_areas_async,
         )
@@ -1100,7 +1100,7 @@ class TestPhase4EndToEndFlow:
 
     def test_full_flow_with_traceability(self):
         """Test that traceability is preserved through full flow."""
-        from farfan_pipeline.phases.Phase_4.aggregation_integration import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_integration import (
             aggregate_dimensions_async,
             aggregate_policy_areas_async,
         )
@@ -1144,7 +1144,7 @@ class TestPhase4EndToEndFlow:
 
     def test_full_flow_with_variance(self):
         """Test full flow with score variance."""
-        from farfan_pipeline.phases.Phase_4.aggregation_integration import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_integration import (
             aggregate_dimensions_async,
             aggregate_policy_areas_async,
         )
@@ -1194,7 +1194,7 @@ class TestPhase4ConstantsAdversarial:
 
     def test_quality_level_constants(self):
         """Test quality level constant definitions."""
-        from farfan_pipeline.phases.Phase_4.PHASE_4_7_CONSTANTS import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_phase_4_7_constants import (
             QUALITY_LEVEL_EXCELENTE,
             QUALITY_LEVEL_BUENO,
             QUALITY_LEVEL_ACEPTABLE,
@@ -1208,7 +1208,7 @@ class TestPhase4ConstantsAdversarial:
 
     def test_score_range_constants(self):
         """Test score range constants."""
-        from farfan_pipeline.phases.Phase_4.PHASE_4_7_CONSTANTS import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_phase_4_7_constants import (
             MIN_SCORE,
             MAX_SCORE,
         )
@@ -1218,7 +1218,7 @@ class TestPhase4ConstantsAdversarial:
 
     def test_quality_threshold_constants(self):
         """Test quality threshold constants."""
-        from farfan_pipeline.phases.Phase_4.PHASE_4_7_CONSTANTS import (
+        from farfan_pipeline.phases.Phase_4.phase4_10_00_phase_4_7_constants import (
             THRESHOLD_EXCELENTE,
             THRESHOLD_BUENO,
             THRESHOLD_ACEPTABLE,
@@ -1245,7 +1245,7 @@ class TestPhase4ValidationAdversarial:
 
     def test_dimension_score_validation(self):
         """Test dimension score validation."""
-        from farfan_pipeline.phases.Phase_4.validation.phase4_7_validation import (
+        from farfan_pipeline.phases.Phase_4.validation import (
             validate_dimension_score,
         )
 
@@ -1265,7 +1265,7 @@ class TestPhase4ValidationAdversarial:
 
     def test_dimension_score_validation_out_of_range(self):
         """Test dimension score validation with out-of-range score."""
-        from farfan_pipeline.phases.Phase_4.validation.phase4_7_validation import (
+        from farfan_pipeline.phases.Phase_4.validation import (
             validate_dimension_score,
         )
 
@@ -1286,7 +1286,7 @@ class TestPhase4ValidationAdversarial:
 
     def test_area_score_validation_hermeticity(self):
         """Test area score validation for hermeticity."""
-        from farfan_pipeline.phases.Phase_4.validation.phase4_7_validation import (
+        from farfan_pipeline.phases.Phase_4.validation import (
             validate_area_score_hermeticity,
             AreaScore,
             DimensionScore,
@@ -1332,7 +1332,7 @@ class TestEnhancedAggregatorsAdversarial:
 
     def test_enhanced_dimension_aggregator(self):
         """Test enhanced dimension aggregator with CI tracking."""
-        from farfan_pipeline.phases.Phase_4.enhancements.enhanced_aggregators import (
+        from farfan_pipeline.phases.Phase_4.enhancements import (
             EnhancedDimensionAggregator,
         )
 
@@ -1352,7 +1352,7 @@ class TestEnhancedAggregatorsAdversarial:
 
     def test_enhanced_area_aggregator(self):
         """Test enhanced area aggregator with dispersion analysis."""
-        from farfan_pipeline.phases.Phase_4.enhancements.enhanced_aggregators import (
+        from farfan_pipeline.phases.Phase_4.enhancements import (
             EnhancedAreaAggregator,
             DimensionScore,
         )
@@ -1442,7 +1442,7 @@ class TestSignalEnrichedAggregationAdversarial:
 
     def test_signal_enriched_aggregator(self):
         """Test signal-enriched aggregation."""
-        from farfan_pipeline.phases.Phase_4.signal_enriched_aggregation import (
+        from farfan_pipeline.phases.Phase_4.enhancements.phase4_10_00_signal_enriched_aggregation import (
             SignalEnrichedAggregator,
         )
 
@@ -1462,7 +1462,7 @@ class TestSignalEnrichedAggregationAdversarial:
 
     def test_critical_score_detection(self):
         """Test critical score detection and boosting."""
-        from farfan_pipeline.phases.Phase_4.signal_enriched_aggregation import (
+        from farfan_pipeline.phases.Phase_4.enhancements.phase4_10_00_signal_enriched_aggregation import (
             detect_critical_scores,
         )
 
@@ -1486,7 +1486,7 @@ class TestAdaptiveMesoScoringAdversarial:
 
     def test_adaptive_method_selection(self):
         """Test adaptive scoring method selection."""
-        from farfan_pipeline.phases.Phase_4.adaptive_meso_scoring import (
+        from farfan_pipeline.phases.Phase_4.enhancements.phase4_10_00_adaptive_meso_scoring import (
             AdaptiveMesoScoring,
         )
 
@@ -1506,7 +1506,7 @@ class TestAdaptiveMesoScoringAdversarial:
 
     def test_performance_tracking(self):
         """Test performance metric tracking."""
-        from farfan_pipeline.phases.Phase_4.adaptive_meso_scoring import (
+        from farfan_pipeline.phases.Phase_4.enhancements.phase4_10_00_adaptive_meso_scoring import (
             AdaptiveMesoScoring,
             ScoringMetrics,
         )

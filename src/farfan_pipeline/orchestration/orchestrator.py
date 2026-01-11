@@ -39,10 +39,10 @@ from farfan_pipeline.phases.Phase_0.phase0_50_01_exit_gates import GateResult
 
 # Define RULES_DIR locally (not exported from paths)
 RULES_DIR = PROJECT_ROOT / "sensitive_rules_for_coding"
-from farfan_pipeline.phases.Phase_4.aggregation_enhancements import (
+from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_enhancements import (
     enhance_aggregator,
 )
-from farfan_pipeline.phases.Phase_4.aggregation_validation import (
+from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,

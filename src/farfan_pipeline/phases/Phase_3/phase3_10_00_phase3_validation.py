@@ -25,6 +25,7 @@ __execution_pattern__ = "On-Demand"
 
 import logging
 import math
+import numbers
 from dataclasses import dataclass
 from typing import Any
 
@@ -168,10 +169,24 @@ def validate_and_clamp_score(
             f"score_type={type(score).__name__}, score_value={score!s}, error={e!s}"
         )
         # For overflow errors, determine if positive or negative
+        # Skip strings/bytes first to avoid recursive conversion issues
+        if isinstance(score, (str, bytes)):
+            return 0.0
+
+        # Use numbers.Integral to handle native ints (which have no overflow)
+        if isinstance(score, numbers.Integral):
+            return 1.0 if score > 0 else 0.0
+
+        # For other numeric types, attempt int() with separate OverflowError handling
         try:
-            score_int = int(score) if not isinstance(score, (str, bytes)) else 0
+            score_int = int(score)
             return 1.0 if score_int > 0 else 0.0
-        except (TypeError, ValueError, OverflowError, RuntimeError):
+        except OverflowError:
+            # int() overflow - determine sign via math.copysign or float() yielding inf
+            # Use math.copysign to safely determine sign without overflow
+            sign = math.copysign(1.0, float(score))
+            return 1.0 if sign > 0 else 0.0
+        except (TypeError, ValueError, RuntimeError):
             return 0.0
 
     # ADVERSARIAL: Check for NaN explicitly (NaN comparisons always return False)

@@ -2,7 +2,7 @@
 Calibration Decorators - SOTA Method Instrumentation Framework
 ==============================================================
 
-Module: src.farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration.decorators
+Module: src.farfan_pipeline.infrastructure.calibration.decorators
 Purpose: Method-level calibration instrumentation and telemetry
 Owner: calibration_core
 Lifecycle: ACTIVE
