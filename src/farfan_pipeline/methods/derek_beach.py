@@ -3361,7 +3361,7 @@ class CausalExtractor:
                     return similarity
                 except Exception as e:
                     # Fallback to direct computation if cache fails
-                    logger.debug("embedding_cache_fallback", error=str(e))
+                    self.logger.debug("embedding_cache_fallback", error=str(e))
 
             # Direct computation without cache
             source_doc = self.nlp(source_node.text[:max_context])
