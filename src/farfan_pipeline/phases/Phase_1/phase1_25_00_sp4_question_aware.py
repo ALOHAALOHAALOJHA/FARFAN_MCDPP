@@ -67,6 +67,14 @@ from farfan_pipeline.phases.Phase_1.phase1_15_00_questionnaire_mapper import (
 from farfan_pipeline.phases.Phase_1.phase1_10_00_phase_1_constants import (
     DIMENSION_COUNT,
     POLICY_AREA_COUNT,
+    TOTAL_QUESTIONS,
+    TOTAL_CHUNK_COMBINATIONS,
+    QUESTIONS_PER_SLOT,
+    REQUIRED_ELEMENT_VERIFICATION,
+    MIN_REQUIRED_ELEMENTS_PRESENT,
+    ASSIGNMENT_METHOD_SEMANTIC,
+    SEMANTIC_SCORE_MAX_EXPECTED,
+    ASSIGNMENT_METHOD_FALLBACK,
 )
 
 # Try to import canonical types

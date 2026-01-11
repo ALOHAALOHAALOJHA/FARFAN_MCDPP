@@ -47,7 +47,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration.decorators import (
+from farfan_pipeline.infrastructure.calibration.decorators import (
     calibrated_method,
 )
 

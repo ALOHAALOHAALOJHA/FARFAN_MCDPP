@@ -31,6 +31,7 @@ __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
 
 import logging
+import math
 from typing import Any
 
 logger = logging.getLogger(__name__)
@@ -57,18 +58,33 @@ def extract_score_from_nexus(result_data: dict[str, Any]) -> float:
     confidence = result_data.get("overall_confidence")
     if confidence is not None:
         try:
-            return float(confidence)
-        except (TypeError, ValueError):
+            score = float(confidence)
+            # ADVERSARIAL: Check for NaN
+            if score != score:  # NaN check
+                return 0.0
+            # ADVERSARIAL: Check for infinity
+            if not math.isfinite(score):
+                return 1.0 if score > 0 else 0.0
+            # ADVERSARIAL: Clamp to [0.0, 1.0]
+            return max(0.0, min(1.0, score))
+        except (TypeError, ValueError, OverflowError):
             logger.warning(f"Invalid overall_confidence type: {type(confidence)}")
 
     # Fallback: Check validation.score (only set when validation fails with score_zero policy)
     validation = result_data.get("validation", {})
-    score = validation.get("score")
-    if score is not None:
-        try:
-            return float(score)
-        except (TypeError, ValueError):
-            logger.warning(f"Invalid validation score type: {type(score)}")
+    if validation is not None:  # ADVERSARIAL: Check validation is not None
+        score = validation.get("score")
+        if score is not None:
+            try:
+                score = float(score)
+                # ADVERSARIAL: Handle NaN/infinity
+                if score != score:  # NaN check
+                    return 0.0
+                if not math.isfinite(score):
+                    return 1.0 if score > 0 else 0.0
+                return max(0.0, min(1.0, score))
+            except (TypeError, ValueError, OverflowError):
+                logger.warning(f"Invalid validation score type: {type(score)}")
 
     # Fallback: Use mean confidence from evidence elements
     evidence = result_data.get("evidence", {})
@@ -77,8 +93,14 @@ def extract_score_from_nexus(result_data: dict[str, Any]) -> float:
         mean_conf = conf_scores.get("mean")
         if mean_conf is not None:
             try:
-                return float(mean_conf)
-            except (TypeError, ValueError):
+                score = float(mean_conf)
+                # ADVERSARIAL: Handle NaN/infinity
+                if score != score:  # NaN check
+                    return 0.0
+                if not math.isfinite(score):
+                    return 1.0 if score > 0 else 0.0
+                return max(0.0, min(1.0, score))
+            except (TypeError, ValueError, OverflowError):
                 pass
 
     # Default: 0.0
@@ -100,11 +122,21 @@ def map_completeness_to_quality(completeness: str | None) -> str:
     Returns:
         Quality level string for Phase 4 aggregation
     """
+    # ADVERSARIAL: Handle None, empty string, and non-string types
     if not completeness:
         return "INSUFICIENTE"
 
-    completeness_lower = completeness.lower()
+    # ADVERSARIAL: Handle non-string types
+    if not isinstance(completeness, str):
+        return "INSUFICIENTE"
 
+    # ADVERSARIAL: Strip whitespace (but are strict about case)
+    completeness_stripped = completeness.strip()
+    if not completeness_stripped:
+        return "INSUFICIENTE"
+
+    # ADVERSARIAL: Strict case-sensitive mapping (no upper() conversion)
+    # This is intentional - we reject "COMPLETE", "Complete", etc.
     mapping = {
         "complete": "EXCELENTE",
         "partial": "ACEPTABLE",
@@ -112,7 +144,7 @@ def map_completeness_to_quality(completeness: str | None) -> str:
         "not_applicable": "NO_APLICABLE",
     }
 
-    return mapping.get(completeness_lower, "INSUFICIENTE")
+    return mapping.get(completeness_stripped, "INSUFICIENTE")
 
 
 def extract_score_from_evidence(evidence: dict[str, Any] | None) -> float:
@@ -127,28 +159,30 @@ def extract_score_from_evidence(evidence: dict[str, Any] | None) -> float:
     Returns:
         Extracted score (0.0-1.0), defaults to 0.0 if not found
     """
-    if not evidence:
+    if not evidence or not isinstance(evidence, dict):
         return 0.0
 
     # Try validation.score (only set when validation fails)
     validation = evidence.get("validation", {})
-    score = validation.get("score")
+    if validation and isinstance(validation, dict):  # ADVERSARIAL: Check validation is not None
+        score = validation.get("score")
 
-    if score is not None:
-        try:
-            return float(score)
-        except (TypeError, ValueError):
-            logger.warning(f"Invalid score type in validation: {type(score)}")
+        if score is not None:
+            try:
+                return float(score)
+            except (TypeError, ValueError):
+                logger.warning(f"Invalid score type in validation: {type(score)}")
 
     # Try confidence_scores.mean as fallback
     if isinstance(evidence, dict):
-        conf_scores = evidence.get("confidence_scores", {})
-        mean_conf = conf_scores.get("mean")
-        if mean_conf is not None:
-            try:
-                return float(mean_conf)
-            except (TypeError, ValueError):
-                pass
+        conf_scores = evidence.get("confidence_scores")
+        if conf_scores and isinstance(conf_scores, dict):  # ADVERSARIAL: Check conf_scores is not None
+            mean_conf = conf_scores.get("mean")
+            if mean_conf is not None:
+                try:
+                    return float(mean_conf)
+                except (TypeError, ValueError):
+                    pass
 
     return 0.0
 
@@ -168,12 +202,13 @@ def extract_quality_level(evidence: dict[str, Any] | None, completeness: str | N
         return map_completeness_to_quality(completeness)
 
     # Fallback: Check validation.quality_level (only set when validation fails)
-    if evidence:
+    if evidence and isinstance(evidence, dict):
         validation = evidence.get("validation", {})
-        quality = validation.get("quality_level")
+        if validation:  # ADVERSARIAL: Check validation is not None
+            quality = validation.get("quality_level")
 
-        if quality is not None:
-            return str(quality)
+            if quality is not None:
+                return str(quality)
 
     return "INSUFICIENTE"
 

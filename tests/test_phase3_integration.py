@@ -450,7 +450,7 @@ class TestAdversarialEndToEnd:
         # Create test data with adversarial corruption
         micro_results = []
 
-        # First batch: valid data
+        # First batch: valid data (1-200 = 199 items)
         for i in range(1, 200):
             micro_results.append(
                 MockMicroQuestionRun(
@@ -462,7 +462,7 @@ class TestAdversarialEndToEnd:
                 )
             )
 
-        # Second batch: corrupted scores
+        # Second batch: corrupted scores (200-240 = 40 items)
         for i in range(200, 240):
             score = float("inf") if i % 2 == 0 else float("-inf")
             micro_results.append(
@@ -475,7 +475,7 @@ class TestAdversarialEndToEnd:
                 )
             )
 
-        # Third batch: missing evidence
+        # Third batch: missing evidence (240-280 = 40 items)
         for i in range(240, 280):
             micro_results.append(
                 MockMicroQuestionRun(
@@ -487,8 +487,8 @@ class TestAdversarialEndToEnd:
                 )
             )
 
-        # Fourth batch: corrupted quality
-        for i in range(280, 305):
+        # Fourth batch: corrupted quality (280-306 = 26 items to reach 305)
+        for i in range(280, 306):
             micro_results.append(
                 MockMicroQuestionRun(
                     question_id=f"Q{i:03d}",

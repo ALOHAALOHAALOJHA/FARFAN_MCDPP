@@ -193,14 +193,18 @@ class TestAdversarialQualityMapping:
     def test_map_completeness_with_mixed_case(self):
         """ADVERSARIAL: Test mapping with mixed case (should be case-sensitive)."""
         # These should NOT map correctly due to case sensitivity
-        quality1 = map_completeness_to_quality("Complete")
-        quality2 = map_completeness_to_quality("COMPLETE")
-        quality3 = map_completeness_to_quality("CoMpLeTe")
+        quality1 = map_completeness_to_quality("Complete")  # Title case - rejected
+        quality2 = map_completeness_to_quality("COMPLETE")  # Upper case - rejected
+        quality3 = map_completeness_to_quality("CoMpLeTe")  # Mixed case - rejected
 
-        # Should default to INSUFICIENTE for wrong case
+        # Should default to INSUFICIENTE for wrong case (strictly lowercase)
         assert quality1 == "INSUFICIENTE"
         assert quality2 == "INSUFICIENTE"
         assert quality3 == "INSUFICIENTE"
+
+        # Only exact lowercase "complete" should map to EXCELENTE
+        quality4 = map_completeness_to_quality("complete")
+        assert quality4 == "EXCELENTE"
 
     def test_map_completeness_with_unicode_homographs(self):
         """ADVERSARIAL: Test mapping with Unicode homograph attacks."""

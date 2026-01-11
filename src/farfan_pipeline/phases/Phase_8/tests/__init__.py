@@ -1,6 +1,6 @@
 """Tests package for Phase 8."""
 
-from .generative_testing import (
+from .phase8_10_00_generative_testing import (
     GenerativeTestSuite,
     DifferentialTester,
     AIEdgeCaseGenerator,

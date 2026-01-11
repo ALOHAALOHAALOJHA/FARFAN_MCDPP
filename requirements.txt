@@ -40,10 +40,11 @@ matplotlib>=3.8.0
 
 # Document Processing (PDF, DOCX)
 # SECURITY FIX: Upgraded pypdf to address CVE-2025-55197, CVE-2025-62707, CVE-2025-62708, CVE-2025-66019
+# UPGRADE: Replaced camelot-py (pypdf<6.0 conflict) with img2table (AI/CV-based, more sophisticated)
 pymupdf>=1.23.0
 pdfplumber>=0.10.0
 pypdf>=6.4.0
-camelot-py[cv]>=1.0.9
+img2table>=1.4.0
 tabula-py>=2.9.0
 python-docx>=1.1.0
 PyPDF2>=3.0.1
@@ -51,6 +52,7 @@ PyPDF2>=3.0.1
 # Report Generation (HTML, PDF, Markdown)
 weasyprint>=62.0
 jinja2>=3.1.0
+pillow>=10.0.0
 
 # Data Handling and Utilities
 pandas>=2.1.0
