@@ -42,7 +42,6 @@ except ImportError:
 
 @dataclass
 class CausalAnalysisResult:
-class CausalAnalysisResult:
     """Results from DoWhy causal analysis"""
 
     identified: bool = False
@@ -219,7 +218,7 @@ class DoWhyCausalAnalyzer:
             return CausalAnalysisResult(
                 identified=False,
                 identification_status="error",
-                warnings=[f"Identification error: {str(e)}"],
+                warnings=[f"Identification error: {e!s}"],
             )
 
     def estimate_effect(
@@ -283,9 +282,7 @@ class DoWhyCausalAnalyzer:
             identified_estimand = model.identify_effect()
 
             if identified_estimand is None:
-                self.logger.warning(
-                    f"Causal effect {treatment}->{outcome} could not be identified"
-                )
+                self.logger.warning(f"Causal effect {treatment}->{outcome} could not be identified")
                 return CausalEffectEstimate(
                     value=0.0,
                     confidence_interval=(0.0, 0.0),
@@ -323,7 +320,7 @@ class DoWhyCausalAnalyzer:
                 confidence_interval=(0.0, 0.0),
                 method=method,
                 identified=False,
-                warnings=[f"Estimation error: {str(e)}"],
+                warnings=[f"Estimation error: {e!s}"],
             )
 
     def refute_estimate(
@@ -383,9 +380,7 @@ class DoWhyCausalAnalyzer:
                 return {}
 
             # Re-estimate for refutation (DoWhy needs CausalEstimate object)
-            dowhy_estimate = model.estimate_effect(
-                identified_estimand, method_name=estimate.method
-            )
+            dowhy_estimate = model.estimate_effect(identified_estimand, method_name=estimate.method)
 
         except Exception as e:
             self.logger.error(f"Error setting up refutation: {e}")
@@ -409,7 +404,11 @@ class DoWhyCausalAnalyzer:
                 passed = True
                 if method == "placebo_treatment_refuter":
                     # For placebo, we want new_effect ≈ 0
-                    passed = abs(new_effect) < abs(estimate.value) * 0.5 if new_effect is not None else True
+                    passed = (
+                        abs(new_effect) < abs(estimate.value) * 0.5
+                        if new_effect is not None
+                        else True
+                    )
                 elif p_value is not None:
                     # For other tests, high p-value = no refutation = passed
                     passed = p_value > 0.05
@@ -435,7 +434,7 @@ class DoWhyCausalAnalyzer:
                 refutation_results[method] = RefutationResult(
                     method=method,
                     refuted=False,
-                    summary=f"Error: {str(e)}",
+                    summary=f"Error: {e!s}",
                     passed=False,
                 )
 

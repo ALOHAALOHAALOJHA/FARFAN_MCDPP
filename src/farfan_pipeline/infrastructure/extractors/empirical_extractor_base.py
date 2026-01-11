@@ -17,13 +17,13 @@ Date: 2026-01-06
 """
 
 import json
+import logging
 import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Dict, List, Any, Optional, Tuple, Set
+from datetime import UTC, datetime
 from pathlib import Path
-from datetime import datetime, timezone
-import logging
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -31,14 +31,15 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ExtractionPattern:
     """Represents a calibrated extraction pattern."""
+
     pattern_id: str
     pattern: str
     pattern_type: str  # REGEX, KEYWORD, SEMANTIC
     confidence_base: float
-    flags: List[str] = field(default_factory=list)
-    captures: Dict[str, Any] = field(default_factory=dict)
-    validation_rules: List[Dict] = field(default_factory=list)
-    empirical_frequency: Dict[str, Any] = field(default_factory=dict)
+    flags: list[str] = field(default_factory=list)
+    captures: dict[str, Any] = field(default_factory=dict)
+    validation_rules: list[dict] = field(default_factory=list)
+    empirical_frequency: dict[str, Any] = field(default_factory=dict)
 
     def compile(self) -> re.Pattern:
         """Compile regex pattern with flags."""
@@ -46,7 +47,7 @@ class ExtractionPattern:
             "IGNORECASE": re.IGNORECASE,
             "MULTILINE": re.MULTILINE,
             "DOTALL": re.DOTALL,
-            "UNICODE": re.UNICODE
+            "UNICODE": re.UNICODE,
         }
         flags_combined = 0
         for flag in self.flags:
@@ -58,15 +59,16 @@ class ExtractionPattern:
 @dataclass
 class ExtractionResult:
     """Result of an extraction operation."""
+
     extractor_id: str
     signal_type: str
-    matches: List[Dict[str, Any]]
+    matches: list[dict[str, Any]]
     confidence: float
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
     validation_passed: bool = True
-    validation_errors: List[str] = field(default_factory=list)
+    validation_errors: list[str] = field(default_factory=list)
 
-    def to_signal(self) -> Dict[str, Any]:
+    def to_signal(self) -> dict[str, Any]:
         """Convert to Signal format for SISAS."""
         return {
             "signal_id": f"{self.extractor_id}_{datetime.now().timestamp()}",
@@ -75,10 +77,10 @@ class ExtractionResult:
             "payload": {
                 "matches": self.matches,
                 "metadata": self.metadata,
-                "validation_passed": self.validation_passed
+                "validation_passed": self.validation_passed,
             },
             "producer_node": self.extractor_id,
-            "produced_at": datetime.now(timezone.utc).isoformat()
+            "produced_at": datetime.now(UTC).isoformat(),
         }
 
 
@@ -86,10 +88,7 @@ class EmpiricallyCalibrated(ABC):
     """Base class for empirically-calibrated extractors."""
 
     def __init__(
-        self,
-        signal_type: str,
-        calibration_file: Optional[Path] = None,
-        auto_validate: bool = True
+        self, signal_type: str, calibration_file: Path | None = None, auto_validate: bool = True
     ):
         self.signal_type = signal_type
         self.auto_validate = auto_validate
@@ -107,16 +106,22 @@ class EmpiricallyCalibrated(ABC):
         self.validation_pass_count = 0
         self.validation_fail_count = 0
 
-        logger.info(f"Initialized {self.__class__.__name__} with {len(self.patterns)} empirical patterns")
+        logger.info(
+            f"Initialized {self.__class__.__name__} with {len(self.patterns)} empirical patterns"
+        )
 
     def _default_calibration_path(self) -> Path:
         """Get default calibration file path."""
-        return Path(__file__).resolve().parent.parent.parent.parent / \
-               "canonic_questionnaire_central" / \
-               "_registry" / "membership_criteria" / "_calibration" / \
-               "extractor_calibration.json"
+        return (
+            Path(__file__).resolve().parent.parent.parent.parent
+            / "canonic_questionnaire_central"
+            / "_registry"
+            / "membership_criteria"
+            / "_calibration"
+            / "extractor_calibration.json"
+        )
 
-    def _load_calibration(self, calibration_file: Path) -> Dict[str, Any]:
+    def _load_calibration(self, calibration_file: Path) -> dict[str, Any]:
         """Load empirical calibration data."""
         if not calibration_file.exists():
             logger.warning(f"Calibration file not found: {calibration_file}")
@@ -126,7 +131,7 @@ class EmpiricallyCalibrated(ABC):
             data = json.load(f)
             return data.get("signal_type_catalog", {}).get(self.signal_type, {})
 
-    def _load_patterns(self) -> List[ExtractionPattern]:
+    def _load_patterns(self) -> list[ExtractionPattern]:
         """Load and compile patterns from calibration."""
         patterns = []
         extraction_patterns = self.calibration.get("extraction_patterns", {})
@@ -141,22 +146,22 @@ class EmpiricallyCalibrated(ABC):
                     flags=pattern_config.get("flags", ["IGNORECASE", "MULTILINE"]),
                     captures=pattern_config.get("captures", {}),
                     validation_rules=pattern_config.get("validation", []),
-                    empirical_frequency=self.calibration.get("empirical_frequency", {})
+                    empirical_frequency=self.calibration.get("empirical_frequency", {}),
                 )
                 patterns.append(pattern)
 
         return patterns
 
-    def _load_gold_standards(self) -> List[Dict[str, Any]]:
+    def _load_gold_standards(self) -> list[dict[str, Any]]:
         """Load gold standard examples for validation."""
         return self.calibration.get("gold_standard_examples", [])
 
     @abstractmethod
-    def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
+    def extract(self, text: str, context: dict | None = None) -> ExtractionResult:
         """Extract signals from text. Must be implemented by subclass."""
         pass
 
-    def validate_extraction(self, result: ExtractionResult) -> Tuple[bool, List[str]]:
+    def validate_extraction(self, result: ExtractionResult) -> tuple[bool, list[str]]:
         """Validate extraction against empirical rules."""
         errors = []
 
@@ -165,7 +170,7 @@ class EmpiricallyCalibrated(ABC):
         if freq:
             match_count = len(result.matches)
             expected_min = freq.get("min_per_document", 0)
-            expected_max = freq.get("max_per_document", float('inf'))
+            expected_max = freq.get("max_per_document", float("inf"))
 
             if match_count < expected_min:
                 errors.append(f"Match count {match_count} below empirical minimum {expected_min}")
@@ -174,7 +179,7 @@ class EmpiricallyCalibrated(ABC):
 
         # Custom validation rules
         for match in result.matches:
-            for rule in getattr(self, 'validation_rules', []):
+            for rule in getattr(self, "validation_rules", []):
                 if not self._apply_validation_rule(match, rule):
                     errors.append(f"Validation rule failed: {rule.get('name', 'unnamed')}")
 
@@ -187,7 +192,7 @@ class EmpiricallyCalibrated(ABC):
 
         return is_valid, errors
 
-    def _apply_validation_rule(self, match: Dict, rule: Dict) -> bool:
+    def _apply_validation_rule(self, match: dict, rule: dict) -> bool:
         """Apply a single validation rule."""
         rule_type = rule.get("type")
 
@@ -211,7 +216,7 @@ class EmpiricallyCalibrated(ABC):
         """Get empirically calibrated confidence threshold."""
         return self.calibration.get("confidence_threshold", 0.70)
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get extractor performance metrics."""
         return {
             "extractor": self.__class__.__name__,
@@ -219,12 +224,16 @@ class EmpiricallyCalibrated(ABC):
             "extractions_performed": self.extraction_count,
             "validations_passed": self.validation_pass_count,
             "validations_failed": self.validation_fail_count,
-            "pass_rate": self.validation_pass_count / self.extraction_count if self.extraction_count > 0 else 0.0,
+            "pass_rate": (
+                self.validation_pass_count / self.extraction_count
+                if self.extraction_count > 0
+                else 0.0
+            ),
             "patterns_loaded": len(self.patterns),
-            "gold_standards_loaded": len(self.gold_standards)
+            "gold_standards_loaded": len(self.gold_standards),
         }
 
-    def self_test(self) -> Dict[str, Any]:
+    def self_test(self) -> dict[str, Any]:
         """Run self-test against gold standard examples."""
         logger.info(f"Running self-test for {self.__class__.__name__}...")
 
@@ -234,7 +243,7 @@ class EmpiricallyCalibrated(ABC):
             "gold_standards_tested": len(self.gold_standards),
             "passed": 0,
             "failed": 0,
-            "failures": []
+            "failures": [],
         }
 
         for i, example in enumerate(self.gold_standards):
@@ -249,21 +258,23 @@ class EmpiricallyCalibrated(ABC):
                     results["passed"] += 1
                 else:
                     results["failed"] += 1
-                    results["failures"].append({
-                        "example_id": i,
-                        "expected": expected,
-                        "actual": actual,
-                        "text_preview": text[:100]
-                    })
+                    results["failures"].append(
+                        {
+                            "example_id": i,
+                            "expected": expected,
+                            "actual": actual,
+                            "text_preview": text[:100],
+                        }
+                    )
             except Exception as e:
                 results["failed"] += 1
-                results["failures"].append({
-                    "example_id": i,
-                    "error": str(e),
-                    "text_preview": text[:100]
-                })
+                results["failures"].append(
+                    {"example_id": i, "error": str(e), "text_preview": text[:100]}
+                )
 
-        results["pass_rate"] = results["passed"] / len(self.gold_standards) if self.gold_standards else 0.0
+        results["pass_rate"] = (
+            results["passed"] / len(self.gold_standards) if self.gold_standards else 0.0
+        )
 
         logger.info(f"Self-test complete: {results['pass_rate']:.2%} pass rate")
 
@@ -273,7 +284,7 @@ class EmpiricallyCalibrated(ABC):
 class PatternBasedExtractor(EmpiricallyCalibrated):
     """Base class for pattern-based extractors (regex, keyword)."""
 
-    def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
+    def extract(self, text: str, context: dict | None = None) -> ExtractionResult:
         """Extract using compiled patterns."""
         matches = []
 
@@ -286,7 +297,7 @@ class PatternBasedExtractor(EmpiricallyCalibrated):
                     "text": match.group(0),
                     "start": match.start(),
                     "end": match.end(),
-                    "confidence": pattern_obj.confidence_base
+                    "confidence": pattern_obj.confidence_base,
                 }
 
                 # Extract captures
@@ -312,10 +323,7 @@ class PatternBasedExtractor(EmpiricallyCalibrated):
             signal_type=self.signal_type,
             matches=matches,
             confidence=avg_confidence,
-            metadata={
-                "patterns_used": len(self.patterns),
-                "total_matches": len(matches)
-            }
+            metadata={"patterns_used": len(self.patterns), "total_matches": len(matches)},
         )
 
         # Validate if enabled
@@ -331,7 +339,8 @@ class PatternBasedExtractor(EmpiricallyCalibrated):
 
 # Utility functions for framework
 
-def load_all_extractors_from_calibration(calibration_file: Path) -> Dict[str, Any]:
+
+def load_all_extractors_from_calibration(calibration_file: Path) -> dict[str, Any]:
     """Load configuration for all extractors from calibration file."""
     with open(calibration_file) as f:
         data = json.load(f)
@@ -378,10 +387,10 @@ def test_gold_standard_{i}(extractor):
 
 # Export main classes
 __all__ = [
-    'EmpiricallyCalibrated',
-    'PatternBasedExtractor',
-    'ExtractionPattern',
-    'ExtractionResult',
-    'load_all_extractors_from_calibration',
-    'generate_test_suite'
+    "EmpiricallyCalibrated",
+    "ExtractionPattern",
+    "ExtractionResult",
+    "PatternBasedExtractor",
+    "generate_test_suite",
+    "load_all_extractors_from_calibration",
 ]

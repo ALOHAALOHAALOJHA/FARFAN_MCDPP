@@ -22,9 +22,11 @@ from typing import TYPE_CHECKING, Any
 
 try:
     import structlog
+
     logger = structlog.get_logger(__name__)
 except ImportError:
     import logging
+
     logger = logging.getLogger(__name__)
 
 from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
@@ -32,13 +34,15 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consum
 )
 
 if TYPE_CHECKING:
-    import farfan_pipeline.phases.Phase_2.executors.base_executor_with_contract import BaseExecutorWithContract
+    from farfan_pipeline.phases.Phase_2.executors.base_executor_with_contract import (
+        BaseExecutorWithContract,
+    )
 
 
 @dataclass
 class ConsumptionTracker:
     """Tracks signal consumption during executor execution."""
-    
+
     executor_id: str
     question_id: str
     policy_area: str
@@ -46,7 +50,7 @@ class ConsumptionTracker:
     injection_time: float = field(default_factory=time.time)
     match_count: int = 0
     evidence_count: int = 0
-    
+
     def __post_init__(self) -> None:
         """Initialize consumption proof."""
         self.proof = SignalConsumptionProof(
@@ -55,7 +59,7 @@ class ConsumptionTracker:
             policy_area=self.policy_area,
             timestamp=self.injection_time,
         )
-    
+
     def record_pattern_match(
         self,
         pattern: str | dict[str, Any],
@@ -63,7 +67,7 @@ class ConsumptionTracker:
         produced_evidence: bool = False,
     ) -> None:
         """Record a pattern match and update consumption proof.
-        
+
         Args:
             pattern: Pattern string or pattern dict with 'pattern' key
             text_segment: Text segment that matched
@@ -76,14 +80,14 @@ class ConsumptionTracker:
         else:
             pattern_str = str(pattern)
             pattern_id = ""
-        
+
         # Record in proof
         self.proof.record_pattern_match(pattern_str, text_segment)
         self.match_count += 1
-        
+
         if produced_evidence:
             self.evidence_count += 1
-        
+
         logger.debug(
             "pattern_match_tracked",
             executor_id=self.executor_id,
@@ -92,10 +96,10 @@ class ConsumptionTracker:
             match_count=self.match_count,
             evidence_count=self.evidence_count,
         )
-    
+
     def get_consumption_summary(self) -> dict[str, Any]:
         """Get summary of consumption tracking.
-        
+
         Returns:
             Dict with consumption metrics
         """
@@ -110,7 +114,7 @@ class ConsumptionTracker:
             "injection_time": self.injection_time,
             "consumption_time": time.time(),
         }
-    
+
     def get_proof(self) -> SignalConsumptionProof:
         """Get the consumption proof object."""
         return self.proof
@@ -123,12 +127,12 @@ def create_consumption_tracker(
     injection_time: float | None = None,
 ) -> ConsumptionTracker:
     """Create a consumption tracker for an executor execution.
-    
+
     Args:
         executor_id: Executor identifier (e.g., "D1-Q1")
         question_id: Question ID (e.g., "Q001")
         policy_area: Policy area code (e.g., "PA01")
-    
+
     Returns:
         ConsumptionTracker instance
     """
@@ -146,7 +150,7 @@ def track_pattern_match_from_evidence(
     text: str,
 ) -> None:
     """Track pattern match from an evidence item.
-    
+
     Args:
         tracker: Consumption tracker instance
         evidence_item: Evidence item dict with lineage information
@@ -156,14 +160,14 @@ def track_pattern_match_from_evidence(
     pattern_id = lineage.get("pattern_id", "")
     pattern_text = lineage.get("pattern_text", "")
     span = evidence_item.get("span", (0, 0))
-    
+
     # Extract text segment
     if span and len(span) == 2:
         start, end = span
         text_segment = text[start:end]
     else:
         text_segment = evidence_item.get("raw_text", "")[:100]
-    
+
     # Record match
     tracker.record_pattern_match(
         pattern={"id": pattern_id, "pattern": pattern_text},
@@ -176,6 +180,7 @@ def track_pattern_match_from_evidence(
 # INTEGRATION WITH BASE EXECUTOR
 # ============================================================================
 
+
 def inject_consumption_tracking(
     executor: BaseExecutorWithContract,
     question_id: str,
@@ -183,18 +188,18 @@ def inject_consumption_tracking(
     injection_time: float | None = None,
 ) -> ConsumptionTracker:
     """Inject consumption tracking into executor execution.
-    
+
     This function should be called at the start of executor execution
     to enable consumption tracking throughout the execution.
-    
+
     Args:
         executor: Base executor instance
         question_id: Question ID being processed
         policy_area_id: Policy area ID
-    
+
     Returns:
         ConsumptionTracker instance
-    
+
     Example:
         >>> tracker = inject_consumption_tracking(executor, "Q001", "PA01")
         >>> # During execution, pattern matches are tracked
@@ -204,27 +209,27 @@ def inject_consumption_tracking(
     tracker = create_consumption_tracker(
         executor_id, question_id, policy_area_id, injection_time=injection_time
     )
-    
+
     # Store tracker in executor for access during execution
     # Use a private attribute to avoid conflicts
-    setattr(executor, "_consumption_tracker", tracker)
-    
+    executor._consumption_tracker = tracker
+
     logger.info(
         "consumption_tracking_injected",
         executor_id=executor_id,
         question_id=question_id,
         policy_area=policy_area_id,
     )
-    
+
     return tracker
 
 
 def get_consumption_tracker(executor: BaseExecutorWithContract) -> ConsumptionTracker | None:
     """Get consumption tracker from executor if it exists.
-    
+
     Args:
         executor: Base executor instance
-    
+
     Returns:
         ConsumptionTracker instance or None if not injected
     """
@@ -237,10 +242,10 @@ def record_evidence_matches(
     source_text: str,
 ) -> None:
     """Record pattern matches from evidence dict.
-    
+
     This function extracts pattern matches from evidence and records them
     in the consumption tracker.
-    
+
     Args:
         executor: Base executor instance with injected tracker
         evidence: Evidence dict with element_type -> matches structure
@@ -253,12 +258,12 @@ def record_evidence_matches(
             executor_id=executor.get_base_slot(),
         )
         return
-    
+
     # Iterate through evidence items
     for element_type, matches in evidence.items():
         if not isinstance(matches, list):
             continue
-        
+
         for match_item in matches:
             if isinstance(match_item, dict):
                 track_pattern_match_from_evidence(tracker, match_item, source_text)
@@ -268,6 +273,7 @@ def record_evidence_matches(
 # CONTEXT SCOPING INTEGRATION
 # ============================================================================
 
+
 def verify_pattern_scope(
     pattern: dict[str, Any],
     document_context: dict[str, Any],
@@ -275,13 +281,13 @@ def verify_pattern_scope(
     question_id: str,
 ) -> tuple[bool, str | None]:
     """Verify that pattern scope matches document context.
-    
+
     Args:
         pattern: Pattern dict with context_requirement and context_scope
         document_context: Document context dict
         policy_area: Policy area for the question
         question_id: Question ID
-    
+
     Returns:
         Tuple of (is_valid, violation_message)
     """
@@ -289,21 +295,21 @@ def verify_pattern_scope(
         context_matches,
         in_scope,
     )
-    
+
     # Check context requirement
     context_req = pattern.get("context_requirement")
     if context_req:
         if not context_matches(document_context, context_req):
             return False, f"Pattern context requirement not met: {context_req}"
-    
+
     # Check scope
     scope = pattern.get("context_scope", "global")
     if not in_scope(document_context, scope):
         return False, f"Pattern scope '{scope}' not applicable to context"
-    
+
     # Check policy area boundary (if pattern has policy_area specified)
     pattern_pa = pattern.get("policy_area")
     if pattern_pa and pattern_pa != policy_area:
         return False, f"Pattern belongs to {pattern_pa} but question is in {policy_area}"
-    
+
     return True, None

@@ -23,28 +23,28 @@ __modified__ = "2025-01-09T00:00:00Z"
 __criticality__ = "HIGH"
 __execution_pattern__ = "Per-Task"
 
-from .PHASE_5_CONSTANTS import (
-    POLICY_AREAS,
-    EXPECTED_AREA_SCORE_COUNT,
-    DIMENSIONS_PER_AREA,
-    DIMENSION_IDS,
+from .phase5_10_00_phase_5_constants import (
     CLUSTER_ASSIGNMENTS,
-    MIN_SCORE,
+    DIMENSION_IDS,
+    DIMENSIONS_PER_AREA,
+    EXPECTED_AREA_SCORE_COUNT,
     MAX_SCORE,
-    QualityLevel,
+    MIN_SCORE,
+    POLICY_AREAS,
     QUALITY_THRESHOLDS,
-    Phase5Invariants
+    Phase5Invariants,
+    QualityLevel,
 )
 
 __all__ = [
-    "POLICY_AREAS",
-    "EXPECTED_AREA_SCORE_COUNT",
+    "CLUSTER_ASSIGNMENTS",
     "DIMENSIONS_PER_AREA",
     "DIMENSION_IDS",
-    "CLUSTER_ASSIGNMENTS",
-    "MIN_SCORE",
+    "EXPECTED_AREA_SCORE_COUNT",
     "MAX_SCORE",
-    "QualityLevel",
+    "MIN_SCORE",
+    "POLICY_AREAS",
     "QUALITY_THRESHOLDS",
-    "Phase5Invariants"
+    "Phase5Invariants",
+    "QualityLevel",
 ]

@@ -458,7 +458,7 @@
   },
   "documentation": {
     "readme": "README.md",
-    "constants": "PHASE_0_CONSTANTS.py",
+    "constants": "phase0_10_00_phase_0_constants.py",
     "manifest": "PHASE_0_MANIFEST.json"
   },
   "validation": {

@@ -4,19 +4,25 @@ Pytest configuration for extractor tests.
 Provides fixtures and test data for empirically-calibrated extractors.
 """
 
-import pytest
 import json
 from pathlib import Path
+
+import pytest
 
 
 @pytest.fixture(scope="session")
 def calibration_data():
     """Load empirical calibration data."""
-    calibration_file = Path(__file__).resolve().parent.parent.parent.parent.parent.parent / \
-                      "canonic_questionnaire_central" / "_registry" / \
-                      "membership_criteria" / "_calibration" / "extractor_calibration.json"
+    calibration_file = (
+        Path(__file__).resolve().parent.parent.parent.parent.parent.parent
+        / "canonic_questionnaire_central"
+        / "_registry"
+        / "membership_criteria"
+        / "_calibration"
+        / "extractor_calibration.json"
+    )
 
-    with open(calibration_file, 'r', encoding='utf-8') as f:
+    with open(calibration_file, encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -43,7 +49,7 @@ def causal_verb_text_samples():
         "Mejorar la infraestructura vial para aumentar la conectividad territorial",
         "Desarrollar estrategias de prevención del consumo de sustancias psicoactivas en jóvenes",
         "Consolidar el sistema de información territorial con el apoyo del DNP",
-        "Impulsar la participación ciudadana para lograr una mayor gobernanza democrática"
+        "Impulsar la participación ciudadana para lograr una mayor gobernanza democrática",
     ]
 
 
@@ -58,7 +64,7 @@ def institutional_entities_samples():
         "La Gobernación del Cauca coordinará las mesas de articulación regional",
         "El SENA desarrollará programas de formación técnica para jóvenes rurales",
         "La Secretaría de Educación en articulación con MinEducación fortalecerá la calidad educativa",
-        "La Unidad de Víctimas (UARIV) acompañará los procesos de reparación colectiva"
+        "La Unidad de Víctimas (UARIV) acompañará los procesos de reparación colectiva",
     ]
 
 
@@ -69,7 +75,7 @@ def quantitative_triplet_samples():
         "Tasa de cobertura educativa neta: línea base 45.2% (2023), meta 2027: 65.0%",
         "Niños con esquema completo de vacunación: línea base 5,420 (2023), meta 2027: 7,800",
         "Kilómetros de vías pavimentadas: Línea Base 2023: 38.5 km, Meta cuatrienio: 85 km",
-        "Índice de pobreza multidimensional: línea base: 52.3% (2023), meta 2027: 42.0%"
+        "Índice de pobreza multidimensional: línea base: 52.3% (2023), meta 2027: 42.0%",
     ]
 
 
@@ -81,5 +87,5 @@ def normative_reference_samples():
         "En cumplimiento de la Ley 1448 de 2011, se implementarán medidas de reparación colectiva",
         "Según el Decreto 1865 de 1994, se establecen las normas de planificación territorial",
         "El CONPES 3932 de 2018 orienta la política de crecimiento verde",
-        "El Artículo 339 de la Constitución establece el Sistema Nacional de Planeación"
+        "El Artículo 339 de la Constitución establece el Sistema Nacional de Planeación",
     ]

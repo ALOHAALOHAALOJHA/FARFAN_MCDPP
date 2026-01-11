@@ -61,9 +61,11 @@ _MUNICIPAL_GOVERNANCE_FILE = _COLOMBIA_CONTEXT_DIR / "municipal_governance.json"
 # DATA STRUCTURES
 # =============================================================================
 
+
 @dataclass
 class CountryInfo:
     """Basic country information."""
+
     name: str
     iso_code: str
     capital: str
@@ -74,6 +76,7 @@ class CountryInfo:
 @dataclass
 class TerritorialOrganization:
     """Colombia's territorial organization."""
+
     departments: int
     districts: int
     municipalities: int
@@ -86,6 +89,7 @@ class TerritorialOrganization:
 @dataclass
 class LegalFramework:
     """Legal framework including constitution, laws, and treaties."""
+
     constitution: dict[str, Any]
     key_laws: list[dict[str, Any]]
     international_treaties: list[dict[str, Any]]
@@ -94,6 +98,7 @@ class LegalFramework:
 @dataclass
 class InstitutionalEntity:
     """An institutional entity."""
+
     entity_id: str
     name: str
     role: str | None = None
@@ -103,6 +108,7 @@ class InstitutionalEntity:
 @dataclass
 class InstitutionalFramework:
     """Institutional framework."""
+
     executive_branch: dict[str, Any]
     special_entities: list[dict[str, Any]]
 
@@ -110,6 +116,7 @@ class InstitutionalFramework:
 @dataclass
 class DevelopmentPlan:
     """A development plan."""
+
     plan_id: str
     name: str
     period: str
@@ -118,6 +125,7 @@ class DevelopmentPlan:
 @dataclass
 class KeyStatistic:
     """A key statistic."""
+
     indicator: str
     value: float | int
     unit: str
@@ -128,6 +136,7 @@ class KeyStatistic:
 @dataclass
 class MunicipalCategory:
     """A municipal category based on population and ICLD."""
+
     category: str
     population_range: str
     icld_range: str
@@ -138,6 +147,7 @@ class MunicipalCategory:
 @dataclass
 class SgpComponent:
     """A component of the Sistema General de Participaciones."""
+
     percentage: float
     uses: list[str]
     rigidity: str
@@ -146,6 +156,7 @@ class SgpComponent:
 @dataclass
 class PdetPillar:
     """A pillar of the PDET (Programas de Desarrollo con Enfoque Territorial)."""
+
     pillar_id: str
     name: str
     focus: list[str]
@@ -155,6 +166,7 @@ class PdetPillar:
 @dataclass
 class PdetInfo:
     """PDET (Programas de Desarrollo con Enfoque Territorial) information."""
+
     full_name: str
     acronym: str
     legal_basis: str
@@ -168,6 +180,7 @@ class PdetInfo:
 @dataclass
 class MunicipalGovernance:
     """Colombian municipal governance context."""
+
     constitutional_foundation: dict[str, Any]
     legal_framework: dict[str, Any]
     categorization: list[MunicipalCategory]
@@ -179,6 +192,7 @@ class MunicipalGovernance:
 # =============================================================================
 # CONFIGURATION LOADER
 # =============================================================================
+
 
 class ColombiaContextLoader:
     """Loader for Colombia context configuration."""
@@ -210,7 +224,7 @@ class ColombiaContextLoader:
             indigenous_territories=data.get("indigenous_territories", 184),
             black_community_territories=data.get("black_community_territories", 167),
             peasant_reserve_zones=data.get("peasant_reserve_zones", 7),
-            special_regions=data.get("special_regions", [])
+            special_regions=data.get("special_regions", []),
         )
 
     def get_legal_framework(self) -> LegalFramework:
@@ -219,7 +233,7 @@ class ColombiaContextLoader:
         return LegalFramework(
             constitution=data.get("constitution", {}),
             key_laws=data.get("key_laws", []),
-            international_treaties=data.get("international_treaties", [])
+            international_treaties=data.get("international_treaties", []),
         )
 
     def get_institutional_framework(self) -> InstitutionalFramework:
@@ -227,7 +241,7 @@ class ColombiaContextLoader:
         data = self._data.get("institutional_framework", {})
         return InstitutionalFramework(
             executive_branch=data.get("executive_branch", {}),
-            special_entities=data.get("special_entities", [])
+            special_entities=data.get("special_entities", []),
         )
 
     def get_laws_for_policy_area(self, policy_area_id: str) -> list[dict[str, Any]]:
@@ -242,10 +256,7 @@ class ColombiaContextLoader:
         legal_data = self._data.get("legal_framework", {})
         all_laws = legal_data.get("key_laws", [])
 
-        return [
-            law for law in all_laws
-            if policy_area_id in law.get("relevance", [])
-        ]
+        return [law for law in all_laws if policy_area_id in law.get("relevance", [])]
 
     def get_treaties_for_policy_area(self, policy_area_id: str) -> list[dict[str, Any]]:
         """Get international treaties relevant to a policy area.
@@ -259,10 +270,7 @@ class ColombiaContextLoader:
         legal_data = self._data.get("legal_framework", {})
         all_treaties = legal_data.get("international_treaties", [])
 
-        return [
-            treaty for treaty in all_treaties
-            if policy_area_id in treaty.get("relevance", [])
-        ]
+        return [treaty for treaty in all_treaties if policy_area_id in treaty.get("relevance", [])]
 
     def get_key_statistics(self) -> dict[str, dict[str, Any]]:
         """Get key statistics by category.
@@ -367,7 +375,7 @@ class ColombiaContextLoader:
                 population_range=cat.get("population_range", ""),
                 icld_range=cat.get("icld_range", ""),
                 description=cat.get("description", ""),
-                fiscal_autonomy=cat.get("fiscal_autonomy", "")
+                fiscal_autonomy=cat.get("fiscal_autonomy", ""),
             )
             for cat in categories_data
         ]
@@ -380,7 +388,7 @@ class ColombiaContextLoader:
                 pillar_id=key,
                 name=pillar_data.get("name", ""),
                 focus=pillar_data.get("focus", []),
-                status=pillar_data.get("status")
+                status=pillar_data.get("status"),
             )
             for key, pillar_data in pillars_data.items()
         ]
@@ -394,7 +402,7 @@ class ColombiaContextLoader:
             territorial_scope=pdet_data.get("territorial_scope", {}),
             pillars=pillars,
             implementation_status=pdet_data.get("implementation_status_2024", {}),
-            key_gaps=pdet_data.get("the_gap", {})
+            key_gaps=pdet_data.get("the_gap", {}),
         )
 
         return MunicipalGovernance(
@@ -403,7 +411,7 @@ class ColombiaContextLoader:
             categorization=categories,
             competencies=data.get("municipal_competencies", {}),
             financial_ecosystem=data.get("financial_ecosystem", {}),
-            pdet_regime=pdet_info
+            pdet_regime=pdet_info,
         )
 
     def get_pdet_info(self) -> PdetInfo:
@@ -444,7 +452,7 @@ class ColombiaContextLoader:
             name: SgpComponent(
                 percentage=value.get("percentage", 0.0),
                 uses=value.get("uses", []),
-                rigidity=value.get("rigidity", "")
+                rigidity=value.get("rigidity", ""),
             )
             for name, value in structure.items()
         }
@@ -456,7 +464,11 @@ class ColombiaContextLoader:
             Dict with OCAD Paz approval information
         """
         data = self._get_municipal_governance_data()
-        return data.get("financial_ecosystem", {}).get("system_general_royalties", {}).get("ocad_paz", {})
+        return (
+            data.get("financial_ecosystem", {})
+            .get("system_general_royalties", {})
+            .get("ocad_paz", {})
+        )
 
     def get_pdet_pillar(self, pillar_id: str) -> PdetPillar | None:
         """Get a specific PDET pillar.
@@ -492,6 +504,7 @@ def _get_loader() -> ColombiaContextLoader:
 # =============================================================================
 # PUBLIC API
 # =============================================================================
+
 
 def get_country_info() -> CountryInfo:
     """Get basic country information."""
@@ -636,9 +649,9 @@ _PDET_MUNICIPALITIES_FILE = _COLOMBIA_CONTEXT_DIR / "pdet_municipalities.json"
 
 def get_pdet_municipalities() -> dict[str, Any]:
     """Get PDET municipalities detailed context.
-    
+
     Returns:
-        Dict with PDET municipalities data including subregions, 
+        Dict with PDET municipalities data including subregions,
         policy area mappings, and aggregate statistics.
     """
     with open(_PDET_MUNICIPALITIES_FILE, "r", encoding="utf-8") as f:
@@ -647,7 +660,7 @@ def get_pdet_municipalities() -> dict[str, Any]:
 
 def get_pdet_subregions() -> list[dict[str, Any]]:
     """Get PDET subregions with municipalities.
-    
+
     Returns:
         List of PDET subregions
     """
@@ -657,19 +670,19 @@ def get_pdet_subregions() -> list[dict[str, Any]]:
 
 def get_pdet_municipalities_for_policy_area(policy_area_id: str) -> list[dict[str, Any]]:
     """Get PDET municipalities relevant to a policy area.
-    
+
     Args:
         policy_area_id: Policy area identifier (e.g., "PA01")
-        
+
     Returns:
         List of relevant municipalities
     """
     pdet_data = get_pdet_municipalities()
     pa_mappings = pdet_data.get("policy_area_mappings", {})
-    
+
     # Normalize policy area ID to match keys in JSON (e.g., PA01 or PA01_Gender)
     pa_key = f"{policy_area_id}" if policy_area_id.startswith("PA") else f"PA{policy_area_id}"
-    
+
     # Try exact match first, then prefix match
     pa_data = pa_mappings.get(pa_key)
     if not pa_data:
@@ -678,17 +691,17 @@ def get_pdet_municipalities_for_policy_area(policy_area_id: str) -> list[dict[st
             if key.startswith(pa_key + "_") or key == pa_key:
                 pa_data = value
                 break
-    
+
     if not pa_data:
         return []
-    
+
     relevant_subregion_ids = set(pa_data.get("relevant_subregions", []))
-    
+
     municipalities = []
     for subregion in pdet_data.get("subregions", []):
         if subregion["subregion_id"] in relevant_subregion_ids:
             municipalities.extend(subregion.get("municipalities", []))
-    
+
     return municipalities
 
 

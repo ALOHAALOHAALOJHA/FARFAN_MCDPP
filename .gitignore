@@ -145,3 +145,11 @@ continue
 # Rule generation temporary files
 new_enhanced_rules.json
 *.backup.*
+.vscode/gemini-mcp/status.json
+.vscode/gemini-mcp/status.json
+.vscode/gemini-mcp/status.json
+.vscode/gemini-mcp/status.json
+.vscode/gemini-mcp/status.json
+.vscode/gemini-mcp/status.json
+.vscode/gemini-mcp/status.json
+/.vscode/gemini-mcp

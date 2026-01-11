@@ -18,8 +18,21 @@ Design Principles:
 - Full traceability of routing decisions
 - Zero tolerance for silent parameter drops
 """
-
 from __future__ import annotations
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 60
+__order__ = 2
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "MEDIUM"
+__execution_pattern__ = "On-Demand"
 
 import inspect
 import logging
@@ -44,6 +57,7 @@ except Exception:  # pragma: no cover
 std_logger = logging.getLogger(__name__)
 
 if structlog is None:
+
     class _CompatLogger:
         def __init__(self, base: logging.Logger) -> None:
             self._base = base
@@ -71,6 +85,7 @@ MISSING: object = object()
 # ============================================================================
 # Base Exceptions and Data Classes
 # ============================================================================
+
 
 class ArgRouterError(RuntimeError):
     """Base exception for routing and validation issues."""
@@ -100,9 +115,8 @@ class ArgumentValidationError(ArgRouterError):
             detail.append(f"unexpected={sorted(self.unexpected)}")
         if self.type_mismatches:
             detail.append(f"type_mismatches={self.type_mismatches}")
-        message = (
-            f"Invalid payload for {class_name}.{method_name}"
-            + (f" ({'; '.join(detail)})" if detail else "")
+        message = f"Invalid payload for {class_name}.{method_name}" + (
+            f" ({'; '.join(detail)})" if detail else ""
         )
         super().__init__(message)
 
@@ -131,9 +145,7 @@ class MethodSpec:
     @property
     def required_arguments(self) -> tuple[str, ...]:
         required = tuple(
-            spec.name
-            for spec in (*self.positional, *self.keyword_only)
-            if spec.required
+            spec.name for spec in (*self.positional, *self.keyword_only) if spec.required
         )
         return required
 
@@ -146,6 +158,7 @@ class MethodSpec:
 # ============================================================================
 # Base ArgRouter (Legacy - use ExtendedArgRouter instead)
 # ============================================================================
+
 
 class ArgRouter:
     """Resolve method call payloads based on inspected signatures.
@@ -281,11 +294,7 @@ class ArgRouter:
         for parameter in signature.parameters.values():
             if parameter.name == "self":
                 continue
-            default = (
-                parameter.default
-                if parameter.default is not inspect._empty
-                else MISSING
-            )
+            default = parameter.default if parameter.default is not inspect._empty else MISSING
             annotation = type_hints.get(parameter.name, parameter.annotation)
             param_spec = _ParameterSpec(
                 name=parameter.name,
@@ -444,9 +453,7 @@ class PayloadDriftMonitor:
                 type_mismatches,
             )
         else:
-            std_logger.debug(
-                "Payload validation OK [%s -> %s]", producer, consumer
-            )
+            std_logger.debug("Payload validation OK [%s -> %s]", producer, consumer)
 
     @staticmethod
     def _expected_type_name(expected: object) -> str:
@@ -950,19 +957,22 @@ class ExtendedArgRouter(ArgRouter):
         """
         routes = []
         for method_name, spec in sorted(self._special_routes.items()):
-            routes.append({
-                "method_name": method_name,
-                "required_args": spec["required_args"],
-                "optional_args": spec["optional_args"],
-                "accepts_kwargs": spec["accepts_kwargs"],
-                "description": spec["description"],
-            })
+            routes.append(
+                {
+                    "method_name": method_name,
+                    "required_args": spec["required_args"],
+                    "optional_args": spec["optional_args"],
+                    "accepts_kwargs": spec["accepts_kwargs"],
+                    "description": spec["description"],
+                }
+            )
         return routes
 
 
 # ============================================================================
 # Minor Improvement 2: Versioned ArgRouter with Schema Evolution
 # ============================================================================
+
 
 @dataclass
 class ArgSchemaV1:

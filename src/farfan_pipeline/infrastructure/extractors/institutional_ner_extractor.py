@@ -26,17 +26,14 @@ Date: 2026-01-06
 """
 
 import json
+import logging
 import re
-from typing import Dict, List, Any, Optional, Tuple, Set
+from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-import logging
-from collections import defaultdict
+from typing import Any
 
-from .empirical_extractor_base import (
-    PatternBasedExtractor,
-    ExtractionResult
-)
+from .empirical_extractor_base import ExtractionResult, PatternBasedExtractor
 
 logger = logging.getLogger(__name__)
 
@@ -44,15 +41,16 @@ logger = logging.getLogger(__name__)
 @dataclass
 class InstitutionalEntity:
     """Represents a detected institutional entity."""
+
     entity_id: str
     canonical_name: str
     detected_as: str  # How it appeared in text
     entity_type: str  # institution, normative, etc.
     level: str  # NATIONAL, DEPARTAMENTAL, etc.
     confidence: float
-    text_span: Tuple[int, int]
-    context: Optional[str] = None
-    scoring_boost: Optional[Dict] = None
+    text_span: tuple[int, int]
+    context: str | None = None
+    scoring_boost: dict | None = None
 
 
 class InstitutionalNERExtractor(PatternBasedExtractor):
@@ -66,11 +64,11 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
     4. Territorial entities
     """
 
-    def __init__(self, calibration_file: Optional[Path] = None):
+    def __init__(self, calibration_file: Path | None = None):
         super().__init__(
             signal_type="INSTITUTIONAL_NETWORK",  # Aligned with integration_map key
             calibration_file=calibration_file,
-            auto_validate=True
+            auto_validate=True,
         )
 
         # Load entity registry
@@ -88,8 +86,12 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
         """Load entities from _registry/entities/."""
         self.entity_registry = {}
 
-        registry_path = Path(__file__).resolve().parent.parent.parent.parent / \
-                       "canonic_questionnaire_central" / "_registry" / "entities"
+        registry_path = (
+            Path(__file__).resolve().parent.parent.parent.parent
+            / "canonic_questionnaire_central"
+            / "_registry"
+            / "entities"
+        )
 
         if not registry_path.exists():
             logger.warning(f"Entity registry not found at {registry_path}")
@@ -101,7 +103,7 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
             "normative.json",
             "populations.json",
             "territorial.json",
-            "international.json"
+            "international.json",
         ]
 
         for filename in entity_files:
@@ -125,23 +127,23 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
             canonical = entity_data.get("canonical_name", "")
             if canonical:
                 # Exact match with word boundaries
-                patterns.append(re.compile(rf'\b{re.escape(canonical)}\b', re.IGNORECASE))
+                patterns.append(re.compile(rf"\b{re.escape(canonical)}\b", re.IGNORECASE))
 
             # Acronym
             acronym = entity_data.get("acronym", "")
             if acronym:
-                patterns.append(re.compile(rf'\b{re.escape(acronym)}\b'))
+                patterns.append(re.compile(rf"\b{re.escape(acronym)}\b"))
 
             # Aliases
             aliases = entity_data.get("aliases", [])
             for alias in aliases:
                 # Escape special regex characters but allow word boundaries
                 escaped = re.escape(alias)
-                patterns.append(re.compile(rf'\b{escaped}\b', re.IGNORECASE))
+                patterns.append(re.compile(rf"\b{escaped}\b", re.IGNORECASE))
 
             self.entity_patterns[entity_id] = patterns
 
-    def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
+    def extract(self, text: str, context: dict | None = None) -> ExtractionResult:
         """
         Extract institutional entities from text.
 
@@ -184,7 +186,7 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
                         match.group(0),
                         entity_data.get("canonical_name", ""),
                         entity_data.get("acronym", ""),
-                        context_window
+                        context_window,
                     )
 
                     # Get scoring boost
@@ -199,7 +201,7 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
                         confidence=confidence,
                         text_span=(start, end),
                         context=context_window,
-                        scoring_boost=scoring_boost
+                        scoring_boost=scoring_boost,
                     )
 
                     detected_entities.append(entity)
@@ -216,7 +218,7 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
                 "level": entity.level,
                 "confidence": entity.confidence,
                 "text_span": entity.text_span,
-                "scoring_boost": entity.scoring_boost
+                "scoring_boost": entity.scoring_boost,
             }
             matches.append(match)
 
@@ -242,8 +244,8 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
                 "by_level": dict(by_level),
                 "institutions": sum(1 for m in matches if m["entity_type"] == "institution"),
                 "normative": sum(1 for m in matches if m["entity_type"] == "normative"),
-                "international": sum(1 for m in matches if m["entity_type"] == "international")
-            }
+                "international": sum(1 for m in matches if m["entity_type"] == "international"),
+            },
         )
 
         # Validate
@@ -257,11 +259,7 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
         return result
 
     def _calculate_confidence(
-        self,
-        detected_text: str,
-        canonical_name: str,
-        acronym: str,
-        context: str
+        self, detected_text: str, canonical_name: str, acronym: str, context: str
     ) -> float:
         """Calculate confidence based on match type and context."""
         base_confidence = 0.70
@@ -285,9 +283,17 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
         # Context validation boosts
         # Check for institutional context keywords
         institutional_keywords = [
-            "ministerio", "departamento", "instituto", "agencia",
-            "unidad", "entidad", "organismo", "ley", "decreto",
-            "conpes", "acuerdo"
+            "ministerio",
+            "departamento",
+            "instituto",
+            "agencia",
+            "unidad",
+            "entidad",
+            "organismo",
+            "ley",
+            "decreto",
+            "conpes",
+            "acuerdo",
         ]
 
         context_lower = context.lower()
@@ -298,14 +304,13 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
 
         return base_confidence
 
-    def get_entities_by_type(self, extraction_result: ExtractionResult, entity_type: str) -> List[Dict]:
+    def get_entities_by_type(
+        self, extraction_result: ExtractionResult, entity_type: str
+    ) -> list[dict]:
         """Filter extracted entities by type."""
-        return [
-            m for m in extraction_result.matches
-            if m["entity_type"] == entity_type
-        ]
+        return [m for m in extraction_result.matches if m["entity_type"] == entity_type]
 
-    def get_scoring_boosts(self, extraction_result: ExtractionResult) -> Dict[str, List[float]]:
+    def get_scoring_boosts(self, extraction_result: ExtractionResult) -> dict[str, list[float]]:
         """Extract scoring boosts for dimensions and policy areas."""
         dimension_boosts = defaultdict(list)
         pa_boosts = defaultdict(list)
@@ -326,27 +331,28 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
         # Aggregate boosts (take maximum)
         return {
             "dimensions": {dim: max(boosts) for dim, boosts in dimension_boosts.items()},
-            "policy_areas": {pa: max(boosts) for pa, boosts in pa_boosts.items()}
+            "policy_areas": {pa: max(boosts) for pa, boosts in pa_boosts.items()},
         }
 
 
 # Convenience functions
 
-def extract_institutional_entities(text: str, context: Optional[Dict] = None) -> ExtractionResult:
+
+def extract_institutional_entities(text: str, context: dict | None = None) -> ExtractionResult:
     """Convenience function to extract institutional entities."""
     extractor = InstitutionalNERExtractor()
     return extractor.extract(text, context)
 
 
-def get_entity_info(entity_id: str) -> Optional[Dict[str, Any]]:
+def get_entity_info(entity_id: str) -> dict[str, Any] | None:
     """Get full information for an entity from registry."""
     extractor = InstitutionalNERExtractor()
     return extractor.entity_registry.get(entity_id)
 
 
 __all__ = [
-    'InstitutionalNERExtractor',
-    'InstitutionalEntity',
-    'extract_institutional_entities',
-    'get_entity_info'
+    "InstitutionalEntity",
+    "InstitutionalNERExtractor",
+    "extract_institutional_entities",
+    "get_entity_info",
 ]

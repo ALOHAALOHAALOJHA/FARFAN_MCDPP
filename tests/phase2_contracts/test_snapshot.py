@@ -3,6 +3,7 @@ Test SC - Snapshot Contract
 Verifies: System refuses to run without frozen σ digests
 State snapshot consistency guarantee
 """
+
 import pytest
 from pathlib import Path
 from typing import Any

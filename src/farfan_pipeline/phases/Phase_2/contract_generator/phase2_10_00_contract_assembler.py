@@ -2,7 +2,7 @@
 Módulo:  contract_assembler.py
 Propósito: Ensamblar contrato completo desde cadena epistémica
 
-Ubicación: src/farfan_pipeline/phases/Phase_two/contract_generator/contract_assembler.py
+Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/contract_assembler.py
 
 RESPONSABILIDADES:
 1. Transformar EpistemicChain en GeneratedContract
@@ -11,7 +11,7 @@ RESPONSABILIDADES:
 4. Generar secciones derivadas del TYPE sin templates
 5. Validar estructura post-ensamblaje
 
-PRINCIPIOS: 
+PRINCIPIOS:
 - La cadena epistémica ES el contrato (no se transforma conceptualmente)
 - TYPE es overlay interpretativo sobre la cadena
 - Cada sección se deriva de la cadena, no de templates
@@ -43,17 +43,17 @@ logger = logging.getLogger(__name__)
 ASSEMBLER_VERSION = "4.0.0-granular"
 
 # Estrategias por TYPE según operationalization_guide.json (PARTE IV)
-TYPE_STRATEGIES:  dict[str, dict[str, str]] = {
+TYPE_STRATEGIES: dict[str, dict[str, str]] = {
     "TYPE_A": {
         "N1": "semantic_corroboration",
         "N2": "dempster_shafer",
         "N3": "veto_gate",
-        "primary":  "semantic_triangulation",
+        "primary": "semantic_triangulation",
     },
     "TYPE_B": {
         "N1": "concat",
         "N2": "bayesian_update",
-        "N3":  "veto_gate",
+        "N3": "veto_gate",
         "primary": "bayesian_update",
     },
     "TYPE_C": {
@@ -68,9 +68,9 @@ TYPE_STRATEGIES:  dict[str, dict[str, str]] = {
         "N3": "financial_coherence_audit",
         "primary": "financial_coherence_audit",
     },
-    "TYPE_E":  {
+    "TYPE_E": {
         "N1": "concat",
-        "N2":  "weighted_mean",
+        "N2": "weighted_mean",
         "N3": "logical_consistency_validation",
         "primary": "logical_consistency_validation",
     },
@@ -88,19 +88,19 @@ TYPE_GATE_LOGIC: dict[str, dict[str, dict[str, Any]]] = {
             "multiplier": 0.5,
         },
     },
-    "TYPE_B":  {
+    "TYPE_B": {
         "statistical_power_below_threshold": {
             "condition": "result < 0.8",
             "action": "downgrade_confidence_to_zero",
         },
     },
-    "TYPE_C":  {
-        "cycle_detected":  {
+    "TYPE_C": {
+        "cycle_detected": {
             "action": "invalidate_graph",
             "multiplier": 0.0,
         },
         "scm_construction_failed": {
-            "action":  "block_branch",
+            "action": "block_branch",
             "scope": "affected_subgraph",
         },
     },
@@ -115,7 +115,7 @@ TYPE_GATE_LOGIC: dict[str, dict[str, dict[str, Any]]] = {
         },
     },
     "TYPE_E": {
-        "logical_contradiction":  {
+        "logical_contradiction": {
             "action": "suppress_contradicting_nodes",
             "multiplier": 0.0,
         },
@@ -127,7 +127,7 @@ TYPE_GATE_LOGIC: dict[str, dict[str, dict[str, Any]]] = {
 }
 
 # Cross-layer fusion definitions (PARTE V)
-CROSS_LAYER_FUSION_TEMPLATE:  dict[str, dict[str, Any]] = {
+CROSS_LAYER_FUSION_TEMPLATE: dict[str, dict[str, Any]] = {
     "N1_to_N2": {
         "relationship": "N2 reads N1 facts",
         "effect": "N2 computes parameters FROM N1 observations",
@@ -136,24 +136,24 @@ CROSS_LAYER_FUSION_TEMPLATE:  dict[str, dict[str, Any]] = {
     "N2_to_N1": {
         "relationship": "N2 modifies N1 confidence",
         "effect": "Edge weights adjust fact confidence scores",
-        "data_flow":  "confidence_backpropagation",
+        "data_flow": "confidence_backpropagation",
     },
     "N3_to_N1": {
         "relationship": "N3 can BLOCK N1 facts",
         "effect": "Failed constraints remove facts from graph",
-        "data_flow":  "veto_propagation",
-        "asymmetry":  "N1 CANNOT invalidate N3",
+        "data_flow": "veto_propagation",
+        "asymmetry": "N1 CANNOT invalidate N3",
     },
     "N3_to_N2": {
         "relationship": "N3 can INVALIDATE N2 parameters",
         "effect": "Failed constraints nullify parameter modifications",
-        "data_flow":  "inference_modulation",
+        "data_flow": "inference_modulation",
         "asymmetry": "N2 CANNOT invalidate N3",
     },
     "all_to_N4": {
         "relationship": "N4 consumes validated outputs from all layers",
         "effect": "Synthesis constructs narrative from filtered graph",
-        "data_flow":  "terminal_aggregation",
+        "data_flow": "terminal_aggregation",
     },
 }
 
@@ -166,7 +166,7 @@ CROSS_LAYER_FUSION_TEMPLATE:  dict[str, dict[str, Any]] = {
 @dataclass
 class GeneratedContract:
     """
-    Contrato ejecutor generado. 
+    Contrato ejecutor generado.
 
     ESTRUCTURA SEGÚN operationalization_guide.json:
     - identity: Identificación del contrato
@@ -182,6 +182,7 @@ class GeneratedContract:
     - output_contract: Schema de salida
     - audit_annotations: Anotaciones de auditoría
     """
+
     # Secciones del contrato
     identity: dict[str, Any]
     executor_binding: dict[str, Any]
@@ -206,7 +207,7 @@ class GeneratedContract:
             "identity": self.identity,
             "executor_binding": self.executor_binding,
             "method_binding": self.method_binding,
-            "question_context":  self.question_context,
+            "question_context": self.question_context,
             "signal_requirements": self.signal_requirements,
             "evidence_assembly": self.evidence_assembly,
             "fusion_specification": self.fusion_specification,
@@ -402,32 +403,27 @@ class ContractAssembler:
 
         return {
             # Identificadores únicos
-            "contract_id":  unique_contract_id,
+            "contract_id": unique_contract_id,
             "contract_number": contract_number,
             "base_contract_id": base_contract_id,
-            "base_slot":  q_id. replace("_", "-"),  # D1_Q1 → D1-Q1
-
+            "base_slot": q_id.replace("_", "-"),  # D1_Q1 → D1-Q1
             # Sector (policy_area_id alias for Carver/Executor compatibility)
             "sector_id": sector.sector_id,
             "policy_area_id": sector.sector_id,  # Alias for chunk JOIN
             "sector_name": sector.canonical_name,
-
             # Dimensión
             "dimension_id": dimension_id,
             "question_id": unique_contract_id,  # Alias for Carver extraction
-
             # Identificador representativo para validación
             "representative_question_id": unique_contract_id,
-
             # Tipo de contrato
             "contract_type": classification.tipo_contrato["codigo"],
-            "contract_type_name":  classification.tipo_contrato["nombre"],
+            "contract_type_name": classification.tipo_contrato["nombre"],
             "contract_type_focus": classification.tipo_contrato["foco"],
-
             # Versión y metadata
             "contract_version": "4.0.0-epistemological",
             "created_at": self.generation_timestamp,
-            "generator_version":  self.generator_version,
+            "generator_version": self.generator_version,
             "specification_source": "operationalization_guide.json",
         }
 
@@ -438,7 +434,7 @@ class ContractAssembler:
         Input: "D1_Q1", "D2_Q3", "D6_Q5"
         Output: "DIM01", "DIM02", "DIM06"
         """
-        pattern = r'^D(\d+)_Q\d+$'
+        pattern = r"^D(\d+)_Q\d+$"
         match = re.match(pattern, question_id)
 
         if not match:
@@ -472,7 +468,7 @@ class ContractAssembler:
 
         return {
             "executor_class": f"{q_id}_{sector.sector_id}_Executor",
-            "executor_module": "farfan_pipeline.phases.Phase_two.executors",
+            "executor_module": "farfan_pipeline.phases.Phase_2.executors",
             "contract_number": contract_number,
         }
 
@@ -484,9 +480,9 @@ class ContractAssembler:
         """
         Construye sección method_binding.
 
-        ESTA ES LA SECCIÓN MÁS GRANULAR. 
+        ESTA ES LA SECCIÓN MÁS GRANULAR.
         Cada método expandido se vuelca íntegramente.
-        NO hay compresión ni resumen. 
+        NO hay compresión ni resumen.
         """
         return {
             "orchestration_mode": "epistemological_pipeline",
@@ -498,11 +494,11 @@ class ContractAssembler:
                     metadata=chain.phase_a_metadata,
                 ),
                 "phase_B_computation": self._build_phase_section(
-                    methods=chain. phase_b_chain,
+                    methods=chain.phase_b_chain,
                     metadata=chain.phase_b_metadata,
                 ),
                 "phase_C_litigation": self._build_phase_section(
-                    methods=chain. phase_c_chain,
+                    methods=chain.phase_c_chain,
                     metadata=chain.phase_c_metadata,
                 ),
             },
@@ -519,11 +515,11 @@ class ContractAssembler:
         """
         Construye sección de una fase con todos los métodos expandidos.
 
-        VERBOSIDAD TOTAL:  Cada campo de cada método se incluye. 
+        VERBOSIDAD TOTAL:  Cada campo de cada método se incluye.
         """
         section = {
-            "description": self._get_phase_description(metadata. level_prefix),
-            "level":  metadata.level_prefix,
+            "description": self._get_phase_description(metadata.level_prefix),
+            "level": metadata.level_prefix,
             "level_name": metadata.level_name,
             "epistemology": metadata.epistemology,
             "methods": [m.to_contract_dict() for m in methods],
@@ -534,19 +530,18 @@ class ContractAssembler:
         # Añadir campos específicos para N3
         if metadata.level_prefix == "N3":
             section["asymmetry_principle"] = (
-                "N3 can invalidate N1/N2 outputs; "
-                "N1 and N2 CANNOT invalidate N3"
+                "N3 can invalidate N1/N2 outputs; " "N1 and N2 CANNOT invalidate N3"
             )
             section["fusion_mode"] = "modulation"
 
         return section
 
-    def _get_phase_description(self, level:  str) -> str:
+    def _get_phase_description(self, level: str) -> str:
         """Obtiene descripción de fase por nivel."""
         descriptions = {
-            "N1":  "Empirical observation layer - direct extraction without interpretation",
+            "N1": "Empirical observation layer - direct extraction without interpretation",
             "N2": "Inferential analysis layer - transformation into analytical constructs",
-            "N3":  "Audit layer - attempt to 'break' results.  Acts as VETO GATE.",
+            "N3": "Audit layer - attempt to 'break' results.  Acts as VETO GATE.",
         }
         return descriptions.get(level, "")
 
@@ -567,7 +562,7 @@ class ContractAssembler:
 
         # Intentar obtener pregunta especializada, fallback a genérica
         specialized_question = classification.pregunta  # Default: pregunta genérica
-        if hasattr(self.registry, 'sector_questions') and self.registry.sector_questions:
+        if hasattr(self.registry, "sector_questions") and self.registry.sector_questions:
             sector_qs = self.registry.sector_questions.get(sector_id, {})
             if base_q_id in sector_qs:
                 specialized_question = sector_qs[base_q_id]
@@ -580,8 +575,8 @@ class ContractAssembler:
             "sector_id": sector.sector_id,
             "sector_name": sector.canonical_name,
             "overrides": None,
-            "failure_contract":  {
-                "abort_if":  [
+            "failure_contract": {
+                "abort_if": [
                     "missing_required_element",
                     "incomplete_text",
                     "no_quantitative_data",
@@ -625,7 +620,7 @@ class ContractAssembler:
         """
         Construye sección evidence_assembly según operationalization_guide.json.
 
-        Las reglas de ensamblaje dependen del TYPE. 
+        Las reglas de ensamblaje dependen del TYPE.
         """
         type_code = classification.tipo_contrato["codigo"]
 
@@ -635,20 +630,20 @@ class ContractAssembler:
                 "origin_level": "N1",
                 "fusion_operation": "graph_node_addition",
                 "merge_behavior": "additive",
-                "symbol":  "⊕",
+                "symbol": "⊕",
                 "description": "Se SUMA al grafo como nodo",
             },
             "PARAMETER": {
                 "origin_level": "N2",
                 "fusion_operation": "edge_weight_modification",
-                "merge_behavior":  "multiplicative",
+                "merge_behavior": "multiplicative",
                 "symbol": "⊗",
                 "description": "MODIFICA pesos de aristas del grafo",
             },
             "CONSTRAINT": {
                 "origin_level": "N3",
                 "fusion_operation": "branch_filtering",
-                "merge_behavior":  "gate",
+                "merge_behavior": "gate",
                 "symbol": "⊘",
                 "description": "FILTRA/BLOQUEA ramas si validación falla",
             },
@@ -676,8 +671,8 @@ class ContractAssembler:
         )
 
         return {
-            "engine":  "EVIDENCE_NEXUS",
-            "module": "farfan_pipeline. phases.Phase_two.evidence_nexus",
+            "engine": "EVIDENCE_NEXUS",
+            "module": "farfan_pipeline. phases.Phase_2.evidence_nexus",
             "class_name": "EvidenceNexus",
             "method_name": "assemble",
             "type_system": type_system,
@@ -693,7 +688,7 @@ class ContractAssembler:
         strategies: dict[str, str],
     ) -> list[dict[str, Any]]:
         """
-        Construye reglas de ensamblaje específicas por TYPE. 
+        Construye reglas de ensamblaje específicas por TYPE.
 
         SEGÚN operationalization_guide.json:
         - TYPE_A: semantic_corroboration → dempster_shafer → veto_gate
@@ -729,7 +724,7 @@ class ContractAssembler:
             "sources": n2_provides,
             "input_dependencies": [r1_target],
             "merge_strategy": type_strats["N2"],
-            "output_type":  "PARAMETER",
+            "output_type": "PARAMETER",
             "confidence_propagation": self._get_r2_confidence_propagation(type_code),
             "description": self._get_r2_description(type_code),
         }
@@ -743,7 +738,7 @@ class ContractAssembler:
         r3_target = self._get_r3_target(type_code)
         r3 = {
             "rule_id": "R3_audit_gate",
-            "rule_type":  self._get_r3_rule_type(type_code),
+            "rule_type": self._get_r3_rule_type(type_code),
             "target": r3_target,
             "sources": n3_provides,
             "input_dependencies": [r1_target, r2_target],
@@ -751,8 +746,7 @@ class ContractAssembler:
             "output_type": "CONSTRAINT",
             "gate_logic": TYPE_GATE_LOGIC.get(type_code, {}),
             "asymmetry_declaration": (
-                "N3 can invalidate N1/N2 outputs; "
-                "N1/N2 CANNOT invalidate N3"
+                "N3 can invalidate N1/N2 outputs; " "N1/N2 CANNOT invalidate N3"
             ),
             "description": "Validate and potentially veto lower-level findings",
         }
@@ -764,8 +758,8 @@ class ContractAssembler:
             "target": "human_answer",
             "sources": [],
             "input_dependencies": [r3_target, r2_target, "audit_results"],
-            "merge_strategy":  "carver_doctoral_synthesis",
-            "output_type":  "NARRATIVE",
+            "merge_strategy": "carver_doctoral_synthesis",
+            "output_type": "NARRATIVE",
             "external_handler": "DoctoralCarverSynthesizer",
             "description": "Synthesize validated evidence into human-readable answer",
         }
@@ -777,9 +771,9 @@ class ContractAssembler:
         targets = {
             "TYPE_A": "raw_facts",
             "TYPE_B": "prior_distribution",
-            "TYPE_C":  "causal_graph",
-            "TYPE_D":  "financial_facts",
-            "TYPE_E":  "policy_statements",
+            "TYPE_C": "causal_graph",
+            "TYPE_D": "financial_facts",
+            "TYPE_E": "policy_statements",
         }
         return targets.get(type_code, "raw_facts")
 
@@ -788,9 +782,9 @@ class ContractAssembler:
         targets = {
             "TYPE_A": "triangulated_facts",
             "TYPE_B": "posterior_belief",
-            "TYPE_C":  "weighted_causal_graph",
+            "TYPE_C": "weighted_causal_graph",
             "TYPE_D": "sufficiency_scores",
-            "TYPE_E":  "coherence_metrics",
+            "TYPE_E": "coherence_metrics",
         }
         return targets.get(type_code, "inferences")
 
@@ -800,7 +794,7 @@ class ContractAssembler:
             "TYPE_A": "validated_facts",
             "TYPE_B": "validated_posterior",
             "TYPE_C": "validated_graph",
-            "TYPE_D":  "validated_financials",
+            "TYPE_D": "validated_financials",
             "TYPE_E": "validated_statements",
         }
         return targets.get(type_code, "validated_output")
@@ -810,8 +804,8 @@ class ContractAssembler:
         rule_types = {
             "TYPE_A": "corroboration",
             "TYPE_B": "probabilistic_update",
-            "TYPE_C":  "edge_inference",
-            "TYPE_D":  "computation",
+            "TYPE_C": "edge_inference",
+            "TYPE_D": "computation",
             "TYPE_E": "computation",
         }
         return rule_types.get(type_code, "computation")
@@ -820,9 +814,9 @@ class ContractAssembler:
         """Rule type de R3 según TYPE."""
         rule_types = {
             "TYPE_A": "robustness_gate",
-            "TYPE_B":  "robustness_gate",
+            "TYPE_B": "robustness_gate",
             "TYPE_C": "validity_check",
-            "TYPE_D":  "financial_coherence_audit",
+            "TYPE_D": "financial_coherence_audit",
             "TYPE_E": "logical_consistency_validation",
         }
         return rule_types.get(type_code, "robustness_gate")
@@ -831,10 +825,10 @@ class ContractAssembler:
         """Confidence propagation de R2 según TYPE."""
         propagations = {
             "TYPE_A": "corroborative_boost",
-            "TYPE_B":  "bayesian_update",
+            "TYPE_B": "bayesian_update",
             "TYPE_C": "topological_merge",
-            "TYPE_D":  "weighted_average",
-            "TYPE_E":  "weighted_average",
+            "TYPE_D": "weighted_average",
+            "TYPE_E": "weighted_average",
         }
         return propagations.get(type_code, "preserve_individual")
 
@@ -843,8 +837,8 @@ class ContractAssembler:
         descriptions = {
             "TYPE_A": "Triangulate and corroborate facts from multiple sources",
             "TYPE_B": "Update prior beliefs with evidence likelihood",
-            "TYPE_C":  "Infer edge weights and merge causal paths",
-            "TYPE_D":  "Compute sufficiency scores from financial data",
+            "TYPE_C": "Infer edge weights and merge causal paths",
+            "TYPE_D": "Compute sufficiency scores from financial data",
             "TYPE_E": "Compute coherence metrics from policy statements",
         }
         return descriptions.get(type_code, "Process inferential analysis")
@@ -858,8 +852,7 @@ class ContractAssembler:
             ),
             "TYPE_B": "posterior = update_belief(prior, likelihood_from_evidence)",
             "TYPE_C": (
-                "if TeoriaCambio path AND CausalExtractor path → "
-                "check for cycles, merge edges"
+                "if TeoriaCambio path AND CausalExtractor path → " "check for cycles, merge edges"
             ),
         }
         return operations.get(type_code)
@@ -891,13 +884,13 @@ class ContractAssembler:
                     "strategy": type_strats["N2"],
                     "behavior": "multiplicative",
                     "conflict_resolution": "weighted_voting",
-                    "affects":  ["N1_facts. confidence", "N1_facts.edge_weights"],
+                    "affects": ["N1_facts. confidence", "N1_facts.edge_weights"],
                 },
                 "N3_constraint_fusion": {
                     "strategy": "veto_gate",
                     "behavior": "gate",
                     "asymmetry_principle": "audit_dominates",
-                    "propagation":  {
+                    "propagation": {
                         "upstream": "confidence_backpropagation",
                         "downstream": "branch_blocking",
                     },
@@ -905,7 +898,7 @@ class ContractAssembler:
             },
             "fusion_pipeline": {
                 "step_1": "Execute all N1 methods → collect FACTS",
-                "step_2":  "Execute all N2 methods → compute PARAMETERS",
+                "step_2": "Execute all N2 methods → compute PARAMETERS",
                 "step_3": "Execute all N3 methods → apply CONSTRAINTS",
                 "step_4": "Synthesize validated graph → NARRATIVE",
             },
@@ -943,36 +936,36 @@ class ContractAssembler:
         }
 
         type_specific = {
-            "TYPE_A":  {
+            "TYPE_A": {
                 "semantic_contradiction": {
-                    "triggered_by":  "SemanticValidator",
+                    "triggered_by": "SemanticValidator",
                     "action": "block_branch",
                     "scope": "contradicting_nodes",
-                    "propagation":  "both",
+                    "propagation": "both",
                 },
             },
-            "TYPE_B":  {
+            "TYPE_B": {
                 "statistical_significance_failed": {
                     "triggered_by": "PolicyContradictionDetector._statistical_significance_test",
                     "action": "block_branch",
                     "scope": "source_facts",
-                    "propagation":  "downstream_only",
+                    "propagation": "downstream_only",
                 },
             },
-            "TYPE_C":  {
+            "TYPE_C": {
                 "cycle_detected": {
                     "triggered_by": "AdvancedDAGValidator._is_acyclic",
                     "action": "invalidate_graph",
                     "scope": "entire_causal_graph",
-                    "propagation":  "total",
+                    "propagation": "total",
                 },
             },
             "TYPE_D": {
                 "budget_insufficiency": {
                     "triggered_by": "FinancialAuditor._calculate_sufficiency",
                     "action": "flag_insufficiency",
-                    "scope":  "affected_goals",
-                    "propagation":  "downstream_only",
+                    "scope": "affected_goals",
+                    "propagation": "downstream_only",
                 },
             },
             "TYPE_E": {
@@ -986,7 +979,7 @@ class ContractAssembler:
         }
 
         result = dict(base_rules)
-        result.update(type_specific. get(type_code, {}))
+        result.update(type_specific.get(type_code, {}))
         return result
 
     # ══════════════════════════════════════════════════════════════════════════
@@ -1015,8 +1008,8 @@ class ContractAssembler:
                     "max_length": 200,
                 },
                 "S2_EVIDENCIA_DURA": {
-                    "role":  "EMPIRICAL_N1",
-                    "content":  [
+                    "role": "EMPIRICAL_N1",
+                    "content": [
                         "hallazgos_factuales",
                         "fuentes_citadas",
                         "datos_cuantitativos",
@@ -1084,22 +1077,22 @@ class ContractAssembler:
         return {
             "input_files": {
                 "classified_methods": {
-                    "file":  "classified_methods.json",
-                    "hash": self. registry.classified_methods_hash,
+                    "file": "classified_methods.json",
+                    "hash": self.registry.classified_methods_hash,
                 },
                 "contratos_clasificados": {
                     "file": "contratos_clasificados.json",
                     "hash": self.registry.contratos_clasificados_hash,
                 },
                 "method_sets": {
-                    "file":  "method_sets_by_question.json",
+                    "file": "method_sets_by_question.json",
                     "hash": self.registry.method_sets_hash,
                 },
             },
             "generation_metadata": {
                 "timestamp": self.generation_timestamp,
                 "generator_version": self.generator_version,
-                "assembler_version":  ASSEMBLER_VERSION,
+                "assembler_version": ASSEMBLER_VERSION,
                 "composition_timestamp": chain.composition_timestamp,
             },
             "contract_lineage": {
@@ -1151,16 +1144,14 @@ class ContractAssembler:
         """Construye sección audit_annotations."""
         # Detectar métodos de baja confianza
         low_confidence_methods = [
-            m.method_id
-            for m in chain.full_chain_ordered
-            if m.confidence_score < 0.7
+            m.method_id for m in chain.full_chain_ordered if m.confidence_score < 0.7
         ]
 
         # Detectar métodos N3 con veto power
         veto_capable_methods = [
             m.method_id
             for m in chain.phase_c_chain
-            if hasattr(m, 'has_veto_power') and m.has_veto_power
+            if hasattr(m, "has_veto_power") and m.has_veto_power
         ]
 
         return {

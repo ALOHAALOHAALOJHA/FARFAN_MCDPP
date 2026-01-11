@@ -46,8 +46,8 @@ except ImportError:
     BayesianDiagnostics = None  # type: ignore[misc, assignment]
 
 __all__ = [
-    "BayesianEngineAdapter",
     "BayesianDiagnostics",
+    "BayesianEngineAdapter",
     "BayesianPriorBuilder",
     "BayesianSamplingEngine",
 ]

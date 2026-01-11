@@ -29,7 +29,7 @@ DIMENSION_DIRS = {
     "DIM03": "DIM03_PRODUCTOS",
     "DIM04": "DIM04_RESULTADOS",
     "DIM05": "DIM05_IMPACTOS",
-    "DIM06": "DIM06_CAUSALIDAD"
+    "DIM06": "DIM06_CAUSALIDAD",
 }
 
 
@@ -43,145 +43,145 @@ class ValidationNormalizer:
                 "type": "completeness",
                 "threshold": 0.8,
                 "description": "Ensures minimum text completeness",
-                "priority": 1
+                "priority": 1,
             },
             {
                 "type": "causal_link_verification",
                 "min_links": 2,
                 "description": "Verifies explicit causal connections between activity and problem",
                 "priority": 2,
-                "colombian_context": "Activities in Colombian PDMs must explicitly link to diagnosed problems"
+                "colombian_context": "Activities in Colombian PDMs must explicitly link to diagnosed problems",
             },
             {
                 "type": "resource_consistency",
                 "check": "budget_match",
                 "description": "Validates that activities have corresponding budget allocation",
                 "priority": 3,
-                "colombian_context": "BPIN/SIGOP numbering required for Colombian investment projects"
+                "colombian_context": "BPIN/SIGOP numbering required for Colombian investment projects",
             },
             {
                 "type": "responsibility_assignment",
                 "required": True,
                 "description": "Ensures responsible entity is identified",
                 "priority": 4,
-                "colombian_context": "Secretaría, entidad, or dependencia must be named"
+                "colombian_context": "Secretaría, entidad, or dependencia must be named",
             },
             {
                 "type": "temporal_coherence",
                 "check": "plausible_timeline",
                 "description": "Validates activity duration is realistic",
                 "priority": 5,
-                "colombian_context": "Activities must fit within 4-year mayoral term"
-            }
+                "colombian_context": "Activities must fit within 4-year mayoral term",
+            },
         ],
         "DIM04_RESULTADOS": [
             {
                 "type": "completeness",
                 "threshold": 0.8,
                 "description": "Ensures minimum text completeness",
-                "priority": 1
+                "priority": 1,
             },
             {
                 "type": "outcome_traceability",
                 "check": "result_to_product",
                 "description": "Verifies outcomes are traceable to products",
                 "priority": 2,
-                "colombian_context": "Results must derive from products (Ley 152 de 1994)"
+                "colombian_context": "Results must derive from products (Ley 152 de 1994)",
             },
             {
                 "type": "indicator_validity",
                 "requires": ["linea_base", "meta", "unidad_medida"],
                 "description": "Validates outcome indicators have baseline, target, and unit",
                 "priority": 3,
-                "colombian_context": "INDICADOR-PDM format following DNP standards"
+                "colombian_context": "INDICADOR-PDM format following DNP standards",
             },
             {
                 "type": "temporal_coherence",
                 "horizon": "medium_term",
                 "description": "Validates outcome temporal consistency",
                 "priority": 4,
-                "colombian_context": "Outcomes typically 2-4 year horizon"
+                "colombian_context": "Outcomes typically 2-4 year horizon",
             },
             {
                 "type": "measurability",
                 "check": "quantifiable",
                 "description": "Ensures outcome can be measured",
                 "priority": 5,
-                "colombian_context": "DNP requires measurable outcomes for follow-up"
-            }
+                "colombian_context": "DNP requires measurable outcomes for follow-up",
+            },
         ],
         "DIM05_IMPACTOS": [
             {
                 "type": "completeness",
                 "threshold": 0.8,
                 "description": "Ensures minimum text completeness",
-                "priority": 1
+                "priority": 1,
             },
             {
                 "type": "impact_chain_completeness",
                 "requires": ["outcome_to_impact_link"],
                 "description": "Verifies impact chain from outcomes to long-term impacts",
                 "priority": 2,
-                "colombian_context": "Impacts are long-term (10+ years) structural changes"
+                "colombian_context": "Impacts are long-term (10+ years) structural changes",
             },
             {
                 "type": "theoretical_coherence",
                 "check": "change_theory_aligned",
                 "description": "Validates impact aligns with theory of change",
                 "priority": 3,
-                "colombian_context": "Must align with Teoría de Cambio del PDM"
+                "colombian_context": "Must align with Teoría de Cambio del PDM",
             },
             {
                 "type": "strategic_alignment",
                 "frameworks": ["PND", "ODS", "plan_sectorial"],
                 "description": "Validates alignment with national/global frameworks",
                 "priority": 4,
-                "colombian_context": "PND, ODS, CONPES alignment required"
+                "colombian_context": "PND, ODS, CONPES alignment required",
             },
             {
                 "type": "ambition_realism_balance",
                 "check": "ambitious_but_achievable",
                 "description": "Balances ambitious goals with feasibility",
                 "priority": 5,
-                "colombian_context": "Impact targets must be ambitious yet municipality-feasible"
-            }
+                "colombian_context": "Impact targets must be ambitious yet municipality-feasible",
+            },
         ],
         "DIM06_CAUSALIDAD": [
             {
                 "type": "completeness",
                 "threshold": 0.8,
                 "description": "Ensures minimum text completeness",
-                "priority": 1
+                "priority": 1,
             },
             {
                 "type": "causal_chain_integrity",
                 "min_links": 3,
                 "description": "Verifies complete causal chain from activities to impacts",
                 "priority": 2,
-                "colombian_context": "Cadena de resultados must be complete"
+                "colombian_context": "Cadena de resultados must be complete",
             },
             {
                 "type": "assumption_explicitness",
                 "requires": ["supuestos_clave"],
                 "description": "Validates key assumptions are explicitly stated",
                 "priority": 3,
-                "colombian_context": "Supuestos y riesgos must be documented"
+                "colombian_context": "Supuestos y riesgos must be documented",
             },
             {
                 "type": "logical_consistency",
                 "check": "no_circular_reasoning",
                 "description": "Detects circular reasoning or logical fallacies",
                 "priority": 4,
-                "colombian_context": "Common fallacy: 'we will achieve X by achieving X'"
+                "colombian_context": "Common fallacy: 'we will achieve X by achieving X'",
             },
             {
                 "type": "contextual_adaptation",
                 "check": "territorial_specificity",
                 "description": "Validates causal logic is adapted to municipal context",
                 "priority": 5,
-                "colombian_context": "Causal mechanisms must reflect municipal realities"
-            }
-        ]
+                "colombian_context": "Causal mechanisms must reflect municipal realities",
+            },
+        ],
     }
 
     def __init__(self):
@@ -196,18 +196,20 @@ class ValidationNormalizer:
         for dim_id, dir_name in DIMENSION_DIRS.items():
             file_path = BASE_PATH / "dimensions" / dir_name / "questions.json"
             if file_path.exists():
-                with open(file_path, 'r', encoding='utf-8') as f:
+                with open(file_path, "r", encoding="utf-8") as f:
                     data = json.load(f)
-                    questions = data.get('questions', [])
+                    questions = data.get("questions", [])
 
                 # Calculate current validation stats
                 validation_counts = []
                 for q in questions:
-                    validations = q.get('validations', {})
+                    validations = q.get("validations", {})
                     count = len(validations) if validations else 0
                     validation_counts.append(count)
 
-                avg_validations = sum(validation_counts) / len(validation_counts) if validation_counts else 0
+                avg_validations = (
+                    sum(validation_counts) / len(validation_counts) if validation_counts else 0
+                )
                 weak_count = sum(1 for c in validation_counts if c <= 1)
                 weak_pct = (weak_count / len(validation_counts) * 100) if validation_counts else 0
 
@@ -216,11 +218,13 @@ class ValidationNormalizer:
                     "avg_validations": round(avg_validations, 2),
                     "weak_validation_count": weak_count,
                     "weak_validation_pct": round(weak_pct, 2),
-                    "validation_counts": validation_counts
+                    "validation_counts": validation_counts,
                 }
                 self.questions_by_dimension[dim_id] = questions
 
-                print(f"  {dim_id}: {len(questions)} questions, avg {avg_validations:.2f} validations, {weak_pct:.1f}% weak")
+                print(
+                    f"  {dim_id}: {len(questions)} questions, avg {avg_validations:.2f} validations, {weak_pct:.1f}% weak"
+                )
 
     def calculate_cv(self) -> float:
         """Calculate coefficient of variation for validation distribution."""
@@ -230,7 +234,7 @@ class ValidationNormalizer:
 
         mean = sum(averages) / len(averages)
         variance = sum((x - mean) ** 2 for x in averages) / len(averages)
-        std_dev = variance ** 0.5
+        std_dev = variance**0.5
 
         cv = (std_dev / mean * 100) if mean > 0 else 0
         return round(cv, 2)
@@ -256,8 +260,8 @@ class ValidationNormalizer:
             updated_questions = []
 
             for q in questions:
-                qid = q.get('question_id')
-                current_validations = q.get('validations', {})
+                qid = q.get("question_id")
+                current_validations = q.get("validations", {})
 
                 # Apply templates
                 new_validations = dict(current_validations) if current_validations else {}
@@ -270,7 +274,7 @@ class ValidationNormalizer:
                             "type": vtype,
                             **{k: v for k, v in template.items() if k != "type"},
                             "applied_by": "validation_normalization_v3.0.0",
-                            "applied_at": datetime.now().isoformat() + "Z"
+                            "applied_at": datetime.now().isoformat() + "Z",
                         }
                         applied_count += 1
 
@@ -279,7 +283,9 @@ class ValidationNormalizer:
                 updated_questions.append(q)
 
                 if applied_count > 0 and qid in ["Q001", "Q016", "Q086", "Q151", "Q186", "Q221"]:
-                    print(f"    {qid}: Added {applied_count} new validations (total: {len(new_validations)})")
+                    print(
+                        f"    {qid}: Added {applied_count} new validations (total: {len(new_validations)})"
+                    )
 
             self.questions_by_dimension[dim_id] = updated_questions
 
@@ -298,8 +304,8 @@ class ValidationNormalizer:
         updated_questions = []
 
         for q in questions:
-            qid = q.get('question_id')
-            current_validations = q.get('validations', {})
+            qid = q.get("question_id")
+            current_validations = q.get("validations", {})
             current_count = len(current_validations) if current_validations else 0
 
             # Only add validations if currently has only 1
@@ -314,14 +320,16 @@ class ValidationNormalizer:
                             "type": vtype,
                             **{k: v for k, v in template.items() if k != "type"},
                             "applied_by": "validation_normalization_v3.0.0",
-                            "applied_at": datetime.now().isoformat() + "Z"
+                            "applied_at": datetime.now().isoformat() + "Z",
                         }
                         applied_count += 1
 
                 q["validations"] = new_validations
 
                 if applied_count > 0 and qid in ["Q006", "Q036", "Q066", "Q096", "Q126"]:
-                    print(f"    {qid}: Added {applied_count} new validations (total: {len(new_validations)})")
+                    print(
+                        f"    {qid}: Added {applied_count} new validations (total: {len(new_validations)})"
+                    )
 
             updated_questions.append(q)
 
@@ -339,18 +347,25 @@ class ValidationNormalizer:
             metadata_path = BASE_PATH / "dimensions" / dir_name / "metadata.json"
 
             # Load original metadata
-            with open(metadata_path, 'r', encoding='utf-8') as f:
+            with open(metadata_path, "r", encoding="utf-8") as f:
                 metadata = json.load(f)
 
             # Save updated questions
             questions = self.questions_by_dimension[dim_id]
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump({
-                    "dimension_id": dim_id,
-                    "dimension_metadata": metadata,
-                    "question_count": len(questions),
-                    "questions": sorted(questions, key=lambda x: int(x.get('question_id', 'Q0')[1:]))
-                }, f, indent=2, ensure_ascii=False)
+            with open(file_path, "w", encoding="utf-8") as f:
+                json.dump(
+                    {
+                        "dimension_id": dim_id,
+                        "dimension_metadata": metadata,
+                        "question_count": len(questions),
+                        "questions": sorted(
+                            questions, key=lambda x: int(x.get("question_id", "Q0")[1:])
+                        ),
+                    },
+                    f,
+                    indent=2,
+                    ensure_ascii=False,
+                )
 
             print(f"  Saved {dir_name}/questions.json")
 
@@ -361,11 +376,13 @@ class ValidationNormalizer:
         for dim_id, questions in self.questions_by_dimension.items():
             validation_counts = []
             for q in questions:
-                validations = q.get('validations', {})
+                validations = q.get("validations", {})
                 count = len(validations) if validations else 0
                 validation_counts.append(count)
 
-            avg_validations = sum(validation_counts) / len(validation_counts) if validation_counts else 0
+            avg_validations = (
+                sum(validation_counts) / len(validation_counts) if validation_counts else 0
+            )
             weak_count = sum(1 for c in validation_counts if c <= 1)
             weak_pct = (weak_count / len(validation_counts) * 100) if validation_counts else 0
 
@@ -373,7 +390,7 @@ class ValidationNormalizer:
                 "question_count": len(questions),
                 "avg_validations": round(avg_validations, 2),
                 "weak_validation_count": weak_count,
-                "weak_validation_pct": round(weak_pct, 2)
+                "weak_validation_pct": round(weak_pct, 2),
             }
 
             print(f"  {dim_id}: avg {avg_validations:.2f} validations, {weak_pct:.1f}% weak")
@@ -383,10 +400,12 @@ class ValidationNormalizer:
         cv_before = self.calculate_cv()
 
         # Calculate CV after
-        averages_after = [self.target_stats[dim]["avg_validations"] for dim in DIMENSION_DIRS.keys()]
+        averages_after = [
+            self.target_stats[dim]["avg_validations"] for dim in DIMENSION_DIRS.keys()
+        ]
         mean_after = sum(averages_after) / len(averages_after)
         variance_after = sum((x - mean_after) ** 2 for x in averages_after) / len(averages_after)
-        cv_after = round((variance_after ** 0.5 / mean_after * 100) if mean_after > 0 else 0, 2)
+        cv_after = round((variance_after**0.5 / mean_after * 100) if mean_after > 0 else 0, 2)
 
         report = {
             "generated_at": datetime.now().isoformat() + "Z",
@@ -394,13 +413,15 @@ class ValidationNormalizer:
             "summary": {
                 "cv_before": cv_before,
                 "cv_after": cv_after,
-                "cv_reduction_percent": round((cv_before - cv_after) / cv_before * 100, 2) if cv_before > 0 else 0,
+                "cv_reduction_percent": (
+                    round((cv_before - cv_after) / cv_before * 100, 2) if cv_before > 0 else 0
+                ),
                 "target_cv": 40.0,
-                "target_met": cv_after < 40.0
+                "target_met": cv_after < 40.0,
             },
             "before_normalization": self.current_stats,
             "after_normalization": self.target_stats,
-            "improvements": {}
+            "improvements": {},
         }
 
         # Calculate improvements
@@ -412,7 +433,7 @@ class ValidationNormalizer:
 
             report["improvements"][dim_id] = {
                 "avg_validations_change": round(after_avg - before_avg, 2),
-                "weak_validation_pct_reduction": round(before_weak - after_weak, 2)
+                "weak_validation_pct_reduction": round(before_weak - after_weak, 2),
             }
 
         return report
@@ -425,10 +446,10 @@ class ValidationNormalizer:
             "version": "3.0.0",
             "generated_at": datetime.now().isoformat() + "Z",
             "description": "Validation templates for normalizing validation contracts across dimensions",
-            "templates": self.VALIDATION_TEMPLATES
+            "templates": self.VALIDATION_TEMPLATES,
         }
 
-        with open(templates_file, 'w', encoding='utf-8') as f:
+        with open(templates_file, "w", encoding="utf-8") as f:
             json.dump(templates_export, f, indent=2, ensure_ascii=False)
 
         print(f"\n=== Saved validation templates to {templates_file} ===")
@@ -456,7 +477,7 @@ class ValidationNormalizer:
 
         # Save report
         report_file = BASE_PATH / "validations" / "normalization_report.json"
-        with open(report_file, 'w', encoding='utf-8') as f:
+        with open(report_file, "w", encoding="utf-8") as f:
             json.dump(report, f, indent=2, ensure_ascii=False)
 
         print("\n" + "=" * 60)

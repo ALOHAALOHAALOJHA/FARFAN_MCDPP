@@ -34,18 +34,15 @@ References:
 from __future__ import annotations
 
 import hashlib
-import json
 import logging
-import mmap
 import pickle
 import threading
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
-from functools import lru_cache
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from typing import Any
 
 import numpy as np
 
@@ -53,6 +50,7 @@ logger = logging.getLogger(__name__)
 
 
 # === CONFIGURATION ===
+
 
 @dataclass
 class CacheConfig:
@@ -68,6 +66,7 @@ class CacheConfig:
         batch_size: Batch size for embedding computation
         enable_prefetch: Enable async prefetch
     """
+
     max_cache_size: int = 10000
     enable_persistence: bool = True
     cache_dir: Path = field(default_factory=lambda: Path("artifacts/embedding_cache"))
@@ -80,6 +79,7 @@ class CacheConfig:
 
 class EmbeddingBackend(Enum):
     """Supported embedding backends."""
+
     SPACY = "spacy"
     TRANSFORMERS = "transformers"
     SENTENCE_TRANSFORMERS = "sentence_transformers"
@@ -87,6 +87,7 @@ class EmbeddingBackend(Enum):
 
 
 # === DATA MODELS ===
+
 
 @dataclass
 class CachedEmbedding:
@@ -101,6 +102,7 @@ class CachedEmbedding:
         last_accessed: Last access timestamp
         backend: Which backend generated this
     """
+
     text_hash: str
     embedding: np.ndarray
     text_length: int
@@ -122,6 +124,7 @@ class CacheStats:
         memory_usage_mb: Estimated memory usage
         avg_access_time_us: Average access time in microseconds
     """
+
     hits: int = 0
     misses: int = 0
     hit_rate: float = 0.0
@@ -132,11 +135,12 @@ class CacheStats:
 
 # === EMBEDDING BACKEND INTERFACE ===
 
+
 class EmbeddingBackendABC(ABC):
     """Abstract base class for embedding backends."""
 
     @abstractmethod
-    def encode(self, texts: List[str]) -> np.ndarray:
+    def encode(self, texts: list[str]) -> np.ndarray:
         """Encode texts to embeddings.
 
         Args:
@@ -177,7 +181,7 @@ class SpacyEmbeddingBackend(EmbeddingBackendABC):
         self.nlp = nlp
         self._dimension = 300  # Default spaCy dimension
 
-    def encode(self, texts: List[str]) -> np.ndarray:
+    def encode(self, texts: list[str]) -> np.ndarray:
         """Encode texts using spaCy."""
         embeddings = []
         for text in texts:
@@ -200,6 +204,7 @@ class SpacyEmbeddingBackend(EmbeddingBackendABC):
 
 
 # === CORE CACHE ENGINE ===
+
 
 class SOTAEmbeddingCache:
     """
@@ -235,8 +240,8 @@ class SOTAEmbeddingCache:
         self.backend = backend
 
         # In-memory cache (LRU)
-        self._cache: Dict[str, CachedEmbedding] = {}
-        self._access_order: List[str] = []
+        self._cache: dict[str, CachedEmbedding] = {}
+        self._access_order: list[str] = []
 
         # Statistics
         self._stats = CacheStats()
@@ -250,10 +255,10 @@ class SOTAEmbeddingCache:
             self._load_persistent_cache()
 
         # Spatial index for similarity search
-        self._similarity_index: Dict[str, np.ndarray] = {}
+        self._similarity_index: dict[str, np.ndarray] = {}
 
         # Prefetch queue
-        self._prefetch_queue: List[str] = []
+        self._prefetch_queue: list[str] = []
 
     def get_embedding(
         self,
@@ -281,6 +286,7 @@ class SOTAEmbeddingCache:
             - Cache is updated with new embedding
         """
         import time
+
         start_time = time.perf_counter()
 
         # Compute text hash for cache key
@@ -292,7 +298,7 @@ class SOTAEmbeddingCache:
                 # Cache hit
                 cached = self._cache[text_hash]
                 cached.access_count += 1
-                cached.last_accessed = datetime.now(timezone.utc).isoformat()
+                cached.last_accessed = datetime.now(UTC).isoformat()
                 self._update_access_order(text_hash)
                 self._stats.hits += 1
 
@@ -301,17 +307,13 @@ class SOTAEmbeddingCache:
                 self._stats.avg_access_time_us = (
                     self._stats.avg_access_time_us * 0.9 + elapsed * 0.1
                 )
-                self._stats.hit_rate = self._stats.hits / (
-                    self._stats.hits + self._stats.misses
-                )
+                self._stats.hit_rate = self._stats.hits / (self._stats.hits + self._stats.misses)
 
                 return cached.embedding
 
             # Cache miss
             self._stats.misses += 1
-            self._stats.hit_rate = self._stats.hits / (
-                self._stats.hits + self._stats.misses
-            )
+            self._stats.hit_rate = self._stats.hits / (self._stats.hits + self._stats.misses)
 
         # Compute embedding
         embedding = self._compute_embedding(text, nlp)
@@ -326,7 +328,7 @@ class SOTAEmbeddingCache:
 
     def get_embeddings_batch(
         self,
-        texts: List[str],
+        texts: list[str],
         nlp: Any | None = None,
     ) -> np.ndarray:
         """
@@ -356,14 +358,10 @@ class SOTAEmbeddingCache:
 
         # Batch compute uncached embeddings
         if uncached_texts:
-            batch_embeddings = self._compute_embeddings_batch(
-                uncached_texts, nlp
-            )
+            batch_embeddings = self._compute_embeddings_batch(uncached_texts, nlp)
 
             # Cache and assign results
-            for text, embedding, idx in zip(
-                uncached_texts, batch_embeddings, uncached_indices
-            ):
+            for text, embedding, idx in zip(uncached_texts, batch_embeddings, uncached_indices):
                 text_hash = self._compute_hash(text)
                 self._cache_embedding(text_hash, text, embedding)
                 embeddings[idx] = embedding
@@ -376,7 +374,7 @@ class SOTAEmbeddingCache:
         n_results: int = 10,
         nlp: Any | None = None,
         threshold: float | None = None,
-    ) -> List[Tuple[str, float]]:
+    ) -> list[tuple[str, float]]:
         """
         Find similar cached texts.
 
@@ -445,14 +443,14 @@ class SOTAEmbeddingCache:
         with self._lock:
             # Update memory usage
             self._stats.total_embeddings = len(self._cache)
-            self._stats.memory_usage_mb = (
-                sum(c.embedding.nbytes for c in self._cache.values()) / (1024 * 1024)
+            self._stats.memory_usage_mb = sum(c.embedding.nbytes for c in self._cache.values()) / (
+                1024 * 1024
             )
             return self._stats
 
     def warm_up(
         self,
-        texts: List[str],
+        texts: list[str],
         nlp: Any | None = None,
     ) -> None:
         """
@@ -520,7 +518,7 @@ class SOTAEmbeddingCache:
 
     def _compute_embeddings_batch(
         self,
-        texts: List[str],
+        texts: list[str],
         nlp: Any | None = None,
     ) -> np.ndarray:
         """Compute embeddings for multiple texts.
@@ -572,7 +570,7 @@ class SOTAEmbeddingCache:
             text_hash=text_hash,
             embedding=embedding,
             text_length=len(text),
-            created_at=datetime.now(timezone.utc).isoformat(),
+            created_at=datetime.now(UTC).isoformat(),
             backend=self.backend.__class__.__name__ if self.backend else "spacy",
         )
 
@@ -648,7 +646,7 @@ class SOTAEmbeddingCache:
                 "text_hash": text_hash,
                 "text_length": len(text),
                 "embedding": embedding,
-                "created_at": datetime.now(timezone.utc).isoformat(),
+                "created_at": datetime.now(UTC).isoformat(),
             }
 
             with open(cache_file, "wb") as f:
@@ -731,6 +729,7 @@ def clear_global_cache() -> None:
 
 
 # === PUBLIC API ===
+
 
 def get_cached_embedding(
     text: str,

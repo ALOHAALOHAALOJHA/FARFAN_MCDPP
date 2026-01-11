@@ -14,17 +14,17 @@ INVARIANTS:
 - INV-BIND-003: Prohibited operations must not appear in any method
 - INV-BIND-004: N2.requires ⊆ N1.provides (dependency chain)
 """
+
 from __future__ import annotations
 
 import json
 import logging
 import re
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from enum import Enum, auto
 from pathlib import Path
-from typing import Callable
 
-from .calibration_core import ValidationError
 from .type_defaults import get_type_defaults, is_operation_prohibited
 
 logger = logging.getLogger(__name__)
@@ -124,9 +124,7 @@ class MethodBindingValidator:
             results.append(result)
 
             if result.severity == ValidationSeverity.FATAL:
-                logger.error(
-                    f"FATAL validation failure: {result.check_name} - {result.message}"
-                )
+                logger.error(f"FATAL validation failure: {result.check_name} - {result.message}")
                 raise EpistemicViolation(
                     f"Validation failed: {result.check_name}\n"
                     f"Message: {result.message}\n"
@@ -135,9 +133,7 @@ class MethodBindingValidator:
 
         return results
 
-    def _validate_layer_ratios(
-        self, binding_set: MethodBindingSet
-    ) -> ValidationResult:
+    def _validate_layer_ratios(self, binding_set: MethodBindingSet) -> ValidationResult:
         """INV-BIND-001: Layer ratios within bounds."""
         type_defaults = get_type_defaults(binding_set.contract_type_code)
         total = binding_set.get_total_count()
@@ -193,13 +189,9 @@ class MethodBindingValidator:
             details={"n1": n1_ratio, "n2": n2_ratio, "n3": n3_ratio},
         )
 
-    def _validate_mandatory_patterns(
-        self, binding_set: MethodBindingSet
-    ) -> ValidationResult:
+    def _validate_mandatory_patterns(self, binding_set: MethodBindingSet) -> ValidationResult:
         """INV-BIND-002: Mandatory patterns satisfied."""
-        minima_path = Path(
-            "artifacts/data/epistemic_inputs_v4/epistemic_minima_by_type.json"
-        )
+        minima_path = Path("artifacts/data/epistemic_inputs_v4/epistemic_minima_by_type.json")
 
         if not minima_path.exists():
             return ValidationResult(
@@ -208,12 +200,10 @@ class MethodBindingValidator:
                 message=f"Epistemic minima file not found: {minima_path}",
             )
 
-        with open(minima_path, "r") as f:
+        with open(minima_path) as f:
             minima = json.load(f)
 
-        type_spec = minima.get("type_specifications", {}).get(
-            binding_set.contract_type_code, {}
-        )
+        type_spec = minima.get("type_specifications", {}).get(binding_set.contract_type_code, {})
         mandatory_patterns = type_spec.get("mandatory_patterns", {})
 
         missing: list[str] = []
@@ -225,9 +215,7 @@ class MethodBindingValidator:
             method_ids = [b.method_id for b in bindings]
 
             for pattern in patterns:
-                if not any(
-                    re.search(pattern, mid, re.IGNORECASE) for mid in method_ids
-                ):
+                if not any(re.search(pattern, mid, re.IGNORECASE) for mid in method_ids):
                     missing.append(f"{level_short}: pattern '{pattern}' has no match")
 
         if missing:
@@ -244,17 +232,13 @@ class MethodBindingValidator:
             message="All mandatory patterns satisfied",
         )
 
-    def _validate_prohibited_operations(
-        self, binding_set: MethodBindingSet
-    ) -> ValidationResult:
+    def _validate_prohibited_operations(self, binding_set: MethodBindingSet) -> ValidationResult:
         """INV-BIND-003: No prohibited operations."""
         violations: list[str] = []
 
         for level, bindings in binding_set.bindings.items():
             for binding in bindings:
-                if is_operation_prohibited(
-                    binding_set.contract_type_code, binding.fusion_behavior
-                ):
+                if is_operation_prohibited(binding_set.contract_type_code, binding.fusion_behavior):
                     violations.append(
                         f"{binding.method_id}: fusion_behavior '{binding.fusion_behavior}' "
                         f"is PROHIBITED for {binding_set.contract_type_code}"
@@ -274,9 +258,7 @@ class MethodBindingValidator:
             message="No prohibited operations",
         )
 
-    def _validate_dependency_chain(
-        self, binding_set: MethodBindingSet
-    ) -> ValidationResult:
+    def _validate_dependency_chain(self, binding_set: MethodBindingSet) -> ValidationResult:
         """INV-BIND-004: N2.requires ⊆ N1.provides."""
         n1_provides = binding_set.get_all_provides("N1-EMP")
         n2_requires = binding_set.get_all_requires("N2-INF")
@@ -297,9 +279,7 @@ class MethodBindingValidator:
             message="Dependency chain satisfied",
         )
 
-    def _validate_veto_coverage(
-        self, binding_set: MethodBindingSet
-    ) -> ValidationResult:
+    def _validate_veto_coverage(self, binding_set: MethodBindingSet) -> ValidationResult:
         """All N3 methods must have veto capability."""
         n3_bindings = binding_set.bindings.get("N3-AUD", [])
 
@@ -310,9 +290,7 @@ class MethodBindingValidator:
                 message="No N3-AUD methods bound (veto capability required)",
             )
 
-        non_veto = [
-            b.method_id for b in n3_bindings if b.fusion_behavior != "veto_gate"
-        ]
+        non_veto = [b.method_id for b in n3_bindings if b.fusion_behavior != "veto_gate"]
 
         if non_veto:
             return ValidationResult(
@@ -330,10 +308,10 @@ class MethodBindingValidator:
 
 
 __all__ = [
-    "ValidationSeverity",
-    "ValidationResult",
+    "EpistemicViolation",
     "MethodBinding",
     "MethodBindingSet",
     "MethodBindingValidator",
-    "EpistemicViolation",
+    "ValidationResult",
+    "ValidationSeverity",
 ]

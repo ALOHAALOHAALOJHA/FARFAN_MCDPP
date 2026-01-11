@@ -1,7 +1,7 @@
 """
 Phase One:  CPP Ingestion & Preprocessing.
 
-This module exports the public API for Phase 1 of the FARFAN pipeline. 
+This module exports the public API for Phase 1 of the FARFAN pipeline.
 
 Exports:
     - Phase1Executor: Main execution class
@@ -61,39 +61,39 @@ from .PHASE_1_CONSTANTS import (
 
 __all__ = [
     # Executor
-    'Phase1Executor',
+    "Phase1Executor",
     # Models
-    'SmartChunk',
-    'Chunk',
-    'LanguageData',
-    'PreprocessedDoc',
-    'StructureData',
-    'KnowledgeGraph',
-    'KGNode',
-    'KGEdge',
-    'CausalChains',
-    'IntegratedCausal',
-    'Arguments',
-    'Temporal',
-    'Discourse',
-    'Strategic',
-    'ValidationResult',
+    "SmartChunk",
+    "Chunk",
+    "LanguageData",
+    "PreprocessedDoc",
+    "StructureData",
+    "KnowledgeGraph",
+    "KGNode",
+    "KGEdge",
+    "CausalChains",
+    "IntegratedCausal",
+    "Arguments",
+    "Temporal",
+    "Discourse",
+    "Strategic",
+    "ValidationResult",
     # Primitives
-    'TruncationAudit',
-    'StreamingPDFExtractor',
+    "TruncationAudit",
+    "StreamingPDFExtractor",
     # Utilities
-    'ThreadSafeResults',
+    "ThreadSafeResults",
     # Constants
-    'PDF_EXTRACTION_CHAR_LIMIT',
-    'SEMANTIC_SCORE_MAX_EXPECTED',
-    'ASSIGNMENT_METHOD_SEMANTIC',
-    'ASSIGNMENT_METHOD_FALLBACK',
-    'VALID_ASSIGNMENT_METHODS',
-    'CHUNK_ID_PATTERN',
-    'POLICY_AREA_COUNT',
-    'DIMENSION_COUNT',
-    'TOTAL_CHUNK_COMBINATIONS',
-    'SUBPHASE_COUNT',
-    'PHASE1_LOGGER_NAME',
-    'RANDOM_SEED',
+    "PDF_EXTRACTION_CHAR_LIMIT",
+    "SEMANTIC_SCORE_MAX_EXPECTED",
+    "ASSIGNMENT_METHOD_SEMANTIC",
+    "ASSIGNMENT_METHOD_FALLBACK",
+    "VALID_ASSIGNMENT_METHODS",
+    "CHUNK_ID_PATTERN",
+    "POLICY_AREA_COUNT",
+    "DIMENSION_COUNT",
+    "TOTAL_CHUNK_COMBINATIONS",
+    "SUBPHASE_COUNT",
+    "PHASE1_LOGGER_NAME",
+    "RANDOM_SEED",
 ]

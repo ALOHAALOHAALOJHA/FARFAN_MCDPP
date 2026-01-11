@@ -20,21 +20,24 @@ from __future__ import annotations
 
 import asyncio
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 
 import structlog
 from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.exception_handlers import http_exception_handler, request_validation_exception_handler
 from fastapi.exceptions import RequestValidationError
-from starlette.exceptions import HTTPException as StarletteHTTPException
-from sse_starlette.sse import EventSourceResponse
-
 from orchestration.factory import load_questionnaire
-from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import PolicyArea, SignalPack
+from sse_starlette.sse import EventSourceResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
 from farfan_pipeline.dashboard_atroz_.api_v1_errors import AtrozAPIException, api_error_response
 from farfan_pipeline.dashboard_atroz_.api_v1_router import router as atroz_router
 from farfan_pipeline.dashboard_atroz_.auth_router import router as auth_router
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
+    PolicyArea,
+    SignalPack,
+)
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
@@ -158,11 +161,15 @@ async def atroz_api_exception_handler(request: Request, exc: AtrozAPIException) 
 
 
 @app.exception_handler(RequestValidationError)
-async def atroz_validation_exception_handler(request: Request, exc: RequestValidationError) -> Response:
+async def atroz_validation_exception_handler(
+    request: Request, exc: RequestValidationError
+) -> Response:
     if request.url.path.startswith("/api/v1"):
         details = {"errors": exc.errors()}
         return api_error_response(
-            AtrozAPIException(status=400, code="BAD_REQUEST", message="Validation error", details=details)
+            AtrozAPIException(
+                status=400, code="BAD_REQUEST", message="Validation error", details=details
+            )
         )
     return await request_validation_exception_handler(request, exc)
 
@@ -215,7 +222,7 @@ async def health_check() -> dict[str, str]:
     """
     return {
         "status": "healthy",
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "signal_count": len(_signal_store),
     }
 
@@ -303,10 +310,12 @@ async def stream_signals(request: Request) -> EventSourceResponse:
             # Send heartbeat
             yield {
                 "event": "heartbeat",
-                "data": json.dumps({
-                    "timestamp": datetime.now(timezone.utc).isoformat(),
-                    "signal_count": len(_signal_store),
-                }),
+                "data": json.dumps(
+                    {
+                        "timestamp": datetime.now(UTC).isoformat(),
+                        "signal_count": len(_signal_store),
+                    }
+                ),
             }
 
             # Wait before next heartbeat

@@ -19,44 +19,38 @@ Arquitectura en capas:
 - Layer 4: ContractValidator + JSONEmitter (validación y emisión)
 """
 
-from .input_registry import (
-    InputLoader,
-    InputRegistry,
-    MethodDefinition,
-    ContractClassification,
-    MethodAssignment,
-    QuestionMethodSet,
-)
-
-from .method_expander import (
-    MethodExpander,
-    ExpandedMethodUnit,
-)
-
 from .chain_composer import (
     ChainComposer,
     EpistemicChain,
 )
-
 from .contract_assembler import (
     ContractAssembler,
     GeneratedContract,
 )
-
+from .contract_generator import (
+    ContractGenerator,
+    main,
+)
 from .contract_validator import (
     ContractValidator,
     ValidationReport,
     ValidationResult,
     ValidationSeverity,
 )
-
+from .input_registry import (
+    ContractClassification,
+    InputLoader,
+    InputRegistry,
+    MethodAssignment,
+    MethodDefinition,
+    QuestionMethodSet,
+)
 from .json_emitter import (
     JSONEmitter,
 )
-
-from .contract_generator import (
-    ContractGenerator,
-    main,
+from .method_expander import (
+    ExpandedMethodUnit,
+    MethodExpander,
 )
 
 __all__ = [

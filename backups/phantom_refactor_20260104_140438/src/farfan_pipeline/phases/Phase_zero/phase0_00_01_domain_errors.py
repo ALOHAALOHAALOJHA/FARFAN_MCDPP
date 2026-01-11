@@ -28,6 +28,7 @@ class ContractViolationError(Exception):
         ...     print(f"Caught: {e}")
         Caught: Contract violated
     """
+
     pass
 
 
@@ -48,6 +49,7 @@ class DataContractError(ContractViolationError):
         ...     print(f"Data error: {e}")
         Data error: Invalid payload schema
     """
+
     pass
 
 
@@ -68,6 +70,7 @@ class SystemContractError(ContractViolationError):
         ...     print(f"System error: {e}")
         System error: Configuration missing
     """
+
     pass
 
 
@@ -79,9 +82,9 @@ if __name__ == "__main__":
     doctest.testmod(verbose=True)
 
     # Integration tests
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("Domain Exceptions Integration Tests")
-    print("="*60)
+    print("=" * 60)
 
     print("\n1. Testing exception hierarchy:")
     assert issubclass(DataContractError, ContractViolationError)
@@ -132,6 +135,6 @@ if __name__ == "__main__":
     assert errors[1] == ("system", "SystemContractError")
     print("   ✓ Data and system errors are distinguishable")
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("Domain exceptions doctest OK - All tests passed!")
-    print("="*60)
+    print("=" * 60)

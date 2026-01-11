@@ -5,6 +5,7 @@ These tests verify type-specific calibration defaults and prohibited operations.
 
 Schema Version: 2.0.0
 """
+
 import pytest
 from farfan_pipeline.infrastructure.calibration import (
     get_type_defaults,
@@ -47,7 +48,10 @@ class TestTypeDefaultsLoading:
 
     def test_unknown_type_raises(self) -> None:
         """Unknown contract type must raise UnknownContractTypeError."""
-        from farfan_pipeline.infrastructure.calibration.type_defaults import UnknownContractTypeError
+        from farfan_pipeline.infrastructure.calibration.type_defaults import (
+            UnknownContractTypeError,
+        )
+
         with pytest.raises(UnknownContractTypeError, match="Unknown contract type"):
             get_type_defaults("TYPE_INVALID")
 
@@ -98,7 +102,7 @@ class TestProhibitedOperations:
     def test_type_e_logical_operations(self) -> None:
         """
         TYPE_E logical consistency contracts per canonical source.
-        
+
         IMPORTANT: Based on contratos_clasificados.json, TYPE_E USES weighted_mean.
         This differs from the original spec but follows the canonical data.
         TYPE_E uses: concat, weighted_mean, logical_consistency_validation
@@ -107,7 +111,7 @@ class TestProhibitedOperations:
         assert not is_operation_prohibited("TYPE_E", "weighted_mean")
         assert not is_operation_prohibited("TYPE_E", "concat")
         assert not is_operation_prohibited("TYPE_E", "logical_consistency_validation")
-        
+
         # TYPE_E prohibits operations that don't preserve logical consistency
         assert is_operation_prohibited("TYPE_E", "bayesian_update")
         assert is_operation_prohibited("TYPE_E", "semantic_corroboration")
@@ -136,7 +140,7 @@ class TestProhibitedOperations:
     def test_substring_matching_behavior_documented(self) -> None:
         """
         Document substring matching behavior - intentionally conservative.
-        
+
         The current implementation uses substring matching which may produce
         false positives. This is by design to ensure no prohibited operations
         slip through. If this becomes problematic, switch to word-boundary matching.
@@ -144,10 +148,10 @@ class TestProhibitedOperations:
         # Test with TYPE_A which prohibits "weighted_mean"
         # "compute_weighted_mean" contains "weighted_mean" substring
         assert is_operation_prohibited("TYPE_A", "compute_weighted_mean")
-        
+
         # This is NOT blocked (doesn't contain prohibited substrings for TYPE_A)
         assert not is_operation_prohibited("TYPE_A", "stream_processor")
-        
+
         # These are correctly blocked (actual prohibited operations)
         assert is_operation_prohibited("TYPE_A", "use_bayesian_update")
         assert is_operation_prohibited("TYPE_B", "apply_semantic_corroboration")

@@ -34,11 +34,14 @@ from typing import NamedTuple
 # Project paths
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 SRC_DIR = PROJECT_ROOT / "src"
-BACKUP_DIR = PROJECT_ROOT / "backups" / f"phantom_refactor_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+BACKUP_DIR = (
+    PROJECT_ROOT / "backups" / f"phantom_refactor_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+)
 
 
 class Transformation(NamedTuple):
     """A single import transformation."""
+
     pattern: str
     replacement: str
     description: str
@@ -54,130 +57,120 @@ TRANSFORMATIONS: list[Transformation] = [
     Transformation(
         pattern=r"from cross_cutting_infrastructure\.irrigation_using_signals\.SISAS",
         replacement="from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS",
-        description="SISAS signal infrastructure"
+        description="SISAS signal infrastructure",
     ),
     Transformation(
         pattern=r"from cross_cutting_infrastructure\.irrigation_using_signals\.ports",
         replacement="from farfan_pipeline.infrastructure.irrigation_using_signals.ports",
-        description="Signal ports"
+        description="Signal ports",
     ),
-    
     # Capaz Calibration
     Transformation(
         pattern=r"from cross_cutting_infrastructure\.capaz_calibration_parmetrization",
         replacement="from farfan_pipeline.infrastructure.capaz_calibration_parmetrization",
-        description="Capaz calibration infrastructure"
+        description="Capaz calibration infrastructure",
     ),
-    
     # Contractual/Dura Lex
     Transformation(
         pattern=r"from cross_cutting_infrastructure\.contractual\.dura_lex",
         replacement="from farfan_pipeline.infrastructure.contractual.dura_lex",
-        description="Dura lex contracts"
+        description="Dura lex contracts",
     ),
     Transformation(
         pattern=r"from cross_cutting_infrastructure\.contractual",
         replacement="from farfan_pipeline.infrastructure.contractual",
-        description="Contractual infrastructure"
+        description="Contractual infrastructure",
     ),
-    
     # Generic cross_cutting fallback
     Transformation(
         pattern=r"from cross_cutting_infrastructure\.",
         replacement="from farfan_pipeline.infrastructure.",
-        description="Generic cross_cutting to infrastructure"
+        description="Generic cross_cutting to infrastructure",
     ),
     Transformation(
         pattern=r"import cross_cutting_infrastructure\.",
         replacement="import farfan_pipeline.infrastructure.",
-        description="Generic cross_cutting import"
+        description="Generic cross_cutting import",
     ),
-    
     # Phase Zero
     Transformation(
         pattern=r"from canonic_phases\.Phase_zero",
         replacement="from farfan_pipeline.phases.Phase_zero",
-        description="Phase Zero imports"
+        description="Phase Zero imports",
     ),
     Transformation(
         pattern=r"from canonic_phases\.phase_0_bootstrap",
         replacement="from farfan_pipeline.phases.Phase_zero",
-        description="Phase Zero bootstrap alias"
+        description="Phase Zero bootstrap alias",
     ),
-    
     # Phase One
     Transformation(
         pattern=r"from canonic_phases\.Phase_one",
         replacement="from farfan_pipeline.phases.Phase_one",
-        description="Phase One imports"
+        description="Phase One imports",
     ),
     Transformation(
         pattern=r"from canonic_phases\.phase_1_cpp_ingestion",
         replacement="from farfan_pipeline.phases.Phase_one",
-        description="Phase One CPP alias"
+        description="Phase One CPP alias",
     ),
-    
     # Phase Two
     Transformation(
         pattern=r"from canonic_phases\.Phase_two",
         replacement="from farfan_pipeline.phases.Phase_two",
-        description="Phase Two imports"
+        description="Phase Two imports",
     ),
     Transformation(
         pattern=r"from canonic_phases\.phase_2_execution",
         replacement="from farfan_pipeline.phases.Phase_two",
-        description="Phase Two execution alias"
+        description="Phase Two execution alias",
     ),
-    
     # Phase Three
     Transformation(
         pattern=r"from canonic_phases\.Phase_three",
         replacement="from farfan_pipeline.phases.Phase_three",
-        description="Phase Three imports"
+        description="Phase Three imports",
     ),
-    
     # Phase Four-Seven (Aggregation)
     Transformation(
         pattern=r"from canonic_phases\.Phase_four_five_six_seven",
         replacement="from farfan_pipeline.phases.Phase_four_five_six_seven",
-        description="Phase 4-7 aggregation imports"
+        description="Phase 4-7 aggregation imports",
     ),
     Transformation(
         pattern=r"from canonic_phases\.phase_4_7_aggregation_pipeline",
         replacement="from farfan_pipeline.phases.Phase_four_five_six_seven",
-        description="Phase 4-7 aggregation pipeline alias"
+        description="Phase 4-7 aggregation pipeline alias",
     ),
-    
     # Phase Eight
     Transformation(
         pattern=r"from canonic_phases\.Phase_eight",
         replacement="from farfan_pipeline.phases.Phase_eight",
-        description="Phase Eight imports"
+        description="Phase Eight imports",
     ),
-    
     # Phase Nine
     Transformation(
         pattern=r"from canonic_phases\.Phase_nine",
         replacement="from farfan_pipeline.phases.Phase_nine",
-        description="Phase Nine imports"
+        description="Phase Nine imports",
     ),
-    
     # Generic canonic_phases fallback
     Transformation(
         pattern=r"from canonic_phases\.",
         replacement="from farfan_pipeline.phases.",
-        description="Generic canonic_phases to phases"
+        description="Generic canonic_phases to phases",
     ),
     Transformation(
         pattern=r"import canonic_phases\.",
         replacement="import farfan_pipeline.phases.",
-        description="Generic canonic_phases import"
+        description="Generic canonic_phases import",
     ),
 ]
 
 
 class RefactorResult(NamedTuple):
     """Result of refactoring a single file."""
+
     filepath: Path
     original_lines: int
     modified_lines: int
@@ -204,39 +197,49 @@ def transform_file(filepath: Path, dry_run: bool = False) -> RefactorResult:
         original_content = filepath.read_text(encoding="utf-8")
         modified_content = original_content
         transformations_applied: list[str] = []
-        
+
         for transform in TRANSFORMATIONS:
             if re.search(transform.pattern, modified_content):
                 modified_content = re.sub(
-                    transform.pattern,
-                    transform.replacement,
-                    modified_content
+                    transform.pattern, transform.replacement, modified_content
                 )
                 transformations_applied.append(transform.description)
-        
+
         if transformations_applied:
-            original_lines = len([l for l in original_content.split('\n') if 'cross_cutting' in l or 'canonic_phases' in l])
-            modified_lines = len([l for l in modified_content.split('\n') if 'cross_cutting' in l or 'canonic_phases' in l])
-            
+            original_lines = len(
+                [
+                    l
+                    for l in original_content.split("\n")
+                    if "cross_cutting" in l or "canonic_phases" in l
+                ]
+            )
+            modified_lines = len(
+                [
+                    l
+                    for l in modified_content.split("\n")
+                    if "cross_cutting" in l or "canonic_phases" in l
+                ]
+            )
+
             if not dry_run:
                 filepath.write_text(modified_content, encoding="utf-8")
-            
+
             return RefactorResult(
                 filepath=filepath,
                 original_lines=original_lines,
                 modified_lines=modified_lines,
                 transformations_applied=transformations_applied,
-                success=True
+                success=True,
             )
-        
+
         return RefactorResult(
             filepath=filepath,
             original_lines=0,
             modified_lines=0,
             transformations_applied=[],
-            success=True
+            success=True,
         )
-        
+
     except Exception as e:
         return RefactorResult(
             filepath=filepath,
@@ -244,17 +247,17 @@ def transform_file(filepath: Path, dry_run: bool = False) -> RefactorResult:
             modified_lines=0,
             transformations_applied=[],
             success=False,
-            error=str(e)
+            error=str(e),
         )
 
 
 def refactor_all(src_dir: Path, dry_run: bool = False) -> list[RefactorResult]:
     """Refactor all Python files in source directory."""
     results: list[RefactorResult] = []
-    
+
     py_files = list(src_dir.rglob("*.py"))
     print(f"Found {len(py_files)} Python files to process")
-    
+
     for py_file in py_files:
         result = transform_file(py_file, dry_run=dry_run)
         if result.transformations_applied:
@@ -264,7 +267,7 @@ def refactor_all(src_dir: Path, dry_run: bool = False) -> list[RefactorResult]:
             print(f"  {status} {rel_path}")
             for t in result.transformations_applied:
                 print(f"           └── {t}")
-    
+
     return results
 
 
@@ -273,15 +276,15 @@ def verify_no_phantoms(src_dir: Path) -> tuple[int, list[str]]:
     phantom_pattern = re.compile(r"(cross_cutting_infrastructure|canonic_phases)")
     remaining: list[str] = []
     count = 0
-    
+
     for py_file in src_dir.rglob("*.py"):
         try:
             content = py_file.read_text(encoding="utf-8")
-            for i, line in enumerate(content.split('\n'), 1):
-                if phantom_pattern.search(line) and ('import' in line or 'from' in line):
+            for i, line in enumerate(content.split("\n"), 1):
+                if phantom_pattern.search(line) and ("import" in line or "from" in line):
                     # Skip comments and strings (heuristic)
                     stripped = line.strip()
-                    if stripped.startswith('#'):
+                    if stripped.startswith("#"):
                         continue
                     if '"""' in line or "'''" in line:
                         continue
@@ -289,7 +292,7 @@ def verify_no_phantoms(src_dir: Path) -> tuple[int, list[str]]:
                     count += 1
         except Exception:
             continue
-    
+
     return count, remaining
 
 
@@ -299,16 +302,18 @@ def main(dry_run: bool = False) -> int:
     print("PHANTOM IMPORTS REFACTOR")
     print(f"Mode: {'DRY-RUN (no changes)' if dry_run else 'LIVE (will modify files)'}")
     print("=" * 70)
-    
+
     # Pre-check
     print("\n[1/4] Pre-refactor phantom count...")
     pre_count, pre_files = verify_no_phantoms(SRC_DIR)
-    print(f"      Found {pre_count} phantom imports in {len(set(f.split(':')[0] for f in pre_files))} files")
-    
+    print(
+        f"      Found {pre_count} phantom imports in {len(set(f.split(':')[0] for f in pre_files))} files"
+    )
+
     if pre_count == 0:
         print("\n✓ No phantom imports found. Nothing to do.")
         return 0
-    
+
     # Backup
     if not dry_run:
         print("\n[2/4] Creating backup...")
@@ -317,19 +322,19 @@ def main(dry_run: bool = False) -> int:
             return 1
     else:
         print("\n[2/4] Skipping backup (dry-run mode)")
-    
+
     # Refactor
     print("\n[3/4] Applying transformations...")
     results = refactor_all(SRC_DIR, dry_run=dry_run)
-    
+
     modified_count = len(results)
     total_transforms = sum(len(r.transformations_applied) for r in results)
     print(f"\n      Modified {modified_count} files with {total_transforms} transformations")
-    
+
     # Verify
     print("\n[4/4] Post-refactor verification...")
     post_count, post_files = verify_no_phantoms(SRC_DIR)
-    
+
     if post_count == 0:
         print("      ✓ All phantom imports eliminated!")
     else:
@@ -338,7 +343,7 @@ def main(dry_run: bool = False) -> int:
             print(f"        - {f}")
         if len(post_files) > 10:
             print(f"        ... and {len(post_files) - 10} more")
-    
+
     # Summary
     print("\n" + "=" * 70)
     print("SUMMARY")
@@ -347,13 +352,13 @@ def main(dry_run: bool = False) -> int:
     print(f"  After:  {post_count} phantom imports")
     print(f"  Eliminated: {pre_count - post_count}")
     print(f"  Files modified: {modified_count}")
-    
+
     if not dry_run and post_count > 0:
         print(f"\n  Backup location: {BACKUP_DIR}")
         print("  To rollback: cp -r {backup}/src/* src/")
-    
+
     print("=" * 70)
-    
+
     return 0 if post_count == 0 else 1
 
 

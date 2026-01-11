@@ -30,10 +30,10 @@ if TYPE_CHECKING:
     pass
 
 try:
+    from causalnex.inference import InferenceEngine
+    from causalnex.network import BayesianNetwork
     from causalnex.structure import StructureModel
     from causalnex.structure.notears import from_pandas
-    from causalnex.network import BayesianNetwork
-    from causalnex.inference import InferenceEngine
 
     CAUSALNEX_AVAILABLE = True
 except ImportError:
@@ -168,7 +168,7 @@ class CausalStructureLearner:
         # Check for continuous variables (CausalNex Bayesian Networks expect discrete)
         continuous_cols = []
         for col in data.columns:
-            if data[col].dtype in ['float64', 'float32', 'float16']:
+            if data[col].dtype in ["float64", "float32", "float16"]:
                 continuous_cols.append(col)
 
         if continuous_cols:
@@ -233,8 +233,7 @@ class CausalStructureLearner:
             )
 
             self.logger.info(
-                f"Learned DAG structure: {n_nodes} nodes, {n_edges} edges, "
-                f"is_dag={is_dag}"
+                f"Learned DAG structure: {n_nodes} nodes, {n_edges} edges, " f"is_dag={is_dag}"
             )
 
             return result
@@ -289,8 +288,7 @@ class CausalStructureLearner:
             self.inference_engine = InferenceEngine(bn)
 
             self.logger.info(
-                f"Fitted Bayesian Network with {len(bn.nodes)} nodes, "
-                f"{len(bn.edges)} edges"
+                f"Fitted Bayesian Network with {len(bn.nodes)} nodes, " f"{len(bn.edges)} edges"
             )
 
             return True
@@ -366,8 +364,7 @@ class CausalStructureLearner:
             )
 
             self.logger.debug(
-                f"Query {query_variable} | {evidence}: MAP={map_estimate}, "
-                f"H={entropy:.3f}"
+                f"Query {query_variable} | {evidence}: MAP={map_estimate}, " f"H={entropy:.3f}"
             )
 
             return result

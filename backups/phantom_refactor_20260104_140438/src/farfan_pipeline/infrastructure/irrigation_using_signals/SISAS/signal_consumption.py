@@ -25,9 +25,11 @@ if TYPE_CHECKING:
 
 try:
     import structlog
+
     logger = structlog.get_logger(__name__)
 except ImportError:
     import logging
+
     logger = logging.getLogger(__name__)
 
 
@@ -65,17 +67,13 @@ class SignalConsumptionProof:
         text_segment = text_segment[:100] if text_segment else ""
 
         # Generate match hash
-        match_hash = hashlib.sha256(
-            f"{pattern}|{text_segment}".encode()
-        ).hexdigest()
+        match_hash = hashlib.sha256(f"{pattern}|{text_segment}".encode()).hexdigest()
 
         self.consumed_patterns.append((pattern, match_hash))
 
         # Update proof chain
         prev_hash = self.proof_chain[-1] if self.proof_chain else "0" * 64
-        new_hash = hashlib.sha256(
-            f"{prev_hash}|{match_hash}".encode()
-        ).hexdigest()
+        new_hash = hashlib.sha256(f"{prev_hash}|{match_hash}".encode()).hexdigest()
         self.proof_chain.append(new_hash)
 
         logger.debug(
@@ -97,14 +95,14 @@ class SignalConsumptionProof:
             - timestamp
         """
         return {
-            'executor_id': self.executor_id,
-            'question_id': self.question_id,
-            'policy_area': self.policy_area,
-            'patterns_consumed': len(self.consumed_patterns),
-            'proof_chain_head': self.proof_chain[-1] if self.proof_chain else None,
-            'proof_chain_length': len(self.proof_chain),
-            'consumed_hashes': [h for _, h in self.consumed_patterns[:10]],
-            'timestamp': self.timestamp,
+            "executor_id": self.executor_id,
+            "question_id": self.question_id,
+            "policy_area": self.policy_area,
+            "patterns_consumed": len(self.consumed_patterns),
+            "proof_chain_head": self.proof_chain[-1] if self.proof_chain else None,
+            "proof_chain_length": len(self.proof_chain),
+            "consumed_hashes": [h for _, h in self.consumed_patterns[:10]],
+            "timestamp": self.timestamp,
         }
 
     def save_to_file(self, output_dir: Path) -> Path:
@@ -119,7 +117,7 @@ class SignalConsumptionProof:
         output_dir.mkdir(parents=True, exist_ok=True)
         proof_file = output_dir / f"{self.question_id}.json"
 
-        with open(proof_file, 'w', encoding='utf-8') as f:
+        with open(proof_file, "w", encoding="utf-8") as f:
             json.dump(self.get_consumption_proof(), f, indent=2)
 
         logger.info(
@@ -145,16 +143,13 @@ def build_merkle_tree(items: list[str]) -> str:
         Hex string of root hash
     """
     if not items:
-        return hashlib.sha256(b'').hexdigest()
+        return hashlib.sha256(b"").hexdigest()
 
     # Sort for determinism
     items = sorted(items)
 
     # Hash each item
-    hashes = [
-        hashlib.sha256(item.encode('utf-8')).hexdigest()
-        for item in items
-    ]
+    hashes = [hashlib.sha256(item.encode("utf-8")).hexdigest() for item in items]
 
     # Build tree bottom-up
     while len(hashes) > 1:
@@ -164,7 +159,7 @@ def build_merkle_tree(items: list[str]) -> str:
         next_level = []
         for i in range(0, len(hashes), 2):
             combined = f"{hashes[i]}|{hashes[i+1]}"
-            next_hash = hashlib.sha256(combined.encode('utf-8')).hexdigest()
+            next_hash = hashlib.sha256(combined.encode("utf-8")).hexdigest()
             next_level.append(next_hash)
 
         hashes = next_level
@@ -201,13 +196,13 @@ class SignalManifest:
     def to_dict(self) -> dict[str, Any]:
         """Convert manifest to dictionary for serialization."""
         return {
-            'policy_area': self.policy_area,
-            'pattern_count': self.pattern_count,
-            'pattern_merkle_root': self.pattern_merkle_root,
-            'indicator_merkle_root': self.indicator_merkle_root,
-            'entity_merkle_root': self.entity_merkle_root,
-            'extraction_timestamp': self.extraction_timestamp,
-            'source_file_hash': self.source_file_hash,
+            "policy_area": self.policy_area,
+            "pattern_count": self.pattern_count,
+            "pattern_merkle_root": self.pattern_merkle_root,
+            "indicator_merkle_root": self.indicator_merkle_root,
+            "entity_merkle_root": self.entity_merkle_root,
+            "extraction_timestamp": self.extraction_timestamp,
+            "source_file_hash": self.source_file_hash,
         }
 
 
@@ -221,7 +216,7 @@ def compute_file_hash(file_path: Path) -> str:
         Hex string of SHA256 hash
     """
     sha256_hash = hashlib.sha256()
-    with open(file_path, 'rb') as f:
+    with open(file_path, "rb") as f:
         for byte_block in iter(lambda: f.read(4096), b""):
             sha256_hash.update(byte_block)
     return sha256_hash.hexdigest()
@@ -246,46 +241,46 @@ def generate_signal_manifests(
     else:
         # Fallback: hash the data itself
         data_str = json.dumps(questionnaire_data, sort_keys=True)
-        source_hash = hashlib.sha256(data_str.encode('utf-8')).hexdigest()
+        source_hash = hashlib.sha256(data_str.encode("utf-8")).hexdigest()
 
     # Fixed timestamp for determinism
     timestamp = 1731258152.0
 
     manifests = {}
-    questions = questionnaire_data.get('blocks', {}).get('micro_questions', [])
+    questions = questionnaire_data.get("blocks", {}).get("micro_questions", [])
 
     # Group patterns by policy area
     patterns_by_pa: dict[str, dict[str, list[str]]] = {}
 
     for question in questions:
-        pa = question.get('policy_area_id', 'PA01')
+        pa = question.get("policy_area_id", "PA01")
         if pa not in patterns_by_pa:
             patterns_by_pa[pa] = {
-                'all': [],
-                'indicators': [],
-                'entities': [],
+                "all": [],
+                "indicators": [],
+                "entities": [],
             }
 
-        for pattern_obj in question.get('patterns', []):
-            pattern_str = pattern_obj.get('pattern', '')
-            category = pattern_obj.get('category', '')
+        for pattern_obj in question.get("patterns", []):
+            pattern_str = pattern_obj.get("pattern", "")
+            category = pattern_obj.get("category", "")
 
             if pattern_str:
-                patterns_by_pa[pa]['all'].append(pattern_str)
+                patterns_by_pa[pa]["all"].append(pattern_str)
 
-                if category == 'INDICADOR':
-                    patterns_by_pa[pa]['indicators'].append(pattern_str)
-                elif category == 'FUENTE_OFICIAL':
-                    patterns_by_pa[pa]['entities'].append(pattern_str)
+                if category == "INDICADOR":
+                    patterns_by_pa[pa]["indicators"].append(pattern_str)
+                elif category == "FUENTE_OFICIAL":
+                    patterns_by_pa[pa]["entities"].append(pattern_str)
 
     # Build manifests
     for pa, patterns in patterns_by_pa.items():
         manifests[pa] = SignalManifest(
             policy_area=pa,
-            pattern_count=len(patterns['all']),
-            pattern_merkle_root=build_merkle_tree(patterns['all']),
-            indicator_merkle_root=build_merkle_tree(patterns['indicators']),
-            entity_merkle_root=build_merkle_tree(patterns['entities']),
+            pattern_count=len(patterns["all"]),
+            pattern_merkle_root=build_merkle_tree(patterns["all"]),
+            indicator_merkle_root=build_merkle_tree(patterns["indicators"]),
+            entity_merkle_root=build_merkle_tree(patterns["entities"]),
             extraction_timestamp=timestamp,
             source_file_hash=source_hash,
         )
@@ -293,7 +288,7 @@ def generate_signal_manifests(
         logger.info(
             "signal_manifest_generated",
             policy_area=pa,
-            pattern_count=len(patterns['all']),
+            pattern_count=len(patterns["all"]),
             merkle_root=manifests[pa].pattern_merkle_root[:16],
         )
 
@@ -304,22 +299,25 @@ def generate_signal_manifests(
 # QUESTIONNAIRE ACCESS AUDIT - Medición de Utilización
 # ============================================================================
 
+
 class AccessLevel(Enum):
     """Nivel de acceso al cuestionario según arquitectura de 3 niveles."""
-    FACTORY = 1      # I/O total - Solo AnalysisPipelineFactory
+
+    FACTORY = 1  # I/O total - Solo AnalysisPipelineFactory
     ORCHESTRATOR = 2  # Parcial recurrente - SISAS, ResourceProvider
-    CONSUMER = 3      # Granular scoped - Ejecutores, Evidence*
+    CONSUMER = 3  # Granular scoped - Ejecutores, Evidence*
 
 
 @dataclass(frozen=True)
 class AccessRecord:
     """Registro inmutable de un acceso al cuestionario."""
+
     timestamp: str
     level: AccessLevel
-    accessor_module: str   # __name__ del módulo
-    accessor_class: str    # Nombre de clase
-    accessor_method: str   # Nombre de método
-    accessed_block: str    # "dimensions", "micro_questions", "patterns", etc.
+    accessor_module: str  # __name__ del módulo
+    accessor_class: str  # Nombre de clase
+    accessor_method: str  # Nombre de método
+    accessed_block: str  # "dimensions", "micro_questions", "patterns", etc.
     accessed_keys: tuple[str, ...]  # IDs específicos (inmutable)
     scope_filter: str | None = None  # Filtro aplicado
 
@@ -413,14 +411,16 @@ class QuestionnaireAccessAudit:
         details: str,
     ) -> None:
         """Registra una violación de nivel arquitectónico."""
-        self._violations.append({
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "type": violation_type,
-            "accessor": accessor,
-            "expected_level": expected_level.name,
-            "actual_level": actual_level.name,
-            "details": details,
-        })
+        self._violations.append(
+            {
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "type": violation_type,
+                "accessor": accessor,
+                "expected_level": expected_level.name,
+                "actual_level": actual_level.name,
+                "details": details,
+            }
+        )
 
     def get_utilization_report(self) -> dict[str, Any]:
         """Genera reporte de utilización del cuestionario."""

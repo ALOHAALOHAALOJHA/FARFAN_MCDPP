@@ -1,27 +1,27 @@
 from .phase1_protocols import (
-    PDFExtractorProtocol,
-    TruncationAuditProtocol,
     ChunkProtocol,
+    PDFExtractorProtocol,
     Phase1ExecutorProtocol,
+    TruncationAuditProtocol,
 )
 from .phase1_types import (
-    TruncationAuditDict,
-    SubphaseResultDict,
     ChunkTraceability,
-    SpanMapping,
-    SignalScores,
     PolicyAreaRelevance,
+    SignalScores,
+    SpanMapping,
+    SubphaseResultDict,
+    TruncationAuditDict,
 )
 
 __all__ = [
-    'PDFExtractorProtocol',
-    'TruncationAuditProtocol',
-    'ChunkProtocol',
-    'Phase1ExecutorProtocol',
-    'TruncationAuditDict',
-    'SubphaseResultDict',
-    'ChunkTraceability',
-    'SpanMapping',
-    'SignalScores',
-    'PolicyAreaRelevance',
+    "ChunkProtocol",
+    "ChunkTraceability",
+    "PDFExtractorProtocol",
+    "Phase1ExecutorProtocol",
+    "PolicyAreaRelevance",
+    "SignalScores",
+    "SpanMapping",
+    "SubphaseResultDict",
+    "TruncationAuditDict",
+    "TruncationAuditProtocol",
 ]

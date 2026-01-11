@@ -22,15 +22,11 @@ Design by Contract:
 from __future__ import annotations
 
 import hashlib
-import logging
 import re
-from collections import Counter
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from dataclasses import dataclass
+from datetime import UTC, datetime
 from enum import Enum
-from functools import lru_cache
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any
 
 import structlog
 
@@ -39,8 +35,10 @@ logger = structlog.get_logger(__name__)
 
 # === POLICY AREA DEFINITIONS ===
 
+
 class PolicyArea(Enum):
     """Policy areas supported by the signal extraction system."""
+
     FISCAL = "fiscal"
     SALUD = "salud"
     AMBIENTE = "ambiente"
@@ -52,6 +50,7 @@ class PolicyArea(Enum):
 
 
 # === SIGNAL EXTRACTION CONFIGURATION ===
+
 
 @dataclass
 class ExtractionConfig:
@@ -67,6 +66,7 @@ class ExtractionConfig:
         extract_patterns: Extract regex patterns
         extract_indicators: Extract KPI indicators
     """
+
     min_confidence: float = 0.65
     enable_nlp: bool = True
     enable_ml_entities: bool = True
@@ -78,6 +78,7 @@ class ExtractionConfig:
 
 
 # === EXTRACTION RESULT DATA MODELS ===
+
 
 @dataclass
 class ExtractedPattern:
@@ -91,6 +92,7 @@ class ExtractedPattern:
         source_location: Source in questionnaire
         extraction_method: How this was extracted
     """
+
     pattern_id: str
     text: str
     policy_area: PolicyArea
@@ -111,6 +113,7 @@ class ExtractedEntity:
         confidence: Extraction confidence [0, 1]
         frequency: How often this entity appears
     """
+
     entity_id: str
     text: str
     entity_type: str
@@ -131,6 +134,7 @@ class ExtractedIndicator:
         unit_of_measure: Unit (%, currency, count, etc.)
         confidence: Extraction confidence [0, 1]
     """
+
     indicator_id: str
     name: str
     description: str
@@ -155,19 +159,21 @@ class ExtractionResult:
         extraction_timestamp: When extraction was performed
         version: Extraction version
     """
+
     policy_area: PolicyArea
-    patterns: List[str]
-    entities: List[str]
-    indicators: List[str]
-    verbs: List[str]
-    regex_patterns: List[str]
-    thresholds: Dict[str, float]
+    patterns: list[str]
+    entities: list[str]
+    indicators: list[str]
+    verbs: list[str]
+    regex_patterns: list[str]
+    thresholds: dict[str, float]
     source_hash: str
     extraction_timestamp: str
     version: str = "2.0.0-sota"
 
 
 # === CORE EXTRACTION ENGINE ===
+
 
 class SOTASignalExtractor:
     """
@@ -224,11 +230,31 @@ class SOTASignalExtractor:
 
     # Common action verbs for policy documents
     ACTION_VERBS = [
-        "implementar", "fortalecer", "desarrollar", "mejorar", "promover",
-        "establecer", "crear", "construir", "expandir", "modernizar",
-        "reformar", "optimizar", "coordinar", "integrar", "regular",
-        "supervisar", "evaluar", "monitorear", "asegurar", "garantizar",
-        "facilitar", "impulsar", "fomentar", "incentivar", "apoyar",
+        "implementar",
+        "fortalecer",
+        "desarrollar",
+        "mejorar",
+        "promover",
+        "establecer",
+        "crear",
+        "construir",
+        "expandir",
+        "modernizar",
+        "reformar",
+        "optimizar",
+        "coordinar",
+        "integrar",
+        "regular",
+        "supervisar",
+        "evaluar",
+        "monitorear",
+        "asegurar",
+        "garantizar",
+        "facilitar",
+        "impulsar",
+        "fomentar",
+        "incentivar",
+        "apoyar",
     ]
 
     # Indicator patterns
@@ -272,6 +298,7 @@ class SOTASignalExtractor:
         if enable_spacy:
             try:
                 import spacy
+
                 self.nlp = spacy.load(spacy_model, disable=["parser", "ner"])
                 logger.info("spaCy loaded", model=spacy_model)
             except OSError:
@@ -283,14 +310,14 @@ class SOTASignalExtractor:
                 self.enable_spacy = False
 
         # Cache for extraction results
-        self._cache: Dict[Tuple[str, str], ExtractionResult] = {}
-        self._cache_timestamps: Dict[Tuple[str, str], datetime] = {}
+        self._cache: dict[tuple[str, str], ExtractionResult] = {}
+        self._cache_timestamps: dict[tuple[str, str], datetime] = {}
 
     def extract_signals_from_monolith(
         self,
-        questionnaire_data: Dict[str, Any],
+        questionnaire_data: dict[str, Any],
         questionnaire_hash: str,
-    ) -> Dict[str, ExtractionResult]:
+    ) -> dict[str, ExtractionResult]:
         """
         Extract signals from questionnaire monolith data.
 
@@ -343,7 +370,7 @@ class SOTASignalExtractor:
 
             # Update cache
             self._cache[cache_key] = result
-            self._cache_timestamps[cache_key] = datetime.now(timezone.utc)
+            self._cache_timestamps[cache_key] = datetime.now(UTC)
 
         logger.info(
             "extraction_complete",
@@ -358,7 +385,7 @@ class SOTASignalExtractor:
     def _extract_for_policy_area(
         self,
         policy_area: PolicyArea,
-        questionnaire_data: Dict[str, Any],
+        questionnaire_data: dict[str, Any],
         source_hash: str,
     ) -> ExtractionResult:
         """Extract signals for a specific policy area.
@@ -372,9 +399,7 @@ class SOTASignalExtractor:
             ExtractionResult for the policy area
         """
         # Collect relevant text from questionnaire
-        relevant_texts = self._collect_relevant_texts(
-            policy_area, questionnaire_data
-        )
+        relevant_texts = self._collect_relevant_texts(policy_area, questionnaire_data)
 
         combined_text = " ".join(relevant_texts)
 
@@ -405,14 +430,14 @@ class SOTASignalExtractor:
             regex_patterns=regex_patterns,
             thresholds=thresholds,
             source_hash=source_hash,
-            extraction_timestamp=datetime.now(timezone.utc).isoformat(),
+            extraction_timestamp=datetime.now(UTC).isoformat(),
         )
 
     def _collect_relevant_texts(
         self,
         policy_area: PolicyArea,
-        questionnaire_data: Dict[str, Any],
-    ) -> List[str]:
+        questionnaire_data: dict[str, Any],
+    ) -> list[str]:
         """Collect questionnaire text relevant to a policy area.
 
         Args:
@@ -455,7 +480,7 @@ class SOTASignalExtractor:
         self,
         policy_area: PolicyArea,
         text: str,
-    ) -> List[str]:
+    ) -> list[str]:
         """Extract policy-specific patterns from text.
 
         Args:
@@ -489,7 +514,7 @@ class SOTASignalExtractor:
         self,
         policy_area: PolicyArea,
         text: str,
-    ) -> List[str]:
+    ) -> list[str]:
         """Extract named entities using NLP.
 
         Args:
@@ -528,7 +553,7 @@ class SOTASignalExtractor:
 
         return unique_entities[:20]  # Limit to top 20
 
-    def _extract_entities_regex(self, text: str) -> List[str]:
+    def _extract_entities_regex(self, text: str) -> list[str]:
         """Fallback regex-based entity extraction.
 
         Args:
@@ -555,7 +580,7 @@ class SOTASignalExtractor:
         self,
         policy_area: PolicyArea,
         text: str,
-    ) -> List[str]:
+    ) -> list[str]:
         """Extract KPI indicators from text.
 
         Args:
@@ -577,9 +602,7 @@ class SOTASignalExtractor:
 
         # Look for percentage patterns
         percentage_matches = re.findall(
-            r"\b\d+(?:\.\d+)?\s*%\b|\b\d+(?:\.\d+)?\s*por\s+ciento\b",
-            text,
-            re.IGNORECASE
+            r"\b\d+(?:\.\d+)?\s*%\b|\b\d+(?:\.\d+)?\s*por\s+ciento\b", text, re.IGNORECASE
         )
         for pm in percentage_matches:
             # Find context around the percentage
@@ -601,7 +624,7 @@ class SOTASignalExtractor:
 
         return unique_indicators[:15]  # Limit to top 15
 
-    def _extract_verbs(self, text: str) -> List[str]:
+    def _extract_verbs(self, text: str) -> list[str]:
         """Extract action verbs from text.
 
         Args:
@@ -622,7 +645,7 @@ class SOTASignalExtractor:
     def _build_regex_patterns(
         self,
         policy_area: PolicyArea,
-    ) -> List[str]:
+    ) -> list[str]:
         """Build regex patterns for the policy area.
 
         Args:
@@ -648,7 +671,7 @@ class SOTASignalExtractor:
     def _build_thresholds(
         self,
         policy_area: PolicyArea,
-    ) -> Dict[str, float]:
+    ) -> dict[str, float]:
         """Build confidence thresholds for the policy area.
 
         Args:
@@ -674,7 +697,7 @@ class SOTASignalExtractor:
     def _get_policy_area_keywords(
         self,
         policy_area: PolicyArea,
-    ) -> List[str]:
+    ) -> list[str]:
         """Get keywords for a policy area.
 
         Args:
@@ -693,7 +716,7 @@ class SOTASignalExtractor:
 
         return keyword_map.get(policy_area, [])
 
-    def _is_cache_valid(self, cache_key: Tuple[str, str]) -> bool:
+    def _is_cache_valid(self, cache_key: tuple[str, str]) -> bool:
         """Check if cache entry is still valid.
 
         Args:
@@ -706,7 +729,7 @@ class SOTASignalExtractor:
             return False
 
         timestamp = self._cache_timestamps[cache_key]
-        age = (datetime.now(timezone.utc) - timestamp).total_seconds()
+        age = (datetime.now(UTC) - timestamp).total_seconds()
         return age < self.config.cache_ttl_seconds
 
     def _config_hash(self) -> str:
@@ -723,11 +746,12 @@ class SOTASignalExtractor:
 
 # === PUBLIC API ===
 
+
 def load_signals_from_monolith_sota(
-    questionnaire_data: Dict[str, Any],
+    questionnaire_data: dict[str, Any],
     questionnaire_hash: str,
     config: ExtractionConfig | None = None,
-) -> Dict[str, Dict[str, Any]]:
+) -> dict[str, dict[str, Any]]:
     """
     Load signal packs from questionnaire monolith using SOTA extraction.
 
@@ -778,7 +802,7 @@ def load_signals_from_monolith_sota(
 
 
 # Legacy compatibility function
-def _create_stub_signal_packs_sota() -> Dict[str, Any]:
+def _create_stub_signal_packs_sota() -> dict[str, Any]:
     """Create stub signal packs using SOTA patterns.
 
     This is a fallback when questionnaire data is not available.

@@ -3,6 +3,7 @@ Test RefC - Refusal Contract
 Verifies: Pre-flight checks refuse execution immediately
 Refusal mechanism guarantee
 """
+
 import pytest
 from pathlib import Path
 from typing import Any

@@ -1,5 +1,5 @@
 """
-Phase 1 Constants - Authoritative Configuration Values. 
+Phase 1 Constants - Authoritative Configuration Values.
 
 Purpose: Centralize all magic numbers, limits, and thresholds for Phase 1.
 Owner Module: Phase 1 CPP Ingestion
@@ -43,7 +43,7 @@ Composition:
 Normalization: semantic_confidence = min(1.0, raw_score / SEMANTIC_SCORE_MAX_EXPECTED)
 """
 
-ASSIGNMENT_METHOD_SEMANTIC:  Final[str] = "semantic"
+ASSIGNMENT_METHOD_SEMANTIC: Final[str] = "semantic"
 ASSIGNMENT_METHOD_FALLBACK: Final[str] = "fallback_sequential"
 
 VALID_ASSIGNMENT_METHODS: Final[tuple[str, ...]] = (
@@ -55,7 +55,7 @@ VALID_ASSIGNMENT_METHODS: Final[tuple[str, ...]] = (
 # SPEC-003: Chunk Validation
 # =============================================================================
 
-CHUNK_ID_PATTERN: Final[str] = r'^PA(0[1-9]|10)-DIM0[1-6]$'
+CHUNK_ID_PATTERN: Final[str] = r"^PA(0[1-9]|10)-DIM0[1-6]$"
 """
 Regex pattern for valid chunk_id format.
 
@@ -66,7 +66,7 @@ Examples:
   - PA01-DIM07 ❌ (DIM out of range)
 """
 
-POLICY_AREA_COUNT:  Final[int] = 10
+POLICY_AREA_COUNT: Final[int] = 10
 DIMENSION_COUNT: Final[int] = 6
 TOTAL_CHUNK_COMBINATIONS: Final[int] = POLICY_AREA_COUNT * DIMENSION_COUNT  # 60
 
@@ -78,9 +78,9 @@ SUBPHASE_COUNT: Final[int] = 16  # SP0 through SP15
 
 # Keys in subphase_results that are NOT integer subphase indices
 SUBPHASE_METADATA_KEYS: Final[tuple[str, ...]] = (
-    'truncation_audit',
-    'irrigation_map',
-    'final_rankings',
+    "truncation_audit",
+    "irrigation_map",
+    "final_rankings",
 )
 
 # =============================================================================

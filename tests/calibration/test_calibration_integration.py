@@ -4,6 +4,7 @@ INTEGRATION TEST: Complete CalibrationLayer Workflow
 This test demonstrates the complete workflow from loading type defaults
 to creating a fully validated calibration layer.
 """
+
 import pytest
 from datetime import datetime, timezone, timedelta
 from farfan_pipeline.infrastructure.calibration.calibration_core import (
@@ -31,21 +32,21 @@ class TestCalibrationLayerIntegration:
         # Step 1: Load type-specific defaults
         defaults = get_type_defaults("TYPE_A")
         # TYPE_A uses semantic triangulation
-        
+
         # Step 2: Verify prohibited operations
         assert is_operation_prohibited("TYPE_A", "weighted_mean")
         assert not is_operation_prohibited("TYPE_A", "semantic_triangulation")
 
         # Step 3: Create calibration parameters from defaults
         now = datetime.now(timezone.utc)
-        
+
         # Evidence reference for all params
         evidence = EvidenceReference(
             path="src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json",
             commit_sha="a" * 40,
-            description="Canonical source"
+            description="Canonical source",
         )
-        
+
         prior_strength = create_calibration_parameter(
             name="prior_strength",
             value=defaults.prior_strength.midpoint(),
@@ -137,7 +138,7 @@ class TestCalibrationLayerIntegration:
         # Per canonical source, TYPE_E uses: concat, weighted_mean, logical_consistency_validation
         assert not is_operation_prohibited("TYPE_E", "weighted_mean")
         assert not is_operation_prohibited("TYPE_E", "concat")
-        
+
         # TYPE_E prohibits operations that don't preserve logical consistency
         assert is_operation_prohibited("TYPE_E", "bayesian_update")
         assert is_operation_prohibited("TYPE_E", "semantic_corroboration")
@@ -168,11 +169,11 @@ class TestCalibrationLayerIntegration:
         """
         bounds = ClosedInterval(lower=0.0, upper=1.0)
         old_date = datetime(2024, 1, 1, tzinfo=timezone.utc)
-        
-        # Create directly to set old dates
-        expires_at = old_date + timedelta(days=30) # Expired long ago
 
-        evidence = EvidenceReference("src/test.py", "a"*40, "desc")
+        # Create directly to set old dates
+        expires_at = old_date + timedelta(days=30)  # Expired long ago
+
+        evidence = EvidenceReference("src/test.py", "a" * 40, "desc")
 
         param = CalibrationParameter(
             name="test_param",
@@ -201,10 +202,10 @@ class TestCalibrationLayerIntegration:
         """
         bounds = ClosedInterval(lower=0.0, upper=1.0)
         now = datetime.now(timezone.utc)
-        evidence = EvidenceReference("src/test.py", "a"*40, "desc")
-        
+        evidence = EvidenceReference("src/test.py", "a" * 40, "desc")
+
         param = CalibrationParameter(
-            name="prior_strength", # Must be a required param
+            name="prior_strength",  # Must be a required param
             value=0.5,
             unit="ratio",
             bounds=bounds,
@@ -213,15 +214,28 @@ class TestCalibrationLayerIntegration:
             calibrated_at=now,
             expires_at=now + timedelta(days=90),
         )
-        
+
         # Minimal set of params to pass validation (needs 4 required ones)
         # REQUIRED: prior_strength, veto_threshold, chunk_size, extraction_coverage_target
         params_list = []
-        for name in ["prior_strength", "veto_threshold", "chunk_size", "extraction_coverage_target"]:
-             params_list.append(CalibrationParameter(
-                name=name, value=0.5 if "chunk" not in name else 2000.0, unit="x", bounds=ClosedInterval(0, 10000),
-                rationale="x", evidence=evidence, calibrated_at=now, expires_at=now+timedelta(days=90)
-             ))
+        for name in [
+            "prior_strength",
+            "veto_threshold",
+            "chunk_size",
+            "extraction_coverage_target",
+        ]:
+            params_list.append(
+                CalibrationParameter(
+                    name=name,
+                    value=0.5 if "chunk" not in name else 2000.0,
+                    unit="x",
+                    bounds=ClosedInterval(0, 10000),
+                    rationale="x",
+                    evidence=evidence,
+                    calibrated_at=now,
+                    expires_at=now + timedelta(days=90),
+                )
+            )
 
         layer1 = CalibrationLayer(
             unit_of_analysis_id="DANE-11001",

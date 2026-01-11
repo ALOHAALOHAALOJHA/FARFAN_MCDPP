@@ -19,20 +19,12 @@ class CPPDeliverable(BaseModel):
     Note: CPP (Canon Policy Package) is the legacy name for SPC (Smart Policy Chunks).
     """
 
-    chunk_graph: dict[str, Any] = Field(
-        description="Chunk graph with all chunks"
-    )
-    policy_manifest: dict[str, Any] = Field(
-        description="Policy metadata manifest"
-    )
+    chunk_graph: dict[str, Any] = Field(description="Chunk graph with all chunks")
+    policy_manifest: dict[str, Any] = Field(description="Policy metadata manifest")
     provenance_completeness: float = Field(
-        ge=0.0,
-        le=1.0,
-        description="Provenance completeness score (must be 1.0)"
+        ge=0.0, le=1.0, description="Provenance completeness score (must be 1.0)"
     )
-    schema_version: str = Field(
-        description="CPP schema version"
-    )
+    schema_version: str = Field(description="CPP schema version")
 
     model_config = {
         "frozen": True,
@@ -41,10 +33,11 @@ class CPPDeliverable(BaseModel):
 
     def __init__(self, **data: Any) -> None:
         import warnings
+
         warnings.warn(
             "CPPDeliverable is deprecated. Use SPCDeliverable instead.",
             DeprecationWarning,
-            stacklevel=2
+            stacklevel=2,
         )
         super().__init__(**data)
 
@@ -66,20 +59,12 @@ class SPCDeliverable(BaseModel):
     This is the preferred terminology for new code. SPC is the successor to CPP.
     """
 
-    chunk_graph: dict[str, Any] = Field(
-        description="Chunk graph with all chunks"
-    )
-    policy_manifest: dict[str, Any] = Field(
-        description="Policy metadata manifest"
-    )
+    chunk_graph: dict[str, Any] = Field(description="Chunk graph with all chunks")
+    policy_manifest: dict[str, Any] = Field(description="Policy metadata manifest")
     provenance_completeness: float = Field(
-        ge=0.0,
-        le=1.0,
-        description="Provenance completeness score (must be 1.0)"
+        ge=0.0, le=1.0, description="Provenance completeness score (must be 1.0)"
     )
-    schema_version: str = Field(
-        description="SPC schema version"
-    )
+    schema_version: str = Field(description="SPC schema version")
 
     model_config = {
         "frozen": True,
@@ -101,17 +86,9 @@ class SPCDeliverable(BaseModel):
 class AdapterExpectation(BaseModel):
     """Contract for CPPAdapter input (Expectation)."""
 
-    chunk_graph: dict[str, Any] = Field(
-        description="Must have chunk_graph with chunks"
-    )
-    policy_manifest: dict[str, Any] = Field(
-        description="Must have policy_manifest"
-    )
-    provenance_completeness: float = Field(
-        ge=1.0,
-        le=1.0,
-        description="Must be exactly 1.0"
-    )
+    chunk_graph: dict[str, Any] = Field(description="Must have chunk_graph with chunks")
+    policy_manifest: dict[str, Any] = Field(description="Must have policy_manifest")
+    provenance_completeness: float = Field(ge=1.0, le=1.0, description="Must be exactly 1.0")
 
     model_config = {
         "frozen": True,
@@ -123,21 +100,13 @@ class PreprocessedDocumentDeliverable(BaseModel):
     """Contract for CPPAdapter output (Deliverable)."""
 
     sentence_metadata: list[dict[str, Any]] = Field(
-        min_length=1,
-        description="Must have at least one sentence"
+        min_length=1, description="Must have at least one sentence"
     )
-    resolution_index: dict[str, Any] = Field(
-        description="Resolution index must be consistent"
-    )
+    resolution_index: dict[str, Any] = Field(description="Resolution index must be consistent")
     provenance_completeness: float = Field(
-        ge=1.0,
-        le=1.0,
-        description="Must maintain 1.0 completeness"
+        ge=1.0, le=1.0, description="Must maintain 1.0 completeness"
     )
-    document_id: str = Field(
-        min_length=1,
-        description="Document ID must be non-empty"
-    )
+    document_id: str = Field(min_length=1, description="Document ID must be non-empty")
 
     model_config = {
         "frozen": True,
@@ -149,13 +118,9 @@ class OrchestratorExpectation(BaseModel):
     """Contract for Orchestrator input (Expectation)."""
 
     sentence_metadata: list[dict[str, Any]] = Field(
-        min_length=1,
-        description="Requires sentence_metadata"
+        min_length=1, description="Requires sentence_metadata"
     )
-    document_id: str = Field(
-        min_length=1,
-        description="Requires document_id"
-    )
+    document_id: str = Field(min_length=1, description="Requires document_id")
 
     model_config = {
         "frozen": True,
@@ -166,17 +131,9 @@ class OrchestratorExpectation(BaseModel):
 class ArgRouterPayloadDeliverable(BaseModel):
     """Contract for Orchestrator to ArgRouter (Deliverable)."""
 
-    class_name: str = Field(
-        min_length=1,
-        description="Target class name"
-    )
-    method_name: str = Field(
-        min_length=1,
-        description="Target method name"
-    )
-    payload: dict[str, Any] = Field(
-        description="Method arguments payload"
-    )
+    class_name: str = Field(min_length=1, description="Target class name")
+    method_name: str = Field(min_length=1, description="Target method name")
+    payload: dict[str, Any] = Field(description="Method arguments payload")
 
     model_config = {
         "frozen": True,
@@ -187,17 +144,9 @@ class ArgRouterPayloadDeliverable(BaseModel):
 class ArgRouterExpectation(BaseModel):
     """Contract for ArgRouter input (Expectation)."""
 
-    class_name: str = Field(
-        min_length=1,
-        description="Class must exist in registry"
-    )
-    method_name: str = Field(
-        min_length=1,
-        description="Method must exist on class"
-    )
-    payload: dict[str, Any] = Field(
-        description="Payload with required arguments"
-    )
+    class_name: str = Field(min_length=1, description="Class must exist in registry")
+    method_name: str = Field(min_length=1, description="Method must exist on class")
+    payload: dict[str, Any] = Field(description="Payload with required arguments")
 
     model_config = {
         "frozen": True,
@@ -208,15 +157,9 @@ class ArgRouterExpectation(BaseModel):
 class ExecutorInputDeliverable(BaseModel):
     """Contract for ArgRouter to Executor (Deliverable)."""
 
-    args: tuple[Any, ...] = Field(
-        description="Positional arguments"
-    )
-    kwargs: dict[str, Any] = Field(
-        description="Keyword arguments"
-    )
-    method_signature: str = Field(
-        description="Target method signature for validation"
-    )
+    args: tuple[Any, ...] = Field(description="Positional arguments")
+    kwargs: dict[str, Any] = Field(description="Keyword arguments")
+    method_signature: str = Field(description="Target method signature for validation")
 
     model_config = {
         "frozen": True,
@@ -227,20 +170,10 @@ class ExecutorInputDeliverable(BaseModel):
 class SignalPackDeliverable(BaseModel):
     """Contract for SignalsClient output (Deliverable)."""
 
-    version: str = Field(
-        description="Signal pack version (must be present)"
-    )
-    policy_area: str = Field(
-        description="Policy area for signals"
-    )
-    patterns: list[str] = Field(
-        default_factory=list,
-        description="Text patterns"
-    )
-    indicators: list[str] = Field(
-        default_factory=list,
-        description="KPI indicators"
-    )
+    version: str = Field(description="Signal pack version (must be present)")
+    policy_area: str = Field(description="Policy area for signals")
+    patterns: list[str] = Field(default_factory=list, description="Text patterns")
+    indicators: list[str] = Field(default_factory=list, description="KPI indicators")
 
     model_config = {
         "frozen": True,
@@ -259,14 +192,8 @@ class SignalPackDeliverable(BaseModel):
 class SignalRegistryExpectation(BaseModel):
     """Contract for SignalRegistry input (Expectation)."""
 
-    version: str = Field(
-        min_length=1,
-        description="Requires version"
-    )
-    policy_area: str = Field(
-        min_length=1,
-        description="Requires policy_area"
-    )
+    version: str = Field(min_length=1, description="Requires version")
+    policy_area: str = Field(min_length=1, description="Requires policy_area")
 
     model_config = {
         "frozen": True,
@@ -277,17 +204,11 @@ class SignalRegistryExpectation(BaseModel):
 class EnrichedChunkDeliverable(BaseModel):
     """Contract for Executor output (Deliverable)."""
 
-    chunk_id: str = Field(
-        min_length=1,
-        description="Chunk identifier"
-    )
+    chunk_id: str = Field(min_length=1, description="Chunk identifier")
     used_signals: list[str] = Field(
-        default_factory=list,
-        description="Signals used during execution"
+        default_factory=list, description="Signals used during execution"
     )
-    enrichment: dict[str, Any] = Field(
-        description="Enrichment data"
-    )
+    enrichment: dict[str, Any] = Field(description="Enrichment data")
 
     model_config = {
         "frozen": True,
@@ -299,8 +220,7 @@ class AggregateExpectation(BaseModel):
     """Contract for Aggregate input (Expectation)."""
 
     enriched_chunks: list[dict[str, Any]] = Field(
-        min_length=1,
-        description="Must have at least one enriched chunk"
+        min_length=1, description="Must have at least one enriched chunk"
     )
 
     model_config = {
@@ -312,17 +232,9 @@ class AggregateExpectation(BaseModel):
 class FeatureTableDeliverable(BaseModel):
     """Contract for Aggregate output (Deliverable)."""
 
-    table_type: str = Field(
-        description="Must be 'pyarrow.Table'"
-    )
-    num_rows: int = Field(
-        ge=1,
-        description="Must have at least one row"
-    )
-    column_names: list[str] = Field(
-        min_length=1,
-        description="Must have required columns"
-    )
+    table_type: str = Field(description="Must be 'pyarrow.Table'")
+    num_rows: int = Field(ge=1, description="Must have at least one row")
+    column_names: list[str] = Field(min_length=1, description="Must have required columns")
 
     model_config = {
         "frozen": True,
@@ -333,13 +245,8 @@ class FeatureTableDeliverable(BaseModel):
 class ScoreExpectation(BaseModel):
     """Contract for Score input (Expectation)."""
 
-    table_type: str = Field(
-        description="Must be pa.Table"
-    )
-    required_columns: list[str] = Field(
-        min_length=1,
-        description="Required columns for scoring"
-    )
+    table_type: str = Field(description="Must be pa.Table")
+    required_columns: list[str] = Field(min_length=1, description="Required columns for scoring")
 
     model_config = {
         "frozen": True,
@@ -350,17 +257,9 @@ class ScoreExpectation(BaseModel):
 class ScoresDeliverable(BaseModel):
     """Contract for Score output (Deliverable)."""
 
-    dataframe_type: str = Field(
-        description="Must be 'polars.DataFrame'"
-    )
-    num_rows: int = Field(
-        ge=1,
-        description="Must have at least one row"
-    )
-    metrics_computed: list[str] = Field(
-        min_length=1,
-        description="Metrics that were computed"
-    )
+    dataframe_type: str = Field(description="Must be 'polars.DataFrame'")
+    num_rows: int = Field(ge=1, description="Must have at least one row")
+    metrics_computed: list[str] = Field(min_length=1, description="Metrics that were computed")
 
     model_config = {
         "frozen": True,
@@ -371,16 +270,9 @@ class ScoresDeliverable(BaseModel):
 class ReportExpectation(BaseModel):
     """Contract for Report input (Expectation)."""
 
-    dataframe_type: str = Field(
-        description="Must be pl.DataFrame"
-    )
-    metrics_present: list[str] = Field(
-        min_length=1,
-        description="Metrics must be present"
-    )
-    manifest_present: bool = Field(
-        description="Manifest must be provided"
-    )
+    dataframe_type: str = Field(description="Must be pl.DataFrame")
+    metrics_present: list[str] = Field(min_length=1, description="Metrics must be present")
+    manifest_present: bool = Field(description="Manifest must be provided")
 
     model_config = {
         "frozen": True,
@@ -391,13 +283,8 @@ class ReportExpectation(BaseModel):
 class ReportDeliverable(BaseModel):
     """Contract for Report output (Deliverable)."""
 
-    report_uris: dict[str, str] = Field(
-        min_length=1,
-        description="Mapping of report name to URI"
-    )
-    all_reports_generated: bool = Field(
-        description="All declared reports generated"
-    )
+    report_uris: dict[str, str] = Field(min_length=1, description="Mapping of report name to URI")
+    all_reports_generated: bool = Field(description="All declared reports generated")
 
     model_config = {
         "frozen": True,
@@ -406,21 +293,21 @@ class ReportDeliverable(BaseModel):
 
 
 __all__ = [
-    'CPPDeliverable',
-    'SPCDeliverable',
-    'AdapterExpectation',
-    'PreprocessedDocumentDeliverable',
-    'OrchestratorExpectation',
-    'ArgRouterPayloadDeliverable',
-    'ArgRouterExpectation',
-    'ExecutorInputDeliverable',
-    'SignalPackDeliverable',
-    'SignalRegistryExpectation',
-    'EnrichedChunkDeliverable',
-    'AggregateExpectation',
-    'FeatureTableDeliverable',
-    'ScoreExpectation',
-    'ScoresDeliverable',
-    'ReportExpectation',
-    'ReportDeliverable',
+    "AdapterExpectation",
+    "AggregateExpectation",
+    "ArgRouterExpectation",
+    "ArgRouterPayloadDeliverable",
+    "CPPDeliverable",
+    "EnrichedChunkDeliverable",
+    "ExecutorInputDeliverable",
+    "FeatureTableDeliverable",
+    "OrchestratorExpectation",
+    "PreprocessedDocumentDeliverable",
+    "ReportDeliverable",
+    "ReportExpectation",
+    "SPCDeliverable",
+    "ScoreExpectation",
+    "ScoresDeliverable",
+    "SignalPackDeliverable",
+    "SignalRegistryExpectation",
 ]

@@ -27,10 +27,7 @@ from collections import defaultdict, Counter
 from dataclasses import dataclass, field, asdict
 
 # Setup logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 CQC_ROOT = Path(__file__).resolve().parent.parent
@@ -43,15 +40,18 @@ OUTPUT_DIR = CQC_ROOT / "_registry" / "patterns"
 @dataclass
 class Pattern:
     """Representación unificada de un pattern."""
+
     canonical_id: str
     pattern_spec: Dict[str, Any]
     classification: Dict[str, Any]
-    bindings: Dict[str, List[str]] = field(default_factory=lambda: {
-        "applies_to_dimensions": [],
-        "applies_to_questions": [],
-        "applies_to_policy_areas": [],
-        "applies_to_membership_criteria": []
-    })
+    bindings: Dict[str, List[str]] = field(
+        default_factory=lambda: {
+            "applies_to_dimensions": [],
+            "applies_to_questions": [],
+            "applies_to_policy_areas": [],
+            "applies_to_membership_criteria": [],
+        }
+    )
     scoring_impact: Dict[str, Any] = field(default_factory=dict)
     provenance: Dict[str, Any] = field(default_factory=dict)
     examples: Dict[str, List[str]] = field(default_factory=lambda: {"positive": [], "negative": []})
@@ -68,7 +68,7 @@ class Pattern:
             "bindings": self.bindings,
             "scoring_impact": self.scoring_impact,
             "provenance": self.provenance,
-            "examples": self.examples
+            "examples": self.examples,
         }
 
 
@@ -111,11 +111,16 @@ class PatternMigrator:
                     existing.legacy_ids.append(str(raw_id))
 
                 # Merge bindings
-                for key in ["applies_to_questions", "applies_to_dimensions", "applies_to_policy_areas", "applies_to_membership_criteria"]:
+                for key in [
+                    "applies_to_questions",
+                    "applies_to_dimensions",
+                    "applies_to_policy_areas",
+                    "applies_to_membership_criteria",
+                ]:
                     if key in raw_pattern:
-                        existing.bindings[key] = list(set(
-                            existing.bindings.get(key, []) + raw_pattern[key]
-                        ))
+                        existing.bindings[key] = list(
+                            set(existing.bindings.get(key, []) + raw_pattern[key])
+                        )
 
                 self.duplicates_merged += 1
                 return None  # Ya existe
@@ -130,37 +135,37 @@ class PatternMigrator:
                     "type": raw_pattern.get("match_type", "REGEX").upper(),
                     "pattern": pattern_str,
                     "flags": raw_pattern.get("flags", ["IGNORECASE", "MULTILINE"]),
-                    "captures": raw_pattern.get("captures", {})
+                    "captures": raw_pattern.get("captures", {}),
                 },
                 classification={
                     "category": category,
                     "subcategory": raw_pattern.get("subcategory", ""),
                     "specificity": raw_pattern.get("specificity", "MEDIUM"),
-                    "confidence_weight": float(raw_pattern.get("confidence_weight", 0.85))
+                    "confidence_weight": float(raw_pattern.get("confidence_weight", 0.85)),
                 },
                 bindings={
                     "applies_to_dimensions": raw_pattern.get("applies_to_dimensions", []),
                     "applies_to_questions": raw_pattern.get("applies_to_questions", []),
                     "applies_to_policy_areas": raw_pattern.get("applies_to_policy_areas", []),
-                    "applies_to_membership_criteria": []
+                    "applies_to_membership_criteria": [],
                 },
                 scoring_impact={
                     "weight_in_scoring": float(raw_pattern.get("weight", 0.15)),
                     "boost_conditions": raw_pattern.get("boost_conditions", []),
-                    "penalty_conditions": raw_pattern.get("penalty_conditions", [])
+                    "penalty_conditions": raw_pattern.get("penalty_conditions", []),
                 },
                 provenance={
                     "source_file": source,
                     "created_at": datetime.now(timezone.utc).isoformat(),
                     "validated": raw_pattern.get("validated", False),
-                    "validation_tests": raw_pattern.get("tests", [])
+                    "validation_tests": raw_pattern.get("tests", []),
                 },
                 examples={
                     "positive": raw_pattern.get("examples", {}).get("positive", []),
-                    "negative": raw_pattern.get("examples", {}).get("negative", [])
+                    "negative": raw_pattern.get("examples", {}).get("negative", []),
                 },
                 legacy_ids=[str(raw_pattern.get("id", raw_pattern.get("pattern_id", "")))],
-                content_hash=content_hash
+                content_hash=content_hash,
             )
 
             self.patterns[content_hash] = pattern
@@ -216,7 +221,9 @@ class PatternMigrator:
             for raw in patterns:
                 self.normalize_pattern(raw, "pattern_registry_v3.json")
 
-        logger.info(f"  Loaded {self.patterns_by_source['pattern_registry_v3.json']} patterns from v3")
+        logger.info(
+            f"  Loaded {self.patterns_by_source['pattern_registry_v3.json']} patterns from v3"
+        )
 
     def load_embedded_patterns(self) -> None:
         """Carga patterns embebidos en questionnaire_monolith.json."""
@@ -242,7 +249,9 @@ class PatternMigrator:
 
                     self.normalize_pattern(raw, "embedded_in_questions")
 
-        logger.info(f"  Loaded {self.patterns_by_source['embedded_in_questions']} unique patterns from embedded")
+        logger.info(
+            f"  Loaded {self.patterns_by_source['embedded_in_questions']} unique patterns from embedded"
+        )
 
     def categorize_patterns(self) -> Dict[str, List[Pattern]]:
         """Categoriza patterns por categoría."""
@@ -263,10 +272,7 @@ class PatternMigrator:
 
         # Estadísticas
         by_category = self.categorize_patterns()
-        category_dist = {
-            cat: len(patterns)
-            for cat, patterns in by_category.items()
-        }
+        category_dist = {cat: len(patterns) for cat, patterns in by_category.items()}
 
         return {
             "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -278,18 +284,18 @@ class PatternMigrator:
                 "source_files": [
                     "pattern_registry.json",
                     "patterns/pattern_registry_v3.json",
-                    "questionnaire_monolith.json (embedded)"
+                    "questionnaire_monolith.json (embedded)",
                 ],
-                "deduplication_strategy": "CONTENT_HASH_MERGE"
+                "deduplication_strategy": "CONTENT_HASH_MERGE",
             },
             "statistics": {
                 "total_patterns": len(self.patterns),
                 "unique_patterns": len(self.patterns),
                 "duplicates_merged": self.duplicates_merged,
                 "category_distribution": category_dist,
-                "patterns_by_source": dict(self.patterns_by_source)
+                "patterns_by_source": dict(self.patterns_by_source),
             },
-            "patterns": patterns_dict
+            "patterns": patterns_dict,
         }
 
     def save_index(self, index: Dict[str, Any]) -> None:
@@ -311,17 +317,21 @@ class PatternMigrator:
 
         for category, patterns in by_category.items():
             patterns_dict = {
-                p.canonical_id: p.to_dict()
-                for p in sorted(patterns, key=lambda x: x.canonical_id)
+                p.canonical_id: p.to_dict() for p in sorted(patterns, key=lambda x: x.canonical_id)
             }
 
             output_file = output_dir / f"{category}.json"
             with open(output_file, "w", encoding="utf-8") as f:
-                json.dump({
-                    "category": category,
-                    "pattern_count": len(patterns),
-                    "patterns": patterns_dict
-                }, f, indent=2, ensure_ascii=False)
+                json.dump(
+                    {
+                        "category": category,
+                        "pattern_count": len(patterns),
+                        "patterns": patterns_dict,
+                    },
+                    f,
+                    indent=2,
+                    ensure_ascii=False,
+                )
 
             logger.info(f"  ✓ Saved {len(patterns)} patterns to {category}.json")
 
@@ -344,8 +354,8 @@ class PatternMigrator:
                         "type": {"type": "string", "enum": ["REGEX", "KEYWORD", "SEMANTIC"]},
                         "pattern": {"type": "string"},
                         "flags": {"type": "array", "items": {"type": "string"}},
-                        "captures": {"type": "object"}
-                    }
+                        "captures": {"type": "object"},
+                    },
                 },
                 "classification": {
                     "type": "object",
@@ -354,14 +364,14 @@ class PatternMigrator:
                         "category": {"type": "string"},
                         "subcategory": {"type": "string"},
                         "specificity": {"type": "string", "enum": ["HIGH", "MEDIUM", "LOW"]},
-                        "confidence_weight": {"type": "number", "minimum": 0, "maximum": 1}
-                    }
+                        "confidence_weight": {"type": "number", "minimum": 0, "maximum": 1},
+                    },
                 },
                 "bindings": {"type": "object"},
                 "scoring_impact": {"type": "object"},
                 "provenance": {"type": "object"},
-                "examples": {"type": "object"}
-            }
+                "examples": {"type": "object"},
+            },
         }
 
         output_file = OUTPUT_DIR / "schema.json"
@@ -387,16 +397,16 @@ class PatternMigrator:
             self.generate_schema()
 
             # Resumen
-            logger.info("\n" + "="*80)
+            logger.info("\n" + "=" * 80)
             logger.info("✅ PATTERN MIGRATION COMPLETED")
-            logger.info("="*80)
+            logger.info("=" * 80)
             logger.info(f"  Total unique patterns: {len(self.patterns)}")
             logger.info(f"  Duplicates merged: {self.duplicates_merged}")
             logger.info(f"  Patterns by source:")
             for source, count in self.patterns_by_source.items():
                 logger.info(f"    - {source}: {count}")
             logger.info(f"  Output location: {OUTPUT_DIR}")
-            logger.info("="*80)
+            logger.info("=" * 80)
 
             return True
 
@@ -423,4 +433,5 @@ def main():
 
 if __name__ == "__main__":
     import sys
+
     sys.exit(main())

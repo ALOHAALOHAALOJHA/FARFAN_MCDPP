@@ -25,9 +25,9 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, List
+from typing import Any
 
-warnings.filterwarnings('ignore')
+warnings.filterwarnings("ignore")
 
 # Constants
 SAMPLE_MUNICIPAL_PLAN = "sample_municipal_plan.txt"
@@ -88,16 +88,6 @@ except ImportError as e:
 # ADR: Import frozen constants from single source of truth
 # =============================================================================
 
-from farfan_pipeline.core.canonical_specs import (
-    MICRO_LEVELS,
-    CANON_POLICY_AREAS,
-    CANON_DIMENSIONS,
-    PDT_SECTION_PATTERNS,
-    PDT_STRATEGIC_PATTERNS,
-    PDT_FINANCIAL_PATTERNS,
-    CAUSAL_CHAIN_VOCABULARY,
-    CAUSAL_CHAIN_ORDER,
-)
 
 # DEPRECATED: POLICY_AREAS_CANONICAL hardcoded below
 # Migration: Use CANON_POLICY_AREAS from canonical_specs instead
@@ -110,526 +100,1078 @@ POLICY_AREAS_CANONICAL_LEGACY: dict[str, dict[str, Any]] = {
         "name": "Derechos de las mujeres e igualdad de género",
         "cluster_id": "CL02",
         "keywords": [
-            "género", "mujer", "mujeres", "igualdad de género", "equidad de género",
-            "enfoque de género", "perspectiva de género", "transversalización de género",
-            "brecha de género", "disparidad de género", "discriminación de género",
-            "violencia basada en género", "VBG", "violencia de género",
-            "violencia intrafamiliar", "VIF", "violencia doméstica",
-            "violencia sexual", "violencia física", "violencia psicológica",
-            "violencia económica", "violencia patrimonial",
-            "feminicidio", "femicidio", "tentativa de feminicidio",
-            "acoso sexual", "acoso laboral", "hostigamiento",
-            "violencia obstétrica", "violencia institucional",
-            "trata de personas", "explotación sexual",
-            "Secretaría de la Mujer", "Consejería de la Mujer",
-            "Comisaría de Familia", "comisarías",
-            "Ley 1257", "Ley 1719", "Ley 1761", "Ley Rosa Elvira Cely",
-            "medidas de protección", "orden de protección",
-            "ruta de atención", "protocolo de atención",
-            "casas de refugio", "casas de acogida",
-            "brecha salarial", "equidad salarial", "igualdad salarial",
-            "trabajo no remunerado", "carga de cuidado",
-            "economía del cuidado", "trabajo del cuidado",
-            "licencia de maternidad", "lactancia materna",
-            "emprendimiento femenino", "empresarias",
-            "empoderamiento económico", "autonomía económica",
+            "género",
+            "mujer",
+            "mujeres",
+            "igualdad de género",
+            "equidad de género",
+            "enfoque de género",
+            "perspectiva de género",
+            "transversalización de género",
+            "brecha de género",
+            "disparidad de género",
+            "discriminación de género",
+            "violencia basada en género",
+            "VBG",
+            "violencia de género",
+            "violencia intrafamiliar",
+            "VIF",
+            "violencia doméstica",
+            "violencia sexual",
+            "violencia física",
+            "violencia psicológica",
+            "violencia económica",
+            "violencia patrimonial",
+            "feminicidio",
+            "femicidio",
+            "tentativa de feminicidio",
+            "acoso sexual",
+            "acoso laboral",
+            "hostigamiento",
+            "violencia obstétrica",
+            "violencia institucional",
+            "trata de personas",
+            "explotación sexual",
+            "Secretaría de la Mujer",
+            "Consejería de la Mujer",
+            "Comisaría de Familia",
+            "comisarías",
+            "Ley 1257",
+            "Ley 1719",
+            "Ley 1761",
+            "Ley Rosa Elvira Cely",
+            "medidas de protección",
+            "orden de protección",
+            "ruta de atención",
+            "protocolo de atención",
+            "casas de refugio",
+            "casas de acogida",
+            "brecha salarial",
+            "equidad salarial",
+            "igualdad salarial",
+            "trabajo no remunerado",
+            "carga de cuidado",
+            "economía del cuidado",
+            "trabajo del cuidado",
+            "licencia de maternidad",
+            "lactancia materna",
+            "emprendimiento femenino",
+            "empresarias",
+            "empoderamiento económico",
+            "autonomía económica",
             "participación política de las mujeres",
-            "liderazgo femenino", "lideresas", "lideresa",
-            "cuotas de género", "paridad", "equidad electoral",
-            "violencia política", "violencia política contra las mujeres",
-            "representación femenina", "concejalas", "diputadas",
-            "salud sexual", "salud reproductiva", "SSR",
-            "derechos reproductivos", "planificación familiar",
-            "embarazo adolescente", "maternidad temprana",
-            "anticoncepción", "anticonceptivos",
-            "mortalidad materna", "morbilidad materna",
-            "mujeres rurales", "mujeres campesinas",
-            "mujeres indígenas", "mujeres afrodescendientes",
-            "mujeres víctimas", "mujeres desplazadas",
-            "mujeres cabeza de familia", "jefatura femenina",
-            "adultas mayores", "niñas", "adolescentes mujeres",
+            "liderazgo femenino",
+            "lideresas",
+            "lideresa",
+            "cuotas de género",
+            "paridad",
+            "equidad electoral",
+            "violencia política",
+            "violencia política contra las mujeres",
+            "representación femenina",
+            "concejalas",
+            "diputadas",
+            "salud sexual",
+            "salud reproductiva",
+            "SSR",
+            "derechos reproductivos",
+            "planificación familiar",
+            "embarazo adolescente",
+            "maternidad temprana",
+            "anticoncepción",
+            "anticonceptivos",
+            "mortalidad materna",
+            "morbilidad materna",
+            "mujeres rurales",
+            "mujeres campesinas",
+            "mujeres indígenas",
+            "mujeres afrodescendientes",
+            "mujeres víctimas",
+            "mujeres desplazadas",
+            "mujeres cabeza de familia",
+            "jefatura femenina",
+            "adultas mayores",
+            "niñas",
+            "adolescentes mujeres",
             "mujeres con discapacidad",
-            "mujeres LGBTI", "mujeres trans",
+            "mujeres LGBTI",
+            "mujeres trans",
             "educación con enfoque de género",
-            "estereotipos de género", "roles de género",
-            "masculinidades", "nuevas masculinidades",
-            "cultura machista", "patriarcado",
-            "coeducación", "educación no sexista",
+            "estereotipos de género",
+            "roles de género",
+            "masculinidades",
+            "nuevas masculinidades",
+            "cultura machista",
+            "patriarcado",
+            "coeducación",
+            "educación no sexista",
             # From ET01 - Enfoque de Género transversal
-            "mainstreaming de género", "análisis de género", "indicadores de género",
-            "presupuestos sensibles al género", "PSG",
-            "política de género", "plan de igualdad",
-            "comité de género", "instancia de género",
-            "madres", "gestantes", "lactantes", "cuidadoras"
-        ]
+            "mainstreaming de género",
+            "análisis de género",
+            "indicadores de género",
+            "presupuestos sensibles al género",
+            "PSG",
+            "política de género",
+            "plan de igualdad",
+            "comité de género",
+            "instancia de género",
+            "madres",
+            "gestantes",
+            "lactantes",
+            "cuidadoras",
+        ],
     },
     "PA02": {
         "id": "PA02",
         "name": "Prevención de la violencia y protección frente al conflicto",
         "cluster_id": "CL01",
         "keywords": [
-            "conflicto armado", "conflicto interno",
-            "grupos armados organizados", "GAO",
-            "grupos delictivos organizados", "GDO",
-            "grupos armados ilegales", "GAI",
-            "disidencias", "disidencias FARC",
-            "ELN", "Ejército de Liberación Nacional",
-            "paramilitares", "paramilitarismo",
-            "bandas criminales", "BACRIM",
-            "narcotráfico", "cultivos ilícitos",
-            "violencia", "inseguridad", "criminalidad",
-            "homicidios", "asesinatos", "muertes violentas",
-            "secuestro", "extorsión", "amenazas",
-            "desaparición forzada", "desaparecidos",
-            "reclutamiento forzado", "uso de menores",
-            "minas antipersonal", "MAP", "MUSE",
-            "artefactos explosivos improvisados", "AEI",
-            "confinamiento", "restricción a la movilidad",
-            "protección", "medidas de protección",
-            "prevención", "prevención temprana",
-            "alertas tempranas", "SAT",
+            "conflicto armado",
+            "conflicto interno",
+            "grupos armados organizados",
+            "GAO",
+            "grupos delictivos organizados",
+            "GDO",
+            "grupos armados ilegales",
+            "GAI",
+            "disidencias",
+            "disidencias FARC",
+            "ELN",
+            "Ejército de Liberación Nacional",
+            "paramilitares",
+            "paramilitarismo",
+            "bandas criminales",
+            "BACRIM",
+            "narcotráfico",
+            "cultivos ilícitos",
+            "violencia",
+            "inseguridad",
+            "criminalidad",
+            "homicidios",
+            "asesinatos",
+            "muertes violentas",
+            "secuestro",
+            "extorsión",
+            "amenazas",
+            "desaparición forzada",
+            "desaparecidos",
+            "reclutamiento forzado",
+            "uso de menores",
+            "minas antipersonal",
+            "MAP",
+            "MUSE",
+            "artefactos explosivos improvisados",
+            "AEI",
+            "confinamiento",
+            "restricción a la movilidad",
+            "protección",
+            "medidas de protección",
+            "prevención",
+            "prevención temprana",
+            "alertas tempranas",
+            "SAT",
             "sistema de alertas tempranas",
-            "nota de seguimiento", "informe de riesgo",
-            "análisis de riesgo", "escenarios de riesgo",
+            "nota de seguimiento",
+            "informe de riesgo",
+            "análisis de riesgo",
+            "escenarios de riesgo",
             "Defensoría del Pueblo",
-            "Policía Nacional", "Ejército Nacional",
-            "Fuerza Pública", "fuerzas militares",
-            "Fiscalía", "Procuraduría",
-            "Personería", "personero",
-            "inspección de policía", "inspectores",
-            "convivencia", "convivencia ciudadana",
-            "seguridad ciudadana", "seguridad comunitaria",
-            "espacio público", "recuperación del espacio público",
-            "pandillas", "pandillismo", "delincuencia juvenil",
-            "consumo de sustancias", "expendio de drogas",
-            "riñas", "lesiones personales",
-            "plan de seguridad", "estrategia de seguridad",
-            "consejos de seguridad", "CONSEA",
-            "frentes de seguridad", "red de cooperantes",
-            "cámaras de seguridad", "videovigilancia",
-            "CAI", "comando de atención inmediata",
+            "Policía Nacional",
+            "Ejército Nacional",
+            "Fuerza Pública",
+            "fuerzas militares",
+            "Fiscalía",
+            "Procuraduría",
+            "Personería",
+            "personero",
+            "inspección de policía",
+            "inspectores",
+            "convivencia",
+            "convivencia ciudadana",
+            "seguridad ciudadana",
+            "seguridad comunitaria",
+            "espacio público",
+            "recuperación del espacio público",
+            "pandillas",
+            "pandillismo",
+            "delincuencia juvenil",
+            "consumo de sustancias",
+            "expendio de drogas",
+            "riñas",
+            "lesiones personales",
+            "plan de seguridad",
+            "estrategia de seguridad",
+            "consejos de seguridad",
+            "CONSEA",
+            "frentes de seguridad",
+            "red de cooperantes",
+            "cámaras de seguridad",
+            "videovigilancia",
+            "CAI",
+            "comando de atención inmediata",
             "cuadrantes de policía",
-            "desmovilizados", "excombatientes",
-            "reintegración", "reincorporación",
-            "DDR", "desarme desmovilización reintegración",
-            "derechos humanos", "DDHH",
-            "derecho internacional humanitario", "DIH",
-            "crímenes de guerra", "crímenes de lesa humanidad",
-            "justicia transicional", "JEP"
-        ]
+            "desmovilizados",
+            "excombatientes",
+            "reintegración",
+            "reincorporación",
+            "DDR",
+            "desarme desmovilización reintegración",
+            "derechos humanos",
+            "DDHH",
+            "derecho internacional humanitario",
+            "DIH",
+            "crímenes de guerra",
+            "crímenes de lesa humanidad",
+            "justicia transicional",
+            "JEP",
+        ],
     },
     "PA03": {
         "id": "PA03",
         "name": "Ambiente sano, cambio climático, prevención y atención a desastres",
         "cluster_id": "CL01",
         "keywords": [
-            "ambiente", "medio ambiente", "ambiental",
-            "sostenibilidad", "sostenibilidad ambiental",
-            "desarrollo sostenible", "sustentabilidad",
-            "ecología", "ecosistemas", "biodiversidad",
-            "conservación", "preservación",
-            "educación ambiental", "conciencia ambiental",
-            "cambio climático", "calentamiento global",
-            "gases de efecto invernadero", "GEI",
-            "mitigación", "adaptación climática",
-            "variabilidad climática", "fenómenos climáticos",
-            "huella de carbono", "carbono neutralidad",
-            "energías renovables", "energía limpia",
-            "recurso hídrico", "agua", "fuentes hídricas",
-            "cuencas", "microcuencas", "acuíferos",
-            "quebradas", "ríos", "humedales",
-            "contaminación del agua", "calidad del agua",
-            "acueducto", "alcantarillado", "saneamiento básico",
-            "PSMV", "plan de saneamiento y manejo de vertimientos",
-            "suelo", "erosión", "degradación del suelo",
-            "deforestación", "tala", "reforestación",
-            "bosques", "páramos", "selva",
-            "áreas protegidas", "reservas naturales",
-            "parques naturales", "zonas de reserva",
+            "ambiente",
+            "medio ambiente",
+            "ambiental",
+            "sostenibilidad",
+            "sostenibilidad ambiental",
+            "desarrollo sostenible",
+            "sustentabilidad",
+            "ecología",
+            "ecosistemas",
+            "biodiversidad",
+            "conservación",
+            "preservación",
+            "educación ambiental",
+            "conciencia ambiental",
+            "cambio climático",
+            "calentamiento global",
+            "gases de efecto invernadero",
+            "GEI",
+            "mitigación",
+            "adaptación climática",
+            "variabilidad climática",
+            "fenómenos climáticos",
+            "huella de carbono",
+            "carbono neutralidad",
+            "energías renovables",
+            "energía limpia",
+            "recurso hídrico",
+            "agua",
+            "fuentes hídricas",
+            "cuencas",
+            "microcuencas",
+            "acuíferos",
+            "quebradas",
+            "ríos",
+            "humedales",
+            "contaminación del agua",
+            "calidad del agua",
+            "acueducto",
+            "alcantarillado",
+            "saneamiento básico",
+            "PSMV",
+            "plan de saneamiento y manejo de vertimientos",
+            "suelo",
+            "erosión",
+            "degradación del suelo",
+            "deforestación",
+            "tala",
+            "reforestación",
+            "bosques",
+            "páramos",
+            "selva",
+            "áreas protegidas",
+            "reservas naturales",
+            "parques naturales",
+            "zonas de reserva",
             "ecosistemas estratégicos",
-            "residuos sólidos", "basuras", "desechos",
-            "PGIRS", "plan de gestión integral de residuos",
-            "reciclaje", "separación en la fuente",
-            "relleno sanitario", "botadero",
-            "contaminación", "contaminación ambiental",
-            "contaminación del aire", "calidad del aire",
-            "gestión del riesgo", "gestión de riesgo de desastres",
-            "desastres", "emergencias", "calamidad",
-            "prevención de desastres", "preparación",
-            "atención de emergencias", "respuesta",
-            "inundaciones", "desbordamientos", "crecientes",
-            "deslizamientos", "remoción en masa", "avalanchas",
-            "incendios forestales", "quemas",
-            "sequía", "desertificación",
-            "vendavales", "vientos fuertes",
-            "sismos", "terremotos",
-            "Fenómeno del Niño", "Fenómeno de la Niña",
-            "CAR", "corporación autónoma regional",
-            "autoridad ambiental", "ANLA",
-            "IDEAM", "CMGRD", "UNGRD",
-            "Bomberos", "Cruz Roja", "Defensa Civil",
-            "ordenamiento territorial", "POT", "PBOT", "EOT",
-            "POMCA", "zonificación ambiental",
-            "licencia ambiental", "permiso ambiental",
-            "fauna", "flora", "especies nativas",
-            "minería", "minería ilegal", "extracción"
-        ]
+            "residuos sólidos",
+            "basuras",
+            "desechos",
+            "PGIRS",
+            "plan de gestión integral de residuos",
+            "reciclaje",
+            "separación en la fuente",
+            "relleno sanitario",
+            "botadero",
+            "contaminación",
+            "contaminación ambiental",
+            "contaminación del aire",
+            "calidad del aire",
+            "gestión del riesgo",
+            "gestión de riesgo de desastres",
+            "desastres",
+            "emergencias",
+            "calamidad",
+            "prevención de desastres",
+            "preparación",
+            "atención de emergencias",
+            "respuesta",
+            "inundaciones",
+            "desbordamientos",
+            "crecientes",
+            "deslizamientos",
+            "remoción en masa",
+            "avalanchas",
+            "incendios forestales",
+            "quemas",
+            "sequía",
+            "desertificación",
+            "vendavales",
+            "vientos fuertes",
+            "sismos",
+            "terremotos",
+            "Fenómeno del Niño",
+            "Fenómeno de la Niña",
+            "CAR",
+            "corporación autónoma regional",
+            "autoridad ambiental",
+            "ANLA",
+            "IDEAM",
+            "CMGRD",
+            "UNGRD",
+            "Bomberos",
+            "Cruz Roja",
+            "Defensa Civil",
+            "ordenamiento territorial",
+            "POT",
+            "PBOT",
+            "EOT",
+            "POMCA",
+            "zonificación ambiental",
+            "licencia ambiental",
+            "permiso ambiental",
+            "fauna",
+            "flora",
+            "especies nativas",
+            "minería",
+            "minería ilegal",
+            "extracción",
+        ],
     },
     "PA04": {
         "id": "PA04",
         "name": "Derechos económicos, sociales y culturales",
         "cluster_id": "CL03",
         "keywords": [
-            "DESC", "derechos económicos", "derechos sociales",
-            "derechos culturales", "pacto DESC",
-            "derechos fundamentales", "mínimo vital",
-            "dignidad humana", "calidad de vida",
-            "empleo", "trabajo", "desempleo",
-            "generación de empleo", "oportunidades laborales",
-            "trabajo decente", "formalización laboral",
-            "informalidad", "subempleo",
-            "salario", "salario mínimo", "remuneración",
-            "seguridad social", "EPS", "ARL",
-            "SENA", "emprendimiento",
-            "vivienda", "vivienda digna", "derecho a la vivienda",
-            "vivienda de interés social", "VIS",
-            "vivienda de interés prioritario", "VIP",
-            "mejoramiento de vivienda", "subsidio de vivienda",
-            "hacinamiento", "servicios públicos",
-            "salud", "derecho a la salud", "sistema de salud",
-            "EPS", "IPS", "régimen contributivo", "régimen subsidiado",
-            "SISBÉN", "afiliación al sistema",
-            "hospital", "centro de salud", "puesto de salud",
-            "ESE", "empresa social del estado",
-            "Secretaría de Salud", "salud mental",
-            "vacunación", "desnutrición", "malnutrición",
-            "mortalidad infantil", "mortalidad materna",
-            "educación", "derecho a la educación",
-            "acceso a la educación", "cobertura educativa",
-            "calidad educativa", "educación inicial",
-            "educación básica", "primaria", "secundaria",
-            "educación media", "bachillerato",
-            "educación superior", "universidad",
-            "Secretaría de Educación", "docentes", "maestros",
-            "deserción escolar", "abandono escolar",
-            "PAE", "programa de alimentación escolar",
-            "transporte escolar", "infraestructura educativa",
-            "analfabetismo", "alfabetización",
-            "cultura", "derechos culturales",
-            "patrimonio cultural", "identidad cultural",
-            "biblioteca", "casa de la cultura", "museo",
-            "Secretaría de Cultura", "artistas",
-            "deporte", "recreación", "actividad física",
-            "escenarios deportivos", "polideportivo", "parques",
-            "alimentación", "seguridad alimentaria",
-            "soberanía alimentaria", "banco de alimentos",
-            "primera infancia", "niños y niñas",
-            "adultos mayores", "tercera edad",
-            "personas con discapacidad", "PcD",
-            "familias en acción", "jóvenes en acción",
-            "transferencias monetarias", "subsidios",
-            "infraestructura social", "espacio público",
-            "vías", "carreteras", "transporte público",
-            "desarrollo comunitario", "JAC", "juntas de acción comunal"
-        ]
+            "DESC",
+            "derechos económicos",
+            "derechos sociales",
+            "derechos culturales",
+            "pacto DESC",
+            "derechos fundamentales",
+            "mínimo vital",
+            "dignidad humana",
+            "calidad de vida",
+            "empleo",
+            "trabajo",
+            "desempleo",
+            "generación de empleo",
+            "oportunidades laborales",
+            "trabajo decente",
+            "formalización laboral",
+            "informalidad",
+            "subempleo",
+            "salario",
+            "salario mínimo",
+            "remuneración",
+            "seguridad social",
+            "EPS",
+            "ARL",
+            "SENA",
+            "emprendimiento",
+            "vivienda",
+            "vivienda digna",
+            "derecho a la vivienda",
+            "vivienda de interés social",
+            "VIS",
+            "vivienda de interés prioritario",
+            "VIP",
+            "mejoramiento de vivienda",
+            "subsidio de vivienda",
+            "hacinamiento",
+            "servicios públicos",
+            "salud",
+            "derecho a la salud",
+            "sistema de salud",
+            "EPS",
+            "IPS",
+            "régimen contributivo",
+            "régimen subsidiado",
+            "SISBÉN",
+            "afiliación al sistema",
+            "hospital",
+            "centro de salud",
+            "puesto de salud",
+            "ESE",
+            "empresa social del estado",
+            "Secretaría de Salud",
+            "salud mental",
+            "vacunación",
+            "desnutrición",
+            "malnutrición",
+            "mortalidad infantil",
+            "mortalidad materna",
+            "educación",
+            "derecho a la educación",
+            "acceso a la educación",
+            "cobertura educativa",
+            "calidad educativa",
+            "educación inicial",
+            "educación básica",
+            "primaria",
+            "secundaria",
+            "educación media",
+            "bachillerato",
+            "educación superior",
+            "universidad",
+            "Secretaría de Educación",
+            "docentes",
+            "maestros",
+            "deserción escolar",
+            "abandono escolar",
+            "PAE",
+            "programa de alimentación escolar",
+            "transporte escolar",
+            "infraestructura educativa",
+            "analfabetismo",
+            "alfabetización",
+            "cultura",
+            "derechos culturales",
+            "patrimonio cultural",
+            "identidad cultural",
+            "biblioteca",
+            "casa de la cultura",
+            "museo",
+            "Secretaría de Cultura",
+            "artistas",
+            "deporte",
+            "recreación",
+            "actividad física",
+            "escenarios deportivos",
+            "polideportivo",
+            "parques",
+            "alimentación",
+            "seguridad alimentaria",
+            "soberanía alimentaria",
+            "banco de alimentos",
+            "primera infancia",
+            "niños y niñas",
+            "adultos mayores",
+            "tercera edad",
+            "personas con discapacidad",
+            "PcD",
+            "familias en acción",
+            "jóvenes en acción",
+            "transferencias monetarias",
+            "subsidios",
+            "infraestructura social",
+            "espacio público",
+            "vías",
+            "carreteras",
+            "transporte público",
+            "desarrollo comunitario",
+            "JAC",
+            "juntas de acción comunal",
+        ],
     },
     "PA05": {
         "id": "PA05",
         "name": "Derechos de las víctimas y construcción de paz",
         "cluster_id": "CL02",
         "keywords": [
-            "víctimas", "víctima", "población víctima",
-            "hechos victimizantes", "hecho victimizante",
-            "RUV", "registro único de víctimas",
-            "UARIV", "unidad de víctimas", "Ley 1448",
-            "Enlace de Víctimas", "enlace municipal",
-            "desplazamiento forzado", "desplazamiento",
-            "desplazados", "población desplazada",
-            "confinamiento", "despojo", "despojo de tierras",
-            "abandono forzado", "homicidio", "masacre",
-            "desaparición forzada", "desaparecidos",
-            "secuestro", "tortura", "violencia sexual",
-            "minas antipersonal", "reclutamiento forzado",
-            "amenazas", "atentados", "actos terroristas",
-            "verdad", "derecho a la verdad",
-            "justicia", "derecho a la justicia",
-            "reparación", "reparación integral",
-            "indemnización", "compensación",
+            "víctimas",
+            "víctima",
+            "población víctima",
+            "hechos victimizantes",
+            "hecho victimizante",
+            "RUV",
+            "registro único de víctimas",
+            "UARIV",
+            "unidad de víctimas",
+            "Ley 1448",
+            "Enlace de Víctimas",
+            "enlace municipal",
+            "desplazamiento forzado",
+            "desplazamiento",
+            "desplazados",
+            "población desplazada",
+            "confinamiento",
+            "despojo",
+            "despojo de tierras",
+            "abandono forzado",
+            "homicidio",
+            "masacre",
+            "desaparición forzada",
+            "desaparecidos",
+            "secuestro",
+            "tortura",
+            "violencia sexual",
+            "minas antipersonal",
+            "reclutamiento forzado",
+            "amenazas",
+            "atentados",
+            "actos terroristas",
+            "verdad",
+            "derecho a la verdad",
+            "justicia",
+            "derecho a la justicia",
+            "reparación",
+            "reparación integral",
+            "indemnización",
+            "compensación",
             "garantías de no repetición",
-            "memoria histórica", "dignificación",
-            "restitución", "restitución de tierras",
-            "URT", "unidad de restitución de tierras",
-            "retornos", "retorno de población",
-            "reubicaciones", "reasentamientos",
-            "atención humanitaria", "ayuda humanitaria",
-            "PAU", "punto de atención",
-            "SNARIV", "sistema nacional de atención",
-            "paz", "construcción de paz", "cultura de paz",
-            "acuerdo de paz", "proceso de paz",
-            "posconflicto", "posacuerdo",
-            "reconciliación", "tejido social",
-            "PDET", "programas de desarrollo territorial",
-            "PAT", "territorios PDET", "municipios PDET",
-            "reforma rural integral", "RRI",
-            "ART", "agencia de renovación del territorio",
-            "ZOMAC", "zonas más afectadas por el conflicto",
-            "justicia transicional", "JEP",
-            "comisión de la verdad", "UBPD",
-            "excombatientes", "FARC", "reincorporación",
-            "ETCR", "ARN", "proyectos productivos",
-            "mesas de participación", "organizaciones de víctimas",
-            "reparación colectiva", "PIRC",
-            "FONSET", "cooperación internacional",
-            "OIM", "ACNUR", "PMA"
-        ]
+            "memoria histórica",
+            "dignificación",
+            "restitución",
+            "restitución de tierras",
+            "URT",
+            "unidad de restitución de tierras",
+            "retornos",
+            "retorno de población",
+            "reubicaciones",
+            "reasentamientos",
+            "atención humanitaria",
+            "ayuda humanitaria",
+            "PAU",
+            "punto de atención",
+            "SNARIV",
+            "sistema nacional de atención",
+            "paz",
+            "construcción de paz",
+            "cultura de paz",
+            "acuerdo de paz",
+            "proceso de paz",
+            "posconflicto",
+            "posacuerdo",
+            "reconciliación",
+            "tejido social",
+            "PDET",
+            "programas de desarrollo territorial",
+            "PAT",
+            "territorios PDET",
+            "municipios PDET",
+            "reforma rural integral",
+            "RRI",
+            "ART",
+            "agencia de renovación del territorio",
+            "ZOMAC",
+            "zonas más afectadas por el conflicto",
+            "justicia transicional",
+            "JEP",
+            "comisión de la verdad",
+            "UBPD",
+            "excombatientes",
+            "FARC",
+            "reincorporación",
+            "ETCR",
+            "ARN",
+            "proyectos productivos",
+            "mesas de participación",
+            "organizaciones de víctimas",
+            "reparación colectiva",
+            "PIRC",
+            "FONSET",
+            "cooperación internacional",
+            "OIM",
+            "ACNUR",
+            "PMA",
+        ],
     },
     "PA06": {
         "id": "PA06",
         "name": "Derecho al buen futuro de la niñez, adolescencia, juventud",
         "cluster_id": "CL02",
         "keywords": [
-            "niñez", "niños", "niñas", "niño", "niña",
-            "primera infancia", "infancia",
-            "adolescencia", "adolescentes", "adolescente",
-            "juventud", "jóvenes", "joven",
-            "menores de edad", "menores",
+            "niñez",
+            "niños",
+            "niñas",
+            "niño",
+            "niña",
+            "primera infancia",
+            "infancia",
+            "adolescencia",
+            "adolescentes",
+            "adolescente",
+            "juventud",
+            "jóvenes",
+            "joven",
+            "menores de edad",
+            "menores",
             "código de infancia y adolescencia",
-            "Ley 1098", "Ley 1804",
-            "política de infancia", "política pública de juventud",
-            "interés superior del niño", "derechos de los niños",
-            "desarrollo integral", "enfoque de derechos",
-            "ICBF", "instituto colombiano de bienestar familiar",
-            "defensor de familia", "Comisaría de Familia",
-            "SNBF", "sistema nacional de bienestar familiar",
-            "Consejería de Juventud", "plataforma de juventud",
-            "De Cero a Siempre", "CDI", "centro de desarrollo infantil",
-            "hogar comunitario", "hogar infantil", "jardín infantil",
-            "madres comunitarias", "atención integral",
-            "educación inicial", "nutrición infantil",
-            "restablecimiento de derechos", "PARD",
-            "vulneración de derechos", "hogar sustituto",
-            "adopción", "protección de niños",
-            "entornos protectores", "maltrato infantil",
-            "trabajo infantil", "explotación infantil",
-            "ESCNNA", "reclutamiento", "consumo de SPA",
-            "SRPA", "sistema de responsabilidad penal adolescente",
-            "justicia juvenil", "sanciones pedagógicas",
-            "CAE", "centro de atención especializada",
-            "educación para niños", "permanencia escolar",
-            "deserción", "ludotecas", "estimulación temprana",
-            "salud infantil", "vacunación", "crecimiento y desarrollo",
-            "lactancia materna", "obesidad infantil",
-            "embarazo adolescente", "prevención del embarazo",
-            "participación juvenil", "consejos de juventud", "CMJ",
-            "organizaciones juveniles", "liderazgo juvenil",
-            "empleo juvenil", "primer empleo",
-            "emprendimiento juvenil", "Jóvenes en Acción",
-            "casas de juventud", "parques infantiles",
-            "prevención del suicidio", "bullying", "acoso escolar",
-            "proyecto de vida", "habilidades para la vida",
-            "niños víctimas", "niños con discapacidad",
-            "familia", "pautas de crianza", "crianza positiva",
-            "escuela de padres", "custodia", "cuota alimentaria"
-        ]
+            "Ley 1098",
+            "Ley 1804",
+            "política de infancia",
+            "política pública de juventud",
+            "interés superior del niño",
+            "derechos de los niños",
+            "desarrollo integral",
+            "enfoque de derechos",
+            "ICBF",
+            "instituto colombiano de bienestar familiar",
+            "defensor de familia",
+            "Comisaría de Familia",
+            "SNBF",
+            "sistema nacional de bienestar familiar",
+            "Consejería de Juventud",
+            "plataforma de juventud",
+            "De Cero a Siempre",
+            "CDI",
+            "centro de desarrollo infantil",
+            "hogar comunitario",
+            "hogar infantil",
+            "jardín infantil",
+            "madres comunitarias",
+            "atención integral",
+            "educación inicial",
+            "nutrición infantil",
+            "restablecimiento de derechos",
+            "PARD",
+            "vulneración de derechos",
+            "hogar sustituto",
+            "adopción",
+            "protección de niños",
+            "entornos protectores",
+            "maltrato infantil",
+            "trabajo infantil",
+            "explotación infantil",
+            "ESCNNA",
+            "reclutamiento",
+            "consumo de SPA",
+            "SRPA",
+            "sistema de responsabilidad penal adolescente",
+            "justicia juvenil",
+            "sanciones pedagógicas",
+            "CAE",
+            "centro de atención especializada",
+            "educación para niños",
+            "permanencia escolar",
+            "deserción",
+            "ludotecas",
+            "estimulación temprana",
+            "salud infantil",
+            "vacunación",
+            "crecimiento y desarrollo",
+            "lactancia materna",
+            "obesidad infantil",
+            "embarazo adolescente",
+            "prevención del embarazo",
+            "participación juvenil",
+            "consejos de juventud",
+            "CMJ",
+            "organizaciones juveniles",
+            "liderazgo juvenil",
+            "empleo juvenil",
+            "primer empleo",
+            "emprendimiento juvenil",
+            "Jóvenes en Acción",
+            "casas de juventud",
+            "parques infantiles",
+            "prevención del suicidio",
+            "bullying",
+            "acoso escolar",
+            "proyecto de vida",
+            "habilidades para la vida",
+            "niños víctimas",
+            "niños con discapacidad",
+            "familia",
+            "pautas de crianza",
+            "crianza positiva",
+            "escuela de padres",
+            "custodia",
+            "cuota alimentaria",
+        ],
     },
     "PA07": {
         "id": "PA07",
         "name": "Tierras y territorios",
         "cluster_id": "CL01",
         "keywords": [
-            "tierras", "tierra", "territorio", "territorial",
-            "tenencia de la tierra", "propiedad",
-            "baldíos", "adjudicación", "titulación",
-            "formalización", "formalización de la propiedad",
-            "escrituración", "registro de instrumentos públicos",
-            "catastro", "catastro multipropósito",
-            "actualización catastral", "avalúo catastral",
-            "IGAC", "Sistema de Información Geográfica", "SIG",
-            "ordenamiento territorial", "OT",
-            "POT", "plan de ordenamiento territorial",
-            "PBOT", "EOT", "revisión del POT",
-            "uso del suelo", "clasificación del suelo",
-            "suelo urbano", "suelo rural", "suelo de expansión",
-            "perímetro urbano", "zonificación",
-            "zonas de riesgo", "zonas de protección ambiental",
-            "desarrollo rural", "reforma rural integral", "RRI",
-            "economía campesina", "agricultura familiar",
-            "campesinos", "pequeños productores",
-            "Unidad Agrícola Familiar", "UAF",
-            "UMATA", "asistencia técnica agropecuaria",
-            "extensión rural", "secretaría de agricultura",
-            "Agencia de Desarrollo Rural", "ADR",
-            "restitución de tierras", "URT",
-            "acceso a la tierra", "fondo de tierras",
-            "conflictos de uso del suelo", "ocupación irregular",
-            "legalización de barrios", "mejoramiento integral de barrios",
-            "vías terciarias", "caminos veredales",
-            "electrificación rural", "acueductos veredales",
-            "conectividad rural", "infraestructura productiva",
-            "territorios étnicos", "resguardos indígenas",
-            "territorios colectivos", "consejos comunitarios",
-            "consulta previa", "autonomía territorial",
-            "títulos mineros", "concesiones",
-            "licencias de urbanismo", "licencias de construcción",
-            "impuesto predial", "valorización",
-            "movilidad", "conectividad vial", "transporte público",
-            "espacio público", "parques", "zonas verdes"
-        ]
+            "tierras",
+            "tierra",
+            "territorio",
+            "territorial",
+            "tenencia de la tierra",
+            "propiedad",
+            "baldíos",
+            "adjudicación",
+            "titulación",
+            "formalización",
+            "formalización de la propiedad",
+            "escrituración",
+            "registro de instrumentos públicos",
+            "catastro",
+            "catastro multipropósito",
+            "actualización catastral",
+            "avalúo catastral",
+            "IGAC",
+            "Sistema de Información Geográfica",
+            "SIG",
+            "ordenamiento territorial",
+            "OT",
+            "POT",
+            "plan de ordenamiento territorial",
+            "PBOT",
+            "EOT",
+            "revisión del POT",
+            "uso del suelo",
+            "clasificación del suelo",
+            "suelo urbano",
+            "suelo rural",
+            "suelo de expansión",
+            "perímetro urbano",
+            "zonificación",
+            "zonas de riesgo",
+            "zonas de protección ambiental",
+            "desarrollo rural",
+            "reforma rural integral",
+            "RRI",
+            "economía campesina",
+            "agricultura familiar",
+            "campesinos",
+            "pequeños productores",
+            "Unidad Agrícola Familiar",
+            "UAF",
+            "UMATA",
+            "asistencia técnica agropecuaria",
+            "extensión rural",
+            "secretaría de agricultura",
+            "Agencia de Desarrollo Rural",
+            "ADR",
+            "restitución de tierras",
+            "URT",
+            "acceso a la tierra",
+            "fondo de tierras",
+            "conflictos de uso del suelo",
+            "ocupación irregular",
+            "legalización de barrios",
+            "mejoramiento integral de barrios",
+            "vías terciarias",
+            "caminos veredales",
+            "electrificación rural",
+            "acueductos veredales",
+            "conectividad rural",
+            "infraestructura productiva",
+            "territorios étnicos",
+            "resguardos indígenas",
+            "territorios colectivos",
+            "consejos comunitarios",
+            "consulta previa",
+            "autonomía territorial",
+            "títulos mineros",
+            "concesiones",
+            "licencias de urbanismo",
+            "licencias de construcción",
+            "impuesto predial",
+            "valorización",
+            "movilidad",
+            "conectividad vial",
+            "transporte público",
+            "espacio público",
+            "parques",
+            "zonas verdes",
+        ],
     },
     "PA08": {
         "id": "PA08",
         "name": "Líderes y defensores de derechos humanos",
         "cluster_id": "CL03",
         "keywords": [
-            "líderes sociales", "liderazgo social",
-            "líderes comunitarios", "líderes comunales",
-            "lideresas", "líder",
-            "defensores de derechos humanos", "defensores",
-            "defensoras", "activistas",
-            "líderes ambientales", "ambientalistas",
-            "líderes campesinos", "líderes rurales",
-            "líderes indígenas", "autoridades indígenas",
+            "líderes sociales",
+            "liderazgo social",
+            "líderes comunitarios",
+            "líderes comunales",
+            "lideresas",
+            "líder",
+            "defensores de derechos humanos",
+            "defensores",
+            "defensoras",
+            "activistas",
+            "líderes ambientales",
+            "ambientalistas",
+            "líderes campesinos",
+            "líderes rurales",
+            "líderes indígenas",
+            "autoridades indígenas",
             "líderes afrodescendientes",
-            "líderes de víctimas", "líderes sindicales",
-            "periodistas", "comunicadores sociales",
-            "JAC", "juntas de acción comunal",
-            "presidentes de JAC", "dignatarios",
-            "gestores de paz", "liderazgo territorial",
-            "amenazas", "amenazas de muerte",
-            "intimidación", "hostigamiento",
-            "riesgo", "situación de riesgo",
-            "riesgo extraordinario", "riesgo extremo",
-            "asesinatos de líderes", "homicidios",
-            "masacres", "atentados", "agresiones",
-            "desplazamiento forzado", "exilio",
-            "estigmatización", "señalamientos",
+            "líderes de víctimas",
+            "líderes sindicales",
+            "periodistas",
+            "comunicadores sociales",
+            "JAC",
+            "juntas de acción comunal",
+            "presidentes de JAC",
+            "dignatarios",
+            "gestores de paz",
+            "liderazgo territorial",
+            "amenazas",
+            "amenazas de muerte",
+            "intimidación",
+            "hostigamiento",
+            "riesgo",
+            "situación de riesgo",
+            "riesgo extraordinario",
+            "riesgo extremo",
+            "asesinatos de líderes",
+            "homicidios",
+            "masacres",
+            "atentados",
+            "agresiones",
+            "desplazamiento forzado",
+            "exilio",
+            "estigmatización",
+            "señalamientos",
             "criminalización de la protesta",
-            "protección", "esquemas de protección",
-            "medidas de protección", "UNP",
-            "escoltas", "vehículos blindados",
-            "botón de pánico", "reubicación temporal",
-            "análisis de riesgo", "CERREM",
-            "prevención", "alertas tempranas", "SAT",
-            "planes de prevención", "autoprotección",
-            "garantías", "Mesa de Garantías",
-            "Decreto 660", "protocolo de protección",
-            "Fiscalía", "Unidad Especial de Investigación",
-            "impunidad", "organizaciones de derechos humanos",
-            "participación política", "movilización social",
-            "protesta social", "manifestaciones",
-            "libertad de expresión", "libertad de prensa"
-        ]
+            "protección",
+            "esquemas de protección",
+            "medidas de protección",
+            "UNP",
+            "escoltas",
+            "vehículos blindados",
+            "botón de pánico",
+            "reubicación temporal",
+            "análisis de riesgo",
+            "CERREM",
+            "prevención",
+            "alertas tempranas",
+            "SAT",
+            "planes de prevención",
+            "autoprotección",
+            "garantías",
+            "Mesa de Garantías",
+            "Decreto 660",
+            "protocolo de protección",
+            "Fiscalía",
+            "Unidad Especial de Investigación",
+            "impunidad",
+            "organizaciones de derechos humanos",
+            "participación política",
+            "movilización social",
+            "protesta social",
+            "manifestaciones",
+            "libertad de expresión",
+            "libertad de prensa",
+        ],
     },
     "PA09": {
         "id": "PA09",
         "name": "Crisis de derechos de personas privadas de la libertad",
         "cluster_id": "CL04",
         "keywords": [
-            "privados de libertad", "PPL",
+            "privados de libertad",
+            "PPL",
             "personas privadas de la libertad",
-            "internos", "reclusos", "presos",
-            "población carcelaria", "población penitenciaria",
-            "condenados", "sindicados", "preventivos",
-            "prisión domiciliaria", "detención domiciliaria",
-            "sistema penitenciario", "cárceles", "cárcel", "prisión",
-            "ERON", "establecimiento penitenciario",
-            "penitenciaría", "centro de reclusión",
-            "pabellones", "patios", "celdas",
-            "INPEC", "instituto nacional penitenciario",
-            "guardias penitenciarios", "dragoneantes",
-            "custodia", "vigilancia",
-            "hacinamiento", "sobrepoblación", "sobrecupo",
-            "cupos carcelarios", "crisis carcelaria",
-            "infraestructura carcelaria", "construcción de cárceles",
-            "condiciones de reclusión", "condiciones inhumanas",
-            "trato cruel", "dignidad",
-            "alimentación carcelaria", "agua potable",
-            "servicios sanitarios", "higiene",
-            "salud en cárceles", "atención médica",
-            "medicamentos", "tuberculosis", "VIH",
-            "salud mental", "adicciones",
-            "muertes en custodia", "fallecimientos",
-            "seguridad carcelaria", "motines", "riñas",
-            "violencia entre internos", "extorsión",
+            "internos",
+            "reclusos",
+            "presos",
+            "población carcelaria",
+            "población penitenciaria",
+            "condenados",
+            "sindicados",
+            "preventivos",
+            "prisión domiciliaria",
+            "detención domiciliaria",
+            "sistema penitenciario",
+            "cárceles",
+            "cárcel",
+            "prisión",
+            "ERON",
+            "establecimiento penitenciario",
+            "penitenciaría",
+            "centro de reclusión",
+            "pabellones",
+            "patios",
+            "celdas",
+            "INPEC",
+            "instituto nacional penitenciario",
+            "guardias penitenciarios",
+            "dragoneantes",
+            "custodia",
+            "vigilancia",
+            "hacinamiento",
+            "sobrepoblación",
+            "sobrecupo",
+            "cupos carcelarios",
+            "crisis carcelaria",
+            "infraestructura carcelaria",
+            "construcción de cárceles",
+            "condiciones de reclusión",
+            "condiciones inhumanas",
+            "trato cruel",
+            "dignidad",
+            "alimentación carcelaria",
+            "agua potable",
+            "servicios sanitarios",
+            "higiene",
+            "salud en cárceles",
+            "atención médica",
+            "medicamentos",
+            "tuberculosis",
+            "VIH",
+            "salud mental",
+            "adicciones",
+            "muertes en custodia",
+            "fallecimientos",
+            "seguridad carcelaria",
+            "motines",
+            "riñas",
+            "violencia entre internos",
+            "extorsión",
             "corrupción carcelaria",
-            "resocialización", "reinserción social",
-            "tratamiento penitenciario", "trabajo penitenciario",
-            "educación carcelaria", "talleres",
-            "redención de pena", "descuentos",
-            "visitas", "visitas familiares", "visitas íntimas",
-            "comunicación", "contacto con la familia",
-            "defensa pública", "defensoría",
-            "jueces de ejecución", "hábeas corpus",
-            "medidas alternativas", "penas alternativas",
-            "libertad condicional", "casa por cárcel",
-            "brazalete electrónico", "monitoreo electrónico",
-            "beneficios judiciales", "permisos de salida",
-            "mujeres privadas de libertad", "madres en prisión",
-            "niños en prisión", "jóvenes privados de libertad",
-            "estado de cosas inconstitucional", "ECI",
-            "Sentencia T-388", "tutelas",
-            "Defensoría del Pueblo", "Procuraduría",
-            "reincidencia", "reingreso",
+            "resocialización",
+            "reinserción social",
+            "tratamiento penitenciario",
+            "trabajo penitenciario",
+            "educación carcelaria",
+            "talleres",
+            "redención de pena",
+            "descuentos",
+            "visitas",
+            "visitas familiares",
+            "visitas íntimas",
+            "comunicación",
+            "contacto con la familia",
+            "defensa pública",
+            "defensoría",
+            "jueces de ejecución",
+            "hábeas corpus",
+            "medidas alternativas",
+            "penas alternativas",
+            "libertad condicional",
+            "casa por cárcel",
+            "brazalete electrónico",
+            "monitoreo electrónico",
+            "beneficios judiciales",
+            "permisos de salida",
+            "mujeres privadas de libertad",
+            "madres en prisión",
+            "niños en prisión",
+            "jóvenes privados de libertad",
+            "estado de cosas inconstitucional",
+            "ECI",
+            "Sentencia T-388",
+            "tutelas",
+            "Defensoría del Pueblo",
+            "Procuraduría",
+            "reincidencia",
+            "reingreso",
             # From ET09 - Enfoque Diferencial PPL
-            "centros de detención transitoria", "medidas de aseguramiento",
-            "Instituto Nacional Penitenciario", "establecimientos de reclusión"
-        ]
+            "centros de detención transitoria",
+            "medidas de aseguramiento",
+            "Instituto Nacional Penitenciario",
+            "establecimientos de reclusión",
+        ],
     },
     "PA10": {
         "id": "PA10",
         "name": "Migración transfronteriza",
         "cluster_id": "CL04",
         "keywords": [
-            "migración", "migrantes", "migrante",
-            "inmigrantes", "inmigración",
-            "población migrante", "flujo migratorio",
-            "migración venezolana", "venezolanos",
-            "refugiados", "solicitantes de refugio",
-            "solicitantes de asilo", "asilo",
+            "migración",
+            "migrantes",
+            "migrante",
+            "inmigrantes",
+            "inmigración",
+            "población migrante",
+            "flujo migratorio",
+            "migración venezolana",
+            "venezolanos",
+            "refugiados",
+            "solicitantes de refugio",
+            "solicitantes de asilo",
+            "asilo",
             "movilidad humana",
-            "regular", "irregular", "situación migratoria",
-            "indocumentados", "sin documentos",
-            "PEP", "permiso especial de permanencia",
-            "PPT", "permiso por protección temporal",
-            "TMF", "tarjeta de movilidad fronteriza",
-            "regularización", "regularización migratoria",
-            "cédula de extranjería", "visa", "pasaporte",
-            "RUMV", "registro único de migrantes",
-            "Migración Colombia", "Cancillería",
-            "RAMV", "Gerencia de Frontera",
-            "frontera", "zona de frontera",
-            "municipios fronterizos", "Venezuela",
-            "Cúcuta", "La Guajira", "Arauca", "Norte de Santander",
-            "pasos fronterizos", "trochas", "pasos irregulares",
-            "control fronterizo", "cierre de frontera",
-            "crisis humanitaria", "emergencia humanitaria",
-            "asistencia humanitaria", "albergues",
-            "integración", "integración social",
-            "inclusión", "cohesión social",
-            "comunidades de acogida", "xenofobia",
-            "acceso a salud", "acceso a educación",
-            "acceso al trabajo", "empleo formal",
-            "explotación laboral", "trabajo informal",
-            "salud de migrantes", "vacunación",
-            "desnutrición", "salud mental",
-            "educación de migrantes", "niños migrantes",
-            "cupos escolares", "matrícula",
-            "vivienda", "hacinamiento",
-            "menores no acompañados", "mujeres migrantes",
-            "trata de personas", "tráfico de migrantes",
-            "protección internacional", "refugio",
-            "CONARE", "protección temporal",
-            "retorno voluntario", "deportación",
+            "regular",
+            "irregular",
+            "situación migratoria",
+            "indocumentados",
+            "sin documentos",
+            "PEP",
+            "permiso especial de permanencia",
+            "PPT",
+            "permiso por protección temporal",
+            "TMF",
+            "tarjeta de movilidad fronteriza",
+            "regularización",
+            "regularización migratoria",
+            "cédula de extranjería",
+            "visa",
+            "pasaporte",
+            "RUMV",
+            "registro único de migrantes",
+            "Migración Colombia",
+            "Cancillería",
+            "RAMV",
+            "Gerencia de Frontera",
+            "frontera",
+            "zona de frontera",
+            "municipios fronterizos",
+            "Venezuela",
+            "Cúcuta",
+            "La Guajira",
+            "Arauca",
+            "Norte de Santander",
+            "pasos fronterizos",
+            "trochas",
+            "pasos irregulares",
+            "control fronterizo",
+            "cierre de frontera",
+            "crisis humanitaria",
+            "emergencia humanitaria",
+            "asistencia humanitaria",
+            "albergues",
+            "integración",
+            "integración social",
+            "inclusión",
+            "cohesión social",
+            "comunidades de acogida",
+            "xenofobia",
+            "acceso a salud",
+            "acceso a educación",
+            "acceso al trabajo",
+            "empleo formal",
+            "explotación laboral",
+            "trabajo informal",
+            "salud de migrantes",
+            "vacunación",
+            "desnutrición",
+            "salud mental",
+            "educación de migrantes",
+            "niños migrantes",
+            "cupos escolares",
+            "matrícula",
+            "vivienda",
+            "hacinamiento",
+            "menores no acompañados",
+            "mujeres migrantes",
+            "trata de personas",
+            "tráfico de migrantes",
+            "protección internacional",
+            "refugio",
+            "CONARE",
+            "protección temporal",
+            "retorno voluntario",
+            "deportación",
             "reunificación familiar",
-            "gestión migratoria", "política migratoria",
-            "ACNUR", "OIM", "UNICEF", "Cruz Roja",
+            "gestión migratoria",
+            "política migratoria",
+            "ACNUR",
+            "OIM",
+            "UNICEF",
+            "Cruz Roja",
             # From ET10 - Enfoque Diferencial Migración
-            "ETPV", "estatuto temporal de protección",
-            "CONPES migratorio", "desplazamiento transfronterizo",
-            "documento de identidad migrante", "empleabilidad migrante",
-            "niños, niñas y adolescentes migrantes", "familias migrantes"
-        ]
-    }
+            "ETPV",
+            "estatuto temporal de protección",
+            "CONPES migratorio",
+            "desplazamiento transfronterizo",
+            "documento de identidad migrante",
+            "empleabilidad migrante",
+            "niños, niñas y adolescentes migrantes",
+            "familias migrantes",
+        ],
+    },
 }
 
 # CANONICAL REFACTORING: Alias legacy to canonical for backward compatibility
@@ -655,37 +1197,79 @@ VALUE_CHAIN_DIMENSIONS: dict[str, dict[str, Any]] = {
         "analytical_variables": {
             "linea_base_diagnostico": {
                 "slot": "D1-Q1",
-                "expected_elements": ["cobertura_territorial_especificada", "fuentes_oficiales", 
-                                     "indicadores_cuantitativos", "series_temporales_años"]
+                "expected_elements": [
+                    "cobertura_territorial_especificada",
+                    "fuentes_oficiales",
+                    "indicadores_cuantitativos",
+                    "series_temporales_años",
+                ],
             },
             "dimensionamiento_brecha": {
-                "slot": "D1-Q2", 
-                "expected_elements": ["brecha_cuantificada", "limitaciones_datos", "subregistro"]
+                "slot": "D1-Q2",
+                "expected_elements": ["brecha_cuantificada", "limitaciones_datos", "subregistro"],
             },
             "asignacion_recursos": {
                 "slot": "D1-Q3",
-                "expected_elements": ["asignacion_explicita", "suficiencia_justificada", "trazabilidad_ppi_bpin"]
+                "expected_elements": [
+                    "asignacion_explicita",
+                    "suficiencia_justificada",
+                    "trazabilidad_ppi_bpin",
+                ],
             },
             "capacidad_institucional": {
                 "slot": "D1-Q4",
-                "expected_elements": ["cuellos_botella", "datos_sistemas", "gobernanza", 
-                                     "procesos", "talento_humano"]
+                "expected_elements": [
+                    "cuellos_botella",
+                    "datos_sistemas",
+                    "gobernanza",
+                    "procesos",
+                    "talento_humano",
+                ],
             },
             "marco_restricciones": {
                 "slot": "D1-Q5",
-                "expected_elements": ["coherencia_demostrada", "restricciones_legales",
-                                     "restricciones_presupuestales", "restricciones_temporales"]
-            }
+                "expected_elements": [
+                    "coherencia_demostrada",
+                    "restricciones_legales",
+                    "restricciones_presupuestales",
+                    "restricciones_temporales",
+                ],
+            },
         },
         "keywords_general": [
-            "línea base", "año base", "situación inicial", "diagnóstico",
-            "DANE", "Medicina Legal", "Fiscalía", "Policía Nacional", "SIVIGILA", "SISPRO",
-            "brecha", "déficit", "rezago", "subregistro", "cifra negra",
-            "recursos", "presupuesto", "PPI", "BPIN", "asignación", "millones",
-            "capacidad instalada", "talento humano", "personal idóneo",
-            "cuello de botella", "limitación institucional", "barrera",
-            "marco legal", "Ley", "Decreto", "competencias", "restricción"
-        ]
+            "línea base",
+            "año base",
+            "situación inicial",
+            "diagnóstico",
+            "DANE",
+            "Medicina Legal",
+            "Fiscalía",
+            "Policía Nacional",
+            "SIVIGILA",
+            "SISPRO",
+            "brecha",
+            "déficit",
+            "rezago",
+            "subregistro",
+            "cifra negra",
+            "recursos",
+            "presupuesto",
+            "PPI",
+            "BPIN",
+            "asignación",
+            "millones",
+            "capacidad instalada",
+            "talento humano",
+            "personal idóneo",
+            "cuello de botella",
+            "limitación institucional",
+            "barrera",
+            "marco legal",
+            "Ley",
+            "Decreto",
+            "competencias",
+            "restricción",
+        ],
     },
     "DIM02": {
         "code": "DIM02",
@@ -695,35 +1279,60 @@ VALUE_CHAIN_DIMENSIONS: dict[str, dict[str, Any]] = {
         "analytical_variables": {
             "estructura_operativa": {
                 "slot": "D2-Q1",
-                "expected_elements": ["columna_costo", "columna_cronograma", "columna_producto",
-                                     "columna_responsable", "formato_tabular"]
+                "expected_elements": [
+                    "columna_costo",
+                    "columna_cronograma",
+                    "columna_producto",
+                    "columna_responsable",
+                    "formato_tabular",
+                ],
             },
             "diseño_intervencion": {
                 "slot": "D2-Q2",
-                "expected_elements": ["instrumento_especificado", "logica_causal_explicita",
-                                     "poblacion_objetivo_definida"]
+                "expected_elements": [
+                    "instrumento_especificado",
+                    "logica_causal_explicita",
+                    "poblacion_objetivo_definida",
+                ],
             },
             "pertinencia_causal": {
                 "slot": "D2-Q3",
-                "expected_elements": ["aborda_causa_raiz", "vinculo_diagnostico_actividad"]
+                "expected_elements": ["aborda_causa_raiz", "vinculo_diagnostico_actividad"],
             },
             "gestion_riesgos": {
                 "slot": "D2-Q4",
-                "expected_elements": ["mitigacion_propuesta", "riesgos_identificados"]
+                "expected_elements": ["mitigacion_propuesta", "riesgos_identificados"],
             },
             "articulacion_actividades": {
                 "slot": "D2-Q5",
-                "expected_elements": ["complementariedad_explicita", "secuenciacion_logica"]
-            }
+                "expected_elements": ["complementariedad_explicita", "secuenciacion_logica"],
+            },
         },
         "keywords_general": [
-            "matriz operativa", "plan de acción", "cronograma", "responsable",
-            "actividad", "intervención", "programa", "proyecto", "estrategia",
-            "población objetivo", "beneficiarios", "focalización",
-            "causa raíz", "árbol de problemas", "teoría de cambio",
-            "riesgo", "mitigación", "contingencia",
-            "articulación", "complementariedad", "secuencia", "etapa", "fase"
-        ]
+            "matriz operativa",
+            "plan de acción",
+            "cronograma",
+            "responsable",
+            "actividad",
+            "intervención",
+            "programa",
+            "proyecto",
+            "estrategia",
+            "población objetivo",
+            "beneficiarios",
+            "focalización",
+            "causa raíz",
+            "árbol de problemas",
+            "teoría de cambio",
+            "riesgo",
+            "mitigación",
+            "contingencia",
+            "articulación",
+            "complementariedad",
+            "secuencia",
+            "etapa",
+            "fase",
+        ],
     },
     "DIM03": {
         "code": "DIM03",
@@ -733,35 +1342,63 @@ VALUE_CHAIN_DIMENSIONS: dict[str, dict[str, Any]] = {
         "analytical_variables": {
             "indicadores_producto": {
                 "slot": "D3-Q1",
-                "expected_elements": ["fuente_verificacion", "linea_base_producto", "meta_cuantitativa"]
+                "expected_elements": [
+                    "fuente_verificacion",
+                    "linea_base_producto",
+                    "meta_cuantitativa",
+                ],
             },
             "dosificacion_metas": {
                 "slot": "D3-Q2",
-                "expected_elements": ["dosificacion_definida", "proporcionalidad_meta_brecha"]
+                "expected_elements": ["dosificacion_definida", "proporcionalidad_meta_brecha"],
             },
             "trazabilidad": {
                 "slot": "D3-Q3",
-                "expected_elements": ["trazabilidad_organizacional", "trazabilidad_presupuestal"]
+                "expected_elements": ["trazabilidad_organizacional", "trazabilidad_presupuestal"],
             },
             "factibilidad": {
                 "slot": "D3-Q4",
-                "expected_elements": ["coherencia_recursos", "factibilidad_tecnica", "realismo_plazos"]
+                "expected_elements": [
+                    "coherencia_recursos",
+                    "factibilidad_tecnica",
+                    "realismo_plazos",
+                ],
             },
             "conexion_resultados": {
                 "slot": "D3-Q5",
-                "expected_elements": ["conexion_producto_resultado", "mecanismo_causal_explicito"]
-            }
+                "expected_elements": ["conexion_producto_resultado", "mecanismo_causal_explicito"],
+            },
         },
         "keywords_general": [
-            "producto", "output", "entregable", "bien", "servicio",
-            "indicador de producto", "meta de producto", "MP-",
-            "línea base", "meta cuatrienio", "fuente de verificación",
-            "dosificación", "programación anual", "avance",
-            "responsable", "secretaría", "dependencia", "entidad",
-            "código BPIN", "proyecto de inversión", "PPI",
-            "factible", "viable", "realista", "coherente",
-            "genera", "produce", "contribuye a"
-        ]
+            "producto",
+            "output",
+            "entregable",
+            "bien",
+            "servicio",
+            "indicador de producto",
+            "meta de producto",
+            "MP-",
+            "línea base",
+            "meta cuatrienio",
+            "fuente de verificación",
+            "dosificación",
+            "programación anual",
+            "avance",
+            "responsable",
+            "secretaría",
+            "dependencia",
+            "entidad",
+            "código BPIN",
+            "proyecto de inversión",
+            "PPI",
+            "factible",
+            "viable",
+            "realista",
+            "coherente",
+            "genera",
+            "produce",
+            "contribuye a",
+        ],
     },
     "DIM04": {
         "code": "DIM04",
@@ -771,38 +1408,67 @@ VALUE_CHAIN_DIMENSIONS: dict[str, dict[str, Any]] = {
         "analytical_variables": {
             "indicadores_resultado": {
                 "slot": "D4-Q1",
-                "expected_elements": ["horizonte_temporal", "linea_base_resultado",
-                                     "meta_resultado", "metrica_outcome"]
+                "expected_elements": [
+                    "horizonte_temporal",
+                    "linea_base_resultado",
+                    "meta_resultado",
+                    "metrica_outcome",
+                ],
             },
             "cadena_causal": {
                 "slot": "D4-Q2",
-                "expected_elements": ["cadena_causal_explicita", "condiciones_habilitantes",
-                                     "supuestos_identificados"]
+                "expected_elements": [
+                    "cadena_causal_explicita",
+                    "condiciones_habilitantes",
+                    "supuestos_identificados",
+                ],
             },
             "alcanzabilidad": {
                 "slot": "D4-Q3",
-                "expected_elements": ["evidencia_comparada", "justificacion_capacidad",
-                                     "justificacion_recursos"]
+                "expected_elements": [
+                    "evidencia_comparada",
+                    "justificacion_capacidad",
+                    "justificacion_recursos",
+                ],
             },
             "coherencia_problematica": {
                 "slot": "D4-Q4",
-                "expected_elements": ["criterios_exito_definidos", "vinculo_resultado_problema"]
+                "expected_elements": ["criterios_exito_definidos", "vinculo_resultado_problema"],
             },
             "alineacion_estrategica": {
                 "slot": "D4-Q5",
-                "expected_elements": ["alineacion_ods", "alineacion_pnd"]
-            }
+                "expected_elements": ["alineacion_ods", "alineacion_pnd"],
+            },
         },
         "keywords_general": [
-            "resultado", "outcome", "efecto", "cambio", "transformación",
-            "indicador de resultado", "meta de resultado", "MR-",
-            "reducción", "incremento", "mejora", "disminución",
-            "tasa", "porcentaje", "índice", "cobertura",
-            "supuesto", "condición", "factor externo",
-            "evidencia", "buena práctica", "caso exitoso",
-            "ODS", "objetivo de desarrollo sostenible", "PND",
-            "plan nacional de desarrollo", "política nacional"
-        ]
+            "resultado",
+            "outcome",
+            "efecto",
+            "cambio",
+            "transformación",
+            "indicador de resultado",
+            "meta de resultado",
+            "MR-",
+            "reducción",
+            "incremento",
+            "mejora",
+            "disminución",
+            "tasa",
+            "porcentaje",
+            "índice",
+            "cobertura",
+            "supuesto",
+            "condición",
+            "factor externo",
+            "evidencia",
+            "buena práctica",
+            "caso exitoso",
+            "ODS",
+            "objetivo de desarrollo sostenible",
+            "PND",
+            "plan nacional de desarrollo",
+            "política nacional",
+        ],
     },
     "DIM05": {
         "code": "DIM05",
@@ -812,36 +1478,61 @@ VALUE_CHAIN_DIMENSIONS: dict[str, dict[str, Any]] = {
         "analytical_variables": {
             "impacto_esperado": {
                 "slot": "D5-Q1",
-                "expected_elements": ["impacto_definido", "rezago_temporal", "ruta_transmision"]
+                "expected_elements": ["impacto_definido", "rezago_temporal", "ruta_transmision"],
             },
             "medicion_impacto": {
                 "slot": "D5-Q2",
-                "expected_elements": ["justifica_validez", "usa_indices_compuestos", "usa_proxies"]
+                "expected_elements": ["justifica_validez", "usa_indices_compuestos", "usa_proxies"],
             },
             "limitaciones_medicion": {
                 "slot": "D5-Q3",
-                "expected_elements": ["documenta_validez", "proxy_para_intangibles",
-                                     "reconoce_limitaciones"]
+                "expected_elements": [
+                    "documenta_validez",
+                    "proxy_para_intangibles",
+                    "reconoce_limitaciones",
+                ],
             },
             "riesgos_sistemicos": {
                 "slot": "D5-Q4",
-                "expected_elements": ["alineacion_marcos", "riesgos_sistemicos"]
+                "expected_elements": ["alineacion_marcos", "riesgos_sistemicos"],
             },
             "realismo_impacto": {
                 "slot": "D5-Q5",
-                "expected_elements": ["analisis_realismo", "efectos_no_deseados", "hipotesis_limite"]
-            }
+                "expected_elements": [
+                    "analisis_realismo",
+                    "efectos_no_deseados",
+                    "hipotesis_limite",
+                ],
+            },
         },
         "keywords_general": [
-            "impacto", "efecto de largo plazo", "transformación estructural",
-            "indicador de impacto", "meta de impacto", "MI-",
-            "bienestar", "calidad de vida", "desarrollo humano",
-            "índice", "índice de desarrollo", "IDH", "IPM",
-            "pobreza", "desigualdad", "Gini", "NBI",
-            "sostenibilidad", "perdurabilidad", "irreversibilidad",
-            "proxy", "aproximación", "medición indirecta",
-            "riesgo sistémico", "efecto no deseado", "externalidad"
-        ]
+            "impacto",
+            "efecto de largo plazo",
+            "transformación estructural",
+            "indicador de impacto",
+            "meta de impacto",
+            "MI-",
+            "bienestar",
+            "calidad de vida",
+            "desarrollo humano",
+            "índice",
+            "índice de desarrollo",
+            "IDH",
+            "IPM",
+            "pobreza",
+            "desigualdad",
+            "Gini",
+            "NBI",
+            "sostenibilidad",
+            "perdurabilidad",
+            "irreversibilidad",
+            "proxy",
+            "aproximación",
+            "medición indirecta",
+            "riesgo sistémico",
+            "efecto no deseado",
+            "externalidad",
+        ],
     },
     "DIM06": {
         "code": "DIM06",
@@ -851,37 +1542,66 @@ VALUE_CHAIN_DIMENSIONS: dict[str, dict[str, Any]] = {
         "analytical_variables": {
             "teoria_cambio": {
                 "slot": "D6-Q1",
-                "expected_elements": ["diagrama_causal", "supuestos_verificables",
-                                     "teoria_cambio_explicita"]
+                "expected_elements": [
+                    "diagrama_causal",
+                    "supuestos_verificables",
+                    "teoria_cambio_explicita",
+                ],
             },
             "coherencia_logica": {
                 "slot": "D6-Q2",
-                "expected_elements": ["evita_saltos_logicos", "proporcionalidad_eslabones"]
+                "expected_elements": ["evita_saltos_logicos", "proporcionalidad_eslabones"],
             },
             "testabilidad": {
                 "slot": "D6-Q3",
-                "expected_elements": ["propone_pilotos_o_pruebas", "reconoce_inconsistencias"]
+                "expected_elements": ["propone_pilotos_o_pruebas", "reconoce_inconsistencias"],
             },
             "adaptabilidad": {
                 "slot": "D6-Q4",
-                "expected_elements": ["ciclos_aprendizaje", "mecanismos_correccion", "sistema_monitoreo"]
+                "expected_elements": [
+                    "ciclos_aprendizaje",
+                    "mecanismos_correccion",
+                    "sistema_monitoreo",
+                ],
             },
             "contextualidad": {
                 "slot": "D6-Q5",
-                "expected_elements": ["analisis_contextual", "enfoque_diferencial"]
-            }
+                "expected_elements": ["analisis_contextual", "enfoque_diferencial"],
+            },
         },
         "keywords_general": [
-            "teoría de cambio", "marco lógico", "cadena de valor",
-            "si-entonces", "porque", "genera", "produce", "causa",
-            "mecanismo causal", "vínculo causal", "conexión lógica",
-            "supuesto", "hipótesis", "condición", "premisa",
-            "eslabón", "nivel", "secuencia causal",
-            "piloto", "prueba", "validación", "verificación",
-            "monitoreo", "seguimiento", "evaluación", "ajuste",
-            "contexto", "territorio", "enfoque diferencial", "particularidad"
-        ]
-    }
+            "teoría de cambio",
+            "marco lógico",
+            "cadena de valor",
+            "si-entonces",
+            "porque",
+            "genera",
+            "produce",
+            "causa",
+            "mecanismo causal",
+            "vínculo causal",
+            "conexión lógica",
+            "supuesto",
+            "hipótesis",
+            "condición",
+            "premisa",
+            "eslabón",
+            "nivel",
+            "secuencia causal",
+            "piloto",
+            "prueba",
+            "validación",
+            "verificación",
+            "monitoreo",
+            "seguimiento",
+            "evaluación",
+            "ajuste",
+            "contexto",
+            "territorio",
+            "enfoque diferencial",
+            "particularidad",
+        ],
+    },
 }
 
 ALL_BASE_SLOTS: tuple[str, ...] = tuple(
@@ -912,9 +1632,10 @@ SLOT_TO_EXPECTED_ELEMENTS: dict[str, list[str]] = {
 # 1. CORE DATA STRUCTURES
 # ---------------------------------------------------------------------------
 
+
 class MunicipalOntology:
     """Core ontology for municipal development domains.
-    
+
     CANONICAL REFACTORING: Uses frozen constants from canonical_specs.py
     - VALUE_CHAIN_DIMENSIONS: 6 analytical dimensions (DIM01-DIM06)
     - POLICY_AREAS_CANONICAL: 10 policy areas (PA01-PA10)
@@ -927,12 +1648,12 @@ class MunicipalOntology:
             dim_id: dim_config["keywords_general"]
             for dim_id, dim_config in VALUE_CHAIN_DIMENSIONS.items()
         }
-        
+
         # Policy areas (PA01-PA10) with keywords
         self.policy_domains = {
-            pa_id: pa_config["keywords"]
-            for pa_id, pa_config in POLICY_AREAS_CANONICAL.items()
+            pa_id: pa_config["keywords"] for pa_id, pa_config in POLICY_AREAS_CANONICAL.items()
         }
+
 
 # ---------------------------------------------------------------------------
 # 2. SEMANTIC ANALYSIS ENGINE
@@ -953,13 +1674,13 @@ PATTERNS_D3_Q3_BY_POLICY_AREA: dict[str, dict[str, Any]] = {
         "trazabilidad_organizacional": [
             r"Secretaría de la Mujer|Oficina de la Mujer|Secretaría de Desarrollo Social",
             r"articulado con la Comisaría de Familia",
-            r"corresponsabilidad de|en alianza con"
+            r"corresponsabilidad de|en alianza con",
         ],
         "trazabilidad_presupuestal": [
             r"código BPIN|proyecto de inversión asociado",
             r"programa del PPI|línea de inversión",
-            r"recursos del proyecto|presupuesto del producto"
-        ]
+            r"recursos del proyecto|presupuesto del producto",
+        ],
     },
     "PA02": {  # Violencia/Conflicto
         "question_id": "Q073",
@@ -967,13 +1688,13 @@ PATTERNS_D3_Q3_BY_POLICY_AREA: dict[str, dict[str, Any]] = {
         "trazabilidad_organizacional": [
             r"Secretaría de Gobierno|Enlace de Víctimas|Personería Municipal",
             r"articulado con la Defensoría del Pueblo|Policía Nacional",
-            r"corresponsabilidad de|en alianza con"
+            r"corresponsabilidad de|en alianza con",
         ],
         "trazabilidad_presupuestal": [
             r"código BPIN|proyecto de inversión para la paz",
             r"programa del PPI|línea de inversión en víctimas",
-            r"recursos del proyecto|presupuesto para prevención"
-        ]
+            r"recursos del proyecto|presupuesto para prevención",
+        ],
     },
     "PA03": {  # Ambiente
         "question_id": "Q103",
@@ -981,13 +1702,13 @@ PATTERNS_D3_Q3_BY_POLICY_AREA: dict[str, dict[str, Any]] = {
         "trazabilidad_organizacional": [
             r"Secretaría de Ambiente|Planeación|Infraestructura",
             r"articulado con la CAR|CMGRD",
-            r"convenio con|contrato de obra No\."
+            r"convenio con|contrato de obra No\.",
         ],
         "trazabilidad_presupuestal": [
             r"código BPIN|proyecto de inversión para gestión del riesgo",
             r"programa del PPI|línea de inversión en sostenibilidad ambiental",
-            r"recursos del proyecto|presupuesto de la obra"
-        ]
+            r"recursos del proyecto|presupuesto de la obra",
+        ],
     },
     "PA04": {  # DESC (Derechos Económicos, Sociales y Culturales)
         "question_id": "Q133",
@@ -995,13 +1716,13 @@ PATTERNS_D3_Q3_BY_POLICY_AREA: dict[str, dict[str, Any]] = {
         "trazabilidad_organizacional": [
             r"Secretaría de Educación|Secretaría de Salud|Oficina de Vivienda",
             r"articulado con la ESE Hospital|ICBF",
-            r"convenio con|contrato de obra No\."
+            r"convenio con|contrato de obra No\.",
         ],
         "trazabilidad_presupuestal": [
             r"código BPIN|proyecto de inversión para educación|salud|vivienda",
             r"programa del PPI|línea de inversión en desarrollo social",
-            r"recursos del proyecto|presupuesto del PAE"
-        ]
+            r"recursos del proyecto|presupuesto del PAE",
+        ],
     },
     "PA05": {  # Víctimas/Paz
         "question_id": "Q163",
@@ -1009,13 +1730,13 @@ PATTERNS_D3_Q3_BY_POLICY_AREA: dict[str, dict[str, Any]] = {
         "trazabilidad_organizacional": [
             r"Enlace Municipal de Víctimas|Secretaría de Gobierno",
             r"articulado con la Personería|UARIV territorial",
-            r"convenio con|operado por"
+            r"convenio con|operado por",
         ],
         "trazabilidad_presupuestal": [
             r"código BPIN|proyecto de inversión para la paz y reconciliación",
             r"programa del PPI|línea de inversión en víctimas",
-            r"recursos del FONSET|presupuesto para el PAT"
-        ]
+            r"recursos del FONSET|presupuesto para el PAT",
+        ],
     },
     "PA06": {  # Niñez/Juventud
         "question_id": "Q193",
@@ -1023,26 +1744,26 @@ PATTERNS_D3_Q3_BY_POLICY_AREA: dict[str, dict[str, Any]] = {
         "trazabilidad_organizacional": [
             r"Secretaría de Desarrollo Social|Educación|Salud",
             r"articulado con el ICBF|Comisaría de Familia",
-            r"convenio con|operado por"
+            r"convenio con|operado por",
         ],
         "trazabilidad_presupuestal": [
             r"código BPIN|proyecto de inversión para primera infancia",
             r"programa del PPI|línea de inversión en juventud",
-            r"recursos del SGP para educación|presupuesto del PAE"
-        ]
+            r"recursos del SGP para educación|presupuesto del PAE",
+        ],
     },
     "PA07": {  # Tierras
         "question_id": "Q223",
         "question_text": "¿Los productos de tierras tienen trazabilidad presupuestal y organizacional?",
         "trazabilidad_organizacional": [
             r"Secretaría de Planeación|Infraestructura|UMATA",
-            r"articulado con el IGAC|convenio con INVIAS|operado por"
+            r"articulado con el IGAC|convenio con INVIAS|operado por",
         ],
         "trazabilidad_presupuestal": [
             r"código BPIN|proyecto de inversión para catastro multipropósito",
             r"programa del PPI|línea de inversión en desarrollo rural",
-            r"recursos del proyecto|presupuesto para la red vial"
-        ]
+            r"recursos del proyecto|presupuesto para la red vial",
+        ],
     },
     "PA08": {  # Líderes DDHH
         "question_id": "Q253",
@@ -1050,13 +1771,13 @@ PATTERNS_D3_Q3_BY_POLICY_AREA: dict[str, dict[str, Any]] = {
         "trazabilidad_organizacional": [
             r"Secretaría de Gobierno|Despacho del Alcalde|Personería Municipal",
             r"articulado con la UNP|en alianza con plataformas de DDHH",
-            r"convenio con|operado por"
+            r"convenio con|operado por",
         ],
         "trazabilidad_presupuestal": [
             r"código BPIN|proyecto de inversión para garantías y DDHH",
             r"programa del PPI|línea de inversión en seguridad y convivencia",
-            r"recursos del proyecto|presupuesto para la Mesa de Garantías"
-        ]
+            r"recursos del proyecto|presupuesto para la Mesa de Garantías",
+        ],
     },
     "PA09": {  # PPL (Personas Privadas de Libertad)
         "question_id": "Q283",
@@ -1064,13 +1785,13 @@ PATTERNS_D3_Q3_BY_POLICY_AREA: dict[str, dict[str, Any]] = {
         "trazabilidad_organizacional": [
             r"Secretaría de Gobierno|Secretaría de Salud|Personería Municipal",
             r"articulado con el INPEC|convenio con la ESE del municipio",
-            r"contrato de obra No\.|contrato de suministro de alimentos"
+            r"contrato de obra No\.|contrato de suministro de alimentos",
         ],
         "trazabilidad_presupuestal": [
             r"código BPIN|proyecto de inversión para infraestructura carcelaria",
             r"programa del PPI|línea de inversión en seguridad y justicia",
-            r"recursos del proyecto|presupuesto para atención a PPL"
-        ]
+            r"recursos del proyecto|presupuesto para atención a PPL",
+        ],
     },
     "PA10": {  # Migración
         "question_id": "Q043",
@@ -1078,20 +1799,20 @@ PATTERNS_D3_Q3_BY_POLICY_AREA: dict[str, dict[str, Any]] = {
         "trazabilidad_organizacional": [
             r"Secretaría de Gobierno|Desarrollo Social|Enlace de Migración",
             r"articulado con la Personería|operado por un socio de la cooperación \(ONG\)",
-            r"convenio con|contrato de suministro"
+            r"convenio con|contrato de suministro",
         ],
         "trazabilidad_presupuestal": [
             r"código BPIN|proyecto de inversión para atención a población migrante",
             r"programa del PPI|línea de inversión en integración",
-            r"recursos del proyecto|presupuesto para el PAO"
-        ]
-    }
+            r"recursos del proyecto|presupuesto para el PAO",
+        ],
+    },
 }
 
 # Expected elements common to all Policy Areas for D3-Q3
 EXPECTED_ELEMENTS_D3_Q3: list[dict[str, Any]] = [
     {"type": "trazabilidad_organizacional", "required": True},
-    {"type": "trazabilidad_presupuestal", "required": True}
+    {"type": "trazabilidad_presupuestal", "required": True},
 ]
 
 # Scoring configuration for D3-Q3 slot
@@ -1100,17 +1821,14 @@ SCORING_CONFIG_D3_Q3: dict[str, Any] = {
     "modality_behavior": "count_and_scale",
     "aggregation": "presence_threshold",
     "threshold": 0.7,
-    "scale": [0, 1, 2, 3]
+    "scale": [0, 1, 2, 3],
 }
 
 
 class SemanticAnalyzer:
     """Advanced semantic analysis for municipal documents."""
 
-    def __init__(
-        self,
-        ontology: MunicipalOntology
-    ) -> None:
+    def __init__(self, ontology: MunicipalOntology) -> None:
         """
         Initialize SemanticAnalyzer.
 
@@ -1127,15 +1845,17 @@ class SemanticAnalyzer:
         # - Removed: _monolith_index and _patterns_resolved (never used, questionnaire coupling)
         # - Kept: Calibration loading (computational results, method-specific parameters)
         # - Kept: Unit of analysis stats (PDT/PDM structure detection)
-        
+
         # Load method-specific calibration (computational results, not questionnaire data)
         calib = self._load_json(Path("artifacts/plan1/calibration/analyzer_one_calibration.json"))
         self._calibration = calib
         self.thresholds_by_base_slot = calib["thresholds_by_base_slot"]
         self._slot_thresholds = {slot: self._get_slot_threshold(slot) for slot in ALL_BASE_SLOTS}
-        
+
         # Load unit of analysis structure stats (PDT/PDM natural blocks)
-        self._unit_of_analysis_stats = self._load_unit_of_analysis_stats(Path("pdt_analysis_report.json"))
+        self._unit_of_analysis_stats = self._load_unit_of_analysis_stats(
+            Path("pdt_analysis_report.json")
+        )
 
         # TF-IDF configuration from calibration
         self.max_features = calib["max_features"]
@@ -1146,7 +1866,7 @@ class SemanticAnalyzer:
             self.vectorizer = TfidfVectorizer(
                 max_features=self.max_features,
                 stop_words=None,  # Spanish text - no English stopwords
-                ngram_range=self.ngram_range
+                ngram_range=self.ngram_range,
             )
         else:
             self.vectorizer = None
@@ -1214,12 +1934,13 @@ class SemanticAnalyzer:
         return {
             "base_slots_count": base_slots_count,
             "theoretical_max_segments_per_slot": theoretical_max_segments,
-            "expected_segment_budget_by_slot": {slot: theoretical_max_segments for slot in ALL_BASE_SLOTS},
+            "expected_segment_budget_by_slot": dict.fromkeys(
+                ALL_BASE_SLOTS, theoretical_max_segments
+            ),
             "unit_of_analysis_natural_blocks": self._unit_of_analysis_stats,
             "unit_of_analysis_source_path": "pdt_analysis_report.json",
         }
 
-    
     def extract_semantic_cube(self, document_segments: list[str]) -> dict[str, Any]:
         """Extract multidimensional semantic cube from document segments."""
 
@@ -1235,19 +1956,15 @@ class SemanticAnalyzer:
         semantic_cube = {
             "dimensions": {
                 "base_slots": {slot: [] for slot in ALL_BASE_SLOTS},
-                "policy_domains": defaultdict(list)
+                "policy_domains": defaultdict(list),
             },
-            "measures": {
-                "semantic_density": [],
-                "coherence_scores": [],
-                "complexity_metrics": []
-            },
+            "measures": {"semantic_density": [], "coherence_scores": [], "complexity_metrics": []},
             "metadata": {
                 "extraction_timestamp": datetime.now().isoformat(),
                 "total_segments": len(document_segments),
                 "processing_parameters": {},
                 "segmentation": self._build_segmentation_metadata(len(document_segments)),
-            }
+            },
         }
 
         # Process each segment
@@ -1286,7 +2003,9 @@ class SemanticAnalyzer:
         else:
             semantic_cube["measures"]["overall_coherence"] = 0.0
 
-        semantic_cube["measures"]["semantic_complexity"] = self._calculate_semantic_complexity(semantic_cube)
+        semantic_cube["measures"]["semantic_complexity"] = self._calculate_semantic_complexity(
+            semantic_cube
+        )
 
         logger.info(f"Extracted semantic cube from {len(document_segments)} segments")
         return semantic_cube
@@ -1296,10 +2015,9 @@ class SemanticAnalyzer:
             raise FileNotFoundError(f"Required artifact missing: {path}")
         return json.loads(path.read_text())
 
-    
     def _empty_semantic_cube(self) -> dict[str, Any]:
         """Return empty semantic cube structure.
-        
+
         Dimensions:
         - base_slots: D1-Q1..D6-Q5 (30 analytical base slots)
         - policy_domains: PA01-PA10 (10 policy areas)
@@ -1307,23 +2025,22 @@ class SemanticAnalyzer:
         return {
             "dimensions": {
                 "base_slots": {slot: [] for slot in ALL_BASE_SLOTS},
-                "policy_domains": {}
+                "policy_domains": {},
             },
             "measures": {
                 "semantic_density": [],
                 "coherence_scores": [],
                 "overall_coherence": 0.0,
-                "semantic_complexity": 0.0
+                "semantic_complexity": 0.0,
             },
             "metadata": {
                 "extraction_timestamp": datetime.now().isoformat(),
                 "total_segments": 0,
                 "processing_parameters": {},
                 "segmentation": self._build_segmentation_metadata(0),
-            }
+            },
         }
 
-    
     def _vectorize_segments(self, segments: list[str]) -> np.ndarray:
         """Vectorize document segments using TF-IDF."""
         calibration_path = CAL_ROOT / "analyzer_one_calibration.json"
@@ -1345,7 +2062,6 @@ class SemanticAnalyzer:
                 f"Generate calibration via: {generation_cmd}"
             ) from exc
 
-    
     def _process_segment(self, segment: str, idx: int, vector) -> dict[str, Any]:
         """Process individual segment and extract features."""
 
@@ -1358,10 +2074,10 @@ class SemanticAnalyzer:
                 sentences = sent_tokenize(segment)
             except:
                 # Fallback to simple splitting
-                sentences = [s.strip() for s in re.split(r'[.!?]+', segment) if len(s.strip()) > 10]
+                sentences = [s.strip() for s in re.split(r"[.!?]+", segment) if len(s.strip()) > 10]
         else:
             # Fallback to simple splitting
-            sentences = [s.strip() for s in re.split(r'[.!?]+', segment) if len(s.strip()) > 10]
+            sentences = [s.strip() for s in re.split(r"[.!?]+", segment) if len(s.strip()) > 10]
 
         # Calculate semantic density (simplified)
         semantic_density = len(set(words)) / len(words) if words else 0.0
@@ -1380,10 +2096,9 @@ class SemanticAnalyzer:
             "word_count": len(words),
             "sentence_count": len(sentences),
             "semantic_density": semantic_density,
-            "coherence_score": coherence_score
+            "coherence_score": coherence_score,
         }
 
-    
     def _select_policy_area(self, domain_scores: dict[str, float]) -> str | None:
         if not domain_scores:
             return None
@@ -1462,7 +2177,9 @@ class SemanticAnalyzer:
         if slot_scores:
             best_score = max(slot_scores.values())
             if best_score > 0.0:
-                best_slots = sorted(slot for slot, score in slot_scores.items() if score == best_score)
+                best_slots = sorted(
+                    slot for slot, score in slot_scores.items() if score == best_score
+                )
                 best_slot = best_slots[0] if best_slots else None
         return {
             "best_slot": best_slot,
@@ -1477,25 +2194,24 @@ class SemanticAnalyzer:
         _ = segment
         return {}
 
-    
     def _classify_policy_domain(self, segment: str) -> dict[str, float]:
         """
         Classify segment by Policy Area (PA01-PA10) using keyword matching.
-        
+
         CANONICAL REFACTORING: Uses frozen policy areas from canonical_specs.py
         Originally extracted from questionnaire_monolith.json, now deterministic.
-        
+
         Args:
             segment: Text segment to classify
-            
+
         Returns:
             dict[str, float]: Score per Policy Area.
                 Keys: PA01, PA02, PA03, PA04, PA05, PA06, PA07, PA08, PA09, PA10
                 Values: Normalized score [0.0-1.0] based on keyword matches
-                
+
         Contract:
             - Output keys MUST be exactly: {PA01, PA02, PA03, PA04, PA05, PA06, PA07, PA08, PA09, PA10}
-            - Output keys MUST NOT be: {economic_development, social_development, 
+            - Output keys MUST NOT be: {economic_development, social_development,
               territorial_development, institutional_development}
             - Scoring: count(matched_keywords) / len(total_keywords_for_PA)
         """
@@ -1506,7 +2222,7 @@ class SemanticAnalyzer:
             if not keywords:
                 policy_area_scores[pa_id] = 0.0
                 continue
-                
+
             match_count = 0
             for keyword in keywords:
                 keyword_lower = keyword.lower()
@@ -1526,7 +2242,6 @@ class SemanticAnalyzer:
 
         return policy_area_scores
 
-    
     def _calculate_semantic_complexity(self, semantic_cube: dict[str, Any]) -> float:
         """Calculate semantic complexity of the cube."""
 
@@ -1541,9 +2256,11 @@ class SemanticAnalyzer:
         max_expected_concepts = 20
         return min(1.0, len(unique_concepts) / max_expected_concepts)
 
+
 # ---------------------------------------------------------------------------
 # 3. PERFORMANCE ANALYZER
 # ---------------------------------------------------------------------------
+
 
 class PerformanceAnalyzer:
     """Analyze value chain performance with operational loss functions."""
@@ -1555,7 +2272,6 @@ class PerformanceAnalyzer:
         else:
             self.bottleneck_detector = None
 
-    
     def analyze_performance(self, semantic_cube: dict[str, Any]) -> dict[str, Any]:
         """Analyze performance indicators across canonical base slots."""
 
@@ -1610,8 +2326,12 @@ class PerformanceAnalyzer:
         }
 
         for slot, metrics in performance_analysis["value_chain_metrics"].items():
-            performance_analysis["operational_loss_functions"][slot] = self._calculate_loss_functions(
-                metrics, target_throughput=target_throughput, target_efficiency=target_efficiency
+            performance_analysis["operational_loss_functions"][slot] = (
+                self._calculate_loss_functions(
+                    metrics,
+                    target_throughput=target_throughput,
+                    target_efficiency=target_efficiency,
+                )
             )
 
         # Generate recommendations
@@ -1624,7 +2344,6 @@ class PerformanceAnalyzer:
         )
         return performance_analysis
 
-    
     def _calculate_throughput_metrics(
         self,
         slot: str,
@@ -1666,7 +2385,8 @@ class PerformanceAnalyzer:
                 present = sum(
                     1
                     for seg in segments
-                    if seg.get("expected_elements_signals", {}).get(slot, {}).get(element, 0.0) > 0.0
+                    if seg.get("expected_elements_signals", {}).get(slot, {}).get(element, 0.0)
+                    > 0.0
                 )
                 coverage_detail[element] = present / len(segments)
             expected_elements_coverage = sum(coverage_detail.values()) / len(expected_elements)
@@ -1684,7 +2404,6 @@ class PerformanceAnalyzer:
             "expected_elements_detail": coverage_detail,
         }
 
-    
     def _detect_bottlenecks(
         self,
         slot: str,
@@ -1693,10 +2412,7 @@ class PerformanceAnalyzer:
     ) -> dict[str, Any]:
         """Detect bottlenecks in a base slot."""
 
-        bottleneck_analysis = {
-            "capacity_constraints": {},
-            "bottleneck_scores": {}
-        }
+        bottleneck_analysis = {"capacity_constraints": {}, "bottleneck_scores": {}}
 
         if expected_elements and segments:
             missing = [
@@ -1710,13 +2426,14 @@ class PerformanceAnalyzer:
             missing_ratio = len(missing) / len(expected_elements)
             bottleneck_analysis["bottleneck_scores"]["expected_elements_missing"] = {
                 "score": missing_ratio,
-                "severity": "high" if missing_ratio > 0.5 else "medium" if missing_ratio > 0.2 else "low",
+                "severity": (
+                    "high" if missing_ratio > 0.5 else "medium" if missing_ratio > 0.2 else "low"
+                ),
                 "missing": missing,
             }
 
         return bottleneck_analysis
 
-    
     def _calculate_loss_functions(
         self,
         metrics: dict[str, Any],
@@ -1728,7 +2445,7 @@ class PerformanceAnalyzer:
 
         # Throughput loss (quadratic)
         throughput_gap = max(0, target_throughput - metrics["throughput"])
-        throughput_loss = throughput_gap ** 2
+        throughput_loss = throughput_gap**2
 
         # Efficiency loss (exponential)
         efficiency_gap = max(0, target_efficiency - metrics["efficiency_score"])
@@ -1749,7 +2466,7 @@ class PerformanceAnalyzer:
             "throughput_loss": float(throughput_loss),
             "efficiency_loss": float(efficiency_loss),
             "time_loss": float(time_loss),
-            "composite_loss": float(composite_loss)
+            "composite_loss": float(composite_loss),
         }
 
     @staticmethod
@@ -1769,34 +2486,41 @@ class PerformanceAnalyzer:
         fraction = rank - lo
         return float(sorted_values[lo] + (sorted_values[hi] - sorted_values[lo]) * fraction)
 
-    
-    def _generate_recommendations(self, performance_analysis: dict[str, Any]) -> list[dict[str, Any]]:
+    def _generate_recommendations(
+        self, performance_analysis: dict[str, Any]
+    ) -> list[dict[str, Any]]:
         """Generate optimization recommendations."""
 
         recommendations = []
 
         for link_name, metrics in performance_analysis["value_chain_metrics"].items():
             if metrics["efficiency_score"] < 0.5:
-                recommendations.append({
-                    "link": link_name,
-                    "type": "efficiency_improvement",
-                    "priority": "high",
-                    "description": f"Critical efficiency improvement needed for {link_name}"
-                })
+                recommendations.append(
+                    {
+                        "link": link_name,
+                        "type": "efficiency_improvement",
+                        "priority": "high",
+                        "description": f"Critical efficiency improvement needed for {link_name}",
+                    }
+                )
 
             if metrics["throughput"] < 20:
-                recommendations.append({
-                    "link": link_name,
-                    "type": "throughput_optimization",
-                    "priority": "medium",
-                    "description": f"Throughput optimization required for {link_name}"
-                })
+                recommendations.append(
+                    {
+                        "link": link_name,
+                        "type": "throughput_optimization",
+                        "priority": "medium",
+                        "description": f"Throughput optimization required for {link_name}",
+                    }
+                )
 
         return recommendations
+
 
 # ---------------------------------------------------------------------------
 # 4. TEXT MINING ENGINE
 # ---------------------------------------------------------------------------
+
 
 class TextMiningEngine:
     """Advanced text mining for critical diagnosis."""
@@ -1808,25 +2532,26 @@ class TextMiningEngine:
         self.stop_words = set()
         if stopwords is not None:
             try:
-                self.stop_words = set(stopwords.words('spanish'))
+                self.stop_words = set(stopwords.words("spanish"))
             except LookupError:
                 # Download if not available
                 try:
                     import nltk
-                    nltk.download('stopwords')
-                    self.stop_words = set(stopwords.words('spanish'))
+
+                    nltk.download("stopwords")
+                    self.stop_words = set(stopwords.words("spanish"))
                 except:
                     logger.warning("Could not download NLTK stopwords. Using empty set.")
 
-    
-    def diagnose_critical_links(self, semantic_cube: dict[str, Any],
-                                performance_analysis: dict[str, Any]) -> dict[str, Any]:
+    def diagnose_critical_links(
+        self, semantic_cube: dict[str, Any], performance_analysis: dict[str, Any]
+    ) -> dict[str, Any]:
         """Diagnose critical base slots."""
 
         diagnosis_results = {
             "critical_links": {},
             "risk_assessment": {},
-            "intervention_recommendations": {}
+            "intervention_recommendations": {},
         }
 
         # Identify critical links
@@ -1846,7 +2571,7 @@ class TextMiningEngine:
 
             diagnosis_results["critical_links"][slot] = {
                 "criticality_score": criticality_score,
-                "text_analysis": text_analysis
+                "text_analysis": text_analysis,
             }
             diagnosis_results["risk_assessment"][slot] = risk_assessment
             diagnosis_results["intervention_recommendations"][slot] = interventions
@@ -1854,14 +2579,13 @@ class TextMiningEngine:
         logger.info(f"Diagnosed {len(critical_links)} critical links")
         return diagnosis_results
 
-    
     def _identify_critical_links(self, performance_analysis: dict[str, Any]) -> dict[str, float]:
         """Identify critical links based on performance metrics."""
 
         critical_links = {}
 
         for link_name, metrics in performance_analysis["value_chain_metrics"].items():
-            criticality_score = 0.0 # Refactored
+            criticality_score = 0.0  # Refactored
 
             # Low efficiency indicates criticality
             if metrics["efficiency_score"] < 0.5:
@@ -1873,7 +2597,9 @@ class TextMiningEngine:
 
             # High loss functions indicate criticality
             if link_name in performance_analysis["operational_loss_functions"]:
-                loss = performance_analysis["operational_loss_functions"][link_name]["composite_loss"]
+                loss = performance_analysis["operational_loss_functions"][link_name][
+                    "composite_loss"
+                ]
                 normalized_loss = min(1.0, loss / 100)
                 criticality_score += normalized_loss * 0.3
 
@@ -1882,7 +2608,6 @@ class TextMiningEngine:
 
         return critical_links
 
-    
     def _analyze_link_text(self, segments: list[dict]) -> dict[str, Any]:
         """Analyze text content for a link."""
 
@@ -1891,16 +2616,19 @@ class TextMiningEngine:
 
         # Combine all text
         combined_text = " ".join([seg["text"] for seg in segments])
-        words = [word.lower() for word in combined_text.split()
-                 if word.lower() not in self.stop_words and len(word) > 2]
+        words = [
+            word.lower()
+            for word in combined_text.split()
+            if word.lower() not in self.stop_words and len(word) > 2
+        ]
 
         # Extract keywords
         word_freq = Counter(words)
         keywords = [word for word, count in word_freq.most_common(10)]
 
         # Simple sentiment analysis
-        positive_words = ['bueno', 'excelente', 'positivo', 'lograr', 'éxito']
-        negative_words = ['problema', 'dificultad', 'limitación', 'falta', 'déficit']
+        positive_words = ["bueno", "excelente", "positivo", "lograr", "éxito"]
+        negative_words = ["problema", "dificultad", "limitación", "falta", "déficit"]
 
         positive_count = sum(1 for word in words if word in positive_words)
         negative_count = sum(1 for word in words if word in negative_words)
@@ -1917,17 +2645,13 @@ class TextMiningEngine:
             "keywords": keywords,
             "sentiment": sentiment,
             "positive_indicators": positive_count,
-            "negative_indicators": negative_count
+            "negative_indicators": negative_count,
         }
 
-    
     def _assess_risks(self, segments: list[dict], text_analysis: dict[str, Any]) -> dict[str, Any]:
         """Assess risks for a value chain link."""
 
-        risk_assessment = {
-            "overall_risk": "low",
-            "risk_factors": []
-        }
+        risk_assessment = {"overall_risk": "low", "risk_factors": []}
 
         # Sentiment-based risk
         if text_analysis["sentiment"] == "negative":
@@ -1949,39 +2673,47 @@ class TextMiningEngine:
 
         return risk_assessment
 
-    
-    def _generate_interventions(self, link_name: str, risk_assessment: dict[str, Any],
-                                text_analysis: dict[str, Any]) -> list[dict[str, str]]:
+    def _generate_interventions(
+        self, link_name: str, risk_assessment: dict[str, Any], text_analysis: dict[str, Any]
+    ) -> list[dict[str, str]]:
         """Generate intervention recommendations."""
 
         interventions = []
 
         if risk_assessment["overall_risk"] == "high":
-            interventions.append({
-                "type": "immediate",
-                "description": f"Priority intervention required for {link_name}",
-                "timeline": "1-3 months"
-            })
+            interventions.append(
+                {
+                    "type": "immediate",
+                    "description": f"Priority intervention required for {link_name}",
+                    "timeline": "1-3 months",
+                }
+            )
 
         if text_analysis["sentiment"] == "negative":
-            interventions.append({
-                "type": "stakeholder_engagement",
-                "description": "Address concerns through stakeholder engagement",
-                "timeline": "ongoing"
-            })
+            interventions.append(
+                {
+                    "type": "stakeholder_engagement",
+                    "description": "Address concerns through stakeholder engagement",
+                    "timeline": "ongoing",
+                }
+            )
 
         if text_analysis["word_count"] < 50:
-            interventions.append({
-                "type": "documentation",
-                "description": "Improve documentation and content development",
-                "timeline": "3-6 months"
-            })
+            interventions.append(
+                {
+                    "type": "documentation",
+                    "description": "Improve documentation and content development",
+                    "timeline": "3-6 months",
+                }
+            )
 
         return interventions
+
 
 # ---------------------------------------------------------------------------
 # 5. COMPREHENSIVE ANALYZER
 # ---------------------------------------------------------------------------
+
 
 class MunicipalAnalyzer:
     """Main analyzer integrating all components."""
@@ -1994,7 +2726,6 @@ class MunicipalAnalyzer:
 
         logger.info("MunicipalAnalyzer initialized successfully")
 
-    
     def analyze_document(self, document_path: str) -> dict[str, Any]:
         """Perform comprehensive analysis of a municipal document."""
 
@@ -2027,17 +2758,18 @@ class MunicipalAnalyzer:
                 "semantic_cube": semantic_cube,
                 "performance_analysis": performance_analysis,
                 "critical_diagnosis": critical_diagnosis,
-                "summary": self._generate_summary(semantic_cube, performance_analysis, critical_diagnosis)
+                "summary": self._generate_summary(
+                    semantic_cube, performance_analysis, critical_diagnosis
+                ),
             }
 
             logger.info(f"Analysis completed in {time.time() - start_time:.2f} seconds")
             return results
 
         except Exception as e:
-            logger.error(f"Analysis failed: {str(e)}")
+            logger.error(f"Analysis failed: {e!s}")
             raise
 
-    
     def _load_document(self, document_path: str) -> list[str]:
         """Load and segment document."""
 
@@ -2047,42 +2779,48 @@ class MunicipalAnalyzer:
         content = read_text_file(document_path)
 
         # Simple sentence segmentation
-        sentences = re.split(r'[.!?]+', content)
+        sentences = re.split(r"[.!?]+", content)
 
         # Clean and filter segments
         segments = []
         for sentence in sentences:
             cleaned = sentence.strip()
-            if len(cleaned) > 20 and not cleaned.startswith(('Página', 'Page')):
+            if len(cleaned) > 20 and not cleaned.startswith(("Página", "Page")):
                 segments.append(cleaned)
 
         return segments[:100]  # Limit for processing efficiency
 
-    
-    def _generate_summary(self, semantic_cube: dict[str, Any],
-                          performance_analysis: dict[str, Any],
-                          critical_diagnosis: dict[str, Any]) -> dict[str, Any]:
+    def _generate_summary(
+        self,
+        semantic_cube: dict[str, Any],
+        performance_analysis: dict[str, Any],
+        critical_diagnosis: dict[str, Any],
+    ) -> dict[str, Any]:
         """Generate executive summary of analysis."""
 
         # Count dimensions
         total_segments = semantic_cube["metadata"]["total_segments"]
-        base_slots_covered = sum(1 for segments in semantic_cube["dimensions"]["base_slots"].values() if segments)
+        base_slots_covered = sum(
+            1 for segments in semantic_cube["dimensions"]["base_slots"].values() if segments
+        )
         policy_domain_coverage = len(semantic_cube["dimensions"]["policy_domains"])
 
         # Performance summary
         if performance_analysis["value_chain_metrics"]:
             if np is not None:
-                avg_efficiency = np.mean([
-                    metrics["efficiency_score"]
-                    for metrics in performance_analysis["value_chain_metrics"].values()
-                ])
+                avg_efficiency = np.mean(
+                    [
+                        metrics["efficiency_score"]
+                        for metrics in performance_analysis["value_chain_metrics"].values()
+                    ]
+                )
             else:
                 avg_efficiency = sum(
                     metrics["efficiency_score"]
                     for metrics in performance_analysis["value_chain_metrics"].values()
                 ) / len(performance_analysis["value_chain_metrics"])
         else:
-            avg_efficiency = 0.0 # Refactored
+            avg_efficiency = 0.0  # Refactored
 
         # Critical links count
         critical_links_count = len(critical_diagnosis["critical_links"])
@@ -2091,21 +2829,27 @@ class MunicipalAnalyzer:
             "document_coverage": {
                 "total_segments_analyzed": total_segments,
                 "base_slots_covered": base_slots_covered,
-                "policy_domains_covered": policy_domain_coverage
+                "policy_domains_covered": policy_domain_coverage,
             },
             "performance_summary": {
                 "average_efficiency_score": float(avg_efficiency),
-                "recommendations_count": len(performance_analysis["optimization_recommendations"])
+                "recommendations_count": len(performance_analysis["optimization_recommendations"]),
             },
             "risk_assessment": {
                 "critical_links_identified": critical_links_count,
-                "overall_risk_level": "high" if critical_links_count > 2 else "medium" if critical_links_count > 0 else "low"
-            }
+                "overall_risk_level": (
+                    "high"
+                    if critical_links_count > 2
+                    else "medium" if critical_links_count > 0 else "low"
+                ),
+            },
         }
+
 
 # ---------------------------------------------------------------------------
 # 6. EXAMPLE USAGE AND UTILITIES
 # ---------------------------------------------------------------------------
+
 
 def example_usage():
     """Example usage of the Municipal Analyzer."""
@@ -2155,7 +2899,7 @@ def example_usage():
 
         # Semantic analysis summary
         print("\nSEMANTIC ANALYSIS:")
-        cube = results['semantic_cube']
+        cube = results["semantic_cube"]
         print(f"- Total segments processed: {cube['metadata']['total_segments']}")
         print(f"- Overall coherence: {cube['measures']['overall_coherence']:.2f}")
         print(f"- Semantic complexity: {cube['measures']['semantic_complexity']:.2f}")
@@ -2166,51 +2910,55 @@ def example_usage():
                 print(f"  - {slot}: {len(segments)} segments")
 
         print("\nPolicy Domains Covered:")
-        for domain, segments in cube['dimensions']['policy_domains'].items():
+        for domain, segments in cube["dimensions"]["policy_domains"].items():
             print(f"  - {domain}: {len(segments)} segments")
 
         # Performance analysis summary
         print("\nPERFORMANCE ANALYSIS:")
-        perf = results['performance_analysis']
-        for link, metrics in perf['value_chain_metrics'].items():
+        perf = results["performance_analysis"]
+        for link, metrics in perf["value_chain_metrics"].items():
             print(f"\n{link.replace('_', ' ').title()}:")
             print(f"  - Efficiency: {metrics['efficiency_score']:.2f}")
             print(f"  - Throughput: {metrics['throughput']:.1f}")
             print(f"  - Capacity utilization: {metrics['capacity_utilization']:.2f}")
 
         print(f"\nOptimization Recommendations: {len(perf['optimization_recommendations'])}")
-        for rec in perf['optimization_recommendations'][:3]:  # Show top 3
+        for rec in perf["optimization_recommendations"][:3]:  # Show top 3
             print(f"  - {rec['description']} (Priority: {rec['priority']})")
 
         # Critical diagnosis summary
         print("\nCRITICAL DIAGNOSIS:")
-        diagnosis = results['critical_diagnosis']
+        diagnosis = results["critical_diagnosis"]
         print(f"Critical links identified: {len(diagnosis['critical_links'])}")
 
-        for link, info in diagnosis['critical_links'].items():
+        for link, info in diagnosis["critical_links"].items():
             print(f"\n{link.replace('_', ' ').title()}:")
             print(f"  - Criticality score: {info['criticality_score']:.2f}")
-            text_analysis = info['text_analysis']
+            text_analysis = info["text_analysis"]
             print(f"  - Sentiment: {text_analysis['sentiment']}")
             print(f"  - Key words: {', '.join(text_analysis['keywords'][:5])}")
 
             # Show risk assessment
-            if link in diagnosis['risk_assessment']:
-                risk = diagnosis['risk_assessment'][link]
+            if link in diagnosis["risk_assessment"]:
+                risk = diagnosis["risk_assessment"][link]
                 print(f"  - Risk level: {risk['overall_risk']}")
-                if risk['risk_factors']:
+                if risk["risk_factors"]:
                     print(f"  - Risk factors: {len(risk['risk_factors'])}")
 
             # Show interventions
-            if link in diagnosis['intervention_recommendations']:
-                interventions = diagnosis['intervention_recommendations'][link]
+            if link in diagnosis["intervention_recommendations"]:
+                interventions = diagnosis["intervention_recommendations"][link]
                 print(f"  - Recommended interventions: {len(interventions)}")
 
         # Overall summary
         print("\nEXECUTIVE SUMMARY:")
-        summary = results['summary']
-        print(f"- Document coverage: {summary['document_coverage']['total_segments_analyzed']} segments")
-        print(f"- Average efficiency: {summary['performance_summary']['average_efficiency_score']:.2f}")
+        summary = results["summary"]
+        print(
+            f"- Document coverage: {summary['document_coverage']['total_segments_analyzed']} segments"
+        )
+        print(
+            f"- Average efficiency: {summary['performance_summary']['average_efficiency_score']:.2f}"
+        )
         print(f"- Overall risk level: {summary['risk_assessment']['overall_risk_level']}")
 
         return results
@@ -2225,14 +2973,16 @@ def example_usage():
         # Clean up
         try:
             import os
+
             os.remove(SAMPLE_MUNICIPAL_PLAN)
         except (FileNotFoundError, OSError):
             pass
 
+
 @dataclass
 class CanonicalQuestionContract:
     """Canonical contract for evidence collection (method capability metadata).
-    
+
     CANONICAL REFACTORING: legacy_question_id kept for traceability only.
     Contract defines evidence requirements (what the method needs), not Q-to-method routing.
     """
@@ -2253,6 +3003,7 @@ class CanonicalQuestionContract:
     canonical_question_id: str = ""
     contract_hash: str = ""
 
+
 @dataclass
 class EvidenceSegment:
     """Single segment of text matched against a question contract."""
@@ -2262,9 +3013,10 @@ class EvidenceSegment:
     segment_hash: str
     matched_patterns: list[str]
 
+
 class CanonicalQuestionSegmenter:
     """Deterministic segmenter using frozen canonical patterns.
-    
+
     CANONICAL REFACTORING: No longer loads questionnaire at runtime.
     Uses PDT/PDM structure patterns from canonical_specs.py
     """
@@ -2289,7 +3041,6 @@ class CanonicalQuestionSegmenter:
             rubric_path=rubric_path,
         )
 
-    
     def segment_plan(self, plan_text: str) -> dict[str, Any]:
         """Segment *plan_text* and emit evidence manifests per canonical contract."""
 
@@ -2298,7 +3049,9 @@ class CanonicalQuestionSegmenter:
             normalized_text,
             method=self.segmentation_method,
         )
-        normalized_segments = [segment.strip() for segment in segments if segment and segment.strip()]
+        normalized_segments = [
+            segment.strip() for segment in segments if segment and segment.strip()
+        ]
 
         matched_contracts = 0
         question_segments: dict[tuple[str, str, str], dict[str, Any]] = {}
@@ -2334,9 +3087,7 @@ class CanonicalQuestionSegmenter:
             "rubric_version": self.rubric_metadata.get("version"),
             "total_contracts": total_contracts,
             "covered_contracts": matched_contracts,
-            "coverage_ratio": (
-                matched_contracts / total_contracts if total_contracts else 0.0
-            ),
+            "coverage_ratio": (matched_contracts / total_contracts if total_contracts else 0.0),
             "total_segments": len(normalized_segments),
             "input_sha256": hashlib.sha256(normalized_text.encode("utf-8")).hexdigest(),
             "contracts_sha256": self.contracts_hash,
@@ -2460,6 +3211,7 @@ class CanonicalQuestionSegmenter:
             },
         }
 
+
 class DocumentProcessor:
     """Utility class for document processing."""
 
@@ -2472,9 +3224,10 @@ class DocumentProcessor:
             from pathlib import Path
 
             import PyPDF2
+
             pdf_path_obj = Path(pdf_path)
 
-            with open(pdf_path_obj, 'rb') as file:
+            with open(pdf_path_obj, "rb") as file:
                 reader = PyPDF2.PdfReader(file)
                 text = ""
                 for page in reader.pages:
@@ -2492,6 +3245,7 @@ class DocumentProcessor:
         """Load text from DOCX file."""
         try:
             import docx
+
             doc = docx.Document(docx_path)
             text = ""
             for paragraph in doc.paragraphs:
@@ -2512,25 +3266,26 @@ class DocumentProcessor:
             # Use NLTK sentence tokenizer if available
             if sent_tokenize is not None:
                 try:
-                    return sent_tokenize(text, language='spanish')
+                    return sent_tokenize(text, language="spanish")
                 except LookupError:
                     # Download if not available
                     try:
                         import nltk
-                        nltk.download('punkt')
-                        return sent_tokenize(text, language='spanish')
+
+                        nltk.download("punkt")
+                        return sent_tokenize(text, language="spanish")
                     except:
                         # Fallback to simple splitting
-                        return [s.strip() for s in re.split(r'[.!?]+', text) if len(s.strip()) > 10]
+                        return [s.strip() for s in re.split(r"[.!?]+", text) if len(s.strip()) > 10]
                 except Exception:
                     # Fallback to simple splitting
-                    return [s.strip() for s in re.split(r'[.!?]+', text) if len(s.strip()) > 10]
+                    return [s.strip() for s in re.split(r"[.!?]+", text) if len(s.strip()) > 10]
             else:
                 # Fallback to simple splitting
-                return [s.strip() for s in re.split(r'[.!?]+', text) if len(s.strip()) > 10]
+                return [s.strip() for s in re.split(r"[.!?]+", text) if len(s.strip()) > 10]
 
         elif method == "paragraph":
-            return [p.strip() for p in text.split('\n\n') if len(p.strip()) > 20]
+            return [p.strip() for p in text.split("\n\n") if len(p.strip()) > 20]
 
         elif method == "fixed_length":
             words = text.split()
@@ -2538,7 +3293,7 @@ class DocumentProcessor:
             segment_length = 50  # words per segment
 
             for i in range(0, len(words), segment_length):
-                segment = " ".join(words[i:i + segment_length])
+                segment = " ".join(words[i : i + segment_length])
                 if len(segment) > 20:
                     segments.append(segment)
 
@@ -2587,8 +3342,7 @@ class DocumentProcessor:
             if not legacy_question_id:
                 continue
             legacy_policy_area = (
-                question.get("metadata", {}).get("policy_area")
-                or legacy_question_id.split("-")[0]
+                question.get("metadata", {}).get("policy_area") or legacy_question_id.split("-")[0]
             )
             dimension_legacy = question.get("dimension") or legacy_question_id.split("-")[1]
             try:
@@ -2618,7 +3372,9 @@ class DocumentProcessor:
 
         common_keys = sorted(set(questionnaire_lookup.keys()) & set(rubric_lookup.keys()))
         if not common_keys:
-            raise ValueError("No overlapping question definitions between questionnaire and rubric metadata")
+            raise ValueError(
+                "No overlapping question definitions between questionnaire and rubric metadata"
+            )
 
         contracts: list[CanonicalQuestionContract] = []
 
@@ -2627,18 +3383,16 @@ class DocumentProcessor:
             rubric_entry = rubric_lookup[key]
             legacy_question_id = questionnaire_entry.get("id") or rubric_entry.get("id")
 
-            legacy_policy_area = (
-                questionnaire_entry.get("metadata", {}).get("policy_area")
-                or rubric_entry.get("policy_area", "")
-            )
+            legacy_policy_area = questionnaire_entry.get("metadata", {}).get(
+                "policy_area"
+            ) or rubric_entry.get("policy_area", "")
             canonical_policy_area = inverse_policy_area_map.get(
                 legacy_policy_area,
                 DocumentProcessor._default_policy_area_id(legacy_policy_area),
             )
 
-            dimension_legacy = (
-                questionnaire_entry.get("dimension")
-                or rubric_entry.get("dimension", "")
+            dimension_legacy = questionnaire_entry.get("dimension") or rubric_entry.get(
+                "dimension", ""
             )
             canonical_dimension = DocumentProcessor._to_canonical_dimension_id(dimension_legacy)
 
@@ -2682,8 +3436,7 @@ class DocumentProcessor:
                 verification_patterns=verification_patterns,
                 evaluation_criteria=evaluation_criteria,
                 question_template=(
-                    rubric_entry.get("template")
-                    or questionnaire_entry.get("texto_template", "")
+                    rubric_entry.get("template") or questionnaire_entry.get("texto_template", "")
                 ),
                 scoring_modality=rubric_entry.get("scoring_modality", ""),
                 evidence_sources=evidence_sources,
@@ -2771,6 +3524,7 @@ class DocumentProcessor:
                 return dimension_code
         return dimension_code
 
+
 class ResultsExporter:
     """Export analysis results to different formats."""
 
@@ -2794,55 +3548,59 @@ class ResultsExporter:
             return
 
         try:
-            with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
+            with pd.ExcelWriter(output_path, engine="openpyxl") as writer:
 
                 # Summary sheet
                 summary_data = []
-                summary = results.get('summary', {})
+                summary = results.get("summary", {})
 
                 for category, data in summary.items():
                     if isinstance(data, dict):
                         for key, value in data.items():
-                            summary_data.append({
-                                'Category': category,
-                                'Metric': key,
-                                'Value': value
-                            })
+                            summary_data.append(
+                                {"Category": category, "Metric": key, "Value": value}
+                            )
 
                 if summary_data:
-                    pd.DataFrame(summary_data).to_excel(writer, sheet_name='Summary', index=False)
+                    pd.DataFrame(summary_data).to_excel(writer, sheet_name="Summary", index=False)
 
                 # Performance metrics sheet
                 perf_data = []
-                perf_analysis = results.get('performance_analysis', {})
+                perf_analysis = results.get("performance_analysis", {})
 
-                for link, metrics in perf_analysis.get('value_chain_metrics', {}).items():
-                    perf_data.append({
-                        'Value_Chain_Link': link,
-                        'Efficiency_Score': metrics.get('efficiency_score', 0),
-                        'Throughput': metrics.get('throughput', 0),
-                        'Capacity_Utilization': metrics.get('capacity_utilization', 0),
-                        'Segment_Count': metrics.get('segment_count', 0)
-                    })
+                for link, metrics in perf_analysis.get("value_chain_metrics", {}).items():
+                    perf_data.append(
+                        {
+                            "Value_Chain_Link": link,
+                            "Efficiency_Score": metrics.get("efficiency_score", 0),
+                            "Throughput": metrics.get("throughput", 0),
+                            "Capacity_Utilization": metrics.get("capacity_utilization", 0),
+                            "Segment_Count": metrics.get("segment_count", 0),
+                        }
+                    )
 
                 if perf_data:
-                    pd.DataFrame(perf_data).to_excel(writer, sheet_name='Performance', index=False)
+                    pd.DataFrame(perf_data).to_excel(writer, sheet_name="Performance", index=False)
 
                 # Recommendations sheet
                 rec_data = []
-                recommendations = perf_analysis.get('optimization_recommendations', [])
+                recommendations = perf_analysis.get("optimization_recommendations", [])
 
                 for i, rec in enumerate(recommendations):
-                    rec_data.append({
-                        'Recommendation_ID': i + 1,
-                        'Link': rec.get('link', ''),
-                        'Type': rec.get('type', ''),
-                        'Priority': rec.get('priority', ''),
-                        'Description': rec.get('description', '')
-                    })
+                    rec_data.append(
+                        {
+                            "Recommendation_ID": i + 1,
+                            "Link": rec.get("link", ""),
+                            "Type": rec.get("type", ""),
+                            "Priority": rec.get("priority", ""),
+                            "Description": rec.get("description", ""),
+                        }
+                    )
 
                 if rec_data:
-                    pd.DataFrame(rec_data).to_excel(writer, sheet_name='Recommendations', index=False)
+                    pd.DataFrame(rec_data).to_excel(
+                        writer, sheet_name="Recommendations", index=False
+                    )
 
             logger.info(f"Results exported to Excel: {output_path}")
 
@@ -2864,30 +3622,36 @@ class ResultsExporter:
             # Basic info
             lines.append(f"Document: {results.get('document_path', 'Unknown')}\n")
             lines.append(f"Analysis Date: {results.get('analysis_timestamp', 'Unknown')}\n")
-            lines.append(f"Processing Time: {results.get('processing_time_seconds', 0):.2f} seconds\n\n")
+            lines.append(
+                f"Processing Time: {results.get('processing_time_seconds', 0):.2f} seconds\n\n"
+            )
 
             # Summary
-            summary = results.get('summary', {})
+            summary = results.get("summary", {})
             lines.append("EXECUTIVE SUMMARY\n")
             lines.append("-" * 20 + "\n")
 
-            doc_coverage = summary.get('document_coverage', {})
+            doc_coverage = summary.get("document_coverage", {})
             lines.append(f"Segments Analyzed: {doc_coverage.get('total_segments_analyzed', 0)}\n")
             lines.append(f"Base Slots Covered: {doc_coverage.get('base_slots_covered', 0)}\n")
             lines.append(f"Policy Domains: {doc_coverage.get('policy_domains_covered', 0)}\n")
 
-            perf_summary = summary.get('performance_summary', {})
-            lines.append(f"Average Efficiency: {perf_summary.get('average_efficiency_score', 0):.2f}\n")
+            perf_summary = summary.get("performance_summary", {})
+            lines.append(
+                f"Average Efficiency: {perf_summary.get('average_efficiency_score', 0):.2f}\n"
+            )
 
-            risk_summary = summary.get('risk_assessment', {})
-            lines.append(f"Overall Risk Level: {risk_summary.get('overall_risk_level', 'Unknown')}\n\n")
+            risk_summary = summary.get("risk_assessment", {})
+            lines.append(
+                f"Overall Risk Level: {risk_summary.get('overall_risk_level', 'Unknown')}\n\n"
+            )
 
             # Performance details
             lines.append("PERFORMANCE ANALYSIS\n")
             lines.append("-" * 20 + "\n")
 
-            perf_analysis = results.get('performance_analysis', {})
-            for link, metrics in perf_analysis.get('value_chain_metrics', {}).items():
+            perf_analysis = results.get("performance_analysis", {})
+            for link, metrics in perf_analysis.get("value_chain_metrics", {}).items():
                 lines.append(f"\n{link.replace('_', ' ').title()}:\n")
                 lines.append(f"  Efficiency: {metrics.get('efficiency_score', 0):.2f}\n")
                 lines.append(f"  Throughput: {metrics.get('throughput', 0):.1f}\n")
@@ -2897,33 +3661,37 @@ class ResultsExporter:
             lines.append("\n\nRECOMMENDATE OPTIONS\n")
             lines.append("-" * 20 + "\n")
 
-            recommendations = perf_analysis.get('optimization_recommendations', [])
+            recommendations = perf_analysis.get("optimization_recommendations", [])
             for i, rec in enumerate(recommendations, 1):
-                lines.append(f"{i}. {rec.get('description', '')} (Priority: {rec.get('priority', '')})\n")
+                lines.append(
+                    f"{i}. {rec.get('description', '')} (Priority: {rec.get('priority', '')})\n"
+                )
 
             # Critical links
             lines.append("\n\nCRITICAL LINKS\n")
             lines.append("-" * 15 + "\n")
 
-            diagnosis = results.get('critical_diagnosis', {})
-            for link, info in diagnosis.get('critical_links', {}).items():
+            diagnosis = results.get("critical_diagnosis", {})
+            for link, info in diagnosis.get("critical_links", {}).items():
                 lines.append(f"\n{link.replace('_', ' ').title()}:\n")
                 lines.append(f"  Criticality: {info.get('criticality_score', 0):.2f}\n")
 
-                text_analysis = info.get('text_analysis', {})
+                text_analysis = info.get("text_analysis", {})
                 lines.append(f"  Sentiment: {text_analysis.get('sentiment', 'neutral')}\n")
 
-                if link in diagnosis.get('risk_assessment', {}):
-                    risk = diagnosis['risk_assessment'][link]
+                if link in diagnosis.get("risk_assessment", {}):
+                    risk = diagnosis["risk_assessment"][link]
                     lines.append(f"  Risk Level: {risk.get('overall_risk', 'unknown')}\n")
 
             # Delegate to factory for I/O operation
             from farfan_pipeline.analysis.factory import write_text_file
-            write_text_file(''.join(lines), output_path)
+
+            write_text_file("".join(lines), output_path)
             logger.info(f"Summary report exported: {output_path}")
 
         except Exception as e:
             logger.error(f"Error exporting summary report: {e}")
+
 
 # ---------------------------------------------------------------------------
 # 7. MAIN EXECUTION
@@ -2933,6 +3701,7 @@ class ResultsExporter:
 # 8. ADDITIONAL UTILITIES FOR PRODUCTION USE
 # ---------------------------------------------------------------------------
 
+
 class ConfigurationManager:
     """Manage analyzer configuration."""
 
@@ -2940,7 +3709,6 @@ class ConfigurationManager:
         self.config_path = config_path or "analyzer_config.json"
         self.config = self.load_config()
 
-    
     def load_config(self) -> dict[str, Any]:
         """Load configuration from file or create default."""
 
@@ -2948,17 +3716,14 @@ class ConfigurationManager:
             "processing": {
                 "max_segments": 200,
                 "min_segment_length": 20,
-                "segmentation_method": "sentence"
+                "segmentation_method": "sentence",
             },
             "analysis": {
                 "criticality_threshold": 0.4,
                 "efficiency_threshold": 0.5,
-                "throughput_threshold": 20
+                "throughput_threshold": 20,
             },
-            "export": {
-                "include_raw_data": False,
-                "export_formats": ["json", "excel", "summary"]
-            }
+            "export": {"include_raw_data": False, "export_formats": ["json", "excel", "summary"]},
         }
 
         if Path(self.config_path).exists():
@@ -2978,7 +3743,6 @@ class ConfigurationManager:
 
         return default_config
 
-    
     def save_config(self) -> None:
         """Save current configuration to file."""
         # Delegate to factory for I/O operation
@@ -2989,13 +3753,13 @@ class ConfigurationManager:
         except Exception as e:
             logger.error(f"Error saving config: {e}")
 
+
 class BatchProcessor:
     """Process multiple documents in batch."""
 
     def __init__(self, analyzer: MunicipalAnalyzer) -> None:
         self.analyzer = analyzer
 
-    
     def process_directory(self, directory_path: str, pattern: str = "*.txt") -> dict[str, Any]:
         """Process all files matching pattern in directory."""
 
@@ -3019,7 +3783,6 @@ class BatchProcessor:
 
         return results
 
-    
     def export_batch_results(self, batch_results: dict[str, Any], output_dir: str) -> None:
         """Export batch processing results."""
 
@@ -3042,7 +3805,6 @@ class BatchProcessor:
         # Create batch summary
         self._create_batch_summary(batch_results, output_path)
 
-    
     def _create_batch_summary(self, batch_results: dict[str, Any], output_path: Path) -> None:
         """Create summary of batch processing results."""
 
@@ -3076,21 +3838,27 @@ class BatchProcessor:
 
                 for filename, result in batch_results.items():
                     if "error" not in result:
-                        summary = result.get('summary', {})
-                        perf_summary = summary.get('performance_summary', {})
-                        risk_summary = summary.get('risk_assessment', {})
+                        summary = result.get("summary", {})
+                        perf_summary = summary.get("performance_summary", {})
+                        risk_summary = summary.get("risk_assessment", {})
 
                         lines.append(f"\n{filename}:\n")
-                        lines.append(f"  Efficiency: {perf_summary.get('average_efficiency_score', 0):.2f}\n")
-                        lines.append(f"  Risk Level: {risk_summary.get('overall_risk_level', 'unknown')}\n")
+                        lines.append(
+                            f"  Efficiency: {perf_summary.get('average_efficiency_score', 0):.2f}\n"
+                        )
+                        lines.append(
+                            f"  Risk Level: {risk_summary.get('overall_risk_level', 'unknown')}\n"
+                        )
 
             # Delegate to factory for I/O operation
             from farfan_pipeline.analysis.factory import write_text_file
-            write_text_file(''.join(lines), summary_file)
+
+            write_text_file("".join(lines), summary_file)
             logger.info(f"Batch summary created: {summary_file}")
 
         except Exception as e:
             logger.error(f"Error creating batch summary: {e}")
+
 
 # Simple CLI interface
 def main() -> None:

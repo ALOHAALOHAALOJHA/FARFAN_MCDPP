@@ -2,7 +2,7 @@
 Módulo: contract_generator.py
 Propósito: Orquestador principal de generación de 300 contratos ejecutores
 
-Ubicación: src/farfan_pipeline/phases/Phase_two/contract_generator/contract_generator.py
+Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/contract_generator.py
 
 RESPONSABILIDADES:
 1. Cargar y validar todos los inputs (método, contratos, sectores)
@@ -32,20 +32,21 @@ from __future__ import annotations
 
 import logging
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from .chain_composer import ChainComposer, EpistemicChain
+from .contract_assembler import ContractAssembler, GeneratedContract
+from .contract_validator import ContractValidator, ValidationReport
+
 # Imports de módulos internos
 from .input_registry import InputLoader, InputRegistry, SectorDefinition
-from .method_expander import MethodExpander
-from .chain_composer import ChainComposer, EpistemicChain
-from . contract_assembler import ContractAssembler, GeneratedContract
-from .contract_validator import ContractValidator, ValidationReport
 from .json_emitter import JSONEmitter
+from .method_expander import MethodExpander
 
 if TYPE_CHECKING:
-    from .input_registry import ContractClassification, QuestionMethodSet
+    from .input_registry import ContractClassification
 
 # ══════════════════════════════════════════════════════════════════════════════
 # CONFIGURACIÓN DE LOGGING
@@ -80,7 +81,7 @@ EXPECTED_TOTAL_CONTRACTS = EXPECTED_BASE_CONTRACTS * EXPECTED_SECTORS  # 300
 
 class ContractGenerator:
     """
-    Orquestador principal de generación de 300 contratos ejecutores. 
+    Orquestador principal de generación de 300 contratos ejecutores.
 
     FLUJO DE GENERACIÓN:
     1. Cargar y validar inputs (métodos, contratos, sectores)
@@ -96,7 +97,7 @@ class ContractGenerator:
     4. Emitir manifiesto de generación
     5. Reportar estadísticas
 
-    INVARIANTES: 
+    INVARIANTES:
     - Fail-loud en cualquier error (modo estricto)
     - Determinismo total:  misma entrada → misma salida byte-idéntica
     - Sin inferencia de métodos:  solo usa lo que está en inputs
@@ -114,7 +115,7 @@ class ContractGenerator:
         strict_mode: bool = True,
     ):
         """
-        Inicializa el generador. 
+        Inicializa el generador.
 
         Args:
             assets_path: Directorio con insumos epistemológicos
@@ -126,11 +127,11 @@ class ContractGenerator:
         self.strict_mode = strict_mode
 
         # Timestamp de generación (único para toda la ejecución)
-        self.generation_timestamp = datetime.now(timezone.utc).isoformat()
+        self.generation_timestamp = datetime.now(UTC).isoformat()
 
         # Componentes (inicializados en _initialize_components)
         self.registry: InputRegistry | None = None
-        self. expander: MethodExpander | None = None
+        self.expander: MethodExpander | None = None
         self.composer: ChainComposer | None = None
         self.assembler: ContractAssembler | None = None
         self.validator: ContractValidator | None = None
@@ -159,7 +160,7 @@ class ContractGenerator:
         5. Retornar estadísticas
 
         Returns:
-            Diccionario con estadísticas de generación: 
+            Diccionario con estadísticas de generación:
             - timestamp: ISO timestamp de generación
             - total_contracts: Total de contratos intentados
             - valid_contracts:  Contratos que pasaron validación
@@ -200,7 +201,7 @@ class ContractGenerator:
         # PASO 4: EMITIR MANIFIESTO
         # ══════════════════════════════════════════════════════════════════
         self._log_step(4, "Emitiendo manifiesto de generación")
-        manifest_path = self. emitter.emit_generation_manifest(
+        manifest_path = self.emitter.emit_generation_manifest(
             contracts=contracts,
             reports=reports,
             timestamp=self.generation_timestamp,
@@ -222,7 +223,7 @@ class ContractGenerator:
             "emitted_files": len(emitted_paths),
             "manifest_path": str(manifest_path),
             "input_hashes": {
-                "classified_methods": self. registry.classified_methods_hash,
+                "classified_methods": self.registry.classified_methods_hash,
                 "contratos_clasificados": self.registry.contratos_clasificados_hash,
                 "method_sets": self.registry.method_sets_hash,
             },
@@ -234,7 +235,7 @@ class ContractGenerator:
 
     def _initialize_components(self) -> None:
         """
-        Inicializa todos los componentes del generador. 
+        Inicializa todos los componentes del generador.
 
         ORDEN DE INICIALIZACIÓN:
         1. InputLoader → InputRegistry
@@ -260,7 +261,7 @@ class ContractGenerator:
 
         # 4. Inicializar assembler con registry
         self.assembler = ContractAssembler(
-            registry=self. registry,
+            registry=self.registry,
             generation_timestamp=self.generation_timestamp,
             generator_version=GENERATOR_VERSION,
         )
@@ -278,22 +279,23 @@ class ContractGenerator:
         logger.info(f"  - Métodos totales: {self.registry.total_methods}")
         logger.info(f"  - Preguntas base: {self.registry.total_contracts}")
         logger.info(f"  - Sectores: {self.registry.total_sectors}")
-        logger.info(f"  - Contratos a generar: {self.registry. total_contracts * self.registry.total_sectors}")
+        logger.info(
+            f"  - Contratos a generar: {self.registry. total_contracts * self.registry.total_sectors}"
+        )
         logger.info(f"  - Hash classified_methods: {self.registry.classified_methods_hash}")
         logger.info(f"  - Hash contratos_clasificados: {self.registry.contratos_clasificados_hash}")
         logger.info(f"  - Hash method_sets: {self.registry. method_sets_hash}")
 
         # Validar totales esperados
-        if self.registry. total_contracts != EXPECTED_BASE_CONTRACTS:
+        if self.registry.total_contracts != EXPECTED_BASE_CONTRACTS:
             raise ValueError(
                 f"Expected {EXPECTED_BASE_CONTRACTS} base contracts, "
                 f"found {self.registry.total_contracts}"
             )
 
-        if self.registry.total_sectors != EXPECTED_SECTORS: 
+        if self.registry.total_sectors != EXPECTED_SECTORS:
             raise ValueError(
-                f"Expected {EXPECTED_SECTORS} sectors, "
-                f"found {self.registry.total_sectors}"
+                f"Expected {EXPECTED_SECTORS} sectors, " f"found {self.registry.total_sectors}"
             )
 
     # ══════════════════════════════════════════════════════════════════════════
@@ -314,11 +316,11 @@ class ContractGenerator:
         Returns:
             Tupla de (lista de contratos, lista de reportes de validación)
         """
-        contracts:  list[GeneratedContract] = []
+        contracts: list[GeneratedContract] = []
         reports: list[ValidationReport] = []
 
         # Obtener orden determinista de preguntas
-        question_ids = sorted(self.registry.method_sets_by_question. keys())
+        question_ids = sorted(self.registry.method_sets_by_question.keys())
 
         # Obtener orden determinista de sectores
         sector_ids = sorted(self.registry.sectors_by_id.keys())
@@ -365,7 +367,7 @@ class ContractGenerator:
                     if report.is_valid:
                         self._stats["contracts_valid"] += 1
                         status = "✓"
-                    else: 
+                    else:
                         self._stats["contracts_invalid"] += 1
                         self._stats["validation_failures"].append(report.contract_id)
                         status = "✗"
@@ -385,19 +387,17 @@ class ContractGenerator:
                         raise
 
             # Log progreso por pregunta
-            logger.info(
-                f"    → {len(sector_ids)} contratos generados para {question_id}"
-            )
+            logger.info(f"    → {len(sector_ids)} contratos generados para {question_id}")
 
         return contracts, reports
 
     def _generate_single_contract(
         self,
         chain: EpistemicChain,
-        classification: "ContractClassification",
+        classification: ContractClassification,
         sector: SectorDefinition,
-        contract_number:  int,
-    ) -> tuple[GeneratedContract, ValidationReport]: 
+        contract_number: int,
+    ) -> tuple[GeneratedContract, ValidationReport]:
         """
         Genera un único contrato para una combinación pregunta+sector.
 
@@ -416,7 +416,7 @@ class ContractGenerator:
             Tupla de (contrato generado, reporte de validación)
         """
         # Ensamblar contrato con sector
-        contract = self.assembler. assemble_contract(
+        contract = self.assembler.assemble_contract(
             chain=chain,
             classification=classification,
             sector=sector,
@@ -435,7 +435,7 @@ class ContractGenerator:
     def _emit_valid_contracts(
         self,
         contracts: list[GeneratedContract],
-        reports:  list[ValidationReport],
+        reports: list[ValidationReport],
     ) -> list[Path]:
         """
         Emite los contratos que pasaron validación.
@@ -447,7 +447,7 @@ class ContractGenerator:
         Returns:
             Lista de paths de archivos emitidos
         """
-        emitted_paths:  list[Path] = []
+        emitted_paths: list[Path] = []
 
         for contract, report in zip(contracts, reports):
             if report.is_valid:
@@ -500,7 +500,7 @@ class ContractGenerator:
 
         # Reportar contratos inválidos si los hay
         if self._stats["validation_failures"]:
-            logger. warning("")
+            logger.warning("")
             logger.warning("Contratos que fallaron validación:")
             for cid in self._stats["validation_failures"]:
                 logger.warning(f"  - {cid}")
@@ -525,7 +525,7 @@ def main() -> int:
     Punto de entrada principal. 
 
     USO:
-        python -m farfan_pipeline.phases.Phase_two.contract_generator. contract_generator \
+        python -m farfan_pipeline.phases.Phase_2.contract_generator. contract_generator \
             --assets /path/to/epistemological_assets \
             --output /path/to/output \
             [--strict | --no-strict]
@@ -585,7 +585,7 @@ Ejemplos:
         logging.getLogger().setLevel(logging.DEBUG)
 
     # Validar que assets existe
-    if not args.assets. exists():
+    if not args.assets.exists():
         logger.error(f"Directorio de assets no existe: {args.assets}")
         return 1
 
@@ -605,15 +605,13 @@ Ejemplos:
 
         # Retornar 0 solo si todos los contratos son válidos
         if result["invalid_contracts"] > 0:
-            logger.warning(
-                f"{result['invalid_contracts']} contratos inválidos - revisar logs"
-            )
+            logger.warning(f"{result['invalid_contracts']} contratos inválidos - revisar logs")
             return 1 if args.strict else 0
 
         return 0
 
     except KeyboardInterrupt:
-        logger. warning("Generación interrumpida por usuario")
+        logger.warning("Generación interrumpida por usuario")
         return 130
 
     except Exception as e:

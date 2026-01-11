@@ -2,9 +2,9 @@
 Módulo:  input_registry.py
 Propósito: Cargar, validar e indexar todos los insumos como registro inmutable
 
-Ubicación: src/farfan_pipeline/phases/Phase_two/contract_generator/input_registry. py
+Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/input_registry. py
 
-RESPONSABILIDADES: 
+RESPONSABILIDADES:
 1. Cargar los 3 archivos JSON de insumos
 2. Validar estructura y contenido de cada archivo
 3. Construir objetos tipados inmutables
@@ -17,7 +17,7 @@ ARCHIVOS DE ENTRADA:
 - contratos_clasificados.json: 30 contratos base con clasificación
 - method_sets_by_question.json: Asignaciones de métodos por pregunta
 
-INVARIANTES: 
+INVARIANTES:
 - Todos los objetos retornados son inmutables (frozen dataclasses)
 - El orden de métodos se preserva exactamente como en el input
 - Falla duro ante cualquier inconsistencia
@@ -48,49 +48,59 @@ EXPECTED_BASE_CONTRACTS = 30
 EXPECTED_SECTORS = 10
 EXPECTED_TOTAL_CONTRACTS = EXPECTED_BASE_CONTRACTS * EXPECTED_SECTORS  # 300
 
-VALID_EPISTEMOLOGICAL_LEVELS = frozenset({
-    "N0-INFRA",
-    "N1-EMP",
-    "N2-INF",
-    "N3-AUD",
-    "N4-META",
-})
+VALID_EPISTEMOLOGICAL_LEVELS = frozenset(
+    {
+        "N0-INFRA",
+        "N1-EMP",
+        "N2-INF",
+        "N3-AUD",
+        "N4-META",
+    }
+)
 
-VALID_CONTRACT_LEVELS = frozenset({
-    "N1-EMP",
-    "N2-INF",
-    "N3-AUD",
-})
+VALID_CONTRACT_LEVELS = frozenset(
+    {
+        "N1-EMP",
+        "N2-INF",
+        "N3-AUD",
+    }
+)
 
-VALID_CONTRACT_TYPES = frozenset({
-    "TYPE_A",
-    "TYPE_B",
-    "TYPE_C",
-    "TYPE_D",
-    "TYPE_E",
-})
+VALID_CONTRACT_TYPES = frozenset(
+    {
+        "TYPE_A",
+        "TYPE_B",
+        "TYPE_C",
+        "TYPE_D",
+        "TYPE_E",
+    }
+)
 
-VALID_OUTPUT_TYPES = frozenset({
-    "INFRASTRUCTURE",
-    "FACT",
-    "PARAMETER",
-    "CONSTRAINT",
-    "META_ANALYSIS",
-})
+VALID_OUTPUT_TYPES = frozenset(
+    {
+        "INFRASTRUCTURE",
+        "FACT",
+        "PARAMETER",
+        "CONSTRAINT",
+        "META_ANALYSIS",
+    }
+)
 
-VALID_FUSION_BEHAVIORS = frozenset({
-    "additive",
-    "multiplicative",
-    "gate",
-    "terminal",
-    "none",
-})
+VALID_FUSION_BEHAVIORS = frozenset(
+    {
+        "additive",
+        "multiplicative",
+        "gate",
+        "terminal",
+        "none",
+    }
+)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # SECTORES CANÓNICOS (FUENTE: monolith)
 # ══════════════════════════════════════════════════════════════════════════════
 
-SECTOR_DEFINITIONS:  dict[str, dict[str, str]] = {
+SECTOR_DEFINITIONS: dict[str, dict[str, str]] = {
     "PA01": {
         "canonical_id": "PA01",
         "canonical_name": "Derechos de las mujeres e igualdad de género",
@@ -105,21 +115,20 @@ SECTOR_DEFINITIONS:  dict[str, dict[str, str]] = {
     },
     "PA03": {
         "canonical_id": "PA03",
-        "canonical_name":  "Ambiente sano, cambio climático, prevención y atención a desastres",
+        "canonical_name": "Ambiente sano, cambio climático, prevención y atención a desastres",
     },
     "PA04": {
         "canonical_id": "PA04",
         "canonical_name": "Derechos económicos, sociales y culturales",
     },
-    "PA05":  {
-        "canonical_id":  "PA05",
+    "PA05": {
+        "canonical_id": "PA05",
         "canonical_name": "Derechos de las víctimas y construcción de paz",
     },
     "PA06": {
         "canonical_id": "PA06",
         "canonical_name": (
-            "Derecho al buen futuro de la niñez, adolescencia, juventud "
-            "y entornos protectores"
+            "Derecho al buen futuro de la niñez, adolescencia, juventud " "y entornos protectores"
         ),
     },
     "PA07": {
@@ -140,7 +149,7 @@ SECTOR_DEFINITIONS:  dict[str, dict[str, str]] = {
     },
     "PA10": {
         "canonical_id": "PA10",
-        "canonical_name":  "Migración transfronteriza",
+        "canonical_name": "Migración transfronteriza",
     },
 }
 
@@ -155,9 +164,9 @@ LOADER_VERSION = "4.0.0-granular"
 @dataclass(frozen=True)
 class MethodDefinition:
     """
-    Definición completa de un método del dispensario. 
+    Definición completa de un método del dispensario.
 
-    Representa un método tal como está clasificado en classified_methods.json. 
+    Representa un método tal como está clasificado en classified_methods.json.
     INMUTABLE después de carga.
 
     Atributos:
@@ -178,19 +187,20 @@ class MethodDefinition:
         return_type: Tipo de retorno
         is_private: Si el método es privado (prefijo _)
     """
+
     class_name: str
     method_name: str
     mother_file: str
-    provides:  str
+    provides: str
     level: str
     level_name: str
     epistemology: str
     output_type: str
     fusion_behavior: str
-    fusion_symbol:  str
-    classification_rationale:  str
+    fusion_symbol: str
+    classification_rationale: str
     confidence_score: float
-    contract_affinities:  dict[str, float]
+    contract_affinities: dict[str, float]
     parameters: tuple[str, ...]
     return_type: str
     is_private: bool
@@ -213,12 +223,12 @@ class MethodDefinition:
 @dataclass(frozen=True)
 class ContractClassification:
     """
-    Clasificación de un contrato según contratos_clasificados.json. 
+    Clasificación de un contrato según contratos_clasificados.json.
 
     Representa la clasificación epistémica de una pregunta base.
-    INMUTABLE. 
+    INMUTABLE.
 
-    Atributos: 
+    Atributos:
         contract_id: ID del contrato (Q001, Q002, etc.)
         dimension_key: Clave de dimensión (D1_Q1, D1_Q2, etc.)
         pregunta:  Texto completo de la pregunta
@@ -228,11 +238,12 @@ class ContractClassification:
         roles_argumentativos: Roles argumentativos aplicables
         clases_dominantes: Clases dominantes para este contrato
     """
+
     contract_id: str
     dimension_key: str
     pregunta: str
     tipo_contrato: dict[str, str]
-    niveles_epistemologicos_requeridos:  dict[str, dict[str, str]]
+    niveles_epistemologicos_requeridos: dict[str, dict[str, str]]
     estrategias_fusion: dict[str, str]
     roles_argumentativos: tuple[str, ...]
     clases_dominantes: tuple[str, ...]
@@ -279,24 +290,25 @@ class MethodAssignment:
     Asignación de un método a una pregunta específica.
 
     Proviene de method_sets_by_question.json.
-    INMUTABLE. 
+    INMUTABLE.
 
     Contiene toda la información necesaria para expandir el método
     en el contexto de un contrato específico.
     """
+
     class_name: str
     method_name: str
     mother_file: str
-    provides:  str
+    provides: str
     level: str
     level_name: str
     epistemology: str
     output_type: str
     fusion_behavior: str
-    fusion_symbol:  str
-    classification_rationale:  str
+    fusion_symbol: str
+    classification_rationale: str
     confidence_score: float
-    contract_affinities:  dict[str, float]
+    contract_affinities: dict[str, float]
     parameters: tuple[str, ...]
     return_type: str
     is_private: bool
@@ -309,7 +321,7 @@ class MethodAssignment:
     @property
     def level_prefix(self) -> str:
         """Prefijo del nivel (N1, N2, N3)"""
-        return self.level. split("-")[0] if "-" in self.level else self.level
+        return self.level.split("-")[0] if "-" in self.level else self.level
 
     @property
     def is_low_confidence(self) -> bool:
@@ -320,14 +332,15 @@ class MethodAssignment:
 @dataclass(frozen=True)
 class QuestionMethodSet:
     """
-    Conjunto de métodos asignados a una pregunta. 
+    Conjunto de métodos asignados a una pregunta.
 
-    Proviene de method_sets_by_question.json. 
+    Proviene de method_sets_by_question.json.
     INMUTABLE.
 
     Representa la asignación completa de métodos para una pregunta base,
     organizada por fase epistémica.
     """
+
     question_id: str
     contract_type: dict[str, str]
     phase_a_N1: tuple[MethodAssignment, ...]
@@ -382,8 +395,9 @@ class SectorDefinition:
     """
     Definición de un sector/área de política.
 
-    INMUTABLE. 
+    INMUTABLE.
     """
+
     sector_id: str
     canonical_name: str
 
@@ -403,10 +417,10 @@ class SectorDefinition:
 @dataclass(frozen=True)
 class InputRegistry:
     """
-    Registro inmutable de todos los insumos. 
+    Registro inmutable de todos los insumos.
 
     Una vez construido, no puede modificarse.
-    Provee acceso indexado a todos los datos necesarios para generación. 
+    Provee acceso indexado a todos los datos necesarios para generación.
 
     Atributos:
         classified_methods_hash: Hash SHA256 truncado del archivo de métodos
@@ -427,6 +441,7 @@ class InputRegistry:
         load_timestamp: Timestamp de carga
         loader_version: Versión del loader
     """
+
     # Hashes para trazabilidad
     classified_methods_hash: str
     contratos_clasificados_hash: str
@@ -435,10 +450,10 @@ class InputRegistry:
     # Índices de métodos
     methods_by_full_id: dict[str, MethodDefinition]
     methods_by_level: dict[str, tuple[MethodDefinition, ...]]
-    methods_by_class:  dict[str, tuple[MethodDefinition, ...]]
+    methods_by_class: dict[str, tuple[MethodDefinition, ...]]
 
     # Índices de contratos
-    contracts_by_id:  dict[str, ContractClassification]
+    contracts_by_id: dict[str, ContractClassification]
     contracts_by_type: dict[str, tuple[ContractClassification, ...]]
     contracts_by_contract_id: dict[str, ContractClassification]
 
@@ -449,7 +464,7 @@ class InputRegistry:
     sectors: dict[str, SectorDefinition]
 
     # Estadísticas
-    total_methods:  int
+    total_methods: int
     total_contracts: int
     total_sectors: int
     level_counts: dict[str, int]
@@ -474,21 +489,21 @@ class InputRegistry:
         """Obtiene el set de métodos para una pregunta."""
         return self.method_sets_by_question.get(question_id)
 
-    def get_sector(self, sector_id:  str) -> SectorDefinition | None:
+    def get_sector(self, sector_id: str) -> SectorDefinition | None:
         """Obtiene la definición de un sector."""
         return self.sectors.get(sector_id)
 
-    def get_methods_for_level(self, level: str) -> tuple[MethodDefinition, ... ]:
+    def get_methods_for_level(self, level: str) -> tuple[MethodDefinition, ...]:
         """Obtiene todos los métodos de un nivel específico."""
         return self.methods_by_level.get(level, ())
 
     def get_contracts_for_type(self, type_code: str) -> tuple[ContractClassification, ...]:
         """Obtiene todos los contratos de un tipo específico."""
-        return self.contracts_by_type. get(type_code, ())
+        return self.contracts_by_type.get(type_code, ())
 
     def iter_all_contract_sector_pairs(self):
         """
-        Itera sobre todos los pares (contrato, sector) para generar 300 contratos. 
+        Itera sobre todos los pares (contrato, sector) para generar 300 contratos.
 
         Yields:
             Tuplas de (ContractClassification, SectorDefinition, contract_number)
@@ -529,7 +544,7 @@ class InputLoader:
 
     def __init__(self, assets_path: Path):
         """
-        Inicializa el loader. 
+        Inicializa el loader.
 
         Args:
             assets_path: Ruta al directorio que contiene los archivos JSON
@@ -540,9 +555,7 @@ class InputLoader:
                 f"HARD FAILURE: Assets directory not found:  {self.assets_path}"
             )
         if not self.assets_path.is_dir():
-            raise ValueError(
-                f"HARD FAILURE:  Assets path is not a directory: {self. assets_path}"
-            )
+            raise ValueError(f"HARD FAILURE:  Assets path is not a directory: {self. assets_path}")
 
     def load_and_validate(self) -> InputRegistry:
         """
@@ -688,7 +701,7 @@ class InputLoader:
         except json.JSONDecodeError as e:
             raise json.JSONDecodeError(
                 f"HARD FAILURE: Invalid JSON in {filename}: {e. msg}",
-                e. doc,
+                e.doc,
                 e.pos,
             ) from e
 
@@ -728,7 +741,7 @@ class InputLoader:
         }
         """
         required_keys = {"metadata", "statistics", "methods_by_level"}
-        missing = required_keys - set(data. keys())
+        missing = required_keys - set(data.keys())
         if missing:
             raise ValueError(
                 f"HARD FAILURE:  classified_methods.json missing required keys: {missing}\n"
@@ -746,13 +759,13 @@ class InputLoader:
         # Validar que hay métodos
         total_methods = sum(len(methods) for methods in data["methods_by_level"].values())
         if total_methods == 0:
-            raise ValueError(
-                "HARD FAILURE: classified_methods.json contains no methods"
-            )
+            raise ValueError("HARD FAILURE: classified_methods.json contains no methods")
 
-        logger.debug(f"    classified_methods.json: {total_methods} methods across {len(actual_levels)} levels")
+        logger.debug(
+            f"    classified_methods.json: {total_methods} methods across {len(actual_levels)} levels"
+        )
 
-    def _validate_contratos_clasificados_structure(self, data:  dict[str, Any]) -> None:
+    def _validate_contratos_clasificados_structure(self, data: dict[str, Any]) -> None:
         """
         Valida estructura de contratos_clasificados.json.
 
@@ -763,14 +776,12 @@ class InputLoader:
             "contratos":  {
                 "DIM01_INSUMOS": {"D1_Q1": {... }, ...},
                 "DIM02_ACTIVIDADES": {"D2_Q1": {...}, ...},
-                ... 
+                ...
             }
         }
         """
         if "contratos" not in data:
-            raise ValueError(
-                "HARD FAILURE:  contratos_clasificados.json missing 'contratos' key"
-            )
+            raise ValueError("HARD FAILURE:  contratos_clasificados.json missing 'contratos' key")
 
         # Contar contratos totales
         total = 0
@@ -790,7 +801,7 @@ class InputLoader:
 
         logger.debug(f"    contratos_clasificados.json: {total} contracts")
 
-    def _validate_method_sets_structure(self, data:  dict[str, Any]) -> None:
+    def _validate_method_sets_structure(self, data: dict[str, Any]) -> None:
         """
         Valida estructura de method_sets_by_question.json.
 
@@ -808,14 +819,12 @@ class InputLoader:
                     "mathematical_evidence": {... },
                     "doctoral_justification": str
                 },
-                ... 
+                ...
             }
         }
         """
         if "method_sets" not in data:
-            raise ValueError(
-                "HARD FAILURE: method_sets_by_question.json missing 'method_sets' key"
-            )
+            raise ValueError("HARD FAILURE: method_sets_by_question.json missing 'method_sets' key")
 
         method_sets = data["method_sets"]
 
@@ -872,7 +881,7 @@ class InputLoader:
         Returns:
             Diccionario {full_id: MethodDefinition}
         """
-        result:  dict[str, MethodDefinition] = {}
+        result: dict[str, MethodDefinition] = {}
 
         for level, methods in data["methods_by_level"].items():
             for m in methods:
@@ -914,7 +923,7 @@ class InputLoader:
 
     def _build_contract_classifications(
         self,
-        data:  dict[str, Any],
+        data: dict[str, Any],
     ) -> dict[str, ContractClassification]:
         """
         Construye diccionario de clasificaciones de contratos.
@@ -978,18 +987,9 @@ class InputLoader:
         for q_id, q_set in data["method_sets"].items():
             try:
                 # Convertir listas de métodos a tuplas de MethodAssignment
-                phase_a = tuple(
-                    self._dict_to_method_assignment(m)
-                    for m in q_set["phase_a_N1"]
-                )
-                phase_b = tuple(
-                    self._dict_to_method_assignment(m)
-                    for m in q_set["phase_b_N2"]
-                )
-                phase_c = tuple(
-                    self._dict_to_method_assignment(m)
-                    for m in q_set["phase_c_N3"]
-                )
+                phase_a = tuple(self._dict_to_method_assignment(m) for m in q_set["phase_a_N1"])
+                phase_b = tuple(self._dict_to_method_assignment(m) for m in q_set["phase_b_N2"])
+                phase_c = tuple(self._dict_to_method_assignment(m) for m in q_set["phase_c_N3"])
 
                 method_set = QuestionMethodSet(
                     question_id=q_id,
@@ -1053,9 +1053,7 @@ class InputLoader:
         result = self._load_sectors_from_canonical()
 
         if len(result) == EXPECTED_SECTORS:
-            logger.info(
-                f"sector_definitions_loaded_from_canonical: sector_count={len(result)}"
-            )
+            logger.info(f"sector_definitions_loaded_from_canonical: sector_count={len(result)}")
             return result
 
         logger.warning(
@@ -1233,7 +1231,7 @@ class InputLoader:
             methods:  Diccionario de métodos del dispensario
             method_sets: Diccionario de asignaciones por pregunta
 
-        Raises: 
+        Raises:
             ValueError: Si hay inconsistencias
         """
         # Validar niveles válidos para contratos
@@ -1269,10 +1267,10 @@ class InputLoader:
         Raises:
             ValueError: Si cualquier método viola la regla de coherencia
         """
-        all_violations:  list[str] = []
+        all_violations: list[str] = []
 
         for q_id, q_set in method_sets.items():
-            violations:  list[str] = []
+            violations: list[str] = []
 
             # Validar phase_a_N1
             for method in q_set.phase_a_N1:
@@ -1283,14 +1281,14 @@ class InputLoader:
 
             # Validar phase_b_N2
             for method in q_set.phase_b_N2:
-                if not method.level. startswith("N2"):
+                if not method.level.startswith("N2"):
                     violations.append(
                         f"    phase_b_N2: {method.full_id} has level '{method.level}' (expected N2-*)"
                     )
 
             # Validar phase_c_N3
             for method in q_set.phase_c_N3:
-                if not method.level. startswith("N3"):
+                if not method.level.startswith("N3"):
                     violations.append(
                         f"    phase_c_N3: {method.full_id} has level '{method.level}' (expected N3-*)"
                     )

@@ -3,6 +3,7 @@ Test FFC - Failure Fallback Contract
 Verifies: Typed errors trigger deterministic fallbacks
 Graceful degradation guarantee
 """
+
 import pytest
 from pathlib import Path
 from typing import Any

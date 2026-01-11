@@ -65,6 +65,7 @@ from farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks import (
 # 1. INPUT VALIDATION ADVERSARIAL TESTS
 # =============================================================================
 
+
 class TestInputValidationAdversarial:
     """Test adversarial inputs for Phase 0 validation."""
 
@@ -76,21 +77,18 @@ class TestInputValidationAdversarial:
             "/../../../root/.ssh/id_rsa",
             "./../../../proc/self/environ",
         ]
-        
+
         for malicious_path in malicious_paths:
-            with pytest.raises(Exception, match="path traversal|pdf_path cannot be empty|String should have at least 1 character"):
-                Phase0InputValidator(
-                    pdf_path=malicious_path,
-                    run_id="test_run"
-                )
+            with pytest.raises(
+                Exception,
+                match="path traversal|pdf_path cannot be empty|String should have at least 1 character",
+            ):
+                Phase0InputValidator(pdf_path=malicious_path, run_id="test_run")
 
     def test_phase0_input_validator_null_byte_injection(self):
         """Test validator rejects null byte injection."""
         with pytest.raises(Exception):
-            Phase0InputValidator(
-                pdf_path="/tmp/test\x00.pdf",
-                run_id="test_run"
-            )
+            Phase0InputValidator(pdf_path="/tmp/test\x00.pdf", run_id="test_run")
 
     def test_phase0_input_validator_sql_injection_in_run_id(self):
         """Test validator rejects SQL injection in run_id."""
@@ -100,13 +98,10 @@ class TestInputValidationAdversarial:
             "test'; UPDATE config SET mode='dev'--",
             "test'; DELETE FROM methods WHERE 1=1--",
         ]
-        
+
         for injection in sql_injections:
             with pytest.raises(Exception, match="invalid characters"):
-                Phase0InputValidator(
-                    pdf_path="/tmp/test.pdf",
-                    run_id=injection
-                )
+                Phase0InputValidator(pdf_path="/tmp/test.pdf", run_id=injection)
 
     def test_phase0_input_validator_xss_injection_in_run_id(self):
         """Test validator rejects XSS injection in run_id."""
@@ -116,13 +111,10 @@ class TestInputValidationAdversarial:
             "<img src=x onerror=alert('xss')>",
             "data:text/html,<script>alert('xss')</script>",
         ]
-        
+
         for payload in xss_payloads:
             with pytest.raises(Exception, match="invalid characters"):
-                Phase0InputValidator(
-                    pdf_path="/tmp/test.pdf",
-                    run_id=payload
-                )
+                Phase0InputValidator(pdf_path="/tmp/test.pdf", run_id=payload)
 
     def test_canonical_input_validator_extremely_large_sha256(self):
         """Test validator rejects extremely large SHA256 values."""
@@ -224,6 +216,7 @@ class TestInputValidationAdversarial:
 # 2. RESOURCE EXHAUSTION ADVERSARIAL TESTS
 # =============================================================================
 
+
 class TestResourceExhaustionAdversarial:
     """Test adversarial resource exhaustion scenarios."""
 
@@ -232,13 +225,13 @@ class TestResourceExhaustionAdversarial:
         # Test extremely small values
         with pytest.raises(ValueError, match="memory_mb must be >= 256"):
             ResourceLimits(memory_mb=1)
-            
+
         with pytest.raises(ValueError, match="cpu_seconds must be >= 10"):
             ResourceLimits(cpu_seconds=1)
-            
+
         with pytest.raises(ValueError, match="disk_mb must be >= 50"):
             ResourceLimits(disk_mb=1)
-            
+
         with pytest.raises(ValueError, match="file_descriptors must be >= 64"):
             ResourceLimits(file_descriptors=1)
 
@@ -248,7 +241,7 @@ class TestResourceExhaustionAdversarial:
             memory_mb=1000000,  # Very large but possibly valid
             cpu_seconds=999999,
             disk_mb=999999,
-            file_descriptors=65535
+            file_descriptors=65535,
         )
         assert limits.memory_mb == 1000000
 
@@ -259,10 +252,10 @@ class TestResourceExhaustionAdversarial:
             memory_mb=1000000,  # Very large
             cpu_seconds=999999,
             disk_mb=999999,
-            file_descriptors=65535
+            file_descriptors=65535,
         )
         controller = ResourceController(limits)
-        
+
         # Just test that it doesn't crash during initialization
         assert controller.limits.memory_mb == 1000000
 
@@ -271,11 +264,11 @@ class TestResourceExhaustionAdversarial:
         # Test very low threshold
         watchdog_low = MemoryWatchdog(threshold_percent=1, check_interval=0.01)
         assert watchdog_low.threshold_percent == 1
-        
+
         # Test very high threshold
         watchdog_high = MemoryWatchdog(threshold_percent=99, check_interval=0.01)
         assert watchdog_high.threshold_percent == 99
-        
+
         # Test invalid threshold type - passing string instead of int
         with pytest.raises((TypeError, ValueError)):
             MemoryWatchdog(threshold_percent="invalid", check_interval=0.01)
@@ -286,7 +279,7 @@ class TestResourceExhaustionAdversarial:
         # We can't easily force this in a test environment, so we'll test the logic
         limits = ResourceLimits(memory_mb=1000000)  # Very high limit
         controller = ResourceController(limits)
-        
+
         # The preflight check should pass since we have plenty of memory
         # (assuming the system has enough memory)
         try:
@@ -301,6 +294,7 @@ class TestResourceExhaustionAdversarial:
 # 3. HASH COMPUTATION ADVERSARIAL TESTS
 # =============================================================================
 
+
 class TestHashComputationAdversarial:
     """Test adversarial hash computation scenarios."""
 
@@ -311,17 +305,17 @@ class TestHashComputationAdversarial:
             # Write a large amount of data (but not too large to avoid filling disk)
             chunk_size = 1024 * 1024  # 1MB chunks
             num_chunks = 10  # 10MB total
-            
+
             for i in range(num_chunks):
                 large_file.write(b"x" * chunk_size)
             large_file.flush()
-            
+
             large_path = Path(large_file.name)
-            
+
         try:
             contract = Phase0ValidationContract()
             hash_result = contract._compute_sha256(large_path)
-            
+
             # Verify it's a valid SHA256 hash
             assert len(hash_result) == 64
             assert all(c in "0123456789abcdef" for c in hash_result)
@@ -334,11 +328,11 @@ class TestHashComputationAdversarial:
             # Don't write anything - file remains empty
             empty_file.flush()
             empty_path = Path(empty_file.name)
-            
+
         try:
             contract = Phase0ValidationContract()
             hash_result = contract._compute_sha256(empty_path)
-            
+
             # SHA256 of empty string
             expected_empty_hash = hashlib.sha256(b"").hexdigest()
             assert hash_result == expected_empty_hash
@@ -353,15 +347,15 @@ class TestHashComputationAdversarial:
             binary_file.write(binary_data)
             binary_file.flush()
             binary_path = Path(binary_file.name)
-            
+
         try:
             contract = Phase0ValidationContract()
             hash_result = contract._compute_sha256(binary_path)
-            
+
             # Verify it's a valid SHA256 hash
             assert len(hash_result) == 64
             assert all(c in "0123456789abcdef" for c in hash_result)
-            
+
             # Verify it matches expected hash
             expected_hash = hashlib.sha256(binary_data).hexdigest()
             assert hash_result == expected_hash
@@ -373,23 +367,20 @@ class TestHashComputationAdversarial:
 # 4. CONTRACT VIOLATION ADVERSARIAL TESTS
 # =============================================================================
 
+
 class TestContractViolationAdversarial:
     """Test adversarial contract violations."""
 
     def test_phase0_input_with_none_values(self):
         """Test Phase0Input with None values."""
         with pytest.raises(TypeError):
-            Phase0Input(
-                pdf_path=None,  # Should be Path
-                run_id="test_run"
-            )
+            Phase0Input(pdf_path=None, run_id="test_run")  # Should be Path
 
     def test_phase0_input_with_invalid_types(self):
         """Test Phase0Input with invalid types."""
         with pytest.raises(TypeError):
             Phase0Input(
-                pdf_path="not_a_path",  # Should be Path object
-                run_id=123  # Should be string
+                pdf_path="not_a_path", run_id=123  # Should be Path object  # Should be string
             )
 
     def test_canonical_input_with_invalid_boolean(self):
@@ -412,7 +403,7 @@ class TestContractViolationAdversarial:
     def test_canonical_input_with_extremely_long_strings(self):
         """Test CanonicalInput with extremely long strings."""
         long_string = "a" * 100000  # 100k characters
-        
+
         with pytest.raises(TypeError):
             CanonicalInput(
                 document_id=long_string,
@@ -446,39 +437,41 @@ class TestContractViolationAdversarial:
 # 5. BOOT CHECKS ADVERSARIAL TESTS
 # =============================================================================
 
+
 class TestBootChecksAdversarial:
     """Test adversarial boot check scenarios."""
 
     def test_boot_check_error_with_extremely_long_messages(self):
         """Test BootCheckError with extremely long messages."""
         long_message = "a" * 100000  # 100k characters
-        
+
         error = BootCheckError(
             component="test_component",
             reason=long_message,
             code="TEST_ERROR_CODE",
         )
-        
+
         assert len(str(error)) > 10000  # Should be quite long
 
     def test_boot_check_error_with_special_characters(self):
         """Test BootCheckError with special characters."""
-        special_message = "Error with null: \x00, newline: \n, tab: \t, quote: \""
-        
+        special_message = 'Error with null: \x00, newline: \n, tab: \t, quote: "'
+
         error = BootCheckError(
             component="test_component",
             reason=special_message,
             code="TEST_ERROR_CODE",
         )
-        
+
         assert "\x00" in error.reason
         assert "\n" in error.reason
-        assert "\"" in error.reason
+        assert '"' in error.reason
 
 
 # =============================================================================
 # 6. ADVERSARIAL INPUTS FOR RUNTIME CONFIG
 # =============================================================================
+
 
 class TestRuntimeConfigAdversarial:
     """Test adversarial runtime configuration scenarios."""
@@ -500,10 +493,10 @@ class TestRuntimeConfigAdversarial:
     def test_runtime_config_with_extremely_long_environment_vars(self):
         """Test RuntimeConfig with extremely long environment variable values."""
         long_value = "a" * 10000  # 10k characters
-        
+
         os.environ["SAAAAAA_RUNTIME_MODE"] = long_value
         os.environ["PHASE_TIMEOUT_SECONDS"] = "600"
-        
+
         # This should either fail or handle gracefully
         try:
             config = RuntimeConfig.from_env()
@@ -517,7 +510,7 @@ class TestRuntimeConfigAdversarial:
         # Set an environment variable that might be interpreted as JSON
         os.environ["SAAAAAA_RUNTIME_MODE"] = "prod"
         os.environ["SOME_COMPLEX_CONFIG"] = '{"invalid": json, "missing": quote}'
-        
+
         config = RuntimeConfig.from_env()
         # Should handle gracefully without crashing
 
@@ -526,13 +519,14 @@ class TestRuntimeConfigAdversarial:
 # 7. RESOURCE CONTROLLER KERNEL LIMIT BYPASS ATTEMPTS
 # =============================================================================
 
+
 class TestResourceControllerKernelBypass:
     """Test attempts to bypass kernel resource limits."""
 
     def test_resource_controller_multiple_context_entries(self):
         """Test attempting to enter enforced_execution context multiple times."""
         controller = ResourceController(ResourceLimits(memory_mb=512))
-        
+
         with controller.enforced_execution():
             # Try to enter again - this should fail
             with pytest.raises(RuntimeError, match="Resource enforcement already active"):
@@ -545,7 +539,7 @@ class TestResourceControllerKernelBypass:
         main_entered = threading.Event()
         interference_attempted = threading.Event()
         interference_result = {"raised": False}
-        
+
         def interference_func():
             """Function that tries to interfere with resource controller."""
             # Wait for main thread to enter first
@@ -559,11 +553,11 @@ class TestResourceControllerKernelBypass:
                 interference_result["raised"] = True
             finally:
                 interference_attempted.set()
-        
+
         # Start interference thread (but it will wait for main to enter first)
         interference_thread = threading.Thread(target=interference_func)
         interference_thread.start()
-        
+
         # Enter from main thread
         with controller.enforced_execution():
             # Signal that main thread has entered
@@ -572,7 +566,7 @@ class TestResourceControllerKernelBypass:
             interference_attempted.wait(timeout=2.0)
             # Verify interference was blocked
             assert interference_result["raised"], "Interference should have raised RuntimeError"
-        
+
         interference_thread.join(timeout=1.0)
         # Ensure main thread execution completed normally
         assert True  # If we reach here, main thread wasn't affected
@@ -582,19 +576,19 @@ class TestResourceControllerKernelBypass:
         # Test with very tight limits
         tight_limits = ResourceLimits(
             memory_mb=256,  # Minimum allowed
-            cpu_seconds=10,  # Minimum allowed  
+            cpu_seconds=10,  # Minimum allowed
             disk_mb=50,  # Minimum allowed
-            file_descriptors=64  # Minimum allowed
+            file_descriptors=64,  # Minimum allowed
         )
-        
+
         controller = ResourceController(tight_limits)
-        
+
         # Should be able to enter context with tight limits
         with controller.enforced_execution():
             # Perform minimal operations
             x = 1 + 1
             str(x)
-        
+
         # Verify metrics were collected
         metrics = controller.get_metrics()
         assert metrics.enforcement_duration_s >= 0
@@ -604,6 +598,7 @@ class TestResourceControllerKernelBypass:
 # 8. INTEGRATION ADVERSARIAL TESTS
 # =============================================================================
 
+
 class TestIntegrationAdversarial:
     """Test adversarial scenarios across multiple components."""
 
@@ -611,7 +606,7 @@ class TestIntegrationAdversarial:
         """Test Phase0ValidationContract with extremely large error lists."""
         # This tests the output validation with large error lists
         large_errors = ["error_" + str(i) for i in range(10000)]
-        
+
         # Create a CanonicalInput with many errors (should fail validation)
         try:
             bad_input = CanonicalInput(
@@ -637,12 +632,12 @@ class TestIntegrationAdversarial:
         """Test resource controller behavior under concurrent load."""
         controllers = []
         contexts = []
-        
+
         # Create multiple controllers
         for i in range(3):
-            controller = ResourceController(ResourceLimits(memory_mb=512 + i*128))
+            controller = ResourceController(ResourceLimits(memory_mb=512 + i * 128))
             controllers.append(controller)
-        
+
         # Try to use them sequentially (not concurrently due to lock)
         for controller in controllers:
             with controller.enforced_execution():
@@ -656,6 +651,7 @@ class TestIntegrationAdversarial:
 # 9. EDGE CASE ADVERSARIAL TESTS
 # =============================================================================
 
+
 class TestEdgeCaseAdversarial:
     """Test edge cases and boundary conditions."""
 
@@ -663,12 +659,12 @@ class TestEdgeCaseAdversarial:
         """Test ResourceLimits at boundary values."""
         # Test minimum allowed values
         min_limits = ResourceLimits(
-            memory_mb=256,      # Minimum
-            cpu_seconds=10,     # Minimum  
-            disk_mb=50,         # Minimum
-            file_descriptors=64 # Minimum
+            memory_mb=256,  # Minimum
+            cpu_seconds=10,  # Minimum
+            disk_mb=50,  # Minimum
+            file_descriptors=64,  # Minimum
         )
-        
+
         assert min_limits.memory_mb == 256
         assert min_limits.cpu_seconds == 10
         assert min_limits.disk_mb == 50
@@ -680,17 +676,14 @@ class TestEdgeCaseAdversarial:
         homograph_variants = [
             "test.pdf",  # Normal
             "tеst.pdf",  # Cyrillic 'e'
-            "teѕt.pdf",  # Cyrillic 's' 
+            "teѕt.pdf",  # Cyrillic 's'
             "ｔｅｓｔ.ｐｄｆ",  # Full-width characters
         ]
-        
+
         for variant in homograph_variants:
             # Should either accept or reject consistently
             try:
-                validator = Phase0InputValidator(
-                    pdf_path=variant,
-                    run_id="test_run"
-                )
+                validator = Phase0InputValidator(pdf_path=variant, run_id="test_run")
                 # If it passes, verify the path is handled correctly
                 assert validator.pdf_path == variant
             except Exception:
@@ -701,16 +694,16 @@ class TestEdgeCaseAdversarial:
         """Test CanonicalInputValidator with various timezone formats."""
         timezone_formats = [
             "2025-12-10T12:00:00Z",
-            "2025-12-10T12:00:00+00:00", 
+            "2025-12-10T12:00:00+00:00",
             "2025-12-10T12:00:00.000Z",
             "2025-12-10T12:00:00.123456Z",
         ]
-        
+
         for tz_format in timezone_formats:
             try:
                 validator = CanonicalInputValidator(
                     document_id="test",
-                    run_id="test_run", 
+                    run_id="test_run",
                     pdf_path="/tmp/test.pdf",
                     pdf_sha256="a" * 64,
                     pdf_size_bytes=1024,

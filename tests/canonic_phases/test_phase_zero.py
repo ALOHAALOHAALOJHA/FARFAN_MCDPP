@@ -41,9 +41,10 @@ from farfan_pipeline.phases.Phase_zero.phase0_10_01_runtime_config import Runtim
 # Exit Gate Tests
 # ============================================================================
 
+
 class MockRunner:
     """Mock Phase 0 runner for testing."""
-    
+
     def __init__(self):
         self.errors = []
         self._bootstrap_failed = False
@@ -57,9 +58,9 @@ def test_bootstrap_gate_passes_with_valid_config():
     """Gate 1 should pass when bootstrap succeeds."""
     runner = MockRunner()
     runner.runtime_config = MagicMock(spec=RuntimeConfig)
-    
+
     result = check_bootstrap_gate(runner)
-    
+
     assert result.passed
     assert result.gate_id == 1
     assert result.gate_name == "bootstrap"
@@ -71,9 +72,9 @@ def test_bootstrap_gate_fails_on_bootstrap_failure():
     runner = MockRunner()
     runner._bootstrap_failed = True
     runner.runtime_config = MagicMock(spec=RuntimeConfig)
-    
+
     result = check_bootstrap_gate(runner)
-    
+
     assert not result.passed
     assert result.gate_id == 1
     assert "Bootstrap failed" in result.reason
@@ -83,9 +84,9 @@ def test_bootstrap_gate_fails_on_missing_config():
     """Gate 1 should fail if runtime_config is None."""
     runner = MockRunner()
     runner.runtime_config = None
-    
+
     result = check_bootstrap_gate(runner)
-    
+
     assert not result.passed
     assert "Runtime config not loaded" in result.reason
 
@@ -95,9 +96,9 @@ def test_bootstrap_gate_fails_with_errors():
     runner = MockRunner()
     runner.runtime_config = MagicMock(spec=RuntimeConfig)
     runner.errors = ["Some error"]
-    
+
     result = check_bootstrap_gate(runner)
-    
+
     assert not result.passed
     assert "Some error" in result.reason
 
@@ -108,9 +109,9 @@ def test_input_verification_gate_passes_with_hashes():
     runner.runtime_config = MagicMock(spec=RuntimeConfig)
     runner.input_pdf_sha256 = "abc123" * 10 + "abcd"  # 64 chars
     runner.questionnaire_sha256 = "def456" * 10 + "defa"
-    
+
     result = check_input_verification_gate(runner)
-    
+
     assert result.passed
     assert result.gate_id == 2
     assert result.gate_name == "input_verification"
@@ -122,9 +123,9 @@ def test_input_verification_gate_fails_on_missing_pdf_hash():
     runner.runtime_config = MagicMock(spec=RuntimeConfig)
     runner.questionnaire_sha256 = "def456" * 10 + "defa"
     # input_pdf_sha256 is empty string
-    
+
     result = check_input_verification_gate(runner)
-    
+
     assert not result.passed
     assert "Input PDF not hashed" in result.reason
 
@@ -139,9 +140,9 @@ def test_determinism_gate_passes_with_mandatory_seeds():
         "python": 12345,
         "numpy": 67890,
     }
-    
+
     result = check_determinism_gate(runner)
-    
+
     assert result.passed
     assert result.gate_id == 4
 
@@ -156,9 +157,9 @@ def test_determinism_gate_fails_on_missing_python_seed():
         "numpy": 67890,
         # Missing python seed
     }
-    
+
     result = check_determinism_gate(runner)
-    
+
     assert not result.passed
     assert "Missing mandatory seeds" in result.reason
     assert "python" in result.reason
@@ -171,9 +172,9 @@ def test_check_all_gates_success():
     runner.input_pdf_sha256 = "abc123" * 10 + "abcd"
     runner.questionnaire_sha256 = "def456" * 10 + "defa"
     runner.seed_snapshot = {"python": 12345, "numpy": 67890}
-    
+
     all_passed, results = check_all_gates(runner)
-    
+
     assert all_passed
     assert len(results) == 4
     assert all(r.passed for r in results)
@@ -184,9 +185,9 @@ def test_check_all_gates_fails_fast():
     runner = MockRunner()
     runner.runtime_config = MagicMock(spec=RuntimeConfig)
     runner._bootstrap_failed = True  # Gate 1 will fail
-    
+
     all_passed, results = check_all_gates(runner)
-    
+
     assert not all_passed
     assert len(results) == 1  # Only checked gate 1
     assert not results[0].passed
@@ -196,11 +197,12 @@ def test_check_all_gates_fails_fast():
 # Determinism Tests
 # ============================================================================
 
+
 def test_derive_seed_from_string_deterministic():
     """Seed derivation should be deterministic for same input."""
     seed1 = derive_seed_from_string("test_input")
     seed2 = derive_seed_from_string("test_input")
-    
+
     assert seed1 == seed2
     assert isinstance(seed1, int)
     assert 0 <= seed1 < 2**32
@@ -210,7 +212,7 @@ def test_derive_seed_from_string_unique():
     """Different inputs should produce different seeds."""
     seed1 = derive_seed_from_string("input_a")
     seed2 = derive_seed_from_string("input_b")
-    
+
     assert seed1 != seed2
 
 
@@ -218,7 +220,7 @@ def test_derive_seed_from_parts_deterministic():
     """Seed derivation from parts should be deterministic."""
     seed1 = derive_seed_from_parts("PU_123", "corr-1", "python")
     seed2 = derive_seed_from_parts("PU_123", "corr-1", "python")
-    
+
     assert seed1 == seed2
 
 
@@ -229,9 +231,9 @@ def test_apply_seeds_to_rngs_success():
         "numpy": 67890,
         "quantum": 11111,
     }
-    
+
     status = apply_seeds_to_rngs(seeds)
-    
+
     assert status["python"] is True
 
 
@@ -240,7 +242,7 @@ def test_apply_seeds_to_rngs_fails_without_python():
     seeds = {
         "numpy": 67890,
     }
-    
+
     with pytest.raises(ValueError, match="Missing mandatory seeds"):
         apply_seeds_to_rngs(seeds)
 
@@ -249,9 +251,9 @@ def test_validate_seed_application_success():
     """Validation should pass when mandatory seeds applied."""
     seeds = {"python": 12345, "numpy": 67890}
     status = {"python": True, "numpy": True}
-    
+
     success, errors = validate_seed_application(seeds, status)
-    
+
     assert success
     assert len(errors) == 0
 

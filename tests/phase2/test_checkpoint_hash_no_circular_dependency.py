@@ -9,7 +9,7 @@ import pytest
 import json
 import hashlib
 
-from farfan_pipeline.phases.Phase_two.phase2_50_00_task_executor import (
+from farfan_pipeline.phases.Phase_2.phase2_50_00_task_executor import (
     CheckpointManager,
 )
 
@@ -36,13 +36,7 @@ class TestCheckpointHashCircularDependency:
 
     def test_nested_dict_hashing(self, checkpoint_manager):
         """Verify nested structures hash correctly."""
-        state = {
-            "level1": {
-                "level2": {
-                    "level3": "deep_value"
-                }
-            }
-        }
+        state = {"level1": {"level2": {"level3": "deep_value"}}}
         hash_result = self.compute_state_hash(state)
         assert isinstance(hash_result, str)
 
@@ -54,9 +48,7 @@ class TestCheckpointHashCircularDependency:
 
         # Should not raise any exception
         checkpoint_path = checkpoint_manager.save_checkpoint(
-            plan_id=plan_id,
-            completed_tasks=completed_tasks,
-            metadata=metadata
+            plan_id=plan_id, completed_tasks=completed_tasks, metadata=metadata
         )
 
         assert checkpoint_path.exists()
@@ -79,23 +71,15 @@ class TestCheckpointHashCircularDependency:
                 "config": {
                     "timeout": 300,
                     "retry_count": 3,
-                    "parameters": {
-                        "mode": "strict",
-                        "validation": True
-                    }
-                }
+                    "parameters": {"mode": "strict", "validation": True},
+                },
             },
-            "metrics": {
-                "duration": 123.45,
-                "memory_mb": 256.7
-            }
+            "metrics": {"duration": 123.45, "memory_mb": 256.7},
         }
 
         # Should not raise RecursionError
         checkpoint_path = checkpoint_manager.save_checkpoint(
-            plan_id=plan_id,
-            completed_tasks=completed_tasks,
-            metadata=metadata
+            plan_id=plan_id, completed_tasks=completed_tasks, metadata=metadata
         )
 
         assert checkpoint_path.exists()
@@ -119,10 +103,7 @@ class TestCheckpointHashCircularDependency:
         completed_tasks = ["task_1", "task_2"]
 
         # Save checkpoint
-        checkpoint_manager.save_checkpoint(
-            plan_id=plan_id,
-            completed_tasks=completed_tasks
-        )
+        checkpoint_manager.save_checkpoint(plan_id=plan_id, completed_tasks=completed_tasks)
 
         # Resume should succeed
         resumed_tasks = checkpoint_manager.resume_from_checkpoint(plan_id)
@@ -135,8 +116,7 @@ class TestCheckpointHashCircularDependency:
             completed_tasks = [f"task_{j}" for j in range(i + 1)]
 
             checkpoint_path = checkpoint_manager.save_checkpoint(
-                plan_id=plan_id,
-                completed_tasks=completed_tasks
+                plan_id=plan_id, completed_tasks=completed_tasks
             )
 
             assert checkpoint_path.exists()
@@ -156,13 +136,11 @@ class TestCheckpointHashCircularDependency:
             "bool": True,
             "null": None,
             "list": [1, 2, 3],
-            "dict": {"nested": "value"}
+            "dict": {"nested": "value"},
         }
 
         checkpoint_path = checkpoint_manager.save_checkpoint(
-            plan_id=plan_id,
-            completed_tasks=completed_tasks,
-            metadata=metadata
+            plan_id=plan_id, completed_tasks=completed_tasks, metadata=metadata
         )
 
         # Verify data roundtrip

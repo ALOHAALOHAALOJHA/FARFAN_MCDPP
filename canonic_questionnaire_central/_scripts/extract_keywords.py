@@ -24,10 +24,7 @@ from typing import Dict, List, Any, Set
 from collections import defaultdict
 
 # Setup logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 CQC_ROOT = Path(__file__).resolve().parent.parent
@@ -124,7 +121,7 @@ class KeywordExtractor:
             keyword_map[kw] = {
                 "keyword": kw,
                 "policy_areas": self.keyword_to_pas.get(kw, []),
-                "frequency": len(self.keyword_to_pas.get(kw, []))
+                "frequency": len(self.keyword_to_pas.get(kw, [])),
             }
 
         return {
@@ -133,17 +130,23 @@ class KeywordExtractor:
             "_meta": {
                 "schema_version": "2.0.0",
                 "generated_at": datetime.now(timezone.utc).isoformat(),
-                "generator": "extract_keywords.py"
+                "generator": "extract_keywords.py",
             },
             "statistics": {
                 "total_unique_keywords": len(self.all_keywords),
                 "total_policy_areas": len(self.keywords_by_pa),
                 "total_clusters": len(self.keywords_by_cluster),
-                "avg_keywords_per_pa": round(
-                    sum(len(kws) for kws in self.keywords_by_pa.values()) / len(self.keywords_by_pa), 2
-                ) if self.keywords_by_pa else 0
+                "avg_keywords_per_pa": (
+                    round(
+                        sum(len(kws) for kws in self.keywords_by_pa.values())
+                        / len(self.keywords_by_pa),
+                        2,
+                    )
+                    if self.keywords_by_pa
+                    else 0
+                ),
             },
-            "keywords": keyword_map
+            "keywords": keyword_map,
         }
 
     def save_index(self, index: Dict[str, Any]) -> None:
@@ -167,11 +170,16 @@ class KeywordExtractor:
             output_file = output_dir / f"{pa_id}.json"
 
             with open(output_file, "w", encoding="utf-8") as f:
-                json.dump({
-                    "policy_area_id": pa_id,
-                    "keyword_count": len(keywords),
-                    "keywords": sorted(keywords)
-                }, f, indent=2, ensure_ascii=False)
+                json.dump(
+                    {
+                        "policy_area_id": pa_id,
+                        "keyword_count": len(keywords),
+                        "keywords": sorted(keywords),
+                    },
+                    f,
+                    indent=2,
+                    ensure_ascii=False,
+                )
 
             logger.debug(f"  ✓ Saved {pa_id}.json")
 
@@ -191,11 +199,16 @@ class KeywordExtractor:
             output_file = output_dir / f"{cluster_id}.json"
 
             with open(output_file, "w", encoding="utf-8") as f:
-                json.dump({
-                    "cluster_id": cluster_id,
-                    "keyword_count": len(keywords),
-                    "keywords": sorted(keywords)
-                }, f, indent=2, ensure_ascii=False)
+                json.dump(
+                    {
+                        "cluster_id": cluster_id,
+                        "keyword_count": len(keywords),
+                        "keywords": sorted(keywords),
+                    },
+                    f,
+                    indent=2,
+                    ensure_ascii=False,
+                )
 
         logger.info(f"  ✓ Saved {len(self.keywords_by_cluster)} cluster files")
 
@@ -209,18 +222,14 @@ class KeywordExtractor:
             "type": "object",
             "oneOf": [
                 {"required": ["policy_area_id", "keywords"]},
-                {"required": ["cluster_id", "keywords"]}
+                {"required": ["cluster_id", "keywords"]},
             ],
             "properties": {
                 "policy_area_id": {"type": "string", "pattern": "^PA\\d{2}"},
                 "cluster_id": {"type": "string", "pattern": "^CL\\d{2}"},
                 "keyword_count": {"type": "integer", "minimum": 0},
-                "keywords": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                    "uniqueItems": True
-                }
-            }
+                "keywords": {"type": "array", "items": {"type": "string"}, "uniqueItems": True},
+            },
         }
 
         output_file = OUTPUT_DIR / "schema.json"
@@ -244,26 +253,28 @@ class KeywordExtractor:
             self.save_by_cluster()
             self.generate_schema()
 
-            logger.info("\n" + "="*80)
+            logger.info("\n" + "=" * 80)
             logger.info("✅ KEYWORD EXTRACTION COMPLETED")
-            logger.info("="*80)
+            logger.info("=" * 80)
             logger.info(f"  Total unique keywords: {len(self.all_keywords)}")
             logger.info(f"  Policy areas processed: {len(self.keywords_by_pa)}")
             logger.info(f"  Clusters processed: {len(self.keywords_by_cluster)}")
             logger.info(f"  Output location: {OUTPUT_DIR}")
-            logger.info("="*80)
+            logger.info("=" * 80)
 
             return True
 
         except Exception as e:
             logger.error(f"❌ Extraction failed: {e}")
             import traceback
+
             traceback.print_exc()
             return False
 
 
 def main():
     import argparse
+
     parser = argparse.ArgumentParser(description="Extract keywords to CQC v2.0")
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
 
@@ -280,4 +291,5 @@ def main():
 
 if __name__ == "__main__":
     import sys
+
     sys.exit(main())

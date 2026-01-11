@@ -35,6 +35,7 @@ from farfan_pipeline.utils.enhanced_contracts import StructuredLogger, utc_now_i
 # DETERMINISTIC SEED MANAGEMENT
 # ============================================================================
 
+
 class DeterministicSeedManager:
     """
     Manages random seeds for deterministic execution.
@@ -88,7 +89,7 @@ class DeterministicSeedManager:
         hash_input = f"{self.base_seed}:{operation_name}".encode()
         hash_digest = hashlib.sha256(hash_input).digest()
         # Convert first 4 bytes to int
-        return int.from_bytes(hash_digest[:4], byteorder='big')
+        return int.from_bytes(hash_digest[:4], byteorder="big")
 
     @contextmanager
     def scoped_seed(self, operation_name: str) -> Iterator[int]:
@@ -149,6 +150,7 @@ class DeterministicSeedManager:
 # DETERMINISTIC EXECUTION WRAPPER
 # ============================================================================
 
+
 class DeterministicExecutor:
     """
     Wraps functions to ensure deterministic execution with observability.
@@ -170,7 +172,7 @@ class DeterministicExecutor:
         self,
         base_seed: int = 42,
         logger_name: str = "deterministic_executor",
-        enable_logging: bool = True
+        enable_logging: bool = True,
     ) -> None:
         """
         Initialize deterministic executor.
@@ -185,10 +187,7 @@ class DeterministicExecutor:
         self.enable_logging = enable_logging
 
     def deterministic(
-        self,
-        operation_name: str,
-        log_inputs: bool = False,
-        log_outputs: bool = False
+        self, operation_name: str, log_inputs: bool = False, log_outputs: bool = False
     ) -> Callable:
         """
         Decorator to make a function deterministic with logging.
@@ -201,6 +200,7 @@ class DeterministicExecutor:
         Returns:
             Decorated function with deterministic execution
         """
+
         def decorator(func: Callable) -> Callable:
             def wrapper(*args: Any, **kwargs: Any) -> Any:
                 # Generate correlation and event IDs
@@ -235,7 +235,7 @@ class DeterministicExecutor:
                                 correlation_id=correlation_id,
                                 success=True,
                                 latency_ms=latency_ms,
-                                **log_data
+                                **log_data,
                             )
 
                         return result
@@ -252,19 +252,21 @@ class DeterministicExecutor:
                             success=False,
                             latency_ms=latency_ms,
                             event_id=event_id,
-                            error=str(e)[:200]  # Truncate for safety
+                            error=str(e)[:200],  # Truncate for safety
                         )
 
                     # Re-raise with event ID
                     raise RuntimeError(f"[{event_id}] {operation_name} failed: {e}") from e
 
             return wrapper
+
         return decorator
 
 
 # ============================================================================
 # UTC TIMESTAMP UTILITIES
 # ============================================================================
+
 
 def enforce_utc_now() -> datetime:
     """
@@ -299,7 +301,7 @@ def parse_utc_timestamp(timestamp_str: str) -> datetime:
         >>> dt.year
         2024
     """
-    dt = datetime.fromisoformat(timestamp_str.replace('Z', '+00:00'))
+    dt = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00"))
 
     # Enforce UTC
     if dt.tzinfo is None or dt.utcoffset() != timezone.utc.utcoffset(None):
@@ -311,6 +313,7 @@ def parse_utc_timestamp(timestamp_str: str) -> datetime:
 # ============================================================================
 # SIDE-EFFECT ISOLATION
 # ============================================================================
+
 
 @contextmanager
 def isolated_execution() -> Iterator[None]:
@@ -351,12 +354,12 @@ def isolated_execution() -> Iterator[None]:
         if stdout_capture.getvalue():
             logging.warning(
                 "Side effect detected: stdout captured during isolated execution: %s",
-                stdout_capture.getvalue()[:200]
+                stdout_capture.getvalue()[:200],
             )
         if stderr_capture.getvalue():
             logging.warning(
                 "Side effect detected: stderr captured during isolated execution: %s",
-                stderr_capture.getvalue()[:200]
+                stderr_capture.getvalue()[:200],
             )
 
 
@@ -372,9 +375,9 @@ if __name__ == "__main__":
     doctest.testmod(verbose=True)
 
     # Additional tests
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("Deterministic Execution Tests")
-    print("="*60)
+    print("=" * 60)
 
     # Test 1: Seed manager determinism
     print("\n1. Testing seed manager determinism:")
@@ -440,6 +443,6 @@ if __name__ == "__main__":
     print(f"   ✓ Event ID: {event_id1[:16]}...")
     print("   ✓ Event ID reproducibility verified")
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("All tests passed!")
-    print("="*60)
+    print("=" * 60)

@@ -44,9 +44,11 @@ from ..modules.scoring_modalities import (
 
 try:
     import structlog
+
     logger = structlog.get_logger(__name__)
 except ImportError:
     import logging
+
     logger = logging.getLogger(__name__)
 
 
@@ -54,33 +56,40 @@ except ImportError:
 # VALIDATION ERRORS
 # =============================================================================
 
+
 class ScoringValidationError(Exception):
     """Base exception for scoring validation errors."""
+
     pass
 
 
 class ScoreRangeError(ScoringValidationError):
     """Raised when score is outside valid range."""
+
     pass
 
 
 class QualityLevelError(ScoringValidationError):
     """Raised when quality level is invalid."""
+
     pass
 
 
 class EvidenceStructureError(ScoringValidationError):
     """Raised when evidence structure is invalid."""
+
     pass
 
 
 class ModalityError(ScoringValidationError):
     """Raised when modality is invalid."""
+
     pass
 
 
 class QuestionIdError(ScoringValidationError):
     """Raised when question_id format is invalid."""
+
     pass
 
 
@@ -88,9 +97,11 @@ class QuestionIdError(ScoringValidationError):
 # VALIDATION RESULT
 # =============================================================================
 
+
 @dataclass
 class ValidationResult:
     """Result of a validation operation."""
+
     is_valid: bool
     errors: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
@@ -116,6 +127,7 @@ class ValidationResult:
 # =============================================================================
 # QUESTION ID VALIDATION
 # =============================================================================
+
 
 class QuestionIdValidator:
     """Validator for question_id format.
@@ -144,9 +156,7 @@ class QuestionIdValidator:
         result = ValidationResult(is_valid=True)
 
         if not isinstance(question_id, str):
-            result.add_error(
-                f"question_id must be string, got {type(question_id).__name__}"
-            )
+            result.add_error(f"question_id must be string, got {type(question_id).__name__}")
             return result
 
         if not question_id:
@@ -155,9 +165,9 @@ class QuestionIdValidator:
 
         # Check if matches any valid pattern
         if (
-            cls.SIMPLE_PATTERN.match(question_id) or
-            cls.FULL_PATTERN.match(question_id) or
-            cls.SLOT_PATTERN.match(question_id)
+            cls.SIMPLE_PATTERN.match(question_id)
+            or cls.FULL_PATTERN.match(question_id)
+            or cls.SLOT_PATTERN.match(question_id)
         ):
             return result
 
@@ -171,6 +181,7 @@ class QuestionIdValidator:
 # =============================================================================
 # EVIDENCE VALIDATION
 # =============================================================================
+
 
 class EvidenceValidator:
     """Validator for evidence structure from Phase 2 EvidenceNexus.
@@ -195,9 +206,7 @@ class EvidenceValidator:
 
         # Check type
         if not isinstance(evidence, dict):
-            result.add_error(
-                f"Evidence must be dict, got {type(evidence).__name__}"
-            )
+            result.add_error(f"Evidence must be dict, got {type(evidence).__name__}")
             return result
 
         # Check required keys
@@ -209,20 +218,14 @@ class EvidenceValidator:
         # Validate elements
         elements = evidence.get("elements")
         if not isinstance(elements, list):
-            result.add_error(
-                f"'elements' must be list, got {type(elements).__name__}"
-            )
+            result.add_error(f"'elements' must be list, got {type(elements).__name__}")
 
         # Validate confidence
         confidence = evidence.get("confidence")
         if not isinstance(confidence, (int, float)):
-            result.add_error(
-                f"'confidence' must be numeric, got {type(confidence).__name__}"
-            )
+            result.add_error(f"'confidence' must be numeric, got {type(confidence).__name__}")
         elif not 0.0 <= confidence <= 1.0:
-            result.add_error(
-                f"'confidence' must be in [0, 1], got {confidence}"
-            )
+            result.add_error(f"'confidence' must be in [0, 1], got {confidence}")
 
         # Validate optional keys if present
         completeness = evidence.get("completeness")
@@ -240,6 +243,7 @@ class EvidenceValidator:
 # =============================================================================
 # SCORE VALIDATION
 # =============================================================================
+
 
 class ScoreValidator:
     """Validator for scored results.
@@ -263,23 +267,17 @@ class ScoreValidator:
         result = ValidationResult(is_valid=True)
 
         if not isinstance(score, (int, float)):
-            result.add_error(
-                f"{field_name} must be numeric, got {type(score).__name__}"
-            )
+            result.add_error(f"{field_name} must be numeric, got {type(score).__name__}")
             return result
 
         if not 0.0 <= score <= 1.0:
-            result.add_error(
-                f"{field_name} must be in [0.0, 1.0], got {score}"
-            )
+            result.add_error(f"{field_name} must be in [0.0, 1.0], got {score}")
 
         return result
 
     @classmethod
     def validate_normalized_score(
-        cls,
-        normalized_score: float,
-        field_name: str = "normalized_score"
+        cls, normalized_score: float, field_name: str = "normalized_score"
     ) -> ValidationResult:
         """Validate normalized score value.
 
@@ -293,15 +291,11 @@ class ScoreValidator:
         result = ValidationResult(is_valid=True)
 
         if not isinstance(normalized_score, (int, float)):
-            result.add_error(
-                f"{field_name} must be numeric, got {type(normalized_score).__name__}"
-            )
+            result.add_error(f"{field_name} must be numeric, got {type(normalized_score).__name__}")
             return result
 
         if not 0.0 <= normalized_score <= 100.0:
-            result.add_error(
-                f"{field_name} must be in [0, 100], got {normalized_score}"
-            )
+            result.add_error(f"{field_name} must be in [0, 100], got {normalized_score}")
 
         return result
 
@@ -309,6 +303,7 @@ class ScoreValidator:
 # =============================================================================
 # QUALITY LEVEL VALIDATION
 # =============================================================================
+
 
 class QualityLevelValidator:
     """Validator for quality levels.
@@ -330,9 +325,7 @@ class QualityLevelValidator:
         result = ValidationResult(is_valid=True)
 
         if not isinstance(quality_level, str):
-            result.add_error(
-                f"quality_level must be string, got {type(quality_level).__name__}"
-            )
+            result.add_error(f"quality_level must be string, got {type(quality_level).__name__}")
             return result
 
         if not is_valid_quality_level(quality_level):
@@ -345,9 +338,7 @@ class QualityLevelValidator:
 
     @classmethod
     def validate_score_quality_consistency(
-        cls,
-        score: float,
-        quality_level: str
+        cls, score: float, quality_level: str
     ) -> ValidationResult:
         """Validate that quality level matches score (invariant check).
 
@@ -376,6 +367,7 @@ class QualityLevelValidator:
 # SCORED RESULT VALIDATION (Complete)
 # =============================================================================
 
+
 class ScoredResultValidator:
     """Complete validator for ScoredResult.
 
@@ -402,18 +394,14 @@ class ScoredResultValidator:
             overall_result.is_valid = False
 
         # Validate normalized score [INV-SC-004]
-        norm_result = ScoreValidator.validate_normalized_score(
-            result.normalized_score
-        )
+        norm_result = ScoreValidator.validate_normalized_score(result.normalized_score)
         overall_result.errors.extend(norm_result.errors)
         overall_result.warnings.extend(norm_result.warnings)
         if not norm_result.is_valid:
             overall_result.is_valid = False
 
         # Validate quality level
-        quality_result = QualityLevelValidator.validate_quality_level(
-            result.quality_level
-        )
+        quality_result = QualityLevelValidator.validate_quality_level(result.quality_level)
         overall_result.errors.extend(quality_result.errors)
         overall_result.warnings.extend(quality_result.warnings)
         if not quality_result.is_valid:
@@ -421,8 +409,7 @@ class ScoredResultValidator:
 
         # Validate score-quality consistency [INV-SC-002]
         consistency_result = QualityLevelValidator.validate_score_quality_consistency(
-            result.score,
-            result.quality_level
+            result.score, result.quality_level
         )
         overall_result.warnings.extend(consistency_result.warnings)
 
@@ -439,6 +426,7 @@ class ScoredResultValidator:
 # =============================================================================
 # METADATA VALIDATION
 # =============================================================================
+
 
 class MetadataValidator:
     """Validator for scoring metadata.
@@ -470,24 +458,18 @@ class MetadataValidator:
         result = ValidationResult(is_valid=True)
 
         if not isinstance(metadata, dict):
-            result.add_error(
-                f"metadata must be dict, got {type(metadata).__name__}"
-            )
+            result.add_error(f"metadata must be dict, got {type(metadata).__name__}")
             return result
 
         # Check required keys [INV-SC-003]
         missing = cls.REQUIRED_KEYS - metadata.keys()
         if missing:
-            result.add_error(
-                f"Missing required metadata keys: {missing}"
-            )
+            result.add_error(f"Missing required metadata keys: {missing}")
 
         # Validate modality if present
         modality = metadata.get("modality")
         if modality is not None and not is_valid_modality(modality):
-            result.add_error(
-                f"Invalid metadata modality: '{modality}'"
-            )
+            result.add_error(f"Invalid metadata modality: '{modality}'")
 
         # Validate threshold if present
         threshold = metadata.get("threshold")
@@ -497,9 +479,7 @@ class MetadataValidator:
                     f"metadata.threshold must be numeric, got {type(threshold).__name__}"
                 )
             elif not 0.0 <= threshold <= 1.0:
-                result.add_error(
-                    f"metadata.threshold must be in [0, 1], got {threshold}"
-                )
+                result.add_error(f"metadata.threshold must be in [0, 1], got {threshold}")
 
         return result
 
@@ -507,6 +487,7 @@ class MetadataValidator:
 # =============================================================================
 # BATCH VALIDATION
 # =============================================================================
+
 
 def validate_batch(results: list[ScoredResult]) -> ValidationResult:
     """Validate a batch of scored results.
@@ -538,7 +519,7 @@ def validate_batch(results: list[ScoredResult]) -> ValidationResult:
             "batch_validation_failed",
             total=len(results),
             failed=len(overall_result.errors),
-            errors=overall_result.errors[:5]  # First 5 errors
+            errors=overall_result.errors[:5],  # First 5 errors
         )
 
     return overall_result
@@ -548,48 +529,43 @@ def validate_batch(results: list[ScoredResult]) -> ValidationResult:
 # PDET CONTEXT VALIDATION
 # =============================================================================
 
+
 class PDETContextValidator:
     """Validator for PDET enrichment context in scoring.
-    
+
     Validates that PDET municipality context is properly structured
     and relevant to the scoring context.
     """
-    
+
     REQUIRED_CONTEXT_KEYS = {"municipalities", "subregions", "policy_area_mappings"}
     OPTIONAL_CONTEXT_KEYS = {"relevant_pillars", "territorial_coverage", "enrichment_metadata"}
-    
+
     @classmethod
     def validate_pdet_context(cls, pdet_context: dict[str, Any]) -> ValidationResult:
         """Validate PDET context structure.
-        
+
         Args:
             pdet_context: PDET context dict from enrichment
-        
+
         Returns:
             ValidationResult with validation status
         """
         result = ValidationResult(is_valid=True)
-        
+
         if not isinstance(pdet_context, dict):
-            result.add_error(
-                f"pdet_context must be dict, got {type(pdet_context).__name__}"
-            )
+            result.add_error(f"pdet_context must be dict, got {type(pdet_context).__name__}")
             return result
-        
+
         # Validate municipalities
         municipalities = pdet_context.get("municipalities", [])
         if not isinstance(municipalities, list):
-            result.add_error(
-                f"'municipalities' must be list, got {type(municipalities).__name__}"
-            )
-        
+            result.add_error(f"'municipalities' must be list, got {type(municipalities).__name__}")
+
         # Validate subregions
         subregions = pdet_context.get("subregions", [])
         if not isinstance(subregions, list):
-            result.add_error(
-                f"'subregions' must be list, got {type(subregions).__name__}"
-            )
-        
+            result.add_error(f"'subregions' must be list, got {type(subregions).__name__}")
+
         # Validate territorial coverage if present
         if "territorial_coverage" in pdet_context:
             coverage = pdet_context["territorial_coverage"]
@@ -598,50 +574,44 @@ class PDETContextValidator:
                     f"'territorial_coverage' must be numeric, got {type(coverage).__name__}"
                 )
             elif not 0.0 <= coverage <= 1.0:
-                result.add_error(
-                    f"'territorial_coverage' must be in [0, 1], got {coverage}"
-                )
-        
+                result.add_error(f"'territorial_coverage' must be in [0, 1], got {coverage}")
+
         # Validate relevant pillars if present
         if "relevant_pillars" in pdet_context:
             pillars = pdet_context["relevant_pillars"]
             if not isinstance(pillars, list):
-                result.add_error(
-                    f"'relevant_pillars' must be list, got {type(pillars).__name__}"
-                )
-        
+                result.add_error(f"'relevant_pillars' must be list, got {type(pillars).__name__}")
+
         return result
-    
+
     @classmethod
     def validate_enriched_result(cls, enriched_result: dict[str, Any]) -> ValidationResult:
         """Validate enriched scored result with PDET context.
-        
+
         Args:
             enriched_result: EnrichedScoredResult as dict
-        
+
         Returns:
             ValidationResult with validation status
         """
         result = ValidationResult(is_valid=True)
-        
+
         if not isinstance(enriched_result, dict):
-            result.add_error(
-                f"enriched_result must be dict, got {type(enriched_result).__name__}"
-            )
+            result.add_error(f"enriched_result must be dict, got {type(enriched_result).__name__}")
             return result
-        
+
         # Check required fields
         required_fields = {"base_result", "pdet_context", "enrichment_applied"}
         missing = required_fields - enriched_result.keys()
         if missing:
             result.add_error(f"Missing required fields: {missing}")
             return result
-        
+
         # Validate base result exists
         base_result = enriched_result.get("base_result")
         if base_result is None:
             result.add_error("'base_result' cannot be None")
-        
+
         # Validate PDET context
         pdet_context = enriched_result.get("pdet_context")
         if pdet_context is not None:
@@ -650,7 +620,7 @@ class PDETContextValidator:
             result.warnings.extend(context_validation.warnings)
             if not context_validation.is_valid:
                 result.is_valid = False
-        
+
         # Validate gate validation status if enrichment applied
         if enriched_result.get("enrichment_applied", False):
             gate_status = enriched_result.get("gate_validation_status", {})
@@ -658,11 +628,16 @@ class PDETContextValidator:
                 result.add_warning("'gate_validation_status' should be dict")
             else:
                 # Check expected gates
-                expected_gates = {"gate_1_scope", "gate_2_value_add", "gate_3_capability", "gate_4_channel"}
+                expected_gates = {
+                    "gate_1_scope",
+                    "gate_2_value_add",
+                    "gate_3_capability",
+                    "gate_4_channel",
+                }
                 missing_gates = expected_gates - gate_status.keys()
                 if missing_gates:
                     result.add_warning(f"Missing gate validation for: {missing_gates}")
-        
+
         # Validate territorial adjustment
         if "territorial_adjustment" in enriched_result:
             adjustment = enriched_result["territorial_adjustment"]
@@ -670,11 +645,13 @@ class PDETContextValidator:
                 result.add_error(
                     f"'territorial_adjustment' must be numeric, got {type(adjustment).__name__}"
                 )
-            elif adjustment < 0.0 or adjustment > 0.16:  # max_total_adjustment from scoring_system.json
+            elif (
+                adjustment < 0.0 or adjustment > 0.16
+            ):  # max_total_adjustment from scoring_system.json
                 result.add_warning(
                     f"'territorial_adjustment' outside configured range [0, 0.16]: {adjustment}"
                 )
-        
+
         return result
 
 

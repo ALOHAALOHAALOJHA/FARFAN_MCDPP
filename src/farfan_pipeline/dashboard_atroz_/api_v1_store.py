@@ -11,7 +11,7 @@ import asyncio
 import hashlib
 from collections import deque
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any, Literal
 
 from .api_v1_schemas import (
@@ -33,8 +33,7 @@ from .api_v1_schemas import (
     TimelinePoint,
 )
 from .api_v1_utils import slugify
-from .pdet_colombia_data import PDETSubregion, PDET_MUNICIPALITIES, PDETMunicipality
-
+from .pdet_colombia_data import PDET_MUNICIPALITIES, PDETMunicipality, PDETSubregion
 
 ExpectedClusterKey = Literal["governance", "social", "economic", "environmental"]
 
@@ -250,11 +249,17 @@ class AtrozStore:
 
     def _bootstrap_reference_data(self) -> None:
         if len(REGION_DEFINITIONS) != 16:
-            raise RuntimeError(f"PDET subregion definitions mismatch: expected 16, got {len(REGION_DEFINITIONS)}")
+            raise RuntimeError(
+                f"PDET subregion definitions mismatch: expected 16, got {len(REGION_DEFINITIONS)}"
+            )
         if len(PDET_MUNICIPALITIES) != 170:
-            raise RuntimeError(f"PDET municipalities mismatch: expected 170, got {len(PDET_MUNICIPALITIES)}")
+            raise RuntimeError(
+                f"PDET municipalities mismatch: expected 170, got {len(PDET_MUNICIPALITIES)}"
+            )
 
-        by_region: dict[str, list[str]] = {definition.id: [] for definition in REGION_DEFINITIONS.values()}
+        by_region: dict[str, list[str]] = {
+            definition.id: [] for definition in REGION_DEFINITIONS.values()
+        }
 
         for municipality in PDET_MUNICIPALITIES:
             region_def = REGION_DEFINITIONS.get(municipality.subregion)
@@ -348,7 +353,11 @@ class AtrozStore:
 
             denom = float(count) if count > 0 else 1.0
             return [
-                ClusterData(id=key, score=totals[key] / denom, normalized_score=(totals[key] / denom) / 100.0)
+                ClusterData(
+                    id=key,
+                    score=totals[key] / denom,
+                    normalized_score=(totals[key] / denom) / 100.0,
+                )
                 for key in ("governance", "social", "economic", "environmental")
             ]
 
@@ -393,13 +402,17 @@ class AtrozStore:
                 return state
         return None
 
-    def _resolve_municipality_by_name(self, name: str, department: str | None) -> MunicipalityState | None:
+    def _resolve_municipality_by_name(
+        self, name: str, department: str | None
+    ) -> MunicipalityState | None:
         if department:
             candidate_id = municipality_id_for_parts(name, department)
             return self._municipalities.get(candidate_id)
 
         slug_name = slugify(name)
-        matches = [state for state in self._municipalities.values() if slugify(state.name) == slug_name]
+        matches = [
+            state for state in self._municipalities.values() if slugify(state.name) == slug_name
+        ]
         if len(matches) == 1:
             return matches[0]
         return None
@@ -438,7 +451,9 @@ class AtrozStore:
             municipality.latest_run_id = payload.run_id
             municipality.last_updated = payload.timestamp
 
-            municipality.overall_score_percent = score_0_to_3_to_percent(payload.macro_result.macro_score)
+            municipality.overall_score_percent = score_0_to_3_to_percent(
+                payload.macro_result.macro_score
+            )
 
             cluster_scores: dict[ExpectedClusterKey, float] = {}
             for cs in payload.cluster_scores:
@@ -475,7 +490,11 @@ class AtrozStore:
             self._recompute_region_scores_locked(municipality.region_id)
             self._append_timeline_locked(municipality.region_id, payload.timestamp)
 
-            score_delta = None if previous_score is None else municipality.overall_score_percent - previous_score
+            score_delta = (
+                None
+                if previous_score is None
+                else municipality.overall_score_percent - previous_score
+            )
 
             return {
                 "status": "success",
@@ -529,7 +548,7 @@ class AtrozStore:
 
         points.append(
             TimelinePoint(
-                timestamp=timestamp.astimezone(timezone.utc).isoformat(),
+                timestamp=timestamp.astimezone(UTC).isoformat(),
                 scores={
                     "overall": region.scores.overall,
                     "governance": region.scores.governance,
@@ -550,7 +569,9 @@ class AtrozStore:
                 nodes.append(
                     ConstellationNode(
                         id=region.id,
-                        position=ConstellationNodePosition(x=region.coordinates.x, y=region.coordinates.y),
+                        position=ConstellationNodePosition(
+                            x=region.coordinates.x, y=region.coordinates.y
+                        ),
                         properties=ConstellationNodeProperties(
                             size=180.0,
                             color="#00D4FF",
@@ -688,7 +709,9 @@ def _extract_metrics(scores: PDETRegionScores, metrics: list[str]) -> dict[str, 
     return out
 
 
-def _extract_metrics_from_municipality(mun: MunicipalityState, metrics: list[str]) -> dict[str, float]:
+def _extract_metrics_from_municipality(
+    mun: MunicipalityState, metrics: list[str]
+) -> dict[str, float]:
     if not metrics:
         return dict(mun.radar)
     out: dict[str, float] = {}

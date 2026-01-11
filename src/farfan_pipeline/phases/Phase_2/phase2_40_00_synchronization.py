@@ -10,16 +10,31 @@ Author: F.A.R.F.A.N Policy Pipeline
 License: Proprietary
 
 This module is part of Phase 2: Analysis & Question Execution.
-All files in Phase_two/ must contain PHASE_LABEL: Phase 2.
+All files in Phase_2/ must contain PHASE_LABEL: Phase 2.
 """
 from __future__ import annotations
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 40
+__order__ = 0
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "HIGH"
+__execution_pattern__ = "On-Demand"
 
 import hashlib
 import json
 import logging
 import re
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from typing import Any, Mapping, Sequence
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -280,9 +295,7 @@ class ChunkMatrix:
             for pa in range(1, 11)
         }
         chunks_per_dimension = {
-            f"DIM{dim:02d}": sum(
-                1 for (_, dim_id) in chunk_matrix if dim_id == f"DIM{dim:02d}"
-            )
+            f"DIM{dim:02d}": sum(1 for (_, dim_id) in chunk_matrix if dim_id == f"DIM{dim:02d}")
             for dim in range(1, 7)
         }
 
@@ -300,7 +313,7 @@ class ChunkMatrix:
 
     def _compute_integrity_hash(self) -> str:
         payload = []
-        for (pa_id, dim_id) in self._matrix_keys_sorted:
+        for pa_id, dim_id in self._matrix_keys_sorted:
             chunk = self._chunk_matrix[(pa_id, dim_id)]
             text_hash = hashlib.sha256(chunk.text.encode("utf-8")).hexdigest()
             payload.append(
@@ -317,4 +330,3 @@ class ChunkMatrix:
 
 
 __all__ = ["ChunkMatrix", "SmartPolicyChunk"]
-

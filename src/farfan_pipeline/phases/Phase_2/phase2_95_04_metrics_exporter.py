@@ -25,13 +25,25 @@ Design Considerations:
 - Configurable HTTP server port (default: 8000)
 - Graceful degradation if prometheus_client unavailable
 """
-
 from __future__ import annotations
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 95
+__order__ = 4
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "MEDIUM"
+__execution_pattern__ = "On-Demand"
 
 import logging
 import threading
 from dataclasses import dataclass
-from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +55,7 @@ try:
         Histogram,
         start_http_server,
     )
+
     PROMETHEUS_AVAILABLE = True
 except ImportError:
     PROMETHEUS_AVAILABLE = False
@@ -53,6 +66,7 @@ except ImportError:
 
 
 # === DATA MODELS ===
+
 
 @dataclass
 class TaskMetricEvent:
@@ -66,12 +80,13 @@ class TaskMetricEvent:
         execution_time_ms: Execution duration in milliseconds
         error: Error message if failed
     """
+
     task_id: str
     executor_id: str
     epistemic_level: str
     success: bool
     execution_time_ms: float
-    error: Optional[str] = None
+    error: str | None = None
 
 
 @dataclass
@@ -83,6 +98,7 @@ class ResourcePressureEvent:
         level: Pressure level (0=none, 1=low, 2=medium, 3=high, 4=critical)
         utilization_percent: Current utilization percentage
     """
+
     resource_type: str
     level: int
     utilization_percent: float
@@ -98,6 +114,7 @@ class CalibrationQualityEvent:
         confidence: Confidence in the score [0.0, 1.0]
         regression_detected: Whether regression was detected
     """
+
     executor_id: str
     quality_score: float
     confidence: float
@@ -106,13 +123,14 @@ class CalibrationQualityEvent:
 
 # === MOCK IMPLEMENTATIONS FOR FALLBACK ===
 
+
 class MockMetric:
     """Mock metric for when prometheus_client is not available."""
 
     def __init__(self, *args, **kwargs):
-        self._values: Dict[tuple, float] = {}
+        self._values: dict[tuple, float] = {}
 
-    def labels(self, **kwargs) -> "MockMetric":
+    def labels(self, **kwargs) -> MockMetric:
         return self
 
     def inc(self, amount: float = 1) -> None:
@@ -229,6 +247,7 @@ else:
 
 
 # === METRICS EXPORTER CLASS ===
+
 
 class MetricsExporter:
     """
@@ -423,10 +442,7 @@ class MetricsExporter:
     # === Parallel Execution Metrics ===
 
     def record_level_execution(
-        self,
-        epistemic_level: str,
-        task_count: int,
-        duration_seconds: float
+        self, epistemic_level: str, task_count: int, duration_seconds: float
     ) -> None:
         """
         Record the duration to execute all tasks in an epistemic level.
@@ -454,7 +470,7 @@ class MetricsExporter:
 
 # === SINGLETON EXPORTER INSTANCE ===
 
-_metrics_exporter: Optional[MetricsExporter] = None
+_metrics_exporter: MetricsExporter | None = None
 _exporter_lock = threading.Lock()
 
 
@@ -477,13 +493,14 @@ def get_metrics_exporter(port: int = 8000) -> MetricsExporter:
 
 # === CONVENIENCE FUNCTIONS ===
 
+
 def record_task_completion(
     task_id: str,
     executor_id: str,
     epistemic_level: str,
     success: bool,
     execution_time_ms: float,
-    error: Optional[str] = None,
+    error: str | None = None,
 ) -> None:
     """
     Record task completion metrics (convenience function).
@@ -497,20 +514,20 @@ def record_task_completion(
         error: Error message if failed.
     """
     exporter = get_metrics_exporter()
-    exporter.record_task_result(TaskMetricEvent(
-        task_id=task_id,
-        executor_id=executor_id,
-        epistemic_level=epistemic_level,
-        success=success,
-        execution_time_ms=execution_time_ms,
-        error=error,
-    ))
+    exporter.record_task_result(
+        TaskMetricEvent(
+            task_id=task_id,
+            executor_id=executor_id,
+            epistemic_level=epistemic_level,
+            success=success,
+            execution_time_ms=execution_time_ms,
+            error=error,
+        )
+    )
 
 
 def update_resource_status(
-    resource_type: str,
-    level: int,
-    utilization_percent: float = 0.0
+    resource_type: str, level: int, utilization_percent: float = 0.0
 ) -> None:
     """
     Update resource pressure status (convenience function).
@@ -521,11 +538,13 @@ def update_resource_status(
         utilization_percent: Current utilization percentage.
     """
     exporter = get_metrics_exporter()
-    exporter.update_resource_pressure(ResourcePressureEvent(
-        resource_type=resource_type,
-        level=level,
-        utilization_percent=utilization_percent,
-    ))
+    exporter.update_resource_pressure(
+        ResourcePressureEvent(
+            resource_type=resource_type,
+            level=level,
+            utilization_percent=utilization_percent,
+        )
+    )
 
 
 def update_calibration_status(
@@ -544,12 +563,14 @@ def update_calibration_status(
         regression_detected: Whether regression was detected.
     """
     exporter = get_metrics_exporter()
-    exporter.update_calibration_quality(CalibrationQualityEvent(
-        executor_id=executor_id,
-        quality_score=quality_score,
-        confidence=confidence,
-        regression_detected=regression_detected,
-    ))
+    exporter.update_calibration_quality(
+        CalibrationQualityEvent(
+            executor_id=executor_id,
+            quality_score=quality_score,
+            confidence=confidence,
+            regression_detected=regression_detected,
+        )
+    )
 
 
 # === GRAFANA DASHBOARD TEMPLATE ===
@@ -566,9 +587,9 @@ GRAFANA_DASHBOARD_TEMPLATE = {
                 "targets": [
                     {
                         "expr": "histogram_quantile(0.95, rate(phase2_task_duration_seconds_bucket[5m]))",
-                        "legendFormat": "{{executor_id}} - {{epistemic_level}}"
+                        "legendFormat": "{{executor_id}} - {{epistemic_level}}",
                     }
-                ]
+                ],
             },
             {
                 "title": "Task Success Rate",
@@ -582,39 +603,29 @@ GRAFANA_DASHBOARD_TEMPLATE = {
                             "sum(rate(phase2_task_failure_total[5m])))"
                         )
                     }
-                ]
+                ],
             },
             {
                 "title": "Resource Pressure",
                 "type": "heatmap",
                 "gridPos": {"x": 18, "y": 0, "w": 6, "h": 8},
                 "targets": [
-                    {
-                        "expr": "phase2_resource_pressure_level",
-                        "legendFormat": "{{resource_type}}"
-                    }
-                ]
+                    {"expr": "phase2_resource_pressure_level", "legendFormat": "{{resource_type}}"}
+                ],
             },
             {
                 "title": "Calibration Quality",
                 "type": "timeseries",
                 "gridPos": {"x": 0, "y": 8, "w": 12, "h": 8},
                 "targets": [
-                    {
-                        "expr": "phase2_calibration_quality_score",
-                        "legendFormat": "{{executor_id}}"
-                    }
-                ]
+                    {"expr": "phase2_calibration_quality_score", "legendFormat": "{{executor_id}}"}
+                ],
             },
             {
                 "title": "Active Tasks",
                 "type": "stat",
                 "gridPos": {"x": 12, "y": 8, "w": 6, "h": 8},
-                "targets": [
-                    {
-                        "expr": "sum(phase2_active_tasks)"
-                    }
-                ]
+                "targets": [{"expr": "sum(phase2_active_tasks)"}],
             },
             {
                 "title": "Task Throughput",
@@ -623,15 +634,15 @@ GRAFANA_DASHBOARD_TEMPLATE = {
                 "targets": [
                     {
                         "expr": "sum(rate(phase2_task_success_total[1m]))",
-                        "legendFormat": "Success/min"
+                        "legendFormat": "Success/min",
                     },
                     {
                         "expr": "sum(rate(phase2_task_failure_total[1m]))",
-                        "legendFormat": "Failure/min"
-                    }
-                ]
-            }
-        ]
+                        "legendFormat": "Failure/min",
+                    },
+                ],
+            },
+        ],
     }
 }
 
@@ -644,6 +655,7 @@ def get_grafana_dashboard_json() -> str:
         JSON string with dashboard configuration.
     """
     import json
+
     return json.dumps(GRAFANA_DASHBOARD_TEMPLATE, indent=2)
 
 

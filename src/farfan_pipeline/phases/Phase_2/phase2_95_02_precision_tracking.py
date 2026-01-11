@@ -4,6 +4,23 @@ PHASE_LABEL: Phase 2
 Sequence: I
 
 """
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 95
+__order__ = 2
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "MEDIUM"
+__execution_pattern__ = "On-Demand"
+
+
+
 """
 Precision Improvement Tracking for Context Filtering
 ====================================================
@@ -31,7 +48,7 @@ Author: F.A.R.F.A.N Pipeline
 Date: 2025-12-03
 """
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 try:
@@ -95,11 +112,9 @@ def get_patterns_with_validation(
         )
         document_context = {}
 
-    validation_timestamp = datetime.now(timezone.utc).isoformat()
+    validation_timestamp = datetime.now(UTC).isoformat()
 
-    pre_filter_count = (
-        len(enriched_pack.patterns) if hasattr(enriched_pack, "patterns") else 0
-    )
+    pre_filter_count = len(enriched_pack.patterns) if hasattr(enriched_pack, "patterns") else 0
 
     filtered, base_stats = enriched_pack.get_patterns_for_context(
         document_context, track_precision_improvement=track_precision_improvement
@@ -141,9 +156,7 @@ def get_patterns_with_validation(
             validation_message = "✓ filter_patterns_by_context integration VALIDATED"
         else:
             enhanced_stats["validation_status"] = "NOT_VALIDATED"
-            validation_message = (
-                "✗ filter_patterns_by_context integration NOT validated"
-            )
+            validation_message = "✗ filter_patterns_by_context integration NOT validated"
 
         target_status = "ACHIEVED" if target_achieved else "NOT_MET"
         enhanced_stats["target_status"] = target_status
@@ -286,14 +299,10 @@ def validate_filter_integration(
             "validation_summary": "✗ ALL TESTS FAILED - Integration NOT working",
         }
 
-    integration_validated_count = sum(
-        1 for r in results if r.get("integration_validated", False)
-    )
+    integration_validated_count = sum(1 for r in results if r.get("integration_validated", False))
     target_achieved_count = sum(1 for r in results if r.get("target_achieved", False))
 
-    average_filter_rate = (
-        sum(r.get("filter_rate", 0.0) for r in results) / successful_tests
-    )
+    average_filter_rate = sum(r.get("filter_rate", 0.0) for r in results) / successful_tests
     average_fp_reduction = (
         sum(r.get("false_positive_reduction", 0.0) for r in results) / successful_tests
     )
@@ -330,14 +339,10 @@ def validate_filter_integration(
         "average_filter_rate": average_filter_rate,
         "average_fp_reduction": average_fp_reduction,
         "max_fp_reduction": (
-            max(r.get("false_positive_reduction", 0.0) for r in results)
-            if results
-            else 0.0
+            max(r.get("false_positive_reduction", 0.0) for r in results) if results else 0.0
         ),
         "min_fp_reduction": (
-            min(r.get("false_positive_reduction", 0.0) for r in results)
-            if results
-            else 0.0
+            min(r.get("false_positive_reduction", 0.0) for r in results) if results else 0.0
         ),
         "errors": errors,
         "validation_summary": validation_summary,
@@ -378,7 +383,7 @@ def create_precision_tracking_session(
         >>> # Use session throughout analysis...
         >>> results = finalize_precision_tracking_session(session)
     """
-    from datetime import datetime, timezone
+    from datetime import datetime
     from uuid import uuid4
 
     if session_id is None:
@@ -386,7 +391,7 @@ def create_precision_tracking_session(
 
     session = {
         "session_id": session_id,
-        "start_timestamp": datetime.now(timezone.utc).isoformat(),
+        "start_timestamp": datetime.now(UTC).isoformat(),
         "enriched_pack": enriched_pack,
         "measurements": [],
         "measurement_count": 0,
@@ -437,17 +442,13 @@ def add_measurement_to_session(
         )
 
     enriched_pack = session["enriched_pack"]
-    patterns, stats = get_patterns_with_validation(
-        enriched_pack, document_context, track_precision
-    )
+    patterns, stats = get_patterns_with_validation(enriched_pack, document_context, track_precision)
 
     session["measurements"].append(stats)
     session["measurement_count"] += 1
     session["contexts_tested"].append(document_context)
 
-    session["cumulative_stats"]["total_patterns_processed"] += stats.get(
-        "total_patterns", 0
-    )
+    session["cumulative_stats"]["total_patterns_processed"] += stats.get("total_patterns", 0)
     session["cumulative_stats"]["total_patterns_filtered"] += stats.get(
         "total_patterns", 0
     ) - stats.get("passed", 0)
@@ -477,13 +478,13 @@ def finalize_precision_tracking_session(
         >>> results = finalize_precision_tracking_session(session)
         >>> print(results['summary'])
     """
-    from datetime import datetime, timezone
+    from datetime import datetime
 
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_intelligence_layer import (
         generate_precision_improvement_report,
     )
 
-    end_timestamp = datetime.now(timezone.utc).isoformat()
+    end_timestamp = datetime.now(UTC).isoformat()
     session["end_timestamp"] = end_timestamp
     session["status"] = "FINALIZED"
 
@@ -514,9 +515,7 @@ def finalize_precision_tracking_session(
     if full_report:
         session_summary["aggregate_report"] = full_report
         session_summary["summary"] = full_report["summary"]
-        session_summary["target_achievement_rate"] = full_report[
-            "target_achievement_rate"
-        ]
+        session_summary["target_achievement_rate"] = full_report["target_achievement_rate"]
         session_summary["integration_validated"] = full_report["validation_rate"] >= 0.8
         session_summary["validation_health"] = full_report["validation_health"]
 
@@ -524,9 +523,7 @@ def finalize_precision_tracking_session(
         "precision_tracking_session_finalized",
         session_id=session["session_id"],
         measurement_count=session["measurement_count"],
-        total_patterns_processed=session["cumulative_stats"][
-            "total_patterns_processed"
-        ],
+        total_patterns_processed=session["cumulative_stats"]["total_patterns_processed"],
         total_filtering_time_ms=session["cumulative_stats"]["total_filtering_time_ms"],
         target_achievement_rate=(session_summary.get("target_achievement_rate", 0.0)),
     )
@@ -673,9 +670,9 @@ def export_precision_metrics_for_monitoring(
         >>> metrics = export_precision_metrics_for_monitoring(measurements, 'json')
     """
     import json
-    from datetime import datetime, timezone
+    from datetime import datetime
 
-    timestamp = datetime.now(timezone.utc).isoformat()
+    timestamp = datetime.now(UTC).isoformat()
 
     if not measurements:
         if output_format == "json":
@@ -690,9 +687,7 @@ def export_precision_metrics_for_monitoring(
     )
     validated = sum(1 for m in measurements if m.get("integration_validated", False))
 
-    avg_fp_reduction = (
-        sum(m.get("false_positive_reduction", 0.0) for m in measurements) / total
-    )
+    avg_fp_reduction = sum(m.get("false_positive_reduction", 0.0) for m in measurements) / total
     avg_filter_rate = sum(m.get("filter_rate", 0.0) for m in measurements) / total
 
     if output_format == "json":
@@ -732,7 +727,7 @@ def export_precision_metrics_for_monitoring(
                     "metric": "farfan.precision.target_achievement_rate",
                     "points": [
                         [
-                            int(datetime.now(timezone.utc).timestamp()),
+                            int(datetime.now(UTC).timestamp()),
                             meets_target / total,
                         ]
                     ],
@@ -741,15 +736,13 @@ def export_precision_metrics_for_monitoring(
                 },
                 {
                     "metric": "farfan.precision.avg_fp_reduction",
-                    "points": [
-                        [int(datetime.now(timezone.utc).timestamp()), avg_fp_reduction]
-                    ],
+                    "points": [[int(datetime.now(UTC).timestamp()), avg_fp_reduction]],
                     "type": "gauge",
                     "tags": ["component:context_filtering"],
                 },
                 {
                     "metric": "farfan.precision.measurement_count",
-                    "points": [[int(datetime.now(timezone.utc).timestamp()), total]],
+                    "points": [[int(datetime.now(UTC).timestamp()), total]],
                     "type": "count",
                     "tags": ["component:context_filtering"],
                 },
@@ -761,12 +754,12 @@ def export_precision_metrics_for_monitoring(
 
 
 __all__ = [
+    "PRECISION_TARGET_THRESHOLD",
+    "add_measurement_to_session",
+    "compare_precision_across_policy_areas",
+    "create_precision_tracking_session",
+    "export_precision_metrics_for_monitoring",
+    "finalize_precision_tracking_session",
     "get_patterns_with_validation",
     "validate_filter_integration",
-    "create_precision_tracking_session",
-    "add_measurement_to_session",
-    "finalize_precision_tracking_session",
-    "compare_precision_across_policy_areas",
-    "export_precision_metrics_for_monitoring",
-    "PRECISION_TARGET_THRESHOLD",
 ]

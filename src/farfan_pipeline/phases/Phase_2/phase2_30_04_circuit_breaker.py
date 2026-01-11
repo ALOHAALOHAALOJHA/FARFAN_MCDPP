@@ -17,17 +17,31 @@ Circuit Breaker States:
     OPEN: Failures exceeded threshold, requests blocked
     HALF_OPEN: Testing recovery, limited requests allowed
 """
-
 from __future__ import annotations
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 30
+__order__ = 4
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "MEDIUM"
+__execution_pattern__ = "On-Demand"
 
 import json
 import logging
 import threading
 import time
+from collections.abc import Callable
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any, Callable, Dict, Optional, TypeVar
+from typing import Any, TypeVar
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +50,7 @@ T = TypeVar("T")
 
 class CircuitState(Enum):
     """States of the circuit breaker."""
+
     CLOSED = "closed"
     OPEN = "open"
     HALF_OPEN = "half_open"
@@ -57,6 +72,7 @@ class CircuitBreakerConfig:
         success_threshold: Successes in half-open to close (default: 3)
         half_open_max_calls: Max concurrent calls in half-open (default: 3)
     """
+
     failure_threshold: int = 5
     success_threshold: int = 3
     recovery_timeout_s: float = 60.0
@@ -78,6 +94,7 @@ class CircuitBreakerMetrics:
         rejected_calls: Calls rejected due to open circuit
         state_changes: Number of state transitions
     """
+
     total_calls: int = 0
     successful_calls: int = 0
     failed_calls: int = 0
@@ -93,11 +110,7 @@ class CircuitBreaker:
     blocking requests when failures exceed a threshold.
     """
 
-    def __init__(
-        self,
-        name: str,
-        config: CircuitBreakerConfig | None = None
-    ):
+    def __init__(self, name: str, config: CircuitBreakerConfig | None = None):
         """
         Initialize circuit breaker.
 
@@ -110,7 +123,7 @@ class CircuitBreaker:
         self.state = CircuitState.CLOSED
         self.failure_count = 0
         self.success_count = 0
-        self.last_failure_time: Optional[float] = None
+        self.last_failure_time: float | None = None
         self.half_open_calls = 0
         self._lock = threading.Lock()
         self._metrics = CircuitBreakerMetrics()
@@ -218,7 +231,7 @@ class CircuitBreaker:
         elapsed = time.time() - self.last_failure_time
         return max(0.0, self.config.recovery_timeout_s - elapsed)
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get circuit breaker metrics."""
         with self._lock:
             return {
@@ -247,10 +260,7 @@ class PersistentCircuitBreaker(CircuitBreaker):
     """
 
     def __init__(
-        self,
-        name: str,
-        state_file: Path | str,
-        config: CircuitBreakerConfig | None = None
+        self, name: str, state_file: Path | str, config: CircuitBreakerConfig | None = None
     ):
         """
         Initialize persistent circuit breaker.
@@ -272,7 +282,7 @@ class PersistentCircuitBreaker(CircuitBreaker):
             return
 
         try:
-            with open(self.state_file, "r") as f:
+            with open(self.state_file) as f:
                 state = json.load(f)
 
             self.state = CircuitState(state["state"])
@@ -306,7 +316,7 @@ class PersistentCircuitBreaker(CircuitBreaker):
             with open(self.state_file, "w") as f:
                 json.dump(state, f, indent=2)
             logger.debug(f"Saved state for {self.name}")
-        except IOError as e:
+        except OSError as e:
             logger.error(f"Failed to save state for {self.name}: {e}")
 
     def record_failure(self) -> None:
@@ -354,14 +364,11 @@ class CircuitBreakerRegistry:
         """
         self.state_dir = Path(state_dir)
         self.state_dir.mkdir(parents=True, exist_ok=True)
-        self._breakers: Dict[str, CircuitBreaker] = {}
+        self._breakers: dict[str, CircuitBreaker] = {}
         self._lock = threading.Lock()
 
     def get_or_create(
-        self,
-        name: str,
-        config: CircuitBreakerConfig | None = None,
-        persistent: bool = True
+        self, name: str, config: CircuitBreakerConfig | None = None, persistent: bool = True
     ) -> CircuitBreaker:
         """
         Get existing or create new circuit breaker.
@@ -390,13 +397,10 @@ class CircuitBreakerRegistry:
                     )
             return self._breakers[name]
 
-    def get_all_metrics(self) -> Dict[str, Dict[str, Any]]:
+    def get_all_metrics(self) -> dict[str, dict[str, Any]]:
         """Get metrics for all circuit breakers."""
         with self._lock:
-            return {
-                name: breaker.get_metrics()
-                for name, breaker in self._breakers.items()
-            }
+            return {name: breaker.get_metrics() for name, breaker in self._breakers.items()}
 
     def reset_all(self) -> int:
         """
@@ -413,9 +417,9 @@ class CircuitBreakerRegistry:
 
 # === DECORATOR FOR CIRCUIT BREAKER PROTECTION ===
 
+
 def circuit_protected(
-    breaker: CircuitBreaker,
-    fallback: Optional[Callable[..., T]] = None
+    breaker: CircuitBreaker, fallback: Callable[..., T] | None = None
 ) -> Callable[[Callable[..., T]], Callable[..., T]]:
     """
     Decorator to protect a function with a circuit breaker.
@@ -434,15 +438,14 @@ def circuit_protected(
         def call_external_service():
             ...
     """
+
     def decorator(func: Callable[..., T]) -> Callable[..., T]:
         def wrapper(*args: Any, **kwargs: Any) -> T:
             can_execute, reason = breaker.can_execute()
 
             if not can_execute:
                 if fallback:
-                    logger.warning(
-                        f"Circuit {breaker.name} open, using fallback: {reason}"
-                    )
+                    logger.warning(f"Circuit {breaker.name} open, using fallback: {reason}")
                     return fallback(*args, **kwargs)
                 raise RuntimeError(f"Circuit {breaker.name} open: {reason}")
 
@@ -450,22 +453,23 @@ def circuit_protected(
                 result = func(*args, **kwargs)
                 breaker.record_success()
                 return result
-            except Exception as e:
+            except Exception:
                 breaker.record_failure()
                 raise
 
         return wrapper
+
     return decorator
 
 
 # === MODULE EXPORTS ===
 
 __all__ = [
-    "CircuitState",
+    "CircuitBreaker",
     "CircuitBreakerConfig",
     "CircuitBreakerMetrics",
-    "CircuitBreaker",
-    "PersistentCircuitBreaker",
     "CircuitBreakerRegistry",
+    "CircuitState",
+    "PersistentCircuitBreaker",
     "circuit_protected",
 ]

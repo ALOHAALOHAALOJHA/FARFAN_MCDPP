@@ -9,10 +9,11 @@ Date: 2026-01-06
 """
 
 import pytest
+
 from farfan_pipeline.infrastructure.extractors import (
     InstitutionalNERExtractor,
     extract_institutional_entities,
-    get_entity_info
+    get_entity_info,
 )
 
 
@@ -44,8 +45,9 @@ class TestInstitutionalNERExtractor:
         assert len(dnp_entities) > 0, "Should find DNP entity"
 
         dnp = dnp_entities[0]
-        assert dnp["confidence"] >= 0.85, \
-            f"DNP should have high confidence, got {dnp['confidence']}"
+        assert (
+            dnp["confidence"] >= 0.85
+        ), f"DNP should have high confidence, got {dnp['confidence']}"
         assert dnp["entity_type"] == "NATIONAL_ENTITY"
 
     def test_dane_extraction(self, extractor):
@@ -130,8 +132,9 @@ class TestInstitutionalNERExtractor:
 
         result = extractor.extract(text)
 
-        alcaldia_entities = [m for m in result.matches
-                            if "alcaldía" in m.get("detected_text", "").lower()]
+        alcaldia_entities = [
+            m for m in result.matches if "alcaldía" in m.get("detected_text", "").lower()
+        ]
 
         # Should extract Alcaldía
         assert len(result.matches) > 0, "Should extract entities from text"
@@ -158,7 +161,7 @@ class TestInstitutionalNERExtractor:
         test_cases = [
             "La Secretaría de Salud implementará el programa",
             "La Secretaría de Educación fortalecerá las competencias",
-            "La Secretaría de Planeación coordinará el SISBEN"
+            "La Secretaría de Planeación coordinará el SISBEN",
         ]
 
         for text in test_cases:
@@ -203,8 +206,9 @@ class TestInstitutionalNERExtractor:
         if dnp_matches:
             confidences = [m["confidence"] for m in dnp_matches]
             max_confidence = max(confidences)
-            assert max_confidence >= 0.85, \
-                f"DNP with context should have confidence >= 0.85, got {max_confidence}"
+            assert (
+                max_confidence >= 0.85
+            ), f"DNP with context should have confidence >= 0.85, got {max_confidence}"
 
     def test_acronym_without_context_lower_confidence(self, extractor):
         """
@@ -235,15 +239,16 @@ class TestInstitutionalNERExtractor:
         national_texts = [
             "El DNP coordinará",
             "El DANE proporcionará datos",
-            "El ICBF ejecutará programas"
+            "El ICBF ejecutará programas",
         ]
 
         for text in national_texts:
             result = extractor.extract(text)
             if result.matches:
                 entity = result.matches[0]
-                assert entity["entity_type"] == "NATIONAL_ENTITY", \
-                    f"Text '{text}' should extract national entity"
+                assert (
+                    entity["entity_type"] == "NATIONAL_ENTITY"
+                ), f"Text '{text}' should extract national entity"
 
     def test_entity_type_territorial(self, extractor):
         """
@@ -252,7 +257,7 @@ class TestInstitutionalNERExtractor:
         """
         territorial_texts = [
             "La Alcaldía Municipal aprobará",
-            "La Gobernación del departamento coordinará"
+            "La Gobernación del departamento coordinará",
         ]
 
         for text in territorial_texts:
@@ -269,12 +274,12 @@ class TestInstitutionalNERExtractor:
         Test: Entity registry loaded correctly.
         Expected: Multiple entities loaded from registry files
         """
-        assert len(extractor.entity_registry) > 0, \
-            "Should load entities from registry files"
+        assert len(extractor.entity_registry) > 0, "Should load entities from registry files"
 
         # Should have at least institutions
-        institution_ids = [eid for eid in extractor.entity_registry.keys()
-                          if eid.startswith("ENT-INST")]
+        institution_ids = [
+            eid for eid in extractor.entity_registry.keys() if eid.startswith("ENT-INST")
+        ]
         assert len(institution_ids) > 0, "Should load institutional entities"
 
     def test_entity_info_retrieval(self, extractor):
@@ -327,16 +332,14 @@ class TestInstitutionalNERExtractor:
         result = extractor.extract(text)
 
         # Should extract multiple entities
-        assert len(result.matches) >= 3, \
-            f"Should extract 3+ entities, got {len(result.matches)}"
+        assert len(result.matches) >= 3, f"Should extract 3+ entities, got {len(result.matches)}"
 
         # Verify no duplicate entity IDs
         entity_ids = [m["entity_id"] for m in result.matches]
         unique_ids = set(entity_ids)
 
         # Each detection should have unique ID
-        assert len(entity_ids) == len(unique_ids), \
-            "Each entity detection should have unique ID"
+        assert len(entity_ids) == len(unique_ids), "Each entity detection should have unique ID"
 
     def test_repeated_entity_mentions(self, extractor):
         """
@@ -353,8 +356,7 @@ class TestInstitutionalNERExtractor:
         dnp_mentions = [m for m in result.matches if "DNP" in m.get("acronym", "")]
 
         # Should extract multiple DNP mentions
-        assert len(dnp_mentions) >= 2, \
-            f"Should extract 2+ DNP mentions, got {len(dnp_mentions)}"
+        assert len(dnp_mentions) >= 2, f"Should extract 2+ DNP mentions, got {len(dnp_mentions)}"
 
     # ========================================================================
     # ROLE EXTRACTION TESTS
@@ -447,8 +449,7 @@ class TestInstitutionalNERExtractor:
         result = extract_institutional_entities(text)
 
         assert result is not None, "Should return ExtractionResult"
-        assert result.signal_type == "INSTITUTIONAL_NETWORK", \
-            "Should have correct signal type"
+        assert result.signal_type == "INSTITUTIONAL_NETWORK", "Should have correct signal type"
         assert len(result.matches) > 0, "Should extract entity"
 
     def test_convenience_function_get_entity_info(self):
@@ -468,8 +469,9 @@ class TestInstitutionalNERExtractor:
             info = get_entity_info(first_id)
 
             # Should return None if not found, or dict if found
-            assert info is None or isinstance(info, dict), \
-                "get_entity_info should return None or dict"
+            assert info is None or isinstance(
+                info, dict
+            ), "get_entity_info should return None or dict"
 
     # ========================================================================
     # VALIDATION TESTS
@@ -484,8 +486,7 @@ class TestInstitutionalNERExtractor:
 
         result = extractor.extract(text)
 
-        assert hasattr(result, 'validation_passed'), \
-            "Should have validation_passed attribute"
+        assert hasattr(result, "validation_passed"), "Should have validation_passed attribute"
 
     def test_validation_errors_empty_on_success(self, extractor):
         """
@@ -497,8 +498,7 @@ class TestInstitutionalNERExtractor:
         result = extractor.extract(text)
 
         if result.validation_passed:
-            assert result.validation_errors == [], \
-                "Should have empty validation_errors on success"
+            assert result.validation_errors == [], "Should have empty validation_errors on success"
 
     # ========================================================================
     # EDGE CASES AND ROBUSTNESS TESTS
@@ -544,8 +544,7 @@ class TestInstitutionalNERExtractor:
         for text in test_cases:
             result = extractor.extract(text)
             dnp_matches = [m for m in result.matches if "DNP" in m.get("acronym", "")]
-            assert len(dnp_matches) > 0, \
-                f"Should extract DNP from '{text}' (case-insensitive)"
+            assert len(dnp_matches) > 0, f"Should extract DNP from '{text}' (case-insensitive)"
 
     def test_entities_with_special_characters(self, extractor):
         """
@@ -581,14 +580,18 @@ class TestInstitutionalNEREmpiricalValidation:
         Top empirical: DNP, DANE, ICBF, SENA, Ministerios
         Expected: All top entities in registry
         """
-        registry_acronyms = [entity.get("acronym") for entity in extractor.entity_registry.values()
-                            if entity.get("acronym")]
+        registry_acronyms = [
+            entity.get("acronym")
+            for entity in extractor.entity_registry.values()
+            if entity.get("acronym")
+        ]
 
         top_empirical = ["DNP", "DANE", "ICBF", "SENA"]
 
         for entity_acronym in top_empirical:
-            assert entity_acronym in registry_acronyms, \
-                f"Top empirical entity '{entity_acronym}' should be in registry"
+            assert (
+                entity_acronym in registry_acronyms
+            ), f"Top empirical entity '{entity_acronym}' should be in registry"
 
     def test_national_entities_pattern_confidence(self, extractor, calibration_data):
         """
@@ -600,8 +603,9 @@ class TestInstitutionalNEREmpiricalValidation:
         patterns = signal_data["extraction_patterns"]
 
         national_confidence = patterns["national_entities"]["confidence"]
-        assert national_confidence == 0.94, \
-            f"Expected national entities confidence=0.94, got {national_confidence}"
+        assert (
+            national_confidence == 0.94
+        ), f"Expected national entities confidence=0.94, got {national_confidence}"
 
     def test_territorial_entities_pattern_confidence(self, extractor, calibration_data):
         """
@@ -613,8 +617,9 @@ class TestInstitutionalNEREmpiricalValidation:
         patterns = signal_data["extraction_patterns"]
 
         territorial_confidence = patterns["territorial_entities"]["confidence"]
-        assert territorial_confidence == 0.89, \
-            f"Expected territorial confidence=0.89, got {territorial_confidence}"
+        assert (
+            territorial_confidence == 0.89
+        ), f"Expected territorial confidence=0.89, got {territorial_confidence}"
 
     def test_entity_frequency_awareness(self, extractor, calibration_data):
         """

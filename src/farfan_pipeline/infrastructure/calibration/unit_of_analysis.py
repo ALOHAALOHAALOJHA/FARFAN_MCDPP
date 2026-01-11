@@ -28,14 +28,14 @@ FAILURE MODES:
     FM-UOA-003: Invalid percentage → ValueError at construction
     FM-UOA-004: Invalid DANE code → ValueError at construction
 """
+
 from __future__ import annotations
 
 import hashlib
 import math
 from dataclasses import dataclass, field
 from enum import Enum, auto
-from typing import Final, FrozenSet
-
+from typing import Final
 
 # =============================================================================
 # ENUMERATIONS
@@ -145,7 +145,7 @@ class UnitOfAnalysis:
     # Document characteristics
     plan_period_start: int  # Year, e.g., 2024
     plan_period_end: int  # Year, e.g., 2027
-    policy_area_codes: FrozenSet[str]  # e.g., {"PA01", "PA02", "PA05"}
+    policy_area_codes: frozenset[str]  # e.g., {"PA01", "PA02", "PA05"}
 
     # Data quality indicators
     data_validity_days: int = 365  # How long extracted data remains valid
@@ -163,9 +163,7 @@ class UnitOfAnalysis:
 
         # INV-UOA-003: SGP percentage in valid range
         if not (0 <= self.sgp_percentage <= 100):
-            raise ValueError(
-                f"SGP percentage must be 0-100, got {self.sgp_percentage}"
-            )
+            raise ValueError(f"SGP percentage must be 0-100, got {self.sgp_percentage}")
 
         # INV-UOA-004: Own revenue percentage in valid range
         if not (0 <= self.own_revenue_percentage <= 100):
@@ -175,9 +173,7 @@ class UnitOfAnalysis:
 
         # INV-UOA-005: DANE code must be 5 digits
         if len(self.municipality_code) != 5:
-            raise ValueError(
-                f"DANE code must be 5 digits, got {self.municipality_code}"
-            )
+            raise ValueError(f"DANE code must be 5 digits, got {self.municipality_code}")
 
     def complexity_score(self) -> float:
         """

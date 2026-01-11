@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_zero
+Module: src.farfan_pipeline.phases.Phase_0
 PHASE_LABEL: Phase 0
 Purpose: Package initialization for Phase 0 - Validation, Hardening & Bootstrap
 Owner: phase0_core
@@ -34,6 +34,7 @@ RESOURCE ENFORCEMENT:
         RESOURCE_DISK_MB (default: 500)
         RESOURCE_FILE_DESCRIPTORS (default: 1024)
 """
+
 from __future__ import annotations
 
 # =============================================================================
@@ -60,31 +61,31 @@ from .phase0_00_01_domain_errors import (
     SystemContractError,
 )
 from .phase0_00_03_primitives import (
-    HashStr,
-    Timestamp,
-    RunID,
-    PolicyAreaID,
     DimensionID,
+    HashStr,
+    PolicyAreaID,
+    RunID,
+    Timestamp,
     validate_hash_str,
 )
 from .phase0_00_03_protocols import (
-    PhaseContract,
-    PhaseInvariant,
-    PhaseMetadata,
     ContractValidationResult,
     PhaseArtifact,
+    PhaseContract,
+    PhaseInvariant,
     PhaseManifestBuilder,
+    PhaseMetadata,
     compute_contract_hash,
 )
 
 # Stage 30: Resource Control
 from .phase0_30_00_resource_controller import (
-    ResourceController,
-    ResourceLimits,
-    ResourceExhausted,
-    MemoryWatchdog,
-    EnforcementMetrics,
     PSUTIL_AVAILABLE,
+    EnforcementMetrics,
+    MemoryWatchdog,
+    ResourceController,
+    ResourceExhausted,
+    ResourceLimits,
 )
 
 # =============================================================================

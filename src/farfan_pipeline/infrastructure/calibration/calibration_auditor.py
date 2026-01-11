@@ -1,7 +1,7 @@
 """
 Calibration Auditor
 ===================
-N3-AUD level auditor for calibration choices. 
+N3-AUD level auditor for calibration choices.
 
 DESIGN PATTERN: Specification Pattern
 - Each invariant is a specification that can be composed
@@ -11,22 +11,21 @@ VETO CAPABILITY:
 - This is an N3-AUD component with VETO GATE behavior
 - Can invalidate calibration if invariants violated
 """
+
 from __future__ import annotations
 
-import json
 import logging
-import re
+from collections.abc import Sequence
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Final, Protocol, Sequence
+from datetime import UTC, datetime
+from typing import Final, Protocol
 
 from .calibration_manifest import CalibrationManifest, DriftIndicator, DriftReport
 from .type_defaults import (
+    PRIOR_STRENGTH_MAX,
+    PRIOR_STRENGTH_MIN,
     PROHIBITED_OPERATIONS,
     get_type_defaults,
-    PRIOR_STRENGTH_MIN,
-    PRIOR_STRENGTH_MAX,
 )
 
 logger = logging.getLogger(__name__)
@@ -34,11 +33,11 @@ logger = logging.getLogger(__name__)
 
 class CalibrationSpecification(Protocol):
     """Protocol for calibration specifications."""
-    
+
     def is_satisfied_by(self, manifest: CalibrationManifest) -> bool:
         """Check if manifest satisfies this specification."""
-        ... 
-    
+        ...
+
     def get_violation_message(self) -> str:
         """Get message describing violation."""
         ...
@@ -47,6 +46,7 @@ class CalibrationSpecification(Protocol):
 @dataclass(frozen=True)
 class CalibrationViolation:
     """Record of calibration invariant violation."""
+
     invariant_id: str
     severity: str  # "WARNING" or "FATAL"
     message: str
@@ -56,6 +56,7 @@ class CalibrationViolation:
 @dataclass
 class AuditResult:
     """Result of calibration audit."""
+
     passed: bool
     violations: list[CalibrationViolation]
     veto_triggered: bool
@@ -66,18 +67,18 @@ class AuditResult:
 
 class PriorStrengthSpecification:
     """INV-CAL-001: Prior strength must be in valid range."""
-    
-    _VALID_RANGE:  Final[tuple[float, float]] = (PRIOR_STRENGTH_MIN, PRIOR_STRENGTH_MAX)
+
+    _VALID_RANGE: Final[tuple[float, float]] = (PRIOR_STRENGTH_MIN, PRIOR_STRENGTH_MAX)
     _violation_message: str = ""
-    
+
     def is_satisfied_by(self, manifest: CalibrationManifest) -> bool:
         ing_prior = manifest.ingestion_layer.get_parameter("prior_strength").value
         ph2_prior = manifest.phase2_layer.get_parameter("prior_strength").value
-        
+
         ing_valid = self._VALID_RANGE[0] <= ing_prior <= self._VALID_RANGE[1]
         ph2_valid = self._VALID_RANGE[0] <= ph2_prior <= self._VALID_RANGE[1]
-        
-        if not ing_valid: 
+
+        if not ing_valid:
             self._violation_message = (
                 f"Ingestion prior strength {ing_prior} outside "
                 f"[{self._VALID_RANGE[0]}, {self._VALID_RANGE[1]}]"
@@ -87,18 +88,18 @@ class PriorStrengthSpecification:
                 f"Phase-2 prior strength {ph2_prior} outside "
                 f"[{self._VALID_RANGE[0]}, {self._VALID_RANGE[1]}]"
             )
-        
+
         return ing_valid and ph2_valid
-    
+
     def get_violation_message(self) -> str:
         return self._violation_message
 
 
 class VetoThresholdSpecification:
     """INV-CAL-002: Veto threshold must match TYPE specification."""
-    
+
     _violation_message: str = ""
-    
+
     def is_satisfied_by(self, manifest: CalibrationManifest) -> bool:
         contract_type = manifest.contract_type_code
         try:
@@ -107,33 +108,33 @@ class VetoThresholdSpecification:
             # Fallback if validation fails or type unknown
             self._violation_message = f"Unknown contract type: {contract_type}"
             return False
-        
+
         expected_bounds = type_defaults.veto_threshold
         actual_value = manifest.phase2_layer.get_parameter("veto_threshold").value
-        
+
         is_valid = expected_bounds.lower <= actual_value <= expected_bounds.upper
-        
-        if not is_valid: 
+
+        if not is_valid:
             self._violation_message = (
                 f"Veto threshold {actual_value} outside TYPE {contract_type} bounds "
                 f"[{expected_bounds.lower}, {expected_bounds.upper}]"
             )
-        
+
         return is_valid
-    
+
     def get_violation_message(self) -> str:
         return self._violation_message
 
 
 class FusionStrategySpecification:
     """INV-CAL-003: Fusion strategy must not use prohibited operations."""
-    
+
     _violation_message: str = ""
-    
+
     def is_satisfied_by(self, manifest: CalibrationManifest) -> bool:
         contract_type = manifest.contract_type_code
         prohibited = PROHIBITED_OPERATIONS.get(contract_type, frozenset())
-        
+
         # Check all decisions for prohibited operations
         for decision in manifest.decisions:
             if any(p in decision.parameter_name.lower() for p in prohibited):
@@ -142,9 +143,9 @@ class FusionStrategySpecification:
                     f"for TYPE {contract_type}"
                 )
                 return False
-        
+
         return True
-    
+
     def get_violation_message(self) -> str:
         return self._violation_message
 
@@ -152,12 +153,12 @@ class FusionStrategySpecification:
 class CalibrationAuditor:
     """
     N3-AUD auditor for calibration manifests.
-    
-    VETO GATE: Can invalidate entire calibration on FATAL violations. 
+
+    VETO GATE: Can invalidate entire calibration on FATAL violations.
     """
-    
+
     _AUDITOR_ID: Final[str] = "CalibrationAuditor_N3_AUD_v1.0"
-    
+
     def __init__(self) -> None:
         self._specifications: list[tuple[str, str, CalibrationSpecification]] = [
             ("INV-CAL-001", "FATAL", PriorStrengthSpecification()),
@@ -165,19 +166,19 @@ class CalibrationAuditor:
             ("INV-CAL-003", "FATAL", FusionStrategySpecification()),
         ]
         self._logger = logging.getLogger(f"{__name__}.{self.__class__.__name__}")
-    
+
     def audit(self, manifest: CalibrationManifest) -> AuditResult:
         """
         Audit calibration manifest against all specifications.
-        
+
         Returns:
             AuditResult with pass/fail status and violations
         """
         self._logger.info(f"Auditing manifest {manifest.manifest_id}")
-        
-        violations:  list[CalibrationViolation] = []
+
+        violations: list[CalibrationViolation] = []
         veto_triggered = False
-        
+
         for invariant_id, severity, spec in self._specifications:
             if not spec.is_satisfied_by(manifest):
                 violation = CalibrationViolation(
@@ -194,15 +195,15 @@ class CalibrationAuditor:
                     )
             else:
                 self._logger.info(f"Invariant {invariant_id} satisfied.")
-        
+
         passed = not veto_triggered
-        
+
         return AuditResult(
             passed=passed,
             violations=violations,
             veto_triggered=veto_triggered,
             auditor_id=self._AUDITOR_ID,
-            timestamp=datetime.now(timezone.utc),
+            timestamp=datetime.now(UTC),
             manifest_hash=manifest.compute_hash(),
         )
 
@@ -217,9 +218,11 @@ class CalibrationAuditor:
         Detects calibration drift between design and runtime.
         """
         drift_indicators: list[DriftIndicator] = []
-        
+
         # Coverage drift
-        actual_coverage = sum(1 for obs in runtime_observations if obs.get("covered")) / max(1, len(runtime_observations))
+        actual_coverage = sum(1 for obs in runtime_observations if obs.get("covered")) / max(
+            1, len(runtime_observations)
+        )
         deviation = abs(actual_coverage - expected_coverage)
         severity = "FATAL" if deviation > 0.2 else "WARNING" if deviation > 0.1 else "INFO"
         if severity != "INFO":
@@ -230,13 +233,17 @@ class CalibrationAuditor:
                     actual_value=actual_coverage,
                     deviation=deviation,
                     severity=severity,
-                    detection_timestamp=datetime.now(timezone.utc),
+                    detection_timestamp=datetime.now(UTC),
                 )
             )
-        
+
         # Credible interval drift (Bayesian only)
         if expected_credible_width is not None:
-            actual_width = sum(obs.get("credible_interval_width", 0) for obs in runtime_observations if "credible_interval_width" in obs) / max(1, len(runtime_observations))
+            actual_width = sum(
+                obs.get("credible_interval_width", 0)
+                for obs in runtime_observations
+                if "credible_interval_width" in obs
+            ) / max(1, len(runtime_observations))
             deviation = abs(actual_width - expected_credible_width)
             severity = "FATAL" if deviation > 0.3 else "WARNING" if deviation > 0.15 else "INFO"
             if severity != "INFO":
@@ -247,9 +254,9 @@ class CalibrationAuditor:
                         actual_value=actual_width,
                         deviation=deviation,
                         severity=severity,
-                        detection_timestamp=datetime.now(timezone.utc),
+                        detection_timestamp=datetime.now(UTC),
                     )
                 )
-        
+
         drift_detected = bool(drift_indicators)
         return DriftReport(indicators=drift_indicators, drift_detected=drift_detected)

@@ -167,21 +167,25 @@ class CanonicalQuestionnaire:
 
 class ResolverError(Exception):
     """Base exception for resolver errors."""
+
     pass
 
 
 class AssemblyError(ResolverError):
     """Error during questionnaire assembly."""
+
     pass
 
 
 class IntegrityError(ResolverError):
     """Hash or integrity verification failure."""
+
     pass
 
 
 class ValidationError(ResolverError):
     """Validation error during assembly."""
+
     pass
 
 
@@ -281,11 +285,7 @@ class CanonicalQuestionnaireResolver:
             IntegrityError: If hash verification fails
         """
         # Check cache
-        if (
-            self._cache_enabled
-            and not force_rebuild
-            and self._cached_questionnaire is not None
-        ):
+        if self._cache_enabled and not force_rebuild and self._cached_questionnaire is not None:
             logger.debug("resolver_cache_hit")
             if expected_hash and self._cached_questionnaire.sha256 != expected_hash:
                 raise IntegrityError(
@@ -428,9 +428,7 @@ class CanonicalQuestionnaireResolver:
             source_paths.append(str(self._root / "macro_question.json"))
 
         # 12. Assemble Micro Questions
-        micro_questions = self._assemble_micro_questions(
-            dimensions, policy_areas, patterns
-        )
+        micro_questions = self._assemble_micro_questions(dimensions, policy_areas, patterns)
 
         # Validate counts
         self._validate_counts(
@@ -594,9 +592,7 @@ class CanonicalQuestionnaireResolver:
 
             if metadata_path.exists():
                 pa_data = {
-                    "metadata": self._load_json(
-                        f"policy_areas/{pa_subdir.name}/metadata.json"
-                    ),
+                    "metadata": self._load_json(f"policy_areas/{pa_subdir.name}/metadata.json"),
                     "questions": [],
                     "keywords": [],
                 }
@@ -607,9 +603,7 @@ class CanonicalQuestionnaireResolver:
                     )
 
                 if keywords_path.exists():
-                    keywords_data = self._load_json(
-                        f"policy_areas/{pa_subdir.name}/keywords.json"
-                    )
+                    keywords_data = self._load_json(f"policy_areas/{pa_subdir.name}/keywords.json")
                     pa_data["keywords"] = keywords_data.get("keywords", [])
 
                 policy_areas[pa_id] = pa_data
@@ -632,15 +626,15 @@ class CanonicalQuestionnaireResolver:
 
             metadata_path = cluster_dir / "metadata.json"
             if metadata_path.exists():
-                metadata = self._load_json(
-                    f"clusters/{cluster_dir.name}/metadata.json"
+                metadata = self._load_json(f"clusters/{cluster_dir.name}/metadata.json")
+                clusters.append(
+                    {
+                        "cluster_id": cluster_id,
+                        "name": metadata.get("name", cluster_dir.name),
+                        "policy_area_ids": metadata.get("policy_area_ids", []),
+                        **metadata,
+                    }
                 )
-                clusters.append({
-                    "cluster_id": cluster_id,
-                    "name": metadata.get("name", cluster_dir.name),
-                    "policy_area_ids": metadata.get("policy_area_ids", []),
-                    **metadata,
-                })
 
         return clusters
 
@@ -753,10 +747,7 @@ class CanonicalQuestionnaireResolver:
                     pa_questions = pa_data.get("questions", [])
 
                     # Filter questions for this dimension
-                    dim_pa_questions = [
-                        q for q in pa_questions
-                        if q.get("dimension_id") == dim_id
-                    ]
+                    dim_pa_questions = [q for q in pa_questions if q.get("dimension_id") == dim_id]
 
                     for q in dim_pa_questions:
                         q_id = q.get("question_id", f"Q{question_seq:03d}")
@@ -777,7 +768,8 @@ class CanonicalQuestionnaireResolver:
                             **{
                                 k: v
                                 for k, v in q.items()
-                                if k not in [
+                                if k
+                                not in [
                                     "question_id",
                                     "dimension_id",
                                     "policy_area_id",
@@ -819,16 +811,18 @@ class CanonicalQuestionnaireResolver:
 
             applies_to = pattern_data.get("applies_to_questions", [])
             if question_id in applies_to or "*" in applies_to:
-                patterns.append({
-                    "id": pattern_id,
-                    "pattern": pattern_data.get("pattern", ""),
-                    "match_type": pattern_data.get("match_type", "REGEX"),
-                    "category": pattern_data.get("category", "GENERAL"),
-                    "confidence_weight": pattern_data.get("confidence_weight", 0.85),
-                    "semantic_expansion": pattern_data.get("semantic_expansion", []),
-                    "context_requirement": pattern_data.get("context_requirement"),
-                    "evidence_boost": pattern_data.get("evidence_boost", 1.0),
-                })
+                patterns.append(
+                    {
+                        "id": pattern_id,
+                        "pattern": pattern_data.get("pattern", ""),
+                        "match_type": pattern_data.get("match_type", "REGEX"),
+                        "category": pattern_data.get("category", "GENERAL"),
+                        "confidence_weight": pattern_data.get("confidence_weight", 0.85),
+                        "semantic_expansion": pattern_data.get("semantic_expansion", []),
+                        "context_requirement": pattern_data.get("context_requirement"),
+                        "evidence_boost": pattern_data.get("evidence_boost", 1.0),
+                    }
+                )
                 self._metrics.patterns_merged += 1
 
         return patterns
@@ -878,9 +872,7 @@ class CanonicalQuestionnaireResolver:
         if errors:
             self._metrics.validation_errors.extend(errors)
             if self._strict_mode:
-                raise AssemblyError(
-                    f"Validation failed:\n" + "\n".join(f"  - {e}" for e in errors)
-                )
+                raise AssemblyError(f"Validation failed:\n" + "\n".join(f"  - {e}" for e in errors))
             else:
                 for error in errors:
                     logger.warning("validation_error", error=error)
@@ -892,10 +884,7 @@ class CanonicalQuestionnaireResolver:
     def _compute_hash(self, data: dict[str, Any]) -> str:
         """Compute deterministic SHA-256 hash of assembled data."""
         # Remove non-deterministic fields for hashing
-        data_for_hash = {
-            k: v for k, v in data.items()
-            if k not in ("generated_at", "provenance")
-        }
+        data_for_hash = {k: v for k, v in data.items() if k not in ("generated_at", "provenance")}
 
         # Serialize deterministically
         serialized = json.dumps(

@@ -26,6 +26,16 @@ INVARIANTS ENFORCED:
 
 Schema Version: 2.0.0
 """
+
+from .calibration_auditor import (
+    AuditResult,
+    CalibrationAuditor,
+    CalibrationSpecification,
+    CalibrationViolation,
+    FusionStrategySpecification,
+    PriorStrengthSpecification,
+    VetoThresholdSpecification,
+)
 from .calibration_core import (
     CalibrationError,
     CalibrationLayer,
@@ -40,39 +50,40 @@ from .calibration_core import (
     create_calibration_parameter,
     create_default_bounds,
 )
-from .type_defaults import (
-    PROHIBITED_OPERATIONS,
-    VALID_CONTRACT_TYPES,
-    CONTRACT_TYPE_A,
-    CONTRACT_TYPE_B,
-    CONTRACT_TYPE_C,
-    CONTRACT_TYPE_D,
-    CONTRACT_TYPE_E,
-    CONTRACT_SUBTIPO_F,
-    PRIOR_STRENGTH_MIN,
-    PRIOR_STRENGTH_MAX,
-    ContractTypeDefaults,
-    EpistemicLayerRatios,
-    get_type_defaults,
-    get_all_type_defaults,
-    is_operation_prohibited,
-    is_operation_permitted,
-    clear_defaults_cache,
-    UnknownContractTypeError,
-    CanonicalSourceError,
-    ConfigurationError,
+from .calibration_manifest import (
+    CalibrationDecision,
+    CalibrationManifest,
+    DriftIndicator,
+    DriftReport,
+    ManifestBuilder,
 )
-from .unit_of_analysis import (
-    FiscalContext,
-    MunicipalityCategory,
-    UnitOfAnalysis,
+from .fact_registry import (
+    CanonicalFactRegistry,
+    DuplicateRecord,
+    EpistemologicalLevel,
+    FactEntry,
+    FactFactory,
+    RegistryStatistics,
 )
 from .ingestion_calibrator import (
+    AggressiveCalibrationStrategy,
     CalibrationStrategy,
+    ConservativeCalibrationStrategy,
     IngestionCalibrator,
     StandardCalibrationStrategy,
-    AggressiveCalibrationStrategy,
-    ConservativeCalibrationStrategy,
+)
+from .interaction_governor import (
+    CycleDetector,
+    DependencyGraph,
+    InteractionGovernor,
+    InteractionViolation,
+    InteractionViolationType,
+    LevelInversionDetector,
+    MethodNode,
+    VetoCoordinator,
+    VetoReport,
+    VetoResult,
+    bounded_multiplicative_fusion,
 )
 from .method_binding_validator import (
     EpistemicViolation,
@@ -86,42 +97,32 @@ from .phase2_calibrator import (
     Phase2CalibrationResult,
     Phase2Calibrator,
 )
-from .calibration_manifest import (
-    CalibrationManifest,
-    CalibrationDecision,
-    ManifestBuilder,
-    DriftIndicator,
-    DriftReport,
+from .type_defaults import (
+    CONTRACT_SUBTIPO_F,
+    CONTRACT_TYPE_A,
+    CONTRACT_TYPE_B,
+    CONTRACT_TYPE_C,
+    CONTRACT_TYPE_D,
+    CONTRACT_TYPE_E,
+    PRIOR_STRENGTH_MAX,
+    PRIOR_STRENGTH_MIN,
+    PROHIBITED_OPERATIONS,
+    VALID_CONTRACT_TYPES,
+    CanonicalSourceError,
+    ConfigurationError,
+    ContractTypeDefaults,
+    EpistemicLayerRatios,
+    UnknownContractTypeError,
+    clear_defaults_cache,
+    get_all_type_defaults,
+    get_type_defaults,
+    is_operation_permitted,
+    is_operation_prohibited,
 )
-from .calibration_auditor import (
-    CalibrationAuditor,
-    AuditResult,
-    CalibrationViolation,
-    CalibrationSpecification,
-    PriorStrengthSpecification,
-    VetoThresholdSpecification,
-    FusionStrategySpecification,
-)
-from .interaction_governor import (
-    InteractionGovernor,
-    DependencyGraph,
-    MethodNode,
-    CycleDetector,
-    LevelInversionDetector,
-    VetoCoordinator,
-    VetoResult,
-    VetoReport,
-    InteractionViolation,
-    InteractionViolationType,
-    bounded_multiplicative_fusion,
-)
-from .fact_registry import (
-    CanonicalFactRegistry,
-    FactEntry,
-    FactFactory,
-    EpistemologicalLevel,
-    DuplicateRecord,
-    RegistryStatistics,
+from .unit_of_analysis import (
+    FiscalContext,
+    MunicipalityCategory,
+    UnitOfAnalysis,
 )
 
 __all__ = [
@@ -137,7 +138,6 @@ __all__ = [
     # Factory functions
     "create_calibration_parameter",
     "create_default_bounds",
-    
     # =========================================================================
     # EXCEPTIONS
     # =========================================================================
@@ -149,7 +149,6 @@ __all__ = [
     "UnknownContractTypeError",
     "CanonicalSourceError",
     "ConfigurationError",
-    
     # =========================================================================
     # TYPE DEFAULTS (Flyweight cached)
     # =========================================================================
@@ -170,14 +169,12 @@ __all__ = [
     "PRIOR_STRENGTH_MAX",
     "ContractTypeDefaults",
     "EpistemicLayerRatios",
-    
     # =========================================================================
     # UNIT OF ANALYSIS
     # =========================================================================
     "FiscalContext",
     "MunicipalityCategory",
     "UnitOfAnalysis",
-    
     # =========================================================================
     # INGESTION CALIBRATOR (N1-EMP)
     # =========================================================================
@@ -186,7 +183,6 @@ __all__ = [
     "StandardCalibrationStrategy",
     "AggressiveCalibrationStrategy",
     "ConservativeCalibrationStrategy",
-    
     # =========================================================================
     # METHOD BINDING VALIDATOR
     # =========================================================================
@@ -195,13 +191,11 @@ __all__ = [
     "MethodBindingValidator",
     "ValidationResult",
     "ValidationSeverity",
-    
     # =========================================================================
     # PHASE-2 CALIBRATOR (N2-INF)
     # =========================================================================
     "Phase2CalibrationResult",
     "Phase2Calibrator",
-    
     # =========================================================================
     # CALIBRATION MANIFEST (Audit Trail)
     # =========================================================================
@@ -210,7 +204,6 @@ __all__ = [
     "ManifestBuilder",
     "DriftIndicator",
     "DriftReport",
-    
     # =========================================================================
     # CALIBRATION AUDITOR (N3-AUD Veto Gate)
     # =========================================================================
@@ -221,7 +214,6 @@ __all__ = [
     "PriorStrengthSpecification",
     "VetoThresholdSpecification",
     "FusionStrategySpecification",
-    
     # =========================================================================
     # INTERACTION GOVERNOR (Bounded Fusion, Veto Cascade)
     # =========================================================================
@@ -236,7 +228,6 @@ __all__ = [
     "InteractionViolation",
     "InteractionViolationType",
     "bounded_multiplicative_fusion",
-    
     # =========================================================================
     # FACT REGISTRY (Deduplication, Verbosity)
     # =========================================================================

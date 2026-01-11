@@ -11,6 +11,22 @@ Requirements:
 - Include schema validation results
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 0
+__stage__ = 40
+__order__ = 3
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "HIGH"
+__execution_pattern__ = "On-Demand"
+
+
+
 import ast
 import json
 import sys
@@ -23,28 +39,25 @@ def count_methods_in_class(filepath: Path, class_name: str) -> tuple[list[str], 
     if not filepath.exists():
         return [], {"public": 0, "private": 0, "total": 0}
 
-    with open(filepath, encoding='utf-8') as f:
+    with open(filepath, encoding="utf-8") as f:
         tree = ast.parse(f.read())
 
     method_names = []
-    method_counts = {
-        "public": 0,
-        "private": 0,
-        "total": 0
-    }
+    method_counts = {"public": 0, "private": 0, "total": 0}
 
     for node in ast.walk(tree):
         if isinstance(node, ast.ClassDef) and node.name == class_name:
             for item in node.body:
                 if isinstance(item, ast.FunctionDef):
                     method_names.append(item.name)
-                    if not item.name.startswith('_'):
+                    if not item.name.startswith("_"):
                         method_counts["public"] += 1
                     else:
                         method_counts["private"] += 1
                     method_counts["total"] += 1
 
     return method_names, method_counts
+
 
 def validate_schema_exists(module_dir: Path) -> tuple[bool, list[str]]:
     """Validate that schema files exist for a module"""
@@ -54,12 +67,13 @@ def validate_schema_exists(module_dir: Path) -> tuple[bool, list[str]]:
     schema_files = list(module_dir.glob("*.schema.json"))
     return len(schema_files) > 0, [f.name for f in schema_files]
 
+
 def count_file_methods(filepath: Path) -> tuple[int, int]:
     """Count all public and total methods in a file"""
     if not filepath.exists():
         return 0, 0
 
-    with open(filepath, encoding='utf-8') as f:
+    with open(filepath, encoding="utf-8") as f:
         try:
             tree = ast.parse(f.read())
             public_methods = 0
@@ -68,13 +82,14 @@ def count_file_methods(filepath: Path) -> tuple[int, int]:
             for node in ast.walk(tree):
                 if isinstance(node, ast.FunctionDef):
                     all_methods += 1
-                    if not node.name.startswith('_'):
+                    if not node.name.startswith("_"):
                         public_methods += 1
 
             return public_methods, all_methods
         except Exception as e:
             print(f"Error parsing {filepath}: {e}")
             return 0, 0
+
 
 def count_all_methods() -> dict[str, any]:
     """Count all methods across all modules and producers"""
@@ -89,7 +104,7 @@ def count_all_methods() -> dict[str, any]:
         "derek_beach.py",
         "policy_processor.py",
         "report_assembly.py",
-        "semantic_chunking_policy.py"
+        "semantic_chunking_policy.py",
     ]
 
     # Producer classes to check
@@ -97,7 +112,7 @@ def count_all_methods() -> dict[str, any]:
         "SemanticChunkingProducer": "semantic_chunking_policy.py",
         "EmbeddingPolicyProducer": "embedding_policy.py",
         "DerekBeachProducer": "derek_beach.py",
-        "ReportAssemblyProducer": "report_assembly.py"
+        "ReportAssemblyProducer": "report_assembly.py",
     }
 
     results = {
@@ -109,10 +124,10 @@ def count_all_methods() -> dict[str, any]:
             "file_total_methods": 0,
             "producer_methods": 0,
             "threshold": 555,
-            "meets_threshold": False
+            "meets_threshold": False,
         },
         "schema_validation": {},
-        "audit_status": "PENDING"
+        "audit_status": "PENDING",
     }
 
     # Count file methods
@@ -125,7 +140,7 @@ def count_all_methods() -> dict[str, any]:
         public_methods, total_methods = count_file_methods(filepath)
         results["files"][filepath_str] = {
             "public_methods": public_methods,
-            "total_methods": total_methods
+            "total_methods": total_methods,
         }
         results["totals"]["file_public_methods"] += public_methods
         results["totals"]["file_total_methods"] += total_methods
@@ -142,15 +157,15 @@ def count_all_methods() -> dict[str, any]:
             "file": filepath,
             "methods": methods,
             "counts": counts,
-            "public_methods": counts["public"]
+            "public_methods": counts["public"],
         }
         results["totals"]["producer_methods"] += counts["public"]
-        print(f"{class_name:45} | {counts['public']:3} public | {counts['private']:3} private | {counts['total']:3} total")
+        print(
+            f"{class_name:45} | {counts['public']:3} public | {counts['private']:3} private | {counts['total']:3} total"
+        )
 
     # Update meets_threshold
-    results["totals"]["meets_threshold"] = (
-        results["totals"]["file_total_methods"] >= 555
-    )
+    results["totals"]["meets_threshold"] = results["totals"]["file_total_methods"] >= 555
 
     # Validate schemas
     print("\n" + "=" * 80)
@@ -161,7 +176,7 @@ def count_all_methods() -> dict[str, any]:
         "semantic_chunking_policy",
         "embedding_policy",
         "derek_beach",
-        "report_assembly"
+        "report_assembly",
     ]
 
     for module in schema_modules:
@@ -170,15 +185,13 @@ def count_all_methods() -> dict[str, any]:
         results["schema_validation"][module] = {
             "has_schemas": has_schemas,
             "schema_files": schema_files,
-            "schema_count": len(schema_files)
+            "schema_count": len(schema_files),
         }
         status = "✓" if has_schemas else "✗"
         print(f"{module:35} | {status} | {len(schema_files)} schemas")
 
     # Determine audit status
-    all_have_schemas = all(
-        v["has_schemas"] for v in results["schema_validation"].values()
-    )
+    all_have_schemas = all(v["has_schemas"] for v in results["schema_validation"].values())
 
     if results["totals"]["meets_threshold"] and all_have_schemas:
         results["audit_status"] = "PASS"
@@ -186,6 +199,7 @@ def count_all_methods() -> dict[str, any]:
         results["audit_status"] = "FAIL"
 
     return results
+
 
 def main() -> int:
     """Main entry point"""
@@ -205,34 +219,38 @@ def main() -> int:
     print(f"Producer methods:        {results['totals']['producer_methods']:4}")
     print(f"Threshold:               {results['totals']['threshold']:4}")
     print(f"Meets threshold:         {results['totals']['meets_threshold']}")
-    print(f"All schemas present:     {all(v['has_schemas'] for v in results['schema_validation'].values())}")
+    print(
+        f"All schemas present:     {all(v['has_schemas'] for v in results['schema_validation'].values())}"
+    )
     print(f"Audit status:            {results['audit_status']}")
 
     # Save audit.json
     audit_path = Path("audit.json")
-    with open(audit_path, 'w', encoding='utf-8') as f:
+    with open(audit_path, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
 
     print(f"\n✓ Audit results saved to {audit_path}")
 
     # Enforce hard-fail
-    if not results['totals']['meets_threshold']:
+    if not results["totals"]["meets_threshold"]:
         print("\n" + "=" * 80)
         print("❌ COVERAGE GATE FAILED")
         print("=" * 80)
         print(f"Required: {results['totals']['threshold']} methods")
         print(f"Found:    {results['totals']['file_total_methods']} methods")
-        print(f"Gap:      {results['totals']['threshold'] - results['totals']['file_total_methods']} methods")
+        print(
+            f"Gap:      {results['totals']['threshold'] - results['totals']['file_total_methods']} methods"
+        )
         print("=" * 80 + "\n")
         return 1
 
     # Check schema validation
-    if not all(v['has_schemas'] for v in results['schema_validation'].values()):
+    if not all(v["has_schemas"] for v in results["schema_validation"].values()):
         print("\n" + "=" * 80)
         print("❌ SCHEMA VALIDATION FAILED")
         print("=" * 80)
-        for module, validation in results['schema_validation'].items():
-            if not validation['has_schemas']:
+        for module, validation in results["schema_validation"].items():
+            if not validation["has_schemas"]:
                 print(f"Missing schemas for: {module}")
         print("=" * 80 + "\n")
         return 1
@@ -247,6 +265,7 @@ def main() -> int:
     print("=" * 80 + "\n")
 
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())

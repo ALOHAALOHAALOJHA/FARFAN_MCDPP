@@ -25,22 +25,37 @@ Design Principles:
 - JSON Schema validation for target versions
 - Idempotent migrations
 """
-
 from __future__ import annotations
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 96
+__order__ = 0
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "HIGH"
+__execution_pattern__ = "On-Demand"
 
 import json
 import logging
 from collections import deque
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Callable, Dict, List, Optional, ClassVar
+from typing import ClassVar
 
 logger = logging.getLogger(__name__)
 
 # Try to import jsonschema for validation
 try:
     import jsonschema
+
     JSONSCHEMA_AVAILABLE = True
 except ImportError:
     JSONSCHEMA_AVAILABLE = False
@@ -51,6 +66,7 @@ except ImportError:
 
 
 # === DATA MODELS ===
+
 
 @dataclass
 class MigrationResult:
@@ -65,13 +81,14 @@ class MigrationResult:
         error: Error message if migration failed
         migration_path: List of versions traversed during migration
     """
+
     success: bool
     original_version: str
     target_version: str
     original_path: Path
-    new_path: Optional[Path] = None
-    error: Optional[str] = None
-    migration_path: List[str] = field(default_factory=list)
+    new_path: Path | None = None
+    error: str | None = None
+    migration_path: list[str] = field(default_factory=list)
 
 
 # Type alias for migration functions
@@ -80,17 +97,21 @@ MigrationFunc = Callable[[dict], dict]
 
 # === EXCEPTIONS ===
 
+
 class MigrationError(Exception):
     """Raised when migration fails."""
+
     pass
 
 
 class ValidationError(Exception):
     """Raised when schema validation fails."""
+
     pass
 
 
 # === CONTRACT MIGRATOR ===
+
 
 class ContractMigrator:
     """
@@ -110,10 +131,10 @@ class ContractMigrator:
     """
 
     # Registry of migrations: (from_version, to_version) -> migration_func
-    MIGRATIONS: ClassVar[Dict[tuple, MigrationFunc]] = {}
+    MIGRATIONS: ClassVar[dict[tuple, MigrationFunc]] = {}
 
     # Schema registry for validation
-    SCHEMAS: ClassVar[Dict[str, dict]] = {}
+    SCHEMAS: ClassVar[dict[str, dict]] = {}
 
     def __init__(self, output_suffix: str = ".migrated"):
         """
@@ -125,12 +146,7 @@ class ContractMigrator:
         self.output_suffix = output_suffix
 
     @classmethod
-    def register_migration(
-        cls,
-        from_version: str,
-        to_version: str,
-        func: MigrationFunc
-    ) -> None:
+    def register_migration(cls, from_version: str, to_version: str, func: MigrationFunc) -> None:
         """
         Register a migration function.
 
@@ -155,10 +171,7 @@ class ContractMigrator:
         logger.debug(f"Registered schema for version: {version}")
 
     def migrate_contract(
-        self,
-        contract_path: Path,
-        target_version: str,
-        output_dir: Optional[Path] = None
+        self, contract_path: Path, target_version: str, output_dir: Path | None = None
     ) -> MigrationResult:
         """
         Migrate a contract file to the target version.
@@ -178,7 +191,7 @@ class ContractMigrator:
 
         try:
             # Load contract
-            with open(contract_path, "r") as f:
+            with open(contract_path) as f:
                 contract = json.load(f)
 
             original_version = contract.get("version", "unknown")
@@ -210,9 +223,7 @@ class ContractMigrator:
 
                 migrator = self.MIGRATIONS.get((from_v, to_v))
                 if not migrator:
-                    raise MigrationError(
-                        f"Missing migration: {from_v} → {to_v}"
-                    )
+                    raise MigrationError(f"Missing migration: {from_v} → {to_v}")
 
                 # Apply pure migration function
                 contract = migrator(contract)
@@ -263,9 +274,9 @@ class ContractMigrator:
         self,
         directory: Path,
         target_version: str,
-        output_dir: Optional[Path] = None,
-        pattern: str = "*.json"
-    ) -> List[MigrationResult]:
+        output_dir: Path | None = None,
+        pattern: str = "*.json",
+    ) -> list[MigrationResult]:
         """
         Migrate all contracts in a directory.
 
@@ -296,11 +307,7 @@ class ContractMigrator:
 
         return results
 
-    def _find_migration_path(
-        self,
-        current: str,
-        target: str
-    ) -> Optional[List[str]]:
+    def _find_migration_path(self, current: str, target: str) -> list[str] | None:
         """
         Find the shortest migration path using BFS.
 
@@ -321,7 +328,7 @@ class ContractMigrator:
             version, path = queue.popleft()
 
             # Find all versions we can migrate to from current version
-            for (from_v, to_v) in self.MIGRATIONS.keys():
+            for from_v, to_v in self.MIGRATIONS.keys():
                 if from_v == version and to_v not in visited:
                     new_path = path + [to_v]
 
@@ -372,7 +379,7 @@ class ContractMigrator:
         """
         return self._find_migration_path(from_version, to_version) is not None
 
-    def get_migration_path(self, from_version: str, to_version: str) -> List[str]:
+    def get_migration_path(self, from_version: str, to_version: str) -> list[str]:
         """
         Get the migration path between versions.
 
@@ -395,7 +402,7 @@ class ContractMigrator:
 # === BUILT-IN MIGRATIONS ===
 
 import copy
-from datetime import datetime, timezone
+
 
 def migrate_v2_to_v3(contract: dict) -> dict:
     """
@@ -414,7 +421,7 @@ def migrate_v2_to_v3(contract: dict) -> dict:
     # Add metadata
     result.setdefault("metadata", {})
     result["metadata"]["migrated_from"] = "v2"
-    result["metadata"]["migration_date"] = datetime.now(timezone.utc).isoformat()
+    result["metadata"]["migration_date"] = datetime.now(UTC).isoformat()
 
     return result
 
@@ -502,7 +509,7 @@ SCHEMA_V3 = {
         "contract_id": {"type": "string"},
         "params": {"type": "object"},
         "metadata": {"type": "object"},
-    }
+    },
 }
 
 SCHEMA_V4 = {
@@ -512,14 +519,9 @@ SCHEMA_V4 = {
         "version": {"type": "string", "pattern": "^v4$"},
         "contract_id": {"type": "string"},
         "schema_version": {"type": "string"},
-        "configuration": {
-            "type": "object",
-            "properties": {
-                "parameters": {"type": "object"}
-            }
-        },
+        "configuration": {"type": "object", "properties": {"parameters": {"type": "object"}}},
         "metadata": {"type": "object"},
-    }
+    },
 }
 
 
@@ -538,10 +540,9 @@ ContractMigrator.register_schema("v4", SCHEMA_V4)
 
 # === CONVENIENCE FUNCTIONS ===
 
+
 def migrate_contract(
-    contract_path: str | Path,
-    target_version: str,
-    output_dir: str | Path | None = None
+    contract_path: str | Path, target_version: str, output_dir: str | Path | None = None
 ) -> MigrationResult:
     """
     Migrate a single contract file (convenience function).
@@ -556,17 +557,13 @@ def migrate_contract(
     """
     migrator = ContractMigrator()
     return migrator.migrate_contract(
-        Path(contract_path),
-        target_version,
-        Path(output_dir) if output_dir else None
+        Path(contract_path), target_version, Path(output_dir) if output_dir else None
     )
 
 
 def migrate_all_contracts(
-    directory: str | Path,
-    target_version: str,
-    output_dir: str | Path | None = None
-) -> List[MigrationResult]:
+    directory: str | Path, target_version: str, output_dir: str | Path | None = None
+) -> list[MigrationResult]:
     """
     Migrate all contracts in a directory (convenience function).
 
@@ -580,9 +577,7 @@ def migrate_all_contracts(
     """
     migrator = ContractMigrator()
     return migrator.migrate_directory(
-        Path(directory),
-        target_version,
-        Path(output_dir) if output_dir else None
+        Path(directory), target_version, Path(output_dir) if output_dir else None
     )
 
 

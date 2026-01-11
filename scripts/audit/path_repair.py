@@ -27,29 +27,27 @@ class PathRepairer:
 
     # Import replacement patterns
     IMPORT_REPLACEMENTS = {
-        r'from canonic_phases\.Phase_zero\.paths import':
-            'from farfan_pipeline.utils.paths import',
-
-        r'from canonic_phases\.Phase_zero import paths':
-            'from farfan_pipeline.utils import paths',
-
-        r'from src\.farfan_pipeline':
-            'from farfan_pipeline',
-
-        r'import canonic_phases\.':
-            'import farfan_pipeline.phases.',
-
-        r'from canonic_phases\.':
-            'from farfan_pipeline.phases.',
+        r"from canonic_phases\.Phase_zero\.paths import": "from farfan_pipeline.utils.paths import",
+        r"from canonic_phases\.Phase_zero import paths": "from farfan_pipeline.utils import paths",
+        r"from src\.farfan_pipeline": "from farfan_pipeline",
+        r"import canonic_phases\.": "import farfan_pipeline.phases.",
+        r"from canonic_phases\.": "from farfan_pipeline.phases.",
     }
 
     # Path operator replacements
     PATH_OPERATOR_REPLACEMENTS = {
         # os.path.join to Path operator
-        r'os\.path\.join\(([^,]+),\s*([^)]+)\)': r'\1 / \2',
+        r"os\.path\.join\(([^,]+),\s*([^)]+)\)": r"\1 / \2",
     }
 
-    def __init__(self, root: Path, dry_run: bool = True, backup: bool = False, verbose: bool = False, aggressive: bool = False):
+    def __init__(
+        self,
+        root: Path,
+        dry_run: bool = True,
+        backup: bool = False,
+        verbose: bool = False,
+        aggressive: bool = False,
+    ):
         self.root = root
         self.dry_run = dry_run
         self.backup = backup
@@ -75,13 +73,15 @@ class PathRepairer:
                 changes_made += count
                 content = new_content
 
-                self.changes.append({
-                    "file": str(py_file.relative_to(self.root)),
-                    "type": "import_fix",
-                    "pattern": old_pattern,
-                    "replacement": new_pattern,
-                    "occurrences": count
-                })
+                self.changes.append(
+                    {
+                        "file": str(py_file.relative_to(self.root)),
+                        "type": "import_fix",
+                        "pattern": old_pattern,
+                        "replacement": new_pattern,
+                        "occurrences": count,
+                    }
+                )
 
         # Apply changes if not dry run
         if changes_made > 0 and not self.dry_run:
@@ -116,19 +116,21 @@ class PathRepairer:
                 line,
             )
             if unix_match:
-                suggestions.append({
-                    "file": str(py_file.relative_to(self.root)),
-                    "line": i,
-                    "type": "hardcoded_path",
-                    "original": line.strip(),
-                    "suggestion": "Replace with: from farfan_pipeline.utils.paths import PROJECT_ROOT"
-                })
+                suggestions.append(
+                    {
+                        "file": str(py_file.relative_to(self.root)),
+                        "line": i,
+                        "type": "hardcoded_path",
+                        "original": line.strip(),
+                        "suggestion": "Replace with: from farfan_pipeline.utils.paths import PROJECT_ROOT",
+                    }
+                )
 
         return suggestions
 
     def repair_os_path_join(self, py_file: Path) -> int:
         """Replace os.path.join with Path / operator if aggressive mode is enabled.
-        
+
         NOTE: This only handles simple cases like os.path.join(var, "string") → var / "string".
         Complex cases with multiple arguments or nested calls require manual review.
         """
@@ -156,10 +158,7 @@ class PathRepairer:
                 if match:
                     base_var = match.group(1)
                     path_part = match.group(2)
-                    new_line = line.replace(
-                        match.group(0),
-                        f'{base_var} / "{path_part}"'
-                    )
+                    new_line = line.replace(match.group(0), f'{base_var} / "{path_part}"')
                     lines[i] = new_line
                     modified = True
                     changes_made += 1
@@ -174,11 +173,13 @@ class PathRepairer:
 
                 py_file.write_text(content, encoding="utf-8")
 
-            self.changes.append({
-                "file": str(py_file.relative_to(self.root)),
-                "type": "os_path_join_fix",
-                "count": changes_made
-            })
+            self.changes.append(
+                {
+                    "file": str(py_file.relative_to(self.root)),
+                    "type": "os_path_join_fix",
+                    "count": changes_made,
+                }
+            )
 
         return changes_made
 
@@ -198,14 +199,14 @@ class PathRepairer:
 
         # Replace Path(__file__) with Path(__file__).resolve()
         # But only if resolve() is not already present
-        pattern = r'Path\(__file__\)(?!\.resolve\(\))'
+        pattern = r"Path\(__file__\)(?!\.resolve\(\))"
         if re.search(pattern, content):
-            new_content = re.sub(pattern, r'Path(__file__).resolve()', content)
-            
+            new_content = re.sub(pattern, r"Path(__file__).resolve()", content)
+
             if new_content != content:
                 # Count how many Path(__file__) patterns were replaced
                 changes_made = len(re.findall(pattern, content))
-                
+
                 if not self.dry_run:
                     if self.backup:
                         backup_path = py_file.with_suffix(py_file.suffix + ".bak")
@@ -213,11 +214,13 @@ class PathRepairer:
 
                     py_file.write_text(new_content, encoding="utf-8")
 
-                self.changes.append({
-                    "file": str(py_file.relative_to(self.root)),
-                    "type": "resolve_file_fix",
-                    "count": changes_made
-                })
+                self.changes.append(
+                    {
+                        "file": str(py_file.relative_to(self.root)),
+                        "type": "resolve_file_fix",
+                        "count": changes_made,
+                    }
+                )
 
         return changes_made
 
@@ -246,19 +249,25 @@ class PathRepairer:
             changes = self.repair_imports(py_file)
             if changes > 0:
                 file_modified = True
-                print(f"  {'[DRY RUN] Would fix' if self.dry_run else 'Fixed'} {changes} import(s) in {py_file.relative_to(self.root)}")
+                print(
+                    f"  {'[DRY RUN] Would fix' if self.dry_run else 'Fixed'} {changes} import(s) in {py_file.relative_to(self.root)}"
+                )
 
             # Repair os.path.join (aggressive mode only)
             if self.aggressive:
                 changes = self.repair_os_path_join(py_file)
                 if changes > 0:
                     file_modified = True
-                    print(f"  {'[DRY RUN] Would fix' if self.dry_run else 'Fixed'} {changes} os.path.join call(s)")
+                    print(
+                        f"  {'[DRY RUN] Would fix' if self.dry_run else 'Fixed'} {changes} os.path.join call(s)"
+                    )
 
                 changes = self.repair_unresolved_file(py_file)
                 if changes > 0:
                     file_modified = True
-                    print(f"  {'[DRY RUN] Would fix' if self.dry_run else 'Fixed'} {changes} unresolved __file__ usage(s)")
+                    print(
+                        f"  {'[DRY RUN] Would fix' if self.dry_run else 'Fixed'} {changes} unresolved __file__ usage(s)"
+                    )
 
             if file_modified:
                 files_modified += 1
@@ -325,34 +334,20 @@ class PathRepairer:
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Automated repair utility for path-related issues"
-    )
-    parser.add_argument(
-        "--fix",
-        action="store_true",
-        help="Apply fixes (default is dry-run)"
-    )
-    parser.add_argument(
-        "--backup",
-        action="store_true",
-        help="Create .bak files before modifying"
-    )
+    parser = argparse.ArgumentParser(description="Automated repair utility for path-related issues")
+    parser.add_argument("--fix", action="store_true", help="Apply fixes (default is dry-run)")
+    parser.add_argument("--backup", action="store_true", help="Create .bak files before modifying")
     parser.add_argument(
         "--aggressive",
         action="store_true",
-        help="Enable aggressive repairs (os.path.join, Path(__file__).resolve())"
+        help="Enable aggressive repairs (os.path.join, Path(__file__).resolve())",
     )
-    parser.add_argument(
-        "--verbose", "-v",
-        action="store_true",
-        help="Enable verbose output"
-    )
+    parser.add_argument("--verbose", "-v", action="store_true", help="Enable verbose output")
     parser.add_argument(
         "--root",
         type=Path,
         default=None,
-        help="Root directory to repair (default: auto-detect project root)"
+        help="Root directory to repair (default: auto-detect project root)",
     )
 
     args = parser.parse_args()
@@ -392,11 +387,7 @@ def main():
         print(f"Processing directory: {root}\n")
 
     repairer = PathRepairer(
-        root,
-        dry_run=dry_run,
-        backup=args.backup,
-        verbose=args.verbose,
-        aggressive=args.aggressive
+        root, dry_run=dry_run, backup=args.backup, verbose=args.verbose, aggressive=args.aggressive
     )
     repairer.repair_directory()
     repairer.print_report()
@@ -410,10 +401,10 @@ def main():
     print(f"  Import fixes: {stats['import_fixes']}")
     print(f"  Hardcoded paths (manual review): {stats['hardcoded_paths']}")
 
-    if dry_run and stats['import_fixes'] > 0:
+    if dry_run and stats["import_fixes"] > 0:
         print("\nRun with --fix to apply import fixes")
 
-    if stats['hardcoded_paths'] > 0:
+    if stats["hardcoded_paths"] > 0:
         print("\n⚠️  Some issues require manual review and cannot be fixed automatically")
 
 

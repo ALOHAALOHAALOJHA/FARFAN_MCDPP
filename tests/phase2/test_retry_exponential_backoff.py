@@ -39,9 +39,7 @@ class TestRetryExponentialBackoff:
         call_count = 0
 
         @with_exponential_backoff(
-            max_retries=3,
-            base_delay_seconds=0.01,
-            retryable_exceptions=(TransientError,)
+            max_retries=3, base_delay_seconds=0.01, retryable_exceptions=(TransientError,)
         )
         def flaky_function():
             nonlocal call_count
@@ -59,9 +57,7 @@ class TestRetryExponentialBackoff:
         call_count = 0
 
         @with_exponential_backoff(
-            max_retries=2,
-            base_delay_seconds=0.01,
-            retryable_exceptions=(TransientError,)
+            max_retries=2, base_delay_seconds=0.01, retryable_exceptions=(TransientError,)
         )
         def always_fails():
             nonlocal call_count
@@ -79,9 +75,7 @@ class TestRetryExponentialBackoff:
         call_count = 0
 
         @with_exponential_backoff(
-            max_retries=3,
-            base_delay_seconds=0.01,
-            retryable_exceptions=(TransientError,)
+            max_retries=3, base_delay_seconds=0.01, retryable_exceptions=(TransientError,)
         )
         def raises_permanent_error():
             nonlocal call_count
@@ -103,7 +97,7 @@ class TestRetryExponentialBackoff:
             base_delay_seconds=0.1,
             multiplier=2.0,
             jitter_factor=0.0,  # No jitter for timing test
-            retryable_exceptions=(TransientError,)
+            retryable_exceptions=(TransientError,),
         )
         def timed_function():
             call_times.append(time.time())
@@ -133,7 +127,7 @@ class TestRetryExponentialBackoff:
             multiplier=10.0,
             max_delay_seconds=0.5,  # Cap at 0.5s
             jitter_factor=0.0,
-            retryable_exceptions=(TransientError,)
+            retryable_exceptions=(TransientError,),
         )
         def capped_function():
             call_times.append(time.time())
@@ -161,7 +155,7 @@ class TestRetryExponentialBackoff:
             max_retries=3,
             base_delay_seconds=0.01,
             retryable_exceptions=(TransientError,),
-            on_retry=capture_retry
+            on_retry=capture_retry,
         )
         def callback_function():
             if len(retry_events) < 2:
@@ -200,9 +194,7 @@ class TestRetryExponentialBackoff:
     def test_retry_policy_max_retries_exceeded(self):
         """Verify RetryPolicy raises after max retries."""
         policy = RetryPolicy(
-            max_retries=2,
-            base_delay_seconds=0.01,
-            retryable_exceptions=(TransientError,)
+            max_retries=2, base_delay_seconds=0.01, retryable_exceptions=(TransientError,)
         )
 
         with pytest.raises(TransientError):
@@ -220,7 +212,7 @@ class TestRetryExponentialBackoff:
             multiplier=3.0,
             max_delay_seconds=10.0,
             jitter_factor=0.2,
-            retryable_exceptions=(ValueError, KeyError)
+            retryable_exceptions=(ValueError, KeyError),
         )
 
         assert config.max_retries == 2
@@ -237,7 +229,7 @@ class TestRetryExponentialBackoff:
         @with_exponential_backoff(
             max_retries=3,
             base_delay_seconds=0.01,
-            retryable_exceptions=(TransientError, ValueError, KeyError)
+            retryable_exceptions=(TransientError, ValueError, KeyError),
         )
         def multi_exception_function():
             nonlocal call_count
@@ -268,7 +260,7 @@ class TestRetryExponentialBackoff:
                 base_delay_seconds=base_delay,
                 multiplier=1.0,
                 jitter_factor=jitter,
-                retryable_exceptions=(TransientError,)
+                retryable_exceptions=(TransientError,),
             )
             def jittered_function():
                 call_times.append(time.perf_counter())
@@ -285,9 +277,9 @@ class TestRetryExponentialBackoff:
         # Use 20% of base_delay as tolerance for execution overhead
         max_delay = base_delay * (1 + jitter) + 0.02  # 0.02s tolerance
         for delay in delays:
-            assert base_delay <= delay <= max_delay, (
-                f"Delay {delay:.4f}s outside expected range [{base_delay}s, {max_delay:.4f}s]"
-            )
+            assert (
+                base_delay <= delay <= max_delay
+            ), f"Delay {delay:.4f}s outside expected range [{base_delay}s, {max_delay:.4f}s]"
 
     def test_metrics_tracking(self):
         """Verify metrics are correctly tracked in RetryConfig."""
@@ -307,6 +299,7 @@ class TestRetryExponentialBackoff:
 
         # Success after retries
         call_count = 0
+
         @with_exponential_backoff(config=config)
         def flaky_then_success():
             nonlocal call_count
@@ -314,7 +307,7 @@ class TestRetryExponentialBackoff:
             if call_count < 3:
                 raise TransientError("Try again")
             return "ok"
-        
+
         flaky_then_success()
         assert config.total_chunks == 2
         assert config.successful_chunks == 2
@@ -324,17 +317,18 @@ class TestRetryExponentialBackoff:
         @with_exponential_backoff(config=config)
         def always_fails():
             raise TransientError("Fatal")
-        
+
         with pytest.raises(TransientError):
             always_fails()
-        
+
         assert config.total_chunks == 3
         assert config.successful_chunks == 2
         assert config.failed_chunks == 1
-        assert config.total_retries == 5 # 2 from previous test + 3 from always_fails
+        assert config.total_retries == 5  # 2 from previous test + 3 from always_fails
 
     def test_decorator_preserves_function_metadata(self):
         """Verify decorator preserves original function metadata."""
+
         @with_exponential_backoff(max_retries=3)
         def documented_function():
             """This is a documented function."""

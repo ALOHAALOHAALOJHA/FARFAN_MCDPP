@@ -31,7 +31,7 @@ if TYPE_CHECKING:
 
 try:
     from econml.dml import CausalForestDML, LinearDML
-    from econml.metalearners import TLearner, SLearner, XLearner
+    from econml.metalearners import SLearner, TLearner, XLearner
     from sklearn.ensemble import RandomForestRegressor
     from sklearn.linear_model import LogisticRegression
 
@@ -608,9 +608,7 @@ class HeterogeneousTreatmentAnalyzer:
                 ),
             }
 
-            self.logger.info(
-                f"Sensitivity analysis: bias={bias:.4f}, robustness={robustness:.3f}"
-            )
+            self.logger.info(f"Sensitivity analysis: bias={bias:.4f}, robustness={robustness:.3f}")
 
             return result
 

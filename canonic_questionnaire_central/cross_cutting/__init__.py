@@ -62,9 +62,11 @@ _THEMES_FILE = _CROSS_CUTTING_DIR / "cross_cutting_themes.json"
 # DATA STRUCTURES
 # =============================================================================
 
+
 @dataclass
 class CrossCuttingTheme:
     """A cross-cutting theme that applies across dimensions and policy areas."""
+
     theme_id: str
     name: str
     description: str
@@ -84,9 +86,8 @@ class CrossCuttingTheme:
     def is_required_for(self, policy_area_id: str) -> bool:
         """Check if theme is required for a policy area."""
         rules = self.validation_rules
-        return (
-            policy_area_id in rules.get("required_for", []) or
-            rules.get("required_for_all", False)
+        return policy_area_id in rules.get("required_for", []) or rules.get(
+            "required_for_all", False
         )
 
     def is_recommended_for(self, policy_area_id: str) -> bool:
@@ -98,6 +99,7 @@ class CrossCuttingTheme:
 @dataclass
 class ThemeCombination:
     """A combination of cross-cutting themes."""
+
     combination_id: str
     themes: list[str]
     description: str
@@ -108,9 +110,11 @@ class ThemeCombination:
 # CONFIGURATION LOADER
 # =============================================================================
 
+
 @dataclass
 class CrossCuttingConfig:
     """Configuration for cross-cutting themes."""
+
     themes: list[CrossCuttingTheme]
     theme_combinations: list[ThemeCombination]
     validation_rules: dict[str, Any]
@@ -124,22 +128,16 @@ class CrossCuttingConfig:
         with open(json_path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        themes = [
-            CrossCuttingTheme(**theme_data)
-            for theme_data in data.get("themes", [])
-        ]
+        themes = [CrossCuttingTheme(**theme_data) for theme_data in data.get("themes", [])]
 
         combinations = [
-            ThemeCombination(**combo_data)
-            for combo_data in data.get("theme_combinations", [])
+            ThemeCombination(**combo_data) for combo_data in data.get("theme_combinations", [])
         ]
 
         validation_rules = data.get("validation_rules", {})
 
         return cls(
-            themes=themes,
-            theme_combinations=combinations,
-            validation_rules=validation_rules
+            themes=themes, theme_combinations=combinations, validation_rules=validation_rules
         )
 
     def get_theme_by_id(self, theme_id: str) -> CrossCuttingTheme | None:
@@ -149,35 +147,21 @@ class CrossCuttingConfig:
                 return theme
         return None
 
-    def get_themes_for_policy_area(
-        self,
-        policy_area_id: PolicyAreaId
-    ) -> list[CrossCuttingTheme]:
+    def get_themes_for_policy_area(self, policy_area_id: PolicyAreaId) -> list[CrossCuttingTheme]:
         """Get all themes that apply to a policy area."""
-        return [
-            theme for theme in self.themes
-            if theme.applies_to_policy_area(policy_area_id)
-        ]
+        return [theme for theme in self.themes if theme.applies_to_policy_area(policy_area_id)]
 
     def get_required_themes_for_policy_area(
-        self,
-        policy_area_id: PolicyAreaId
+        self, policy_area_id: PolicyAreaId
     ) -> list[CrossCuttingTheme]:
         """Get required themes for a policy area."""
-        return [
-            theme for theme in self.themes
-            if theme.is_required_for(policy_area_id)
-        ]
+        return [theme for theme in self.themes if theme.is_required_for(policy_area_id)]
 
     def get_recommended_themes_for_policy_area(
-        self,
-        policy_area_id: PolicyAreaId
+        self, policy_area_id: PolicyAreaId
     ) -> list[CrossCuttingTheme]:
         """Get recommended themes for a policy area."""
-        return [
-            theme for theme in self.themes
-            if theme.is_recommended_for(policy_area_id)
-        ]
+        return [theme for theme in self.themes if theme.is_recommended_for(policy_area_id)]
 
 
 # =============================================================================
@@ -198,6 +182,7 @@ def _get_config() -> CrossCuttingConfig:
 # =============================================================================
 # PUBLIC API
 # =============================================================================
+
 
 def get_cross_cutting_themes() -> list[CrossCuttingTheme]:
     """Get all cross-cutting themes.
@@ -222,9 +207,7 @@ def get_theme_by_id(theme_id: ThemeId) -> CrossCuttingTheme | None:
     return config.get_theme_by_id(theme_id)
 
 
-def get_themes_for_policy_area(
-    policy_area_id: PolicyAreaId
-) -> list[CrossCuttingTheme]:
+def get_themes_for_policy_area(policy_area_id: PolicyAreaId) -> list[CrossCuttingTheme]:
     """Get all themes that apply to a policy area.
 
     Args:
@@ -237,9 +220,7 @@ def get_themes_for_policy_area(
     return config.get_themes_for_policy_area(policy_area_id)
 
 
-def get_required_themes_for_policy_area(
-    policy_area_id: PolicyAreaId
-) -> list[CrossCuttingTheme]:
+def get_required_themes_for_policy_area(policy_area_id: PolicyAreaId) -> list[CrossCuttingTheme]:
     """Get required themes for a policy area.
 
     Args:
@@ -252,9 +233,7 @@ def get_required_themes_for_policy_area(
     return config.get_required_themes_for_policy_area(policy_area_id)
 
 
-def get_recommended_themes_for_policy_area(
-    policy_area_id: PolicyAreaId
-) -> list[CrossCuttingTheme]:
+def get_recommended_themes_for_policy_area(policy_area_id: PolicyAreaId) -> list[CrossCuttingTheme]:
     """Get recommended themes for a policy area.
 
     Args:
@@ -278,8 +257,7 @@ def get_theme_combinations() -> list[ThemeCombination]:
 
 
 def validate_themes_coverage(
-    policy_area_id: PolicyAreaId,
-    covered_themes: list[str]
+    policy_area_id: PolicyAreaId, covered_themes: list[str]
 ) -> tuple[bool, list[str], list[str]]:
     """Validate coverage of required themes.
 
@@ -296,15 +274,9 @@ def validate_themes_coverage(
     required_ids = [t.theme_id for t in required]
     recommended_ids = [t.theme_id for t in recommended]
 
-    missing_required = [
-        t_id for t_id in required_ids
-        if t_id not in covered_themes
-    ]
+    missing_required = [t_id for t_id in required_ids if t_id not in covered_themes]
 
-    missing_recommended = [
-        t_id for t_id in recommended_ids
-        if t_id not in covered_themes
-    ]
+    missing_recommended = [t_id for t_id in recommended_ids if t_id not in covered_themes]
 
     is_valid = len(missing_required) == 0
 

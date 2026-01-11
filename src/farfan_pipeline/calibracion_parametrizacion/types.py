@@ -29,29 +29,30 @@ Policy Areas (PA01-PA10):
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum, auto
-from typing import Any, Dict, List, Optional, Tuple, Union
-import re
-
+from typing import Any
 
 # =============================================================================
 # ENUMS - Clasificadores del dominio PDET
 # =============================================================================
+
 
 class NivelJerarquico(Enum):
     """
     Nivel jerárquico en la estructura del PDT.
     Refleja la organización real de los documentos PDM/PDET.
     """
-    H1_TITULO = auto()              # CAPÍTULO / TÍTULO (ej: CAPÍTULO 5. BUENOS AIRES...)
-    H2_LINEA_ESTRATEGICA = auto()   # Línea Estratégica / Eje Estratégico
-    H3_SECTOR = auto()              # Sector (ej: 41 Inclusión Social)
-    H4_PROGRAMA = auto()            # Programa Presupuestal
-    H5_PRODUCTO = auto()            # Producto / Proyecto MGA
-    H6_META = auto()                # Meta Cuatrienio / Indicador
-    H7_SUBMETA = auto()             # Metas anuales desagregadas (2024-2027)
+
+    H1_TITULO = auto()  # CAPÍTULO / TÍTULO (ej: CAPÍTULO 5. BUENOS AIRES...)
+    H2_LINEA_ESTRATEGICA = auto()  # Línea Estratégica / Eje Estratégico
+    H3_SECTOR = auto()  # Sector (ej: 41 Inclusión Social)
+    H4_PROGRAMA = auto()  # Programa Presupuestal
+    H5_PRODUCTO = auto()  # Producto / Proyecto MGA
+    H6_META = auto()  # Meta Cuatrienio / Indicador
+    H7_SUBMETA = auto()  # Metas anuales desagregadas (2024-2027)
 
 
 class SeccionPDT(Enum):
@@ -59,29 +60,30 @@ class SeccionPDT(Enum):
     Secciones principales del PDT según Ley 152/1994 y estructura real PDET.
     Incluye secciones obligatorias y contextuales.
     """
+
     # === TÍTULO I: Fundamentos y Componente General ===
-    FUNDAMENTOS = "fundamentos"                  # Marco normativo y alineación
-    METODOLOGIA = "metodologia"                  # Participación ciudadana, SisPT
-    DIAGNOSTICO = "diagnostico"                  # Caracterización territorial, Análisis de brechas
-    
+    FUNDAMENTOS = "fundamentos"  # Marco normativo y alineación
+    METODOLOGIA = "metodologia"  # Participación ciudadana, SisPT
+    DIAGNOSTICO = "diagnostico"  # Caracterización territorial, Análisis de brechas
+
     # === TÍTULO II: Parte Estratégica ===
-    PRINCIPIOS = "principios"                    # Visión, Misión, Principios Rectores
-    ENFOQUES = "enfoques"                        # Enfoques Transversales
-    PARTE_ESTRATEGICA = "parte_estrategica"      # Líneas/Ejes, Programas, Metas
-    
+    PRINCIPIOS = "principios"  # Visión, Misión, Principios Rectores
+    ENFOQUES = "enfoques"  # Enfoques Transversales
+    PARTE_ESTRATEGICA = "parte_estrategica"  # Líneas/Ejes, Programas, Metas
+
     # === TÍTULO III: Componente Financiero ===
-    PLAN_FINANCIERO = "plan_financiero"          # Diagnóstico fiscal, MFMP
-    PLAN_INVERSIONES = "plan_inversiones"        # PPI - Matriz presupuestaria
-    
+    PLAN_FINANCIERO = "plan_financiero"  # Diagnóstico fiscal, MFMP
+    PLAN_INVERSIONES = "plan_inversiones"  # PPI - Matriz presupuestaria
+
     # === Capítulos Especiales (Obligatorios/Contextuales) ===
-    CAPITULO_PAZ = "capitulo_paz"                # Construcción de paz / PDET (obligatorio)
-    CAPITULO_SGR = "capitulo_sgr"                # Inversiones SGR (independiente)
-    
+    CAPITULO_PAZ = "capitulo_paz"  # Construcción de paz / PDET (obligatorio)
+    CAPITULO_SGR = "capitulo_sgr"  # Inversiones SGR (independiente)
+
     # === TÍTULO IV: Seguimiento y Evaluación ===
-    SEGUIMIENTO = "seguimiento"                  # Indicadores, Plan de Acción, SisPT
-    
+    SEGUIMIENTO = "seguimiento"  # Indicadores, Plan de Acción, SisPT
+
     # === Otros ===
-    ANEXOS = "anexos"                            # Matrices, tablas complementarias
+    ANEXOS = "anexos"  # Matrices, tablas complementarias
 
 
 class DimensionCausal(Enum):
@@ -90,15 +92,16 @@ class DimensionCausal(Enum):
     Alineado con canonical_notation.dimensions del questionnaire_monolith.json
     Refleja la lógica de intervención pública territorial.
     """
-    DIM01_INSUMOS = "DIM01"       # D1: Diagnóstico, Recursos, Capacidad institucional
-    DIM02_ACTIVIDADES = "DIM02"   # D2: Diseño de Intervención, Procesos operativos
-    DIM03_PRODUCTOS = "DIM03"     # D3: Productos y Outputs (bienes/servicios entregados)
-    DIM04_RESULTADOS = "DIM04"    # D4: Resultados y Outcomes (efectos/cambios generados)
-    DIM05_IMPACTOS = "DIM05"      # D5: Impactos de Largo Plazo (transformación territorial)
-    DIM06_CAUSALIDAD = "DIM06"    # D6: Teoría de Cambio (coherencia cadena de valor)
+
+    DIM01_INSUMOS = "DIM01"  # D1: Diagnóstico, Recursos, Capacidad institucional
+    DIM02_ACTIVIDADES = "DIM02"  # D2: Diseño de Intervención, Procesos operativos
+    DIM03_PRODUCTOS = "DIM03"  # D3: Productos y Outputs (bienes/servicios entregados)
+    DIM04_RESULTADOS = "DIM04"  # D4: Resultados y Outcomes (efectos/cambios generados)
+    DIM05_IMPACTOS = "DIM05"  # D5: Impactos de Largo Plazo (transformación territorial)
+    DIM06_CAUSALIDAD = "DIM06"  # D6: Teoría de Cambio (coherencia cadena de valor)
 
     @classmethod
-    def from_legacy(cls, legacy_id: str) -> "DimensionCausal": 
+    def from_legacy(cls, legacy_id: str) -> DimensionCausal:
         """Convierte D1-D6 a DIM01-DIM06."""
         mapping = {
             "D1": cls.DIM01_INSUMOS,
@@ -116,6 +119,7 @@ class CategoriaCausal(Enum):
     Categorías causales jerárquicas para teoría de cambio.
     Axioma: 1-5 en orden INSUMOS->CAUSALIDAD.
     """
+
     INSUMOS = 1
     PROCESOS = 2
     PRODUCTOS = 3
@@ -129,19 +133,22 @@ class PolicyArea(Enum):
     Alineado con canonical_notation.policy_areas del questionnaire_monolith.json
     Enfoque de derechos humanos en contexto colombiano y PDET.
     """
+
     PA01 = "PA01"  # Derechos de las mujeres e igualdad de género
     PA02 = "PA02"  # Prevención de la violencia y protección frente al conflicto armado
     PA03 = "PA03"  # Ambiente sano, cambio climático, prevención y atención a desastres
     PA04 = "PA04"  # Derechos económicos, sociales y culturales
     PA05 = "PA05"  # Derechos de las víctimas y construcción de paz
-    PA06 = "PA06"  # Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores
+    PA06 = (
+        "PA06"  # Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores
+    )
     PA07 = "PA07"  # Tierras y territorios
     PA08 = "PA08"  # Líderes y lideresas, defensores y defensoras de derechos humanos
     PA09 = "PA09"  # Crisis de derechos de personas privadas de la libertad
     PA10 = "PA10"  # Migración transfronteriza
 
     @classmethod
-    def from_legacy(cls, legacy_id: str) -> "PolicyArea":
+    def from_legacy(cls, legacy_id: str) -> PolicyArea:
         """Convert legacy policy area id into canonical PolicyArea."""
         from farfan_pipeline.core.policy_area_canonicalization import (
             canonicalize_policy_area_id,
@@ -154,7 +161,7 @@ class PolicyArea(Enum):
         return cls(canonicalize_policy_area_id(legacy_id))
 
     @classmethod
-    def canonicalize(cls, policy_area_id: str) -> "PolicyArea":
+    def canonicalize(cls, policy_area_id: str) -> PolicyArea:
         """Parse legacy or canonical id into canonical PolicyArea."""
         from farfan_pipeline.core.policy_area_canonicalization import canonicalize_policy_area_id
 
@@ -166,9 +173,10 @@ class MarcadorContextual(Enum):
     Marcadores P-D-Q para clasificación de contenido según contexto semántico.
     Permite identificar el tipo de información en el texto del PDT.
     """
-    P_PROBLEMA = "problema"      # Diagnóstico, brechas, necesidades, problemáticas
-    D_DECISION = "decision"      # Elección estratégica, priorización, objetivos
-    Q_PREGUNTA = "pregunta"      # Investigación, evaluación, seguimiento
+
+    P_PROBLEMA = "problema"  # Diagnóstico, brechas, necesidades, problemáticas
+    D_DECISION = "decision"  # Elección estratégica, priorización, objetivos
+    Q_PREGUNTA = "pregunta"  # Investigación, evaluación, seguimiento
 
 
 class TipoIndicador(Enum):
@@ -176,10 +184,11 @@ class TipoIndicador(Enum):
     Clasificación de indicadores según metodología DNP.
     Refleja los tipos reales encontrados en matrices de indicadores PDT.
     """
-    PRODUCTO = "producto"        # Bienes/servicios entregados (outputs)
-    RESULTADO = "resultado"      # Efectos/cambios generados (outcomes)
-    BIENESTAR = "bienestar"      # Calidad de vida, cierre de brechas
-    GESTION = "gestion"          # Procesos internos, eficiencia administrativa
+
+    PRODUCTO = "producto"  # Bienes/servicios entregados (outputs)
+    RESULTADO = "resultado"  # Efectos/cambios generados (outcomes)
+    BIENESTAR = "bienestar"  # Calidad de vida, cierre de brechas
+    GESTION = "gestion"  # Procesos internos, eficiencia administrativa
 
 
 class FuenteFinanciacion(Enum):
@@ -187,12 +196,13 @@ class FuenteFinanciacion(Enum):
     Fuentes de financiación en el sistema territorial colombiano.
     Refleja las columnas reales del Plan Plurianual de Inversiones (PPI).
     """
-    SGP = "sgp"                          # Sistema General de Participaciones
-    SGR = "sgr"                          # Sistema General de Regalías
+
+    SGP = "sgp"  # Sistema General de Participaciones
+    SGR = "sgr"  # Sistema General de Regalías
     RECURSOS_PROPIOS = "recursos_propios"  # Ingresos tributarios locales
-    CREDITO = "credito"                  # Endeudamiento público
-    COOPERACION = "cooperacion"          # Cooperación internacional
-    OTRAS = "otras"                      # Cofinanciación, transferencias
+    CREDITO = "credito"  # Endeudamiento público
+    COOPERACION = "cooperacion"  # Cooperación internacional
+    OTRAS = "otras"  # Cofinanciación, transferencias
     FONDO_SUBREGIONAL = "fondo_subregional"  # Ej: Alto Patía
 
 
@@ -201,9 +211,10 @@ class NivelConfianza(Enum):
     Nivel de confianza en la extracción y análisis de datos.
     Basado en umbrales de scoring y calidad de evidencia.
     """
-    ALTA = "alta"       # 0.9-1.0 - Datos explícitos, verificados, cuantitativos
-    MEDIA = "media"     # 0.6-0.8 - Datos inferidos, parciales, cualitativos
-    BAJA = "baja"       # <0.6 - Datos ausentes, ambiguos o "S/D"
+
+    ALTA = "alta"  # 0.9-1.0 - Datos explícitos, verificados, cuantitativos
+    MEDIA = "media"  # 0.6-0.8 - Datos inferidos, parciales, cualitativos
+    BAJA = "baja"  # <0.6 - Datos ausentes, ambiguos o "S/D"
 
 
 class ScoringLevel(Enum):
@@ -211,13 +222,14 @@ class ScoringLevel(Enum):
     Niveles de scoring del questionnaire.
     Alineado con scoring.micro_levels del questionnaire_schema.json
     """
-    EXCELENTE = "excelente"      # min_score: 0.85
-    BUENO = "bueno"              # min_score: 0.70
-    ACEPTABLE = "aceptable"      # min_score: 0.55
+
+    EXCELENTE = "excelente"  # min_score: 0.85
+    BUENO = "bueno"  # min_score: 0.70
+    ACEPTABLE = "aceptable"  # min_score: 0.55
     INSUFICIENTE = "insuficiente"  # min_score: 0.0
 
     @classmethod
-    def from_score(cls, score: float) -> "ScoringLevel":
+    def from_score(cls, score: float) -> ScoringLevel:
         """Determina nivel de scoring basado en puntaje."""
         if score >= 0.85:
             return cls.EXCELENTE
@@ -233,6 +245,7 @@ class PatternMatchType(Enum):
     Tipos de matching de patrones.
     Alineado con PatternItem.match_type del questionnaire_schema.json
     """
+
     REGEX = "REGEX"
     LITERAL = "LITERAL"
     NER_OR_REGEX = "NER_OR_REGEX"
@@ -243,9 +256,10 @@ class PatternSpecificity(Enum):
     Especificidad de patrones de detección.
     Alineado con PatternItem.specificity del questionnaire_schema.json
     """
-    HIGH = "HIGH"      # Patrones muy específicos (ej: códigos MGA)
+
+    HIGH = "HIGH"  # Patrones muy específicos (ej: códigos MGA)
     MEDIUM = "MEDIUM"  # Patrones moderados (ej: términos técnicos)
-    LOW = "LOW"        # Patrones genéricos (ej: palabras comunes)
+    LOW = "LOW"  # Patrones genéricos (ej: palabras comunes)
 
 
 class PatternContextScope(Enum):
@@ -253,10 +267,11 @@ class PatternContextScope(Enum):
     Alcance de contexto para patrones de detección.
     Alineado con PatternItem.context_scope del questionnaire_schema.json
     """
-    SENTENCE = "SENTENCE"      # Oración individual
-    PARAGRAPH = "PARAGRAPH"    # Párrafo completo
-    SECTION = "SECTION"        # Sección del documento
-    DOCUMENT = "DOCUMENT"      # Documento completo
+
+    SENTENCE = "SENTENCE"  # Oración individual
+    PARAGRAPH = "PARAGRAPH"  # Párrafo completo
+    SECTION = "SECTION"  # Sección del documento
+    DOCUMENT = "DOCUMENT"  # Documento completo
 
 
 class MethodType(Enum):
@@ -264,12 +279,13 @@ class MethodType(Enum):
     Tipos de métodos analíticos.
     Alineado con MethodSet.method_type del questionnaire_schema.json
     """
-    ANALYSIS = "analysis"          # Análisis de contenido
-    AGGREGATION = "aggregation"    # Agregación de resultados
-    ROUTING = "routing"            # Enrutamiento de preguntas
-    VALIDATION = "validation"      # Validación de datos
-    EXTRACTION = "extraction"      # Extracción de información
-    SCORING = "scoring"            # Cálculo de puntajes
+
+    ANALYSIS = "analysis"  # Análisis de contenido
+    AGGREGATION = "aggregation"  # Agregación de resultados
+    ROUTING = "routing"  # Enrutamiento de preguntas
+    VALIDATION = "validation"  # Validación de datos
+    EXTRACTION = "extraction"  # Extracción de información
+    SCORING = "scoring"  # Cálculo de puntajes
 
 
 class AggregationMethod(Enum):
@@ -277,9 +293,10 @@ class AggregationMethod(Enum):
     Métodos de agregación para preguntas multinivel.
     Alineado con MacroQuestion.aggregation_method del questionnaire_schema.json
     """
+
     HOLISTIC_ASSESSMENT = "holistic_assessment"  # Evaluación holística cualitativa
-    WEIGHTED_AVERAGE = "weighted_average"        # Promedio ponderado
-    HIERARCHICAL = "hierarchical"                # Agregación jerárquica
+    WEIGHTED_AVERAGE = "weighted_average"  # Promedio ponderado
+    HIERARCHICAL = "hierarchical"  # Agregación jerárquica
 
 
 class TipoEntidadInstitucional(Enum):
@@ -287,25 +304,27 @@ class TipoEntidadInstitucional(Enum):
     Tipos de entidades institucionales en el sistema colombiano.
     Refleja la estructura real del Estado y actores territoriales.
     """
-    NACIONAL = "nacional"              # DNP, Ministerios, Fiscalía, JEP, UARIV
-    DEPARTAMENTAL = "departamental"    # Gobernación, CAR
-    MUNICIPAL = "municipal"            # Alcaldía, Secretarías, Consejo Municipal
-    COOPERACION = "cooperacion"        # Organismos internacionales
+
+    NACIONAL = "nacional"  # DNP, Ministerios, Fiscalía, JEP, UARIV
+    DEPARTAMENTAL = "departamental"  # Gobernación, CAR
+    MUNICIPAL = "municipal"  # Alcaldía, Secretarías, Consejo Municipal
+    COOPERACION = "cooperacion"  # Organismos internacionales
     SOCIEDAD_CIVIL = "sociedad_civil"  # JAC, Consejos Comunitarios, Mesas
-    CONTROL = "control"                # Contraloría, Personería
+    CONTROL = "control"  # Contraloría, Personería
 
 
 class TipoReferenciaLegal(Enum):
     """
     Tipos de referencias legales en el ordenamiento colombiano.
     """
+
     CONSTITUCION = "constitucion"  # Constitución Política (Art. 339)
-    LEY = "ley"                    # Ley 152 de 1994, Ley 2056 de 2020
-    DECRETO = "decreto"            # Decreto 111 de 1996, Decreto 413 de 2018
-    RESOLUCION = "resolucion"      # Resolución DNP
-    ACUERDO = "acuerdo"            # Acuerdo Municipal
-    CIRCULAR = "circular"          # Circular conjunta
-    SENTENCIA = "sentencia"        # Sentencias de Cortes
+    LEY = "ley"  # Ley 152 de 1994, Ley 2056 de 2020
+    DECRETO = "decreto"  # Decreto 111 de 1996, Decreto 413 de 2018
+    RESOLUCION = "resolucion"  # Resolución DNP
+    ACUERDO = "acuerdo"  # Acuerdo Municipal
+    CIRCULAR = "circular"  # Circular conjunta
+    SENTENCIA = "sentencia"  # Sentencias de Cortes
 
 
 class ZonaPDET(Enum):
@@ -313,10 +332,11 @@ class ZonaPDET(Enum):
     Subregiones PDET (Programas de Desarrollo con Enfoque Territorial).
     16 subregiones priorizadas del Acuerdo de Paz.
     """
+
     # Cauca
     ALTO_PATIA_NORTE_CAUCA = "alto_patia_norte_cauca"
     PACIFICO_MEDIO = "pacifico_medio"
-    
+
     # Otras regiones PDET (ejemplos)
     ARAUCA = "arauca"
     BAJO_CAUCA_NORDESTE_ANTIOQUIA = "bajo_cauca_nordeste_antioquia"
@@ -339,6 +359,7 @@ class PilarRRI(Enum):
     Pilares de la Reforma Rural Integral (RRI) - Acuerdo de Paz.
     Los 8 pilares PDET vinculados al capítulo de paz del PDT.
     """
+
     PILAR_1_ORDENAMIENTO = "pilar_1_ordenamiento_social_propiedad"
     PILAR_2_INFRAESTRUCTURA = "pilar_2_infraestructura_adecuacion_tierras"
     PILAR_3_SALUD = "pilar_3_salud_rural"
@@ -353,36 +374,38 @@ class PilarRRI(Enum):
 # TIPOS BASE - Provenance y Chunks
 # =============================================================================
 
+
 @dataclass
-class Provenance: 
+class Provenance:
     """
     Rastrea el origen y transformación de datos.
     Permite auditoría completa desde el PDF original hasta el análisis final.
-    
+
     CRÍTICO: Todos los datos extraídos deben tener provenance para trazabilidad.
     """
+
     source_file: str
-    page_number: Optional[int] = None
-    chunk_id: Optional[str] = None
+    page_number: int | None = None
+    chunk_id: str | None = None
     extraction_method: str = "unknown"
-    timestamp: Optional[datetime] = None
+    timestamp: datetime | None = None
 
     # Localización semántica en el documento
-    seccion_pdt: Optional[SeccionPDT] = None
-    nivel_jerarquico: Optional[NivelJerarquico] = None
+    seccion_pdt: SeccionPDT | None = None
+    nivel_jerarquico: NivelJerarquico | None = None
 
     # Offsets para trazabilidad exacta (posición en el texto)
-    start_offset: Optional[int] = None
-    end_offset: Optional[int] = None
+    start_offset: int | None = None
+    end_offset: int | None = None
 
     # Confianza en la extracción
     confidence_score: float = 0.0
     nivel_confianza: NivelConfianza = NivelConfianza.BAJA
 
     # Contexto adicional
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Serializa provenance a diccionario."""
         return {
             "source_file": self.source_file,
@@ -396,7 +419,7 @@ class Provenance:
             "end_offset": self.end_offset,
             "confidence_score": self.confidence_score,
             "nivel_confianza": self.nivel_confianza.value,
-            "metadata": self.metadata
+            "metadata": self.metadata,
         }
 
 
@@ -406,53 +429,55 @@ class TextSpan:
     Representa un span de texto con posición exacta.
     Útil para resaltar evidencias en el documento original.
     """
+
     text: str
     start: int
     end: int
-    page: Optional[int] = None
+    page: int | None = None
 
 
 @dataclass
 class ChunkData:
     """
-    Unidad mínima de texto extraído con contexto completo. 
+    Unidad mínima de texto extraído con contexto completo.
 
-    Cada chunk preserva: 
+    Cada chunk preserva:
     - Texto original sin modificar
     - Posición exacta (offsets, página)
     - Clasificación semántica (sección, nivel, dimensión causal, policy area)
     - Provenance completo
     - Relaciones jerárquicas (parent/children)
-    
+
     INVARIANTE CRÍTICO: El sistema debe generar exactamente 60 chunks base:
     10 Policy Areas × 6 Dimensions = 60 chunks
     """
+
     chunk_id: str
     text: str
     start_offset: int
     end_offset: int
 
     # Localización física
-    page_number: Optional[int] = None
-    seccion_pdt: Optional[SeccionPDT] = None
-    nivel_jerarquico: Optional[NivelJerarquico] = None
+    page_number: int | None = None
+    seccion_pdt: SeccionPDT | None = None
+    nivel_jerarquico: NivelJerarquico | None = None
 
     # Clasificación semántica (coordenadas en el espacio de análisis)
-    dimension_causal: Optional[DimensionCausal] = None
-    policy_area: Optional[PolicyArea] = None
-    marcador_contextual: Optional[MarcadorContextual] = None
+    dimension_causal: DimensionCausal | None = None
+    policy_area: PolicyArea | None = None
+    marcador_contextual: MarcadorContextual | None = None
 
     # Trazabilidad
-    provenance: Optional[Provenance] = None
+    provenance: Provenance | None = None
 
     # Relaciones jerárquicas
-    parent_chunk_id: Optional[str] = None
-    child_chunk_ids: List[str] = field(default_factory=list)
+    parent_chunk_id: str | None = None
+    child_chunk_ids: list[str] = field(default_factory=list)
 
     # Metadatos adicionales
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
-    def get_coordinate(self) -> Tuple[str, str]:
+    def get_coordinate(self) -> tuple[str, str]:
         """
         Retorna la coordenada (PolicyArea, Dimension) del chunk.
         Útil para indexación y búsqueda.
@@ -466,41 +491,43 @@ class ChunkData:
 # TIPOS DE QUESTIONNAIRE - Alineados con questionnaire_schema.json
 # =============================================================================
 
+
 @dataclass
 class PatternItem:
     """
     Patrón de detección para análisis de texto.
     Alineado con definitions.PatternItem del questionnaire_schema.json
-    
+
     Los patrones son la base del análisis automatizado de PDTs.
     """
+
     id: str
     pattern: str
     match_type: PatternMatchType
     category: str
 
     # Contexto semántico
-    context_requirement: Optional[str] = None
+    context_requirement: str | None = None
     context_scope: PatternContextScope = PatternContextScope.PARAGRAPH
 
     # Especificidad y expansión
     specificity: PatternSpecificity = PatternSpecificity.MEDIUM
-    semantic_expansion: Optional[Union[str, Dict, List]] = None
-    synonym_clusters: Optional[List[str]] = None
+    semantic_expansion: str | dict | list | None = None
+    synonym_clusters: list[str] | None = None
 
     # Validación y confianza
-    validation_rule: Optional[str] = None
-    confidence_weight: Optional[float] = None
-    negative_filter: Optional[bool] = None
+    validation_rule: str | None = None
+    confidence_weight: float | None = None
+    negative_filter: bool | None = None
 
     # Tipo de entidad
-    entity_type: Optional[str] = None
-    element_tags: Optional[List[str]] = None
+    entity_type: str | None = None
+    element_tags: list[str] | None = None
 
     # Referencia a patrón compartido (pattern_registry.json)
-    pattern_ref: Optional[str] = None  # e.g., "PAT-0001"
+    pattern_ref: str | None = None  # e.g., "PAT-0001"
 
-    def matches(self, text: str, context: Optional[str] = None) -> bool:
+    def matches(self, text: str, context: str | None = None) -> bool:
         """
         Verifica si el patrón hace match con el texto.
         Considera el contexto si es requerido.
@@ -520,25 +547,26 @@ class MethodSet:
     """
     Conjunto de métodos analíticos para una pregunta.
     Alineado con definitions.MethodSet del questionnaire_schema.json
-    
+
     Define la estrategia de análisis para responder una micro-question.
     """
+
     class_name: str  # Pattern: ^[A-Za-z_][A-Za-z0-9_]*$
-    function: str    # Pattern: ^[A-Za-z_][A-Za-z0-9_]*$
+    function: str  # Pattern: ^[A-Za-z_][A-Za-z0-9_]*$
     method_type: MethodType
 
     priority: int = 0
-    description: Optional[str] = None
+    description: str | None = None
 
     # Dependencias de patrones
-    depends_on_patterns: List[str] = field(default_factory=list)
-    pattern_dependencies: List[str] = field(default_factory=list)
+    depends_on_patterns: list[str] = field(default_factory=list)
+    pattern_dependencies: list[str] = field(default_factory=list)
 
     # Output esperado
-    produces_elements: List[str] = field(default_factory=list)
-    output_validates: List[str] = field(default_factory=list)
+    produces_elements: list[str] = field(default_factory=list)
+    output_validates: list[str] = field(default_factory=list)
 
-    failure_mode: Optional[str] = None
+    failure_mode: str | None = None
 
 
 @dataclass
@@ -546,33 +574,34 @@ class MicroQuestion:
     """
     Pregunta micro del cuestionario (300 preguntas).
     Alineado con definitions.MicroQuestion del questionnaire_schema.json
-    
+
     Representa la unidad atómica de análisis del PDT.
     Cada micro-question evalúa un aspecto específico de la calidad del plan.
     """
+
     question_id: str  # Pattern: ^Q\d{3}$ (Q001-Q300)
     text: str
     cluster_id: str
     dimension_id: str  # DIM01-DIM06
 
-    policy_area_id: Optional[str] = None  # PA01-PA10
-    base_slot: Optional[str] = None
-    question_global: Optional[int] = None
-    scoring_modality: Optional[str] = None
-    scoring_definition_ref: Optional[str] = None
+    policy_area_id: str | None = None  # PA01-PA10
+    base_slot: str | None = None
+    question_global: int | None = None
+    scoring_modality: str | None = None
+    scoring_definition_ref: str | None = None
 
     # Elementos esperados en la respuesta
-    expected_elements: List[str] = field(default_factory=list)
+    expected_elements: list[str] = field(default_factory=list)
 
     # Contrato de fallo (qué hacer si no se puede responder)
-    failure_contract: Optional[Dict[str, Any]] = None
+    failure_contract: dict[str, Any] | None = None
 
     # Métodos y patrones asociados
-    method_sets: List[MethodSet] = field(default_factory=list)
-    patterns: List[PatternItem] = field(default_factory=list)
+    method_sets: list[MethodSet] = field(default_factory=list)
+    patterns: list[PatternItem] = field(default_factory=list)
 
     # Validaciones
-    validations: Optional[Dict[str, Any]] = None
+    validations: dict[str, Any] | None = None
 
     def validate_question_id(self) -> bool:
         """Valida que question_id siga el patrón ^Q\\d{3}$."""
@@ -584,22 +613,23 @@ class MesoQuestion:
     """
     Pregunta meso del cuestionario (clusters temáticos).
     Alineado con definitions.MesoQuestion del questionnaire_schema.json
-    
+
     Agrega múltiples micro-questions relacionadas temáticamente.
     """
+
     question_id: str  # Pattern: ^MESO_[A-Z0-9_]+$
     cluster_id: str
     text: str
     type: str
 
-    question_global: Optional[int] = None
-    aggregation_method: Optional[str] = None
-    scoring_modality: Optional[str] = None
-    policy_areas: List[str] = field(default_factory=list)
-    patterns: List[Dict[str, Any]] = field(default_factory=list)
+    question_global: int | None = None
+    aggregation_method: str | None = None
+    scoring_modality: str | None = None
+    policy_areas: list[str] = field(default_factory=list)
+    patterns: list[dict[str, Any]] = field(default_factory=list)
 
     # Micro questions que agrega
-    micro_question_ids: List[str] = field(default_factory=list)
+    micro_question_ids: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -607,15 +637,16 @@ class MacroQuestion:
     """
     Pregunta macro del cuestionario (evaluación holística).
     Alineado con definitions.MacroQuestion del questionnaire_schema.json
-    
+
     Evaluación de más alto nivel que integra múltiples meso-questions.
     """
+
     question_global: int
     aggregation_method: AggregationMethod
 
-    clusters: List[str] = field(default_factory=list)
-    patterns: List[Dict[str, Any]] = field(default_factory=list)
-    fallback: Optional[Dict[str, Any]] = None
+    clusters: list[str] = field(default_factory=list)
+    patterns: list[dict[str, Any]] = field(default_factory=list)
+    fallback: dict[str, Any] | None = None
 
 
 @dataclass
@@ -624,15 +655,17 @@ class ScoringDefinition:
     Definición de scoring para un nivel de evaluación.
     Vincula puntajes numéricos con categorías cualitativas.
     """
+
     level: ScoringLevel
     min_score: float
     criteria: str = ""
-    color: Optional[str] = None  # Para visualización
+    color: str | None = None  # Para visualización
 
 
 # =============================================================================
 # TIPOS DE DOMINIO PDT - Estructura Jerárquica del Territorio
 # =============================================================================
+
 
 @dataclass
 class EntidadInstitucional:
@@ -640,14 +673,15 @@ class EntidadInstitucional:
     Entidad institucional colombiana referenciada en el PDT.
     Refleja el ecosistema de actores del sistema territorial.
     """
+
     nombre: str
-    sigla: Optional[str] = None
+    sigla: str | None = None
     tipo: TipoEntidadInstitucional = TipoEntidadInstitucional.MUNICIPAL
-    rol: Optional[str] = None
-    
+    rol: str | None = None
+
     # Información de contacto/ubicación (opcional)
-    nivel_gobierno: Optional[str] = None  # nacional, departamental, municipal
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    nivel_gobierno: str | None = None  # nacional, departamental, municipal
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -656,14 +690,15 @@ class ReferenciaLegal:
     Referencia a normativa colombiana citada en el PDT.
     Permite rastrear el marco legal de las intervenciones.
     """
+
     tipo: TipoReferenciaLegal
     numero: str
     año: int
-    articulo: Optional[str] = None
-    descripcion: Optional[str] = None
-    
+    articulo: str | None = None
+    descripcion: str | None = None
+
     # Texto completo de la referencia (ej: "Ley 152 de 1994")
-    texto_completo: Optional[str] = None
+    texto_completo: str | None = None
 
 
 @dataclass
@@ -671,40 +706,41 @@ class Meta:
     """
     Meta cuantificable del PDT.
     Vincula indicador + línea base + objetivo cuatrienal.
-    
+
     Refleja la estructura real de las Matrices de Indicadores.
     """
-    codigo: Optional[str] = None
+
+    codigo: str | None = None
     descripcion: str = ""
 
     # Indicador asociado
     tipo_indicador: TipoIndicador = TipoIndicador.PRODUCTO
     indicador_nombre: str = ""
-    codigo_indicador: Optional[str] = None
+    codigo_indicador: str | None = None
     unidad_medida: str = ""
 
     # Valores (Línea Base → Meta Cuatrienio)
-    linea_base: Optional[float] = None
-    año_linea_base: Optional[int] = None
-    meta_cuatrienio: Optional[float] = None
+    linea_base: float | None = None
+    año_linea_base: int | None = None
+    meta_cuatrienio: float | None = None
 
     # Desagregación anual (submetas)
-    meta_2024: Optional[float] = None
-    meta_2025: Optional[float] = None
-    meta_2026: Optional[float] = None
-    meta_2027: Optional[float] = None
+    meta_2024: float | None = None
+    meta_2025: float | None = None
+    meta_2026: float | None = None
+    meta_2027: float | None = None
 
-     # Información adicional
-    fuente_informacion: Optional[str] = None
-    responsable: Optional[str] = None  # Secretaría responsable
+    # Información adicional
+    fuente_informacion: str | None = None
+    responsable: str | None = None  # Secretaría responsable
 
     # Grupo poblacional objetivo
-    poblacion_objetivo: Optional[str] = None
+    poblacion_objetivo: str | None = None
 
     # Trazabilidad
-    provenance: Optional[Provenance] = None
+    provenance: Provenance | None = None
 
-    def cumplimiento_porcentual(self) -> Optional[float]:
+    def cumplimiento_porcentual(self) -> float | None:
         """Calcula % de cumplimiento si hay línea base y meta."""
         if self.linea_base is not None and self.meta_cuatrienio is not None:
             if self.meta_cuatrienio == 0:
@@ -718,56 +754,58 @@ class Producto:
     """
     Producto del PDT (bien o servicio entregable).
     Codificado según catálogo MGA (Metodología General Ajustada) del DNP.
-    
+
     Representa el nivel H5 de la jerarquía PDT.
     """
-    codigo_mga: Optional[str] = None  # Código del catálogo MGA (ej: 2106003)
+
+    codigo_mga: str | None = None  # Código del catálogo MGA (ej: 2106003)
     nombre: str = ""
     descripcion: str = ""
 
     # Indicadores y metas asociadas
-    indicadores: List[Meta] = field(default_factory=list)
+    indicadores: list[Meta] = field(default_factory=list)
 
     # Presupuesto del producto
-    costo_total: Optional[float] = None
-    fuentes_financiacion: Dict[FuenteFinanciacion, float] = field(default_factory=dict)
+    costo_total: float | None = None
+    fuentes_financiacion: dict[FuenteFinanciacion, float] = field(default_factory=dict)
 
     # Información adicional
-    alcance_geografico: Optional[str] = None  # Rural, Urbano, Corregimientos específicos
-    poblacion_beneficiaria: Optional[str] = None
+    alcance_geografico: str | None = None  # Rural, Urbano, Corregimientos específicos
+    poblacion_beneficiaria: str | None = None
 
     # Trazabilidad
-    provenance: Optional[Provenance] = None
+    provenance: Provenance | None = None
 
 
 @dataclass
 class Programa:
     """
-    Programa presupuestal del PDT. 
+    Programa presupuestal del PDT.
     Agrupa productos relacionados bajo un código presupuestal único.
-    
+
     Representa el nivel H4 de la jerarquía PDT.
     Refleja la estructura real de los documentos (ej: "Programa: Salud Pública").
     """
-    codigo_presupuestal: Optional[str] = None  # Código del programa (ej: 1203)
+
+    codigo_presupuestal: str | None = None  # Código del programa (ej: 1203)
     nombre: str = ""
     descripcion: str = ""
-    sector: Optional[str] = None  # Ej: "41 Inclusión Social"
+    sector: str | None = None  # Ej: "41 Inclusión Social"
 
     # Contenido del programa
-    productos: List[Producto] = field(default_factory=list)
-    metas_resultado: List[Meta] = field(default_factory=list)
+    productos: list[Producto] = field(default_factory=list)
+    metas_resultado: list[Meta] = field(default_factory=list)
 
     # Presupuesto agregado
-    costo_total_cuatrienio: Optional[float] = None
-    distribucion_anual: Dict[int, float] = field(default_factory=dict)  # {2024: monto, ...}
+    costo_total_cuatrienio: float | None = None
+    distribucion_anual: dict[int, float] = field(default_factory=dict)  # {2024: monto, ...}
 
     # Justificación (vínculo con diagnóstico)
-    justificacion: Optional[str] = None
-    problematicas_atendidas: List[str] = field(default_factory=list)
+    justificacion: str | None = None
+    problematicas_atendidas: list[str] = field(default_factory=list)
 
     # Trazabilidad
-    provenance: Optional[Provenance] = None
+    provenance: Provenance | None = None
 
 
 @dataclass
@@ -775,32 +813,33 @@ class LineaEstrategica:
     """
     Línea/Eje estratégico del PDT.
     Nivel más alto de organización programática (H2).
-    
+
     Refleja las "grandes apuestas" de la administración territorial.
     Ej: "Línea Estratégica 1: Territorio, Ambiente y Ruralidad"
     """
-    codigo: Optional[str] = None
-    numero: Optional[int] = None
+
+    codigo: str | None = None
+    numero: int | None = None
     titulo: str = ""
-    descripcion: Optional[str] = None
+    descripcion: str | None = None
 
     # Enfoques transversales aplicados
-    enfoques: List[str] = field(default_factory=list)  
+    enfoques: list[str] = field(default_factory=list)
     # Ej: ["derechos", "género", "territorial", "diferencial", "sostenibilidad"]
 
     # Contenido de la línea
-    programas: List[Programa] = field(default_factory=list)
+    programas: list[Programa] = field(default_factory=list)
 
     # Presupuesto agregado de la línea
-    inversion_total: Optional[float] = None
-    distribucion_anual: Dict[int, float] = field(default_factory=dict)
+    inversion_total: float | None = None
+    distribucion_anual: dict[int, float] = field(default_factory=dict)
 
     # Vinculación con ODS y PND
-    ods_vinculados: List[int] = field(default_factory=list)  # Números de ODS (1-17)
-    vinculacion_pnd: Optional[str] = None  # Transformación Colombia Potencia Mundial de la Vida
+    ods_vinculados: list[int] = field(default_factory=list)  # Números de ODS (1-17)
+    vinculacion_pnd: str | None = None  # Transformación Colombia Potencia Mundial de la Vida
 
     # Trazabilidad
-    provenance: Optional[Provenance] = None
+    provenance: Provenance | None = None
 
 
 @dataclass
@@ -809,36 +848,37 @@ class DiagnosticoTerritorial:
     Información del diagnóstico/caracterización del PDT (Título I).
     Fundamenta la intervención pública identificando brechas y necesidades.
     """
+
     # === Datos demográficos ===
-    poblacion_total: Optional[int] = None
-    poblacion_urbana: Optional[int] = None
-    poblacion_rural: Optional[int] = None
-    poblacion_etnica: Optional[Dict[str, int]] = None  # {"indigena": X, "afro": Y}
+    poblacion_total: int | None = None
+    poblacion_urbana: int | None = None
+    poblacion_rural: int | None = None
+    poblacion_etnica: dict[str, int] | None = None  # {"indigena": X, "afro": Y}
 
     # === Indicadores socioeconómicos ===
-    indice_pobreza_multidimensional: Optional[float] = None  # IPM
-    nbi: Optional[float] = None  # Necesidades Básicas Insatisfechas
-    cobertura_salud: Optional[Dict[str, int]] = None  # {"contributivo": X, "subsidiado": Y}
-    tasas_educacion: Optional[Dict[str, float]] = None  # {"cobertura": X, "desercion": Y}
+    indice_pobreza_multidimensional: float | None = None  # IPM
+    nbi: float | None = None  # Necesidades Básicas Insatisfechas
+    cobertura_salud: dict[str, int] | None = None  # {"contributivo": X, "subsidiado": Y}
+    tasas_educacion: dict[str, float] | None = None  # {"cobertura": X, "desercion": Y}
 
     # === Problemáticas identificadas ===
-    problematicas: List[str] = field(default_factory=list)
-    brechas: List[str] = field(default_factory=list)
-    ejes_problematicos: List[str] = field(default_factory=list)
+    problematicas: list[str] = field(default_factory=list)
+    brechas: list[str] = field(default_factory=list)
+    ejes_problematicos: list[str] = field(default_factory=list)
 
     # === División territorial ===
-    corregimientos: List[str] = field(default_factory=list)
-    veredas: List[str] = field(default_factory=list)
-    consejos_comunitarios: List[str] = field(default_factory=list)
+    corregimientos: list[str] = field(default_factory=list)
+    veredas: list[str] = field(default_factory=list)
+    consejos_comunitarios: list[str] = field(default_factory=list)
 
     # === Instrumentos de ordenamiento ===
     tiene_pot: bool = False
     tiene_pbot: bool = False
     tiene_eot: bool = False
-    fecha_actualizacion_ot: Optional[datetime] = None
+    fecha_actualizacion_ot: datetime | None = None
 
     # Trazabilidad
-    provenance: Optional[Provenance] = None
+    provenance: Provenance | None = None
 
 
 @dataclass
@@ -846,41 +886,42 @@ class PlanPlurianuaInversiones:
     """
     Plan Plurianual de Inversiones (PPI) - Título III del PDT.
     Componente financiero obligatorio que proyecta recursos del cuatrienio.
-    
+
     Refleja la estructura real de las Matrices PPI encontradas en los documentos.
     """
+
     # === Totales por vigencia (año fiscal) ===
-    total_2024: Optional[float] = None
-    total_2025: Optional[float] = None
-    total_2026: Optional[float] = None
-    total_2027: Optional[float] = None
-    total_cuatrienio: Optional[float] = None
+    total_2024: float | None = None
+    total_2025: float | None = None
+    total_2026: float | None = None
+    total_2027: float | None = None
+    total_cuatrienio: float | None = None
 
     # === Desglose por fuente de financiación ===
-    total_sgp: Optional[float] = None  # Sistema General de Participaciones
-    total_sgr: Optional[float] = None  # Sistema General de Regalías
-    total_recursos_propios: Optional[float] = None
-    total_credito: Optional[float] = None
-    total_cooperacion: Optional[float] = None
-    total_otras_fuentes: Optional[float] = None
+    total_sgp: float | None = None  # Sistema General de Participaciones
+    total_sgr: float | None = None  # Sistema General de Regalías
+    total_recursos_propios: float | None = None
+    total_credito: float | None = None
+    total_cooperacion: float | None = None
+    total_otras_fuentes: float | None = None
 
     # === Matriz de inversiones detallada ===
     # Lista de diccionarios con estructura:
     # {"linea": str, "sector": str, "programa": str, "2024": float, "2025": float, ...}
-    matriz_inversiones: List[Dict[str, Any]] = field(default_factory=list)
+    matriz_inversiones: list[dict[str, Any]] = field(default_factory=list)
 
     # === Análisis fiscal ===
-    marco_fiscal_mediano_plazo: Optional[Dict[str, Any]] = None  # MFMP (proyección 10 años)
-    sostenibilidad_fiscal: Optional[str] = None  # Análisis cualitativo
+    marco_fiscal_mediano_plazo: dict[str, Any] | None = None  # MFMP (proyección 10 años)
+    sostenibilidad_fiscal: str | None = None  # Análisis cualitativo
 
     # Trazabilidad
-    provenance: Optional[Provenance] = None
+    provenance: Provenance | None = None
 
-    def calcular_porcentaje_fuente(self, fuente: FuenteFinanciacion) -> Optional[float]:
+    def calcular_porcentaje_fuente(self, fuente: FuenteFinanciacion) -> float | None:
         """Calcula % de una fuente respecto al total."""
         if self.total_cuatrienio is None or self.total_cuatrienio == 0:
             return None
-        
+
         mapping = {
             FuenteFinanciacion.SGP: self.total_sgp,
             FuenteFinanciacion.SGR: self.total_sgr,
@@ -889,7 +930,7 @@ class PlanPlurianuaInversiones:
             FuenteFinanciacion.COOPERACION: self.total_cooperacion,
             FuenteFinanciacion.OTRAS: self.total_otras_fuentes,
         }
-        
+
         valor = mapping.get(fuente)
         if valor is not None:
             return (valor / self.total_cuatrienio) * 100
@@ -903,116 +944,120 @@ class IniciativaPDET:
     Las iniciativas PDET son priorizadas por las comunidades en los PATR
     (Planes de Acción para la Transformación Regional).
     """
+
     # Clasificación PDET (pilar es obligatorio, los demás campos son opcionales)
     pilar_rri: PilarRRI  # Uno de los 8 pilares
-    codigo: Optional[str] = None
+    codigo: str | None = None
     nombre: str = ""
     descripcion: str = ""
-    
-    linea_accion: Optional[str] = None
-    
+
+    linea_accion: str | None = None
+
     # Vinculación con el PDT
-    programa_vinculado: Optional[str] = None  # Código del programa PDT
-    presupuesto_asignado: Optional[float] = None
-    
+    programa_vinculado: str | None = None  # Código del programa PDT
+    presupuesto_asignado: float | None = None
+
     # Ubicación
-    corregimientos_veredas: List[str] = field(default_factory=list)
-    
+    corregimientos_veredas: list[str] = field(default_factory=list)
+
     # Trazabilidad
-    provenance: Optional[Provenance] = None
+    provenance: Provenance | None = None
 
 
 @dataclass
 class CapituloPaz:
     """
     Capítulo de Paz/PDET - Obligatorio en municipios PDET.
-    
-    Articulación del PDT con el Acuerdo de Paz (2016) y el Plan Marco 
+
+    Articulación del PDT con el Acuerdo de Paz (2016) y el Plan Marco
     de Implementación (PMI). Fundamental en zonas afectadas por el conflicto.
-    
+
     Refleja la estructura real del "CAPÍTULO 5. BUENOS AIRES ACTÚA POR LA PAZ"
     y secciones similares en documentos PDET.
     """
+
     # === Clasificación PDET ===
     es_municipio_pdet: bool = False
-    subregion_pdet: Optional[ZonaPDET] = None
-    
+    subregion_pdet: ZonaPDET | None = None
+
     # === Iniciativas PDET priorizadas ===
-    iniciativas_pdet: List[IniciativaPDET] = field(default_factory=list)
+    iniciativas_pdet: list[IniciativaPDET] = field(default_factory=list)
     total_iniciativas_priorizadas: int = 0
-    
+
     # === Articulación con pilares RRI ===
-    pilares_abordados: List[PilarRRI] = field(default_factory=list)
-    
+    pilares_abordados: list[PilarRRI] = field(default_factory=list)
+
     # === Articulación institucional ===
-    articulacion_pmi: Optional[str] = None  # Plan Marco de Implementación
-    articulacion_patr: Optional[str] = None  # Plan de Acción Transformación Regional
-    articulacion_pnis: Optional[str] = None  # Programa Nacional Integral Sustitución
-    
+    articulacion_pmi: str | None = None  # Plan Marco de Implementación
+    articulacion_patr: str | None = None  # Plan de Acción Transformación Regional
+    articulacion_pnis: str | None = None  # Programa Nacional Integral Sustitución
+
     # === Presupuesto específico paz ===
-    presupuesto_total_paz: Optional[float] = None
-    fuentes_paz: Dict[FuenteFinanciacion, float] = field(default_factory=dict)
-    
+    presupuesto_total_paz: float | None = None
+    fuentes_paz: dict[FuenteFinanciacion, float] = field(default_factory=dict)
+
     # === Población beneficiaria ===
-    victimas_conflicto: Optional[int] = None
-    excombatientes: Optional[int] = None
-    comunidades_etnicas_beneficiadas: List[str] = field(default_factory=list)
-    
+    victimas_conflicto: int | None = None
+    excombatientes: int | None = None
+    comunidades_etnicas_beneficiadas: list[str] = field(default_factory=list)
+
     # === Metas específicas de construcción de paz ===
-    metas_reconciliacion: List[Meta] = field(default_factory=list)
-    metas_reintegracion: List[Meta] = field(default_factory=list)
-    metas_reparacion_victimas: List[Meta] = field(default_factory=list)
-    
+    metas_reconciliacion: list[Meta] = field(default_factory=list)
+    metas_reintegracion: list[Meta] = field(default_factory=list)
+    metas_reparacion_victimas: list[Meta] = field(default_factory=list)
+
     # === Coordinación interinstitucional ===
-    entidades_coordinacion: List[EntidadInstitucional] = field(default_factory=list)
+    entidades_coordinacion: list[EntidadInstitucional] = field(default_factory=list)
     # Ej: ART, Agencia Renovación Territorio; ARN, Agencia Reintegración
-    
+
     # Trazabilidad
-    provenance: Optional[Provenance] = None
+    provenance: Provenance | None = None
 
 
 # =============================================================================
 # DOCUMENTO PREPROCESADO - Output de Phase 1
 # =============================================================================
 
+
 @dataclass
 class PreprocessedDocument:
     """
-    Documento PDT después de preprocesamiento. 
+    Documento PDT después de preprocesamiento.
 
     Output canónico de Phase 1 (Ingestion).
-    Input para el Orchestrator y fases subsiguientes. 
+    Input para el Orchestrator y fases subsiguientes.
 
     INVARIANTE CRÍTICO: chunk_count == 60 (10 Policy Areas × 6 Dimensions)
     Cada chunk debe tener coordenadas (PA, DIM) únicas.
     """
+
     # === Identificación ===
     document_id: str
     source_path: str
-    municipio: Optional[str] = None
+    municipio: str | None = None
     departamento: str = "Cauca"  # Default para el contexto actual
     periodo: str = "2024-2027"
 
     # === Clasificación PDET ===
     es_municipio_pdet: bool = False
-    subregion_pdet: Optional[ZonaPDET] = None
+    subregion_pdet: ZonaPDET | None = None
 
     # === Chunks extraídos (60 unidades mínimas) ===
-    chunks: List[ChunkData] = field(default_factory=list)
+    chunks: list[ChunkData] = field(default_factory=list)
 
     # === Estructura jerárquica parseada ===
-    diagnostico: Optional[DiagnosticoTerritorial] = None
-    lineas_estrategicas: List[LineaEstrategica] = field(default_factory=list)
-    plan_inversiones: Optional[PlanPlurianuaInversiones] = None
-    capitulo_paz: Optional[CapituloPaz] = None
+    diagnostico: DiagnosticoTerritorial | None = None
+    lineas_estrategicas: list[LineaEstrategica] = field(default_factory=list)
+    plan_inversiones: PlanPlurianuaInversiones | None = None
+    capitulo_paz: CapituloPaz | None = None
 
     # === Entidades y referencias extraídas ===
-    entidades_mencionadas: List[EntidadInstitucional] = field(default_factory=list)
-    referencias_legales: List[ReferenciaLegal] = field(default_factory=list)
+    entidades_mencionadas: list[EntidadInstitucional] = field(default_factory=list)
+    referencias_legales: list[ReferenciaLegal] = field(default_factory=list)
 
     # === Metadatos de extracción ===
     total_pages: int = 0
-    extraction_timestamp: Optional[datetime] = None
+    extraction_timestamp: datetime | None = None
     extraction_method: str = "unknown"
 
     # === Métricas de calidad ===
@@ -1022,10 +1067,10 @@ class PreprocessedDocument:
 
     # === Validación de invariantes ===
     invariant_60_chunks: bool = False
-    coverage_matrix: Dict[Tuple[str, str], bool] = field(default_factory=dict)
+    coverage_matrix: dict[tuple[str, str], bool] = field(default_factory=dict)
     # Matriz PA×DIM: {("PA01", "DIM01"): True, ...}
 
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     def compute_provenance_completeness(self) -> float:
         """Calcula métrica de completitud de provenance."""
@@ -1045,7 +1090,7 @@ class PreprocessedDocument:
         Retorna True si la estructura es correcta.
         """
         self.invariant_60_chunks = len(self.chunks) == 60
-        
+
         # Construir matriz de cobertura
         self.coverage_matrix = {}
         for pa_num in range(1, 11):  # PA01-PA10
@@ -1053,51 +1098,59 @@ class PreprocessedDocument:
                 pa_id = f"PA{pa_num:02d}"
                 dim_id = f"DIM{dim_num:02d}"
                 coord = (pa_id, dim_id)
-                
+
                 # Verificar si existe chunk con esta coordenada
                 has_chunk = any(
-                    c.policy_area and c.dimension_causal and
-                    c.policy_area.value == pa_id and c.dimension_causal.value == dim_id
+                    c.policy_area
+                    and c.dimension_causal
+                    and c.policy_area.value == pa_id
+                    and c.dimension_causal.value == dim_id
                     for c in self.chunks
                 )
                 self.coverage_matrix[coord] = has_chunk
-        
+
         # Verificar cobertura completa
         full_coverage = all(self.coverage_matrix.values())
-        
+
         return self.invariant_60_chunks and full_coverage
 
-    def get_chunk_by_coordinate(self, policy_area: str, dimension: str) -> Optional[ChunkData]:
+    def get_chunk_by_coordinate(self, policy_area: str, dimension: str) -> ChunkData | None:
         """Obtiene chunk específico por coordenada (PA, DIM)."""
         for chunk in self.chunks:
-            if (chunk.policy_area and chunk.policy_area.value == policy_area and
-                chunk.dimension_causal and chunk.dimension_causal.value == dimension):
+            if (
+                chunk.policy_area
+                and chunk.policy_area.value == policy_area
+                and chunk.dimension_causal
+                and chunk.dimension_causal.value == dimension
+            ):
                 return chunk
         return None
 
-    def get_chunks_by_policy_area(self, policy_area: str) -> List[ChunkData]:
+    def get_chunks_by_policy_area(self, policy_area: str) -> list[ChunkData]:
         """Obtiene todos los chunks de una Policy Area específica."""
-        return [c for c in self.chunks 
-                if c.policy_area and c.policy_area.value == policy_area]
+        return [c for c in self.chunks if c.policy_area and c.policy_area.value == policy_area]
 
-    def get_chunks_by_dimension(self, dimension: str) -> List[ChunkData]:
+    def get_chunks_by_dimension(self, dimension: str) -> list[ChunkData]:
         """Obtiene todos los chunks de una Dimensión específica."""
-        return [c for c in self.chunks 
-                if c.dimension_causal and c.dimension_causal.value == dimension]
+        return [
+            c for c in self.chunks if c.dimension_causal and c.dimension_causal.value == dimension
+        ]
 
 
 # =============================================================================
 # TIPOS PARA ANÁLISIS - Phases 2+
 # =============================================================================
 
+
 @dataclass
 class CausalLink:
     """
     Vínculo causal identificado en el PDT.
     Conecta elementos de la cadena de valor DNP (D1→D2→D3→D4→D5).
-    
+
     Crítico para evaluar la coherencia lógica del plan (Dimensión D6).
     """
+
     source_chunk_id: str
     target_chunk_id: str
 
@@ -1106,9 +1159,9 @@ class CausalLink:
 
     # Tipo de relación
     tipo_relacion: str  # "causa", "temporal", "jerarquica", "geografica"
-    conector_textual: Optional[str] = None  # Frase que establece el vínculo
-    
-    # Ejemplo: "a través de la estructuración y ejecución de proyectos... 
+    conector_textual: str | None = None  # Frase que establece el vínculo
+
+    # Ejemplo: "a través de la estructuración y ejecución de proyectos...
     # que contribuyen al logro de las transformaciones"
 
     # Fortaleza del vínculo
@@ -1116,7 +1169,7 @@ class CausalLink:
     explicito: bool = False  # ¿Vínculo explícito o inferido?
 
     # Trazabilidad
-    provenance: Optional[Provenance] = None
+    provenance: Provenance | None = None
 
 
 @dataclass
@@ -1125,17 +1178,18 @@ class ExtractedEvidence:
     Evidencia extraída para responder una pregunta de análisis.
     Vincula texto específico del PDT con una micro-question del questionnaire.
     """
+
     question_id: str  # Q001-Q300
-    chunk_ids: List[str] = field(default_factory=list)
+    chunk_ids: list[str] = field(default_factory=list)
 
     # Evidencia textual
     evidencia_textual: str = ""
-    evidencia_contraria: Optional[str] = None  # Contraejemplos o inconsistencias
+    evidencia_contraria: str | None = None  # Contraejemplos o inconsistencias
 
     # Clasificación
-    dimension_causal: Optional[DimensionCausal] = None
-    policy_area: Optional[PolicyArea] = None
-    marcador_contextual: Optional[MarcadorContextual] = None
+    dimension_causal: DimensionCausal | None = None
+    policy_area: PolicyArea | None = None
+    marcador_contextual: MarcadorContextual | None = None
 
     # Scoring
     score: float = 0.0
@@ -1143,7 +1197,7 @@ class ExtractedEvidence:
     nivel_confianza: NivelConfianza = NivelConfianza.BAJA
 
     # Trazabilidad
-    provenance: Optional[Provenance] = None
+    provenance: Provenance | None = None
 
 
 @dataclass
@@ -1152,37 +1206,38 @@ class MicroQuestionResult:
     Resultado de evaluación de una MicroQuestion (Q001-Q300).
     Unidad atómica de análisis del pipeline.
     """
+
     question_id: str  # Q001-Q300
     question_text: str
 
     # === Scoring ===
     score: float
     scoring_level: ScoringLevel
-    scoring_modality: Optional[str] = None
+    scoring_modality: str | None = None
 
     # === Evidencias ===
-    evidencias: List[ExtractedEvidence] = field(default_factory=list)
+    evidencias: list[ExtractedEvidence] = field(default_factory=list)
     n_evidencias_positivas: int = 0
     n_evidencias_negativas: int = 0
 
     # === Patrones y métodos aplicados ===
-    patterns_matched: List[str] = field(default_factory=list)
-    methods_applied: List[str] = field(default_factory=list)
+    patterns_matched: list[str] = field(default_factory=list)
+    methods_applied: list[str] = field(default_factory=list)
 
     # === Contexto ===
-    dimension_id: Optional[str] = None  # DIM01-DIM06
-    policy_area_id: Optional[str] = None  # PA01-PA10
-    cluster_id: Optional[str] = None
+    dimension_id: str | None = None  # DIM01-DIM06
+    policy_area_id: str | None = None  # PA01-PA10
+    cluster_id: str | None = None
 
     # === Hallazgos específicos ===
-    hallazgos: List[str] = field(default_factory=list)
-    recomendaciones: List[str] = field(default_factory=list)
+    hallazgos: list[str] = field(default_factory=list)
+    recomendaciones: list[str] = field(default_factory=list)
 
     # === Trazabilidad y performance ===
-    execution_time_ms: Optional[float] = None
-    provenance: Optional[Provenance] = None
+    execution_time_ms: float | None = None
+    provenance: Provenance | None = None
 
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -1191,6 +1246,7 @@ class MesoQuestionResult:
     Resultado agregado de evaluación de una MesoQuestion (cluster temático).
     Agrega múltiples micro-questions relacionadas.
     """
+
     question_id: str  # MESO_[ID]
     question_text: str
 
@@ -1200,21 +1256,21 @@ class MesoQuestionResult:
     aggregation_method: AggregationMethod
 
     # === Micro questions agregadas ===
-    micro_results: List[MicroQuestionResult] = field(default_factory=list)
+    micro_results: list[MicroQuestionResult] = field(default_factory=list)
     n_micro_evaluated: int = 0
-    
+
     # Distribución de scoring
-    distribution: Dict[ScoringLevel, int] = field(default_factory=dict)
+    distribution: dict[ScoringLevel, int] = field(default_factory=dict)
 
     # === Contexto ===
     cluster_id: str = ""
-    policy_areas: List[str] = field(default_factory=list)
+    policy_areas: list[str] = field(default_factory=list)
 
     # === Hallazgos consolidados ===
-    hallazgos: List[str] = field(default_factory=list)
-    recomendaciones: List[str] = field(default_factory=list)
+    hallazgos: list[str] = field(default_factory=list)
+    recomendaciones: list[str] = field(default_factory=list)
 
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -1223,23 +1279,24 @@ class MacroQuestionResult:
     Resultado de evaluación holística (MacroQuestion).
     Nivel más alto de agregación, integra múltiples meso-questions.
     """
+
     score: float
     scoring_level: ScoringLevel
     aggregation_method: AggregationMethod
 
     # === Meso questions agregadas ===
-    meso_results: List[MesoQuestionResult] = field(default_factory=list)
+    meso_results: list[MesoQuestionResult] = field(default_factory=list)
     n_meso_evaluated: int = 0
 
     # === Hallazgos globales ===
-    hallazgos: List[str] = field(default_factory=list)
-    recomendaciones: List[str] = field(default_factory=list)
-    
-    # Fortalezas y debilidades identificadas
-    fortalezas: List[str] = field(default_factory=list)
-    debilidades: List[str] = field(default_factory=list)
+    hallazgos: list[str] = field(default_factory=list)
+    recomendaciones: list[str] = field(default_factory=list)
 
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    # Fortalezas y debilidades identificadas
+    fortalezas: list[str] = field(default_factory=list)
+    debilidades: list[str] = field(default_factory=list)
+
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -1247,9 +1304,10 @@ class AnalysisResult:
     """
     Resultado completo del análisis del pipeline F.A.R.F.A.N.
     Representa el output final de todo el proceso de evaluación.
-    
+
     Este es el artefacto que se entrega como resultado del análisis.
     """
+
     # === Identificación ===
     document_id: str
     municipio: str
@@ -1259,54 +1317,54 @@ class AnalysisResult:
 
     # === Clasificación PDET ===
     es_municipio_pdet: bool = False
-    subregion_pdet: Optional[ZonaPDET] = None
+    subregion_pdet: ZonaPDET | None = None
 
     # === Resultados por nivel jerárquico ===
-    macro_result: Optional[MacroQuestionResult] = None
-    meso_results: List[MesoQuestionResult] = field(default_factory=list)
-    micro_results: List[MicroQuestionResult] = field(default_factory=list)
+    macro_result: MacroQuestionResult | None = None
+    meso_results: list[MesoQuestionResult] = field(default_factory=list)
+    micro_results: list[MicroQuestionResult] = field(default_factory=list)
 
     # === Métricas agregadas globales ===
     overall_score: float = 0.0
     overall_level: ScoringLevel = ScoringLevel.INSUFICIENTE
 
     # === Scoring por dimensión (cadena de valor) ===
-    scores_by_dimension: Dict[str, float] = field(default_factory=dict)
+    scores_by_dimension: dict[str, float] = field(default_factory=dict)
     # {"DIM01": 0.75, "DIM02": 0.82, ...}
 
     # === Scoring por policy area (derechos) ===
-    scores_by_policy_area: Dict[str, float] = field(default_factory=dict)
+    scores_by_policy_area: dict[str, float] = field(default_factory=dict)
     # {"PA01": 0.68, "PA05": 0.91, ...}
 
     # === Matriz de cobertura PA×DIM ===
-    coverage_matrix_scores: Dict[Tuple[str, str], float] = field(default_factory=dict)
+    coverage_matrix_scores: dict[tuple[str, str], float] = field(default_factory=dict)
     # {("PA01", "DIM01"): 0.85, ...}
 
     # === Hallazgos y recomendaciones consolidadas ===
-    hallazgos_principales: List[str] = field(default_factory=list)
-    recomendaciones_prioritarias: List[str] = field(default_factory=list)
-    
-    fortalezas_principales: List[str] = field(default_factory=list)
-    debilidades_principales: List[str] = field(default_factory=list)
+    hallazgos_principales: list[str] = field(default_factory=list)
+    recomendaciones_prioritarias: list[str] = field(default_factory=list)
+
+    fortalezas_principales: list[str] = field(default_factory=list)
+    debilidades_principales: list[str] = field(default_factory=list)
 
     # === Evaluación específica PDET (si aplica) ===
-    evaluacion_pdet: Optional[Dict[str, Any]] = None
+    evaluacion_pdet: dict[str, Any] | None = None
     # {"articulacion_patr": score, "pilares_rri_cubiertos": [...], ...}
 
     # === Integridad del análisis ===
     questions_executed: int = 0
     questions_total: int = 300
     execution_success: bool = False
-    execution_errors: List[str] = field(default_factory=list)
+    execution_errors: list[str] = field(default_factory=list)
 
     # === Hashes para verificación de integridad ===
-    input_hash: Optional[str] = None  # Hash del documento de entrada
-    output_hash: Optional[str] = None  # Hash de este resultado
+    input_hash: str | None = None  # Hash del documento de entrada
+    output_hash: str | None = None  # Hash de este resultado
 
     # === Performance ===
-    total_execution_time_seconds: Optional[float] = None
+    total_execution_time_seconds: float | None = None
 
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     def compute_overall_score(self) -> float:
         """
@@ -1321,11 +1379,11 @@ class AnalysisResult:
         elif self.micro_results:
             # Promedio simple de micro-questions
             self.overall_score = sum(m.score for m in self.micro_results) / len(self.micro_results)
-        
+
         self.overall_level = ScoringLevel.from_score(self.overall_score)
         return self.overall_score
 
-    def generate_summary_report(self) -> Dict[str, Any]:
+    def generate_summary_report(self) -> dict[str, Any]:
         """
         Genera un resumen ejecutivo del análisis.
         Útil para visualización y reportes.
@@ -1351,38 +1409,39 @@ class AnalysisResult:
 # UTILIDADES Y VALIDACIONES
 # =============================================================================
 
-def validate_pdt_structure(doc: PreprocessedDocument) -> Dict[str, Any]:
+
+def validate_pdt_structure(doc: PreprocessedDocument) -> dict[str, Any]:
     """
     Valida la estructura de un PDT preprocesado contra los requisitos.
-    
+
     Returns:
         Dict con resultados de validación y errores encontrados.
     """
     errors = []
     warnings = []
-    
+
     # Validar invariante de 60 chunks
     if not doc.validate_chunk_invariant():
         errors.append(f"Invariante de 60 chunks no cumplido. Found: {len(doc.chunks)}")
-    
+
     # Validar completitud de provenance
     if doc.provenance_completeness < 0.9:
         warnings.append(f"Provenance completeness bajo: {doc.provenance_completeness:.2%}")
-    
+
     # Validar secciones obligatorias
     if not doc.diagnostico:
         errors.append("Falta sección de Diagnóstico (obligatoria)")
-    
+
     if not doc.lineas_estrategicas:
         errors.append("Faltan Líneas Estratégicas (obligatorias)")
-    
+
     if not doc.plan_inversiones:
         errors.append("Falta Plan Plurianual de Inversiones (obligatorio)")
-    
+
     # Validar capítulo PDET si es municipio PDET
     if doc.es_municipio_pdet and not doc.capitulo_paz:
         errors.append("Municipio PDET sin Capítulo de Paz (obligatorio)")
-    
+
     return {
         "valid": len(errors) == 0,
         "errors": errors,
@@ -1394,15 +1453,12 @@ def validate_pdt_structure(doc: PreprocessedDocument) -> Dict[str, Any]:
             "has_estrategia": len(doc.lineas_estrategicas) > 0,
             "has_ppi": doc.plan_inversiones is not None,
             "has_paz_if_pdet": not doc.es_municipio_pdet or doc.capitulo_paz is not None,
-        }
+        },
     }
 
 
 def create_empty_preprocessed_document(
-    document_id: str,
-    source_path: str,
-    municipio: str,
-    es_pdet: bool = False
+    document_id: str, source_path: str, municipio: str, es_pdet: bool = False
 ) -> PreprocessedDocument:
     """
     Crea un PreprocessedDocument vacío con la estructura básica.
@@ -1416,7 +1472,7 @@ def create_empty_preprocessed_document(
         periodo="2024-2027",
         es_municipio_pdet=es_pdet,
         extraction_timestamp=datetime.now(),
-        extraction_method="unknown"
+        extraction_method="unknown",
     )
 
 
@@ -1426,14 +1482,24 @@ def create_empty_preprocessed_document(
 
 # Municipios PDET de la subregión Alto Patía y Norte del Cauca
 MUNICIPIOS_PDET_ALTO_PATIA_NORTE_CAUCA = [
-    "Buenos Aires", "Caldono", "Caloto", "Corinto", "El Tambo",
-    "Jambaló", "Mercaderes", "Miranda", "Morales", "Piendamó",
-    "Santander de Quilichao", "Suárez", "Toribío"
+    "Buenos Aires",
+    "Caldono",
+    "Caloto",
+    "Corinto",
+    "El Tambo",
+    "Jambaló",
+    "Mercaderes",
+    "Miranda",
+    "Morales",
+    "Piendamó",
+    "Santander de Quilichao",
+    "Suárez",
+    "Toribío",
 ]
 
 # ODS relacionados con contexto PDET (Objetivos de Desarrollo Sostenible)
 ODS_PDET_PRIORITARIOS = [1, 2, 3, 5, 8, 10, 11, 15, 16]
-# 1-Fin pobreza, 2-Hambre cero, 3-Salud, 5-Igualdad género, 
+# 1-Fin pobreza, 2-Hambre cero, 3-Salud, 5-Igualdad género,
 # 8-Trabajo decente, 10-Reducción desigualdades, 11-Ciudades sostenibles,
 # 15-Vida ecosistemas terrestres, 16-Paz y justicia
 

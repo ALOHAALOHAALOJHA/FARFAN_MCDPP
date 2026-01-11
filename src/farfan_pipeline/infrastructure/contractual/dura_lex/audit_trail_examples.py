@@ -4,15 +4,14 @@ Audit Trail System - Examples and Usage
 Demonstrates usage of the audit trail system for calibration verification.
 """
 
-
 from audit_trail import (
-    generate_manifest,
-    verify_manifest,
-    reconstruct_score,
-    validate_determinism,
     StructuredAuditLogger,
     TraceGenerator,
     create_trace_example,
+    generate_manifest,
+    reconstruct_score,
+    validate_determinism,
+    verify_manifest,
 )
 
 
@@ -21,7 +20,7 @@ def example_basic_manifest_generation():
     print("=" * 70)
     print("Example 1: Basic Manifest Generation")
     print("=" * 70)
-    
+
     manifest = generate_manifest(
         calibration_scores={
             "FIN:BayesianNumericalAnalyzer.analyze_numeric_pattern@Q": 0.8004,
@@ -59,7 +58,7 @@ def example_basic_manifest_generation():
         validator_version="2.0.0",
         secret_key="test_secret_key_do_not_use_in_production",
     )
-    
+
     print("✓ Manifest generated")
     print(f"  Timestamp: {manifest.timestamp}")
     print(f"  Validator version: {manifest.validator_version}")
@@ -67,7 +66,7 @@ def example_basic_manifest_generation():
     print(f"  Macro score: {manifest.results.macro_score}")
     print(f"  Signature: {manifest.signature[:32]}...")
     print()
-    
+
     return manifest
 
 
@@ -76,15 +75,15 @@ def example_manifest_verification(manifest):
     print("=" * 70)
     print("Example 2: Manifest Verification")
     print("=" * 70)
-    
+
     valid = verify_manifest(manifest, "test_secret_key_do_not_use_in_production")
-    
+
     print(f"✓ Signature verification: {'VALID' if valid else 'INVALID'}")
-    
+
     invalid = verify_manifest(manifest, "wrong_key")
     print(f"✓ Wrong key verification: {'VALID' if invalid else 'INVALID (expected)'}")
     print()
-    
+
     return valid
 
 
@@ -93,10 +92,10 @@ def example_score_reconstruction(manifest):
     print("=" * 70)
     print("Example 3: Score Reconstruction")
     print("=" * 70)
-    
+
     reconstructed = reconstruct_score(manifest)
     original = manifest.results.macro_score
-    
+
     print(f"  Original macro score: {original}")
     print(f"  Reconstructed score:  {reconstructed}")
     print(f"  Difference:           {abs(original - reconstructed)}")
@@ -109,7 +108,7 @@ def example_determinism_validation():
     print("=" * 70)
     print("Example 4: Determinism Validation")
     print("=" * 70)
-    
+
     manifest1 = generate_manifest(
         calibration_scores={"method1": 0.8, "method2": 0.9},
         config_hash="abc123",
@@ -127,7 +126,7 @@ def example_determinism_validation():
         validator_version="2.0.0",
         secret_key="test_key",
     )
-    
+
     manifest2 = generate_manifest(
         calibration_scores={"method1": 0.8, "method2": 0.9},
         config_hash="abc123",
@@ -145,11 +144,13 @@ def example_determinism_validation():
         validator_version="2.0.0",
         secret_key="test_key",
     )
-    
+
     deterministic = validate_determinism(manifest1, manifest2)
-    
-    print(f"✓ Same seeds, same config, same results: {'DETERMINISTIC' if deterministic else 'NON-DETERMINISTIC'}")
-    
+
+    print(
+        f"✓ Same seeds, same config, same results: {'DETERMINISTIC' if deterministic else 'NON-DETERMINISTIC'}"
+    )
+
     manifest3 = generate_manifest(
         calibration_scores={"method1": 0.8, "method2": 0.9},
         config_hash="abc123",
@@ -167,9 +168,11 @@ def example_determinism_validation():
         validator_version="2.0.0",
         secret_key="test_key",
     )
-    
+
     non_deterministic = validate_determinism(manifest1, manifest3)
-    print(f"✓ Different seeds, different results: {'ALLOWS VARIATION' if not non_deterministic else 'UNEXPECTED'}")
+    print(
+        f"✓ Different seeds, different results: {'ALLOWS VARIATION' if not non_deterministic else 'UNEXPECTED'}"
+    )
     print()
 
 
@@ -178,13 +181,13 @@ def example_structured_logging():
     print("=" * 70)
     print("Example 5: Structured Logging")
     print("=" * 70)
-    
+
     logger = StructuredAuditLogger(log_dir="logs/calibration", component="test_audit")
-    
+
     logger.log("INFO", "Starting calibration", {"phase": "initialization"})
     logger.log("INFO", "Calibration complete", {"phase": "completion", "score": 0.85})
     logger.log("WARNING", "Low confidence detected", {"confidence": 0.62, "threshold": 0.7})
-    
+
     print("✓ Logs written to: logs/calibration/test_audit_*.log")
     print("  Log format: Structured JSON with timestamp, level, component, message, metadata")
     print()
@@ -195,22 +198,14 @@ def example_trace_generation():
     print("=" * 70)
     print("Example 6: Operation Trace Generation")
     print("=" * 70)
-    
+
     with TraceGenerator(enabled=True) as tracer:
-        tracer.trace_operation(
-            "compute_score",
-            {"evidence": 0.85, "confidence": 0.9},
-            0.765
-        )
-        
-        tracer.trace_operation(
-            "aggregate_dimensions",
-            {"dim_scores": [0.8, 0.9, 0.7]},
-            0.8
-        )
-        
+        tracer.trace_operation("compute_score", {"evidence": 0.85, "confidence": 0.9}, 0.765)
+
+        tracer.trace_operation("aggregate_dimensions", {"dim_scores": [0.8, 0.9, 0.7]}, 0.8)
+
         traces = tracer.get_traces()
-    
+
     print(f"✓ Traced {len(traces)} operations")
     for i, trace in enumerate(traces, 1):
         print(f"  {i}. {trace.operation}: {trace.inputs} → {trace.output}")
@@ -222,15 +217,15 @@ def example_complete_workflow():
     print("=" * 70)
     print("Example 7: Complete Audit Trail Workflow")
     print("=" * 70)
-    
+
     logger = StructuredAuditLogger(log_dir="logs/calibration", component="workflow")
-    
+
     with TraceGenerator(enabled=True) as tracer:
         tracer.trace_operation("initialize", {"seed": 42}, None)
         tracer.trace_operation("compute", {"input": 0.85}, 0.8)
-        
+
         traces = tracer.get_traces()
-    
+
     manifest = generate_manifest(
         calibration_scores={"method1": 0.8},
         config_hash="abc",
@@ -249,12 +244,12 @@ def example_complete_workflow():
         secret_key="test_key",
         trace=traces,
     )
-    
+
     logger.log_manifest_generation(manifest, success=True)
-    
+
     verified = verify_manifest(manifest, "test_key")
     logger.log_verification(manifest, verified)
-    
+
     print("✓ Complete workflow executed")
     print(f"  - Traces captured: {len(manifest.trace)}")
     print("  - Manifest generated with signature")
@@ -268,9 +263,9 @@ def example_create_trace_files():
     print("=" * 70)
     print("Example 8: Create Trace Example Files")
     print("=" * 70)
-    
+
     create_trace_example(output_dir="trace_examples")
-    
+
     print("✓ Trace examples created in: trace_examples/")
     print("  - example_traces.json")
     print()
@@ -282,7 +277,7 @@ if __name__ == "__main__":
     print("AUDIT TRAIL SYSTEM - EXAMPLES")
     print("*" * 70)
     print("\n")
-    
+
     manifest = example_basic_manifest_generation()
     example_manifest_verification(manifest)
     example_score_reconstruction(manifest)
@@ -291,7 +286,7 @@ if __name__ == "__main__":
     example_trace_generation()
     example_complete_workflow()
     example_create_trace_files()
-    
+
     print("*" * 70)
     print("ALL EXAMPLES COMPLETED SUCCESSFULLY")
     print("*" * 70)

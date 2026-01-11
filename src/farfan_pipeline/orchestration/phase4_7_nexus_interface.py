@@ -12,11 +12,11 @@ Phase 7: Macro Evaluation
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, List, Optional
 
 
 class NexusDirection(str, Enum):
     """Direction of data flow between nodes."""
+
     DELIVERS = "delivers"
     RECEIVES = "receives"
     BIDIRECTIONAL = "bidirectional"
@@ -33,6 +33,7 @@ class NexusNode:
         node_type: Type of node (input, output, processor)
         description: Human-readable description
     """
+
     node_id: str
     phase: int
     node_type: str  # "input", "output", "processor"
@@ -51,6 +52,7 @@ class NexusRelationship:
         data_type: Type of data transferred
         description: Human-readable description
     """
+
     from_node: NexusNode
     to_node: NexusNode
     direction: NexusDirection
@@ -70,85 +72,82 @@ class Phase4_7NexusInterface:
     """
 
     # Define all nodes
-    NODES: Dict[str, NexusNode] = {
+    NODES: dict[str, NexusNode] = {
         # Phase 4: Dimension Aggregation
         "phase4_dimension_aggregation_input": NexusNode(
             node_id="phase4_dimension_aggregation_input",
             phase=4,
             node_type="input",
-            description="Receives scored results from Phase 3"
+            description="Receives scored results from Phase 3",
         ),
         "phase4_dimension_aggregation_processor": NexusNode(
             node_id="phase4_dimension_aggregation_processor",
             phase=4,
             node_type="processor",
-            description="Aggregates scores by dimension"
+            description="Aggregates scores by dimension",
         ),
         "phase4_dimension_aggregation_output": NexusNode(
             node_id="phase4_dimension_aggregation_output",
             phase=4,
             node_type="output",
-            description="Emits dimension-level scores"
+            description="Emits dimension-level scores",
         ),
-
         # Phase 5: Area Aggregation
         "phase5_area_aggregation_input": NexusNode(
             node_id="phase5_area_aggregation_input",
             phase=5,
             node_type="input",
-            description="Receives dimension scores from Phase 4"
+            description="Receives dimension scores from Phase 4",
         ),
         "phase5_area_aggregation_processor": NexusNode(
             node_id="phase5_area_aggregation_processor",
             phase=5,
             node_type="processor",
-            description="Aggregates scores by policy area"
+            description="Aggregates scores by policy area",
         ),
         "phase5_area_aggregation_output": NexusNode(
             node_id="phase5_area_aggregation_output",
             phase=5,
             node_type="output",
-            description="Emits area-level scores"
+            description="Emits area-level scores",
         ),
-
         # Phase 6: Cluster Aggregation
         "phase6_cluster_aggregation_input": NexusNode(
             node_id="phase6_cluster_aggregation_input",
             phase=6,
             node_type="input",
-            description="Receives area scores from Phase 5"
+            description="Receives area scores from Phase 5",
         ),
         "phase6_cluster_aggregation_processor": NexusNode(
             node_id="phase6_cluster_aggregation_processor",
             phase=6,
             node_type="processor",
-            description="Aggregates scores by cluster"
+            description="Aggregates scores by cluster",
         ),
         "phase6_cluster_aggregation_output": NexusNode(
             node_id="phase6_cluster_aggregation_output",
             phase=6,
             node_type="output",
-            description="Emits cluster-level scores"
+            description="Emits cluster-level scores",
         ),
-
         # Phase 7: Macro Evaluation
         "phase7_macro_evaluation_input": NexusNode(
             node_id="phase7_macro_evaluation_input",
             phase=7,
             node_type="input",
-            description="Receives cluster scores from Phase 6"
+            description="Receives cluster scores from Phase 6",
         ),
         "phase7_macro_evaluation_processor": NexusNode(
             node_id="phase7_macro_evaluation_processor",
             phase=7,
             node_type="processor",
-            description="Computes macro-level evaluation"
+            description="Computes macro-level evaluation",
         ),
         "phase7_macro_evaluation_output": NexusNode(
             node_id="phase7_macro_evaluation_output",
             phase=7,
             node_type="output",
-            description="Emits final macro score"
+            description="Emits final macro score",
         ),
     }
 
@@ -160,41 +159,37 @@ class Phase4_7NexusInterface:
                 node_id="phase3_quality_scoring_output",
                 phase=3,
                 node_type="output",
-                description="Phase 3 output node"
+                description="Phase 3 output node",
             ),
             to_node=NODES["phase4_dimension_aggregation_input"],
             direction=NexusDirection.DELIVERS,
             data_type="ScoredResult[]",
-            description="Phase 3 delivers scored results to Phase 4"
+            description="Phase 3 delivers scored results to Phase 4",
         ),
-
         # Phase 4 → Phase 5
         NexusRelationship(
             from_node=NODES["phase4_dimension_aggregation_output"],
             to_node=NODES["phase5_area_aggregation_input"],
             direction=NexusDirection.DELIVERS,
             data_type="DimensionScore[]",
-            description="Phase 4 delivers dimension scores to Phase 5"
+            description="Phase 4 delivers dimension scores to Phase 5",
         ),
-
         # Phase 5 → Phase 6
         NexusRelationship(
             from_node=NODES["phase5_area_aggregation_output"],
             to_node=NODES["phase6_cluster_aggregation_input"],
             direction=NexusDirection.DELIVERS,
             data_type="AreaScore[]",
-            description="Phase 5 delivers area scores to Phase 6"
+            description="Phase 5 delivers area scores to Phase 6",
         ),
-
         # Phase 6 → Phase 7
         NexusRelationship(
             from_node=NODES["phase6_cluster_aggregation_output"],
             to_node=NODES["phase7_macro_evaluation_input"],
             direction=NexusDirection.DELIVERS,
             data_type="ClusterScore[]",
-            description="Phase 6 delivers cluster scores to Phase 7"
+            description="Phase 6 delivers cluster scores to Phase 7",
         ),
-
         # External exit relationship
         NexusRelationship(
             from_node=NODES["phase7_macro_evaluation_output"],
@@ -202,16 +197,16 @@ class Phase4_7NexusInterface:
                 node_id="phase8_semantic_input",
                 phase=8,
                 node_type="input",
-                description="Phase 8 input node"
+                description="Phase 8 input node",
             ),
             direction=NexusDirection.DELIVERS,
             data_type="MacroScore",
-            description="Phase 7 delivers macro score to Phase 8"
+            description="Phase 7 delivers macro score to Phase 8",
         ),
     ]
 
     @classmethod
-    def get_node(cls, node_id: str) -> Optional[NexusNode]:
+    def get_node(cls, node_id: str) -> NexusNode | None:
         """
         Get a node by its ID.
 
@@ -224,7 +219,7 @@ class Phase4_7NexusInterface:
         return cls.NODES.get(node_id)
 
     @classmethod
-    def get_nodes_by_phase(cls, phase: int) -> List[NexusNode]:
+    def get_nodes_by_phase(cls, phase: int) -> list[NexusNode]:
         """
         Get all nodes for a specific phase.
 
@@ -237,7 +232,7 @@ class Phase4_7NexusInterface:
         return [node for node in cls.NODES.values() if node.phase == phase]
 
     @classmethod
-    def get_relationships_from_node(cls, node_id: str) -> List[NexusRelationship]:
+    def get_relationships_from_node(cls, node_id: str) -> list[NexusRelationship]:
         """
         Get all relationships where the specified node is the source.
 
@@ -247,13 +242,10 @@ class Phase4_7NexusInterface:
         Returns:
             List of NexusRelationship objects
         """
-        return [
-            rel for rel in cls.RELATIONSHIPS
-            if rel.from_node.node_id == node_id
-        ]
+        return [rel for rel in cls.RELATIONSHIPS if rel.from_node.node_id == node_id]
 
     @classmethod
-    def get_relationships_to_node(cls, node_id: str) -> List[NexusRelationship]:
+    def get_relationships_to_node(cls, node_id: str) -> list[NexusRelationship]:
         """
         Get all relationships where the specified node is the destination.
 
@@ -263,13 +255,10 @@ class Phase4_7NexusInterface:
         Returns:
             List of NexusRelationship objects
         """
-        return [
-            rel for rel in cls.RELATIONSHIPS
-            if rel.to_node.node_id == node_id
-        ]
+        return [rel for rel in cls.RELATIONSHIPS if rel.to_node.node_id == node_id]
 
     @classmethod
-    def validate_data_flow(cls) -> tuple[bool, List[str]]:
+    def validate_data_flow(cls) -> tuple[bool, list[str]]:
         """
         Validate that the data flow is properly connected.
 
@@ -374,7 +363,7 @@ def get_nexus_interface() -> Phase4_7NexusInterface:
     return Phase4_7NexusInterface()
 
 
-def validate_nexus_connections() -> tuple[bool, List[str]]:
+def validate_nexus_connections() -> tuple[bool, list[str]]:
     """
     Validate all nexus connections.
 
@@ -395,6 +384,6 @@ __all__ = [
     "NexusRelationship",
     "Phase4_7NexusInterface",
     "get_nexus_interface",
-    "validate_nexus_connections",
     "print_nexus_flow",
+    "validate_nexus_connections",
 ]

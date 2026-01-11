@@ -16,10 +16,11 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Iterable, Iterator, Sequence
+from typing import Any
 
 
 class ModularQuestionnaireError(Exception):
@@ -71,7 +72,9 @@ class QuestionnaireModularResolver:
         manifest_path: Path | None = None,
         index_path: Path | None = None,
     ) -> None:
-        self.root = (root or Path(__file__).resolve().parents[3] / "canonic_questionnaire_central").resolve()
+        self.root = (
+            root or Path(__file__).resolve().parents[3] / "canonic_questionnaire_central"
+        ).resolve()
         self.manifest_path = (manifest_path or self.root / "modular_manifest.json").resolve()
         self.index_path = (index_path or self.root / "questionnaire_index.json").resolve()
 
@@ -88,19 +91,37 @@ class QuestionnaireModularResolver:
     def load_policy_area(self, pa_id: str, *, validate_ids: bool = True) -> QuestionnaireSlice:
         record = self._lookup(self._manifest["structure"]["policy_areas"]["items"], pa_id)
         path = (self.root / "policy_areas" / record["folder"] / "questions.json").resolve()
-        questions = self._load_questions(path, expected_count=record["questions"], expected_ids=self._index["indices"]["by_policy_area"][pa_id]["question_ids"] if validate_ids else None)
+        questions = self._load_questions(
+            path,
+            expected_count=record["questions"],
+            expected_ids=(
+                self._index["indices"]["by_policy_area"][pa_id]["question_ids"]
+                if validate_ids
+                else None
+            ),
+        )
         return QuestionnaireSlice(slice_id=pa_id, path=path, questions=questions)
 
     def load_dimension(self, dim_id: str, *, validate_ids: bool = True) -> QuestionnaireSlice:
         record = self._lookup(self._manifest["structure"]["dimensions"]["items"], dim_id)
         path = (self.root / "dimensions" / record["folder"] / "questions.json").resolve()
-        questions = self._load_questions(path, expected_count=record["questions"], expected_ids=self._index["indices"]["by_dimension"][dim_id]["question_ids"] if validate_ids else None)
+        questions = self._load_questions(
+            path,
+            expected_count=record["questions"],
+            expected_ids=(
+                self._index["indices"]["by_dimension"][dim_id]["question_ids"]
+                if validate_ids
+                else None
+            ),
+        )
         return QuestionnaireSlice(slice_id=dim_id, path=path, questions=questions)
 
     def load_cluster(self, cluster_id: str) -> QuestionnaireSlice:
         record = self._lookup(self._manifest["structure"]["clusters"]["items"], cluster_id)
         path = (self.root / "clusters" / record["folder"] / "questions.json").resolve()
-        questions = self._load_questions(path, expected_count=record["questions"], expected_ids=None)
+        questions = self._load_questions(
+            path, expected_count=record["questions"], expected_ids=None
+        )
         return QuestionnaireSlice(slice_id=cluster_id, path=path, questions=questions)
 
     def aggregate_policy_area_questions(self) -> QuestionnaireSlice:
@@ -127,7 +148,8 @@ class QuestionnaireModularResolver:
         macro_question = self._load_json(self.root / "macro_question.json")
 
         data = {
-            "version": self._index.get("version") or self._manifest.get("_manifest_version", "unknown"),
+            "version": self._index.get("version")
+            or self._manifest.get("_manifest_version", "unknown"),
             "canonical_notation": canonical_notation,
             "blocks": {
                 "micro_questions": micro_questions,
@@ -138,7 +160,7 @@ class QuestionnaireModularResolver:
                 "assembled_from": "modular",
                 "manifest_path": str(self.manifest_path),
                 "index_path": str(self.index_path),
-                "assembly_timestamp": datetime.now(timezone.utc).isoformat(),
+                "assembly_timestamp": datetime.now(UTC).isoformat(),
             },
         }
 
@@ -249,12 +271,12 @@ class QuestionnaireModularResolver:
 
 
 __all__ = [
-    "QuestionnaireModularResolver",
-    "QuestionnaireSlice",
     "AggregatePayload",
-    "ModularQuestionnaireError",
-    "ManifestValidationError",
-    "IndexValidationError",
     "CountMismatchError",
     "IdMismatchError",
+    "IndexValidationError",
+    "ManifestValidationError",
+    "ModularQuestionnaireError",
+    "QuestionnaireModularResolver",
+    "QuestionnaireSlice",
 ]

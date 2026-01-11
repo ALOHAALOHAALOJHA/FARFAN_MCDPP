@@ -1,5 +1,5 @@
 """
-Module: src.farfan_pipeline.phases.Phase_eight.phase8_20_01_recommendation_engine_adapter
+Module: src.farfan_pipeline.phases.Phase_8.phase8_20_01_recommendation_engine_adapter
 Purpose: Ports and Adapters pattern adapter for RecommendationEngine
 Owner: phase8_core
 Stage: 20 (Engine)
@@ -13,6 +13,22 @@ Implements RecommendationEnginePort using the concrete RecommendationEngine
 from the analysis module. This adapter follows the Ports and Adapters pattern,
 allowing the orchestrator to depend on abstractions rather than concrete implementations.
 """
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 8
+__stage__ = 20
+__order__ = 1
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "MEDIUM"
+__execution_pattern__ = "On-Demand"
+
+
 
 import logging
 from pathlib import Path
@@ -152,9 +168,7 @@ class RecommendationEngineAdapter:
         if self._engine is None:
             raise RuntimeError("RecommendationEngine not initialized")
 
-        return self._engine.generate_micro_recommendations(
-            scores=scores, context=context
-        )
+        return self._engine.generate_micro_recommendations(scores=scores, context=context)
 
     def generate_meso_recommendations(
         self, cluster_data: dict[str, Any], context: dict[str, Any] | None = None
@@ -196,9 +210,7 @@ class RecommendationEngineAdapter:
         if self._engine is None:
             raise RuntimeError("RecommendationEngine not initialized")
 
-        return self._engine.generate_macro_recommendations(
-            macro_data=macro_data, context=context
-        )
+        return self._engine.generate_macro_recommendations(macro_data=macro_data, context=context)
 
     def reload_rules(self) -> None:
         """Reload recommendation rules from disk.

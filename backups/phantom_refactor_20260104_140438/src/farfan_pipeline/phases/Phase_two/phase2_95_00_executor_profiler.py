@@ -115,9 +115,7 @@ class MethodCallMetrics:
     call_count: int = 1
     success: bool = True
     error: str | None = None
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
     @property
     def is_dispensary_method(self) -> bool:
@@ -154,9 +152,7 @@ class ExecutorMetrics:
     call_count: int = 1
     success: bool = True
     error: str | None = None
-    timestamp: str = field(
-        default_factory=lambda: datetime.now(timezone.utc).isoformat()
-    )
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     metadata: dict[str, Any] = field(default_factory=dict)
 
     @property
@@ -185,9 +181,7 @@ class ExecutorMetrics:
         """Average method execution time."""
         if not self.method_calls:
             return 0.0
-        return sum(m.execution_time_ms for m in self.method_calls) / len(
-            self.method_calls
-        )
+        return sum(m.execution_time_ms for m in self.method_calls) / len(self.method_calls)
 
     @property
     def slowest_method(self) -> MethodCallMetrics | None:
@@ -213,9 +207,7 @@ class ExecutorMetrics:
         data["unique_dispensaries_used"] = list(self.unique_dispensaries_used)
         data["average_method_time_ms"] = self.average_method_time_ms
         slowest = self.slowest_method
-        data["slowest_method"] = (
-            f"{slowest.class_name}.{slowest.method_name}" if slowest else None
-        )
+        data["slowest_method"] = f"{slowest.class_name}.{slowest.method_name}" if slowest else None
         memory_intensive = self.memory_intensive_method
         data["memory_intensive_method"] = (
             f"{memory_intensive.class_name}.{memory_intensive.method_name}"
@@ -330,20 +322,20 @@ class ExecutorProfiler:
 
     def _initialize_memory_tracking(self) -> None:
         """Initialize psutil for memory tracking if available and enabled.
-        
+
         Sets self._psutil and self._psutil_process if psutil is available.
         Disables memory_tracking and emits structured warning if psutil unavailable.
-        
+
         Postconditions:
             - If memory_tracking=True and psutil available: self._psutil_process is not None
             - If psutil unavailable: self.memory_tracking=False and warning logged
         """
         self._psutil = None
         self._psutil_process = None
-        
+
         if not self.memory_tracking:
             return
-            
+
         try:
             import psutil
 
@@ -382,9 +374,7 @@ class ExecutorProfiler:
         """
         return ProfilerContext(self, executor_id)
 
-    def record_executor_metrics(
-        self, executor_id: str, metrics: ExecutorMetrics
-    ) -> None:
+    def record_executor_metrics(self, executor_id: str, metrics: ExecutorMetrics) -> None:
         """Record metrics for an executor execution.
 
         Args:
@@ -400,9 +390,7 @@ class ExecutorProfiler:
         if self.baseline_path and self.auto_save_baseline:
             self._update_baseline(executor_id, metrics)
 
-    def _update_dispensary_stats(
-        self, executor_id: str, metrics: ExecutorMetrics
-    ) -> None:
+    def _update_dispensary_stats(self, executor_id: str, metrics: ExecutorMetrics) -> None:
         """Update dispensary usage statistics.
 
         Args:
@@ -417,9 +405,7 @@ class ExecutorProfiler:
                 self.dispensary_call_counts[class_name] += method_call.call_count
 
                 # Track execution times
-                self.dispensary_execution_times[class_name].append(
-                    method_call.execution_time_ms
-                )
+                self.dispensary_execution_times[class_name].append(method_call.execution_time_ms)
 
                 # Track executor→dispensary usage
                 self.executor_dispensary_usage[executor_id].add(class_name)
@@ -442,8 +428,7 @@ class ExecutorProfiler:
                 baseline.memory_footprint_mb * 0.8 + metrics.memory_footprint_mb * 0.2
             )
             baseline.serialization_time_ms = (
-                baseline.serialization_time_ms * 0.8
-                + metrics.serialization_time_ms * 0.2
+                baseline.serialization_time_ms * 0.8 + metrics.serialization_time_ms * 0.2
             )
             baseline.call_count += 1
 
@@ -489,9 +474,7 @@ class ExecutorProfiler:
                 delta_percent = ((current_val - baseline_val) / baseline_val) * 100
 
                 if delta_percent > threshold:
-                    severity = (
-                        "critical" if delta_percent > threshold * 2 else "warning"
-                    )
+                    severity = "critical" if delta_percent > threshold * 2 else "warning"
                     recommendation = self._generate_recommendation(
                         executor_id, metric_name, delta_percent, current
                     )
@@ -555,11 +538,17 @@ class ExecutorProfiler:
                         f"{shared_count} executors."
                     )
                 else:
-                    recommendation += f"Review method call sequence or optimize {slowest.full_method_name}."
+                    recommendation += (
+                        f"Review method call sequence or optimize {slowest.full_method_name}."
+                    )
             elif metric_name == "memory_footprint_mb":
-                recommendation += "Check for memory leaks, optimize data structures, or implement streaming."
+                recommendation += (
+                    "Check for memory leaks, optimize data structures, or implement streaming."
+                )
             elif metric_name == "serialization_time_ms":
-                recommendation += "Reduce result payload size or use more efficient serialization format."
+                recommendation += (
+                    "Reduce result payload size or use more efficient serialization format."
+                )
 
         return recommendation
 
@@ -593,12 +582,8 @@ class ExecutorProfiler:
                 "avg_memory_mb": avg_metrics["memory_footprint_mb"],
                 "avg_serialization_ms": avg_metrics["serialization_time_ms"],
                 "total_method_calls": avg_metrics["total_method_calls"],
-                "dispensary_usage_ratio": avg_metrics.get(
-                    "dispensary_usage_ratio", 0.0
-                ),
-                "unique_dispensaries": list(
-                    self.executor_dispensary_usage.get(executor_id, set())
-                ),
+                "dispensary_usage_ratio": avg_metrics.get("dispensary_usage_ratio", 0.0),
+                "unique_dispensaries": list(self.executor_dispensary_usage.get(executor_id, set())),
                 "slowest_method": avg_metrics["slowest_method"],
                 "memory_intensive_method": avg_metrics["memory_intensive_method"],
                 "recommendation": self._generate_bottleneck_recommendation(
@@ -610,22 +595,18 @@ class ExecutorProfiler:
         bottlenecks.sort(key=lambda x: x["bottleneck_score"], reverse=True)
         return bottlenecks[:top_n]
 
-    def _compute_average_metrics(
-        self, metric_list: list[ExecutorMetrics]
-    ) -> dict[str, Any]:
+    def _compute_average_metrics(self, metric_list: list[ExecutorMetrics]) -> dict[str, Any]:
         """Compute average metrics from a list of executor metrics."""
         if not metric_list:
             return {}
 
         return {
-            "execution_time_ms": sum(m.execution_time_ms for m in metric_list)
-            / len(metric_list),
+            "execution_time_ms": sum(m.execution_time_ms for m in metric_list) / len(metric_list),
             "memory_footprint_mb": sum(m.memory_footprint_mb for m in metric_list)
             / len(metric_list),
             "serialization_time_ms": sum(m.serialization_time_ms for m in metric_list)
             / len(metric_list),
-            "total_method_calls": sum(m.total_method_calls for m in metric_list)
-            / len(metric_list),
+            "total_method_calls": sum(m.total_method_calls for m in metric_list) / len(metric_list),
             "dispensary_usage_ratio": sum(m.dispensary_usage_ratio for m in metric_list)
             / len(metric_list),
             "slowest_method": (
@@ -652,9 +633,7 @@ class ExecutorProfiler:
 
         if avg_metrics["execution_time_ms"] > self.thresholds["execution_time_ms"]:
             slowest = avg_metrics["slowest_method"]
-            if slowest and any(
-                dispensary in slowest for dispensary in KNOWN_DISPENSARY_CLASSES
-            ):
+            if slowest and any(dispensary in slowest for dispensary in KNOWN_DISPENSARY_CLASSES):
                 # Extract class name
                 class_name = slowest.split(".")[0]
                 shared_count = len(
@@ -789,14 +768,11 @@ class ExecutorProfiler:
             "total_executors_profiled": len(self.metrics),
             "total_executions": sum(len(m) for m in self.metrics.values()),
             "regressions_detected": len(regressions),
-            "critical_regressions": sum(
-                1 for r in regressions if r.severity == "critical"
-            ),
+            "critical_regressions": sum(1 for r in regressions if r.severity == "critical"),
             "bottlenecks_identified": len(bottlenecks),
             "avg_execution_time_ms": total_execution_time
             / max(1, sum(len(m) for m in self.metrics.values())),
-            "avg_memory_mb": total_memory
-            / max(1, sum(len(m) for m in self.metrics.values())),
+            "avg_memory_mb": total_memory / max(1, sum(len(m) for m in self.metrics.values())),
         }
 
         # Add dispensary analytics to report
@@ -830,9 +806,7 @@ class ExecutorProfiler:
         for executor_id, metric_list in self.metrics.items():
             if not metric_list:
                 continue
-            avg_value = sum(getattr(m, metric_name, 0.0) for m in metric_list) / len(
-                metric_list
-            )
+            avg_value = sum(getattr(m, metric_name, 0.0) for m in metric_list) / len(metric_list)
             rankings.append((executor_id, avg_value))
 
         rankings.sort(key=lambda x: x[1], reverse=True)
@@ -851,8 +825,7 @@ class ExecutorProfiler:
         path.parent.mkdir(parents=True, exist_ok=True)
 
         baseline_data = {
-            executor_id: metrics.to_dict()
-            for executor_id, metrics in self.baseline_metrics.items()
+            executor_id: metrics.to_dict() for executor_id, metrics in self.baseline_metrics.items()
         }
 
         with open(path, "w", encoding="utf-8") as f:
@@ -875,9 +848,7 @@ class ExecutorProfiler:
             baseline_data = json.load(f)
 
         for executor_id, data in baseline_data.items():
-            method_calls = [
-                MethodCallMetrics(**m) for m in data.pop("method_calls", [])
-            ]
+            method_calls = [MethodCallMetrics(**m) for m in data.pop("method_calls", [])]
             # Remove computed properties before reconstructing
             data.pop("total_method_calls", None)
             data.pop("dispensary_method_calls", None)
@@ -890,9 +861,7 @@ class ExecutorProfiler:
             metrics = ExecutorMetrics(**data, method_calls=method_calls)
             self.baseline_metrics[executor_id] = metrics
 
-        logger.info(
-            f"Baseline loaded from {path}: {len(self.baseline_metrics)} executors"
-        )
+        logger.info(f"Baseline loaded from {path}: {len(self.baseline_metrics)} executors")
 
     def export_report(
         self, report: PerformanceReport, path: Path | str, format: str = "json"

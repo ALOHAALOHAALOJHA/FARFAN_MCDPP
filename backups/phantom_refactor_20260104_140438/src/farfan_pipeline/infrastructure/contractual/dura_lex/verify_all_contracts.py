@@ -35,9 +35,7 @@ def main() -> None:
 
     # 1. Run Pytest Suite
     print("\n--- 1. RUNNING TESTS ---")
-    if not run_command(
-        f"pytest {TESTS_DIR} -v", "All Contract Tests", set_pythonpath=True
-    ):
+    if not run_command(f"pytest {TESTS_DIR} -v", "All Contract Tests", set_pythonpath=True):
         sys.exit(1)
 
     # 2. Run CLI Tools to generate certificates

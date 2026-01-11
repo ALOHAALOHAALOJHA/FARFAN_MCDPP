@@ -9,10 +9,8 @@ Date: 2026-01-06
 """
 
 import pytest
-from farfan_pipeline.infrastructure.extractors import (
-    CausalVerbExtractor,
-    extract_causal_links
-)
+
+from farfan_pipeline.infrastructure.extractors import CausalVerbExtractor, extract_causal_links
 
 
 class TestCausalVerbExtractor:
@@ -40,10 +38,13 @@ class TestCausalVerbExtractor:
         assert len(result.matches) > 0, "Should extract 'fortalecer'"
 
         verb_match = result.matches[0]
-        assert verb_match["verb_lemma"] == "fortalecer", \
-            f"Expected lemma 'fortalecer', got '{verb_match['verb_lemma']}'"
-        assert verb_match["causal_strength"] in ["medium", "strong"], \
-            "Fortalecer should be medium/strong causal verb"
+        assert (
+            verb_match["verb_lemma"] == "fortalecer"
+        ), f"Expected lemma 'fortalecer', got '{verb_match['verb_lemma']}'"
+        assert verb_match["causal_strength"] in [
+            "medium",
+            "strong",
+        ], "Fortalecer should be medium/strong causal verb"
 
     def test_top_causal_verb_implementar(self, extractor):
         """
@@ -59,8 +60,7 @@ class TestCausalVerbExtractor:
 
         verb_match = result.matches[0]
         assert verb_match["verb_lemma"] == "implementar"
-        assert verb_match["causal_strength"] == "strong", \
-            "Implementar should be strong causal verb"
+        assert verb_match["causal_strength"] == "strong", "Implementar should be strong causal verb"
 
     def test_top_causal_verb_garantizar(self, extractor):
         """
@@ -119,8 +119,7 @@ class TestCausalVerbExtractor:
         result = extractor.extract(text)
 
         assert len(result.matches) > 0, "Should extract conjugated verb 'fortalece'"
-        assert result.matches[0]["verb_lemma"] == "fortalecer", \
-            "Should lemmatize to 'fortalecer'"
+        assert result.matches[0]["verb_lemma"] == "fortalecer", "Should lemmatize to 'fortalecer'"
 
     def test_verb_conjugation_future(self, extractor):
         """
@@ -179,8 +178,9 @@ class TestCausalVerbExtractor:
 
         link = result.matches[0]
         assert link["object"] is not None, "Should extract object"
-        assert "capacidad" in link["object"].lower(), \
-            f"Object should contain 'capacidad', got: {link['object']}"
+        assert (
+            "capacidad" in link["object"].lower()
+        ), f"Object should contain 'capacidad', got: {link['object']}"
 
     def test_outcome_extraction_with_para(self, extractor):
         """
@@ -196,8 +196,9 @@ class TestCausalVerbExtractor:
 
         link = result.matches[0]
         assert link["outcome"] is not None, "Should extract outcome"
-        assert "reducir" in link["outcome"].lower() or "mortalidad" in link["outcome"].lower(), \
-            f"Outcome should mention goal, got: {link['outcome']}"
+        assert (
+            "reducir" in link["outcome"].lower() or "mortalidad" in link["outcome"].lower()
+        ), f"Outcome should mention goal, got: {link['outcome']}"
 
     def test_subject_extraction(self, extractor):
         """
@@ -211,8 +212,9 @@ class TestCausalVerbExtractor:
 
         if result.matches and result.matches[0]["subject"]:
             subject = result.matches[0]["subject"]
-            assert "secretaría" in subject.lower() or "educación" in subject.lower(), \
-                f"Subject should reference entity, got: {subject}"
+            assert (
+                "secretaría" in subject.lower() or "educación" in subject.lower()
+            ), f"Subject should reference entity, got: {subject}"
 
     def test_complete_causal_chain(self, extractor):
         """
@@ -233,10 +235,8 @@ class TestCausalVerbExtractor:
 
         if complete_links:
             link = complete_links[0]
-            assert link["confidence"] >= 0.70, \
-                "Complete chains should have higher confidence"
-            assert link["chain_length"] >= 2, \
-                "Complete chains should have length >= 2"
+            assert link["confidence"] >= 0.70, "Complete chains should have higher confidence"
+            assert link["chain_length"] >= 2, "Complete chains should have length >= 2"
 
     # ========================================================================
     # CAUSAL STRENGTH CLASSIFICATION TESTS
@@ -253,14 +253,15 @@ class TestCausalVerbExtractor:
             "Desarrollar capacidades técnicas",
             "Crear nuevos programas sociales",
             "Construir infraestructura educativa",
-            "Garantizar el acceso a servicios"
+            "Garantizar el acceso a servicios",
         ]
 
         for text in strong_texts:
             result = extractor.extract(text)
             if result.matches:
-                assert result.matches[0]["causal_strength"] == "strong", \
-                    f"Text '{text}' should have strong causal verb"
+                assert (
+                    result.matches[0]["causal_strength"] == "strong"
+                ), f"Text '{text}' should have strong causal verb"
 
     def test_medium_causal_verbs_classification(self, extractor):
         """
@@ -273,14 +274,15 @@ class TestCausalVerbExtractor:
             "Mejorar la conectividad rural",
             "Promover la participación ciudadana",
             "Impulsar el desarrollo económico",
-            "Fomentar la cultura de paz"
+            "Fomentar la cultura de paz",
         ]
 
         for text in medium_texts:
             result = extractor.extract(text)
             if result.matches:
-                assert result.matches[0]["causal_strength"] == "medium", \
-                    f"Text '{text}' should have medium causal verb"
+                assert (
+                    result.matches[0]["causal_strength"] == "medium"
+                ), f"Text '{text}' should have medium causal verb"
 
     def test_weak_causal_verbs_classification(self, extractor):
         """
@@ -291,14 +293,15 @@ class TestCausalVerbExtractor:
         weak_texts = [
             "Buscar mecanismos de financiación",
             "Procurar la articulación interinstitucional",
-            "Propender por el bienestar colectivo"
+            "Propender por el bienestar colectivo",
         ]
 
         for text in weak_texts:
             result = extractor.extract(text)
             if result.matches:
-                assert result.matches[0]["causal_strength"] == "weak", \
-                    f"Text '{text}' should have weak causal verb"
+                assert (
+                    result.matches[0]["causal_strength"] == "weak"
+                ), f"Text '{text}' should have weak causal verb"
 
     # ========================================================================
     # CONFIDENCE SCORING TESTS
@@ -322,8 +325,9 @@ class TestCausalVerbExtractor:
             conf_partial = result_partial.matches[0]["confidence"]
 
             # Complete should have higher or equal confidence
-            assert conf_complete >= conf_partial - 0.05, \
-                "Complete chains should have >= confidence than partial"
+            assert (
+                conf_complete >= conf_partial - 0.05
+            ), "Complete chains should have >= confidence than partial"
 
     def test_confidence_by_causal_strength(self, extractor):
         """
@@ -337,7 +341,7 @@ class TestCausalVerbExtractor:
         results = {
             "strong": extractor.extract(text_strong),
             "medium": extractor.extract(text_medium),
-            "weak": extractor.extract(text_weak)
+            "weak": extractor.extract(text_weak),
         }
 
         # Verify base confidence differences
@@ -345,11 +349,11 @@ class TestCausalVerbExtractor:
             if result.matches:
                 conf = result.matches[0]["confidence"]
                 if strength == "strong":
-                    assert conf >= 0.75, f"Strong verbs should have conf >= 0.75"
+                    assert conf >= 0.75, "Strong verbs should have conf >= 0.75"
                 elif strength == "medium":
-                    assert conf >= 0.65, f"Medium verbs should have conf >= 0.65"
+                    assert conf >= 0.65, "Medium verbs should have conf >= 0.65"
                 elif strength == "weak":
-                    assert conf >= 0.60, f"Weak verbs should have conf >= 0.60"
+                    assert conf >= 0.60, "Weak verbs should have conf >= 0.60"
 
     # ========================================================================
     # METADATA GENERATION TESTS
@@ -379,8 +383,7 @@ class TestCausalVerbExtractor:
         assert "weak" in by_strength
 
         total = by_strength["strong"] + by_strength["medium"] + by_strength["weak"]
-        assert total == len(result.matches), \
-            "Sum of by_strength should equal total matches"
+        assert total == len(result.matches), "Sum of by_strength should equal total matches"
 
     def test_metadata_avg_chain_length(self, extractor):
         """
@@ -420,16 +423,18 @@ class TestCausalVerbExtractor:
         result = extractor.extract(text)
 
         # Should extract multiple causal links
-        assert len(result.matches) >= 3, \
-            f"Should extract 3+ causal verbs, got {len(result.matches)}"
+        assert (
+            len(result.matches) >= 3
+        ), f"Should extract 3+ causal verbs, got {len(result.matches)}"
 
         verbs_found = {m["verb_lemma"] for m in result.matches}
         expected_verbs = {"fortalecer", "mejorar", "implementar", "garantizar", "promover"}
 
         # At least 3 of the expected verbs should be found
         intersection = verbs_found & expected_verbs
-        assert len(intersection) >= 3, \
-            f"Should find at least 3 expected verbs, found: {verbs_found}"
+        assert (
+            len(intersection) >= 3
+        ), f"Should find at least 3 expected verbs, found: {verbs_found}"
 
     # ========================================================================
     # VALIDATION TESTS
@@ -444,8 +449,7 @@ class TestCausalVerbExtractor:
 
         result = extractor.extract(text)
 
-        assert hasattr(result, 'validation_passed'), \
-            "Should have validation_passed attribute"
+        assert hasattr(result, "validation_passed"), "Should have validation_passed attribute"
 
     def test_object_requirement_for_completeness(self, extractor):
         """
@@ -461,8 +465,7 @@ class TestCausalVerbExtractor:
             # Links should have object to be complete
             for link in result.matches:
                 if not link["object"]:
-                    assert not link["is_complete"], \
-                        "Links without object should not be complete"
+                    assert not link["is_complete"], "Links without object should not be complete"
 
     # ========================================================================
     # CONVENIENCE FUNCTION TESTS
@@ -503,8 +506,7 @@ class TestCausalVerbExtractor:
 
         result = extractor.extract(text)
 
-        assert result.matches == [], \
-            "Should return empty matches for text without causal verbs"
+        assert result.matches == [], "Should return empty matches for text without causal verbs"
 
     def test_case_insensitive_matching(self, extractor):
         """
@@ -519,8 +521,7 @@ class TestCausalVerbExtractor:
 
         for text in test_cases:
             result = extractor.extract(text)
-            assert len(result.matches) > 0, \
-                f"Should extract from '{text}' (case-insensitive)"
+            assert len(result.matches) > 0, f"Should extract from '{text}' (case-insensitive)"
             assert result.matches[0]["verb_lemma"] == "fortalecer"
 
 
@@ -550,13 +551,20 @@ class TestCausalVerbEmpiricalValidation:
             all_verbs.extend(verbs)
 
         empirical_top_10 = [
-            "fortalecer", "implementar", "garantizar", "promover", "mejorar",
-            "gestionar", "asegurar", "impulsar", "articular", "capacitar"
+            "fortalecer",
+            "implementar",
+            "garantizar",
+            "promover",
+            "mejorar",
+            "gestionar",
+            "asegurar",
+            "impulsar",
+            "articular",
+            "capacitar",
         ]
 
         for verb in empirical_top_10:
-            assert verb in all_verbs, \
-                f"Top empirical verb '{verb}' should be in taxonomy"
+            assert verb in all_verbs, f"Top empirical verb '{verb}' should be in taxonomy"
 
     def test_total_verbs_coverage(self, extractor):
         """
@@ -565,8 +573,7 @@ class TestCausalVerbEmpiricalValidation:
         """
         total_verbs = extractor._total_verbs()
 
-        assert total_verbs >= 25, \
-            f"Should have 25+ causal verbs for coverage, got {total_verbs}"
+        assert total_verbs >= 25, f"Should have 25+ causal verbs for coverage, got {total_verbs}"
 
     def test_confidence_threshold_alignment(self, extractor, calibration_data):
         """
@@ -577,5 +584,6 @@ class TestCausalVerbEmpiricalValidation:
         patterns = signal_data["extraction_patterns"]
 
         verb_confidence = patterns["causal_verbs"]["confidence"]
-        assert verb_confidence == 0.82, \
-            f"Expected causal verb confidence=0.82, got {verb_confidence}"
+        assert (
+            verb_confidence == 0.82
+        ), f"Expected causal verb confidence=0.82, got {verb_confidence}"

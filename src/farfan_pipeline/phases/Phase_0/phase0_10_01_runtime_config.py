@@ -28,38 +28,38 @@ CATEGORY D (OPERATIONAL - Operational Flexibility):
 
 Environment Variables:
     SAAAAAA_RUNTIME_MODE: Runtime mode (prod/dev/exploratory), default: prod
-    
+
     # Category A - Critical System Integrity
     ALLOW_CONTRADICTION_FALLBACK: Allow contradiction detection fallback, default: false
     ALLOW_VALIDATOR_DISABLE: Allow wiring validator disabling, default: false
     ALLOW_EXECUTION_ESTIMATES: Allow execution metric estimation, default: false
-    
+
     # Category B - Quality Degradation
     ALLOW_NETWORKX_FALLBACK: Allow NetworkX unavailability, default: false
     ALLOW_SPACY_FALLBACK: Allow spaCy model fallback, default: false
-    
+
     # Category C - Development Convenience (FORBIDDEN in PROD)
     ALLOW_DEV_INGESTION_FALLBACKS: Allow dev ingestion fallbacks, default: false
     ALLOW_AGGREGATION_DEFAULTS: Allow aggregation defaults, default: false
-    
+
     # Category D - Operational Flexibility
     ALLOW_HASH_FALLBACK: Allow hash algorithm fallback, default: true
     ALLOW_PDFPLUMBER_FALLBACK: Allow pdfplumber unavailability, default: false
-    
+
     # Model and Processing Configuration
     PREFERRED_SPACY_MODEL: Preferred spaCy model, default: es_core_news_lg
     PREFERRED_EMBEDDING_MODEL: Preferred embedding model, default: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
-    
+
     # Path Configuration
     SAAAAAA_PROJECT_ROOT: Project root override
     SAAAAAA_DATA_DIR: Data directory override
     SAAAAAA_OUTPUT_DIR: Output directory override
     SAAAAAA_CACHE_DIR: Cache directory override
     SAAAAAA_LOGS_DIR: Logs directory override
-    
+
     # External Dependencies
     HF_ONLINE: Allow HuggingFace online access (0 or 1), default: 0
-    
+
     # Processing Limits
     EXPECTED_QUESTION_COUNT: Expected question count, default: 305
     EXPECTED_METHOD_COUNT: Expected method count, default: 416
@@ -73,37 +73,53 @@ Example:
     ...     assert not config.allow_dev_ingestion_fallbacks
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 0
+__stage__ = 10
+__order__ = 1
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "CRITICAL"
+__execution_pattern__ = "On-Demand"
+
+
+
 import os
 from dataclasses import dataclass
 from enum import Enum
-from typing import ClassVar, Optional
+from typing import ClassVar
 
 
 class RuntimeMode(Enum):
     """Runtime execution mode with different strictness levels."""
-    
+
     PROD = "prod"
     """Production mode: strict enforcement, no fallbacks unless explicitly allowed."""
-    
+
     DEV = "dev"
     """Development mode: permissive with flags, allows controlled degradation."""
-    
+
     EXPLORATORY = "exploratory"
     """Exploratory mode: maximum flexibility for research and experimentation."""
 
 
 class FallbackCategory(Enum):
     """Categorization of fallback types by impact."""
-    
+
     CRITICAL = "critical"
     """Category A: System integrity - failures indicate missing critical dependencies."""
-    
+
     QUALITY = "quality"
     """Category B: Quality degradation - system continues with reduced quality."""
-    
+
     DEVELOPMENT = "development"
     """Category C: Development convenience - only allowed in DEV/EXPLORATORY."""
-    
+
     OPERATIONAL = "operational"
     """Category D: Operational flexibility - safe fallbacks for operational concerns."""
 
@@ -120,45 +136,45 @@ class ConfigurationError(Exception):
 class RuntimeConfig:
     """
     Immutable runtime configuration parsed from environment variables.
-    
+
     This configuration controls system behavior across all components, enforcing
     strict policies in PROD mode and allowing controlled degradation in DEV/EXPLORATORY.
-    
+
     Attributes:
         mode: Runtime execution mode
-        
+
         # Category A - Critical System Integrity
         allow_contradiction_fallback: Allow fallback when contradiction module unavailable
         allow_validator_disable: Allow disabling wiring validator
         allow_execution_estimates: Allow execution metric estimation
-        
+
         # Category B - Quality Degradation
         allow_networkx_fallback: Allow NetworkX unavailability
         allow_spacy_fallback: Allow spaCy model fallback
-        
+
         # Category C - Development Convenience
         allow_dev_ingestion_fallbacks: Allow development ingestion fallbacks
         allow_aggregation_defaults: Allow aggregation default values
         allow_missing_base_weights: Allow missing base weights (legacy calibration flag)
-        
+
         # Category D - Operational Flexibility
         allow_hash_fallback: Allow hash algorithm fallback
         allow_pdfplumber_fallback: Allow pdfplumber unavailability
-        
+
         # Model Configuration
         preferred_spacy_model: Preferred spaCy model name
         preferred_embedding_model: Preferred embedding model name
-        
+
         # Path Configuration
         project_root_override: Project root path override
         data_dir_override: Data directory override
         output_dir_override: Output directory override
         cache_dir_override: Cache directory override
         logs_dir_override: Logs directory override
-        
+
         # External Dependencies
         hf_online: Allow HuggingFace online access
-        
+
         # Processing Configuration
         expected_question_count: Expected question count for validation
         expected_method_count: Expected method count for validation
@@ -166,68 +182,68 @@ class RuntimeConfig:
         max_workers: Maximum worker threads
         batch_size: Batch size for processing
     """
-    
+
     mode: RuntimeMode
-    
+
     # Category A - Critical
     allow_contradiction_fallback: bool
     allow_validator_disable: bool
     allow_execution_estimates: bool
-    
+
     # Category B - Quality
     allow_networkx_fallback: bool
     allow_spacy_fallback: bool
-    
+
     # Category C - Development
     allow_dev_ingestion_fallbacks: bool
     allow_aggregation_defaults: bool
     allow_missing_base_weights: bool
-    
+
     # Category D - Operational
     allow_hash_fallback: bool
     allow_pdfplumber_fallback: bool
-    
+
     # Model Configuration
     preferred_spacy_model: str
     preferred_embedding_model: str
-    
+
     # Path Configuration
-    project_root_override: Optional[str]
-    data_dir_override: Optional[str]
-    output_dir_override: Optional[str]
-    cache_dir_override: Optional[str]
-    logs_dir_override: Optional[str]
-    
+    project_root_override: str | None
+    data_dir_override: str | None
+    output_dir_override: str | None
+    cache_dir_override: str | None
+    logs_dir_override: str | None
+
     # External Dependencies
     hf_online: bool
-    
+
     # Processing Configuration
     expected_question_count: int
     expected_method_count: int
     phase_timeout_seconds: int
     max_workers: int
     batch_size: int
-    
+
     # Illegal combinations in PROD mode
     _PROD_ILLEGAL_COMBOS: ClassVar[dict[str, tuple[str, FallbackCategory]]] = {
         "ALLOW_DEV_INGESTION_FALLBACKS": (
             "Development ingestion fallbacks not allowed in PROD - they bypass quality gates",
-            FallbackCategory.DEVELOPMENT
+            FallbackCategory.DEVELOPMENT,
         ),
         "ALLOW_EXECUTION_ESTIMATES": (
             "Execution metric estimation not allowed in PROD - actual measurements required",
-            FallbackCategory.CRITICAL
+            FallbackCategory.CRITICAL,
         ),
         "ALLOW_AGGREGATION_DEFAULTS": (
             "Aggregation defaults not allowed in PROD - explicit calibration required",
-            FallbackCategory.DEVELOPMENT
+            FallbackCategory.DEVELOPMENT,
         ),
         "ALLOW_MISSING_BASE_WEIGHTS": (
             "Missing base weights not allowed in PROD - complete calibration required",
             FallbackCategory.DEVELOPMENT,
         ),
     }
-    
+
     @classmethod
     def from_dict(cls, data: dict) -> "RuntimeConfig":
         """
@@ -261,7 +277,10 @@ class RuntimeConfig:
             allow_hash_fallback=data.get("allow_hash_fallback", True),
             allow_pdfplumber_fallback=data.get("allow_pdfplumber_fallback", False),
             preferred_spacy_model=data.get("preferred_spacy_model", "es_core_news_lg"),
-            preferred_embedding_model=data.get("preferred_embedding_model", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"),
+            preferred_embedding_model=data.get(
+                "preferred_embedding_model",
+                "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+            ),
             project_root_override=data.get("project_root_override"),
             data_dir_override=data.get("data_dir_override"),
             output_dir_override=data.get("output_dir_override"),
@@ -279,13 +298,13 @@ class RuntimeConfig:
     def from_env(cls) -> "RuntimeConfig":
         """
         Parse runtime configuration from environment variables.
-        
+
         Returns:
             RuntimeConfig: Validated configuration instance
-            
+
         Raises:
             ConfigurationError: If configuration is invalid or contains illegal combinations
-            
+
         Example:
             >>> os.environ['SAAAAAA_RUNTIME_MODE'] = 'prod'
             >>> config = RuntimeConfig.from_env()
@@ -300,49 +319,49 @@ class RuntimeConfig:
                 f"Invalid SAAAAAA_RUNTIME_MODE: {mode_str}. "
                 f"Must be one of: {', '.join(m.value for m in RuntimeMode)}"
             ) from e
-        
+
         # Parse Category A - Critical Fallbacks
         allow_contradiction_fallback = _parse_bool_env("ALLOW_CONTRADICTION_FALLBACK", False)
         allow_validator_disable = _parse_bool_env("ALLOW_VALIDATOR_DISABLE", False)
         allow_execution_estimates = _parse_bool_env("ALLOW_EXECUTION_ESTIMATES", False)
-        
+
         # Parse Category B - Quality Fallbacks
         allow_networkx_fallback = _parse_bool_env("ALLOW_NETWORKX_FALLBACK", False)
         allow_spacy_fallback = _parse_bool_env("ALLOW_SPACY_FALLBACK", False)
-        
+
         # Parse Category C - Development Fallbacks
         allow_dev_ingestion_fallbacks = _parse_bool_env("ALLOW_DEV_INGESTION_FALLBACKS", False)
         allow_aggregation_defaults = _parse_bool_env("ALLOW_AGGREGATION_DEFAULTS", False)
         allow_missing_base_weights = _parse_bool_env("ALLOW_MISSING_BASE_WEIGHTS", False)
-        
+
         # Parse Category D - Operational Fallbacks
         allow_hash_fallback = _parse_bool_env("ALLOW_HASH_FALLBACK", True)
         allow_pdfplumber_fallback = _parse_bool_env("ALLOW_PDFPLUMBER_FALLBACK", False)
-        
+
         # Parse model configuration
         preferred_spacy_model = os.getenv("PREFERRED_SPACY_MODEL", "es_core_news_lg")
         preferred_embedding_model = os.getenv(
             "PREFERRED_EMBEDDING_MODEL",
-            "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+            "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
         )
-        
+
         # Parse path configuration
         project_root_override = os.getenv("SAAAAAA_PROJECT_ROOT")
         data_dir_override = os.getenv("SAAAAAA_DATA_DIR")
         output_dir_override = os.getenv("SAAAAAA_OUTPUT_DIR")
         cache_dir_override = os.getenv("SAAAAAA_CACHE_DIR")
         logs_dir_override = os.getenv("SAAAAAA_LOGS_DIR")
-        
+
         # Parse external dependencies
         hf_online = os.getenv("HF_ONLINE", "0") == "1"
-        
+
         # Parse processing configuration
         expected_question_count = _parse_int_env("EXPECTED_QUESTION_COUNT", 305)
         expected_method_count = _parse_int_env("EXPECTED_METHOD_COUNT", 416)
         phase_timeout_seconds = _parse_int_env("PHASE_TIMEOUT_SECONDS", 300)
         max_workers = _parse_int_env("MAX_WORKERS", 4)
         batch_size = _parse_int_env("BATCH_SIZE", 100)
-        
+
         # Create config instance
         config = cls(
             mode=mode,
@@ -370,39 +389,39 @@ class RuntimeConfig:
             max_workers=max_workers,
             batch_size=batch_size,
         )
-        
+
         # Validate configuration
         config._validate()
-        
+
         return config
-    
+
     def _validate(self) -> None:
         """
         Validate configuration for illegal combinations.
-        
+
         In PROD mode, certain ALLOW_* flags are prohibited to ensure strict behavior.
-        
+
         Raises:
             ConfigurationError: If illegal combination detected
         """
         if self.mode != RuntimeMode.PROD:
             return  # DEV/EXPLORATORY modes allow all combinations
-        
+
         # Check for illegal PROD combinations
         violations = []
-        
+
         if self.allow_dev_ingestion_fallbacks:
             msg, cat = self._PROD_ILLEGAL_COMBOS["ALLOW_DEV_INGESTION_FALLBACKS"]
             violations.append(
                 f"PROD + ALLOW_DEV_INGESTION_FALLBACKS=true: {msg} [Category: {cat.value}]"
             )
-        
+
         if self.allow_execution_estimates:
             msg, cat = self._PROD_ILLEGAL_COMBOS["ALLOW_EXECUTION_ESTIMATES"]
             violations.append(
                 f"PROD + ALLOW_EXECUTION_ESTIMATES=true: {msg} [Category: {cat.value}]"
             )
-        
+
         if self.allow_aggregation_defaults:
             msg, cat = self._PROD_ILLEGAL_COMBOS["ALLOW_AGGREGATION_DEFAULTS"]
             violations.append(
@@ -414,13 +433,14 @@ class RuntimeConfig:
             violations.append(
                 f"PROD + ALLOW_MISSING_BASE_WEIGHTS=true: {msg} [Category: {cat.value}]"
             )
-        
+
         if violations:
             raise ConfigurationError(
-                "Illegal configuration combinations detected:\n" + "\n".join(f"  - {v}" for v in violations),
-                illegal_combo="; ".join(violations)
+                "Illegal configuration combinations detected:\n"
+                + "\n".join(f"  - {v}" for v in violations),
+                illegal_combo="; ".join(violations),
             )
-    
+
     def is_strict_mode(self) -> bool:
         """Check if running in strict mode (PROD with no fallbacks allowed)."""
         return (
@@ -428,24 +448,24 @@ class RuntimeConfig:
             and not self.allow_contradiction_fallback
             and not self.allow_validator_disable
         )
-    
+
     @property
     def strict_calibration(self) -> bool:
         """
         Check if strict calibration is required.
-        
+
         In PROD mode, strict calibration is enforced unless explicitly relaxed.
         This means no missing base weights are allowed.
-        
+
         Returns:
             True if strict calibration is required (PROD without allow_missing_base_weights)
         """
         return self.mode == RuntimeMode.PROD and not self.allow_missing_base_weights
-    
+
     def get_fallback_summary(self) -> dict[str, dict[str, bool]]:
         """
         Get summary of all fallback configurations grouped by category.
-        
+
         Returns:
             Dictionary mapping category names to flag dictionaries
         """
@@ -469,7 +489,7 @@ class RuntimeConfig:
                 "pdfplumber_fallback": self.allow_pdfplumber_fallback,
             },
         }
-    
+
     def __repr__(self) -> str:
         """String representation showing mode and key flags."""
         flags = []
@@ -491,7 +511,7 @@ class RuntimeConfig:
             flags.append("missing_base_weights")
         if not self.strict_calibration:
             flags.append("relaxed_calibration")
-        
+
         flags_str = f", flags={flags}" if flags else ""
         return f"RuntimeConfig(mode={self.mode.value}{flags_str})"
 
@@ -499,21 +519,21 @@ class RuntimeConfig:
 def _parse_bool_env(var_name: str, default: bool) -> bool:
     """
     Parse boolean environment variable with case-insensitive handling.
-    
+
     Args:
         var_name: Environment variable name
         default: Default value if not set
-        
+
     Returns:
         Parsed boolean value
-        
+
     Raises:
         ConfigurationError: If value is not a valid boolean
     """
     value = os.getenv(var_name)
     if value is None:
         return default
-    
+
     value_lower = value.lower()
     if value_lower in ("true", "1", "yes", "on"):
         return True
@@ -529,27 +549,26 @@ def _parse_bool_env(var_name: str, default: bool) -> bool:
 def _parse_int_env(var_name: str, default: int) -> int:
     """
     Parse integer environment variable with validation.
-    
+
     Args:
         var_name: Environment variable name
         default: Default value if not set
-        
+
     Returns:
         Parsed integer value
-        
+
     Raises:
         ConfigurationError: If value is not a valid integer
     """
     value = os.getenv(var_name)
     if value is None:
         return default
-    
+
     try:
         return int(value)
     except ValueError:
         raise ConfigurationError(
-            f"Invalid integer value for {var_name}: {value}. "
-            f"Must be a valid integer."
+            f"Invalid integer value for {var_name}: {value}. " f"Must be a valid integer."
         )
 
 
@@ -560,10 +579,10 @@ _global_config: RuntimeConfig | None = None
 def get_runtime_config() -> RuntimeConfig:
     """
     Get global runtime configuration instance (lazy-initialized).
-    
+
     Returns:
         RuntimeConfig: Global configuration instance
-        
+
     Note:
         This is initialized once on first call. For testing, use from_env() directly.
     """
@@ -576,7 +595,7 @@ def get_runtime_config() -> RuntimeConfig:
 def reset_runtime_config() -> None:
     """
     Reset global runtime configuration (for testing only).
-    
+
     Warning:
         This should only be used in tests. Production code should never reset config.
     """

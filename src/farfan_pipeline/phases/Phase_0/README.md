@@ -1,21 +1,28 @@
 # Phase 0: Validation, Hardening & Bootstrap
 
-**Document ID:** PHASE-0-README  
-**Version:** 1.3.0  
-**Date:** 2026-01-07  
-**Status:** ACTIVE  
-**Authors:** F.A.R.F.A.N Core Architecture Team  
+**Document ID:** PHASE-0-README
+**Version:** 1.4.0
+**Date:** 2026-01-11
+**Status:** ACTIVE
+**Authors:** F.A.R.F.A.N Core Architecture Team
 **Classification:** Technical Specification - Internal
 
 ---
 
 ## Abstract
 
-Phase 0 constitutes the foundational layer of the F.A.R.F.A.N (Framework for Automated Reasoning on Fiscal, Administrative, and Regulatory Frameworks for Analytical Normalization) deterministic policy analysis pipeline. This phase implements a rigorous pre-execution validation, hardening, and bootstrap protocol that guarantees system integrity, reproducibility, and resource safety before any analytical computation commences. The architecture comprises **24 Python modules** organized into **7 canonical stages** (00-90), each implementing specific validation, enforcement, or orchestration responsibilities. Phase 0 enforces kernel-level resource limits via `setrlimit()`, guarantees bitwise-identical reproducibility through deterministic seed management, validates all input contracts and schemas, and orchestrates the complete wiring initialization sequence. This document specifies the complete technical architecture, execution semantics, module inventory, and formal verification properties required for production deployment of the F.A.R.F.A.N pipeline.
+Phase 0 constitutes the foundational layer of the F.A.R.F.A.N (Framework for Automated Reasoning on Fiscal, Administrative, and Regulatory Frameworks for Analytical Normalization) deterministic policy analysis pipeline. This phase implements a rigorous pre-execution validation, hardening, and bootstrap protocol that guarantees system integrity, reproducibility, and resource safety before any analytical computation commences. The architecture comprises **27 Python modules** organized into **7 canonical stages** (00-90), each implementing specific validation, enforcement, or orchestration responsibilities. Phase 0 enforces kernel-level resource limits via `setrlimit()`, guarantees bitwise-identical reproducibility through deterministic seed management, validates all input contracts and schemas, and orchestrates the complete wiring initialization sequence. This document specifies the complete technical architecture, execution semantics, module inventory, and formal verification properties required for production deployment of the F.A.R.F.A.N pipeline.
 
 **Keywords:** deterministic execution, resource enforcement, validation pipeline, bootstrap orchestration, reproducibility guarantees, kernel-level limits
 
-**Test Status (2026-01-07):** 115 unit tests passed, 0 failures. All adversarial security tests (33) passed following remediation of 6 identified vulnerabilities.
+**Test Status (2026-01-11):** 115 unit tests passed, 0 failures. All adversarial security tests (33) passed. Complete phase stabilization achieved following remediation of enum comparison bug and import path issues.
+
+**Recent Fixes (v1.4.0):**
+- Fixed critical enum comparison bug in boot_checks and exit_gates modules (string-based comparison instead of enum instance comparison)
+- Added missing RuntimeMode import to phase0_50_00_boot_checks.py
+- Fixed contradiction detection module import path (methods.contradiction_deteccion)
+- Created Phase_zero symlink for backward compatibility
+- All 115 main tests passing across 4 test files
 
 ---
 

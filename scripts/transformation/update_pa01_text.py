@@ -1,11 +1,11 @@
-
 import json
 import sys
 
+
 def update_questionnaire(file_path):
-    with open(file_path, 'r', encoding='utf-8') as f:
+    with open(file_path, "r", encoding="utf-8") as f:
         data = json.load(f)
-    
+
     new_texts = {
         "Q001": "¿El diagnóstico de las inequidades y brechas de género presenta datos cuantitativos (tasas de violencia basada en género, porcentajes de participación política, cifras de desempleo femenino o brecha salarial) con año de referencia y fuente identificada (Medicina Legal, DANE, Observatorio de Género), desagregados por territorio (rural/urbano) o grupos poblacionales (mujeres diversas, étnicas)?",
         "Q002": "¿El diagnóstico dimensiona numéricamente la magnitud de las desigualdades o violencias contra las mujeres y reconoce explícitamente limitaciones en los datos como 'subregistro de denuncias', 'información insuficiente sobre economía del cuidado', 'falta de caracterización de violencias no físicas' o 'vacíos en cifras municipales'?",
@@ -30,27 +30,28 @@ def update_questionnaire(file_path):
         "Q021": "¿El plan define impactos o transformaciones estructurales de largo plazo para las mujeres (ej. 'transformación de roles de género', 'erradicación de la feminización de la pobreza', 'democracia paritaria consolidada'), describiendo cómo se llega a ellos desde los resultados y el horizonte temporal esperado más allá del cuatrienio?",
         "Q022": "¿Se utilizan índices reconocidos (ej. Índice de Paridad Política, Índice de Brecha Global de Género) o indicadores proxy para medir impactos en equidad, justificando por qué son adecuados para capturar las transformaciones culturales y estructurales esperadas?",
         "Q023": "¿Los impactos en equidad de género se alinean con marcos globales y consideran riesgos externos (retrocesos en derechos, crisis económicas que afectan desproporcionadamente a mujeres, aumento de violencias en contextos de inseguridad) que podrían impedir o revertir los logros esperados?",
-        "Q024": "¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados (ej. doble jornada laboral sin redistribución del cuidado, violencia como reacción al empoderamiento) y propone un enfoque de \"acción sin daño\" o límites de la gestión municipal?",
+        "Q024": '¿El plan evalúa si la ambición del impacto es realista, considerando posibles efectos no deseados (ej. doble jornada laboral sin redistribución del cuidado, violencia como reacción al empoderamiento) y propone un enfoque de "acción sin daño" o límites de la gestión municipal?',
         "Q025": "¿El plan describe cómo se sostendrán los logros en equidad de género más allá del periodo de gobierno, identificando mecanismos de institucionalización (ej. Política Pública Municipal por Acuerdo, transversalización presupuestal), apropiación por organizaciones de mujeres o fortalecimiento de la sociedad civil?",
         "Q026": "¿El plan presenta una descripción explícitamente de cómo se genera el cambio hacia la igualdad (ej. modelo ecológico para violencia, empoderamiento multidimensional), preferiblemente en diagrama o matriz, que identifique causas estructurales, intervenciones, supuestos y la secuencia insumos→actividades→productos→resultados→impactos?",
         "Q027": "¿El plan evita saltos desproporcionados en su lógica (ej. no asume que un taller elimina el machismo), reconociendo explícitamente que la transformación de inequidades de género requiere procesos culturales y estructurales sostenidos en el tiempo y no solo acciones afirmativas puntuales?",
         "Q028": "¿El plan reconoce la complejidad de las relaciones de género, identifica incertidumbres en su estrategia de cambio cultural, y propone mecanismos para aprender y ajustar (ej. observatorios de género, consejos consultivos activos, evaluaciones cualitativas)?",
         "Q029": "¿Se describe un sistema de monitoreo para la política de género que incluya indicadores desagregados, mecanismos de alerta temprana (ej. en violencias), retroalimentación con organizaciones de mujeres o Consejos Consultivos, y capacidad de adaptar la estrategia ante nuevas dinámicas de desigualdad?",
-        "Q030": "¿El plan considera el contexto municipal específico (ruralidad, presencia de conflicto, vocación económica), reconoce la diversidad de las mujeres (enfoque interseccional: campesinas, afro, indígenas, con discapacidad) y explicita restricciones que condicionan el cierre de brechas en el territorio?"
+        "Q030": "¿El plan considera el contexto municipal específico (ruralidad, presencia de conflicto, vocación económica), reconoce la diversidad de las mujeres (enfoque interseccional: campesinas, afro, indígenas, con discapacidad) y explicita restricciones que condicionan el cierre de brechas en el territorio?",
     }
 
-    micro_questions = data.get('blocks', {}).get('micro_questions', [])
+    micro_questions = data.get("blocks", {}).get("micro_questions", [])
     updated_count = 0
     for q in micro_questions:
-        q_id = q.get('question_id')
+        q_id = q.get("question_id")
         if q_id in new_texts:
-            q['text'] = new_texts[q_id]
+            q["text"] = new_texts[q_id]
             updated_count += 1
-    
-    with open(file_path, 'w', encoding='utf-8') as f:
+
+    with open(file_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
-    
+
     print(f"✓ Updated {updated_count} questions in {file_path}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     update_questionnaire(sys.argv[1])

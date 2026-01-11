@@ -51,33 +51,50 @@ Phase 2.2 Process:
 """
 from __future__ import annotations
 
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
-from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Any, Final, Callable
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 50
+__order__ = 0
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "CRITICAL"
+__execution_pattern__ = "On-Demand"
+
 import hashlib
 import json
 import logging
 import os
 import threading
-from datetime import datetime, timezone
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from dataclasses import dataclass, field
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any, Final
 
-from .phase2_d_irrigation_orchestrator import ExecutionPlan, ExecutableTask
+from farfan_pipeline.phases.Phase_2.phase2_50_01_task_planner import ExecutableTask
+from farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer import ExecutionPlan
 
 logger: Final = logging.getLogger(__name__)
 
 # === DATA STRUCTURES ===
 
+
 @dataclass(frozen=True, slots=True)
 class TaskResult:
     """
     Result of executing a single task.
-    
+
     Invariants:
         - task_id matches originating ExecutableTask
         - success indicates execution completed
         - output contains executor results
     """
+
     task_id: str
     question_id: str
     question_global: int
@@ -95,9 +112,10 @@ class TaskResult:
 class QuestionContext:
     """
     Context for a question ready for executor dispatch.
-    
+
     Contains all data needed to execute a question against a chunk.
     """
+
     question_id: str
     question_global: int
     question_text: str
@@ -115,14 +133,16 @@ class QuestionContext:
 
 # === EXCEPTION TAXONOMY ===
 
+
 @dataclass
 class ExecutionError(Exception):
     """Raised when Phase 2.2 task execution fails."""
+
     error_code: str
     message: str
     task_id: str | None = None
     details: dict[str, Any] = field(default_factory=dict)
-    
+
     def __str__(self) -> str:
         if self.task_id:
             return f"[{self.error_code}] Task {self.task_id}: {self.message}"
@@ -132,6 +152,7 @@ class ExecutionError(Exception):
 @dataclass
 class CalibrationError(Exception):
     """Raised when method calibration fails."""
+
     error_code: str
     message: str
     method_name: str | None = None
@@ -139,10 +160,12 @@ class CalibrationError(Exception):
 
 class CheckpointCorruptionError(Exception):
     """Raised when checkpoint integrity validation fails."""
+
     pass
 
 
 # === GAP 1: CHECKPOINT MANAGER ===
+
 
 class CheckpointManager:
     """
@@ -181,10 +204,7 @@ class CheckpointManager:
         return hashlib.sha256(payload).hexdigest()
 
     def save_checkpoint(
-        self,
-        plan_id: str,
-        completed_tasks: list[str],
-        metadata: dict | None = None
+        self, plan_id: str, completed_tasks: list[str], metadata: dict | None = None
     ) -> Path:
         """
         Persist a checkpoint to disk.
@@ -202,8 +222,8 @@ class CheckpointManager:
             data = {
                 "plan_id": plan_id,
                 "completed_tasks": completed_tasks,
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "metadata": metadata or {}
+                "timestamp": datetime.now(UTC).isoformat(),
+                "metadata": metadata or {},
             }
             # Compute hash before adding it to the data (avoiding circular dependency)
             checkpoint_hash = self._compute_hash(data)
@@ -218,7 +238,7 @@ class CheckpointManager:
                     "plan_id": plan_id,
                     "completed_count": len(completed_tasks),
                     "path": str(checkpoint_path),
-                }
+                },
             )
             return checkpoint_path
 
@@ -241,7 +261,7 @@ class CheckpointManager:
                 return None
 
             try:
-                with open(checkpoint_path, "r") as f:
+                with open(checkpoint_path) as f:
                     data = json.load(f)
             except (json.JSONDecodeError, OSError) as exc:
                 raise CheckpointCorruptionError(
@@ -263,7 +283,7 @@ class CheckpointManager:
                     "plan_id": plan_id,
                     "completed_count": len(data["completed_tasks"]),
                     "checkpoint_timestamp": data["timestamp"],
-                }
+                },
             )
             return set(data["completed_tasks"])
 
@@ -282,8 +302,7 @@ class CheckpointManager:
             if checkpoint_path.exists():
                 checkpoint_path.unlink()
                 logger.info(
-                    "Checkpoint cleared after successful completion",
-                    extra={"plan_id": plan_id}
+                    "Checkpoint cleared after successful completion", extra={"plan_id": plan_id}
                 )
                 return True
             return False
@@ -302,11 +321,12 @@ class CheckpointManager:
         if not checkpoint_path.exists():
             return None
 
-        with open(checkpoint_path, "r") as f:
+        with open(checkpoint_path) as f:
             return json.load(f)
 
 
 # === GAP 2: PARALLEL TASK EXECUTOR ===
+
 
 class ParallelTaskExecutor:
     """
@@ -357,8 +377,7 @@ class ParallelTaskExecutor:
         """
         if signal_registry is None:
             raise ValueError(
-                "SignalRegistry is required for Phase 2.2. "
-                "Must be initialized in Phase 0."
+                "SignalRegistry is required for Phase 2.2. " "Must be initialized in Phase 0."
             )
 
         self.questionnaire_monolith = questionnaire_monolith
@@ -428,14 +447,12 @@ class ParallelTaskExecutor:
                 "levels": sorted(levels.keys()),
                 "max_workers": self.max_workers,
                 "already_completed": len(completed_ids),
-            }
+            },
         )
 
         # Execute levels in order
         for level in sorted(levels.keys()):
-            level_tasks = [
-                t for t in levels[level] if t.task_id not in completed_ids
-            ]
+            level_tasks = [t for t in levels[level] if t.task_id not in completed_ids]
 
             if not level_tasks:
                 logger.debug(f"Skipping level {level} - all tasks already completed")
@@ -443,7 +460,7 @@ class ParallelTaskExecutor:
 
             logger.info(
                 f"Executing level {level}",
-                extra={"task_count": len(level_tasks), "max_workers": self.max_workers}
+                extra={"task_count": len(level_tasks), "max_workers": self.max_workers},
             )
 
             level_results = self._execute_level(level_tasks)
@@ -455,13 +472,8 @@ class ParallelTaskExecutor:
                 tasks_since_checkpoint += 1
 
                 # Checkpoint periodically
-                if (
-                    self.checkpoint_manager
-                    and tasks_since_checkpoint >= self.checkpoint_batch_size
-                ):
-                    self.checkpoint_manager.save_checkpoint(
-                        plan_id, list(completed_ids)
-                    )
+                if self.checkpoint_manager and tasks_since_checkpoint >= self.checkpoint_batch_size:
+                    self.checkpoint_manager.save_checkpoint(plan_id, list(completed_ids))
                     tasks_since_checkpoint = 0
 
         # Final checkpoint and cleanup
@@ -482,7 +494,7 @@ class ParallelTaskExecutor:
                 "total_tasks": len(ordered_results),
                 "successful": sum(1 for r in ordered_results if r.success),
                 "failed": sum(1 for r in ordered_results if not r.success),
-            }
+            },
         )
 
         return ordered_results
@@ -554,8 +566,7 @@ class ParallelTaskExecutor:
 
         with ExecutorClass(max_workers=self.max_workers) as executor:
             future_to_task = {
-                executor.submit(self._execute_task_safe, task): task
-                for task in tasks
+                executor.submit(self._execute_task_safe, task): task for task in tasks
             }
 
             for future in as_completed(future_to_task):
@@ -564,9 +575,7 @@ class ParallelTaskExecutor:
                     result = future.result()
                     results.append(result)
                 except Exception as e:
-                    logger.error(
-                        f"Task {task.task_id} failed with unexpected error: {e}"
-                    )
+                    logger.error(f"Task {task.task_id} failed with unexpected error: {e}")
                     # Create failure result
                     result = TaskResult(
                         task_id=task.task_id,
@@ -593,7 +602,7 @@ class ParallelTaskExecutor:
         Returns:
             TaskResult with success or failure status.
         """
-        start_time = datetime.now(timezone.utc)
+        start_time = datetime.now(UTC)
 
         try:
             # Lookup question from monolith
@@ -632,7 +641,7 @@ class ParallelTaskExecutor:
             output = executor.execute(question_context)
 
             # Calculate execution time
-            end_time = datetime.now(timezone.utc)
+            end_time = datetime.now(UTC)
             execution_time_ms = (end_time - start_time).total_seconds() * 1000
 
             return TaskResult(
@@ -648,11 +657,11 @@ class ParallelTaskExecutor:
                 metadata={
                     "base_slot": output.get("base_slot"),
                     "correlation_id": task.correlation_id,
-                }
+                },
             )
 
         except Exception as e:
-            end_time = datetime.now(timezone.utc)
+            end_time = datetime.now(UTC)
             execution_time_ms = (end_time - start_time).total_seconds() * 1000
 
             logger.error(
@@ -661,7 +670,7 @@ class ParallelTaskExecutor:
                     "task_id": task.task_id,
                     "question_id": task.question_id,
                     "error": str(e),
-                }
+                },
             )
 
             return TaskResult(
@@ -679,6 +688,7 @@ class ParallelTaskExecutor:
 
 
 # === MINOR IMPROVEMENT 5: DRY-RUN EXECUTOR ===
+
 
 class DryRunExecutor:
     """
@@ -741,7 +751,7 @@ class DryRunExecutor:
             extra={
                 "plan_id": plan.plan_id,
                 "task_count": len(plan.tasks),
-            }
+            },
         )
 
         for task in plan.tasks:
@@ -755,7 +765,7 @@ class DryRunExecutor:
                 "total_tasks": len(results),
                 "would_succeed": sum(1 for r in results if r.success),
                 "would_fail": sum(1 for r in results if not r.success),
-            }
+            },
         )
 
         return results
@@ -817,9 +827,7 @@ class DryRunExecutor:
             metadata={"dry_run": True, "estimated_time_ms": estimated_time_ms},
         )
 
-    def _estimate_execution_time(
-        self, task: ExecutableTask, question: dict
-    ) -> float:
+    def _estimate_execution_time(self, task: ExecutableTask, question: dict) -> float:
         """
         Estimate execution time based on task characteristics.
 
@@ -855,36 +863,37 @@ class DryRunExecutor:
 
 # === DYNAMIC CONTRACT EXECUTOR ===
 
+
 class DynamicContractExecutor:
     """
     Executor for the 300-contract model with automatic base_slot derivation.
-    
+
     Derives base_slot from question_id using the formula:
     - slot_index = (q_number - 1) % 30
     - dimension = (slot_index // 5) + 1
     - question_in_dimension = (slot_index % 5) + 1
     - base_slot = f"D{dimension}-Q{question_in_dimension}"
-    
+
     Caches derivations in _question_to_base_slot_cache for performance.
-    
+
     SUCCESS_CRITERIA:
         - Correct base_slot derivation for all Q001-Q300
         - Successful method execution for all tasks
         - Output format compatible with carver input
-    
+
     FAILURE_MODES:
         - InvalidQuestionID: Cannot parse question_id
         - BaseSlotDerivationFailure: Formula produces invalid slot
         - MethodExecutionFailure: Executor method fails
-    
+
     VERIFICATION_STRATEGY:
         - test_phase2_task_executor.py
     """
-    
+
     # Class-level cache for base_slot derivations
     _question_to_base_slot_cache: dict[str, str] = {}
     _cache_lock = threading.Lock()
-    
+
     def __init__(
         self,
         question_id: str,
@@ -893,7 +902,7 @@ class DynamicContractExecutor:
     ) -> None:
         """
         Initialize DynamicContractExecutor for a specific question.
-        
+
         Args:
             question_id: Question identifier (e.g., "Q001", "Q150")
             calibration_orchestrator: Optional calibration support
@@ -902,30 +911,30 @@ class DynamicContractExecutor:
         self.question_id = question_id
         self.calibration_orchestrator = calibration_orchestrator
         self.validation_orchestrator = validation_orchestrator
-        
+
         # Derive and cache base_slot
         self.base_slot = self._derive_base_slot(question_id)
-        
+
         logger.info(
             "DynamicContractExecutor initialized",
             extra={
                 "question_id": question_id,
                 "base_slot": self.base_slot,
-            }
+            },
         )
-    
+
     @classmethod
     def _derive_base_slot(cls, question_id: str) -> str:
         """
         Derive base_slot from question_id with thread-safe caching.
-        
+
         Formula:
         - Extract question number (Q001 -> 1, Q150 -> 150)
         - slot_index = (q_number - 1) % 30
         - dimension = (slot_index // 5) + 1
         - question_in_dimension = (slot_index % 5) + 1
         - base_slot = f"D{dimension}-Q{question_in_dimension}"
-        
+
         Examples:
         - Q001 -> slot_index=0 -> D1-Q1
         - Q006 -> slot_index=5 -> D2-Q1
@@ -936,7 +945,7 @@ class DynamicContractExecutor:
         with cls._cache_lock:
             if question_id in cls._question_to_base_slot_cache:
                 return cls._question_to_base_slot_cache[question_id]
-        
+
         # Parse question number
         try:
             if not question_id.startswith("Q"):
@@ -944,58 +953,58 @@ class DynamicContractExecutor:
             q_number = int(question_id[1:])
         except (ValueError, IndexError) as e:
             raise ValueError(f"Cannot parse question_id: {question_id}") from e
-        
+
         # Derive slot_index
         slot_index = (q_number - 1) % 30
-        
+
         # Derive dimension and question_in_dimension
         dimension = (slot_index // 5) + 1
         question_in_dimension = (slot_index % 5) + 1
-        
+
         # Build base_slot
         base_slot = f"D{dimension}-Q{question_in_dimension}"
-        
+
         # Thread-safe cache write
         with cls._cache_lock:
             cls._question_to_base_slot_cache[question_id] = base_slot
-        
+
         return base_slot
-    
+
     def execute(self, question_context: QuestionContext) -> dict[str, Any]:
         """
         Execute task with question context.
-        
+
         Args:
             question_context: Context with all data for execution
-            
+
         Returns:
             Execution result dictionary
-            
+
         Raises:
             ExecutionError: If execution fails
         """
-        start_time = datetime.now(timezone.utc)
-        
+        start_time = datetime.now(UTC)
+
         try:
             # Build method context
             method_context = self._build_method_context(question_context)
-            
+
             # Execute methods (simplified - actual implementation would call real executors)
             output = self._execute_methods(method_context, question_context)
-            
+
             # Track execution time
-            end_time = datetime.now(timezone.utc)
+            end_time = datetime.now(UTC)
             execution_time_ms = (end_time - start_time).total_seconds() * 1000
-            
+
             logger.info(
                 "Task execution successful",
                 extra={
                     "question_id": question_context.question_id,
                     "base_slot": self.base_slot,
                     "execution_time_ms": execution_time_ms,
-                }
+                },
             )
-            
+
             return {
                 "question_id": question_context.question_id,
                 "base_slot": self.base_slot,
@@ -1003,7 +1012,7 @@ class DynamicContractExecutor:
                 "execution_time_ms": execution_time_ms,
                 "success": True,
             }
-            
+
         except Exception as e:
             logger.error(
                 "Task execution failed",
@@ -1011,18 +1020,16 @@ class DynamicContractExecutor:
                     "question_id": question_context.question_id,
                     "base_slot": self.base_slot,
                     "error": str(e),
-                }
+                },
             )
             raise ExecutionError(
                 error_code="E2007",
-                message=f"Task execution failed: {str(e)}",
+                message=f"Task execution failed: {e!s}",
                 task_id=question_context.question_id,
-                details={"base_slot": self.base_slot, "error": str(e)}
+                details={"base_slot": self.base_slot, "error": str(e)},
             ) from e
-    
-    def _build_method_context(
-        self, question_context: QuestionContext
-    ) -> dict[str, Any]:
+
+    def _build_method_context(self, question_context: QuestionContext) -> dict[str, Any]:
         """Build context dictionary for method execution."""
         return {
             "question_id": question_context.question_id,
@@ -1039,16 +1046,16 @@ class DynamicContractExecutor:
             "method_sets": question_context.method_sets,
             "correlation_id": question_context.correlation_id,
         }
-    
+
     def _execute_methods(
         self, method_context: dict, question_context: QuestionContext
     ) -> dict[str, Any]:
         """
         Execute methods for this question.
-        
+
         OPERATIONAL INTEGRATION:
         This method integrates with the existing MethodRegistry infrastructure:
-        
+
         1. MethodRegistry implements lazy loading with 300s TTL cache
         2. 40+ method classes mapped in class_registry._CLASS_PATHS:
            - TextMiningEngine, CausalExtractor, FinancialAuditor,
@@ -1060,12 +1067,12 @@ class DynamicContractExecutor:
            - Execute with arguments validated by ExtendedArgRouter
         4. CalibrationPolicy (from calibration_policy.py) weights methods
         5. Thread-safe with threading.Lock
-        
+
         Current Implementation:
         - Simplified execution for canonical Phase 2 pipeline
         - Full MethodRegistry integration available via orchestrator
         - See: farfan_pipeline/orchestration/method_registry.py
-        - See: farfan_pipeline/phases/Phase_two/calibration_policy.py
+        - See: farfan_pipeline/phases/Phase_2/calibration_policy.py
         """
         # Simplified execution - full integration via orchestrator's MethodRegistry
         return {
@@ -1078,31 +1085,32 @@ class DynamicContractExecutor:
 
 # === TASK EXECUTOR ===
 
+
 class TaskExecutor:
     """
     Phase 2.2 - Execute 300 tasks from ExecutionPlan.
-    
+
     Iterates over ExecutionPlan.tasks, executes each task with
     DynamicContractExecutor, and collects results.
-    
+
     SUCCESS_CRITERIA:
         - All 300 tasks execute successfully
         - Each result traces to originating task
         - Results compatible with Carver input
-    
+
     FAILURE_MODES:
         - TaskExecutionFailure: Individual task fails
         - QuestionLookupFailure: Cannot find question
         - ExecutorFailure: Executor instantiation fails
-    
+
     TERMINATION_CONDITION:
         - All 300 tasks processed
         - Returns list of 300 TaskResult objects
-    
+
     VERIFICATION_STRATEGY:
         - test_phase2_task_executor.py
     """
-    
+
     def __init__(
         self,
         questionnaire_monolith: dict[str, Any],
@@ -1113,40 +1121,39 @@ class TaskExecutor:
     ) -> None:
         """
         Initialize TaskExecutor.
-        
+
         Args:
             questionnaire_monolith: 300 questions
             preprocessed_document: 60 CPP chunks
             signal_registry: REQUIRED SISAS signal resolution (must be initialized in Phase 0)
             calibration_orchestrator: Optional calibration
             validation_orchestrator: Optional validation tracking
-            
+
         Raises:
             ValueError: If signal_registry is None
         """
         # Validate SignalRegistry is provided
         if signal_registry is None:
             raise ValueError(
-                "SignalRegistry is required for Phase 2.2. "
-                "Must be initialized in Phase 0."
+                "SignalRegistry is required for Phase 2.2. " "Must be initialized in Phase 0."
             )
-        
+
         self.questionnaire_monolith = questionnaire_monolith
         self.preprocessed_document = preprocessed_document
         self.signal_registry = signal_registry
         self.calibration_orchestrator = calibration_orchestrator
         self.validation_orchestrator = validation_orchestrator
-        
+
         # Build question lookup index
         self._question_index = self._build_question_index()
-        
+
         # Executor cache
         self._executor_cache: dict[str, DynamicContractExecutor] = {}
-    
+
     def _build_question_index(self) -> dict[str, dict[str, Any]]:
         """Build index of questions by question_id."""
         index: dict[str, dict[str, Any]] = {}
-        
+
         blocks = self.questionnaire_monolith.get("blocks", [])
         for block in blocks:
             if block.get("block_type") == "micro_questions":
@@ -1154,43 +1161,41 @@ class TaskExecutor:
                     question_id = question.get("question_id")
                     if question_id:
                         index[question_id] = question
-        
+
         return index
-    
+
     def execute_plan(self, execution_plan: ExecutionPlan) -> list[TaskResult]:
         """
         Execute all tasks in ExecutionPlan.
-        
+
         Args:
             execution_plan: Plan with 300 tasks from Phase 2.1
-            
+
         Returns:
             List of 300 TaskResult objects
-            
+
         Raises:
             ExecutionError: If execution fails
         """
         results: list[TaskResult] = []
-        
+
         logger.info(
             "Starting task execution",
             extra={
                 "plan_id": execution_plan.plan_id,
                 "task_count": len(execution_plan.tasks),
                 "correlation_id": execution_plan.correlation_id,
-            }
+            },
         )
-        
+
         for i, task in enumerate(execution_plan.tasks):
             try:
                 result = self._execute_task(task)
                 results.append(result)
-                
+
                 if (i + 1) % 50 == 0:
-                    logger.info(
-                        f"Progress: {i + 1}/{len(execution_plan.tasks)} tasks completed"
-                    )
-                    
+                    logger.info(f"Progress: {i + 1}/{len(execution_plan.tasks)} tasks completed")
+
             except Exception as e:
                 logger.error(
                     "Task execution failed",
@@ -1198,9 +1203,9 @@ class TaskExecutor:
                         "task_id": task.task_id,
                         "question_id": task.question_id,
                         "error": str(e),
-                    }
+                    },
                 )
-                
+
                 # Create failure result
                 result = TaskResult(
                     task_id=task.task_id,
@@ -1214,7 +1219,7 @@ class TaskExecutor:
                     error=str(e),
                 )
                 results.append(result)
-        
+
         logger.info(
             "Task execution complete",
             extra={
@@ -1222,31 +1227,31 @@ class TaskExecutor:
                 "total_tasks": len(results),
                 "successful": sum(1 for r in results if r.success),
                 "failed": sum(1 for r in results if not r.success),
-            }
+            },
         )
-        
+
         return results
-    
+
     def _execute_task(self, task: ExecutableTask) -> TaskResult:
         """Execute single task."""
-        start_time = datetime.now(timezone.utc)
-        
+        start_time = datetime.now(UTC)
+
         # Lookup question from monolith
         question = self._lookup_question(task)
-        
+
         # Build question context
         question_context = self._build_question_context(task, question)
-        
+
         # Get or create executor
         executor = self._get_executor(task.question_id)
-        
+
         # Execute task
         output = executor.execute(question_context)
-        
+
         # Calculate execution time
-        end_time = datetime.now(timezone.utc)
+        end_time = datetime.now(UTC)
         execution_time_ms = (end_time - start_time).total_seconds() * 1000
-        
+
         return TaskResult(
             task_id=task.task_id,
             question_id=task.question_id,
@@ -1260,21 +1265,17 @@ class TaskExecutor:
             metadata={
                 "base_slot": output.get("base_slot"),
                 "correlation_id": task.correlation_id,
-            }
+            },
         )
-    
+
     def _lookup_question(self, task: ExecutableTask) -> dict[str, Any]:
         """Lookup question from monolith by question_id."""
         question = self._question_index.get(task.question_id)
         if not question:
-            raise ValueError(
-                f"Question not found in monolith: {task.question_id}"
-            )
+            raise ValueError(f"Question not found in monolith: {task.question_id}")
         return question
-    
-    def _build_question_context(
-        self, task: ExecutableTask, question: dict
-    ) -> QuestionContext:
+
+    def _build_question_context(self, task: ExecutableTask, question: dict) -> QuestionContext:
         """Build QuestionContext from task and question."""
         return QuestionContext(
             question_id=task.question_id,
@@ -1291,7 +1292,7 @@ class TaskExecutor:
             correlation_id=task.correlation_id,
             metadata=task.metadata,
         )
-    
+
     def _get_executor(self, question_id: str) -> DynamicContractExecutor:
         """Get or create executor for question_id (with caching)."""
         if question_id not in self._executor_cache:
@@ -1305,6 +1306,7 @@ class TaskExecutor:
 
 # === PUBLIC API ===
 
+
 def execute_tasks(
     execution_plan: ExecutionPlan,
     questionnaire_monolith: dict[str, Any],
@@ -1315,7 +1317,7 @@ def execute_tasks(
 ) -> list[TaskResult]:
     """
     Public API for executing tasks from ExecutionPlan.
-    
+
     Args:
         execution_plan: Plan with 300 tasks from Phase 2.1
         questionnaire_monolith: 300 questions
@@ -1323,10 +1325,10 @@ def execute_tasks(
         signal_registry: SISAS signal resolution
         calibration_orchestrator: Optional calibration
         validation_orchestrator: Optional validation tracking
-        
+
     Returns:
         List of 300 TaskResult objects
-        
+
     Raises:
         ExecutionError: If execution fails
     """

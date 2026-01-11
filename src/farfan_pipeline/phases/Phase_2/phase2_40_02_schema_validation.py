@@ -44,8 +44,21 @@ Parallelization:
     - Phase 6.2-6.3: Concurrency potential (independent validation layers)
     - Phase 6.4: Synchronization barrier (aggregates results)
 """
-
 from __future__ import annotations
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 40
+__order__ = 2
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "HIGH"
+__execution_pattern__ = "On-Demand"
 
 import logging
 from typing import Any
@@ -88,7 +101,7 @@ def _extract_and_classify_schemas(
     question: dict[str, Any],
     chunk_expected_elements: list[dict[str, Any]] | dict[str, Any] | None,
     question_id: str,
-) -> tuple[int, Any, Any, str, str]:  # noqa: ANN401
+) -> tuple[int, Any, Any, str, str]:
     """Phase 6.1: Extract question_global and expected_elements, classify types.
 
     Extracts question_global via bracket notation (question["question_global"])
@@ -280,9 +293,7 @@ def _validate_semantic_constraints(
 
     # Iterate deterministically via enumerate-zip for lists
     if question_type == "list" and chunk_type == "list":
-        for idx, (q_elem, c_elem) in enumerate(
-            zip(question_schema, chunk_schema, strict=True)
-        ):
+        for idx, (q_elem, c_elem) in enumerate(zip(question_schema, chunk_schema, strict=True)):
             if not isinstance(q_elem, dict) or not isinstance(c_elem, dict):
                 continue
 
@@ -457,9 +468,7 @@ def validate_phase6_schema_compatibility(
     if question_schema is not None:
         if isinstance(question_schema, list):
             has_required_fields = any(
-                elem.get("required", False)
-                for elem in question_schema
-                if isinstance(elem, dict)
+                elem.get("required", False) for elem in question_schema if isinstance(elem, dict)
             )
             has_minimum_thresholds = any(
                 "minimum" in elem for elem in question_schema if isinstance(elem, dict)
@@ -471,9 +480,7 @@ def validate_phase6_schema_compatibility(
                 if isinstance(elem, dict)
             )
             has_minimum_thresholds = any(
-                "minimum" in elem
-                for elem in question_schema.values()
-                if isinstance(elem, dict)
+                "minimum" in elem for elem in question_schema.values() if isinstance(elem, dict)
             )
 
     logger.debug(
@@ -501,9 +508,9 @@ def validate_phase6_schema_compatibility(
 
 
 __all__ = [
-    "validate_phase6_schema_compatibility",
-    "_extract_and_classify_schemas",
-    "_validate_structural_compatibility",
-    "_validate_semantic_constraints",
     "_classify_expected_elements_type",
+    "_extract_and_classify_schemas",
+    "_validate_semantic_constraints",
+    "_validate_structural_compatibility",
+    "validate_phase6_schema_compatibility",
 ]

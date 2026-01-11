@@ -10,42 +10,42 @@ This package contains enhanced aggregators with additional features:
 
 from __future__ import annotations
 
-from .enhanced_aggregators import (
-    ConfidenceInterval,
-    DispersionMetrics,
-    HermeticityDiagnosis,
-    EnhancedDimensionAggregator,
-    EnhancedAreaAggregator,
-    EnhancedClusterAggregator,
-    EnhancedMacroAggregator,
-    enhance_aggregator,
-)
-from .adaptive_meso_scoring import (
+from .phase4_10_00_adaptive_meso_scoring import (
+    AdaptiveMesoScoring,
     AdaptiveScoringConfig,
     ScoringMetrics,
-    AdaptiveMesoScoring,
     create_adaptive_scorer,
 )
-from .signal_enriched_aggregation import (
+from .phase4_10_00_enhanced_aggregators import (
+    ConfidenceInterval,
+    DispersionMetrics,
+    EnhancedAreaAggregator,
+    EnhancedClusterAggregator,
+    EnhancedDimensionAggregator,
+    EnhancedMacroAggregator,
+    HermeticityDiagnosis,
+    enhance_aggregator,
+)
+from .phase4_10_00_signal_enriched_aggregation import (
     SignalEnrichedAggregator,
     adjust_weights,
     interpret_dispersion,
 )
 
 __all__ = [
+    "AdaptiveMesoScoring",
+    "AdaptiveScoringConfig",
     "ConfidenceInterval",
     "DispersionMetrics",
-    "HermeticityDiagnosis",
-    "EnhancedDimensionAggregator",
     "EnhancedAreaAggregator",
     "EnhancedClusterAggregator",
+    "EnhancedDimensionAggregator",
     "EnhancedMacroAggregator",
-    "enhance_aggregator",
-    "AdaptiveScoringConfig",
+    "HermeticityDiagnosis",
     "ScoringMetrics",
-    "AdaptiveMesoScoring",
-    "create_adaptive_scorer",
     "SignalEnrichedAggregator",
     "adjust_weights",
+    "create_adaptive_scorer",
+    "enhance_aggregator",
     "interpret_dispersion",
 ]

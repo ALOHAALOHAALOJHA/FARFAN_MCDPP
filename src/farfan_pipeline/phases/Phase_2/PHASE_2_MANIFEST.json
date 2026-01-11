@@ -82,7 +82,7 @@
   },
   "documentation": {
     "readme": "README.md",
-    "constants": "PHASE_2_CONSTANTS.py",
+    "constants": "phase2_10_00_phase_2_constants.py",
     "manifest": "PHASE_2_MANIFEST.json"
   }
 }

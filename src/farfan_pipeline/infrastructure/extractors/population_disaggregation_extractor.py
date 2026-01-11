@@ -22,27 +22,18 @@ Date: 2026-01-07
 
 from __future__ import annotations
 
-import itertools
 import json
 import logging
-from abc import ABC, abstractmethod
 from collections import defaultdict
+from collections.abc import Iterator, Sequence
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from pathlib import Path
 from typing import (
     Any,
-    Dict,
-    Iterator,
-    List,
     Literal,
-    Optional,
     Protocol,
-    Sequence,
-    Set,
-    Tuple,
-    TypeVar,
     runtime_checkable,
 )
 
@@ -53,8 +44,10 @@ logger = logging.getLogger(__name__)
 # Type Definitions & Enums
 # -----------------------------------------------------------------------------
 
+
 class DisaggregationErrorType(Enum):
     """Types of disaggregation anomalies detected."""
+
     OVERLAP_DETECTED = "overlap_detected"
     COVERAGE_GAP = "coverage_gap"
     INVALID_AXIS = "invalid_axis"
@@ -67,12 +60,13 @@ class DisaggregationErrorType(Enum):
 @dataclass(frozen=True)
 class DisaggregationError:
     """Immutable record of a disaggregation anomaly."""
+
     error_type: DisaggregationErrorType
     axis: str
-    affected_values: Tuple[str, ...]
+    affected_values: tuple[str, ...]
     message: str
     severity: Literal["warning", "error", "fatal"] = "error"
-    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(UTC).isoformat())
 
     def __str__(self) -> str:
         return f"[{self.severity.upper()}] {self.error_type.value} on {self.axis}: {self.message}"
@@ -91,12 +85,13 @@ class DisaggregationError:
 @dataclass(frozen=True)
 class DisaggregationAxis:
     """Defines a demographic axis for disaggregation."""
+
     axis_name: str
-    values: Tuple[str, ...]
+    values: tuple[str, ...]
     required: bool = True
     tolerance: float = 0.0  # Allow X% missing values
     hierarchical: bool = False  # Whether values have hierarchy
-    parent_map: Dict[str, str] = field(default_factory=dict)  # For hierarchical axes
+    parent_map: dict[str, str] = field(default_factory=dict)  # For hierarchical axes
 
     def __contains__(self, value: str) -> bool:
         return value in self.values
@@ -108,12 +103,13 @@ class DisaggregationAxis:
 @dataclass
 class PopulationGroup:
     """Represents a specific population subgroup."""
+
     axis_name: str
     value: str
     count: int
     percentage: float = 0.0
-    parent_value: Optional[str] = None  # For hierarchical groups
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    parent_value: str | None = None  # For hierarchical groups
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     def __hash__(self) -> int:
         return hash((self.axis_name, self.value))
@@ -136,14 +132,15 @@ class PopulationGroup:
 @dataclass
 class DisaggregationReport:
     """Report from disaggregation validation."""
+
     is_valid: bool
     total_records: int
-    axes_validated: Dict[str, bool]
-    coverage_by_axis: Dict[str, float]
-    overlaps_detected: List[Dict[str, Any]]
-    gaps_detected: List[Dict[str, Any]]
-    errors: List[DisaggregationError]
-    metrics: Dict[str, Any]
+    axes_validated: dict[str, bool]
+    coverage_by_axis: dict[str, float]
+    overlaps_detected: list[dict[str, Any]]
+    gaps_detected: list[dict[str, Any]]
+    errors: list[DisaggregationError]
+    metrics: dict[str, Any]
 
     def __repr__(self) -> str:
         return (
@@ -160,6 +157,7 @@ class DisaggregationReport:
 # Protocol: PopulationSourceAdapter
 # -----------------------------------------------------------------------------
 
+
 @runtime_checkable
 class PopulationSourceAdapter(Protocol):
     """
@@ -167,11 +165,11 @@ class PopulationSourceAdapter(Protocol):
     Abstracts CSV, JSON, SQL, API, or any other source.
     """
 
-    def fetch_records(self) -> Iterator[Dict[str, Any]]:
+    def fetch_records(self) -> Iterator[dict[str, Any]]:
         """Yield raw record dictionaries from the source."""
         ...
 
-    def get_source_metadata(self) -> Dict[str, Any]:
+    def get_source_metadata(self) -> dict[str, Any]:
         """Return metadata about the source (type, version, etc.)."""
         ...
 
@@ -180,17 +178,18 @@ class PopulationSourceAdapter(Protocol):
 # Built-in Source Adapters
 # -----------------------------------------------------------------------------
 
+
 class DictPopulationAdapter:
     """Adapter for in-memory list of dictionaries."""
 
-    def __init__(self, data: List[Dict[str, Any]], source_name: str = "in_memory"):
+    def __init__(self, data: list[dict[str, Any]], source_name: str = "in_memory"):
         self._data = data
         self._source_name = source_name
 
-    def fetch_records(self) -> Iterator[Dict[str, Any]]:
+    def fetch_records(self) -> Iterator[dict[str, Any]]:
         yield from self._data
 
-    def get_source_metadata(self) -> Dict[str, Any]:
+    def get_source_metadata(self) -> dict[str, Any]:
         return {
             "source_type": "dict",
             "source_name": self._source_name,
@@ -201,17 +200,12 @@ class DictPopulationAdapter:
 class CSVPopulationAdapter:
     """Adapter for CSV file sources with population data."""
 
-    def __init__(
-        self,
-        file_path: Path,
-        encoding: str = "utf-8",
-        **kwargs
-    ):
+    def __init__(self, file_path: Path, encoding: str = "utf-8", **kwargs):
         self._file_path = Path(file_path)
         self._encoding = encoding
         self._kwargs = kwargs
 
-    def fetch_records(self) -> Iterator[Dict[str, Any]]:
+    def fetch_records(self) -> Iterator[dict[str, Any]]:
         import csv
 
         with open(self._file_path, encoding=self._encoding, newline="") as f:
@@ -219,7 +213,7 @@ class CSVPopulationAdapter:
             for row in reader:
                 yield dict(row)
 
-    def get_source_metadata(self) -> Dict[str, Any]:
+    def get_source_metadata(self) -> dict[str, Any]:
         return {
             "source_type": "csv_file",
             "source_path": str(self._file_path),
@@ -230,17 +224,12 @@ class CSVPopulationAdapter:
 class JSONPopulationAdapter:
     """Adapter for JSON file sources."""
 
-    def __init__(
-        self,
-        file_path: Path,
-        record_path: str = "records",
-        encoding: str = "utf-8"
-    ):
+    def __init__(self, file_path: Path, record_path: str = "records", encoding: str = "utf-8"):
         self._file_path = Path(file_path)
         self._record_path = record_path
         self._encoding = encoding
 
-    def fetch_records(self) -> Iterator[Dict[str, Any]]:
+    def fetch_records(self) -> Iterator[dict[str, Any]]:
         with open(self._file_path, encoding=self._encoding) as f:
             data = json.load(f)
 
@@ -253,7 +242,7 @@ class JSONPopulationAdapter:
         if isinstance(records, list):
             yield from records
 
-    def get_source_metadata(self) -> Dict[str, Any]:
+    def get_source_metadata(self) -> dict[str, Any]:
         return {
             "source_type": "json_file",
             "source_path": str(self._file_path),
@@ -264,6 +253,7 @@ class JSONPopulationAdapter:
 # -----------------------------------------------------------------------------
 # Core: PopulationDisaggregationExtractor
 # -----------------------------------------------------------------------------
+
 
 class PopulationDisaggregationExtractor:
     """
@@ -293,7 +283,14 @@ class PopulationDisaggregationExtractor:
         ),
         "ethnicity": DisaggregationAxis(
             axis_name="ethnicity",
-            values=("Indígena", "Rom", "Afrodescendiente", "Palenquero", "Raizal", "Sin información"),
+            values=(
+                "Indígena",
+                "Rom",
+                "Afrodescendiente",
+                "Palenquero",
+                "Raizal",
+                "Sin información",
+            ),
             required=False,
             tolerance=0.20,
         ),
@@ -319,7 +316,7 @@ class PopulationDisaggregationExtractor:
 
     def __init__(
         self,
-        axes: Optional[Dict[str, DisaggregationAxis]] = None,
+        axes: dict[str, DisaggregationAxis] | None = None,
         auto_validate: bool = True,
         strict_mode: bool = False,
     ):
@@ -336,19 +333,19 @@ class PopulationDisaggregationExtractor:
         self._strict_mode = strict_mode
 
         # Internal state
-        self._groups: Dict[Tuple[str, str], PopulationGroup] = {}
-        self._records_by_axis: Dict[str, Set[str]] = defaultdict(set)
+        self._groups: dict[tuple[str, str], PopulationGroup] = {}
+        self._records_by_axis: dict[str, set[str]] = defaultdict(set)
         self._total_count: int = 0
-        self._errors: List[DisaggregationError] = []
-        self._source_metadata: Dict[str, Any] = {}
+        self._errors: list[DisaggregationError] = []
+        self._source_metadata: dict[str, Any] = {}
         self._ingested = False
-        self._last_report: Optional[DisaggregationReport] = None
+        self._last_report: DisaggregationReport | None = None
 
     # -------------------------------------------------------------------------
     # Public Interface
     # -------------------------------------------------------------------------
 
-    def configure_axes(self, axes: Dict[str, DisaggregationAxis]) -> None:
+    def configure_axes(self, axes: dict[str, DisaggregationAxis]) -> None:
         """
         Configure or update axes for disaggregation.
 
@@ -368,7 +365,9 @@ class PopulationDisaggregationExtractor:
         self._reset()
         self._source_metadata = source.get_source_metadata()
 
-        logger.info(f"Ingesting population data from {self._source_metadata.get('source_type', 'unknown')}")
+        logger.info(
+            f"Ingesting population data from {self._source_metadata.get('source_type', 'unknown')}"
+        )
 
         # Phase 1: Load all records
         for raw_record in source.fetch_records():
@@ -381,7 +380,7 @@ class PopulationDisaggregationExtractor:
                     "unknown",
                     (),
                     f"Failed to process record: {e}",
-                    severity="warning"
+                    severity="warning",
                 )
 
         logger.info(f"Loaded {self._total_count} records across {len(self._groups)} groups")
@@ -407,10 +406,10 @@ class PopulationDisaggregationExtractor:
         """
         self._ensure_ingested()
 
-        axes_validated: Dict[str, bool] = {}
-        coverage_by_axis: Dict[str, float] = {}
-        overlaps: List[Dict[str, Any]] = []
-        gaps: List[Dict[str, Any]] = []
+        axes_validated: dict[str, bool] = {}
+        coverage_by_axis: dict[str, float] = {}
+        overlaps: list[dict[str, Any]] = []
+        gaps: list[dict[str, Any]] = []
 
         # Clear previous errors
         validation_errors = []
@@ -427,29 +426,35 @@ class PopulationDisaggregationExtractor:
             # Gap detection
             if axis.required and coverage < (1.0 - axis.tolerance):
                 gap_size = self._total_count - axis_total
-                gaps.append({
-                    "axis": axis_name,
-                    "gap_count": gap_size,
-                    "gap_percentage": 1.0 - coverage,
-                    "tolerance": axis.tolerance,
-                })
-                validation_errors.append(DisaggregationError(
-                    error_type=DisaggregationErrorType.COVERAGE_GAP,
-                    axis=axis_name,
-                    affected_values=tuple(g.value for g in axis_groups),
-                    message=f"Coverage {coverage:.1%} below threshold {1.0 - axis.tolerance:.1%}",
-                    severity="error" if self._strict_mode else "warning"
-                ))
+                gaps.append(
+                    {
+                        "axis": axis_name,
+                        "gap_count": gap_size,
+                        "gap_percentage": 1.0 - coverage,
+                        "tolerance": axis.tolerance,
+                    }
+                )
+                validation_errors.append(
+                    DisaggregationError(
+                        error_type=DisaggregationErrorType.COVERAGE_GAP,
+                        axis=axis_name,
+                        affected_values=tuple(g.value for g in axis_groups),
+                        message=f"Coverage {coverage:.1%} below threshold {1.0 - axis.tolerance:.1%}",
+                        severity="error" if self._strict_mode else "warning",
+                    )
+                )
 
             # Missing required axis
             if axis.required and not axis_groups:
-                validation_errors.append(DisaggregationError(
-                    error_type=DisaggregationErrorType.MISSING_REQUIRED_AXIS,
-                    axis=axis_name,
-                    affected_values=(),
-                    message=f"Required axis '{axis_name}' has no data",
-                    severity="fatal" if self._strict_mode else "error"
-                ))
+                validation_errors.append(
+                    DisaggregationError(
+                        error_type=DisaggregationErrorType.MISSING_REQUIRED_AXIS,
+                        axis=axis_name,
+                        affected_values=(),
+                        message=f"Required axis '{axis_name}' has no data",
+                        severity="fatal" if self._strict_mode else "error",
+                    )
+                )
 
             axes_validated[axis_name] = len(gaps) == 0 or not axis.required
 
@@ -460,17 +465,18 @@ class PopulationDisaggregationExtractor:
         # Total mismatch check
         grand_total = sum(g.count for g in self._groups.values())
         if grand_total != self._total_count:
-            validation_errors.append(DisaggregationError(
-                error_type=DisaggregationErrorType.TOTAL_MISMATCH,
-                axis="all",
-                affected_values=(),
-                message=f"Sum of group counts ({grand_total}) != total records ({self._total_count})",
-                severity="warning"
-            ))
+            validation_errors.append(
+                DisaggregationError(
+                    error_type=DisaggregationErrorType.TOTAL_MISMATCH,
+                    axis="all",
+                    affected_values=(),
+                    message=f"Sum of group counts ({grand_total}) != total records ({self._total_count})",
+                    severity="warning",
+                )
+            )
 
-        is_valid = (
-            len(validation_errors) == 0 or
-            all(e.severity != "fatal" and e.severity != "error" for e in validation_errors)
+        is_valid = len(validation_errors) == 0 or all(
+            e.severity != "fatal" and e.severity != "error" for e in validation_errors
         )
 
         report = DisaggregationReport(
@@ -488,10 +494,8 @@ class PopulationDisaggregationExtractor:
         return report
 
     def get_subpopulations(
-        self,
-        parent: Optional[str] = None,
-        axis: Optional[str] = None
-    ) -> List[PopulationGroup]:
+        self, parent: str | None = None, axis: str | None = None
+    ) -> list[PopulationGroup]:
         """
         Get subpopulations, optionally filtered by parent or axis.
 
@@ -514,12 +518,12 @@ class PopulationDisaggregationExtractor:
 
         return groups
 
-    def get_groups_by_axis(self, axis_name: str) -> List[PopulationGroup]:
+    def get_groups_by_axis(self, axis_name: str) -> list[PopulationGroup]:
         """Get all groups for a specific axis."""
         self._ensure_ingested()
         return [g for g in self._groups.values() if g.axis_name == axis_name]
 
-    def report_gaps(self) -> List[Dict[str, Any]]:
+    def report_gaps(self) -> list[dict[str, Any]]:
         """Report gaps in coverage across all axes."""
         if self._last_report:
             return self._last_report.gaps_detected
@@ -528,7 +532,7 @@ class PopulationDisaggregationExtractor:
         report = self.validate()
         return report.gaps_detected
 
-    def summarize(self) -> Dict[str, Any]:
+    def summarize(self) -> dict[str, Any]:
         """Get summary statistics of the disaggregated population."""
         self._ensure_ingested()
 
@@ -555,11 +559,7 @@ class PopulationDisaggregationExtractor:
 
         return summary
 
-    def get_cross_tabulation(
-        self,
-        axis1: str,
-        axis2: str
-    ) -> Dict[str, Dict[str, int]]:
+    def get_cross_tabulation(self, axis1: str, axis2: str) -> dict[str, dict[str, int]]:
         """
         Get cross-tabulation between two axes.
 
@@ -568,7 +568,7 @@ class PopulationDisaggregationExtractor:
         self._ensure_ingested()
 
         # Check if we have cross-axis data
-        matrix: Dict[str, Dict[str, int]] = defaultdict(lambda: defaultdict(int))
+        matrix: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
 
         for group in self._groups.values():
             if group.axis_name == axis1:
@@ -585,7 +585,7 @@ class PopulationDisaggregationExtractor:
         """Return all errors as strings."""
         return [str(e) for e in self._errors]
 
-    def get_errors(self) -> List[DisaggregationError]:
+    def get_errors(self) -> list[DisaggregationError]:
         """Return all DisaggregationError objects."""
         return list(self._errors)
 
@@ -605,7 +605,7 @@ class PopulationDisaggregationExtractor:
         else:
             raise ValueError(f"Unsupported format: {fmt}")
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get detailed metrics."""
         self._ensure_ingested()
         return self._compute_metrics()
@@ -614,7 +614,7 @@ class PopulationDisaggregationExtractor:
     # Private: Record Processing
     # -------------------------------------------------------------------------
 
-    def _process_record(self, raw: Dict[str, Any]) -> None:
+    def _process_record(self, raw: dict[str, Any]) -> None:
         """Process a single population record."""
         self._total_count += 1
 
@@ -635,7 +635,7 @@ class PopulationDisaggregationExtractor:
                         axis_name,
                         (value_str,),
                         f"Value '{value_str}' not in allowed values for axis '{axis_name}'",
-                        severity="error"
+                        severity="error",
                     )
                 continue
 
@@ -665,7 +665,7 @@ class PopulationDisaggregationExtractor:
 
             self._records_by_axis[axis_name].add(value_str)
 
-    def _detect_axis_overlaps(self, axis_name: str) -> List[Dict[str, Any]]:
+    def _detect_axis_overlaps(self, axis_name: str) -> list[dict[str, Any]]:
         """Detect overlapping groups within an axis."""
         overlaps = []
 
@@ -676,7 +676,7 @@ class PopulationDisaggregationExtractor:
         groups = self.get_groups_by_axis(axis_name)
 
         # For hierarchical axes, check if a record appears in multiple levels
-        value_to_children: Dict[str, List[str]] = defaultdict(list)
+        value_to_children: dict[str, list[str]] = defaultdict(list)
         for group in groups:
             if group.parent_value:
                 value_to_children[group.parent_value].append(group.value)
@@ -686,16 +686,18 @@ class PopulationDisaggregationExtractor:
             if len(children) > 1:
                 parent_group = next((g for g in groups if g.value == parent), None)
                 if parent_group:
-                    overlaps.append({
-                        "axis": axis_name,
-                        "parent_value": parent,
-                        "overlapping_children": children,
-                        "type": "hierarchical_overlap",
-                    })
+                    overlaps.append(
+                        {
+                            "axis": axis_name,
+                            "parent_value": parent,
+                            "overlapping_children": children,
+                            "type": "hierarchical_overlap",
+                        }
+                    )
 
         return overlaps
 
-    def _compute_metrics(self) -> Dict[str, Any]:
+    def _compute_metrics(self) -> dict[str, Any]:
         """Compute detailed metrics."""
         metrics = {
             "total_records": self._total_count,
@@ -733,7 +735,7 @@ class PopulationDisaggregationExtractor:
         """Export as JSON."""
         data = {
             "metadata": {
-                "exported_at": datetime.now(timezone.utc).isoformat(),
+                "exported_at": datetime.now(UTC).isoformat(),
                 "source": self._source_metadata,
                 "metrics": self.get_metrics(),
             },
@@ -808,23 +810,25 @@ class PopulationDisaggregationExtractor:
         self,
         error_type: DisaggregationErrorType,
         axis: str,
-        affected_values: Tuple[str, ...],
+        affected_values: tuple[str, ...],
         message: str,
         severity: Literal["warning", "error", "fatal"] = "error",
     ) -> None:
         """Add an error to the error list."""
-        self._errors.append(DisaggregationError(
-            error_type=error_type,
-            axis=axis,
-            affected_values=affected_values,
-            message=message,
-            severity=severity,
-        ))
+        self._errors.append(
+            DisaggregationError(
+                error_type=error_type,
+                axis=axis,
+                affected_values=affected_values,
+                message=message,
+                severity=severity,
+            )
+        )
         logger.warning(f"Disaggregation anomaly: {error_type.value} - {message}")
 
-    def _count_errors_by_type(self) -> Dict[str, int]:
+    def _count_errors_by_type(self) -> dict[str, int]:
         """Count errors grouped by type."""
-        counts: Dict[str, int] = defaultdict(int)
+        counts: dict[str, int] = defaultdict(int)
         for error in self._errors:
             counts[error.error_type.value] += 1
         return dict(counts)
@@ -835,14 +839,14 @@ class PopulationDisaggregationExtractor:
 # -----------------------------------------------------------------------------
 
 __all__ = [
-    "PopulationDisaggregationExtractor",
-    "PopulationSourceAdapter",
-    "DictPopulationAdapter",
     "CSVPopulationAdapter",
-    "JSONPopulationAdapter",
+    "DictPopulationAdapter",
     "DisaggregationAxis",
     "DisaggregationError",
     "DisaggregationErrorType",
     "DisaggregationReport",
+    "JSONPopulationAdapter",
+    "PopulationDisaggregationExtractor",
     "PopulationGroup",
+    "PopulationSourceAdapter",
 ]

@@ -23,30 +23,30 @@ __modified__ = "2025-01-09T00:00:00Z"
 __criticality__ = "HIGH"
 __execution_pattern__ = "Per-Task"
 
-from .PHASE_6_CONSTANTS import (
-    CLUSTERS,
-    EXPECTED_CLUSTER_SCORE_COUNT,
+from .phase6_10_00_phase_6_constants import (
     CLUSTER_COMPOSITION,
-    MIN_SCORE,
-    MAX_SCORE,
-    DISPERSION_THRESHOLDS,
-    PENALTY_WEIGHT,
-    COHERENCE_THRESHOLD_LOW,
+    CLUSTERS,
     COHERENCE_THRESHOLD_HIGH,
+    COHERENCE_THRESHOLD_LOW,
+    DISPERSION_THRESHOLDS,
+    EXPECTED_CLUSTER_SCORE_COUNT,
+    MAX_SCORE,
+    MIN_SCORE,
+    PENALTY_WEIGHT,
     DispersionScenario,
-    Phase6Invariants
+    Phase6Invariants,
 )
 
 __all__ = [
     "CLUSTERS",
-    "EXPECTED_CLUSTER_SCORE_COUNT",
     "CLUSTER_COMPOSITION",
-    "MIN_SCORE",
-    "MAX_SCORE",
-    "DISPERSION_THRESHOLDS",
-    "PENALTY_WEIGHT",
-    "COHERENCE_THRESHOLD_LOW",
     "COHERENCE_THRESHOLD_HIGH",
+    "COHERENCE_THRESHOLD_LOW",
+    "DISPERSION_THRESHOLDS",
+    "EXPECTED_CLUSTER_SCORE_COUNT",
+    "MAX_SCORE",
+    "MIN_SCORE",
+    "PENALTY_WEIGHT",
     "DispersionScenario",
-    "Phase6Invariants"
+    "Phase6Invariants",
 ]

@@ -8,8 +8,21 @@ Page when new keys appear or required keys vanish.
 
 Catches upstream changes (or LLM output drift) instantly.
 """
-
 from __future__ import annotations
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 0
+__stage__ = 40
+__order__ = 1
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "HIGH"
+__execution_pattern__ = "Continuous"
 
 import json
 import logging
@@ -18,6 +31,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, TypedDict
+
 from farfan_pipeline.core.parameters import ParameterLoaderV2
 
 if TYPE_CHECKING:
@@ -30,6 +44,7 @@ logger = logging.getLogger(__name__)
 # SCHEMA SHAPE TRACKING
 # ============================================================================
 
+
 class SchemaShape(TypedDict):
     """Shape of a data payload."""
 
@@ -37,6 +52,7 @@ class SchemaShape(TypedDict):
     types: dict[str, str]
     sample_values: dict[str, Any]
     timestamp: str
+
 
 @dataclass
 class SchemaStats:
@@ -48,6 +64,7 @@ class SchemaStats:
     missing_keys: set[str] = field(default_factory=set)
     total_samples: int = 0
     last_updated: datetime | None = None
+
 
 class SchemaDriftDetector:
     """
@@ -133,9 +150,7 @@ class SchemaDriftDetector:
             new_keys = keys - baseline_keys
             if new_keys:
                 stats.new_keys.update(new_keys)
-                logger.warning(
-                    f"SCHEMA_DRIFT[source={source}]: New keys detected: {new_keys}"
-                )
+                logger.warning(f"SCHEMA_DRIFT[source={source}]: New keys detected: {new_keys}")
 
             missing_keys = baseline_keys - keys
             if missing_keys:
@@ -162,22 +177,26 @@ class SchemaDriftDetector:
             stats = self.stats_by_source[src]
 
             if stats.new_keys:
-                alerts.append({
-                    "level": "WARNING",
-                    "source": src,
-                    "type": "NEW_KEYS",
-                    "keys": list(stats.new_keys),
-                    "timestamp": stats.last_updated.isoformat() if stats.last_updated else None,
-                })
+                alerts.append(
+                    {
+                        "level": "WARNING",
+                        "source": src,
+                        "type": "NEW_KEYS",
+                        "keys": list(stats.new_keys),
+                        "timestamp": stats.last_updated.isoformat() if stats.last_updated else None,
+                    }
+                )
 
             if stats.missing_keys:
-                alerts.append({
-                    "level": "CRITICAL",
-                    "source": src,
-                    "type": "MISSING_KEYS",
-                    "keys": list(stats.missing_keys),
-                    "timestamp": stats.last_updated.isoformat() if stats.last_updated else None,
-                })
+                alerts.append(
+                    {
+                        "level": "CRITICAL",
+                        "source": src,
+                        "type": "MISSING_KEYS",
+                        "keys": list(stats.missing_keys),
+                        "timestamp": stats.last_updated.isoformat() if stats.last_updated else None,
+                    }
+                )
 
             # Check for type inconsistencies
             for key, type_counts in stats.type_by_key.items():
@@ -186,15 +205,19 @@ class SchemaDriftDetector:
                     dominant_type = type_counts.most_common(1)[0][0]
                     other_types = [t for t in type_counts if t != dominant_type]
 
-                    alerts.append({
-                        "level": "WARNING",
-                        "source": src,
-                        "type": "TYPE_INCONSISTENCY",
-                        "key": key,
-                        "expected_type": dominant_type,
-                        "observed_types": other_types,
-                        "timestamp": stats.last_updated.isoformat() if stats.last_updated else None,
-                    })
+                    alerts.append(
+                        {
+                            "level": "WARNING",
+                            "source": src,
+                            "type": "TYPE_INCONSISTENCY",
+                            "key": key,
+                            "expected_type": dominant_type,
+                            "observed_types": other_types,
+                            "timestamp": (
+                                stats.last_updated.isoformat() if stats.last_updated else None
+                            ),
+                        }
+                    )
 
         return alerts
 
@@ -209,11 +232,12 @@ class SchemaDriftDetector:
 
         for source, stats in self.stats_by_source.items():
             # Get most common keys (present in >50% of samples)
-            threshold = stats.total_samples * ParameterLoaderV2.get("farfan_core.utils.schema_monitor.SchemaDriftDetector.save_baseline", "auto_param_L215_46", 0.5)
-            common_keys = {
-                key for key, count in stats.key_frequency.items()
-                if count >= threshold
-            }
+            threshold = stats.total_samples * ParameterLoaderV2.get(
+                "farfan_core.utils.schema_monitor.SchemaDriftDetector.save_baseline",
+                "auto_param_L215_46",
+                0.5,
+            )
+            common_keys = {key for key, count in stats.key_frequency.items() if count >= threshold}
 
             # Get dominant type for each key
             types = {
@@ -272,8 +296,7 @@ class SchemaDriftDetector:
                 "new_keys_count": len(stats.new_keys),
                 "missing_keys_count": len(stats.missing_keys),
                 "type_inconsistencies": sum(
-                    1 for counts in stats.type_by_key.values()
-                    if len(counts) > 1
+                    1 for counts in stats.type_by_key.values() if len(counts) > 1
                 ),
             }
 
@@ -281,15 +304,16 @@ class SchemaDriftDetector:
         return {
             "sources": list(self.stats_by_source.keys()),
             "total_samples": sum(s.total_samples for s in self.stats_by_source.values()),
-            "sources_with_drift": len([
-                s for s in self.stats_by_source.values()
-                if s.new_keys or s.missing_keys
-            ]),
+            "sources_with_drift": len(
+                [s for s in self.stats_by_source.values() if s.new_keys or s.missing_keys]
+            ),
         }
+
 
 # ============================================================================
 # PAYLOAD VALIDATOR
 # ============================================================================
+
 
 class PayloadValidator:
     """
@@ -380,6 +404,7 @@ class PayloadValidator:
         except Exception as e:
             logger.error(f"Failed to load schemas: {e}")
 
+
 # ============================================================================
 # GLOBAL INSTANCE (optional convenience)
 # ============================================================================
@@ -387,10 +412,16 @@ class PayloadValidator:
 # Singleton detector for application-wide use
 _global_detector: SchemaDriftDetector | None = None
 
+
 def get_detector() -> SchemaDriftDetector:
     """Get or create global schema drift detector."""
     global _global_detector
     if _global_detector is None:
-        _global_detector = SchemaDriftDetector(sample_rate=ParameterLoaderV2.get("farfan_core.utils.schema_monitor.PayloadValidator._load_schemas", "auto_param_L400_59", 0.05))
+        _global_detector = SchemaDriftDetector(
+            sample_rate=ParameterLoaderV2.get(
+                "farfan_core.utils.schema_monitor.PayloadValidator._load_schemas",
+                "auto_param_L400_59",
+                0.05,
+            )
+        )
     return _global_detector
-

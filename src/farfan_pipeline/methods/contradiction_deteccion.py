@@ -25,31 +25,28 @@ from typing import Any
 import networkx as nx
 import numpy as np
 import torch
-from scipy import stats
-from scipy.spatial.distance import cosine
-from scipy.stats import beta
-from sentence_transformers import SentenceTransformer
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-from transformers import AutoModelForSequenceClassification, DebertaV2Tokenizer, pipeline
 
 # Check dependency lockdown
 from farfan_pipeline.core.dependency_lockdown import get_dependency_lockdown
 
 # Import runtime error fixes for defensive programming
-from farfan_pipeline.utils.runtime_error_fixes import ensure_list_return, safe_text_extract
+from farfan_pipeline.utils.runtime_error_fixes import ensure_list_return
+from scipy.stats import beta
+from sentence_transformers import SentenceTransformer
+from transformers import AutoModelForSequenceClassification, DebertaV2Tokenizer, pipeline
 
 _lockdown = get_dependency_lockdown()
 
 # Configure logging with structured format
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
+
 class ContradictionType(Enum):
     """Taxonomía de contradicciones según estándares de política pública"""
+
     NUMERICAL_INCONSISTENCY = auto()
     TEMPORAL_CONFLICT = auto()
     SEMANTIC_OPPOSITION = auto()
@@ -59,8 +56,10 @@ class ContradictionType(Enum):
     REGULATORY_CONFLICT = auto()
     STAKEHOLDER_DIVERGENCE = auto()
 
+
 class PolicyDimension(Enum):
     """Dimensiones del Plan de Desarrollo según DNP Colombia"""
+
     DIAGNOSTICO = "diagnóstico"
     ESTRATEGICO = "estratégico"
     PROGRAMATICO = "programático"
@@ -68,9 +67,11 @@ class PolicyDimension(Enum):
     SEGUIMIENTO = "seguimiento y evaluación"
     TERRITORIAL = "ordenamiento territorial"
 
+
 @dataclass(frozen=True)
 class PolicyStatement:
     """Representación estructurada de una declaración de política"""
+
     text: str
     dimension: PolicyDimension
     position: tuple[int, int]  # (start, end) in document
@@ -82,9 +83,11 @@ class PolicyStatement:
     semantic_role: str | None = None
     dependencies: set[str] = field(default_factory=set)
 
+
 @dataclass
 class ContradictionEvidence:
     """Evidencia estructurada de contradicción con trazabilidad completa"""
+
     statement_a: PolicyStatement
     statement_b: PolicyStatement
     contradiction_type: ContradictionType
@@ -98,6 +101,7 @@ class ContradictionEvidence:
     resolution_suggestions: list[str]
     graph_path: list[str] | None = None
     statistical_significance: float | None = None
+
 
 class BayesianConfidenceCalculator:
     """
@@ -113,10 +117,7 @@ class BayesianConfidenceCalculator:
         self.prior_beta = 7.5  # Scale parameter (conservative bias favoring lower confidence)
 
     def calculate_posterior(
-            self,
-            evidence_strength: float,
-            observations: int,
-            domain_weight: float = 1.0
+        self, evidence_strength: float, observations: int, domain_weight: float = 1.0
     ) -> float:
         """
         Calculate posterior probability using Bayesian inference.
@@ -147,6 +148,7 @@ class BayesianConfidenceCalculator:
 
         return min(1.0, posterior_mean * uncertainty_penalty)
 
+
 class TemporalLogicVerifier:
     """
     Temporal consistency verification using Linear Temporal Logic (LTL).
@@ -157,15 +159,18 @@ class TemporalLogicVerifier:
 
     def __init__(self) -> None:
         self.temporal_patterns = {
-            'sequential': re.compile(r'(primero|luego|después|posteriormente|finalmente)', re.IGNORECASE),
-            'parallel': re.compile(r'(simultáneamente|al mismo tiempo|paralelamente)', re.IGNORECASE),
-            'deadline': re.compile(r'(antes de|hasta|máximo|plazo)', re.IGNORECASE),
-            'milestone': re.compile(r'(hito|meta intermedia|checkpoint)', re.IGNORECASE)
+            "sequential": re.compile(
+                r"(primero|luego|después|posteriormente|finalmente)", re.IGNORECASE
+            ),
+            "parallel": re.compile(
+                r"(simultáneamente|al mismo tiempo|paralelamente)", re.IGNORECASE
+            ),
+            "deadline": re.compile(r"(antes de|hasta|máximo|plazo)", re.IGNORECASE),
+            "milestone": re.compile(r"(hito|meta intermedia|checkpoint)", re.IGNORECASE),
         }
 
     def verify_temporal_consistency(
-            self,
-            statements: list[PolicyStatement]
+        self, statements: list[PolicyStatement]
     ) -> tuple[bool, list[dict[str, Any]]]:
         """
         Verify temporal consistency between policy statements.
@@ -186,13 +191,15 @@ class TemporalLogicVerifier:
 
         # Verify temporal ordering
         for i, event_a in enumerate(timeline):
-            for event_b in timeline[i + 1:]:
+            for event_b in timeline[i + 1 :]:
                 if self._has_temporal_conflict(event_a, event_b):
-                    conflicts.append({
-                        'event_a': event_a,
-                        'event_b': event_b,
-                        'conflict_type': 'temporal_ordering'
-                    })
+                    conflicts.append(
+                        {
+                            "event_a": event_a,
+                            "event_b": event_b,
+                            "conflict_type": "temporal_ordering",
+                        }
+                    )
 
         # Verify deadline constraints
         deadline_violations = self._check_deadline_constraints(timeline)
@@ -200,7 +207,6 @@ class TemporalLogicVerifier:
 
         return len(conflicts) == 0, conflicts
 
-    
     def _build_timeline(self, statements: list[PolicyStatement]) -> list[dict]:
         """
         Build timeline from policy statements.
@@ -217,15 +223,16 @@ class TemporalLogicVerifier:
         for stmt in statements:
             for marker in stmt.temporal_markers:
                 # Extract structured temporal information
-                timeline.append({
-                    'statement': stmt,
-                    'marker': marker,
-                    'timestamp': self._parse_temporal_marker(marker),
-                    'type': self._classify_temporal_type(marker)
-                })
-        return sorted(timeline, key=lambda x: x.get('timestamp', 0))
+                timeline.append(
+                    {
+                        "statement": stmt,
+                        "marker": marker,
+                        "timestamp": self._parse_temporal_marker(marker),
+                        "type": self._classify_temporal_type(marker),
+                    }
+                )
+        return sorted(timeline, key=lambda x: x.get("timestamp", 0))
 
-    
     def _parse_temporal_marker(self, marker: str) -> int | None:
         """
         Parse temporal marker to numeric timestamp.
@@ -239,13 +246,19 @@ class TemporalLogicVerifier:
             int | None: Numeric timestamp, or None if parsing fails
         """
         # Implementation specific to Colombian policy document format
-        year_match = re.search(r'20\d{2}', marker)
+        year_match = re.search(r"20\d{2}", marker)
         if year_match:
             return int(year_match.group())
 
         quarter_patterns = {
-            'primer': 1, 'segundo': 2, 'tercer': 3, 'cuarto': 4,
-            'Q1': 1, 'Q2': 2, 'Q3': 3, 'Q4': 4
+            "primer": 1,
+            "segundo": 2,
+            "tercer": 3,
+            "cuarto": 4,
+            "Q1": 1,
+            "Q2": 2,
+            "Q3": 3,
+            "Q4": 4,
         }
         for pattern, quarter in quarter_patterns.items():
             if pattern in marker.lower():
@@ -253,23 +266,15 @@ class TemporalLogicVerifier:
 
         return None
 
-    
     def _has_temporal_conflict(self, event_a: dict, event_b: dict) -> bool:
         """Detecta conflictos temporales entre eventos"""
-        if event_a['timestamp'] and event_b['timestamp']:
+        if event_a["timestamp"] and event_b["timestamp"]:
             # Verificar si eventos mutuamente excluyentes ocurren simultáneamente
-            if event_a['timestamp'] == event_b['timestamp']:
-                return self._are_mutually_exclusive(
-                    event_a['statement'],
-                    event_b['statement']
-                )
+            if event_a["timestamp"] == event_b["timestamp"]:
+                return self._are_mutually_exclusive(event_a["statement"], event_b["statement"])
         return False
 
-    def _are_mutually_exclusive(
-            self,
-            stmt_a: PolicyStatement,
-            stmt_b: PolicyStatement
-    ) -> bool:
+    def _are_mutually_exclusive(self, stmt_a: PolicyStatement, stmt_b: PolicyStatement) -> bool:
         """Determina si dos declaraciones son mutuamente excluyentes"""
         # Verificar si compiten por los mismos recursos
         resources_a = set(self._extract_resources(stmt_a.text))
@@ -277,15 +282,14 @@ class TemporalLogicVerifier:
 
         return len(resources_a & resources_b) > 0
 
-    
     def _extract_resources(self, text: str) -> list[str]:
         """Extrae recursos mencionados en el texto"""
         resource_patterns = [
-            r'presupuesto',
-            r'recursos?\s+\w+',
-            r'fondos?\s+\w+',
-            r'personal',
-            r'infraestructura'
+            r"presupuesto",
+            r"recursos?\s+\w+",
+            r"fondos?\s+\w+",
+            r"personal",
+            r"infraestructura",
         ]
         resources = []
         for pattern in resource_patterns:
@@ -293,37 +297,36 @@ class TemporalLogicVerifier:
             resources.extend(matches)
         return resources
 
-    
     def _check_deadline_constraints(self, timeline: list[dict]) -> list[dict]:
         """Verifica violaciones de restricciones de plazo"""
         violations = []
         for event in timeline:
-            if event['type'] == 'deadline':
+            if event["type"] == "deadline":
                 # Verificar si hay eventos posteriores que deberían ocurrir antes
                 for other in timeline:
-                    if other['timestamp'] and event['timestamp']:
-                        if other['timestamp'] > event['timestamp']:
-                            if self._should_precede(other['statement'], event['statement']):
-                                violations.append({
-                                    'event_a': other,
-                                    'event_b': event,
-                                    'conflict_type': 'deadline_violation'
-                                })
+                    if other["timestamp"] and event["timestamp"]:
+                        if other["timestamp"] > event["timestamp"]:
+                            if self._should_precede(other["statement"], event["statement"]):
+                                violations.append(
+                                    {
+                                        "event_a": other,
+                                        "event_b": event,
+                                        "conflict_type": "deadline_violation",
+                                    }
+                                )
         return violations
 
-    
     def _should_precede(self, stmt_a: PolicyStatement, stmt_b: PolicyStatement) -> bool:
         """Determina si stmt_a debe preceder a stmt_b"""
         # Análisis de dependencias causales
         return bool(stmt_a.dependencies & {stmt_b.text[:50]})
 
-    
     def _classify_temporal_type(self, marker: str) -> str:
         """Clasifica el tipo de marcador temporal"""
         for pattern_type, pattern in self.temporal_patterns.items():
             if pattern.search(marker):
                 return pattern_type
-        return 'unspecified'
+        return "unspecified"
 
 
 class SemanticValidator:
@@ -347,26 +350,26 @@ class SemanticValidator:
 
     # Official sources patterns for D1-Q1 validation
     OFFICIAL_SOURCES_PATTERNS = [
-        r'\bDANE\b',
-        r'\bMedicina\s+Legal\b',
-        r'\bObservatorio\s+de\s+Género\b',
-        r'\bObservatorio\s+de\s+Asuntos\s+de\s+Género\b',
-        r'\bDNP\b',
-        r'\bSISPRO\b',
-        r'\bSIVIGILA\b',
-        r'\bSecretaría\s+de\s+la\s+Mujer\b',
-        r'\bComisar[íi]a\s+de\s+Familia\b',
-        r'\bFiscal[íi]a\b',
-        r'\bPolic[íi]a\s+Nacional\b'
+        r"\bDANE\b",
+        r"\bMedicina\s+Legal\b",
+        r"\bObservatorio\s+de\s+Género\b",
+        r"\bObservatorio\s+de\s+Asuntos\s+de\s+Género\b",
+        r"\bDNP\b",
+        r"\bSISPRO\b",
+        r"\bSIVIGILA\b",
+        r"\bSecretaría\s+de\s+la\s+Mujer\b",
+        r"\bComisar[íi]a\s+de\s+Familia\b",
+        r"\bFiscal[íi]a\b",
+        r"\bPolic[íi]a\s+Nacional\b",
     ]
 
     # Baseline indicators patterns
     BASELINE_INDICATORS = [
-        r'l[íi]nea\s+base',
-        r'año\s+base',
-        r'situaci[óo]n\s+inicial',
-        r'diagn[óo]stico',
-        r'referencia\s+inicial'
+        r"l[íi]nea\s+base",
+        r"año\s+base",
+        r"situaci[óo]n\s+inicial",
+        r"diagn[óo]stico",
+        r"referencia\s+inicial",
     ]
 
     def __init__(self, temporal_verifier: TemporalLogicVerifier | None = None):
@@ -380,10 +383,7 @@ class SemanticValidator:
         self.temporal_verifier = temporal_verifier or TemporalLogicVerifier()
         self.logger = logging.getLogger(self.__class__.__name__)
 
-    def validate_semantic_completeness_coherence(
-        self,
-        raw_facts: dict[str, Any]
-    ) -> dict[str, Any]:
+    def validate_semantic_completeness_coherence(self, raw_facts: dict[str, Any]) -> dict[str, Any]:
         """
         Validate semantic completeness and coherence for D1-Q1 requirements.
 
@@ -410,7 +410,7 @@ class SemanticValidator:
             - has_official_sources: bool
             - resources_temporal_compatible: bool
             - semantic_completeness_pass: bool (all above must be True)
-            
+
             Each flag is binary (True/False), no scores or probabilities.
         """
         results = {
@@ -418,16 +418,20 @@ class SemanticValidator:
             "has_baseline_indicator": self._check_baseline_indicator(raw_facts),
             "has_year_reference": self._check_year_reference(raw_facts),
             "has_official_sources": self._check_official_sources(raw_facts),
-            "resources_temporal_compatible": self._check_resources_temporal_compatibility(raw_facts)
+            "resources_temporal_compatible": self._check_resources_temporal_compatibility(
+                raw_facts
+            ),
         }
 
         # Overall semantic completeness: all requirements must pass
-        results["semantic_completeness_pass"] = all([
-            results["has_quantitative_data"],
-            results["has_baseline_indicator"],
-            results["has_year_reference"],
-            results["has_official_sources"]
-        ])
+        results["semantic_completeness_pass"] = all(
+            [
+                results["has_quantitative_data"],
+                results["has_baseline_indicator"],
+                results["has_year_reference"],
+                results["has_official_sources"],
+            ]
+        )
 
         return results
 
@@ -468,7 +472,9 @@ class SemanticValidator:
         quantitative_claims = raw_facts.get("quantitative_claims", [])
         for claim in quantitative_claims:
             context = claim.get("context", "").lower()
-            if any(re.search(pattern, context, re.IGNORECASE) for pattern in self.BASELINE_INDICATORS):
+            if any(
+                re.search(pattern, context, re.IGNORECASE) for pattern in self.BASELINE_INDICATORS
+            ):
                 return True
 
         # Check in point_evidence text
@@ -476,10 +482,15 @@ class SemanticValidator:
         for evidence in point_evidence.values():
             if isinstance(evidence, dict):
                 text = evidence.get("text", "").lower()
-                if any(re.search(pattern, text, re.IGNORECASE) for pattern in self.BASELINE_INDICATORS):
+                if any(
+                    re.search(pattern, text, re.IGNORECASE) for pattern in self.BASELINE_INDICATORS
+                ):
                     return True
             elif isinstance(evidence, str):
-                if any(re.search(pattern, evidence.lower(), re.IGNORECASE) for pattern in self.BASELINE_INDICATORS):
+                if any(
+                    re.search(pattern, evidence.lower(), re.IGNORECASE)
+                    for pattern in self.BASELINE_INDICATORS
+                ):
                     return True
 
         return False
@@ -503,9 +514,11 @@ class SemanticValidator:
         for claim in quantitative_claims:
             context = claim.get("context", "")
             # Look for year patterns: 20XX or "año 20XX"
-            if re.search(r'(?:año|años?|vigencia|periodo)\s*(?:de\s*)?(?:20\d{2})', context, re.IGNORECASE):
+            if re.search(
+                r"(?:año|años?|vigencia|periodo)\s*(?:de\s*)?(?:20\d{2})", context, re.IGNORECASE
+            ):
                 return True
-            if re.search(r'20\d{2}', context):
+            if re.search(r"20\d{2}", context):
                 return True
 
         return False
@@ -574,10 +587,10 @@ class PolicyContradictionDetector:
     """
 
     def __init__(
-            self,
-            model_name: str = "hiiamsid/sentence_similarity_spanish_es",
-            spacy_model: str = "es_core_news_lg",
-            device: str = "cuda" if torch.cuda.is_available() else "cpu"
+        self,
+        model_name: str = "hiiamsid/sentence_similarity_spanish_es",
+        spacy_model: str = "es_core_news_lg",
+        device: str = "cuda" if torch.cuda.is_available() else "cpu",
     ) -> None:
         # Modelos de transformers para análisis semántico
         self.semantic_model = SentenceTransformer(model_name, device=device)
@@ -588,10 +601,7 @@ class PolicyContradictionDetector:
         model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
         self.contradiction_classifier = pipeline(
-            "text-classification",
-            model=model,
-            tokenizer=tokenizer,
-            device=device
+            "text-classification", model=model, tokenizer=tokenizer, device=device
         )
 
         # Verificador temporal
@@ -607,37 +617,31 @@ class PolicyContradictionDetector:
         self._initialize_pdm_patterns()
 
         self.logger = logging.getLogger(self.__class__.__name__)
-    
+
     def _initialize_pdm_patterns(self) -> None:
         """Inicializa patrones específicos para análisis de PDMs colombianos"""
         self.pdm_patterns = {
-            'diagnostico': re.compile(
-                r'(?:diagnóstico|caracterización|situación actual|línea base|año base)',
-                re.IGNORECASE
+            "diagnostico": re.compile(
+                r"(?:diagnóstico|caracterización|situación actual|línea base|año base)",
+                re.IGNORECASE,
             ),
-            'objetivos': re.compile(
-                r'(?:objetivo|meta|propósito|finalidad)',
-                re.IGNORECASE
+            "objetivos": re.compile(r"(?:objetivo|meta|propósito|finalidad)", re.IGNORECASE),
+            "estrategias": re.compile(
+                r"(?:estrategia|programa|proyecto|acción|intervención)", re.IGNORECASE
             ),
-            'estrategias': re.compile(
-                r'(?:estrategia|programa|proyecto|acción|intervención)',
-                re.IGNORECASE
+            "recursos": re.compile(
+                r"(?:presupuesto|recurso|financiación|inversión|asignación)", re.IGNORECASE
             ),
-            'recursos': re.compile(
-                r'(?:presupuesto|recurso|financiación|inversión|asignación)',
-                re.IGNORECASE
+            "temporal": re.compile(
+                r"(?:vigencia|periodo|año|trimestre|semestre|plazo)", re.IGNORECASE
             ),
-            'temporal': re.compile(
-                r'(?:vigencia|periodo|año|trimestre|semestre|plazo)',
-                re.IGNORECASE
-            )
         }
 
     def detect(
-            self,
-            text: str,
-            plan_name: str = "PDM",
-            dimension: PolicyDimension = PolicyDimension.ESTRATEGICO
+        self,
+        text: str,
+        plan_name: str = "PDM",
+        dimension: PolicyDimension = PolicyDimension.ESTRATEGICO,
     ) -> dict[str, Any]:
         """
         Detecta contradicciones con análisis multi-dimensional avanzado
@@ -694,13 +698,14 @@ class PolicyContradictionDetector:
             "contradictions": [self._serialize_contradiction(c) for c in contradictions],
             "coherence_metrics": coherence_metrics,
             "resolution_recommendations": resolution_recommendations,
-            "graph_statistics": self._get_graph_statistics()
+            "graph_statistics": self._get_graph_statistics(),
         }
 
 
 # ============================================================================
 # PRIORITY 1: N3-AUD CONTRADICTION DOMINATOR (TYPE_E Veto Gate)
 # ============================================================================
+
 
 class ContradictionDominator:
     """
@@ -736,20 +741,17 @@ class ContradictionDominator:
     VETO_CONDITIONS = {
         "contradiction_detected": "TOTAL_VETO",
         "min_contradictions": 1,
-        "confidence_on_veto": 0.0
+        "confidence_on_veto": 0.0,
     }
 
     # PROHIBITED operations for TYPE_E (enforced at runtime)
-    FORBIDDEN_OPERATIONS = ['weighted_mean', 'average', 'mean', 'avg']
+    FORBIDDEN_OPERATIONS = ["weighted_mean", "average", "mean", "avg"]
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(self.__class__.__name__)
         self._veto_count = 0
 
-    def apply_dominance_veto(
-        self,
-        facts: list[dict] | list[ContradictionEvidence]
-    ) -> dict:
+    def apply_dominance_veto(self, facts: list[dict] | list[ContradictionEvidence]) -> dict:
         """
         Apply total veto if ANY contradiction detected.
         ONE contradiction -> confidence = 0.0 (non-negotiable).
@@ -777,13 +779,13 @@ class ContradictionDominator:
                 if evidence.contradiction_type in [
                     ContradictionType.LOGICAL_INCOMPATIBILITY,
                     ContradictionType.SEMANTIC_OPPOSITION,
-                    ContradictionType.NUMERICAL_INCONSISTENCY
+                    ContradictionType.NUMERICAL_INCONSISTENCY,
                 ]:
                     has_contradiction = True
                     break
-            original_confidence = 1.0 - max([
-                (1.0 - e.confidence) for e in facts
-            ], default=0.0) if facts else 0.5
+            original_confidence = (
+                1.0 - max([(1.0 - e.confidence) for e in facts], default=0.0) if facts else 0.5
+            )
         else:
             # Processing dict facts
             has_contradiction = self._detect_any_contradiction_from_dicts(facts)
@@ -794,8 +796,8 @@ class ContradictionDominator:
             veto_report = self._generate_veto_report_from_facts(facts)
 
             self.logger.warning(
-                f"CONTRADICTION DOMINANCE VETO APPLIED: "
-                f"contradiction(s) detected -> confidence = 0.0"
+                "CONTRADICTION DOMINANCE VETO APPLIED: "
+                "contradiction(s) detected -> confidence = 0.0"
             )
 
             return {
@@ -804,7 +806,7 @@ class ContradictionDominator:
                 "contradiction_detected": True,
                 "veto_applied": True,
                 "rationale": "Popperian falsification: ONE contradiction refutes the hypothesis",
-                "veto_report": veto_report
+                "veto_report": veto_report,
             }
         else:
             return {
@@ -812,13 +814,10 @@ class ContradictionDominator:
                 "confidence": original_confidence,
                 "contradiction_detected": False,
                 "veto_applied": False,
-                "rationale": "No contradictions detected - hypothesis remains viable"
+                "rationale": "No contradictions detected - hypothesis remains viable",
             }
 
-    def detect_any_contradiction(
-        self,
-        facts: list[dict] | list[ContradictionEvidence]
-    ) -> bool:
+    def detect_any_contradiction(self, facts: list[dict] | list[ContradictionEvidence]) -> bool:
         """
         Scan facts for ANY contradiction (binary check).
 
@@ -833,10 +832,11 @@ class ContradictionDominator:
 
         if isinstance(facts[0], ContradictionEvidence):
             return any(
-                e.contradiction_type in [
+                e.contradiction_type
+                in [
                     ContradictionType.LOGICAL_INCOMPATIBILITY,
                     ContradictionType.SEMANTIC_OPPOSITION,
-                    ContradictionType.NUMERICAL_INCONSISTENCY
+                    ContradictionType.NUMERICAL_INCONSISTENCY,
                 ]
                 for e in facts
             )
@@ -859,10 +859,7 @@ class ContradictionDominator:
 
         return False
 
-    def generate_veto_report(
-        self,
-        facts: list[dict] | list[ContradictionEvidence]
-    ) -> dict:
+    def generate_veto_report(self, facts: list[dict] | list[ContradictionEvidence]) -> dict:
         """
         Generate detailed report when veto is applied.
 
@@ -877,8 +874,7 @@ class ContradictionDominator:
         return self._generate_veto_report_from_facts(facts)
 
     def _generate_veto_report_from_facts(
-        self,
-        facts: list[dict] | list[ContradictionEvidence]
+        self, facts: list[dict] | list[ContradictionEvidence]
     ) -> dict:
         """Generate veto report from facts (dict or ContradictionEvidence)."""
         contradictions_found = []
@@ -886,23 +882,27 @@ class ContradictionDominator:
 
         if facts and isinstance(facts[0], ContradictionEvidence):
             for evidence in facts:
-                contradictions_found.append({
-                    "fact_id": str(id(evidence)),
-                    "statement_a": str(evidence.statement_a.text[:100]),
-                    "statement_b": str(evidence.statement_b.text[:100]),
-                    "contradiction_type": evidence.contradiction_type.name,
-                    "confidence": float(evidence.confidence)
-                })
+                contradictions_found.append(
+                    {
+                        "fact_id": str(id(evidence)),
+                        "statement_a": str(evidence.statement_a.text[:100]),
+                        "statement_b": str(evidence.statement_b.text[:100]),
+                        "contradiction_type": evidence.contradiction_type.name,
+                        "confidence": float(evidence.confidence),
+                    }
+                )
                 affected_facts.append(str(id(evidence)))
         else:
             for fact in facts:
                 if fact.get("has_contradiction") or fact.get("consistency_flag") == "CONTRADICTORY":
-                    contradictions_found.append({
-                        "fact_id": fact.get("id", "UNKNOWN"),
-                        "fact_text": fact.get("text", "")[:100],
-                        "contradiction_type": fact.get("contradiction_type", "LOGICAL"),
-                        "inconsistent_with": fact.get("inconsistent_with", [])
-                    })
+                    contradictions_found.append(
+                        {
+                            "fact_id": fact.get("id", "UNKNOWN"),
+                            "fact_text": fact.get("text", "")[:100],
+                            "contradiction_type": fact.get("contradiction_type", "LOGICAL"),
+                            "inconsistent_with": fact.get("inconsistent_with", []),
+                        }
+                    )
                     affected_facts.append(fact.get("id", "UNKNOWN"))
 
         severity = "CRITICAL" if len(contradictions_found) == 1 else "CATASTROPHIC"
@@ -913,7 +913,7 @@ class ContradictionDominator:
             "veto_count": self._veto_count,
             "veto_timestamp": logging.getLogger(__name__).name,
             "severity": severity,
-            "popperian_principle": "Single refutation suffices for falsification"
+            "popperian_principle": "Single refutation suffices for falsification",
         }
 
     def _calculate_original_confidence_from_dicts(self, facts: list[dict]) -> float:
@@ -938,6 +938,7 @@ class ContradictionDominator:
 # ============================================================================
 # PRIORITY 2: N2-INF DEMPSTER-SHAFER COMBINATOR (TYPE_A Belief Combination)
 # ============================================================================
+
 
 class DempsterShaferCombinator:
     """
@@ -993,7 +994,7 @@ class DempsterShaferCombinator:
                 "combined_belief": {},
                 "conflict_mass": 0.0,
                 "normalization_factor": 1.0,
-                "reliability_score": 0.0
+                "reliability_score": 0.0,
             }
 
         if len(sources) == 1:
@@ -1004,7 +1005,7 @@ class DempsterShaferCombinator:
                 "combined_belief": {prop: mass},
                 "conflict_mass": 0.0,
                 "normalization_factor": 1.0,
-                "reliability_score": mass
+                "reliability_score": mass,
             }
 
         # Calculate conflict mass K
@@ -1023,7 +1024,7 @@ class DempsterShaferCombinator:
             "combined_belief": normalized,
             "conflict_mass": K,
             "normalization_factor": 1.0 - K,
-            "reliability_score": reliability
+            "reliability_score": reliability,
         }
 
     def calculate_conflict_mass(self, sources: list[dict]) -> float:
@@ -1052,18 +1053,14 @@ class DempsterShaferCombinator:
         # Calculate conflict as cross-product of masses for different propositions
         prop_names = list(propositions.keys())
         for i, prop1 in enumerate(prop_names):
-            for prop2 in prop_names[i + 1:]:
+            for prop2 in prop_names[i + 1 :]:
                 for mass1 in propositions[prop1]:
                     for mass2 in propositions[prop2]:
                         K += mass1 * mass2
 
         return min(1.0, K)
 
-    def normalize_belief_distribution(
-        self,
-        raw_belief: dict,
-        K: float
-    ) -> dict:
+    def normalize_belief_distribution(self, raw_belief: dict, K: float) -> dict:
         """
         Normalize by (1 - K) to ensure belief mass sums to 1.
 
@@ -1107,12 +1104,7 @@ class DempsterShaferCombinator:
 
         return combined
 
-    def _calculate_reliability_score(
-        self,
-        normalized: dict,
-        K: float,
-        n_sources: int
-    ) -> float:
+    def _calculate_reliability_score(self, normalized: dict, K: float, n_sources: int) -> float:
         """
         Calculate reliability score based on:
         - Conflict mass (lower is better)
@@ -1136,6 +1128,7 @@ class DempsterShaferCombinator:
 # ============================================================================
 # PRIORITY 2: N2-INF LOGICAL CONSISTENCY CHECKER (TYPE_E AND Logic)
 # ============================================================================
+
 
 class LogicalConsistencyChecker:
     """
@@ -1162,7 +1155,7 @@ class LogicalConsistencyChecker:
     """
 
     # PROHIBITED for TYPE_E - enforcement is mandatory
-    FORBIDDEN_METHODS = ['weighted_mean', 'average', 'mean']
+    FORBIDDEN_METHODS = ["weighted_mean", "average", "mean"]
 
     def __init__(self) -> None:
         self.logger = logging.getLogger(self.__class__.__name__)
@@ -1189,7 +1182,7 @@ class LogicalConsistencyChecker:
                 "consistency_score": 0.0,
                 "weakest_link": None,
                 "logical_violations": [],
-                "fusion_method": "MIN"
+                "fusion_method": "MIN",
             }
 
         # Extract confidences
@@ -1203,7 +1196,7 @@ class LogicalConsistencyChecker:
         weakest_link = {
             "fact": facts[weakest_idx].get("fact", ""),
             "confidence": consistency_score,
-            "logical_role": facts[weakest_idx].get("logical_role", "unknown")
+            "logical_role": facts[weakest_idx].get("logical_role", "unknown"),
         }
 
         # Detect logical violations
@@ -1215,7 +1208,7 @@ class LogicalConsistencyChecker:
             "logical_violations": violations,
             "fusion_method": "MIN",  # Explicitly MIN, never MEAN
             "fact_count": len(facts),
-            "epistemology": "LOGICAL_CONJUNCTION"
+            "epistemology": "LOGICAL_CONJUNCTION",
         }
 
     def detect_logical_violations(self, facts: list[dict]) -> list[dict]:
@@ -1230,21 +1223,25 @@ class LogicalConsistencyChecker:
         # Check for explicit violation flags
         for fact in facts:
             if fact.get("has_violation", False):
-                violations.append({
-                    "fact": fact.get("fact", ""),
-                    "violation_type": fact.get("violation_type", "UNKNOWN"),
-                    "description": fact.get("violation_description", "")
-                })
+                violations.append(
+                    {
+                        "fact": fact.get("fact", ""),
+                        "violation_type": fact.get("violation_type", "UNKNOWN"),
+                        "description": fact.get("violation_description", ""),
+                    }
+                )
 
         # Check for consistency flags
         for fact in facts:
             consistency_flag = fact.get("consistency_flag", "")
             if consistency_flag and consistency_flag not in ["CONSISTENT", "VALID"]:
-                violations.append({
-                    "fact": fact.get("fact", ""),
-                    "violation_type": "INCONSISTENCY",
-                    "description": f"Consistency flag: {consistency_flag}"
-                })
+                violations.append(
+                    {
+                        "fact": fact.get("fact", ""),
+                        "violation_type": "INCONSISTENCY",
+                        "description": f"Consistency flag: {consistency_flag}",
+                    }
+                )
 
         return violations
 

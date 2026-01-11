@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Phase 4-7 Aggregation Pipeline — Canonical Package
 
@@ -12,73 +11,75 @@ Status: FROZEN
 from __future__ import annotations
 
 # ==============================================================================
-# LOCAL IMPORTS — Files live in this directory
+# LOCAL IMPORTS — Files live in this directory (using actual file names)
 # ==============================================================================
-
 # Core Aggregation Pipeline
-from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation import (
-    # Dataclasses
-    AggregationSettings,
-    ScoredResult,
-    DimensionScore,
-    AreaScore,
-    ClusterScore,
-    MacroScore,
-    # Aggregators
-    DimensionAggregator,
-    AreaPolicyAggregator,
-    ClusterAggregator,
-    MacroAggregator,
+from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation import (
     # Provenance (integrated)
     AggregationDAG,
-    ProvenanceNode,
+    # Dataclasses
+    AggregationSettings,
+    AreaPolicyAggregator,
+    AreaScore,
     # Bootstrap
     BootstrapAggregator,
+    ClusterAggregator,
+    ClusterScore,
+    # Aggregators
+    DimensionAggregator,
+    DimensionScore,
+    MacroAggregator,
+    MacroScore,
+    ProvenanceNode,
+    ScoredResult,
     # Utilities
     group_by,
     validate_scored_results,
+    ValidationError,
+)
+
+# Provenance (standalone re-export for explicit access)
+from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_provenance import (
+    AggregationDAG as ProvenanceDAG,
+)
+from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_provenance import (
+    ProvenanceNode as ProvenanceEntry,
 )
 
 # Choquet Integral Aggregator
-from farfan_pipeline.phases.Phase_four_five_six_seven.choquet_aggregator import (
+from farfan_pipeline.phases.Phase_4.phase4_10_00_choquet_aggregator import (
+    CalibrationResult,
     ChoquetAggregator,
     ChoquetConfig,
-    CalibrationResult,
 )
 
 # Enhanced Aggregation
-from farfan_pipeline.phases.Phase_four_five_six_seven.enhancements import (
-    EnhancedDimensionAggregator,
+from farfan_pipeline.phases.Phase_4.enhancements import (
     DispersionMetrics,
+    EnhancedDimensionAggregator,
     HermeticityDiagnosis,
     enhance_aggregator,
 )
 
+# Adaptive Meso Scoring
+from farfan_pipeline.phases.Phase_4.enhancements.phase4_10_00_adaptive_meso_scoring import (
+    AdaptiveMesoScoring,
+)
+
+# Signal-Enriched Aggregation
+from farfan_pipeline.phases.Phase_4.enhancements.phase4_10_00_signal_enriched_aggregation import (
+    SignalEnrichedAggregator,
+)
+
 # Validation
-from farfan_pipeline.phases.Phase_four_five_six_seven.validation import (
+from farfan_pipeline.phases.Phase_4.validation import (
+    AggregationValidationError,
+    ValidationResult,
+    validate_full_aggregation_pipeline,
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,
     validate_phase7_output,
-    validate_full_aggregation_pipeline,
-    ValidationResult,
-    AggregationValidationError,
-)
-
-# Provenance (standalone re-export for explicit access)
-from farfan_pipeline.phases.Phase_four_five_six_seven.aggregation_provenance import (
-    AggregationDAG as ProvenanceDAG,
-    ProvenanceNode as ProvenanceEntry,
-)
-
-# Signal-Enriched Aggregation
-from farfan_pipeline.phases.Phase_four_five_six_seven.enhancements.signal_enriched_aggregation import (
-    SignalEnrichedAggregator,
-)
-
-# Adaptive Meso Scoring
-from farfan_pipeline.phases.Phase_four_five_six_seven.enhancements.adaptive_meso_scoring import (
-    AdaptiveMesoScoring,
 )
 
 # ==============================================================================
@@ -109,6 +110,7 @@ __all__ = [
     "MacroAggregator",
     "group_by",
     "validate_scored_results",
+    "ValidationError",
     # Choquet
     "ChoquetAggregator",
     "ChoquetConfig",
@@ -136,7 +138,7 @@ __all__ = [
     # Signal
     "SignalEnrichedAggregator",
     # Adaptive
-    "AdaptiveMesoScoringEngine",
+    "AdaptiveMesoScoring",
 ]
 
 # ==============================================================================

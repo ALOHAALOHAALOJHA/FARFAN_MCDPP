@@ -24,8 +24,8 @@ import re
 from dataclasses import FrozenInstanceError
 from typing import Any, Dict, List
 
-# Phase 1 imports
-from farfan_pipeline.phases.Phase_one import (
+# Phase 1 imports - Canonical path is Phase_1 (not Phase_one)
+from farfan_pipeline.phases.Phase_1 import (
     SmartChunk,
     Chunk,
     LanguageData,
@@ -45,19 +45,19 @@ from farfan_pipeline.phases.Phase_one import (
     ASSIGNMENT_METHOD_FALLBACK,
 )
 
-from farfan_pipeline.phases.Phase_one.cpp_models import (
+from farfan_pipeline.phases.Phase_1.phase1_10_00_cpp_models import (
     TextSpan,
     LegacyChunk,
     ChunkResolution,
     CanonPolicyPackage,
 )
 
-from farfan_pipeline.phases.Phase_one.phase1_20_00_cpp_ingestion import (
+from farfan_pipeline.phases.Phase_1.phase1_20_00_cpp_ingestion import (
     Phase1MissionContract,
     PADimGridSpecification,
 )
 
-from farfan_pipeline.phases.Phase_one.phase1_40_00_circuit_breaker import (
+from farfan_pipeline.phases.Phase_1.phase1_40_00_circuit_breaker import (
     Phase1CircuitBreaker,
     CircuitState,
     FailureSeverity,
@@ -69,6 +69,7 @@ from farfan_pipeline.phases.Phase_one.phase1_40_00_circuit_breaker import (
 # =============================================================================
 # 1. MODEL VALIDATION TESTS
 # =============================================================================
+
 
 class TestModelValidation:
     """Test data model integrity and validation."""
@@ -150,6 +151,7 @@ class TestModelValidation:
 # 2. CHUNK INVARIANT TESTS
 # =============================================================================
 
+
 class TestChunkInvariants:
     """Test PA×DIM grid constitutional invariants."""
 
@@ -182,21 +184,22 @@ class TestChunkInvariants:
         """CHUNK_ID_PATTERN must reject invalid chunk IDs."""
         pattern = re.compile(CHUNK_ID_PATTERN)
         invalid_ids = [
-            "PA00-DIM01",   # PA00 invalid
-            "PA11-DIM01",   # PA11 invalid
-            "PA01-DIM00",   # DIM00 invalid
-            "PA01-DIM07",   # DIM07 invalid
-            "PA1-DIM01",    # Missing leading zero
-            "PA01DIM01",    # Missing hyphen
-            "pa01-dim01",   # Lowercase
-            "",             # Empty
-            "INVALID",      # Garbage
+            "PA00-DIM01",  # PA00 invalid
+            "PA11-DIM01",  # PA11 invalid
+            "PA01-DIM00",  # DIM00 invalid
+            "PA01-DIM07",  # DIM07 invalid
+            "PA1-DIM01",  # Missing leading zero
+            "PA01DIM01",  # Missing hyphen
+            "pa01-dim01",  # Lowercase
+            "",  # Empty
+            "INVALID",  # Garbage
         ]
         for invalid_id in invalid_ids:
             assert not pattern.match(invalid_id), f"Pattern wrongly matched {invalid_id}"
 
     def test_validate_chunk_rejects_missing_fields(self):
         """PADimGridSpecification.validate_chunk must reject missing fields."""
+
         class BadChunk:
             pass
 
@@ -205,6 +208,7 @@ class TestChunkInvariants:
 
     def test_validate_chunk_rejects_invalid_pa(self):
         """validate_chunk must reject invalid policy_area_id."""
+
         class BadChunk:
             chunk_id = "PA99-DIM01"
             policy_area_id = "PA99"
@@ -218,6 +222,7 @@ class TestChunkInvariants:
 # =============================================================================
 # 3. WEIGHT CONTRACT TESTS
 # =============================================================================
+
 
 class TestWeightContract:
     """Test weight-based execution contract."""
@@ -252,6 +257,7 @@ class TestWeightContract:
 # =============================================================================
 # 4. CIRCUIT BREAKER TESTS
 # =============================================================================
+
 
 class TestCircuitBreaker:
     """Test aggressively preventive failure protection."""
@@ -289,6 +295,7 @@ class TestCircuitBreaker:
 # 5. QUESTIONNAIRE MAPPING TESTS
 # =============================================================================
 
+
 class TestQuestionnaireMapping:
     """Test question-level granularity (v2.0 architecture)."""
 
@@ -325,6 +332,7 @@ class TestQuestionnaireMapping:
 # =============================================================================
 # 6. EDGE CASE TESTS
 # =============================================================================
+
 
 class TestEdgeCases:
     """Test boundary conditions and edge cases."""
@@ -389,6 +397,7 @@ class TestEdgeCases:
 # 7. ADVERSARIAL INPUT TESTS
 # =============================================================================
 
+
 class TestAdversarialInputs:
     """Test malformed and adversarial inputs."""
 
@@ -441,6 +450,7 @@ class TestAdversarialInputs:
 # =============================================================================
 # 8. INTEGRATION TESTS
 # =============================================================================
+
 
 class TestIntegration:
     """Test component integration."""

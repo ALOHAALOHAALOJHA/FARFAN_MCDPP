@@ -22,6 +22,22 @@ Version: 1.0.0
 Date: 2026-01-09
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 30
+__order__ = 5
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "MEDIUM"
+__execution_pattern__ = "On-Demand"
+
+
+
 from __future__ import annotations
 
 import hashlib
@@ -30,13 +46,14 @@ import logging
 import threading
 import time
 from collections import OrderedDict
-from dataclasses import dataclass, field
+from collections.abc import Callable
+from dataclasses import dataclass
 from functools import wraps
-from typing import Any, Callable, Optional, TypeVar, Generic
+from typing import Any, Generic, TypeVar
 
 logger = logging.getLogger(__name__)
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 @dataclass
@@ -128,8 +145,7 @@ class IntelligentCache:
         self._stats = CacheStatistics()
 
         logger.info(
-            f"IntelligentCache initialized: max_size={max_size}, "
-            f"default_ttl={default_ttl}s"
+            f"IntelligentCache initialized: max_size={max_size}, " f"default_ttl={default_ttl}s"
         )
 
     def _compute_key(
@@ -169,7 +185,7 @@ class IntelligentCache:
         method_name: str,
         args: tuple = (),
         kwargs: dict | None = None,
-    ) -> Optional[Any]:
+    ) -> Any | None:
         """
         Retrieve value from cache.
 
@@ -325,10 +341,7 @@ class IntelligentCache:
             Number of entries removed
         """
         with self._lock:
-            expired_keys = [
-                key for key, entry in self._cache.items()
-                if entry.is_expired()
-            ]
+            expired_keys = [key for key, entry in self._cache.items() if entry.is_expired()]
 
             for key in expired_keys:
                 del self._cache[key]
@@ -342,7 +355,7 @@ class IntelligentCache:
 
 
 # Global cache instance (singleton)
-_global_cache: Optional[IntelligentCache] = None
+_global_cache: IntelligentCache | None = None
 _cache_lock = threading.Lock()
 
 
@@ -381,6 +394,7 @@ def cached_method(
     Returns:
         Decorated function
     """
+
     def decorator(func: Callable) -> Callable:
         cache = cache_instance or get_global_cache()
 

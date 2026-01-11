@@ -20,24 +20,22 @@ import string
 import tempfile
 import time
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 import pytest
 
 from farfan_pipeline.infrastructure.extractors.programmatic_hierarchy_extractor import (
     CSVSourceAdapter,
     DictSourceAdapter,
-    HierarchyError,
     HierarchyErrorType,
-    HierarchyNode,
     JSONFileSourceAdapter,
     ProgrammaticHierarchyExtractor,
 )
 
-
 # =============================================================================
 # Fixtures
 # =============================================================================
+
 
 @pytest.fixture
 def extractor() -> ProgrammaticHierarchyExtractor:
@@ -46,7 +44,7 @@ def extractor() -> ProgrammaticHierarchyExtractor:
 
 
 @pytest.fixture
-def simple_hierarchy() -> List[Dict[str, Any]]:
+def simple_hierarchy() -> list[dict[str, Any]]:
     """A simple 3-level hierarchy."""
     return [
         {"id": "root", "parent_id": None, "name": "Root Program", "level": 0},
@@ -59,7 +57,7 @@ def simple_hierarchy() -> List[Dict[str, Any]]:
 
 
 @pytest.fixture
-def hierarchy_with_missing_parent() -> List[Dict[str, Any]]:
+def hierarchy_with_missing_parent() -> list[dict[str, Any]]:
     return [
         {"id": "root", "parent_id": None, "name": "Root", "level": 0},
         {"id": "child1", "parent_id": "root", "name": "Child 1", "level": 1},
@@ -68,7 +66,7 @@ def hierarchy_with_missing_parent() -> List[Dict[str, Any]]:
 
 
 @pytest.fixture
-def hierarchy_multi_root() -> List[Dict[str, Any]]:
+def hierarchy_multi_root() -> list[dict[str, Any]]:
     return [
         {"id": "root1", "parent_id": None, "name": "Root 1", "level": 0},
         {"id": "root2", "parent_id": None, "name": "Root 2", "level": 0},
@@ -81,7 +79,8 @@ def hierarchy_multi_root() -> List[Dict[str, Any]]:
 # Helper: Synthetic DAG Generators
 # =============================================================================
 
-def generate_binary_tree(depth: int) -> List[Dict[str, Any]]:
+
+def generate_binary_tree(depth: int) -> list[dict[str, Any]]:
     """Generate a complete binary tree of given depth (0-indexed)."""
     nodes = []
     total = (2 ** (depth + 1)) - 1
@@ -89,21 +88,31 @@ def generate_binary_tree(depth: int) -> List[Dict[str, Any]]:
         parent = f"node_{(i - 1) // 2}" if i > 0 else None
         # Calculate level: floor(log2(i+1))
         node_level = (i + 1).bit_length() - 1
-        nodes.append({"id": f"node_{i}", "parent_id": parent, "name": f"Node {i}", "level": node_level})
+        nodes.append(
+            {"id": f"node_{i}", "parent_id": parent, "name": f"Node {i}", "level": node_level}
+        )
     return nodes
 
 
-def generate_linear_chain(length: int) -> List[Dict[str, Any]]:
-    return [{"id": f"node_{i}", "parent_id": f"node_{i-1}" if i > 0 else None, "name": f"Node {i}"} for i in range(length)]
+def generate_linear_chain(length: int) -> list[dict[str, Any]]:
+    return [
+        {"id": f"node_{i}", "parent_id": f"node_{i-1}" if i > 0 else None, "name": f"Node {i}"}
+        for i in range(length)
+    ]
 
 
-def generate_wide_tree(num_children: int) -> List[Dict[str, Any]]:
+def generate_wide_tree(num_children: int) -> list[dict[str, Any]]:
     nodes = [{"id": "root", "parent_id": None, "name": "Root"}]
-    nodes.extend([{"id": f"child_{i}", "parent_id": "root", "name": f"Child {i}"} for i in range(num_children)])
+    nodes.extend(
+        [
+            {"id": f"child_{i}", "parent_id": "root", "name": f"Child {i}"}
+            for i in range(num_children)
+        ]
+    )
     return nodes
 
 
-def generate_nary_tree(branching_factor: int, depth: int) -> List[Dict[str, Any]]:
+def generate_nary_tree(branching_factor: int, depth: int) -> list[dict[str, Any]]:
     nodes = [{"id": "node_0", "parent_id": None, "name": "Root", "level": 0}]
     node_id = 1
     current_level = ["node_0"]
@@ -112,14 +121,18 @@ def generate_nary_tree(branching_factor: int, depth: int) -> List[Dict[str, Any]
         for parent in current_level:
             for _ in range(branching_factor):
                 nid = f"node_{node_id}"
-                nodes.append({"id": nid, "parent_id": parent, "name": f"Node {node_id}", "level": level})
+                nodes.append(
+                    {"id": nid, "parent_id": parent, "name": f"Node {node_id}", "level": level}
+                )
                 next_level.append(nid)
                 node_id += 1
         current_level = next_level
     return nodes
 
 
-def generate_random_dag(num_nodes: int, seed: int, root_probability: float = 0.1) -> List[Dict[str, Any]]:
+def generate_random_dag(
+    num_nodes: int, seed: int, root_probability: float = 0.1
+) -> list[dict[str, Any]]:
     random.seed(seed)
     nodes = []
     for i in range(num_nodes):
@@ -127,11 +140,15 @@ def generate_random_dag(num_nodes: int, seed: int, root_probability: float = 0.1
         if i > 0 and random.random() > root_probability:
             parent_idx = random.randint(0, i - 1)
             parent = f"node_{parent_idx}"
-        nodes.append({"id": f"node_{i}", "parent_id": parent, "name": f"Fuzzed Node {i}", "level": i // 10})
+        nodes.append(
+            {"id": f"node_{i}", "parent_id": parent, "name": f"Fuzzed Node {i}", "level": i // 10}
+        )
     return nodes
 
 
-def generate_dag_with_cycle(num_nodes: int, cycle_start: int, cycle_end: int) -> List[Dict[str, Any]]:
+def generate_dag_with_cycle(
+    num_nodes: int, cycle_start: int, cycle_end: int
+) -> list[dict[str, Any]]:
     """Generate a DAG with an intentional cycle by making an early node point to a later one."""
     nodes = generate_linear_chain(num_nodes)
     # Create cycle: make cycle_start's parent point to cycle_end (creates back edge)
@@ -140,19 +157,26 @@ def generate_dag_with_cycle(num_nodes: int, cycle_start: int, cycle_end: int) ->
     return nodes
 
 
-def generate_forest(num_trees: int, nodes_per_tree: int) -> List[Dict[str, Any]]:
+def generate_forest(num_trees: int, nodes_per_tree: int) -> list[dict[str, Any]]:
     nodes = []
     for tree in range(num_trees):
         tree_prefix = f"tree{tree}_"
         for i in range(nodes_per_tree):
             parent = f"{tree_prefix}node_{i-1}" if i > 0 else None
-            nodes.append({"id": f"{tree_prefix}node_{i}", "parent_id": parent, "name": f"Tree {tree} Node {i}"})
+            nodes.append(
+                {
+                    "id": f"{tree_prefix}node_{i}",
+                    "parent_id": parent,
+                    "name": f"Tree {tree} Node {i}",
+                }
+            )
     return nodes
 
 
 # =============================================================================
 # Traversal Tests (30+ cases)
 # =============================================================================
+
 
 class TestTraversal:
     def test_get_ancestors_leaf(self, extractor, simple_hierarchy):
@@ -310,12 +334,15 @@ class TestTraversal:
 # Error Detection Tests (40+ cases)
 # =============================================================================
 
+
 class TestErrorDetection:
     def test_detect_missing_parent(self, extractor, hierarchy_with_missing_parent):
         source = DictSourceAdapter(hierarchy_with_missing_parent)
         extractor.ingest(source)
         errors = extractor.get_errors()
-        missing_parent_errors = [e for e in errors if e.error_type == HierarchyErrorType.MISSING_PARENT]
+        missing_parent_errors = [
+            e for e in errors if e.error_type == HierarchyErrorType.MISSING_PARENT
+        ]
         assert len(missing_parent_errors) == 1
         assert "orphan" in missing_parent_errors[0].node_ids
 
@@ -371,25 +398,38 @@ class TestErrorDetection:
     def test_no_errors_valid_tree(self, extractor, simple_hierarchy):
         source = DictSourceAdapter(simple_hierarchy)
         extractor.ingest(source)
-        non_multi_root = [e for e in extractor.get_errors() if e.error_type != HierarchyErrorType.MULTI_ROOT]
+        non_multi_root = [
+            e for e in extractor.get_errors() if e.error_type != HierarchyErrorType.MULTI_ROOT
+        ]
         assert len(non_multi_root) == 0
 
     @pytest.mark.parametrize("num_roots", [2, 3, 5, 10, 20])
     def test_detect_multiple_roots(self, extractor, num_roots):
-        data = [{"id": f"root_{i}", "parent_id": None, "name": f"Root {i}"} for i in range(num_roots)]
+        data = [
+            {"id": f"root_{i}", "parent_id": None, "name": f"Root {i}"} for i in range(num_roots)
+        ]
         source = DictSourceAdapter(data)
         extractor.ingest(source)
         assert len(extractor.get_roots()) == num_roots
-        multi_root_errors = [e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.MULTI_ROOT]
+        multi_root_errors = [
+            e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.MULTI_ROOT
+        ]
         assert len(multi_root_errors) == 1
 
     @pytest.mark.parametrize("num_orphans", [1, 5, 10, 20])
     def test_detect_multiple_missing_parents(self, extractor, num_orphans):
         data = [{"id": "root", "parent_id": None, "name": "Root"}]
-        data.extend([{"id": f"orphan_{i}", "parent_id": f"missing_{i}", "name": f"Orphan {i}"} for i in range(num_orphans)])
+        data.extend(
+            [
+                {"id": f"orphan_{i}", "parent_id": f"missing_{i}", "name": f"Orphan {i}"}
+                for i in range(num_orphans)
+            ]
+        )
         source = DictSourceAdapter(data)
         extractor.ingest(source)
-        missing_parent_errors = [e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.MISSING_PARENT]
+        missing_parent_errors = [
+            e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.MISSING_PARENT
+        ]
         assert len(missing_parent_errors) == num_orphans
 
     @pytest.mark.parametrize("num_duplicates", [2, 3, 5, 10])
@@ -397,7 +437,9 @@ class TestErrorDetection:
         data = [{"id": "dup", "parent_id": None, "name": f"Dup {i}"} for i in range(num_duplicates)]
         source = DictSourceAdapter(data)
         extractor.ingest(source)
-        duplicate_errors = [e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.DUPLICATE_NODE]
+        duplicate_errors = [
+            e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.DUPLICATE_NODE
+        ]
         assert len(duplicate_errors) == num_duplicates - 1
 
     @pytest.mark.parametrize("cycle_size", [3, 4, 5, 10, 20])
@@ -408,7 +450,9 @@ class TestErrorDetection:
             data.append({"id": f"node_{i}", "parent_id": f"node_{next_i}", "name": f"Node {i}"})
         source = DictSourceAdapter(data)
         extractor.ingest(source)
-        cycle_errors = [e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.CYCLE_DETECTED]
+        cycle_errors = [
+            e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.CYCLE_DETECTED
+        ]
         assert len(cycle_errors) >= 1
 
     def test_orphan_detection(self, extractor):
@@ -420,7 +464,9 @@ class TestErrorDetection:
         ]
         source = DictSourceAdapter(data)
         extractor.ingest(source)
-        orphan_errors = [e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.ORPHAN_NODE]
+        orphan_errors = [
+            e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.ORPHAN_NODE
+        ]
         assert len(orphan_errors) >= 1
 
     @pytest.mark.parametrize("seed", range(10))
@@ -442,6 +488,7 @@ class TestErrorDetection:
 # =============================================================================
 # Normalization Tests (25+ cases)
 # =============================================================================
+
 
 class TestNormalization:
     def test_normalize_unicode_keys(self, extractor):
@@ -534,6 +581,7 @@ class TestNormalization:
 # Source Adapter Tests (15+ cases)
 # =============================================================================
 
+
 class TestSourceAdapters:
     def test_dict_source_adapter(self, extractor, simple_hierarchy):
         source = DictSourceAdapter(simple_hierarchy, source_name="test_dict")
@@ -543,7 +591,7 @@ class TestSourceAdapters:
         assert metadata["record_count"] == 6
 
     def test_json_file_adapter(self, extractor, simple_hierarchy):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             json.dump({"nodes": simple_hierarchy}, f)
             temp_path = Path(f.name)
         try:
@@ -554,7 +602,7 @@ class TestSourceAdapters:
             temp_path.unlink()
 
     def test_json_file_adapter_nested_path(self, extractor, simple_hierarchy):
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             json.dump({"data": {"hierarchy": {"nodes": simple_hierarchy}}}, f)
             temp_path = Path(f.name)
         try:
@@ -565,8 +613,10 @@ class TestSourceAdapters:
             temp_path.unlink()
 
     def test_csv_source_adapter(self, extractor):
-        csv_content = "id,parent_id,name,level\nroot,,Root,0\nchild1,root,Child 1,1\nchild2,root,Child 2,1\n"
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.csv', delete=False) as f:
+        csv_content = (
+            "id,parent_id,name,level\nroot,,Root,0\nchild1,root,Child 1,1\nchild2,root,Child 2,1\n"
+        )
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False) as f:
             f.write(csv_content)
             temp_path = Path(f.name)
         try:
@@ -579,12 +629,17 @@ class TestSourceAdapters:
 
     def test_csv_source_adapter_custom_columns(self, extractor):
         csv_content = "node_id,parent_node,node_name,depth\nroot,,Root,0\nchild1,root,Child 1,1\n"
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.csv', delete=False) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".csv", delete=False) as f:
             f.write(csv_content)
             temp_path = Path(f.name)
         try:
-            source = CSVSourceAdapter(temp_path, id_column="node_id", parent_column="parent_node", 
-                                      name_column="node_name", level_column="depth")
+            source = CSVSourceAdapter(
+                temp_path,
+                id_column="node_id",
+                parent_column="parent_node",
+                name_column="node_name",
+                level_column="depth",
+            )
             extractor.ingest(source)
             assert len(extractor.get_all_nodes()) == 2
         finally:
@@ -605,6 +660,7 @@ class TestSourceAdapters:
 # =============================================================================
 # Export Tests (15+ cases)
 # =============================================================================
+
 
 class TestExport:
     def test_export_json(self, extractor, simple_hierarchy):
@@ -684,6 +740,7 @@ class TestExport:
 # Metrics Tests (15+ cases)
 # =============================================================================
 
+
 class TestMetrics:
     def test_get_metrics(self, extractor, simple_hierarchy):
         source = DictSourceAdapter(simple_hierarchy)
@@ -743,6 +800,7 @@ class TestMetrics:
 # Performance Tests (10+ cases)
 # =============================================================================
 
+
 class TestPerformance:
     @pytest.mark.slow
     def test_large_hierarchy_50k_nodes(self, extractor):
@@ -756,7 +814,9 @@ class TestPerformance:
                     if node_id >= 50000:
                         break
                     nid = f"node_{node_id}"
-                    nodes.append({"id": nid, "parent_id": parent, "name": f"Node {node_id}", "level": level})
+                    nodes.append(
+                        {"id": nid, "parent_id": parent, "name": f"Node {node_id}", "level": level}
+                    )
                     next_level.append(nid)
                     node_id += 1
                 if node_id >= 50000:
@@ -807,6 +867,7 @@ class TestPerformance:
 # =============================================================================
 # Fuzz Tests (50+ parametrized cases)
 # =============================================================================
+
 
 class TestFuzzed:
     @pytest.mark.parametrize("seed", range(50))
@@ -860,13 +921,16 @@ class TestFuzzed:
             data.append({"id": f"node_{i}", "parent_id": f"node_{next_i}", "name": f"Node {i}"})
         source = DictSourceAdapter(data)
         extractor.ingest(source)
-        cycle_errors = [e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.CYCLE_DETECTED]
+        cycle_errors = [
+            e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.CYCLE_DETECTED
+        ]
         assert len(cycle_errors) >= 1
 
 
 # =============================================================================
 # Edge Case Tests (30+ cases)
 # =============================================================================
+
 
 class TestEdgeCases:
     def test_self_loop(self, extractor):
@@ -934,7 +998,9 @@ class TestEdgeCases:
         data = [{"id": "node", "parent_id": "ghost", "name": "Node"}]
         source = DictSourceAdapter(data)
         extractor.ingest(source)
-        missing_errors = [e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.MISSING_PARENT]
+        missing_errors = [
+            e for e in extractor.get_errors() if e.error_type == HierarchyErrorType.MISSING_PARENT
+        ]
         assert len(missing_errors) == 1
 
     @pytest.mark.parametrize("level", [-1, 0, 1, 100, 999999])
@@ -951,7 +1017,15 @@ class TestEdgeCases:
         assert extractor.get_node("node").level == 0
 
     def test_metadata_preservation(self, extractor):
-        data = [{"id": "node", "parent_id": None, "name": "Node", "custom_field": "custom_value", "extra": 123}]
+        data = [
+            {
+                "id": "node",
+                "parent_id": None,
+                "name": "Node",
+                "custom_field": "custom_value",
+                "extra": 123,
+            }
+        ]
         source = DictSourceAdapter(data)
         extractor.ingest(source)
         node = extractor.get_node("node")
@@ -976,6 +1050,7 @@ class TestEdgeCases:
 # =============================================================================
 # Oracle-Based Lineage Tests (20+ cases)
 # =============================================================================
+
 
 class TestOracleBasedLineage:
     def test_complete_binary_tree_lineage(self, extractor):
@@ -1044,10 +1119,13 @@ class TestOracleBasedLineage:
 # Regression Suite on Synthetic DAGs (20+ cases)
 # =============================================================================
 
+
 class TestRegressionSyntheticDAGs:
     def test_star_graph(self, extractor):
         data = [{"id": "center", "parent_id": None, "name": "Center"}]
-        data.extend([{"id": f"leaf_{i}", "parent_id": "center", "name": f"Leaf {i}"} for i in range(100)])
+        data.extend(
+            [{"id": f"leaf_{i}", "parent_id": "center", "name": f"Leaf {i}"} for i in range(100)]
+        )
         source = DictSourceAdapter(data)
         extractor.ingest(source)
         assert len(extractor.get_descendants("center")) == 100

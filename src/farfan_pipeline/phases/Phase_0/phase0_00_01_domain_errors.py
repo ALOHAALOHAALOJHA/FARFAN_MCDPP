@@ -14,6 +14,22 @@ Version: 1.0.0
 License: Proprietary
 """
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 0
+__stage__ = 0
+__order__ = 1
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "LOW"
+__execution_pattern__ = "Singleton"
+
+
+
 
 class ContractViolationError(Exception):
     """
@@ -28,6 +44,7 @@ class ContractViolationError(Exception):
         ...     print(f"Caught: {e}")
         Caught: Contract violated
     """
+
     pass
 
 
@@ -48,6 +65,7 @@ class DataContractError(ContractViolationError):
         ...     print(f"Data error: {e}")
         Data error: Invalid payload schema
     """
+
     pass
 
 
@@ -68,6 +86,7 @@ class SystemContractError(ContractViolationError):
         ...     print(f"System error: {e}")
         System error: Configuration missing
     """
+
     pass
 
 
@@ -79,9 +98,9 @@ if __name__ == "__main__":
     doctest.testmod(verbose=True)
 
     # Integration tests
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("Domain Exceptions Integration Tests")
-    print("="*60)
+    print("=" * 60)
 
     print("\n1. Testing exception hierarchy:")
     assert issubclass(DataContractError, ContractViolationError)
@@ -132,6 +151,6 @@ if __name__ == "__main__":
     assert errors[1] == ("system", "SystemContractError")
     print("   ✓ Data and system errors are distinguishable")
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("Domain exceptions doctest OK - All tests passed!")
-    print("="*60)
+    print("=" * 60)

@@ -33,6 +33,7 @@ class CQCConfig:
 
     **Fallback**: Set to False for backward compatibility.
     """
+
     lazy_load_questions: bool = True
     use_signal_index: bool = True
     pattern_inheritance: bool = True
@@ -87,9 +88,9 @@ class CQCLoader:
         if self.config.lazy_load_questions:
             try:
                 from ._registry.questions.question_loader import LazyQuestionRegistry
+
                 self.registry = LazyQuestionRegistry(
-                    cache_size=self.config.cache_size,
-                    questions_dir=self._get_questions_dir()
+                    cache_size=self.config.cache_size, questions_dir=self._get_questions_dir()
                 )
                 self._registry_type = "lazy"
             except ImportError:
@@ -103,6 +104,7 @@ class CQCLoader:
         if self.config.use_signal_index:
             try:
                 from ._registry.questions.signal_router import SignalQuestionIndex
+
                 self.router = SignalQuestionIndex()
                 self._router_type = "indexed"
             except ImportError:
@@ -116,6 +118,7 @@ class CQCLoader:
         if self.config.pattern_inheritance:
             try:
                 from ._registry.questions.pattern_inheritance import PatternResolver
+
                 self.pattern_resolver = PatternResolver(registry_path=self._get_registry_path())
                 self._pattern_type = "inherited"
             except ImportError:
@@ -165,7 +168,7 @@ class CQCLoader:
             return self.registry.get(question_id)
         else:
             # Fallback to traditional loading
-            return self.registry.get(question_id) if hasattr(self.registry, 'get') else None
+            return self.registry.get(question_id) if hasattr(self.registry, "get") else None
 
     def get_batch(self, question_ids: List[str]) -> Dict[str, Any]:
         """
@@ -185,7 +188,7 @@ class CQCLoader:
             ValueError: If not all requested questions could be loaded
         """
         requested_count = len(question_ids)
-        
+
         if self._registry_type == "lazy":
             result = self.registry.get_batch(question_ids)
         else:
@@ -239,12 +242,12 @@ class CQCLoader:
             Dict mapping signal_type → question_ids
         """
         import logging
-        
+
         if self._router_type == "indexed":
             results = self.router.route_batch(signal_types)
         else:
             results = {sig: self.route_signal(sig) for sig in signal_types}
-        
+
         # Verify counts per coding guidelines
         requested = len(signal_types)
         processed = len(results)
@@ -254,7 +257,7 @@ class CQCLoader:
                 f"route_batch: requested {requested} signals, processed {processed}. "
                 f"Missing: {missing}"
             )
-        
+
         return results
 
     # ========================================================================
@@ -281,7 +284,7 @@ class CQCLoader:
         else:
             # Fallback to direct patterns from question
             question = self.get_question(question_id)
-            return question.patterns if question and hasattr(question, 'patterns') else []
+            return question.patterns if question and hasattr(question, "patterns") else []
 
     # ========================================================================
     # COMBINED OPERATIONS (Synergy of all 3 points)
@@ -315,14 +318,14 @@ class CQCLoader:
         if not question:
             return None
 
-        result = question.to_dict() if hasattr(question, 'to_dict') else question
+        result = question.to_dict() if hasattr(question, "to_dict") else question
 
         # Add resolved patterns (Acupuncture Point 3)
         if self._pattern_type == "inherited":
             result["patterns"] = self.resolve_patterns(question_id)
 
         # Add signal types (Acupuncture Point 2 - reverse lookup)
-        if self._router_type == "indexed" and hasattr(self.router, 'get_signals_for_question'):
+        if self._router_type == "indexed" and hasattr(self.router, "get_signals_for_question"):
             result["signals"] = list(self.router.get_signals_for_question(question_id))
 
         return result
@@ -358,14 +361,14 @@ class CQCLoader:
             results[qid] = {
                 "question": question,
                 "patterns": self.resolve_patterns(qid),
-                "signal_data": signal_data
+                "signal_data": signal_data,
             }
 
         return {
             "signal_type": signal_type,
             "target_count": len(target_question_ids),
             "loaded_count": len(questions),
-            "results": results
+            "results": results,
         }
 
     # ========================================================================
@@ -383,21 +386,21 @@ class CQCLoader:
             "config": {
                 "lazy_load_questions": self.config.lazy_load_questions,
                 "use_signal_index": self.config.use_signal_index,
-                "pattern_inheritance": self.config.pattern_inheritance
+                "pattern_inheritance": self.config.pattern_inheritance,
             },
             "components": {
                 "registry_type": self._registry_type,
                 "router_type": self._router_type,
-                "pattern_type": self._pattern_type
-            }
+                "pattern_type": self._pattern_type,
+            },
         }
 
         # Registry stats
-        if self._registry_type == "lazy" and hasattr(self.registry, 'get_stats'):
+        if self._registry_type == "lazy" and hasattr(self.registry, "get_stats"):
             stats["registry"] = self.registry.get_stats()
 
         # Router stats
-        if self._router_type == "indexed" and hasattr(self.router, 'get_coverage_stats'):
+        if self._router_type == "indexed" and hasattr(self.router, "get_coverage_stats"):
             stats["router"] = self.router.get_coverage_stats()
 
         # Pattern resolver stats
@@ -406,7 +409,7 @@ class CQCLoader:
                 "clusters": len(self.pattern_resolver.clusters),
                 "policy_areas": len(self.pattern_resolver.policy_areas),
                 "dimensions": len(self.pattern_resolver.dimensions),
-                "slots": len(self.pattern_resolver.slots)
+                "slots": len(self.pattern_resolver.slots),
             }
 
         return stats
@@ -421,10 +424,7 @@ class CQCLoader:
 
 
 # Convenience exports
-__all__ = [
-    "CQCConfig",
-    "CQCLoader"
-]
+__all__ = ["CQCConfig", "CQCLoader"]
 
 __version__ = "2.0.0"
 
@@ -445,15 +445,17 @@ from .resolver import (
     resolve_questionnaire,
 )
 
-__all__.extend([
-    "CanonicalQuestionnaireResolver",
-    "CanonicalQuestionnaire",
-    "AssemblyProvenance",
-    "QuestionnairePort",
-    "ResolverError",
-    "AssemblyError",
-    "IntegrityError",
-    "ValidationError",
-    "get_resolver",
-    "resolve_questionnaire",
-])
+__all__.extend(
+    [
+        "CanonicalQuestionnaireResolver",
+        "CanonicalQuestionnaire",
+        "AssemblyProvenance",
+        "QuestionnairePort",
+        "ResolverError",
+        "AssemblyError",
+        "IntegrityError",
+        "ValidationError",
+        "get_resolver",
+        "resolve_questionnaire",
+    ]
+)

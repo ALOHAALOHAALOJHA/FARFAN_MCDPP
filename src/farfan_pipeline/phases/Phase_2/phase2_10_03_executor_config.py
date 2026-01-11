@@ -19,17 +19,31 @@ Loading hierarchy (highest to lowest priority):
 
 See CALIBRATION_VS_PARAMETRIZATION.md for complete specification.
 """
-
 from __future__ import annotations
 
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 10
+__order__ = 3
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "CRITICAL"
+__execution_pattern__ = "On-Demand"
+
 import json
+import logging
 import os
 import threading
-import logging
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from collections.abc import Callable
+from dataclasses import dataclass
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict, Optional, Callable
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -38,13 +52,13 @@ logger = logging.getLogger(__name__)
 class ExecutorConfig:
     """
     Runtime configuration for executor execution (HOW parameters only).
-    
+
     This dataclass contains ONLY execution parameters that control HOW
     executors run, NOT calibration values that define WHAT quality we measure.
-    
+
     Loading Hierarchy:
         CLI args > ENV vars > environment file > executor config file > defaults
-    
+
     Attributes:
         timeout_s: Maximum execution time in seconds
         retry: Number of retry attempts on failure
@@ -78,11 +92,17 @@ class ExecutorConfig:
             raise ValueError("memory_limit_mb must be positive when provided")
 
     @classmethod
-    def from_dict(cls, config_dict: Dict[str, Any]) -> ExecutorConfig:
+    def from_dict(cls, config_dict: dict[str, Any]) -> ExecutorConfig:
         """Create ExecutorConfig from dictionary."""
         valid_fields = {
-            "timeout_s", "retry", "temperature", "max_tokens",
-            "memory_limit_mb", "enable_profiling", "seed", "extra"
+            "timeout_s",
+            "retry",
+            "temperature",
+            "max_tokens",
+            "memory_limit_mb",
+            "enable_profiling",
+            "seed",
+            "extra",
         }
         filtered = {k: v for k, v in config_dict.items() if k in valid_fields}
         return cls(**filtered)
@@ -92,46 +112,46 @@ class ExecutorConfig:
         cls,
         executor_id: str,
         environment: str = "production",
-        cli_overrides: Optional[Dict[str, Any]] = None
+        cli_overrides: dict[str, Any] | None = None,
     ) -> ExecutorConfig:
         """
         Load ExecutorConfig from multiple sources with proper hierarchy.
-        
+
         Loading order (highest to lowest priority):
         1. CLI arguments (passed via cli_overrides)
         2. Environment variables (FARFAN_*)
         3. Environment file (system/config/environments/{env}.json)
         4. Executor config file (executor_configs/{executor_id}.json)
         5. Conservative defaults
-        
+
         Args:
             executor_id: Executor identifier (e.g., "Q001" or legacy "D3_Q2_TargetProportionalityAnalyzer")
             environment: Environment name (development, staging, production)
             cli_overrides: CLI argument overrides
-        
+
         Returns:
             ExecutorConfig with merged configuration
         """
         config = cls._get_conservative_defaults()
-        
+
         executor_config = cls._load_executor_config_file(executor_id)
         if executor_config:
             config.update(executor_config)
-        
+
         env_config = cls._load_environment_file(environment)
         if env_config and "executor" in env_config:
             config.update(env_config["executor"])
-        
+
         env_vars = cls._load_environment_variables()
         config.update(env_vars)
-        
+
         if cli_overrides:
             config.update(cli_overrides)
-        
+
         return cls.from_dict(config)
 
     @staticmethod
-    def _get_conservative_defaults() -> Dict[str, Any]:
+    def _get_conservative_defaults() -> dict[str, Any]:
         """Get conservative default parameters."""
         return {
             "timeout_s": 300.0,
@@ -144,40 +164,45 @@ class ExecutorConfig:
         }
 
     @staticmethod
-    def _load_executor_config_file(executor_id: str) -> Optional[Dict[str, Any]]:
+    def _load_executor_config_file(executor_id: str) -> dict[str, Any] | None:
         """Load executor-specific config file."""
         config_file = Path(__file__).resolve().parent / "executor_configs" / f"{executor_id}.json"
-        
+
         if not config_file.exists():
             return None
-        
+
         try:
             with open(config_file) as f:
                 data = json.load(f)
                 return data.get("runtime_parameters", {})
-        except (json.JSONDecodeError, IOError):
+        except (OSError, json.JSONDecodeError):
             return None
 
     @staticmethod
-    def _load_environment_file(environment: str) -> Optional[Dict[str, Any]]:
+    def _load_environment_file(environment: str) -> dict[str, Any] | None:
         """Load environment-specific config file."""
-        base_path = Path(__file__).resolve().parent.parent.parent.parent / "system" / "config" / "environments"
+        base_path = (
+            Path(__file__).resolve().parent.parent.parent.parent
+            / "system"
+            / "config"
+            / "environments"
+        )
         env_file = base_path / f"{environment}.json"
-        
+
         if not env_file.exists():
             return None
-        
+
         try:
             with open(env_file) as f:
                 return json.load(f)
-        except (json.JSONDecodeError, IOError):
+        except (OSError, json.JSONDecodeError):
             return None
 
     @staticmethod
-    def _load_environment_variables() -> Dict[str, Any]:
+    def _load_environment_variables() -> dict[str, Any]:
         """Load configuration from environment variables."""
         config = {}
-        
+
         if "FARFAN_TIMEOUT_S" in os.environ:
             config["timeout_s"] = float(os.environ["FARFAN_TIMEOUT_S"])
         if "FARFAN_RETRY" in os.environ:
@@ -190,13 +215,14 @@ class ExecutorConfig:
             config["memory_limit_mb"] = int(os.environ["FARFAN_MEMORY_LIMIT_MB"])
         if "FARFAN_SEED" in os.environ:
             config["seed"] = int(os.environ["FARFAN_SEED"])
-        
+
         return config
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary, excluding None values."""
         return {
-            k: v for k, v in {
+            k: v
+            for k, v in {
                 "timeout_s": self.timeout_s,
                 "retry": self.retry,
                 "temperature": self.temperature,
@@ -205,7 +231,8 @@ class ExecutorConfig:
                 "enable_profiling": self.enable_profiling,
                 "seed": self.seed,
                 "extra": self.extra,
-            }.items() if v is not None
+            }.items()
+            if v is not None
         }
 
 
@@ -215,7 +242,6 @@ class ExecutorConfig:
 
 import signal
 import time
-from typing import Callable
 
 
 class HotReloadableConfig:
@@ -245,7 +271,7 @@ class HotReloadableConfig:
         self,
         config_path: Path,
         auto_reload_signal: bool = True,
-        reload_interval_seconds: float = 30.0
+        reload_interval_seconds: float = 30.0,
     ):
         """
         Initialize hot-reloadable config.
@@ -257,7 +283,7 @@ class HotReloadableConfig:
         """
         self.config_path = config_path
         self.reload_interval_seconds = reload_interval_seconds
-        self._config: Dict[str, Any] = {}
+        self._config: dict[str, Any] = {}
         self._lock = threading.RLock()
 
         # Track both execution time and file modification time
@@ -265,8 +291,8 @@ class HotReloadableConfig:
         self._file_modified_at: datetime | None = None  # File modification time (timezone-aware)
 
         self._watching = False
-        self._watch_thread: Optional[threading.Thread] = None
-        self._reload_callbacks: list[Callable[[Dict[str, Any]], None]] = []
+        self._watch_thread: threading.Thread | None = None
+        self._reload_callbacks: list[Callable[[dict[str, Any]], None]] = []
 
         # Load initial config
         self._load_config()
@@ -275,7 +301,7 @@ class HotReloadableConfig:
         if auto_reload_signal:
             self._register_signal_handler()
 
-    def _load_config(self) -> Dict[str, Any]:
+    def _load_config(self) -> dict[str, Any]:
         """Load configuration from file."""
         with self._lock:
             if not self.config_path.exists():
@@ -283,28 +309,27 @@ class HotReloadableConfig:
                 return self._config
 
             try:
-                with open(self.config_path, "r") as f:
+                with open(self.config_path) as f:
                     self._config = json.load(f)
 
                 # Track when config was loaded (execution time)
-                self._loaded_at = datetime.now(timezone.utc)
+                self._loaded_at = datetime.now(UTC)
 
                 # Track file modification time (convert to timezone-aware)
                 self._file_modified_at = datetime.fromtimestamp(
-                    self.config_path.stat().st_mtime,
-                    tz=timezone.utc
+                    self.config_path.stat().st_mtime, tz=UTC
                 )
 
                 logger.info(f"Configuration loaded from {self.config_path}")
                 return self._config
-            except (json.JSONDecodeError, IOError) as e:
+            except (OSError, json.JSONDecodeError) as e:
                 logger.error(f"Failed to load config: {e}")
                 return self._config
 
     def _register_signal_handler(self) -> None:
         """
         Register SIGHUP handler for reload.
-        
+
         Note: Signal handlers must be registered from the main thread.
         If this config is initialized in a non-main thread, signal
         registration will fail silently and hot-reload will not be available.
@@ -317,7 +342,7 @@ class HotReloadableConfig:
                     "Signal-based config reload will be disabled."
                 )
                 return
-            
+
             signal.signal(signal.SIGHUP, self._reload_handler)
             logger.debug("Registered SIGHUP handler for config reload")
         except (AttributeError, ValueError) as e:
@@ -329,7 +354,7 @@ class HotReloadableConfig:
         logger.info("Received SIGHUP, reloading configuration")
         self.reload()
 
-    def reload(self) -> Dict[str, Any]:
+    def reload(self) -> dict[str, Any]:
         """
         Reload configuration from file.
 
@@ -363,12 +388,12 @@ class HotReloadableConfig:
         with self._lock:
             return self._config.get(key, default)
 
-    def get_all(self) -> Dict[str, Any]:
+    def get_all(self) -> dict[str, Any]:
         """Get complete configuration."""
         with self._lock:
             return dict(self._config)
 
-    def on_reload(self, callback: Callable[[Dict[str, Any]], None]) -> None:
+    def on_reload(self, callback: Callable[[dict[str, Any]], None]) -> None:
         """
         Register callback for configuration reload.
 
@@ -384,9 +409,7 @@ class HotReloadableConfig:
 
         self._watching = True
         self._watch_thread = threading.Thread(
-            target=self._watch_loop,
-            daemon=True,
-            name="ConfigWatcher"
+            target=self._watch_loop, daemon=True, name="ConfigWatcher"
         )
         self._watch_thread.start()
         logger.info(f"Started watching {self.config_path} for changes")
@@ -406,12 +429,14 @@ class HotReloadableConfig:
                 if self.config_path.exists():
                     # Convert file mtime to timezone-aware datetime
                     current_file_modified = datetime.fromtimestamp(
-                        self.config_path.stat().st_mtime,
-                        tz=timezone.utc
+                        self.config_path.stat().st_mtime, tz=UTC
                     )
 
                     # Compare with last known file modification time
-                    if self._file_modified_at is None or current_file_modified > self._file_modified_at:
+                    if (
+                        self._file_modified_at is None
+                        or current_file_modified > self._file_modified_at
+                    ):
                         logger.info("Config file changed, reloading")
                         self.reload()
             except Exception as e:

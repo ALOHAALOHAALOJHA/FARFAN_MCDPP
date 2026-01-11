@@ -4,6 +4,23 @@ PHASE_LABEL: Phase 2
 Sequence: G
 
 """
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 2
+__stage__ = 20
+__order__ = 0
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "HIGH"
+__execution_pattern__ = "Per-Task"
+
+
+
 """
 Method Signature Chain Layer Validation
 
@@ -18,7 +35,7 @@ This module provides signature governance for the analysis pipeline.
 """
 
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, TypedDict
 
@@ -80,9 +97,7 @@ class MethodSignatureValidator:
     def load_signatures(self) -> None:
         """Load method signatures from JSON file."""
         if not self.signatures_path.exists():
-            raise FileNotFoundError(
-                f"Signatures file not found: {self.signatures_path}"
-            )
+            raise FileNotFoundError(f"Signatures file not found: {self.signatures_path}")
 
         with open(self.signatures_path) as f:
             self.signatures_data = json.load(f)
@@ -124,9 +139,7 @@ class MethodSignatureValidator:
                 is_valid = False
                 issues.append("required_inputs must be a list")
             elif len(signature["required_inputs"]) == 0:
-                warnings.append(
-                    "required_inputs is empty - method has no mandatory inputs"
-                )
+                warnings.append("required_inputs is empty - method has no mandatory inputs")
             else:
                 # Validate input names
                 for inp in signature["required_inputs"]:
@@ -156,9 +169,7 @@ class MethodSignatureValidator:
                 for inp in signature["critical_optional"]:
                     if not isinstance(inp, str):
                         is_valid = False
-                        issues.append(
-                            f"Invalid critical_optional input (not a string): {inp}"
-                        )
+                        issues.append(f"Invalid critical_optional input (not a string): {inp}")
                     elif inp not in optional_inputs:
                         warnings.append(
                             f"critical_optional input '{inp}' not found in optional_inputs"
@@ -184,14 +195,10 @@ class MethodSignatureValidator:
                     issues.append("output_range must be a list or null")
                 elif len(output_range) != 2:
                     is_valid = False
-                    issues.append(
-                        "output_range must have exactly 2 elements [min, max]"
-                    )
+                    issues.append("output_range must have exactly 2 elements [min, max]")
                 else:
                     try:
-                        min_val, max_val = float(output_range[0]), float(
-                            output_range[1]
-                        )
+                        min_val, max_val = float(output_range[0]), float(output_range[1])
                         if min_val >= max_val:
                             is_valid = False
                             issues.append("output_range min must be less than max")
@@ -247,9 +254,7 @@ class MethodSignatureValidator:
 
         # Generate summary statistics
         total_methods = len(methods)
-        completeness_rate = (
-            (valid_count / total_methods * 100) if total_methods > 0 else 0.0
-        )
+        completeness_rate = (valid_count / total_methods * 100) if total_methods > 0 else 0.0
 
         # Analyze input patterns
         required_inputs_stats: dict[str, int] = {}
@@ -297,10 +302,8 @@ class MethodSignatureValidator:
         }
 
         return ValidationReport(
-            validation_timestamp=datetime.now(timezone.utc).isoformat() + "Z",
-            signatures_version=self.signatures_data.get(
-                "signatures_version", "unknown"
-            ),
+            validation_timestamp=datetime.now(UTC).isoformat() + "Z",
+            signatures_version=self.signatures_data.get("signatures_version", "unknown"),
             total_methods=total_methods,
             valid_methods=valid_count,
             invalid_methods=invalid_count,

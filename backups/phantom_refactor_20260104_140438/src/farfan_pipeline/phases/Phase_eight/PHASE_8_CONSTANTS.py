@@ -6,6 +6,7 @@ Lifecycle: ACTIVE
 Version: 1.0.0
 Effective-Date: 2025-12-30
 """
+
 from __future__ import annotations
 
 from typing import Final
@@ -31,12 +32,14 @@ STAGE_INIT: Final[int] = 10
 STAGE_ENGINE: Final[int] = 20
 STAGE_ENRICHMENT: Final[int] = 30
 
-VALID_STAGES: Final[frozenset[int]] = frozenset({
-    STAGE_BASE,
-    STAGE_INIT,
-    STAGE_ENGINE,
-    STAGE_ENRICHMENT,
-})
+VALID_STAGES: Final[frozenset[int]] = frozenset(
+    {
+        STAGE_BASE,
+        STAGE_INIT,
+        STAGE_ENGINE,
+        STAGE_ENRICHMENT,
+    }
+)
 
 STAGE_METADATA: Final[dict[int, dict[str, str]]] = {
     0: {"name": "Base", "description": "Package init and types"},
@@ -54,12 +57,14 @@ TYPE_ADAPTER: Final[str] = "ADP"
 TYPE_ENRICHER: Final[str] = "ENR"
 TYPE_UTILITY: Final[str] = "UTIL"
 
-VALID_MODULE_TYPES: Final[frozenset[str]] = frozenset({
-    TYPE_ENGINE,
-    TYPE_ADAPTER,
-    TYPE_ENRICHER,
-    TYPE_UTILITY,
-})
+VALID_MODULE_TYPES: Final[frozenset[str]] = frozenset(
+    {
+        TYPE_ENGINE,
+        TYPE_ADAPTER,
+        TYPE_ENRICHER,
+        TYPE_UTILITY,
+    }
+)
 
 # ============================================================================
 # CRITICALITY LEVELS
@@ -69,11 +74,13 @@ CRITICALITY_CRITICAL: Final[str] = "CRITICAL"
 CRITICALITY_HIGH: Final[str] = "HIGH"
 CRITICALITY_MEDIUM: Final[str] = "MEDIUM"
 
-VALID_CRITICALITY_LEVELS: Final[frozenset[str]] = frozenset({
-    CRITICALITY_CRITICAL,
-    CRITICALITY_HIGH,
-    CRITICALITY_MEDIUM,
-})
+VALID_CRITICALITY_LEVELS: Final[frozenset[str]] = frozenset(
+    {
+        CRITICALITY_CRITICAL,
+        CRITICALITY_HIGH,
+        CRITICALITY_MEDIUM,
+    }
+)
 
 # ============================================================================
 # EXECUTION PATTERNS
@@ -82,10 +89,12 @@ VALID_CRITICALITY_LEVELS: Final[frozenset[str]] = frozenset({
 PATTERN_ON_DEMAND: Final[str] = "On-Demand"
 PATTERN_STREAMING: Final[str] = "Streaming"
 
-VALID_EXECUTION_PATTERNS: Final[frozenset[str]] = frozenset({
-    PATTERN_ON_DEMAND,
-    PATTERN_STREAMING,
-})
+VALID_EXECUTION_PATTERNS: Final[frozenset[str]] = frozenset(
+    {
+        PATTERN_ON_DEMAND,
+        PATTERN_STREAMING,
+    }
+)
 
 # ============================================================================
 # RECOMMENDATION CONSTANTS

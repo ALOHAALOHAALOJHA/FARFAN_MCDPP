@@ -2,7 +2,7 @@
 Módulo:  method_expander.py
 Propósito: Expandir cada método asignado en una unidad semántica completa
 
-Ubicación: src/farfan_pipeline/phases/Phase_two/contract_generator/method_expander.py
+Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/method_expander.py
 
 RESPONSABILIDADES:
 1. Transformar MethodAssignment en ExpandedMethodUnit
@@ -11,7 +11,7 @@ RESPONSABILIDADES:
 4. Generar veto_conditions para métodos N3
 5. Preservar trazabilidad completa
 
-PRINCIPIOS: 
+PRINCIPIOS:
 - El expander NUNCA inventa información epistémica
 - Toda derivación se basa en reglas documentadas en la guía
 - Los campos expandidos son derivaciones lógicas, no inferencias
@@ -24,13 +24,13 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from . input_registry import MethodAssignment
+    from .input_registry import MethodAssignment
 
-logger = logging. getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -40,7 +40,7 @@ logger = logging. getLogger(__name__)
 EXPANDER_VERSION = "4.0.0-granular"
 
 # Mapeo de nivel a evidence requirements típicos (PARTE II, Sec 2.2)
-LEVEL_EVIDENCE_REQUIREMENTS:  dict[str, tuple[str, ...]] = {
+LEVEL_EVIDENCE_REQUIREMENTS: dict[str, tuple[str, ...]] = {
     "N1-EMP": (
         "raw_document_text",
         "preprocesado_metadata",
@@ -76,7 +76,7 @@ OUTPUT_TYPE_CLAIMS: dict[str, tuple[str, ...]] = {
 
 # Mapeo de nivel a failure modes típicos (PARTE II, Sec 2.2)
 LEVEL_FAILURE_MODES: dict[str, tuple[str, ...]] = {
-    "N1-EMP":  (
+    "N1-EMP": (
         "empty_extraction",
         "pattern_not_found",
         "malformed_input",
@@ -120,21 +120,21 @@ LEVEL_PHASE_DESCRIPTIONS: dict[str, str] = {
         "Calcula parámetros inferenciales basados en evidencia de N1. "
         "Transforma hechos en parámetros cuantitativos."
     ),
-    "N3-AUD":  (
+    "N3-AUD": (
         "Valida y puede vetar hallazgos basándose en criterios de robustez. "
         "Genera restricciones que pueden bloquear resultados."
     ),
 }
 
 # Mapeo de nivel a dependencies (para method_binding)
-LEVEL_DEPENDENCIES:  dict[str, tuple[str, ...]] = {
-    "N1-EMP":  (),
+LEVEL_DEPENDENCIES: dict[str, tuple[str, ...]] = {
+    "N1-EMP": (),
     "N2-INF": ("raw_facts",),
     "N3-AUD": ("raw_facts", "inferences"),
 }
 
 # Mapeo de nivel a modulates (para N3)
-LEVEL_MODULATES:  dict[str, tuple[str, ...]] = {
+LEVEL_MODULATES: dict[str, tuple[str, ...]] = {
     "N1-EMP": (),
     "N2-INF": ("edge_weights", "confidence_scores"),
     "N3-AUD": ("raw_facts. confidence", "inferences.confidence"),
@@ -151,24 +151,24 @@ DEFAULT_VETO_CONDITIONS: dict[str, dict[str, dict[str, Any]]] = {
             "rationale": "Semantic contradiction invalidates affected nodes",
         },
         "low_coherence": {
-            "trigger":  "coherence_score < 0.5",
+            "trigger": "coherence_score < 0.5",
             "action": "reduce_confidence",
             "scope": "source_facts",
             "confidence_multiplier": 0.5,
             "rationale": "Low coherence reduces reliability",
         },
     },
-    "TYPE_B":  {
+    "TYPE_B": {
         "statistical_significance_failed": {
             "trigger": "p_value > 0.05",
             "action": "reduce_confidence",
-            "scope":  "source_facts",
+            "scope": "source_facts",
             "confidence_multiplier": 0.5,
-            "rationale":  "Statistical insignificance degrades confidence",
+            "rationale": "Statistical insignificance degrades confidence",
         },
         "sample_size_insufficient": {
             "trigger": "sample_size < 30",
-            "action":  "flag_caution",
+            "action": "flag_caution",
             "scope": "affected_inferences",
             "confidence_multiplier": 0.7,
             "rationale": "Small sample size warrants caution",
@@ -177,15 +177,15 @@ DEFAULT_VETO_CONDITIONS: dict[str, dict[str, dict[str, Any]]] = {
     "TYPE_C": {
         "cycle_detected": {
             "trigger": "has_cycle(DAG) == True",
-            "action":  "invalidate_graph",
+            "action": "invalidate_graph",
             "scope": "entire_causal_graph",
             "confidence_multiplier": 0.0,
             "rationale": "Cyclic DAG is epistemically invalid",
         },
         "topological_violation": {
             "trigger": "topological_order_violated == True",
-            "action":  "block_branch",
-            "scope":  "affected_subgraph",
+            "action": "block_branch",
+            "scope": "affected_subgraph",
             "confidence_multiplier": 0.0,
             "rationale": "Topological violation invalidates causal chain",
         },
@@ -194,14 +194,14 @@ DEFAULT_VETO_CONDITIONS: dict[str, dict[str, dict[str, Any]]] = {
         "budget_gap_critical": {
             "trigger": "budget_gap > 0.5",
             "action": "block_branch",
-            "scope":  "affected_goals",
+            "scope": "affected_goals",
             "confidence_multiplier": 0.0,
             "rationale": "Critical budget gap blocks feasibility",
         },
         "budget_gap_significant": {
             "trigger": "budget_gap > 0.3",
             "action": "reduce_confidence",
-            "scope":  "affected_goals",
+            "scope": "affected_goals",
             "confidence_multiplier": 0.3,
             "rationale": "Significant budget gap reduces confidence",
         },
@@ -225,12 +225,12 @@ DEFAULT_VETO_CONDITIONS: dict[str, dict[str, dict[str, Any]]] = {
 }
 
 # Veto conditions genéricas para cualquier N3
-GENERIC_N3_VETO_CONDITIONS:  dict[str, dict[str, Any]] = {
+GENERIC_N3_VETO_CONDITIONS: dict[str, dict[str, Any]] = {
     "critical_failure_veto": {
-        "trigger":  "critical_validation_failed == True",
-        "action":  "invalidate_graph",
+        "trigger": "critical_validation_failed == True",
+        "action": "invalidate_graph",
         "scope": "entire_output",
-        "confidence_multiplier":  0.0,
+        "confidence_multiplier": 0.0,
         "rationale": "Critical validation failure invalidates entire output",
     },
 }
@@ -242,16 +242,16 @@ GENERIC_N3_VETO_CONDITIONS:  dict[str, dict[str, Any]] = {
 
 
 @dataclass(frozen=True)
-class ExpandedMethodUnit: 
+class ExpandedMethodUnit:
     """
-    Unidad de método completamente expandida. 
+    Unidad de método completamente expandida.
 
     Representa un método con toda su información semántica explícita,
-    lista para ser incluida en un contrato. 
+    lista para ser incluida en un contrato.
 
-    INMUTABLE después de creación. 
+    INMUTABLE después de creación.
 
-    Esta estructura captura: 
+    Esta estructura captura:
     - Identidad del método (class, name, file, provides)
     - Clasificación epistémica (level, epistemology, output_type)
     - Comportamiento de fusión (fusion_behavior, fusion_symbol)
@@ -261,11 +261,12 @@ class ExpandedMethodUnit:
     - Veto conditions (solo para N3)
     - Metadata de trazabilidad
     """
+
     # ══════════════════════════════════════════════════════════════════════
     # IDENTIDAD
     # ══════════════════════════════════════════════════════════════════════
     method_id: str  # ClassName. method_name
-    class_name:  str
+    class_name: str
     method_name: str
     mother_file: str
     provides: str
@@ -276,7 +277,7 @@ class ExpandedMethodUnit:
     level: str  # N1-EMP, N2-INF, N3-AUD
     level_name: str  # Base Empírica, Procesamiento Inferencial, etc.
     epistemology: str  # Empirismo positivista, Bayesianismo, Falsacionismo
-    output_type:  str  # FACT, PARAMETER, CONSTRAINT
+    output_type: str  # FACT, PARAMETER, CONSTRAINT
 
     # ══════════════════════════════════════════════════════════════════════
     # COMPORTAMIENTO DE FUSIÓN
@@ -311,7 +312,7 @@ class ExpandedMethodUnit:
     # ══════════════════════════════════════════════════════════════════════
     # DEPENDENCIAS Y MODIFICACIONES
     # ══════════════════════════════════════════════════════════════════════
-    requires:  tuple[str, ...]  # Dependencias de entrada
+    requires: tuple[str, ...]  # Dependencias de entrada
     modifies: tuple[str, ...]  # Lo que modifica (para N2) o modulates (para N3)
 
     # ══════════════════════════════════════════════════════════════════════
@@ -333,7 +334,7 @@ class ExpandedMethodUnit:
     @property
     def is_n3_auditor(self) -> bool:
         """Indica si es un método de auditoría (N3)"""
-        return self.level. startswith("N3")
+        return self.level.startswith("N3")
 
     @property
     def is_low_confidence(self) -> bool:
@@ -347,26 +348,26 @@ class ExpandedMethodUnit:
 
     def to_contract_dict(self) -> dict[str, Any]:
         """
-        Convierte a diccionario para inclusión en contrato JSON. 
+        Convierte a diccionario para inclusión en contrato JSON.
 
         Returns:
             Diccionario con todos los campos para el contrato
         """
         base_dict = {
             "class_name": self.class_name,
-            "method_name":  self.method_name,
+            "method_name": self.method_name,
             "mother_file": self.mother_file,
-            "provides":  self.provides,
+            "provides": self.provides,
             "method_id": self.method_id,
-            "level": self. level,
+            "level": self.level,
             "level_name": self.level_name,
-            "epistemology": self. epistemology,
+            "epistemology": self.epistemology,
             "output_type": self.output_type,
-            "fusion_behavior":  self.fusion_behavior,
+            "fusion_behavior": self.fusion_behavior,
             "fusion_symbol": self.fusion_symbol,
             "classification_rationale": self.classification_rationale,
             "confidence_score": self.confidence_score,
-            "contract_affinities":  self.contract_affinities,
+            "contract_affinities": self.contract_affinities,
             "parameters": list(self.parameters),
             "return_type": self.return_type,
             "is_private": self.is_private,
@@ -374,9 +375,9 @@ class ExpandedMethodUnit:
             "output_claims": list(self.output_claims),
             "constraints_and_limits": list(self.constraints_and_limits),
             "failure_modes": list(self.failure_modes),
-            "interaction_notes": self. interaction_notes,
+            "interaction_notes": self.interaction_notes,
             "expansion_source": self.expansion_source,
-            "expansion_timestamp":  self.expansion_timestamp,
+            "expansion_timestamp": self.expansion_timestamp,
             "description": self.description,
             "requires": list(self.requires),
         }
@@ -418,25 +419,25 @@ class MethodExpander:
 
     def __init__(self, timestamp: str | None = None):
         """
-        Inicializa el expander. 
+        Inicializa el expander.
 
         Args:
-            timestamp:  ISO timestamp para trazabilidad.  Si None, se genera automáticamente. 
+            timestamp:  ISO timestamp para trazabilidad.  Si None, se genera automáticamente.
         """
-        self.expansion_timestamp = timestamp or datetime.now(timezone.utc).isoformat()
+        self.expansion_timestamp = timestamp or datetime.now(UTC).isoformat()
         self._expansion_count = 0
 
         logger.info(f"MethodExpander initialized, version {EXPANDER_VERSION}")
 
     def expand_method(
         self,
-        assignment: "MethodAssignment",
+        assignment: MethodAssignment,
         context: dict[str, Any],
     ) -> ExpandedMethodUnit:
         """
         Expande un método asignado en unidad semántica completa.
 
-        SECUENCIA: 
+        SECUENCIA:
         1. Derivar evidence_requirements del nivel
         2. Derivar output_claims del output_type
         3. Derivar constraints del nivel y contexto
@@ -447,9 +448,9 @@ class MethodExpander:
         8. Generar veto_conditions si es N3
         9. Ensamblar ExpandedMethodUnit
 
-        Args: 
+        Args:
             assignment: MethodAssignment del method_sets_by_question. json
-            context: Contexto de la pregunta con: 
+            context: Contexto de la pregunta con:
                 - type_code: Código del tipo de contrato (TYPE_A, etc.)
                 - type_name: Nombre del tipo
                 - fusion_strategy: Estrategia de fusión
@@ -464,7 +465,7 @@ class MethodExpander:
         # ══════════════════════════════════════════════════════════════════
 
         # 1. Evidence requirements del nivel
-        evidence_reqs = self._derive_evidence_requirements(assignment. level)
+        evidence_reqs = self._derive_evidence_requirements(assignment.level)
 
         # 2. Output claims del output_type
         output_claims = self._derive_output_claims(assignment.output_type)
@@ -479,7 +480,7 @@ class MethodExpander:
         interaction = self._derive_interaction_notes(assignment, context)
 
         # 6. Description del nivel
-        description = self._derive_description(assignment. level)
+        description = self._derive_description(assignment.level)
 
         # 7. Dependencies del nivel
         requires = self._derive_requires(assignment.level)
@@ -489,9 +490,7 @@ class MethodExpander:
         veto_conditions = self._derive_veto_conditions(assignment, context)
 
         # 9. Enriquecer classification_rationale con referencia a la guía
-        enhanced_rationale = (
-            f"{assignment.classification_rationale} (PARTE II, Sección 2.2)"
-        )
+        enhanced_rationale = f"{assignment.classification_rationale} (PARTE II, Sección 2.2)"
 
         # ══════════════════════════════════════════════════════════════════
         # ENSAMBLAJE
@@ -518,7 +517,7 @@ class MethodExpander:
             contract_affinities=dict(assignment.contract_affinities),
             # Firma técnica
             parameters=assignment.parameters,
-            return_type=assignment. return_type,
+            return_type=assignment.return_type,
             is_private=assignment.is_private,
             # Campos expandidos
             evidence_requirements=evidence_reqs,
@@ -550,7 +549,7 @@ class MethodExpander:
         """
         Deriva evidence requirements del nivel.
 
-        Basado en PARTE II, Sección 2.2 de la guía. 
+        Basado en PARTE II, Sección 2.2 de la guía.
 
         Args:
             level: Nivel epistémico (N1-EMP, N2-INF, N3-AUD)
@@ -558,11 +557,11 @@ class MethodExpander:
         Returns:
             Tupla de requirements
         """
-        return LEVEL_EVIDENCE_REQUIREMENTS. get(level, ())
+        return LEVEL_EVIDENCE_REQUIREMENTS.get(level, ())
 
     def _derive_output_claims(self, output_type: str) -> tuple[str, ...]:
         """
-        Deriva output claims del output_type. 
+        Deriva output claims del output_type.
 
         Basado en PARTE I, Sección 1.3 de la guía.
 
@@ -576,7 +575,7 @@ class MethodExpander:
 
     def _derive_constraints(
         self,
-        assignment: "MethodAssignment",
+        assignment: MethodAssignment,
         context: dict[str, Any],
     ) -> tuple[str, ...]:
         """
@@ -591,11 +590,11 @@ class MethodExpander:
         Returns:
             Tupla de constraints
         """
-        constraints:  list[str] = []
+        constraints: list[str] = []
 
         # Constraints base del nivel
-        base_constraints = LEVEL_BASE_CONSTRAINTS.get(assignment. level, ())
-        constraints. extend(base_constraints)
+        base_constraints = LEVEL_BASE_CONSTRAINTS.get(assignment.level, ())
+        constraints.extend(base_constraints)
 
         # Constraint de confianza baja
         if assignment.confidence_score < 0.7:
@@ -605,7 +604,7 @@ class MethodExpander:
 
     def _derive_failure_modes(self, level: str) -> tuple[str, ...]:
         """
-        Deriva failure modes del nivel. 
+        Deriva failure modes del nivel.
 
         Basado en PARTE II, Sección 2.2 de la guía.
 
@@ -619,7 +618,7 @@ class MethodExpander:
 
     def _derive_interaction_notes(
         self,
-        assignment: "MethodAssignment",
+        assignment: MethodAssignment,
         context: dict[str, Any],
     ) -> str:
         """
@@ -641,7 +640,7 @@ class MethodExpander:
             f"Level {assignment.level} provides {assignment.output_type} output."
         )
 
-    def _derive_description(self, level:  str) -> str:
+    def _derive_description(self, level: str) -> str:
         """
         Deriva descripción del nivel.
 
@@ -655,7 +654,7 @@ class MethodExpander:
         """
         return LEVEL_PHASE_DESCRIPTIONS.get(level, "")
 
-    def _derive_requires(self, level: str) -> tuple[str, ...]: 
+    def _derive_requires(self, level: str) -> tuple[str, ...]:
         """
         Deriva dependencias de entrada del nivel.
 
@@ -684,7 +683,7 @@ class MethodExpander:
 
     def _derive_veto_conditions(
         self,
-        assignment: "MethodAssignment",
+        assignment: MethodAssignment,
         context: dict[str, Any],
     ) -> dict[str, dict[str, Any]]:
         """
@@ -706,7 +705,7 @@ class MethodExpander:
             return {}
 
         type_code = context.get("type_code", "TYPE_A")
-        veto_conditions:  dict[str, dict[str, Any]] = {}
+        veto_conditions: dict[str, dict[str, Any]] = {}
 
         # Obtener veto conditions específicas del tipo
         type_specific = DEFAULT_VETO_CONDITIONS.get(type_code, {})
@@ -715,37 +714,41 @@ class MethodExpander:
         method_name_lower = assignment.method_name.lower()
 
         # Heurísticas para seleccionar veto conditions
-        if "coherence" in method_name_lower or "semantic" in method_name_lower: 
+        if "coherence" in method_name_lower or "semantic" in method_name_lower:
             if "low_coherence" in type_specific:
                 veto_conditions["low_coherence"] = type_specific["low_coherence"]
             if "semantic_contradiction" in type_specific:
                 veto_conditions["semantic_contradiction"] = type_specific["semantic_contradiction"]
 
-        if "statistical" in method_name_lower or "significance" in method_name_lower: 
+        if "statistical" in method_name_lower or "significance" in method_name_lower:
             if "statistical_significance_failed" in type_specific:
-                veto_conditions["statistical_significance_failed"] = type_specific["statistical_significance_failed"]
+                veto_conditions["statistical_significance_failed"] = type_specific[
+                    "statistical_significance_failed"
+                ]
 
         if "cycle" in method_name_lower or "acyclic" in method_name_lower:
-            if "cycle_detected" in type_specific: 
+            if "cycle_detected" in type_specific:
                 veto_conditions["cycle_detected"] = type_specific["cycle_detected"]
 
-        if "budget" in method_name_lower or "sufficiency" in method_name_lower: 
+        if "budget" in method_name_lower or "sufficiency" in method_name_lower:
             if "budget_gap_critical" in type_specific:
                 veto_conditions["budget_gap_critical"] = type_specific["budget_gap_critical"]
             if "budget_gap_significant" in type_specific:
                 veto_conditions["budget_gap_significant"] = type_specific["budget_gap_significant"]
 
-        if "logical" in method_name_lower or "contradiction" in method_name_lower: 
+        if "logical" in method_name_lower or "contradiction" in method_name_lower:
             if "logical_contradiction" in type_specific:
                 veto_conditions["logical_contradiction"] = type_specific["logical_contradiction"]
 
-        if "sequence" in method_name_lower: 
+        if "sequence" in method_name_lower:
             if "sequence_violation" in type_specific:
                 veto_conditions["sequence_violation"] = type_specific["sequence_violation"]
 
         # Si no se encontraron veto conditions específicas, añadir la genérica
         if not veto_conditions:
-            veto_conditions["critical_failure_veto"] = GENERIC_N3_VETO_CONDITIONS["critical_failure_veto"]
+            veto_conditions["critical_failure_veto"] = GENERIC_N3_VETO_CONDITIONS[
+                "critical_failure_veto"
+            ]
 
         return veto_conditions
 

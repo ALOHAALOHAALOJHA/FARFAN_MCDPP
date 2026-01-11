@@ -36,19 +36,15 @@ class TestProcessorConfigSchema:
 
     def test_sentence_length_validation(self):
         # Valid configuration
-        config = ProcessorConfigSchema(
-            min_sentence_length=50,
-            max_sentence_length=300
-        )
+        config = ProcessorConfigSchema(min_sentence_length=50, max_sentence_length=300)
         assert config.min_sentence_length == 50
         assert config.max_sentence_length == 300
 
         # Invalid: min >= max
-        with pytest.raises(ValidationError, match="min_sentence_length must be less than max_sentence_length"):
-            ProcessorConfigSchema(
-                min_sentence_length=600,
-                max_sentence_length=500
-            )
+        with pytest.raises(
+            ValidationError, match="min_sentence_length must be less than max_sentence_length"
+        ):
+            ProcessorConfigSchema(min_sentence_length=600, max_sentence_length=500)
 
     def test_context_window_validation(self):
         with pytest.raises(ValidationError, match="context_window_chars must be at least 100"):

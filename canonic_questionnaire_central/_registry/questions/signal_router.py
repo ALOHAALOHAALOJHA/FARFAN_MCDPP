@@ -22,6 +22,7 @@ import pandas as pd
 @dataclass
 class SignalRoutingMetrics:
     """Metrics for signal routing performance."""
+
     total_signals: int = 0
     total_questions: int = 0
     avg_questions_per_signal: float = 0.0
@@ -101,11 +102,12 @@ class SignalQuestionIndex:
         }
         """
         import time
+
         start = time.time()
 
         # Load integration map with error handling
         try:
-            with open(self.integration_map_path, 'r', encoding='utf-8') as f:
+            with open(self.integration_map_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
             integration_map = data.get("farfan_question_mapping", {})
             slot_mappings = integration_map.get("slot_to_signal_mapping", {})
@@ -152,9 +154,10 @@ class SignalQuestionIndex:
         self.metrics = SignalRoutingMetrics(
             total_signals=len(self.index),
             total_questions=len(self.reverse_index),
-            avg_questions_per_signal=sum(len(qids) for qids in self.index.values()) / max(len(self.index), 1),
+            avg_questions_per_signal=sum(len(qids) for qids in self.index.values())
+            / max(len(self.index), 1),
             index_size_bytes=self._estimate_size(),
-            build_time_ms=build_time
+            build_time_ms=build_time,
         )
 
     def _estimate_size(self) -> int:
@@ -296,21 +299,33 @@ class SignalQuestionIndex:
         """
         # Find max and min
         questions_per_signal = {sig: len(qids) for sig, qids in self.index.items()}
-        max_signal = max(questions_per_signal.items(), key=lambda x: x[1]) if questions_per_signal else (None, 0)
-        min_signal = min(questions_per_signal.items(), key=lambda x: x[1]) if questions_per_signal else (None, 0)
+        max_signal = (
+            max(questions_per_signal.items(), key=lambda x: x[1])
+            if questions_per_signal
+            else (None, 0)
+        )
+        min_signal = (
+            min(questions_per_signal.items(), key=lambda x: x[1])
+            if questions_per_signal
+            else (None, 0)
+        )
 
         # Find orphans by comparing against full sets
         questions_with_no_signals = [
-            qid for qid in self.all_question_ids
+            qid
+            for qid in self.all_question_ids
             if qid not in self.reverse_index or len(self.reverse_index.get(qid, [])) == 0
         ]
         signals_with_no_questions = [
-            sig for sig in self.all_signal_ids
+            sig
+            for sig in self.all_signal_ids
             if sig not in self.index or len(self.index.get(sig, [])) == 0
         ]
 
         # Avg signals per question
-        signals_per_question = sum(len(sigs) for sigs in self.reverse_index.values()) / max(len(self.reverse_index), 1)
+        signals_per_question = sum(len(sigs) for sigs in self.reverse_index.values()) / max(
+            len(self.reverse_index), 1
+        )
 
         return {
             "total_signals": len(self.index),
@@ -322,7 +337,7 @@ class SignalQuestionIndex:
             "questions_with_no_signals": questions_with_no_signals,
             "signals_with_no_questions": signals_with_no_questions,
             "index_size_kb": self.metrics.index_size_bytes / 1024,
-            "build_time_ms": self.metrics.build_time_ms
+            "build_time_ms": self.metrics.build_time_ms,
         }
 
     def export_index(self, output_path: Path) -> None:
@@ -342,11 +357,11 @@ class SignalQuestionIndex:
                 "total_questions": self.metrics.total_questions,
                 "avg_questions_per_signal": self.metrics.avg_questions_per_signal,
                 "index_size_bytes": self.metrics.index_size_bytes,
-                "build_time_ms": self.metrics.build_time_ms
-            }
+                "build_time_ms": self.metrics.build_time_ms,
+            },
         }
 
-        with open(output_path, 'w', encoding='utf-8') as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             json.dump(export_data, f, indent=2, ensure_ascii=False)
 
     def __repr__(self) -> str:

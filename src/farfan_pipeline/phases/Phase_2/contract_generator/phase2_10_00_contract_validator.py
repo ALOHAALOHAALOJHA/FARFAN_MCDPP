@@ -2,7 +2,7 @@
 Módulo: contract_validator.py
 Propósito: Validar contratos generados antes de emisión
 
-Ubicación: src/farfan_pipeline/phases/Phase_two/contract_generator/contract_validator.py
+Ubicación: src/farfan_pipeline/phases/Phase_2/contract_generator/contract_validator.py
 
 RESPONSABILIDADES:
 1. Validación estructural: campos requeridos presentes
@@ -66,13 +66,14 @@ VALID_PHASE_LEVELS = {
 
 class ValidationSeverity(Enum):
     """
-    Severidad de validación. 
+    Severidad de validación.
 
     CRITICAL: Bloquea emisión del contrato
     HIGH: Degrada calidad epistemológica
     MEDIUM:  Afecta usabilidad
     LOW: Mejora sugerida (informativo)
     """
+
     CRITICAL = "CRITICAL"
     HIGH = "HIGH"
     MEDIUM = "MEDIUM"
@@ -86,6 +87,7 @@ class ValidationResult:
 
     Inmutable para garantizar integridad del reporte.
     """
+
     check_id: str
     passed: bool
     severity: ValidationSeverity
@@ -110,9 +112,10 @@ class ValidationResult:
 @dataclass
 class ValidationReport:
     """
-    Reporte completo de validación de un contrato. 
+    Reporte completo de validación de un contrato.
     """
-    contract_id:  str
+
+    contract_id: str
     question_id: str
     sector_id: str
     contract_number: int
@@ -123,7 +126,7 @@ class ValidationReport:
     high_failures: int
     medium_failures: int
     low_failures: int
-    results:  list[ValidationResult] = field(default_factory=list)
+    results: list[ValidationResult] = field(default_factory=list)
     is_valid: bool = True
     validation_timestamp: str = ""
     validator_version: str = VALIDATOR_VERSION
@@ -142,19 +145,19 @@ class ValidationReport:
         """Serializa a diccionario."""
         return {
             "contract_id": self.contract_id,
-            "question_id":  self.question_id,
+            "question_id": self.question_id,
             "sector_id": self.sector_id,
             "contract_number": self.contract_number,
             "total_checks": self.total_checks,
             "passed_checks": self.passed_checks,
             "failed_checks": self.failed_checks,
             "pass_rate": round(self.pass_rate, 4),
-            "critical_failures":  self.critical_failures,
+            "critical_failures": self.critical_failures,
             "high_failures": self.high_failures,
             "medium_failures": self.medium_failures,
             "low_failures": self.low_failures,
             "is_valid": self.is_valid,
-            "validation_timestamp":  self.validation_timestamp,
+            "validation_timestamp": self.validation_timestamp,
             "validator_version": self.validator_version,
             "results": [r.to_dict() for r in self.results],
         }
@@ -167,7 +170,7 @@ class ValidationReport:
 
 class ContractValidator:
     """
-    Validador de contratos generados. 
+    Validador de contratos generados.
 
     CAPAS DE VALIDACIÓN:
     1. Estructural: Campos requeridos presentes
@@ -176,7 +179,7 @@ class ContractValidator:
     4. Referencial: Cross-references válidas
     5. Sector: Sector embebido correctamente
 
-    PRINCIPIO: 
+    PRINCIPIO:
     - Un contrato es válido solo si tiene 0 CRITICAL failures
     - Fail-loud: en strict_mode, HIGH failures también bloquean
 
@@ -191,7 +194,7 @@ class ContractValidator:
     # CAMPOS REQUERIDOS POR SECCIÓN
     # ══════════════════════════════════════════════════════════════════════════
 
-    REQUIRED_FIELDS:  dict[str, list[str]] = {
+    REQUIRED_FIELDS: dict[str, list[str]] = {
         "identity": [
             "contract_id",
             "contract_number",
@@ -210,7 +213,7 @@ class ContractValidator:
             "executor_class",
             "executor_module",
         ],
-        "method_binding":  [
+        "method_binding": [
             "orchestration_mode",
             "contract_type",
             "method_count",
@@ -252,17 +255,17 @@ class ContractValidator:
             "sections",
             "confidence_interpretation",
         ],
-        "traceability":  [
+        "traceability": [
             "input_files",
             "generation_metadata",
             "contract_lineage",
             "method_count",
         ],
-        "output_contract":  [
+        "output_contract": [
             "schema_version",
             "required_fields",
         ],
-        "audit_annotations":  [
+        "audit_annotations": [
             "generation_metadata",  # Was generation_audit - aligned with assembler output
             "quality_flags",
             "validation_status",
@@ -319,7 +322,7 @@ class ContractValidator:
         Args:
             strict_mode:  Si True, HIGH failures también bloquean emisión
         """
-        self. strict_mode = strict_mode
+        self.strict_mode = strict_mode
         self._validation_count = 0
 
         logger.info(f"ContractValidator initialized, version {VALIDATOR_VERSION}")
@@ -341,7 +344,7 @@ class ContractValidator:
         5. Layer 5: Validación de sector
         6.  Calcular estadísticas y determinar validez
 
-        Args: 
+        Args:
             contract: GeneratedContract a validar
 
         Returns:
@@ -349,7 +352,7 @@ class ContractValidator:
         """
         from datetime import datetime
 
-        results:  list[ValidationResult] = []
+        results: list[ValidationResult] = []
 
         # ══════════════════════════════════════════════════════════════════
         # LAYER 1: VALIDACIÓN ESTRUCTURAL
@@ -384,27 +387,17 @@ class ContractValidator:
         failed = total - passed
 
         critical = sum(
-            1 for r in results
-            if not r.passed and r.severity == ValidationSeverity.CRITICAL
+            1 for r in results if not r.passed and r.severity == ValidationSeverity.CRITICAL
         )
-        high = sum(
-            1 for r in results
-            if not r.passed and r.severity == ValidationSeverity.HIGH
-        )
-        medium = sum(
-            1 for r in results
-            if not r.passed and r.severity == ValidationSeverity.MEDIUM
-        )
-        low = sum(
-            1 for r in results
-            if not r.passed and r.severity == ValidationSeverity.LOW
-        )
+        high = sum(1 for r in results if not r.passed and r.severity == ValidationSeverity.HIGH)
+        medium = sum(1 for r in results if not r.passed and r.severity == ValidationSeverity.MEDIUM)
+        low = sum(1 for r in results if not r.passed and r.severity == ValidationSeverity.LOW)
 
         # Determinar validez
         if self.strict_mode:
             is_valid = (critical == 0) and (high == 0)
         else:
-            is_valid = (critical == 0)
+            is_valid = critical == 0
 
         # Extraer IDs
         contract_id = contract.identity.get("contract_id", "UNKNOWN")
@@ -436,13 +429,11 @@ class ContractValidator:
     # LAYER 1: VALIDACIÓN ESTRUCTURAL
     # ══════════════════════════════════════════════════════════════════════════
 
-    def _validate_structure(
-        self, contract: GeneratedContract
-    ) -> list[ValidationResult]:
+    def _validate_structure(self, contract: GeneratedContract) -> list[ValidationResult]:
         """
-        Validación estructural:  campos requeridos. 
+        Validación estructural:  campos requeridos.
 
-        Verifica: 
+        Verifica:
         - Todas las secciones presentes
         - Campos requeridos en cada sección
         - Fases requeridas en method_binding
@@ -460,15 +451,17 @@ class ContractValidator:
 
             # Verificar que la sección existe
             if section_data is None or not isinstance(section_data, dict):
-                results.append(ValidationResult(
-                    check_id=f"STRUCT_section_{section}_exists",
-                    passed=False,
-                    severity=ValidationSeverity.CRITICAL,
-                    message=f"Section '{section}' must exist and be a dict",
-                    section=section,
-                    expected="dict",
-                    actual=type(section_data).__name__,
-                ))
+                results.append(
+                    ValidationResult(
+                        check_id=f"STRUCT_section_{section}_exists",
+                        passed=False,
+                        severity=ValidationSeverity.CRITICAL,
+                        message=f"Section '{section}' must exist and be a dict",
+                        section=section,
+                        expected="dict",
+                        actual=type(section_data).__name__,
+                    )
+                )
                 continue
 
             # Verificar cada campo requerido
@@ -477,15 +470,17 @@ class ContractValidator:
                 value = section_data.get(field_name)
                 passed = value is not None
 
-                results.append(ValidationResult(
-                    check_id=check_id,
-                    passed=passed,
-                    severity=ValidationSeverity.CRITICAL,
-                    message=f"Required field '{field_name}' in section '{section}'",
-                    section=section,
-                    expected=f"Field '{field_name}' present and not None",
-                    actual="Present" if passed else "Missing or None",
-                ))
+                results.append(
+                    ValidationResult(
+                        check_id=check_id,
+                        passed=passed,
+                        severity=ValidationSeverity.CRITICAL,
+                        message=f"Required field '{field_name}' in section '{section}'",
+                        section=section,
+                        expected=f"Field '{field_name}' present and not None",
+                        actual="Present" if passed else "Missing or None",
+                    )
+                )
 
         # ─────────────────────────────────────────────────────────────────
         # Verificar fases en method_binding
@@ -494,17 +489,19 @@ class ContractValidator:
 
         for phase_name in self.REQUIRED_PHASES:
             check_id = f"STRUCT_phase_{phase_name}"
-            passed = phase_name in phases and isinstance(phases. get(phase_name), dict)
+            passed = phase_name in phases and isinstance(phases.get(phase_name), dict)
 
-            results.append(ValidationResult(
-                check_id=check_id,
-                passed=passed,
-                severity=ValidationSeverity.CRITICAL,
-                message=f"Required phase '{phase_name}' in execution_phases",
-                section="method_binding",
-                expected=f"Phase '{phase_name}' present as dict",
-                actual="Present" if passed else "Missing",
-            ))
+            results.append(
+                ValidationResult(
+                    check_id=check_id,
+                    passed=passed,
+                    severity=ValidationSeverity.CRITICAL,
+                    message=f"Required phase '{phase_name}' in execution_phases",
+                    section="method_binding",
+                    expected=f"Phase '{phase_name}' present as dict",
+                    actual="Present" if passed else "Missing",
+                )
+            )
 
         # ─────────────────────────────────────────────────────────────────
         # Verificar métodos tienen campos requeridos
@@ -517,35 +514,41 @@ class ContractValidator:
                     passed = field_name in method and method[field_name] is not None
 
                     # Solo severity HIGH para campos de método (no bloquea)
-                    results.append(ValidationResult(
-                        check_id=check_id,
-                        passed=passed,
-                        severity=ValidationSeverity.HIGH if not passed else ValidationSeverity.LOW,
-                        message=f"Method field '{field_name}' in {phase_name}[{i}]",
-                        section="method_binding",
-                        expected=f"Field '{field_name}' present",
-                        actual="Present" if passed else "Missing",
-                    ))
+                    results.append(
+                        ValidationResult(
+                            check_id=check_id,
+                            passed=passed,
+                            severity=(
+                                ValidationSeverity.HIGH if not passed else ValidationSeverity.LOW
+                            ),
+                            message=f"Method field '{field_name}' in {phase_name}[{i}]",
+                            section="method_binding",
+                            expected=f"Field '{field_name}' present",
+                            actual="Present" if passed else "Missing",
+                        )
+                    )
 
         # ─────────────────────────────────────────────────────────────────
         # Verificar reglas en evidence_assembly
         # ─────────────────────────────────────────────────────────────────
-        rules = contract. evidence_assembly.get("assembly_rules", [])
-        rule_ids = {r. get("rule_id") for r in rules if isinstance(r, dict)}
+        rules = contract.evidence_assembly.get("assembly_rules", [])
+        rule_ids = {r.get("rule_id") for r in rules if isinstance(r, dict)}
 
         for rule_id in self.REQUIRED_RULES:
             check_id = f"STRUCT_rule_{rule_id}"
             passed = rule_id in rule_ids
 
-            results.append(ValidationResult(
-                check_id=check_id,
-                passed=passed,
-                severity=ValidationSeverity.CRITICAL,
-                message=f"Required rule '{rule_id}' in assembly_rules",
-                section="evidence_assembly",
-                expected=f"Rule '{rule_id}' present",
-                actual="Present" if passed else "Missing",
-            ))
+            results.append(
+                ValidationResult(
+                    check_id=check_id,
+                    passed=passed,
+                    severity=ValidationSeverity.CRITICAL,
+                    message=f"Required rule '{rule_id}' in assembly_rules",
+                    section="evidence_assembly",
+                    expected=f"Rule '{rule_id}' present",
+                    actual="Present" if passed else "Missing",
+                )
+            )
 
         return results
 
@@ -553,9 +556,7 @@ class ContractValidator:
     # LAYER 2: VALIDACIÓN EPISTÉMICA
     # ══════════════════════════════════════════════════════════════════════════
 
-    def _validate_epistemic_coherence(
-        self, contract: GeneratedContract
-    ) -> list[ValidationResult]:
+    def _validate_epistemic_coherence(self, contract: GeneratedContract) -> list[ValidationResult]:
         """
         Validación epistémica: coherencia entre niveles.
 
@@ -566,7 +567,7 @@ class ContractValidator:
         - TYPE consistente en todas las secciones
         - Veto conditions en métodos N3
         """
-        results:  list[ValidationResult] = []
+        results: list[ValidationResult] = []
         phases = contract.method_binding.get("execution_phases", {})
 
         # ─────────────────────────────────────────────────────────────────
@@ -580,32 +581,36 @@ class ContractValidator:
             check_id = f"EPIST_{phase_name}_has_methods"
             passed = len(methods) > 0
 
-            results.append(ValidationResult(
-                check_id=check_id,
-                passed=passed,
-                severity=ValidationSeverity. CRITICAL,
-                message=f"Phase '{phase_name}' must have at least one method",
-                section="method_binding",
-                expected="At least 1 method",
-                actual=f"{len(methods)} methods",
-            ))
+            results.append(
+                ValidationResult(
+                    check_id=check_id,
+                    passed=passed,
+                    severity=ValidationSeverity.CRITICAL,
+                    message=f"Phase '{phase_name}' must have at least one method",
+                    section="method_binding",
+                    expected="At least 1 method",
+                    actual=f"{len(methods)} methods",
+                )
+            )
 
             # Check: métodos tienen nivel correcto
             for i, method in enumerate(methods):
                 method_level = method.get("level", "")
                 method_id = method.get("method_id", f"method_{i}")
                 check_id = f"EPIST_{phase_name}_{method_id}_level"
-                passed = method_level. startswith(expected_level)
+                passed = method_level.startswith(expected_level)
 
-                results.append(ValidationResult(
-                    check_id=check_id,
-                    passed=passed,
-                    severity=ValidationSeverity.CRITICAL,
-                    message=f"Method '{method_id}' in '{phase_name}' must be level {expected_level}",
-                    section="method_binding",
-                    expected=f"Level starting with '{expected_level}'",
-                    actual=method_level,
-                ))
+                results.append(
+                    ValidationResult(
+                        check_id=check_id,
+                        passed=passed,
+                        severity=ValidationSeverity.CRITICAL,
+                        message=f"Method '{method_id}' in '{phase_name}' must be level {expected_level}",
+                        section="method_binding",
+                        expected=f"Level starting with '{expected_level}'",
+                        actual=method_level,
+                    )
+                )
 
             # Check:  métodos N3 tienen veto_conditions
             if expected_level == "N3":
@@ -615,15 +620,17 @@ class ContractValidator:
                     check_id = f"EPIST_{phase_name}_{method_id}_veto"
                     passed = isinstance(veto_conditions, dict) and len(veto_conditions) > 0
 
-                    results.append(ValidationResult(
-                        check_id=check_id,
-                        passed=passed,
-                        severity=ValidationSeverity.HIGH,
-                        message=f"N3 method '{method_id}' should have veto_conditions",
-                        section="method_binding",
-                        expected="Non-empty veto_conditions dict",
-                        actual=f"{len(veto_conditions)} conditions",
-                    ))
+                    results.append(
+                        ValidationResult(
+                            check_id=check_id,
+                            passed=passed,
+                            severity=ValidationSeverity.HIGH,
+                            message=f"N3 method '{method_id}' should have veto_conditions",
+                            section="method_binding",
+                            expected="Non-empty veto_conditions dict",
+                            actual=f"{len(veto_conditions)} conditions",
+                        )
+                    )
 
         # ─────────────────────────────────────────────────────────────────
         # Verificar asimetría N3
@@ -633,28 +640,32 @@ class ContractValidator:
         n3_to_n1 = cross_layer.get("N3_to_N1", {})
         check_id = "EPIST_asymmetry_N3_to_N1"
         passed = n3_to_n1.get("asymmetry") == "N1 CANNOT invalidate N3"
-        results.append(ValidationResult(
-            check_id=check_id,
-            passed=passed,
-            severity=ValidationSeverity.HIGH,
-            message="N3→N1 asymmetry must be declared",
-            section="cross_layer_fusion",
-            expected="asymmetry: 'N1 CANNOT invalidate N3'",
-            actual=n3_to_n1.get("asymmetry", "NOT DECLARED"),
-        ))
+        results.append(
+            ValidationResult(
+                check_id=check_id,
+                passed=passed,
+                severity=ValidationSeverity.HIGH,
+                message="N3→N1 asymmetry must be declared",
+                section="cross_layer_fusion",
+                expected="asymmetry: 'N1 CANNOT invalidate N3'",
+                actual=n3_to_n1.get("asymmetry", "NOT DECLARED"),
+            )
+        )
 
         n3_to_n2 = cross_layer.get("N3_to_N2", {})
         check_id = "EPIST_asymmetry_N3_to_N2"
         passed = n3_to_n2.get("asymmetry") == "N2 CANNOT invalidate N3"
-        results.append(ValidationResult(
-            check_id=check_id,
-            passed=passed,
-            severity=ValidationSeverity. HIGH,
-            message="N3→N2 asymmetry must be declared",
-            section="cross_layer_fusion",
-            expected="asymmetry: 'N2 CANNOT invalidate N3'",
-            actual=n3_to_n2.get("asymmetry", "NOT DECLARED"),
-        ))
+        results.append(
+            ValidationResult(
+                check_id=check_id,
+                passed=passed,
+                severity=ValidationSeverity.HIGH,
+                message="N3→N2 asymmetry must be declared",
+                section="cross_layer_fusion",
+                expected="asymmetry: 'N2 CANNOT invalidate N3'",
+                actual=n3_to_n2.get("asymmetry", "NOT DECLARED"),
+            )
+        )
 
         # ─────────────────────────────────────────────────────────────────
         # Verificar TYPE consistente
@@ -664,29 +675,33 @@ class ContractValidator:
         fusion_type = contract.fusion_specification.get("contract_type")
 
         check_id = "EPIST_type_consistency"
-        passed = (identity_type == method_binding_type == fusion_type)
-        results.append(ValidationResult(
-            check_id=check_id,
-            passed=passed,
-            severity=ValidationSeverity. CRITICAL,
-            message="Contract TYPE must be consistent across sections",
-            section="global",
-            expected=f"All sections:  {identity_type}",
-            actual=f"identity:{identity_type}, method_binding:{method_binding_type}, fusion:{fusion_type}",
-        ))
+        passed = identity_type == method_binding_type == fusion_type
+        results.append(
+            ValidationResult(
+                check_id=check_id,
+                passed=passed,
+                severity=ValidationSeverity.CRITICAL,
+                message="Contract TYPE must be consistent across sections",
+                section="global",
+                expected=f"All sections:  {identity_type}",
+                actual=f"identity:{identity_type}, method_binding:{method_binding_type}, fusion:{fusion_type}",
+            )
+        )
 
         # Verificar TYPE es válido
         check_id = "EPIST_type_valid"
         passed = identity_type in VALID_CONTRACT_TYPES
-        results.append(ValidationResult(
-            check_id=check_id,
-            passed=passed,
-            severity=ValidationSeverity.CRITICAL,
-            message="Contract TYPE must be valid",
-            section="identity",
-            expected=f"One of {VALID_CONTRACT_TYPES}",
-            actual=identity_type,
-        ))
+        results.append(
+            ValidationResult(
+                check_id=check_id,
+                passed=passed,
+                severity=ValidationSeverity.CRITICAL,
+                message="Contract TYPE must be valid",
+                section="identity",
+                expected=f"One of {VALID_CONTRACT_TYPES}",
+                actual=identity_type,
+            )
+        )
 
         return results
 
@@ -694,9 +709,7 @@ class ContractValidator:
     # LAYER 3: VALIDACIÓN TEMPORAL
     # ══════════════════════════════════════════════════════════════════════════
 
-    def _validate_temporal(
-        self, contract: GeneratedContract
-    ) -> list[ValidationResult]:
+    def _validate_temporal(self, contract: GeneratedContract) -> list[ValidationResult]:
         """
         Validación temporal: timestamps y validez.
 
@@ -714,32 +727,36 @@ class ContractValidator:
         check_id = "TEMP_created_at_present"
         passed = bool(created_at) and len(created_at) > 10
 
-        results.append(ValidationResult(
-            check_id=check_id,
-            passed=passed,
-            severity=ValidationSeverity.HIGH,
-            message="created_at timestamp must be present",
-            section="identity",
-            expected="ISO timestamp (e.g., 2026-01-03T... )",
-            actual=created_at[: 30] if created_at else "MISSING",
-        ))
+        results.append(
+            ValidationResult(
+                check_id=check_id,
+                passed=passed,
+                severity=ValidationSeverity.HIGH,
+                message="created_at timestamp must be present",
+                section="identity",
+                expected="ISO timestamp (e.g., 2026-01-03T... )",
+                actual=created_at[:30] if created_at else "MISSING",
+            )
+        )
 
         # Verificar formato ISO
         if created_at:
             check_id = "TEMP_created_at_format"
             # Patrón básico ISO: YYYY-MM-DDTHH:MM:SS
-            iso_pattern = r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}'
+            iso_pattern = r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"
             passed = bool(re.match(iso_pattern, created_at))
 
-            results.append(ValidationResult(
-                check_id=check_id,
-                passed=passed,
-                severity=ValidationSeverity. MEDIUM,
-                message="created_at should be ISO format",
-                section="identity",
-                expected="YYYY-MM-DDTHH:MM:SS.. .",
-                actual=created_at[: 25],
-            ))
+            results.append(
+                ValidationResult(
+                    check_id=check_id,
+                    passed=passed,
+                    severity=ValidationSeverity.MEDIUM,
+                    message="created_at should be ISO format",
+                    section="identity",
+                    expected="YYYY-MM-DDTHH:MM:SS.. .",
+                    actual=created_at[:25],
+                )
+            )
 
         # ─────────────────────────────────────────────────────────────────
         # generator_version
@@ -748,15 +765,17 @@ class ContractValidator:
         check_id = "TEMP_generator_version"
         passed = bool(generator_version)
 
-        results.append(ValidationResult(
-            check_id=check_id,
-            passed=passed,
-            severity=ValidationSeverity. MEDIUM,
-            message="generator_version must be present",
-            section="identity",
-            expected="Version string (e.g., 4.0.0-granular)",
-            actual=generator_version or "MISSING",
-        ))
+        results.append(
+            ValidationResult(
+                check_id=check_id,
+                passed=passed,
+                severity=ValidationSeverity.MEDIUM,
+                message="generator_version must be present",
+                section="identity",
+                expected="Version string (e.g., 4.0.0-granular)",
+                actual=generator_version or "MISSING",
+            )
+        )
 
         return results
 
@@ -764,9 +783,7 @@ class ContractValidator:
     # LAYER 4: VALIDACIÓN REFERENCIAL
     # ══════════════════════════════════════════════════════════════════════════
 
-    def _validate_cross_references(
-        self, contract: GeneratedContract
-    ) -> list[ValidationResult]:
+    def _validate_cross_references(self, contract: GeneratedContract) -> list[ValidationResult]:
         """
         Validación referencial:  cross-references válidas.
 
@@ -775,13 +792,13 @@ class ContractValidator:
         - Input hashes presentes en traceability
         - method_count consistente
         """
-        results:  list[ValidationResult] = []
+        results: list[ValidationResult] = []
 
         # ─────────────────────────────────────────────────────────────────
         # Recolectar todos los 'provides' de métodos
         # ─────────────────────────────────────────────────────────────────
         phases = contract.method_binding.get("execution_phases", {})
-        all_provides:  set[str] = set()
+        all_provides: set[str] = set()
 
         for phase_data in phases.values():
             for method in phase_data.get("methods", []):
@@ -807,15 +824,17 @@ class ContractValidator:
                 check_id = f"XREF_rule_{rule_id}_sources"
                 passed = matching > 0
 
-                results.append(ValidationResult(
-                    check_id=check_id,
-                    passed=passed,
-                    severity=ValidationSeverity. MEDIUM,
-                    message=f"Rule '{rule_id}' sources should reference method provides",
-                    section="evidence_assembly",
-                    expected="At least one source matching provides",
-                    actual=f"{matching}/{len(sources)} sources match",
-                ))
+                results.append(
+                    ValidationResult(
+                        check_id=check_id,
+                        passed=passed,
+                        severity=ValidationSeverity.MEDIUM,
+                        message=f"Rule '{rule_id}' sources should reference method provides",
+                        section="evidence_assembly",
+                        expected="At least one source matching provides",
+                        actual=f"{matching}/{len(sources)} sources match",
+                    )
+                )
 
         # ─────────────────────────────────────────────────────────────────
         # Verificar input hashes en traceability
@@ -830,37 +849,38 @@ class ContractValidator:
             check_id = f"XREF_input_hash_{input_name}"
             passed = bool(hash_value) and len(hash_value) >= 8
 
-            results.append(ValidationResult(
-                check_id=check_id,
-                passed=passed,
-                severity=ValidationSeverity.MEDIUM,
-                message=f"Input hash '{input_name}' should be present",
-                section="traceability",
-                expected="Hash string >= 8 chars",
-                actual=hash_value[: 16] if hash_value else "MISSING",
-            ))
+            results.append(
+                ValidationResult(
+                    check_id=check_id,
+                    passed=passed,
+                    severity=ValidationSeverity.MEDIUM,
+                    message=f"Input hash '{input_name}' should be present",
+                    section="traceability",
+                    expected="Hash string >= 8 chars",
+                    actual=hash_value[:16] if hash_value else "MISSING",
+                )
+            )
 
         # ─────────────────────────────────────────────────────────────────
         # Verificar method_count consistente
         # ─────────────────────────────────────────────────────────────────
         declared_count = contract.method_binding.get("method_count", 0)
-        actual_count = sum(
-            len(phase_data.get("methods", []))
-            for phase_data in phases.values()
-        )
+        actual_count = sum(len(phase_data.get("methods", [])) for phase_data in phases.values())
 
         check_id = "XREF_method_count_consistent"
         passed = declared_count == actual_count
 
-        results.append(ValidationResult(
-            check_id=check_id,
-            passed=passed,
-            severity=ValidationSeverity.HIGH,
-            message="method_count must match actual method count",
-            section="method_binding",
-            expected=f"Declared:  {declared_count}",
-            actual=f"Actual: {actual_count}",
-        ))
+        results.append(
+            ValidationResult(
+                check_id=check_id,
+                passed=passed,
+                severity=ValidationSeverity.HIGH,
+                message="method_count must match actual method count",
+                section="method_binding",
+                expected=f"Declared:  {declared_count}",
+                actual=f"Actual: {actual_count}",
+            )
+        )
 
         return results
 
@@ -868,9 +888,7 @@ class ContractValidator:
     # LAYER 5: VALIDACIÓN DE SECTOR
     # ══════════════════════════════════════════════════════════════════════════
 
-    def _validate_sector(
-        self, contract: GeneratedContract
-    ) -> list[ValidationResult]:
+    def _validate_sector(self, contract: GeneratedContract) -> list[ValidationResult]:
         """
         Validación de sector: sector embebido correctamente.
 
@@ -889,27 +907,31 @@ class ContractValidator:
 
         check_id = "SECTOR_id_present"
         passed = bool(sector_id)
-        results.append(ValidationResult(
-            check_id=check_id,
-            passed=passed,
-            severity=ValidationSeverity. CRITICAL,
-            message="sector_id must be present in identity",
-            section="identity",
-            expected="Non-empty sector_id",
-            actual=sector_id or "MISSING",
-        ))
+        results.append(
+            ValidationResult(
+                check_id=check_id,
+                passed=passed,
+                severity=ValidationSeverity.CRITICAL,
+                message="sector_id must be present in identity",
+                section="identity",
+                expected="Non-empty sector_id",
+                actual=sector_id or "MISSING",
+            )
+        )
 
         check_id = "SECTOR_id_valid"
         passed = sector_id in VALID_SECTOR_IDS
-        results.append(ValidationResult(
-            check_id=check_id,
-            passed=passed,
-            severity=ValidationSeverity.CRITICAL,
-            message="sector_id must be valid (PA01-PA10)",
-            section="identity",
-            expected=f"One of {sorted(VALID_SECTOR_IDS)}",
-            actual=sector_id,
-        ))
+        results.append(
+            ValidationResult(
+                check_id=check_id,
+                passed=passed,
+                severity=ValidationSeverity.CRITICAL,
+                message="sector_id must be valid (PA01-PA10)",
+                section="identity",
+                expected=f"One of {sorted(VALID_SECTOR_IDS)}",
+                actual=sector_id,
+            )
+        )
 
         # ─────────────────────────────────────────────────────────────────
         # sector_name presente
@@ -918,15 +940,17 @@ class ContractValidator:
 
         check_id = "SECTOR_name_present"
         passed = bool(sector_name) and len(sector_name) > 5
-        results.append(ValidationResult(
-            check_id=check_id,
-            passed=passed,
-            severity=ValidationSeverity.HIGH,
-            message="sector_name must be present and meaningful",
-            section="identity",
-            expected="Non-empty sector name",
-            actual=sector_name[: 50] if sector_name else "MISSING",
-        ))
+        results.append(
+            ValidationResult(
+                check_id=check_id,
+                passed=passed,
+                severity=ValidationSeverity.HIGH,
+                message="sector_name must be present and meaningful",
+                section="identity",
+                expected="Non-empty sector name",
+                actual=sector_name[:50] if sector_name else "MISSING",
+            )
+        )
 
         # ─────────────────────────────────────────────────────────────────
         # sector_id consistente
@@ -935,36 +959,40 @@ class ContractValidator:
         audit_sector = contract.audit_annotations.get("sector_specific", {}).get("sector_id", "")
 
         check_id = "SECTOR_id_consistent"
-        passed = (sector_id == question_context_sector == audit_sector)
-        results.append(ValidationResult(
-            check_id=check_id,
-            passed=passed,
-            severity=ValidationSeverity.HIGH,
-            message="sector_id must be consistent across sections",
-            section="global",
-            expected=f"All:  {sector_id}",
-            actual=f"identity:{sector_id}, question_context:{question_context_sector}, audit:{audit_sector}",
-        ))
+        passed = sector_id == question_context_sector == audit_sector
+        results.append(
+            ValidationResult(
+                check_id=check_id,
+                passed=passed,
+                severity=ValidationSeverity.HIGH,
+                message="sector_id must be consistent across sections",
+                section="global",
+                expected=f"All:  {sector_id}",
+                actual=f"identity:{sector_id}, question_context:{question_context_sector}, audit:{audit_sector}",
+            )
+        )
 
         # ─────────────────────────────────────────────────────────────────
         # contract_id formato correcto
         # ─────────────────────────────────────────────────────────────────
-        contract_id = contract.identity. get("contract_id", "")
+        contract_id = contract.identity.get("contract_id", "")
 
         check_id = "SECTOR_contract_id_format"
         # Formato esperado: Q001_PA01, Q030_PA10, etc.
-        pattern = r'^Q\d{3}_PA\d{2}$'
+        pattern = r"^Q\d{3}_PA\d{2}$"
         passed = bool(re.match(pattern, contract_id))
 
-        results.append(ValidationResult(
-            check_id=check_id,
-            passed=passed,
-            severity=ValidationSeverity.CRITICAL,
-            message="contract_id must have format Qxxx_PAxx",
-            section="identity",
-            expected="Format: Q001_PA01, Q030_PA10, etc.",
-            actual=contract_id,
-        ))
+        results.append(
+            ValidationResult(
+                check_id=check_id,
+                passed=passed,
+                severity=ValidationSeverity.CRITICAL,
+                message="contract_id must have format Qxxx_PAxx",
+                section="identity",
+                expected="Format: Q001_PA01, Q030_PA10, etc.",
+                actual=contract_id,
+            )
+        )
 
         # Verificar que sector_id en contract_id coincide
         if passed:
@@ -972,15 +1000,17 @@ class ContractValidator:
             check_id = "SECTOR_contract_id_matches"
             passed = extracted_sector == sector_id
 
-            results.append(ValidationResult(
-                check_id=check_id,
-                passed=passed,
-                severity=ValidationSeverity.CRITICAL,
-                message="sector_id in contract_id must match identity. sector_id",
-                section="identity",
-                expected=f"Extracted: {sector_id}",
-                actual=f"In contract_id: {extracted_sector}",
-            ))
+            results.append(
+                ValidationResult(
+                    check_id=check_id,
+                    passed=passed,
+                    severity=ValidationSeverity.CRITICAL,
+                    message="sector_id in contract_id must match identity. sector_id",
+                    section="identity",
+                    expected=f"Extracted: {sector_id}",
+                    actual=f"In contract_id: {extracted_sector}",
+                )
+            )
 
         return results
 

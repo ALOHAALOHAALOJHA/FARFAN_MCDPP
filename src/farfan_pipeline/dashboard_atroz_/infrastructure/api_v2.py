@@ -2,23 +2,25 @@
 API v2 Endpoints
 High-performance endpoints serving data from the PostgreSQL aggregation pyramid.
 """
+
 from fastapi import APIRouter
-from typing import List, Optional, Dict
 from pydantic import BaseModel
-import uuid
 
 router = APIRouter(prefix="/api/v2", tags=["dashboard"])
+
 
 # Pydantic Models
 class RegionSummary(BaseModel):
     id: str
     name: str
-    macro_score: Optional[float]
-    macro_band: Optional[str]
-    coordinates: Optional[Dict[str, float]] = None
+    macro_score: float | None
+    macro_band: str | None
+    coordinates: dict[str, float] | None = None
+
 
 class ComparisonRequest(BaseModel):
-    region_ids: List[str]
+    region_ids: list[str]
+
 
 # Dependency
 def get_db():
@@ -29,8 +31,9 @@ def get_db():
     # finally: db.close()
     pass
 
-@router.get("/regions", response_model=List[RegionSummary])
-async def list_regions(subregion_id: Optional[str] = None):
+
+@router.get("/regions", response_model=list[RegionSummary])
+async def list_regions(subregion_id: str | None = None):
     """
     List all regions, optionally filtered by PDET subregion.
     Uses cached aggregation table.
@@ -40,16 +43,35 @@ async def list_regions(subregion_id: Optional[str] = None):
 
     # Mock data for demonstration of API contract
     mock_regions = [
-        RegionSummary(id="19050", name="ARGELIA", macro_score=75.5, macro_band="HIGH", coordinates={"lat": 2.263, "lon": -77.194}),
-        RegionSummary(id="19075", name="BALBOA", macro_score=62.0, macro_band="MEDIUM", coordinates={"lat": 2.0, "lon": -77.0}),
-        RegionSummary(id="19100", name="BUENOS AIRES", macro_score=None, macro_band=None, coordinates={"lat": 3.0, "lon": -76.0}),
+        RegionSummary(
+            id="19050",
+            name="ARGELIA",
+            macro_score=75.5,
+            macro_band="HIGH",
+            coordinates={"lat": 2.263, "lon": -77.194},
+        ),
+        RegionSummary(
+            id="19075",
+            name="BALBOA",
+            macro_score=62.0,
+            macro_band="MEDIUM",
+            coordinates={"lat": 2.0, "lon": -77.0},
+        ),
+        RegionSummary(
+            id="19100",
+            name="BUENOS AIRES",
+            macro_score=None,
+            macro_band=None,
+            coordinates={"lat": 3.0, "lon": -76.0},
+        ),
     ]
 
     if subregion_id:
         # Basic filtering logic simulation
-        return [r for r in mock_regions if int(r.id) > 19060] # Dummy logic
+        return [r for r in mock_regions if int(r.id) > 19060]  # Dummy logic
 
     return mock_regions
+
 
 @router.get("/regions/{region_id}")
 async def get_region_detail(region_id: str):
@@ -61,8 +83,9 @@ async def get_region_detail(region_id: str):
         "detail": "Detailed analysis payload",
         "macro": {"score": 75.5, "band": "HIGH"},
         "meso": {"CL01": 80, "CL02": 70},
-        "micro": []
+        "micro": [],
     }
+
 
 @router.post("/compare")
 async def compare_regions(request: ComparisonRequest):
@@ -71,5 +94,5 @@ async def compare_regions(request: ComparisonRequest):
     """
     return {
         "comparison_matrix": {rid: {"score": 70 + i} for i, rid in enumerate(request.region_ids)},
-        "regions": request.region_ids
+        "regions": request.region_ids,
     }

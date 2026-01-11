@@ -13,8 +13,21 @@ All path operations in the repository MUST use these utilities instead of:
 - Hardcoded absolute paths
 - os.path functions (use pathlib.Path instead)
 """
-
 from __future__ import annotations
+
+# =============================================================================
+# METADATA
+# =============================================================================
+
+__version__ = "1.0.0"
+__phase__ = 0
+__stage__ = 10
+__order__ = 0
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-10"
+__modified__ = "2026-01-10"
+__criticality__ = "CRITICAL"
+__execution_pattern__ = "On-Demand"
 
 import os
 import unicodedata
@@ -25,26 +38,31 @@ from typing import Final
 # Custom exception types for path errors
 class PathError(Exception):
     """Base exception for path-related errors."""
+
     pass
 
 
 class PathTraversalError(PathError):
     """Raised when a path attempts to escape workspace boundaries."""
+
     pass
 
 
 class PathNotFoundError(PathError):
     """Raised when a required path does not exist."""
+
     pass
 
 
 class PathOutsideWorkspaceError(PathError):
     """Raised when a path is outside the allowed workspace."""
+
     pass
 
 
 class UnnormalizedPathError(PathError):
     """Raised when a path is not properly normalized."""
+
     pass
 
 
@@ -88,9 +106,9 @@ def _detect_project_root() -> Path:
         if (parent / "pyproject.toml").exists():
             return parent
         if (
-            ((parent / "src" / "farfan_pipeline").exists() or (parent / "src" / "farfan_core").exists())
-            and (parent / "setup.py").exists()
-        ):
+            (parent / "src" / "farfan_pipeline").exists()
+            or (parent / "src" / "farfan_core").exists()
+        ) and (parent / "setup.py").exists():
             return parent
 
     # Fallback: if we can't find it, assume we're in src/<package>/utils
@@ -124,9 +142,13 @@ QUESTIONNAIRE_MACRO_FILE: Final[Path] = CONFIG_DIR / "macro_question.json"
 # Cross-referenced modular files
 QUESTIONNAIRE_SCORING_FILE: Final[Path] = CONFIG_DIR / "scoring/scoring_system.json"
 QUESTIONNAIRE_SEMANTIC_CONFIG_FILE: Final[Path] = CONFIG_DIR / "semantic/semantic_config.json"
-QUESTIONNAIRE_CROSS_CUTTING_FILE: Final[Path] = CONFIG_DIR / "cross_cutting/cross_cutting_themes.json"
+QUESTIONNAIRE_CROSS_CUTTING_FILE: Final[Path] = (
+    CONFIG_DIR / "cross_cutting/cross_cutting_themes.json"
+)
 QUESTIONNAIRE_GOVERNANCE_FILE: Final[Path] = CONFIG_DIR / "governance/governance.json"
-QUESTIONNAIRE_VALIDATION_TEMPLATES_FILE: Final[Path] = CONFIG_DIR / "validations/validation_templates.json"
+QUESTIONNAIRE_VALIDATION_TEMPLATES_FILE: Final[Path] = (
+    CONFIG_DIR / "validations/validation_templates.json"
+)
 
 
 def proj_root() -> Path:
@@ -345,7 +367,7 @@ def resources(package: str, *path_parts: str) -> Path:
             pkg_path = pkg_path.joinpath(part)
 
         # Convert to Path - files() returns Traversable
-        if hasattr(pkg_path, '__fspath__'):
+        if hasattr(pkg_path, "__fspath__"):
             return Path(pkg_path)
         else:
             # Fallback for Traversable that doesn't support __fspath__
@@ -420,6 +442,7 @@ def validate_write_path(path: Path, allow_source_tree: bool = False) -> None:
 
 
 # Environment variable accessors (typed and safe)
+
 
 def get_env_path(key: str, default: Path | None = None) -> Path | None:
     """

@@ -1,11 +1,12 @@
 """
-Module: src.farfan_pipeline.phases.Phase_nine.PHASE_9_CONSTANTS
+Module: src.farfan_pipeline.phases.Phase_9.PHASE_9_CONSTANTS
 Purpose: Global constants for Phase 9 - Report Generation
 Owner: phase9_core
 Lifecycle: ACTIVE
 Version: 1.0.0
 Effective-Date: 2025-12-30
 """
+
 from __future__ import annotations
 
 from typing import Final

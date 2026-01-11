@@ -22,40 +22,31 @@ setup(
         "fastapi>=0.109.0",
         "pydantic>=2.0.0",
         "uvicorn>=0.27.0",
-        
         # NLP and transformers
         "transformers>=4.41.0,<4.42.0",
         "sentence-transformers>=3.1.0,<3.2.0",
         "accelerate>=1.2.0",
         "tokenizers>=0.15.0",
-        
         # Bayesian analysis
         "pymc>=5.16.0,<5.17.0",
         "pytensor>=2.25.1,<2.26",
         "arviz>=0.17.0",
-        
         # Machine learning
         "scikit-learn>=1.6.0",
         "numpy>=1.26.4,<2.0.0",
         "scipy>=1.11.0",
-        
         # Graph analysis
         "networkx>=3.0",
-        
         # NLP tools
         "spacy>=3.7.0",
-        
         # PDF processing
         "PyPDF2>=3.0.0",
         "pdfplumber>=0.10.0",
-        
         # Data handling
         "pandas>=2.1.0",
         "pyarrow>=14.0.0",
-        
         # Configuration
         "python-dotenv>=1.0.0",
-        
         # Utilities
         "requests>=2.31.0",
         "aiohttp>=3.9.0",

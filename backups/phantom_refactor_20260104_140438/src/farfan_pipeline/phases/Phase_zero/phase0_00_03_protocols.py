@@ -272,9 +272,7 @@ class PhaseContract(ABC, Generic[TInput, TOutput]):
         finally:
             finished_at = datetime.now(timezone.utc)
             metadata.finished_at = finished_at.isoformat()
-            metadata.duration_ms = (
-                finished_at - started_at
-            ).total_seconds() * 1000
+            metadata.duration_ms = (finished_at - started_at).total_seconds() * 1000
             self.metadata = metadata
 
 
@@ -363,12 +361,8 @@ class PhaseManifestBuilder:
         return {
             "phases": self.phases,
             "total_phases": len(self.phases),
-            "successful_phases": sum(
-                1 for p in self.phases.values() if p["status"] == "success"
-            ),
-            "failed_phases": sum(
-                1 for p in self.phases.values() if p["status"] == "failed"
-            ),
+            "successful_phases": sum(1 for p in self.phases.values() if p["status"] == "success"),
+            "failed_phases": sum(1 for p in self.phases.values() if p["status"] == "failed"),
         }
 
     def save(self, output_path: Path) -> None:

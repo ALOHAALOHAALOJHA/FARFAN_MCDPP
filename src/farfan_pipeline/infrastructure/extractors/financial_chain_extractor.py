@@ -24,17 +24,13 @@ Version: 2.0.0
 Date: 2026-01-06
 """
 
-import re
-from typing import Dict, List, Any, Optional, Tuple
-from dataclasses import dataclass, field
-from pathlib import Path
 import logging
+import re
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
 
-from .empirical_extractor_base import (
-    PatternBasedExtractor,
-    ExtractionResult,
-    ExtractionPattern
-)
+from .empirical_extractor_base import ExtractionResult, PatternBasedExtractor
 
 logger = logging.getLogger(__name__)
 
@@ -42,14 +38,15 @@ logger = logging.getLogger(__name__)
 @dataclass
 class FinancialChain:
     """Represents a complete or partial financial chain."""
+
     chain_id: str
-    monto: Optional[Dict[str, Any]] = None
-    fuente: Optional[Dict[str, Any]] = None
-    programa: Optional[Dict[str, Any]] = None
-    periodo: Optional[Dict[str, Any]] = None
+    monto: dict[str, Any] | None = None
+    fuente: dict[str, Any] | None = None
+    programa: dict[str, Any] | None = None
+    periodo: dict[str, Any] | None = None
     completeness: float = 0.0
     confidence: float = 0.0
-    text_span: Tuple[int, int] = (0, 0)
+    text_span: tuple[int, int] = (0, 0)
 
     def is_complete(self) -> bool:
         """Check if chain has all required components."""
@@ -73,11 +70,9 @@ class FinancialChainExtractor(PatternBasedExtractor):
     4. Períodos de vigencia (fiscal years)
     """
 
-    def __init__(self, calibration_file: Optional[Path] = None):
+    def __init__(self, calibration_file: Path | None = None):
         super().__init__(
-            signal_type="FINANCIAL_CHAIN",
-            calibration_file=calibration_file,
-            auto_validate=True
+            signal_type="FINANCIAL_CHAIN", calibration_file=calibration_file, auto_validate=True
         )
 
         # Load specialized patterns
@@ -86,10 +81,16 @@ class FinancialChainExtractor(PatternBasedExtractor):
         # Validation rules specific to financial chains
         self.validation_rules = [
             {"type": "positive_value", "field": "valor_normalizado", "name": "positive_amount"},
-            {"type": "date_range", "field": "año_inicio", "min_year": 2020, "max_year": 2030, "name": "valid_year"}
+            {
+                "type": "date_range",
+                "field": "año_inicio",
+                "min_year": 2020,
+                "max_year": 2030,
+                "name": "valid_year",
+            },
         ]
 
-        logger.info(f"FinancialChainExtractor initialized with empirical calibration")
+        logger.info("FinancialChainExtractor initialized with empirical calibration")
 
     def _load_financial_patterns(self):
         """Load and compile financial-specific patterns."""
@@ -116,7 +117,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
             for pattern_str in config.get("patterns", []):
                 self.periodo_patterns.append(re.compile(pattern_str, re.IGNORECASE))
 
-    def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
+    def extract(self, text: str, context: dict | None = None) -> ExtractionResult:
         """
         Extract financial chains from text.
 
@@ -148,7 +149,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
                 "completeness": chain.get_completeness(),
                 "confidence": chain.confidence,
                 "is_complete": chain.is_complete(),
-                "text_span": chain.text_span
+                "text_span": chain.text_span,
             }
             matches.append(match)
 
@@ -166,8 +167,8 @@ class FinancialChainExtractor(PatternBasedExtractor):
                 "total_programas": len(programas),
                 "total_periodos": len(periodos),
                 "complete_chains": sum(1 for c in chains if c.is_complete()),
-                "partial_chains": len(chains) - sum(1 for c in chains if c.is_complete())
-            }
+                "partial_chains": len(chains) - sum(1 for c in chains if c.is_complete()),
+            },
         )
 
         # Validate
@@ -180,19 +181,23 @@ class FinancialChainExtractor(PatternBasedExtractor):
 
         return result
 
-    def _extract_montos(self, text: str) -> List[Dict[str, Any]]:
+    def _extract_montos(self, text: str) -> list[dict[str, Any]]:
         """Extract monetary amounts."""
         montos = []
 
         # Patterns from empirical calibration
         default_patterns = [
-            r'\$\s*([\d.,]+)\s*(millones?|mil\s+millones?|MM|M)?',
-            r'([\d.,]+)\s*(millones?\s+de\s+pesos|COP|pesos)',
-            r'valor:\s*\$?\s*([\d.,]+)',
-            r'presupuesto:\s*\$?\s*([\d.,]+)'
+            r"\$\s*([\d.,]+)\s*(millones?|mil\s+millones?|MM|M)?",
+            r"([\d.,]+)\s*(millones?\s+de\s+pesos|COP|pesos)",
+            r"valor:\s*\$?\s*([\d.,]+)",
+            r"presupuesto:\s*\$?\s*([\d.,]+)",
         ]
 
-        patterns = self.monto_patterns if self.monto_patterns else [re.compile(p, re.IGNORECASE) for p in default_patterns]
+        patterns = (
+            self.monto_patterns
+            if self.monto_patterns
+            else [re.compile(p, re.IGNORECASE) for p in default_patterns]
+        )
 
         for pattern in patterns:
             for match in pattern.finditer(text):
@@ -209,16 +214,16 @@ class FinancialChainExtractor(PatternBasedExtractor):
                     "valor_normalizado": valor_normalizado,
                     "start": match.start(),
                     "end": match.end(),
-                    "confidence": 0.85
+                    "confidence": 0.85,
                 }
                 montos.append(monto)
 
         return montos
 
-    def _normalize_currency(self, valor_str: str, unidad: Optional[str]) -> float:
+    def _normalize_currency(self, valor_str: str, unidad: str | None) -> float:
         """Normalize currency to pesos."""
         # Remove thousands separators and convert to float
-        valor_str = valor_str.replace(',', '').replace('.', '')
+        valor_str = valor_str.replace(",", "").replace(".", "")
         try:
             valor = float(valor_str)
         except ValueError:
@@ -227,14 +232,14 @@ class FinancialChainExtractor(PatternBasedExtractor):
         # Apply unit multiplier
         if unidad:
             unidad_lower = unidad.lower()
-            if 'millones' in unidad_lower or 'mm' in unidad_lower:
+            if "millones" in unidad_lower or "mm" in unidad_lower:
                 valor *= 1_000_000
-            elif 'miles' in unidad_lower:
+            elif "miles" in unidad_lower:
                 valor *= 1_000
 
         return valor
 
-    def _extract_fuentes(self, text: str) -> List[Dict[str, Any]]:
+    def _extract_fuentes(self, text: str) -> list[dict[str, Any]]:
         """Extract funding sources."""
         fuentes = []
 
@@ -245,45 +250,47 @@ class FinancialChainExtractor(PatternBasedExtractor):
             "SGR": ["SGR", "Sistema General de Regalías", "regalías"],
             "CREDITO": ["crédito", "endeudamiento", "empréstito"],
             "COFINANCIACION": ["cofinanciación", "nación", "departamento"],
-            "COOPERACION": ["cooperación internacional", "donaciones"]
+            "COOPERACION": ["cooperación internacional", "donaciones"],
         }
 
-        keyword_sets = getattr(self, 'fuente_keywords', default_keywords)
+        keyword_sets = getattr(self, "fuente_keywords", default_keywords)
 
         for fuente_type, keywords in keyword_sets.items():
             for keyword in keywords:
-                pattern = re.compile(rf'\b{re.escape(keyword)}\b', re.IGNORECASE)
+                pattern = re.compile(rf"\b{re.escape(keyword)}\b", re.IGNORECASE)
                 for match in pattern.finditer(text):
                     fuente = {
                         "text": match.group(0),
                         "fuente_type": fuente_type,
                         "start": match.start(),
                         "end": match.end(),
-                        "confidence": 0.90
+                        "confidence": 0.90,
                     }
                     fuentes.append(fuente)
 
         return fuentes
 
-    def _extract_programas(self, text: str, context: Optional[Dict]) -> List[Dict[str, Any]]:
+    def _extract_programas(self, text: str, context: dict | None) -> list[dict[str, Any]]:
         """Extract linked programs (simplified - uses context if available)."""
         programas = []
 
         # If context provides programmatic hierarchy, use it
         if context and "programa" in context:
-            programas.append({
-                "text": context["programa"],
-                "programa_id": context.get("programa_id"),
-                "start": 0,
-                "end": 0,
-                "confidence": 0.95,
-                "source": "context"
-            })
+            programas.append(
+                {
+                    "text": context["programa"],
+                    "programa_id": context.get("programa_id"),
+                    "start": 0,
+                    "end": 0,
+                    "confidence": 0.95,
+                    "source": "context",
+                }
+            )
 
         # Simple pattern-based extraction
         programa_patterns = [
-            r'(?:programa|proyecto|iniciativa)[\s:]+([\w\s]+?)(?:\.|,|\n)',
-            r'(?:Programa|Proyecto|Iniciativa):\s*(.*?)(?:\n|$)'
+            r"(?:programa|proyecto|iniciativa)[\s:]+([\w\s]+?)(?:\.|,|\n)",
+            r"(?:Programa|Proyecto|Iniciativa):\s*(.*?)(?:\n|$)",
         ]
 
         for pattern_str in programa_patterns:
@@ -294,24 +301,28 @@ class FinancialChainExtractor(PatternBasedExtractor):
                     "start": match.start(),
                     "end": match.end(),
                     "confidence": 0.70,
-                    "source": "text"
+                    "source": "text",
                 }
                 programas.append(programa)
 
         return programas
 
-    def _extract_periodos(self, text: str) -> List[Dict[str, Any]]:
+    def _extract_periodos(self, text: str) -> list[dict[str, Any]]:
         """Extract fiscal periods."""
         periodos = []
 
         default_patterns = [
-            r'(20[2-3]\d)\s*[-–]\s*(20[2-3]\d)',
-            r'vigencia\s+(20[2-3]\d)',
-            r'año\s+(20[2-3]\d)',
-            r'(20[2-3]\d)'
+            r"(20[2-3]\d)\s*[-–]\s*(20[2-3]\d)",
+            r"vigencia\s+(20[2-3]\d)",
+            r"año\s+(20[2-3]\d)",
+            r"(20[2-3]\d)",
         ]
 
-        patterns = self.periodo_patterns if self.periodo_patterns else [re.compile(p) for p in default_patterns]
+        patterns = (
+            self.periodo_patterns
+            if self.periodo_patterns
+            else [re.compile(p) for p in default_patterns]
+        )
 
         for pattern in patterns:
             for match in pattern.finditer(text):
@@ -330,7 +341,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
                     "año_fin": año_fin,
                     "start": match.start(),
                     "end": match.end(),
-                    "confidence": 0.85
+                    "confidence": 0.85,
                 }
                 periodos.append(periodo)
 
@@ -338,12 +349,12 @@ class FinancialChainExtractor(PatternBasedExtractor):
 
     def _link_components(
         self,
-        montos: List[Dict],
-        fuentes: List[Dict],
-        programas: List[Dict],
-        periodos: List[Dict],
-        text: str
-    ) -> List[FinancialChain]:
+        montos: list[dict],
+        fuentes: list[dict],
+        programas: list[dict],
+        periodos: list[dict],
+        text: str,
+    ) -> list[FinancialChain]:
         """Link components into financial chains using proximity."""
         chains = []
         chain_id = 0
@@ -385,7 +396,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
                 programa=closest_programa,
                 periodo=closest_periodo,
                 confidence=chain_confidence,
-                text_span=(min_start, max_end)
+                text_span=(min_start, max_end),
             )
 
             chains.append(chain)
@@ -394,11 +405,8 @@ class FinancialChainExtractor(PatternBasedExtractor):
         return chains
 
     def _find_closest(
-        self,
-        position: int,
-        components: List[Dict],
-        max_distance: int = 200
-    ) -> Optional[Dict]:
+        self, position: int, components: list[dict], max_distance: int = 200
+    ) -> dict | None:
         """Find closest component to a position."""
         closest = None
         min_distance = max_distance
@@ -414,10 +422,11 @@ class FinancialChainExtractor(PatternBasedExtractor):
 
 # Convenience functions
 
-def extract_financial_chains(text: str, context: Optional[Dict] = None) -> ExtractionResult:
+
+def extract_financial_chains(text: str, context: dict | None = None) -> ExtractionResult:
     """Convenience function to extract financial chains."""
     extractor = FinancialChainExtractor()
     return extractor.extract(text, context)
 
 
-__all__ = ['FinancialChainExtractor', 'FinancialChain', 'extract_financial_chains']
+__all__ = ["FinancialChain", "FinancialChainExtractor", "extract_financial_chains"]
