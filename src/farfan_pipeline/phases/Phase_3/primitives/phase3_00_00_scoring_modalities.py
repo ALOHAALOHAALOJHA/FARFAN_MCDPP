@@ -119,7 +119,7 @@ except ImportError:
 ScoringModality = Literal["TYPE_A", "TYPE_B", "TYPE_C", "TYPE_D", "TYPE_E", "TYPE_F"]
 
 
-from .quality_levels import QualityLevel
+from .phase3_00_00_quality_levels import QualityLevel
 
 # =============================================================================
 # EXCEPTIONS

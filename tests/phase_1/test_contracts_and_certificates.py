@@ -19,16 +19,17 @@ class TestContractModules:
         contracts_dir = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
             / "contracts"
         )
 
         contract_files = [
-            "phase1_mission_contract.py",
-            "phase1_input_contract.py",
-            "phase1_output_contract.py",
-            "phase1_constitutional_contract.py",
+            "phase1_10_00_phase1_mission_contract.py",
+            "phase1_10_00_phase1_input_contract.py",
+            "phase1_10_00_phase1_output_contract.py",
+            "phase1_10_00_phase1_constitutional_contract.py",
         ]
 
         for filename in contract_files:
@@ -50,10 +51,11 @@ class TestContractStructure:
         mission_contract_path = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
             / "contracts"
-            / "phase1_mission_contract.py"
+            / "phase1_10_00_phase1_mission_contract.py"
         )
 
         content = mission_contract_path.read_text()
@@ -77,10 +79,11 @@ class TestContractStructure:
         input_contract_path = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
             / "contracts"
-            / "phase1_input_contract.py"
+            / "phase1_10_00_phase1_input_contract.py"
         )
 
         content = input_contract_path.read_text()
@@ -103,10 +106,11 @@ class TestContractStructure:
         output_contract_path = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
             / "contracts"
-            / "phase1_output_contract.py"
+            / "phase1_10_00_phase1_output_contract.py"
         )
 
         content = output_contract_path.read_text()
@@ -132,10 +136,11 @@ class TestContractStructure:
         constitutional_contract_path = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
             / "contracts"
-            / "phase1_constitutional_contract.py"
+            / "phase1_10_00_phase1_constitutional_contract.py"
         )
 
         content = constitutional_contract_path.read_text()
@@ -159,8 +164,9 @@ class TestCertificates:
         cert_dir = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
             / "contracts"
             / "certificates"
         )
@@ -172,8 +178,9 @@ class TestCertificates:
         cert_dir = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
             / "contracts"
             / "certificates"
         )
@@ -193,8 +200,9 @@ class TestCertificates:
         cert_dir = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
             / "contracts"
             / "certificates"
         )
@@ -225,8 +233,9 @@ class TestCertificates:
         cert_dir = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
             / "contracts"
             / "certificates"
         )
@@ -243,8 +252,9 @@ class TestContractsPackage:
         contracts_init = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
             / "contracts"
             / "__init__.py"
         )

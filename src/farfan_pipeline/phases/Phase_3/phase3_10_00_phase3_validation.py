@@ -24,6 +24,7 @@ __criticality__ = "CRITICAL"
 __execution_pattern__ = "On-Demand"
 
 import logging
+import math
 from dataclasses import dataclass
 from typing import Any
 
@@ -157,14 +158,43 @@ def validate_and_clamp_score(
 
     try:
         score_float = float(score)
-    except (TypeError, ValueError) as e:
+    except (TypeError, ValueError, OverflowError) as e:
+        # ADVERSARIAL: Handle OverflowError for extremely large integers
         counters.out_of_bounds_scores += 1
         logger.error(
             f"Phase 3 score validation failed: unconvertible type, "
             f"question_id={question_id}, question_global={question_global}, "
             f"score_type={type(score).__name__}, score_value={score!s}, error={e!s}"
         )
+        # For overflow errors, determine if positive or negative
+        try:
+            score_int = int(score) if not isinstance(score, (str, bytes)) else 0
+            return 1.0 if score_int > 0 else 0.0
+        except (TypeError, ValueError, OverflowError):
+            return 0.0
+
+    # ADVERSARIAL: Check for NaN explicitly (NaN comparisons always return False)
+    if score_float != score_float:  # NaN is the only value that is not equal to itself
+        counters.out_of_bounds_scores += 1
+        counters.score_clamping_applied += 1
+        logger.warning(
+            f"Phase 3 score validation: NaN detected, defaulting to 0.0, "
+            f"question_id={question_id}, question_global={question_global}, "
+            f"original_score={score_float}"
+        )
         return 0.0
+
+    # ADVERSARIAL: Check for infinity
+    if not math.isfinite(score_float):
+        counters.out_of_bounds_scores += 1
+        counters.score_clamping_applied += 1
+        clamped = max(0.0, min(1.0, score_float))
+        logger.warning(
+            f"Phase 3 score validation: infinity detected, clamping, "
+            f"question_id={question_id}, question_global={question_global}, "
+            f"original_score={score_float}, clamped_score={clamped}"
+        )
+        return clamped
 
     if score_float < 0.0 or score_float > 1.0:
         counters.out_of_bounds_scores += 1

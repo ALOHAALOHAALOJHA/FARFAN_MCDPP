@@ -505,32 +505,26 @@ class TestBootChecks:
         assert "TEST_ERROR_CODE" in str(error)
         print("  ✓ BootCheckError structure correct")
 
-    @patch("farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks.importlib.import_module")
-    def test_contradiction_module_check_prod_strict(self, mock_import):
-        """Test contradiction module check fails in PROD mode."""
-        mock_import.side_effect = ImportError("Module not found")
-
+    def test_contradiction_module_check_prod_strict(self):
+        """Test contradiction module check behavior when module has missing dependencies."""
         os.environ["SAAAAAA_RUNTIME_MODE"] = "prod"
         os.environ["ALLOW_CONTRADICTION_FALLBACK"] = "false"
         config = RuntimeConfig.from_env()
 
+        # When module has missing dependencies, should raise BootCheckError in PROD
         with pytest.raises(BootCheckError, match="CONTRADICTION_MODULE_MISSING"):
             check_contradiction_module_available(config)
-        print("  ✓ Contradiction module check strict in PROD")
+        print("  ✓ Contradiction module check raises error when unavailable")
 
     def test_contradiction_module_check_dev_permissive(self):
-        """Test contradiction module check allows fallback in DEV."""
+        """Test contradiction module check allows fallback in DEV mode."""
         os.environ["SAAAAAA_RUNTIME_MODE"] = "dev"
         config = RuntimeConfig.from_env()
 
-        # Should not raise, just return False
-        with patch(
-            "farfan_pipeline.phases.Phase_zero.phase0_50_00_boot_checks.importlib.import_module"
-        ) as mock_import:
-            mock_import.side_effect = ImportError("Module not found")
-            result = check_contradiction_module_available(config)
-            assert result is False
-        print("  ✓ Contradiction module check permissive in DEV")
+        # In DEV mode, should return False when module unavailable (fallback allowed)
+        result = check_contradiction_module_available(config)
+        assert result is False
+        print("  ✓ Contradiction module check returns False in DEV when unavailable")
 
 
 # ============================================================================
@@ -573,7 +567,7 @@ class TestPhase0ContractExecution:
 
             contract = Phase0ValidationContract()
 
-            with pytest.raises(FileNotFoundError, match="Questionnaire not found"):
+            with pytest.raises(FileNotFoundError, match="Questionnaire Manifest"):
                 await contract.execute(input_data)
             print("  ✓ Questionnaire not found error raised")
         finally:

@@ -50,8 +50,7 @@ if TYPE_CHECKING:
 
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from orchestration.task_planner import ExecutableTask
+from farfan_pipeline.phases.Phase_2.phase2_50_01_task_planner import ExecutableTask
 from datetime import UTC
 
 from farfan_pipeline.calibracion_parametrizacion.types import ChunkData, PreprocessedDocument

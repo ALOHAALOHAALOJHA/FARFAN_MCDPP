@@ -40,12 +40,12 @@ from itertools import combinations
 from typing import TYPE_CHECKING, Any
 
 # Cross-module integration with Uncertainty Quantification
-from farfan_pipeline.phases.Phase_4.uncertainty_quantification import (
+from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification import (
     UncertaintyMetrics,
 )
 
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_4.aggregation import AggregationSettings
+    from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation import AggregationSettings
 
 logger = logging.getLogger(__name__)
 

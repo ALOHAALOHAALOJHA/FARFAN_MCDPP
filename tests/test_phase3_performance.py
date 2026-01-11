@@ -41,7 +41,7 @@ def test_validation_performance():
     Note: Validation adds explicit checks that improve correctness.
     The overhead is acceptable given the value added (preventing silent failures).
     """
-    from farfan_pipeline.phases.Phase_three.validation import (
+    from farfan_pipeline.phases.Phase_3.phase3_10_00_phase3_validation import (
         validate_micro_results_input,
         validate_evidence_presence,
         validate_and_clamp_score,
@@ -147,7 +147,7 @@ def test_validation_performance():
 
 def test_validation_scales_linearly():
     """Test validation time scales linearly with question count."""
-    from farfan_pipeline.phases.Phase_three.validation import (
+    from farfan_pipeline.phases.Phase_3.phase3_10_00_phase3_validation import (
         validate_micro_results_input,
         validate_evidence_presence,
         validate_and_clamp_score,

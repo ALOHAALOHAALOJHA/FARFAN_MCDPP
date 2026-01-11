@@ -20,7 +20,10 @@ Version: 1.0.0
 
 from __future__ import annotations
 
-from . import phase4_7_entry_contract, phase4_7_exit_contract
+from . import (
+    phase4_10_00_phase4_7_entry_contract as phase4_7_entry_contract,
+    phase4_10_00_phase4_7_exit_contract as phase4_7_exit_contract,
+)
 
 __all__ = [
     "phase4_7_entry_contract",

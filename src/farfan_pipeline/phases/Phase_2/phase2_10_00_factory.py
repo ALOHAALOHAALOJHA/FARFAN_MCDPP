@@ -164,11 +164,11 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 # Phase 2 orchestration components
-from farfan_pipeline.phases.Phase_2.arg_router import ExtendedArgRouter
-from farfan_pipeline.phases.Phase_2.executors.base_executor_with_contract import (
+from farfan_pipeline.phases.Phase_2.phase2_60_02_arg_router import ExtendedArgRouter
+from farfan_pipeline.phases.Phase_2.phase2_60_00_base_executor_with_contract import (
     BaseExecutorWithContract,
 )
-from farfan_pipeline.phases.Phase_2.executors.executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
 from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import (
     build_class_registry,
     get_class_paths,
@@ -188,6 +188,19 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_regist
     create_signal_registry,
 )
 from farfan_pipeline.infrastructure.questionnaire import QuestionnaireModularResolver
+
+# Phase 0 integration
+from farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import (
+    RuntimeConfig,
+)
+from farfan_pipeline.phases.Phase_0.phase0_50_01_exit_gates import (
+    check_all_gates,
+)
+from farfan_pipeline.phases.Phase_0.phase0_90_01_verified_pipeline_runner import (
+    VerifiedPipelineRunner,
+)
+
+logger = logging.getLogger(__name__)
 
 # Canonical method injection (direct method access, no class instantiation)
 from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import (
@@ -216,8 +229,7 @@ try:
 except ImportError:
     MODULAR_RESOLVER_AVAILABLE = False
     logger.warning(
-        "modular_resolver_unavailable",
-        message="CanonicalQuestionnaireResolver not available, using legacy loader",
+        "modular_resolver_unavailable: CanonicalQuestionnaireResolver not available, using legacy loader"
     )
 
 # Phase 1 validation constants module
@@ -238,12 +250,12 @@ CoreModuleFactory = None
 CORE_MODULE_FACTORY_AVAILABLE = False
 
 # SeedRegistry for determinism
-from orchestration.seed_registry import SeedRegistry
+from farfan_pipeline.orchestration.seed_registry import SeedRegistry
 
 SEED_REGISTRY_AVAILABLE = True
 
 # CP-0.1 & CP-0.2: Phase 1 Validation
-from farfan_pipeline.core.types import PreprocessedDocument
+from farfan_pipeline.calibracion_parametrizacion.types import PreprocessedDocument
 from farfan_pipeline.validators.phase1_output_validator import Phase1OutputValidator
 
 # Phase 0 integration

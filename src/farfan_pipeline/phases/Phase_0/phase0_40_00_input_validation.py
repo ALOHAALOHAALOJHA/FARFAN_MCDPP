@@ -86,6 +86,7 @@ except ImportError as e:
 # Phase protocol from Phase Zero Infrastructure
 from farfan_pipeline.phases.Phase_0.phase0_00_03_protocols import (
     ContractValidationResult,
+    PhaseContract,
 )
 
 # Dura Lex Contract System - ACTUAL USAGE FOR MAXIMUM PERFORMANCE

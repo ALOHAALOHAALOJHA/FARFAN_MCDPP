@@ -23,7 +23,7 @@ __modified__ = "2025-01-09T00:00:00Z"
 __criticality__ = "HIGH"
 __execution_pattern__ = "Per-Task"
 
-from .PHASE_6_CONSTANTS import (
+from .phase6_10_00_phase_6_constants import (
     CLUSTER_COMPOSITION,
     CLUSTERS,
     COHERENCE_THRESHOLD_HIGH,

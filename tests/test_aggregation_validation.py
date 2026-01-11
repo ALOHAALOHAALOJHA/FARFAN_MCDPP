@@ -12,14 +12,14 @@ import pytest
 from pathlib import Path
 
 # Add src to path
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
+from farfan_pipeline.phases.Phase_4.aggregation import (
     DimensionScore,
     AreaScore,
     ClusterScore,
     MacroScore,
     ScoredResult,
 )
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validation import (
+from farfan_pipeline.phases.Phase_4.aggregation_validation import (
     validate_phase4_output,
     validate_phase5_output,
     validate_phase6_output,
@@ -27,6 +27,7 @@ from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_validatio
     validate_full_aggregation_pipeline,
     AggregationValidationError,
     enforce_validation_or_fail,
+    ValidationResult,
 )
 
 

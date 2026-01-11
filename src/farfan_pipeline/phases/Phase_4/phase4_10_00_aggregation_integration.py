@@ -31,15 +31,13 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     pass
 
-from farfan_pipeline.phases.Phase_4.aggregation import (
+from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation import (
     DimensionAggregator,
     DimensionScore,
     AreaPolicyAggregator,
     AreaScore,
     ClusterAggregator,
     ClusterScore,
-    DimensionAggregator,
-    DimensionScore,
     MacroAggregator,
     MacroScore,
     group_by,

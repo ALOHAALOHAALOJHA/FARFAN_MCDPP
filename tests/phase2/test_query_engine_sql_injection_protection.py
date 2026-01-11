@@ -7,7 +7,7 @@ attempts while allowing legitimate queries.
 
 import pytest
 
-from farfan_pipeline.phases.Phase_two.phase2_80_01_evidence_query_engine import (
+from farfan_pipeline.phases.Phase_2.phase2_80_01_evidence_query_engine import (
     QueryValidationError,
     SecureQueryParser,
     create_query_engine,

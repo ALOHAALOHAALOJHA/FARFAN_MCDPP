@@ -24,8 +24,8 @@ import re
 from dataclasses import FrozenInstanceError
 from typing import Any, Dict, List
 
-# Phase 1 imports
-from farfan_pipeline.phases.Phase_one import (
+# Phase 1 imports - Canonical path is Phase_1 (not Phase_one)
+from farfan_pipeline.phases.Phase_1 import (
     SmartChunk,
     Chunk,
     LanguageData,
@@ -45,19 +45,19 @@ from farfan_pipeline.phases.Phase_one import (
     ASSIGNMENT_METHOD_FALLBACK,
 )
 
-from farfan_pipeline.phases.Phase_one.cpp_models import (
+from farfan_pipeline.phases.Phase_1.phase1_10_00_cpp_models import (
     TextSpan,
     LegacyChunk,
     ChunkResolution,
     CanonPolicyPackage,
 )
 
-from farfan_pipeline.phases.Phase_one.phase1_20_00_cpp_ingestion import (
+from farfan_pipeline.phases.Phase_1.phase1_20_00_cpp_ingestion import (
     Phase1MissionContract,
     PADimGridSpecification,
 )
 
-from farfan_pipeline.phases.Phase_one.phase1_40_00_circuit_breaker import (
+from farfan_pipeline.phases.Phase_1.phase1_40_00_circuit_breaker import (
     Phase1CircuitBreaker,
     CircuitState,
     FailureSeverity,

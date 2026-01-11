@@ -25,7 +25,7 @@ __execution_pattern__ = "On-Demand"
 import json
 from pathlib import Path
 
-from farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import RuntimeConfig
+from farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import RuntimeConfig, RuntimeMode
 
 
 class BootCheckError(Exception):
@@ -59,11 +59,12 @@ def check_contradiction_module_available(config: RuntimeConfig) -> bool:
         BootCheckError: If module unavailable in strict PROD mode
     """
     try:
-        from farfan_pipeline.analysis.contradiction_detection import PolicyContradictionDetector
+        from farfan_pipeline.methods.contradiction_deteccion import PolicyContradictionDetector
 
         return True
     except ImportError as e:
-        if config.mode == RuntimeMode.PROD and not config.allow_contradiction_fallback:
+        # Use string comparison to avoid enum instance comparison issues
+        if config.mode.value == "prod" and not config.allow_contradiction_fallback:
             raise BootCheckError(
                 component="contradiction_module",
                 reason=f"PolicyContradictionDetector not available: {e}",

@@ -45,7 +45,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from orchestration.orchestrator import ResourceLimits
+    from farfan_pipeline.orchestration.orchestrator import ResourceLimits
 
 logger = logging.getLogger(__name__)
 

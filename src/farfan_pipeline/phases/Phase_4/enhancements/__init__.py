@@ -10,13 +10,13 @@ This package contains enhanced aggregators with additional features:
 
 from __future__ import annotations
 
-from .adaptive_meso_scoring import (
+from .phase4_10_00_adaptive_meso_scoring import (
     AdaptiveMesoScoring,
     AdaptiveScoringConfig,
     ScoringMetrics,
     create_adaptive_scorer,
 )
-from .enhanced_aggregators import (
+from .phase4_10_00_enhanced_aggregators import (
     ConfidenceInterval,
     DispersionMetrics,
     EnhancedAreaAggregator,
@@ -26,7 +26,7 @@ from .enhanced_aggregators import (
     HermeticityDiagnosis,
     enhance_aggregator,
 )
-from .signal_enriched_aggregation import (
+from .phase4_10_00_signal_enriched_aggregation import (
     SignalEnrichedAggregator,
     adjust_weights,
     interpret_dispersion,

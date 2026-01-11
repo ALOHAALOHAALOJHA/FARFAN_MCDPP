@@ -28,15 +28,15 @@ import logging
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
-    from orchestration.orchestrator import MethodExecutor, Orchestrator, ResourceLimits
+    from farfan_pipeline.orchestration.orchestrator import MethodExecutor, Orchestrator, ResourceLimits
 
-from orchestration.resource_alerts import (
+from farfan_pipeline.phases.Phase_2.phase2_30_02_resource_alerts import (
     AlertChannel,
     AlertThresholds,
     ResourceAlertManager,
 )
-from orchestration.resource_aware_executor import ResourceAwareExecutor
-from orchestration.resource_manager import (
+from farfan_pipeline.phases.Phase_2.phase2_30_03_resource_aware_executor import ResourceAwareExecutor
+from farfan_pipeline.phases.Phase_2.phase2_30_00_resource_manager import (
     AdaptiveResourceManager,
     ExecutorPriority,
     ResourceAllocationPolicy,

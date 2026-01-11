@@ -9,7 +9,7 @@ import pytest
 import json
 import hashlib
 
-from farfan_pipeline.phases.Phase_two.phase2_50_00_task_executor import (
+from farfan_pipeline.phases.Phase_2.phase2_50_00_task_executor import (
     CheckpointManager,
 )
 

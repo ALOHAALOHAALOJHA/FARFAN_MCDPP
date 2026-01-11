@@ -113,11 +113,11 @@ from .phase1_10_00_phase_1_constants import (
     PDF_EXTRACTION_CHAR_LIMIT,
     SEMANTIC_SCORE_MAX_EXPECTED,
 )
-from .primitives.streaming_extractor import StreamingPDFExtractor
+from .primitives import StreamingPDFExtractor
 
 # Remediation Imports (SPEC-001, SPEC-003, SPEC-004)
-from .primitives.truncation_audit import TruncationAudit
-from .thread_safe_results import ThreadSafeResults
+from .primitives import TruncationAudit
+from .phase1_10_00_thread_safe_results import ThreadSafeResults
 
 
 # PDT Section Types and Hierarchy Levels
@@ -141,7 +141,7 @@ class PDTSectionType(Enum):
 PDT_TYPES_AVAILABLE = True
 
 # CPP models - REAL PRODUCTION MODELS (no stubs)
-from .cpp_models import (
+from .phase1_10_00_cpp_models import (
     CanonPolicyPackage,
     CanonPolicyPackageValidator,
     ChunkGraph,
@@ -3066,10 +3066,15 @@ class Phase1CPPIngestionFullContract:
 
     def _smartchunk_kwargs_filter(self, kwargs: dict[str, Any]) -> dict[str, Any]:
         """
-        Filter kwargs to match SmartChunk fields to avoid unexpected argument errors.
+        Filter kwargs to match SmartChunk init fields to avoid unexpected argument errors.
+        Excludes fields with init=False.
         """
         # Get valid field names from the SmartChunk dataclass fields
-        valid_fields = {f for f in SmartChunk.__dataclass_fields__}
+        # Only include fields where init=True (default) or not specified as False
+        valid_fields = {
+            name for name, field_obj in SmartChunk.__dataclass_fields__.items()
+            if field_obj.init is not False
+        }
         return {k: v for k, v in kwargs.items() if k in valid_fields}
 
     def _execute_sp11_smart_chunks(

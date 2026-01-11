@@ -207,8 +207,12 @@ def get_recommendation_engine_v2() -> "RecommendationEngineV2":
     return RecommendationEngine()
 
 
-# Default to v3 for new code
-RecommendationEngine = RecommendationEngineV3
+# Default to v2 for compatibility (v3 requires additional modules)
+# RecommendationEngine alias will be set dynamically
+def _get_default_engine_class():
+    """Get default RecommendationEngine class (v2 for compatibility)."""
+    from .phase8_20_00_recommendation_engine import RecommendationEngine as EngineV2
+    return EngineV2
 
 
 def get_schema_validator():

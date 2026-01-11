@@ -10,7 +10,7 @@ This package provides strict validation for all aggregation phases to ensure:
 
 from __future__ import annotations
 
-from .phase4_7_validation import (
+from .phase4_10_00_phase4_7_validation import (
     AggregationValidationError,
     ValidationResult,
     enforce_validation_or_fail,

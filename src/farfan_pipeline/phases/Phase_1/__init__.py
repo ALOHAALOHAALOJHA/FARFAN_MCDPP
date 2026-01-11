@@ -62,10 +62,10 @@ from .phase1_10_00_phase_1_constants import (
     TOTAL_CHUNK_COMBINATIONS,
     VALID_ASSIGNMENT_METHODS,
 )
-from .primitives.streaming_extractor import StreamingPDFExtractor
+from .primitives import StreamingPDFExtractor
 
 # Primitives
-from .primitives.truncation_audit import TruncationAudit
+from .primitives import TruncationAudit
 
 # Question-aware architecture (v2.0) - NEW
 try:

@@ -8,16 +8,16 @@ preventing DeprecationWarning in Python 3.12+.
 import warnings
 from datetime import datetime, timezone
 
-from farfan_pipeline.phases.Phase_two.phase2_30_00_resource_manager import (
+from farfan_pipeline.phases.Phase_2.phase2_30_00_resource_manager import (
     CircuitBreaker,
     CircuitBreakerConfig,
 )
-from farfan_pipeline.phases.Phase_two.phase2_30_02_resource_alerts import (
+from farfan_pipeline.phases.Phase_2.phase2_30_02_resource_alerts import (
     ResourceAlert,
     ResourceAlertManager,
     AlertSeverity,
 )
-from farfan_pipeline.phases.Phase_two.phase2_50_00_task_executor import (
+from farfan_pipeline.phases.Phase_2.phase2_50_00_task_executor import (
     CheckpointManager,
 )
 
@@ -116,7 +116,7 @@ class TestDatetimeTimezoneAwareness:
 
     def test_resource_alert_timestamp_timezone_aware(self):
         """Verify resource alert timestamps are timezone-aware."""
-        from farfan_pipeline.phases.Phase_two.phase2_30_00_resource_manager import (
+        from farfan_pipeline.phases.Phase_2.phase2_30_00_resource_manager import (
             ResourcePressureEvent,
             ResourcePressureLevel,
         )
@@ -143,7 +143,7 @@ class TestDatetimeTimezoneAwareness:
 
     def test_alert_manager_rate_limiting_timezone_aware(self):
         """Verify alert manager rate limiting uses timezone-aware timestamps."""
-        from farfan_pipeline.phases.Phase_two.phase2_30_00_resource_manager import (
+        from farfan_pipeline.phases.Phase_2.phase2_30_00_resource_manager import (
             ResourcePressureEvent,
             ResourcePressureLevel,
         )

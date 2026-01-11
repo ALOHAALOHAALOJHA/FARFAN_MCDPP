@@ -76,7 +76,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Final
 
-from .phase2_d_irrigation_orchestrator import ExecutableTask, ExecutionPlan
+from farfan_pipeline.phases.Phase_2.phase2_50_01_task_planner import ExecutableTask
+from farfan_pipeline.phases.Phase_2.phase2_40_03_irrigation_synchronizer import ExecutionPlan
 
 logger: Final = logging.getLogger(__name__)
 

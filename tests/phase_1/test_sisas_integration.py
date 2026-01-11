@@ -19,29 +19,31 @@ class TestSISASIntegration:
         signal_enrichment_path = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
-            / "signal_enrichment.py"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
+            / "phase1_60_00_signal_enrichment.py"
         )
-        assert signal_enrichment_path.exists(), "signal_enrichment.py must exist"
+        assert signal_enrichment_path.exists(), "phase1_60_00_signal_enrichment.py must exist"
 
         # Verify it's substantial (not a stub)
         size_bytes = signal_enrichment_path.stat().st_size
         assert (
             size_bytes > 1000
-        ), f"signal_enrichment.py should be substantial, got {size_bytes} bytes"
+        ), f"phase1_60_00_signal_enrichment.py should be substantial, got {size_bytes} bytes"
 
     def test_signal_registry_parameter_in_main_function(self):
         """Verify execute_phase_1_with_full_contract accepts signal_registry."""
         cpp_ingestion_path = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
-            / "phase1_cpp_ingestion_full.py"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
+            / "phase1_20_00_cpp_ingestion.py"
         )
 
-        assert cpp_ingestion_path.exists(), "phase1_cpp_ingestion_full.py must exist"
+        assert cpp_ingestion_path.exists(), "phase1_20_00_cpp_ingestion.py must exist"
 
         content = cpp_ingestion_path.read_text()
 
@@ -56,8 +58,9 @@ class TestSISASIntegration:
         readme_path = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
             / "README.md"
         )
 
@@ -77,8 +80,9 @@ class TestSISASIntegration:
         readme_path = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
             / "README.md"
         )
         readme_content = readme_path.read_text()
@@ -98,8 +102,9 @@ class TestSP12IrrigationOutputs:
         readme_path = (
             Path(__file__).resolve().parent.parent.parent
             / "src"
-            / "canonic_phases"
-            / "phase_1_cpp_ingestion"
+            / "farfan_pipeline"
+            / "phases"
+            / "Phase_1"
             / "README.md"
         )
         readme_content = readme_path.read_text()

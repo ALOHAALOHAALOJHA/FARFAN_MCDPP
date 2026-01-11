@@ -283,6 +283,7 @@ class Arguments:
 class Temporal:
     """Output of SP8."""
 
+    timeline: list[Any] = field(default_factory=list)
     time_markers: list[Any] = field(default_factory=list)
     sequences: list[Any] = field(default_factory=list)
     durations: list[Any] = field(default_factory=list)
@@ -291,7 +292,7 @@ class Temporal:
     @property
     def temporal_markers(self) -> list[Any]:
         """Alias per FORCING ROUTE [EXEC-SP8-002]."""
-        return self.time_markers
+        return self.time_markers if self.time_markers else self.timeline
 
 
 @dataclass

@@ -35,7 +35,7 @@ from datetime import UTC, datetime, timedelta
 from enum import Enum
 from typing import Any
 
-from orchestration.resource_manager import (
+from farfan_pipeline.phases.Phase_2.phase2_30_00_resource_manager import (
     ResourcePressureEvent,
     ResourcePressureLevel,
 )
