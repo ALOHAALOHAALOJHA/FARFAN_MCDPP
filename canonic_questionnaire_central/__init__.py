@@ -260,6 +260,13 @@ class CQCLoader:
         else:
             # Fallback to linear search (slow) - iterates through all questions
             # This is O(n) vs O(1) for indexed routing
+            import logging
+            logging.warning(
+                "Using O(n) linear search fallback for signal routing. "
+                "Consider enabling SignalQuestionIndex for O(1) performance. "
+                f"signal_type={signal_type}"
+            )
+            
             result_set = set()
 
             # Get all questions from registry
