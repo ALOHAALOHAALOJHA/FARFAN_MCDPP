@@ -40,6 +40,8 @@ import os
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Protocol
 
+from farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import RuntimeMode
+
 if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_0.phase0_10_01_runtime_config import RuntimeConfig
 
@@ -458,8 +460,7 @@ def check_method_registry_gate(runner: Phase0Runner) -> GateResult:
 
     # In PROD mode, no failed classes allowed
     if runner.runtime_config and hasattr(runner.runtime_config, "mode"):
-        # Use string comparison to avoid enum instance comparison issues
-        if runner.runtime_config.mode.value == "prod" and failed_count > 0:
+        if runner.runtime_config.mode == RuntimeMode.PROD and failed_count > 0:
             failed_names = stats.get("failed_class_names", [])
             return GateResult(
                 passed=False,
@@ -544,9 +545,8 @@ def check_smoke_tests_gate(runner: Phase0Runner) -> GateResult:
 
     if failed_tests:
         # In PROD mode, any smoke test failure is fatal
-        # Use string comparison to avoid enum instance comparison issues
         if runner.runtime_config and hasattr(runner.runtime_config, "mode"):
-            if runner.runtime_config.mode.value == "prod":
+            if runner.runtime_config.mode == RuntimeMode.PROD:
                 return GateResult(
                     passed=False,
                     gate_name=gate_name,

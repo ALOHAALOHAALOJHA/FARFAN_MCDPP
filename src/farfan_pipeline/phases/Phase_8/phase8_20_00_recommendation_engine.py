@@ -50,7 +50,7 @@ from typing import Any
 
 import jsonschema
 from farfan_pipeline.core.parameters import ParameterLoaderV2
-from farfan_pipeline.infrastructure.capaz_calibration_parmetrization.calibration.decorators import (
+from farfan_pipeline.infrastructure.calibration.decorators import (
     calibrated_method,
 )
 
