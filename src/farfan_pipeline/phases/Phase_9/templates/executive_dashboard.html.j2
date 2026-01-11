@@ -385,11 +385,11 @@
 
         <div class="kpi-card" style="grid-column: span 3;">
             <div class="kpi-label">Cobertura</div>
-            <div class="kpi-value">{{ ((metadata.questions_analyzed / metadata.total_questions) * 100) | round(0) }}%</div>
+            <div class="kpi-value">{{ (((metadata.questions_analyzed / metadata.total_questions) if metadata.total_questions > 0 else 0) * 100) | round(0) }}%</div>
             <div class="kpi-subtitle">{{ metadata.questions_analyzed }} de {{ metadata.total_questions }} preguntas</div>
-            <div class="kpi-trend {% if (metadata.questions_analyzed / metadata.total_questions) >= 0.95 %}trend-up{% elif (metadata.questions_analyzed / metadata.total_questions) >= 0.8 %}trend-neutral{% else %}trend-down{% endif %}">
-                {% if (metadata.questions_analyzed / metadata.total_questions) >= 0.95 %}✓ Cobertura completa
-                {% elif (metadata.questions_analyzed / metadata.total_questions) >= 0.8 %}⚠ Cobertura parcial
+            <div class="kpi-trend {% if ((metadata.questions_analyzed / metadata.total_questions) if metadata.total_questions > 0 else 0) >= 0.95 %}trend-up{% elif ((metadata.questions_analyzed / metadata.total_questions) if metadata.total_questions > 0 else 0) >= 0.8 %}trend-neutral{% else %}trend-down{% endif %}">
+                {% if ((metadata.questions_analyzed / metadata.total_questions) if metadata.total_questions > 0 else 0) >= 0.95 %}✓ Cobertura completa
+                {% elif ((metadata.questions_analyzed / metadata.total_questions) if metadata.total_questions > 0 else 0) >= 0.8 %}⚠ Cobertura parcial
                 {% else %}⚠ Cobertura insuficiente
                 {% endif %}
             </div>
@@ -489,7 +489,10 @@
             {% set poor_count = micro_analyses | selectattr('score', 'lt', 0.55) | list | length %}
             {% set total_with_score = excellent_count + good_count + fair_count + poor_count %}
 
-            <div class="dist-bar-container">
+            {% if total_with_score == 0 %}
+<p style="text-align: center; color: #888;">No hay preguntas evaluadas disponibles</p>
+{% else %}
+<div class="dist-bar-container">
                 <div class="dist-bar">
                     <div class="dist-bar-fill color-excellent" style="height: {% if total_with_score > 0 %}{{ (excellent_count / total_with_score * 100) }}%{% else %}0%{% endif %};">
                         {{ excellent_count }}

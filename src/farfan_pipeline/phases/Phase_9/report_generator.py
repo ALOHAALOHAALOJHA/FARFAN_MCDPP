@@ -16,12 +16,13 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import math
 import random
 from datetime import UTC, datetime
+from html import escape as html_escape
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, List, Dict, Optional
+from typing import TYPE_CHECKING, Any, List
 import base64
-from io import BytesIO
 
 if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_9.report_assembly import AnalysisReport
@@ -31,6 +32,7 @@ logger = logging.getLogger(__name__)
 __all__ = [
     "ReportGenerator",
     "compute_file_sha256",
+    "format_digest_atroz",
     "generate_charts",
     "generate_html_report",
     "generate_markdown_report",
@@ -422,9 +424,9 @@ class ReportGenerator:
         generate_pdf: bool = True,
         generate_html: bool = True,
         generate_markdown: bool = True,
-        template_name: str = "report_atroz_enhanced.html.j2",
+        template_name: str = "report_enhanced.html.j2",
     ) -> dict[str, Path]:
-        """Generate all report formats with AtroZ aesthetic."""
+        """Generate all report formats with enhanced template (default: report_enhanced.html.j2)."""
         artifacts: dict[str, Path] = {}
 
         try:
@@ -597,10 +599,10 @@ def generate_markdown_report(report: AnalysisReport) -> str:
 def generate_html_report(
     report: AnalysisReport,
     chart_paths: list[Path] | None = None,
-    template_name: str = "report_atroz.html.j2",
+    template_name: str = "report_enhanced.html.j2",
     enable_animations: bool = True,
 ) -> str:
-    """Generate HTML report with full AtroZ aesthetic including animations."""
+    """Generate HTML report with enhanced template (aligned with generate_all default)."""
     visualizer = AtrozVisualizer()
     
     try:
@@ -636,7 +638,14 @@ def _generate_atroz_html(
     visualizer: AtrozVisualizer,
     enable_animations: bool = True
 ) -> str:
-    """Generate inline HTML with full AtroZ visceral aesthetic."""
+    """Generate inline HTML with full AtroZ visceral aesthetic (fallback mode with XSS protection)."""
+    
+    # Escape all user-controllable metadata fields for XSS protection
+    safe_plan_name = html_escape(report.metadata.plan_name)
+    safe_report_id = html_escape(report.metadata.report_id)
+    safe_generated_at = html_escape(str(report.metadata.generated_at))
+    safe_monolith_version = html_escape(report.metadata.monolith_version)
+    safe_monolith_hash = html_escape(report.metadata.monolith_hash)
     
     # Prepare data
     score_pct = report.macro_summary.adjusted_score * 100 if report.macro_summary else 0
@@ -676,7 +685,7 @@ def _generate_atroz_html(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ F.A.R.F.A.N · {report.metadata.plan_name}</title>
+    <title>⚡ F.A.R.F.A.N · {safe_plan_name}</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@200;400;700&display=swap" rel="stylesheet">
     
     <style>
@@ -1062,9 +1071,9 @@ def _generate_atroz_html(
             <div class="logo glitch-text" data-text="F.A.R.F.A.N">F.A.R.F.A.N</div>
             <div class="subtitle">Neural Policy Analysis System</div>
             <div style="margin-top: 20px; font-size: 18px; opacity: 0.8;">
-                {report.metadata.plan_name}
+                {safe_plan_name}
             </div>
-            <div class="report-id">REPORT ID: {report.metadata.report_id}</div>
+            <div class="report-id">REPORT ID: {safe_report_id}</div>
         </header>
         
         <div class="score-hero">
@@ -1106,10 +1115,10 @@ def _generate_atroz_html(
             <div class="recommendation-grid">
                 {' '.join([f'''
                 <div class="rec-card">
-                    <div class="rec-severity">{rec.severity}</div>
-                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">{rec.type}</div>
-                    <div style="font-size: 12px; opacity: 0.9;">{rec.description}</div>
-                    <div style="font-size: 10px; opacity: 0.5; margin-top: 10px;">{rec.source}</div>
+                    <div class="rec-severity">{html_escape(rec.severity)}</div>
+                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">{html_escape(rec.type)}</div>
+                    <div style="font-size: 12px; opacity: 0.9;">{html_escape(rec.description)}</div>
+                    <div style="font-size: 10px; opacity: 0.5; margin-top: 10px;">{html_escape(rec.source)}</div>
                 </div>
                 ''' for i, rec in enumerate(report.macro_summary.recommendations[:6]) if report.macro_summary])}
             </div>
@@ -1122,9 +1131,9 @@ def _generate_atroz_html(
                 Framework for Advanced Retrieval and Forensic Analysis
             </div>
             <div class="metadata">
-                Generado el {report.metadata.generated_at} | 
-                Versión {report.metadata.monolith_version} | 
-                Hash: {report.metadata.monolith_hash[:12]}...
+                Generado el {safe_generated_at} | 
+                Versión {safe_monolith_version} | 
+                Hash: {safe_monolith_hash[:12]}...
             </div>
         </div>
     </div>
@@ -1364,23 +1373,30 @@ def generate_charts(report: AnalysisReport, output_dir: Path, plan_name: str = "
 
         # RADAR CHART for clusters (if we have multiple dimensions)
         if report.meso_clusters and len(report.meso_clusters) >= 3:
+            # TODO: Implement proper radar chart with actual cluster metrics
             # For radar, we need multiple dimensions per cluster
-            # This is a simplified example
+            # Currently using simplified aggregated scores as placeholder
             fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(polar=True), facecolor=colors['bg'])
             ax.set_facecolor(colors['bg'])
             
-            # Example data
-            categories = ['Gobernanza', 'Social', 'Económico', 'Ambiental', 'Implementación']
+            # Use actual cluster data instead of random
+            categories = list(report.meso_clusters.keys())[:5]  # Use first 5 clusters as categories
             N = len(categories)
             
-            # Example scores (in reality, get from cluster data)
-            values = np.random.rand(3, N)  # 3 clusters, N categories
+            # Extract real scores from clusters
+            cluster_items = list(report.meso_clusters.items())[:3]  # First 3 clusters
+            values = []
+            for _, cluster in cluster_items:
+                # Use actual adjusted_score, repeated for each category
+                # This is a placeholder until proper multi-dimensional metrics are available
+                values.append([cluster.adjusted_score] * N)
+            values = np.array(values)
             
             # Plot each cluster
             angles = np.linspace(0, 2 * np.pi, N, endpoint=False).tolist()
             angles += angles[:1]
             
-            for i in range(3):
+            for i in range(min(3, len(cluster_items))):
                 vals = values[i].tolist()
                 vals += vals[:1]
                 
@@ -1422,12 +1438,18 @@ def generate_charts(report: AnalysisReport, output_dir: Path, plan_name: str = "
 
 
 def compute_file_sha256(file_path: Path) -> str:
-    """Compute SHA256 hash with AtroZ prefix."""
+    """Compute SHA256 hash of file (returns standard 64-char hex digest)."""
     sha256_hash = hashlib.sha256()
     with open(file_path, "rb") as f:
         for chunk in iter(lambda: f.read(8192), b""):
             sha256_hash.update(chunk)
     
-    digest = sha256_hash.hexdigest()
-    # Return with AtroZ-style formatting
-    return f"atroz:{digest[:16]}...{digest[-16:]}"
+    # Return standard hex digest for compatibility
+    return sha256_hash.hexdigest()
+
+
+def format_digest_atroz(digest: str) -> str:
+    """Format SHA256 digest with AtroZ aesthetic (for display only)."""
+    if len(digest) >= 32:
+        return f"atroz:{digest[:16]}...{digest[-16:]}"
+    return digest
