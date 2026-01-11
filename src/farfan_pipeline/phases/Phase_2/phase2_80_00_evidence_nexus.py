@@ -1479,19 +1479,18 @@ class ColombianContextRule:
                 )
             else:
                 error_msg = f"Colombian context file not found at {self._context_path}"
-                logger.warning("colombian_context_file_not_found", path=str(self._context_path))
+                logger.warning(f"colombian_context_file_not_found: {error_msg}", extra={"path": str(self._context_path)})
                 self._context_load_error = error_msg
         except (json.JSONDecodeError, OSError) as e:
             error_msg = f"Failed to load Colombian context: {e}"
-            logger.error("colombian_context_load_failed", error=str(e), error_type=type(e).__name__)
+            logger.error(f"colombian_context_load_failed: {error_msg}", extra={"error": str(e), "error_type": type(e).__name__})
             self._context_load_error = error_msg
         except Exception as e:
             # Catch any unexpected error and preserve it for validation reporting
             error_msg = f"Unexpected error loading Colombian context: {e}"
             logger.error(
-                "colombian_context_load_unexpected_error",
-                error=str(e),
-                error_type=type(e).__name__,
+                f"colombian_context_load_unexpected_error: {error_msg}",
+                extra={"error": str(e), "error_type": type(e).__name__}
             )
             self._context_load_error = error_msg
 
