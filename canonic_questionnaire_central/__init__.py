@@ -173,7 +173,6 @@ class CQCLoader:
                     registry[question_id] = question_data
             except (json.JSONDecodeError, IOError) as e:
                 # Skip files that fail to load
-                import logging
                 logging.warning(f"Failed to load question from {json_file}: {e}")
                 continue
 
@@ -297,8 +296,6 @@ class CQCLoader:
         Returns:
             Dict mapping signal_type → question_ids
         """
-        import logging
-
         if self._router_type == "indexed":
             results = self.router.route_batch(signal_types)
         else:
