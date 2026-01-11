@@ -53,6 +53,7 @@ dependencies = [
     "werkzeug>=3.0.0",
     "structlog>=24.1.0",
     "img2table>=1.4.0",
+    "pillow>=10.0.0",
     "tabula-py>=2.9.0",
     "typing_extensions>=4.10.0",
     "bcrypt>=4.0.0",
