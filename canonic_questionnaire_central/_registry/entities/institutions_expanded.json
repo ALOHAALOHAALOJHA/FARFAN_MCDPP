@@ -1,0 +1,608 @@
+{
+  "$schema": "./schema.json",
+  "_schema_version": "2.0.0",
+  "_generated_at": "2026-01-12T15:00:00Z",
+  "_expansion_note": "Expanded entity registry to increase NER coverage from 13% to 40%+ of questions",
+
+  "entities": {
+    "ENT-INST-011": {
+      "entity_id": "ENT-INST-011",
+      "canonical_name": "Ministerio de Salud y Protección Social",
+      "acronym": "MinSalud",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": ["MinSalud", "Ministerio de Salud", "Minsalud"],
+      "description": "Ministerio encargado del sistema de salud y protección social",
+      "scoring_context": {
+        "boost_policy_areas": {"PA02": 0.30, "PA04": 0.15},
+        "boost_dimensions": {"DIM03": 0.20, "DIM04": 0.10}
+      }
+    },
+
+    "ENT-INST-012": {
+      "entity_id": "ENT-INST-012",
+      "canonical_name": "Ministerio de Educación Nacional",
+      "acronym": "MEN",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": ["MEN", "Ministerio de Educación", "Mineducación"],
+      "description": "Ministerio encargado de la política educativa nacional",
+      "scoring_context": {
+        "boost_policy_areas": {"PA03": 0.30, "PA04": 0.15},
+        "boost_dimensions": {"DIM02": 0.15, "DIM04": 0.20}
+      }
+    },
+
+    "ENT-INST-013": {
+      "entity_id": "ENT-INST-013",
+      "canonical_name": "Servicio Nacional de Aprendizaje",
+      "acronym": "SENA",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "training",
+      "aliases": ["SENA", "Servicio Nacional Aprendizaje"],
+      "description": "Institución pública de formación profesional",
+      "scoring_context": {
+        "boost_policy_areas": {"PA05": 0.25, "PA03": 0.15},
+        "boost_dimensions": {"DIM04": 0.20}
+      }
+    },
+
+    "ENT-INST-014": {
+      "entity_id": "ENT-INST-014",
+      "canonical_name": "Instituto Nacional de Vías",
+      "acronym": "INVIAS",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "infrastructure",
+      "aliases": ["INVIAS", "Instituto de Vías", "Instituto Nacional Vías"],
+      "description": "Entidad encargada de la infraestructura vial nacional",
+      "scoring_context": {
+        "boost_policy_areas": {"PA04": 0.30, "PA01": 0.15},
+        "boost_dimensions": {"DIM04": 0.25}
+      }
+    },
+
+    "ENT-INST-015": {
+      "entity_id": "ENT-INST-015",
+      "canonical_name": "Agencia Nacional de Infraestructura",
+      "acronym": "ANI",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "infrastructure",
+      "aliases": ["ANI", "Agencia de Infraestructura"],
+      "description": "Agencia encargada de concesiones viales",
+      "scoring_context": {
+        "boost_policy_areas": {"PA04": 0.30, "PA01": 0.10},
+        "boost_dimensions": {"DIM02": 0.15, "DIM04": 0.20}
+      }
+    },
+
+    "ENT-INST-016": {
+      "entity_id": "ENT-INST-016",
+      "canonical_name": "Dirección de Impuestos y Aduanas Nacionales",
+      "acronym": "DIAN",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "fiscal",
+      "aliases": ["DIAN", "Impuestos Nacionales", "Aduanas"],
+      "description": "Entidad de recaudo tributario y aduanero",
+      "scoring_context": {
+        "boost_policy_areas": {"PA05": 0.25, "PA09": 0.15},
+        "boost_dimensions": {"DIM01": 0.20, "DIM04": 0.15}
+      }
+    },
+
+    "ENT-INST-017": {
+      "entity_id": "ENT-INST-017",
+      "canonical_name": "Banco de Comercio Exterior",
+      "acronym": "BANCOLDEX",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "financial",
+      "aliases": ["BANCOLDEX", "Banco Comercio Exterior"],
+      "description": "Banco de desarrollo empresarial y comercio exterior",
+      "scoring_context": {
+        "boost_policy_areas": {"PA05": 0.30, "PA04": 0.10},
+        "boost_dimensions": {"DIM02": 0.15}
+      }
+    },
+
+    "ENT-INST-018": {
+      "entity_id": "ENT-INST-018",
+      "canonical_name": "Banco Agrario de Colombia",
+      "acronym": "Banco Agrario",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "financial",
+      "aliases": ["Banco Agrario", "Banco Agrario de Colombia"],
+      "description": "Banco público especializado en sector rural",
+      "scoring_context": {
+        "boost_policy_areas": {"PA07": 0.30, "PA05": 0.20},
+        "boost_dimensions": {"DIM02": 0.15, "DIM03": 0.10}
+      }
+    },
+
+    "ENT-INST-019": {
+      "entity_id": "ENT-INST-019",
+      "canonical_name": "Instituto de Desarrollo Urbano",
+      "acronym": "IDU",
+      "category": "institution",
+      "level": "MUNICIPAL",
+      "type": "infrastructure",
+      "aliases": ["IDU", "Instituto Desarrollo Urbano"],
+      "description": "Entidad de infraestructura urbana",
+      "scoring_context": {
+        "boost_policy_areas": {"PA04": 0.25, "PA01": 0.20},
+        "boost_dimensions": {"DIM03": 0.20, "DIM04": 0.15}
+      }
+    },
+
+    "ENT-INST-020": {
+      "entity_id": "ENT-INST-020",
+      "canonical_name": "Policía Nacional de Colombia",
+      "acronym": "Policía Nacional",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "security",
+      "aliases": ["Policía Nacional", "Policía", "Policía de Colombia"],
+      "description": "Cuerpo armado de naturaleza civil encargado de la seguridad ciudadana",
+      "scoring_context": {
+        "boost_policy_areas": {"PA08": 0.30, "PA02": 0.20},
+        "boost_dimensions": {"DIM03": 0.25, "DIM04": 0.15}
+      }
+    },
+
+    "ENT-INST-021": {
+      "entity_id": "ENT-INST-021",
+      "canonical_name": "Fiscalía General de la Nación",
+      "acronym": "Fiscalía",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "justice",
+      "aliases": ["Fiscalía", "Fiscalía General", "FGN"],
+      "description": "Entidad encargada de la investigación penal",
+      "scoring_context": {
+        "boost_policy_areas": {"PA08": 0.30, "PA02": 0.15},
+        "boost_dimensions": {"DIM03": 0.20, "DIM04": 0.15}
+      }
+    },
+
+    "ENT-INST-022": {
+      "entity_id": "ENT-INST-022",
+      "canonical_name": "Procuraduría General de la Nación",
+      "acronym": "Procuraduría",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "oversight",
+      "aliases": ["Procuraduría", "Procuraduría General", "PGN"],
+      "description": "Entidad de control disciplinario sobre servidores públicos",
+      "scoring_context": {
+        "boost_policy_areas": {"PA09": 0.30, "PA08": 0.15},
+        "boost_dimensions": {"DIM05": 0.25}
+      }
+    },
+
+    "ENT-INST-023": {
+      "entity_id": "ENT-INST-023",
+      "canonical_name": "Contraloría General de la República",
+      "acronym": "Contraloría",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "oversight",
+      "aliases": ["Contraloría", "Contraloría General", "CGR"],
+      "description": "Entidad de control fiscal del Estado",
+      "scoring_context": {
+        "boost_policy_areas": {"PA09": 0.30, "PA05": 0.10},
+        "boost_dimensions": {"DIM04": 0.20, "DIM05": 0.20}
+      }
+    },
+
+    "ENT-INST-024": {
+      "entity_id": "ENT-INST-024",
+      "canonical_name": "Ministerio de Tecnologías de la Información y las Comunicaciones",
+      "acronym": "MinTIC",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": ["MinTIC", "Ministerio TIC", "Ministerio de Tecnologías"],
+      "description": "Ministerio encargado de la política TIC",
+      "scoring_context": {
+        "boost_policy_areas": {"PA10": 0.30, "PA09": 0.15},
+        "boost_dimensions": {"DIM02": 0.15, "DIM04": 0.20}
+      }
+    },
+
+    "ENT-INST-025": {
+      "entity_id": "ENT-INST-025",
+      "canonical_name": "Financiera de Desarrollo Territorial",
+      "acronym": "FINDETER",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "financial",
+      "aliases": ["FINDETER", "Financiera Territorial"],
+      "description": "Banca de desarrollo territorial",
+      "scoring_context": {
+        "boost_policy_areas": {"PA01": 0.25, "PA04": 0.20, "PA09": 0.15},
+        "boost_dimensions": {"DIM02": 0.20, "DIM04": 0.15}
+      }
+    },
+
+    "ENT-INST-026": {
+      "entity_id": "ENT-INST-026",
+      "canonical_name": "Instituto Geográfico Agustín Codazzi",
+      "acronym": "IGAC",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "technical",
+      "aliases": ["IGAC", "Instituto Agustín Codazzi", "Instituto Geográfico"],
+      "description": "Entidad encargada del catastro y cartografía nacional",
+      "scoring_context": {
+        "boost_policy_areas": {"PA01": 0.30, "PA07": 0.15},
+        "boost_dimensions": {"DIM01": 0.25, "DIM04": 0.15}
+      }
+    },
+
+    "ENT-INST-027": {
+      "entity_id": "ENT-INST-027",
+      "canonical_name": "Instituto de Hidrología Meteorología y Estudios Ambientales",
+      "acronym": "IDEAM",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "technical",
+      "aliases": ["IDEAM", "Instituto Hidrología", "Instituto Estudios Ambientales"],
+      "description": "Entidad de información ambiental y meteorológica",
+      "scoring_context": {
+        "boost_policy_areas": {"PA03": 0.30, "PA06": 0.20},
+        "boost_dimensions": {"DIM01": 0.25, "DIM04": 0.15}
+      }
+    },
+
+    "ENT-INST-028": {
+      "entity_id": "ENT-INST-028",
+      "canonical_name": "Corporación Autónoma Regional",
+      "acronym": "CAR",
+      "category": "institution",
+      "level": "REGIONAL",
+      "type": "environmental",
+      "aliases": ["CAR", "Corporación Autónoma Regional", "Autoridad Ambiental"],
+      "description": "Entidad de gestión ambiental regional",
+      "scoring_context": {
+        "boost_policy_areas": {"PA03": 0.30, "PA06": 0.20},
+        "boost_dimensions": {"DIM03": 0.25, "DIM04": 0.15}
+      }
+    },
+
+    "ENT-INST-029": {
+      "entity_id": "ENT-INST-029",
+      "canonical_name": "Autoridad Nacional de Licencias Ambientales",
+      "acronym": "ANLA",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "environmental",
+      "aliases": ["ANLA", "Autoridad Licencias Ambientales"],
+      "description": "Entidad de licenciamiento ambiental",
+      "scoring_context": {
+        "boost_policy_areas": {"PA03": 0.30, "PA04": 0.15},
+        "boost_dimensions": {"DIM03": 0.20, "DIM05": 0.15}
+      }
+    },
+
+    "ENT-INST-030": {
+      "entity_id": "ENT-INST-030",
+      "canonical_name": "Parques Nacionales Naturales de Colombia",
+      "acronym": "Parques Nacionales",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "environmental",
+      "aliases": ["Parques Nacionales", "Parques Naturales", "PNN"],
+      "description": "Entidad de administración de áreas protegidas",
+      "scoring_context": {
+        "boost_policy_areas": {"PA03": 0.30, "PA06": 0.20},
+        "boost_dimensions": {"DIM03": 0.25}
+      }
+    },
+
+    "ENT-INST-031": {
+      "entity_id": "ENT-INST-031",
+      "canonical_name": "Secretaría de Planeación",
+      "acronym": "Secretaría Planeación",
+      "category": "institution",
+      "level": "MUNICIPAL",
+      "type": "planning",
+      "aliases": ["Secretaría de Planeación", "Secretaría Planeación Municipal", "Planeación Municipal"],
+      "description": "Dependencia municipal de planeación",
+      "scoring_context": {
+        "boost_policy_areas": {"PA01": 0.30, "PA09": 0.20},
+        "boost_dimensions": {"DIM01": 0.25, "DIM02": 0.20, "DIM04": 0.15}
+      }
+    },
+
+    "ENT-INST-032": {
+      "entity_id": "ENT-INST-032",
+      "canonical_name": "Secretaría de Salud",
+      "acronym": "Secretaría Salud",
+      "category": "institution",
+      "level": "MUNICIPAL",
+      "type": "health",
+      "aliases": ["Secretaría de Salud", "Secretaría Salud Municipal", "Salud Municipal"],
+      "description": "Dependencia municipal de salud",
+      "scoring_context": {
+        "boost_policy_areas": {"PA02": 0.30, "PA04": 0.15},
+        "boost_dimensions": {"DIM03": 0.25, "DIM04": 0.20}
+      }
+    },
+
+    "ENT-INST-033": {
+      "entity_id": "ENT-INST-033",
+      "canonical_name": "Secretaría de Educación",
+      "acronym": "Secretaría Educación",
+      "category": "institution",
+      "level": "MUNICIPAL",
+      "type": "education",
+      "aliases": ["Secretaría de Educación", "Secretaría Educación Municipal", "Educación Municipal"],
+      "description": "Dependencia municipal de educación",
+      "scoring_context": {
+        "boost_policy_areas": {"PA03": 0.30, "PA04": 0.15},
+        "boost_dimensions": {"DIM02": 0.20, "DIM03": 0.25, "DIM04": 0.20}
+      }
+    },
+
+    "ENT-INST-034": {
+      "entity_id": "ENT-INST-034",
+      "canonical_name": "Alcaldía Municipal",
+      "acronym": "Alcaldía",
+      "category": "institution",
+      "level": "MUNICIPAL",
+      "type": "executive",
+      "aliases": ["Alcaldía", "Alcaldía Municipal", "Despacho del Alcalde"],
+      "description": "Autoridad ejecutiva municipal",
+      "scoring_context": {
+        "boost_policy_areas": {"PA01": 0.20, "PA09": 0.30},
+        "boost_dimensions": {"DIM02": 0.30, "DIM03": 0.25, "DIM04": 0.20}
+      }
+    },
+
+    "ENT-INST-035": {
+      "entity_id": "ENT-INST-035",
+      "canonical_name": "Concejo Municipal",
+      "acronym": "Concejo",
+      "category": "institution",
+      "level": "MUNICIPAL",
+      "type": "legislative",
+      "aliases": ["Concejo Municipal", "Concejo", "Corporación Municipal"],
+      "description": "Corporación administrativa de elección popular",
+      "scoring_context": {
+        "boost_policy_areas": {"PA09": 0.30, "PA01": 0.15},
+        "boost_dimensions": {"DIM02": 0.25, "DIM05": 0.20}
+      }
+    },
+
+    "ENT-INST-036": {
+      "entity_id": "ENT-INST-036",
+      "canonical_name": "Personería Municipal",
+      "acronym": "Personería",
+      "category": "institution",
+      "level": "MUNICIPAL",
+      "type": "oversight",
+      "aliases": ["Personería", "Personería Municipal"],
+      "description": "Ministerio Público municipal",
+      "scoring_context": {
+        "boost_policy_areas": {"PA08": 0.25, "PA09": 0.20},
+        "boost_dimensions": {"DIM05": 0.30}
+      }
+    },
+
+    "ENT-INST-037": {
+      "entity_id": "ENT-INST-037",
+      "canonical_name": "Comisaría de Familia",
+      "acronym": "Comisaría",
+      "category": "institution",
+      "level": "MUNICIPAL",
+      "type": "family_protection",
+      "aliases": ["Comisaría de Familia", "Comisaría"],
+      "description": "Entidad de protección familiar y prevención de violencia intrafamiliar",
+      "scoring_context": {
+        "boost_policy_areas": {"PA01": 0.30, "PA08": 0.20},
+        "boost_dimensions": {"DIM03": 0.25, "DIM04": 0.15}
+      }
+    },
+
+    "ENT-INST-038": {
+      "entity_id": "ENT-INST-038",
+      "canonical_name": "Inspección de Policía",
+      "acronym": "Inspección",
+      "category": "institution",
+      "level": "MUNICIPAL",
+      "type": "police_inspection",
+      "aliases": ["Inspección de Policía", "Inspección"],
+      "description": "Autoridad de policía administrativa",
+      "scoring_context": {
+        "boost_policy_areas": {"PA08": 0.25, "PA09": 0.15},
+        "boost_dimensions": {"DIM03": 0.20}
+      }
+    },
+
+    "ENT-INST-039": {
+      "entity_id": "ENT-INST-039",
+      "canonical_name": "Empresa Social del Estado",
+      "acronym": "ESE",
+      "category": "institution",
+      "level": "MUNICIPAL",
+      "type": "health_provider",
+      "aliases": ["ESE", "Empresa Social del Estado", "Hospital"],
+      "description": "Prestador público de servicios de salud",
+      "scoring_context": {
+        "boost_policy_areas": {"PA02": 0.30, "PA04": 0.15},
+        "boost_dimensions": {"DIM03": 0.25, "DIM04": 0.20}
+      }
+    },
+
+    "ENT-INST-040": {
+      "entity_id": "ENT-INST-040",
+      "canonical_name": "Cámara de Comercio",
+      "acronym": "Cámara Comercio",
+      "category": "institution",
+      "level": "REGIONAL",
+      "type": "commercial",
+      "aliases": ["Cámara de Comercio", "Cámara Comercio"],
+      "description": "Entidad de apoyo empresarial y registro mercantil",
+      "scoring_context": {
+        "boost_policy_areas": {"PA05": 0.30, "PA09": 0.15},
+        "boost_dimensions": {"DIM02": 0.20, "DIM04": 0.15}
+      }
+    },
+
+    "ENT-INST-041": {
+      "entity_id": "ENT-INST-041",
+      "canonical_name": "Superintendencia Nacional de Salud",
+      "acronym": "Supersalud",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "oversight",
+      "aliases": ["Supersalud", "Superintendencia Salud", "SNS"],
+      "description": "Entidad de inspección vigilancia y control del sistema de salud",
+      "scoring_context": {
+        "boost_policy_areas": {"PA02": 0.25, "PA09": 0.15},
+        "boost_dimensions": {"DIM05": 0.25}
+      }
+    },
+
+    "ENT-INST-042": {
+      "entity_id": "ENT-INST-042",
+      "canonical_name": "Instituto Nacional de Salud",
+      "acronym": "INS",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "technical",
+      "aliases": ["INS", "Instituto Nacional Salud"],
+      "description": "Instituto de investigación en salud pública",
+      "scoring_context": {
+        "boost_policy_areas": {"PA02": 0.30},
+        "boost_dimensions": {"DIM01": 0.25, "DIM04": 0.20}
+      }
+    },
+
+    "ENT-INST-043": {
+      "entity_id": "ENT-INST-043",
+      "canonical_name": "Instituto Colombiano de Crédito Educativo y Estudios Técnicos en el Exterior",
+      "acronym": "ICETEX",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "financial",
+      "aliases": ["ICETEX", "Instituto Crédito Educativo"],
+      "description": "Entidad de financiación educativa",
+      "scoring_context": {
+        "boost_policy_areas": {"PA03": 0.30, "PA04": 0.15},
+        "boost_dimensions": {"DIM02": 0.15, "DIM04": 0.15}
+      }
+    },
+
+    "ENT-INST-044": {
+      "entity_id": "ENT-INST-044",
+      "canonical_name": "Ministerio de Transporte",
+      "acronym": "MinTransporte",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": ["MinTransporte", "Ministerio Transporte"],
+      "description": "Ministerio del sector transporte",
+      "scoring_context": {
+        "boost_policy_areas": {"PA04": 0.30, "PA01": 0.15},
+        "boost_dimensions": {"DIM02": 0.20, "DIM03": 0.15}
+      }
+    },
+
+    "ENT-INST-045": {
+      "entity_id": "ENT-INST-045",
+      "canonical_name": "Ministerio de Vivienda Ciudad y Territorio",
+      "acronym": "MinVivienda",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "ministry",
+      "aliases": ["MinVivienda", "Ministerio Vivienda", "Ministerio de Vivienda"],
+      "description": "Ministerio del sector vivienda y ordenamiento territorial",
+      "scoring_context": {
+        "boost_policy_areas": {"PA01": 0.30, "PA04": 0.20},
+        "boost_dimensions": {"DIM02": 0.20, "DIM03": 0.15}
+      }
+    },
+
+    "ENT-INST-046": {
+      "entity_id": "ENT-INST-046",
+      "canonical_name": "Departamento Administrativo de la Función Pública",
+      "acronym": "DAFP",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "administrative",
+      "aliases": ["DAFP", "Función Pública", "Departamento Función Pública"],
+      "description": "Entidad de gestión del talento humano del Estado",
+      "scoring_context": {
+        "boost_policy_areas": {"PA09": 0.30},
+        "boost_dimensions": {"DIM04": 0.25, "DIM05": 0.15}
+      }
+    },
+
+    "ENT-INST-047": {
+      "entity_id": "ENT-INST-047",
+      "canonical_name": "Escuela Superior de Administración Pública",
+      "acronym": "ESAP",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "training",
+      "aliases": ["ESAP", "Escuela Administración Pública"],
+      "description": "Institución de educación superior pública",
+      "scoring_context": {
+        "boost_policy_areas": {"PA09": 0.30, "PA03": 0.15},
+        "boost_dimensions": {"DIM04": 0.25}
+      }
+    },
+
+    "ENT-INST-048": {
+      "entity_id": "ENT-INST-048",
+      "canonical_name": "Agencia Nacional del Espectro",
+      "acronym": "ANE",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "technical",
+      "aliases": ["ANE", "Agencia Espectro"],
+      "description": "Entidad de gestión del espectro radioeléctrico",
+      "scoring_context": {
+        "boost_policy_areas": {"PA10": 0.30},
+        "boost_dimensions": {"DIM03": 0.20, "DIM04": 0.15}
+      }
+    },
+
+    "ENT-INST-049": {
+      "entity_id": "ENT-INST-049",
+      "canonical_name": "Comisión de Regulación de Comunicaciones",
+      "acronym": "CRC",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "regulatory",
+      "aliases": ["CRC", "Comisión Regulación Comunicaciones"],
+      "description": "Entidad de regulación del sector comunicaciones",
+      "scoring_context": {
+        "boost_policy_areas": {"PA10": 0.30},
+        "boost_dimensions": {"DIM03": 0.20, "DIM05": 0.15}
+      }
+    },
+
+    "ENT-INST-050": {
+      "entity_id": "ENT-INST-050",
+      "canonical_name": "Jurisdicción Especial para la Paz",
+      "acronym": "JEP",
+      "category": "institution",
+      "level": "NATIONAL",
+      "type": "transitional_justice",
+      "aliases": ["JEP", "Jurisdicción Paz"],
+      "description": "Sistema de justicia transicional del Acuerdo de Paz",
+      "scoring_context": {
+        "boost_policy_areas": {"PA05": 0.30, "PA02": 0.20, "PA08": 0.15},
+        "boost_dimensions": {"DIM02": 0.20, "DIM03": 0.15}
+      }
+    }
+  }
+}

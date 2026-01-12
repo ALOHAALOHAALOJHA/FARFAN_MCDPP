@@ -861,26 +861,22 @@ Phase_5/
 ├── TEST_MANIFEST.json                   # Test configuration
 ├── phase5_10_00_phase_5_constants.py    # Constants and enums
 │
-├── stage_00_components/                 # Initialization
-│   └── __init__.py
-├── stage_10_components/                 # Core aggregation (delegated to Phase 4)
-│   └── __init__.py
-├── stage_20_components/                 # Hermeticity validation
-│   └── __init__.py
-├── stage_30_components/                 # Weight resolution
-│   └── __init__.py
-├── stage_40_components/                 # Score computation
-│   └── __init__.py
-├── stage_50_components/                 # Rubric application
-│   └── __init__.py
-├── stage_60_components/                 # Cluster assignment
-│   └── __init__.py
-├── stage_70_components/                 # Validation
-│   └── __init__.py
-├── stage_80_components/                 # Provenance
-│   └── __init__.py
-└── stage_90_components/                 # Finalization
-    └── __init__.py
+├── components/                          # Core functional modules
+│   ├── area_aggregator.py               # Weighted aggregation logic
+│   ├── cluster_assigner.py              # Policy area → cluster mapping
+│   ├── dispersion_analyzer.py           # CV, DI, quartile computation
+│   ├── hermeticity_validator.py         # Partition integrity checks
+│   ├── provenance_tracker.py            # W3C PROV-DM compliance
+│   └── weight_resolver.py               # Canonical weight loading
+│
+├── contracts/                           # DbC specifications
+│   ├── phase5_contracts.json            # Input/output contracts
+│   └── certificates/                    # Compliance certificates
+│
+└── tests/                               # Unit and integration tests
+    ├── test_area_aggregator.py
+    ├── test_cluster_assignment.py
+    └── test_hermeticity.py
 ```
 
 ---
@@ -1232,7 +1228,9 @@ When `abort_on_insufficient=False`:
 
 | Document | Description |
 |----------|-------------|
-| [Phase 4-7 README](../Phase_4/README.md) | Complete aggregation pipeline documentation |
+| [Phase 4 README](../Phase_4/README.md) | Dimension aggregation (micro → dimension) |
+| [Phase 6 README](../Phase_6/README.md) | Cluster aggregation (area → cluster) |
+| [Phase 7 README](../Phase_7/README.md) | Macro evaluation (cluster → global) |
 | [AGGREGATION_QUICK_REFERENCE](../../../../docs/AGGREGATION_QUICK_REFERENCE.md) | Quick reference for aggregation usage |
 | [ARCHITECTURE](../../../../docs/ARCHITECTURE.md) | System architecture overview |
 | [CERTIFICATE_02](../Phase_4/contracts/certificates/CERTIFICATE_02_PHASE5_COUNT_10.md) | Phase 5 compliance certificate |

@@ -28,6 +28,7 @@ from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation import (
     ClusterScore as ActualClusterScore,
     MacroAggregator,
     MacroScore,
+    validate_scored_results,
 )
 from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_integration import (
     aggregate_dimensions_async,
@@ -99,10 +100,10 @@ def create_scored_result_dict(
 
 def create_dimension_score_group(
     dimension: str = "DIM01", policy_area: str = "PA01", scores: list[float] | None = None
-) -> list[dict[str, Any]]:
-    """Create a group of scored result dicts for a dimension."""
+) -> list[Any]:
+    """Create a group of ScoredResult objects (validated, not mocks)."""
     scores = scores or [2.0, 2.0, 2.0, 2.0, 2.0]
-    return [
+    dicts = [
         create_scored_result_dict(
             question_global=i + 1,
             base_slot=f"{dimension}-Q{i+1:03d}",
@@ -112,6 +113,8 @@ def create_dimension_score_group(
         )
         for i, score in enumerate(scores)
     ]
+    # Use real validator to convert dicts to ScoredResult objects
+    return validate_scored_results(dicts)
 
 
 def create_mock_instrumentation():

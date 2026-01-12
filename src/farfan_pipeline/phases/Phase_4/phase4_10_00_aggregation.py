@@ -1835,15 +1835,15 @@ class AreaPolicyAggregator:
         quality_level = self.apply_rubric_thresholds(avg_score)
         validation_details["rubric"] = {"score": avg_score, "quality_level": quality_level}
 
-        # Get area name
-        area_name = next(
-            (
-                a["i18n"]["keys"]["label_es"]
-                for a in self.policy_areas
-                if a["policy_area_id"] == area_id
-            ),
-            area_id,
-        )
+        # Get area name with safe fallback
+        area_name = area_id
+        for a in self.policy_areas:
+            if a["policy_area_id"] == area_id:
+                try:
+                    area_name = a["i18n"]["keys"]["label_es"]
+                except (KeyError, TypeError):
+                    area_name = area_id
+                break
 
         # Get cluster_id from modular metadata - MEANINGFUL CONNECTION
         # This ensures AreaScore.cluster_id reflects the real PA→Cluster mapping
