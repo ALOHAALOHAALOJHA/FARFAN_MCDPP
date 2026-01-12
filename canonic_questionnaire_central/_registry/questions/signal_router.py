@@ -105,16 +105,22 @@ class SignalQuestionIndex:
 
         start = time.time()
 
-        # Load integration map with error handling
+        # Load integration map with fail-fast approach
         try:
             with open(self.integration_map_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
             integration_map = data.get("farfan_question_mapping", {})
             slot_mappings = integration_map.get("slot_to_signal_mapping", {})
-        except (FileNotFoundError, json.JSONDecodeError) as e:
-            print(f"Warning: Could not load integration_map.json: {e}. Using empty mappings.")
-            integration_map = {}
-            slot_mappings = {}
+        except FileNotFoundError:
+            raise RuntimeError(
+                f"Cannot initialize SignalQuestionIndex without integration map at: {self.integration_map_path}. "
+                f"This file is critical for signal routing."
+            )
+        except json.JSONDecodeError as e:
+            raise RuntimeError(
+                f"Invalid JSON in integration map file: {self.integration_map_path}. "
+                f"Error: {e}"
+            )
 
         # Build forward index: signal → questions
         index = defaultdict(set)
