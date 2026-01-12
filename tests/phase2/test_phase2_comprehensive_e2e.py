@@ -110,9 +110,9 @@ def sample_preprocessed_document():
     """Create a valid PreprocessedDocument for testing."""
     from farfan_pipeline.calibracion_parametrizacion.types import (
         ChunkData,
+        PreprocessedDocument,
         DimensionCausal,
         PolicyArea,
-        PreprocessedDocument,
     )
 
     chunks = []
@@ -134,8 +134,9 @@ def sample_preprocessed_document():
 
     return PreprocessedDocument(
         document_id="test_doc_001",
-        source_path="tests/fixtures/test_document.pdf",
-        chunks=chunks
+        source_path="/test/sample_document.pdf",
+        chunks=chunks,
+        metadata={"source": "test", "created_at": datetime.now(UTC).isoformat()}
     )
 
 
