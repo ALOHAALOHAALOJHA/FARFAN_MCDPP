@@ -68,6 +68,30 @@ from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification impo
     aggregate_with_uncertainty,
 )
 
+# Lazy import for SystemicGapDetector to avoid circular dependency with Phase_7 __init__
+def _get_systemic_gap_detector():
+    """Lazy import SystemicGapDetector from Phase 7."""
+    from farfan_pipeline.phases.Phase_7.phase7_10_00_systemic_gap_detector import (
+        SystemicGapDetector,
+    )
+    return SystemicGapDetector
+
+
+def _get_systemic_gap_class():
+    """Lazy import SystemicGap dataclass from Phase 7."""
+    from farfan_pipeline.phases.Phase_7.phase7_10_00_systemic_gap_detector import (
+        SystemicGap,
+    )
+    return SystemicGap
+
+
+# For TYPE_CHECKING, import the types
+if TYPE_CHECKING:
+    from farfan_pipeline.phases.Phase_7.phase7_10_00_systemic_gap_detector import (
+        SystemicGap,
+        SystemicGapDetector,
+    )
+
 # Lazy import to avoid circular dependency with choquet_adapter
 # choquet_adapter imports AggregationSettings from this module (via TYPE_CHECKING)
 # This module imports create_default_choquet_adapter from choquet_adapter
@@ -821,7 +845,7 @@ class MacroScore:
     score: float
     quality_level: str
     cross_cutting_coherence: float  # Coherence across all clusters
-    systemic_gaps: list[str]
+    systemic_gaps: list[Any]  # Enhanced: SystemicGap objects from Phase 7
     strategic_alignment: float
     cluster_scores: list[ClusterScore]
     validation_passed: bool = True
@@ -2423,24 +2447,56 @@ class MacroAggregator:
 
         return coherence
 
-    def identify_systemic_gaps(self, area_scores: list[AreaScore]) -> list[str]:
+    def identify_systemic_gaps(
+        self,
+        area_scores: list[AreaScore],
+        extracted_norms_by_area: dict[str, list[str]] | None = None,
+        context_by_area: dict[str, Any] | None = None,
+    ):
         """
-        Identify systemic gaps (areas with INSUFICIENTE quality).
+        Identify systemic gaps using SystemicGapDetector with normative baseline.
+
+        Enhanced detection that combines quality-level thresholds with
+        normative compliance validation from empirical corpus.
 
         Args:
             area_scores: List of area scores
+            extracted_norms_by_area: Optional dict mapping area_id -> list of extracted norm IDs
+            context_by_area: Optional dict mapping area_id -> context dict for validation
 
         Returns:
-            List of area names with systemic gaps
+            List of SystemicGap objects sorted by priority (CRITICAL first)
         """
-        gaps = []
-        for area in area_scores:
-            if area.quality_level == "INSUFICIENTE":
-                gaps.append(area.area_name)
-                logger.warning(f"Systemic gap identified: {area.area_name}")
+        # Lazy import to avoid circular dependency
+        SystemicGapDetectorClass = _get_systemic_gap_detector()
 
-        logger.info(f"Systemic gaps identified: {len(gaps)}")
-        return gaps
+        # Initialize detector with normative validation
+        detector = SystemicGapDetectorClass(
+            score_threshold=0.55,  # INSUFICIENTE threshold
+            enable_normative_validation=True,
+        )
+
+        # Detect gaps using enhanced detector
+        systemic_gaps = detector.detect_gaps(
+            area_scores=area_scores,
+            extracted_norms_by_area=extracted_norms_by_area or {},
+            context_by_area=context_by_area or {},
+        )
+
+        # Log detected gaps
+        for gap in systemic_gaps:
+            logger.warning(
+                f"Systemic gap identified: {gap.area_name} "
+                f"(priority={gap.priority}, score={gap.score:.3f})"
+            )
+
+        logger.info(
+            f"Systemic gaps identified: {len(systemic_gaps)} "
+            f"(CRITICAL: {sum(1 for g in systemic_gaps if g.priority == 'CRITICAL')}, "
+            f"HIGH: {sum(1 for g in systemic_gaps if g.priority == 'HIGH')})"
+        )
+
+        return systemic_gaps
 
     def assess_strategic_alignment(
         self, cluster_scores: list[ClusterScore], dimension_scores: list[DimensionScore]
@@ -2566,7 +2622,16 @@ class MacroAggregator:
 
         # Identify systemic gaps
         systemic_gaps = self.identify_systemic_gaps(area_scores)
-        validation_details["gaps"] = {"count": len(systemic_gaps), "areas": systemic_gaps}
+        validation_details["gaps"] = {
+            "count": len(systemic_gaps),
+            "areas": [gap.area_name for gap in systemic_gaps],
+            "by_priority": {
+                "CRITICAL": [g.area_name for g in systemic_gaps if g.priority == "CRITICAL"],
+                "HIGH": [g.area_name for g in systemic_gaps if g.priority == "HIGH"],
+                "MEDIUM": [g.area_name for g in systemic_gaps if g.priority == "MEDIUM"],
+                "LOW": [g.area_name for g in systemic_gaps if g.priority == "LOW"],
+            },
+        }
 
         # Assess strategic alignment
         strategic_alignment = self.assess_strategic_alignment(cluster_scores, dimension_scores)

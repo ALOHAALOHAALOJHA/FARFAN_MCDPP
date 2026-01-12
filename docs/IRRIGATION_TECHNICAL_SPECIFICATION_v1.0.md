@@ -1,114 +1,124 @@
-# ESPECIFICACIÓN TÉCNICA COMPLETA: IRRIGACIÓN DE CORPUS EMPÍRICOS
-## F.A.R.F.A.N Multi-Criteria Decision Policy Pipeline
-**Versión:** 1.0.0  
-**Fecha:** 11 de enero de 2026  
-**Estado:** AUDITORÍA COMPLETADA - PLAN DE IRRIGACIÓN DETALLADO
+# Technical Specification: F.A.R.F.A.N Multi-Criteria Decision Policy Pipeline
+
+## Empirical Corpus Irrigation System
+
+| **Version** | **Date** | **Status** |
+|-------------|----------|------------|
+| 1.0.0 | January 11, 2026 | AUDIT COMPLETE - DETAILED IRRIGATION PLAN |
 
 ---
 
-## RESUMEN EJECUTIVO
+## 1. Executive Summary
 
-Este documento presenta la **especificación técnica exhaustiva** del sistema de irrigación de datos empíricos desde los 4 corpus raíz hacia los 494 archivos JSON del `canonic_questionnaire_central/` y su conexión con las 10 fases canónicas del pipeline F.A.R.F.A.N.
+This technical specification defines the complete data irrigation system for the F.A.R.F.A.N (Multi-Criteria Decision Policy Pipeline) framework.  The system manages the flow of empirical data from 4 root corpus files through 494 JSON files in the `canonic_questionnaire_central/` directory, connecting to the 10 canonical pipeline phases.
 
-### Hallazgos Críticos
+### 1.1 Current State Assessment
 
-| Métrica | Estado Actual | Objetivo |
-|---------|---------------|----------|
-| **Corpus integrados en CQC** | 4/4 (100%) | ✅ COMPLETO |
-| **Extractores implementados** | 2/10 (20%) | 10/10 (100%) |
-| **Wiring efectivo a consumidores** | ~15% | 85% |
-| **Alignment score** | 2.9% | 85% |
-| **Questions bloqueadas** | 159/300 (53%) | 0/300 |
+| Metric | Current State | Target State | Gap |
+|--------|---------------|--------------|-----|
+| Corpus integrated in CQC | 4/4 (100%) | 4/4 (100%) | ✅ Complete |
+| Extractors implemented | 2/10 (20%) | 10/10 (100%) | 8 extractors |
+| Effective wiring to consumers | ~15% | 85% | 70% |
+| Alignment score | 2.9% | 85% | 82. 1% |
+| Blocked questions | 159/300 (53%) | 0/300 | 159 questions |
 
 ---
 
-## 1. ARQUITECTURA DE IRRIGACIÓN
+## 2. System Architecture
 
-### 1.1 Flujo de Datos: Corpus → CQC → Pipeline
+### 2.1 Three-Tier Data Flow Model
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                           NIVEL 1: CORPUS RAÍZ                                  │
+│                           TIER 1: ROOT CORPUS                                   │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                 │
-│  corpus_empirico_calibracion_extractores.json (666 líneas)                     │
-│  corpus_empirico_integrado.json (1237 líneas)                                  │
-│  corpus_empirico_normatividad.json (269 líneas)                                │
-│  corpus_thresholds_weights.json (351 líneas)                                   │
+│  ├── corpus_empirico_calibracion_extractores.json    (666 lines)               │
+│  ├── corpus_empirico_integrado. json                  (1,237 lines)             │
+│  ├── corpus_empirico_normatividad.json               (269 lines)               │
+│  └── corpus_thresholds_weights.json                  (351 lines)               │
+│                                                                                 │
+│  TOTAL:  2,523 lines of empirical calibration data                              │
 │                                                                                 │
 └──────────────────────────────────┬──────────────────────────────────────────────┘
                                    │
-                                   ▼ IRRIGACIÓN (ya completada)
+                                   ▼ IRRIGATION (Complete)
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                    NIVEL 2: ARCHIVOS DERIVADOS EN CQC                           │
+│                    TIER 2: DERIVED FILES IN CQC                                 │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                 │
-│  _registry/membership_criteria/_calibration/extractor_calibration.json         │
-│  _registry/questions/integration_map.json                                      │
-│  _registry/entities/normative_compliance.json                                  │
-│  scoring/calibration/empirical_weights.json                                    │
+│  ├── _registry/membership_criteria/_calibration/extractor_calibration.json     │
+│  ├── _registry/questions/integration_map.json                                  │
+│  ├── _registry/entities/normative_compliance.json                              │
+│  └── scoring/calibration/empirical_weights.json                                │
 │                                                                                 │
 └──────────────────────────────────┬──────────────────────────────────────────────┘
                                    │
-                                   ▼ CONSUMO (parcialmente implementado)
+                                   ▼ CONSUMPTION (Partially Implemented)
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                      NIVEL 3: CONSUMIDORES DEL PIPELINE                         │
+│                      TIER 3: PIPELINE CONSUMERS                                 │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                 │
-│  Phase 1: Extractors (MC01-MC10) ← extractor_calibration.json                  │
-│  Phase 2: IrrigationSynchronizer ← integration_map.json                        │
-│  Phase 3: Scorers (@b, @p, @q, @d, @u, @chain) ← empirical_weights.json        │
-│  Phase 3: @p PolicyAreaScorer ← normative_compliance.json                      │
-│  Phase 4-7: Aggregators ← empirical_weights.json                               │
+│  Phase 1: Extractors (MC01-MC10)      ← extractor_calibration.json             │
+│  Phase 2: IrrigationSynchronizer      ← integration_map.json                   │
+│  Phase 3: Scorers (@b, @p, @q, @d,    ← empirical_weights.json                 │
+│           @u, @chain)                                                          │
+│  Phase 3: @p PolicyAreaScorer         ← normative_compliance.json              │
+│  Phase 4-7:  Aggregators               ← empirical_weights.json                 │
 │                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 2. DETALLE DE CADA CANAL DE IRRIGACIÓN
+## 3. Irrigation Channel Specifications
 
-### 2.1 Canal 1: `calibracion_extractores` → `extractor_calibration.json`
+### 3.1 Channel 1: Extractor Calibration
 
-#### 2.1.1 Ubicación y Tamaño
-```
-Origen:  /corpus_empirico_calibracion_extractores.json (666 líneas)
-Destino: /canonic_questionnaire_central/_registry/membership_criteria/_calibration/extractor_calibration.json (~700 líneas)
-```
+#### 3.1.1 File Mapping
 
-#### 2.1.2 Contenido Irrigado
-| Campo | Descripción | Uso en Pipeline |
-|-------|-------------|-----------------|
-| `signal_type_catalog` | 10 tipos de señal con frecuencias empíricas | Base de todos los extractores |
-| `empirical_frequency` | Media, min, max, std por tipo | Validación de extracciones |
-| `extraction_patterns` | Regex calibrados con 14 planes | Patrones de extracción |
-| `gold_standard_examples` | Ejemplos validados manualmente | Testing y calibración |
-| `confidence` | Umbrales de confianza por patrón | Filtrado de señales |
+| Property | Value |
+|----------|-------|
+| **Source** | `/corpus_empirico_calibracion_extractores.json` |
+| **Source Size** | 666 lines |
+| **Destination** | `/canonic_questionnaire_central/_registry/membership_criteria/_calibration/extractor_calibration.json` |
+| **Destination Size** | ~700 lines |
 
-#### 2.1.3 Consumidores Implementados vs Pendientes
+#### 3.1.2 Data Schema
 
-| Consumidor | Archivo | Estado | Línea de Carga |
-|------------|---------|--------|----------------|
-| `EmpiricalExtractorBase` | `empirical_extractor_base.py` | ✅ IMPLEMENTADO | L121 |
-| `StructuralMarkerExtractor` | `structural_marker_extractor.py` | ✅ IMPLEMENTADO | hereda de base |
-| `QuantitativeTripletExtractor` | `quantitative_triplet_extractor.py` | ✅ IMPLEMENTADO | hereda de base |
-| `NormativeReferenceExtractor` | `normative_reference_extractor.py` | ✅ IMPLEMENTADO | hereda de base |
-| `FinancialChainExtractor` | `financial_chain_extractor.py` | ❌ **MISSING** | N/A |
-| `CausalVerbExtractor` | `causal_verb_extractor.py` | ⚠️ PARCIAL | hereda de base |
-| `InstitutionalNER` | `institutional_ner_extractor.py` | ⚠️ PARCIAL | hereda de base |
-| `PopulationDisaggregationExtractor` | N/A | ❌ **MISSING** | N/A |
-| `TemporalMarkerExtractor` | N/A | ❌ **MISSING** | N/A |
-| `SemanticRelationshipExtractor` | N/A | ❌ **MISSING** | N/A |
+| Field | Description | Pipeline Usage |
+|-------|-------------|----------------|
+| `signal_type_catalog` | 10 signal types with empirical frequencies | Base for all extractors |
+| `empirical_frequency` | Mean, min, max, std per type | Extraction validation |
+| `extraction_patterns` | Regex patterns calibrated with 14 plans | Extraction patterns |
+| `gold_standard_examples` | Manually validated examples | Testing and calibration |
+| `confidence` | Confidence thresholds per pattern | Signal filtering |
 
-#### 2.1.4 Código de Carga Actual
-```python
-# Archivo: src/farfan_pipeline/infrastructure/extractors/empirical_extractor_base.py
-# Líneas 114-123
+#### 3.1.3 Consumer Implementation Status
+
+| Consumer | File | Status | Notes |
+|----------|------|--------|-------|
+| `EmpiricalExtractorBase` | `empirical_extractor_base.py` | ✅ Implemented | Line 121 |
+| `StructuralMarkerExtractor` | `structural_marker_extractor.py` | ✅ Implemented | Inherits from base |
+| `QuantitativeTripletExtractor` | `quantitative_triplet_extractor.py` | ✅ Implemented | Inherits from base |
+| `NormativeReferenceExtractor` | `normative_reference_extractor.py` | ✅ Implemented | Inherits from base |
+| `FinancialChainExtractor` | `financial_chain_extractor.py` | ❌ Missing | Not created |
+| `CausalVerbExtractor` | `causal_verb_extractor.py` | ⚠️ Partial | Inherits from base |
+| `InstitutionalNER` | `institutional_ner_extractor.py` | ⚠️ Partial | Inherits from base |
+| `PopulationDisaggregationExtractor` | N/A | ❌ Missing | Not created |
+| `TemporalMarkerExtractor` | N/A | ❌ Missing | Not created |
+| `SemanticRelationshipExtractor` | N/A | ❌ Missing | Not created |
+
+#### 3.1.4 Current Loading Implementation
+
+```python name=empirical_extractor_base. py
+# File: src/farfan_pipeline/infrastructure/extractors/empirical_extractor_base.py
+# Lines 114-123
 
 def _default_calibration_path(self) -> Path:
     """Get default calibration file path."""
     return (
-        Path(__file__).resolve().parent.parent.parent.parent
+        Path(__file__).resolve().parent.parent. parent. parent
         / "canonic_questionnaire_central"
         / "_registry"
         / "membership_criteria"
@@ -120,166 +130,137 @@ def _load_calibration(self, calibration_file: Path) -> dict[str, Any]:
     """Load empirical calibration data."""
     with open(calibration_file) as f:
         data = json.load(f)
-        return data.get("signal_type_catalog", {}).get(self.signal_type, {})
+        return data. get("signal_type_catalog", {}).get(self.signal_type, {})
 ```
 
-#### 2.1.5 Brechas de Irrigación Detectadas
+#### 3.1.5 Identified Gaps
 
-**Brecha 1: 3 Extractores MISSING (MC05, MC08, MC09)**
-```
-MC05_financial_chains.json:
-  - implementation_status: "MISSING"
-  - Calibración presente en extractor_calibration.json → FINANCIAL_CHAIN
-  - 52 questions bloqueadas: Q003, Q033, Q063, Q093, Q123, Q153, Q183, Q213, Q243, Q273
-  - Impacto: layer_chain_causal, CC_SOSTENIBILIDAD_PRESUPUESTAL
+**Gap 1.1: Missing Extractors (MC05, MC08, MC09)**
 
-MC08_causal_verbs.json:
-  - implementation_status: "MISSING" (extractor existe pero incompleto)
-  - Calibración presente → CAUSAL_VERBS
-  - 68 questions bloqueadas: D2-Q3, D2-Q5, D3-Q4, D3-Q5, D4-Q2, D6-Q1, D6-Q2
-  - Impacto: DIM06_CAUSALIDAD completa, layer_chain_causal
+| Extractor ID | Status | Blocked Questions | Impacted Layers |
+|--------------|--------|-------------------|-----------------|
+| MC05 (Financial Chains) | ❌ Missing | 52 questions | `layer_chain_causal`, `CC_SOSTENIBILIDAD_PRESUPUESTAL` |
+| MC08 (Causal Verbs) | ⚠️ Incomplete | 68 questions | `DIM06_CAUSALIDAD`, `layer_chain_causal` |
+| MC09 (Institutional Network) | ⚠️ Incomplete | 39 questions | `layer_p_policy_area`, `layer_C_crosscutting` |
 
-MC09_institutional_network.json:
-  - implementation_status: "MISSING" (extractor existe pero incompleto)
-  - Calibración presente → INSTITUTIONAL_NETWORK
-  - 39 questions bloqueadas: D1-Q4, D2-Q1, D5-Q5, D6-Q4
-  - Impacto: layer_p_policy_area, layer_C_crosscutting
-```
+**Gap 1.2: Pattern Utilization**
 
-**Brecha 2: Patrones no utilizados**
-```
-Patrones disponibles en calibración: 2,358
-Patrones actualmente consumidos: 223 (9.4%)
-```
+| Metric | Value |
+|--------|-------|
+| Available patterns in calibration | 2,358 |
+| Currently consumed patterns | 223 |
+| Utilization rate | 9.4% |
 
 ---
 
-### 2.2 Canal 2: `corpus_integrado` → `integration_map.json`
+### 3.2 Channel 2: Integration Mapping
 
-#### 2.2.1 Ubicación y Tamaño
-```
-Origen:  /corpus_empirico_integrado.json (1237 líneas)
-Destino: /canonic_questionnaire_central/_registry/questions/integration_map.json (~1200 líneas)
-```
+#### 3.2.1 File Mapping
 
-#### 2.2.2 Contenido Irrigado
-| Campo | Descripción | Uso en Pipeline |
-|-------|-------------|-----------------|
-| `slot_to_signal_mapping` | 30 slots genéricos × 10 PA = 300 Q | Routing de señales |
-| `primary_signals` | Señales principales por pregunta | Priorización de extracción |
-| `secondary_signals` | Señales secundarias | Enriquecimiento |
-| `expected_patterns` | Patrones esperados por slot | Validación |
-| `scoring_modality` | TYPE_A, B, C, D por pregunta | Selección de scorer |
-| `empirical_availability` | Frecuencia empírica (0.0-1.0) | Expectativas realistas |
+| Property | Value |
+|----------|-------|
+| **Source** | `/corpus_empirico_integrado. json` |
+| **Source Size** | 1,237 lines |
+| **Destination** | `/canonic_questionnaire_central/_registry/questions/integration_map.json` |
+| **Destination Size** | ~1,200 lines |
 
-#### 2.2.3 Estructura del Mapeo Slot→Signal
+#### 3.2.2 Data Schema
 
-```json
+| Field | Description | Pipeline Usage |
+|-------|-------------|----------------|
+| `slot_to_signal_mapping` | 30 generic slots × 10 PA = 300 Q | Signal routing |
+| `primary_signals` | Primary signals per question | Extraction prioritization |
+| `secondary_signals` | Secondary signals | Enrichment |
+| `expected_patterns` | Expected patterns per slot | Validation |
+| `scoring_modality` | TYPE_A, B, C, D per question | Scorer selection |
+| `empirical_availability` | Empirical frequency (0. 0-1.0) | Realistic expectations |
+
+#### 3.2.3 Slot-to-Signal Mapping Structure
+
+```json name=integration_map_example.json
 {
-  "D1-Q3_RECUR-ASIG": {
-    "slot": "D1-Q3",
-    "generic_question": "¿El PPI asigna recursos monetarios explícitos?",
+  "D1-Q3_RECUR-ASIG":  {
+    "slot":  "D1-Q3",
+    "generic_question": "Does the PPI assign explicit monetary resources? ",
     "children_questions": ["Q003", "Q033", "Q063", "Q093", "Q123", "Q153", "Q183", "Q213", "Q243", "Q273"],
     "primary_signals": ["FINANCIAL_CHAIN", "STRUCTURAL_MARKER"],
     "secondary_signals": ["PROGRAMMATIC_HIERARCHY"],
     "scoring_modality": "TYPE_D",
     "weight": 0.30,
-    "empirical_availability": 0.92
+    "empirical_availability":  0.92
   }
 }
 ```
 
-#### 2.2.4 Consumidores Implementados vs Pendientes
+#### 3.2.4 Consumer Implementation Status
 
-| Consumidor | Archivo | Estado | Detalle |
-|------------|---------|--------|---------|
-| `SignalQuestionIndex` | `signal_router.py` | ✅ IMPLEMENTADO | O(1) routing |
-| `IrrigationSynchronizer` | `phase2_*` | ⚠️ PARCIAL | Fallback a empty |
-| `EvidenceNexus` | `phase2_80_00_evidence_nexus.py` | ⚠️ PARCIAL | L3281-3292 |
-| `QuestionnaireSignalRegistry` | N/A | ❌ **NO EXISTE** | Pendiente crear |
+| Consumer | File | Status | Notes |
+|----------|------|--------|-------|
+| `SignalQuestionIndex` | `signal_router.py` | ✅ Implemented | O(1) routing |
+| `IrrigationSynchronizer` | `phase2_*` | ⚠️ Partial | Fallback to empty |
+| `EvidenceNexus` | `phase2_80_00_evidence_nexus.py` | ⚠️ Partial | Lines 3281-3292 |
+| `QuestionnaireSignalRegistry` | N/A | ❌ Missing | Pending creation |
 
-#### 2.2.5 Código de Carga Actual
-```python
-# Archivo: canonic_questionnaire_central/_registry/questions/signal_router.py
-# Líneas 69-76
+#### 3.2.5 Identified Gaps
 
-def __init__(self, integration_map_path: Optional[Path] = None):
-    if integration_map_path is None:
-        integration_map_path = Path(__file__).resolve().parent / "integration_map.json"
-    
-    self.integration_map_path = integration_map_path
-    # ...
-    try:
-        with open(self.integration_map_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        integration_map = data.get("farfan_question_mapping", {})
-        slot_mappings = integration_map.get("slot_to_signal_mapping", {})
-    except (FileNotFoundError, json.JSONDecodeError) as e:
-        print(f"Warning: Could not load integration_map.json: {e}. Using empty mappings.")
-        integration_map = {}  # ← FALLBACK A VACÍO
+**Gap 2.1: Silent Fallback to Empty Mapping**
+
+```python name=signal_router_current.py
+# Current problematic implementation
+try:
+    with open(self. integration_map_path, "r", encoding="utf-8") as f:
+        data = json. load(f)
+    integration_map = data.get("farfan_question_mapping", {})
+    slot_mappings = integration_map.get("slot_to_signal_mapping", {})
+except (FileNotFoundError, json.JSONDecodeError) as e:
+    print(f"Warning: Could not load integration_map.json: {e}.  Using empty mappings.")
+    integration_map = {}  # ← SILENT FALLBACK TO EMPTY
 ```
 
-#### 2.2.6 Brechas de Irrigación Detectadas
+| Issue | Impact | Required Solution |
+|-------|--------|-------------------|
+| Silent fallback | 0% signals reach correct questions | Fail-fast with clear error |
 
-**Brecha 1: Fallback silencioso a mapeo vacío**
-```
-Problema: Si falla la carga, el sistema continúa con mappings vacíos
-Impacto: 0% de señales llegan a preguntas correctas
-Solución: Fail-fast con mensaje de error claro
-```
+**Gap 2.2: Unused `empirical_availability` Field**
 
-**Brecha 2: IrrigationSynchronizer no usa integration_map**
-```
-# Búsqueda en Phase 2:
-grep "integration_map" phase2_*.py
-→ Solo referencias en comentarios y try_catch fallbacks
-→ No hay consumo efectivo del slot_to_signal_mapping
-```
-
-**Brecha 3: `empirical_availability` no usado**
-```
-El campo empirical_availability (0.14 a 1.0) indica la frecuencia empírica
-de cada tipo de evidencia en los 14 planes analizados.
-
-Ejemplos:
-  - D6-Q1 (Teoría del Cambio): 0.14 (solo 14% de planes la tienen)
-  - D6-Q5 (Contexto Territorial): 1.0 (100% de planes)
-
-Este dato NO se usa actualmente para:
-  - Ajustar expectativas de scoring
-  - Calibrar penalizaciones por ausencia
-  - Reportar gaps realistas
-```
+The `empirical_availability` field (range:  0.14 to 1.0) indicates empirical frequency but is not used for: 
+- Adjusting scoring expectations
+- Calibrating absence penalties
+- Reporting realistic gaps
 
 ---
 
-### 2.3 Canal 3: `corpus_normatividad` → `normative_compliance.json`
+### 3.3 Channel 3: Normative Compliance
 
-#### 2.3.1 Ubicación y Tamaño
-```
-Origen:  /corpus_empirico_normatividad.json (269 líneas)
-Destino: /canonic_questionnaire_central/_registry/entities/normative_compliance.json (~260 líneas)
-```
+#### 3.3.1 File Mapping
 
-#### 2.3.2 Contenido Irrigado
-| Campo | Descripción | Uso en Pipeline |
-|-------|-------------|-----------------|
-| `mandatory_norms_by_policy_area` | Normas obligatorias por PA | Validación @p |
-| `penalty_if_missing` | Penalizaciones (0.2-0.5) | Cálculo CC_COHERENCIA |
-| `universal_mandatory_norms` | 4 normas para todos los PA | Validación base |
-| `contextual_validation_rules` | Reglas para PDET, étnicos | Validación contextual |
-| `scoring_algorithm` | Fórmula de cálculo | Implementación |
+| Property | Value |
+|----------|-------|
+| **Source** | `/corpus_empirico_normatividad.json` |
+| **Source Size** | 269 lines |
+| **Destination** | `/canonic_questionnaire_central/_registry/entities/normative_compliance.json` |
+| **Destination Size** | ~260 lines |
 
-#### 2.3.3 Estructura de Normas Obligatorias por PA
+#### 3.3.2 Data Schema
 
-```json
+| Field | Description | Pipeline Usage |
+|-------|-------------|----------------|
+| `mandatory_norms_by_policy_area` | Required norms per PA | @p validation |
+| `penalty_if_missing` | Penalties (0.2-0.5) | `CC_COHERENCIA` calculation |
+| `universal_mandatory_norms` | 4 norms for all PAs | Base validation |
+| `contextual_validation_rules` | Rules for PDET, ethnic territories | Contextual validation |
+| `scoring_algorithm` | Calculation formula | Implementation reference |
+
+#### 3.3.3 Mandatory Norms Structure
+
+```json name=normative_compliance_example. json
 {
   "PA05_victimas_paz": {
-    "mandatory": [
+    "mandatory":  [
       {
         "norm_id": "Ley 1448 de 2011",
-        "name": "Ley de Víctimas y Restitución de Tierras",
-        "reason": "Marco fundamental para víctimas del conflicto",
+        "name": "Victims and Land Restitution Law",
+        "reason": "Fundamental framework for conflict victims",
         "empirical_frequency": 5,
         "penalty_if_missing": 0.4
       },
@@ -290,96 +271,95 @@ Destino: /canonic_questionnaire_central/_registry/entities/normative_compliance.
       }
     ],
     "recommended": [
-      {"norm_id": "Acuerdo Final de Paz 2016"}
+      {"norm_id": "Final Peace Agreement 2016"}
     ]
   }
 }
 ```
 
-#### 2.3.4 Consumidores Implementados vs Pendientes
+#### 3.3.4 Consumer Implementation Status
 
-| Consumidor | Archivo | Estado | Detalle |
-|------------|---------|--------|---------|
-| `NormativeComplianceValidator` | N/A | ❌ **NO EXISTE** | Crítico |
-| `@p PolicyAreaScorer` | `phase3_*` | ⚠️ REFERENCIA | No consume JSON |
-| `CrossCuttingScorer` | `phase3_*` | ⚠️ REFERENCIA | CC_COHERENCIA_NORMATIVA |
-| `MC03 extractor` | `normative_reference_extractor.py` | ✅ PARCIAL | Extrae, no valida |
+| Consumer | File | Status | Notes |
+|----------|------|--------|-------|
+| `NormativeComplianceValidator` | N/A | ❌ Missing | Critical gap |
+| `@p PolicyAreaScorer` | `phase3_*` | ⚠️ Reference only | Does not consume JSON |
+| `CrossCuttingScorer` | `phase3_*` | ⚠️ Reference only | `CC_COHERENCIA_NORMATIVA` |
+| `MC03 extractor` | `normative_reference_extractor.py` | ⚠️ Partial | Extracts but doesn't validate |
 
-#### 2.3.5 Brechas de Irrigación Detectadas
+#### 3.3.5 Identified Gaps
 
-**Brecha 1: NO EXISTE `NormativeComplianceValidator`**
-```
-El archivo normative_compliance.json contiene:
-- 10 Policy Areas con normas obligatorias
-- Penalizaciones calibradas (0.2 a 0.5)
-- Algoritmo de scoring documentado
+**Gap 3.1: Missing `NormativeComplianceValidator`**
 
-PERO no existe ningún validador que:
-1. Cargue este archivo
-2. Compare normas citadas vs obligatorias
-3. Calcule penalizaciones
-4. Genere gap_reports
-```
+The `normative_compliance.json` file contains complete validation data but no validator exists to:
+1. Load the configuration file
+2. Compare cited norms vs. mandatory norms
+3. Calculate penalties
+4. Generate gap reports
 
-**Brecha 2: `scoring_algorithm` no implementado**
-```json
-// En normative_compliance.json:
-"scoring_algorithm": {
-  "formula": "score = max(0.0, 1.0 - SUM(penalties)) for missing mandatory norms",
-  "interpretation": {
-    "EXCELENTE": ">= 0.90",
-    "BUENO": "0.75 - 0.89",
-    "ACEPTABLE": "0.60 - 0.74",
-    "DEFICIENTE": "< 0.60"
+**Gap 3.2: Unimplemented Scoring Algorithm**
+
+```json name=scoring_algorithm_spec.json
+{
+  "scoring_algorithm": {
+    "formula": "score = max(0.0, 1.0 - SUM(penalties)) for missing mandatory norms",
+    "interpretation": {
+      "EXCELLENT": "&gt;= 0.90",
+      "GOOD": "0.75 - 0.89",
+      "ACCEPTABLE": "0.60 - 0.74",
+      "DEFICIENT": "&lt; 0.60"
+    }
   }
 }
-
-// En código: NO EXISTE implementación de esta fórmula
 ```
 
-**Brecha 3: `contextual_validation_rules` ignoradas**
-```json
-"contextual_validation_rules": {
-  "pdet_municipalities": {
-    "condition": "Municipality is in PDET list",
-    "additional_mandatory": [
-      {"norm_id": "Decreto 893 de 2017", "penalty_if_missing": 0.4}
-    ]
-  },
-  "ethnic_territories": {
-    "condition": "Population > 10% indigenous or afro",
-    "additional_mandatory": [
-      {"norm_id": "Ley 70 de 1993"},
-      {"norm_id": "Decreto 1953 de 2014"}
-    ]
+**Gap 3.3: Ignored Contextual Validation Rules**
+
+```json name=contextual_rules_spec.json
+{
+  "contextual_validation_rules":  {
+    "pdet_municipalities": {
+      "condition": "Municipality is in PDET list",
+      "additional_mandatory": [
+        {"norm_id": "Decreto 893 de 2017", "penalty_if_missing": 0.4}
+      ]
+    },
+    "ethnic_territories": {
+      "condition": "Population &gt; 10% indigenous or afro",
+      "additional_mandatory": [
+        {"norm_id": "Ley 70 de 1993"},
+        {"norm_id": "Decreto 1953 de 2014"}
+      ]
+    }
   }
 }
-
-// NO HAY validador que aplique estas reglas contextuales
 ```
 
 ---
 
-### 2.4 Canal 4: `corpus_thresholds_weights` → `empirical_weights.json`
+### 3.4 Channel 4: Thresholds and Weights
 
-#### 2.4.1 Ubicación y Tamaño
-```
-Origen:  /corpus_thresholds_weights.json (351 líneas)
-Destino: /canonic_questionnaire_central/scoring/calibration/empirical_weights.json (~320 líneas)
-```
+#### 3.4.1 File Mapping
 
-#### 2.4.2 Contenido Irrigado
-| Campo | Descripción | Uso en Pipeline |
-|-------|-------------|-----------------|
-| `signal_confidence_thresholds` | Umbrales por tipo de señal | Filtrado en Phase 1-2 |
-| `phase3_scoring_weights` | Pesos para 7 layers | Scorers Phase 3 |
-| `aggregation_weights` | Pesos Phases 4-7 | Aggregators |
-| `value_add_thresholds` | Mínimo delta para señal útil | Deduplicación |
-| `capability_requirements` | Capacidades por señal | Validación DBC |
+| Property | Value |
+|----------|-------|
+| **Source** | `/corpus_thresholds_weights.json` |
+| **Source Size** | 351 lines |
+| **Destination** | `/canonic_questionnaire_central/scoring/calibration/empirical_weights.json` |
+| **Destination Size** | ~320 lines |
 
-#### 2.4.3 Estructura de Pesos de Scoring
+#### 3.4.2 Data Schema
 
-```json
+| Field | Description | Pipeline Usage |
+|-------|-------------|----------------|
+| `signal_confidence_thresholds` | Thresholds by signal type | Filtering in Phases 1-2 |
+| `phase3_scoring_weights` | Weights for 7 layers | Phase 3 scorers |
+| `aggregation_weights` | Weights for Phases 4-7 | Aggregators |
+| `value_add_thresholds` | Minimum delta for useful signal | Deduplication |
+| `capability_requirements` | Capabilities per signal | DBC validation |
+
+#### 3.4.3 Scoring Weights Structure
+
+```json name=empirical_weights_example.json
 {
   "phase3_scoring_weights": {
     "layer_b_baseline": {
@@ -391,7 +371,7 @@ Destino: /canonic_questionnaire_central/scoring/calibration/empirical_weights.js
       "NORMATIVE_REFERENCE_mandatory": 0.40,
       "keyword_coverage": 0.30,
       "POPULATION_DISAGGREGATION_relevant": 0.20,
-      "INSTITUTIONAL_NETWORK": 0.10
+      "INSTITUTIONAL_NETWORK":  0.10
     },
     "layer_chain_causal": {
       "CAUSAL_LINK_explicit": 0.50,
@@ -402,129 +382,110 @@ Destino: /canonic_questionnaire_central/scoring/calibration/empirical_weights.js
 }
 ```
 
-#### 2.4.4 Consumidores Implementados vs Pendientes
+#### 3.4.4 Consumer Implementation Status
 
-| Consumidor | Archivo | Estado | Detalle |
-|------------|---------|--------|---------|
-| `BaselineScorer (@b)` | `phase3_*` | ⚠️ TODO | Pesos hardcodeados |
-| `PolicyAreaScorer (@p)` | `phase3_*` | ⚠️ TODO | No carga JSON |
-| `QualityScorer (@q)` | `phase3_*` | ⚠️ TODO | No carga JSON |
-| `DimensionScorer (@d)` | `phase3_*` | ⚠️ TODO | No carga JSON |
-| `StructuralScorer (@u)` | `phase3_*` | ⚠️ TODO | No carga JSON |
-| `CausalScorer (@chain)` | `phase3_*` | ⚠️ TODO | No carga JSON |
-| `DimensionAggregator` | `phase4_*` | ⚠️ TODO | Pesos hardcodeados |
-| `PolicyAreaAggregator` | `phase5_*` | ⚠️ TODO | Pesos hardcodeados |
+| Consumer | File | Status | Notes |
+|----------|------|--------|-------|
+| `BaselineScorer (@b)` | `phase3_*` | ⚠️ TODO | Hardcoded weights |
+| `PolicyAreaScorer (@p)` | `phase3_*` | ⚠️ TODO | Does not load JSON |
+| `QualityScorer (@q)` | `phase3_*` | ⚠️ TODO | Does not load JSON |
+| `DimensionScorer (@d)` | `phase3_*` | ⚠️ TODO | Does not load JSON |
+| `StructuralScorer (@u)` | `phase3_*` | ⚠️ TODO | Does not load JSON |
+| `CausalScorer (@chain)` | `phase3_*` | ⚠️ TODO | Does not load JSON |
+| `DimensionAggregator` | `phase4_*` | ⚠️ TODO | Hardcoded weights |
+| `PolicyAreaAggregator` | `phase5_*` | ⚠️ TODO | Hardcoded weights |
 
-#### 2.4.5 Evidencia del Estado TODO
+#### 3.4.5 Identified Gaps
+
+**Gap 4.1: No Scorer Loads `empirical_weights.json`**
 
 ```bash
 $ grep -r "empirical_weights" src/farfan_pipeline/phases/
-# Resultado: 0 matches en código de fases
-# Solo aparece en documentación y comentarios TODO
+# Result: 0 matches in phase code
+# Only appears in documentation and TODO comments
 ```
 
-#### 2.4.6 Brechas de Irrigación Detectadas
+**Gap 4.2: Disconnected Aggregation Weights**
 
-**Brecha 1: NINGÚN scorer carga `empirical_weights.json`**
-```
-Todos los scorers de Phase 3 tienen pesos hardcodeados o TODO:
-
-# Ejemplo típico encontrado:
-class BaselineScorer:
-    def __init__(self):
-        # TODO: Load from empirical_weights.json
-        self.weights = {
-            "QUANTITATIVE_TRIPLET_present": 0.70,  # Hardcodeado
-            ...
-        }
-```
-
-**Brecha 2: `aggregation_weights` no conectados**
-```json
-// En empirical_weights.json:
-"phase5_policy_area_aggregation": {
-  "dimension_weights": {
-    "DIM01_insumos": 0.15,
-    "DIM02_actividades": 0.15,
-    "DIM03_productos": 0.20,
-    "DIM04_resultados": 0.25,  // Mayor peso
-    "DIM05_impacto": 0.15,
-    "DIM06_causalidad": 0.10
+```json name=aggregation_weights_spec. json
+{
+  "phase5_policy_area_aggregation":  {
+    "dimension_weights": {
+      "DIM01_insumos": 0.15,
+      "DIM02_actividades": 0.15,
+      "DIM03_productos": 0.20,
+      "DIM04_resultados": 0.25,
+      "DIM05_impacto": 0.15,
+      "DIM06_causalidad": 0.10
+    }
   }
 }
-
-// En código: NO se consume este JSON
 ```
 
-**Brecha 3: `value_add_thresholds` no implementados**
-```json
-"value_add_thresholds": {
-  "minimum_value_add": {
-    "delta_score": 0.05,
-    "description": "Signal must improve score by at least 5%"
+**Gap 4.3:  Unimplemented Value-Add Thresholds**
+
+```json name=value_add_spec.json
+{
+  "value_add_thresholds": {
+    "minimum_value_add": {
+      "delta_score": 0.05,
+      "description": "Signal must improve score by at least 5%"
+    }
   }
 }
-
-// NO existe ValueAddScorer ni filtrado por delta mínimo
 ```
 
 ---
 
-## 3. MATRIZ DE IRRIGACIÓN COMPLETA
+## 4. Consolidated Irrigation Matrix
 
-### 3.1 Vista Consolidada: Corpus → Archivo Derivado → Consumidor → Estado
+### 4.1 Complete Wiring Status
 
-```
-┌────────────────────────────┬─────────────────────────────────┬──────────────────────────────┬─────────────┐
-│ CORPUS RAÍZ                │ ARCHIVO DERIVADO CQC            │ CONSUMIDORES                 │ WIRING      │
-├────────────────────────────┼─────────────────────────────────┼──────────────────────────────┼─────────────┤
-│                            │                                 │ EmpiricalExtractorBase       │ ✅ OK       │
-│                            │                                 │ StructuralMarkerExtractor    │ ✅ OK       │
-│ calibracion_extractores    │ extractor_calibration.json      │ QuantitativeTripletExtractor │ ✅ OK       │
-│ (666 líneas)               │ (700 líneas)                    │ NormativeReferenceExtractor  │ ✅ OK       │
-│                            │                                 │ FinancialChainExtractor      │ ❌ MISSING  │
-│                            │                                 │ CausalVerbExtractor          │ ⚠️ PARCIAL  │
-│                            │                                 │ InstitutionalNER             │ ⚠️ PARCIAL  │
-├────────────────────────────┼─────────────────────────────────┼──────────────────────────────┼─────────────┤
-│                            │                                 │ SignalQuestionIndex          │ ✅ OK       │
-│ corpus_integrado           │ integration_map.json            │ IrrigationSynchronizer       │ ⚠️ FALLBACK │
-│ (1237 líneas)              │ (1200 líneas)                   │ EvidenceNexus                │ ⚠️ PARCIAL  │
-│                            │                                 │ QuestionnaireSignalRegistry  │ ❌ NO EXISTE│
-├────────────────────────────┼─────────────────────────────────┼──────────────────────────────┼─────────────┤
-│                            │                                 │ NormativeComplianceValidator │ ❌ NO EXISTE│
-│ corpus_normatividad        │ normative_compliance.json       │ @p PolicyAreaScorer          │ ⚠️ NO USA   │
-│ (269 líneas)               │ (260 líneas)                    │ CrossCuttingScorer           │ ⚠️ NO USA   │
-│                            │                                 │ MC03 extractor               │ ⚠️ PARCIAL  │
-├────────────────────────────┼─────────────────────────────────┼──────────────────────────────┼─────────────┤
-│                            │                                 │ BaselineScorer (@b)          │ ⚠️ TODO     │
-│                            │                                 │ PolicyAreaScorer (@p)        │ ⚠️ TODO     │
-│ thresholds_weights         │ empirical_weights.json          │ QualityScorer (@q)           │ ⚠️ TODO     │
-│ (351 líneas)               │ (320 líneas)                    │ DimensionScorer (@d)         │ ⚠️ TODO     │
-│                            │                                 │ CausalScorer (@chain)        │ ⚠️ TODO     │
-│                            │                                 │ Aggregators (Phase 4-7)      │ ⚠️ TODO     │
-└────────────────────────────┴─────────────────────────────────┴──────────────────────────────┴─────────────┘
-```
+| Root Corpus | Derived CQC File | Consumers | Wiring Status |
+|-------------|------------------|-----------|---------------|
+| `calibracion_extractores` (666 lines) | `extractor_calibration.json` (700 lines) | `EmpiricalExtractorBase` | ✅ OK |
+| | | `StructuralMarkerExtractor` | ✅ OK |
+| | | `QuantitativeTripletExtractor` | ✅ OK |
+| | | `NormativeReferenceExtractor` | ✅ OK |
+| | | `FinancialChainExtractor` | ❌ Missing |
+| | | `CausalVerbExtractor` | ⚠️ Partial |
+| | | `InstitutionalNER` | ⚠️ Partial |
+| `corpus_integrado` (1,237 lines) | `integration_map.json` (1,200 lines) | `SignalQuestionIndex` | ✅ OK |
+| | | `IrrigationSynchronizer` | ⚠️ Fallback |
+| | | `EvidenceNexus` | ⚠️ Partial |
+| | | `QuestionnaireSignalRegistry` | ❌ Missing |
+| `corpus_normatividad` (269 lines) | `normative_compliance.json` (260 lines) | `NormativeComplianceValidator` | ❌ Missing |
+| | | `@p PolicyAreaScorer` | ⚠️ Unused |
+| | | `CrossCuttingScorer` | ⚠️ Unused |
+| | | `MC03 extractor` | ⚠️ Partial |
+| `thresholds_weights` (351 lines) | `empirical_weights.json` (320 lines) | `BaselineScorer (@b)` | ⚠️ TODO |
+| | | `PolicyAreaScorer (@p)` | ⚠️ TODO |
+| | | `QualityScorer (@q)` | ⚠️ TODO |
+| | | `DimensionScorer (@d)` | ⚠️ TODO |
+| | | `CausalScorer (@chain)` | ⚠️ TODO |
+| | | `Aggregators (Phase 4-7)` | ⚠️ TODO |
 
-### 3.2 Resumen de Estado de Wiring
+### 4.2 Wiring Summary
 
-| Estado | Cantidad | Porcentaje |
-|--------|----------|------------|
-| ✅ IMPLEMENTADO | 5 consumidores | ~20% |
-| ⚠️ PARCIAL/TODO | 12 consumidores | ~50% |
-| ❌ MISSING/NO EXISTE | 7 consumidores | ~30% |
+| Status | Count | Percentage |
+|--------|-------|------------|
+| ✅ Implemented | 5 consumers | ~20% |
+| ⚠️ Partial/TODO | 12 consumers | ~50% |
+| ❌ Missing/Not Exists | 7 consumers | ~30% |
 
 ---
 
-## 4. ESPECIFICACIÓN DE IMPLEMENTACIÓN
+## 5. Implementation Specifications
 
-### 4.1 Prioridad 0 (Crítica): Implementar Extractores MISSING
+### 5.1 Priority 0 (Critical): Implement Missing Extractors
 
-#### 4.1.1 `FinancialChainExtractor` (MC05)
+#### 5.1.1 `FinancialChainExtractor` (MC05)
 
-**Archivo a crear:** `src/farfan_pipeline/infrastructure/extractors/financial_chain_extractor.py`
+**File to Create:** `src/farfan_pipeline/infrastructure/extractors/financial_chain_extractor.py`
 
-**Datos de calibración disponibles en `extractor_calibration.json`:**
-```json
+**Available Calibration Data:**
+
+```json name=financial_chain_calibration.json
 {
   "FINANCIAL_CHAIN": {
     "empirical_frequency": {
@@ -532,20 +493,20 @@ class BaselineScorer:
       "fuentes_per_plan": {"mean": 7, "min": 5, "max": 13}
     },
     "extraction_patterns": {
-      "monto": {
-        "regex": "\\$\\s*([0-9.,]+)\\s*(millones?|billones?)?",
+      "monto":  {
+        "regex": "\\$\s*([0-9.,]+)\s*(millones? |billones?)?",
         "confidence": 0.90,
         "normalization": {"millones": "* 1000000", "billones": "* 1000000000000"}
       },
       "fuente": {
-        "regex": "(?:SGP|recursos\\s+propios|SGR|crédito|cofinanciación)",
+        "regex":  "(? :SGP|recursos\\s+propios|SGR|crédito|cofinanciación)",
         "confidence": 0.92
       }
     },
     "risk_thresholds": {
       "credito_max_pct": 0.20,
       "propios_min_pct": 0.03,
-      "sgp_dependencia_max": 0.85
+      "sgp_dependencia_max":  0.85
     },
     "gold_standard_examples": [
       {
@@ -558,31 +519,24 @@ class BaselineScorer:
 }
 ```
 
-**Preguntas desbloqueadas:** 52
-```
-Q003, Q013, Q018, Q023, Q025, Q033, Q043, Q048, Q053, Q055,
-Q063, Q073, Q078, Q083, Q085, Q093, Q103, Q108, Q113, Q115,
-Q123, Q133, Q138, Q143, Q145, Q153, Q163, Q168, Q173, Q175,
-Q183, Q193, Q198, Q203, Q205, Q213, Q223, Q228, Q233, Q235,
-Q243, Q253, Q258, Q263, Q265, Q273, Q283, Q288, Q293, Q295
-```
+**Questions Unblocked:** 52
 
-**Slots que requieren FINANCIAL_CHAIN:**
-- D1-Q3 (RECUR-ASIG): Recursos asignados en PPI
-- D3-Q3 (TRAZ-PRES): Trazabilidad presupuestal
-- D4-Q3 (JUST-AMB): Justificación de ambición vs recursos
-- D5-Q5 (SOST-IMP): Sostenibilidad de impactos
+| Slot | Questions | Description |
+|------|-----------|-------------|
+| D1-Q3 (RECUR-ASIG) | Q003, Q033, Q063, Q093, Q123, Q153, Q183, Q213, Q243, Q273 | Resources assigned in PPI |
+| D3-Q3 (TRAZ-PRES) | Q078, Q108, Q138, Q168, Q198, Q228, Q258, Q288 | Budget traceability |
+| D4-Q3 (JUST-AMB) | Q083, Q113, Q143, Q173, Q203, Q233, Q263, Q293 | Ambition justification vs resources |
+| D5-Q5 (SOST-IMP) | Q095, Q125, Q155, Q185, Q215, Q245, Q275, Q295 | Impact sustainability |
 
----
+#### 5.1.2 `CausalVerbExtractor` (MC08) - Complete Implementation
 
-#### 4.1.2 `CausalVerbExtractor` (MC08) - Completar implementación
+**Existing File:** `src/farfan_pipeline/infrastructure/extractors/causal_verb_extractor.py`
 
-**Archivo existente:** `src/farfan_pipeline/infrastructure/extractors/causal_verb_extractor.py`
+**Status:** Partial - Extracts verbs but doesn't construct causal chains
 
-**Estado:** PARCIAL - Extrae verbos pero no construye cadenas causales
+**Available Calibration Data:**
 
-**Datos de calibración disponibles:**
-```json
+```json name=causal_verbs_calibration.json
 {
   "CAUSAL_VERBS": {
     "empirical_frequency": {
@@ -593,7 +547,7 @@ Q243, Q253, Q258, Q263, Q265, Q273, Q283, Q288, Q293, Q295
       ],
       "conectores_causales": {
         "con_el_fin_de": {"mean": 18},
-        "mediante": {"mean": 22},
+        "mediante":  {"mean": 22},
         "a_traves_de": {"mean": 35}
       }
     },
@@ -605,76 +559,102 @@ Q243, Q253, Q258, Q263, Q265, Q273, Q283, Q288, Q293, Q295
 }
 ```
 
-**Funcionalidad faltante:**
-1. Detección de cadenas causales completas (VERB → PRODUCT → CONNECTOR → RESULT)
-2. Vinculación con PROGRAMMATIC_HIERARCHY
-3. Construcción de grafo causal
+**Missing Functionality:**
 
-**Preguntas desbloqueadas:** 68
-```
-D2-Q3, D2-Q5, D3-Q4, D3-Q5, D4-Q2, D6-Q1, D6-Q2 × 10 PA
-```
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| Complete causal chain detection | VERB → PRODUCT → CONNECTOR → RESULT | High |
+| `PROGRAMMATIC_HIERARCHY` linkage | Connect to program structure | High |
+| Causal graph construction | Build directed graph of causality | Medium |
 
----
+**Questions Unblocked:** 68
 
-#### 4.1.3 `InstitutionalNER` (MC09) - Completar implementación
+#### 5.1.3 `InstitutionalNER` (MC09) - Complete Implementation
 
-**Archivo existente:** `src/farfan_pipeline/infrastructure/extractors/institutional_ner_extractor.py`
+**Existing File:** `src/farfan_pipeline/infrastructure/extractors/institutional_ner_extractor.py`
 
-**Estado:** PARCIAL - Extrae entidades pero no construye red institucional
+**Status:** Partial - Extracts entities but doesn't build institutional network
 
-**Datos de calibración disponibles:**
-```json
-{
-  "INSTITUTIONAL_NETWORK": {
-    "empirical_frequency": {
-      "entidades_nacionales": {
-        "DNP": {"mean": 15},
-        "DANE": {"mean": 10},
-        "ICBF": {"mean": 11}
-      },
-      "entidades_territoriales": {
-        "Alcaldía": {"mean": 420}
-      }
-    },
-    "entity_roles": {
-      "RESPONSABLE": "Primary executor",
-      "COORDINADOR": "Coordination role",
-      "APOYO": "Support/technical assistance"
-    }
-  }
-}
-```
-
-**Preguntas desbloqueadas:** 39
-```
-D1-Q4, D2-Q1, D5-Q5, D6-Q4 × 10 PA (parcialmente)
-```
+**Questions Unblocked:** 39
 
 ---
 
-### 4.2 Prioridad 1 (Alta): Crear Validadores Faltantes
+### 5.2 Priority 1 (High): Create Missing Validators
 
-#### 4.2.1 `NormativeComplianceValidator`
+#### 5.2.1 `NormativeComplianceValidator`
 
-**Archivo a crear:** `src/farfan_pipeline/phases/Phase_3/validators/normative_compliance_validator.py`
+**File to Create:** `src/farfan_pipeline/phases/Phase_3/validators/normative_compliance_validator.py`
 
-**Responsabilidades:**
-1. Cargar `normative_compliance.json`
-2. Para cada PA, verificar normas obligatorias citadas
-3. Calcular penalizaciones por normas faltantes
-4. Aplicar reglas contextuales (PDET, territorios étnicos)
-5. Generar `gap_report` con recomendaciones
+**Responsibilities:**
+1. Load `normative_compliance.json`
+2. For each PA, verify cited mandatory norms
+3. Calculate penalties for missing norms
+4. Apply contextual rules (PDET, ethnic territories)
+5. Generate `gap_report` with recommendations
 
-**Pseudocódigo:**
-```python
+**Interface Specification:**
+
+```python name=normative_compliance_validator. py
+from dataclasses import dataclass
+from pathlib import Path
+from typing import List, Optional
+import json
+
+
+@dataclass
+class ValidationResult:
+    policy_area: str
+    score: float
+    missing_norms: List[dict]
+    recommendation: str
+    contextual_adjustments: Optional[dict] = None
+
+
 class NormativeComplianceValidator:
-    def __init__(self):
-        self.compliance_data = self._load_compliance_json()
+    """Validates normative compliance against empirical requirements."""
     
-    def validate(self, plan_id: str, policy_area: str, cited_norms: List[str]) -> ValidationResult:
-        mandatory = self.compliance_data["mandatory_norms_by_policy_area"][policy_area]["mandatory"]
-        universal = self.compliance_data["universal_mandatory_norms"]
+    def __init__(self, config_path: Optional[Path] = None):
+        if config_path is None:
+            config_path = (
+                Path(__file__).resolve().parent.parent.parent. parent
+                / "canonic_questionnaire_central"
+                / "_registry"
+                / "entities"
+                / "normative_compliance.json"
+            )
+        self.compliance_data = self._load_compliance_json(config_path)
+    
+    def _load_compliance_json(self, path: Path) -> dict:
+        """Load compliance configuration with fail-fast behavior."""
+        if not path.exists():
+            raise FileNotFoundError(
+                f"Critical:  normative_compliance.json not found at {path}"
+            )
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    
+    def validate(
+        self,
+        plan_id: str,
+        policy_area: str,
+        cited_norms: List[str],
+        context:  Optional[dict] = None
+    ) -> ValidationResult:
+        """
+        Validate normative compliance for a policy area. 
+        
+        Args:
+            plan_id: Unique identifier for the development plan
+            policy_area: Policy area code (e.g., "PA05_victimas_paz")
+            cited_norms: List of norm IDs cited in the plan
+            context: Optional context for contextual rules (PDET, ethnic)
+        
+        Returns:
+            ValidationResult with score, missing norms, and recommendations
+        """
+        mandatory = self.compliance_data["mandatory_norms_by_policy_area"]. get(
+            policy_area, {}).get("mandatory", [])
+        universal = self.compliance_data. get("universal_mandatory_norms", [])
         
         missing = []
         total_penalty = 0.0
@@ -682,7 +662,15 @@ class NormativeComplianceValidator:
         for norm in mandatory + universal:
             if norm["norm_id"] not in cited_norms:
                 missing.append(norm)
-                total_penalty += norm.get("penalty_if_missing", 0.2)
+                total_penalty += norm. get("penalty_if_missing", 0.2)
+        
+        # Apply contextual rules if context provided
+        contextual_adjustments = None
+        if context:
+            contextual_adjustments = self._apply_contextual_rules(
+                context, cited_norms
+            )
+            total_penalty += contextual_adjustments.get("additional_penalty", 0.0)
         
         score = max(0.0, 1.0 - total_penalty)
         
@@ -690,150 +678,310 @@ class NormativeComplianceValidator:
             policy_area=policy_area,
             score=score,
             missing_norms=missing,
-            recommendation=self._generate_recommendation(missing)
+            recommendation=self._generate_recommendation(missing, score),
+            contextual_adjustments=contextual_adjustments
         )
+    
+    def _apply_contextual_rules(
+        self, context: dict, cited_norms: List[str]
+    ) -> dict:
+        """Apply PDET and ethnic territory rules."""
+        rules = self.compliance_data.get("contextual_validation_rules", {})
+        adjustments = {"additional_penalty": 0.0, "triggered_rules": []}
+        
+        if context.get("is_pdet_municipality"):
+            pdet_rules = rules.get("pdet_municipalities", {})
+            for norm in pdet_rules.get("additional_mandatory", []):
+                if norm["norm_id"] not in cited_norms:
+                    adjustments["additional_penalty"] += norm.get(
+                        "penalty_if_missing", 0.2
+                    )
+                    adjustments["triggered_rules"]. append("pdet_municipalities")
+        
+        if context. get("ethnic_population_pct", 0) > 0.10:
+            ethnic_rules = rules.get("ethnic_territories", {})
+            for norm in ethnic_rules.get("additional_mandatory", []):
+                if norm["norm_id"] not in cited_norms:
+                    adjustments["additional_penalty"] += norm.get(
+                        "penalty_if_missing", 0.2
+                    )
+                    adjustments["triggered_rules"].append("ethnic_territories")
+        
+        return adjustments
+    
+    def _generate_recommendation(
+        self, missing: List[dict], score: float
+    ) -> str:
+        """Generate actionable recommendation based on gaps."""
+        if score >= 0.90:
+            return "EXCELLENT:  Normative compliance meets all requirements."
+        elif score >= 0.75:
+            return f"GOOD: Consider adding references to:  {', '.join(n['norm_id'] for n in missing[: 2])}"
+        elif score >= 0.60:
+            return f"ACCEPTABLE: Missing critical norms: {', '.join(n['norm_id'] for n in missing)}"
+        else:
+            return f"DEFICIENT:  Urgent review required.  Missing {len(missing)} mandatory norms."
 ```
 
----
+#### 5.2.2 `QuestionnaireSignalRegistry`
 
-#### 4.2.2 `QuestionnaireSignalRegistry`
+**File to Create:** `src/farfan_pipeline/phases/Phase_2/registries/questionnaire_signal_registry.py`
 
-**Archivo a crear:** `src/farfan_pipeline/phases/Phase_2/registries/questionnaire_signal_registry.py`
+**Interface Specification:**
 
-**Responsabilidades:**
-1. Cargar `integration_map.json` al inicio
-2. Proveer mapeo Q→Signals a todos los consumidores
-3. Calcular `expected_signal_counts` por pregunta
-4. Trackear `empirical_availability` para ajustar expectativas
+```python name=questionnaire_signal_registry.py
+from dataclasses import dataclass
+from pathlib import Path
+from typing import List, Optional
+import json
 
-**Interfaz:**
-```python
+
+@dataclass
+class SignalSpec:
+    primary_signals: List[str]
+    secondary_signals: List[str]
+    scoring_modality: str
+    weight:  float
+    empirical_availability:  float
+
+
 class QuestionnaireSignalRegistry:
-    def get_signals_for_question(self, question_id: str) -> SignalSpec
-    def get_expected_count(self, question_id: str) -> int
-    def get_empirical_availability(self, question_id: str) -> float
-    def get_scoring_modality(self, question_id: str) -> str
+    """Central registry for question-to-signal mappings."""
+    
+    def __init__(self, integration_map_path: Optional[Path] = None):
+        if integration_map_path is None:
+            integration_map_path = (
+                Path(__file__).resolve().parent.parent.parent. parent
+                / "canonic_questionnaire_central"
+                / "_registry"
+                / "questions"
+                / "integration_map.json"
+            )
+        self._load_integration_map(integration_map_path)
+    
+    def _load_integration_map(self, path: Path) -> None:
+        """Load integration map with fail-fast behavior."""
+        if not path.exists():
+            raise FileNotFoundError(
+                f"Critical: integration_map.json not found at {path}. "
+                "Pipeline cannot proceed without signal mappings."
+            )
+        
+        with open(path, "r", encoding="utf-8") as f:
+            data = json. load(f)
+        
+        mapping_data = data.get("farfan_question_mapping", {})
+        self._slot_mappings = mapping_data.get("slot_to_signal_mapping", {})
+        
+        if not self._slot_mappings:
+            raise ValueError(
+                "Critical: slot_to_signal_mapping is empty. "
+                "Cannot route signals to questions."
+            )
+        
+        # Build reverse index:  question_id -> slot
+        self._question_to_slot = {}
+        for slot_id, slot_data in self._slot_mappings.items():
+            for q_id in slot_data.get("children_questions", []):
+                self._question_to_slot[q_id] = slot_id
+    
+    def get_signals_for_question(self, question_id: str) -> SignalSpec:
+        """Get signal specification for a question."""
+        slot_id = self._question_to_slot.get(question_id)
+        if not slot_id:
+            raise KeyError(f"Question {question_id} not found in integration map")
+        
+        slot_data = self._slot_mappings[slot_id]
+        return SignalSpec(
+            primary_signals=slot_data.get("primary_signals", []),
+            secondary_signals=slot_data.get("secondary_signals", []),
+            scoring_modality=slot_data.get("scoring_modality", "TYPE_A"),
+            weight=slot_data.get("weight", 0.1),
+            empirical_availability=slot_data.get("empirical_availability", 0.5)
+        )
+    
+    def get_expected_count(self, question_id: str) -> int:
+        """Get expected signal count based on empirical data."""
+        spec = self.get_signals_for_question(question_id)
+        return len(spec.primary_signals) + len(spec.secondary_signals)
+    
+    def get_empirical_availability(self, question_id: str) -> float:
+        """Get empirical availability (0.0-1.0) for expectation calibration."""
+        spec = self. get_signals_for_question(question_id)
+        return spec.empirical_availability
+    
+    def get_scoring_modality(self, question_id: str) -> str:
+        """Get scoring modality (TYPE_A, B, C, D) for scorer selection."""
+        spec = self. get_signals_for_question(question_id)
+        return spec.scoring_modality
 ```
 
 ---
 
-### 4.3 Prioridad 2 (Media): Conectar Scorers a `empirical_weights.json`
+### 5.3 Priority 2 (Medium): Connect Scorers to `empirical_weights.json`
 
-**Archivos a modificar:**
+**Files to Modify:**
 - `src/farfan_pipeline/phases/Phase_3/scorers/baseline_scorer.py`
 - `src/farfan_pipeline/phases/Phase_3/scorers/policy_area_scorer.py`
 - `src/farfan_pipeline/phases/Phase_3/scorers/quality_scorer.py`
 - `src/farfan_pipeline/phases/Phase_3/scorers/dimension_scorer.py`
 - `src/farfan_pipeline/phases/Phase_3/scorers/causal_scorer.py`
 
-**Patrón de implementación:**
-```python
-class BaseScorer:
-    def __init__(self, weights_path: Path = None):
+**Implementation Pattern:**
+
+```python name=base_scorer_pattern.py
+from abc import ABC, abstractmethod
+from pathlib import Path
+from typing import Any, Dict, Optional
+import json
+
+
+class BaseScorer(ABC):
+    """Abstract base class for all Phase 3 scorers."""
+    
+    def __init__(
+        self,
+        weights_path: Optional[Path] = None,
+        layer_name: str = ""
+    ):
         if weights_path is None:
-            weights_path = CQC_PATH / "scoring" / "calibration" / "empirical_weights.json"
+            weights_path = (
+                Path(__file__).resolve().parent.parent.parent.parent
+                / "canonic_questionnaire_central"
+                / "scoring"
+                / "calibration"
+                / "empirical_weights.json"
+            )
         
-        with open(weights_path) as f:
-            self.config = json.load(f)
+        self.layer_name = layer_name
+        self._load_weights(weights_path)
+    
+    def _load_weights(self, path: Path) -> None:
+        """Load empirical weights with fail-fast behavior."""
+        if not path.exists():
+            raise FileNotFoundError(
+                f"Critical: empirical_weights. json not found at {path}"
+            )
         
-        self.weights = self.config["phase3_scoring_weights"][self.layer_name]
-        self.thresholds = self.config["signal_confidence_thresholds"]
+        with open(path, "r", encoding="utf-8") as f:
+            self. config = json.load(f)
+        
+        self.weights = self. config.get("phase3_scoring_weights", {}).get(
+            self.layer_name, {}
+        )
+        self.thresholds = self.config.get("signal_confidence_thresholds", {})
+        self.value_add_min = self.config.get("value_add_thresholds", {}).get(
+            "minimum_value_add", {}).get("delta_score", 0.05)
+    
+    @abstractmethod
+    def score(self, signals: Dict[str, Any]) -> float:
+        """Calculate score based on signals and empirical weights."""
+        pass
+    
+    def meets_value_add_threshold(self, delta:  float) -> bool:
+        """Check if signal improvement meets minimum threshold."""
+        return delta >= self.value_add_min
 ```
 
 ---
 
-## 5. ROADMAP DE IMPLEMENTACIÓN
+## 6. Implementation Roadmap
 
-### 5.1 Fase 1: Extractores Críticos (Semanas 1-2)
+### 6.1 Phase 1: Critical Extractors (Weeks 1-2)
 
-| Día | Tarea | Entregable | Impacto |
-|-----|-------|------------|---------|
-| 1-2 | Implementar `FinancialChainExtractor` | Archivo .py completo | +52 preguntas |
-| 3-4 | Completar `CausalVerbExtractor` | Cadenas causales | +68 preguntas |
-| 5 | Completar `InstitutionalNER` | Red institucional | +39 preguntas |
-| 6-7 | Tests unitarios + integración | 100% coverage | Validación |
+| Day | Task | Deliverable | Impact |
+|-----|------|-------------|--------|
+| 1-2 | Implement `FinancialChainExtractor` | Complete `.py` file | +52 questions |
+| 3-4 | Complete `CausalVerbExtractor` | Causal chains functional | +68 questions |
+| 5 | Complete `InstitutionalNER` | Institutional network | +39 questions |
+| 6-7 | Unit tests + integration tests | 100% coverage | Validation |
 
-**KPI de éxito:** Questions bloqueadas: 159 → 0
+**Success KPI:** Blocked questions:  159 → 0
 
-### 5.2 Fase 2: Validadores y Registries (Semanas 3-4)
+### 6.2 Phase 2: Validators and Registries (Weeks 3-4)
 
-| Día | Tarea | Entregable | Impacto |
-|-----|-------|------------|---------|
-| 8-9 | Crear `NormativeComplianceValidator` | Validador completo | CC_COHERENCIA activo |
-| 10-11 | Crear `QuestionnaireSignalRegistry` | Registry cargado | Routing correcto |
-| 12-13 | Conectar scorers a `empirical_weights.json` | 6 scorers actualizados | Pesos empíricos |
-| 14 | Integration tests con 14 planes | Report de cobertura | Validación E2E |
+| Day | Task | Deliverable | Impact |
+|-----|------|-------------|--------|
+| 8-9 | Create `NormativeComplianceValidator` | Complete validator | `CC_COHERENCIA` active |
+| 10-11 | Create `QuestionnaireSignalRegistry` | Loaded registry | Correct routing |
+| 12-13 | Connect scorers to `empirical_weights.json` | 6 scorers updated | Empirical weights |
+| 14 | Integration tests with 14 plans | Coverage report | E2E validation |
 
-**KPI de éxito:** Wiring efectivo: 15% → 70%
+**Success KPI:** Effective wiring: 15% → 70%
 
-### 5.3 Fase 3: Optimización y Alineamiento (Semanas 5-6)
+### 6.3 Phase 3: Optimization and Alignment (Weeks 5-6)
 
-| Día | Tarea | Entregable | Impacto |
-|-----|-------|------------|---------|
-| 15-16 | Implementar `ValueAddScorer` | Filtrado de señales | -30% ruido |
-| 17-18 | Pattern enrichment (992 → 5000) | Patrones adicionales | +400% cobertura |
-| 19-20 | Calibración final con corpus | Thresholds ajustados | Precision +15% |
-| 21 | Documentación + release notes | Docs actualizados | Mantenibilidad |
+| Day | Task | Deliverable | Impact |
+|-----|------|-------------|--------|
+| 15-16 | Implement `ValueAddScorer` | Signal filtering | -30% noise |
+| 17-18 | Pattern enrichment (992 → 5000) | Additional patterns | +400% coverage |
+| 19-20 | Final calibration with corpus | Adjusted thresholds | +15% precision |
+| 21 | Documentation + release notes | Updated docs | Maintainability |
 
-**KPI de éxito:** Alignment score: 2.9% → 85%
+**Success KPI:** Alignment score: 2.9% → 85%
 
 ---
 
-## 6. MÉTRICAS DE ÉXITO
+## 7. Success Metrics
 
-### 6.1 Indicadores Cuantitativos
+### 7.1 Quantitative Indicators
 
-| Métrica | Actual | Post-Fase 1 | Post-Fase 2 | Post-Fase 3 |
-|---------|--------|-------------|-------------|-------------|
-| Extractores implementados | 2/10 | 5/10 | 7/10 | 10/10 |
-| Questions desbloqueadas | 141/300 | 300/300 | 300/300 | 300/300 |
-| Wiring efectivo | 15% | 40% | 70% | 85% |
-| Patrones activos | 223 | 500 | 2000 | 5000 |
+| Metric | Current | Post-Phase 1 | Post-Phase 2 | Post-Phase 3 |
+|--------|---------|--------------|--------------|--------------|
+| Extractors implemented | 2/10 | 5/10 | 7/10 | 10/10 |
+| Questions unblocked | 141/300 | 300/300 | 300/300 | 300/300 |
+| Effective wiring | 15% | 40% | 70% | 85% |
+| Active patterns | 223 | 500 | 2,000 | 5,000 |
 | Alignment score | 2.9% | 35% | 65% | 85% |
 
-### 6.2 Indicadores Cualitativos
+### 7.2 Qualitative Acceptance Criteria
 
-- [ ] Todos los extractores consumen `extractor_calibration.json`
-- [ ] Todos los scorers consumen `empirical_weights.json`
-- [ ] `normative_compliance.json` validado por `NormativeComplianceValidator`
-- [ ] `integration_map.json` usado por `QuestionnaireSignalRegistry`
-- [ ] Sin fallbacks silenciosos a mapeos vacíos
-- [ ] Documentación actualizada en cada consumidor
+| Criterion | Status |
+|-----------|--------|
+| All extractors consume `extractor_calibration.json` | ⬜ Pending |
+| All scorers consume `empirical_weights.json` | ⬜ Pending |
+| `normative_compliance.json` validated by `NormativeComplianceValidator` | ⬜ Pending |
+| `integration_map.json` used by `QuestionnaireSignalRegistry` | ⬜ Pending |
+| No silent fallbacks to empty mappings | ⬜ Pending |
+| Updated documentation in each consumer | ⬜ Pending |
 
 ---
 
-## 7. ANEXOS
+## 8. Appendices
 
-### 7.1 Inventario Completo de Archivos CQC
+### 8.1 CQC File Inventory
 
-| Categoría | Cantidad | Ubicación |
-|-----------|----------|-----------|
-| Archivos JSON totales | 494 | `canonic_questionnaire_central/` |
-| Preguntas individuales | 300 | `dimensions/DIM*/questions/Q*.json` |
+| Category | Count | Location |
+|----------|-------|----------|
+| Total JSON files | 494 | `canonic_questionnaire_central/` |
+| Individual questions | 300 | `dimensions/DIM*/questions/Q*. json` |
 | Membership Criteria | 10 | `_registry/membership_criteria/MC*.json` |
 | Binding maps | 3 | `_registry/membership_criteria/_bindings/` |
-| Calibración | 1 | `_registry/membership_criteria/_calibration/` |
-| Entidades | 7 | `_registry/entities/` |
-| Capacidades | 4 | `_registry/capabilities/` |
-| Patrones | 17 | `_registry/patterns/by_category/` |
+| Calibration | 1 | `_registry/membership_criteria/_calibration/` |
+| Entities | 7 | `_registry/entities/` |
+| Capabilities | 4 | `_registry/capabilities/` |
+| Patterns | 17 | `_registry/patterns/by_category/` |
 | Keywords | 21 | `_registry/keywords/by_policy_area/` |
-| Vistas analíticas | 7 | `_views/` |
+| Analytical views | 7 | `_views/` |
 | Clusters | 4 | `clusters/CL*/` |
-| Dimensiones | 6 | `dimensions/DIM*/` |
+| Dimensions | 6 | `dimensions/DIM*/` |
 | Policy Areas | 10 | `policy_areas/PA*/` |
 | Scoring | 2 | `scoring/` |
 
-### 7.2 Referencias Cruzadas
+### 8.2 Cross-Reference Index
 
-- [EMPIRICAL_CORPUS_INDEX.json](canonic_questionnaire_central/_registry/EMPIRICAL_CORPUS_INDEX.json) - Índice maestro
-- [extractor_calibration.json](canonic_questionnaire_central/_registry/membership_criteria/_calibration/extractor_calibration.json) - Calibración de extractores
-- [integration_map.json](canonic_questionnaire_central/_registry/questions/integration_map.json) - Mapeo Q→Signals
-- [normative_compliance.json](canonic_questionnaire_central/_registry/entities/normative_compliance.json) - Cumplimiento normativo
-- [empirical_weights.json](canonic_questionnaire_central/scoring/calibration/empirical_weights.json) - Pesos empíricos
+| Document | Purpose |
+|----------|---------|
+| `EMPIRICAL_CORPUS_INDEX. json` | Master index |
+| `extractor_calibration.json` | Extractor calibration |
+| `integration_map.json` | Q→Signals mapping |
+| `normative_compliance.json` | Normative compliance |
+| `empirical_weights.json` | Empirical weights |
 
 ---
 
-**Documento generado:** 11 de enero de 2026  
-**Autor:** GitHub Copilot - Auditoría Técnica F.A.R.F.A.N  
-**Versión:** 1.0.0  
-**Estado:** COMPLETO - Listo para implementación
+| **Document Generated** | January 11, 2026 |
+|------------------------|------------------|
+| **Author** | GitHub Copilot - F. A.R.F.A.N Technical Audit |
+| **Version** | 1.0.0 |
+| **Status** | COMPLETE - Ready for Implementation |

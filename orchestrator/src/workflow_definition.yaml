@@ -1,0 +1,108 @@
+# ============================================================================
+# F.A.R.F.A.N Pipeline Workflow Definition
+# ============================================================================
+# Explicit DAG for pipeline execution
+# ============================================================================
+
+workflow:
+  name: farfan_municipal_evaluation
+  version: "1.0.0"
+  description: "Evaluate Colombian Municipal Development Plans using causal framework"
+  
+  # --------------------------------------------------------------------------
+  # Execution Parameters
+  # --------------------------------------------------------------------------
+  parameters:
+    municipality_id:
+      type: string
+      required: true
+      description: "DANE code for municipality"
+    document_path:
+      type: string
+      required: true
+      description: "Path to PDF document"
+    evaluation_date:
+      type: string
+      format: "YYYY-MM-DD"
+      default: "${CURRENT_DATE}"
+    
+  # --------------------------------------------------------------------------
+  # Stage Definitions (DAG)
+  # --------------------------------------------------------------------------
+  stages:
+    - name: phase_0_bootstrap
+      contract: contracts/stages/phase_0_bootstrap.yaml
+      next: [phase_1_document_ingestion]
+      
+    - name: phase_1_document_ingestion
+      contract: contracts/stages/phase_1_ingestion.yaml
+      next: [phase_2_evidence_extraction]
+      
+    - name: phase_2_evidence_extraction
+      contract: contracts/stages/phase_2_evidence_extraction.yaml
+      next: [phase_3_scoring]
+      
+    - name: phase_3_scoring
+      contract: contracts/stages/phase_3_scoring.yaml
+      # Parallel: both aggregation and choquet can run
+      next: [phase_4_aggregation, phase_8_choquet]
+      
+    - name: phase_8_choquet
+      contract: contracts/stages/phase_8_choquet.yaml
+      # Feeds into aggregation
+      next: [phase_4_aggregation]
+      optional: true  # Can skip if Choquet not enabled
+      
+    - name: phase_4_aggregation
+      contract: contracts/stages/phase_4_aggregation.yaml
+      # Wait for both Phase 3 and optionally Phase 8
+      wait_for: [phase_3_scoring]
+      wait_for_any: [phase_8_choquet]
+      next: [phase_5_validation]
+      
+    - name: phase_5_validation
+      contract: contracts/stages/phase_5_validation.yaml
+      next: [phase_6_report_generation]
+      
+    - name: phase_6_report_generation
+      contract: contracts/stages/phase_6_report.yaml
+      next: [phase_7_archival]
+      
+    - name: phase_7_archival
+      contract: contracts/stages/phase_7_archival.yaml
+      next: []  # Terminal node
+      
+    # Calibration is independent, triggered separately
+    - name: phase_9_calibration
+      contract: contracts/stages/phase_9_calibration.yaml
+      trigger: manual
+      next: []
+
+  # --------------------------------------------------------------------------
+  # Execution Configuration
+  # --------------------------------------------------------------------------
+  execution:
+    max_parallelism: 4
+    default_timeout_seconds: 3600
+    failure_strategy: "fail_fast"  # or "continue_on_failure"
+    
+  # --------------------------------------------------------------------------
+  # Observability
+  # --------------------------------------------------------------------------
+  observability:
+    run_id_format: "${municipality_id}-${evaluation_date}-${uuid}"
+    metrics_prefix: "farfan_pipeline"
+    log_level: "INFO"
+    
+  # --------------------------------------------------------------------------
+  # Notifications
+  # --------------------------------------------------------------------------
+  notifications:
+    on_success:
+      - type: webhook
+        url: "${WEBHOOK_SUCCESS_URL}"
+    on_failure:
+      - type: webhook
+        url: "${WEBHOOK_FAILURE_URL}"
+      - type: email
+        to: ["ops-team@example.com"]
