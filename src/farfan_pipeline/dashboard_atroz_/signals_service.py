@@ -49,6 +49,25 @@ logger = structlog.get_logger(__name__)
 # Check for blake3 availability at module level for performance
 _HAS_BLAKE3 = hasattr(hashlib, "blake3")
 
+# Load spaCy model once at module level for efficiency (SOTA performance optimization)
+_SPACY_NLP = None
+def _get_spacy_model():
+    """Get or load spaCy Spanish model (singleton pattern for efficiency)."""
+    global _SPACY_NLP
+    if _SPACY_NLP is None:
+        try:
+            
+            _SPACY_NLP = spacy.load("es_core_news_sm")
+            logger.info("spacy_model_loaded", model="es_core_news_sm")
+        except (ImportError, OSError) as e:
+            logger.warning("spacy_model_not_available", error=str(e))
+            _SPACY_NLP = False  # Mark as unavailable to avoid repeated attempts
+    return _SPACY_NLP if _SPACY_NLP is not False else None
+
+# Constants for questionnaire structure
+QUESTIONS_PER_POLICY_AREA = 30
+TOTAL_QUESTIONS = 300
+
 
 # In-memory signal store (would be database/file in production)
 _signal_store: dict[str, SignalPack] = {}
@@ -333,22 +352,23 @@ def _mine_patterns_for_policy_area(pa_code: str, pa_name: str, pdet_patterns: di
     except Exception as e:
         logger.debug("tfidf_extraction_failed", error=str(e))
     
-    # 4. Use spaCy for noun phrase extraction (if available)
-    try:
-        import spacy
-        nlp = spacy.load("es_core_news_sm")
-        doc = nlp(pa_name)
-        
-        # Extract noun chunks as patterns
-        for chunk in doc.noun_chunks:
-            if len(chunk.text.split()) >= 2:  # Multi-word phrases only
-                patterns.append(chunk.text.lower())
-        
-        # Extract named entities
-        for ent in doc.ents:
-            patterns.append(ent.text.lower())
+    # 4. Use spaCy for noun phrase extraction (SOTA NLP with singleton pattern)
+    nlp = _get_spacy_model()
+    if nlp:
+        try:
+            doc = nlp(pa_name)
             
-    except (ImportError, OSError) as e:
+            # Extract noun chunks as patterns
+            for chunk in doc.noun_chunks:
+                if len(chunk.text.split()) >= 2:  # Multi-word phrases only
+                    patterns.append(chunk.text.lower())
+            
+            # Extract named entities
+            for ent in doc.ents:
+                patterns.append(ent.text.lower())
+        except Exception as e:
+            logger.debug("spacy_extraction_failed", error=str(e))
+    else:
         logger.debug("spacy_extraction_not_available", message="Using rule-based extraction as fallback")
     
     # 5. Add policy area-specific governance and PDET patterns
@@ -450,7 +470,7 @@ def _extract_indicators_for_policy_area(pa_code: str, pattern_registry: dict) ->
                         if q_id.startswith("Q"):
                             try:
                                 q_num = int(q_id[1:])
-                                q_pa_num = ((q_num - 1) // 30) + 1
+                                q_pa_num = ((q_num - 1) // QUESTIONS_PER_POLICY_AREA) + 1
                                 if f"PA{q_pa_num:02d}" == pa_code:
                                     # Add expected patterns as indicators
                                     for pattern in slot_data.get("expected_patterns", []):
@@ -467,10 +487,10 @@ def _extract_indicators_for_policy_area(pa_code: str, pattern_registry: dict) ->
         
         # Get questions for this policy area
         pa_num = int(pa_code[2:])
-        start_q = ((pa_num - 1) * 30) + 1
-        end_q = pa_num * 30
+        start_q = ((pa_num - 1) * QUESTIONS_PER_POLICY_AREA) + 1
+        end_q = pa_num * QUESTIONS_PER_POLICY_AREA
         
-        for q_num in range(start_q, min(end_q + 1, 301)):
+        for q_num in range(start_q, min(end_q + 1, TOTAL_QUESTIONS + 1)):
             q_id = f"Q{q_num:03d}"
             try:
                 question = cqc.get_question(q_id)
@@ -580,8 +600,8 @@ def _extract_action_verbs_for_policy_area(pa_name: str) -> list[str]:
     
     # 1. Use spaCy for verb extraction
     try:
-        import spacy
-        nlp = spacy.load("es_core_news_sm")
+        
+        nlp = _get_spacy_model()
         doc = nlp(pa_name)
         
         # Extract verbs with POS tagging
@@ -640,11 +660,11 @@ def _extract_entities_for_policy_area(pa_code: str, pa_name: str) -> list[str]:
         List of extracted named entities relevant to policy area
     """
     try:
-        import spacy
+        
         
         # Load spaCy with NER enabled
         try:
-            nlp = spacy.load("es_core_news_sm")
+            nlp = _get_spacy_model()
         except OSError:
             # Fallback to domain knowledge if model not available
             logger.warning("spacy_model_not_found", message="Using domain knowledge fallback")
