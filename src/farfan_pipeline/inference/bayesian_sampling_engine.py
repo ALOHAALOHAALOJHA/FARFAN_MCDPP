@@ -92,10 +92,7 @@ class BayesianSamplingEngine:
 
         # Configuration loading with explicit None handling
         # This preserves zero as a valid value while defaulting only on None
-        if hasattr(config, "get"):
-            bayesian_thresholds = config.get("bayesian_thresholds", {})
-        else:
-            bayesian_thresholds = {}
+        bayesian_thresholds = config.get("bayesian_thresholds", {}) if hasattr(config, 'get') else {}
 
         # If config is object-style, extract thresholds dict
         if not isinstance(bayesian_thresholds, dict):
@@ -110,25 +107,9 @@ class BayesianSamplingEngine:
         raw_chains = bayesian_thresholds.get("mcmc_chains")
         raw_accept = bayesian_thresholds.get("target_accept")
 
-        # Parse with defaults
-        n_samples_parsed = int(raw_samples) if raw_samples is not None else 2000
-        n_chains_parsed = int(raw_chains) if raw_chains is not None else 4
-        target_accept_parsed = float(raw_accept) if raw_accept is not None else 0.9
-
-        # RIGOROUS VALIDATION: MCMC parameters must be valid
-        if n_samples_parsed < 1:
-            self.logger.warning(f"mcmc_samples={n_samples_parsed} invalid, using minimum 100")
-            n_samples_parsed = 100
-        if n_chains_parsed < 1:
-            self.logger.warning(f"mcmc_chains={n_chains_parsed} invalid, using minimum 1")
-            n_chains_parsed = 1
-        if not 0.0 < target_accept_parsed < 1.0:
-            self.logger.warning(f"target_accept={target_accept_parsed} outside (0,1), using 0.9")
-            target_accept_parsed = 0.9
-
-        self.n_samples: int = n_samples_parsed
-        self.n_chains: int = n_chains_parsed
-        self.target_accept: float = target_accept_parsed
+        self.n_samples: int = int(raw_samples) if raw_samples is not None else 2000
+        self.n_chains: int = int(raw_chains) if raw_chains is not None else 4
+        self.target_accept: float = float(raw_accept) if raw_accept is not None else 0.9
 
         self.logger.info(
             f"BayesianSamplingEngine initialized: "
@@ -141,11 +122,7 @@ class BayesianSamplingEngine:
         return PYMC_AVAILABLE
 
     def sample_beta_binomial(
-        self,
-        n_successes: int,
-        n_trials: int,
-        prior_alpha: float = 1.0,
-        prior_beta: float = 1.0,
+        self, n_successes: int, n_trials: int, prior_alpha: float = 1.0, prior_beta: float = 1.0
     ) -> SamplingResult:
         """
         Sample from Beta-Binomial conjugate model.
@@ -156,48 +133,32 @@ class BayesianSamplingEngine:
             Posterior: theta | y ~ Beta(prior_alpha + n_successes, prior_beta + n_failures)
 
         Args:
-            n_successes: Number of successes observed (must be >= 0)
-            n_trials: Total number of trials (must be >= n_successes)
-            prior_alpha: Prior alpha parameter (must be > 0)
-            prior_beta: Prior beta parameter (must be > 0)
+            n_successes: Number of successes observed
+            n_trials: Total number of trials
+            prior_alpha: Prior alpha parameter
+            prior_beta: Prior beta parameter
 
         Returns:
             SamplingResult with posterior samples and diagnostics
 
         Raises:
-            ValueError: If prior parameters are not positive
+            RuntimeError: If PyMC is not available
         """
-        # CRITICAL VALIDATION: Prior parameters must be positive for Beta distribution
-        # Validate BEFORE checking PyMC availability (fail fast principle)
-        if not isinstance(prior_alpha, (int, float)) or not np.isfinite(prior_alpha):
-            raise ValueError(f"prior_alpha must be finite numeric, got {prior_alpha}")
-        if not isinstance(prior_beta, (int, float)) or not np.isfinite(prior_beta):
-            raise ValueError(f"prior_beta must be finite numeric, got {prior_beta}")
-        if prior_alpha <= 0:
-            raise ValueError(f"prior_alpha must be > 0 for Beta distribution, got {prior_alpha}")
-        if prior_beta <= 0:
-            raise ValueError(f"prior_beta must be > 0 for Beta distribution, got {prior_beta}")
-
         if not PYMC_AVAILABLE:
             self.logger.error("PyMC not available for Beta-Binomial sampling")
             return self._null_result("pymc_unavailable")
 
-        # RIGOROUS VALIDATION: Data constraints
         if n_trials < 0 or n_successes < 0 or n_successes > n_trials:
             self.logger.error(f"Invalid data: successes={n_successes}, trials={n_trials}")
             return self._null_result("invalid_data")
 
-        # Handle degenerate case: n_trials = 0 produces uninformative update
-        if n_trials == 0:
-            self.logger.warning("n_trials=0 produces degenerate posterior equal to prior")
-
         try:
-            with pm.Model():
+            with pm.Model() as model:
                 # Prior: Beta distribution
                 theta = pm.Beta("theta", alpha=prior_alpha, beta=prior_beta)
 
                 # Likelihood: Binomial
-                pm.Binomial("y", n=n_trials, p=theta, observed=n_successes)
+                y = pm.Binomial("y", n=n_trials, p=theta, observed=n_successes)
 
                 # Sample posterior
                 with warnings.catch_warnings():
@@ -266,7 +227,7 @@ class BayesianSamplingEngine:
         obs_array = np.asarray(observations, dtype=np.float64)
 
         try:
-            with pm.Model():
+            with pm.Model() as model:
                 # Prior: Normal distribution for mean
                 mu = pm.Normal("mu", mu=prior_mu, sigma=prior_sigma)
 
@@ -274,7 +235,7 @@ class BayesianSamplingEngine:
                 obs_std = float(np.std(obs_array, ddof=1) if len(obs_array) > 1 else 1.0)
 
                 # Likelihood: Normal with estimated std
-                pm.Normal("y", mu=mu, sigma=obs_std, observed=obs_array)
+                y = pm.Normal("y", mu=mu, sigma=obs_std, observed=obs_array)
 
                 # Sample posterior
                 with warnings.catch_warnings():
@@ -324,48 +285,15 @@ class BayesianSamplingEngine:
 
         Args:
             group_data: List of (successes, trials) tuples for each group
-            population_alpha: Sigma for population-level alpha hyperprior (must be > 0)
-            population_beta: Sigma for population-level beta hyperprior (must be > 0)
+            population_alpha: Sigma for alpha hyperprior (default: 2.0)
+            population_beta: Sigma for beta hyperprior (default: 2.0)
 
         Returns:
             List of SamplingResult objects, one per group
 
         Raises:
-            ValueError: If population parameters are not positive or group data invalid
+            RuntimeError: If PyMC is not available
         """
-        # CRITICAL VALIDATION: HalfNormal sigma must be positive
-        # Validate BEFORE checking PyMC availability (fail fast principle)
-        if not isinstance(population_alpha, (int, float)) or not np.isfinite(population_alpha):
-            raise ValueError(f"population_alpha must be finite numeric, got {population_alpha}")
-        if not isinstance(population_beta, (int, float)) or not np.isfinite(population_beta):
-            raise ValueError(f"population_beta must be finite numeric, got {population_beta}")
-        if population_alpha <= 0:
-            raise ValueError(
-                f"population_alpha must be > 0 for HalfNormal sigma, got {population_alpha}"
-            )
-        if population_beta <= 0:
-            raise ValueError(
-                f"population_beta must be > 0 for HalfNormal sigma, got {population_beta}"
-            )
-
-        # RIGOROUS VALIDATION: Validate each group's data BEFORE PyMC check
-        if len(group_data) > 0:
-            for i, (successes, trials) in enumerate(group_data):
-                if not isinstance(successes, (int, np.integer)):
-                    raise TypeError(f"group_data[{i}][0] (successes) must be integer")
-                if not isinstance(trials, (int, np.integer)):
-                    raise TypeError(f"group_data[{i}][1] (trials) must be integer")
-                if successes < 0:
-                    raise ValueError(
-                        f"group_data[{i}][0] (successes) must be >= 0, got {successes}"
-                    )
-                if trials < 0:
-                    raise ValueError(f"group_data[{i}][1] (trials) must be >= 0, got {trials}")
-                if successes > trials:
-                    raise ValueError(
-                        f"group_data[{i}]: successes ({successes}) > trials ({trials})"
-                    )
-
         if not PYMC_AVAILABLE:
             self.logger.error("PyMC not available for hierarchical sampling")
             return [self._null_result("pymc_unavailable") for _ in group_data]
@@ -375,18 +303,12 @@ class BayesianSamplingEngine:
             return []
 
         n_groups = len(group_data)
-        for i, (successes, trials) in enumerate(group_data):
-            if trials == 0:
-                self.logger.warning(
-                    f"group_data[{i}] has trials=0, will produce uninformative update"
-                )
-
         successes_array = np.array([s for s, _ in group_data], dtype=np.int64)
         trials_array = np.array([t for _, t in group_data], dtype=np.int64)
 
         try:
-            with pm.Model():
-                # Population-level hyperpriors (parameterized)
+            with pm.Model() as model:
+                # Population-level hyperpriors (using parameterized sigmas)
                 alpha = pm.HalfNormal("alpha", sigma=population_alpha)
                 beta = pm.HalfNormal("beta", sigma=population_beta)
 
@@ -421,7 +343,8 @@ class BayesianSamplingEngine:
                 # Compute HDI manually for group
                 theta_values = theta_g.values.flatten()
                 hdi = az.hdi(theta_values, hdi_prob=0.95)
-                hdi_lower, hdi_upper = self._extract_hdi_bounds(hdi)
+                hdi_lower = float(hdi[0]) if hasattr(hdi, "__getitem__") else float(hdi)
+                hdi_upper = float(hdi[1]) if hasattr(hdi, "__getitem__") else float(hdi)
 
                 # Convergence diagnostics (group-level)
                 rhat = float(az.rhat(trace, var_names=["theta"]).to_array().mean().item())
@@ -437,9 +360,7 @@ class BayesianSamplingEngine:
                     else:
                         ess_tail = float(ess_tail_data["theta"].item())
                 except Exception as e:
-                    self.logger.warning(
-                        f"Could not compute ESS tail: {e}, using bulk ESS approximation"
-                    )
+                    self.logger.warning(f"Could not compute ESS tail: {e}, using bulk ESS approximation")
                     ess_tail = ess_bulk * 0.8
 
                 result = SamplingResult(
@@ -471,20 +392,6 @@ class BayesianSamplingEngine:
             self.logger.error(f"Error in hierarchical sampling: {e}")
             return [self._null_result("sampling_error", str(e)) for _ in group_data]
 
-    def _extract_hdi_bounds(self, hdi: Any) -> tuple[float, float]:
-        """
-        Extract HDI lower and upper bounds from ArviZ HDI output.
-
-        Args:
-            hdi: HDI data from az.hdi()
-
-        Returns:
-            Tuple of (lower_bound, upper_bound)
-        """
-        hdi_lower = float(hdi[0]) if hasattr(hdi, "__getitem__") else float(hdi)
-        hdi_upper = float(hdi[1]) if hasattr(hdi, "__getitem__") else float(hdi)
-        return hdi_lower, hdi_upper
-
     def _extract_diagnostics(self, trace: Any, param: str) -> SamplingResult:
         """
         Extract comprehensive diagnostics from PyMC trace.
@@ -504,7 +411,8 @@ class BayesianSamplingEngine:
 
         # HDI (Highest Density Interval) - 95%
         hdi = az.hdi(trace, hdi_prob=0.95)[param].values
-        hdi_lower, hdi_upper = self._extract_hdi_bounds(hdi)
+        hdi_lower = float(hdi[0]) if hasattr(hdi, "__len__") else float(hdi)
+        hdi_upper = float(hdi[1]) if hasattr(hdi, "__len__") else float(hdi)
 
         # Convergence diagnostics
         rhat = float(az.rhat(trace, var_names=[param])[param].item())

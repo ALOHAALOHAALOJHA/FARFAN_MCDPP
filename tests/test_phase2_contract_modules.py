@@ -6,14 +6,15 @@ These tests verify the basic functionality of the contract enforcement mechanism
 - Concurrency Determinism
 - Runtime Contracts (precondition, postcondition, invariant)
 """
-
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 import pytest
 
 # Add src to path for imports
+
 from farfan_pipeline.phases.phase_2.contracts import (
     ConcurrencyContractViolation,
     ConcurrencyDeterminismVerifier,

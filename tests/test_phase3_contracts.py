@@ -13,15 +13,18 @@ from dataclasses import dataclass, field
 from unittest.mock import MagicMock
 
 # Add src to path
+repo_root = Path(__file__).parent.parent
 
 from orchestration.orchestrator import Orchestrator, MicroQuestionRun, ScoredMicroQuestion, Evidence
-
 
 # Mock dependencies
 class MockSignalRegistry:
     def get_scoring_signals(self, question_id):
-        m = MagicMock(question_modalities={question_id: "test_modality"}, source_hash="hash_123")
-        m.scoring_modality = "binary_presence"  # Fix the attribute access in logs
+        m = MagicMock(
+            question_modalities={question_id: "test_modality"},
+            source_hash="hash_123"
+        )
+        m.scoring_modality = "binary_presence" # Fix the attribute access in logs
         # Ensure stable string representation
         m.__repr__ = lambda x: "<MockSignalObject>"
         return m
@@ -32,25 +35,15 @@ class MockSignalRegistry:
         signals.indicators = ["i1"]
         return signals
 
-
 class MockExecutor:
     def __init__(self):
         self.signal_registry = MockSignalRegistry()
 
-
 class MockInstrumentation:
-    def start(self, items_total=None):
-        pass
-
-    def increment(self, latency=None):
-        pass
-
-    def record_error(self, category, message):
-        pass
-
-    def complete(self):
-        pass
-
+    def start(self, items_total=None): pass
+    def increment(self, latency=None): pass
+    def record_error(self, category, message): pass
+    def complete(self): pass
 
 # Test class
 class TestPhase3Contracts:
@@ -76,23 +69,15 @@ class TestPhase3Contracts:
             question_id="Q001",
             question_global=1,
             base_slot="D1-Q1",
-            metadata={
-                "overall_confidence": 0.7,
-                "completeness": "partial",
-                "calibrated_interval": [0.6, 0.8],
-            },
+            metadata={"overall_confidence": 0.7, "completeness": "partial", "calibrated_interval": [0.6, 0.8]},
             evidence=Evidence(modality="text", raw_results={}),
-            duration_ms=100,
+            duration_ms=100
         )
 
         with unittest.mock.patch("orchestration.orchestrator.EXPECTED_QUESTION_COUNT", 1):
-            with unittest.mock.patch(
-                "orchestration.orchestrator.validate_micro_results_input", MagicMock()
-            ):
+             with unittest.mock.patch("orchestration.orchestrator.validate_micro_results_input", MagicMock()):
                 # Execute actual method from Orchestrator class
-                results = await Orchestrator._score_micro_results_async(
-                    orchestrator, [micro_result], {}
-                )
+                results = await Orchestrator._score_micro_results_async(orchestrator, [micro_result], {})
 
         assert len(results) == 1
         scored = results[0]
@@ -125,24 +110,18 @@ class TestPhase3Contracts:
             base_slot="D1-Q1",
             metadata={"overall_confidence": 0.85, "completeness": "complete"},
             evidence=Evidence(modality="text", raw_results={}),
-            duration_ms=100,
+            duration_ms=100
         )
 
         # Mock EXPECTED_QUESTION_COUNT to 1 for test
         with unittest.mock.patch("orchestration.orchestrator.EXPECTED_QUESTION_COUNT", 1):
-            with unittest.mock.patch(
-                "orchestration.orchestrator.validate_micro_results_input", MagicMock()
-            ):
-                with unittest.mock.patch("time.time", return_value=1234567890.0):
+             with unittest.mock.patch("orchestration.orchestrator.validate_micro_results_input", MagicMock()):
+                 with unittest.mock.patch("time.time", return_value=1234567890.0):
                     # Run 1
-                    results1 = await Orchestrator._score_micro_results_async(
-                        orchestrator, [micro_result], {}
-                    )
+                    results1 = await Orchestrator._score_micro_results_async(orchestrator, [micro_result], {})
 
                     # Run 2
-                    results2 = await Orchestrator._score_micro_results_async(
-                        orchestrator, [micro_result], {}
-                    )
+                    results2 = await Orchestrator._score_micro_results_async(orchestrator, [micro_result], {})
 
         # Assert equality
         assert results1[0].score == results2[0].score
@@ -150,7 +129,6 @@ class TestPhase3Contracts:
 
         # Deep compare scoring details
         import json
-
         d1 = json.dumps(results1[0].scoring_details, sort_keys=True, default=str)
         d2 = json.dumps(results2[0].scoring_details, sort_keys=True, default=str)
         assert d1 == d2
@@ -171,16 +149,12 @@ class TestPhase3Contracts:
             base_slot="D1-Q1",
             metadata={"overall_confidence": 0.9, "completeness": "insufficient"},
             evidence=Evidence(modality="text", raw_results={}),
-            duration_ms=100,
+            duration_ms=100
         )
 
         with unittest.mock.patch("orchestration.orchestrator.EXPECTED_QUESTION_COUNT", 1):
-            with unittest.mock.patch(
-                "orchestration.orchestrator.validate_micro_results_input", MagicMock()
-            ):
-                results = await Orchestrator._score_micro_results_async(
-                    orchestrator, [micro_result], {}
-                )
+             with unittest.mock.patch("orchestration.orchestrator.validate_micro_results_input", MagicMock()):
+                results = await Orchestrator._score_micro_results_async(orchestrator, [micro_result], {})
         scored = results[0]
 
         # Without SignalEnrichedScorer, insufficient -> INSUFICIENTE
@@ -208,16 +182,12 @@ class TestPhase3Contracts:
             base_slot="D1-Q1",
             metadata={"overall_confidence": 0.2, "completeness": "complete"},
             evidence=Evidence(modality="text", raw_results={}),
-            duration_ms=100,
+            duration_ms=100
         )
 
         with unittest.mock.patch("orchestration.orchestrator.EXPECTED_QUESTION_COUNT", 1):
-            with unittest.mock.patch(
-                "orchestration.orchestrator.validate_micro_results_input", MagicMock()
-            ):
-                results = await Orchestrator._score_micro_results_async(
-                    orchestrator, [micro_result], {}
-                )
+             with unittest.mock.patch("orchestration.orchestrator.validate_micro_results_input", MagicMock()):
+                results = await Orchestrator._score_micro_results_async(orchestrator, [micro_result], {})
         scored = results[0]
 
         # Without SignalEnrichedScorer, complete -> EXCELENTE

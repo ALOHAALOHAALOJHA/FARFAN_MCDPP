@@ -3,12 +3,13 @@ Test CDC - Concurrency Determinism Contract
 Verifies: 1 worker vs N workers produce identical output hash
 Thread-safe deterministic execution guarantee
 """
-
 import pytest
 import hashlib
 import json
+import sys
 from pathlib import Path
 from typing import Any
+
 
 from cross_cutting_infrastructure.contractual.dura_lex.concurrency_determinism import (
     ConcurrencyDeterminismContract,
@@ -36,11 +37,17 @@ class TestConcurrencyDeterminismContract:
             for i in range(1, 31)
         ]
 
-    def test_cdc_001_determinism_1_vs_4_workers(self, sample_inputs: list[dict[str, Any]]) -> None:
+    def test_cdc_001_determinism_1_vs_4_workers(
+        self, sample_inputs: list[dict[str, Any]]
+    ) -> None:
         """CDC-001: 1 worker vs 4 workers produce identical results."""
-        assert ConcurrencyDeterminismContract.verify_determinism(self.mock_executor, sample_inputs)
+        assert ConcurrencyDeterminismContract.verify_determinism(
+            self.mock_executor, sample_inputs
+        )
 
-    def test_cdc_002_result_order_preserved(self, sample_inputs: list[dict[str, Any]]) -> None:
+    def test_cdc_002_result_order_preserved(
+        self, sample_inputs: list[dict[str, Any]]
+    ) -> None:
         """CDC-002: Results maintain input order regardless of concurrency."""
         results_1 = ConcurrencyDeterminismContract.execute_concurrently(
             self.mock_executor, sample_inputs, workers=1
@@ -59,8 +66,12 @@ class TestConcurrencyDeterminismContract:
         results_conc = ConcurrencyDeterminismContract.execute_concurrently(
             self.mock_executor, sample_inputs, workers=8
         )
-        hash_seq = hashlib.blake2b(json.dumps(results_seq, sort_keys=True).encode()).hexdigest()
-        hash_conc = hashlib.blake2b(json.dumps(results_conc, sort_keys=True).encode()).hexdigest()
+        hash_seq = hashlib.blake2b(
+            json.dumps(results_seq, sort_keys=True).encode()
+        ).hexdigest()
+        hash_conc = hashlib.blake2b(
+            json.dumps(results_conc, sort_keys=True).encode()
+        ).hexdigest()
         assert hash_seq == hash_conc
 
     def test_cdc_004_empty_input(self) -> None:

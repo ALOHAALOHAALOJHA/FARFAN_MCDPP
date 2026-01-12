@@ -3,10 +3,11 @@ Test RCC - Risk Certificate Contract
 Verifies: Conformal Prediction guarantees (1-α) coverage
 Risk scoring validation guarantee
 """
-
 import pytest
 import numpy as np
+import sys
 from pathlib import Path
+
 
 from cross_cutting_infrastructure.contractual.dura_lex.risk_certificate import (
     RiskCertificateContract,
@@ -28,10 +29,14 @@ class TestRiskCertificateContract:
         np.random.seed(123)
         return list(np.random.uniform(0.0, 1.0, 50))
 
-    def test_rcc_001_conformal_quantile(self, calibration_scores: list[float]) -> None:
+    def test_rcc_001_conformal_quantile(
+        self, calibration_scores: list[float]
+    ) -> None:
         """RCC-001: Conformal quantile is computed correctly."""
         alpha = 0.1
-        threshold = RiskCertificateContract.conformal_prediction(calibration_scores, alpha)
+        threshold = RiskCertificateContract.conformal_prediction(
+            calibration_scores, alpha
+        )
         assert 0.0 <= threshold <= 1.0
 
     def test_rcc_002_coverage_guarantee(
@@ -79,11 +84,19 @@ class TestRiskCertificateContract:
         assert result["alpha"] == alpha
         assert 0.0 <= result["risk"] <= 1.0
 
-    def test_rcc_005_threshold_monotonic(self, calibration_scores: list[float]) -> None:
+    def test_rcc_005_threshold_monotonic(
+        self, calibration_scores: list[float]
+    ) -> None:
         """RCC-005: Lower alpha produces higher threshold."""
-        threshold_05 = RiskCertificateContract.conformal_prediction(calibration_scores, 0.05)
-        threshold_10 = RiskCertificateContract.conformal_prediction(calibration_scores, 0.10)
-        threshold_20 = RiskCertificateContract.conformal_prediction(calibration_scores, 0.20)
+        threshold_05 = RiskCertificateContract.conformal_prediction(
+            calibration_scores, 0.05
+        )
+        threshold_10 = RiskCertificateContract.conformal_prediction(
+            calibration_scores, 0.10
+        )
+        threshold_20 = RiskCertificateContract.conformal_prediction(
+            calibration_scores, 0.20
+        )
         assert threshold_05 >= threshold_10 >= threshold_20
 
     def test_rcc_006_phase2_confidence_scores(self) -> None:
@@ -94,7 +107,9 @@ class TestRiskCertificateContract:
         holdout = list(np.random.beta(8, 2, 30))
 
         alpha = 0.10
-        result = RiskCertificateContract.verify_risk(calibration, holdout, alpha, seed=42)
+        result = RiskCertificateContract.verify_risk(
+            calibration, holdout, alpha, seed=42
+        )
 
         assert "threshold" in result
         assert "coverage" in result

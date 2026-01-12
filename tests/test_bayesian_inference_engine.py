@@ -267,7 +267,7 @@ class TestBayesianSamplingEngine:
     def test_hierarchical_sampling(self, sampling_engine: BayesianSamplingEngine) -> None:
         """Test hierarchical Beta-Binomial sampling"""
         group_data = [
-            (7, 10),  # (n_successes, n_trials) for level 1
+            (7, 10),   # (n_successes, n_trials) for level 1
             (12, 20),  # (n_successes, n_trials) for level 2
             (18, 30),  # (n_successes, n_trials) for level 3
         ]
@@ -276,10 +276,13 @@ class TestBayesianSamplingEngine:
             group_data=group_data,
             population_alpha=2.0,
             population_beta=2.0,
+            n_samples=500,
+            n_chains=2,
         )
 
         assert len(results) == 3
-        assert all(r.converged for r in results)
+        for result in results:
+            assert result.converged is True
 
 
 # ==================== BayesianDiagnostics Tests ====================
@@ -422,7 +425,7 @@ class TestBayesianEngineIntegration:
         """Test hierarchical analysis for micro-meso-macro levels"""
         # Convert observations to (successes, trials) tuples
         level_data = [
-            (7, 10),  # micro: 7 successes out of 10
+            (7, 10),   # micro: 7 successes out of 10
             (12, 20),  # meso: 12 successes out of 20
             (18, 30),  # macro: 18 successes out of 30
         ]
