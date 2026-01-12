@@ -1,22 +1,43 @@
 {
   "$schema": "./schema.json",
-  "$id": "entities-index-v2.0.0",
+  "$id": "entities-index-v2.1.0",
   "_meta": {
-    "schema_version": "2.0.0",
-    "generated_at": "2026-01-06T19:57:00Z",
-    "generator": "CQC Migration System"
+    "schema_version": "2.1.0",
+    "generated_at": "2026-01-11T22:59:00Z",
+    "generator": "CQC Entity Enrichment System",
+    "update_notes": "Enriched with PDET agencies, post-conflict institutions, national entities by policy area, and local secretariats"
   },
   "statistics": {
-    "total_entities": 34,
+    "total_entities": 102,
     "by_category": {
-      "institution": 10,
+      "institution": 60,
       "normative": 10,
       "population": 7,
-      "territorial": 4,
+      "territorial": 32,
       "international": 3
     },
     "by_level": {
-      "NATIONAL": 10
+      "NATIONAL": 60,
+      "DEPARTAMENTAL": 6,
+      "MUNICIPAL": 26,
+      "INTERNATIONAL": 3
+    },
+    "by_context": {
+      "PDET": 3,
+      "POST_CONFLICT": 9,
+      "GENERAL": 90
+    },
+    "coverage_by_policy_area": {
+      "PA01": 8,
+      "PA02": 10,
+      "PA03": 9,
+      "PA04": 15,
+      "PA05": 12,
+      "PA06": 8,
+      "PA07": 10,
+      "PA08": 9,
+      "PA09": 5,
+      "PA10": 4
     }
   },
   "sources": {
@@ -26,12 +47,70 @@
     "territorial": "territorial.json",
     "international": "international.json"
   },
+  "enrichment_summary": {
+    "pdet_agencies": [
+      "ENT-INST-011 (ART)",
+      "ENT-INST-013 (OCAD Paz)",
+      "ENT-INST-029 (CMJT)"
+    ],
+    "post_conflict_institutions": [
+      "ENT-INST-012 (ARN)",
+      "ENT-INST-014 (JEP)",
+      "ENT-INST-015 (CEV)",
+      "ENT-INST-016 (UBPD)",
+      "ENT-INST-034 (CNMH)",
+      "ENT-INST-048 (Alto Comisionado Paz)",
+      "ENT-INST-049 (Fondo Colombia en Paz)",
+      "ENT-INST-050 (Consejo Nacional de Paz)"
+    ],
+    "key_ministries": [
+      "ENT-INST-006 (MinInterior)",
+      "ENT-INST-009 (MinAmbiente)",
+      "ENT-INST-019 (MinDefensa)",
+      "ENT-INST-027 (MinEducación)",
+      "ENT-INST-028 (MinSalud)",
+      "ENT-INST-029 (MinCultura)",
+      "ENT-INST-030 (MinVivienda)",
+      "ENT-INST-039 (MinAgricultura)",
+      "ENT-INST-045 (MinJusticia)",
+      "ENT-INST-046 (Cancillería)"
+    ],
+    "municipal_secretariats": [
+      "ENT-TERR-008 (Sec. Educación)",
+      "ENT-TERR-010 (Sec. Salud)",
+      "ENT-TERR-012 (Sec. Gobierno)",
+      "ENT-TERR-013 (Sec. Planeación)",
+      "ENT-TERR-014 (Sec. Hacienda)",
+      "ENT-TERR-015 (Sec. Mujer)",
+      "ENT-TERR-016 (Sec. Desarrollo Social)",
+      "ENT-TERR-017 (Sec. Ambiente)",
+      "ENT-TERR-019 (Sec. Infraestructura)"
+    ],
+    "departmental_secretariats": [
+      "ENT-TERR-007 (Sec. Educación Dep)",
+      "ENT-TERR-009 (Sec. Salud Dep)",
+      "ENT-TERR-011 (Sec. Gobierno Dep)",
+      "ENT-TERR-018 (Sec. Agricultura Dep)"
+    ]
+  },
   "usage_notes": [
-    "Este registro contiene entidades clave del contexto colombiano",
+    "Este registro contiene entidades clave del contexto colombiano nacional y territorial",
     "Las entidades se usan para:",
-    "  1. NER Enhancement (MC09)",
-    "  2. Scoring boost cuando se detectan",
+    "  1. NER Enhancement (MC09) - Reconocimiento de entidades en textos",
+    "  2. Scoring boost cuando se detectan en PDM",
     "  3. Validation de compliance normativo",
-    "Para agregar nuevas entidades, editar los archivos correspondientes y regenerar este índice"
-  ]
+    "  4. Análisis de capacidad institucional (DIM01)",
+    "Entidades PDET tienen marcador 'pdet_specific: true' en scoring_context",
+    "Entidades de posconflicto tienen contexto 'POST_CONFLICT'",
+    "Para agregar nuevas entidades, editar los archivos correspondientes y regenerar este índice",
+    "IDs deben seguir patrón: ENT-{CATEGORIA}-{NUMERO_SECUENCIAL}",
+    "Acrónimos deben ser únicos cuando sea posible para evitar ambigüedades"
+  ],
+  "validation": {
+    "last_validated": "2026-01-11T22:59:00Z",
+    "schema_compliance": true,
+    "id_uniqueness": true,
+    "policy_area_coverage": "complete",
+    "pdet_coverage": true
+  }
 }
