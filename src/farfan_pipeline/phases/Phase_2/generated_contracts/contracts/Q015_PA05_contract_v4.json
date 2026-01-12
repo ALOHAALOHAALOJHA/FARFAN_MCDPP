@@ -1,0 +1,1329 @@
+{
+  "identity": {
+    "contract_id": "Q015_PA05",
+    "contract_number": 145,
+    "base_contract_id": "Q015",
+    "base_slot": "D3-Q5",
+    "sector_id": "PA05",
+    "policy_area_id": "PA05",
+    "sector_name": "Derechos de las víctimas y construcción de paz",
+    "dimension_id": "DIM03",
+    "question_id": "Q015_PA05",
+    "representative_question_id": "Q015_PA05",
+    "contract_type": "TYPE_D",
+    "contract_type_name": "Financiero",
+    "contract_type_focus": "Mecanismo producto→resultado",
+    "contract_version": "4.0.0-epistemological",
+    "created_at": "2026-01-05T13:47:40.819299+00:00",
+    "generator_version": "4.0.0-granular",
+    "specification_source": "operationalization_guide.json"
+  },
+  "executor_binding": {
+    "executor_class": "D3_Q5_PA05_Executor",
+    "executor_module": "farfan_pipeline.phases.Phase_two.executors",
+    "contract_number": 145
+  },
+  "method_binding": {
+    "orchestration_mode": "epistemological_pipeline",
+    "contract_type": "TYPE_D",
+    "method_count": 14,
+    "execution_phases": {
+      "phase_A_construction": {
+        "description": "Empirical observation layer - direct extraction without interpretation",
+        "level": "N1",
+        "level_name": "Base Empírica",
+        "epistemology": "Empirismo positivista",
+        "methods": [
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_extract_financial_amounts",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.extract_financial_amounts",
+            "method_id": "PDETMunicipalPlanAnalyzer._extract_financial_amounts",
+            "level": "N1-EMP",
+            "level_name": "Base Empírica",
+            "epistemology": "Empirismo positivista",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "fusion_symbol": "⊕",
+            "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2) (PARTE II, Sección 2.2)",
+            "confidence_score": 0.88,
+            "contract_affinities": {
+              "TYPE_A": 0.7,
+              "TYPE_B": 0.5,
+              "TYPE_C": 0.7,
+              "TYPE_D": 1.0,
+              "TYPE_E": 0.5
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": true,
+            "evidence_requirements": [
+              "raw_document_text",
+              "preprocesado_metadata"
+            ],
+            "output_claims": [
+              "observable_datum",
+              "literal_extraction"
+            ],
+            "constraints_and_limits": [
+              "output_must_be_literal",
+              "no_transformation_allowed"
+            ],
+            "failure_modes": [
+              "empty_extraction",
+              "pattern_not_found",
+              "malformed_input"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Extrae y procesa observaciones empíricas directas del texto.  Produce hechos observables sin interpretación.",
+            "requires": []
+          },
+          {
+            "class_name": "FinancialAggregator",
+            "method_name": "_extract_from_ppi_dict",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "financialaggregator.extract_from_ppi_dict",
+            "method_id": "FinancialAggregator._extract_from_ppi_dict",
+            "level": "N1-EMP",
+            "level_name": "Base Empírica",
+            "epistemology": "Empirismo positivista",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "fusion_symbol": "⊕",
+            "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2) (PARTE II, Sección 2.2)",
+            "confidence_score": 0.88,
+            "contract_affinities": {
+              "TYPE_A": 0.7,
+              "TYPE_B": 0.5,
+              "TYPE_C": 0.7,
+              "TYPE_D": 1.0,
+              "TYPE_E": 0.5
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": true,
+            "evidence_requirements": [
+              "raw_document_text",
+              "preprocesado_metadata"
+            ],
+            "output_claims": [
+              "observable_datum",
+              "literal_extraction"
+            ],
+            "constraints_and_limits": [
+              "output_must_be_literal",
+              "no_transformation_allowed"
+            ],
+            "failure_modes": [
+              "empty_extraction",
+              "pattern_not_found",
+              "malformed_input"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Extrae y procesa observaciones empíricas directas del texto.  Produce hechos observables sin interpretación.",
+            "requires": []
+          },
+          {
+            "class_name": "DocumentProcessor",
+            "method_name": "load_pdf",
+            "mother_file": "analyzer_one.py",
+            "provides": "documentprocessor.load_pdf",
+            "method_id": "DocumentProcessor.load_pdf",
+            "level": "N1-EMP",
+            "level_name": "Base Empírica",
+            "epistemology": "Empirismo positivista",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "fusion_symbol": "⊕",
+            "classification_rationale": "Clase DocumentProcessor listada en N1-EMP + patrón 'load_' (PARTE II, Sección 2.2)",
+            "confidence_score": 0.92,
+            "contract_affinities": {
+              "TYPE_A": 0.7,
+              "TYPE_B": 0.5,
+              "TYPE_C": 0.7,
+              "TYPE_D": 0.8,
+              "TYPE_E": 0.5
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": false,
+            "evidence_requirements": [
+              "raw_document_text",
+              "preprocesado_metadata"
+            ],
+            "output_claims": [
+              "observable_datum",
+              "literal_extraction"
+            ],
+            "constraints_and_limits": [
+              "output_must_be_literal",
+              "no_transformation_allowed"
+            ],
+            "failure_modes": [
+              "empty_extraction",
+              "pattern_not_found",
+              "malformed_input"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Extrae y procesa observaciones empíricas directas del texto.  Produce hechos observables sin interpretación.",
+            "requires": []
+          },
+          {
+            "class_name": "PDFProcessor",
+            "method_name": "load_document",
+            "mother_file": "derek_beach.py",
+            "provides": "pdfprocessor.load_document",
+            "method_id": "PDFProcessor.load_document",
+            "level": "N1-EMP",
+            "level_name": "Base Empírica",
+            "epistemology": "Empirismo positivista",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "fusion_symbol": "⊕",
+            "classification_rationale": "Clase PDFProcessor listada en N1-EMP + patrón 'load_' (PARTE II, Sección 2.2)",
+            "confidence_score": 0.92,
+            "contract_affinities": {
+              "TYPE_A": 0.7,
+              "TYPE_B": 0.5,
+              "TYPE_C": 0.7,
+              "TYPE_D": 0.8,
+              "TYPE_E": 0.5
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": false,
+            "evidence_requirements": [
+              "raw_document_text",
+              "preprocesado_metadata"
+            ],
+            "output_claims": [
+              "observable_datum",
+              "literal_extraction"
+            ],
+            "constraints_and_limits": [
+              "output_must_be_literal",
+              "no_transformation_allowed"
+            ],
+            "failure_modes": [
+              "empty_extraction",
+              "pattern_not_found",
+              "malformed_input"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Extrae y procesa observaciones empíricas directas del texto.  Produce hechos observables sin interpretación.",
+            "requires": []
+          },
+          {
+            "class_name": "BayesianEvidenceExtractor",
+            "method_name": "extract_prior_beliefs",
+            "mother_file": "bayesian_multilevel_system.py",
+            "provides": "bayesianevidenceextractor.extract_prior_beliefs",
+            "method_id": "BayesianEvidenceExtractor.extract_prior_beliefs",
+            "level": "N1-EMP",
+            "level_name": "Base Empírica",
+            "epistemology": "Empirismo positivista",
+            "output_type": "FACT",
+            "fusion_behavior": "additive",
+            "fusion_symbol": "⊕",
+            "classification_rationale": "Patrón de nombre 'extract_' → N1-EMP (PARTE II, Sec 2.2) (PARTE II, Sección 2.2)",
+            "confidence_score": 0.88,
+            "contract_affinities": {
+              "TYPE_A": 0.7,
+              "TYPE_B": 0.9,
+              "TYPE_C": 0.7,
+              "TYPE_D": 0.8,
+              "TYPE_E": 0.5
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": false,
+            "evidence_requirements": [
+              "raw_document_text",
+              "preprocesado_metadata"
+            ],
+            "output_claims": [
+              "observable_datum",
+              "literal_extraction"
+            ],
+            "constraints_and_limits": [
+              "output_must_be_literal",
+              "no_transformation_allowed"
+            ],
+            "failure_modes": [
+              "empty_extraction",
+              "pattern_not_found",
+              "malformed_input"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N1-EMP provides FACT output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Extrae y procesa observaciones empíricas directas del texto.  Produce hechos observables sin interpretación.",
+            "requires": []
+          }
+        ],
+        "dependencies": [],
+        "output_target": "raw_facts"
+      },
+      "phase_B_computation": {
+        "description": "Inferential analysis layer - transformation into analytical constructs",
+        "level": "N2",
+        "level_name": "Procesamiento Inferencial",
+        "epistemology": "Bayesianismo subjetivista",
+        "methods": [
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "analyze_financial_feasibility",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.analyze_financial_feasibility",
+            "method_id": "PDETMunicipalPlanAnalyzer.analyze_financial_feasibility",
+            "level": "N2-INF",
+            "level_name": "Procesamiento Inferencial",
+            "epistemology": "Bayesianismo subjetivista",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "fusion_symbol": "⊗",
+            "classification_rationale": "Patrón de nombre 'analyze_' → N2-INF (PARTE II, Sec 2.2) (PARTE II, Sección 2.2)",
+            "confidence_score": 0.88,
+            "contract_affinities": {
+              "TYPE_A": 0.8,
+              "TYPE_B": 0.9,
+              "TYPE_C": 0.7,
+              "TYPE_D": 1.0,
+              "TYPE_E": 0.6
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": false,
+            "evidence_requirements": [
+              "raw_facts_from_N1",
+              "confidence_scores"
+            ],
+            "output_claims": [
+              "derived_score",
+              "probability_estimate",
+              "relational_inference"
+            ],
+            "constraints_and_limits": [
+              "requires_N1_input",
+              "output_is_derived"
+            ],
+            "failure_modes": [
+              "insufficient_evidence",
+              "prior_undefined",
+              "computation_error"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ]
+          },
+          {
+            "class_name": "FinancialAggregator",
+            "method_name": "aggregate_financial_data",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "financialaggregator.aggregate_financial_data",
+            "method_id": "FinancialAggregator.aggregate_financial_data",
+            "level": "N2-INF",
+            "level_name": "Procesamiento Inferencial",
+            "epistemology": "Bayesianismo subjetivista",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "fusion_symbol": "⊗",
+            "classification_rationale": "Patrón de nombre 'aggregate_' → N2-INF (PARTE II, Sec 2.2) (PARTE II, Sección 2.2)",
+            "confidence_score": 0.88,
+            "contract_affinities": {
+              "TYPE_A": 0.8,
+              "TYPE_B": 0.9,
+              "TYPE_C": 0.7,
+              "TYPE_D": 1.0,
+              "TYPE_E": 0.6
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": false,
+            "evidence_requirements": [
+              "raw_facts_from_N1",
+              "confidence_scores"
+            ],
+            "output_claims": [
+              "derived_score",
+              "probability_estimate",
+              "relational_inference"
+            ],
+            "constraints_and_limits": [
+              "requires_N1_input",
+              "output_is_derived"
+            ],
+            "failure_modes": [
+              "insufficient_evidence",
+              "prior_undefined",
+              "computation_error"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ]
+          },
+          {
+            "class_name": "SemanticAnalyzer",
+            "method_name": "_compute_unit_of_analysis_natural_blocks",
+            "mother_file": "analyzer_one.py",
+            "provides": "semanticanalyzer.compute_unit_of_analysis_natural_blocks",
+            "method_id": "SemanticAnalyzer._compute_unit_of_analysis_natural_blocks",
+            "level": "N2-INF",
+            "level_name": "Procesamiento Inferencial",
+            "epistemology": "Bayesianismo subjetivista",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "fusion_symbol": "⊗",
+            "classification_rationale": "Clase SemanticAnalyzer listada en N2-INF + patrón 'compute_' (PARTE II, Sección 2.2)",
+            "confidence_score": 0.92,
+            "contract_affinities": {
+              "TYPE_A": 1.0,
+              "TYPE_B": 0.9,
+              "TYPE_C": 0.7,
+              "TYPE_D": 0.6,
+              "TYPE_E": 0.6
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": true,
+            "evidence_requirements": [
+              "raw_facts_from_N1",
+              "confidence_scores"
+            ],
+            "output_claims": [
+              "derived_score",
+              "probability_estimate",
+              "relational_inference"
+            ],
+            "constraints_and_limits": [
+              "requires_N1_input",
+              "output_is_derived"
+            ],
+            "failure_modes": [
+              "insufficient_evidence",
+              "prior_undefined",
+              "computation_error"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ]
+          },
+          {
+            "class_name": "DispersionEngine",
+            "method_name": "calculate_cv",
+            "mother_file": "bayesian_multilevel_system.py",
+            "provides": "dispersionengine.calculate_cv",
+            "method_id": "DispersionEngine.calculate_cv",
+            "level": "N2-INF",
+            "level_name": "Procesamiento Inferencial",
+            "epistemology": "Bayesianismo subjetivista",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "fusion_symbol": "⊗",
+            "classification_rationale": "Clase DispersionEngine listada en N2-INF + patrón 'calculate_' (PARTE II, Sección 2.2)",
+            "confidence_score": 0.92,
+            "contract_affinities": {
+              "TYPE_A": 0.8,
+              "TYPE_B": 0.9,
+              "TYPE_C": 0.7,
+              "TYPE_D": 0.6,
+              "TYPE_E": 0.6
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": false,
+            "evidence_requirements": [
+              "raw_facts_from_N1",
+              "confidence_scores"
+            ],
+            "output_claims": [
+              "derived_score",
+              "probability_estimate",
+              "relational_inference"
+            ],
+            "constraints_and_limits": [
+              "requires_N1_input",
+              "output_is_derived"
+            ],
+            "failure_modes": [
+              "insufficient_evidence",
+              "prior_undefined",
+              "computation_error"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ]
+          },
+          {
+            "class_name": "PeerCalibrator",
+            "method_name": "compare_to_peers",
+            "mother_file": "bayesian_multilevel_system.py",
+            "provides": "peercalibrator.compare_to_peers",
+            "method_id": "PeerCalibrator.compare_to_peers",
+            "level": "N2-INF",
+            "level_name": "Procesamiento Inferencial",
+            "epistemology": "Bayesianismo subjetivista",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "fusion_symbol": "⊗",
+            "classification_rationale": "Clase PeerCalibrator listada en N2-INF + patrón 'compare_' (PARTE II, Sección 2.2)",
+            "confidence_score": 0.92,
+            "contract_affinities": {
+              "TYPE_A": 0.8,
+              "TYPE_B": 0.9,
+              "TYPE_C": 0.7,
+              "TYPE_D": 0.6,
+              "TYPE_E": 0.6
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": false,
+            "evidence_requirements": [
+              "raw_facts_from_N1",
+              "confidence_scores"
+            ],
+            "output_claims": [
+              "derived_score",
+              "probability_estimate",
+              "relational_inference"
+            ],
+            "constraints_and_limits": [
+              "requires_N1_input",
+              "output_is_derived"
+            ],
+            "failure_modes": [
+              "insufficient_evidence",
+              "prior_undefined",
+              "computation_error"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ]
+          },
+          {
+            "class_name": "PDETMunicipalPlanAnalyzer",
+            "method_name": "_assess_financial_sustainability",
+            "mother_file": "financiero_viabilidad_tablas.py",
+            "provides": "pdetmunicipalplananalyzer.assess_financial_sustainability",
+            "method_id": "PDETMunicipalPlanAnalyzer._assess_financial_sustainability",
+            "level": "N2-INF",
+            "level_name": "Procesamiento Inferencial",
+            "epistemology": "Bayesianismo subjetivista",
+            "output_type": "PARAMETER",
+            "fusion_behavior": "multiplicative",
+            "fusion_symbol": "⊗",
+            "classification_rationale": "Clasificación por defecto (requiere revisión manual) (PARTE II, Sección 2.2)",
+            "confidence_score": 0.5,
+            "contract_affinities": {
+              "TYPE_A": 0.8,
+              "TYPE_B": 0.9,
+              "TYPE_C": 0.7,
+              "TYPE_D": 1.0,
+              "TYPE_E": 0.6
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": true,
+            "evidence_requirements": [
+              "raw_facts_from_N1",
+              "confidence_scores"
+            ],
+            "output_claims": [
+              "derived_score",
+              "probability_estimate",
+              "relational_inference"
+            ],
+            "constraints_and_limits": [
+              "requires_N1_input",
+              "output_is_derived",
+              "low_confidence_method"
+            ],
+            "failure_modes": [
+              "insufficient_evidence",
+              "prior_undefined",
+              "computation_error"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N2-INF provides PARAMETER output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Calcula parámetros inferenciales basados en evidencia de N1. Transforma hechos en parámetros cuantitativos.",
+            "requires": [
+              "raw_facts"
+            ],
+            "modifies": [
+              "edge_weights",
+              "confidence_scores"
+            ]
+          }
+        ],
+        "dependencies": [
+          "phase_A_construction"
+        ],
+        "output_target": "inferences"
+      },
+      "phase_C_litigation": {
+        "description": "Audit layer - attempt to 'break' results.  Acts as VETO GATE.",
+        "level": "N3",
+        "level_name": "Auditoría y Robustez",
+        "epistemology": "Falsacionismo popperiano",
+        "methods": [
+          {
+            "class_name": "FinancialAuditor",
+            "method_name": "_detect_allocation_gaps",
+            "mother_file": "derek_beach.py",
+            "provides": "financialauditor.detect_allocation_gaps",
+            "method_id": "FinancialAuditor._detect_allocation_gaps",
+            "level": "N3-AUD",
+            "level_name": "Auditoría y Robustez",
+            "epistemology": "Falsacionismo popperiano",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "fusion_symbol": "⊘",
+            "classification_rationale": "Clase FinancialAuditor listada en N3-AUD + patrón 'detect_' (PARTE II, Sección 2.2)",
+            "confidence_score": 0.92,
+            "contract_affinities": {
+              "TYPE_A": 0.5,
+              "TYPE_B": 0.6,
+              "TYPE_C": 0.8,
+              "TYPE_D": 1.0,
+              "TYPE_E": 0.9
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": true,
+            "evidence_requirements": [
+              "raw_facts_from_N1",
+              "inferences_from_N2",
+              "audit_criteria"
+            ],
+            "output_claims": [
+              "validation_flag",
+              "confidence_modulator",
+              "veto_signal"
+            ],
+            "constraints_and_limits": [
+              "requires_N1_and_N2_input",
+              "can_veto_lower_levels",
+              "asymmetric_authority"
+            ],
+            "failure_modes": [
+              "validation_inconclusive",
+              "criteria_not_met",
+              "veto_triggered"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N3-AUD provides CONSTRAINT output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "veto_conditions": {
+              "critical_failure_veto": {
+                "trigger": "critical_validation_failed == True",
+                "action": "invalidate_graph",
+                "scope": "entire_output",
+                "confidence_multiplier": 0.0,
+                "rationale": "Critical validation failure invalidates entire output"
+              }
+            },
+            "modulates": [
+              "raw_facts. confidence",
+              "inferences.confidence"
+            ]
+          },
+          {
+            "class_name": "OperationalizationAuditor",
+            "method_name": "_perform_counterfactual_budget_check",
+            "mother_file": "derek_beach.py",
+            "provides": "operationalizationauditor.perform_counterfactual_budget_check",
+            "method_id": "OperationalizationAuditor._perform_counterfactual_budget_check",
+            "level": "N3-AUD",
+            "level_name": "Auditoría y Robustez",
+            "epistemology": "Falsacionismo popperiano",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "fusion_symbol": "⊘",
+            "classification_rationale": "Clase OperationalizationAuditor es dominante en N3-AUD (PARTE II, Sección 2.2)",
+            "confidence_score": 0.85,
+            "contract_affinities": {
+              "TYPE_A": 0.5,
+              "TYPE_B": 0.6,
+              "TYPE_C": 0.8,
+              "TYPE_D": 1.0,
+              "TYPE_E": 1.0
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": true,
+            "evidence_requirements": [
+              "raw_facts_from_N1",
+              "inferences_from_N2",
+              "audit_criteria"
+            ],
+            "output_claims": [
+              "validation_flag",
+              "confidence_modulator",
+              "veto_signal"
+            ],
+            "constraints_and_limits": [
+              "requires_N1_and_N2_input",
+              "can_veto_lower_levels",
+              "asymmetric_authority"
+            ],
+            "failure_modes": [
+              "validation_inconclusive",
+              "criteria_not_met",
+              "veto_triggered"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N3-AUD provides CONSTRAINT output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "veto_conditions": {
+              "budget_gap_critical": {
+                "trigger": "budget_gap > 0.5",
+                "action": "block_branch",
+                "scope": "affected_goals",
+                "confidence_multiplier": 0.0,
+                "rationale": "Critical budget gap blocks feasibility"
+              },
+              "budget_gap_significant": {
+                "trigger": "budget_gap > 0.3",
+                "action": "reduce_confidence",
+                "scope": "affected_goals",
+                "confidence_multiplier": 0.3,
+                "rationale": "Significant budget gap reduces confidence"
+              }
+            },
+            "modulates": [
+              "raw_facts. confidence",
+              "inferences.confidence"
+            ]
+          },
+          {
+            "class_name": "CausalExtractor",
+            "method_name": "_assess_financial_consistency",
+            "mother_file": "derek_beach.py",
+            "provides": "causalextractor.assess_financial_consistency",
+            "method_id": "CausalExtractor._assess_financial_consistency",
+            "level": "N3-AUD",
+            "level_name": "Auditoría y Robustez",
+            "epistemology": "Falsacionismo popperiano",
+            "output_type": "CONSTRAINT",
+            "fusion_behavior": "gate",
+            "fusion_symbol": "⊘",
+            "classification_rationale": "Keyword 'consistency' detectado → N3-AUD (PARTE II, Sección 2.2)",
+            "confidence_score": 0.8,
+            "contract_affinities": {
+              "TYPE_A": 0.5,
+              "TYPE_B": 0.6,
+              "TYPE_C": 1.0,
+              "TYPE_D": 1.0,
+              "TYPE_E": 1.0
+            },
+            "parameters": [
+              "self"
+            ],
+            "return_type": "Any",
+            "is_private": true,
+            "evidence_requirements": [
+              "raw_facts_from_N1",
+              "inferences_from_N2",
+              "audit_criteria"
+            ],
+            "output_claims": [
+              "validation_flag",
+              "confidence_modulator",
+              "veto_signal"
+            ],
+            "constraints_and_limits": [
+              "requires_N1_and_N2_input",
+              "can_veto_lower_levels",
+              "asymmetric_authority"
+            ],
+            "failure_modes": [
+              "validation_inconclusive",
+              "criteria_not_met",
+              "veto_triggered"
+            ],
+            "interaction_notes": "Method operates within TYPE_D contract.  Fusion strategy: financial_coherence_audit. Level N3-AUD provides CONSTRAINT output.",
+            "expansion_source": "method_sets_by_question.json",
+            "expansion_timestamp": "2026-01-05T13:47:40.819299+00:00",
+            "description": "Valida y puede vetar hallazgos basándose en criterios de robustez. Genera restricciones que pueden bloquear resultados.",
+            "requires": [
+              "raw_facts",
+              "inferences"
+            ],
+            "veto_conditions": {
+              "critical_failure_veto": {
+                "trigger": "critical_validation_failed == True",
+                "action": "invalidate_graph",
+                "scope": "entire_output",
+                "confidence_multiplier": 0.0,
+                "rationale": "Critical validation failure invalidates entire output"
+              }
+            },
+            "modulates": [
+              "raw_facts. confidence",
+              "inferences.confidence"
+            ]
+          }
+        ],
+        "dependencies": [
+          "phase_A_construction",
+          "phase_B_computation"
+        ],
+        "output_target": "audit_results",
+        "asymmetry_principle": "N3 can invalidate N1/N2 outputs; N1 and N2 CANNOT invalidate N3",
+        "fusion_mode": "modulation"
+      }
+    },
+    "efficiency_score": 1.0256,
+    "mathematical_evidence": {
+      "corroboration_formula": "1 - ∏(1 - conf_i)",
+      "corroboration_score": 1.0,
+      "individual_confidences": [
+        0.88,
+        0.88,
+        0.92,
+        0.92,
+        0.88,
+        0.88,
+        0.88,
+        0.92,
+        0.92,
+        0.92,
+        0.92,
+        0.85,
+        0.8
+      ],
+      "average_contract_affinity": 0.8615,
+      "phase_coverage": 1.0,
+      "phase_counts": {
+        "N1": 5,
+        "N2": 5,
+        "N3": 3
+      },
+      "unique_classes": 11,
+      "diversity_bonus": 0.15,
+      "balance_score": 0.781,
+      "efficiency_formula": "0.30*corroboration + 0.30*affinity + 0.20*coverage + 0.15*balance + diversity",
+      "final_efficiency": 1.0256
+    },
+    "doctoral_justification": "La pregunta D3_Q5 ('¿El plan describe cómo los productos generan resultados?') ha sido clasificada como contrato TYPE_D (Financiero), cuyo foco epistemológico es 'Suficiencia presupuestal'. Según la taxonomía de contratos de episte_refact, este tipo requiere una estrategia de fusión principal de 'financial_coherence_audit', lo cual determina la selección y ponderación de métodos en las tres fases de ejecución del pipeline epistemológico.\n\nPara la Fase A (Construction, Nivel N1-EMP), se seleccionaron 5 métodos de las clases PDETMunicipalPlanAnalyzer, PDFProcessor, FinancialAggregator, DocumentProcessor, BayesianEvidenceExtractor, incluyendo _extract_financial_amounts, _extract_from_ppi_dict, load_pdf. Estos métodos implementan empirismo positivista, extrayendo hechos brutos del documento sin transformación interpretativa. Su output de tipo FACT se suma al grafo de evidencia con comportamiento aditivo (⊕), estableciendo la base empírica verificable sobre la cual operarán las fases subsiguientes.\n\nLa Fase B (Computation, Nivel N2-INF) emplea 5 métodos de SemanticAnalyzer, PeerCalibrator, PDETMunicipalPlanAnalyzer, DispersionEngine, FinancialAggregator, con una afinidad promedio de 76.00% hacia el tipo de contrato TYPE_D. Estos métodos transforman los hechos N1 en conocimiento probabilístico mediante bayesianismo subjetivista. Su output de tipo PARAMETER modifica los pesos de las aristas del grafo (comportamiento multiplicativo ⊗), actualizando las creencias sobre la evidencia según la fórmula posterior = update_belief(prior, likelihood).\n\nLa Fase C (Litigation, Nivel N3-AUD) constituye el núcleo del falsacionismo popperiano implementado en FARFAN. Los 3 métodos de CausalExtractor, FinancialAuditor, OperationalizationAuditor actúan como VETO GATES, intentando refutar los hallazgos de las fases anteriores. Su propiedad crítica es la influencia asimétrica: N3 puede invalidar N1/N2, pero N1/N2 NO pueden invalidar N3. Su output de tipo CONSTRAINT filtra o bloquea ramas del grafo de evidencia (⊘), garantizando que solo la evidencia robusta llegue a la síntesis final.\n\nLa eficiencia matemática del juego de métodos es 102.56%, calculada mediante la fórmula de corroboración de episte_refact: confidence_combined = 1 - ∏(1 - conf_i), que para este conjunto produce 1.000. La cobertura de fases es 100.00% con distribución N1:5, N2:5, N3:3, y la diversidad de clases (11 únicas) aporta un bonus de 0.150. Este conjunto metodológico está matemáticamente optimizado para responder la pregunta con nivel doctoral, máxima certeza epistemológica y trazabilidad completa de la evidencia."
+  },
+  "question_context": {
+    "monolith_ref": "Q015",
+    "question_text": "¿El plan describe cómo los productos del sector generan o contribuyen a los resultados esperados, explicando esta conexión o ruta?",
+    "pregunta_completa": "¿El plan describe cómo los productos del sector generan o contribuyen a los resultados esperados, explicando esta conexión o ruta?",
+    "pregunta_generica": "¿El plan describe cómo los productos del sector generan o contribuyen a los resultados esperados, explicando esta conexión o ruta?",
+    "sector_id": "PA05",
+    "sector_name": "Derechos de las víctimas y construcción de paz",
+    "overrides": null,
+    "failure_contract": {
+      "abort_if": [
+        "missing_required_element",
+        "incomplete_text",
+        "no_quantitative_data"
+      ],
+      "emit_code": "ABORT-D3-Q5-PA05-REQ"
+    }
+  },
+  "signal_requirements": {
+    "derivation_source": "expected_elements",
+    "derivation_rules": {
+      "mandatory": "expected_elements[required=true]. type → detection_{type}",
+      "optional": "expected_elements[required=false]. type → detection_{type}"
+    },
+    "signal_aggregation": "weighted_mean",
+    "minimum_signal_threshold": 0.5
+  },
+  "evidence_assembly": {
+    "engine": "EVIDENCE_NEXUS",
+    "module": "farfan_pipeline. phases.Phase_two.evidence_nexus",
+    "class_name": "EvidenceNexus",
+    "method_name": "assemble",
+    "type_system": {
+      "FACT": {
+        "origin_level": "N1",
+        "fusion_operation": "graph_node_addition",
+        "merge_behavior": "additive",
+        "symbol": "⊕",
+        "description": "Se SUMA al grafo como nodo"
+      },
+      "PARAMETER": {
+        "origin_level": "N2",
+        "fusion_operation": "edge_weight_modification",
+        "merge_behavior": "multiplicative",
+        "symbol": "⊗",
+        "description": "MODIFICA pesos de aristas del grafo"
+      },
+      "CONSTRAINT": {
+        "origin_level": "N3",
+        "fusion_operation": "branch_filtering",
+        "merge_behavior": "gate",
+        "symbol": "⊘",
+        "description": "FILTRA/BLOQUEA ramas si validación falla"
+      },
+      "NARRATIVE": {
+        "origin_level": "N4",
+        "fusion_operation": "synthesis",
+        "merge_behavior": "terminal",
+        "symbol": "⊙",
+        "description": "CONSUME grafo para texto final"
+      }
+    },
+    "assembly_rules": [
+      {
+        "rule_id": "R1_empirical_extraction",
+        "rule_type": "empirical_basis",
+        "target": "financial_facts",
+        "sources": [
+          "pdetmunicipalplananalyzer.extract_financial_amounts",
+          "financialaggregator.extract_from_ppi_dict",
+          "documentprocessor.load_pdf",
+          "pdfprocessor.load_document",
+          "bayesianevidenceextractor.extract_prior_beliefs"
+        ],
+        "merge_strategy": "concat",
+        "output_type": "FACT",
+        "confidence_propagation": "preserve_individual",
+        "description": "Extract raw facts from document without interpretation"
+      },
+      {
+        "rule_id": "R2_inferential_processing",
+        "rule_type": "computation",
+        "target": "sufficiency_scores",
+        "sources": [
+          "pdetmunicipalplananalyzer.analyze_financial_feasibility",
+          "financialaggregator.aggregate_financial_data",
+          "semanticanalyzer.compute_unit_of_analysis_natural_blocks",
+          "dispersionengine.calculate_cv",
+          "peercalibrator.compare_to_peers",
+          "pdetmunicipalplananalyzer.assess_financial_sustainability"
+        ],
+        "input_dependencies": [
+          "financial_facts"
+        ],
+        "merge_strategy": "weighted_mean",
+        "output_type": "PARAMETER",
+        "confidence_propagation": "weighted_average",
+        "description": "Compute sufficiency scores from financial data"
+      },
+      {
+        "rule_id": "R3_audit_gate",
+        "rule_type": "financial_coherence_audit",
+        "target": "validated_financials",
+        "sources": [
+          "financialauditor.detect_allocation_gaps",
+          "operationalizationauditor.perform_counterfactual_budget_check",
+          "causalextractor.assess_financial_consistency"
+        ],
+        "input_dependencies": [
+          "financial_facts",
+          "sufficiency_scores"
+        ],
+        "merge_strategy": "veto_gate",
+        "output_type": "CONSTRAINT",
+        "gate_logic": {
+          "budget_gap_detected": {
+            "action": "flag_insufficiency",
+            "multiplier": 0.3
+          },
+          "allocation_mismatch": {
+            "action": "reduce_confidence",
+            "multiplier": 0.5
+          }
+        },
+        "asymmetry_declaration": "N3 can invalidate N1/N2 outputs; N1/N2 CANNOT invalidate N3",
+        "description": "Validate and potentially veto lower-level findings"
+      },
+      {
+        "rule_id": "R4_narrative_synthesis",
+        "rule_type": "synthesis",
+        "target": "human_answer",
+        "sources": [],
+        "input_dependencies": [
+          "validated_financials",
+          "sufficiency_scores",
+          "audit_results"
+        ],
+        "merge_strategy": "carver_doctoral_synthesis",
+        "output_type": "NARRATIVE",
+        "external_handler": "DoctoralCarverSynthesizer",
+        "description": "Synthesize validated evidence into human-readable answer"
+      }
+    ]
+  },
+  "fusion_specification": {
+    "contract_type": "TYPE_D",
+    "primary_strategy": "financial_coherence_audit",
+    "level_strategies": {
+      "N1_fact_fusion": {
+        "strategy": "concat",
+        "behavior": "additive",
+        "conflict_resolution": "corroborative_stacking",
+        "formula": "if same_fact detected by multiple methods → confidence = 1 - ∏(1 - conf_i)"
+      },
+      "N2_parameter_fusion": {
+        "strategy": "weighted_mean",
+        "behavior": "multiplicative",
+        "conflict_resolution": "weighted_voting",
+        "affects": [
+          "N1_facts. confidence",
+          "N1_facts.edge_weights"
+        ]
+      },
+      "N3_constraint_fusion": {
+        "strategy": "veto_gate",
+        "behavior": "gate",
+        "asymmetry_principle": "audit_dominates",
+        "propagation": {
+          "upstream": "confidence_backpropagation",
+          "downstream": "branch_blocking"
+        }
+      }
+    },
+    "fusion_pipeline": {
+      "step_1": "Execute all N1 methods → collect FACTS",
+      "step_2": "Execute all N2 methods → compute PARAMETERS",
+      "step_3": "Execute all N3 methods → apply CONSTRAINTS",
+      "step_4": "Synthesize validated graph → NARRATIVE"
+    }
+  },
+  "cross_layer_fusion": {
+    "N1_to_N2": {
+      "relationship": "N2 reads N1 facts",
+      "effect": "N2 computes parameters FROM N1 observations",
+      "data_flow": "forward_propagation"
+    },
+    "N2_to_N1": {
+      "relationship": "N2 modifies N1 confidence",
+      "effect": "Edge weights adjust fact confidence scores",
+      "data_flow": "confidence_backpropagation"
+    },
+    "N3_to_N1": {
+      "relationship": "N3 can BLOCK N1 facts",
+      "effect": "Failed constraints remove facts from graph",
+      "data_flow": "veto_propagation",
+      "asymmetry": "N1 CANNOT invalidate N3"
+    },
+    "N3_to_N2": {
+      "relationship": "N3 can INVALIDATE N2 parameters",
+      "effect": "Failed constraints nullify parameter modifications",
+      "data_flow": "inference_modulation",
+      "asymmetry": "N2 CANNOT invalidate N3"
+    },
+    "all_to_N4": {
+      "relationship": "N4 consumes validated outputs from all layers",
+      "effect": "Synthesis constructs narrative from filtered graph",
+      "data_flow": "terminal_aggregation"
+    },
+    "blocking_propagation_rules": {
+      "matrix_not_positive_definite": {
+        "triggered_by": "IndustrialGradeValidator",
+        "action": "block_branch",
+        "scope": "affected_subgraph",
+        "propagation": "upstream_and_downstream"
+      },
+      "budget_insufficiency": {
+        "triggered_by": "FinancialAuditor._calculate_sufficiency",
+        "action": "flag_insufficiency",
+        "scope": "affected_goals",
+        "propagation": "downstream_only"
+      }
+    }
+  },
+  "human_answer_structure": {
+    "format": "markdown",
+    "template_mode": "epistemological_narrative",
+    "contract_type": "TYPE_D",
+    "sections": {
+      "S1_VEREDICTO": {
+        "role": "SYNTHESIS",
+        "content": [
+          "respuesta_directa",
+          "confianza_global",
+          "caveats_principales"
+        ],
+        "max_length": 200
+      },
+      "S2_EVIDENCIA_DURA": {
+        "role": "EMPIRICAL_N1",
+        "content": [
+          "hallazgos_factuales",
+          "fuentes_citadas",
+          "datos_cuantitativos"
+        ],
+        "source_levels": [
+          "N1-EMP"
+        ]
+      },
+      "S3_ANALISIS_ROBUSTEZ": {
+        "role": "AUDIT_N3",
+        "content": [
+          "validaciones_pasadas",
+          "validaciones_fallidas",
+          "modulaciones_aplicadas"
+        ],
+        "source_levels": [
+          "N3-AUD"
+        ]
+      },
+      "S4_PUNTOS_CIEGOS": {
+        "role": "GAPS",
+        "content": [
+          "informacion_faltante",
+          "supuestos_no_verificables",
+          "limitaciones_metodologicas"
+        ]
+      }
+    },
+    "confidence_interpretation": {
+      "critical": {
+        "range": [
+          0,
+          19
+        ],
+        "label": "INVÁLIDO",
+        "description": "Veto activado por N3, modelo lógico inválido técnicamente",
+        "display": "🔴"
+      },
+      "low": {
+        "range": [
+          20,
+          49
+        ],
+        "label": "DÉBIL",
+        "description": "Evidencia insuficiente o contradicciones detectadas",
+        "display": "🟠"
+      },
+      "medium": {
+        "range": [
+          50,
+          79
+        ],
+        "label": "MODERADO",
+        "description": "Evidencia presente con limitaciones menores",
+        "display": "🟡"
+      },
+      "high": {
+        "range": [
+          80,
+          100
+        ],
+        "label": "ROBUSTO",
+        "description": "Múltiples observaciones corroborantes, auditorías pasadas",
+        "display": "🟢"
+      }
+    },
+    "roles_argumentativos": [
+      "EMPIRICAL_BASIS",
+      "INFERENTIAL_BRIDGE",
+      "ROBUSTNESS_QUALIFIER"
+    ]
+  },
+  "traceability": {
+    "input_files": {
+      "classified_methods": {
+        "file": "classified_methods.json",
+        "hash": "e3b57835bbe2cca5"
+      },
+      "contratos_clasificados": {
+        "file": "contratos_clasificados.json",
+        "hash": "4b348284ad32888c"
+      },
+      "method_sets": {
+        "file": "method_sets_by_question.json",
+        "hash": "3c64c710b70eb9e9"
+      }
+    },
+    "generation_metadata": {
+      "timestamp": "2026-01-05T13:47:40.819299+00:00",
+      "generator_version": "4.0.0-granular",
+      "assembler_version": "4.0.0-granular",
+      "composition_timestamp": "2026-01-05T13:47:41.089817+00:00"
+    },
+    "contract_lineage": {
+      "base_question": "D3_Q5",
+      "base_contract_id": "Q015",
+      "sector_id": "PA05",
+      "contract_type": "TYPE_D"
+    },
+    "method_count": {
+      "N1": 5,
+      "N2": 6,
+      "N3": 3,
+      "total": 14
+    }
+  },
+  "output_contract": {
+    "schema_version": "4.0.0",
+    "required_fields": [
+      "confidence_score",
+      "human_answer",
+      "evidence_graph",
+      "audit_trail"
+    ],
+    "confidence_bounds": {
+      "min": 0.0,
+      "max": 1.0
+    },
+    "human_answer_format": "structured_markdown",
+    "evidence_graph_format": "networkx_json"
+  },
+  "audit_annotations": {
+    "generation_metadata": {
+      "generator_version": "4.0.0-granular",
+      "generation_timestamp": "2026-01-05T13:47:40.819299+00:00",
+      "input_hashes": {
+        "classified_methods": "e3b57835bbe2cca5",
+        "contratos_clasificados": "4b348284ad32888c",
+        "method_sets": "3c64c710b70eb9e9"
+      }
+    },
+    "source_references": {
+      "method_assignments_source": "method_sets_by_question.json",
+      "contract_classification_source": "contratos_clasificados.json",
+      "method_definitions_source": "classified_methods.json",
+      "doctrine_source": "operationalization_guide.json"
+    },
+    "composition_trace": {
+      "question_id": "D3_Q5",
+      "contract_id": "Q015",
+      "type_code": "TYPE_D",
+      "methods_in_chain": 14,
+      "n1_methods": 5,
+      "n2_methods": 6,
+      "n3_methods": 3,
+      "efficiency_score": 1.0256
+    },
+    "validity_conditions": {
+      "temporal_validity": "Until next input revision",
+      "review_trigger": "Changes to any input file",
+      "expiration_policy": "Regenerate if input hashes change"
+    },
+    "quality_flags": {
+      "low_confidence_methods": [
+        "PDETMunicipalPlanAnalyzer._assess_financial_sustainability"
+      ],
+      "low_confidence_count": 1,
+      "veto_capable_methods": [
+        "FinancialAuditor._detect_allocation_gaps",
+        "OperationalizationAuditor._perform_counterfactual_budget_check",
+        "CausalExtractor._assess_financial_consistency"
+      ],
+      "veto_capable_count": 3
+    },
+    "validation_status": {
+      "phase_level_coherence": "PASSED",
+      "method_expansion": "COMPLETED",
+      "chain_composition": "COMPLETED",
+      "contract_assembly": "COMPLETED"
+    },
+    "sector_specific": {
+      "sector_id": "PA05",
+      "sector_name": "Derechos de las víctimas y construcción de paz"
+    },
+    "audit_checklist": {
+      "structure_validated": true,
+      "epistemic_coherence_validated": true,
+      "temporal_validity_validated": true,
+      "cross_reference_validated": true,
+      "sector_validated": true,
+      "validation_pass_rate": 1.0,
+      "validation_checks_total": 365,
+      "validation_checks_passed": 365,
+      "validation_timestamp": "2026-01-05T13:47:41.095065+00:00",
+      "validator_version": "4.0.0-granular"
+    },
+    "emission_metadata": {
+      "emitter_version": "4.0.0-granular",
+      "emission_timestamp": "2026-01-05T13:47:41.545666+00:00",
+      "output_format": "json",
+      "encoding": "utf-8",
+      "deterministic": true
+    }
+  }
+}
