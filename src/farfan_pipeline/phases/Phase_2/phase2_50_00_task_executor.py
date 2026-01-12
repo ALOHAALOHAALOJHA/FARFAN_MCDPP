@@ -400,13 +400,25 @@ class ParallelTaskExecutor:
     def _build_question_index(self) -> dict[str, dict[str, Any]]:
         """Build index of questions by question_id."""
         index: dict[str, dict[str, Any]] = {}
-        blocks = self.questionnaire_monolith.get("blocks", [])
-        for block in blocks:
-            if block.get("block_type") == "micro_questions":
-                for question in block.get("micro_questions", []):
-                    question_id = question.get("question_id")
-                    if question_id:
-                        index[question_id] = question
+        blocks = self.questionnaire_monolith.get("blocks", {})
+
+        # Support both dict format {"micro_questions": [...]} and list format
+        if isinstance(blocks, dict):
+            # Dict format: {"micro_questions": [...]}
+            micro_questions = blocks.get("micro_questions", [])
+            for question in micro_questions:
+                question_id = question.get("question_id")
+                if question_id:
+                    index[question_id] = question
+        elif isinstance(blocks, list):
+            # List format: [{"block_type": "micro_questions", "micro_questions": [...]}]
+            for block in blocks:
+                if block.get("block_type") == "micro_questions":
+                    for question in block.get("micro_questions", []):
+                        question_id = question.get("question_id")
+                        if question_id:
+                            index[question_id] = question
+
         return index
 
     def execute_plan_parallel(self, plan: ExecutionPlan) -> list[TaskResult]:
@@ -725,13 +737,25 @@ class DryRunExecutor:
     def _build_question_index(self) -> dict[str, dict[str, Any]]:
         """Build index of questions by question_id."""
         index: dict[str, dict[str, Any]] = {}
-        blocks = self.questionnaire_monolith.get("blocks", [])
-        for block in blocks:
-            if block.get("block_type") == "micro_questions":
-                for question in block.get("micro_questions", []):
-                    question_id = question.get("question_id")
-                    if question_id:
-                        index[question_id] = question
+        blocks = self.questionnaire_monolith.get("blocks", {})
+
+        # Support both dict format {"micro_questions": [...]} and list format
+        if isinstance(blocks, dict):
+            # Dict format: {"micro_questions": [...]}
+            micro_questions = blocks.get("micro_questions", [])
+            for question in micro_questions:
+                question_id = question.get("question_id")
+                if question_id:
+                    index[question_id] = question
+        elif isinstance(blocks, list):
+            # List format: [{"block_type": "micro_questions", "micro_questions": [...]}]
+            for block in blocks:
+                if block.get("block_type") == "micro_questions":
+                    for question in block.get("micro_questions", []):
+                        question_id = question.get("question_id")
+                        if question_id:
+                            index[question_id] = question
+
         return index
 
     def execute_plan_dry_run(self, plan: ExecutionPlan) -> list[TaskResult]:
@@ -786,9 +810,9 @@ class DryRunExecutor:
             return TaskResult(
                 task_id=task.task_id,
                 question_id=task.question_id,
-                question_global=task.question_global,
-                policy_area_id=task.policy_area_id,
-                dimension_id=task.dimension_id,
+                question_global=0,
+                policy_area_id=task.policy_area,
+                dimension_id=task.dimension,
                 chunk_id=task.chunk_id,
                 success=False,
                 output={},
@@ -802,13 +826,16 @@ class DryRunExecutor:
         # Build dry-run output
         method_sets = question.get("method_sets", [])
         base_slot = DynamicContractExecutor._derive_base_slot(task.question_id)
+        patterns = question.get("patterns", [])
+        signal_requirements = question.get("signal_requirements", [])
+        expected_elements = question.get("expected_elements", [])
 
         return TaskResult(
             task_id=task.task_id,
             question_id=task.question_id,
-            question_global=task.question_global,
-            policy_area_id=task.policy_area_id,
-            dimension_id=task.dimension_id,
+            question_global=question.get("question_global", 0),
+            policy_area_id=task.policy_area,
+            dimension_id=task.dimension,
             chunk_id=task.chunk_id,
             success=True,
             output={
@@ -816,10 +843,10 @@ class DryRunExecutor:
                 "would_execute": {
                     "method_sets": method_sets,
                     "base_slot": base_slot,
-                    "patterns_count": len(task.patterns),
-                    "signals_count": len(task.signals),
-                    "expected_elements_count": len(task.expected_elements),
-                    "chunk_text_length": len(task.chunk_text) if task.chunk_text else 0,
+                    "patterns_count": len(patterns),
+                    "signals_count": len(signal_requirements),
+                    "expected_elements_count": len(expected_elements),
+                    "chunk_text_length": len(task.question_text) if task.question_text else 0,
                 },
                 "estimated_time_ms": estimated_time_ms,
             },
@@ -842,17 +869,20 @@ class DryRunExecutor:
         base_ms = 50.0
 
         # Add time for patterns
-        base_ms += len(task.patterns) * 5.0
+        patterns = question.get("patterns", [])
+        base_ms += len(patterns) * 5.0
 
         # Add time for signals
-        base_ms += len(task.signals) * 3.0
+        signal_requirements = question.get("signal_requirements", [])
+        base_ms += len(signal_requirements) * 3.0
 
         # Add time for expected elements
-        base_ms += len(task.expected_elements) * 2.0
+        expected_elements = question.get("expected_elements", [])
+        base_ms += len(expected_elements) * 2.0
 
-        # Add time for chunk text length
-        chunk_length = len(task.chunk_text) if task.chunk_text else 0
-        base_ms += chunk_length * 0.01
+        # Add time for question text length (proxy for chunk text)
+        text_length = len(task.question_text) if task.question_text else 0
+        base_ms += text_length * 0.01
 
         # Add time for method sets
         method_sets = question.get("method_sets", [])
@@ -1154,13 +1184,24 @@ class TaskExecutor:
         """Build index of questions by question_id."""
         index: dict[str, dict[str, Any]] = {}
 
-        blocks = self.questionnaire_monolith.get("blocks", [])
-        for block in blocks:
-            if block.get("block_type") == "micro_questions":
-                for question in block.get("micro_questions", []):
-                    question_id = question.get("question_id")
-                    if question_id:
-                        index[question_id] = question
+        blocks = self.questionnaire_monolith.get("blocks", {})
+
+        # Support both dict format {"micro_questions": [...]} and list format
+        if isinstance(blocks, dict):
+            # Dict format: {"micro_questions": [...]}
+            micro_questions = blocks.get("micro_questions", [])
+            for question in micro_questions:
+                question_id = question.get("question_id")
+                if question_id:
+                    index[question_id] = question
+        elif isinstance(blocks, list):
+            # List format: [{"block_type": "micro_questions", "micro_questions": [...]}]
+            for block in blocks:
+                if block.get("block_type") == "micro_questions":
+                    for question in block.get("micro_questions", []):
+                        question_id = question.get("question_id")
+                        if question_id:
+                            index[question_id] = question
 
         return index
 
