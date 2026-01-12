@@ -66,18 +66,55 @@ QUALITY_INSUFICIENTE = "INSUFICIENTE"
 QUALITY_NO_APLICABLE = "NO_APLICABLE"
 QUALITY_ERROR = "ERROR"
 
-# Threshold adjustment constants
-# NOTE: These are now fallback defaults. Empirical values loaded from corpus_thresholds_weights.json
-HIGH_PATTERN_THRESHOLD = 15  # Pattern count threshold for complexity
-HIGH_INDICATOR_THRESHOLD = 10  # Indicator count threshold for specificity
-PATTERN_COMPLEXITY_ADJUSTMENT = -0.05  # Lower threshold for complex questions
-INDICATOR_SPECIFICITY_ADJUSTMENT = 0.03  # Raise threshold for specific questions
-COMPLETE_EVIDENCE_ADJUSTMENT = 0.02  # Bonus for complete evidence
+# DEPRECATED: Threshold constants moved to config/signal_scoring_thresholds.json
+# Use get_threshold_config() from farfan_pipeline.config.threshold_config instead
+# These remain as fallback only if config system fails
+_FALLBACK_HIGH_PATTERN_THRESHOLD = 15
+_FALLBACK_HIGH_INDICATOR_THRESHOLD = 10
+_FALLBACK_PATTERN_COMPLEXITY_ADJUSTMENT = -0.05
+_FALLBACK_INDICATOR_SPECIFICITY_ADJUSTMENT = 0.03
+_FALLBACK_COMPLETE_EVIDENCE_ADJUSTMENT = 0.02
+_FALLBACK_HIGH_SCORE_THRESHOLD = 0.8
+_FALLBACK_LOW_SCORE_THRESHOLD = 0.3
 
-# Score thresholds for validation
-# NOTE: These should be loaded from empirical_weights.json phase3_scoring_weights
-HIGH_SCORE_THRESHOLD = 0.8
-LOW_SCORE_THRESHOLD = 0.3
+# Load centralized configuration
+try:
+    from farfan_pipeline.config.threshold_config import get_threshold_config
+
+    _threshold_config = get_threshold_config()
+    if not _threshold_config.validation_passed:
+        logger.warning(
+            f"Threshold config validation failed: {_threshold_config.validation_errors}. "
+            "Using fallback values."
+        )
+        HIGH_PATTERN_THRESHOLD = _FALLBACK_HIGH_PATTERN_THRESHOLD
+        HIGH_INDICATOR_THRESHOLD = _FALLBACK_HIGH_INDICATOR_THRESHOLD
+        PATTERN_COMPLEXITY_ADJUSTMENT = _FALLBACK_PATTERN_COMPLEXITY_ADJUSTMENT
+        INDICATOR_SPECIFICITY_ADJUSTMENT = _FALLBACK_INDICATOR_SPECIFICITY_ADJUSTMENT
+        COMPLETE_EVIDENCE_ADJUSTMENT = _FALLBACK_COMPLETE_EVIDENCE_ADJUSTMENT
+        HIGH_SCORE_THRESHOLD = _FALLBACK_HIGH_SCORE_THRESHOLD
+        LOW_SCORE_THRESHOLD = _FALLBACK_LOW_SCORE_THRESHOLD
+    else:
+        HIGH_PATTERN_THRESHOLD = _threshold_config.high_pattern_threshold
+        HIGH_INDICATOR_THRESHOLD = _threshold_config.high_indicator_threshold
+        PATTERN_COMPLEXITY_ADJUSTMENT = _threshold_config.pattern_complexity_adjustment
+        INDICATOR_SPECIFICITY_ADJUSTMENT = _threshold_config.indicator_specificity_adjustment
+        COMPLETE_EVIDENCE_ADJUSTMENT = _threshold_config.complete_evidence_adjustment
+        HIGH_SCORE_THRESHOLD = _threshold_config.high_score_threshold
+        LOW_SCORE_THRESHOLD = _threshold_config.low_score_threshold
+        logger.info(
+            f"Threshold config loaded: HIGH_PATTERN={HIGH_PATTERN_THRESHOLD}, "
+            f"HIGH_SCORE={HIGH_SCORE_THRESHOLD}"
+        )
+except Exception as e:
+    logger.warning(f"Failed to load threshold config: {e}. Using fallback values.")
+    HIGH_PATTERN_THRESHOLD = _FALLBACK_HIGH_PATTERN_THRESHOLD
+    HIGH_INDICATOR_THRESHOLD = _FALLBACK_HIGH_INDICATOR_THRESHOLD
+    PATTERN_COMPLEXITY_ADJUSTMENT = _FALLBACK_PATTERN_COMPLEXITY_ADJUSTMENT
+    INDICATOR_SPECIFICITY_ADJUSTMENT = _FALLBACK_INDICATOR_SPECIFICITY_ADJUSTMENT
+    COMPLETE_EVIDENCE_ADJUSTMENT = _FALLBACK_COMPLETE_EVIDENCE_ADJUSTMENT
+    HIGH_SCORE_THRESHOLD = _FALLBACK_HIGH_SCORE_THRESHOLD
+    LOW_SCORE_THRESHOLD = _FALLBACK_LOW_SCORE_THRESHOLD
 
 __all__ = [
     "SignalEnrichedScorer",
@@ -353,17 +390,37 @@ class SignalEnrichedScorer:
             adjustment_log["status"] = "no_enriched_pack"
             return raw_score, adjustment_log
 
-        # Get expected signals for question
+        # Get expected signals for question using QuestionnaireSignalRegistry
+        # NO SILENT FALLBACKS - if this fails, the system should fail explicitly
         expected_primary = []
         try:
-            from canonic_questionnaire_central import CQCLoader
+            from farfan_pipeline.phases.Phase_2.registries.questionnaire_signal_registry import (
+                QuestionnaireSignalRegistry,
+            )
 
-            cqc = CQCLoader()
-            if hasattr(cqc, "get_signals_for_question"):
-                expected_signals = cqc.get_signals_for_question(question_id)
-                expected_primary = list(expected_signals)[:2]  # First 2 are primary
-        except Exception:
-            pass
+            registry = QuestionnaireSignalRegistry()
+            mapping = registry.get_question_mapping(question_id)
+            if mapping:
+                # Primary signals are the ones we expect
+                expected_primary = mapping.primary_signals
+            else:
+                logger.warning(
+                    f"No signal mapping found for question {question_id} in QuestionnaireSignalRegistry"
+                )
+        except ImportError as e:
+            # Hard fail if registry is not available - this is a critical dependency
+            raise RuntimeError(
+                f"QuestionnaireSignalRegistry is required but not available: {e}. "
+                "Cannot perform signal-enriched scoring without signal registry."
+            ) from e
+        except Exception as e:
+            # Log and fail explicitly for other errors - NO SILENT FAILURES
+            logger.error(
+                f"Failed to get expected signals for {question_id}: {type(e).__name__}: {e}"
+            )
+            raise RuntimeError(
+                f"Failed to retrieve signal mapping for {question_id}: {e}"
+            ) from e
 
         # Get signals that were actually detected
         received_signals = enriched_pack.get("signals_detected", [])

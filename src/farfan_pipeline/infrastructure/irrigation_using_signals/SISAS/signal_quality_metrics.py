@@ -150,7 +150,10 @@ def compute_signal_quality_metrics(
         SignalQualityMetrics object
 
     Example:
-        >>> pack = build_signal_pack_from_monolith("PA07")
+        >>> # Get signal pack from QuestionnaireSignalRegistry
+        >>> from farfan_pipeline.phases.Phase_2.registries.questionnaire_signal_registry import QuestionnaireSignalRegistry
+        >>> registry = QuestionnaireSignalRegistry()
+        >>> # Note: SignalPack is now accessed through registry, not built from monolith
         >>> metrics = compute_signal_quality_metrics(pack, "PA07")
         >>> print(f"Coverage tier: {metrics.coverage_tier}")
         >>> print(f"High quality: {metrics.is_high_quality}")
@@ -224,8 +227,10 @@ def analyze_coverage_gaps(metrics_by_pa: dict[str, SignalQualityMetrics]) -> Cov
         CoverageGapAnalysis object
 
     Example:
-        >>> packs = build_all_signal_packs()
-        >>> metrics = {pa: compute_signal_quality_metrics(pack, pa) for pa, pack in packs.items()}
+        >>> # Use QuestionnaireSignalRegistry instead of deprecated signal_loader
+        >>> from farfan_pipeline.phases.Phase_2.registries.questionnaire_signal_registry import QuestionnaireSignalRegistry
+        >>> registry = QuestionnaireSignalRegistry()
+        >>> # Build metrics from registry data
         >>> gap_analysis = analyze_coverage_gaps(metrics)
         >>> print(f"Gap severity: {gap_analysis.gap_severity}")
         >>> print(f"Requires fallback: {gap_analysis.requires_fallback_fusion}")
@@ -326,8 +331,10 @@ def generate_quality_report(metrics_by_pa: dict[str, SignalQualityMetrics]) -> d
         - quality_gates: Pass/fail status for quality gates
 
     Example:
-        >>> packs = build_all_signal_packs()
-        >>> metrics = {pa: compute_signal_quality_metrics(pack, pa) for pa, pack in packs.items()}
+        >>> # Use QuestionnaireSignalRegistry instead of deprecated signal_loader
+        >>> from farfan_pipeline.phases.Phase_2.registries.questionnaire_signal_registry import QuestionnaireSignalRegistry
+        >>> registry = QuestionnaireSignalRegistry()
+        >>> # Build metrics from registry data
         >>> report = generate_quality_report(metrics)
         >>> print(json.dumps(report["summary"], indent=2))
     """
