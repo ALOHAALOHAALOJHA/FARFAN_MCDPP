@@ -13,15 +13,15 @@ Python: 3.12+
 
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import logging
 import math
 import random
 from datetime import UTC, datetime
-from html import escape as html_escape
 from pathlib import Path
-import base64
+from typing import TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_9.report_assembly import AnalysisReport
@@ -299,7 +299,7 @@ class AtrozVisualizer:
         """
     
     @staticmethod
-    def generate_radar_chart(scores: List[float], labels: List[str]) -> str:
+    def generate_radar_chart(scores: list[float], labels: list[str]) -> str:
         """Generate animated radar chart with AtroZ styling."""
         if not scores or not labels:
             return ""
@@ -339,7 +339,7 @@ class AtrozVisualizer:
         # Draw axes
         n_points = len(labels)
         for i in range(n_points):
-            angle = (2 * 3.14159 * i) / n_points
+            angle = (2 * math.pi * i) / n_points
             x = 200 + 200 * math.sin(angle)
             y = 200 - 200 * math.cos(angle)
             
@@ -369,7 +369,7 @@ class AtrozVisualizer:
         for i in range(n_points):
             score = normalized_scores[i]
             radius = 200 * (score / 100)
-            angle = (2 * 3.14159 * i) / n_points
+            angle = (2 * math.pi * i) / n_points
             x = 200 + radius * math.sin(angle)
             y = 200 - radius * math.cos(angle)
             points.append(f"{x},{y}")
@@ -598,7 +598,7 @@ def generate_markdown_report(report: AnalysisReport) -> str:
 def generate_html_report(
     report: AnalysisReport,
     chart_paths: list[Path] | None = None,
-    template_name: str = "report_enhanced.html.j2",
+    template_name: str = "report.html.j2",
     enable_animations: bool = True,
 ) -> str:
     """Generate HTML report with enhanced template (aligned with generate_all default)."""
@@ -1199,8 +1199,6 @@ def generate_charts(report: AnalysisReport, output_dir: Path, plan_name: str = "
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
         import numpy as np
-        from matplotlib.patches import Polygon
-        import matplotlib.cm as cm
     except ImportError:
         logger.warning("Matplotlib not available for AtroZ charts")
         return []
