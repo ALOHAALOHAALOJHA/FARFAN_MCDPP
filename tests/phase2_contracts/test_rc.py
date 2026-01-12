@@ -8,7 +8,7 @@ import pytest
 import numpy as np
 from pathlib import Path
 
-from cross_cutting_infrastructure.contractual.dura_lex.risk_certificate import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.risk_certificate import (
     RiskCertificateContract,
 )
 

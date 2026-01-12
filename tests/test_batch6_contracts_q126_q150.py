@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 
-from farfan_pipeline.phases.Phase_two.contract_validator_cqvr import CQVRValidator  # noqa: E402
+from farfan_pipeline.phases.Phase_2.contract_validator_cqvr import CQVRValidator  # noqa: E402
 
 
 CONTRACTS_DIR = (
@@ -12,7 +12,7 @@ CONTRACTS_DIR = (
     / "src"
     / "farfan_pipeline"
     / "phases"
-    / "Phase_two"
+    / "Phase_2"
     / "json_files_phase_two"
     / "executor_contracts"
     / "specialized"

@@ -8,7 +8,7 @@ import pytest
 from pathlib import Path
 from typing import Any
 
-from cross_cutting_infrastructure.contractual.dura_lex.idempotency_dedup import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.idempotency_dedup import (
     IdempotencyContract,
     EvidenceStore,
 )

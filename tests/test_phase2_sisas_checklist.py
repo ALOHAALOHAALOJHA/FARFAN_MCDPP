@@ -101,7 +101,7 @@ except ImportError:
 
 # SISAS Signal Registry - REAL PATHS after repo reorganization
 try:
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry as SISASSignalRegistry,
         create_signal_registry,
     )
@@ -118,7 +118,7 @@ SignalPack = None
 
 # Signal loader for building packs by policy area - REAL PATH
 try:
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_loader import (
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_loader import (
         build_all_signal_packs,
         build_signal_pack_from_monolith,
     )
@@ -251,7 +251,7 @@ def executor_contracts_dir(project_root: Path) -> Path:
         / "src"
         / "farfan_pipeline"
         / "phases"
-        / "Phase_two"
+        / "Phase_2"
         / "json_files_phase_two"
         / "executor_contracts"
         / "specialized"

@@ -8,10 +8,10 @@ import pytest
 from pathlib import Path
 from typing import Any
 
-from cross_cutting_infrastructure.contractual.dura_lex.alignment_stability import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.alignment_stability import (
     AlignmentStabilityContract,
 )
-from cross_cutting_infrastructure.contractual.dura_lex.total_ordering import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.total_ordering import (
     TotalOrderingContract,
 )
 

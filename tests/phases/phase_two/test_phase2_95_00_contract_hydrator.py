@@ -18,7 +18,7 @@ import pytest
 from typing import Any, Dict
 from unittest.mock import MagicMock
 
-from farfan_pipeline.phases.Phase_two.phase2_95_00_contract_hydrator import (
+from farfan_pipeline.phases.Phase_2.phase2_95_00_contract_hydrator import (
     ContractHydrator,
     ContractHydrationError,
     HydrationResult,

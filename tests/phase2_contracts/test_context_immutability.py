@@ -10,7 +10,7 @@ from dataclasses import dataclass, FrozenInstanceError
 from types import MappingProxyType
 from typing import Any
 
-from cross_cutting_infrastructure.contractual.dura_lex.context_immutability import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.context_immutability import (
     ContextImmutabilityContract,
 )
 

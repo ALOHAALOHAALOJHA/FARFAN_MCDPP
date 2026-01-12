@@ -17,7 +17,7 @@ from unittest.mock import patch
 import pytest
 
 # Import the module under test
-from farfan_pipeline.phases.Phase_two.phase2_95_03_executor_calibration_integration import (
+from farfan_pipeline.phases.Phase_2.phase2_95_03_executor_calibration_integration import (
     get_executor_config,
 )
 

@@ -7,7 +7,7 @@ Resource allocation ordering guarantee
 import pytest
 from pathlib import Path
 
-from cross_cutting_infrastructure.contractual.dura_lex.budget_monotonicity import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.budget_monotonicity import (
     BudgetMonotonicityContract,
 )
 

@@ -42,7 +42,7 @@ class TestCalibrationLayerIntegration:
 
         # Evidence reference for all params
         evidence = EvidenceReference(
-            path="src/farfan_pipeline/phases/Phase_two/epistemological_assets/contratos_clasificados.json",
+            path="src/farfan_pipeline/phases/Phase_2/epistemological_assets/contratos_clasificados.json",
             commit_sha="a" * 40,
             description="Canonical source",
         )

@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from cross_cutting_infrastructure.contractual.dura_lex.concurrency_determinism import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.concurrency_determinism import (
     ConcurrencyDeterminismContract,
 )
 
