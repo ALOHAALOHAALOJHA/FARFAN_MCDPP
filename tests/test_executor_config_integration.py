@@ -11,12 +11,14 @@ Verifies:
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 from unittest.mock import patch
 
 import pytest
 
 # Import the module under test
+
 from farfan_pipeline.phases.Phase_two.phase2_95_03_executor_calibration_integration import (
     get_executor_config,
 )
@@ -83,7 +85,9 @@ class TestGetExecutorConfigIntegration:
         }
 
         with patch.dict(os.environ, {"FARFAN_TIMEOUT_S": "120"}):
-            config = get_executor_config("test_executor", "D1", "Q1", cli_overrides=cli_overrides)
+            config = get_executor_config(
+                "test_executor", "D1", "Q1", cli_overrides=cli_overrides
+            )
             # CLI should override environment variable
             assert config["timeout_seconds"] == 180
             assert config["max_retries"] == 7
@@ -92,7 +96,9 @@ class TestGetExecutorConfigIntegration:
     def test_environment_parameter_passed_through(self) -> None:
         """Test that environment parameter is passed to ExecutorConfig."""
         # This should not raise an error even with non-default environment
-        config = get_executor_config("test_executor", "D1", "Q1", environment="development")
+        config = get_executor_config(
+            "test_executor", "D1", "Q1", environment="development"
+        )
         assert isinstance(config, dict)
         assert "timeout_seconds" in config
 
@@ -150,11 +156,18 @@ class TestGetExecutorConfigLogging:
 
         # Should log the config request
         assert any(
-            "Config requested for test_executor" in record.message for record in caplog.records
+            "Config requested for test_executor" in record.message
+            for record in caplog.records
         )
-        assert any("dimension=D1" in record.message for record in caplog.records)
-        assert any("question=Q1" in record.message for record in caplog.records)
-        assert any("environment=production" in record.message for record in caplog.records)
+        assert any(
+            "dimension=D1" in record.message for record in caplog.records
+        )
+        assert any(
+            "question=Q1" in record.message for record in caplog.records
+        )
+        assert any(
+            "environment=production" in record.message for record in caplog.records
+        )
 
     def test_debug_logging_shows_loaded_values(self, caplog) -> None:
         """Test that debug logging shows loaded configuration values."""
@@ -165,7 +178,10 @@ class TestGetExecutorConfigLogging:
         get_executor_config("test_executor", "D1", "Q1")
 
         # Should log the loaded values
-        assert any("Loaded config for test_executor" in record.message for record in caplog.records)
+        assert any(
+            "Loaded config for test_executor" in record.message
+            for record in caplog.records
+        )
         assert any("timeout=" in record.message for record in caplog.records)
         assert any("retries=" in record.message for record in caplog.records)
         assert any("memory=" in record.message for record in caplog.records)

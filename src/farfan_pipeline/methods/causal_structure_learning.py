@@ -512,39 +512,41 @@ class CausalStructureLearner:
         max_path_length: int | None = None,
     ) -> list[list[str]]:
         """
-        Find all causal paths from source to target.
-
+        Find causal paths between nodes.
+        
         Args:
-            source: Source variable
-            target: Target variable
+            source: Starting node
+            target: Ending node
             max_paths: Maximum number of paths to return
-            max_path_length: Maximum path length (None for unlimited)
-
+            max_path_length: Maximum path length (number of edges), None for unlimited
+            
         Returns:
-            List of paths (each path is list of variables)
+            List of paths, each path is a list of node names
         """
-        if not CAUSALNEX_AVAILABLE or self.structure_model is None:
+        if not self.structure_model:
             return []
-
+        
         try:
-            from networkx import all_simple_paths
-
-            paths = list(
-                all_simple_paths(
-                    self.structure_model,
-                    source=source,
-                    target=target,
-                    cutoff=max_path_length,
-                )
-            )
-
+            # Get all paths up to max_path_length
+            all_paths = list(nx.all_simple_paths(
+                self.structure_model,
+                source,
+                target,
+                cutoff=max_path_length  # Limits LENGTH, not count
+            ))
+            
+            # Then limit COUNT of returned paths
+            result = all_paths[:max_paths]
+            
             self.logger.debug(
-                f"Found {len(paths)} causal paths from {source} to {target}, "
-                f"returning top {min(len(paths), max_paths)}"
+                f"Found {len(all_paths)} total paths from {source} to {target}, "
+                f"returning {len(result)}"
             )
-            return paths[:max_paths]
-
-        except Exception as e:
+            
+            return result
+        except nx.NetworkXError as e:
+            self.logger.warning(f"Path finding failed: {e}")
+            return []
             self.logger.error(f"Error finding causal paths: {e}")
             return []
 

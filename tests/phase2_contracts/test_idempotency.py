@@ -3,10 +3,11 @@ Test IDC - Idempotency Contract
 Verifies: Content-hash de-duplication, 10 runs = 1 result
 Duplicate detection guarantee
 """
-
 import pytest
+import sys
 from pathlib import Path
 from typing import Any
+
 
 from cross_cutting_infrastructure.contractual.dura_lex.idempotency_dedup import (
     IdempotencyContract,
@@ -28,13 +29,17 @@ class TestIdempotencyContract:
             {"question_id": "Q001", "element": "fuente_oficial", "value": "DANE"},  # dup
         ]
 
-    def test_idc_001_duplicates_blocked(self, sample_evidence: list[dict[str, Any]]) -> None:
+    def test_idc_001_duplicates_blocked(
+        self, sample_evidence: list[dict[str, Any]]
+    ) -> None:
         """IDC-001: Duplicate items are blocked."""
         result = IdempotencyContract.verify_idempotency(sample_evidence)
         assert result["duplicates_blocked"] == 2
         assert result["count"] == 3  # Only 3 unique items
 
-    def test_idc_002_state_hash_stable(self, sample_evidence: list[dict[str, Any]]) -> None:
+    def test_idc_002_state_hash_stable(
+        self, sample_evidence: list[dict[str, Any]]
+    ) -> None:
         """IDC-002: State hash is identical for same inputs."""
         result1 = IdempotencyContract.verify_idempotency(sample_evidence)
         result2 = IdempotencyContract.verify_idempotency(sample_evidence)

@@ -8,6 +8,7 @@ F.A.R.F.A.N pipeline.
 Main Components:
 - signal_registry: Central registry for signal packs and questionnaire signals
 - signals: Core signal abstractions and client
+- signal_irrigator: Signal delivery system (extractor → question routing) **NEW**
 - signal_quality_metrics: Quality assessment for signal coverage
 - signal_intelligence_layer: Advanced signal processing
 - signal_contract_validator: Contract enforcement for signals
@@ -33,9 +34,9 @@ The F.A.R.F.A.N pipeline enforces contracts with zero tolerance for maximum perf
 # Note: 'infrastrucuture' spelling is intentional - matches actual folder name
 try:
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals import (
-        SignalClient,
         SignalPack,
         SignalRegistry,
+        SignalClient,
         create_default_signal_pack,
     )
 except ImportError as e:
@@ -49,9 +50,9 @@ except ImportError as e:
 # Signal registry for questionnaires and chunks - REQUIRED
 try:
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+        QuestionnaireSignalRegistry,
         ChunkingSignalPack,
         MicroAnsweringSignalPack,
-        QuestionnaireSignalRegistry,
         create_signal_registry,
     )
 except ImportError as e:
@@ -64,8 +65,8 @@ except ImportError as e:
 try:
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_quality_metrics import (
         SignalQualityMetrics,
-        analyze_coverage_gaps,
         compute_signal_quality_metrics,
+        analyze_coverage_gaps,
         generate_quality_report,
     )
 except ImportError as e:
@@ -76,29 +77,42 @@ except ImportError as e:
 
 # Strategic Enhancements - NEW 2025-12-11
 try:
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_enhancement_integrator import (
-        SignalEnhancementIntegrator,
-        create_enhancement_integrator,
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_irrigator import (
+        SignalIrrigator,
+        SignalDelivery,
+        IrrigationStats,
+        irrigate_extraction_result,
     )
+except ImportError as e:
+    raise ImportError(
+        "SISAS signal_irrigator module failed to import. "
+        f"Ensure signal_irrigator.py is present. Original error: {e}"
+    ) from e
+
+try:
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_method_metadata import (
-        MethodExecutionMetadata,
         MethodMetadata,
+        MethodExecutionMetadata,
         extract_method_metadata,
-    )
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_scoring_context import (
-        ScoringContext,
-        ScoringModalityDefinition,
-        extract_scoring_context,
-    )
-    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_semantic_context import (
-        DisambiguationRule,
-        SemanticContext,
-        extract_semantic_context,
     )
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_validation_specs import (
         ValidationSpec,
         ValidationSpecifications,
         extract_validation_specifications,
+    )
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_scoring_context import (
+        ScoringModalityDefinition,
+        ScoringContext,
+        extract_scoring_context,
+    )
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_semantic_context import (
+        SemanticContext,
+        DisambiguationRule,
+        extract_semantic_context,
+    )
+    from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_enhancement_integrator import (
+        SignalEnhancementIntegrator,
+        create_enhancement_integrator,
     )
 except ImportError as e:
     raise ImportError(
@@ -117,6 +131,11 @@ __all__ = [
     "ChunkingSignalPack",
     "MicroAnsweringSignalPack",
     "create_signal_registry",
+    # Signal Irrigation - NEW
+    "SignalIrrigator",
+    "SignalDelivery",
+    "IrrigationStats",
+    "irrigate_extraction_result",
     # Quality
     "SignalQualityMetrics",
     "compute_signal_quality_metrics",

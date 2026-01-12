@@ -70,19 +70,19 @@ table_pattern = structural_config["extraction_patterns"]["table_detection"]["reg
 confidence_threshold = structural_config["extraction_patterns"]["table_detection"]["confidence"]
 
 # Use in extractor
-class CPPStructuralParser:
+class StructuralMarkerExtractor:
     def __init__(self, calibration_data):
         self.table_pattern = re.compile(calibration_data["extraction_patterns"]["table_detection"]["regex"])
         self.confidence_threshold = calibration_data["extraction_patterns"]["table_detection"]["confidence"]
 ```
 
 #### Used By
-- `CPPStructuralParser` (Phase 1-SP2)
+- `StructuralMarkerExtractor` (Phase 1-SP2)
 - `QuantitativeTripletExtractor` (Phase 1-SP6)
 - `NormativeReferenceExtractor` (Phase 1-SP5)
 - `FinancialChainExtractor` (Phase 1-SP7)
 - `CausalVerbExtractor` (Phase 1-SP10)
-- `InstitutionalNER` (Phase 1-SP11)
+- `InstitutionalNERExtractor` (Phase 1-SP11)
 
 ---
 
@@ -273,7 +273,7 @@ with open("_registry/membership_criteria/_calibration/extractor_calibration.json
     extractor_config = json.load(f)
 
 # 2. Configure all extractors
-structural_parser = CPPStructuralParser(extractor_config["signal_type_catalog"]["STRUCTURAL_MARKER"])
+structural_parser = StructuralMarkerExtractor(extractor_config["signal_type_catalog"]["STRUCTURAL_MARKER"])
 triplet_extractor = QuantitativeTripletExtractor(extractor_config["signal_type_catalog"]["QUANTITATIVE_TRIPLET"])
 normative_extractor = NormativeReferenceExtractor(extractor_config["signal_type_catalog"]["NORMATIVE_REFERENCE"])
 # ... etc for all MC01-MC10

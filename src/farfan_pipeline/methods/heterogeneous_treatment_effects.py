@@ -200,7 +200,7 @@ class HeterogeneousTreatmentAnalyzer:
             feature_importance = {}
             if hasattr(model, "feature_importances_"):
                 importances = model.feature_importances_
-                for name, importance in zip(self.feature_names, importances):
+                for name, importance in zip(self.feature_names, importances, strict=True):
                     feature_importance[name] = float(importance)
 
             estimate = CATEEstimate(
@@ -377,8 +377,8 @@ class HeterogeneousTreatmentAnalyzer:
                     # Filter to subgroup
                     mask = X[col] == value
                     X_sub = X[mask]
-                    T_sub = T[mask] if isinstance(T, pd.Series) else T[mask]
-                    Y_sub = Y[mask] if isinstance(Y, pd.Series) else Y[mask]
+                    T_sub = T[mask]
+                    Y_sub = Y[mask]
 
                     if len(X_sub) < 10:
                         continue  # Skip small subgroups
@@ -579,7 +579,7 @@ class HeterogeneousTreatmentAnalyzer:
             baseline_estimate = self.estimate_cate_dml(X, T, Y, method="forest")
 
             # Simulate unmeasured confounder
-            n = len(T) if isinstance(T, pd.Series) else len(T)
+            n = len(T)
             U = np.random.randn(n) * confounder_strength
 
             # Add confounder to outcome

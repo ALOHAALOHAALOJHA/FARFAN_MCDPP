@@ -3,10 +3,11 @@ Test FFC - Failure Fallback Contract
 Verifies: Typed errors trigger deterministic fallbacks
 Graceful degradation guarantee
 """
-
 import pytest
+import sys
 from pathlib import Path
 from typing import Any
+
 
 from cross_cutting_infrastructure.contractual.dura_lex.failure_fallback import (
     FailureFallbackContract,

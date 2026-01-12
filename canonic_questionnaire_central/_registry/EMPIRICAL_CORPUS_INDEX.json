@@ -42,7 +42,7 @@
         "NormativeReferenceExtractor (Phase 1-SP5)",
         "FinancialChainExtractor (Phase 1-SP7)",
         "CausalVerbExtractor (Phase 1-SP10)",
-        "InstitutionalNER (Phase 1-SP11)"
+        "InstitutionalNERExtractor (Phase 1-SP11)"
       ],
       "critical_for": "Extractor accuracy and confidence scoring"
     },
@@ -120,12 +120,12 @@
     "step1_extractor_initialization": {
       "action": "Load extractor_calibration.json",
       "extractors_configure": [
-        "CPPStructuralParser → table/section detection patterns",
+        "StructuralMarkerExtractor → table/section detection patterns",
         "QuantitativeTripletExtractor → LB/Meta/Año patterns",
         "NormativeReferenceExtractor → norm citation patterns",
         "FinancialChainExtractor → budget chain patterns",
         "CausalVerbExtractor → causal verb patterns",
-        "InstitutionalNER → entity recognition patterns"
+        "InstitutionalNERExtractor → entity recognition patterns"
       ],
       "output": "Extractors ready with empirically validated patterns"
     },
