@@ -141,9 +141,39 @@ class CQCLoader:
         return Path(__file__).resolve().parent / "_registry"
 
     def _fallback_registry(self):
-        """Fallback to traditional loading if lazy loading unavailable."""
-        # Placeholder - would load from consolidated files
-        return {}
+        """Fallback to traditional loading if lazy loading unavailable.
+
+        Loads questions from atomized JSON files when LazyQuestionRegistry
+        is not available. This provides backward compatibility.
+
+        Returns:
+            Dict mapping question_id to question data
+        """
+        import json
+
+        registry = {}
+        questions_dir = self._get_questions_dir()
+
+        if not questions_dir.exists():
+            # No questions directory, return empty registry
+            return {}
+
+        # Load all JSON files from questions directory
+        for json_file in questions_dir.glob("*.json"):
+            try:
+                with open(json_file, "r", encoding="utf-8") as f:
+                    question_data = json.load(f)
+
+                    # Extract question_id from data or filename
+                    question_id = question_data.get("question_id") or json_file.stem
+                    registry[question_id] = question_data
+            except (json.JSONDecodeError, IOError) as e:
+                # Skip files that fail to load
+                import logging
+                logging.warning(f"Failed to load question from {json_file}: {e}")
+                continue
+
+        return registry
 
     # ========================================================================
     # QUESTION LOADING (Acupuncture Point 1)
@@ -228,8 +258,21 @@ class CQCLoader:
         if self._router_type == "indexed":
             return self.router.route(signal_type)
         else:
-            # Fallback to linear search (slow)
-            return set()  # Placeholder
+            # Fallback to linear search (slow) - iterates through all questions
+            # This is O(n) vs O(1) for indexed routing
+            result_set = set()
+
+            # Get all questions from registry
+            if hasattr(self.registry, "keys"):
+                # Registry is a dict-like object
+                for question_id in self.registry.keys():
+                    question = self.get_question(question_id)
+                    if question and hasattr(question, "signals"):
+                        # Check if signal_type is in question's signals
+                        if signal_type in question.signals:
+                            result_set.add(question_id)
+
+            return result_set
 
     def route_batch(self, signal_types: List[str]) -> Dict[str, Set[str]]:
         """

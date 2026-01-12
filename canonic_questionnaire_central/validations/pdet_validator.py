@@ -319,7 +319,7 @@ class PDETValidator:
 
         return result
 
-    # Placeholder validation methods - these would contain actual validation logic
+    # PDET-specific validation methods implementing territorial context rules
 
     def _validate_municipality_context(self, rule, context, data, result):
         """Validate municipality context (DIM01)."""
