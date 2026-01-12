@@ -1,6 +1,6 @@
 """FastAPI Signal Service - Cross-Cut Channel Publisher.
 
-This service exposes signal packs from questionnaire.monolith to the orchestrator
+This service exposes signal packs from the modular canonical questionnaire to the orchestrator
 via HTTP endpoints with ETag support, caching, and SSE streaming.
 
 Endpoints:
@@ -50,34 +50,34 @@ logger = structlog.get_logger(__name__)
 _signal_store: dict[str, SignalPack] = {}
 
 
-def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[str, SignalPack]:
+def load_signals_from_canonical_questionnaire(questionnaire_path: str | Path | None = None) -> dict[str, SignalPack]:
     """
-    Load signal packs from questionnaire monolith using sophisticated extraction.
+    Load signal packs from modular canonical questionnaire using sophisticated extraction.
 
-    Extracts policy-aware patterns, indicators, and thresholds from the
-    questionnaire structure using NLP and semantic analysis.
+    This function loads signal packs using the CQCLoader from the canonical
+    questionnaire central, which contains the modularized questionnaire with
+    PDET focus and entity registry.
 
     Args:
-        monolith_path: DEPRECATED - Path parameter is ignored.
-                      Questionnaire always loads from canonical path.
+        questionnaire_path: DEPRECATED - Path parameter is ignored.
+                          Uses CQCLoader which auto-discovers canonical registry.
 
     Returns:
-        Dict mapping policy area to SignalPack
+        Dict mapping policy area code to SignalPack
 
-    Extraction Strategy:
-        1. Load questionnaire using CQCLoader (lazy-loaded registry)
-        2. Extract questions per policy area (PA01-PA10)
-        3. Mine patterns from question text using TF-IDF
-        4. Extract indicators from scoring metrics
-        5. Generate regex patterns from structured fields
-        6. Extract verbs using POS tagging
-        7. Identify entities using NER and domain knowledge
-        8. Compute thresholds from statistical analysis
+    Algorithm:
+        1. Initialize CQCLoader with modular questionnaire access
+        2. Extract patterns using TF-IDF
+        3. Extract indicators from questionnaire structure
+        4. Extract entities from canonical registry (PDET focus)
+        5. Generate regex patterns for data extraction
+        6. Extract action verbs using POS tagging
+        7. Compute thresholds from statistical analysis
     """
-    if monolith_path is not None:
+    if questionnaire_path is not None:
         logger.info(
-            "monolith_path_ignored",
-            provided_path=str(monolith_path),
+            "questionnaire_path_ignored",
+            provided_path=str(questionnaire_path),
             message="Path parameter ignored. Using canonical loader.",
         )
 
@@ -98,7 +98,7 @@ def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[
         packs = _extract_sophisticated_signal_packs()
 
         logger.info(
-            "signals_loaded_from_monolith",
+            "signals_loaded_from_canonical_questionnaire",
             pack_count=len(packs),
             policy_areas=list(packs.keys()),
         )
@@ -106,7 +106,7 @@ def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[
         return packs
 
     except Exception as e:
-        logger.error("failed_to_load_monolith", error=str(e), exc_info=True)
+        logger.error("failed_to_load_canonical_questionnaire", error=str(e), exc_info=True)
         # Fallback to synthetic generation
         return _generate_synthetic_signal_packs()
 
@@ -424,85 +424,83 @@ def _extract_action_verbs_for_policy_area(pa_name: str) -> list[str]:
 
 def _extract_entities_for_policy_area(pa_code: str, pa_name: str) -> list[str]:
     """
-    Extract named entities relevant to policy area using NER and domain knowledge.
+    Extract named entities relevant to policy area from canonical questionnaire registry.
+    
+    Loads entities from canonic_questionnaire_central/_registry/entities/ with focus
+    on PDET (Programas de Desarrollo con Enfoque Territorial) context.
 
     Args:
         pa_code: Policy area code
         pa_name: Policy area name
 
     Returns:
-        List of named entities
+        List of named entities from canonical source
     """
-    # Entity library per policy area
-    entity_library = {
-        "PA01": [
-            "Departamento de Planeación",
-            "Secretaría de Desarrollo",
-            "Concejo Municipal",
-            "Curador Urbano",
-        ],
-        "PA02": [
-            "Secretaría de Salud",
-            "Hospital Local",
-            "Centro de Salud",
-            "Ministerio de Salud",
-        ],
-        "PA03": [
-            "Secretaría de Educación",
-            "ICBF",
-            "Ministerio de Educación",
-            "Institución Educativa",
-        ],
-        "PA04": [
-            "Secretaría de Infraestructura",
-            "INVIAS",
-            "Empresa de Servicios Públicos",
-            "ANI",
-        ],
-        "PA05": [
-            "Secretaría de Desarrollo Económico",
-            "Cámara de Comercio",
-            "SENA",
-            "Banco Agrario",
-        ],
-        "PA06": [
-            "Corporación Autónoma Regional",
-            "Ministerio de Ambiente",
-            "IDEAM",
-            "Parques Nacionales",
-        ],
-        "PA07": [
-            "Secretaría de Gobierno",
-            "Policía Nacional",
-            "Comisaría de Familia",
-            "Fiscalía",
-        ],
-        "PA08": [
-            "Unidad para las Víctimas",
-            "Centro Regional de Memoria",
-            "Personería Municipal",
-            "Defensoría del Pueblo",
-        ],
-        "PA09": [
-            "Alcaldía Municipal",
-            "Contraloría",
-            "Procuraduría",
-            "Veeduría Ciudadana",
-        ],
-        "PA10": [
-            "MinTIC",
-            "Secretaría TIC",
-            "Gobierno Digital",
-            "Punto Vive Digital",
-        ],
-    }
-
-    return entity_library.get(pa_code, [
-        "Entidad Territorial",
-        "Organismo Competente",
-        "Autoridad Local",
-        "Instancia de Coordinación",
-    ])
+    import json
+    from pathlib import Path
+    
+    # Load entities from canonical questionnaire registry
+    entities = []
+    registry_path = Path(__file__).resolve().parent.parent.parent / "canonic_questionnaire_central" / "_registry" / "entities"
+    
+    try:
+        # Load entities by category
+        for entity_file in ["institutions.json", "populations.json", "territorial.json", "normative.json"]:
+            file_path = registry_path / entity_file
+            if file_path.exists():
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    for entity_id, entity_data in data.get("entities", {}).items():
+                        canonical_name = entity_data.get("canonical_name", "")
+                        
+                        # Check if entity is relevant for this policy area
+                        scoring_context = entity_data.get("scoring_context", {})
+                        boost_areas = scoring_context.get("boost_policy_areas", {})
+                        
+                        if pa_code in boost_areas or not boost_areas:
+                            entities.append(canonical_name)
+                        
+                        # Add PDET-specific entities for all policy areas (main pipeline focus)
+                        if "PDET" in canonical_name or any("pdet" in alias.lower() for alias in entity_data.get("aliases", [])):
+                            entities.append(canonical_name)
+        
+        # Add PDET-specific entities that are critical for territorial development
+        pdet_entities = [
+            "Municipio PDET",
+            "Subregión PDET",
+            "PATR (Plan de Acción para la Transformación Regional)",
+            "ART (Agencia de Renovación del Territorio)",
+            "Diálogos Territoriales",
+            "Pacto Municipal",
+        ]
+        entities.extend(pdet_entities)
+        
+        # Policy area specific institutional entities
+        institutional_map = {
+            "PA01": ["Secretaría de Mujer y Género", "Consejería Presidencial para la Equidad de la Mujer"],
+            "PA02": ["Policía Nacional", "Fuerza Pública", "Fiscalía"],
+            "PA03": ["Ministerio de Ambiente", "IDEAM", "Corporación Autónoma Regional"],
+            "PA04": ["Ministerio de Educación", "Secretaría de Educación", "ICBF"],
+            "PA05": ["Unidad para las Víctimas", "Centro de Memoria Histórica", "Defensoría del Pueblo"],
+            "PA06": ["ICBF", "Comisaría de Familia", "Secretaría de Infancia"],
+            "PA07": ["ANT (Agencia Nacional de Tierras)", "URT (Unidad de Restitución de Tierras)"],
+            "PA08": ["Defensoría del Pueblo", "Personería Municipal"],
+            "PA09": ["INPEC", "Ministerio de Justicia"],
+            "PA10": ["Migración Colombia", "ACNUR"],
+        }
+        
+        entities.extend(institutional_map.get(pa_code, []))
+        
+    except Exception as e:
+        logger.warning(f"Failed to load entities from canonical source: {e}. Using fallback.")
+        # Fallback to minimal set
+        entities = [
+            "Entidad Territorial",
+            "Municipio PDET",
+            "Comunidad",
+        ]
+    
+    return list(set(entities))  # Remove duplicates
 
 
 def _compute_thresholds_for_policy_area(pa_code: str) -> dict[str, float]:
@@ -615,7 +613,7 @@ def _generate_synthetic_signal_packs() -> dict[str, SignalPack]:
 # Initialize FastAPI app
 app = FastAPI(
     title="F.A.R.F.A.N Signal Service",
-    description="Cross-cut signal channel from questionnaire.monolith to orchestrator - Framework for Advanced Retrieval of Administrativa Narratives",
+    description="Cross-cut signal channel from modular canonical questionnaire to orchestrator - Framework for Advanced Retrieval of Administrativa Narratives",
     version="1.0.0",
 )
 
@@ -670,8 +668,8 @@ async def startup_event() -> None:
     global _signal_store
 
     # Load from canonical questionnaire path (via questionnaire.load_questionnaire())
-    # Path parameter is deprecated and ignored - see load_signals_from_monolith() docstring
-    _signal_store = load_signals_from_monolith(monolith_path=None)
+    # Path parameter is deprecated and ignored - see load_signals_from_canonical_questionnaire() docstring
+    _signal_store = load_signals_from_canonical_questionnaire(questionnaire_path=None)
 
     logger.info(
         "signal_service_started",
