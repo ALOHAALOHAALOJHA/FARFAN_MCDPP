@@ -189,6 +189,10 @@ class DoWhyCausalAnalyzer:
         return "digraph {" + "; ".join(edges) + "}"
 ```
 
+> **Note:** DoWhy accepts NetworkX DiGraph objects directly via the `graph=`
+> parameter. No format conversion is required. The `_get_dowhy_compatible_graph`
+> method exists for API consistency and documentation purposes.
+
 **Step 5**: Integration with `derek_beach.py`
 ```python
 # Add to derek_beach.py imports:
@@ -604,7 +608,27 @@ class CausalStructureLearner:
             w_threshold=w_threshold
         )
         return sm
+```
 
+#### Data Requirements for CausalNex
+
+CausalNex Bayesian Networks require **discrete features**. Continuous data must
+be discretized before use:
+
+```python
+def _discretize_data(self, data: pd.DataFrame, n_bins: int = 5) -> pd.DataFrame:
+    """Quantile-bin continuous columns for CausalNex compatibility."""
+    discretized = data.copy()
+    for col in data.select_dtypes(include=['float64', 'float32']).columns:
+        discretized[col] = pd.qcut(
+            data[col], q=n_bins, labels=False, duplicates='drop'
+        )
+    return discretized
+```
+
+Call this method before `from_pandas()` and before fitting/predicting.
+
+```python
     def create_bayesian_network(
         self,
         structure: StructureModel,
