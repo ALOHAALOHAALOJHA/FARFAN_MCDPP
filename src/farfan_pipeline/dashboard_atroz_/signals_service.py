@@ -500,8 +500,12 @@ def _extract_indicators_for_policy_area(pa_code: str, pattern_registry: dict) ->
                     metadata = question.metadata if isinstance(question.metadata, dict) else {}
                     if 'indicators' in metadata:
                         indicators.extend(metadata['indicators'])
-            except Exception:
-                pass
+            except Exception as e:
+                logger.debug(
+                    "cqc_per_question_indicator_extraction_failed",
+                    question_id=q_id,
+                    error=str(e),
+                )
                 
     except (ImportError, Exception) as e:
         logger.debug("cqc_indicator_extraction_failed", error=str(e))
