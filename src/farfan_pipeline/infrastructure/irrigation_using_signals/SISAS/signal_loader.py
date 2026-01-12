@@ -61,21 +61,29 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals impor
 
 def compute_fingerprint(content: str | bytes) -> str:
     """
-    Compute fingerprint of content using blake3 or sha256 fallback.
+    Compute fingerprint of content using BLAKE3 ONLY.
+
+    BLAKE3 is REQUIRED for deterministic, reproducible fingerprints.
+    No fallback to SHA256 to ensure consistent hashing across environments.
 
     Args:
         content: String or bytes to hash
 
     Returns:
-        Hex string of hash
+        Hex string of BLAKE3 hash (64 hex characters)
+
+    Raises:
+        RuntimeError: If blake3 is not available (must be installed)
     """
+    if not BLAKE3_AVAILABLE:
+        raise RuntimeError(
+            "blake3 is REQUIRED for signal fingerprints. Install with: pip install blake3"
+        )
+
     if isinstance(content, str):
         content = content.encode("utf-8")
 
-    if BLAKE3_AVAILABLE:
-        return blake3.blake3(content).hexdigest()
-    else:
-        return hashlib.sha256(content).hexdigest()
+    return blake3.blake3(content).hexdigest()
 
 
 # DEPRECATED: Re-exported from factory.py for backward compatibility
@@ -244,8 +252,11 @@ def build_signal_pack_from_monolith(
     """
     Build SignalPack for a specific policy area from questionnaire monolith.
 
-    This extracts REAL patterns from the questionnaire_monolith.json file and
-    constructs a versioned SignalPack with proper categorization.
+    .. deprecated:: 2.0.0
+        This function is HARD DEPRECATED. Use QuestionnaireSignalRegistry instead.
+        See SPEC_SIGNAL_NORMALIZATION_COMPREHENSIVE.md §5.2: SISAS-LOADER-001
+
+    This function now raises RuntimeError to enforce migration to the new system.
 
     Args:
         policy_area: Policy area code (PA01-PA10)
@@ -253,15 +264,24 @@ def build_signal_pack_from_monolith(
         questionnaire: Optional questionnaire port exposing .data/.sha256/.version
 
     Returns:
-        SignalPack object with extracted patterns
+        Never returns - always raises RuntimeError
 
-    Example:
-        >>> from farfan_core.core.orchestrator.questionnaire import load_questionnaire
-        >>> canonical = load_questionnaire()
-        >>> pack = build_signal_pack_from_monolith("PA01", questionnaire=canonical)
-        >>> print(f"Patterns: {len(pack.patterns)}")
-        >>> print(f"Indicators: {len(pack.indicators)}")
+    Raises:
+        RuntimeError: Always raised to enforce migration
+
+    Migration:
+        Replace:
+            pack = build_signal_pack_from_monolith("PA01", questionnaire=canonical)
+        With:
+            from farfan_pipeline.phases.Phase_2.registries.questionnaire_signal_registry import QuestionnaireSignalRegistry
+            registry = QuestionnaireSignalRegistry()
+            mapping = registry.get_question_mapping("Q001")  # Get signals for specific question
     """
+    raise RuntimeError(
+        "build_signal_pack_from_monolith() is HARD DEPRECATED and no longer functional. "
+        "Use QuestionnaireSignalRegistry from Phase_2.registries.questionnaire_signal_registry instead. "
+        "See SPEC_SIGNAL_NORMALIZATION_COMPREHENSIVE.md §5.2: SISAS-LOADER-001 for migration guide."
+    )
 
     if monolith is not None:
         monolith_data = monolith
@@ -362,38 +382,16 @@ def build_all_signal_packs(
     """
     Build SignalPacks for all policy areas.
 
-    Args:
-        monolith: Optional pre-loaded monolith data
-        questionnaire: Optional questionnaire port exposing .data
+    .. deprecated:: 2.0.0
+        This function is HARD DEPRECATED. Use QuestionnaireSignalRegistry instead.
 
-    Returns:
-        Dict mapping policy_area_id to SignalPack
-
-    Example:
-        >>> from farfan_core.core.orchestrator.questionnaire import load_questionnaire
-        >>> canonical = load_questionnaire()
-        >>> packs = build_all_signal_packs(questionnaire=canonical)
-        >>> print(f"Built {len(packs)} signal packs")
+    Raises:
+        RuntimeError: Always raised to enforce migration
     """
-
-    if monolith is None and questionnaire is None:
-        raise ValueError("Questionnaire data is required to build signal packs")
-
-    policy_areas = [f"PA{i:02d}" for i in range(1, 11)]
-
-    signal_packs = {}
-    for pa in policy_areas:
-        signal_packs[pa] = build_signal_pack_from_monolith(
-            pa, monolith=monolith, questionnaire=questionnaire
-        )
-
-    logger.info(
-        "all_signal_packs_built",
-        count=len(signal_packs),
-        policy_areas=list(signal_packs.keys()),
+    raise RuntimeError(
+        "build_all_signal_packs() is HARD DEPRECATED and no longer functional. "
+        "Use QuestionnaireSignalRegistry from Phase_2.registries.questionnaire_signal_registry instead."
     )
-
-    return signal_packs
 
 
 def build_signal_manifests(
@@ -404,33 +402,13 @@ def build_signal_manifests(
     """
     Build signal manifests with Merkle roots for verification.
 
-    Args:
-        monolith: Optional pre-loaded monolith data
-        questionnaire: Optional questionnaire port exposing .data
+    .. deprecated:: 2.0.0
+        This function is HARD DEPRECATED. Use QuestionnaireSignalRegistry instead.
 
-    Returns:
-        Dict mapping policy_area_id to SignalManifest
-
-    Example:
-        >>> from farfan_core.core.orchestrator.questionnaire import load_questionnaire
-        >>> canonical = load_questionnaire()
-        >>> manifests = build_signal_manifests(questionnaire=canonical)
-        >>> print(f"Built {len(manifests)} manifests")
+    Raises:
+        RuntimeError: Always raised to enforce migration
     """
-
-    if monolith is not None:
-        monolith_data = monolith
-    elif questionnaire is not None:
-        monolith_data = dict(questionnaire.data)
-    else:
-        raise ValueError("Questionnaire data is required to build signal manifests")
-
-    manifests = generate_signal_manifests(monolith_data, None)
-
-    logger.info(
-        "signal_manifests_built",
-        count=len(manifests),
-        policy_areas=list(manifests.keys()),
+    raise RuntimeError(
+        "build_signal_manifests() is HARD DEPRECATED and no longer functional. "
+        "Use QuestionnaireSignalRegistry from Phase_2.registries.questionnaire_signal_registry instead."
     )
-
-    return manifests
