@@ -1690,10 +1690,16 @@ class AreaPolicyAggregator:
             }
         except HermeticityValidationError as e:
             logger.error(f"Hermeticity validation failed for area {area_id}: {e}")
-            # Get area name and cluster_id from modular metadata
+            # Get area name and cluster_id from modular metadata with safe fallback
             pa_data = next((a for a in self.policy_areas if a["policy_area_id"] == area_id), None)
-            area_name = pa_data["i18n"]["keys"]["label_es"] if pa_data else area_id
-            cluster_id = pa_data.get("cluster_id") if pa_data else None
+            area_name = area_id
+            cluster_id = None
+            if pa_data:
+                try:
+                    area_name = pa_data["i18n"]["keys"]["label_es"]
+                except (KeyError, TypeError):
+                    area_name = area_id
+                cluster_id = pa_data.get("cluster_id")
             return AreaScore(
                 area_id=area_id,
                 area_name=area_name,
