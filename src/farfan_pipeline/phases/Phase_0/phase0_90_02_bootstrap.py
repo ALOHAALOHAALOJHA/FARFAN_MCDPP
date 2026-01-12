@@ -66,8 +66,21 @@ from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals impor
     SignalPack,
     SignalRegistry,
 )
-from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import CONFIG_DIR
-from farfan_pipeline.phases.Phase_2.phase2_10_00_factory import CanonicalQuestionnaire
+from farfan_pipeline.phases.Phase_0.phase0_10_00_paths import CONFIG_DIR, DATA_DIR
+
+# Import CanonicalQuestionnaire from canonical source to avoid circular import
+try:
+    from canonic_questionnaire_central import CanonicalQuestionnaire
+except ImportError:
+    # Fallback: define minimal protocol for type hints
+    from typing import Protocol
+    class CanonicalQuestionnaire(Protocol):  # type: ignore[no-redef]
+        data: dict
+        dimensions: dict
+        policy_areas: dict
+        micro_questions: list
+        sha256: str
+
 from farfan_pipeline.phases.Phase_2.phase2_10_01_class_registry import build_class_registry
 from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
 from farfan_pipeline.phases.Phase_2.phase2_60_02_arg_router import ExtendedArgRouter
@@ -272,9 +285,23 @@ _HAS_CALIBRATION = False
 # Import wiring support from consolidated module
 from farfan_pipeline.phases.Phase_0.phase0_90_03_wiring_validator import (
     MissingDependencyError,
+    Phase0ConfigValidator as Phase0Validator,
+    WiringFeatureFlags,
+    WiringInitializationError,
+    WiringValidator,
 )
 
 logger = structlog.get_logger(__name__)
+
+
+@dataclass
+class CoreModuleFactory:
+    """Stub factory for core module instantiation.
+    
+    Note: This is a minimal stub. The full implementation is in
+    AnalysisPipelineFactory (phase2_10_00_factory.py).
+    """
+    data_dir: Path | None = None
 
 
 @dataclass

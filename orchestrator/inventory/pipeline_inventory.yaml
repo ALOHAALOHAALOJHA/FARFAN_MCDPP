@@ -1,0 +1,382 @@
+# ============================================================================
+# F.A.R.F.A.N Pipeline Inventory
+# ============================================================================
+# Version: 1.0.0
+# Generated: 2026-01-12
+# Purpose: Exhaustive inventory of all pipeline stages
+# Rule: Every executable in raw_files.txt MUST be mapped here
+# ============================================================================
+
+metadata:
+  pipeline_name: "FARFAN_MCDPP"
+  description: "Municipal Development Plan Causal Evaluation Pipeline"
+  version: "4.0.0"
+  total_phases: 10
+  total_questions: 305
+
+# ============================================================================
+# STAGE DEFINITIONS
+# ============================================================================
+
+stages:
+  # --------------------------------------------------------------------------
+  # Phase 0: Bootstrap / Initialization
+  # --------------------------------------------------------------------------
+  - name: phase_0_bootstrap
+    description: "Pipeline initialization and resource loading"
+    executable: src/farfan_pipeline/phases/Phase_0/
+    inputs:
+      - type: file
+        uri: canonic_questionnaire_central/questionnaire_monolith.json
+        description: "Canonical questionnaire (305 questions)"
+      - type: file
+        uri: canonic_questionnaire_central/modular_manifest.json
+        description: "Modular structure manifest"
+    outputs:
+      - type: memory
+        uri: CanonicalQuestionnaire
+        description: "Loaded questionnaire object"
+      - type: memory
+        uri: QuestionnaireSignalRegistry
+        description: "Signal registry for routing"
+    preconditions:
+      - description: "questionnaire_monolith.json exists and is valid JSON"
+      - description: "SHA256 hash matches integrity record"
+    postconditions:
+      - description: "CanonicalQuestionnaire is immutable (frozen)"
+      - description: "All 305 questions loaded"
+    sla:
+      max_runtime_minutes: 1
+      max_retries: 0
+    side_effects: []
+    upstream_dependencies: []
+    downstream_dependencies:
+      - phase_1_document_ingestion
+
+  # --------------------------------------------------------------------------
+  # Phase 1: Document Ingestion
+  # --------------------------------------------------------------------------
+  - name: phase_1_document_ingestion
+    description: "PDF/document parsing and text extraction"
+    executable: src/farfan_pipeline/phases/Phase_1/
+    inputs:
+      - type: file
+        uri: "input_documents/*.pdf"
+        description: "Municipal Development Plans (PDFs)"
+    outputs:
+      - type: memory
+        uri: ParsedDocument
+        description: "Structured text with sections"
+      - type: file
+        uri: "artifacts/parsed/*.json"
+        description: "Parsed document cache"
+    preconditions:
+      - description: "Input PDF is readable and not corrupted"
+      - description: "PDF contains extractable text (not scanned image)"
+    postconditions:
+      - description: "Document structure identified (sections, tables)"
+      - description: "Text encoding is UTF-8"
+    sla:
+      max_runtime_minutes: 10
+      max_retries: 2
+    side_effects:
+      - description: "Creates parsed cache files"
+    upstream_dependencies:
+      - phase_0_bootstrap
+    downstream_dependencies:
+      - phase_2_evidence_extraction
+
+  # --------------------------------------------------------------------------
+  # Phase 2: Evidence Extraction & Classification
+  # --------------------------------------------------------------------------
+  - name: phase_2_evidence_extraction
+    description: "NLP-based evidence extraction using patterns and semantic matching"
+    executable: src/farfan_pipeline/phases/Phase_2/
+    inputs:
+      - type: memory
+        uri: ParsedDocument
+        description: "Structured document from Phase 1"
+      - type: memory
+        uri: CanonicalQuestionnaire
+        description: "Question patterns and expected elements"
+    outputs:
+      - type: memory
+        uri: EvidencePackage
+        description: "Extracted evidence per question"
+      - type: file
+        uri: "artifacts/evidence/*.json"
+        description: "Evidence extraction results"
+    preconditions:
+      - description: "ParsedDocument has valid structure"
+      - description: "Pattern registry is loaded"
+    postconditions:
+      - description: "Each Q001-Q300 has evidence attempt"
+      - description: "Match confidence scores calculated"
+    sla:
+      max_runtime_minutes: 30
+      max_retries: 1
+    side_effects: []
+    upstream_dependencies:
+      - phase_1_document_ingestion
+    downstream_dependencies:
+      - phase_3_scoring
+
+  # --------------------------------------------------------------------------
+  # Phase 3: Scoring (MICRO level)
+  # --------------------------------------------------------------------------
+  - name: phase_3_scoring
+    description: "Apply scoring modalities to extracted evidence"
+    executable: src/farfan_pipeline/phases/Phase_3/
+    inputs:
+      - type: memory
+        uri: EvidencePackage
+        description: "Evidence from Phase 2"
+      - type: file
+        uri: canonic_questionnaire_central/scoring/scoring_system.json
+        description: "Scoring rubrics"
+    outputs:
+      - type: memory
+        uri: MicroScores
+        description: "Scores for Q001-Q300"
+      - type: file
+        uri: "artifacts/scores/micro_scores.json"
+        description: "Persisted micro scores"
+    preconditions:
+      - description: "EvidencePackage contains all 300 micro questions"
+      - description: "Scoring modalities (TYPE_A through TYPE_F) are defined"
+    postconditions:
+      - description: "Each question has score 0.0-1.0"
+      - description: "Quality level assigned (excelente/bueno/aceptable/insuficiente)"
+    sla:
+      max_runtime_minutes: 5
+      max_retries: 0
+    side_effects: []
+    upstream_dependencies:
+      - phase_2_evidence_extraction
+    downstream_dependencies:
+      - phase_4_aggregation
+
+  # --------------------------------------------------------------------------
+  # Phase 4: Aggregation (MESO + MACRO levels)
+  # --------------------------------------------------------------------------
+  - name: phase_4_aggregation
+    description: "Aggregate micro scores to meso (cluster) and macro (global) levels"
+    executable: src/farfan_pipeline/phases/Phase_4/
+    inputs:
+      - type: memory
+        uri: MicroScores
+        description: "300 micro question scores"
+      - type: file
+        uri: canonic_questionnaire_central/meso_questions.json
+        description: "MESO question definitions"
+      - type: file
+        uri: canonic_questionnaire_central/macro_question.json
+        description: "MACRO question definition"
+    outputs:
+      - type: memory
+        uri: AggregatedScores
+        description: "MESO (4) + MACRO (1) scores"
+      - type: file
+        uri: "artifacts/scores/aggregated_scores.json"
+        description: "Persisted aggregated scores"
+    preconditions:
+      - description: "All 300 micro scores available"
+      - description: "MESO_INTEGRATION and MACRO_HOLISTIC modalities defined"
+    postconditions:
+      - description: "4 cluster scores calculated (CL01-CL04)"
+      - description: "1 global coherence score calculated"
+    sla:
+      max_runtime_minutes: 2
+      max_retries: 0
+    side_effects: []
+    upstream_dependencies:
+      - phase_3_scoring
+    downstream_dependencies:
+      - phase_5_validation
+
+  # --------------------------------------------------------------------------
+  # Phase 5: Validation & Interdependency Checks
+  # --------------------------------------------------------------------------
+  - name: phase_5_validation
+    description: "Validate causal chain coherence and interdependencies"
+    executable: src/farfan_pipeline/phases/Phase_5/
+    inputs:
+      - type: memory
+        uri: AggregatedScores
+        description: "All scores"
+      - type: file
+        uri: canonic_questionnaire_central/validations/interdependency_mapping.json
+        description: "Interdependency rules"
+    outputs:
+      - type: memory
+        uri: ValidationResult
+        description: "Pass/fail with details"
+      - type: file
+        uri: "artifacts/validation/validation_report.json"
+        description: "Validation report"
+    preconditions:
+      - description: "Aggregated scores present"
+    postconditions:
+      - description: "Causal chain integrity verified"
+      - description: "Circular reasoning detected if present"
+    sla:
+      max_runtime_minutes: 2
+      max_retries: 0
+    side_effects: []
+    upstream_dependencies:
+      - phase_4_aggregation
+    downstream_dependencies:
+      - phase_6_report_generation
+
+  # --------------------------------------------------------------------------
+  # Phase 6: Report Generation
+  # --------------------------------------------------------------------------
+  - name: phase_6_report_generation
+    description: "Generate human-readable evaluation report"
+    executable: src/farfan_pipeline/phases/Phase_6/
+    inputs:
+      - type: memory
+        uri: ValidationResult
+        description: "Validation outcome"
+      - type: memory
+        uri: AggregatedScores
+        description: "All scores"
+    outputs:
+      - type: file
+        uri: "output/reports/*.pdf"
+        description: "PDF evaluation report"
+      - type: file
+        uri: "output/reports/*.json"
+        description: "Machine-readable report"
+    preconditions:
+      - description: "All scores and validations complete"
+    postconditions:
+      - description: "Report includes all 10 policy areas"
+      - description: "Report includes recommendations"
+    sla:
+      max_runtime_minutes: 5
+      max_retries: 1
+    side_effects:
+      - description: "Creates output files"
+    upstream_dependencies:
+      - phase_5_validation
+    downstream_dependencies:
+      - phase_7_archival
+
+  # --------------------------------------------------------------------------
+  # Phase 7: Archival & Audit Trail
+  # --------------------------------------------------------------------------
+  - name: phase_7_archival
+    description: "Archive results and create audit trail"
+    executable: src/farfan_pipeline/phases/Phase_7/
+    inputs:
+      - type: file
+        uri: "output/reports/*"
+        description: "Generated reports"
+      - type: file
+        uri: "artifacts/**/*"
+        description: "All artifacts"
+    outputs:
+      - type: file
+        uri: "archive/${municipality}_${date}.tar.gz"
+        description: "Compressed archive"
+      - type: file
+        uri: "audit/audit_log.jsonl"
+        description: "Audit trail entry"
+    preconditions:
+      - description: "Reports generated successfully"
+    postconditions:
+      - description: "Archive integrity verified (checksum)"
+      - description: "Audit log entry created"
+    sla:
+      max_runtime_minutes: 3
+      max_retries: 1
+    side_effects:
+      - description: "Writes to archive storage"
+      - description: "Appends to audit log"
+    upstream_dependencies:
+      - phase_6_report_generation
+    downstream_dependencies: []
+
+  # --------------------------------------------------------------------------
+  # Phase 8: Choquet Aggregation (Advanced)
+  # --------------------------------------------------------------------------
+  - name: phase_8_choquet
+    description: "Apply Choquet integral aggregation for interaction effects"
+    executable: src/farfan_pipeline/phases/Phase_8/
+    inputs:
+      - type: memory
+        uri: MicroScores
+        description: "Raw micro scores"
+      - type: file
+        uri: "config/choquet_weights.json"
+        description: "Fuzzy measure coefficients"
+    outputs:
+      - type: memory
+        uri: ChoquetScores
+        description: "Interaction-adjusted scores"
+    preconditions:
+      - description: "Choquet weights calibrated"
+    postconditions:
+      - description: "Interaction effects calculated"
+    sla:
+      max_runtime_minutes: 5
+      max_retries: 0
+    side_effects: []
+    upstream_dependencies:
+      - phase_3_scoring
+    downstream_dependencies:
+      - phase_4_aggregation
+
+  # --------------------------------------------------------------------------
+  # Phase 9: Calibration & Benchmarking
+  # --------------------------------------------------------------------------
+  - name: phase_9_calibration
+    description: "Calibrate scoring against benchmark corpus"
+    executable: src/farfan_pipeline/phases/Phase_9/
+    inputs:
+      - type: file
+        uri: "benchmark_corpus/*.json"
+        description: "Ground truth evaluations"
+      - type: memory
+        uri: MicroScores
+        description: "Pipeline scores"
+    outputs:
+      - type: file
+        uri: "calibration/calibration_report.json"
+        description: "Calibration metrics"
+      - type: file
+        uri: "calibration/bias_corrections.json"
+        description: "Bias correction factors"
+    preconditions:
+      - description: "Benchmark corpus available"
+    postconditions:
+      - description: "Calibration metrics calculated"
+    sla:
+      max_runtime_minutes: 10
+      max_retries: 0
+    side_effects: []
+    upstream_dependencies:
+      - phase_3_scoring
+    downstream_dependencies: []
+
+# ============================================================================
+# CROSS-CUTTING CONCERNS
+# ============================================================================
+
+cross_cutting:
+  observability:
+    metrics_endpoint: "prometheus://localhost:9090"
+    log_format: "JSON"
+    trace_propagation: "W3C"
+    
+  secrets:
+    provider: "environment_variables"
+    required:
+      - OPENAI_API_KEY
+      - GCS_CREDENTIALS
+      
+  governance:
+    data_classification: "CONFIDENTIAL"
+    retention_days: 365
+    audit_required: true

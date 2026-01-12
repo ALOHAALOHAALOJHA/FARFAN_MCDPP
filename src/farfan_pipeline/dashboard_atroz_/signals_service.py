@@ -19,9 +19,10 @@ Design:
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 from datetime import UTC, datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import structlog
 from fastapi import FastAPI, HTTPException, Request, Response
@@ -44,6 +45,9 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 logger = structlog.get_logger(__name__)
+
+# Check for blake3 availability at module level for performance
+_HAS_BLAKE3 = hasattr(hashlib, "blake3")
 
 
 # In-memory signal store (would be database/file in production)
@@ -113,20 +117,17 @@ def load_signals_from_canonical_questionnaire(questionnaire_path: str | Path | N
 
 def _extract_sophisticated_signal_packs() -> dict[str, SignalPack]:
     """
-    Extract signal packs using sophisticated NLP and pattern mining.
+    Extract signal packs using domain knowledge libraries.
 
     Uses:
-    - TF-IDF for pattern extraction
-    - POS tagging for verb extraction
+    - Curated domain knowledge libraries for pattern extraction
+    - Policy-area-specific KPI libraries
+    - Domain-specific entity and verb catalogs
     - Statistical analysis for threshold computation
-    - Domain knowledge for entity identification
 
     Returns:
         Dict mapping policy area to SignalPack
     """
-    import hashlib
-    import re
-    from collections import Counter, defaultdict
     from datetime import UTC, datetime
 
     # Policy area mappings - loaded from canonical source
@@ -167,7 +168,8 @@ def _extract_sophisticated_signal_packs() -> dict[str, SignalPack]:
 
             # Compute source fingerprint
             content = f"{pa_code}{patterns}{indicators}".encode()
-            fingerprint = hashlib.blake3(content).hexdigest()[:32] if hasattr(hashlib, "blake3") else hashlib.sha256(content).hexdigest()[:32]
+            # Uses blake3 if available (requires: pip install blake3), falls back to sha256
+            fingerprint = hashlib.blake3(content).hexdigest()[:32] if _HAS_BLAKE3 else hashlib.sha256(content).hexdigest()[:32]
 
             # Create signal pack
             pack = SignalPack(
@@ -184,8 +186,8 @@ def _extract_sophisticated_signal_packs() -> dict[str, SignalPack]:
                 valid_from=datetime.now(UTC).isoformat(),
                 metadata={
                     "policy_area_name": pa_name,
-                    "extraction_method": "sophisticated_nlp",
-                    "quality_score": 0.95,
+                    "extraction_method": "domain_knowledge_library",
+                    "quality_score": 0.80,
                 },
             )
 
@@ -211,14 +213,14 @@ def _extract_sophisticated_signal_packs() -> dict[str, SignalPack]:
 
 def _mine_patterns_for_policy_area(pa_code: str, pa_name: str) -> list[str]:
     """
-    Mine text patterns for a policy area using TF-IDF and domain knowledge.
+    Mine text patterns for a policy area using domain knowledge libraries.
 
     Args:
         pa_code: Policy area code (e.g., "PA01")
         pa_name: Policy area name
 
     Returns:
-        List of mined patterns
+        List of curated patterns from domain knowledge library
     """
     # Domain-specific patterns based on policy area
     pattern_library = {
@@ -282,13 +284,13 @@ def _mine_patterns_for_policy_area(pa_code: str, pa_name: str) -> list[str]:
 
 def _extract_indicators_for_policy_area(pa_code: str) -> list[str]:
     """
-    Extract key performance indicators for a policy area.
+    Extract key performance indicators for a policy area from curated KPI library.
 
     Args:
         pa_code: Policy area code
 
     Returns:
-        List of KPIs
+        List of KPIs from domain knowledge library
     """
     # KPI library per policy area
     kpi_library = {
@@ -396,13 +398,13 @@ def _generate_regex_patterns_for_policy_area(pa_code: str) -> list[str]:
 
 def _extract_action_verbs_for_policy_area(pa_name: str) -> list[str]:
     """
-    Extract action verbs relevant to policy area using POS analysis.
+    Extract action verbs relevant to policy area from curated domain knowledge.
 
     Args:
         pa_name: Policy area name
 
     Returns:
-        List of action verbs
+        List of action verbs from domain knowledge catalog
     """
     # Common policy verbs
     common_verbs = [
@@ -430,9 +432,57 @@ def _extract_entities_for_policy_area(pa_code: str, pa_name: str) -> list[str]:
     on PDET (Programas de Desarrollo con Enfoque Territorial) context.
 
     Args:
-        pa_code: Policy area code
+        pa_code: Policy area code (PA01-PA10)
         pa_name: Policy area name
+        
+    Returns:
+        List of extracted named entities relevant to policy area
+    """
+    try:
+        import spacy
+        
+        # Load spaCy with NER enabled
+        try:
+            nlp = spacy.load("es_core_news_sm")
+        except OSError:
+            # Fallback to domain knowledge if model not available
+            logger.warning("spacy_model_not_found", message="Using domain knowledge fallback")
+            return _extract_entities_domain_knowledge(pa_code)
+        
+        # Process policy area name with NER
+        doc = nlp(pa_name)
+        entities = []
+        
+        # Extract entities from policy area context
+        for ent in doc.ents:
+            if ent.label_ in ["ORG", "LOC", "MISC"]:
+                entities.append(ent.text)
+        
+        # Add domain-specific entities from knowledge base
+        domain_entities = _extract_entities_domain_knowledge(pa_code)
+        
+        # Merge NER results with domain knowledge (domain entities prioritized)
+        all_entities = domain_entities + [e for e in entities if e not in domain_entities]
+        
+        # Return combined results
+        return all_entities[:10]  # Top 10 most relevant
+        
+    except Exception as e:
+        logger.warning("ner_extraction_failed", error=str(e), pa_code=pa_code)
+        # Fallback to domain knowledge
+        return _extract_entities_domain_knowledge(pa_code)
 
+
+def _extract_entities_domain_knowledge(pa_code: str) -> list[str]:
+    """
+    Domain knowledge entity library for Colombian policy areas.
+    
+    This provides curated entity lists based on PDET (Programas de Desarrollo
+    con Enfoque Territorial) and Colombian governmental structure.
+    
+    Args:
+        pa_code: Policy area code (PA01-PA10)
+        
     Returns:
         List of named entities from canonical source
     """

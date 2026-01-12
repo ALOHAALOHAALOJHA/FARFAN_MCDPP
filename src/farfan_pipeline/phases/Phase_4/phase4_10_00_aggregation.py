@@ -62,14 +62,45 @@ from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_provenance import (
     AggregationDAG,
     ProvenanceNode,
 )
-from farfan_pipeline.phases.Phase_4.phase4_10_00_choquet_adapter import (
-    create_default_choquet_adapter,
-)
 from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification import (
     BootstrapAggregator,
     UncertaintyMetrics,
     aggregate_with_uncertainty,
 )
+
+# Lazy import for SystemicGapDetector to avoid circular dependency with Phase_7 __init__
+def _get_systemic_gap_detector():
+    """Lazy import SystemicGapDetector from Phase 7."""
+    from farfan_pipeline.phases.Phase_7.phase7_10_00_systemic_gap_detector import (
+        SystemicGapDetector,
+    )
+    return SystemicGapDetector
+
+
+def _get_systemic_gap_class():
+    """Lazy import SystemicGap dataclass from Phase 7."""
+    from farfan_pipeline.phases.Phase_7.phase7_10_00_systemic_gap_detector import (
+        SystemicGap,
+    )
+    return SystemicGap
+
+
+# For TYPE_CHECKING, import the types
+if TYPE_CHECKING:
+    from farfan_pipeline.phases.Phase_7.phase7_10_00_systemic_gap_detector import (
+        SystemicGap,
+        SystemicGapDetector,
+    )
+
+# Lazy import to avoid circular dependency with choquet_adapter
+# choquet_adapter imports AggregationSettings from this module (via TYPE_CHECKING)
+# This module imports create_default_choquet_adapter from choquet_adapter
+def _get_create_default_choquet_adapter():
+    """Lazy import to break circular dependency."""
+    from farfan_pipeline.phases.Phase_4.phase4_10_00_choquet_adapter import (
+        create_default_choquet_adapter,
+    )
+    return create_default_choquet_adapter
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
@@ -298,6 +329,104 @@ class AggregationSettings:
             source_hash=None,  # SISAS: No hash from raw monolith
             sisas_source="legacy_monolith",  # SISAS: Track source
         )
+
+    @classmethod
+    def from_empirical_corpus(
+        cls,
+        monolith: dict[str, Any] | None = None,
+        corpus_path: str | None = None,
+    ) -> AggregationSettings:
+        """Build aggregation settings with empirical weights from corpus.
+
+        This method enhances monolith-based settings with empirical weights
+        from corpus_thresholds_weights.json, providing calibrated dimension
+        weights based on 14 real PDT plans.
+
+        Args:
+            monolith: Base questionnaire monolith (required for structure)
+            corpus_path: Optional path to empirical_weights.json
+
+        Returns:
+            AggregationSettings with empirical dimension weights
+
+        Raises:
+            ValueError: If monolith is None
+        """
+        if monolith is None:
+            raise ValueError("Monolith required for empirical corpus integration")
+
+        # Start with monolith-based settings
+        base_settings = cls.from_monolith(monolith)
+
+        try:
+            # Import empirical thresholds loader
+            from pathlib import Path
+
+            from farfan_pipeline.phases.Phase_3.phase3_10_00_empirical_thresholds_loader import (
+                load_empirical_thresholds,
+            )
+
+            # Load empirical corpus
+            corpus = load_empirical_thresholds(corpus_path)
+
+            # Extract Phase 5 policy area aggregation weights
+            phase5_weights = corpus.get("aggregation_weights", {}).get(
+                "phase5_policy_area_aggregation", {}
+            )
+            dimension_weights = phase5_weights.get("dimension_weights", {})
+
+            if dimension_weights:
+                # Apply empirical dimension weights to all policy areas
+                # Format: {"DIM01_insumos": 0.15, "DIM02_actividades": 0.15, ...}
+                policy_area_dimension_weights = {}
+
+                niveles = monolith.get("blocks", {}).get("niveles_abstraccion", {})
+                policy_areas = niveles.get("policy_areas", [])
+
+                for area in policy_areas:
+                    area_id = area.get("policy_area_id") or area.get("id")
+                    if not area_id:
+                        continue
+
+                    # Map dimension IDs to empirical weights
+                    area_weights = {}
+                    for dim_id in area.get("dimension_ids", []):
+                        # Extract dimension type (DIM01, DIM02, etc.) from dim_id
+                        # Example: "PA01_DIM01" -> "DIM01"
+                        dim_type = dim_id.split("_")[-1] if "_" in dim_id else dim_id
+
+                        # Find matching empirical weight
+                        for empirical_key, weight in dimension_weights.items():
+                            if dim_type in empirical_key or empirical_key.startswith(dim_type):
+                                area_weights[dim_id] = float(weight)
+                                break
+
+                    if area_weights:
+                        # Normalize weights to sum to 1.0
+                        total = sum(area_weights.values())
+                        if total > 0:
+                            area_weights = {k: v / total for k, v in area_weights.items()}
+                        policy_area_dimension_weights[area_id] = area_weights
+
+                if policy_area_dimension_weights:
+                    base_settings.policy_area_dimension_weights = policy_area_dimension_weights
+                    base_settings.sisas_source = "empirical_corpus"
+                    logger.info(
+                        f"Empirical corpus integrated: {len(policy_area_dimension_weights)} "
+                        f"policy areas with dimension weights from corpus"
+                    )
+                else:
+                    logger.warning("No empirical dimension weights applied (no matching dimensions)")
+
+            else:
+                logger.warning("No Phase 5 dimension weights found in empirical corpus")
+
+        except ImportError as e:
+            logger.warning(f"Failed to import empirical thresholds loader: {e}")
+        except Exception as e:
+            logger.warning(f"Failed to load empirical corpus, using monolith weights: {e}")
+
+        return base_settings
 
     @classmethod
     def from_monolith_or_registry(
@@ -716,7 +845,7 @@ class MacroScore:
     score: float
     quality_level: str
     cross_cutting_coherence: float  # Coherence across all clusters
-    systemic_gaps: list[str]
+    systemic_gaps: list[Any]  # Enhanced: SystemicGap objects from Phase 7
     strategic_alignment: float
     cluster_scores: list[ClusterScore]
     validation_passed: bool = True
@@ -1062,6 +1191,8 @@ class DimensionAggregator:
 
         if method == "choquet":
             # Use Choquet integral for non-linear aggregation
+            # Lazy import to avoid circular dependency
+            create_default_choquet_adapter = _get_create_default_choquet_adapter()
             choquet_adapter = create_default_choquet_adapter(len(scores))
             score = choquet_adapter.aggregate(scores, weights)
             logger.info(f"Choquet aggregation: {len(scores)} inputs → {score:.4f}")
@@ -1681,10 +1812,16 @@ class AreaPolicyAggregator:
             }
         except HermeticityValidationError as e:
             logger.error(f"Hermeticity validation failed for area {area_id}: {e}")
-            # Get area name and cluster_id from modular metadata
+            # Get area name and cluster_id from modular metadata with safe fallback
             pa_data = next((a for a in self.policy_areas if a["policy_area_id"] == area_id), None)
-            area_name = pa_data["i18n"]["keys"]["label_es"] if pa_data else area_id
-            cluster_id = pa_data.get("cluster_id") if pa_data else None
+            area_name = area_id
+            cluster_id = None
+            if pa_data:
+                try:
+                    area_name = pa_data["i18n"]["keys"]["label_es"]
+                except (KeyError, TypeError):
+                    area_name = area_id
+                cluster_id = pa_data.get("cluster_id")
             return AreaScore(
                 area_id=area_id,
                 area_name=area_name,
@@ -1728,15 +1865,15 @@ class AreaPolicyAggregator:
         quality_level = self.apply_rubric_thresholds(avg_score)
         validation_details["rubric"] = {"score": avg_score, "quality_level": quality_level}
 
-        # Get area name
-        area_name = next(
-            (
-                a["i18n"]["keys"]["label_es"]
-                for a in self.policy_areas
-                if a["policy_area_id"] == area_id
-            ),
-            area_id,
-        )
+        # Get area name with safe fallback
+        area_name = area_id
+        for a in self.policy_areas:
+            if a["policy_area_id"] == area_id:
+                try:
+                    area_name = a["i18n"]["keys"]["label_es"]
+                except (KeyError, TypeError):
+                    area_name = area_id
+                break
 
         # Get cluster_id from modular metadata - MEANINGFUL CONNECTION
         # This ensures AreaScore.cluster_id reflects the real PA→Cluster mapping
@@ -2310,24 +2447,56 @@ class MacroAggregator:
 
         return coherence
 
-    def identify_systemic_gaps(self, area_scores: list[AreaScore]) -> list[str]:
+    def identify_systemic_gaps(
+        self,
+        area_scores: list[AreaScore],
+        extracted_norms_by_area: dict[str, list[str]] | None = None,
+        context_by_area: dict[str, Any] | None = None,
+    ):
         """
-        Identify systemic gaps (areas with INSUFICIENTE quality).
+        Identify systemic gaps using SystemicGapDetector with normative baseline.
+
+        Enhanced detection that combines quality-level thresholds with
+        normative compliance validation from empirical corpus.
 
         Args:
             area_scores: List of area scores
+            extracted_norms_by_area: Optional dict mapping area_id -> list of extracted norm IDs
+            context_by_area: Optional dict mapping area_id -> context dict for validation
 
         Returns:
-            List of area names with systemic gaps
+            List of SystemicGap objects sorted by priority (CRITICAL first)
         """
-        gaps = []
-        for area in area_scores:
-            if area.quality_level == "INSUFICIENTE":
-                gaps.append(area.area_name)
-                logger.warning(f"Systemic gap identified: {area.area_name}")
+        # Lazy import to avoid circular dependency
+        SystemicGapDetectorClass = _get_systemic_gap_detector()
 
-        logger.info(f"Systemic gaps identified: {len(gaps)}")
-        return gaps
+        # Initialize detector with normative validation
+        detector = SystemicGapDetectorClass(
+            score_threshold=0.55,  # INSUFICIENTE threshold
+            enable_normative_validation=True,
+        )
+
+        # Detect gaps using enhanced detector
+        systemic_gaps = detector.detect_gaps(
+            area_scores=area_scores,
+            extracted_norms_by_area=extracted_norms_by_area or {},
+            context_by_area=context_by_area or {},
+        )
+
+        # Log detected gaps
+        for gap in systemic_gaps:
+            logger.warning(
+                f"Systemic gap identified: {gap.area_name} "
+                f"(priority={gap.priority}, score={gap.score:.3f})"
+            )
+
+        logger.info(
+            f"Systemic gaps identified: {len(systemic_gaps)} "
+            f"(CRITICAL: {sum(1 for g in systemic_gaps if g.priority == 'CRITICAL')}, "
+            f"HIGH: {sum(1 for g in systemic_gaps if g.priority == 'HIGH')})"
+        )
+
+        return systemic_gaps
 
     def assess_strategic_alignment(
         self, cluster_scores: list[ClusterScore], dimension_scores: list[DimensionScore]
@@ -2453,7 +2622,16 @@ class MacroAggregator:
 
         # Identify systemic gaps
         systemic_gaps = self.identify_systemic_gaps(area_scores)
-        validation_details["gaps"] = {"count": len(systemic_gaps), "areas": systemic_gaps}
+        validation_details["gaps"] = {
+            "count": len(systemic_gaps),
+            "areas": [gap.area_name for gap in systemic_gaps],
+            "by_priority": {
+                "CRITICAL": [g.area_name for g in systemic_gaps if g.priority == "CRITICAL"],
+                "HIGH": [g.area_name for g in systemic_gaps if g.priority == "HIGH"],
+                "MEDIUM": [g.area_name for g in systemic_gaps if g.priority == "MEDIUM"],
+                "LOW": [g.area_name for g in systemic_gaps if g.priority == "LOW"],
+            },
+        }
 
         # Assess strategic alignment
         strategic_alignment = self.assess_strategic_alignment(cluster_scores, dimension_scores)
