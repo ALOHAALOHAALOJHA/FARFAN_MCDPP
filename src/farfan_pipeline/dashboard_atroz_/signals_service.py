@@ -486,7 +486,6 @@ def _extract_entities_domain_knowledge(pa_code: str) -> list[str]:
     Returns:
         List of named entities from canonical source
     """
-    import json
     from pathlib import Path
     
     # Load entities from canonical questionnaire registry
