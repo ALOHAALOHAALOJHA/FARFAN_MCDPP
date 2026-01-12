@@ -93,7 +93,7 @@ class TestSOTASignalExtractor:
         assert any(keyword in entity_text for keyword in ["Alcaldía", "Contraloría", "Procuraduría"]), \
             "Should find institutional entities"
         
-        print(f"✓ PA09 extracted {len(entities)} entities: {entities[:5]}")
+        print(f"✓ PA09 (using FISCAL) extracted {len(entities)} entities: {entities[:5]}")
     
     def test_entity_scoring(self, extractor):
         """Test that entities are properly scored and ranked."""

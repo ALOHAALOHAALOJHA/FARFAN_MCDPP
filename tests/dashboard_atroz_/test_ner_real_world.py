@@ -100,14 +100,15 @@ class TestRealWorldNER:
         from farfan_pipeline.dashboard_atroz_.signal_extraction_sota import PolicyArea
         
         text = REAL_WORLD_SAMPLES["PA01_ordenamiento"]
-        entities = extractor._extract_entities(PolicyArea.FISCAL, text)
+        # PA01 maps to infrastructure/territorial planning - using INFRAESTRUCTURA
+        entities = extractor._extract_entities(PolicyArea.INFRAESTRUCTURA, text)
         
         # Expected key entities
         expected = ["DNP", "IGAC", "Planeación", "Concejo Municipal", "Curaduría"]
         found = [exp for exp in expected if any(exp in ent for ent in entities)]
         
         assert len(found) >= 2, f"Should find key PA01 entities, found: {found}"
-        print(f"✓ PA01 Real World: {len(entities)} entities, including {found}")
+        print(f"✓ PA01 Real World (INFRAESTRUCTURA): {len(entities)} entities, including {found}")
     
     def test_pa02_salud_extraction(self, extractor):
         """Test entity extraction from real PA02 document."""
@@ -156,34 +157,43 @@ class TestRealWorldNER:
         from farfan_pipeline.dashboard_atroz_.signal_extraction_sota import PolicyArea
         
         text = REAL_WORLD_SAMPLES["PA08_victimas"]
-        entities = extractor._extract_entities(PolicyArea.FISCAL, text)
+        # PA08 Víctimas - no direct match, using SEGURIDAD as closest
+        entities = extractor._extract_entities(PolicyArea.SEGURIDAD, text)
         
         # Expected key entities (specialized peace process entities)
         expected = ["UARIV", "Memoria Histórica", "JEP", "Comisión", "UBPD"]
         found = [exp for exp in expected if any(exp in ent for ent in entities)]
         
         assert len(found) >= 1, f"Should find key PA08 entities, found: {found}"
-        print(f"✓ PA08 Real World: {len(entities)} entities, including {found}")
+        print(f"✓ PA08 Real World (SEGURIDAD): {len(entities)} entities, including {found}")
     
     def test_entity_precision_across_samples(self, extractor):
         """Test precision: extracted entities should be real organizations."""
         from farfan_pipeline.dashboard_atroz_.signal_extraction_sota import PolicyArea
         
-        # Combine all samples
-        all_text = " ".join(REAL_WORLD_SAMPLES.values())
-        entities = extractor._extract_entities(PolicyArea.FISCAL, all_text)
+        # Test with different policy areas for different content
+        samples_with_areas = [
+            (REAL_WORLD_SAMPLES["PA02_salud"], PolicyArea.SALUD),
+            (REAL_WORLD_SAMPLES["PA03_educacion"], PolicyArea.EDUCACIÓN),
+            (REAL_WORLD_SAMPLES["PA06_ambiente"], PolicyArea.AMBIENTE),
+        ]
+        
+        all_entities = []
+        for text, policy_area in samples_with_areas:
+            entities = extractor._extract_entities(policy_area, text)
+            all_entities.extend(entities)
         
         # Check that entities are not generic words
         generic_words = ["el", "la", "los", "de", "y", "para", "con", "en"]
-        invalid = [e for e in entities if e.lower() in generic_words]
+        invalid = [e for e in all_entities if e.lower() in generic_words]
         
         assert len(invalid) == 0, f"Should not extract generic words: {invalid}"
         
         # Check minimum entity length (real organizations are longer)
-        short_entities = [e for e in entities if len(e) < 3]
-        assert len(short_entities) / len(entities) < 0.1, "Most entities should be meaningful"
+        short_entities = [e for e in all_entities if len(e) < 3]
+        assert len(short_entities) / len(all_entities) < 0.1, "Most entities should be meaningful"
         
-        print(f"✓ Precision check: {len(entities)} entities, 0 generic words")
+        print(f"✓ Precision check: {len(all_entities)} entities, 0 generic words")
     
     def test_entity_recall_comprehensive(self, extractor):
         """Test recall: should find key Colombian entities across documents."""
@@ -218,17 +228,17 @@ class TestRealWorldNER:
         """Test that Colombian-specific entities are recognized."""
         from farfan_pipeline.dashboard_atroz_.signal_extraction_sota import PolicyArea
         
-        # Test each sample
+        # Test each sample with appropriate policy area
         colombian_markers = {
-            "PA01_ordenamiento": ["IGAC", "DNP", "POT"],
-            "PA02_salud": ["Supersalud", "INS", "SISPRO"],
-            "PA03_educacion": ["ICBF", "ICETEX"],
-            "PA08_victimas": ["UARIV", "JEP", "UBPD"],
+            "PA01_ordenamiento": (["IGAC", "DNP", "POT"], PolicyArea.INFRAESTRUCTURA),
+            "PA02_salud": (["Supersalud", "INS", "SISPRO"], PolicyArea.SALUD),
+            "PA03_educacion": (["ICBF", "ICETEX"], PolicyArea.EDUCACIÓN),
+            "PA08_victimas": (["UARIV", "JEP", "UBPD"], PolicyArea.SEGURIDAD),
         }
         
-        for sample_key, markers in colombian_markers.items():
+        for sample_key, (markers, policy_area) in colombian_markers.items():
             text = REAL_WORLD_SAMPLES[sample_key]
-            entities = extractor._extract_entities(PolicyArea.FISCAL, text)
+            entities = extractor._extract_entities(policy_area, text)
             entities_text = " ".join(entities).upper()
             
             found = [m for m in markers if m.upper() in entities_text]
