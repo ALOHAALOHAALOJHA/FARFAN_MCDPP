@@ -84,7 +84,6 @@ class CQCLoader:
             config: CQCConfig object. If None, uses defaults (all optimizations ON).
         """
         self.config = config or CQCConfig()
-        
         # Performance warning tracking (for fallback logging rate limiting)
         self._fallback_warning_logged = False
 

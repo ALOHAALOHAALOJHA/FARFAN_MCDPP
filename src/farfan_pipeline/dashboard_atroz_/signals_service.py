@@ -117,7 +117,7 @@ def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[
 
 def _extract_sophisticated_signal_packs(cqc: Any) -> dict[str, SignalPack]:
     """
-    Extract signal packs using domain knowledge libraries and pattern matching.
+    Extract signal packs using domain knowledge libraries.
 
     Uses:
     - Curated domain knowledge libraries for pattern extraction
