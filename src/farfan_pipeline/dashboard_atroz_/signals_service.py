@@ -19,6 +19,7 @@ Design:
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
@@ -46,7 +47,6 @@ if TYPE_CHECKING:
 logger = structlog.get_logger(__name__)
 
 # Check for blake3 availability at module level for performance
-import hashlib
 _HAS_BLAKE3 = hasattr(hashlib, "blake3")
 
 
