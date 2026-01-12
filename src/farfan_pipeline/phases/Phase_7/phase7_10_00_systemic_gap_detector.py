@@ -177,19 +177,18 @@ class SystemicGapDetector:
         return gaps
 
     def _normalize_score(self, score: float) -> float:
-        """Normalize score to 0-1 range.
+        """Normalize score from 0-3 to 0-1 range.
+
+        In F.A.R.F.A.N, ALL scores use the 0-3 scale (MIN_SCORE=0, MAX_SCORE=3).
+        No heuristic detection needed - always divide by 3.
 
         Args:
-            score: Input score (may be 0-3 or 0-1)
+            score: Input score in 0-3 range
 
         Returns:
             Normalized score (0-1)
         """
-        # Detect if score is already normalized
-        if 0.0 <= score <= 1.0:
-            return score
-
-        # Assume 0-3 range, normalize
+        # F.A.R.F.A.N uses 0-3 scale consistently - always normalize
         return max(0.0, min(1.0, score / 3.0))
 
     def _create_basic_gap(
