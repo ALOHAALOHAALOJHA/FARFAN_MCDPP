@@ -21,7 +21,7 @@ import math
 import random
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_9.report_assembly import AnalysisReport
