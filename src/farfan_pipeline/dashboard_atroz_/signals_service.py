@@ -56,10 +56,10 @@ _signal_store: dict[str, SignalPack] = {}
 
 def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[str, SignalPack]:
     """
-    Load signal packs from questionnaire monolith using sophisticated extraction.
+    Load signal packs from questionnaire monolith using domain knowledge libraries.
 
-    Extracts policy-aware patterns, indicators, and thresholds from the
-    questionnaire structure using NLP and semantic analysis.
+    Extracts policy-aware patterns, indicators, and thresholds using
+    curated domain knowledge catalogs for 10 policy areas.
 
     Args:
         monolith_path: DEPRECATED - Path parameter is ignored.
@@ -71,11 +71,11 @@ def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[
     Extraction Strategy:
         1. Load questionnaire using CQCLoader (lazy-loaded registry)
         2. Extract questions per policy area (PA01-PA10)
-        3. Mine patterns from question text using TF-IDF
-        4. Extract indicators from scoring metrics
-        5. Generate regex patterns from structured fields
-        6. Extract verbs using POS tagging
-        7. Identify entities using NER and domain knowledge
+        3. Retrieve patterns from curated domain knowledge libraries
+        4. Extract indicators from policy-specific KPI catalogs
+        5. Generate regex patterns for structured data extraction
+        6. Extract verbs from domain-specific action catalogs
+        7. Identify entities from territorial knowledge bases
         8. Compute thresholds from statistical analysis
     """
     if monolith_path is not None:
@@ -98,7 +98,7 @@ def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[
             pattern_type=cqc._pattern_type,
         )
 
-        # Extract signal packs using sophisticated analysis
+        # Extract signal packs using domain knowledge libraries
         packs = _extract_sophisticated_signal_packs(cqc)
 
         logger.info(
