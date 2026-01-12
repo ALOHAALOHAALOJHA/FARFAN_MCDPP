@@ -212,7 +212,6 @@ class TestRealWorldNER:
         for sample_key, (expected_entities, policy_area) in key_tests.items():
             text = REAL_WORLD_SAMPLES[sample_key]
             entities = extractor._extract_entities(policy_area, text)
-            entities_text = " ".join(entities).upper()
             
             found = [e for e in expected_entities if any(e.upper() in ent.upper() for ent in entities)]
             total_found += len(found)
