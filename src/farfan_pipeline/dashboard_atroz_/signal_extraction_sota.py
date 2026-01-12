@@ -287,20 +287,26 @@ class SOTASignalExtractor:
 
         Args:
             config: Extraction configuration
-            enable_spacy: Enable spaCy for NLP
+            enable_spacy: Enable spaCy for NLP with NER
             spacy_model: spaCy model to use
         """
         self.config = config or ExtractionConfig()
         self.enable_spacy = enable_spacy
 
-        # Initialize spaCy if available
+        # Initialize spaCy with NER ENABLED for SOTA entity recognition
         self.nlp = None
         if enable_spacy:
             try:
                 import spacy
 
-                self.nlp = spacy.load(spacy_model, disable=["parser", "ner"])
-                logger.info("spaCy loaded", model=spacy_model)
+                # Load with NER enabled (removed from disable list)
+                self.nlp = spacy.load(spacy_model, disable=["parser"])
+                logger.info("spaCy loaded with NER enabled", model=spacy_model, 
+                           components=self.nlp.pipe_names)
+                
+                # Add custom entity ruler for Colombian domain entities
+                self._add_domain_entity_patterns()
+                
             except OSError:
                 logger.warning(
                     "spaCy model not found",
@@ -312,6 +318,170 @@ class SOTASignalExtractor:
         # Cache for extraction results
         self._cache: dict[tuple[str, str], ExtractionResult] = {}
         self._cache_timestamps: dict[tuple[str, str], datetime] = {}
+
+    def _add_domain_entity_patterns(self):
+        """
+        Add Colombian domain-specific entity patterns using spaCy's EntityRuler.
+        
+        This implements SOTA entity recognition by combining:
+        1. Pre-trained spaCy NER for general entities
+        2. Domain-specific patterns for Colombian municipal entities
+        3. Policy area specific organizations and authorities
+        
+        Patterns cover all 10 policy areas (PA01-PA10) with Colombian entities.
+        """
+        if self.nlp is None:
+            return
+            
+        try:
+            from spacy.pipeline import EntityRuler
+            
+            # Create entity ruler and add to pipeline before NER
+            ruler = self.nlp.add_pipe("entity_ruler", before="ner")
+            
+            # Comprehensive Colombian entity patterns for all policy areas
+            patterns = [
+                # PA01: Ordenamiento Territorial
+                {"label": "ORG", "pattern": "Departamento de Planeación"},
+                {"label": "ORG", "pattern": "Departamento Nacional de Planeación"},
+                {"label": "ORG", "pattern": "DNP"},
+                {"label": "ORG", "pattern": "Secretaría de Planeación"},
+                {"label": "ORG", "pattern": "Secretaría de Desarrollo"},
+                {"label": "ORG", "pattern": "Concejo Municipal"},
+                {"label": "ORG", "pattern": "Curador Urbano"},
+                {"label": "ORG", "pattern": "Curaduría Urbana"},
+                {"label": "ORG", "pattern": "Instituto Geográfico Agustín Codazzi"},
+                {"label": "ORG", "pattern": "IGAC"},
+                
+                # PA02: Salud y Protección Social
+                {"label": "ORG", "pattern": "Ministerio de Salud"},
+                {"label": "ORG", "pattern": "Ministerio de Salud y Protección Social"},
+                {"label": "ORG", "pattern": "MinSalud"},
+                {"label": "ORG", "pattern": "Secretaría de Salud"},
+                {"label": "ORG", "pattern": "Hospital Local"},
+                {"label": "ORG", "pattern": "Centro de Salud"},
+                {"label": "ORG", "pattern": "EPS"},
+                {"label": "ORG", "pattern": "IPS"},
+                {"label": "ORG", "pattern": "Instituto Nacional de Salud"},
+                {"label": "ORG", "pattern": "INS"},
+                {"label": "ORG", "pattern": "Supersalud"},
+                {"label": "ORG", "pattern": "Superintendencia Nacional de Salud"},
+                
+                # PA03: Educación y Primera Infancia
+                {"label": "ORG", "pattern": "Ministerio de Educación"},
+                {"label": "ORG", "pattern": "Ministerio de Educación Nacional"},
+                {"label": "ORG", "pattern": "MEN"},
+                {"label": "ORG", "pattern": "Secretaría de Educación"},
+                {"label": "ORG", "pattern": "ICBF"},
+                {"label": "ORG", "pattern": "Instituto Colombiano de Bienestar Familiar"},
+                {"label": "ORG", "pattern": "Institución Educativa"},
+                {"label": "ORG", "pattern": "SENA"},
+                {"label": "ORG", "pattern": "Servicio Nacional de Aprendizaje"},
+                {"label": "ORG", "pattern": "ICETEX"},
+                
+                # PA04: Infraestructura y Equipamientos
+                {"label": "ORG", "pattern": "Secretaría de Infraestructura"},
+                {"label": "ORG", "pattern": "INVIAS"},
+                {"label": "ORG", "pattern": "Instituto Nacional de Vías"},
+                {"label": "ORG", "pattern": "ANI"},
+                {"label": "ORG", "pattern": "Agencia Nacional de Infraestructura"},
+                {"label": "ORG", "pattern": "Empresa de Servicios Públicos"},
+                {"label": "ORG", "pattern": "ESP"},
+                {"label": "ORG", "pattern": "FINDETER"},
+                {"label": "ORG", "pattern": "Ministerio de Transporte"},
+                {"label": "ORG", "pattern": "Ministerio de Vivienda"},
+                
+                # PA05: Desarrollo Económico
+                {"label": "ORG", "pattern": "Secretaría de Desarrollo Económico"},
+                {"label": "ORG", "pattern": "Cámara de Comercio"},
+                {"label": "ORG", "pattern": "Banco Agrario"},
+                {"label": "ORG", "pattern": "BANCOLDEX"},
+                {"label": "ORG", "pattern": "DIAN"},
+                {"label": "ORG", "pattern": "Dirección de Impuestos y Aduanas Nacionales"},
+                {"label": "ORG", "pattern": "Ministerio de Comercio"},
+                {"label": "ORG", "pattern": "Ministerio de Agricultura"},
+                {"label": "ORG", "pattern": "MinAgricultura"},
+                {"label": "ORG", "pattern": "FINAGRO"},
+                
+                # PA06: Sostenibilidad Ambiental
+                {"label": "ORG", "pattern": "Corporación Autónoma Regional"},
+                {"label": "ORG", "pattern": "CAR"},
+                {"label": "ORG", "pattern": "Ministerio de Ambiente"},
+                {"label": "ORG", "pattern": "Ministerio de Ambiente y Desarrollo Sostenible"},
+                {"label": "ORG", "pattern": "MinAmbiente"},
+                {"label": "ORG", "pattern": "IDEAM"},
+                {"label": "ORG", "pattern": "Instituto de Hidrología, Meteorología y Estudios Ambientales"},
+                {"label": "ORG", "pattern": "Parques Nacionales"},
+                {"label": "ORG", "pattern": "Parques Nacionales Naturales"},
+                {"label": "ORG", "pattern": "ANLA"},
+                {"label": "ORG", "pattern": "Autoridad Nacional de Licencias Ambientales"},
+                
+                # PA07: Seguridad y Convivencia
+                {"label": "ORG", "pattern": "Secretaría de Gobierno"},
+                {"label": "ORG", "pattern": "Policía Nacional"},
+                {"label": "ORG", "pattern": "Comisaría de Familia"},
+                {"label": "ORG", "pattern": "Fiscalía"},
+                {"label": "ORG", "pattern": "Fiscalía General de la Nación"},
+                {"label": "ORG", "pattern": "Defensoría del Pueblo"},
+                {"label": "ORG", "pattern": "Personería Municipal"},
+                {"label": "ORG", "pattern": "Ministerio de Defensa"},
+                {"label": "ORG", "pattern": "Ministerio del Interior"},
+                
+                # PA08: Víctimas y Reconciliación
+                {"label": "ORG", "pattern": "Unidad para las Víctimas"},
+                {"label": "ORG", "pattern": "Unidad para la Atención y Reparación Integral a las Víctimas"},
+                {"label": "ORG", "pattern": "UARIV"},
+                {"label": "ORG", "pattern": "Centro Regional de Memoria"},
+                {"label": "ORG", "pattern": "Centro Nacional de Memoria Histórica"},
+                {"label": "ORG", "pattern": "JEP"},
+                {"label": "ORG", "pattern": "Jurisdicción Especial para la Paz"},
+                {"label": "ORG", "pattern": "Comisión de la Verdad"},
+                {"label": "ORG", "pattern": "Unidad de Búsqueda de Personas Desaparecidas"},
+                
+                # PA09: Fortalecimiento Institucional
+                {"label": "ORG", "pattern": "Alcaldía Municipal"},
+                {"label": "ORG", "pattern": "Alcaldía"},
+                {"label": "ORG", "pattern": "Contraloría"},
+                {"label": "ORG", "pattern": "Contraloría General"},
+                {"label": "ORG", "pattern": "Procuraduría"},
+                {"label": "ORG", "pattern": "Procuraduría General de la Nación"},
+                {"label": "ORG", "pattern": "Veeduría Ciudadana"},
+                {"label": "ORG", "pattern": "Departamento Administrativo de la Función Pública"},
+                {"label": "ORG", "pattern": "DAFP"},
+                {"label": "ORG", "pattern": "ESAP"},
+                {"label": "ORG", "pattern": "Escuela Superior de Administración Pública"},
+                
+                # PA10: Conectividad y TIC
+                {"label": "ORG", "pattern": "MinTIC"},
+                {"label": "ORG", "pattern": "Ministerio de Tecnologías de la Información"},
+                {"label": "ORG", "pattern": "Ministerio de Tecnologías de la Información y las Comunicaciones"},
+                {"label": "ORG", "pattern": "Secretaría TIC"},
+                {"label": "ORG", "pattern": "Gobierno Digital"},
+                {"label": "ORG", "pattern": "Punto Vive Digital"},
+                {"label": "ORG", "pattern": "ANE"},
+                {"label": "ORG", "pattern": "Agencia Nacional del Espectro"},
+                {"label": "ORG", "pattern": "CRC"},
+                {"label": "ORG", "pattern": "Comisión de Regulación de Comunicaciones"},
+                
+                # General governmental entities
+                {"label": "ORG", "pattern": "Gobernación"},
+                {"label": "ORG", "pattern": "Asamblea Departamental"},
+                {"label": "ORG", "pattern": "Entidad Territorial"},
+                {"label": "ORG", "pattern": "Organismo Competente"},
+                {"label": "ORG", "pattern": "Autoridad Local"},
+                {"label": "ORG", "pattern": "Instancia de Coordinación"},
+            ]
+            
+            ruler.add_patterns(patterns)
+            
+            logger.info(
+                "domain_entity_patterns_added",
+                pattern_count=len(patterns),
+                pipeline=self.nlp.pipe_names
+            )
+            
+        except Exception as e:
+            logger.warning("failed_to_add_entity_patterns", error=str(e))
 
     def extract_signals_from_monolith(
         self,
@@ -515,16 +685,24 @@ class SOTASignalExtractor:
         policy_area: PolicyArea,
         text: str,
     ) -> list[str]:
-        """Extract named entities using NLP.
-
+        """
+        Extract named entities using SOTA NER with domain knowledge.
+        
+        Implements state-of-the-art entity extraction combining:
+        1. Pre-trained spaCy NER with custom domain patterns
+        2. Policy area specific entity filtering
+        3. Entity frequency scoring and ranking
+        4. Contextual entity validation
+        
         Args:
-            policy_area: Policy area
-            text: Text to extract from
-
+            policy_area: Policy area for context-aware extraction
+            text: Text to extract entities from
+            
         Returns:
-            List of extracted entities
+            List of extracted and ranked entities
         """
         entities = []
+        entity_scores = {}  # Track entity importance scores
 
         if not self.enable_spacy or self.nlp is None:
             # Fallback to regex-based entity extraction
@@ -534,47 +712,174 @@ class SOTASignalExtractor:
         try:
             doc = self.nlp(text[:100000])  # Limit for performance
 
-            # Extract organizations
+            # Extract entities with confidence scoring
             for ent in doc.ents:
-                if ent.label_ in ["ORG", "PERSON", "GPE", "LOC"]:
-                    entities.append(ent.text)
+                # Focus on organizational and location entities relevant to policy
+                if ent.label_ in ["ORG", "PERSON", "GPE", "LOC", "MISC"]:
+                    entity_text = ent.text.strip()
+                    
+                    # Filter out very short or invalid entities
+                    if len(entity_text) < 3:
+                        continue
+                    
+                    # Score entity based on:
+                    # 1. Entity type relevance (ORG > LOC > PERSON)
+                    # 2. Length (longer = more specific)
+                    # 3. Frequency in text
+                    
+                    type_score = {
+                        "ORG": 1.0,      # Organizations most relevant
+                        "LOC": 0.7,      # Locations relevant
+                        "GPE": 0.7,      # Geopolitical entities
+                        "MISC": 0.5,     # Miscellaneous
+                        "PERSON": 0.4,   # Persons less relevant for policy
+                    }.get(ent.label_, 0.3)
+                    
+                    length_score = min(len(entity_text) / 50.0, 1.0)
+                    frequency_score = text.count(entity_text) / 10.0
+                    
+                    # Composite score
+                    score = type_score * 0.5 + length_score * 0.2 + min(frequency_score, 1.0) * 0.3
+                    
+                    # Update score if already seen (boost frequency)
+                    if entity_text in entity_scores:
+                        entity_scores[entity_text] = min(entity_scores[entity_text] + 0.1, 1.0)
+                    else:
+                        entity_scores[entity_text] = score
+                        entities.append(entity_text)
+
+            # Add domain-specific entities from policy area context
+            domain_entities = self._get_policy_area_entities(policy_area, text)
+            for entity in domain_entities:
+                if entity not in entity_scores:
+                    entities.append(entity)
+                    entity_scores[entity] = 0.8  # High score for domain matches
 
         except Exception as e:
             logger.warning("nlp_extraction_failed", error=str(e))
             entities = self._extract_entities_regex(text)
+            return entities
 
-        # Deduplicate
-        seen = set()
-        unique_entities = []
-        for e in entities:
-            if e.lower() not in seen:
-                seen.add(e.lower())
-                unique_entities.append(e)
+        # Sort by score and deduplicate
+        ranked_entities = sorted(
+            entity_scores.items(),
+            key=lambda x: x[1],
+            reverse=True
+        )
+        
+        # Return top ranked entities
+        return [ent for ent, score in ranked_entities[:30]]  # Top 30 entities
 
-        return unique_entities[:20]  # Limit to top 20
+    def _get_policy_area_entities(self, policy_area: PolicyArea, text: str) -> list[str]:
+        """
+        Get domain-specific entities for a policy area using knowledge base.
+        
+        This implements domain knowledge integration by providing curated
+        entity lists for each Colombian policy area. Entities are only returned
+        if they appear in the text (contextual matching).
+        
+        Args:
+            policy_area: Policy area context
+            text: Text to check for entity presence
+            
+        Returns:
+            List of relevant domain entities found in text
+        """
+        # Colombian policy area entity knowledge base
+        # Based on PDET (Programas de Desarrollo con Enfoque Territorial) structure
+        entity_kb = {
+            PolicyArea.FISCAL: [
+                "Ministerio de Hacienda",
+                "DIAN",
+                "Contraloría General",
+                "Departamento Nacional de Planeación",
+                "Banco de la República",
+            ],
+            PolicyArea.SALUD: [
+                "Ministerio de Salud y Protección Social",
+                "Secretaría de Salud",
+                "Instituto Nacional de Salud",
+                "Superintendencia Nacional de Salud",
+                "SISPRO",
+            ],
+            PolicyArea.AMBIENTE: [
+                "Ministerio de Ambiente y Desarrollo Sostenible",
+                "IDEAM",
+                "Parques Nacionales Naturales",
+                "ANLA",
+                "Corporación Autónoma Regional",
+            ],
+            PolicyArea.EDUCACIÓN: [
+                "Ministerio de Educación Nacional",
+                "ICBF",
+                "ICETEX",
+                "SENA",
+                "Secretaría de Educación",
+            ],
+            PolicyArea.SEGURIDAD: [
+                "Ministerio de Defensa",
+                "Policía Nacional",
+                "Fiscalía General",
+                "Defensoría del Pueblo",
+                "Personería",
+            ],
+            PolicyArea.INFRAESTRUCTURA: [
+                "Ministerio de Transporte",
+                "ANI",
+                "INVIAS",
+                "FINDETER",
+                "Aeronáutica Civil",
+            ],
+            # Default for other policy areas
+        }
+        
+        # Get entities for this policy area
+        known_entities = entity_kb.get(policy_area, [])
+        
+        # Only return entities that appear in the text (contextual matching)
+        found_entities = []
+        text_lower = text.lower()
+        for entity in known_entities:
+            if entity.lower() in text_lower:
+                found_entities.append(entity)
+        
+        return found_entities
 
     def _extract_entities_regex(self, text: str) -> list[str]:
-        """Fallback regex-based entity extraction.
-
+        """
+        Enhanced regex-based entity extraction fallback.
+        
+        This provides a robust fallback when spaCy NER is unavailable,
+        using comprehensive regex patterns for Colombian entities.
+        
         Args:
             text: Text to extract from
-
+            
         Returns:
             List of potential entities
         """
         entities = []
 
-        # Common organization patterns
+        # Enhanced organization patterns for Colombian entities
         org_patterns = [
-            r"\b[A-Z][A-Za-z\s]+(Ministerio|Secretaría|Instituto|Agencia|Servicio)\b",
-            r"\b[A-Z][A-Za-z\s]+(Corporación|Comisión|Comité|Consejo)\b",
+            # Ministries and secretariats
+            r"\b(?:Ministerio|Secretaría)\s+(?:de\s+)?[\w\s]{3,40}",
+            # Institutes and agencies  
+            r"\b(?:Instituto|Agencia|Servicio|Departamento)\s+[\w\s]{3,40}",
+            # Corporations and commissions
+            r"\b(?:Corporación|Comisión|Comité|Consejo)\s+[\w\s]{3,40}",
+            # Administrative entities
+            r"\b(?:Alcaldía|Gobernación|Contraloría|Procuraduría|Personería)\s+[\w\s]{0,30}",
+            # Common acronyms
+            r"\b(?:DNP|DIAN|ICBF|SENA|INVIAS|ANI|IDEAM|ANLA|UARIV|MinTIC|CAR|EPS|IPS)\b",
         ]
 
         for pattern in org_patterns:
             matches = re.findall(pattern, text, re.IGNORECASE)
-            entities.extend(matches)
+            entities.extend([m.strip() for m in matches if len(m.strip()) > 3])
 
-        return entities
+        # Deduplicate
+        return list(dict.fromkeys(entities))[:30]
 
     def _extract_indicators(
         self,
