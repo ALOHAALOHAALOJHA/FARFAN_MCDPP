@@ -558,6 +558,11 @@ def _generate_synthetic_signal_packs() -> dict[str, SignalPack]:
         "PA03": "Ambiente sano, cambio climático, prevención y atención a desastres",
         "PA04": "Derechos económicos, sociales y culturales",
         "PA05": "Derechos de las víctimas y construcción de paz",
+        "PA06": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
+        "PA07": "Tierras y territorios",
+        "PA08": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
+        "PA09": "Crisis de derechos de personas privadas de la libertad",
+        "PA10": "Migración transfronteriza",
     }
 
     packs = {}
