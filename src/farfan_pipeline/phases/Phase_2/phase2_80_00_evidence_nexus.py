@@ -278,6 +278,7 @@ class EvidenceNode:
     source_method: str
     extraction_timestamp: float
     document_location: str | None  # Page/section reference
+    source_signal_pack_id: str | None = None  # SISAS: ID of signal pack that produced this evidence
 
     # Metadata
     tags: frozenset[str] = field(default_factory=frozenset)
@@ -295,8 +296,25 @@ class EvidenceNode:
         parent_ids: Sequence[EvidenceID] | None = None,
         belief_mass: float | None = None,
         uncertainty_mass: float | None = None,
+        source_signal_pack_id: str | None = None,
     ) -> EvidenceNode:
-        """Factory method with automatic ID generation."""
+        """Factory method with automatic ID generation.
+
+        Args:
+            evidence_type: Type of evidence
+            content: Evidence content dict
+            confidence: Confidence score [0.0-1.0]
+            source_method: Method that extracted this evidence
+            document_location: Optional document location reference
+            tags: Optional tags for categorization
+            parent_ids: Optional parent evidence IDs for provenance
+            belief_mass: Optional Dempster-Shafer belief mass
+            uncertainty_mass: Optional epistemic uncertainty
+            source_signal_pack_id: Optional SISAS signal pack ID that produced this evidence
+
+        Returns:
+            Immutable EvidenceNode with computed node_id
+        """
         # Compute content hash for identity
         canonical = cls._canonical_json(content)
         node_id = hashlib.sha256(canonical.encode()).hexdigest()
@@ -315,6 +333,7 @@ class EvidenceNode:
             source_method=source_method,
             extraction_timestamp=time.time(),
             document_location=document_location,
+            source_signal_pack_id=source_signal_pack_id,
             tags=frozenset(tags or []),
             parent_ids=tuple(parent_ids or []),
         )

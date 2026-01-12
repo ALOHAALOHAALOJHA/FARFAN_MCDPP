@@ -110,17 +110,11 @@ except ImportError:
 SIGNAL_PACK_AVAILABLE = False
 SignalPack = None
 
-# Signal loader for building packs by policy area - REAL PATH
-try:
-    from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_loader import (
-        build_all_signal_packs,
-        build_signal_pack_from_monolith,
-    )
-    SIGNAL_LOADER_AVAILABLE = True
-except ImportError:
-    SIGNAL_LOADER_AVAILABLE = False
-    build_all_signal_packs = None
-    build_signal_pack_from_monolith = None
+# Signal loader is DEPRECATED - Tests should use QuestionnaireSignalRegistry instead
+# These functions now raise RuntimeError to enforce migration
+SIGNAL_LOADER_AVAILABLE = False
+build_all_signal_packs = None
+build_signal_pack_from_monolith = None
 
 # CanonicalQuestionnaire - REAL PATH in orchestration/
 try:
