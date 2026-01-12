@@ -594,38 +594,12 @@ Statistics:
 
     <div class="technical-section">
         <h3>4.2 Scoring Modality Breakdown</h3>
-        {% set modality_counts = {} %}
-        {% for analysis in micro_analyses %}
-            {% if analysis.scoring_modality %}
-                {% set _ = modality_counts.update({analysis.scoring_modality: modality_counts.get(analysis.scoring_modality, 0) + 1}) %}
-            {% endif %}
+        {% for modality, items in (micro_analyses | selectattr('scoring_modality') | groupby('scoring_modality')) %}
+        <tr>
+            <td><strong>{{ modality }}</strong></td>
+            <td>{{ items | list | length }}</td>
+        </tr>
         {% endfor %}
-
-        <table class="metric-table">
-            <thead>
-                <tr>
-                    <th>Modality</th>
-                    <th>Count</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for modality, count in modality_counts.items() %}
-                <tr>
-                    <td><strong>{{ modality }}</strong></td>
-                    <td>{{ count }}</td>
-                    <td>
-                        {% if modality == "TYPE_A" %}Quantitative indicators
-                        {% elif modality == "TYPE_B" %}Qualitative descriptors
-                        {% elif modality == "TYPE_C" %}Mixed evidence
-                        {% elif modality == "TYPE_D" %}Temporal series
-                        {% elif modality == "TYPE_E" %}Territorial coverage
-                        {% elif modality == "TYPE_F" %}Institutional actors
-                        {% else %}Unknown modality
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
             </tbody>
         </table>
     </div>

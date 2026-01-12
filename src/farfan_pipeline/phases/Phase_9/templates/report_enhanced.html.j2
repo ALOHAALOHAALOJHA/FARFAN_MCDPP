@@ -1030,7 +1030,7 @@
                 </div>
             </div>
 
-            {% if cluster.dispersion_metrics %}
+            {% if cluster.get("dispersion_metrics") %}
             <div style="margin-top: 15px; padding: 10px; background: var(--bg-light); border-radius: 5px; font-size: 8pt;">
                 <strong>Métricas de Dispersión:</strong><br>
                 {% for key, value in cluster.dispersion_metrics.items() %}
@@ -1076,7 +1076,7 @@
                         <span>{{ analysis.metadata.get('policy_area') }}</span>
                     </div>
                     {% endif %}
-                    {% if analysis.scoring_modality %}
+                    {% if analysis.get("scoring_modality") %}
                     <div class="micro-metadata-item">
                         <span class="micro-metadata-label">Modalidad:</span>
                         <span class="badge badge-primary">{{ analysis.scoring_modality }}</span>
