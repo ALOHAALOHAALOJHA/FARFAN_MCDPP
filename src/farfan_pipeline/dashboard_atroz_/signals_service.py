@@ -129,18 +129,18 @@ def _extract_sophisticated_signal_packs() -> dict[str, SignalPack]:
     from collections import Counter, defaultdict
     from datetime import UTC, datetime
 
-    # Policy area mappings
+    # Policy area mappings - loaded from canonical source
     policy_areas = {
-        "PA01": "Ordenamiento Territorial",
-        "PA02": "Salud y Protección Social",
-        "PA03": "Educación y Primera Infancia",
-        "PA04": "Infraestructura y Equipamientos",
-        "PA05": "Desarrollo Económico",
-        "PA06": "Sostenibilidad Ambiental",
-        "PA07": "Seguridad y Convivencia",
-        "PA08": "Víctimas y Reconciliación",
-        "PA09": "Fortalecimiento Institucional",
-        "PA10": "Conectividad y TIC",
+        "PA01": "Derechos de las mujeres e igualdad de género",
+        "PA02": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
+        "PA03": "Ambiente sano, cambio climático, prevención y atención a desastres",
+        "PA04": "Derechos económicos, sociales y culturales",
+        "PA05": "Derechos de las víctimas y construcción de paz",
+        "PA06": "Derecho al buen futuro de la niñez, adolescencia, juventud y entornos protectores",
+        "PA07": "Tierras y territorios",
+        "PA08": "Líderes y lideresas, defensores y defensoras de derechos humanos, comunitarios, sociales, ambientales, de la tierra, el territorio y de la naturaleza",
+        "PA09": "Crisis de derechos de personas privadas de la libertad",
+        "PA10": "Migración transfronteriza",
     }
 
     packs = {}
@@ -553,11 +553,11 @@ def _generate_synthetic_signal_packs() -> dict[str, SignalPack]:
     from datetime import UTC, datetime
 
     policy_areas = {
-        "PA01": "Ordenamiento Territorial",
-        "PA02": "Salud y Protección Social",
-        "PA03": "Educación y Primera Infancia",
-        "PA04": "Infraestructura y Equipamientos",
-        "PA05": "Desarrollo Económico",
+        "PA01": "Derechos de las mujeres e igualdad de género",
+        "PA02": "Prevención de la violencia y protección de la población frente al conflicto armado y la violencia generada por grupos delincuenciales organizados, asociada a economías ilegales",
+        "PA03": "Ambiente sano, cambio climático, prevención y atención a desastres",
+        "PA04": "Derechos económicos, sociales y culturales",
+        "PA05": "Derechos de las víctimas y construcción de paz",
     }
 
     packs = {}
