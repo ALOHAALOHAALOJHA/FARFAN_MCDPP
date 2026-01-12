@@ -20,7 +20,6 @@ import logging
 import math
 import random
 from datetime import UTC, datetime
-from io import BytesIO
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Optional
 
