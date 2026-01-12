@@ -120,6 +120,7 @@ __all__ = [
     "SignalEnrichedScorer",
     "get_signal_adjusted_threshold",
     "get_signal_quality_validation",
+    "generate_quality_promotion_report",
     # Constants
     "QUALITY_EXCELENTE",
     "QUALITY_ACEPTABLE",
@@ -271,6 +272,10 @@ class SignalEnrichedScorer:
         Uses signal-based heuristics to ensure quality level is consistent
         with score, completeness, and question characteristics.
 
+        QUALITY PROMOTION/DEMOTION TRACKING:
+        All quality level changes are logged explicitly with full provenance
+        including original quality, new quality, trigger reason, score, and completeness.
+
         Args:
             question_id: Question identifier
             quality_level: Computed quality level from Phase 3
@@ -279,6 +284,13 @@ class SignalEnrichedScorer:
 
         Returns:
             Tuple of (validated_quality_level, validation_details)
+            validation_details includes:
+              - original_quality: Original quality level
+              - validated_quality: Final quality level
+              - adjusted: Boolean whether quality was changed
+              - promotion_reason: If promoted, the reason
+              - demotion_reason: If demoted, the reason
+              - checks: List of all validation checks performed
         """
         if not self.enable_quality_validation:
             return quality_level, {"validation": "disabled"}
@@ -288,9 +300,13 @@ class SignalEnrichedScorer:
             "score": score,
             "completeness": completeness,
             "checks": [],
+            "promotion_reason": None,
+            "demotion_reason": None,
         }
 
         validated = quality_level
+        was_promoted = False
+        was_demoted = False
 
         try:
             # Check 1: Score-quality consistency
@@ -303,12 +319,21 @@ class SignalEnrichedScorer:
                         "check": "score_quality_consistency",
                         "issue": "high_score_low_quality",
                         "action": "promote_quality",
+                        "score": score,
+                        "threshold": HIGH_SCORE_THRESHOLD,
                     }
                 )
                 validated = QUALITY_ACEPTABLE  # Promote to at least ACEPTABLE
-                logger.info(
-                    f"Quality promoted for {question_id}: "
-                    f"{quality_level} → {validated} (high score {score:.3f})"
+                validation_details["promotion_reason"] = (
+                    f"High score {score:.3f} >= {HIGH_SCORE_THRESHOLD} "
+                    f"inconsistent with {quality_level}"
+                )
+                was_promoted = True
+                logger.warning(
+                    f"[QUALITY PROMOTION] {question_id}: "
+                    f"{quality_level} → {validated} | "
+                    f"Reason: high_score={score:.3f} >= {HIGH_SCORE_THRESHOLD} | "
+                    f"Completeness: {completeness}"
                 )
 
             # Check 2: Completeness-quality alignment
@@ -318,12 +343,20 @@ class SignalEnrichedScorer:
                         "check": "completeness_quality_alignment",
                         "issue": "complete_evidence_low_quality",
                         "action": "promote_quality",
+                        "completeness": completeness,
                     }
                 )
                 validated = QUALITY_ACEPTABLE  # At least ACEPTABLE for complete evidence
-                logger.info(
-                    f"Quality promoted for {question_id}: "
-                    f"{quality_level} → {validated} (complete evidence)"
+                if not was_promoted:  # Don't override previous promotion reason
+                    validation_details["promotion_reason"] = (
+                        f"Complete evidence with {quality_level} quality is inconsistent"
+                    )
+                was_promoted = True
+                logger.warning(
+                    f"[QUALITY PROMOTION] {question_id}: "
+                    f"{quality_level} → {validated} | "
+                    f"Reason: complete_evidence with {quality_level} | "
+                    f"Score: {score:.3f}"
                 )
 
             # Check 3: Low score validation
@@ -333,20 +366,41 @@ class SignalEnrichedScorer:
                         "check": "low_score_validation",
                         "issue": "low_score_high_quality",
                         "action": "demote_quality",
+                        "score": score,
+                        "threshold": LOW_SCORE_THRESHOLD,
                     }
                 )
                 validated = QUALITY_ACEPTABLE  # Demote to ACEPTABLE
-                logger.info(
-                    f"Quality demoted for {question_id}: "
-                    f"{quality_level} → {validated} (low score {score:.3f})"
+                validation_details["demotion_reason"] = (
+                    f"Low score {score:.3f} < {LOW_SCORE_THRESHOLD} "
+                    f"inconsistent with {quality_level}"
+                )
+                was_demoted = True
+                logger.warning(
+                    f"[QUALITY DEMOTION] {question_id}: "
+                    f"{quality_level} → {validated} | "
+                    f"Reason: low_score={score:.3f} < {LOW_SCORE_THRESHOLD} | "
+                    f"Completeness: {completeness}"
                 )
 
             validation_details["validated_quality"] = validated
             validation_details["adjusted"] = validated != quality_level
+            validation_details["was_promoted"] = was_promoted
+            validation_details["was_demoted"] = was_demoted
+
+            # Add cascade check: warn if both promotion and demotion attempted
+            if was_promoted and was_demoted:
+                logger.error(
+                    f"[QUALITY CASCADE DETECTED] {question_id}: "
+                    f"Both promotion and demotion attempted! Original: {quality_level}, "
+                    f"Final: {validated}. This indicates conflicting quality signals."
+                )
+                validation_details["cascade_detected"] = True
 
         except Exception as e:
-            logger.warning(
-                f"Failed to validate quality for {question_id}: {e}. "
+            logger.error(
+                f"[QUALITY VALIDATION ERROR] {question_id}: "
+                f"Failed to validate quality: {type(e).__name__}: {e}. "
                 f"Using original quality {quality_level}"
             )
             validation_details["error"] = str(e)
@@ -505,6 +559,112 @@ class SignalEnrichedScorer:
         }
 
         return enriched
+
+
+def generate_quality_promotion_report(
+    all_validation_details: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Generate comprehensive report of all quality promotions/demotions.
+
+    This function aggregates all quality level changes across all questions
+    and generates a summary report for audit and debugging purposes.
+
+    Args:
+        all_validation_details: List of validation_details dicts from all questions
+
+    Returns:
+        Report dict with:
+          - summary: Overall promotion/demotion statistics
+          - promotions: List of all promotions with full context
+          - demotions: List of all demotions with full context
+          - cascades: List of questions where both promotion and demotion occurred
+          - by_reason: Breakdown of changes by trigger reason
+    """
+    promotions = []
+    demotions = []
+    cascades = []
+    no_change = 0
+
+    reason_counts = {}
+
+    for details in all_validation_details:
+        if not details.get("adjusted", False):
+            no_change += 1
+            continue
+
+        question_id = details.get("question_id", "UNKNOWN")
+
+        # Track promotions
+        if details.get("was_promoted", False):
+            promotion_reason = details.get("promotion_reason", "Unknown reason")
+            promotions.append(
+                {
+                    "question_id": question_id,
+                    "original_quality": details.get("original_quality"),
+                    "new_quality": details.get("validated_quality"),
+                    "reason": promotion_reason,
+                    "score": details.get("score"),
+                    "completeness": details.get("completeness"),
+                }
+            )
+            reason_counts[promotion_reason] = reason_counts.get(promotion_reason, 0) + 1
+
+        # Track demotions
+        if details.get("was_demoted", False):
+            demotion_reason = details.get("demotion_reason", "Unknown reason")
+            demotions.append(
+                {
+                    "question_id": question_id,
+                    "original_quality": details.get("original_quality"),
+                    "new_quality": details.get("validated_quality"),
+                    "reason": demotion_reason,
+                    "score": details.get("score"),
+                    "completeness": details.get("completeness"),
+                }
+            )
+            reason_counts[demotion_reason] = reason_counts.get(demotion_reason, 0) + 1
+
+        # Track cascades (both promotion and demotion)
+        if details.get("cascade_detected", False):
+            cascades.append(
+                {
+                    "question_id": question_id,
+                    "original_quality": details.get("original_quality"),
+                    "final_quality": details.get("validated_quality"),
+                    "promotion_reason": details.get("promotion_reason"),
+                    "demotion_reason": details.get("demotion_reason"),
+                }
+            )
+
+    report = {
+        "summary": {
+            "total_questions": len(all_validation_details),
+            "promotions": len(promotions),
+            "demotions": len(demotions),
+            "no_change": no_change,
+            "cascades_detected": len(cascades),
+            "promotion_rate": round(len(promotions) / len(all_validation_details) * 100, 2)
+            if all_validation_details
+            else 0,
+            "demotion_rate": round(len(demotions) / len(all_validation_details) * 100, 2)
+            if all_validation_details
+            else 0,
+        },
+        "promotions": promotions,
+        "demotions": demotions,
+        "cascades": cascades,
+        "by_reason": reason_counts,
+    }
+
+    logger.info(
+        f"[QUALITY PROMOTION REPORT] "
+        f"Total: {len(all_validation_details)} | "
+        f"Promotions: {len(promotions)} ({report['summary']['promotion_rate']:.1f}%) | "
+        f"Demotions: {len(demotions)} ({report['summary']['demotion_rate']:.1f}%) | "
+        f"Cascades: {len(cascades)}"
+    )
+
+    return report
 
 
 def get_signal_adjusted_threshold(
