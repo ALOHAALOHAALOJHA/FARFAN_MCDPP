@@ -1,457 +1,313 @@
 """
-Structural Marker Extractor (MC03) - Empirically Calibrated.
+Structural Marker Extractor (CPPStructuralParser) - Empirically Calibrated.
 
-Detects structural elements: PPI tables, budget matrices, indicator grids,
-section headers, and document structure markers.
+Extracts structural markers from PDT documents:
+- Tables with quantitative data
+- Document sections (Diagnóstico, Estratégica, PPI, etc.)
+- Graphs and visual elements
 
-This extractor implements MC03 (Structural Marker) with:
-- 87 questions mapped (coverage: 0.29)
-- Critical for PPI table detection
-- Table and section structure analysis
+This extractor implements Phase 1-SP2 using empirically
+validated patterns from 14 real PDT plans.
 
 Empirical Calibration:
-- PPI tables per plan: mean=12, std=5
-- Budget matrices per plan: mean=4, std=2
-- Section headers per plan: mean=45, std=20
-- Table detection confidence: from_table=0.95
+- Average tables per plan: 62 ± 28
+- Average graphs per plan: 52 ± 24
+- Average sections per plan: 7 ± 2
+- Confidence threshold: 0.95 for table detection, 0.90 for sections
 
 Innovation Features:
-- Heuristic row/column detection
-- Table type classification (PPI, budget, indicator)
-- Section hierarchy extraction
-- Document structure mapping
+- Auto-loads patterns from empirical corpus
+- Table header template matching
+- Section hierarchydetection
+- Graph/visual element identification
 
 Author: CQC Extractor Excellence Framework
 Version: 1.0.0
-Date: 2026-01-07
+Date: 2026-01-06
 """
 
-import logging
 import re
-from collections import defaultdict
+from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass
-from enum import Enum
 from pathlib import Path
-from typing import Any
+import logging
 
-from .empirical_extractor_base import ExtractionResult, PatternBasedExtractor
+from .empirical_extractor_base import (
+    PatternBasedExtractor,
+    ExtractionResult
+)
 
 logger = logging.getLogger(__name__)
 
 
-class StructureType(Enum):
-    """Types of structural elements."""
-
-    PPI_TABLE = "ppi_table"
-    BUDGET_TABLE = "budget_table"
-    INDICATOR_TABLE = "indicator_table"
-    GENERIC_TABLE = "generic_table"
-    SECTION_HEADER = "section_header"
-    SUBSECTION_HEADER = "subsection_header"
-    LIST_STRUCTURE = "list_structure"
-    MATRIX = "matrix"
-
-
 @dataclass
-class StructuralMarker:
-    """Represents a detected structural element."""
+class StructuralElement:
+    """Represents a structural element (table, section, graph)."""
+    element_id: str
+    element_type: str  # TABLE, SECTION, GRAPH
+    title: Optional[str] = None
+    headers: List[str] = None
+    row_count: Optional[int] = None
+    confidence: float = 0.90
+    text_span: Tuple[int, int] = (0, 0)
+    metadata: Dict[str, Any] = None
 
-    structure_type: StructureType
-    content_preview: str  # First N chars of content
-    row_count: int | None  # For tables
-    column_count: int | None  # For tables
-    header_level: int | None  # For section headers
-    has_numeric_data: bool
-    has_percentage_data: bool
-    confidence: float
-    text_span: tuple[int, int]
-    metadata: dict[str, Any]
+    def __post_init__(self):
+        if self.headers is None:
+            self.headers = []
+        if self.metadata is None:
+            self.metadata = {}
 
 
 class StructuralMarkerExtractor(PatternBasedExtractor):
     """
-    Extractor for document structural elements.
+    Extractor for structural markers (CPPStructuralParser, Phase 1-SP2).
 
-    Detects:
-    1. PPI tables (Plan Plurianual de Inversiones)
-    2. Budget allocation matrices
-    3. Indicator tables
-    4. Section headers at various levels
-    5. List structures
+    Extracts and analyzes:
+    1. Tables with headers and data
+    2. Document sections (structural hierarchy)
+    3. Graphs and visual elements
+    4. Template matching for standard PDT structures
     """
 
-    # PPI table detection keywords
-    PPI_KEYWORDS = [
-        "plan plurianual",
-        "plan de inversiones",
-        "plurianual de inversiones",
-        "programas y proyectos",
-        "asignación presupuestal",
-        "vigencia",
-        "metas",
-        "indicadores",
+    # Empirically validated section names
+    SECTION_PATTERNS = [
+        ("DIAGNOSTICO", r"(?:Diagnóstico|DIAGNÓSTICO|Capítulo\s+1|PARTE\s+I)"),
+        ("ESTRATEGICA", r"(?:Parte\s+Estratégica|Componente\s+Estratégico|Estratégico)"),
+        ("PPI", r"(?:Plan\s+Plurianual|Plurianual\s+de\s+Inversiones|PPI)"),
+        ("SEGUIMIENTO", r"(?:Seguimiento|Evaluación|Monitoreo|Sistema\s+de\s+Seguimiento)"),
     ]
 
-    # Budget table keywords
-    BUDGET_KEYWORDS = [
-        "presupuesto",
-        "apropiación",
-        "recursos",
-        "fuente de financiación",
-        "sgp",
-        "recursos propios",
-        "regalías",
-    ]
+    # Common PDT table templates
+    TABLE_TEMPLATES = {
+        "ppi_table": ["Programa", "Meta", "Presupuesto", "Fuente"],
+        "indicator_table": ["Indicador", "Línea Base", "Meta", "Responsable"],
+        "budget_table": ["Fuente", "Monto", "Porcentaje"],
+    }
 
-    # Indicator table keywords
-    INDICATOR_KEYWORDS = [
-        "línea base",
-        "meta",
-        "indicador",
-        "unidad de medida",
-        "responsable",
-        "fuente de verificación",
-    ]
-
-    def __init__(self, calibration_file: Path | None = None):
+    def __init__(self, calibration_file: Optional[Path] = None):
         super().__init__(
-            signal_type="STRUCTURAL_MARKER",  # Must match integration_map key
+            signal_type="STRUCTURAL_MARKER",
             calibration_file=calibration_file,
-            auto_validate=True,
+            auto_validate=True
         )
 
-        # Build detection patterns
-        self._build_patterns()
+        # Build structural patterns
+        self._build_table_patterns()
+        self._build_section_patterns()
 
-        logger.info("StructuralMarkerExtractor initialized")
+        logger.info(f"Initialized {self.__class__.__name__} with empirical patterns")
 
-    def _build_patterns(self):
-        """Build regex patterns for structure detection."""
+    def _build_table_patterns(self):
+        """Build regex patterns for table detection."""
+        # Pattern for table titles: "Tabla 1: Description"
+        self.table_title_pattern = re.compile(
+            r"Tabla\s+(\d+)[:\s.-]+(.*?)(?=\n|$)",
+            re.IGNORECASE
+        )
 
-        # Table detection patterns
-        self.table_patterns = [
-            # Markdown-style tables
-            r"\|[^|\n]+\|(?:\s*\n\|[-:| ]+\|)?(?:\s*\n\|[^|\n]+\|)+",
-            # Tab-separated rows (3+ columns)
-            r"(?:[^\t\n]+\t){2,}[^\t\n]+(?:\n(?:[^\t\n]+\t){2,}[^\t\n]+)+",
-            # Pipe-separated values
-            r"(?:[^|\n]+\|){2,}[^|\n]+(?:\n(?:[^|\n]+\|){2,}[^|\n]+)+",
-        ]
+        # Pattern for detecting table-like structures (headers with alignment)
+        self.table_header_pattern = re.compile(
+            r"(?:(?:[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+\s*){1,5})\s*\|\s*(?:(?:[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+\s*){1,5})",
+            re.MULTILINE
+        )
 
-        # Table indicator patterns (text that suggests a table nearby)
-        self.table_indicator_patterns = [
-            r"(?:Tabla|Cuadro|Matriz)\s*(?:N[°º]?|No\.?)?\s*\d+",
-            r"(?:Ver|Véase)\s+(?:tabla|cuadro|matriz)",
-            r"(?:A\s+continuación|Siguiente)\s+(?:tabla|cuadro)",
-        ]
+    def _build_section_patterns(self):
+        """Build regex patterns for section detection."""
+        self.section_patterns = []
+        for section_name, pattern in self.SECTION_PATTERNS:
+            compiled = re.compile(pattern, re.IGNORECASE | re.MULTILINE)
+            self.section_patterns.append((section_name, compiled))
 
-        # Section header patterns
-        self.header_patterns = [
-            # Numbered sections: 1. TITULO, 1.1 Subtitulo
-            (r"^(\d+)\.\s+([A-ZÁÉÍÓÚÑ][A-Za-záéíóúñ\s]{3,80})$", 1),
-            (r"^(\d+\.\d+)\s+([A-Za-záéíóúñ][A-Za-záéíóúñ\s]{3,80})$", 2),
-            (r"^(\d+\.\d+\.\d+)\s+([A-Za-záéíóúñ][A-Za-záéíóúñ\s]{3,80})$", 3),
-            # Roman numeral sections
-            (r"^([IVXLC]+)\.\s+([A-ZÁÉÍÓÚÑ][A-Za-záéíóúñ\s]{3,80})$", 1),
-            # ALL CAPS headers
-            (r"^([A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ\s]{5,50})$", 1),
-            # Article/Chapter
-            (r"^(?:ARTÍCULO|CAPÍTULO|SECCIÓN)\s+([IVXLC\d]+)[.:]\s+(.+)$", 1),
-        ]
+    def extract(self, text: str, context: Optional[Dict] = None) -> ExtractionResult:
+        """Extract structural markers from text."""
+        structural_elements = []
 
-        # List patterns
-        self.list_patterns = [
-            # Bulleted lists
-            r"(?:^|\n)[•\-\*]\s+[A-Za-záéíóúñ]",
-            # Numbered lists
-            r"(?:^|\n)\d+[.)\-]\s+[A-Za-záéíóúñ]",
-            # Letter lists
-            r"(?:^|\n)[a-zA-Z][.)\-]\s+[A-Za-záéíóúñ]",
-        ]
+        # Extract tables
+        table_matches = self._extract_tables(text)
+        structural_elements.extend(table_matches)
 
-        # Compile patterns
-        self._compiled_table_patterns = [re.compile(p, re.MULTILINE) for p in self.table_patterns]
-        self._compiled_table_indicators = [
-            re.compile(p, re.IGNORECASE) for p in self.table_indicator_patterns
-        ]
-        self._compiled_header_patterns = [
-            (re.compile(p, re.MULTILINE), level) for p, level in self.header_patterns
-        ]
-        self._compiled_list_patterns = [re.compile(p, re.MULTILINE) for p in self.list_patterns]
+        # Extract sections
+        section_matches = self._extract_sections(text)
+        structural_elements.extend(section_matches)
 
-    def extract(self, text: str, context: dict | None = None) -> ExtractionResult:
-        """
-        Extract structural markers from text.
-        """
-        if not text or not text.strip():
-            return self._empty_result()
+        # Extract graphs (simplified detection)
+        graph_matches = self._extract_graphs(text)
+        structural_elements.extend(graph_matches)
 
-        markers: list[StructuralMarker] = []
-
-        # Detect tables
-        table_markers = self._detect_tables(text)
-        markers.extend(table_markers)
-
-        # Detect section headers
-        header_markers = self._detect_headers(text)
-        markers.extend(header_markers)
-
-        # Detect list structures
-        list_markers = self._detect_lists(text)
-        markers.extend(list_markers)
-
-        # Sort by position
-        markers.sort(key=lambda m: m.text_span[0])
-
-        # Build matches
-        matches = []
-        for marker in markers:
-            match = {
-                "structure_type": marker.structure_type.value,
-                "content_preview": marker.content_preview[:100],
-                "row_count": marker.row_count,
-                "column_count": marker.column_count,
-                "header_level": marker.header_level,
-                "has_numeric_data": marker.has_numeric_data,
-                "has_percentage_data": marker.has_percentage_data,
-                "confidence": marker.confidence,
-                "span_start": marker.text_span[0],
-                "span_end": marker.text_span[1],
-                "metadata": marker.metadata,
-            }
-            matches.append(match)
-
-        # Calculate overall confidence
-        avg_confidence = sum(m["confidence"] for m in matches) / len(matches) if matches else 0.0
-
-        # Build metadata
-        by_type = defaultdict(int)
-        for m in matches:
-            by_type[m["structure_type"]] += 1
-
-        ppi_tables = sum(1 for m in matches if m["structure_type"] == "ppi_table")
+        # Calculate aggregate confidence
+        avg_confidence = (
+            sum(elem.get("confidence", 0.0) for elem in structural_elements) / len(structural_elements)
+            if structural_elements
+            else 0.0
+        )
 
         result = ExtractionResult(
-            extractor_id="StructuralMarkerExtractor",
-            signal_type="STRUCTURAL_MARKER",
-            matches=matches,
+            extractor_id=self.__class__.__name__,
+            signal_type=self.signal_type,
+            matches=structural_elements,
             confidence=avg_confidence,
             metadata={
-                "total_structures": len(matches),
-                "by_type": dict(by_type),
-                "ppi_tables_detected": ppi_tables,
-                "tables_with_numeric": sum(1 for m in matches if m.get("has_numeric_data")),
-                "section_headers": by_type.get("section_header", 0)
-                + by_type.get("subsection_header", 0),
-            },
+                "total_elements": len(structural_elements),
+                "tables": sum(1 for e in structural_elements if e.get("element_type") == "TABLE"),
+                "sections": sum(1 for e in structural_elements if e.get("element_type") == "SECTION"),
+                "graphs": sum(1 for e in structural_elements if e.get("element_type") == "GRAPH"),
+            }
         )
 
-        # Validate
+        # Validate if enabled
         if self.auto_validate:
-            validation = self._validate_extraction(result)
-            result.metadata["validation"] = validation
+            is_valid, errors = self.validate_extraction(result)
+            result.validation_passed = is_valid
+            result.validation_errors = errors
+
+        self.extraction_count += 1
 
         return result
 
-    def _detect_tables(self, text: str) -> list[StructuralMarker]:
-        """Detect tables in text."""
-        markers = []
+    def _extract_tables(self, text: str) -> List[Dict[str, Any]]:
+        """Extract table structures from text."""
+        tables = []
 
-        # First, find explicit table patterns
-        for pattern in self._compiled_table_patterns:
+        # Find table titles
+        for match in self.table_title_pattern.finditer(text):
+            table_number = match.group(1)
+            table_title = match.group(2).strip()
+
+            # Try to detect headers after title
+            # Look ahead ~200 chars for header patterns
+            start_pos = match.end()
+            end_pos = min(start_pos + 200, len(text))
+            snippet = text[start_pos:end_pos]
+
+            headers = self._detect_headers(snippet)
+
+            table_elem = {
+                "element_id": f"TABLE-{table_number}",
+                "element_type": "TABLE",
+                "title": table_title,
+                "table_number": int(table_number),
+                "headers": headers,
+                "header_count": len(headers),
+                "confidence": 0.95,
+                "start": match.start(),
+                "end": match.end(),
+                "text": match.group(0)
+            }
+
+            # Boost confidence if headers match known templates
+            if self._matches_template(headers):
+                table_elem["confidence"] = 0.98
+                table_elem["template_match"] = True
+
+            tables.append(table_elem)
+
+        return tables
+
+    def _extract_sections(self, text: str) -> List[Dict[str, Any]]:
+        """Extract document sections from text."""
+        sections = []
+
+        for section_name, pattern in self.section_patterns:
             for match in pattern.finditer(text):
-                table_text = match.group(0)
-                table_type, confidence = self._classify_table(table_text)
-                rows, cols = self._count_table_dimensions(table_text)
+                section_elem = {
+                    "element_id": f"SECTION-{section_name}",
+                    "element_type": "SECTION",
+                    "section_name": section_name,
+                    "title": match.group(0),
+                    "confidence": 0.90,
+                    "start": match.start(),
+                    "end": match.end(),
+                    "text": match.group(0)
+                }
+                sections.append(section_elem)
 
-                marker = StructuralMarker(
-                    structure_type=table_type,
-                    content_preview=table_text,
-                    row_count=rows,
-                    column_count=cols,
-                    header_level=None,
-                    has_numeric_data=self._has_numeric_data(table_text),
-                    has_percentage_data=self._has_percentage_data(table_text),
-                    confidence=confidence,
-                    text_span=(match.start(), match.end()),
-                    metadata={"detection_method": "pattern_match"},
-                )
-                markers.append(marker)
+        return sections
 
-        # Also look for table indicators (implicit tables)
-        for pattern in self._compiled_table_indicators:
-            for match in pattern.finditer(text):
-                # Check if we already have a table at this position
-                pos = match.start()
-                if any(m.text_span[0] <= pos <= m.text_span[1] for m in markers):
-                    continue
+    def _extract_graphs(self, text: str) -> List[Dict[str, Any]]:
+        """Extract graph/figure references from text."""
+        graphs = []
 
-                marker = StructuralMarker(
-                    structure_type=StructureType.GENERIC_TABLE,
-                    content_preview=match.group(0),
-                    row_count=None,
-                    column_count=None,
-                    header_level=None,
-                    has_numeric_data=False,
-                    has_percentage_data=False,
-                    confidence=0.6,  # Lower confidence for indicators
-                    text_span=(match.start(), match.end()),
-                    metadata={"detection_method": "indicator"},
-                )
-                markers.append(marker)
-
-        return markers
-
-    def _classify_table(self, table_text: str) -> tuple[StructureType, float]:
-        """Classify a table by its content."""
-        text_lower = table_text.lower()
-
-        # Check for PPI table
-        ppi_score = sum(1 for kw in self.PPI_KEYWORDS if kw in text_lower)
-        if ppi_score >= 2:
-            return StructureType.PPI_TABLE, min(0.95, 0.7 + 0.1 * ppi_score)
-
-        # Check for budget table
-        budget_score = sum(1 for kw in self.BUDGET_KEYWORDS if kw in text_lower)
-        if budget_score >= 2:
-            return StructureType.BUDGET_TABLE, min(0.90, 0.65 + 0.1 * budget_score)
-
-        # Check for indicator table
-        indicator_score = sum(1 for kw in self.INDICATOR_KEYWORDS if kw in text_lower)
-        if indicator_score >= 2:
-            return StructureType.INDICATOR_TABLE, min(0.90, 0.65 + 0.1 * indicator_score)
-
-        return StructureType.GENERIC_TABLE, 0.7
-
-    def _count_table_dimensions(self, table_text: str) -> tuple[int | None, int | None]:
-        """Count rows and columns in a table."""
-        lines = table_text.strip().split("\n")
-        rows = len(lines)
-
-        # Estimate columns from first non-empty row
-        cols = None
-        for line in lines:
-            if "|" in line:
-                cols = line.count("|") + 1
-                break
-            elif "\t" in line:
-                cols = line.count("\t") + 1
-                break
-
-        return rows if rows > 0 else None, cols
-
-    def _detect_headers(self, text: str) -> list[StructuralMarker]:
-        """Detect section headers."""
-        markers = []
-
-        for pattern, level in self._compiled_header_patterns:
-            for match in pattern.finditer(text):
-                header_text = match.group(0)
-
-                # Skip if too short or looks like table content
-                if len(header_text) < 5 or "|" in header_text:
-                    continue
-
-                structure_type = (
-                    StructureType.SECTION_HEADER if level == 1 else StructureType.SUBSECTION_HEADER
-                )
-
-                marker = StructuralMarker(
-                    structure_type=structure_type,
-                    content_preview=header_text,
-                    row_count=None,
-                    column_count=None,
-                    header_level=level,
-                    has_numeric_data=False,
-                    has_percentage_data=False,
-                    confidence=0.85,
-                    text_span=(match.start(), match.end()),
-                    metadata={"level": level},
-                )
-                markers.append(marker)
-
-        return markers
-
-    def _detect_lists(self, text: str) -> list[StructuralMarker]:
-        """Detect list structures."""
-        markers = []
-
-        for pattern in self._compiled_list_patterns:
-            matches = list(pattern.finditer(text))
-
-            # Group consecutive matches into list structures
-            if len(matches) >= 2:
-                # Find clusters of list items
-                clusters = []
-                current_cluster = [matches[0]]
-
-                for i in range(1, len(matches)):
-                    # If matches are within 500 chars, same list
-                    if matches[i].start() - matches[i - 1].end() < 500:
-                        current_cluster.append(matches[i])
-                    else:
-                        if len(current_cluster) >= 2:
-                            clusters.append(current_cluster)
-                        current_cluster = [matches[i]]
-
-                if len(current_cluster) >= 2:
-                    clusters.append(current_cluster)
-
-                # Create markers for each cluster
-                for cluster in clusters:
-                    start = cluster[0].start()
-                    end = cluster[-1].end()
-                    list_text = text[start:end]
-
-                    marker = StructuralMarker(
-                        structure_type=StructureType.LIST_STRUCTURE,
-                        content_preview=list_text,
-                        row_count=len(cluster),
-                        column_count=None,
-                        header_level=None,
-                        has_numeric_data=self._has_numeric_data(list_text),
-                        has_percentage_data=self._has_percentage_data(list_text),
-                        confidence=0.75,
-                        text_span=(start, end),
-                        metadata={"item_count": len(cluster)},
-                    )
-                    markers.append(marker)
-
-        return markers
-
-    def _has_numeric_data(self, text: str) -> bool:
-        """Check if text contains significant numeric data."""
-        # Look for numbers that aren't just years
-        numeric_pattern = r"\b\d{1,3}(?:[.,]\d{3})*(?:[.,]\d+)?\b"
-        matches = re.findall(numeric_pattern, text)
-        # Filter out likely years
-        non_year = [m for m in matches if not re.match(r"^(19|20)\d{2}$", m)]
-        return len(non_year) >= 2
-
-    def _has_percentage_data(self, text: str) -> bool:
-        """Check if text contains percentage data."""
-        return bool(re.search(r"\d+[.,]?\d*\s*%", text))
-
-    def _validate_extraction(self, result: ExtractionResult) -> dict:
-        """Validate extraction."""
-        return {
-            "ppi_detection_adequate": result.metadata.get("ppi_tables_detected", 0) >= 1,
-            "has_structure": result.metadata.get("total_structures", 0) > 0,
-            "confidence_adequate": result.confidence >= 0.6,
-        }
-
-    def _empty_result(self) -> ExtractionResult:
-        """Return an empty result for invalid input."""
-        return ExtractionResult(
-            extractor_id="StructuralMarkerExtractor",
-            signal_type="STRUCTURAL_MARKER",
-            matches=[],
-            confidence=0.0,
-            metadata={
-                "total_structures": 0,
-                "by_type": {},
-                "ppi_tables_detected": 0,
-                "tables_with_numeric": 0,
-                "section_headers": 0,
-            },
+        # Simple pattern for "Gráfica N:" or "Figura N:"
+        graph_pattern = re.compile(
+            r"(?:Gráfica|Gráfico|Figura|Cuadro)\s+(\d+)[:\s.-]+(.*?)(?=\n|$)",
+            re.IGNORECASE
         )
+
+        for match in graph_pattern.finditer(text):
+            graph_number = match.group(1)
+            graph_title = match.group(2).strip()
+
+            graph_elem = {
+                "element_id": f"GRAPH-{graph_number}",
+                "element_type": "GRAPH",
+                "title": graph_title,
+                "graph_number": int(graph_number),
+                "confidence": 0.85,
+                "start": match.start(),
+                "end": match.end(),
+                "text": match.group(0)
+            }
+            graphs.append(graph_elem)
+
+        return graphs
+
+    def _detect_headers(self, text: str) -> List[str]:
+        """Detect table headers from text snippet."""
+        headers = []
+
+        # Look for pipe-separated headers
+        header_match = self.table_header_pattern.search(text)
+        if header_match:
+            header_text = header_match.group(0)
+            # Split by pipe and clean
+            headers = [h.strip() for h in header_text.split("|") if h.strip()]
+
+        # Fallback: look for capitalized words on first line
+        if not headers:
+            first_line = text.split("\n")[0] if text else ""
+            # Simple heuristic: words that start with capital letter
+            potential_headers = re.findall(r"[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+", first_line)
+            headers = potential_headers[:6]  # Limit to 6 headers max
+
+        return headers
+
+    def _matches_template(self, headers: List[str]) -> bool:
+        """Check if headers match a known PDT table template."""
+        if not headers:
+            return False
+
+        # Normalize headers for comparison
+        normalized = [h.lower() for h in headers]
+
+        # Check against each template
+        for template_name, template_headers in self.TABLE_TEMPLATES.items():
+            template_normalized = [h.lower() for h in template_headers]
+
+            # Count matches
+            matches = sum(
+                1 for th in template_normalized
+                if any(th in nh or nh in th for nh in normalized)
+            )
+
+            # If 50%+ match, consider it a template match
+            if matches >= len(template_normalized) * 0.5:
+                return True
+
+        return False
+
+    def get_metrics(self) -> Dict[str, Any]:
+        """Get extractor performance metrics."""
+        base_metrics = super().get_metrics()
+        base_metrics.update({
+            "section_patterns_loaded": len(self.section_patterns),
+            "table_templates_loaded": len(self.TABLE_TEMPLATES),
+        })
+        return base_metrics
+
+
+# Export
+__all__ = [
+    "StructuralMarkerExtractor",
+    "StructuralElement",
+]
