@@ -307,6 +307,104 @@ class AggregationSettings:
         )
 
     @classmethod
+    def from_empirical_corpus(
+        cls,
+        monolith: dict[str, Any] | None = None,
+        corpus_path: str | None = None,
+    ) -> AggregationSettings:
+        """Build aggregation settings with empirical weights from corpus.
+
+        This method enhances monolith-based settings with empirical weights
+        from corpus_thresholds_weights.json, providing calibrated dimension
+        weights based on 14 real PDT plans.
+
+        Args:
+            monolith: Base questionnaire monolith (required for structure)
+            corpus_path: Optional path to empirical_weights.json
+
+        Returns:
+            AggregationSettings with empirical dimension weights
+
+        Raises:
+            ValueError: If monolith is None
+        """
+        if monolith is None:
+            raise ValueError("Monolith required for empirical corpus integration")
+
+        # Start with monolith-based settings
+        base_settings = cls.from_monolith(monolith)
+
+        try:
+            # Import empirical thresholds loader
+            from pathlib import Path
+
+            from farfan_pipeline.phases.Phase_3.phase3_10_00_empirical_thresholds_loader import (
+                load_empirical_thresholds,
+            )
+
+            # Load empirical corpus
+            corpus = load_empirical_thresholds(corpus_path)
+
+            # Extract Phase 5 policy area aggregation weights
+            phase5_weights = corpus.get("aggregation_weights", {}).get(
+                "phase5_policy_area_aggregation", {}
+            )
+            dimension_weights = phase5_weights.get("dimension_weights", {})
+
+            if dimension_weights:
+                # Apply empirical dimension weights to all policy areas
+                # Format: {"DIM01_insumos": 0.15, "DIM02_actividades": 0.15, ...}
+                policy_area_dimension_weights = {}
+
+                niveles = monolith.get("blocks", {}).get("niveles_abstraccion", {})
+                policy_areas = niveles.get("policy_areas", [])
+
+                for area in policy_areas:
+                    area_id = area.get("policy_area_id") or area.get("id")
+                    if not area_id:
+                        continue
+
+                    # Map dimension IDs to empirical weights
+                    area_weights = {}
+                    for dim_id in area.get("dimension_ids", []):
+                        # Extract dimension type (DIM01, DIM02, etc.) from dim_id
+                        # Example: "PA01_DIM01" -> "DIM01"
+                        dim_type = dim_id.split("_")[-1] if "_" in dim_id else dim_id
+
+                        # Find matching empirical weight
+                        for empirical_key, weight in dimension_weights.items():
+                            if dim_type in empirical_key or empirical_key.startswith(dim_type):
+                                area_weights[dim_id] = float(weight)
+                                break
+
+                    if area_weights:
+                        # Normalize weights to sum to 1.0
+                        total = sum(area_weights.values())
+                        if total > 0:
+                            area_weights = {k: v / total for k, v in area_weights.items()}
+                        policy_area_dimension_weights[area_id] = area_weights
+
+                if policy_area_dimension_weights:
+                    base_settings.policy_area_dimension_weights = policy_area_dimension_weights
+                    base_settings.sisas_source = "empirical_corpus"
+                    logger.info(
+                        f"Empirical corpus integrated: {len(policy_area_dimension_weights)} "
+                        f"policy areas with dimension weights from corpus"
+                    )
+                else:
+                    logger.warning("No empirical dimension weights applied (no matching dimensions)")
+
+            else:
+                logger.warning("No Phase 5 dimension weights found in empirical corpus")
+
+        except ImportError as e:
+            logger.warning(f"Failed to import empirical thresholds loader: {e}")
+        except Exception as e:
+            logger.warning(f"Failed to load empirical corpus, using monolith weights: {e}")
+
+        return base_settings
+
+    @classmethod
     def from_monolith_or_registry(
         cls,
         monolith: dict[str, Any] | None = None,
