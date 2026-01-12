@@ -427,3 +427,71 @@ def monolith_from_modular(
         "_modular_source": True,
         "_manifest_version": modular_manifest.get("_manifest_version"),
     }
+
+
+# =============================================================================
+# HELPER FIXTURES - Test helpers for adversarial testing
+# =============================================================================
+
+
+@pytest.fixture
+def create_minimal_monolith():
+    """
+    Create a minimal monolith for testing when full monolith is not needed.
+
+    VALUE: Provides lightweight test fixture for unit tests.
+
+    EQUIPPED WITH:
+        - Basic cluster structure
+        - Minimal PA definitions
+        - Dimension definitions
+    """
+
+    def _create() -> dict:
+        return {
+            "blocks": {
+                "niveles_abstraccion": {
+                    "clusters": [
+                        {"cluster_id": "MESO_1", "i18n": {}, "policy_area_ids": ["PA01"]},
+                    ],
+                    "policy_areas": [
+                        {
+                            "policy_area_id": "PA01",
+                            "i18n": {},
+                            "cluster_id": "MESO_1",
+                            "dimension_ids": ["DIM01", "DIM02", "DIM03", "DIM04", "DIM05", "DIM06"],
+                        },
+                    ],
+                    "dimensions": [
+                        {"dimension_id": f"DIM{i:02d}", "i18n": {}}
+                        for i in range(1, 7)
+                    ],
+                },
+                "scoring": {},
+            },
+        }
+
+    return _create
+
+
+@pytest.fixture
+def mock_instrumentation():
+    """
+    Create mock instrumentation for testing async aggregation functions.
+
+    VALUE: Provides test double for instrumentation tracking.
+    """
+
+    class MockInstrumentation:
+        def __init__(self):
+            self.items_total = 0
+            self.items_completed = 0
+
+        def start(self, items_total: int = 1):
+            self.items_total = items_total
+            self.items_completed = 0
+
+        def complete_item(self):
+            self.items_completed += 1
+
+    return MockInstrumentation()

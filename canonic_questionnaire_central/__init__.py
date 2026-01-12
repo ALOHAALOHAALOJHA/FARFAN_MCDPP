@@ -19,6 +19,10 @@ Date: 2026-01-06
 from pathlib import Path
 from typing import Optional, Dict, Set, List, Any
 from dataclasses import dataclass, field
+import logging
+
+# Module-level flag for rate-limiting fallback warnings across all instances
+_FALLBACK_WARNING_LOGGED = False
 
 
 @dataclass
@@ -150,7 +154,6 @@ class CQCLoader:
             Dict mapping question_id to question data
         """
         import json
-        from pathlib import Path
 
         registry = {}
         questions_dir = self._get_questions_dir()
@@ -170,7 +173,6 @@ class CQCLoader:
                     registry[question_id] = question_data
             except (json.JSONDecodeError, IOError) as e:
                 # Skip files that fail to load
-                import logging
                 logging.warning(f"Failed to load question from {json_file}: {e}")
                 continue
 
@@ -261,6 +263,16 @@ class CQCLoader:
         else:
             # Fallback to linear search (slow) - iterates through all questions
             # This is O(n) vs O(1) for indexed routing
+            # Log warning only once globally to avoid log noise in high-concurrency scenarios
+            global _FALLBACK_WARNING_LOGGED
+            if not _FALLBACK_WARNING_LOGGED:
+                logging.warning(
+                    "Using O(n) linear search fallback for signal routing. "
+                    "Consider enabling SignalQuestionIndex for O(1) performance. "
+                    "This warning will only be shown once globally."
+                )
+                _FALLBACK_WARNING_LOGGED = True
+            
             result_set = set()
 
             # Get all questions from registry
@@ -285,8 +297,6 @@ class CQCLoader:
         Returns:
             Dict mapping signal_type → question_ids
         """
-        import logging
-
         if self._router_type == "indexed":
             results = self.router.route_batch(signal_types)
         else:

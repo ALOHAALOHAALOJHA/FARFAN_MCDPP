@@ -53,7 +53,7 @@ from typing import TYPE_CHECKING
 from farfan_pipeline.phases.Phase_2.phase2_50_01_task_planner import ExecutableTask
 from datetime import UTC
 
-from farfan_pipeline.calibracion_parametrizacion.types import ChunkData, PreprocessedDocument
+from farfan_pipeline.calibracion_parametrizacion.types import ChunkData, DimensionCausal, PreprocessedDocument
 from farfan_pipeline.phases.Phase_2.phase2_40_00_synchronization import ChunkMatrix
 from farfan_pipeline.phases.Phase_2.phase2_40_02_schema_validation import (
     validate_phase6_schema_compatibility,
@@ -200,6 +200,27 @@ else:
     synchronization_chunk_matches = DummyMetric()
 
 SHA256_HEX_DIGEST_LENGTH = 64
+
+
+def _normalize_dimension_id(dimension_id: str) -> str:
+    """Normalize dimension ID from legacy format (D1-D6) to canonical format (DIM01-DIM06).
+
+    Args:
+        dimension_id: Dimension ID in either format (D1 or DIM01)
+
+    Returns:
+        Normalized dimension ID in DIM01-DIM06 format
+    """
+    # If already in DIM01-DIM06 format, return as-is
+    if dimension_id.startswith("DIM"):
+        return dimension_id
+
+    # Convert legacy D1-D6 format to DIM01-DIM06
+    try:
+        return DimensionCausal.from_legacy(dimension_id).value
+    except (KeyError, AttributeError):
+        # If conversion fails, return original (will fail validation later)
+        return dimension_id
 
 
 @dataclass(frozen=True)
@@ -446,8 +467,11 @@ class IrrigationSynchronizer:
         if not dimension_id:
             raise ValueError(f"Question {question_id} missing required field: dimension_id")
 
+        # Normalize dimension_id from legacy format (D1) to canonical format (DIM01)
+        normalized_dimension_id = _normalize_dimension_id(dimension_id)
+
         try:
-            target_chunk = self.chunk_matrix.get_chunk(policy_area_id, dimension_id)
+            target_chunk = self.chunk_matrix.get_chunk(policy_area_id, normalized_dimension_id)
 
             chunk_id = target_chunk.chunk_id or f"{policy_area_id}-{dimension_id}"
 
@@ -462,10 +486,10 @@ class IrrigationSynchronizer:
                     f"question policy_area={policy_area_id} but chunk has {target_chunk.policy_area_id}"
                 )
 
-            if target_chunk.dimension_id and target_chunk.dimension_id != dimension_id:
+            if target_chunk.dimension_id and target_chunk.dimension_id != normalized_dimension_id:
                 raise ValueError(
                     f"Chunk routing key mismatch for {question_id}: "
-                    f"question dimension={dimension_id} but chunk has {target_chunk.dimension_id}"
+                    f"question dimension={dimension_id} (normalized={normalized_dimension_id}) but chunk has {target_chunk.dimension_id}"
                 )
 
             expected_elements = question.get("expected_elements", [])

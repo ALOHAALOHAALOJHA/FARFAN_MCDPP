@@ -19,9 +19,10 @@ Design:
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 from datetime import UTC, datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import structlog
 from fastapi import FastAPI, HTTPException, Request, Response
@@ -45,6 +46,9 @@ if TYPE_CHECKING:
 
 logger = structlog.get_logger(__name__)
 
+# Check for blake3 availability at module level for performance
+_HAS_BLAKE3 = hasattr(hashlib, "blake3")
+
 
 # In-memory signal store (would be database/file in production)
 _signal_store: dict[str, SignalPack] = {}
@@ -52,10 +56,10 @@ _signal_store: dict[str, SignalPack] = {}
 
 def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[str, SignalPack]:
     """
-    Load signal packs from questionnaire monolith using sophisticated extraction.
+    Load signal packs from questionnaire monolith using domain knowledge libraries.
 
-    Extracts policy-aware patterns, indicators, and thresholds from the
-    questionnaire structure using NLP and semantic analysis.
+    Extracts policy-aware patterns, indicators, and thresholds using
+    curated domain knowledge catalogs for 10 policy areas.
 
     Args:
         monolith_path: DEPRECATED - Path parameter is ignored.
@@ -67,11 +71,11 @@ def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[
     Extraction Strategy:
         1. Load questionnaire using CQCLoader (lazy-loaded registry)
         2. Extract questions per policy area (PA01-PA10)
-        3. Mine patterns from question text using TF-IDF
-        4. Extract indicators from scoring metrics
-        5. Generate regex patterns from structured fields
-        6. Extract verbs using POS tagging
-        7. Identify entities using NER and domain knowledge
+        3. Retrieve patterns from curated domain knowledge libraries
+        4. Extract indicators from policy-specific KPI catalogs
+        5. Generate regex patterns for structured data extraction
+        6. Extract verbs from domain-specific action catalogs
+        7. Identify entities from territorial knowledge bases
         8. Compute thresholds from statistical analysis
     """
     if monolith_path is not None:
@@ -94,7 +98,7 @@ def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[
             pattern_type=cqc._pattern_type,
         )
 
-        # Extract signal packs using sophisticated analysis
+        # Extract signal packs using domain knowledge libraries
         packs = _extract_sophisticated_signal_packs(cqc)
 
         logger.info(
@@ -113,23 +117,20 @@ def load_signals_from_monolith(monolith_path: str | Path | None = None) -> dict[
 
 def _extract_sophisticated_signal_packs(cqc: Any) -> dict[str, SignalPack]:
     """
-    Extract signal packs using sophisticated NLP and pattern mining.
+    Extract signal packs using domain knowledge libraries.
 
     Uses:
-    - TF-IDF for pattern extraction
-    - POS tagging for verb extraction
+    - Curated domain knowledge libraries for pattern extraction
+    - Policy-area-specific KPI libraries
+    - Domain-specific entity and verb catalogs
     - Statistical analysis for threshold computation
-    - Domain knowledge for entity identification
 
     Args:
-        cqc: CQCLoader instance
+        cqc: CQCLoader instance (preserved for future questionnaire-driven extraction)
 
     Returns:
         Dict mapping policy area to SignalPack
     """
-    import hashlib
-    import re
-    from collections import Counter, defaultdict
     from datetime import UTC, datetime
 
     # Policy area mappings
@@ -170,7 +171,8 @@ def _extract_sophisticated_signal_packs(cqc: Any) -> dict[str, SignalPack]:
 
             # Compute source fingerprint
             content = f"{pa_code}{patterns}{indicators}".encode()
-            fingerprint = hashlib.blake3(content).hexdigest()[:32] if hasattr(hashlib, "blake3") else hashlib.sha256(content).hexdigest()[:32]
+            # Uses blake3 if available (requires: pip install blake3), falls back to sha256
+            fingerprint = hashlib.blake3(content).hexdigest()[:32] if _HAS_BLAKE3 else hashlib.sha256(content).hexdigest()[:32]
 
             # Create signal pack
             pack = SignalPack(
@@ -187,8 +189,8 @@ def _extract_sophisticated_signal_packs(cqc: Any) -> dict[str, SignalPack]:
                 valid_from=datetime.now(UTC).isoformat(),
                 metadata={
                     "policy_area_name": pa_name,
-                    "extraction_method": "sophisticated_nlp",
-                    "quality_score": 0.95,
+                    "extraction_method": "domain_knowledge_library",
+                    "quality_score": 0.80,
                 },
             )
 
@@ -214,15 +216,15 @@ def _extract_sophisticated_signal_packs(cqc: Any) -> dict[str, SignalPack]:
 
 def _mine_patterns_for_policy_area(cqc: Any, pa_code: str, pa_name: str) -> list[str]:
     """
-    Mine text patterns for a policy area using TF-IDF and domain knowledge.
+    Mine text patterns for a policy area using domain knowledge libraries.
 
     Args:
-        cqc: CQCLoader instance
+        cqc: CQCLoader instance (preserved for future questionnaire-driven mining)
         pa_code: Policy area code (e.g., "PA01")
         pa_name: Policy area name
 
     Returns:
-        List of mined patterns
+        List of curated patterns from domain knowledge library
     """
     # Domain-specific patterns based on policy area
     pattern_library = {
@@ -286,14 +288,14 @@ def _mine_patterns_for_policy_area(cqc: Any, pa_code: str, pa_name: str) -> list
 
 def _extract_indicators_for_policy_area(cqc: Any, pa_code: str) -> list[str]:
     """
-    Extract key performance indicators for a policy area.
+    Extract key performance indicators for a policy area from curated KPI library.
 
     Args:
-        cqc: CQCLoader instance
+        cqc: CQCLoader instance (preserved for future questionnaire-driven extraction)
         pa_code: Policy area code
 
     Returns:
-        List of KPIs
+        List of KPIs from domain knowledge library
     """
     # KPI library per policy area
     kpi_library = {
@@ -401,13 +403,13 @@ def _generate_regex_patterns_for_policy_area(pa_code: str) -> list[str]:
 
 def _extract_action_verbs_for_policy_area(pa_name: str) -> list[str]:
     """
-    Extract action verbs relevant to policy area using POS analysis.
+    Extract action verbs relevant to policy area from curated domain knowledge.
 
     Args:
         pa_name: Policy area name
 
     Returns:
-        List of action verbs
+        List of action verbs from domain knowledge catalog
     """
     # Common policy verbs
     common_verbs = [
