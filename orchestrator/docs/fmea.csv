@@ -1,0 +1,16 @@
+Failure_Mode,Cause,Effect,Severity,Detection,Mitigation,Owner
+Job_timeout,Slow NLP model or large document,Pipeline blocked at Phase 2,HIGH,Heartbeat timeout after 30min,Auto retry with smaller chunk size,Orchestrator
+Duplicate_execution,Retry without idempotency key check,Data corruption or duplicate scores,CRITICAL,Checksum mismatch on outputs,Idempotent execution keys per stage,Orchestrator
+Partial_output,Crash mid-extraction,Downstream phases receive incomplete data,HIGH,Output count validation < 300,Atomic writes + compensating action,Stage
+Lost_run_state,Orchestrator restart,Orphaned partial executions,MEDIUM,Gap in run sequence,Persistent workflow state in DB,Orchestrator
+Pattern_registry_corruption,Bad deployment or merge,Wrong evidence extraction,CRITICAL,Schema validation + hash check,Immutable pattern registry with versioning,DevOps
+Questionnaire_version_mismatch,Using old cached questionnaire,Scoring against wrong rubric,HIGH,Version assertion at Phase 0,Force reload on version bump,Orchestrator
+PDF_parsing_failure,Scanned PDF without OCR,Empty text in Phase 1,MEDIUM,Empty text detection,Fallback to OCR or reject with clear error,Phase_1
+NLP_model_unavailable,API outage or quota exceeded,Phase 2 blocked,HIGH,Health check before execution,Circuit breaker + fallback model,Phase_2
+Score_drift,Model bias over time,Inconsistent evaluations,MEDIUM,Calibration metrics vs benchmark,Periodic recalibration in Phase 9,Phase_9
+Circular_reasoning_undetected,Missing interdependency rule,False positive coherence score,LOW,Manual audit sample,Expand interdependency_mapping rules,Phase_5
+Out_of_memory,Large PDF with many tables,Process crash,MEDIUM,Memory monitoring,Streaming processing + chunking,Phase_1
+Concurrent_execution_conflict,Same municipality processed twice,Race condition on outputs,HIGH,Distributed lock check,Mutex on municipality_id + date,Orchestrator
+Secret_exposure,API key in logs,Security breach,CRITICAL,Log sanitization validation,Secret injection at runtime only,Infra
+Archive_corruption,Disk failure during write,Data loss,HIGH,Checksum verification post-write,Redundant storage + verification,Phase_7
+Audit_trail_gap,Logging failure,Compliance violation,MEDIUM,Audit log sequence check,Write-ahead logging,Phase_7

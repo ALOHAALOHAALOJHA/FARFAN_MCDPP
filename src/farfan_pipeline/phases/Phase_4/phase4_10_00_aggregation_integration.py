@@ -108,8 +108,8 @@ async def aggregate_dimensions_async(
         # Return empty if validation fails
         return []
 
-    # Group by (policy_area, dimension)
-    grouped = group_by(validated_results, key_func=lambda r: (r.policy_area_id, r.dimension_id))
+    # Group by (policy_area, dimension) - ScoredResult uses 'policy_area' and 'dimension' attributes
+    grouped = group_by(validated_results, key_func=lambda r: (r.policy_area, r.dimension))
 
     logger.info(f"Phase 4: Processing {len(grouped)} dimension groups")
     instrumentation.start(items_total=len(grouped))
@@ -164,8 +164,8 @@ async def aggregate_policy_areas_async(
         abort_on_insufficient=True,
     )
 
-    # Group by area_id
-    grouped = group_by(dimension_scores, key_func=lambda d: (d.policy_area_id,))
+    # Group by area_id - DimensionScore uses 'area_id' attribute
+    grouped = group_by(dimension_scores, key_func=lambda d: (d.area_id,))
 
     logger.info(f"Phase 5: Processing {len(grouped)} policy area groups")
     instrumentation.start(items_total=len(grouped))

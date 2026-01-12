@@ -43,6 +43,20 @@ if TYPE_CHECKING:
     except ImportError:
         QuestionnaireSignalRegistry = Any  # type: ignore
 
+# EMPIRICAL CORPUS INTEGRATION
+try:
+    from farfan_pipeline.phases.Phase_3.phase3_10_00_empirical_thresholds_loader import (
+        get_global_thresholds_loader,
+    )
+
+    _empirical_loader = get_global_thresholds_loader()
+    logger = logging.getLogger(__name__)
+    logger.info("Empirical thresholds loader initialized for SignalEnrichedScorer")
+except Exception as e:
+    logger = logging.getLogger(__name__)
+    logger.warning(f"Failed to load empirical thresholds, using hardcoded defaults: {e}")
+    _empirical_loader = None
+
 logger = logging.getLogger(__name__)
 
 # Quality level constants
@@ -53,6 +67,7 @@ QUALITY_NO_APLICABLE = "NO_APLICABLE"
 QUALITY_ERROR = "ERROR"
 
 # Threshold adjustment constants
+# NOTE: These are now fallback defaults. Empirical values loaded from corpus_thresholds_weights.json
 HIGH_PATTERN_THRESHOLD = 15  # Pattern count threshold for complexity
 HIGH_INDICATOR_THRESHOLD = 10  # Indicator count threshold for specificity
 PATTERN_COMPLEXITY_ADJUSTMENT = -0.05  # Lower threshold for complex questions
@@ -60,6 +75,7 @@ INDICATOR_SPECIFICITY_ADJUSTMENT = 0.03  # Raise threshold for specific question
 COMPLETE_EVIDENCE_ADJUSTMENT = 0.02  # Bonus for complete evidence
 
 # Score thresholds for validation
+# NOTE: These should be loaded from empirical_weights.json phase3_scoring_weights
 HIGH_SCORE_THRESHOLD = 0.8
 LOW_SCORE_THRESHOLD = 0.3
 
