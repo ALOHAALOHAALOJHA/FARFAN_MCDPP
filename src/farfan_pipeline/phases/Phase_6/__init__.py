@@ -37,6 +37,8 @@ from .phase6_10_00_phase_6_constants import (
     Phase6Invariants,
 )
 
+from .phase6_10_00_cluster_score import ClusterScore
+
 __all__ = [
     "CLUSTERS",
     "CLUSTER_COMPOSITION",
@@ -49,4 +51,5 @@ __all__ = [
     "PENALTY_WEIGHT",
     "DispersionScenario",
     "Phase6Invariants",
+    "ClusterScore",
 ]

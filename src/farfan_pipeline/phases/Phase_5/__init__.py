@@ -36,6 +36,8 @@ from .phase5_10_00_phase_5_constants import (
     QualityLevel,
 )
 
+from .phase5_10_00_area_score import AreaScore
+
 __all__ = [
     "CLUSTER_ASSIGNMENTS",
     "DIMENSIONS_PER_AREA",
@@ -47,4 +49,5 @@ __all__ = [
     "QUALITY_THRESHOLDS",
     "Phase5Invariants",
     "QualityLevel",
+    "AreaScore",
 ]
