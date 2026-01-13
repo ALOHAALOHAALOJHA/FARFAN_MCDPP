@@ -90,22 +90,23 @@ def validate_mission_contract() -> bool:
 
 
 # Module Topological Order (Import Dependencies)
-# Based on static analysis from scripts/audit/verify_phase_chain.py
+# Based on static analysis from audit (2026-01-13)
+# NOTE: 4 modules were reclassified during normalization:
+# - phase1_01_00_cpp_models → docs/legacy/ (superseded by phase1_03)
+# - phase1_04_00_phase_protocol → interphase/ (cross-phase protocol)
+# - phase1_08_00_adapter → interphase/ (downstream adapter)
+# - phase1_10_00_dependency_validator → primitives/ (utility)
 PHASE1_TOPOLOGICAL_ORDER: list[str] = [
     "PHASE_1_CONSTANTS",              # 0: Root constants
-    "phase1_01_00_cpp_models",        # 1: CPP data models
-    "phase1_02_00_phase_1_constants", # 2: Phase constants
-    "phase1_03_00_models",            # 3: Core data models
-    "phase1_04_00_phase_protocol",    # 4: Protocol definitions
-    "phase1_05_00_thread_safe_results", # 5: Thread safety utilities
-    "phase1_06_00_questionnaire_mapper", # 6: Question mapping
-    "phase1_07_00_sp4_question_aware", # 7: Question-aware segmentation
-    "phase1_08_00_adapter",           # 8: Adapter layer
-    "phase1_09_00_circuit_breaker",   # 9: Circuit breaker
-    "phase1_10_00_dependency_validator", # 10: Dependency validation
-    "phase1_11_00_signal_enrichment", # 11: Signal enrichment
-    "phase1_12_00_structural",        # 12: Structural analysis
-    "phase1_13_00_cpp_ingestion",     # 13: Main executor (imports all)
+    "phase1_02_00_phase_1_constants", # 1: Phase constants
+    "phase1_03_00_models",            # 2: Core data models
+    "phase1_05_00_thread_safe_results", # 3: Thread safety utilities
+    "phase1_06_00_questionnaire_mapper", # 4: Question mapping
+    "phase1_07_00_sp4_question_aware", # 5: Question-aware segmentation
+    "phase1_09_00_circuit_breaker",   # 6: Circuit breaker
+    "phase1_11_00_signal_enrichment", # 7: Signal enrichment
+    "phase1_12_00_structural",        # 8: Structural analysis
+    "phase1_13_00_cpp_ingestion",     # 9: Main executor (imports all)
 ]
 
 

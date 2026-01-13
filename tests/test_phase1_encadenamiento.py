@@ -130,22 +130,18 @@ class TestPhase1Encadenamiento:
             f"Expected cpp_ingestion to be last, got: {last_module}"
 
     def test_orphan_files_documented(self, chain_report: Dict):
-        """Test that any orphan files are documented (false positives are acceptable)."""
-        orphan_files = chain_report.get("orphan_files", [])
-        
-        # Orphan files are acceptable if they're documented false positives
-        # These are typically re-exported through __init__.py or used externally
-        known_false_positives = {
-            "phase1_01_00_cpp_models",
-            "phase1_04_00_phase_protocol",
-            "phase1_05_00_thread_safe_results",
-            "phase1_08_00_adapter",
-            "phase1_10_00_dependency_validator"
-        }
-        
-        for orphan in orphan_files:
-            assert orphan in known_false_positives, \
-                f"Unexpected orphan file: {orphan} (not in documented false positives)"
+        """Test that any orphan files are documented (post-normalization: should be 0)."""
+        # After normalization, all orphan files should be reclassified
+        # Check the reclassified_modules section
+        reclassified = chain_report.get("reclassified_modules", {}).get("reclassified", [])
+
+        # Verify the 4 reclassified modules are documented
+        assert len(reclassified) == 4, f"Expected 4 reclassified modules, got {len(reclassified)}"
+
+        # Verify no orphan files remain in summary
+        summary = chain_report.get("summary", {})
+        orphan_count = summary.get("orphan_files", 1)
+        assert orphan_count == 0, f"Orphan files still exist: {orphan_count}"
 
     def test_input_contract_functions_defined(self, phase1_dir: Path):
         """Test that input contract defines required validation functions."""
