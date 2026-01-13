@@ -20,9 +20,6 @@ import pytest
 from dataclasses import dataclass
 
 # Import contracts
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 from farfan_pipeline.phases.Phase_2.contracts.phase2_input_contract import (
     Phase2InputPreconditions,
