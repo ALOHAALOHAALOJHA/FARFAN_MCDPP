@@ -73,7 +73,7 @@ class ClusterScore:
     coherence: float
     variance: float
     weakest_area: str | None
-    area_scores: list[Any] = field(default_factory=list)  # List[AreaScore]
+    area_scores: list["AreaScore"] = field(default_factory=list)
     validation_passed: bool = True
     validation_details: dict[str, Any] = field(default_factory=dict)
     score_std: float = 0.0
