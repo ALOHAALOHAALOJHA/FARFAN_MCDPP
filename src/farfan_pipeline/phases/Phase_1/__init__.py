@@ -18,7 +18,7 @@ Version: 2.0.0 - Question-Aware Architecture
 
 # Core executor (may have optional dependencies)
 try:
-    from .phase1_20_00_cpp_ingestion import Phase1MissionContract as Phase1Executor
+    from .phase1_13_00_cpp_ingestion import Phase1MissionContract as Phase1Executor
 
     PHASE1_EXECUTOR_AVAILABLE = True
 except ImportError:
@@ -26,7 +26,7 @@ except ImportError:
     PHASE1_EXECUTOR_AVAILABLE = False
 
 # Data models
-from .phase1_10_00_models import (
+from .phase1_03_00_models import (
     Arguments,
     CausalChains,
     Chunk,
@@ -45,10 +45,10 @@ from .phase1_10_00_models import (
 )
 
 # Thread-safe utilities
-from .phase1_10_00_thread_safe_results import ThreadSafeResults
+from .phase1_05_00_thread_safe_results import ThreadSafeResults
 
 # Constants
-from .phase1_10_00_phase_1_constants import (
+from .phase1_02_00_phase_1_constants import (
     ASSIGNMENT_METHOD_FALLBACK,
     ASSIGNMENT_METHOD_SEMANTIC,
     CHUNK_ID_PATTERN,
@@ -69,7 +69,7 @@ from .primitives import TruncationAudit
 
 # Question-aware architecture (v2.0) - NEW
 try:
-    from .phase1_15_00_questionnaire_mapper import (
+    from .phase1_06_00_questionnaire_mapper import (
         NUM_DIMENSIONS,
         NUM_POLICY_AREAS,
         QUESTIONS_PER_DIMENSION,
@@ -99,10 +99,10 @@ except ImportError:
     QUESTIONNAIRE_MAPPER_AVAILABLE = False
 
 try:
-    from .phase1_25_00_sp4_question_aware import (
+    from .phase1_07_00_sp4_question_aware import (
         TOTAL_CHUNK_COMBINATIONS as SP4_TOTAL_CHUNKS,
     )
-    from .phase1_25_00_sp4_question_aware import (
+    from .phase1_07_00_sp4_question_aware import (
         execute_sp4_question_aware,
     )
 
