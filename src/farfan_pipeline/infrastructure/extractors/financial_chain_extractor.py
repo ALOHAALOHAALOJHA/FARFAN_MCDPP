@@ -187,8 +187,8 @@ class FinancialChainExtractor(PatternBasedExtractor):
 
         # Patterns from empirical calibration
         default_patterns = [
-            r"\$\s*([\d.,]+)\s*(millones?|mil\s+millones?|MM|M)?",
-            r"([\d.,]+)\s*(millones?\s+de\s+pesos|COP|pesos)",
+            r"\$\s*([\d.,]+)\s*(billones?|mil(?:es)?\s+de\s+millones?|mil\s+millones?|millones?|MM|M)?",
+            r"([\d.,]+)\s*(billones?|mil(?:es)?\s+de\s+millones?|millones?(?:\s+de\s+pesos)?|COP|pesos)",
             r"valor:\s*\$?\s*([\d.,]+)",
             r"presupuesto:\s*\$?\s*([\d.,]+)",
         ]
@@ -222,19 +222,65 @@ class FinancialChainExtractor(PatternBasedExtractor):
 
     def _normalize_currency(self, valor_str: str, unidad: str | None) -> float:
         """Normalize currency to pesos."""
-        # Remove thousands separators and convert to float
-        valor_str = valor_str.replace(",", "").replace(".", "")
+        # 1. Clean the string
+        clean_str = valor_str.strip()
+        
+        # 2. Heuristic parsing for separators
+        # If both ',' and '.' exist
+        if "," in clean_str and "." in clean_str:
+            if clean_str.rfind(",") > clean_str.rfind("."):
+                # European/Colombian: 1.234.567,89
+                clean_str = clean_str.replace(".", "").replace(",", ".")
+            else:
+                # US: 1,234,567.89
+                clean_str = clean_str.replace(",", "")
+        # If only ',' exists (e.g., 1,234 or 1,5)
+        elif "," in clean_str:
+             # If it appears multiple times, it's thousands: 1,234,567 -> 1234567
+             if clean_str.count(",") > 1:
+                 clean_str = clean_str.replace(",", "")
+             # If it appears once
+             else:
+                 # Check if it looks like a decimal (e.g. "1,5 millones") vs thousands ("1,200")
+                 # Context matters. "1,5 millones" is clearly 1.5. "1,200 pesos" is 1200.
+                 # If unit is present (millones, etc), it's likely a decimal comma
+                 if unidad: 
+                     clean_str = clean_str.replace(",", ".")
+                 else:
+                     # If no unit, assume standard thousands if length after comma is 3 (1,000)
+                     # But this is ambiguous. Let's assume decimal if < 1000? 
+                     # Risk: "1,500" could be 1.5 or 1500.
+                     # In CO plans, "." is usually thousands, "," is decimal.
+                     # Let's try replacing "," with "." and see if it makes sense as a float.
+                     # Actually, standard CO is "," for decimal.
+                     clean_str = clean_str.replace(",", ".")
+        # If only '.' exists (e.g. 1.234 or 1.5)
+        elif "." in clean_str:
+            if clean_str.count(".") > 1:
+                clean_str = clean_str.replace(".", "")
+            else:
+                # If unit present, likely decimal (1.5 M) -> 1.5
+                if unidad:
+                    pass # Keep as is (decimal point)
+                else:
+                    # 1.200 -> 1200
+                     clean_str = clean_str.replace(".", "")
+
         try:
-            valor = float(valor_str)
+            valor = float(clean_str)
         except ValueError:
             return 0.0
 
-        # Apply unit multiplier
+        # 3. Apply unit multiplier
         if unidad:
             unidad_lower = unidad.lower()
-            if "millones" in unidad_lower or "mm" in unidad_lower:
+            if "billones" in unidad_lower:
+                valor *= 1_000_000_000_000
+            elif "mil millones" in unidad_lower or "miles de millones" in unidad_lower:
+                valor *= 1_000_000_000
+            elif "millones" in unidad_lower or "mm" in unidad_lower:
                 valor *= 1_000_000
-            elif "miles" in unidad_lower:
+            elif "miles" in unidad_lower and "millones" not in unidad_lower:
                 valor *= 1_000
 
         return valor
@@ -310,6 +356,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
     def _extract_periodos(self, text: str) -> list[dict[str, Any]]:
         """Extract fiscal periods."""
         periodos = []
+        covered_spans = set()
 
         default_patterns = [
             r"(20[2-3]\d)\s*[-–]\s*(20[2-3]\d)",
@@ -326,6 +373,15 @@ class FinancialChainExtractor(PatternBasedExtractor):
 
         for pattern in patterns:
             for match in pattern.finditer(text):
+                # Check if this span is already covered by a previous (more specific) match
+                is_covered = False
+                for start, end in covered_spans:
+                    if match.start() >= start and match.end() <= end:
+                        is_covered = True
+                        break
+                if is_covered:
+                    continue
+
                 if match.lastindex >= 2:
                     # Range pattern
                     año_inicio = int(match.group(1))
@@ -344,6 +400,7 @@ class FinancialChainExtractor(PatternBasedExtractor):
                     "confidence": 0.85,
                 }
                 periodos.append(periodo)
+                covered_spans.add((match.start(), match.end()))
 
         return periodos
 

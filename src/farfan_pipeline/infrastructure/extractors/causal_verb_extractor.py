@@ -45,6 +45,7 @@ class CausalLink:
     subject: str | None = None
     object: str | None = None
     outcome: str | None = None
+    programmatic_link: dict | None = None
     causal_strength: str = "medium"  # weak, medium, strong
     confidence: float = 0.65
     text_span: tuple[int, int] = (0, 0)
@@ -107,6 +108,21 @@ class CausalVerbExtractor(PatternBasedExtractor):
             "dirigir",
         ],
     }
+
+    # Empirically validated causal connectors
+    CAUSAL_CONNECTORS = [
+        "con el fin de",
+        "con el objetivo de",
+        "con el propósito de",
+        "mediante",
+        "a través de",
+        "por medio de",
+        "para",
+        "garantizando",
+        "asegurando",
+        "permitiendo",
+        "logrando",
+    ]
 
     def __init__(self, calibration_file: Path | None = None):
         super().__init__(
@@ -177,13 +193,21 @@ class CausalVerbExtractor(PatternBasedExtractor):
 
     def _build_argument_patterns(self):
         """Build patterns for extracting verb arguments."""
-        # Object pattern: verb + [la|el|los|las] + [0-20 words] + [noun]
+        # Object pattern: verb + [optional determiner] + [0-10 words] + [noun]
+        # Made determiner optional to catch "Garantizar derechos"
         self.object_pattern = re.compile(
-            r"(?:la|el|los|las|al|del|de|a)\s+((?:\w+\s+){0,10}\w+)", re.IGNORECASE
+            r"(?:(?:la|el|los|las|al|del|de|a)\s+)?((?:\w+\s+){0,10}\w+)", re.IGNORECASE
         )
 
-        # Outcome pattern: "para" + [infinitive or noun phrase]
-        self.outcome_pattern = re.compile(r"para\s+((?:\w+\s+){0,15}\w+)", re.IGNORECASE)
+        # Connector pattern: union of all causal connectors
+        connectors_regex = "|".join(re.escape(c) for c in self.CAUSAL_CONNECTORS)
+        self.connector_pattern = re.compile(rf"\b({connectors_regex})\b", re.IGNORECASE)
+
+        # Outcome pattern: connector + [phrase]
+        # We look for the connector first, then capture what follows
+        self.outcome_pattern = re.compile(
+            rf"\b(?:{connectors_regex})\s+((?:\w+\s+){0,15}\w+)", re.IGNORECASE
+        )
 
         # Subject pattern: preceding noun phrase (simplified)
         self.subject_pattern = re.compile(
@@ -224,6 +248,9 @@ class CausalVerbExtractor(PatternBasedExtractor):
                 obj = self._extract_object(text, verb_end, context_window)
                 outcome = self._extract_outcome(text, verb_end, context_window)
 
+                # Link to hierarchy
+                programmatic_link = self._link_to_hierarchy(context)
+
                 # Calculate confidence based on completeness
                 confidence = self._calculate_confidence(strength, obj, outcome)
 
@@ -238,6 +265,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
                     subject=subject["text"] if subject else None,
                     object=obj["text"] if obj else None,
                     outcome=outcome["text"] if outcome else None,
+                    programmatic_link=programmatic_link,
                     causal_strength=strength,
                     confidence=confidence,
                     text_span=(span_start, span_end),
@@ -258,6 +286,7 @@ class CausalVerbExtractor(PatternBasedExtractor):
                 "subject": link.subject,
                 "object": link.object,
                 "outcome": link.outcome,
+                "programmatic_link": link.programmatic_link,
                 "causal_strength": link.causal_strength,
                 "confidence": link.confidence,
                 "chain_length": link.chain_length,
@@ -295,6 +324,21 @@ class CausalVerbExtractor(PatternBasedExtractor):
         self.extraction_count += 1
 
         return result
+
+    def _link_to_hierarchy(self, context: dict | None) -> dict | None:
+        """Link causal chain to programmatic hierarchy."""
+        if not context:
+            return None
+            
+        link = {}
+        if "programa" in context:
+            link["program"] = context["programa"]
+        if "meta" in context:
+            link["goal"] = context["meta"]
+        if "policy_area" in context:
+            link["policy_area"] = context["policy_area"]
+            
+        return link if link else None
 
     def _get_verb_lemma(self, verb_text: str) -> str:
         """Get lemma (infinitive) of verb."""

@@ -29,7 +29,7 @@ import json
 import logging
 import re
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -51,6 +51,7 @@ class InstitutionalEntity:
     text_span: tuple[int, int]
     context: str | None = None
     scoring_boost: dict | None = None
+    relationships: list[dict] = field(default_factory=list)
 
 
 class InstitutionalNERExtractor(PatternBasedExtractor):
@@ -63,6 +64,14 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
     3. International frameworks (ODS, CEDAW, etc.)
     4. Territorial entities
     """
+
+    # Relationship markers
+    RELATIONSHIP_MARKERS = {
+        "coordination": ["coordina con", "en coordinación con", "articulado con", "conjuntamente con"],
+        "support": ["apoyo de", "asistencia técnica de", "acompañamiento de"],
+        "funding": ["financiado por", "recursos de", "cofinanciación de"],
+        "oversight": ["vigilancia de", "control de", "supervisión de"],
+    }
 
     def __init__(self, calibration_file: Path | None = None):
         super().__init__(
@@ -77,17 +86,27 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
         # Build recognition patterns
         self._build_entity_patterns()
 
+        # Compile relationship patterns
+        self._build_relationship_patterns()
+
         logger.info(
             f"InstitutionalNERExtractor initialized with "
             f"{len(self.entity_registry)} entities from registry"
         )
+
+    def _build_relationship_patterns(self):
+        """Compile relationship marker patterns."""
+        self.relationship_patterns = {}
+        for rel_type, markers in self.RELATIONSHIP_MARKERS.items():
+            pattern_str = r"\b(?:" + "|".join(re.escape(m) for m in markers) + r")\b"
+            self.relationship_patterns[rel_type] = re.compile(pattern_str, re.IGNORECASE)
 
     def _load_entity_registry(self):
         """Load entities from _registry/entities/."""
         self.entity_registry = {}
 
         registry_path = (
-            Path(__file__).resolve().parent.parent.parent.parent
+            Path(__file__).resolve().parent.parent.parent.parent.parent
             / "canonic_questionnaire_central"
             / "_registry"
             / "entities"
@@ -207,6 +226,9 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
                     detected_entities.append(entity)
                     entity_id_counter += 1
 
+        # Extract relationships between entities
+        self._extract_relationships(detected_entities, text)
+
         # Convert to matches format
         matches = []
         for entity in detected_entities:
@@ -219,6 +241,7 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
                 "confidence": entity.confidence,
                 "text_span": entity.text_span,
                 "scoring_boost": entity.scoring_boost,
+                "relationships": entity.relationships,
             }
             matches.append(match)
 
@@ -245,6 +268,7 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
                 "institutions": sum(1 for m in matches if m["entity_type"] == "institution"),
                 "normative": sum(1 for m in matches if m["entity_type"] == "normative"),
                 "international": sum(1 for m in matches if m["entity_type"] == "international"),
+                "relationships_found": sum(len(m["relationships"]) for m in matches),
             },
         )
 
@@ -257,6 +281,52 @@ class InstitutionalNERExtractor(PatternBasedExtractor):
         self.extraction_count += 1
 
         return result
+
+    def _extract_relationships(self, entities: list[InstitutionalEntity], text: str):
+        """Find relationships between detected entities based on proximity and markers."""
+        # Sort entities by position
+        sorted_entities = sorted(entities, key=lambda e: e.text_span[0])
+
+        for i in range(len(sorted_entities)):
+            entity_a = sorted_entities[i]
+            
+            # Look at subsequent entities within a reasonable distance (e.g., 100 chars)
+            for j in range(i + 1, len(sorted_entities)):
+                entity_b = sorted_entities[j]
+                
+                # Calculate distance between end of A and start of B
+                distance = entity_b.text_span[0] - entity_a.text_span[1]
+                
+                if distance > 150: # Too far
+                    break
+                
+                # Get text between them
+                between_text = text[entity_a.text_span[1]:entity_b.text_span[0]]
+                
+                # Check for relationship markers
+                for rel_type, pattern in self.relationship_patterns.items():
+                    if pattern.search(between_text):
+                        # Relationship found: A -> rel -> B
+                        rel_data = {
+                            "related_entity_id": entity_b.entity_id,
+                            "related_entity_name": entity_b.canonical_name,
+                            "type": rel_type,
+                            "confidence": 0.85
+                        }
+                        entity_a.relationships.append(rel_data)
+                        
+                        # Also add inverse? Maybe "is_coordinated_by"? 
+                        # For now just one way is fine or bidirectional if symmetric.
+                        # Coordination is often symmetric.
+                        if rel_type == "coordination":
+                             rel_data_b = {
+                                "related_entity_id": entity_a.entity_id,
+                                "related_entity_name": entity_a.canonical_name,
+                                "type": rel_type,
+                                "confidence": 0.85
+                            }
+                             entity_b.relationships.append(rel_data_b)
+                        break
 
     def _calculate_confidence(
         self, detected_text: str, canonical_name: str, acronym: str, context: str
