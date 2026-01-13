@@ -60,7 +60,7 @@ from .phase0_00_01_domain_errors import (
     DataContractError,
     SystemContractError,
 )
-from .phase0_00_03_primitives import (
+from .primitives.phase0_00_03_primitives import (
     DimensionID,
     HashStr,
     PolicyAreaID,
