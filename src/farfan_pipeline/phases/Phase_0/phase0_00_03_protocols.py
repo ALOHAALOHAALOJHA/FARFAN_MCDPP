@@ -63,8 +63,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Generic, TypeVar
 
-# Use primitives from our primitives module
-from farfan_pipeline.phases.Phase_0.primitives.phase0_00_03_primitives import HashStr
+# Use primitives from our primitives module (relative import)
+from .primitives.phase0_00_03_primitives import HashStr
 
 # Type variables for generic phase contracts
 TInput = TypeVar("TInput")
