@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Phase 4-7 Aggregation Pipeline — Canonical Package
+Phase 4 - Dimension Aggregation Pipeline
 
-This is the CANONICAL location for Phase 4-7 aggregation modules.
-All source files live here. No legacy re-exports.
+This is the CANONICAL location for Phase 4 dimension aggregation modules.
+Phase 4 is responsible ONLY for aggregating 300 micro-questions into 60 dimension scores.
 
-Document ID: CANONIC-P4-7-INIT-2025-12-18
-Status: FROZEN
+Phases 5, 6, and 7 have been separated into their own modules.
+
+Document ID: PHASE-4-INIT-2026-01-13
+Status: ACTIVE
 """
 
 from __future__ import annotations
@@ -15,79 +17,82 @@ from __future__ import annotations
 # LOCAL IMPORTS — Files live in this directory
 # ==============================================================================
 
-# Core Aggregation Pipeline
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation import (
+# Core Aggregation Pipeline (Phase 4 only)
+from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation import (
     # Dataclasses
     AggregationSettings,
     ScoredResult,
     DimensionScore,
-    AreaScore,
-    ClusterScore,
-    MacroScore,
     # Aggregators
     DimensionAggregator,
-    AreaPolicyAggregator,
-    ClusterAggregator,
-    MacroAggregator,
     # Provenance (integrated)
     AggregationDAG,
     ProvenanceNode,
-    # Bootstrap
-    BootstrapAggregator,
     # Utilities
     group_by,
     validate_scored_results,
+    # Exceptions
+    AggregationError,
+    ValidationError,
+    WeightValidationError,
+    ThresholdValidationError,
+    HermeticityValidationError,
+    CoverageError,
 )
 
 # Choquet Integral Aggregator
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.choquet_aggregator import (
+from farfan_pipeline.phases.Phase_4.phase4_10_00_choquet_aggregator import (
     ChoquetAggregator,
-    ChoquetConfig,
-    CalibrationResult,
+)
+
+# Choquet Adapter
+from farfan_pipeline.phases.Phase_4.phase4_10_00_choquet_adapter import (
+    create_default_choquet_adapter,
+)
+
+# Uncertainty Quantification
+from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification import (
+    BootstrapAggregator,
+    UncertaintyMetrics,
+    aggregate_with_uncertainty,
+)
+
+# Provenance (standalone import)
+from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_provenance import (
+    AggregationDAG as ProvenanceDAG,
+    ProvenanceNode as ProvenanceEntry,
+)
+
+# Signal-Enriched Aggregation
+from farfan_pipeline.phases.Phase_4.phase4_10_00_signal_enriched_aggregation import (
+    SignalEnrichedAggregator,
 )
 
 # Enhanced Aggregation
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.enhancements import (
+from farfan_pipeline.phases.Phase_4.enhancements import (
     EnhancedDimensionAggregator,
     DispersionMetrics,
     HermeticityDiagnosis,
     enhance_aggregator,
 )
 
-# Validation
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.validation import (
-    validate_phase4_output,
-    validate_phase5_output,
-    validate_phase6_output,
-    validate_phase7_output,
-    validate_full_aggregation_pipeline,
-    ValidationResult,
-    AggregationValidationError,
-)
-
-# Provenance (standalone re-export for explicit access)
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.aggregation_provenance import (
-    AggregationDAG as ProvenanceDAG,
-    ProvenanceNode as ProvenanceEntry,
-)
-
-# Signal-Enriched Aggregation
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.enhancements.signal_enriched_aggregation import (
-    SignalEnrichedAggregator,
-)
-
-# Adaptive Meso Scoring
-from farfan_pipeline.phases.phase_4_7_aggregation_pipeline.enhancements.adaptive_meso_scoring import (
-    AdaptiveMesoScoringEngine,
+# Constants
+from farfan_pipeline.phases.Phase_4.PHASE_4_CONSTANTS import (
+    PHASE_ID,
+    PHASE_NAME,
+    EXPECTED_INPUT_MICRO_QUESTIONS,
+    EXPECTED_OUTPUT_DIMENSION_SCORES,
+    get_quality_level,
 )
 
 # ==============================================================================
 # VERSION METADATA
 # ==============================================================================
 
-__version__ = "1.0.0-canonical"
-__canonical_date__ = "2025-12-18"
-__status__ = "FROZEN"
+__version__ = "1.0.0"
+__canonical_date__ = "2026-01-13"
+__status__ = "ACTIVE"
+__phase__ = 4
 
 # ==============================================================================
 # PUBLIC API
@@ -96,57 +101,57 @@ __status__ = "FROZEN"
 __all__ = [
     # Settings & Configuration
     "AggregationSettings",
-    # Score Dataclasses
+    # Score Dataclasses (Phase 4 only)
     "ScoredResult",
     "DimensionScore",
-    "AreaScore",
-    "ClusterScore",
-    "MacroScore",
-    # Core Aggregators
+    # Core Aggregators (Phase 4 only)
     "DimensionAggregator",
-    "AreaPolicyAggregator",
-    "ClusterAggregator",
-    "MacroAggregator",
     "group_by",
     "validate_scored_results",
     # Choquet
     "ChoquetAggregator",
-    "ChoquetConfig",
-    "CalibrationResult",
+    "create_default_choquet_adapter",
     # Enhanced
     "EnhancedDimensionAggregator",
     "DispersionMetrics",
     "HermeticityDiagnosis",
     "enhance_aggregator",
-    # Validation
-    "validate_phase4_output",
-    "validate_phase5_output",
-    "validate_phase6_output",
-    "validate_phase7_output",
-    "validate_full_aggregation_pipeline",
-    "ValidationResult",
-    "AggregationValidationError",
     # Provenance
     "AggregationDAG",
     "ProvenanceNode",
     "ProvenanceDAG",
     "ProvenanceEntry",
-    # Bootstrap
+    # Bootstrap & Uncertainty
     "BootstrapAggregator",
+    "UncertaintyMetrics",
+    "aggregate_with_uncertainty",
     # Signal
     "SignalEnrichedAggregator",
-    # Adaptive
-    "AdaptiveMesoScoringEngine",
+    # Exceptions
+    "AggregationError",
+    "ValidationError",
+    "WeightValidationError",
+    "ThresholdValidationError",
+    "HermeticityValidationError",
+    "CoverageError",
+    # Constants
+    "PHASE_ID",
+    "PHASE_NAME",
+    "EXPECTED_INPUT_MICRO_QUESTIONS",
+    "EXPECTED_OUTPUT_DIMENSION_SCORES",
+    "get_quality_level",
 ]
 
 # ==============================================================================
 # CONTRACT SIGNATURE
 # ==============================================================================
-# This package GUARANTEES:
-# 1. 300 micro → 60 dimension (Phase 4)
-# 2. 60 dimension → 10 area (Phase 5)
-# 3. 10 area → 4 cluster (Phase 6)
-# 4. 4 cluster → 1 macro (Phase 7)
-# 5. Full provenance DAG for all operations
-# 6. Hermetic validation at each phase boundary
+# This package GUARANTEES (Phase 4 ONLY):
+# 1. Input: 300 ScoredMicroQuestion from Phase 3
+# 2. Output: 60 DimensionScore (6 dimensions × 10 policy areas)
+# 3. Full provenance DAG for all aggregation operations
+# 4. Hermetic validation at phase boundary
+# 5. Uncertainty quantification via bootstrap resampling
+#
+# NOTE: Phases 5, 6, and 7 are handled by separate modules.
 # ==============================================================================
+
