@@ -27,7 +27,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 from farfan_pipeline.phases.Phase_2.contracts.phase2_input_contract import (
     Phase2InputPreconditions,
     Phase2InputValidator,
-    Phase2InputContractError,
 )
 from farfan_pipeline.phases.Phase_2.contracts.phase2_mission_contract import (
     verify_dag_acyclicity,
