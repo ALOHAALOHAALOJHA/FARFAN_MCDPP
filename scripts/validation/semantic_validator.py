@@ -7,17 +7,21 @@ repository. Ensures names are not only syntactically correct but also
 semantically meaningful and consistent.
 
 Document: FPN-GNEA-002
-Version: 1.0.0
+Version: 1.1.0
 """
 
 from __future__ import annotations
 
 import ast
+import json
 import re
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
+
+# Path to GNEA rules configuration
+GNEA_RULES_PATH = Path(__file__).parent.parent / "enforcement" / "gnea_rules.json"
 
 
 class SemanticIssue(Enum):
@@ -52,93 +56,82 @@ class SemanticValidator:
     - Consistent with domain terminology
     - Not misleading or vague
     - Following established conventions
+    
+    Loads configuration from gnea_rules.json for consistency with GNEA enforcer.
     """
 
-    # Domain-specific terminology dictionary
-    DOMAIN_TERMS = {
-        "phase": ["phase", "stage", "step", "portion"],
-        "executor": ["executor", "runner", "handler", "processor"],
-        "contract": ["contract", "agreement", "specification", "schema"],
-        "validation": ["validation", "validator", "verify", "check"],
-        "factory": ["factory", "creator", "builder", "maker"],
-        "registry": ["registry", "register", "catalog", "index"],
-        "nexus": ["nexus", "hub", "center", "core"],
-        "router": ["router", "dispatcher", "director", "switch"],
-        "config": ["config", "configuration", "settings", "options"],
-    }
-
-    # Common abbreviations that should be avoided or documented
-    PROBLEMATIC_ABBREVIATIONS = {
-        "cfg": "config",
-        "ctx": "context",
-        "env": "environment",
-        "msg": "message",
-        "obj": "object",
-        "param": "parameter",
-        "proc": "process",
-        "resp": "response",
-        "req": "request",
-        "tmp": "temporary",
-        "val": "value",
-        "var": "variable",
-    }
-
-    # Vague or generic names to avoid
-    VAGUE_NAMES = {
-        "data",
-        "info",
-        "item",
-        "thing",
-        "stuff",
-        "manager",
-        "helper",
-        "util",
-        "utils",
-        "handler",
-        "processor",
-    }
-
-    # Verbs that should be used for functions
-    FUNCTION_VERBS = {
-        "get",
-        "set",
-        "add",
-        "remove",
-        "create",
-        "delete",
-        "update",
-        "fetch",
-        "load",
-        "save",
-        "store",
-        "find",
-        "search",
-        "filter",
-        "validate",
-        "verify",
-        "check",
-        "test",
-        "run",
-        "execute",
-        "process",
-        "handle",
-        "transform",
-        "convert",
-        "parse",
-        "format",
-        "calculate",
-        "compute",
-        "derive",
-        "generate",
-        "build",
-        "construct",
-    }
+    # Default values (overridden by gnea_rules.json if available)
+    DOMAIN_TERMS: Dict[str, List[str]] = {}
+    PROBLEMATIC_ABBREVIATIONS: Dict[str, str] = {}
+    VAGUE_NAMES: Set[str] = set()
+    FUNCTION_VERBS: Set[str] = set()
+    
+    @classmethod
+    def _load_gnea_config(cls) -> Dict:
+        """Load GNEA rules configuration."""
+        if GNEA_RULES_PATH.exists():
+            try:
+                with open(GNEA_RULES_PATH) as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, OSError):
+                pass
+        return {}
 
     def __init__(self, repo_root: Optional[Path] = None):
         self.repo_root = repo_root or Path.cwd()
         self.violations: List[SemanticViolation] = []
         self.term_usage: Dict[str, List[str]] = {}
+        
+        # Load configuration from gnea_rules.json
+        self._load_semantic_rules()
         self._initialize_term_usage()
+    
+    def _load_semantic_rules(self) -> None:
+        """Load semantic validation rules from gnea_rules.json."""
+        config = self._load_gnea_config()
+        
+        # Load semantic rules if present, otherwise use defaults
+        semantic_rules = config.get("semantic_rules", {})
+        
+        self.DOMAIN_TERMS = semantic_rules.get("domain_terms", {
+            "phase": ["phase", "stage", "step", "portion"],
+            "executor": ["executor", "runner", "handler", "processor"],
+            "contract": ["contract", "agreement", "specification", "schema"],
+            "validation": ["validation", "validator", "verify", "check"],
+            "factory": ["factory", "creator", "builder", "maker"],
+            "registry": ["registry", "register", "catalog", "index"],
+            "nexus": ["nexus", "hub", "center", "core"],
+            "router": ["router", "dispatcher", "director", "switch"],
+            "config": ["config", "configuration", "settings", "options"],
+        })
+        
+        self.PROBLEMATIC_ABBREVIATIONS = semantic_rules.get("problematic_abbreviations", {
+            "cfg": "config",
+            "ctx": "context",
+            "env": "environment",
+            "msg": "message",
+            "obj": "object",
+            "param": "parameter",
+            "proc": "process",
+            "resp": "response",
+            "req": "request",
+            "tmp": "temporary",
+            "val": "value",
+            "var": "variable",
+        })
+        
+        self.VAGUE_NAMES = set(semantic_rules.get("vague_names", [
+            "data", "info", "item", "thing", "stuff",
+            "manager", "helper", "util", "utils", "handler", "processor",
+        ]))
+        
+        self.FUNCTION_VERBS = set(semantic_rules.get("function_verbs", [
+            "get", "set", "add", "remove", "create", "delete", "update",
+            "fetch", "load", "save", "store", "find", "search", "filter",
+            "validate", "verify", "check", "test", "run", "execute",
+            "process", "handle", "transform", "convert", "parse", "format",
+            "calculate", "compute", "derive", "generate", "build", "construct",
+        ]))
 
     def _initialize_term_usage(self):
         """Initialize term usage tracking."""

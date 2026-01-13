@@ -1,0 +1,164 @@
+{
+  "$schema": "phase_contract_schema.json",
+  "contract_version": "1.0.0",
+  "contract_id": "CONTRACT-P2-RECEIVES",
+  "contract_type": "receives_from_previous_phase",
+  "phase": {
+    "number": 2,
+    "name": "Evidence Extraction & Task Execution"
+  },
+  "previous_phase": {
+    "number": 1,
+    "name": "Signal Enrichment"
+  },
+  "certification": {
+    "status": "CERTIFIED",
+    "compatibility_verified": true,
+    "certified_by": "F.A.R.F.A.N Architecture Team",
+    "certification_date": "2026-01-12",
+    "verification_method": "Interface validation against Phase 1 delivers_to_next_phase_contract.json"
+  },
+  "received_inputs": [
+    {
+      "name": "enriched_signal_packs",
+      "type": "dict[str, EnrichedSignalPack]",
+      "required": true,
+      "source": "Phase 1 / phase1_60_00_signal_enrichment.py",
+      "validation": "len() == 305, all questions present",
+      "description": "Dictionary of question_id -> EnrichedSignalPack",
+      "received_as": "enriched_signal_packs"
+    },
+    {
+      "name": "irrigation_map",
+      "type": "IrrigationMap",
+      "required": true,
+      "source": "Phase 1 / phase1_20_00_cpp_ingestion.py (SP12)",
+      "validation": "coverage_metrics['completeness'] == 1.0",
+      "description": "Mapping of chunks to questions for routing",
+      "received_as": "irrigation_map"
+    },
+    {
+      "name": "smart_chunks",
+      "type": "list[SmartChunk]",
+      "required": true,
+      "source": "Phase 1 / phase1_20_00_cpp_ingestion.py (SP11)",
+      "validation": "all chunks have semantic_type",
+      "description": "Semantically segmented text chunks",
+      "received_as": "smart_chunks"
+    },
+    {
+      "name": "truncation_audit",
+      "type": "TruncationAudit",
+      "required": true,
+      "source": "Phase 1 / phase1_20_00_cpp_ingestion.py (SP13)",
+      "validation": "integrity_score >= 0.95",
+      "description": "Truncation and integrity audit",
+      "received_as": "truncation_audit"
+    },
+    {
+      "name": "structural_validation_result",
+      "type": "StructuralValidationResult",
+      "required": true,
+      "source": "Phase 1 / phase1_70_00_structural.py",
+      "validation": "is_valid == true",
+      "description": "Structural validation of enriched signals",
+      "received_as": "structural_validation"
+    },
+    {
+      "name": "questionnaire_mapper",
+      "type": "QuestionnaireMapper",
+      "required": false,
+      "source": "Phase 1 / phase1_15_00_questionnaire_mapper.py",
+      "validation": "Not None if present",
+      "description": "Optional questionnaire mapper",
+      "received_as": "questionnaire_mapper"
+    }
+  ],
+  "inherited_from_phase_0": [
+    {"name": "RuntimeConfig", "received_as": "runtime_config"},
+    {"name": "ResourceController", "received_as": "resource_controller"},
+    {"name": "validated_paths", "received_as": "paths"},
+    {"name": "logger", "received_as": "logger"},
+    {"name": "seed_snapshot", "received_as": "seed_snapshot"},
+    {"name": "questionnaire_sha256", "received_as": "questionnaire_hash"}
+  ],
+  "wiring_components_from_phase_0": [
+    {"name": "CanonicalQuestionnaire", "accessed_via": "factory"},
+    {"name": "MethodRegistry", "accessed_via": "methods_registry"},
+    {"name": "ExecutorConfig", "accessed_via": "executor_config"},
+    {"name": "QuestionnaireSignalRegistry", "accessed_via": "signal_registry"}
+  ],
+  "input_preconditions": [
+    {
+      "id": "PRE-P2-01",
+      "description": "All 305 questions have enriched signal packs",
+      "validation_method": "len(enriched_signal_packs) == 305",
+      "maps_to": "POST-P1-01",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "PRE-P2-02",
+      "description": "Smart chunks are valid and segmented",
+      "validation_method": "all(chunk.semantic_type for chunk in smart_chunks)",
+      "maps_to": "POST-P1-02",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "PRE-P2-03",
+      "description": "Irrigation map is complete",
+      "validation_method": "irrigation_map.coverage_metrics['completeness'] == 1.0",
+      "maps_to": "POST-P1-03",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "PRE-P2-04",
+      "description": "Structural validation passed",
+      "validation_method": "structural_validation.is_valid == true",
+      "maps_to": "POST-P1-04",
+      "severity": "HIGH"
+    },
+    {
+      "id": "PRE-P2-05",
+      "description": "Data integrity is acceptable",
+      "validation_method": "truncation_audit.integrity_score >= 0.95",
+      "maps_to": "POST-P1-05",
+      "severity": "HIGH"
+    },
+    {
+      "id": "PRE-P2-06",
+      "description": "Method registry has 416 methods",
+      "validation_method": "len(method_registry) == 416",
+      "maps_to": "POST-P0-06",
+      "severity": "HIGH"
+    },
+    {
+      "id": "PRE-P2-07",
+      "description": "Signal registry is initialized",
+      "validation_method": "signal_registry is not None",
+      "maps_to": "POST-P0-07",
+      "severity": "HIGH"
+    }
+  ],
+  "compatibility_guarantees": [
+    {
+      "guarantee": "All Phase 1 deliverables received",
+      "description": "Every deliverable from Phase 1 is available",
+      "verification": "Cross-reference with Phase 1 delivers contract"
+    },
+    {
+      "guarantee": "Type compatibility",
+      "description": "Types match Phase 1 delivery",
+      "verification": "Type checking"
+    },
+    {
+      "guarantee": "No data loss",
+      "description": "All signal data intact",
+      "verification": "Hash verification"
+    }
+  ],
+  "notes": [
+    "Phase 2 receives ProcessorBundle via Orchestrator",
+    "Core inputs: enriched_signal_packs, irrigation_map, smart_chunks",
+    "Uses Phase 0 WiringComponents for factory, registries"
+  ]
+}

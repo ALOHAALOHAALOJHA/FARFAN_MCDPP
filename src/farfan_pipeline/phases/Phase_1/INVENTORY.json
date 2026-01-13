@@ -1,0 +1,220 @@
+{
+  "$schema": "phase_inventory_schema.json",
+  "inventory_version": "1.0.0",
+  "phase": {
+    "number": 1,
+    "name": "Signal Enrichment"
+  },
+  "inventory_date": "2026-01-12",
+  "root_path": "src/farfan_pipeline/phases/Phase_1",
+  "directories": [
+    {
+      "path": ".",
+      "purpose": "Root directory containing all Phase 1 modules",
+      "contains_subdirs": true
+    },
+    {
+      "path": "interfaces",
+      "purpose": "Phase boundary contracts with Phase 0 (receives) and Phase 2 (delivers)",
+      "contains_subdirs": false
+    },
+    {
+      "path": "contracts",
+      "purpose": "Internal phase contracts and validation certificates"
+    },
+    {
+      "path": "interphase",
+      "purpose": "Inter-phase communication contracts (being replaced by interfaces/)"
+    },
+    {
+      "path": "primitives",
+      "purpose": "Core primitive types and data structures for Phase 1"
+    },
+    {
+      "path": "tests",
+      "purpose": "Phase 1 unit and integration tests"
+    },
+    {
+      "path": "docs",
+      "purpose": "Phase 1 documentation"
+    }
+  ],
+  "python_modules": [
+    {
+      "filename": "__init__.py",
+      "canonical_name": "phase1_init",
+      "type": "INFRA",
+      "criticality": "LOW",
+      "lines_of_code": 120,
+      "purpose": "Package initialization and public API exports"
+    },
+    {
+      "filename": "phase1_10_00_phase_protocol.py",
+      "canonical_name": "phase1_10_00_phase_protocol",
+      "type": "INFRA",
+      "criticality": "HIGH",
+      "lines_of_code": 380,
+      "purpose": "Phase protocol definitions and interfaces"
+    },
+    {
+      "filename": "phase1_10_00_phase_1_constants.py",
+      "canonical_name": "phase1_10_00_phase_1_constants",
+      "type": "CFG",
+      "criticality": "HIGH",
+      "lines_of_code": 160,
+      "purpose": "Phase 1 specific constants and configuration values"
+    },
+    {
+      "filename": "PHASE_1_CONSTANTS.py",
+      "canonical_name": "phase1_constants_duplicate",
+      "type": "CFG",
+      "criticality": "LOW",
+      "lines_of_code": 160,
+      "purpose": "DUPLICATE - consider removal, same as phase1_10_00_phase_1_constants.py"
+    },
+    {
+      "filename": "phase1_10_00_models.py",
+      "canonical_name": "phase1_10_00_models",
+      "type": "DATA",
+      "criticality": "HIGH",
+      "lines_of_code": 450,
+      "purpose": "Data models and typed dataclasses for Phase 1"
+    },
+    {
+      "filename": "phase1_10_00_cpp_models.py",
+      "canonical_name": "phase1_10_00_cpp_models",
+      "type": "DATA",
+      "criticality": "MEDIUM",
+      "lines_of_code": 520,
+      "purpose": "C++ interoperability models (evaluate if needed)"
+    },
+    {
+      "filename": "phase1_10_00_thread_safe_results.py",
+      "canonical_name": "phase1_10_00_thread_safe_results",
+      "type": "DATA",
+      "criticality": "MEDIUM",
+      "lines_of_code": 80,
+      "purpose": "Thread-safe result containers"
+    },
+    {
+      "filename": "phase1_15_00_questionnaire_mapper.py",
+      "canonical_name": "phase1_15_00_questionnaire_mapper",
+      "type": "PROC",
+      "criticality": "HIGH",
+      "lines_of_code": 450,
+      "purpose": "Map questionnaire structure to signal patterns"
+    },
+    {
+      "filename": "phase1_20_00_cpp_ingestion.py",
+      "canonical_name": "phase1_20_00_cpp_ingestion",
+      "type": "PROC",
+      "criticality": "HIGH",
+      "lines_of_code": 4800,
+      "purpose": "C++ based ingestion pipeline (evaluate if needed vs Python version)"
+    },
+    {
+      "filename": "phase1_25_00_sp4_question_aware.py",
+      "canonical_name": "phase1_25_00_sp4_question_aware",
+      "type": "PROC",
+      "criticality": "MEDIUM",
+      "lines_of_code": 520,
+      "purpose": "SP4 question-aware processing"
+    },
+    {
+      "filename": "phase1_30_00_adapter.py",
+      "canonical_name": "phase1_30_00_adapter",
+      "type": "PROC",
+      "criticality": "HIGH",
+      "lines_of_code": 980,
+      "purpose": "Adapter pattern implementation for signal processing"
+    },
+    {
+      "filename": "phase1_40_00_circuit_breaker.py",
+      "canonical_name": "phase1_40_00_circuit_breaker",
+      "type": "ENF",
+      "criticality": "MEDIUM",
+      "lines_of_code": 780,
+      "purpose": "Circuit breaker pattern for fault tolerance"
+    },
+    {
+      "filename": "phase1_50_00_dependency_validator.py",
+      "canonical_name": "phase1_50_00_dependency_validator",
+      "type": "VAL",
+      "criticality": "MEDIUM",
+      "lines_of_code": 420,
+      "purpose": "Validate dependencies before execution"
+    },
+    {
+      "filename": "phase1_60_00_signal_enrichment.py",
+      "canonical_name": "phase1_60_00_signal_enrichment",
+      "type": "CORE",
+      "criticality": "CRITICAL",
+      "lines_of_code": 1100,
+      "purpose": "Main signal enrichment engine"
+    },
+    {
+      "filename": "phase1_70_00_structural.py",
+      "canonical_name": "phase1_70_00_structural",
+      "type": "VAL",
+      "criticality": "MEDIUM",
+      "lines_of_code": 120,
+      "purpose": "Structural validation of enriched signals"
+    }
+  ],
+  "metadata_files": [
+    {
+      "filename": "PHASE_1_MANIFEST.json",
+      "purpose": "Canonical manifest describing phase structure"
+    },
+    {
+      "filename": "INVENTORY.json",
+      "purpose": "Complete inventory of all files in Phase 1"
+    },
+    {
+      "filename": "README.md",
+      "purpose": "Human-readable documentation for Phase 1"
+    },
+    {
+      "filename": "TEST_MANIFEST.json",
+      "purpose": "Test coverage and validation manifest"
+    }
+  ],
+  "backup_files_to_remove": [
+    "phase1_20_00_cpp_ingestion.py.bak",
+    "phase1_60_00_signal_enrichment.py.bak"
+  ],
+  "duplicates_to_consolidate": [
+    {
+      "primary": "phase1_10_00_phase_1_constants.py",
+      "duplicate": "PHASE_1_CONSTANTS.py",
+      "recommendation": "Remove PHASE_1_CONSTANTS.py, update all imports"
+    }
+  ],
+  "directories_to_audit": [
+    {
+      "path": "interphase",
+      "reason": "Being replaced by interfaces/ - need to consolidate",
+      "action": "Move unique content to interfaces/, remove if redundant"
+    }
+  ],
+  "files_to_audit": [
+    {
+      "filename": "phase1_20_00_cpp_ingestion.py",
+      "reason": "4800 lines - evaluate if C++ version is still needed",
+      "action": "Compare with Python implementation, consolidate if redundant"
+    },
+    {
+      "filename": "phase1_10_00_cpp_models.py",
+      "reason": "C++ interoperability - check if still used",
+      "action": "Audit usage, remove if obsolete"
+    }
+  ],
+  "total_python_modules": 16,
+  "total_lines_of_code": "~11670",
+  "criticality_summary": {
+    "CRITICAL": 1,
+    "HIGH": 6,
+    "MEDIUM": 8,
+    "LOW": 1
+  }
+}
