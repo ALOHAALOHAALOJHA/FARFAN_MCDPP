@@ -192,7 +192,6 @@ CHOQUET_K_ADDITIVE_DEFAULT = CHOQUET_K_ADDITIVE_2
 CHOQUET_INTERACTION_NONE = 0.0  # Pure additive
 CHOQUET_INTERACTION_CONSERVATIVE = 0.1  # Minimal interactions
 CHOQUET_INTERACTION_MODERATE = 0.3  # Moderate interactions
-CHOQUET_INTERACTION_STRONG = 0.5  # Strong interactions
 
 # =============================================================================
 # SIGNAL-ENRICHED AGGREGATION
