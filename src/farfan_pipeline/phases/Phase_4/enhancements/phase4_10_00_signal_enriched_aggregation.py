@@ -1,6 +1,6 @@
-"""Phase 4-7 Signal-Enriched Aggregation Module
+"""Phase 4 Signal-Enriched Aggregation Module
 
-Extends Phase 4-7 hierarchical aggregation with signal-based enhancements
+Extends Phase 4 hierarchical aggregation with signal-based enhancements
 for context-aware weight adjustments, dispersion analysis, and enhanced
 aggregation transparency.
 
@@ -75,7 +75,7 @@ __all__ = [
 
 
 class SignalEnrichedAggregator:
-    """Signal-enriched aggregator for Phase 4-7 with adaptive weighting.
+    """Signal-enriched aggregator for Phase 4 with adaptive weighting.
 
     Enhances hierarchical aggregation with signal intelligence for better
     weight adaptation, dispersion interpretation, and aggregation quality.
