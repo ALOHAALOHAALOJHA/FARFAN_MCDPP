@@ -17,7 +17,7 @@
       "module": "phase0_30_01_performance_metrics",
       "stage": 30,
       "order": 1,
-      "test_file": "tests/phases/phase0/test_phase0_30_01_performance_metrics.py",
+      "test_file": "tests/phases/phase0/test_primitives/performance_metrics.py",
       "coverage_target": 0.8,
       "criticality": "MEDIUM"
     },
@@ -25,7 +25,7 @@
       "module": "phase0_00_02_runtime_error_fixes",
       "stage": 0,
       "order": 2,
-      "test_file": "tests/phases/phase0/test_phase0_00_02_runtime_error_fixes.py",
+      "test_file": "tests/phases/phase0/test_primitives/runtime_error_fixes.py",
       "coverage_target": 0.8,
       "criticality": "LOW"
     },
@@ -33,7 +33,7 @@
       "module": "phase0_40_03_coverage_gate",
       "stage": 40,
       "order": 3,
-      "test_file": "tests/phases/phase0/test_phase0_40_03_coverage_gate.py",
+      "test_file": "tests/phases/phase0/test_primitives/coverage_gate.py",
       "coverage_target": 0.8,
       "criticality": "HIGH"
     },
@@ -121,7 +121,7 @@
       "module": "phase0_10_00_phase_0_constants",
       "stage": 10,
       "order": 0,
-      "test_file": "tests/phases/phase0/test_phase0_10_00_phase_0_constants.py",
+      "test_file": "tests/phases/phase0/test_primitives/constants.py",
       "coverage_target": 0.8,
       "criticality": "CRITICAL"
     },
@@ -137,7 +137,7 @@
       "module": "phase0_40_01_schema_monitor",
       "stage": 40,
       "order": 1,
-      "test_file": "tests/phases/phase0/test_phase0_40_01_schema_monitor.py",
+      "test_file": "tests/phases/phase0/test_primitives/schema_monitor.py",
       "coverage_target": 0.8,
       "criticality": "HIGH"
     },
@@ -161,7 +161,7 @@
       "module": "phase0_40_02_signature_validator",
       "stage": 40,
       "order": 2,
-      "test_file": "tests/phases/phase0/test_phase0_40_02_signature_validator.py",
+      "test_file": "tests/phases/phase0/test_primitives/signature_validator.py",
       "coverage_target": 0.8,
       "criticality": "HIGH"
     },
@@ -201,7 +201,7 @@
       "module": "phase0_10_02_json_logger",
       "stage": 10,
       "order": 2,
-      "test_file": "tests/phases/phase0/test_phase0_10_02_json_logger.py",
+      "test_file": "tests/phases/phase0/test_primitives/json_logger.py",
       "coverage_target": 0.8,
       "criticality": "CRITICAL"
     },

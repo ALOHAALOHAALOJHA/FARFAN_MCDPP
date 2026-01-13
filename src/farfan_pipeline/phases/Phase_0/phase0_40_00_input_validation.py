@@ -71,7 +71,7 @@ except ImportError as e:
     ) from e
 
 # Phase protocol from Phase Zero Infrastructure
-from farfan_pipeline.phases.Phase_zero.phase0_00_03_protocols import (
+from farfan_pipeline.phases.Phase_0.phase0_00_03_protocols import (
     ContractValidationResult,
     PhaseContract,
 )

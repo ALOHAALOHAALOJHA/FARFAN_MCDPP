@@ -39,153 +39,30 @@ import hashlib
 import importlib
 import importlib.util
 import json
-import os
 import random
-from dataclasses import dataclass, field
-from datetime import datetime
-from enum import Enum
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Protocol
+from typing import TYPE_CHECKING, Any
 
 try:
     import blake3
-
     BLAKE3_AVAILABLE = True
 except ImportError:
     BLAKE3_AVAILABLE = False
 
 try:
     import numpy as np
-
     NUMPY_AVAILABLE = True
 except ImportError:
     NUMPY_AVAILABLE = False
 
-if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_0.phase0_90_02_bootstrap import WiringComponents
-
-
-# =============================================================================
-# SEVERITY LEVELS
-# =============================================================================
-
-
-class Severity(str, Enum):
-    """Violation severity levels."""
-
-    CRITICAL = "CRITICAL"  # Impossible to continue
-    HIGH = "HIGH"  # Compromises result quality
-    MEDIUM = "MEDIUM"  # Performance degradation
-    LOW = "LOW"  # Cosmetic / best practices
-
-
-# =============================================================================
-# CONTRACT VIOLATION
-# =============================================================================
-
-
-@dataclass
-class ContractViolation:
-    """Represents a single contract violation detected during validation."""
-
-    type: str
-    severity: Severity
-    component_path: str
-    message: str
-    expected: Any = None
-    actual: Any = None
-    remediation: str = ""
-    timestamp: datetime = field(default_factory=datetime.utcnow)
-
-    def to_dict(self) -> dict[str, Any]:
-        """Serialize to dictionary for JSON output."""
-        return {
-            "type": self.type,
-            "severity": self.severity.value,
-            "component_path": self.component_path,
-            "message": self.message,
-            "expected": str(self.expected) if self.expected is not None else None,
-            "actual": str(self.actual) if self.actual is not None else None,
-            "remediation": self.remediation,
-            "timestamp": self.timestamp.isoformat(),
-        }
-
-    def format_console(self) -> str:
-        """Format for human-readable console output."""
-        lines = [
-            f"[{self.severity.value}] {self.type}: {self.message}",
-        ]
-        if self.expected is not None:
-            lines.append(f"  → Expected: {self.expected}")
-        if self.actual is not None:
-            lines.append(f"  → Actual: {self.actual}")
-        if self.remediation:
-            lines.append(f"  → Remediation: {self.remediation}")
-        lines.append(f"  → Component: {self.component_path}")
-        return "\n".join(lines)
-
-
-# =============================================================================
-# VALIDATION RESULT
-# =============================================================================
-
-
-@dataclass
-class ValidationResult:
-    """Result of WiringValidator.validate() call."""
-
-    passed: bool
-    violations: list[ContractViolation] = field(default_factory=list)
-    integrity_hash: str = ""
-    validation_time_ms: float = 0.0
-
-    @property
-    def critical_count(self) -> int:
-        return sum(1 for v in self.violations if v.severity == Severity.CRITICAL)
-
-    @property
-    def high_count(self) -> int:
-        return sum(1 for v in self.violations if v.severity == Severity.HIGH)
-
-    def to_dict(self) -> dict[str, Any]:
-        """Serialize to dictionary for JSON output."""
-        return {
-            "validation_status": "PASSED" if self.passed else "FAILED",
-            "violations": [v.to_dict() for v in self.violations],
-            "total_violations": len(self.violations),
-            "critical_count": self.critical_count,
-            "high_count": self.high_count,
-            "integrity_hash": self.integrity_hash,
-            "validation_time_ms": round(self.validation_time_ms, 2),
-        }
-
-    def format_console(self) -> str:
-        """Format all violations for console output."""
-        if self.passed:
-            return f"✅ Wiring validation PASSED (hash: {self.integrity_hash[:16]}...)"
-
-        lines = [
-            f"❌ Wiring validation FAILED: {len(self.violations)} violation(s)",
-            f"   Critical: {self.critical_count}, High: {self.high_count}",
-            "",
-        ]
-        for v in self.violations:
-            lines.append(v.format_console())
-            lines.append("")
-        return "\n".join(lines)
-
-
-# =============================================================================
-# VALIDATOR PROTOCOL (for extensibility)
-# =============================================================================
-
-
-class TierValidator(Protocol):
-    """Protocol for tier-specific validators."""
-
-    def validate(self, wiring: WiringComponents) -> list[ContractViolation]:
-        """Execute tier validation and return violations."""
-        ...
+from farfan_pipeline.phases.Phase_0.interphase.wiring_types import (
+    ContractViolation,
+    Severity,
+    TierValidator,
+    ValidationResult,
+    WiringComponents,
+    WiringFeatureFlags,
+)
 
 
 # =============================================================================
@@ -807,50 +684,6 @@ class WiringInitializationError(Exception):
 
 
 # =============================================================================
-# FEATURE FLAGS
-# =============================================================================
-
-
-@dataclass
-class WiringFeatureFlags:
-    """Feature flags for wiring configuration."""
-
-    enable_http_signals: bool = False
-    enable_calibration: bool = False
-    strict_validation: bool = True
-    memory_signal_ttl: int = 3600
-    enable_resource_enforcement: bool = False
-
-    @classmethod
-    def from_env(cls) -> WiringFeatureFlags:
-        """Load flags from environment variables."""
-        return cls(
-            enable_http_signals=os.getenv("ENABLE_HTTP_SIGNALS", "false").lower() == "true",
-            enable_calibration=os.getenv("ENABLE_CALIBRATION", "false").lower() == "true",
-            strict_validation=os.getenv("STRICT_VALIDATION", "true").lower() == "true",
-            memory_signal_ttl=int(os.getenv("MEMORY_SIGNAL_TTL", "3600")),
-            enable_resource_enforcement=os.getenv("ENFORCE_RESOURCES", "false").lower() == "true",
-        )
-
-    def validate(self) -> list[str]:
-        """Validate flag combinations and return warnings."""
-        warnings = []
-        if self.enable_http_signals and self.memory_signal_ttl < 60:
-            warnings.append("HTTP signals with TTL < 60s may cause excessive network calls")
-        return warnings
-
-    def to_dict(self) -> dict[str, Any]:
-        """Serialize to dictionary."""
-        return {
-            "enable_http_signals": self.enable_http_signals,
-            "enable_calibration": self.enable_calibration,
-            "strict_validation": self.strict_validation,
-            "memory_signal_ttl": self.memory_signal_ttl,
-            "enable_resource_enforcement": self.enable_resource_enforcement,
-        }
-
-
-# =============================================================================
 # PHASE 0 CONFIG VALIDATOR
 # =============================================================================
 
@@ -892,34 +725,3 @@ class Phase0ConfigValidator:
 
 # Alias for backward compatibility
 Phase0Validator = Phase0ConfigValidator
-
-
-# =============================================================================
-# EXPORTS
-# =============================================================================
-
-__all__ = [
-    # Main validator
-    "WiringValidator",
-    "ValidationResult",
-    "ContractViolation",
-    "Severity",
-    # Tier validators (for custom composition)
-    "Tier1ExistentialValidator",
-    "Tier2CardinalityValidator",
-    "Tier3SignatureValidator",
-    "Tier4ReferentialIntegrityValidator",
-    "Tier5IntegrityHashValidator",
-    "Tier6SeedConsistencyValidator",
-    "Tier7ImportResolvabilityValidator",
-    # Exceptions
-    "WiringValidationError",
-    "MissingDependencyError",
-    "WiringInitializationError",
-    # Support classes
-    "WiringFeatureFlags",
-    "Phase0ConfigValidator",
-    "Phase0Validator",
-    # Protocol
-    "TierValidator",
-]
