@@ -1,11 +1,13 @@
-"""Phase 4-7 Aggregation Pipeline Enhancements.
+"""Phase 4 Aggregation Pipeline Enhancements.
 
 This package contains enhanced aggregators with additional features:
 - Confidence interval tracking
 - Dispersion analysis
 - Hermeticity diagnosis
-- Strategic alignment metrics
 - Adaptive penalty computation
+
+NOTE: Only Phase 4 (Dimension) aggregation enhancements are included here.
+Area, Cluster, and Macro aggregation enhancements belong to Phases 5, 6, and 7.
 """
 
 from __future__ import annotations
