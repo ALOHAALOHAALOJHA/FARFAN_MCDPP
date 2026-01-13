@@ -206,19 +206,20 @@ class Phase2InputValidator:
         """
         all_errors = []
         
-        is_valid, errors = self.validate_cpp(cpp)
+        cpp_valid, errors = self.validate_cpp(cpp)
         all_errors.extend(errors)
         
-        is_valid, errors = self.validate_phase1_certificate(certificate)
+        cert_valid, errors = self.validate_phase1_certificate(certificate)
         all_errors.extend(errors)
         
-        is_valid, errors = self.validate_questionnaire(questionnaire)
+        questionnaire_valid, errors = self.validate_questionnaire(questionnaire)
         all_errors.extend(errors)
         
-        is_valid, errors = self.validate_method_registry(registry)
+        registry_valid, errors = self.validate_method_registry(registry)
         all_errors.extend(errors)
         
-        return len(all_errors) == 0, all_errors
+        is_valid = cpp_valid and cert_valid and questionnaire_valid and registry_valid
+        return is_valid, all_errors
 
 
 # =============================================================================
