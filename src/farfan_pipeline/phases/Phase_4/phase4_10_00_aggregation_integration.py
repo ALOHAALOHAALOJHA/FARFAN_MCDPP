@@ -30,37 +30,19 @@ from farfan_pipeline.phases.Phase_5.phase5_10_00_area_aggregation import (
     AreaScore,
 )
 
-# Phase 6 and 7 imports (TODO: Update when Phase 6 and 7 are extracted)
-# from farfan_pipeline.phases.Phase_6.phase6_10_00_cluster_aggregation import (
-#     ClusterAggregator,
-#     ClusterScore,
-# )
-# from farfan_pipeline.phases.Phase_7.phase7_10_00_macro_aggregation import (
-#     MacroAggregator,
-#     MacroScore,
-# )
+# Phase 6 imports
+from farfan_pipeline.phases.Phase_6.phase6_10_00_cluster_score import ClusterScore
+
+# Phase 7 imports - NOW AVAILABLE
+from farfan_pipeline.phases.Phase_7.phase7_10_00_macro_score import MacroScore
+from farfan_pipeline.phases.Phase_7.phase7_20_00_macro_aggregator import MacroAggregator
 
 logger = logging.getLogger(__name__)
 
 
-# Placeholder for missing Phase 6 and 7 components
-class ClusterScore:
-    """Placeholder for Phase 6 ClusterScore (to be extracted)."""
-    pass
-
-
+# Placeholder for missing Phase 6 ClusterAggregator
 class ClusterAggregator:
     """Placeholder for Phase 6 ClusterAggregator (to be extracted)."""
-    pass
-
-
-class MacroScore:
-    """Placeholder for Phase 7 MacroScore (to be extracted)."""
-    pass
-
-
-class MacroAggregator:
-    """Placeholder for Phase 7 MacroAggregator (to be extracted)."""
     pass
 
 
