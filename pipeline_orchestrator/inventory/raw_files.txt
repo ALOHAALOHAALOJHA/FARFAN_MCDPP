@@ -343,7 +343,7 @@ scripts/enforcement/inject_metadata.py
 scripts/enforcement/master_enforcer.py
 scripts/enforcement/rename_all_non_compliant.py
 scripts/enforcement/rollback_manager.py
-scripts/enforcement/semantic_validator.py
+scripts/validation/semantic_validator.py
 scripts/enforcement/update_constants_imports.py
 scripts/enhance_pdet_enrichment.py
 scripts/enrich_pdet_data.py

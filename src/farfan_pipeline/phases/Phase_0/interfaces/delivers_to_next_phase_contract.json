@@ -1,0 +1,281 @@
+{
+  "$schema": "phase_contract_schema.json",
+  "contract_version": "1.0.0",
+  "contract_id": "CONTRACT-P0-DELIVERS",
+  "contract_type": "delivers_to_next_phase",
+  "phase": {
+    "number": 0,
+    "name": "Validation, Hardening & Bootstrap"
+  },
+  "next_phase": {
+    "number": 1,
+    "name": "Signal Enrichment"
+  },
+  "certification": {
+    "status": "CERTIFIED",
+    "compatibility_verified": true,
+    "certified_by": "F.A.R.F.A.N Architecture Team",
+    "certification_date": "2026-01-12",
+    "verification_method": "Interface validation + type checking"
+  },
+  "deliverables": [
+    {
+      "name": "WiringComponents",
+      "type": "dataclass",
+      "required": true,
+      "delivered_by": "phase0_90_02_bootstrap.py:WiringBootstrap",
+      "received_by_phase": "Phase 1",
+      "description": "Container with all initialized components - PRIMARY OUTPUT",
+      "schema": {
+        "fields": [
+          {"name": "provider", "type": "QuestionnaireResourceProvider"},
+          {"name": "signal_client", "type": "SignalClient"},
+          {"name": "signal_registry", "type": "SignalRegistry"},
+          {"name": "executor_config", "type": "ExecutorConfig"},
+          {"name": "factory", "type": "CoreModuleFactory"},
+          {"name": "arg_router", "type": "ExtendedArgRouter"},
+          {"name": "class_registry", "type": "dict[str, type]"},
+          {"name": "validator", "type": "WiringValidator"},
+          {"name": "calibration_orchestrator", "type": "CalibrationOrchestrator | None"},
+          {"name": "flags", "type": "WiringFeatureFlags"},
+          {"name": "init_hashes", "type": "dict[str, str]"}
+        ]
+      },
+      "source_file": "phase0_90_02_bootstrap.py",
+      "source_line": "QuestionnaireResourceProvider definition at line ~90",
+      "notes": [
+        "QuestionnaireResourceProvider provides scoped access to questionnaire data",
+        "Access is tracked via get_access_audit() from signal_consumption module",
+        "Methods: get_data(), get_dimensions(), get_policy_areas(), get_micro_questions_for_policy_area(), etc."
+      ]
+    },
+    {
+      "name": "init_hashes",
+      "type": "dict[str, str]",
+      "required": true,
+      "delivered_by": "phase0_90_02_bootstrap.py:WiringBootstrap",
+      "received_by_phase": "Phase 1",
+      "description": "Hashes of initialized components for reproducibility verification",
+      "schema": {
+        "key_type": "str",
+        "value_type": "str (hex hash)",
+        "example_keys": ["questionnaire", "method_registry", "signal_registry"]
+      }
+    },
+    {
+      "name": "enforcement_metrics",
+      "type": "EnforcementMetrics",
+      "required": true,
+      "delivered_by": "phase0_30_00_resource_controller.py:ResourceController",
+      "received_by_phase": "Phase 1",
+      "description": "Resource usage metrics collected during initialization",
+      "schema": {
+        "fields": [
+          {"name": "peak_memory_mb", "type": "float"},
+          {"name": "peak_cpu_seconds", "type": "float"},
+          {"name": "enforcement_count", "type": "int"}
+        ]
+      }
+    },
+    {
+      "name": "RuntimeConfig",
+      "type": "RuntimeConfig",
+      "required": true,
+      "delivered_by": "phase0_10_01_runtime_config.py:get_runtime_config()",
+      "received_by_phase": "Phase 1",
+      "description": "Frozen runtime configuration for the pipeline execution",
+      "schema": {
+        "fields": [
+          {"name": "mode", "type": "RuntimeMode"},
+          {"name": "questionnaire_path", "type": "Path"},
+          {"name": "input_pdf_path", "type": "Path"},
+          {"name": "calibration_profile", "type": "str"},
+          {"name": "abort_on_insufficient", "type": "bool"},
+          {"name": "is_frozen", "type": "bool", "value": "true (immutable after Phase 0)"}
+        ]
+      }
+    },
+    {
+      "name": "questionnaire_sha256",
+      "type": "str",
+      "required": true,
+      "delivered_by": "phase0_40_00_input_validation.py:Phase0InputValidator",
+      "received_by_phase": "Phase 1",
+      "description": "SHA-256 hash of validated questionnaire for integrity tracking",
+      "schema": {
+        "format": "64-character hex string",
+        "validation": "^[a-f0-9]{64}$"
+      }
+    },
+    {
+      "name": "input_pdf_sha256",
+      "type": "str",
+      "required": true,
+      "delivered_by": "phase0_40_00_input_validation.py:Phase0InputValidator",
+      "received_by_phase": "Phase 1",
+      "description": "SHA-256 hash of input PDF for provenance tracking",
+      "schema": {
+        "format": "64-character hex string",
+        "validation": "^[a-f0-9]{64}$"
+      }
+    },
+    {
+      "name": "seed_snapshot",
+      "type": "dict[str, int]",
+      "required": true,
+      "delivered_by": "phase0_20_02_determinism.py:enforce_determinism()",
+      "received_by_phase": "Phase 1",
+      "description": "Applied seed values for deterministic reproducibility",
+      "schema": {
+        "keys": ["python", "numpy", "hash"],
+        "value_type": "int"
+      }
+    },
+    {
+      "name": "ResourceController",
+      "type": "ResourceController",
+      "required": true,
+      "delivered_by": "phase0_30_00_resource_controller.py:ResourceController",
+      "received_by_phase": "Phase 1",
+      "description": "Resource enforcement controller with kernel-level limits",
+      "schema": {
+        "capabilities": [
+          "Memory limit enforcement (RLIMIT_AS)",
+          "CPU time enforcement (RLIMIT_CPU)",
+          "File descriptor limit (RLIMIT_NOFILE)",
+          "Memory watchdog monitoring"
+        ]
+      }
+    },
+    {
+      "name": "validated_paths",
+      "type": "dict[str, Path]",
+      "required": true,
+      "delivered_by": "phase0_10_00_paths.py (exports)",
+      "received_by_phase": "Phase 1",
+      "description": "Validated canonical paths for all project directories",
+      "schema": {
+        "keys": ["PROJECT_ROOT", "DATA_DIR", "CONFIG_DIR", "OUTPUT_DIR", "CACHE_DIR"],
+        "value_type": "Path (validated, absolute)"
+      }
+    },
+    {
+      "name": "logger",
+      "type": "logging.Logger | structlog.BoundLogger",
+      "required": true,
+      "delivered_by": "phase0_10_02_json_logger.py:get_logger()",
+      "received_by_phase": "Phase 1",
+      "description": "Configured structured logger with correlation ID support",
+      "schema": {
+        "features": [
+          "JSON structured output",
+          "Correlation ID injection",
+          "Thread-safe",
+          "Context-aware binding"
+        ]
+      }
+    },
+    {
+      "name": "ExitGateValidation",
+      "type": "Phase0ValidationResult",
+      "required": true,
+      "delivered_by": "phase0_50_01_exit_gates.py:check_all_gates()",
+      "received_by_phase": "Phase 1",
+      "description": "Result of Phase 0 exit gate validation",
+      "schema": {
+        "fields": [
+          {"name": "all_passed", "type": "bool"},
+          {"name": "gate_results", "type": "list[GateResult]"},
+          {"name": "validation_time", "type": "str (ISO 8601)"},
+          {"name": "seed_snapshot", "type": "dict[str, int]"},
+          {"name": "questionnaire_sha256", "type": "str"},
+          {"name": "input_pdf_sha256", "type": "str"}
+        ]
+      }
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "POST-P0-01",
+      "description": "All exit gates passed (7/7 gates)",
+      "validation_method": "ExitGateValidation.all_passed == true",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "POST-P0-02",
+      "description": "RuntimeConfig is frozen and immutable",
+      "validation_method": "RuntimeConfig.is_frozen() == true",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "POST-P0-03",
+      "description": "All seeds applied for determinism",
+      "validation_method": "seed_snapshot contains python, numpy, hash keys",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "POST-P0-04",
+      "description": "Resource limits are enforced at kernel level",
+      "validation_method": "ResourceController.is_enforcing() == true",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "POST-P0-05",
+      "description": "Questionnaire integrity verified",
+      "validation_method": "questionnaire_sha256 matches expected value",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "POST-P0-06",
+      "description": "Method registry loaded with expected method count",
+      "validation_method": "len(method_registry) == 416",
+      "severity": "HIGH"
+    },
+    {
+      "id": "POST-P0-07",
+      "description": "Signal registry initialized with questionnaire signals",
+      "validation_method": "signal_registry is not None and signal_registry.get_question_count() == 305",
+      "severity": "HIGH"
+    },
+    {
+      "id": "POST-P0-08",
+      "description": "All paths validated and absolute",
+      "validation_method": "all(p.is_absolute() for p in validated_paths.values())",
+      "severity": "HIGH"
+    }
+  ],
+  "compatibility_guarantees": [
+    {
+      "guarantee": "Type Compatibility",
+      "description": "All deliverables match types expected by Phase 1",
+      "verification": "Type checking against Phase 1 receives_from_previous_phase_contract.json"
+    },
+    {
+      "guarantee": "Schema Compatibility",
+      "description": "Data structures conform to expected schemas",
+      "verification": "JSON schema validation"
+    },
+    {
+      "guarantee": "Contract Compatibility",
+      "description": "Phase 0 outputs satisfy Phase 1 preconditions",
+      "verification": "PRE-P1-* satisfied by POST-P0-*"
+    },
+    {
+      "guarantee": "Invariant Preservation",
+      "description": "Phase 0 invariants maintained in Phase 1",
+      "verification": "Runtime invariant checks"
+    }
+  ],
+  "handoff_protocol": {
+    "mechanism": "Direct object passing via orchestrator",
+    "validation_point": "Before Phase 1 execution begins",
+    "failure_handling": "If any POST-P0-* fails, pipeline aborts before Phase 1",
+    "rollback_capability": "None (Phase 0 is foundation, failure is fatal)"
+  },
+  "notes": [
+    "Phase 0 deliverables are consumed by Orchestrator which then passes to Phase 1",
+    "All deliverables are immutable after Phase 0 completes",
+    "Failure of any exit gate prevents pipeline execution",
+    "Deliverables form the foundation for all subsequent phases"
+  ]
+}

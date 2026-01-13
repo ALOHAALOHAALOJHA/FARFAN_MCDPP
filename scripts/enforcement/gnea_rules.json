@@ -260,5 +260,44 @@
       ["7", "8"],
       ["8", "9"]
     ]
+  },
+  "semantic_rules": {
+    "description": "Semantic validation rules for FPN-GNEA-002",
+    "domain_terms": {
+      "phase": ["phase", "stage", "step", "portion"],
+      "executor": ["executor", "runner", "handler", "processor"],
+      "contract": ["contract", "agreement", "specification", "schema"],
+      "validation": ["validation", "validator", "verify", "check"],
+      "factory": ["factory", "creator", "builder", "maker"],
+      "registry": ["registry", "register", "catalog", "index"],
+      "nexus": ["nexus", "hub", "center", "core"],
+      "router": ["router", "dispatcher", "director", "switch"],
+      "config": ["config", "configuration", "settings", "options"]
+    },
+    "problematic_abbreviations": {
+      "cfg": "config",
+      "ctx": "context",
+      "env": "environment",
+      "msg": "message",
+      "obj": "object",
+      "param": "parameter",
+      "proc": "process",
+      "resp": "response",
+      "req": "request",
+      "tmp": "temporary",
+      "val": "value",
+      "var": "variable"
+    },
+    "vague_names": [
+      "data", "info", "item", "thing", "stuff",
+      "manager", "helper", "util", "utils", "handler", "processor"
+    ],
+    "function_verbs": [
+      "get", "set", "add", "remove", "create", "delete", "update",
+      "fetch", "load", "save", "store", "find", "search", "filter",
+      "validate", "verify", "check", "test", "run", "execute",
+      "process", "handle", "transform", "convert", "parse", "format",
+      "calculate", "compute", "derive", "generate", "build", "construct"
+    ]
   }
 }

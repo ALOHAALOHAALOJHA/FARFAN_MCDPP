@@ -43,6 +43,17 @@ if TYPE_CHECKING:
     except ImportError:
         QuestionnaireSignalRegistry = Any  # type: ignore
 
+# Runtime import of QuestionnaireSignalRegistry for scoring logic.
+# This makes the dependency explicit while still allowing hard failure if missing.
+try:
+    from farfan_pipeline.phases.Phase_2.registries.questionnaire_signal_registry import (
+        QuestionnaireSignalRegistry as _QuestionnaireSignalRegistryRuntime,
+    )
+    _questionnaire_signal_registry_import_error: Exception | None = None
+except ImportError as e:
+    _QuestionnaireSignalRegistryRuntime = None  # type: ignore[assignment]
+    _questionnaire_signal_registry_import_error = e
+
 # EMPIRICAL CORPUS INTEGRATION
 try:
     from farfan_pipeline.phases.Phase_3.phase3_10_00_empirical_thresholds_loader import (
@@ -66,16 +77,9 @@ QUALITY_INSUFICIENTE = "INSUFICIENTE"
 QUALITY_NO_APLICABLE = "NO_APLICABLE"
 QUALITY_ERROR = "ERROR"
 
-# DEPRECATED: Threshold constants moved to config/signal_scoring_thresholds.json
-# Use get_threshold_config() from farfan_pipeline.config.threshold_config instead
-# These remain as fallback only if config system fails
-_FALLBACK_HIGH_PATTERN_THRESHOLD = 15
-_FALLBACK_HIGH_INDICATOR_THRESHOLD = 10
-_FALLBACK_PATTERN_COMPLEXITY_ADJUSTMENT = -0.05
-_FALLBACK_INDICATOR_SPECIFICITY_ADJUSTMENT = 0.03
-_FALLBACK_COMPLETE_EVIDENCE_ADJUSTMENT = 0.02
-_FALLBACK_HIGH_SCORE_THRESHOLD = 0.8
-_FALLBACK_LOW_SCORE_THRESHOLD = 0.3
+# Threshold constants are now provided by config/signal_scoring_thresholds.json
+# via get_threshold_config() from farfan_pipeline.config.threshold_config.
+# This module only defines last-resort hardcoded values if the config system fails.
 
 # Load centralized configuration
 try:
@@ -85,36 +89,30 @@ try:
     if not _threshold_config.validation_passed:
         logger.warning(
             f"Threshold config validation failed: {_threshold_config.validation_errors}. "
-            "Using fallback values."
+            "Using potentially degraded but centralized values."
         )
-        HIGH_PATTERN_THRESHOLD = _FALLBACK_HIGH_PATTERN_THRESHOLD
-        HIGH_INDICATOR_THRESHOLD = _FALLBACK_HIGH_INDICATOR_THRESHOLD
-        PATTERN_COMPLEXITY_ADJUSTMENT = _FALLBACK_PATTERN_COMPLEXITY_ADJUSTMENT
-        INDICATOR_SPECIFICITY_ADJUSTMENT = _FALLBACK_INDICATOR_SPECIFICITY_ADJUSTMENT
-        COMPLETE_EVIDENCE_ADJUSTMENT = _FALLBACK_COMPLETE_EVIDENCE_ADJUSTMENT
-        HIGH_SCORE_THRESHOLD = _FALLBACK_HIGH_SCORE_THRESHOLD
-        LOW_SCORE_THRESHOLD = _FALLBACK_LOW_SCORE_THRESHOLD
-    else:
-        HIGH_PATTERN_THRESHOLD = _threshold_config.high_pattern_threshold
-        HIGH_INDICATOR_THRESHOLD = _threshold_config.high_indicator_threshold
-        PATTERN_COMPLEXITY_ADJUSTMENT = _threshold_config.pattern_complexity_adjustment
-        INDICATOR_SPECIFICITY_ADJUSTMENT = _threshold_config.indicator_specificity_adjustment
-        COMPLETE_EVIDENCE_ADJUSTMENT = _threshold_config.complete_evidence_adjustment
-        HIGH_SCORE_THRESHOLD = _threshold_config.high_score_threshold
-        LOW_SCORE_THRESHOLD = _threshold_config.low_score_threshold
-        logger.info(
-            f"Threshold config loaded: HIGH_PATTERN={HIGH_PATTERN_THRESHOLD}, "
-            f"HIGH_SCORE={HIGH_SCORE_THRESHOLD}"
-        )
+
+    HIGH_PATTERN_THRESHOLD = _threshold_config.high_pattern_threshold
+    HIGH_INDICATOR_THRESHOLD = _threshold_config.high_indicator_threshold
+    PATTERN_COMPLEXITY_ADJUSTMENT = _threshold_config.pattern_complexity_adjustment
+    INDICATOR_SPECIFICITY_ADJUSTMENT = _threshold_config.indicator_specificity_adjustment
+    COMPLETE_EVIDENCE_ADJUSTMENT = _threshold_config.complete_evidence_adjustment
+    HIGH_SCORE_THRESHOLD = _threshold_config.high_score_threshold
+    LOW_SCORE_THRESHOLD = _threshold_config.low_score_threshold
+
+    logger.info(
+        f"Threshold config loaded: HIGH_PATTERN={HIGH_PATTERN_THRESHOLD}, "
+        f"HIGH_SCORE={HIGH_SCORE_THRESHOLD}"
+    )
 except Exception as e:
     logger.warning(f"Failed to load threshold config: {e}. Using fallback values.")
-    HIGH_PATTERN_THRESHOLD = _FALLBACK_HIGH_PATTERN_THRESHOLD
-    HIGH_INDICATOR_THRESHOLD = _FALLBACK_HIGH_INDICATOR_THRESHOLD
-    PATTERN_COMPLEXITY_ADJUSTMENT = _FALLBACK_PATTERN_COMPLEXITY_ADJUSTMENT
-    INDICATOR_SPECIFICITY_ADJUSTMENT = _FALLBACK_INDICATOR_SPECIFICITY_ADJUSTMENT
-    COMPLETE_EVIDENCE_ADJUSTMENT = _FALLBACK_COMPLETE_EVIDENCE_ADJUSTMENT
-    HIGH_SCORE_THRESHOLD = _FALLBACK_HIGH_SCORE_THRESHOLD
-    LOW_SCORE_THRESHOLD = _FALLBACK_LOW_SCORE_THRESHOLD
+    HIGH_PATTERN_THRESHOLD = 15
+    HIGH_INDICATOR_THRESHOLD = 10
+    PATTERN_COMPLEXITY_ADJUSTMENT = -0.05
+    INDICATOR_SPECIFICITY_ADJUSTMENT = 0.03
+    COMPLETE_EVIDENCE_ADJUSTMENT = 0.02
+    HIGH_SCORE_THRESHOLD = 0.8
+    LOW_SCORE_THRESHOLD = 0.3
 
 __all__ = [
     "SignalEnrichedScorer",
@@ -445,14 +443,19 @@ class SignalEnrichedScorer:
             return raw_score, adjustment_log
 
         # Get expected signals for question using QuestionnaireSignalRegistry
-        # NO SILENT FALLBACKS - if this fails, the system should fail explicitly
+        # Error handling strategy:
+        # - Import/registry availability failures cause an explicit hard fail
+        # - Other issues are logged and we proceed with a well-defined fallback
         expected_primary = []
         try:
-            from farfan_pipeline.phases.Phase_2.registries.questionnaire_signal_registry import (
-                QuestionnaireSignalRegistry,
-            )
+            if _QuestionnaireSignalRegistryRuntime is None:
+                # Hard fail if registry is not available - this is a critical dependency
+                raise RuntimeError(
+                    "QuestionnaireSignalRegistry is required but not available. "
+                    "Cannot perform signal-enriched scoring without signal registry."
+                ) from _questionnaire_signal_registry_import_error
 
-            registry = QuestionnaireSignalRegistry()
+            registry = _QuestionnaireSignalRegistryRuntime()
             mapping = registry.get_question_mapping(question_id)
             if mapping:
                 # Primary signals are the ones we expect
@@ -461,12 +464,6 @@ class SignalEnrichedScorer:
                 logger.warning(
                     f"No signal mapping found for question {question_id} in QuestionnaireSignalRegistry"
                 )
-        except ImportError as e:
-            # Hard fail if registry is not available - this is a critical dependency
-            raise RuntimeError(
-                f"QuestionnaireSignalRegistry is required but not available: {e}. "
-                "Cannot perform signal-enriched scoring without signal registry."
-            ) from e
         except Exception as e:
             # Log and fail explicitly for other errors - NO SILENT FAILURES
             logger.error(

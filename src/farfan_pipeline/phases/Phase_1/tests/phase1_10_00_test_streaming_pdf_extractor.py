@@ -16,7 +16,7 @@ from farfan_pipeline.phases.Phase_1.primitives.streaming_extractor import (
     PYMUPDF_AVAILABLE,
     StreamingPDFExtractor,
 )
-from farfan_pipeline.phases.Phase_1.phase1_10_00_phase_1_constants import PDF_EXTRACTION_CHAR_LIMIT
+from farfan_pipeline.phases.Phase_1.phase1_02_00_phase_1_constants import PDF_EXTRACTION_CHAR_LIMIT
     def test_raises_runtime_error_when_pymupdf_not_available_stream(self):
         extractor = StreamingPDFExtractor(Path("dummy.pdf"))
         with self.assertRaises(RuntimeError) as ctx:
