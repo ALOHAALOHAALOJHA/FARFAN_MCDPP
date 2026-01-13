@@ -12,9 +12,10 @@
 | **Canonical Name** | `phase_5_policy_area_aggregation` |
 | **Status** | `ACTIVE` |
 | **Version** | `2.0.0` |
-| **Effective Date** | 2026-01-11 |
+| **Effective Date** | 2026-01-13 |
 | **Pipeline Position** | Phase 4 (Dimension) → **Phase 5** → Phase 6 (Cluster) |
 | **Criticality** | `HIGH` |
+| **Surgery Date** | 2026-01-13 (Extracted from Phase 4 meta-phase) |
 | **Certification** | [CERTIFICATE_02_PHASE5_COUNT_10](../Phase_4/contracts/certificates/CERTIFICATE_02_PHASE5_COUNT_10.md) |
 
 ---
