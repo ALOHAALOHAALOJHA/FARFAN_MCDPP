@@ -22,7 +22,7 @@ spec = importlib.util.spec_from_file_location(
     / "src"
     / "farfan_pipeline"
     / "phases"
-    / "Phase_two"
+    / "Phase_2"
     / "phase2_95_03_executor_calibration_integration.py",
 )
 assert spec is not None and spec.loader is not None

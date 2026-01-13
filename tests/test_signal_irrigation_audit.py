@@ -20,7 +20,7 @@ from pathlib import Path
 
 import pytest
 
-from cross_cutting_infrastructure.irrigation_using_signals.audit_signal_irrigation import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.audit_signal_irrigation import (
     AuditResults,
     SignalIrrigationAuditor,
     ScopeCoherenceAuditor,
@@ -28,22 +28,22 @@ from cross_cutting_infrastructure.irrigation_using_signals.audit_signal_irrigati
     UtilityAuditor,
     WiringAuditor,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
     AccessLevel,
     SignalConsumptionProof,
     QuestionnaireAccessAudit,
     reset_access_audit,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption_integration import (
     ConsumptionTracker,
     create_consumption_tracker,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_wiring_fixes import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_wiring_fixes import (
     validate_access_level,
     validate_injection_timing,
     verify_pattern_scope_before_application,
 )
-from cross_cutting_infrastructure.irrigation_using_signals.visualization_generator import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.visualization_generator import (
     HeatmapGenerator,
     SankeyDiagramGenerator,
     StateMachineGenerator,
@@ -227,7 +227,7 @@ class TestWiringFixes:
 
         # Invalid access: Consumer trying to access at FACTORY level
         is_valid = validate_access_level(
-            "canonic_phases.Phase_two",
+            "canonic_phases.Phase_2",
             "BaseExecutor",
             "execute",
             AccessLevel.FACTORY,
@@ -404,7 +404,7 @@ class TestAccessAudit:
         # Reset audit for clean test
         reset_access_audit()
 
-        from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
+        from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_consumption import (
             get_access_audit,
         )
 
@@ -422,7 +422,7 @@ class TestAccessAudit:
 
         audit.record_access(
             AccessLevel.CONSUMER,
-            "canonic_phases.Phase_two",
+            "canonic_phases.Phase_2",
             "BaseExecutor",
             "execute",
             "patterns",

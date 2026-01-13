@@ -1,7 +1,7 @@
 """Tests for circuit breaker degradation annotations."""
 
 import pytest
-from farfan_pipeline.phases.Phase_two.phase2_30_04_circuit_breaker import CircuitBreakerConfig
+from farfan_pipeline.phases.Phase_2.phase2_30_04_circuit_breaker import CircuitBreakerConfig
 
 
 class TestCircuitBreakerAnnotations:

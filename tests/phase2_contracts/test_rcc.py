@@ -3,13 +3,12 @@ Test RC - Routing Contract
 Verifies: A* path is bitwise identical for same inputs
 Request routing rules guarantee
 """
+
 import pytest
-import sys
 from pathlib import Path
 from typing import Any
 
-
-from cross_cutting_infrastructure.contractual.dura_lex.routing_contract import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.routing_contract import (
     RoutingContract,
     RoutingInput,
 )
@@ -40,9 +39,7 @@ class TestRoutingContract:
         route = RoutingContract.compute_route(routing_input)
         assert RoutingContract.verify(routing_input, route)
 
-    def test_rcc_003_route_verification_fails_invalid(
-        self, routing_input: RoutingInput
-    ) -> None:
+    def test_rcc_003_route_verification_fails_invalid(self, routing_input: RoutingInput) -> None:
         """RCC-003: Route verification fails for incorrect route."""
         invalid_route = ["invalid_step_1", "invalid_step_2"]
         assert not RoutingContract.verify(routing_input, invalid_route)
@@ -67,16 +64,12 @@ class TestRoutingContract:
         route2 = RoutingContract.compute_route(input2)
         assert route1 != route2
 
-    def test_rcc_005_lexicographical_ordering(
-        self, routing_input: RoutingInput
-    ) -> None:
+    def test_rcc_005_lexicographical_ordering(self, routing_input: RoutingInput) -> None:
         """RCC-005: Route steps are lexicographically sorted."""
         route = RoutingContract.compute_route(routing_input)
         assert route == sorted(route)
 
-    def test_rcc_006_route_is_list_of_strings(
-        self, routing_input: RoutingInput
-    ) -> None:
+    def test_rcc_006_route_is_list_of_strings(self, routing_input: RoutingInput) -> None:
         """RCC-006: Route is a list of step IDs (strings)."""
         route = RoutingContract.compute_route(routing_input)
         assert isinstance(route, list)

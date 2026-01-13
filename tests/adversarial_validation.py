@@ -102,7 +102,7 @@ def test_jf1_factory_migration():
     print("=== JF1: Factory Migration Adversarial Validation ===")
 
     # Read factory source to verify changes
-    factory_path = Path("src/farfan_pipeline/phases/Phase_two/phase2_10_00_factory.py")
+    factory_path = Path("src/farfan_pipeline/phases/Phase_2/phase2_10_00_factory.py")
     if not factory_path.exists():
         raise FileNotFoundError("Factory file not found")
 
@@ -285,7 +285,7 @@ def run_all_tests():
         print()
         print("All implementation files verified:")
         print("  ✓ canonic_questionnaire_central/resolver.py")
-        print("  ✓ src/farfan_pipeline/phases/Phase_two/phase2_10_00_factory.py")
+        print("  ✓ src/farfan_pipeline/phases/Phase_2/phase2_10_00_factory.py")
         print(
             "  ✓ src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_registry.py"
         )

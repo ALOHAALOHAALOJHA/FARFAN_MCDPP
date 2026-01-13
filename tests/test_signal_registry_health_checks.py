@@ -18,7 +18,7 @@ from typing import Any
 from unittest.mock import Mock, MagicMock, patch
 import pytest
 
-from cross_cutting_infrastructure.irrigation_using_signals.SISAS.signal_registry import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
     QuestionnaireSignalRegistry,
     SignalExtractionError,
     QuestionNotFoundError,

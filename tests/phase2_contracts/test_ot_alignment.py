@@ -3,16 +3,15 @@ Test OT/ASC - Ordering & Total Alignment Contract
 Verifies: Fixed params (λ, ε) ⇒ Fixed Plan Hash
 Total order consistency guarantee
 """
+
 import pytest
-import sys
 from pathlib import Path
 from typing import Any
 
-
-from cross_cutting_infrastructure.contractual.dura_lex.alignment_stability import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.alignment_stability import (
     AlignmentStabilityContract,
 )
-from cross_cutting_infrastructure.contractual.dura_lex.total_ordering import (
+from farfan_pipeline.infrastructure.contractual.dura_lex.total_ordering import (
     TotalOrderingContract,
 )
 
@@ -121,13 +120,9 @@ class TestTotalOrderingContract:
             {"question_id": "Q004", "score": 0.65, "content_hash": "ghi012"},
         ]
 
-    def test_toc_001_stable_sort(
-        self, phase2_results: list[dict[str, Any]]
-    ) -> None:
+    def test_toc_001_stable_sort(self, phase2_results: list[dict[str, Any]]) -> None:
         """TOC-001: Sort is stable and deterministic."""
-        assert TotalOrderingContract.verify_order(
-            phase2_results, key=lambda x: -x["score"]
-        )
+        assert TotalOrderingContract.verify_order(phase2_results, key=lambda x: -x["score"])
 
     def test_toc_002_tie_breaker_lexicographical(
         self, phase2_results: list[dict[str, Any]]
@@ -140,19 +135,11 @@ class TestTotalOrderingContract:
         q75_items = [r for r in sorted_results if r["score"] == 0.75]
         assert q75_items[0]["content_hash"] < q75_items[1]["content_hash"]
 
-    def test_toc_003_repeated_sort_identical(
-        self, phase2_results: list[dict[str, Any]]
-    ) -> None:
+    def test_toc_003_repeated_sort_identical(self, phase2_results: list[dict[str, Any]]) -> None:
         """TOC-003: Multiple sorts produce identical results."""
-        sorted1 = TotalOrderingContract.stable_sort(
-            phase2_results, key=lambda x: -x["score"]
-        )
-        sorted2 = TotalOrderingContract.stable_sort(
-            phase2_results, key=lambda x: -x["score"]
-        )
-        sorted3 = TotalOrderingContract.stable_sort(
-            phase2_results, key=lambda x: -x["score"]
-        )
+        sorted1 = TotalOrderingContract.stable_sort(phase2_results, key=lambda x: -x["score"])
+        sorted2 = TotalOrderingContract.stable_sort(phase2_results, key=lambda x: -x["score"])
+        sorted3 = TotalOrderingContract.stable_sort(phase2_results, key=lambda x: -x["score"])
         assert sorted1 == sorted2 == sorted3
 
     def test_toc_004_empty_list(self) -> None:
