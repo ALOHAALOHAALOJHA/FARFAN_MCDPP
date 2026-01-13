@@ -37,15 +37,17 @@ import logging
 import math
 from dataclasses import dataclass, field
 from itertools import combinations
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 # Cross-module integration with Uncertainty Quantification
 from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification import (
     UncertaintyMetrics,
 )
 
-if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation import AggregationSettings
+# Import AggregationSettings from dedicated settings module (no circular dependency)
+from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_settings import (
+    AggregationSettings,
+)
 
 logger = logging.getLogger(__name__)
 
