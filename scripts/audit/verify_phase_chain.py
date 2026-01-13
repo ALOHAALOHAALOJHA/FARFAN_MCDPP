@@ -21,7 +21,6 @@ import json
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Any
 
 # Add src to path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
