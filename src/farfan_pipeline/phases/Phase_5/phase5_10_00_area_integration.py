@@ -27,7 +27,6 @@ from typing import Any
 
 from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation import DimensionScore
 from farfan_pipeline.phases.Phase_5.phase5_10_00_area_aggregation import (
-    AreaPolicyAggregator,
     AreaScore,
     aggregate_policy_areas_async,
 )
