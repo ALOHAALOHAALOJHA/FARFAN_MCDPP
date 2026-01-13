@@ -218,7 +218,6 @@ class TestPhase1Encadenamiento:
         ]
         
         for prim_file in expected_primitives:
-            prim_path = primitives_dir / prim_file
             # Either the file exists directly or with version prefix
             variants = [
                 primitives_dir / prim_file,
