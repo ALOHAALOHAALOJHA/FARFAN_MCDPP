@@ -1,20 +1,24 @@
 """
-Phase 4-7 Canonical Constants
+Phase 4 Canonical Constants
 ============================
 
-This module contains all canonical constants for Phases 4-7 (Hierarchical Aggregation).
+This module contains all canonical constants for Phase 4 (Dimension Aggregation).
 Following the F.A.R.F.A.N. canonical phase policy, constants are organized by:
 
-1. Quality Levels: Thresholds for determining result quality
-2. Aggregation Weights: Hierarchical weights for dimension/area/cluster/macro
-3. Scoring Modalities: Score transformation rules
-4. Dispersion Thresholds: Coherence and dispersion analysis constants
-5. Constitutional Bounds: Permissible ranges for aggregation components
-6. Metadata Keys: Standardized keys for provenance tracking
+1. Phase Identification: Phase 4 metadata
+2. Input/Output Counts: Expected data volumes
+3. Quality Levels: Thresholds for determining result quality
+4. Aggregation Weights: Default weights for dimension aggregation
+5. Scoring Modalities: Score transformation rules
+6. Dispersion Thresholds: Coherence and dispersion analysis constants
+7. Uncertainty Quantification: Bootstrap and confidence interval settings
+8. Choquet Integral: Parameters for Choquet aggregation
+9. Metadata Keys: Standardized keys for provenance tracking
+10. Policy Area × Dimension Matrix: PA×DIM coverage
 
 Author: F.A.R.F.A.N. Pipeline Team
 Version: 1.0.0
-Canonical Phase: Four-Five-Six-Seven (Hierarchical Aggregation)
+Canonical Phase: Four (Dimension Aggregation ONLY)
 """
 
 from __future__ import annotations
@@ -23,33 +27,36 @@ from __future__ import annotations
 # PHASE IDENTIFICATION
 # =============================================================================
 
-PHASE_ID = "PHASE_4_7"
-PHASE_NAME = "Hierarchical Aggregation Pipeline"
+PHASE_ID = "PHASE_4"
+PHASE_NAME = "Dimension Aggregation"
 PHASE_VERSION = "1.0.0"
+PHASE_CODENAME = "DIMENSION"
 
-PHASE_4_ID = "PHASE_4"
-PHASE_4_NAME = "Dimension Aggregation"
+# =============================================================================
+# INPUT/OUTPUT COUNTS
+# =============================================================================
+# Phase 4: 300 ScoredMicroQuestion → 60 DimensionScore
 
-PHASE_5_ID = "PHASE_5"
-PHASE_5_NAME = "Area Policy Aggregation"
+# Input: Micro-questions from Phase 3
+EXPECTED_INPUT_MICRO_QUESTIONS = 300  # 30 base questions × 10 policy areas
+MICRO_QUESTIONS_PER_DIMENSION = 5  # 300 / 60 = 5
 
-PHASE_6_ID = "PHASE_6"
-PHASE_6_NAME = "Cluster Aggregation"
-
-PHASE_7_ID = "PHASE_7"
-PHASE_7_NAME = "Macro Evaluation"
+# Output: Dimension scores
+EXPECTED_OUTPUT_DIMENSION_SCORES = 60  # 6 dimensions × 10 policy areas
+DIMENSIONS_PER_POLICY_AREA = 6
+POLICY_AREAS_COUNT = 10
 
 # =============================================================================
 # QUALITY LEVELS
 # =============================================================================
-# Thresholds for determining aggregated result quality levels
+# Thresholds for determining dimension score quality levels
 
 QUALITY_LEVEL_EXCELENTE = "EXCELENTE"
 QUALITY_LEVEL_BUENO = "BUENO"
 QUALITY_LEVEL_ACEPTABLE = "ACEPTABLE"
 QUALITY_LEVEL_INSUFICIENTE = "INSUFICIENTE"
 
-# Quality thresholds (macro score in [0, 3] scale)
+# Quality thresholds (dimension score in [0, 3] scale)
 QUALITY_THRESHOLD_EXCELENTE_MIN = 2.5
 QUALITY_THRESHOLD_BUENO_MIN = 2.0
 QUALITY_THRESHOLD_ACEPTABLE_MIN = 1.5
@@ -58,35 +65,19 @@ QUALITY_THRESHOLD_INSUFICIENTE_MAX = 1.5
 # =============================================================================
 # AGGREGATION WEIGHTS
 # =============================================================================
-# Hierarchical weights for the 4-level aggregation structure
+# Default weights for dimension aggregation (Phase 4 only)
 
-# Macro Cluster Weights (PHASE_7)
-MACRO_CLUSTER_SOCIAL_WEIGHT = 0.30
-MACRO_CLUSTER_ECONOMIC_WEIGHT = 0.25
-MACRO_CLUSTER_ENVIRONMENTAL_WEIGHT = 0.25
-MACRO_CLUSTER_INSTITUTIONAL_WEIGHT = 0.20
-
-MACRO_CLUSTER_WEIGHTS = {
-    "SOCIAL": MACRO_CLUSTER_SOCIAL_WEIGHT,
-    "ECONOMIC": MACRO_CLUSTER_ECONOMIC_WEIGHT,
-    "ENVIRONMENTAL": MACRO_CLUSTER_ENVIRONMENTAL_WEIGHT,
-    "INSTITUTIONAL": MACRO_CLUSTER_INSTITUTIONAL_WEIGHT,
-}
-
-# Area Weights (PHASE_6) - Default uniform distribution
-# Can be overridden per-cluster
-DEFAULT_AREA_WEIGHT = 1.0  # Will be normalized to 1/n
-
-# Dimension Weights (PHASE_5) - Default uniform distribution
-# Can be overridden per-area
+# Dimension Weights - Default uniform distribution
+# Can be overridden per micro-question based on signal registry
 DEFAULT_DIMENSION_WEIGHT = 1.0  # Will be normalized to 1/n
+DEFAULT_MICRO_QUESTION_WEIGHT = 1.0  # Default weight for each micro-question
 
 # =============================================================================
 # SCORING MODALITIES
 # =============================================================================
 # Score ranges and transformations
 
-# Primary score range
+# Primary score range for Phase 4 outputs
 MIN_SCORE = 0.0
 MAX_SCORE = 3.0
 SCORE_RANGE = (MIN_SCORE, MAX_SCORE)
@@ -103,7 +94,7 @@ SCORE_MODE_PERCENT = "percent"  # Transform to [0, 100]
 # =============================================================================
 # DISPERSION THRESHOLDS
 # =============================================================================
-# Thresholds for coherence and dispersion analysis
+# Thresholds for coherence and dispersion analysis within dimensions
 
 # Coefficient of Variation (CV) thresholds
 CV_CONVERGENCE_THRESHOLD = 0.15  # Low dispersion = convergence
@@ -117,13 +108,13 @@ DISPERSION_SCENARIO_MODERATE = "moderate"
 DISPERSION_SCENARIO_HIGH = "high_dispersion"
 DISPERSION_SCENARIO_EXTREME = "extreme_dispersion"
 
-# Coherence thresholds
+# Coherence thresholds (within dimension)
 COHERENCE_EXCELLENT = 0.90
 COHERENCE_GOOD = 0.75
 COHERENCE_ACCEPTABLE = 0.60
 COHERENCE_POOR = 0.45
 
-# Penalty weights for dispersion
+# Penalty weights for dispersion (applies to dimension aggregation)
 PENALTY_WEIGHT_BASE = 0.3
 PENALTY_MULTIPLIER_CONVERGENCE = 0.5
 PENALTY_MULTIPLIER_MODERATE = 1.0
@@ -133,7 +124,7 @@ PENALTY_MULTIPLIER_EXTREME = 2.0
 # =============================================================================
 # UNCERTAINTY QUANTIFICATION
 # =============================================================================
-# Bootstrap and uncertainty analysis constants
+# Bootstrap and uncertainty analysis constants for dimension aggregation
 
 # Bootstrap settings
 BOOTSTRAP_DEFAULT_ITERATIONS = 2000
@@ -154,38 +145,9 @@ CONVERGENCE_MAX_KS_STATISTIC = 0.05
 CONVERGENCE_MAX_BIMODALITY = 2.0
 
 # =============================================================================
-# CONSTITUTIONAL BOUNDS
-# =============================================================================
-# Permissible ranges for aggregation components (Shapley values)
-
-# Default bounds: ±20% of nominal weight
-CONSTITUTIONAL_DEFAULT_VARIANCE = 0.20
-
-# Bounds for each cluster
-CONSTITUTIONAL_BOUNDS = {
-    "SOCIAL": (0.24, 0.36),  # 0.30 ± 20%
-    "ECONOMIC": (0.20, 0.30),  # 0.25 ± 20%
-    "ENVIRONMENTAL": (0.20, 0.30),  # 0.25 ± 20%
-    "INSTITUTIONAL": (0.16, 0.24),  # 0.20 ± 20%
-}
-
-# =============================================================================
-# SIGNAL-ENRICHED AGGREGATION
-# =============================================================================
-# Constants for signal-based weight adjustments
-
-# Critical score threshold for weight boosting
-CRITICAL_SCORE_THRESHOLD = 0.4
-CRITICAL_SCORE_BOOST_FACTOR = 1.2
-
-# High signal pattern threshold
-HIGH_SIGNAL_PATTERN_THRESHOLD = 15
-HIGH_SIGNAL_BOOST_FACTOR = 1.05
-
-# =============================================================================
 # CHOQUET INTEGRAL
 # =============================================================================
-# Constants for Choquet aggregation
+# Constants for Choquet aggregation (dimension level)
 
 # k-additivity orders
 CHOQUET_K_ADDITIVE_1 = 1  # Pure additive
@@ -198,6 +160,19 @@ CHOQUET_INTERACTION_NONE = 0.0  # Pure additive
 CHOQUET_INTERACTION_CONSERVATIVE = 0.1  # Minimal interactions
 CHOQUET_INTERACTION_MODERATE = 0.3  # Moderate interactions
 CHOQUET_INTERACTION_STRONG = 0.5  # Strong interactions
+
+# =============================================================================
+# SIGNAL-ENRICHED AGGREGATION
+# =============================================================================
+# Constants for signal-based weight adjustments (dimension level)
+
+# Critical score threshold for weight boosting
+CRITICAL_SCORE_THRESHOLD = 0.4
+CRITICAL_SCORE_BOOST_FACTOR = 1.2
+
+# High signal pattern threshold
+HIGH_SIGNAL_PATTERN_THRESHOLD = 15
+HIGH_SIGNAL_BOOST_FACTOR = 1.05
 
 # =============================================================================
 # METADATA KEYS
@@ -221,7 +196,6 @@ META_AGGREGATION_COHERENCE = f"{META_PREFIX_AGGREGATION}.coherence"
 # Validation metadata keys
 META_VALIDATION_HERMETICITY = f"{META_PREFIX_VALIDATION}.hermeticity"
 META_VALIDATION_TRACEABILITY = f"{META_PREFIX_VALIDATION}.traceability"
-META_VALIDATION_CONSTITUTIONAL = f"{META_PREFIX_VALIDATION}.constitutional"
 
 # Uncertainty metadata keys
 META_UNCERTAINTY_CI_LOWER = f"{META_PREFIX_UNCERTAINTY}.ci_lower"
@@ -244,7 +218,7 @@ META_PROVENANCE_SOURCE_PHASE = f"{META_PREFIX_PROVENANCE}.source_phase"
 POLICY_AREAS = [
     "SOCIAL_PROTECTION",
     "ECONOMIC_DEVELOPMENT",
-    "ENVIRONMENTAL sustainability",
+    "ENVIRONMENTAL_SUSTAINABILITY",
     "GOVERNANCE",
     "HEALTH",
     "EDUCATION",
@@ -279,18 +253,20 @@ VALIDATION_STRICT_MODE = True
 VALIDATION_ERROR_EMPTY_OUTPUT = "EMPTY_OUTPUT"
 VALIDATION_ERROR_NOT_TRACEABLE = "NOT_TRACEABLE"
 VALIDATION_ERROR_INVALID_SCORE = "INVALID_SCORE"
-VALIDATION_ERROR_ZERO_MACRO = "ZERO_MACRO"
+VALIDATION_ERROR_INCORRECT_COUNT = "INCORRECT_COUNT"
+VALIDATION_ERROR_MISSING_DIMENSION = "MISSING_DIMENSION"
 
 # =============================================================================
 # UTILITY FUNCTIONS
 # =============================================================================
 
+
 def get_quality_level(score: float) -> str:
     """
-    Determine quality level from macro score.
+    Determine quality level from dimension score.
 
     Args:
-        score: Macro score in [0, 3] range
+        score: Dimension score in [0, 3] range
 
     Returns:
         Quality level string (EXCELENTE, BUENO, ACEPTABLE, INSUFICIENTE)
@@ -381,10 +357,13 @@ __all__ = [
     "PHASE_ID",
     "PHASE_NAME",
     "PHASE_VERSION",
-    "PHASE_4_ID",
-    "PHASE_5_ID",
-    "PHASE_6_ID",
-    "PHASE_7_ID",
+    "PHASE_CODENAME",
+    # Input/Output counts
+    "EXPECTED_INPUT_MICRO_QUESTIONS",
+    "EXPECTED_OUTPUT_DIMENSION_SCORES",
+    "MICRO_QUESTIONS_PER_DIMENSION",
+    "DIMENSIONS_PER_POLICY_AREA",
+    "POLICY_AREAS_COUNT",
     # Quality levels
     "QUALITY_LEVEL_EXCELENTE",
     "QUALITY_LEVEL_BUENO",
@@ -394,9 +373,8 @@ __all__ = [
     "QUALITY_THRESHOLD_BUENO_MIN",
     "QUALITY_THRESHOLD_ACEPTABLE_MIN",
     # Aggregation weights
-    "MACRO_CLUSTER_WEIGHTS",
-    "DEFAULT_AREA_WEIGHT",
     "DEFAULT_DIMENSION_WEIGHT",
+    "DEFAULT_MICRO_QUESTION_WEIGHT",
     # Scoring modalities
     "MIN_SCORE",
     "MAX_SCORE",
@@ -409,11 +387,12 @@ __all__ = [
     "COHERENCE_GOOD",
     "COHERENCE_ACCEPTABLE",
     "COHERENCE_POOR",
-    "Uncertainty quantification"
+    # Uncertainty quantification
     "BOOTSTRAP_DEFAULT_ITERATIONS",
     "CONFIDENCE_LEVEL_DEFAULT",
-    # Constitutional bounds
-    "CONSTITUTIONAL_BOUNDS",
+    # Choquet integral
+    "CHOQUET_K_ADDITIVE_DEFAULT",
+    "CHOQUET_INTERACTION_MODERATE",
     # PA×DIM matrix
     "POLICY_AREAS",
     "DIMENSIONS",
