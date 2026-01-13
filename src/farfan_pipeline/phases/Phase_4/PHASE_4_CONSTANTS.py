@@ -188,6 +188,13 @@ CHOQUET_K_ADDITIVE_2 = 2  # Pairwise interactions
 CHOQUET_K_ADDITIVE_3 = 3  # Three-way interactions
 CHOQUET_K_ADDITIVE_DEFAULT = CHOQUET_K_ADDITIVE_2
 
+# Registry of supported k-additivity orders (used for validation/introspection)
+CHOQUET_K_ADDITIVE_OPTIONS = {
+    1: CHOQUET_K_ADDITIVE_1,
+    2: CHOQUET_K_ADDITIVE_2,
+    3: CHOQUET_K_ADDITIVE_3,
+}
+
 # Interaction strength
 CHOQUET_INTERACTION_NONE = 0.0  # Pure additive
 CHOQUET_INTERACTION_CONSERVATIVE = 0.1  # Minimal interactions
