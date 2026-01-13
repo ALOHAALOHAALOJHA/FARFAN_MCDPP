@@ -105,7 +105,6 @@ if TYPE_CHECKING:
         QuestionnaireSignalRegistry,
     )
     from farfan_pipeline.phases.Phase_7.phase7_10_00_systemic_gap_detector import (
-        SystemicGap,
         SystemicGapDetector,
     )
 
