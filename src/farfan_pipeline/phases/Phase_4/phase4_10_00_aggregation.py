@@ -70,6 +70,16 @@ from farfan_pipeline.phases.Phase_4.phase4_10_00_uncertainty_quantification impo
     aggregate_with_uncertainty,
 )
 
+# Import AggregationSettings from dedicated module (breaks circular dependency)
+from farfan_pipeline.phases.Phase_4.phase4_10_00_aggregation_settings import (
+    AggregationSettings,
+)
+
+# Import choquet_adapter directly (no circular dependency after settings extraction)
+from farfan_pipeline.phases.Phase_4.phase4_10_00_choquet_adapter import (
+    create_default_choquet_adapter,
+)
+
 # Lazy import for SystemicGapDetector to avoid circular dependency with Phase_7 __init__
 def _get_systemic_gap_detector():
     """Lazy import SystemicGapDetector from Phase 7."""
@@ -89,26 +99,14 @@ def _get_systemic_gap_class():
 
 # For TYPE_CHECKING, import the types
 if TYPE_CHECKING:
-    from farfan_pipeline.phases.Phase_7.phase7_10_00_systemic_gap_detector import (
-        SystemicGap,
-        SystemicGapDetector,
-    )
-
-# Lazy import to avoid circular dependency with choquet_adapter
-# choquet_adapter imports AggregationSettings from this module (via TYPE_CHECKING)
-# This module imports create_default_choquet_adapter from choquet_adapter
-def _get_create_default_choquet_adapter():
-    """Lazy import to break circular dependency."""
-    from farfan_pipeline.phases.Phase_4.phase4_10_00_choquet_adapter import (
-        create_default_choquet_adapter,
-    )
-    return create_default_choquet_adapter
-
-if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
 
     from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signal_registry import (
         QuestionnaireSignalRegistry,
+    )
+    from farfan_pipeline.phases.Phase_7.phase7_10_00_systemic_gap_detector import (
+        SystemicGap,
+        SystemicGapDetector,
     )
 
 T = TypeVar("T")
@@ -1126,8 +1124,6 @@ class DimensionAggregator:
 
         if method == "choquet":
             # Use Choquet integral for non-linear aggregation
-            # Lazy import to avoid circular dependency
-            create_default_choquet_adapter = _get_create_default_choquet_adapter()
             choquet_adapter = create_default_choquet_adapter(len(scores))
             score = choquet_adapter.aggregate(scores, weights)
             logger.info(f"Choquet aggregation: {len(scores)} inputs → {score:.4f}")
