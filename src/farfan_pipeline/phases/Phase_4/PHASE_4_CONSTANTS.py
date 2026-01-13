@@ -23,6 +23,39 @@ Canonical Phase: Four (Dimension Aggregation ONLY)
 
 from __future__ import annotations
 
+__all__ = [
+    # Phase identification
+    "PHASE_ID",
+    "PHASE_NAME",
+    "PHASE_VERSION",
+    "PHASE_CODENAME",
+    # Input/Output counts
+    "EXPECTED_INPUT_MICRO_QUESTIONS",
+    "MICRO_QUESTIONS_PER_DIMENSION",
+    "EXPECTED_OUTPUT_DIMENSION_SCORES",
+    "DIMENSIONS_PER_POLICY_AREA",
+    "POLICY_AREAS_COUNT",
+    # Quality levels (selection, not exhaustive if more exist above)
+    "QUALITY_LEVEL_EXCELENTE",
+    "QUALITY_LEVEL_BUENO",
+    "QUALITY_LEVEL_ACEPTABLE",
+    "QUALITY_LEVEL_INSUFICIENTE",
+    # Policy areas and dimensions
+    "POLICY_AREAS",
+    "DIMENSIONS",
+    "EXPECTED_PA_DIM_CELLS",
+    # Validation constants
+    "VALIDATION_STRICT_MODE",
+    "VALIDATION_ERROR_EMPTY_OUTPUT",
+    "VALIDATION_ERROR_NOT_TRACEABLE",
+    "VALIDATION_ERROR_INVALID_SCORE",
+    "VALIDATION_ERROR_INCORRECT_COUNT",
+    "VALIDATION_ERROR_MISSING_DIMENSION",
+    # Utility functions
+    "get_quality_level",
+    "get_dispersion_scenario",
+]
+
 # =============================================================================
 # PHASE IDENTIFICATION
 # =============================================================================
