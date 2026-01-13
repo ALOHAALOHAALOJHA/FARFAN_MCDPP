@@ -44,7 +44,13 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 try:
     from orchestration.settings import PROJECT_ROOT as FARFAN_PROJECT_ROOT
     PATHS_AVAILABLE = True
-except ImportError: 
+except ImportError as e:
+    print(
+        f"[test_phase2_sisas_checklist] Failed to import "
+        f"'orchestration.settings.PROJECT_ROOT': {e!s}. "
+        "Falling back to local PROJECT_ROOT.",
+        file=sys.stderr,
+    )
     FARFAN_PROJECT_ROOT = PROJECT_ROOT
     PATHS_AVAILABLE = False
 
@@ -55,7 +61,13 @@ try:
         get_global_registry,
     )
     EVIDENCE_REGISTRY_AVAILABLE = True
-except ImportError:
+except ImportError as e:
+    print(
+        f"[test_phase2_sisas_checklist] Failed to import "
+        f"'EvidenceRecord/EvidenceRegistry' from 'orchestration.orchestrator': {e!s}. "
+        "Evidence registry-dependent checks may be skipped.",
+        file=sys.stderr,
+    )
     EVIDENCE_REGISTRY_AVAILABLE = False
     EvidenceRecord = None
     EvidenceRegistry = None
@@ -65,14 +77,26 @@ try:
         BaseExecutorWithContract,
     )
     EXECUTOR_CONTRACT_AVAILABLE = True
-except ImportError:
+except ImportError as e:
+    print(
+        f"[test_phase2_sisas_checklist] Failed to import "
+        f"'BaseExecutorWithContract' from 'orchestration.orchestrator': {e!s}. "
+        "Executor contract-dependent checks may be skipped.",
+        file=sys.stderr,
+    )
     EXECUTOR_CONTRACT_AVAILABLE = False
     BaseExecutorWithContract = None
 
 try:
     from orchestration.task_planner import ExecutableTask
     TASK_PLANNER_AVAILABLE = True
-except ImportError:
+except ImportError as e:
+    print(
+        f"[test_phase2_sisas_checklist] Failed to import "
+        f"'ExecutableTask' from 'orchestration.task_planner': {e!s}. "
+        "Task planner-dependent checks may be skipped.",
+        file=sys.stderr,
+    )
     TASK_PLANNER_AVAILABLE = False
     ExecutableTask = None
 
@@ -106,15 +130,9 @@ except ImportError:
     SISASSignalRegistry = None
     create_signal_registry = None
 
-# SignalPack with compute_hash - REMOVED (Unused)
+# SignalPack integration is disabled in this test suite
 SIGNAL_PACK_AVAILABLE = False
 SignalPack = None
-
-# Signal loader is DEPRECATED - Tests should use QuestionnaireSignalRegistry instead
-# These functions now raise RuntimeError to enforce migration
-SIGNAL_LOADER_AVAILABLE = False
-build_all_signal_packs = None
-build_signal_pack_from_monolith = None
 
 # CanonicalQuestionnaire - REAL PATH in orchestration/
 try:
@@ -516,10 +534,7 @@ class TestSISASPreconditions:
         _checklist_report.add(result)
         assert result.passed, result.message
 
-    @pytest.mark.skipif(
-        not (SIGNAL_LOADER_AVAILABLE and QUESTIONNAIRE_LOADER_AVAILABLE),
-        reason="Signal loader or questionnaire loader not available"
-    )
+    @pytest.mark.skip(reason="Signal loader functionality is deprecated or unavailable")
     def test_sisas_pre_004_signalpack_versions(self):
         """[SISAS-PRE-004] Verify all SignalPacks have valid non-empty version."""
         passed = True
@@ -585,8 +600,8 @@ class TestSISASPreconditions:
         assert result.passed, result.message
 
     @pytest.mark.skipif(
-        not (SIGNAL_LOADER_AVAILABLE and QUESTIONNAIRE_LOADER_AVAILABLE),
-        reason="Signal loader or questionnaire loader not available"
+        not QUESTIONNAIRE_LOADER_AVAILABLE,
+        reason="Questionnaire loader not available"
     )
     def test_sisas_pre_005_signalpack_hash_integrity(self):
         """[SISAS-PRE-005] Verify each SignalPack compute_hash() returns valid SHA-256 (64 hex chars)."""

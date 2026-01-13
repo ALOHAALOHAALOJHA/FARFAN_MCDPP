@@ -25,7 +25,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Any
 
-from .phase1_10_00_phase_1_constants import (
+from .phase1_02_00_phase_1_constants import (
     CHUNK_ID_PATTERN,
     CHUNK_ID_PATTERN_LEGACY,
     VALID_ASSIGNMENT_METHODS,
