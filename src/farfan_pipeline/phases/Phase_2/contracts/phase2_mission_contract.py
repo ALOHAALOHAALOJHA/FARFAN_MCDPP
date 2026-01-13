@@ -108,8 +108,6 @@ PHASE2_TOPOLOGICAL_ORDER: Final[tuple[ModuleNode, ...]] = (
         dependencies=(
             "phase2_10_02_methods_registry",
             "phase2_10_03_executor_config",
-            "phase2_60_00_base_executor_with_contract",
-            "phase2_60_02_arg_router",
         ),
         description="Dependency injection factory"
     ),
