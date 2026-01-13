@@ -93,19 +93,19 @@ def validate_mission_contract() -> bool:
 # Based on static analysis from scripts/audit/verify_phase_chain.py
 PHASE1_TOPOLOGICAL_ORDER: list[str] = [
     "PHASE_1_CONSTANTS",              # 0: Root constants
-    "phase1_10_00_cpp_models",        # 1: CPP data models
-    "phase1_10_00_phase_1_constants", # 2: Phase constants
-    "phase1_10_00_models",            # 3: Core data models
-    "phase1_10_00_phase_protocol",    # 4: Protocol definitions
-    "phase1_10_00_thread_safe_results", # 5: Thread safety utilities
-    "phase1_15_00_questionnaire_mapper", # 6: Question mapping
-    "phase1_25_00_sp4_question_aware", # 7: Question-aware segmentation
-    "phase1_30_00_adapter",           # 8: Adapter layer
-    "phase1_40_00_circuit_breaker",   # 9: Circuit breaker
-    "phase1_50_00_dependency_validator", # 10: Dependency validation
-    "phase1_60_00_signal_enrichment", # 11: Signal enrichment
-    "phase1_70_00_structural",        # 12: Structural analysis
-    "phase1_20_00_cpp_ingestion",     # 13: Main executor (imports all)
+    "phase1_01_00_cpp_models",        # 1: CPP data models
+    "phase1_02_00_phase_1_constants", # 2: Phase constants
+    "phase1_03_00_models",            # 3: Core data models
+    "phase1_04_00_phase_protocol",    # 4: Protocol definitions
+    "phase1_05_00_thread_safe_results", # 5: Thread safety utilities
+    "phase1_06_00_questionnaire_mapper", # 6: Question mapping
+    "phase1_07_00_sp4_question_aware", # 7: Question-aware segmentation
+    "phase1_08_00_adapter",           # 8: Adapter layer
+    "phase1_09_00_circuit_breaker",   # 9: Circuit breaker
+    "phase1_10_00_dependency_validator", # 10: Dependency validation
+    "phase1_11_00_signal_enrichment", # 11: Signal enrichment
+    "phase1_12_00_structural",        # 12: Structural analysis
+    "phase1_13_00_cpp_ingestion",     # 13: Main executor (imports all)
 ]
 
 

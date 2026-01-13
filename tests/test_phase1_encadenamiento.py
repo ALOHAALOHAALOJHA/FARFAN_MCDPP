@@ -136,11 +136,11 @@ class TestPhase1Encadenamiento:
         # Orphan files are acceptable if they're documented false positives
         # These are typically re-exported through __init__.py or used externally
         known_false_positives = {
-            "phase1_10_00_cpp_models",
-            "phase1_10_00_phase_protocol",
-            "phase1_10_00_thread_safe_results",
-            "phase1_30_00_adapter",
-            "phase1_50_00_dependency_validator"
+            "phase1_01_00_cpp_models",
+            "phase1_04_00_phase_protocol",
+            "phase1_05_00_thread_safe_results",
+            "phase1_08_00_adapter",
+            "phase1_10_00_dependency_validator"
         }
         
         for orphan in orphan_files:

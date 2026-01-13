@@ -78,7 +78,7 @@ except ImportError:
     # I'll try the absolute one first.
     from farfan_pipeline.phases.Phase_zero.phase0_40_00_input_validation import CanonicalInput
 
-from .phase1_10_00_models import (
+from .phase1_03_00_models import (
     LanguageData, PreprocessedDoc, StructureData, KnowledgeGraph, KGNode, KGEdge,
     Chunk, CausalChains, IntegratedCausal, Arguments, Temporal, Discourse, Strategic,
     SmartChunk, ValidationResult, CausalGraph, CANONICAL_TYPES_AVAILABLE
@@ -129,7 +129,7 @@ from .cpp_models import (
 )
 
 # Circuit Breaker for Aggressively Preventive Failure Protection
-from .phase1_40_00_circuit_breaker import (
+from .phase1_09_00_circuit_breaker import (
     get_circuit_breaker,
     run_preflight_check,
     ensure_can_execute,
@@ -236,7 +236,7 @@ TEORIA_CAMBIO_AVAILABLE = TEORIA_CAMBIO_CLASS is not None
 
 # Signal Enrichment Module - PRODUCTION (same directory)
 try:
-    from .phase1_60_00_signal_enrichment import (
+    from .phase1_11_00_signal_enrichment import (
         SignalEnricher,
         create_signal_enricher,
     )
@@ -253,7 +253,7 @@ except ImportError as e:
 
 # Structural Normalizer - REAL PATH (same directory)
 try:
-    from .phase1_70_00_structural import StructuralNormalizer
+    from .phase1_12_00_structural import StructuralNormalizer
     STRUCTURAL_AVAILABLE = True
 except ImportError:
     STRUCTURAL_AVAILABLE = False

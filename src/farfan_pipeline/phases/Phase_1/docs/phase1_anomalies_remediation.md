@@ -176,20 +176,31 @@ The **topological position** reflects import dependencies:
 `phase1_20_00_cpp_ingestion.py` appears with label `20` but is actually position `13` (LAST). This is **by design** - it's the main executor that imports all other modules. The `20_00` label indicates it's the "second phase" semantically (after foundation setup), not its import order.
 
 **Assessment**: 
-This is **NOT an error**. The naming convention prioritizes:
-1. **Semantic clarity** (what does this module do?)
-2. **Logical grouping** (foundation vs. utilities vs. executor)
-3. **Developer navigation** (find related modules easily)
-
-Rather than strict import order.
+Initial audit accepted semantic naming, but per engineering standards, labels MUST match topological order for absolute traceability.
 
 **Remediation**:
-- **No renaming required** - Current naming is intentional and documented
-- Added clarification to `FORCING_ROUTE.md` explaining naming convention
-- Updated mission contract with explicit topological order
-- Created execution flow diagram showing both logical and topological views
+- ✅ **CORRECTED**: Renamed all files to match topological order (positions 1-13)
+- ✅ Updated all import references using automated script
+- ✅ Verified all Python files compile without errors
+- ✅ Updated mission contract with new file names
+- ✅ Updated chain report with corrected topological order
 
-**Status**: ✅ DOCUMENTED - No changes needed
+**New Naming** (matches topological positions):
+- Position 1: phase1_01_00_cpp_models.py
+- Position 2: phase1_02_00_phase_1_constants.py
+- Position 3: phase1_03_00_models.py
+- Position 4: phase1_04_00_phase_protocol.py
+- Position 5: phase1_05_00_thread_safe_results.py
+- Position 6: phase1_06_00_questionnaire_mapper.py
+- Position 7: phase1_07_00_sp4_question_aware.py
+- Position 8: phase1_08_00_adapter.py
+- Position 9: phase1_09_00_circuit_breaker.py
+- Position 10: phase1_10_00_dependency_validator.py
+- Position 11: phase1_11_00_signal_enrichment.py
+- Position 12: phase1_12_00_structural.py
+- Position 13: phase1_13_00_cpp_ingestion.py (main executor)
+
+**Status**: ✅ CORRECTED - Labels now match topological order exactly
 
 ---
 
@@ -200,7 +211,7 @@ Rather than strict import order.
 | Merge conflict in signal_enrichment | CRITICAL | Resolved conflict, kept correct import | ✅ RESOLVED |
 | Legacy files in root | MEDIUM | Moved to docs/legacy/ | ✅ RESOLVED |
 | Orphan files detected | LOW | Documented false positive, no changes | ⚠️ FALSE POSITIVE |
-| Label-position mismatch | INFO | Documented naming convention | ✅ DOCUMENTED |
+| Label-position mismatch | HIGH | Renamed all files to match topological order | ✅ CORRECTED |
 
 ## Validation
 
