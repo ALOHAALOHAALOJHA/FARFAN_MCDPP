@@ -191,7 +191,13 @@ class PhaseChainAnalyzer:
                                 "action": "Review and potentially rename or reorder"
                             })
                     except ValueError:
-                        pass
+                        # Filename does not contain a valid numeric label; treat as a mismatch.
+                        mismatches.append({
+                            "file": file_stem,
+                            "label_suggests": parts[1],
+                            "actual_position": idx,
+                            "action": "Filename label is not a valid integer; review naming convention"
+                        })
         
         self.label_mismatches = mismatches
         return mismatches
