@@ -113,7 +113,7 @@ class EmpiricallyCalibrated(ABC):
     def _default_calibration_path(self) -> Path:
         """Get default calibration file path."""
         return (
-            Path(__file__).resolve().parent.parent.parent.parent
+            Path(__file__).resolve().parent.parent.parent.parent.parent
             / "canonic_questionnaire_central"
             / "_registry"
             / "membership_criteria"
