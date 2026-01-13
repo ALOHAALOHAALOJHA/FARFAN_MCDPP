@@ -89,8 +89,29 @@ def validate_mission_contract() -> bool:
     return True
 
 
+# Module Topological Order (Import Dependencies)
+# Based on static analysis from scripts/audit/verify_phase_chain.py
+PHASE1_TOPOLOGICAL_ORDER: list[str] = [
+    "PHASE_1_CONSTANTS",              # 0: Root constants
+    "phase1_01_00_cpp_models",        # 1: CPP data models
+    "phase1_02_00_phase_1_constants", # 2: Phase constants
+    "phase1_03_00_models",            # 3: Core data models
+    "phase1_04_00_phase_protocol",    # 4: Protocol definitions
+    "phase1_05_00_thread_safe_results", # 5: Thread safety utilities
+    "phase1_06_00_questionnaire_mapper", # 6: Question mapping
+    "phase1_07_00_sp4_question_aware", # 7: Question-aware segmentation
+    "phase1_08_00_adapter",           # 8: Adapter layer
+    "phase1_09_00_circuit_breaker",   # 9: Circuit breaker
+    "phase1_10_00_dependency_validator", # 10: Dependency validation
+    "phase1_11_00_signal_enrichment", # 11: Signal enrichment
+    "phase1_12_00_structural",        # 12: Structural analysis
+    "phase1_13_00_cpp_ingestion",     # 13: Main executor (imports all)
+]
+
+
 __all__ = [
     "PHASE1_SUBPHASE_WEIGHTS",
+    "PHASE1_TOPOLOGICAL_ORDER",
     "SubphaseWeight",
     "WeightTier",
     "validate_mission_contract",
