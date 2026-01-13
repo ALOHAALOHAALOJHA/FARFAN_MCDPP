@@ -39,15 +39,15 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from orchestration.task_planner import ExecutableTask
-from farfan_pipeline.phases.Phase_two.schema_validation import (
+from farfan_pipeline.phases.Phase_2.phase2_40_02_schema_validation import (
     validate_phase6_schema_compatibility,
 )
 from farfan_pipeline.core.types import ChunkData, PreprocessedDocument
-from farfan_pipeline.phases.Phase_two.synchronization import ChunkMatrix
+from farfan_pipeline.phases.Phase_2.phase2_40_00_synchronization import ChunkMatrix
 
 # Import executor-chunk synchronizer for JOIN table
 try:
-    from farfan_pipeline.phases.Phase_two.executor_chunk_synchronizer import (
+    from farfan_pipeline.phases.Phase_2.phase2_40_01_executor_chunk_synchronizer import (
         ExecutorChunkBinding,
         build_join_table,
         generate_verification_manifest,
@@ -63,19 +63,19 @@ except ImportError as e:
     class ExecutorChunkBinding:  # type: ignore
         def __init__(self, *args: Any, **kwargs: Any) -> None:
             raise ImportError(
-                "canonic_phases.Phase_two.executor_chunk_synchronizer is not available. "
+                "farfan_pipeline.phases.Phase_2.phase2_40_01_executor_chunk_synchronizer is not available. "
                 "Please ensure the dependency is installed and importable."
             ) from _import_error
     
     def build_join_table(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
-            "canonic_phases.Phase_two.executor_chunk_synchronizer is not available. "
+            "farfan_pipeline.phases.Phase_2.phase2_40_01_executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
     
     def generate_verification_manifest(*args: Any, **kwargs: Any) -> Any:
         raise ImportError(
-            "canonic_phases.Phase_two.executor_chunk_synchronizer is not available. "
+            "farfan_pipeline.phases.Phase_2.phase2_40_01_executor_chunk_synchronizer is not available. "
             "Please ensure the dependency is installed and importable."
         ) from _import_error
     

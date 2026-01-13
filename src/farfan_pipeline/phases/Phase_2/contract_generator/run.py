@@ -116,7 +116,7 @@ def load_generator_modules() -> dict:
     """
     # Try package imports first (when running as module)
     try:
-        from farfan_pipeline.phases.Phase_two.contract_generator import (
+        from farfan_pipeline.phases.Phase_2.contract_generator import (
             chain_composer,
             contract_assembler,
             contract_generator,

@@ -1,0 +1,132 @@
+{
+  "$schema": "phase_contract_schema.json",
+  "contract_version": "1.0.0",
+  "contract_id": "CONTRACT-P0-RECEIVES",
+  "contract_type": "receives_from_previous_phase",
+  "phase": {
+    "number": 0,
+    "name": "Validation, Hardening & Bootstrap"
+  },
+  "previous_phase": null,
+  "certification": {
+    "status": "N/A",
+    "reason": "Phase 0 is the initial phase of the pipeline",
+    "certified_by": "F.A.R.F.A.N Architecture Team",
+    "certification_date": "2026-01-12"
+  },
+  "external_inputs": [
+    {
+      "name": "questionnaire_path",
+      "type": "Path",
+      "required": true,
+      "source": "External user input",
+      "validation": "Path exists, readable, is JSON file",
+      "description": "Path to canonical questionnaire monolith JSON"
+    },
+    {
+      "name": "questionnaire_hash",
+      "type": "str",
+      "required": true,
+      "source": "External configuration",
+      "validation": "SHA-256 hex string, 64 characters",
+      "description": "Expected SHA-256 hash of questionnaire for integrity verification"
+    },
+    {
+      "name": "input_pdf_path",
+      "type": "Path",
+      "required": true,
+      "source": "External user input",
+      "validation": "Path exists, readable, is PDF file",
+      "description": "Path to input PDF document to analyze"
+    },
+    {
+      "name": "input_pdf_hash",
+      "type": "str",
+      "required": true,
+      "source": "External configuration",
+      "validation": "SHA-256 hex string, 64 characters",
+      "description": "Expected SHA-256 hash of input PDF"
+    },
+    {
+      "name": "executor_config_path",
+      "type": "Path",
+      "required": true,
+      "source": "External configuration",
+      "validation": "Path exists, readable, is JSON file",
+      "description": "Path to executor configuration JSON"
+    },
+    {
+      "name": "calibration_profile",
+      "type": "str",
+      "required": true,
+      "source": "External configuration",
+      "validation": "One of: ['default', 'strict', 'lenient']",
+      "description": "Calibration profile name for scoring thresholds"
+    },
+    {
+      "name": "abort_on_insufficient",
+      "type": "bool",
+      "required": true,
+      "source": "External configuration or environment variable",
+      "validation": "Boolean value",
+      "description": "Whether to abort execution when data is insufficient"
+    },
+    {
+      "name": "resource_limits",
+      "type": "dict",
+      "required": false,
+      "source": "External configuration (optional override)",
+      "validation": "Keys: memory_mb, cpu_seconds, file_descriptors",
+      "description": "Optional resource limit overrides"
+    },
+    {
+      "name": "runtime_mode",
+      "type": "str",
+      "required": false,
+      "source": "Environment variable (FARFAN_RUNTIME_MODE)",
+      "validation": "One of: ['PROD', 'DEV', 'TEST']",
+      "description": "Runtime execution mode",
+      "default": "PROD"
+    },
+    {
+      "name": "seed_snapshot",
+      "type": "dict",
+      "required": false,
+      "source": "External configuration (for reproducibility)",
+      "validation": "Keys: python, numpy, hash values",
+      "description": "Optional seed values for deterministic reproducibility"
+    }
+  ],
+  "input_preconditions": [
+    {
+      "id": "PRE-P0-EXT-01",
+      "description": "All file paths exist and are readable",
+      "validation_method": "File system check",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "PRE-P0-EXT-02",
+      "description": "Hash values are valid SHA-256 hex strings",
+      "validation_method": "Regex validation: ^[a-f0-9]{64}$",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "PRE-P0-EXT-03",
+      "description": "Questionnaire JSON is valid and parseable",
+      "validation_method": "JSON schema validation",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "PRE-P0-EXT-04",
+      "description": "Environment has required dependencies installed",
+      "validation_method": "Import checks",
+      "severity": "CRITICAL"
+    }
+  ],
+  "notes": [
+    "Phase 0 receives inputs from external sources (user, filesystem, environment)",
+    "No previous phase exists - Phase 0 is the foundation/bootstrap phase",
+    "All inputs are validated and hardened before Phase 0 completes",
+    "Output of Phase 0 is passed to Phase 1 via delivers_to_next_phase_contract.json"
+  ]
+}

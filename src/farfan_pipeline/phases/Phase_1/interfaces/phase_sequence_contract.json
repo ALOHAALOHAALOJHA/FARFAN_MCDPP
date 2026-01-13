@@ -1,0 +1,234 @@
+{
+  "$schema": "phase_sequence_schema.json",
+  "contract_version": "1.0.0",
+  "contract_id": "CONTRACT-P1-SEQUENCE",
+  "contract_type": "phase_execution_sequence",
+  "phase": {
+    "number": 1,
+    "name": "Signal Enrichment"
+  },
+  "execution_sequence": [
+    {
+      "order": 0,
+      "stage_code": "00",
+      "stage_name": "Configuration & Protocols",
+      "description": "Load constants, protocols, and data models",
+      "files": [
+        {
+          "filename": "phase1_10_00_phase_protocol.py",
+          "label": "phase1_10_00_phase_protocol",
+          "purpose": "Phase protocol definitions and interfaces",
+          "receives": [],
+          "delivers": ["PhaseProtocol", "PhaseInterfaces"]
+        },
+        {
+          "filename": "phase1_10_00_phase_1_constants.py",
+          "label": "phase1_10_00_phase_1_constants",
+          "purpose": "Phase 1 specific constants and configuration values",
+          "receives": [],
+          "delivers": ["phase1 constants"]
+        },
+        {
+          "filename": "phase1_10_00_models.py",
+          "label": "phase1_10_00_models",
+          "purpose": "Data models and typed dataclasses for Phase 1",
+          "receives": [],
+          "delivers": ["SmartChunk", "EnrichmentResult", "ValidationResult"]
+        },
+        {
+          "filename": "phase1_10_00_cpp_models.py",
+          "label": "phase1_10_00_cpp_models",
+          "purpose": "C++ interoperability models",
+          "receives": [],
+          "delivers": ["CPPModel types"],
+          "note": "EVALUATE IF NEEDED - may be obsolete"
+        },
+        {
+          "filename": "phase1_10_00_thread_safe_results.py",
+          "label": "phase1_10_00_thread_safe_results",
+          "purpose": "Thread-safe result containers",
+          "receives": [],
+          "delivers": ["ThreadSafeResult", "ConcurrentResults"]
+        }
+      ],
+      "execution_pattern": "Boot-Once"
+    },
+    {
+      "order": 1,
+      "stage_code": "10",
+      "stage_name": "Questionnaire Mapping",
+      "description": "Map questionnaire structure to signal patterns",
+      "files": [
+        {
+          "filename": "phase1_15_00_questionnaire_mapper.py",
+          "label": "phase1_15_00_questionnaire_mapper",
+          "purpose": "Map questionnaire structure to signal patterns",
+          "receives": ["CanonicalQuestionnaire", "QuestionnaireSignalRegistry"],
+          "delivers": ["QuestionnaireMapper", "PatternMap"]
+        }
+      ],
+      "execution_pattern": "Singleton",
+      "dependencies": ["phase1_10_00_models", "phase1_10_00_phase_protocol"]
+    },
+    {
+      "order": 2,
+      "stage_code": "20",
+      "stage_name": "Ingestion & Preprocessing",
+      "description": "PDF text extraction, preprocessing, structural analysis",
+      "files": [
+        {
+          "filename": "phase1_20_00_cpp_ingestion.py",
+          "label": "phase1_20_00_cpp_ingestion",
+          "purpose": "C++ based ingestion pipeline (SP0-SP15 subphases)",
+          "receives": ["input_pdf_path", "RuntimeConfig"],
+          "delivers": ["SmartChunk list", "TruncationAudit", "ValidationResult"],
+          "note": "4800 lines - EVALUATE IF C++ VERSION IS NEEDED vs Python"
+        }
+      ],
+      "execution_pattern": "Once-Per-PDF",
+      "dependencies": ["phase1_10_00_models", "phase1_10_00_cpp_models"]
+    },
+    {
+      "order": 3,
+      "stage_code": "25",
+      "stage_name": "SP4 Question-Aware Processing",
+      "description": "SP4 semantic segmentation with question awareness",
+      "files": [
+        {
+          "filename": "phase1_25_00_sp4_question_aware.py",
+          "label": "phase1_25_00_sp4_question_aware",
+          "purpose": "SP4 question-aware processing",
+          "receives": ["SmartChunk list", "CanonicalQuestionnaire"],
+          "delivers": ["QuestionAwareChunks"]
+        }
+      ],
+      "execution_pattern": "Once-Per-PDF",
+      "dependencies": ["phase1_20_00_cpp_ingestion", "phase1_15_00_questionnaire_mapper"]
+    },
+    {
+      "order": 4,
+      "stage_code": "30",
+      "stage_name": "Adapter Layer",
+      "description": "Adapter pattern implementation for signal processing",
+      "files": [
+        {
+          "filename": "phase1_30_00_adapter.py",
+          "label": "phase1_30_00_adapter",
+          "purpose": "Adapter pattern implementation for signal processing",
+          "receives": ["QuestionAwareChunks", "QuestionnaireSignalRegistry"],
+          "delivers": ["AdaptedChunks", "SignalMap"]
+        }
+      ],
+      "execution_pattern": "Once-Per-PDF",
+      "dependencies": ["phase1_25_00_sp4_question_aware"]
+    },
+    {
+      "order": 5,
+      "stage_code": "40",
+      "stage_name": "Circuit Breaker",
+      "description": "Circuit breaker pattern for fault tolerance",
+      "files": [
+        {
+          "filename": "phase1_40_00_circuit_breaker.py",
+          "label": "phase1_40_00_circuit_breaker",
+          "purpose": "Circuit breaker pattern for fault tolerance",
+          "receives": [],
+          "delivers": ["CircuitBreaker", "CircuitState"]
+        }
+      ],
+      "execution_pattern": "Continuous",
+      "dependencies": []
+    },
+    {
+      "order": 6,
+      "stage_code": "50",
+      "stage_name": "Dependency Validation",
+      "description": "Validate dependencies before execution",
+      "files": [
+        {
+          "filename": "phase1_50_00_dependency_validator.py",
+          "label": "phase1_50_00_dependency_validator",
+          "purpose": "Validate dependencies before execution",
+          "receives": ["RuntimeConfig", "validated_paths"],
+          "delivers": ["DependencyValidationResult"]
+        }
+      ],
+      "execution_pattern": "Boot-Once",
+      "dependencies": ["phase1_10_00_phase_protocol"]
+    },
+    {
+      "order": 7,
+      "stage_code": "60",
+      "stage_name": "Signal Enrichment",
+      "description": "Main signal enrichment engine",
+      "files": [
+        {
+          "filename": "phase1_60_00_signal_enrichment.py",
+          "label": "phase1_60_00_signal_enrichment",
+          "purpose": "Main signal enrichment engine",
+          "receives": ["AdaptedChunks", "QuestionnaireSignalRegistry", "CircuitBreaker"],
+          "delivers": ["EnrichedSignalPacks", "IrrigationMap"]
+        }
+      ],
+      "execution_pattern": "Once-Per-PDF",
+      "dependencies": ["phase1_30_00_adapter", "phase1_40_00_circuit_breaker"]
+    },
+    {
+      "order": 8,
+      "stage_code": "70",
+      "stage_name": "Structural Validation",
+      "description": "Structural validation of enriched signals",
+      "files": [
+        {
+          "filename": "phase1_70_00_structural.py",
+          "label": "phase1_70_00_structural",
+          "purpose": "Structural validation of enriched signals",
+          "receives": ["EnrichedSignalPacks"],
+          "delivers": ["StructuralValidationResult"]
+        }
+      ],
+      "execution_pattern": "Once-Per-PDF",
+      "dependencies": ["phase1_60_00_signal_enrichment"]
+    }
+  ],
+  "subphases_from_cpp_ingestion": [
+    {"id": "SP0", "name": "Language Detection", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP1", "name": "Advanced Preprocessing", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP2", "name": "Structural Analysis", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP3", "name": "Knowledge Graph Construction", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP4", "name": "Semantic Segmentation", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP5", "name": "Causal Chain Construction", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP6", "name": "Integrated Causal Graph", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP7", "name": "Argumentative Structure", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP8", "name": "Temporal Markers", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP9", "name": "Discourse Mode", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP10", "name": "Strategic Integration", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP11", "name": "SmartChunk Assembly", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP12", "name": "Irrigation Linking", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP13", "name": "Integrity Validation", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP14", "name": "Ranking", "module": "phase1_20_00_cpp_ingestion"},
+    {"id": "SP15", "name": "Final Output", "module": "phase1_20_00_cpp_ingestion"}
+  ],
+  "critical_path": [
+    "phase1_10_00_phase_protocol",
+    "phase1_10_00_models",
+    "phase1_15_00_questionnaire_mapper",
+    "phase1_20_00_cpp_ingestion",
+    "phase1_30_00_adapter",
+    "phase1_60_00_signal_enrichment"
+  ],
+  "parallelization_opportunities": [
+    {
+      "stage": 20,
+      "modules": ["phase1_20_00_cpp_ingestion subphases"],
+      "can_parallelize": true,
+      "note": "Some SP subphases may run in parallel"
+    }
+  ],
+  "certification": {
+    "status": "CERTIFIED",
+    "certified_by": "F.A.R.F.A.N Architecture Team",
+    "certification_date": "2026-01-12",
+    "validation_method": "Manual code review + dependency graph analysis"
+  }
+}

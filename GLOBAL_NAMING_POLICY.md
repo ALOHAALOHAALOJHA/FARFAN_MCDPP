@@ -187,7 +187,7 @@ repos:
         
       - id: semantic-validator
         name: Semantic Name Validator
-        entry: python scripts/enforcement/semantic_validator.py
+        entry: python scripts/validation/semantic_validator.py
         language: python
         files: \.(py|json|md)$
         

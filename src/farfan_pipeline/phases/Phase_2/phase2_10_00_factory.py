@@ -151,10 +151,10 @@ from dataclasses import dataclass, field
 from typing import Any, TYPE_CHECKING
 
 # Phase 2 orchestration components
-from farfan_pipeline.phases.Phase_two.arg_router import ExtendedArgRouter
+from farfan_pipeline.phases.Phase_2.phase2_60_02_arg_router import ExtendedArgRouter
 from orchestration.class_registry import build_class_registry, get_class_paths
-from farfan_pipeline.phases.Phase_two.executors.executor_config import ExecutorConfig
-from farfan_pipeline.phases.Phase_two.executors.base_executor_with_contract import BaseExecutorWithContract
+from farfan_pipeline.phases.Phase_2.phase2_10_03_executor_config import ExecutorConfig
+from farfan_pipeline.phases.Phase_2.phase2_60_00_base_executor_with_contract import BaseExecutorWithContract
 
 # Core orchestration
 if TYPE_CHECKING:
@@ -165,9 +165,8 @@ from orchestration.method_registry import (
 )
 
 # Canonical method injection (direct method access, no class instantiation)
-from farfan_pipeline.phases.Phase_two.methods_registry import (
+from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import (
     inject_canonical_methods,
-    setup_registry_with_canonical_methods,
 )
 
 # SISAS - Signal Intelligence Layer (Nivel 2)

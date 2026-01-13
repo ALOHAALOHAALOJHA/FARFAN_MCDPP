@@ -1,0 +1,165 @@
+{
+  "$schema": "phase_sequence_schema.json",
+  "contract_version": "1.0.0",
+  "contract_id": "CONTRACT-P0-SEQUENCE",
+  "contract_type": "phase_execution_sequence",
+  "phase": {
+    "number": 0,
+    "name": "Validation, Hardening & Bootstrap"
+  },
+  "execution_narrative": "Phase 0 validates input integrity, enforces determinism, and produces WiringComponents for Phase 1 handoff. All steps are interconnected via the orchestrator.",
+  "entry_point": {
+    "file": "phase0_90_00_main.py",
+    "function": "main() → run_phase_zero() → VerifiedPipelineRunner.run_phase_zero()",
+    "description": "CLI entry point that orchestrates the complete Phase 0 sequence"
+  },
+  "orchestrator": {
+    "file": "phase0_90_01_verified_pipeline_runner.py",
+    "class": "VerifiedPipelineRunner",
+    "method": "run_phase_zero()",
+    "description": "Canonical orchestrator that executes P0.0-P0.3 with exit gate enforcement"
+  },
+  "wiring": {
+    "file": "phase0_90_02_bootstrap.py",
+    "class": "WiringBootstrap",
+    "method": "bootstrap()",
+    "description": "Produces final WiringComponents for Phase 1 handoff"
+  },
+  "deterministic_sequence": [
+    {
+      "step": "P0.0",
+      "name": "Bootstrap",
+      "file": "phase0_90_01_verified_pipeline_runner.py",
+      "method": "__init__()",
+      "action": "Load RuntimeConfig.from_env(), create artifacts_dir, initialize seed_registry",
+      "imports": ["phase0_10_01_runtime_config.RuntimeConfig"]
+    },
+    {
+      "step": "GATE_1",
+      "name": "Bootstrap Gate",
+      "file": "phase0_50_01_exit_gates.py",
+      "method": "check_bootstrap_gate()",
+      "action": "Verify runtime_config loaded, no bootstrap failures, no errors",
+      "imports": ["phase0_10_01_runtime_config.RuntimeMode"]
+    },
+    {
+      "step": "P0.1",
+      "name": "Input Verification",
+      "file": "phase0_90_01_verified_pipeline_runner.py",
+      "method": "verify_input()",
+      "action": "Compute SHA256 of PDF and questionnaire, validate file integrity",
+      "produces": ["input_pdf_sha256", "questionnaire_sha256"]
+    },
+    {
+      "step": "GATE_2",
+      "name": "Input Verification Gate",
+      "file": "phase0_50_01_exit_gates.py",
+      "method": "check_input_verification_gate()",
+      "action": "Verify PDF hashed (SHA-256), questionnaire hashed (SHA-256), no errors"
+    },
+    {
+      "step": "P0.2",
+      "name": "Boot Checks",
+      "file": "phase0_90_01_verified_pipeline_runner.py",
+      "method": "run_boot_checks()",
+      "action": "Validate dependencies (contradiction, wiring_validator, spacy, calibration)",
+      "imports": ["phase0_50_00_boot_checks.run_boot_checks"],
+      "submodule_calls": [
+        "phase0_50_00_boot_checks.check_contradiction_module_available()",
+        "phase0_50_00_boot_checks.check_wiring_validator_available()",
+        "phase0_50_00_boot_checks.check_spacy_model_available()",
+        "phase0_50_00_boot_checks.check_calibration_files()"
+      ]
+    },
+    {
+      "step": "GATE_3",
+      "name": "Boot Checks Gate",
+      "file": "phase0_50_01_exit_gates.py",
+      "method": "check_boot_checks_gate()",
+      "action": "Verify boot checks passed, no errors in PROD mode",
+      "imports": ["phase0_10_01_runtime_config.RuntimeMode"]
+    },
+    {
+      "step": "P0.3",
+      "name": "Determinism",
+      "file": "phase0_90_01_verified_pipeline_runner.py",
+      "method": "initialize_determinism()",
+      "action": "Apply mandatory seeds (python, numpy) to RNGs via seed_registry",
+      "imports": ["phase0_20_02_determinism.initialize_determinism_from_registry"],
+      "produces": ["seed_snapshot"]
+    },
+    {
+      "step": "GATE_4",
+      "name": "Determinism Gate",
+      "file": "phase0_50_01_exit_gates.py",
+      "method": "check_determinism_gate()",
+      "action": "Verify seed_snapshot created, mandatory seeds (python, numpy) applied"
+    },
+    {
+      "step": "GATE_5",
+      "name": "Questionnaire Integrity Gate",
+      "file": "phase0_50_01_exit_gates.py",
+      "method": "check_questionnaire_integrity_gate()",
+      "action": "Verify questionnaire SHA256 matches expected value (if configured)"
+    },
+    {
+      "step": "GATE_6",
+      "name": "Method Registry Gate",
+      "file": "phase0_50_01_exit_gates.py",
+      "method": "check_method_registry_gate()",
+      "action": "Verify method_executor initialized, expected method count (416) loaded"
+    },
+    {
+      "step": "GATE_7",
+      "name": "Smoke Tests Gate",
+      "file": "phase0_50_01_exit_gates.py",
+      "method": "check_smoke_tests_gate()",
+      "action": "Verify sample methods can be instantiated (ingest, scoring, aggregation)"
+    },
+    {
+      "step": "WIRING",
+      "name": "Bootstrap Wiring",
+      "file": "phase0_90_02_bootstrap.py",
+      "class": "WiringBootstrap",
+      "method": "bootstrap()",
+      "action": "Load CanonicalQuestionnaire, initialize SignalRegistry, build CoreModuleFactory, create ExtendedArgRouter, assemble WiringComponents",
+      "imports": [
+        "phase0_10_00_paths (CONFIG_DIR, DATA_DIR)",
+        "phase0_90_03_wiring_validator (WiringValidator, WiringFeatureFlags)"
+      ],
+      "produces": ["WiringComponents"]
+    }
+  ],
+  "dependencies": {
+    "infrastructure": [
+      "phase0_00_03_primitives.py (base types)",
+      "phase0_00_03_protocols.py (PhaseContract framework)"
+    ],
+    "stage_10_environment": [
+      "phase0_10_00_paths.py (PROJECT_ROOT, CONFIG_DIR, DATA_DIR)",
+      "phase0_10_01_runtime_config.py (RuntimeConfig, RuntimeMode)"
+    ],
+    "stage_20_determinism": [
+      "phase0_20_02_determinism.py (initialize_determinism_from_registry)"
+    ],
+    "stage_50_boot": [
+      "phase0_50_00_boot_checks.py (run_boot_checks, BootCheckError)",
+      "phase0_50_01_exit_gates.py (check_all_gates, 7 gate functions)"
+    ],
+    "stage_90_integration": [
+      "phase0_90_00_main.py (CLI entry point)",
+      "phase0_90_01_verified_pipeline_runner.py (orchestrator)",
+      "phase0_90_02_bootstrap.py (wiring assembly)",
+      "phase0_90_03_wiring_validator.py (7-tier validation)"
+    ]
+  },
+  "exit_condition": "ALL 7 GATES MUST PASS → WiringComponents produced for Phase 1",
+  "fail_fast": "Any gate failure aborts pipeline immediately",
+  "notes": [
+    "EVERYTHING is INTERCONNECTED via the orchestrator - NO independent modules",
+    "The sequence is STRICTLY DETERMINISTIC: P0.0 → GATE_1 → P0.1 → GATE_2 → P0.2 → GATE_3 → P0.3 → GATE_4-7 → WIRING",
+    "VerifiedPipelineRunner is the CENTRAL ORCHESTRATOR that calls all other modules",
+    "check_all_gates() is called AFTER each step (P0.0-P0.3) to verify exit conditions",
+    "WiringBootstrap.bootstrap() produces the FINAL OUTPUT (WiringComponents) for Phase 1"
+  ]
+}

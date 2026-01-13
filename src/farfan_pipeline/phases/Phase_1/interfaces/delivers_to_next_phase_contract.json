@@ -1,0 +1,213 @@
+{
+  "$schema": "phase_contract_schema.json",
+  "contract_version": "1.0.0",
+  "contract_id": "CONTRACT-P1-DELIVERS",
+  "contract_type": "delivers_to_next_phase",
+  "phase": {
+    "number": 1,
+    "name": "Signal Enrichment"
+  },
+  "next_phase": {
+    "number": 2,
+    "name": "Evidence Extraction & Task Execution"
+  },
+  "certification": {
+    "status": "CERTIFIED",
+    "compatibility_verified": true,
+    "certified_by": "F.A.R.F.A.N Architecture Team",
+    "certification_date": "2026-01-12",
+    "verification_method": "Interface validation + type checking"
+  },
+  "deliverables": [
+    {
+      "name": "enriched_signal_packs",
+      "type": "dict[str, EnrichedSignalPack]",
+      "required": true,
+      "delivered_by": "phase1_60_00_signal_enrichment.py:SignalEnrichmentEngine",
+      "received_by_phase": "Phase 2",
+      "description": "Dictionary of question_id -> EnrichedSignalPack with patterns and signals",
+      "schema": {
+        "key_type": "str (question_id, e.g., Q001-Q300)",
+        "value_type": "EnrichedSignalPack",
+        "expected_count": 305,
+        "EnrichedSignalPack_fields": [
+          {"name": "question_id", "type": "str"},
+          {"name": "policy_area", "type": "str"},
+          {"name": "dimension", "type": "str"},
+          {"name": "patterns", "type": "list[str]"},
+          {"name": "signals_detected", "type": "list[str]"},
+          {"name": "enrichment_metadata", "type": "dict"}
+        ]
+      }
+    },
+    {
+      "name": "irrigation_map",
+      "type": "IrrigationMap",
+      "required": true,
+      "delivered_by": "phase1_20_00_cpp_ingestion.py:SP12 Irrigation Linking",
+      "received_by_phase": "Phase 2",
+      "description": "Mapping of chunks to questions for task routing",
+      "schema": {
+        "fields": [
+          {"name": "chunk_id_to_questions", "type": "dict[str, list[str]]"},
+          {"name": "question_to_chunks", "type": "dict[str, list[str]]"},
+          {"name": "coverage_metrics", "type": "dict"}
+        ]
+      }
+    },
+    {
+      "name": "smart_chunks",
+      "type": "list[SmartChunk]",
+      "required": true,
+      "delivered_by": "phase1_20_00_cpp_ingestion.py:SP11 SmartChunk Assembly",
+      "received_by_phase": "Phase 2",
+      "description": "List of semantically segmented and enriched text chunks",
+      "schema": {
+        "SmartChunk_fields": [
+          {"name": "chunk_id", "type": "str"},
+          {"name": "text", "type": "str"},
+          {"name": "semantic_type", "type": "str"},
+          {"name": "relevant_questions", "type": "list[str]"},
+          {"name": "causal_links", "type": "list[CausalLink]"},
+          {"name": "temporal_markers", "type": "list[TemporalMarker]"},
+          {"name": "discourse_mode", "type": "str"},
+          {"name": "rank_score", "type": "float"},
+          {"name": "page_reference", "type": "PageReference"}
+        ]
+      }
+    },
+    {
+      "name": "truncation_audit",
+      "type": "TruncationAudit",
+      "required": true,
+      "delivered_by": "phase1_20_00_cpp_ingestion.py:SP13 Integrity Validation",
+      "received_by_phase": "Phase 2",
+      "description": "Audit trail of any truncation or data loss during processing",
+      "schema": {
+        "fields": [
+          {"name": "original_pages", "type": "int"},
+          {"name": "processed_pages", "type": "int"},
+          {"name": "truncated_sections", "type": "list[dict]"},
+          {"name": "integrity_score", "type": "float"}
+        ]
+      }
+    },
+    {
+      "name": "structural_validation_result",
+      "type": "StructuralValidationResult",
+      "required": true,
+      "delivered_by": "phase1_70_00_structural.py",
+      "received_by_phase": "Phase 2",
+      "description": "Result of structural validation of enriched signals",
+      "schema": {
+        "fields": [
+          {"name": "is_valid", "type": "bool"},
+          {"name": "validation_errors", "type": "list[str]"},
+          {"name": "coverage_metrics", "type": "dict"},
+          {"name": "signal_density", "type": "dict[str, float]"}
+        ]
+      }
+    },
+    {
+      "name": "questionnaire_mapper",
+      "type": "QuestionnaireMapper",
+      "required": false,
+      "delivered_by": "phase1_15_00_questionnaire_mapper.py",
+      "received_by_phase": "Phase 2 (optional)",
+      "description": "Mapper for questionnaire structure to signal patterns",
+      "schema": {
+        "capabilities": [
+          "Get patterns for question",
+          "Get questions for policy area",
+          "Get questions for dimension",
+          "Validate question coverage"
+        ]
+      }
+    }
+  ],
+  "postconditions": [
+    {
+      "id": "POST-P1-01",
+      "description": "All 305 questions have enriched signal packs",
+      "validation_method": "len(enriched_signal_packs) == 305",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "POST-P1-02",
+      "description": "Smart chunks contain valid semantic segmentation",
+      "validation_method": "all(chunk.semantic_type is not None for chunk in smart_chunks)",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "POST-P1-03",
+      "description": "Irrigation map covers all chunks and questions",
+      "validation_method": "irrigation_map.coverage_metrics['completeness'] == 1.0",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "POST-P1-04",
+      "description": "Structural validation passed",
+      "validation_method": "structural_validation_result.is_valid == true",
+      "severity": "HIGH"
+    },
+    {
+      "id": "POST-P1-05",
+      "description": "Truncation audit shows acceptable data integrity",
+      "validation_method": "truncation_audit.integrity_score >= 0.95",
+      "severity": "HIGH"
+    },
+    {
+      "id": "POST-P1-06",
+      "description": "No critical enrichment errors",
+      "validation_method": "len(structural_validation_result.validation_errors) == 0 or all(e['severity'] != 'CRITICAL' for e in structural_validation_result.validation_errors)",
+      "severity": "HIGH"
+    },
+    {
+      "id": "POST-P1-07",
+      "description": "Signal density meets minimum threshold",
+      "validation_method": "all(density >= 0.3 for density in structural_validation_result.signal_density.values())",
+      "severity": "MEDIUM"
+    },
+    {
+      "id": "POST-P1-08",
+      "description": "Resource limits not exceeded during enrichment",
+      "validation_method": "enforcement_metrics.peak_memory_mb < memory_limit",
+      "severity": "CRITICAL"
+    }
+  ],
+  "compatibility_guarantees": [
+    {
+      "guarantee": "Type Compatibility",
+      "description": "All deliverables match types expected by Phase 2",
+      "verification": "Type checking against Phase 2 receives_from_previous_phase_contract.json"
+    },
+    {
+      "guarantee": "Question Coverage",
+      "description": "All 305 questions have corresponding signal packs",
+      "verification": "len(enriched_signal_packs) == 305"
+    },
+    {
+      "guarantee": "Data Integrity",
+      "description": "No data loss or corruption during enrichment",
+      "verification": "TruncationAudit.integrity_score >= 0.95"
+    },
+    {
+      "guarantee": "Irrigation Completeness",
+      "description": "All chunks are mapped to relevant questions",
+      "verification": "IrrigationMap coverage metrics"
+    }
+  ],
+  "handoff_protocol": {
+    "mechanism": "ProcessorBundle passed via Orchestrator",
+    "validation_point": "Before Phase 2 execution begins",
+    "failure_handling": "If any POST-P1-* CRITICAL fails, pipeline aborts before Phase 2",
+    "rollback_capability": "None (Phase 1 output is consumed by Phase 2)"
+  },
+  "notes": [
+    "Phase 1 deliverables are packaged into ProcessorBundle by Orchestrator",
+    "Enriched signal packs are the primary input for Phase 2 task routing",
+    "Irrigation map enables efficient chunk-to-question routing",
+    "Smart chunks contain all extracted semantic information",
+    "All deliverables maintain provenance to Phase 0 inputs"
+  ]
+}
