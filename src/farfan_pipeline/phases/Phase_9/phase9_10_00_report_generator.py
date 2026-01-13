@@ -1,27 +1,20 @@
 """
 Report Generator Module - Production Grade with AtroZ Aesthetic
-===================================================================
-
-Generates comprehensive policy analysis reports in Markdown, HTML, and PDF formats
-with full AtroZ dark cyberpunk visual styling including animations, neural effects,
-and visceral design elements.
-
-Author: F.A.R.F.A.N Pipeline Team
-Version: 3.0.0 (AtroZ Visceral Aesthetic)
 Python: 3.12+
 """
 
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import logging
 import math
 import random
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 from html import escape as html_escape
 from pathlib import Path
-import base64
+from typing import TYPE_CHECKING, Any, Optional
 
 if TYPE_CHECKING:
     from farfan_pipeline.phases.Phase_9.report_assembly import AnalysisReport
@@ -69,7 +62,7 @@ class AtrozVisualizer:
     }
     
     @staticmethod
-    def generate_neural_background() -> str:
+    def generate_neural_background(num_lines: int = 50) -> str:
         """Generate SVG neural network background."""
         svg = f"""
         <svg width="100%" height="100%" style="position: absolute; top: 0; left: 0; pointer-events: none; opacity: 0.05;">
@@ -90,7 +83,7 @@ class AtrozVisualizer:
         """
         
         # Generate random neural network lines
-        for _ in range(50):
+        for _ in range(num_lines):
             x1 = random.randint(0, 100)
             y1 = random.randint(0, 100)
             x2 = random.randint(0, 100)
@@ -299,7 +292,7 @@ class AtrozVisualizer:
         """
     
     @staticmethod
-    def generate_radar_chart(scores: List[float], labels: List[str]) -> str:
+    def generate_radar_chart(scores: list[float], labels: list[str]) -> str:
         """Generate animated radar chart with AtroZ styling."""
         if not scores or not labels:
             return ""
@@ -339,7 +332,7 @@ class AtrozVisualizer:
         # Draw axes
         n_points = len(labels)
         for i in range(n_points):
-            angle = (2 * 3.14159 * i) / n_points
+            angle = (2 * math.pi * i) / n_points
             x = 200 + 200 * math.sin(angle)
             y = 200 - 200 * math.cos(angle)
             
@@ -369,7 +362,7 @@ class AtrozVisualizer:
         for i in range(n_points):
             score = normalized_scores[i]
             radius = 200 * (score / 100)
-            angle = (2 * 3.14159 * i) / n_points
+            angle = (2 * math.pi * i) / n_points
             x = 200 + radius * math.sin(angle)
             y = 200 - radius * math.cos(angle)
             points.append(f"{x},{y}")
@@ -484,7 +477,7 @@ class ReportGenerator:
     def _generate_manifest(self, artifacts: dict[str, Path], report: AnalysisReport) -> dict[str, Any]:
         """Generate manifest with AtroZ artifact metadata."""
         manifest: dict[str, Any] = {
-            "generated_at": datetime.now(UTC).isoformat(),
+            "generated_at": datetime.now(timezone.utc).isoformat(),
             "plan_name": self.plan_name,
             "report_id": report.metadata.report_id,
             "aesthetic": "atroz_visceral",
@@ -598,7 +591,7 @@ def generate_markdown_report(report: AnalysisReport) -> str:
 def generate_html_report(
     report: AnalysisReport,
     chart_paths: list[Path] | None = None,
-    template_name: str = "report_enhanced.html.j2",
+    template_name: str = "report.html.j2",
     enable_animations: bool = True,
 ) -> str:
     """Generate HTML report with enhanced template (aligned with generate_all default)."""
@@ -1199,8 +1192,6 @@ def generate_charts(report: AnalysisReport, output_dir: Path, plan_name: str = "
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
         import numpy as np
-        from matplotlib.patches import Polygon
-        import matplotlib.cm as cm
     except ImportError:
         logger.warning("Matplotlib not available for AtroZ charts")
         return []

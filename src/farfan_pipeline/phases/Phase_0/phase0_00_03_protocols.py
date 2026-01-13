@@ -61,14 +61,17 @@ from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, NewType, TypeVar
 
-# Use primitives from our new module
-from farfan_pipeline.phases.Phase_0.phase0_00_03_primitives import HashStr
+# Use primitives from our primitives module (relative import)
+from .primitives.phase0_00_03_primitives import HashStr
 
 # Type variables for generic phase contracts
 TInput = TypeVar("TInput")
 TOutput = TypeVar("TOutput")
+
+# Strongly-typed timestamp wrapper around ISO 8601 strings
+Timestamp = NewType("Timestamp", str)
 
 
 @dataclass

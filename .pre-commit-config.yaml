@@ -30,7 +30,7 @@ repos:
       # GNEA Semantic Validator
       - id: gnea-semantic-validator
         name: GNEA Semantic Validator
-        entry: python scripts/enforcement/semantic_validator.py
+        entry: python scripts/validation/semantic_validator.py
         language: system
         types: [python]
         files: ^(src/farfan_pipeline/phases/.*\.py)$

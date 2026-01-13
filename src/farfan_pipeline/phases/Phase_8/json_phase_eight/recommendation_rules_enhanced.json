@@ -1,6 +1,10 @@
 {
+<<<<<<< Updated upstream
   "version": "3.0",
   "last_updated": "2026-01-11T19:45:54.682782",
+=======
+  "version": "2.0",
+>>>>>>> Stashed changes
   "enhanced_features": [
     "template_parameterization",
     "execution_logic",
@@ -8,6 +12,7 @@
     "unambiguous_time_horizons",
     "testable_verification",
     "cost_tracking",
+<<<<<<< Updated upstream
     "authority_mapping",
     "multi_threshold_scoring",
     "cross_cluster_dependencies",
@@ -42,6 +47,10 @@
       "coverage": "Crisis, transformation pathways, and inter-cluster balance scenarios"
     }
   },
+=======
+    "authority_mapping"
+  ],
+>>>>>>> Stashed changes
   "rules": [
     {
       "rule_id": "REC-MICRO-PA01-DIM01-LB01",
@@ -67,6 +76,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA01-DIM01-LB01-IND'",
@@ -74,6 +84,9 @@
             "pa_id": "PA01",
             "dim_id": "DIM01"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA01-DIM01-LB01-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -252,6 +265,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA01-DIM02-ACT-IND'",
@@ -259,6 +273,9 @@
             "pa_id": "PA01",
             "dim_id": "DIM02"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA01-DIM02-ACT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -437,6 +454,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA01-DIM03-BPIN-IND'",
@@ -444,6 +462,9 @@
             "pa_id": "PA01",
             "dim_id": "DIM03"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA01-DIM03-BPIN-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -630,6 +651,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA01-DIM04-RESULT-IND'",
@@ -637,6 +659,9 @@
             "pa_id": "PA01",
             "dim_id": "DIM04"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA01-DIM04-RESULT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -825,6 +850,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA01-DIM05-RIESGOS-IND'",
@@ -832,6 +858,9 @@
             "pa_id": "PA01",
             "dim_id": "DIM05"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA01-DIM05-RIESGOS-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -1020,6 +1049,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA01-DIM06-DAG-IND'",
@@ -1027,6 +1057,9 @@
             "pa_id": "PA01",
             "dim_id": "DIM06"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA01-DIM06-DAG-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -1215,6 +1248,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA02-DIM01-LB01-IND'",
@@ -1222,6 +1256,9 @@
             "pa_id": "PA02",
             "dim_id": "DIM01"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA02-DIM01-LB01-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -1400,6 +1437,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA02-DIM02-ACT-IND'",
@@ -1407,6 +1445,9 @@
             "pa_id": "PA02",
             "dim_id": "DIM02"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA02-DIM02-ACT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -1587,6 +1628,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA02-DIM03-BPIN-IND'",
@@ -1594,6 +1636,9 @@
             "pa_id": "PA02",
             "dim_id": "DIM03"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA02-DIM03-BPIN-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -1780,6 +1825,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA02-DIM04-RESULT-IND'",
@@ -1787,6 +1833,9 @@
             "pa_id": "PA02",
             "dim_id": "DIM04"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA02-DIM04-RESULT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -1975,6 +2024,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA02-DIM05-RIESGOS-IND'",
@@ -1982,6 +2032,9 @@
             "pa_id": "PA02",
             "dim_id": "DIM05"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA02-DIM05-RIESGOS-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -2170,6 +2223,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA02-DIM06-DAG-IND'",
@@ -2177,6 +2231,9 @@
             "pa_id": "PA02",
             "dim_id": "DIM06"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA02-DIM06-DAG-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -2365,6 +2422,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA03-DIM01-LB01-IND'",
@@ -2372,6 +2430,9 @@
             "pa_id": "PA03",
             "dim_id": "DIM01"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA03-DIM01-LB01-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -2550,6 +2611,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA03-DIM02-ACT-IND'",
@@ -2557,6 +2619,9 @@
             "pa_id": "PA03",
             "dim_id": "DIM02"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA03-DIM02-ACT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -2737,6 +2802,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA03-DIM03-BPIN-IND'",
@@ -2744,6 +2810,9 @@
             "pa_id": "PA03",
             "dim_id": "DIM03"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA03-DIM03-BPIN-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -2930,6 +2999,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA03-DIM04-RESULT-IND'",
@@ -2937,6 +3007,9 @@
             "pa_id": "PA03",
             "dim_id": "DIM04"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA03-DIM04-RESULT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -3125,6 +3198,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA03-DIM05-RIESGOS-IND'",
@@ -3132,6 +3206,9 @@
             "pa_id": "PA03",
             "dim_id": "DIM05"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA03-DIM05-RIESGOS-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -3320,6 +3397,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA03-DIM06-DAG-IND'",
@@ -3327,6 +3405,9 @@
             "pa_id": "PA03",
             "dim_id": "DIM06"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA03-DIM06-DAG-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -3515,6 +3596,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA04-DIM01-LB01-IND'",
@@ -3522,6 +3604,9 @@
             "pa_id": "PA04",
             "dim_id": "DIM01"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA04-DIM01-LB01-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -3702,6 +3787,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA04-DIM02-ACT-IND'",
@@ -3709,6 +3795,9 @@
             "pa_id": "PA04",
             "dim_id": "DIM02"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA04-DIM02-ACT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -3889,6 +3978,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA04-DIM03-BPIN-IND'",
@@ -3896,6 +3986,9 @@
             "pa_id": "PA04",
             "dim_id": "DIM03"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA04-DIM03-BPIN-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -4082,6 +4175,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA04-DIM04-RESULT-IND'",
@@ -4089,6 +4183,9 @@
             "pa_id": "PA04",
             "dim_id": "DIM04"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA04-DIM04-RESULT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -4277,6 +4374,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA04-DIM05-RIESGOS-IND'",
@@ -4284,6 +4382,9 @@
             "pa_id": "PA04",
             "dim_id": "DIM05"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA04-DIM05-RIESGOS-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -4472,6 +4573,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA04-DIM06-DAG-IND'",
@@ -4479,6 +4581,9 @@
             "pa_id": "PA04",
             "dim_id": "DIM06"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA04-DIM06-DAG-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -4667,6 +4772,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA05-DIM01-LB01-IND'",
@@ -4674,6 +4780,9 @@
             "pa_id": "PA05",
             "dim_id": "DIM01"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA05-DIM01-LB01-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -4850,6 +4959,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA05-DIM02-ACT-IND'",
@@ -4857,6 +4967,9 @@
             "pa_id": "PA05",
             "dim_id": "DIM02"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA05-DIM02-ACT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -5037,6 +5150,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA05-DIM03-BPIN-IND'",
@@ -5044,6 +5158,9 @@
             "pa_id": "PA05",
             "dim_id": "DIM03"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA05-DIM03-BPIN-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -5230,6 +5347,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA05-DIM04-RESULT-IND'",
@@ -5237,6 +5355,9 @@
             "pa_id": "PA05",
             "dim_id": "DIM04"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA05-DIM04-RESULT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -5425,6 +5546,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA05-DIM05-RIESGOS-IND'",
@@ -5432,6 +5554,9 @@
             "pa_id": "PA05",
             "dim_id": "DIM05"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA05-DIM05-RIESGOS-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -5620,6 +5745,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA05-DIM06-DAG-IND'",
@@ -5627,6 +5753,9 @@
             "pa_id": "PA05",
             "dim_id": "DIM06"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA05-DIM06-DAG-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -5815,6 +5944,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA06-DIM01-LB01-IND'",
@@ -5822,6 +5952,9 @@
             "pa_id": "PA06",
             "dim_id": "DIM01"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA06-DIM01-LB01-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -6002,6 +6135,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA06-DIM02-ACT-IND'",
@@ -6009,6 +6143,9 @@
             "pa_id": "PA06",
             "dim_id": "DIM02"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA06-DIM02-ACT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -6189,6 +6326,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA06-DIM03-BPIN-IND'",
@@ -6196,6 +6334,9 @@
             "pa_id": "PA06",
             "dim_id": "DIM03"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA06-DIM03-BPIN-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -6382,6 +6523,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA06-DIM04-RESULT-IND'",
@@ -6389,6 +6531,9 @@
             "pa_id": "PA06",
             "dim_id": "DIM04"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA06-DIM04-RESULT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -6577,6 +6722,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA06-DIM05-RIESGOS-IND'",
@@ -6584,6 +6730,9 @@
             "pa_id": "PA06",
             "dim_id": "DIM05"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA06-DIM05-RIESGOS-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -6772,6 +6921,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA06-DIM06-DAG-IND'",
@@ -6779,6 +6929,9 @@
             "pa_id": "PA06",
             "dim_id": "DIM06"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA06-DIM06-DAG-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -6967,6 +7120,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA07-DIM01-LB01-IND'",
@@ -6974,6 +7128,9 @@
             "pa_id": "PA07",
             "dim_id": "DIM01"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA07-DIM01-LB01-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -7152,6 +7309,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA07-DIM02-ACT-IND'",
@@ -7159,6 +7317,9 @@
             "pa_id": "PA07",
             "dim_id": "DIM02"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA07-DIM02-ACT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -7339,6 +7500,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA07-DIM03-BPIN-IND'",
@@ -7346,6 +7508,9 @@
             "pa_id": "PA07",
             "dim_id": "DIM03"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA07-DIM03-BPIN-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -7532,6 +7697,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA07-DIM04-RESULT-IND'",
@@ -7539,6 +7705,9 @@
             "pa_id": "PA07",
             "dim_id": "DIM04"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA07-DIM04-RESULT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -7727,6 +7896,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA07-DIM05-RIESGOS-IND'",
@@ -7734,6 +7904,9 @@
             "pa_id": "PA07",
             "dim_id": "DIM05"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA07-DIM05-RIESGOS-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -7922,6 +8095,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA07-DIM06-DAG-IND'",
@@ -7929,6 +8103,9 @@
             "pa_id": "PA07",
             "dim_id": "DIM06"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA07-DIM06-DAG-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -8117,6 +8294,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA08-DIM01-LB01-IND'",
@@ -8124,6 +8302,9 @@
             "pa_id": "PA08",
             "dim_id": "DIM01"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA08-DIM01-LB01-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -8302,6 +8483,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA08-DIM02-ACT-IND'",
@@ -8309,6 +8491,9 @@
             "pa_id": "PA08",
             "dim_id": "DIM02"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA08-DIM02-ACT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -8489,6 +8674,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA08-DIM03-BPIN-IND'",
@@ -8496,6 +8682,9 @@
             "pa_id": "PA08",
             "dim_id": "DIM03"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA08-DIM03-BPIN-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -8682,6 +8871,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA08-DIM04-RESULT-IND'",
@@ -8689,6 +8879,9 @@
             "pa_id": "PA08",
             "dim_id": "DIM04"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA08-DIM04-RESULT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -8877,6 +9070,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA08-DIM05-RIESGOS-IND'",
@@ -8884,6 +9078,9 @@
             "pa_id": "PA08",
             "dim_id": "DIM05"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA08-DIM05-RIESGOS-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -9072,6 +9269,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA08-DIM06-DAG-IND'",
@@ -9079,6 +9277,9 @@
             "pa_id": "PA08",
             "dim_id": "DIM06"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA08-DIM06-DAG-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -9267,6 +9468,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA09-DIM01-LB01-IND'",
@@ -9274,6 +9476,9 @@
             "pa_id": "PA09",
             "dim_id": "DIM01"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA09-DIM01-LB01-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -9453,6 +9658,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA09-DIM02-ACT-IND'",
@@ -9460,6 +9666,9 @@
             "pa_id": "PA09",
             "dim_id": "DIM02"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA09-DIM02-ACT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -9641,6 +9850,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA09-DIM03-BPIN-IND'",
@@ -9648,6 +9858,9 @@
             "pa_id": "PA09",
             "dim_id": "DIM03"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA09-DIM03-BPIN-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -9835,6 +10048,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA09-DIM04-RESULT-IND'",
@@ -9842,6 +10056,9 @@
             "pa_id": "PA09",
             "dim_id": "DIM04"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA09-DIM04-RESULT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -10031,6 +10248,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA09-DIM05-RIESGOS-IND'",
@@ -10038,6 +10256,9 @@
             "pa_id": "PA09",
             "dim_id": "DIM05"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA09-DIM05-RIESGOS-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -10227,6 +10448,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA09-DIM06-DAG-IND'",
@@ -10234,6 +10456,9 @@
             "pa_id": "PA09",
             "dim_id": "DIM06"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA09-DIM06-DAG-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -10423,6 +10648,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA10-DIM01-LB01-IND'",
@@ -10430,6 +10656,9 @@
             "pa_id": "PA10",
             "dim_id": "DIM01"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA10-DIM01-LB01-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -10610,6 +10839,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA10-DIM02-ACT-IND'",
@@ -10617,6 +10847,9 @@
             "pa_id": "PA10",
             "dim_id": "DIM02"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA10-DIM02-ACT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -10797,6 +11030,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA10-DIM03-BPIN-IND'",
@@ -10804,6 +11038,9 @@
             "pa_id": "PA10",
             "dim_id": "DIM03"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA10-DIM03-BPIN-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -10990,6 +11227,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA10-DIM04-RESULT-IND'",
@@ -10997,6 +11235,9 @@
             "pa_id": "PA10",
             "dim_id": "DIM04"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA10-DIM04-RESULT-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -11185,6 +11426,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA10-DIM05-RIESGOS-IND'",
@@ -11192,6 +11434,9 @@
             "pa_id": "PA10",
             "dim_id": "DIM05"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA10-DIM05-RIESGOS-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -11380,6 +11625,7 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA10-DIM06-DAG-IND'",
@@ -11387,6 +11633,9 @@
             "pa_id": "PA10",
             "dim_id": "DIM06"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MICRO-PA10-DIM06-DAG-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -11577,12 +11826,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA02-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL01-ALTA-PA02-ALTO-IND",
             "pa_id": "PA02"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA02-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -11765,12 +12018,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA02-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL01-ALTA-PA02-BAJO-IND",
             "pa_id": "PA02"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA02-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -11961,12 +12218,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA02-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL01-ALTA-PA02-MEDIO-IND",
             "pa_id": "PA02"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA02-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -12157,12 +12418,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA03-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL01-ALTA-PA03-ALTO-IND",
             "pa_id": "PA03"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA03-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -12345,12 +12610,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA03-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL01-ALTA-PA03-BAJO-IND",
             "pa_id": "PA03"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA03-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -12541,12 +12810,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA03-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL01-ALTA-PA03-MEDIO-IND",
             "pa_id": "PA03"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA03-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -12737,12 +13010,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA07-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL01-ALTA-PA07-ALTO-IND",
             "pa_id": "PA07"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA07-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -12925,12 +13202,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA07-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL01-ALTA-PA07-BAJO-IND",
             "pa_id": "PA07"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA07-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -13121,12 +13402,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA07-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL01-ALTA-PA07-MEDIO-IND",
             "pa_id": "PA07"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-ALTA-PA07-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -13315,11 +13600,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-BAJA-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL01-BAJA-ALTO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-BAJA-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -13498,11 +13787,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-BAJA-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL01-BAJA-BAJO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-BAJA-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -13689,11 +13982,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-BAJA-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL01-BAJA-MEDIO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-BAJA-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -13872,11 +14169,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-MEDIA-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL01-MEDIA-ALTO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-MEDIA-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -14055,11 +14356,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-MEDIA-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL01-MEDIA-BAJO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-MEDIA-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -14246,11 +14551,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-MEDIA-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL01-MEDIA-MEDIO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL01-MEDIA-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -14439,12 +14748,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA01-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL02-ALTA-PA01-ALTO-IND",
             "pa_id": "PA01"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA01-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -14627,12 +14940,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA01-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL02-ALTA-PA01-BAJO-IND",
             "pa_id": "PA01"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA01-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -14823,12 +15140,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA01-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL02-ALTA-PA01-MEDIO-IND",
             "pa_id": "PA01"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA01-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -15019,12 +15340,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA05-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL02-ALTA-PA05-ALTO-IND",
             "pa_id": "PA05"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA05-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -15207,12 +15532,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA05-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL02-ALTA-PA05-BAJO-IND",
             "pa_id": "PA05"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA05-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -15403,12 +15732,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA05-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL02-ALTA-PA05-MEDIO-IND",
             "pa_id": "PA05"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA05-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -15599,12 +15932,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA06-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL02-ALTA-PA06-ALTO-IND",
             "pa_id": "PA06"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA06-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -15787,12 +16124,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA06-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL02-ALTA-PA06-BAJO-IND",
             "pa_id": "PA06"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA06-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -15983,12 +16324,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA06-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL02-ALTA-PA06-MEDIO-IND",
             "pa_id": "PA06"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-ALTA-PA06-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -16177,11 +16522,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-BAJA-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL02-BAJA-ALTO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-BAJA-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -16360,11 +16709,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-BAJA-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL02-BAJA-BAJO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-BAJA-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -16551,11 +16904,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-BAJA-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL02-BAJA-MEDIO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-BAJA-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -16734,11 +17091,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-MEDIA-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL02-MEDIA-ALTO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-MEDIA-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -16917,11 +17278,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-MEDIA-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL02-MEDIA-BAJO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-MEDIA-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -17108,11 +17473,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-MEDIA-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL02-MEDIA-MEDIO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL02-MEDIA-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -17301,12 +17670,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-ALTA-PA04-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL03-ALTA-PA04-ALTO-IND",
             "pa_id": "PA04"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-ALTA-PA04-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -17489,12 +17862,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-ALTA-PA04-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL03-ALTA-PA04-BAJO-IND",
             "pa_id": "PA04"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-ALTA-PA04-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -17685,12 +18062,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-ALTA-PA04-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL03-ALTA-PA04-MEDIO-IND",
             "pa_id": "PA04"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-ALTA-PA04-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -17881,12 +18262,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-ALTA-PA08-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL03-ALTA-PA08-ALTO-IND",
             "pa_id": "PA08"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-ALTA-PA08-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -18069,12 +18454,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-ALTA-PA08-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL03-ALTA-PA08-BAJO-IND",
             "pa_id": "PA08"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-ALTA-PA08-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -18265,12 +18654,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-ALTA-PA08-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL03-ALTA-PA08-MEDIO-IND",
             "pa_id": "PA08"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-ALTA-PA08-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -18459,11 +18852,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-BAJA-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL03-BAJA-ALTO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-BAJA-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -18642,11 +19039,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-BAJA-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL03-BAJA-BAJO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-BAJA-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -18833,11 +19234,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-BAJA-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL03-BAJA-MEDIO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-BAJA-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -19016,11 +19421,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-MEDIA-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL03-MEDIA-ALTO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-MEDIA-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -19199,11 +19608,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-MEDIA-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL03-MEDIA-BAJO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-MEDIA-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -19390,11 +19803,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-MEDIA-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL03-MEDIA-MEDIO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL03-MEDIA-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -19583,12 +20000,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-ALTA-PA09-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL04-ALTA-PA09-ALTO-IND",
             "pa_id": "PA09"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-ALTA-PA09-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -19771,12 +20192,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-ALTA-PA09-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL04-ALTA-PA09-BAJO-IND",
             "pa_id": "PA09"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-ALTA-PA09-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -19967,12 +20392,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-ALTA-PA09-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL04-ALTA-PA09-MEDIO-IND",
             "pa_id": "PA09"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-ALTA-PA09-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -20163,12 +20592,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-ALTA-PA10-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL04-ALTA-PA10-ALTO-IND",
             "pa_id": "PA10"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-ALTA-PA10-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -20351,12 +20784,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-ALTA-PA10-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL04-ALTA-PA10-BAJO-IND",
             "pa_id": "PA10"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-ALTA-PA10-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -20547,12 +20984,16 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-ALTA-PA10-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL04-ALTA-PA10-MEDIO-IND",
             "pa_id": "PA10"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-ALTA-PA10-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -20741,11 +21182,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-BAJA-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL04-BAJA-ALTO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-BAJA-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -20924,11 +21369,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-BAJA-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL04-BAJA-BAJO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-BAJA-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -21115,11 +21564,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-BAJA-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL04-BAJA-MEDIO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-BAJA-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -21298,11 +21751,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-MEDIA-ALTO-IND'",
             "indicator_pattern": "REC-MESO-CL04-MEDIA-ALTO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-MEDIA-ALTO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -21481,11 +21938,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-MEDIA-BAJO-IND'",
             "indicator_pattern": "REC-MESO-CL04-MEDIA-BAJO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-MEDIA-BAJO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -21672,11 +22133,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-MEDIA-MEDIO-IND'",
             "indicator_pattern": "REC-MESO-CL04-MEDIA-MEDIO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MESO-CL04-MEDIA-MEDIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -21869,11 +22334,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MACRO-ALTO-MODERADO-IND'",
             "indicator_pattern": "REC-MACRO-ALTO-MODERADO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MACRO-ALTO-MODERADO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -22067,11 +22536,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MACRO-COHESION-SATISFACTORIO-IND'",
             "indicator_pattern": "REC-MACRO-COHESION-SATISFACTORIO-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MACRO-COHESION-SATISFACTORIO-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -22261,11 +22734,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MACRO-EXCELENTE-SOSTENER-IND'",
             "indicator_pattern": "REC-MACRO-EXCELENTE-SOSTENER-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MACRO-EXCELENTE-SOSTENER-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -22452,11 +22929,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MACRO-GLOBAL-DEFICIENTE-IND'",
             "indicator_pattern": "REC-MACRO-GLOBAL-DEFICIENTE-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MACRO-GLOBAL-DEFICIENTE-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -22650,11 +23131,15 @@
           "baseline_measurement_date": "2024-01-01",
           "measurement_frequency": "mensual",
           "data_source": "Sistema de Seguimiento de Planes (SSP)",
+<<<<<<< Updated upstream
           "data_source_query": {
             "type": "indicator_count",
             "description": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MACRO-SEG-SOC-INSUFICIENTE-IND'",
             "indicator_pattern": "REC-MACRO-SEG-SOC-INSUFICIENTE-IND"
           },
+=======
+          "data_source_query": "SELECT COUNT(*) FROM indicators WHERE indicator_id = 'REC-MACRO-SEG-SOC-INSUFICIENTE-IND'",
+>>>>>>> Stashed changes
           "responsible_measurement": "Oficina de Planeación Municipal",
           "escalation_if_below": 0.6
         },
@@ -22814,6 +23299,7 @@
         ],
         "fiscal_year": 2025
       }
+<<<<<<< Updated upstream
     },
     {
       "rule_id": "REC-MICRO-PA01-DIM01-CRITICO",
@@ -79521,6 +80007,8 @@
       "horizon": {
         "duration_months": 12
       }
+=======
+>>>>>>> Stashed changes
     }
   ]
 }

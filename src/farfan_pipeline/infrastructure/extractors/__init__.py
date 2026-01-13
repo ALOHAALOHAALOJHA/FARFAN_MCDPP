@@ -12,7 +12,10 @@ Key Features:
 - Performance metrics and reporting
 
 Available Extractors:
+- StructuralMarkerExtractor (MC01/Phase 1-SP2): Tables, sections, graphs
+- NormativeReferenceExtractor (MC03/Phase 1-SP5): Laws, decrees, treaties
 - FinancialChainExtractor (MC05): Budgetary chains
+- QuantitativeTripletExtractor (MC06/Phase 1-SP6): Línea Base, Meta, Año
 - CausalVerbExtractor (MC08): Causal relationships
 - InstitutionalNERExtractor (MC09): Colombian institutions
 
@@ -43,163 +46,92 @@ Version: 2.0.0
 Date: 2026-01-06
 """
 
-from .causal_verb_extractor import CausalLink, CausalVerbExtractor, extract_causal_links
 from .empirical_extractor_base import (
     EmpiricallyCalibrated,
+    PatternBasedExtractor,
     ExtractionPattern,
     ExtractionResult,
-    PatternBasedExtractor,
-    generate_test_suite,
     load_all_extractors_from_calibration,
+    generate_test_suite
 )
-from .extractor_validator import ExtractorValidator, ValidationMetrics
-from .financial_chain_extractor import (
-    FinancialChain,
-    FinancialChainExtractor,
-    extract_financial_chains,
-)
-from .institutional_ner_extractor import (
-    InstitutionalEntity,
-    InstitutionalNERExtractor,
-)
-from .normative_reference_extractor import (
-    NormativeReference,
-    NormativeReferenceExtractor,
-)
-from .population_disaggregation_extractor import (
-    CSVPopulationAdapter,
-    DictPopulationAdapter,
-    DisaggregationAxis,
-    DisaggregationError,
-    DisaggregationErrorType,
-    DisaggregationReport,
-    JSONPopulationAdapter,
-    PopulationDisaggregationExtractor,
-    PopulationGroup,
-    PopulationSourceAdapter,
-)
-from .programmatic_hierarchy_extractor import (
-    CSVSourceAdapter,
-    DictSourceAdapter,
-    HierarchyError,
-    HierarchyErrorType,
-    HierarchyNode,
-    HierarchySourceAdapter,
-    JSONFileSourceAdapter,
-    ProgrammaticHierarchyExtractor,
-)
-from .quantitative_triplet_extractor import (
-    QuantitativeTriplet,
-    QuantitativeTripletExtractor,
-)
-from .semantic_relationship_extractor import (
-    CSVRelationshipAdapter,
-    DictRelationshipAdapter,
-    JSONRelationshipAdapter,
-    RelationshipCluster,
-    RelationshipError,
-    RelationshipErrorType,
-    RelationshipReport,
-    RelationshipSourceAdapter,
-    RelationshipType,
-    SemanticRelationship,
-    SemanticRelationshipExtractor,
-)
+
 from .structural_marker_extractor import (
-    StructuralMarker,
     StructuralMarkerExtractor,
-    StructureType,
+    StructuralElement
 )
-from .temporal_consistency_extractor import (
-    ConsistencyReport,
-    CSVTemporalAdapter,
-    DictTemporalAdapter,
-    JSONTemporalAdapter,
-    TemporalConsistencyExtractor,
-    TemporalError,
-    TemporalErrorType,
-    TemporalGap,
-    TemporalOverlap,
-    TemporalSourceAdapter,
-    TimeInterval,
+
+from .normative_reference_extractor import (
+    NormativeReferenceExtractor,
+    NormativeReference
+)
+
+from .quantitative_triplet_extractor import (
+    QuantitativeTripletExtractor,
+    QuantitativeTriplet
+)
+
+from .financial_chain_extractor import (
+    FinancialChainExtractor,
+    FinancialChain,
+    extract_financial_chains
+)
+
+from .causal_verb_extractor import (
+    CausalVerbExtractor,
+    CausalLink,
+    extract_causal_links
+)
+
+from .institutional_ner_extractor import (
+    InstitutionalNERExtractor,
+    InstitutionalEntity,
+    extract_institutional_entities,
+    get_entity_info
+)
+
+from .extractor_validator import (
+    ExtractorValidator,
+    ValidationMetrics
 )
 
 __version__ = "2.0.0"
 
 __all__ = [
     # Base framework
-    "EmpiricallyCalibrated",
-    "PatternBasedExtractor",
-    "ExtractionPattern",
-    "ExtractionResult",
+    'EmpiricallyCalibrated',
+    'PatternBasedExtractor',
+    'ExtractionPattern',
+    'ExtractionResult',
+
     # Extractors
-    "FinancialChainExtractor",
-    "CausalVerbExtractor",
-    "InstitutionalNERExtractor",
-    "QuantitativeTripletExtractor",
-    "NormativeReferenceExtractor",
-    "StructuralMarkerExtractor",
+    'StructuralMarkerExtractor',
+    'NormativeReferenceExtractor',
+    'QuantitativeTripletExtractor',
+    'FinancialChainExtractor',
+    'CausalVerbExtractor',
+    'InstitutionalNERExtractor',
+
     # Data structures
-    "FinancialChain",
-    "CausalLink",
-    "InstitutionalEntity",
-    "QuantitativeTriplet",
-    "NormativeReference",
-    "StructuralMarker",
-    "StructureType",
+    'StructuralElement',
+    'NormativeReference',
+    'QuantitativeTriplet',
+    'FinancialChain',
+    'CausalLink',
+    'InstitutionalEntity',
+
     # Convenience functions
-    "extract_financial_chains",
-    "extract_causal_links",
+    'extract_financial_chains',
+    'extract_causal_links',
+    'extract_institutional_entities',
+    'get_entity_info',
+
     # Validation
-    "ExtractorValidator",
-    "ValidationMetrics",
+    'ExtractorValidator',
+    'ValidationMetrics',
+
     # Utilities
-    "load_all_extractors_from_calibration",
-    "generate_test_suite",
-    # Hierarchy Extractor
-    "ProgrammaticHierarchyExtractor",
-    "HierarchySourceAdapter",
-    "DictSourceAdapter",
-    "JSONFileSourceAdapter",
-    "CSVSourceAdapter",
-    "HierarchyNode",
-    "HierarchyError",
-    "HierarchyErrorType",
-    # Population Disaggregation Extractor
-    "PopulationDisaggregationExtractor",
-    "PopulationSourceAdapter",
-    "DictPopulationAdapter",
-    "CSVPopulationAdapter",
-    "JSONPopulationAdapter",
-    "DisaggregationAxis",
-    "DisaggregationError",
-    "DisaggregationErrorType",
-    "DisaggregationReport",
-    "PopulationGroup",
-    # Temporal Consistency Extractor
-    "TemporalConsistencyExtractor",
-    "TemporalSourceAdapter",
-    "DictTemporalAdapter",
-    "CSVTemporalAdapter",
-    "JSONTemporalAdapter",
-    "TemporalError",
-    "TemporalErrorType",
-    "TimeInterval",
-    "TemporalGap",
-    "TemporalOverlap",
-    "ConsistencyReport",
-    # Semantic Relationship Extractor
-    "SemanticRelationshipExtractor",
-    "RelationshipSourceAdapter",
-    "DictRelationshipAdapter",
-    "CSVRelationshipAdapter",
-    "JSONRelationshipAdapter",
-    "RelationshipType",
-    "RelationshipError",
-    "RelationshipErrorType",
-    "SemanticRelationship",
-    "RelationshipCluster",
-    "RelationshipReport",
+    'load_all_extractors_from_calibration',
+    'generate_test_suite'
 ]
 
 
@@ -207,7 +139,6 @@ __all__ = [
 def _run_quick_validation():
     """Run quick validation on import to ensure extractors are working."""
     import logging
-
     logger = logging.getLogger(__name__)
 
     try:
@@ -218,9 +149,7 @@ def _run_quick_validation():
         if len(result.matches) == 0:
             logger.warning("FinancialChainExtractor smoke test failed - no matches")
         else:
-            logger.debug(
-                f"✓ FinancialChainExtractor smoke test passed ({len(result.matches)} matches)"
-            )
+            logger.debug(f"✓ FinancialChainExtractor smoke test passed ({len(result.matches)} matches)")
     except Exception as e:
         logger.warning(f"Extractor smoke test failed: {e}")
 

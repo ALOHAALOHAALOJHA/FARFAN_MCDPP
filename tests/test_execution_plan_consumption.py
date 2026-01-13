@@ -23,12 +23,12 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Create minimal test-only versions of required classes to avoid full import dependencies
 @dataclass(frozen=True)
 class Task:
     """Minimal Task for testing."""
-
     task_id: str
     dimension: str
     question_id: str
@@ -41,7 +41,6 @@ class Task:
 @dataclass
 class ExecutionPlan:
     """Minimal ExecutionPlan for testing."""
-
     plan_id: str
     tasks: tuple[Task, ...]
     chunk_count: int
@@ -68,7 +67,7 @@ def mock_execution_plan():
             policy_area="PA01",
             chunk_id="chunk_001",
             chunk_index=0,
-            question_text="Test question 1",
+            question_text="Test question 1"
         ),
         Task(
             task_id="MQC-002_PA01",
@@ -77,7 +76,7 @@ def mock_execution_plan():
             policy_area="PA01",
             chunk_id="chunk_002",
             chunk_index=1,
-            question_text="Test question 2",
+            question_text="Test question 2"
         ),
         Task(
             task_id="MQC-003_PA02",
@@ -86,10 +85,10 @@ def mock_execution_plan():
             policy_area="PA02",
             chunk_id="chunk_003",
             chunk_index=0,
-            question_text="Test question 3",
+            question_text="Test question 3"
         ),
     ]
-
+    
     plan = ExecutionPlan(
         plan_id="test_plan_001",
         tasks=tuple(tasks),
@@ -98,9 +97,9 @@ def mock_execution_plan():
         integrity_hash="test_hash_001",
         created_at="2025-01-01T00:00:00Z",
         correlation_id="test_correlation_001",
-        metadata={},
+        metadata={}
     )
-
+    
     return plan
 
 
@@ -143,10 +142,7 @@ def mock_config():
     }
 
 
-@pytest.mark.skipif(
-    not IMPORTS_AVAILABLE,
-    reason=f"Required imports not available: {IMPORT_ERROR if not IMPORTS_AVAILABLE else ''}",
-)
+@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason=f"Required imports not available: {IMPORT_ERROR if not IMPORTS_AVAILABLE else ''}")
 class TestExecutionPlanConsumption:
     """Test suite for ExecutionPlan consumption in Phase 2."""
 
@@ -156,7 +152,7 @@ class TestExecutionPlanConsumption:
         assert mock_execution_plan.plan_id == "test_plan_001"
         assert mock_execution_plan.chunk_count == 3
         assert mock_execution_plan.question_count == 3
-
+        
         task = mock_execution_plan.tasks[0]
         assert task.task_id == "MQC-001_PA01"
         assert task.dimension == "D1"
@@ -172,7 +168,7 @@ class TestExecutionPlanConsumption:
         """Test that config micro_questions have required fields."""
         questions = mock_config["micro_questions"]
         assert len(questions) == 3
-
+        
         for q in questions:
             assert "id" in q or "question_id" in q
             assert "base_slot" in q
@@ -183,14 +179,14 @@ class TestExecutionPlanConsumption:
         # Simulate the lookup logic
         task = mock_execution_plan.tasks[0]
         question_id = task.question_id
-
+        
         questions = mock_config["micro_questions"]
         found = None
         for q in questions:
             if q.get("id") == question_id or q.get("question_id") == question_id:
                 found = q
                 break
-
+        
         assert found is not None
         assert found["question_id"] == "Q001"
         assert found["base_slot"] == "D1-Q1"
@@ -204,29 +200,28 @@ class TestExecutionPlanConsumption:
                 if q.get("id") == task.question_id or q.get("question_id") == task.question_id:
                     question = q
                     break
-
+            
             assert question is not None, f"Question not found for task {task.task_id}"
             assert "base_slot" in question, f"base_slot missing for task {task.task_id}"
-
+            
             # Verify base_slot format matches dimension
             base_slot = question["base_slot"]
-            assert base_slot.startswith(
-                task.dimension
-            ), f"base_slot {base_slot} doesn't match dimension {task.dimension}"
+            assert base_slot.startswith(task.dimension), \
+                f"base_slot {base_slot} doesn't match dimension {task.dimension}"
 
     def test_plan_coverage_validation(self, mock_execution_plan):
         """Test logic for validating that all tasks are executed."""
         tasks_in_plan = set(task.task_id for task in mock_execution_plan.tasks)
-
+        
         # Simulate execution
         tasks_executed = set()
         for task in mock_execution_plan.tasks:
             tasks_executed.add(task.task_id)
-
+        
         # Check for orphans
         orphan_tasks = tasks_in_plan - tasks_executed
         assert len(orphan_tasks) == 0, f"Orphan tasks found: {orphan_tasks}"
-
+        
         # Check for duplicates
         assert len(tasks_executed) == len(tasks_in_plan), "Duplicate executions detected"
 
@@ -234,23 +229,23 @@ class TestExecutionPlanConsumption:
         """Test logic for detecting duplicate task executions."""
         tasks_executed = set()
         duplicates = []
-
+        
         # Simulate processing with one duplicate
         task_list = list(mock_execution_plan.tasks)
         task_list.append(task_list[0])  # Add duplicate
-
+        
         for task in task_list:
             if task.task_id in tasks_executed:
                 duplicates.append(task.task_id)
             tasks_executed.add(task.task_id)
-
+        
         assert len(duplicates) == 1
         assert duplicates[0] == "MQC-001_PA01"
 
     def test_task_metadata_completeness(self, mock_execution_plan):
         """Test that tasks contain all required metadata."""
         required_fields = ["task_id", "dimension", "question_id", "policy_area", "chunk_id"]
-
+        
         for task in mock_execution_plan.tasks:
             for field in required_fields:
                 assert hasattr(task, field), f"Task missing field: {field}"

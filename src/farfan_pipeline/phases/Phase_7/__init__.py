@@ -23,7 +23,7 @@ __modified__ = "2025-01-09T00:00:00Z"
 __criticality__ = "CRITICAL"
 __execution_pattern__ = "Per-Task"
 
-from .PHASE_7_CONSTANTS import (
+from .phase7_10_00_phase_7_constants import (
     ALIGNMENT_THRESHOLD_HIGH,
     ALIGNMENT_THRESHOLD_LOW,
     ALIGNMENT_THRESHOLD_MEDIUM,

@@ -73,7 +73,7 @@ jobs:
       - name: Run Semantic Validator
         id: semantic-validator
         run: |
-          python scripts/enforcement/semantic_validator.py \
+          python scripts/validation/semantic_validator.py \
             src/farfan_pipeline/phases
         continue-on-error: true
 

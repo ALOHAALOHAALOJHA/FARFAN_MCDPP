@@ -42,7 +42,7 @@
         "NormativeReferenceExtractor (Phase 1-SP5)",
         "FinancialChainExtractor (Phase 1-SP7)",
         "CausalVerbExtractor (Phase 1-SP10)",
-        "InstitutionalNER (Phase 1-SP11)"
+        "InstitutionalNERExtractor (Phase 1-SP11)"
       ],
       "critical_for": "Extractor accuracy and confidence scoring"
     },
@@ -120,12 +120,12 @@
     "step1_extractor_initialization": {
       "action": "Load extractor_calibration.json",
       "extractors_configure": [
-        "CPPStructuralParser → table/section detection patterns",
+        "StructuralMarkerExtractor → table/section detection patterns",
         "QuantitativeTripletExtractor → LB/Meta/Año patterns",
         "NormativeReferenceExtractor → norm citation patterns",
         "FinancialChainExtractor → budget chain patterns",
         "CausalVerbExtractor → causal verb patterns",
-        "InstitutionalNER → entity recognition patterns"
+        "InstitutionalNERExtractor → entity recognition patterns"
       ],
       "output": "Extractors ready with empirically validated patterns"
     },
@@ -174,31 +174,90 @@
     "extractor_calibration": {
       "integrated": true,
       "location": "_registry/membership_criteria/_calibration/",
-      "linked_to": ["MC01-MC10 definitions", "Phase 1 extractors"]
+      "linked_to": ["MC01-MC10 definitions", "Phase 1 extractors"],
+      "consumers": [
+        "StructuralMarkerExtractor (ACTIVE)",
+        "FinancialChainExtractor (ACTIVE)",
+        "InstitutionalNERExtractor (ACTIVE)",
+        "CausalVerbExtractor (ACTIVE)",
+        "QuantitativeTripletExtractor (ACTIVE)",
+        "NormativeReferenceExtractor (ACTIVE)"
+      ],
+      "implementation_date": "2026-01-06",
+      "status": "FULLY_IRRIGATED"
     },
     "integration_map": {
       "integrated": true,
       "location": "_registry/questions/",
-      "linked_to": ["QuestionnaireSignalRegistry", "IrrigationSynchronizer"]
+      "linked_to": ["QuestionnaireSignalRegistry", "IrrigationSynchronizer"],
+      "consumers": [
+        "signal_router.py (ACTIVE)",
+        "EvidenceNexus._get_expected_signals() (ACTIVE)",
+        "IrrigationSynchronizer (INDIRECT via SignalRegistry)"
+      ],
+      "implementation_date": "2026-01-06",
+      "status": "FULLY_IRRIGATED"
     },
     "normative_compliance": {
       "integrated": true,
       "location": "_registry/entities/",
-      "linked_to": ["normative.json entities", "@p scorer"]
+      "linked_to": ["normative.json entities", "@p scorer", "CC_COHERENCIA_NORMATIVA"],
+      "consumers": [
+        "NormativeComplianceValidator (ACTIVE - phase3_10_00_normative_compliance_validator.py)",
+        "SystemicGapDetector (ACTIVE - phase7_10_00_systemic_gap_detector.py)"
+      ],
+      "implementation_date": "2026-01-12",
+      "status": "NEWLY_IRRIGATED"
     },
     "empirical_weights": {
       "integrated": true,
       "location": "scoring/calibration/",
-      "linked_to": ["All scorers", "Aggregators Phases 4-7"]
+      "linked_to": ["All scorers", "Aggregators Phases 4-7"],
+      "consumers": [
+        "EmpiricalThresholdsLoader (ACTIVE - phase3_10_00_empirical_thresholds_loader.py)",
+        "SignalEnrichedScorer (ACTIVE - imports EmpiricalThresholdsLoader)",
+        "AggregationSettings.from_empirical_corpus() (ACTIVE - phase4_10_00_aggregation.py)"
+      ],
+      "implementation_date": "2026-01-12",
+      "status": "NEWLY_IRRIGATED"
+    }
+  },
+
+  "irrigation_changelog": {
+    "2026-01-12": {
+      "action": "Empirical Corpus Strategic Irrigation - 4 points",
+      "changes": [
+        "✅ Created NormativeComplianceValidator in Phase 3 (phase3_10_00_normative_compliance_validator.py)",
+        "✅ Created EmpiricalThresholdsLoader for Phase 3 scoring (phase3_10_00_empirical_thresholds_loader.py)",
+        "✅ Connected SignalEnrichedScorer to empirical thresholds",
+        "✅ Created AggregationSettings.from_empirical_corpus() for Phase 5 weights",
+        "✅ Created SystemicGapDetector with normative baseline for Phase 7 (phase7_10_00_systemic_gap_detector.py)"
+      ],
+      "files_created": [
+        "src/farfan_pipeline/phases/Phase_3/phase3_10_00_normative_compliance_validator.py",
+        "src/farfan_pipeline/phases/Phase_3/phase3_10_00_empirical_thresholds_loader.py",
+        "src/farfan_pipeline/phases/Phase_7/phase7_10_00_systemic_gap_detector.py"
+      ],
+      "files_modified": [
+        "src/farfan_pipeline/phases/Phase_3/phase3_10_00_phase3_signal_enriched_scoring.py",
+        "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation.py"
+      ],
+      "value_added": [
+        "Phase 3: Normative compliance validation with penalty calculation (score = 1.0 - SUM(penalties))",
+        "Phase 3: Empirical confidence thresholds calibrated from 14 real PDT plans",
+        "Phase 5: Dimension weights differentiated by empirical coverage (DIM04=0.25 vs DIM01=0.15)",
+        "Phase 7: Systemic gap detection prioritized by mandatory norm violations (CRITICAL/HIGH/MEDIUM/LOW)"
+      ]
     }
   },
 
   "next_steps": [
-    "Wire Membership Criteria MC01-MC10 to consume extractor_calibration.json (file present, consumers need implementation)",
-    "Wire QuestionnaireSignalRegistry to consume integration_map.json (file present, consumers need implementation)",
-    "Wire PolicyAreaScorer to consume normative_compliance.json (file present, consumers need implementation)",
-    "Wire scoring/scoring_system.json to consume empirical_weights.json (file present, consumers need implementation)",
-    "Implement validators that consume these empirical thresholds",
-    "Document consumption patterns in extractor implementations"
+    "✅ Wire Phase 3 to consume normative_compliance.json (COMPLETED 2026-01-12)",
+    "✅ Wire Phase 3 scoring to empirical thresholds (COMPLETED 2026-01-12)",
+    "✅ Wire Phase 5 AreaPolicyAggregator to empirical weights (COMPLETED 2026-01-12)",
+    "✅ Wire Phase 7 SGD to normative baseline (COMPLETED 2026-01-12)",
+    "🔄 Update orchestrator to use AggregationSettings.from_empirical_corpus()",
+    "🔄 Update MacroAggregator.identify_systemic_gaps() to use SystemicGapDetector",
+    "📝 Document usage patterns for new validators in developer guide"
   ]
 }

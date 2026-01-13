@@ -1,0 +1,78 @@
+# Phase 3: Scoring Contract
+# ============================================================================
+
+stage: phase_3_scoring
+
+contract:
+  inputs:
+    required:
+      - name: evidence_package
+        schema:
+          type: object
+          properties:
+            document_id: { type: string }
+            extractions: { type: array, minItems: 300 }
+        source: phase_2_evidence_extraction
+        
+      - name: scoring_system
+        schema:
+          type: object
+          properties:
+            modalities: { type: object }
+            micro_levels: { type: array }
+        source: file://canonic_questionnaire_central/scoring/scoring_system.json
+
+  outputs:
+    guaranteed:
+      - name: micro_scores
+        schema:
+          type: object
+          properties:
+            document_id: { type: string }
+            scores:
+              type: array
+              minItems: 300
+              items:
+                type: object
+                properties:
+                  question_id: { type: string }
+                  score: { type: number, minimum: 0, maximum: 1 }
+                  quality_level: { type: string, enum: [excelente, bueno, aceptable, insuficiente] }
+                  modality_used: { type: string }
+                  evidence_summary: { type: string }
+        destination: phase_4_aggregation
+
+  invariants:
+    - "len(output.scores) == 300"
+    - "all(s.score >= 0 and s.score <= 1 for s in output.scores)"
+    - "all(s.quality_level in ['excelente','bueno','aceptable','insuficiente'] for s in output.scores)"
+
+  idempotency:
+    key: "${document_id}-phase3-${scoring_system_version}"
+    strategy: skip_if_exists
+
+  retry_policy:
+    max_attempts: 1
+    backoff_strategy: none
+    non_retryable_errors:
+      - "MODALITY_NOT_FOUND"
+      - "INVALID_EVIDENCE_STRUCTURE"
+
+  timeout_seconds: 300  # 5 minutes
+
+  compensating_action:
+    description: "Remove partial score artifacts"
+    steps:
+      - action: delete_file
+        target: "artifacts/scores/${document_id}_micro.json"
+
+observability:
+  metrics:
+    - name: scoring_duration
+      type: histogram
+    - name: score_distribution
+      type: histogram
+      labels: [dimension_id, policy_area_id]
+    - name: quality_level_count
+      type: counter
+      labels: [quality_level]

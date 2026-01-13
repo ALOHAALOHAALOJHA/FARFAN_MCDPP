@@ -43,6 +43,31 @@ if TYPE_CHECKING:
     except ImportError:
         QuestionnaireSignalRegistry = Any  # type: ignore
 
+# Runtime import of QuestionnaireSignalRegistry for scoring logic.
+# This makes the dependency explicit while still allowing hard failure if missing.
+try:
+    from farfan_pipeline.phases.Phase_2.registries.questionnaire_signal_registry import (
+        QuestionnaireSignalRegistry as _QuestionnaireSignalRegistryRuntime,
+    )
+    _questionnaire_signal_registry_import_error: Exception | None = None
+except ImportError as e:
+    _QuestionnaireSignalRegistryRuntime = None  # type: ignore[assignment]
+    _questionnaire_signal_registry_import_error = e
+
+# EMPIRICAL CORPUS INTEGRATION
+try:
+    from farfan_pipeline.phases.Phase_3.phase3_10_00_empirical_thresholds_loader import (
+        get_global_thresholds_loader,
+    )
+
+    _empirical_loader = get_global_thresholds_loader()
+    logger = logging.getLogger(__name__)
+    logger.info("Empirical thresholds loader initialized for SignalEnrichedScorer")
+except Exception as e:
+    logger = logging.getLogger(__name__)
+    logger.warning(f"Failed to load empirical thresholds, using hardcoded defaults: {e}")
+    _empirical_loader = None
+
 logger = logging.getLogger(__name__)
 
 # Quality level constants
@@ -52,21 +77,48 @@ QUALITY_INSUFICIENTE = "INSUFICIENTE"
 QUALITY_NO_APLICABLE = "NO_APLICABLE"
 QUALITY_ERROR = "ERROR"
 
-# Threshold adjustment constants
-HIGH_PATTERN_THRESHOLD = 15  # Pattern count threshold for complexity
-HIGH_INDICATOR_THRESHOLD = 10  # Indicator count threshold for specificity
-PATTERN_COMPLEXITY_ADJUSTMENT = -0.05  # Lower threshold for complex questions
-INDICATOR_SPECIFICITY_ADJUSTMENT = 0.03  # Raise threshold for specific questions
-COMPLETE_EVIDENCE_ADJUSTMENT = 0.02  # Bonus for complete evidence
+# Threshold constants are now provided by config/signal_scoring_thresholds.json
+# via get_threshold_config() from farfan_pipeline.config.threshold_config.
+# This module only defines last-resort hardcoded values if the config system fails.
 
-# Score thresholds for validation
-HIGH_SCORE_THRESHOLD = 0.8
-LOW_SCORE_THRESHOLD = 0.3
+# Load centralized configuration
+try:
+    from farfan_pipeline.config.threshold_config import get_threshold_config
+
+    _threshold_config = get_threshold_config()
+    if not _threshold_config.validation_passed:
+        logger.warning(
+            f"Threshold config validation failed: {_threshold_config.validation_errors}. "
+            "Using potentially degraded but centralized values."
+        )
+
+    HIGH_PATTERN_THRESHOLD = _threshold_config.high_pattern_threshold
+    HIGH_INDICATOR_THRESHOLD = _threshold_config.high_indicator_threshold
+    PATTERN_COMPLEXITY_ADJUSTMENT = _threshold_config.pattern_complexity_adjustment
+    INDICATOR_SPECIFICITY_ADJUSTMENT = _threshold_config.indicator_specificity_adjustment
+    COMPLETE_EVIDENCE_ADJUSTMENT = _threshold_config.complete_evidence_adjustment
+    HIGH_SCORE_THRESHOLD = _threshold_config.high_score_threshold
+    LOW_SCORE_THRESHOLD = _threshold_config.low_score_threshold
+
+    logger.info(
+        f"Threshold config loaded: HIGH_PATTERN={HIGH_PATTERN_THRESHOLD}, "
+        f"HIGH_SCORE={HIGH_SCORE_THRESHOLD}"
+    )
+except Exception as e:
+    logger.warning(f"Failed to load threshold config: {e}. Using fallback values.")
+    HIGH_PATTERN_THRESHOLD = 15
+    HIGH_INDICATOR_THRESHOLD = 10
+    PATTERN_COMPLEXITY_ADJUSTMENT = -0.05
+    INDICATOR_SPECIFICITY_ADJUSTMENT = 0.03
+    COMPLETE_EVIDENCE_ADJUSTMENT = 0.02
+    HIGH_SCORE_THRESHOLD = 0.8
+    LOW_SCORE_THRESHOLD = 0.3
 
 __all__ = [
     "SignalEnrichedScorer",
     "get_signal_adjusted_threshold",
     "get_signal_quality_validation",
+    "generate_quality_promotion_report",
     # Constants
     "QUALITY_EXCELENTE",
     "QUALITY_ACEPTABLE",
@@ -218,6 +270,10 @@ class SignalEnrichedScorer:
         Uses signal-based heuristics to ensure quality level is consistent
         with score, completeness, and question characteristics.
 
+        QUALITY PROMOTION/DEMOTION TRACKING:
+        All quality level changes are logged explicitly with full provenance
+        including original quality, new quality, trigger reason, score, and completeness.
+
         Args:
             question_id: Question identifier
             quality_level: Computed quality level from Phase 3
@@ -226,6 +282,13 @@ class SignalEnrichedScorer:
 
         Returns:
             Tuple of (validated_quality_level, validation_details)
+            validation_details includes:
+              - original_quality: Original quality level
+              - validated_quality: Final quality level
+              - adjusted: Boolean whether quality was changed
+              - promotion_reason: If promoted, the reason
+              - demotion_reason: If demoted, the reason
+              - checks: List of all validation checks performed
         """
         if not self.enable_quality_validation:
             return quality_level, {"validation": "disabled"}
@@ -235,9 +298,13 @@ class SignalEnrichedScorer:
             "score": score,
             "completeness": completeness,
             "checks": [],
+            "promotion_reason": None,
+            "demotion_reason": None,
         }
 
         validated = quality_level
+        was_promoted = False
+        was_demoted = False
 
         try:
             # Check 1: Score-quality consistency
@@ -250,12 +317,21 @@ class SignalEnrichedScorer:
                         "check": "score_quality_consistency",
                         "issue": "high_score_low_quality",
                         "action": "promote_quality",
+                        "score": score,
+                        "threshold": HIGH_SCORE_THRESHOLD,
                     }
                 )
                 validated = QUALITY_ACEPTABLE  # Promote to at least ACEPTABLE
-                logger.info(
-                    f"Quality promoted for {question_id}: "
-                    f"{quality_level} → {validated} (high score {score:.3f})"
+                validation_details["promotion_reason"] = (
+                    f"High score {score:.3f} >= {HIGH_SCORE_THRESHOLD} "
+                    f"inconsistent with {quality_level}"
+                )
+                was_promoted = True
+                logger.warning(
+                    f"[QUALITY PROMOTION] {question_id}: "
+                    f"{quality_level} → {validated} | "
+                    f"Reason: high_score={score:.3f} >= {HIGH_SCORE_THRESHOLD} | "
+                    f"Completeness: {completeness}"
                 )
 
             # Check 2: Completeness-quality alignment
@@ -265,12 +341,20 @@ class SignalEnrichedScorer:
                         "check": "completeness_quality_alignment",
                         "issue": "complete_evidence_low_quality",
                         "action": "promote_quality",
+                        "completeness": completeness,
                     }
                 )
                 validated = QUALITY_ACEPTABLE  # At least ACEPTABLE for complete evidence
-                logger.info(
-                    f"Quality promoted for {question_id}: "
-                    f"{quality_level} → {validated} (complete evidence)"
+                if not was_promoted:  # Don't override previous promotion reason
+                    validation_details["promotion_reason"] = (
+                        f"Complete evidence with {quality_level} quality is inconsistent"
+                    )
+                was_promoted = True
+                logger.warning(
+                    f"[QUALITY PROMOTION] {question_id}: "
+                    f"{quality_level} → {validated} | "
+                    f"Reason: complete_evidence with {quality_level} | "
+                    f"Score: {score:.3f}"
                 )
 
             # Check 3: Low score validation
@@ -280,20 +364,41 @@ class SignalEnrichedScorer:
                         "check": "low_score_validation",
                         "issue": "low_score_high_quality",
                         "action": "demote_quality",
+                        "score": score,
+                        "threshold": LOW_SCORE_THRESHOLD,
                     }
                 )
                 validated = QUALITY_ACEPTABLE  # Demote to ACEPTABLE
-                logger.info(
-                    f"Quality demoted for {question_id}: "
-                    f"{quality_level} → {validated} (low score {score:.3f})"
+                validation_details["demotion_reason"] = (
+                    f"Low score {score:.3f} < {LOW_SCORE_THRESHOLD} "
+                    f"inconsistent with {quality_level}"
+                )
+                was_demoted = True
+                logger.warning(
+                    f"[QUALITY DEMOTION] {question_id}: "
+                    f"{quality_level} → {validated} | "
+                    f"Reason: low_score={score:.3f} < {LOW_SCORE_THRESHOLD} | "
+                    f"Completeness: {completeness}"
                 )
 
             validation_details["validated_quality"] = validated
             validation_details["adjusted"] = validated != quality_level
+            validation_details["was_promoted"] = was_promoted
+            validation_details["was_demoted"] = was_demoted
+
+            # Add cascade check: warn if both promotion and demotion attempted
+            if was_promoted and was_demoted:
+                logger.error(
+                    f"[QUALITY CASCADE DETECTED] {question_id}: "
+                    f"Both promotion and demotion attempted! Original: {quality_level}, "
+                    f"Final: {validated}. This indicates conflicting quality signals."
+                )
+                validation_details["cascade_detected"] = True
 
         except Exception as e:
-            logger.warning(
-                f"Failed to validate quality for {question_id}: {e}. "
+            logger.error(
+                f"[QUALITY VALIDATION ERROR] {question_id}: "
+                f"Failed to validate quality: {type(e).__name__}: {e}. "
                 f"Using original quality {quality_level}"
             )
             validation_details["error"] = str(e)
@@ -337,17 +442,36 @@ class SignalEnrichedScorer:
             adjustment_log["status"] = "no_enriched_pack"
             return raw_score, adjustment_log
 
-        # Get expected signals for question
+        # Get expected signals for question using QuestionnaireSignalRegistry
+        # Error handling strategy:
+        # - Import/registry availability failures cause an explicit hard fail
+        # - Other issues are logged and we proceed with a well-defined fallback
         expected_primary = []
         try:
-            from canonic_questionnaire_central import CQCLoader
+            if _QuestionnaireSignalRegistryRuntime is None:
+                # Hard fail if registry is not available - this is a critical dependency
+                raise RuntimeError(
+                    "QuestionnaireSignalRegistry is required but not available. "
+                    "Cannot perform signal-enriched scoring without signal registry."
+                ) from _questionnaire_signal_registry_import_error
 
-            cqc = CQCLoader()
-            if hasattr(cqc, "get_signals_for_question"):
-                expected_signals = cqc.get_signals_for_question(question_id)
-                expected_primary = list(expected_signals)[:2]  # First 2 are primary
-        except Exception:
-            pass
+            registry = _QuestionnaireSignalRegistryRuntime()
+            mapping = registry.get_question_mapping(question_id)
+            if mapping:
+                # Primary signals are the ones we expect
+                expected_primary = mapping.primary_signals
+            else:
+                logger.warning(
+                    f"No signal mapping found for question {question_id} in QuestionnaireSignalRegistry"
+                )
+        except Exception as e:
+            # Log and fail explicitly for other errors - NO SILENT FAILURES
+            logger.error(
+                f"Failed to get expected signals for {question_id}: {type(e).__name__}: {e}"
+            )
+            raise RuntimeError(
+                f"Failed to retrieve signal mapping for {question_id}: {e}"
+            ) from e
 
         # Get signals that were actually detected
         received_signals = enriched_pack.get("signals_detected", [])
@@ -432,6 +556,112 @@ class SignalEnrichedScorer:
         }
 
         return enriched
+
+
+def generate_quality_promotion_report(
+    all_validation_details: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Generate comprehensive report of all quality promotions/demotions.
+
+    This function aggregates all quality level changes across all questions
+    and generates a summary report for audit and debugging purposes.
+
+    Args:
+        all_validation_details: List of validation_details dicts from all questions
+
+    Returns:
+        Report dict with:
+          - summary: Overall promotion/demotion statistics
+          - promotions: List of all promotions with full context
+          - demotions: List of all demotions with full context
+          - cascades: List of questions where both promotion and demotion occurred
+          - by_reason: Breakdown of changes by trigger reason
+    """
+    promotions = []
+    demotions = []
+    cascades = []
+    no_change = 0
+
+    reason_counts = {}
+
+    for details in all_validation_details:
+        if not details.get("adjusted", False):
+            no_change += 1
+            continue
+
+        question_id = details.get("question_id", "UNKNOWN")
+
+        # Track promotions
+        if details.get("was_promoted", False):
+            promotion_reason = details.get("promotion_reason", "Unknown reason")
+            promotions.append(
+                {
+                    "question_id": question_id,
+                    "original_quality": details.get("original_quality"),
+                    "new_quality": details.get("validated_quality"),
+                    "reason": promotion_reason,
+                    "score": details.get("score"),
+                    "completeness": details.get("completeness"),
+                }
+            )
+            reason_counts[promotion_reason] = reason_counts.get(promotion_reason, 0) + 1
+
+        # Track demotions
+        if details.get("was_demoted", False):
+            demotion_reason = details.get("demotion_reason", "Unknown reason")
+            demotions.append(
+                {
+                    "question_id": question_id,
+                    "original_quality": details.get("original_quality"),
+                    "new_quality": details.get("validated_quality"),
+                    "reason": demotion_reason,
+                    "score": details.get("score"),
+                    "completeness": details.get("completeness"),
+                }
+            )
+            reason_counts[demotion_reason] = reason_counts.get(demotion_reason, 0) + 1
+
+        # Track cascades (both promotion and demotion)
+        if details.get("cascade_detected", False):
+            cascades.append(
+                {
+                    "question_id": question_id,
+                    "original_quality": details.get("original_quality"),
+                    "final_quality": details.get("validated_quality"),
+                    "promotion_reason": details.get("promotion_reason"),
+                    "demotion_reason": details.get("demotion_reason"),
+                }
+            )
+
+    report = {
+        "summary": {
+            "total_questions": len(all_validation_details),
+            "promotions": len(promotions),
+            "demotions": len(demotions),
+            "no_change": no_change,
+            "cascades_detected": len(cascades),
+            "promotion_rate": round(len(promotions) / len(all_validation_details) * 100, 2)
+            if all_validation_details
+            else 0,
+            "demotion_rate": round(len(demotions) / len(all_validation_details) * 100, 2)
+            if all_validation_details
+            else 0,
+        },
+        "promotions": promotions,
+        "demotions": demotions,
+        "cascades": cascades,
+        "by_reason": reason_counts,
+    }
+
+    logger.info(
+        f"[QUALITY PROMOTION REPORT] "
+        f"Total: {len(all_validation_details)} | "
+        f"Promotions: {len(promotions)} ({report['summary']['promotion_rate']:.1f}%) | "
+        f"Demotions: {len(demotions)} ({report['summary']['demotion_rate']:.1f}%) | "
+        f"Cascades: {len(cascades)}"
+    )
+
+    return report
 
 
 def get_signal_adjusted_threshold(

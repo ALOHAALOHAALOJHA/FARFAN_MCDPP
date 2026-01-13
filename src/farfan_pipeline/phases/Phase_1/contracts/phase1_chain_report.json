@@ -1,0 +1,111 @@
+{
+  "phase_id": 1,
+  "phase_dir": "/home/runner/work/FARFAN_MCDPP/FARFAN_MCDPP/src/farfan_pipeline/phases/Phase_1",
+  "timestamp": "2026-01-13T02:23:31.494155+00:00",
+  "total_files": 14,
+  "files_in_chain": 14,
+  "orphan_files": [
+    "phase1_01_00_cpp_models",
+    "phase1_04_00_phase_protocol",
+    "phase1_05_00_thread_safe_results",
+    "phase1_08_00_adapter",
+    "phase1_10_00_dependency_validator"
+  ],
+  "topological_order": [
+    "PHASE_1_CONSTANTS",
+    "phase1_01_00_cpp_models",
+    "phase1_02_00_phase_1_constants",
+    "phase1_03_00_models",
+    "phase1_04_00_phase_protocol",
+    "phase1_05_00_thread_safe_results",
+    "phase1_06_00_questionnaire_mapper",
+    "phase1_07_00_sp4_question_aware",
+    "phase1_08_00_adapter",
+    "phase1_09_00_circuit_breaker",
+    "phase1_10_00_dependency_validator",
+    "phase1_11_00_signal_enrichment",
+    "phase1_12_00_structural",
+    "phase1_13_00_cpp_ingestion"
+  ],
+  "label_position_mismatches": [
+    {
+      "file": "phase1_02_00_phase_1_constants",
+      "label_suggests": 2,
+      "actual_position": 2,
+      "action": "Review and potentially rename or reorder"
+    },
+    {
+      "file": "phase1_03_00_models",
+      "label_suggests": 3,
+      "actual_position": 3,
+      "action": "Review and potentially rename or reorder"
+    },
+    {
+      "file": "phase1_04_00_phase_protocol",
+      "label_suggests": 4,
+      "actual_position": 4,
+      "action": "Review and potentially rename or reorder"
+    },
+    {
+      "file": "phase1_05_00_thread_safe_results",
+      "label_suggests": 5,
+      "actual_position": 5,
+      "action": "Review and potentially rename or reorder"
+    },
+    {
+      "file": "phase1_06_00_questionnaire_mapper",
+      "label_suggests": 6,
+      "actual_position": 6,
+      "action": "Review and potentially rename or reorder"
+    },
+    {
+      "file": "phase1_07_00_sp4_question_aware",
+      "label_suggests": 7,
+      "actual_position": 7,
+      "action": "Review and potentially rename or reorder"
+    },
+    {
+      "file": "phase1_08_00_adapter",
+      "label_suggests": 8,
+      "actual_position": 8,
+      "action": "Review and potentially rename or reorder"
+    },
+    {
+      "file": "phase1_09_00_circuit_breaker",
+      "label_suggests": 9,
+      "actual_position": 9,
+      "action": "Review and potentially rename or reorder"
+    },
+    {
+      "file": "phase1_10_00_dependency_validator",
+      "label_suggests": 10,
+      "actual_position": 10,
+      "action": "Review and potentially rename or reorder"
+    },
+    {
+      "file": "phase1_11_00_signal_enrichment",
+      "label_suggests": 11,
+      "actual_position": 11,
+      "action": "Review and potentially rename or reorder"
+    },
+    {
+      "file": "phase1_12_00_structural",
+      "label_suggests": 12,
+      "actual_position": 12,
+      "action": "Review and potentially rename or reorder"
+    },
+    {
+      "file": "phase1_13_00_cpp_ingestion",
+      "label_suggests": 13,
+      "actual_position": 13,
+      "action": "Review and potentially rename or reorder"
+    }
+  ],
+  "circular_dependencies": [],
+  "validation_status": "FAIL",
+  "issues_summary": {
+    "orphan_count": 5,
+    "circular_dependency_count": 0,
+    "label_mismatch_count": 12
+  }
+}

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # Phase 3: Deterministic Scoring Transformation with Adversarial Validation
 ## A formally verified component for quantitative evidence-to-score mapping in administrative policy analysis systems
 
@@ -557,3 +558,19 @@ License: Proprietary - All Rights Reserved
 **Document Status**: APPROVED
 **Next Review**: 2026-07-11
 **Maintainer**: F.A.R.F.A.N Core Team <core@farfan.org>
+=======
+# Phase 3: Scoring Transformation
+
+Canonical implementation of Phase 3, responsible for transforming Phase 2 evidence into quantitative scores.
+
+## Architecture
+
+- **Primitives**: Mathematical foundations and scoring modalities.
+- **Interface**: Contracts defining inputs (MicroQuestionRun) and outputs (ScoredMicroQuestion).
+- **Core**: Score extraction, validation, and signal enrichment.
+
+## Status
+
+Canonical Freeze: 2025-12-18
+Enforcement Level: MANDATORY
+>>>>>>> Stashed changes

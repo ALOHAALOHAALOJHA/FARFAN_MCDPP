@@ -1,0 +1,21 @@
+Requirement,Stage,Orchestrator_Responsibility,Implementation_Status,Priority,Notes
+Dependency_management,all,Graph resolution via DAG,PENDING,P0,Must prevent out-of-order execution
+Retry_with_backoff,phase_1 phase_2,Retry engine with exponential backoff,PENDING,P0,Critical for transient failures
+Idempotency,all,Execution keys per stage,PENDING,P0,Key format: ${municipality_id}-${phase}-${version}
+Observability_metrics,all,Prometheus metrics per stage,PENDING,P0,Duration histogram and counters
+Observability_logs,all,Structured JSON logs with correlation_id,PENDING,P0,Must include run_id trace
+Observability_traces,all,W3C trace propagation,PENDING,P1,OpenTelemetry integration
+State_persistence,all,Workflow state in persistent store,PENDING,P0,Survive orchestrator restarts
+Concurrency_control,phase_2,Semaphore for NLP model calls,PENDING,P1,Limit concurrent API calls
+Backfill_support,all,Reprocessing with date parameters,PENDING,P1,Support historical re-evaluation
+Versioning,all,Workflow version tracking,PENDING,P0,Contract version in execution context
+Compensating_actions,phase_2 phase_3,Rollback on failure,PENDING,P1,Delete partial artifacts
+Timeout_enforcement,all,Hard timeout per stage,PENDING,P0,Kill after SLA breach
+Health_checks,phase_0,Dependency health before start,PENDING,P1,Check questionnaire + models
+Circuit_breaker,phase_2,Fail fast on repeated errors,PENDING,P2,After 3 consecutive failures
+Secret_injection,all,Environment variable injection,PENDING,P0,No secrets in code or logs
+Audit_trail,phase_7,Immutable audit log,PENDING,P0,Compliance requirement
+Data_validation,all,Schema validation on I/O,PENDING,P0,JSON Schema enforcement
+Error_classification,all,Retryable vs non-retryable,PENDING,P0,Different handling paths
+Alerting,all,Alert on critical failures,PENDING,P1,Integration with PagerDuty/Slack
+Dashboard,all,Real-time pipeline visibility,PENDING,P2,Grafana dashboard
