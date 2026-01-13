@@ -167,7 +167,6 @@ from orchestration.method_registry import (
 # Canonical method injection (direct method access, no class instantiation)
 from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import (
     inject_canonical_methods,
-    setup_registry_with_canonical_methods,
 )
 
 # SISAS - Signal Intelligence Layer (Nivel 2)
