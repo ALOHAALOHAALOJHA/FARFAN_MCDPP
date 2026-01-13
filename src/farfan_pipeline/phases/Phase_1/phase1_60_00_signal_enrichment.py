@@ -460,11 +460,7 @@ class SignalEnricher:
                 InstitutionalNERExtractor,
             )
         except ImportError:
-<<<<<<< Updated upstream
             from farfan_pipeline.infrastructure.extractors import (
-=======
-            from src.farfan_pipeline.infrastructure.extractors import (
->>>>>>> Stashed changes
                 QuantitativeTripletExtractor,
                 NormativeReferenceExtractor,
                 StructuralMarkerExtractor,
