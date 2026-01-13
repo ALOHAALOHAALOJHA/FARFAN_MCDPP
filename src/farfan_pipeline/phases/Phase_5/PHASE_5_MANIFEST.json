@@ -12,12 +12,13 @@
   },
   "metadata": {
     "created": "2025-01-09T00:00:00Z",
-    "modified": "2025-01-09T00:00:00Z",
+    "modified": "2026-01-13T21:40:00Z",
     "authors": ["F.A.R.F.A.N Core Team"],
     "owners": ["phase5_team"],
-    "repository": "FARFAN_MPP"
+    "repository": "FARFAN_MPP",
+    "surgery_note": "Phase 5 surgically separated from Phase 4 meta-phase on 2026-01-13. AreaScore and AreaPolicyAggregator extracted and fully implemented."
   },
-  "description": "Phase 5 aggregates 60 dimension scores into 10 area scores (one per policy area PA01-PA10) with hermeticity validation.",
+  "description": "Phase 5 aggregates 60 dimension scores (6 dimensions × 10 policy areas) into 10 area scores (one per policy area PA01-PA10) using weighted averaging. Implements complete hermeticity validation, bounds checking, and SOTA uncertainty quantification.",
   "stages": [
     {
       "code": 10,
