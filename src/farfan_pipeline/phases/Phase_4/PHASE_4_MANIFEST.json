@@ -12,12 +12,13 @@
   },
   "metadata": {
     "created": "2025-01-09T00:00:00Z",
-    "modified": "2025-01-09T00:00:00Z",
+    "modified": "2026-01-13T00:00:00Z",
     "authors": ["F.A.R.F.A.N Core Team"],
     "owners": ["phase4_team"],
-    "repository": "FARFAN_MPP"
+    "repository": "FARFAN_MCDPP",
+    "surgery_note": "Phase 4 surgically separated from meta-phase 4-7 on 2026-01-13"
   },
-  "description": "Phase 4 aggregates 300 scored micro-questions into 60 dimension scores (6 dimensions × 10 policy areas) using weighted averaging or Choquet integral.",
+  "description": "Phase 4 aggregates 300 scored micro-questions from Phase 3 into 60 dimension scores (6 dimensions × 10 policy areas) using weighted averaging or Choquet integral. This phase is hermetically sealed and does NOT produce AreaScore, ClusterScore, or MacroScore - those belong to Phases 5, 6, and 7.",
   "stages": [
     {
       "code": 10,
