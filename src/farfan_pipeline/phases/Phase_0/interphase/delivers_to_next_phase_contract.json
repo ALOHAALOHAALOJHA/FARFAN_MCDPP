@@ -163,7 +163,7 @@
       "name": "logger",
       "type": "logging.Logger | structlog.BoundLogger",
       "required": true,
-      "delivered_by": "phase0_10_02_json_logger.py:get_logger()",
+      "delivered_by": "primitives/json_logger.py:get_logger()",
       "received_by_phase": "Phase 1",
       "description": "Configured structured logger with correlation ID support",
       "schema": {

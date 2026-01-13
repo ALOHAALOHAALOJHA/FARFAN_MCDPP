@@ -45,7 +45,7 @@
       "purpose": "Domain-specific exception hierarchy for contract violations"
     },
     {
-      "filename": "phase0_00_02_runtime_error_fixes.py",
+      "filename": "primitives/runtime_error_fixes.py",
       "canonical_name": "phase0_00_02_runtime_error_fixes",
       "type": "INFRA",
       "criticality": "MEDIUM",
@@ -77,7 +77,7 @@
       "purpose": "Central path resolution for all F.A.R.F.A.N directories"
     },
     {
-      "filename": "phase0_10_00_phase_0_constants.py",
+      "filename": "primitives/constants.py",
       "canonical_name": "phase0_10_00_phase_0_constants",
       "type": "CFG",
       "criticality": "HIGH",
@@ -101,7 +101,7 @@
       "purpose": "Typed alternative runtime configuration (consider for consolidation)"
     },
     {
-      "filename": "phase0_10_02_json_logger.py",
+      "filename": "primitives/json_logger.py",
       "canonical_name": "phase0_10_02_json_logger",
       "type": "CFG",
       "criticality": "HIGH",
@@ -165,7 +165,7 @@
       "purpose": "Kernel-level resource enforcement using setrlimit()"
     },
     {
-      "filename": "phase0_30_01_performance_metrics.py",
+      "filename": "primitives/performance_metrics.py",
       "canonical_name": "phase0_30_01_performance_metrics",
       "type": "UTIL",
       "criticality": "MEDIUM",
@@ -181,7 +181,7 @@
       "purpose": "Validate input documents, questionnaire, and configuration"
     },
     {
-      "filename": "phase0_40_01_schema_monitor.py",
+      "filename": "primitives/schema_monitor.py",
       "canonical_name": "phase0_40_01_schema_monitor",
       "type": "VAL",
       "criticality": "HIGH",
@@ -189,7 +189,7 @@
       "purpose": "Monitor schema shape evolution and detect drift"
     },
     {
-      "filename": "phase0_40_02_signature_validator.py",
+      "filename": "primitives/signature_validator.py",
       "canonical_name": "phase0_40_02_signature_validator",
       "type": "VAL",
       "criticality": "HIGH",
@@ -197,7 +197,7 @@
       "purpose": "Validate method signatures against contract specifications"
     },
     {
-      "filename": "phase0_40_03_coverage_gate.py",
+      "filename": "primitives/coverage_gate.py",
       "canonical_name": "phase0_40_03_coverage_gate",
       "type": "VAL",
       "criticality": "MEDIUM",
@@ -258,7 +258,7 @@
       "type": "CFG",
       "criticality": "LOW",
       "lines_of_code": 380,
-      "purpose": "DUPLICATE - consider removal, same as phase0_10_00_phase_0_constants.py"
+      "purpose": "DUPLICATE - consider removal, same as primitives/constants.py"
     }
   ],
   "metadata_files": [
@@ -285,7 +285,7 @@
   ],
   "duplicates_to_consolidate": [
     {
-      "primary": "phase0_10_00_phase_0_constants.py",
+      "primary": "primitives/constants.py",
       "duplicate": "PHASE_0_CONSTANTS.py",
       "recommendation": "Remove PHASE_0_CONSTANTS.py, update all imports"
     },

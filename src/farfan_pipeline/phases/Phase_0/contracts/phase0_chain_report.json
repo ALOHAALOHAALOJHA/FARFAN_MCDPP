@@ -1,0 +1,68 @@
+{
+  "phase_id": "0",
+  "phase_dir": "/Users/recovered/FARFAN_MPP/src/farfan_pipeline/phases/Phase_0",
+  "total_files": 22,
+  "files_in_chain": 11,
+  "orphan_files": [],
+  "allowed_orphans": [
+    "contracts/phase0_input_contract.py",
+    "contracts/phase0_mission_contract.py",
+    "contracts/phase0_output_contract.py",
+    "primitives/__init__.py",
+    "primitives/constants.py",
+    "primitives/coverage_gate.py",
+    "primitives/json_logger.py",
+    "primitives/performance_metrics.py",
+    "primitives/runtime_error_fixes.py",
+    "primitives/schema_monitor.py",
+    "primitives/signature_validator.py"
+  ],
+  "circular_dependencies": [],
+  "dependency_graph": {
+    "__init__.py": [
+      "phase0_00_01_domain_errors.py",
+      "primitives/phase0_00_03_primitives.py",
+      "phase0_00_03_protocols.py",
+      "phase0_30_00_resource_controller.py"
+    ],
+    "phase0_00_03_protocols.py": [
+      "primitives/phase0_00_03_primitives.py"
+    ],
+    "phase0_10_01_runtime_config_typed.py": [
+      "phase0_10_01_runtime_config.py"
+    ],
+    "phase0_40_00_input_validation.py": [
+      "phase0_00_03_protocols.py"
+    ],
+    "phase0_50_00_boot_checks.py": [
+      "phase0_10_01_runtime_config.py"
+    ],
+    "phase0_50_01_exit_gates.py": [
+      "phase0_10_01_runtime_config.py"
+    ],
+    "phase0_90_00_main.py": [
+      "phase0_10_00_paths.py",
+      "phase0_90_01_verified_pipeline_runner.py",
+      "phase0_90_02_bootstrap.py"
+    ],
+    "phase0_90_01_verified_pipeline_runner.py": [
+      "phase0_10_01_runtime_config.py",
+      "phase0_20_02_determinism.py",
+      "phase0_50_00_boot_checks.py",
+      "phase0_50_01_exit_gates.py"
+    ],
+    "phase0_90_02_bootstrap.py": [
+      "phase0_10_00_paths.py",
+      "primitives/providers.py",
+      "interphase/wiring_types.py",
+      "phase0_90_03_wiring_validator.py"
+    ],
+    "phase0_90_03_wiring_validator.py": [
+      "interphase/wiring_types.py"
+    ],
+    "primitives/providers.py": [
+      "phase0_10_00_paths.py"
+    ]
+  },
+  "validation_status": "PASS"
+}

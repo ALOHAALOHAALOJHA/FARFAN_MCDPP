@@ -28,16 +28,16 @@ Phase 0 modules must execute in this strict topological order:
 **Stage 00 - Infrastructure (Boot Time: t=0)**
 1. `__init__.py` - Package initialization
 2. `phase0_00_01_domain_errors.py` - Exception hierarchy
-3. `phase0_00_02_runtime_error_fixes.py` - Error handling utilities
+3. `primitives/runtime_error_fixes.py` - Error handling utilities
 4. `phase0_00_03_protocols.py` - Contract framework
 5. `phase0_00_03_primitives.py` - Base types (to be moved to primitives/)
 
 **Stage 10 - Environment Configuration (t=1)**
 6. `phase0_10_00_paths.py` - Path resolution (depends on: domain_errors)
-7. `phase0_10_00_phase_0_constants.py` - Constants and mappings
+7. `primitives/constants.py` - Constants and mappings
 8. `phase0_10_01_runtime_config.py` - Config parsing (depends on: paths)
 9. `phase0_10_01_runtime_config_typed.py` - Typed config models
-10. `phase0_10_02_json_logger.py` - Structured logging (depends on: runtime_config)
+10. `primitives/json_logger.py` - Structured logging (depends on: runtime_config)
 11. `phase0_10_03_runtime_config_schema.py` - Config schema validation
 
 **Stage 20 - Determinism Enforcement (t=2)**
@@ -45,17 +45,16 @@ Phase 0 modules must execute in this strict topological order:
 13. `phase0_20_01_hash_utils.py` - Hash computation (standalone)
 14. `phase0_20_02_determinism.py` - Core enforcement (depends on: seed_factory, hash_utils)
 15. `phase0_20_03_determinism_helpers.py` - Helper functions (depends on: determinism)
-16. `phase0_20_04_deterministic_execution.py` - Execution context (depends on: determinism, helpers)
 
 **Stage 30 - Resource Control (t=3)**
 17. `phase0_30_00_resource_controller.py` - Kernel limits (depends on: runtime_config, json_logger)
-18. `phase0_30_01_performance_metrics.py` - Performance tracking (standalone)
+18. `primitives/performance_metrics.py` - Performance tracking (standalone)
 
 **Stage 40 - Validation (t=4)**
 19. `phase0_40_00_input_validation.py` - Input validation (depends on: paths, runtime_config, domain_errors, protocols)
-20. `phase0_40_01_schema_monitor.py` - Schema drift detection (depends on: hash_utils)
-21. `phase0_40_02_signature_validator.py` - Method signature validation (depends on: domain_errors)
-22. `phase0_40_03_coverage_gate.py` - Coverage verification (depends on: runtime_config)
+20. `primitives/schema_monitor.py` - Schema drift detection (depends on: hash_utils)
+21. `primitives/signature_validator.py` - Method signature validation (depends on: domain_errors)
+22. `primitives/coverage_gate.py` - Coverage verification (depends on: runtime_config)
 
 **Stage 50 - Boot Sequence (t=5)**
 23. `phase0_50_00_boot_checks.py` - Pre-flight checks (depends on: runtime_config, resource_controller, input_validation)
@@ -87,9 +86,9 @@ The Phase 0 dependency graph must satisfy:
 4. **Orphan-Free:** No modules exist outside the execution DAG
 
 Modules may be orphaned from direct imports but still used:
-- `phase0_10_02_json_logger.py` - Used via runtime_config initialization
+- `primitives/json_logger.py` - Used via runtime_config initialization
 - `phase0_20_00_seed_factory.py` - Used via determinism module
-- `phase0_30_01_performance_metrics.py` - Used optionally for instrumentation
+- `primitives/performance_metrics.py` - Used optionally for instrumentation
 - Other helpers used indirectly through main modules
 
 Execution Invariants

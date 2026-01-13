@@ -1,0 +1,40 @@
+Verifying Phase 0 dependency chain...
+Phase directory: /Users/recovered/FARFAN_MPP/src/farfan_pipeline/phases/Phase_0
+============================================================
+
+✓ Built dependency graph with 0 modules
+
+✓ No circular dependencies detected
+
+⚠ WARNING: Found 31 potentially orphaned file(s):
+  - phase0_90_03_wiring_validator.py
+  - phase0_30_01_performance_metrics.py
+  - phase0_00_02_runtime_error_fixes.py
+  - phase0_40_03_coverage_gate.py
+  - PHASE_0_CONSTANTS.py
+  - phase0_90_00_main.py
+  - phase0_20_01_hash_utils.py
+  - phase0_20_03_determinism_helpers.py
+  - phase0_10_01_runtime_config.py
+  - phase0_00_03_protocols.py
+  - phase0_50_00_boot_checks.py
+  - phase0_50_01_exit_gates.py
+  - phase0_10_01_runtime_config_typed.py
+  - phase0_00_01_domain_errors.py
+  - phase0_20_04_deterministic_execution.py
+  - phase0_10_00_phase_0_constants.py
+  - phase0_40_00_input_validation.py
+  - phase0_40_01_schema_monitor.py
+  - phase0_20_02_determinism.py
+  - phase0_40_02_signature_validator.py
+  - phase0_10_00_paths.py
+  - phase0_90_02_bootstrap.py
+  - phase0_90_01_verified_pipeline_runner.py
+  - phase0_30_00_resource_controller.py
+  - phase0_10_02_json_logger.py
+  - phase0_10_03_runtime_config_schema.py
+  - phase0_20_00_seed_factory.py
+  - contracts/phase0_input_contract.py
+  - contracts/phase0_mission_contract.py
+  - contracts/phase0_output_contract.py
+  - primitives/phase0_00_03_primitives.py

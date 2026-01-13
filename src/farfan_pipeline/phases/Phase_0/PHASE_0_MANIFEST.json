@@ -466,7 +466,7 @@
   },
   "documentation": {
     "readme": "README.md",
-    "constants": "phase0_10_00_phase_0_constants.py",
+    "constants": "primitives/constants.py",
     "manifest": "PHASE_0_MANIFEST.json",
     "contracts": {
       "input_contract": "contracts/phase0_input_contract.py",
