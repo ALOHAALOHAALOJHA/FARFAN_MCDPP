@@ -1,0 +1,197 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sisas.farfan.pipeline/schemas/contract_schema.json",
+  "title": "SISAS Contract Schema",
+  "description": "JSON Schema for validating SISAS Contract objects",
+  "oneOf": [
+    {
+      "$ref": "#/definitions/PublicationContract"
+    },
+    {
+      "$ref": "#/definitions/ConsumptionContract"
+    },
+    {
+      "$ref": "#/definitions/IrrigationContract"
+    }
+  ],
+  "definitions": {
+    "PublicationContract": {
+      "type": "object",
+      "required": ["contract_id", "contract_type", "status", "publisher_vehicle", "allowed_signal_types", "allowed_buses", "version"],
+      "properties": {
+        "contract_id": {
+          "type": "string",
+          "description": "Unique contract identifier"
+        },
+        "contract_type": {
+          "type": "string",
+          "const": "publication",
+          "description": "Contract type"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "active", "suspended", "terminated"],
+          "description": "Contract status"
+        },
+        "publisher_vehicle": {
+          "type": "string",
+          "description": "Vehicle that publishes signals"
+        },
+        "allowed_signal_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "description": "Signal types allowed to publish"
+        },
+        "allowed_buses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "description": "Buses allowed to publish to"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        }
+      }
+    },
+    "ConsumptionContract": {
+      "type": "object",
+      "required": ["contract_id", "contract_type", "status", "consumer_id", "consumer_phase", "subscribed_signal_types", "subscribed_buses", "version"],
+      "properties": {
+        "contract_id": {
+          "type": "string",
+          "description": "Unique contract identifier"
+        },
+        "contract_type": {
+          "type": "string",
+          "const": "consumption",
+          "description": "Contract type"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "active", "suspended", "terminated"],
+          "description": "Contract status"
+        },
+        "consumer_id": {
+          "type": "string",
+          "description": "Consumer identifier"
+        },
+        "consumer_phase": {
+          "type": "string",
+          "pattern": "^phase_\\d+$",
+          "description": "Phase of the consumer"
+        },
+        "subscribed_signal_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "description": "Signal types subscribed to"
+        },
+        "subscribed_buses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "description": "Buses subscribed to"
+        },
+        "context_filters": {
+          "type": "object",
+          "description": "Filters for signal context"
+        },
+        "required_capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Required capabilities"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        }
+      }
+    },
+    "IrrigationContract": {
+      "type": "object",
+      "required": ["contract_id", "contract_type", "status", "source_file", "source_path", "source_phase", "vehicles", "consumers", "generated_signals", "vocabulary_aligned", "gaps", "version"],
+      "properties": {
+        "contract_id": {
+          "type": "string",
+          "description": "Unique contract identifier"
+        },
+        "contract_type": {
+          "type": "string",
+          "const": "irrigation",
+          "description": "Contract type"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "active", "suspended", "terminated"],
+          "description": "Contract status"
+        },
+        "source_file": {
+          "type": "string",
+          "description": "Source canonical file"
+        },
+        "source_path": {
+          "type": "string",
+          "description": "Full path to source file"
+        },
+        "source_phase": {
+          "type": "string",
+          "pattern": "^phase_\\d+$",
+          "description": "Phase of the source"
+        },
+        "vehicles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Vehicles that transport data"
+        },
+        "consumers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Consumers that receive data"
+        },
+        "generated_signals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Signal types generated"
+        },
+        "vocabulary_aligned": {
+          "type": "boolean",
+          "description": "Whether vocabularies are aligned"
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["NECESITA_VEHICULO", "NECESITA_CONSUMIDOR", "VOCAB_SEÑALES_NO_ALINEADO", "VOCAB_CAPACIDADES_NO_ALINEADO"]
+          },
+          "description": "Gaps blocking irrigation"
+        },
+        "is_irrigable": {
+          "type": "boolean",
+          "description": "Whether the contract allows irrigation"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        }
+      }
+    }
+  }
+}

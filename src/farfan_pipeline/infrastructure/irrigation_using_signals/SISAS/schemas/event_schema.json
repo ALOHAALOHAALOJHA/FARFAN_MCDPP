@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sisas.farfan.pipeline/schemas/event_schema.json",
+  "title": "SISAS Event Schema",
+  "description": "JSON Schema for validating SISAS Event objects",
+  "type": "object",
+  "required": ["event_id", "event_type", "timestamp", "source_component", "source_file", "source_path", "payload", "phase", "consumer_scope"],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the event"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "canonical_data_loaded",
+        "canonical_data_validated",
+        "canonical_data_transformed",
+        "irrigation_requested",
+        "irrigation_started",
+        "irrigation_completed",
+        "irrigation_failed",
+        "consumer_registered",
+        "consumer_received_data",
+        "consumer_processed_data",
+        "signal_generated",
+        "signal_published",
+        "signal_consumed",
+        "contrast_started",
+        "contrast_divergence_detected",
+        "contrast_completed"
+      ],
+      "description": "Type of event"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the event occurred"
+    },
+    "source_component": {
+      "type": "string",
+      "description": "Component that generated the event"
+    },
+    "source_file": {
+      "type": "string",
+      "description": "Source file related to the event"
+    },
+    "source_path": {
+      "type": "string",
+      "description": "Full path to the source file"
+    },
+    "payload": {
+      "type": "object",
+      "required": ["data", "schema_version"],
+      "properties": {
+        "data": {
+          "type": "object",
+          "description": "Event data payload"
+        },
+        "schema_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Schema version of the payload"
+        }
+      }
+    },
+    "phase": {
+      "type": "string",
+      "pattern": "^phase_\\d+$",
+      "description": "Phase of the pipeline"
+    },
+    "consumer_scope": {
+      "type": "string",
+      "description": "Scope of consumers for this event"
+    },
+    "correlation_id": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "Optional correlation ID for related events"
+    },
+    "causation_id": {
+      "type": ["string", "null"],
+      "format": "uuid",
+      "description": "Optional ID of event that caused this event"
+    },
+    "processed": {
+      "type": "boolean",
+      "description": "Whether the event has been processed"
+    },
+    "processing_errors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of processing errors"
+    }
+  }
+}

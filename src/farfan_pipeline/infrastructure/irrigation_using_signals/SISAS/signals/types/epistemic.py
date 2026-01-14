@@ -139,6 +139,10 @@ class AnswerSpecificitySignal(Signal):
     def is_sufficient_for_compliance(self) -> bool:
         """Verifica si es suficiente para cumplimiento"""
         return self.specificity_level in [SpecificityLevel.HIGH, SpecificityLevel.MEDIUM]
+
+
+@dataclass
+class EmpiricalSupportSignal(Signal):
     """
     Señal que evalúa el soporte empírico/documental de una respuesta.
 
