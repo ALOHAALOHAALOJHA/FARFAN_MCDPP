@@ -14,6 +14,16 @@ from __future__ import annotations
 import json
 import logging
 import sys
+
+# GNEA METADATA
+__version__ = "1.0.0"
+__module_type__ = "MGR"  # Manager
+__criticality__ = "HIGH"
+__lifecycle__ = "ACTIVE"
+__execution_pattern__ = "Per-Task"
+__owner__ = "Orchestration"
+__compliance_status__ = "GNEA_COMPLIANT"
+
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, TypeVar

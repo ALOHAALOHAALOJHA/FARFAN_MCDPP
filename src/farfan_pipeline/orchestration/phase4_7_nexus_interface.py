@@ -10,6 +10,16 @@ Phase 6: Cluster Aggregation
 Phase 7: Macro Evaluation
 """
 
+# GNEA METADATA
+__version__ = "1.0.0"
+__module_type__ = "ORCH"  # Orchestration - Specification
+__criticality__ = "HIGH"
+__lifecycle__ = "ACTIVE"
+__execution_pattern__ = "Singleton"
+__phase_scope__ = "4,5,6,7"
+__purpose__ = "Declarative data flow specification for aggregation cascade"
+__compliance_status__ = "GNEA_COMPLIANT"
+
 from dataclasses import dataclass
 from enum import Enum
 
