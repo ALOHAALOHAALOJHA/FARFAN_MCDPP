@@ -42,7 +42,7 @@ from datetime import UTC, datetime
 from types import MappingProxyType
 from typing import Any, Final
 
-from farfan_pipeline.core.parameters import ParameterLoaderV2
+from farfan_pipeline.infrastructure.calibration.parameters import ParameterLoaderV2
 from farfan_pipeline.core.types import ChunkData, PreprocessedDocument, Provenance
 
 logger = logging.getLogger(__name__)

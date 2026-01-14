@@ -37,107 +37,20 @@ if TYPE_CHECKING:
     import fitz
 
 # Core dependencies
-# NOTE: Tests should not fail on import - dependencies are checked at runtime
-PYDOT_AVAILABLE = False
-NETWORKX_AVAILABLE = False
-NUMPY_AVAILABLE = False
-PANDAS_AVAILABLE = False
-SPACY_AVAILABLE = False
-YAML_AVAILABLE = False
-PYDANTIC_AVAILABLE = False
-RAPIDFUZZ_AVAILABLE = False
-SCIPY_AVAILABLE = False
-
 try:
     import networkx as nx
-    NETWORKX_AVAILABLE = True
-except ImportError:
-    nx = None  # type: ignore
-
-try:
     import numpy as np
-    NUMPY_AVAILABLE = True
-except ImportError:
-    np = None  # type: ignore
-
-try:
     import pandas as pd
-    PANDAS_AVAILABLE = True
-except ImportError:
-    pd = None  # type: ignore
-
-try:
     import spacy
-    SPACY_AVAILABLE = True
-except ImportError:
-    spacy = None  # type: ignore
-
-try:
     import yaml
-    YAML_AVAILABLE = True
-except ImportError:
-    yaml = None  # type: ignore
-
-try:
     from pydantic import BaseModel, Field, ValidationError, validator
-    PYDANTIC_AVAILABLE = True
-except ImportError:
-    BaseModel = object  # type: ignore
-    Field = None  # type: ignore
-    ValidationError = Exception  # type: ignore
-    validator = lambda: lambda x: x  # type: ignore
-
-try:
     from pydot import Dot, Edge, Node
-    PYDOT_AVAILABLE = True
-except ImportError:
-    Dot = None  # type: ignore
-    Edge = None  # type: ignore
-    Node = None  # type: ignore
-
-try:
     from rapidfuzz import fuzz, process
-    RAPIDFUZZ_AVAILABLE = True
-except ImportError:
-    fuzz = None  # type: ignore
-    process = None  # type: ignore
-
-try:
     from scipy.spatial.distance import cosine
     from scipy.special import rel_entr
-    SCIPY_AVAILABLE = True
-except ImportError:
-    cosine = None  # type: ignore
-    rel_entr = None  # type: ignore
-
-# Log missing dependencies without sys.exit
-import warnings
-missing_deps = []
-if not PYDOT_AVAILABLE:
-    missing_deps.append("pydot")
-if not NETWORKX_AVAILABLE:
-    missing_deps.append("networkx")
-if not NUMPY_AVAILABLE:
-    missing_deps.append("numpy")
-if not PANDAS_AVAILABLE:
-    missing_deps.append("pandas")
-if not SPACY_AVAILABLE:
-    missing_deps.append("spacy")
-if not YAML_AVAILABLE:
-    missing_deps.append("yaml")
-if not PYDANTIC_AVAILABLE:
-    missing_deps.append("pydantic")
-if not RAPIDFUZZ_AVAILABLE:
-    missing_deps.append("rapidfuzz")
-if not SCIPY_AVAILABLE:
-    missing_deps.append("scipy")
-
-if missing_deps:
-    warnings.warn(
-        f"WARNING: Missing optional dependencies: {', '.join(missing_deps)}. "
-        f"Some functionality may be limited. Install with: pip install {' '.join(missing_deps)}",
-        ImportWarning
-    )
+except ImportError as e:
+    print(f"ERROR: Dependencia faltante. Ejecute: pip install {e.name}")
+    sys.exit(1)
 
 # DNP Standards Integration
 try:
@@ -172,7 +85,7 @@ logging.basicConfig(
 # Source: canonical_specs.py (single source of truth)
 # ============================================================================
 
-from farfan_pipeline.core.canonical_specs import (
+from farfan_pipeline.infrastructure.calibration.canonical_specs import (
     ALIGNMENT_THRESHOLD,
     CANON_POLICY_AREAS,
     CAUSAL_CHAIN_VOCABULARY,

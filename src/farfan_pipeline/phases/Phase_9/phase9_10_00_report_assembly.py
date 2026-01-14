@@ -49,7 +49,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 # Calibration parameters - loaded at runtime if calibration system available
 try:
-    from farfan_pipeline.core.parameters import ParameterLoaderV2
+    from farfan_pipeline.infrastructure.calibration.parameters import ParameterLoaderV2
 except (ImportError, AttributeError):
     # Fallback: use explicit defaults if calibration system not available
     _PARAM_LOADER = None
