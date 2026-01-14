@@ -22,11 +22,52 @@ class SignalCategory(Enum):
 
 
 class SignalConfidence(Enum):
-    """Niveles de confianza de una señal"""
+    """
+    Niveles de confianza de una señal.
+
+    Ordering: HIGH > MEDIUM > LOW > INDETERMINATE
+
+    Valores son strings para serialización, pero se pueden comparar
+    usando los métodos de comparación implementados.
+    """
     HIGH = "HIGH"
     MEDIUM = "MEDIUM"
     LOW = "LOW"
     INDETERMINATE = "INDETERMINATE"
+
+    @property
+    def numeric_value(self) -> int:
+        """Valor numérico para ordenamiento"""
+        return {
+            "HIGH": 4,
+            "MEDIUM": 3,
+            "LOW": 2,
+            "INDETERMINATE": 1
+        }[self.value]
+
+    def __lt__(self, other):
+        """Permite comparación: HIGH > MEDIUM > LOW > INDETERMINATE"""
+        if self.__class__ is other.__class__:
+            return self.numeric_value < other.numeric_value
+        return NotImplemented
+
+    def __le__(self, other):
+        """Menor o igual"""
+        if self.__class__ is other.__class__:
+            return self.numeric_value <= other.numeric_value
+        return NotImplemented
+
+    def __gt__(self, other):
+        """Mayor que"""
+        if self.__class__ is other.__class__:
+            return self.numeric_value > other.numeric_value
+        return NotImplemented
+
+    def __ge__(self, other):
+        """Mayor o igual"""
+        if self.__class__ is other.__class__:
+            return self.numeric_value >= other.numeric_value
+        return NotImplemented
 
 
 @dataclass(frozen=True)
@@ -91,6 +132,12 @@ class Signal(ABC):
     4. contextual: Anclada a nodo, fase, consumidor
     5. auditable: Explica por qué existe
     6. non_imperative: No ordena, no decide
+
+    IMMUTABILITY POLICY:
+    - Core fields (signal_id, signal_type, context, source, value, confidence, etc.)
+      are IMMUTABLE after initialization
+    - audit_trail is the ONLY mutable field (by design for auditability)
+    - Attempting to modify core fields will raise AttributeError
     """
 
     # Identificación
@@ -114,8 +161,11 @@ class Signal(ABC):
     expires_at: Optional[datetime] = field(default=None)
     tags: List[str] = field(default_factory=list)
 
-    # Auditoría
+    # Auditoría (ÚNICO campo mutable por diseño)
     audit_trail: List[Dict[str, Any]] = field(default_factory=list)
+
+    # Internal flag to track initialization
+    _initialized: bool = field(default=False, init=False, repr=False)
 
     def __post_init__(self):
         """Validación post-inicialización"""
@@ -131,6 +181,31 @@ class Signal(ABC):
             "signal_id": self.signal_id,
             "signal_type": getattr(self, "signal_type", "Unknown")
         })
+
+        # Mark as initialized to enable immutability checks
+        object.__setattr__(self, '_initialized', True)
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        """
+        Enforce immutability for core fields.
+        Only audit_trail can be modified after initialization.
+        """
+        # Allow setting during initialization
+        if not getattr(self, '_initialized', False):
+            object.__setattr__(self, name, value)
+            return
+
+        # After initialization, only allow audit_trail modifications
+        if name == 'audit_trail':
+            object.__setattr__(self, name, value)
+            return
+
+        # Block all other modifications
+        raise AttributeError(
+            f"Cannot modify '{name}' - Signal is immutable after creation. "
+            f"Only audit_trail can be updated. "
+            f"(Axiom: versioned - signals never overwritten)"
+        )
 
     @property
     @abstractmethod
