@@ -34,6 +34,8 @@ from enum import Enum, auto
 from pathlib import Path
 from typing import Any
 
+from farfan_pipeline.infrastructure.calibration.unit_of_analysis import FiscalContext, UnitOfAnalysis
+
 import numpy as np
 from scipy import stats
 
@@ -357,6 +359,58 @@ class BayesianUpdater:
         )
 
         return posterior
+
+
+class BayesianEvidenceIntegrator:
+    """
+    Bayesian evidence integration WITH unit-aware calibration.
+
+    CRITICAL: This method now REQUIRES UnitOfAnalysis for proper calibration.
+    """
+
+    def __init__(
+        self,
+        prior_concentration: float = 0.5,
+        unit_of_analysis: UnitOfAnalysis | None = None,
+    ):
+        """
+        Args:
+            prior_concentration: Base prior strength
+            unit_of_analysis: Municipal characteristics for calibration
+        """
+        self.prior_alpha = float(prior_concentration)
+        self.unit = unit_of_analysis
+
+        if unit_of_analysis:
+            self.prior_alpha = self._calibrate_prior_to_unit()
+
+    def _calibrate_prior_to_unit(self) -> float:
+        """
+        Adjust prior strength based on unit characteristics.
+
+        Calibration Rules (INV-CAL-001):
+        - High complexity (>0.7) → Weaker prior (more uncertainty)
+        - Low fiscal capacity → Stronger prior (conservative)
+        - Small population → Stronger prior (less data)
+        """
+        base = self.prior_alpha
+        unit = self.unit
+        if unit is None:
+            return base
+
+        complexity = unit.complexity_score()
+        if complexity > 0.7:
+            base *= 0.7  # Weaker prior for complex units
+        elif complexity < 0.3:
+            base *= 1.3  # Stronger prior for simple units
+
+        if unit.fiscal_context == FiscalContext.LOW_CAPACITY:
+            base *= 1.2  # Conservative for SGP-dependent units
+
+        if unit.population < 20000:
+            base *= 1.1  # Stronger prior for small municipalities
+
+        return base
 
     def sequential_update(
         self, initial_prior: float, tests: list[tuple[ProbativeTest, bool]]

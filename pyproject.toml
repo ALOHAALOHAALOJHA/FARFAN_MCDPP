@@ -334,3 +334,103 @@ forbidden_modules = [
     "farfan_pipeline.processing",
     "farfan_pipeline.analysis",
 ]
+
+# =============================================================================
+# DEPENDENCY LAYER ISOLATION CONTRACTS (Added 2026-01-13)
+# =============================================================================
+# These contracts enforce architectural boundaries between dependency layers
+# as defined in infrastructure/dependencies.py
+#
+# Key separations:
+# - NLP layer (transformers, spacy) vs Bayesian layer (pymc, pytensor)
+# - Deep Learning (torch) separated from probabilistic programming
+# - PDF processing centralized in infrastructure/document_processor.py
+# =============================================================================
+
+[[tool.importlinter.contracts]]
+name = "NLP and Bayesian layers must remain isolated"
+type = "forbidden"
+source_modules = [
+    "farfan_pipeline.methods.bayesian_*",
+    "farfan_pipeline.analysis.probabilistic_*",
+]
+forbidden_modules = [
+    "farfan_pipeline.methods.semantic_*",
+    "farfan_pipeline.analysis.deep_learning",
+]
+ignore_modules = [
+    "farfan_pipeline.infrastructure.dependencies",
+]
+
+[[tool.importlinter.contracts]]
+name = "Bayesian layer isolated from NLP transformers"
+type = "forbidden"
+source_modules = [
+    "farfan_pipeline.methods.bayesian_multilevel_system",
+    "farfan_pipeline.methods.bayesian_*",
+]
+forbidden_modules = [
+    "transformers",
+    "sentence_transformers",
+    "spacy",
+]
+
+[[tool.importlinter.contracts]]
+name = "NLP semantic layer isolated from Bayesian inference"
+type = "forbidden"
+source_modules = [
+    "farfan_pipeline.methods.semantic_*",
+    "farfan_pipeline.analysis.nlp_*",
+]
+forbidden_modules = [
+    "pymc",
+    "pytensor",
+    "arviz",
+]
+
+[[tool.importlinter.contracts]]
+name = "PDF libraries only in document_processor infrastructure"
+type = "forbidden"
+source_modules = [
+    "farfan_pipeline.phases",
+    "farfan_pipeline.processing",
+    "farfan_pipeline.analysis",
+    "farfan_pipeline.methods",
+]
+forbidden_modules = [
+    "fitz",
+    "pdfplumber",
+    "pypdf",
+    "img2table",
+    "tabula",
+]
+ignore_modules = [
+    "farfan_pipeline.infrastructure.document_processor",
+    "farfan_pipeline.infrastructure.extractors",
+]
+
+[[tool.importlinter.contracts]]
+name = "Flask (dashboard) isolated from FastAPI (pipeline API)"
+type = "forbidden"
+source_modules = [
+    "farfan_pipeline.api",
+    "farfan_pipeline.phases",
+    "farfan_pipeline.processing",
+]
+forbidden_modules = [
+    "farfan_pipeline.dashboard_atroz_",
+]
+ignore_modules = []
+
+[[tool.importlinter.contracts]]
+name = "Dashboard module does not import pipeline internals"
+type = "forbidden"
+source_modules = [
+    "farfan_pipeline.dashboard_atroz_",
+]
+forbidden_modules = [
+    "farfan_pipeline.processing",
+    "farfan_pipeline.analysis",
+    "farfan_pipeline.phases.Phase_2",
+    "farfan_pipeline.phases.Phase_4",
+]
