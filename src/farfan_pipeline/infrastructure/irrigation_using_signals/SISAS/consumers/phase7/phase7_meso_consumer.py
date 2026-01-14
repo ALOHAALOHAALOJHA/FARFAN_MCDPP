@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List
 
 from ..base_consumer import BaseConsumer
-from ...core.signal import Signal
+from ... core.signal import Signal
 from ...core.contracts import ConsumptionContract
 
 
@@ -12,16 +12,16 @@ from ...core.contracts import ConsumptionContract
 class Phase7MesoConsumer(BaseConsumer):
     """
     Consumidor para meso_questions.json en Phase 7.
-
+    
     Procesa preguntas de nivel meso y genera análisis agregado.
     """
-
+    
     consumer_id: str = "phase7_meso_consumer.py"
     consumer_phase: str = "phase_7"
-
+    
     def __post_init__(self):
         super().__post_init__()
-
+        
         # Configurar contrato de consumo
         self.consumption_contract = ConsumptionContract(
             contract_id="CC_PHASE7_MESO",
@@ -38,27 +38,27 @@ class Phase7MesoConsumer(BaseConsumer):
             },
             required_capabilities=["can_scope_context"]
         )
-
+    
     def process_signal(self, signal: Signal) -> Dict[str, Any]:
         """
-        Procesa una señal recibida.
-
-        NO ejecuta decisiones, solo analiza.
+        Procesa una señal recibida. 
+        
+        NO ejecuta decisiones, solo analiza. 
         """
         result = {
             "signal_id": signal.signal_id,
-            "signal_type": signal.signal_type,
+            "signal_type": signal. signal_type,
             "processed":  True,
             "analysis": {}
         }
-
+        
         if signal.signal_type == "CanonicalMappingSignal":
             result["analysis"] = self._analyze_mapping(signal)
         elif signal.signal_type == "StructuralAlignmentSignal":
             result["analysis"] = self._analyze_alignment(signal)
-
+        
         return result
-
+    
     def _analyze_mapping(self, signal: Signal) -> Dict[str, Any]:
         """Analiza señal de mapeo"""
         return {
@@ -66,7 +66,7 @@ class Phase7MesoConsumer(BaseConsumer):
             "mapping_completeness": getattr(signal, 'mapping_completeness', 0.0),
             "unmapped":  getattr(signal, 'unmapped_aspects', [])
         }
-
+    
     def _analyze_alignment(self, signal: Signal) -> Dict[str, Any]:
         """Analiza señal de alineación"""
         return {

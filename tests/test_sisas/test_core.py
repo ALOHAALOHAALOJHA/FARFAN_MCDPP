@@ -3,26 +3,37 @@
 import pytest
 from datetime import datetime
 from uuid import uuid4
-from dataclasses import dataclass
+import sys
+import os
 
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import (
+# Asegurar que src está en el path para las pruebas
+sys.path.append(os.path.abspath("src"))
+
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.signal import (
     Signal, SignalContext, SignalSource, SignalCategory, SignalConfidence
 )
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.event import (
     Event, EventStore, EventType, EventPayload
 )
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.contracts import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.contracts import (
     PublicationContract, ConsumptionContract, IrrigationContract,
     ContractRegistry, ContractStatus, SignalTypeSpec
 )
-from src.farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.bus import (
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.core.bus import (
     SignalBus, BusRegistry, BusType, BusMessage
+)
+# IMPORTING REAL SOTA SIGNALS
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types.structural import (
+    StructuralAlignmentSignal, AlignmentStatus
+)
+from farfan_pipeline.infrastructure.irrigation_using_signals.SISAS.signals.types.integrity import (
+    EventPresenceSignal, PresenceStatus
 )
 
 
 class TestSignalContext:
     """Tests para SignalContext"""
-
+    
     def test_create_context(self):
         context = SignalContext(
             node_type="question",
@@ -32,7 +43,7 @@ class TestSignalContext:
         )
         assert context.node_type == "question"
         assert context.node_id == "Q147"
-
+    
     def test_context_to_dict(self):
         context = SignalContext(
             node_type="policy_area",
@@ -43,7 +54,7 @@ class TestSignalContext:
         d = context.to_dict()
         assert d["node_type"] == "policy_area"
         assert d["node_id"] == "PA03"
-
+    
     def test_context_from_dict(self):
         data = {
             "node_type": "dimension",
@@ -57,7 +68,7 @@ class TestSignalContext:
 
 class TestSignalSource:
     """Tests para SignalSource"""
-
+    
     def test_create_source(self):
         source = SignalSource(
             event_id=str(uuid4()),
@@ -67,7 +78,7 @@ class TestSignalSource:
             generator_vehicle="signal_registry"
         )
         assert source.generator_vehicle == "signal_registry"
-
+    
     def test_source_to_dict(self):
         source = SignalSource(
             event_id="evt-123",
@@ -83,7 +94,7 @@ class TestSignalSource:
 
 class TestEventStore:
     """Tests para EventStore"""
-
+    
     def test_append_event(self):
         store = EventStore()
         event = Event(
@@ -94,52 +105,52 @@ class TestEventStore:
         event_id = store.append(event)
         assert event_id == event.event_id
         assert store.count() == 1
-
+    
     def test_get_by_type(self):
         store = EventStore()
-
+        
         e1 = Event(event_type=EventType.CANONICAL_DATA_LOADED, source_file="a.json")
         e2 = Event(event_type=EventType.CANONICAL_DATA_VALIDATED, source_file="b.json")
         e3 = Event(event_type=EventType.CANONICAL_DATA_LOADED, source_file="c.json")
-
+        
         store.append(e1)
         store.append(e2)
         store.append(e3)
-
+        
         loaded = store.get_by_type(EventType.CANONICAL_DATA_LOADED)
         assert len(loaded) == 2
-
+    
     def test_get_by_phase(self):
         store = EventStore()
-
+        
         e1 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_0")
         e2 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_1")
         e3 = Event(event_type=EventType.CANONICAL_DATA_LOADED, phase="phase_0")
-
+        
         store.append(e1)
         store.append(e2)
         store.append(e3)
-
+        
         phase0 = store.get_by_phase("phase_0")
         assert len(phase0) == 2
-
+    
     def test_events_never_lost(self):
-        """Axioma:  Ningún evento se pierde"""
+        """Axioma: Ningún evento se pierde"""
         store = EventStore()
-
+        
         for i in range(1000):
             event = Event(
                 event_type=EventType.CANONICAL_DATA_LOADED,
                 source_file=f"file_{i}.json"
             )
             store.append(event)
-
+        
         assert store.count() == 1000
 
 
 class TestContracts:
     """Tests para contratos"""
-
+    
     def test_publication_contract_validation(self):
         contract = PublicationContract(
             contract_id="PC_TEST",
@@ -152,16 +163,7 @@ class TestContracts:
             require_context=True,
             require_source=True
         )
-
-        # Crear señal mock para validación
-        # Definimos una señal mock ya que no hemos implementado StructuralAlignmentSignal en core
-        @dataclass
-        class MockSignal(Signal):
-            signal_type: str = "StructuralAlignmentSignal"
-            @property
-            def category(self) -> SignalCategory:
-                return SignalCategory.STRUCTURAL
-
+        
         context = SignalContext(
             node_type="test",
             node_id="test-1",
@@ -175,16 +177,20 @@ class TestContracts:
             generation_timestamp=datetime.utcnow(),
             generator_vehicle="test"
         )
-
-        signal = MockSignal(
+        
+        # USING REAL SOTA SIGNAL
+        signal = StructuralAlignmentSignal(
             context=context,
-            source=source
+            source=source,
+            alignment_status=AlignmentStatus.ALIGNED,
+            canonical_path="test/path",
+            actual_path="test/path"
         )
-
+        
         is_valid, errors = contract.validate_signal(signal)
         assert is_valid
         assert len(errors) == 0
-
+    
     def test_consumption_contract_filtering(self):
         contract = ConsumptionContract(
             contract_id="CC_TEST",
@@ -196,31 +202,42 @@ class TestContracts:
                 "node_type": ["question", "dimension"]
             }
         )
+        
+        context = SignalContext(
+            node_type="question",
+            node_id="Q001",
+            phase="phase_0",
+            consumer_scope="Phase_0"
+        )
+        source = SignalSource(
+            event_id="evt-1",
+            source_file="Q001.json",
+            source_path="questions/Q001.json",
+            generation_timestamp=datetime.utcnow(),
+            generator_vehicle="test"
+        )
 
-        # Mock signal que coincide
-        class MockSignal:
-            signal_type = "StructuralAlignmentSignal"
-            context = SignalContext(
-                node_type="question",
-                node_id="Q001",
-                phase="phase_0",
-                consumer_scope="Phase_0"
-            )
-
-        assert contract.matches_signal(MockSignal())
-
-        # Mock signal que NO coincide (tipo incorrecto)
-        class MockSignal2:
-            signal_type = "OtherSignal"
-            context = SignalContext(
-                node_type="question",
-                node_id="Q001",
-                phase="phase_0",
-                consumer_scope="Phase_0"
-            )
-
-        assert not contract.matches_signal(MockSignal2())
-
+        # USING REAL SOTA SIGNAL
+        signal_match = StructuralAlignmentSignal(
+            context=context,
+            source=source,
+            alignment_status=AlignmentStatus.ALIGNED,
+            canonical_path="questions/Q001",
+            actual_path="questions/Q001.json"
+        )
+        
+        assert contract.matches_signal(signal_match)
+        
+        # USING REAL SOTA SIGNAL (Different Type)
+        signal_no_match = EventPresenceSignal(
+            context=context,
+            source=source,
+            expected_event_type="test",
+            presence_status=PresenceStatus.PRESENT
+        )
+        
+        assert not contract.matches_signal(signal_no_match)
+    
     def test_irrigation_contract_irrigability(self):
         # Contrato completo - puede irrigar
         contract1 = IrrigationContract(
@@ -235,7 +252,7 @@ class TestContracts:
             status=ContractStatus.ACTIVE
         )
         assert contract1.is_irrigable()
-
+        
         # Contrato sin vehículos - NO puede irrigar
         contract2 = IrrigationContract(
             contract_id="IC_NO_VEHICLE",
@@ -254,7 +271,7 @@ class TestContracts:
 
 class TestBus:
     """Tests para buses de señales"""
-
+    
     def test_bus_creation(self):
         bus = SignalBus(
             bus_type=BusType.STRUCTURAL,
@@ -262,19 +279,19 @@ class TestBus:
         )
         assert bus.name == "test_structural_bus"
         assert bus.get_subscriber_count() == 0
-
+    
     def test_bus_registry_creation(self):
         registry = BusRegistry()
-
+        
         # Debe crear buses por defecto
         assert registry.get_bus("structural_bus") is not None
         assert registry.get_bus("epistemic_bus") is not None
         assert registry.get_bus("universal_bus") is not None
-
+    
     def test_bus_subscription(self):
         registry = BusRegistry()
         bus = registry.get_bus("structural_bus")
-
+        
         contract = ConsumptionContract(
             contract_id="CC_SUB_TEST",
             consumer_id="test_consumer",
@@ -282,15 +299,15 @@ class TestBus:
             subscribed_signal_types=["StructuralAlignmentSignal"],
             subscribed_buses=["structural_bus"]
         )
-
+        
         success = bus.subscribe(contract)
         assert success
         assert bus.get_subscriber_count() == 1
-
+    
     def test_bus_stats(self):
         bus = SignalBus(bus_type=BusType.STRUCTURAL)
         stats = bus.get_stats()
-
+        
         assert "total_published" in stats
         assert "total_delivered" in stats
         assert "total_rejected" in stats

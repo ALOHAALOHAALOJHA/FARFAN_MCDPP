@@ -1,0 +1,56 @@
+# src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/config/vocabulary_config.yaml
+
+vocabulary_system:
+  validation:
+    mode: "STRICT"  # OPTIONS: STRICT, LENIENT, LEARNING
+    cache_enabled: true
+    cache_ttl_seconds: 3600
+    fail_fast: true
+    
+  signal_definitions:
+    enforce_semantic_versioning: true
+    require_description: true
+    allow_dynamic_registration: false
+    
+  categories:
+    structural:
+      validation_level: "CRITICAL"
+      required_metadata: ["canonical_path", "alignment_status"]
+      
+    integrity:
+      validation_level: "CRITICAL"
+      required_metadata: ["source_file"]
+      
+    epistemic:
+      validation_level: "HIGH"
+      confidence_threshold: "MEDIUM"  # Minimum confidence to accept
+      
+    contrast:
+      validation_level: "HIGH"
+      allow_divergence: true
+      
+    operational:
+      validation_level: "MEDIUM"
+      retention_policy: "7_days"
+      
+    consumption:
+      validation_level: "MEDIUM"
+      aggregation_allowed: true
+
+  performance_tuning:
+    # Optimizations for SignalVocabulary._validation_cache
+    cache_strategy: "LRU"
+    max_cache_size: 10000
+    precompute_hashes: true
+    
+  audit_integration:
+    log_validation_failures: true
+    audit_orphan_signals: true
+    audit_frequency_seconds: 300  # 5 minutes
+
+  compliance:
+    # Rules for CapabilityVocabulary alignment
+    require_producer_declaration: true
+    require_consumer_declaration: true
+    validate_dependencies: true
+    ignore_external_capabilities: false

@@ -1,138 +1,71 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://sisas.farfan.pipeline/schemas/signal_schema.json",
   "title": "SISAS Signal Schema",
-  "description": "JSON Schema for validating SISAS Signal objects",
   "type": "object",
-  "required": ["signal_id", "signal_type", "category", "version", "context", "source", "value", "confidence", "created_at"],
+  "required": [
+    "signal_id",
+    "signal_type",
+    "category",
+    "version",
+    "context",
+    "source",
+    "created_at"
+  ],
   "properties": {
     "signal_id": {
       "type": "string",
-      "format": "uuid",
-      "description": "Unique identifier for the signal"
+      "format": "uuid"
     },
     "signal_type": {
-      "type": "string",
-      "description": "Type of signal",
-      "enum": [
-        "StructuralAlignmentSignal",
-        "SchemaConflictSignal",
-        "CanonicalMappingSignal",
-        "EventPresenceSignal",
-        "EventCompletenessSignal",
-        "DataIntegritySignal",
-        "AnswerDeterminacySignal",
-        "AnswerSpecificitySignal",
-        "EmpiricalSupportSignal",
-        "MethodApplicationSignal",
-        "DecisionDivergenceSignal",
-        "ConfidenceDropSignal",
-        "TemporalContrastSignal",
-        "ExecutionAttemptSignal",
-        "FailureModeSignal",
-        "LegacyActivitySignal",
-        "LegacyDependencySignal",
-        "FrequencySignal",
-        "TemporalCouplingSignal",
-        "ConsumerHealthSignal"
-      ]
+      "type": "string"
     },
     "category": {
       "type": "string",
-      "enum": ["structural", "integrity", "epistemic", "contrast", "operational", "consumption"],
-      "description": "Signal category"
+      "enum": [
+        "structural",
+        "integrity",
+        "epistemic",
+        "contrast",
+        "operational",
+        "consumption"
+      ]
     },
     "version": {
       "type": "string",
-      "pattern": "^\\d+\\.\\d+\\.\\d+$",
-      "description": "Semantic version of the signal"
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
     },
     "context": {
       "type": "object",
       "required": ["node_type", "node_id", "phase", "consumer_scope"],
       "properties": {
-        "node_type": {
-          "type": "string",
-          "enum": ["policy_area", "dimension", "question", "cluster", "pattern", "entity", "config"],
-          "description": "Type of node this signal is anchored to"
-        },
-        "node_id": {
-          "type": "string",
-          "description": "Identifier of the node (e.g., PA03, DIM02, Q147)"
-        },
-        "phase": {
-          "type": "string",
-          "pattern": "^phase_\\d+$",
-          "description": "Phase of the pipeline (e.g., phase_0, phase_1)"
-        },
-        "consumer_scope": {
-          "type": "string",
-          "description": "Scope of consumers that can receive this signal"
-        }
+        "node_type": { "type": "string" },
+        "node_id": { "type": "string" },
+        "phase": { "type": "string" },
+        "consumer_scope": { "type": "string" }
       }
     },
     "source": {
       "type": "object",
-      "required": ["event_id", "source_file", "source_path", "generation_timestamp", "generator_vehicle"],
+      "required": ["event_id", "source_file", "generation_timestamp", "generator_vehicle"],
       "properties": {
-        "event_id": {
-          "type": "string",
-          "format": "uuid",
-          "description": "ID of the event that generated this signal"
-        },
-        "source_file": {
-          "type": "string",
-          "description": "Name of the source file"
-        },
-        "source_path": {
-          "type": "string",
-          "description": "Full path to the source file"
-        },
-        "generation_timestamp": {
-          "type": "string",
-          "format": "date-time",
-          "description": "When the signal was generated"
-        },
-        "generator_vehicle": {
-          "type": "string",
-          "description": "Vehicle that generated this signal"
-        }
+        "event_id": { "type": "string" },
+        "source_file": { "type": "string" },
+        "source_path": { "type": "string" },
+        "generation_timestamp": { "type": "string", "format": "date-time" },
+        "generator_vehicle": { "type": "string" }
       }
     },
-    "value": {
-      "description": "Payload value of the signal (type varies)"
-    },
+    "value": {},
     "confidence": {
       "type": "string",
-      "enum": ["HIGH", "MEDIUM", "LOW", "INDETERMINATE"],
-      "description": "Confidence level of the signal"
+      "enum": ["HIGH", "MEDIUM", "LOW", "INDETERMINATE"]
     },
-    "rationale": {
-      "type": "string",
-      "description": "Explanation of why this signal exists"
-    },
-    "created_at": {
-      "type": "string",
-      "format": "date-time",
-      "description": "Creation timestamp"
-    },
-    "expires_at": {
-      "type": ["string", "null"],
-      "format": "date-time",
-      "description": "Optional expiration timestamp"
-    },
+    "rationale": { "type": "string" },
+    "created_at": { "type": "string", "format": "date-time" },
     "tags": {
       "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "description": "Optional tags for categorization"
+      "items": { "type": "string" }
     },
-    "hash": {
-      "type": "string",
-      "pattern": "^[a-f0-9]{64}$",
-      "description": "SHA-256 hash for deterministic verification"
-    }
-  },
-  "additionalProperties": true
+    "hash": { "type": "string" }
+  }
 }

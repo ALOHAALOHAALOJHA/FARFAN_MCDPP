@@ -21,44 +21,64 @@ class SignalAuditor:
     """
     Auditor de señales.
     Verifica integridad, trazabilidad y completitud de las señales.
+    
+    JF-10: Auditoría continua.
     """
 
     bus_registry: BusRegistry
 
     def audit_signals(self) -> AuditReport:
-        """Ejecuta auditoría de todas las señales en los buses"""
+        """
+        Ejecuta auditoría de todas las señales en los buses.
+        Verifica:
+        1. Ninguna señal huérfana (debe tener source).
+        2. Source válido.
+        3. Consistencia de hash determinístico.
+        """
         report = AuditReport(audit_type="signal_audit")
         total_signals = 0
         orphan_signals = 0
+        corrupted_hashes = 0
+        invalid_sources = 0
 
         for bus_name, bus in self.bus_registry.buses.items():
-            # Accedemos al historial del bus (implementación depende de si expone historial completo)
-            # SignalBus tiene _message_history pero es protegido.
-            # Asumiremos que podemos acceder o que bus tiene metodo para auditar.
-            # Para este ejemplo, usaremos get_pending_messages y stats.
-
-            # Nota: Acceder a _message_history es una violación de encapsulamiento si no hay getter.
-            # Pero para auditoría interna a veces se permite o se añade getter.
-            # Asumamos que SignalBus tiene get_history() o similar, o usamos _message_history con cuidado.
-
-            messages = bus._message_history # Accessing protected member for audit
+            # Nota: Acceder a _message_history para auditoría interna
+            messages = getattr(bus, '_message_history', [])
             total_signals += len(messages)
 
             for msg in messages:
                 signal = msg.signal
+                
+                # 1. Verificar si es huérfana
                 if not signal.source:
                     orphan_signals += 1
-                    report.issues.append(f"Signal {signal.signal_id} has no source")
+                    report.issues.append(f"Signal {signal.signal_id} ({signal.signal_type}) is orphan (no source)")
+                
+                # 2. Verificar source válido (debe tener event_id o similar)
+                elif not signal.source.event_id and not signal.source.source_file:
+                    invalid_sources += 1
+                    report.issues.append(f"Signal {signal.signal_id} has invalid source metadata")
 
-                # Verify hash integrity if needed
-                if signal.compute_hash() != getattr(signal, 'hash', ''):
-                     # compute_hash is deterministic but 'hash' field might not be set in dict/object unless explicitly done
-                     pass
+                # 3. Verificar integridad del hash
+                current_hash = getattr(signal, 'hash', '')
+                if not current_hash:
+                    # Si no lo tiene guardado (ej: dict), lo calculamos
+                    current_hash = signal.compute_hash()
+                
+                if signal.compute_hash() != current_hash:
+                    corrupted_hashes += 1
+                    report.issues.append(f"Signal {signal.signal_id} has hash mismatch (corrupted)")
 
-        report.stats["total_signals"] = total_signals
-        report.stats["orphan_signals"] = orphan_signals
+        report.stats = {
+            "total_signals": total_signals,
+            "orphan_signals": orphan_signals,
+            "corrupted_hashes": corrupted_hashes,
+            "invalid_sources": invalid_sources
+        }
 
-        if orphan_signals > 0:
+        if orphan_signals > 0 or corrupted_hashes > 0:
             report.status = "FAIL"
+        elif invalid_sources > 0:
+            report.status = "WARN"
 
         return report
