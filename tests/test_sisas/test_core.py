@@ -129,7 +129,7 @@ class TestEventStore:
 
         for i in range(1000):
             event = Event(
-                event_type=EventType. CANONICAL_DATA_LOADED,
+                event_type=EventType.CANONICAL_DATA_LOADED,
                 source_file=f"file_{i}.json"
             )
             store.append(event)

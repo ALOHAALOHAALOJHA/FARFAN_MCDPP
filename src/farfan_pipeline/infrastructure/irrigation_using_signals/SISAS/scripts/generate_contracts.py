@@ -28,7 +28,6 @@ def generate_contracts_from_csv(csv_path: str) -> ContractRegistry:
 
             # Parsear datos
             file_path = row.get("json_file_path", "")
-            stage = row.get("stage", "")
             phase = row.get("phase", "")
             vehicles = parse_list(row.get("vehiculos_str", ""))
             consumers = parse_list(row.get("consumidores_str", ""))
