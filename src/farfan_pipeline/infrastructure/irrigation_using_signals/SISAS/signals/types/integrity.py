@@ -3,7 +3,6 @@
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Set
 from enum import Enum
-from datetime import datetime
 
 from ...core.signal import Signal, SignalCategory, SignalContext, SignalSource, SignalConfidence
 
