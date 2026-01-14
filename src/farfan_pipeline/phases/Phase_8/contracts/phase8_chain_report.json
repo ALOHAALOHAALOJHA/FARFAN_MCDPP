@@ -1,0 +1,250 @@
+{
+  "phase_id": "8",
+  "phase_name": "Recommendation Engine",
+  "phase_dir": "src/farfan_pipeline/phases/Phase_8",
+  "phase_prefix": "phase8",
+  "timestamp": "2026-01-13T22:58:23.355116+00:00",
+  "audit_version": "3.0.0-STRICT",
+  "summary": {
+    "total_files": 27,
+    "files_in_chain": 21,
+    "orphan_files": 17,
+    "circular_dependencies": 0,
+    "validation_status": "FAIL"
+  },
+  "dependency_graph": {
+    "description": "Directed acyclic graph of internal module imports",
+    "nodes": [
+      "phase8_10_00_schema_validation",
+      "phase8_20_00_recommendation_engine",
+      "phase8_20_03_template_compiler",
+      "phase8_20_01_recommendation_engine_adapter",
+      "phase8_30_00_signal_enriched_recommendations",
+      "phase8_20_02_generic_rule_engine",
+      "phase8_00_00_data_models",
+      "__init__",
+      "interfaces.phase8_10_00_interface_validator",
+      "interfaces.__init__",
+      "contracts.phase8_mission_contract",
+      "contracts.phase8_output_contract",
+      "contracts.phase8_input_contract",
+      "primitives.PHASE_8_ENUMS",
+      "primitives.phase8_00_00_phase_8_enums",
+      "primitives.phase8_00_00_phase_8_types",
+      "primitives.phase8_10_00_phase_8_types",
+      "primitives.phase8_10_00_phase_8_constants",
+      "primitives.phase8_10_00_phase_8_enums",
+      "primitives.phase8_00_00_phase_8_constants",
+      "primitives.PHASE_8_CONSTANTS",
+      "primitives.__init__",
+      "primitives.PHASE_8_TYPES",
+      "interphase.interface_validator",
+      "interphase.__init__",
+      "tests.__init__"
+    ],
+    "edges": [
+      {
+        "from": "phase8_10_00_schema_validation",
+        "to": "phase8_00_00_data_models"
+      },
+      {
+        "from": "phase8_20_02_generic_rule_engine",
+        "to": "phase8_00_00_data_models"
+      },
+      {
+        "from": "__init__",
+        "to": "phase8_20_01_recommendation_engine_adapter"
+      },
+      {
+        "from": "__init__",
+        "to": "phase8_20_00_recommendation_engine"
+      },
+      {
+        "from": "__init__",
+        "to": "phase8_30_00_signal_enriched_recommendations"
+      }
+    ]
+  },
+  "topological_order": [
+    "__init__",
+    "contracts.phase8_input_contract",
+    "contracts.phase8_mission_contract",
+    "contracts.phase8_output_contract",
+    "interfaces.__init__",
+    "interfaces.phase8_10_00_interface_validator",
+    "interphase.__init__",
+    "interphase.interface_validator",
+    "phase8_10_00_schema_validation",
+    "phase8_20_02_generic_rule_engine",
+    "phase8_20_03_template_compiler",
+    "primitives.PHASE_8_CONSTANTS",
+    "primitives.PHASE_8_ENUMS",
+    "primitives.PHASE_8_TYPES",
+    "primitives.__init__",
+    "primitives.phase8_00_00_phase_8_constants",
+    "primitives.phase8_00_00_phase_8_enums",
+    "primitives.phase8_00_00_phase_8_types",
+    "primitives.phase8_10_00_phase_8_constants",
+    "primitives.phase8_10_00_phase_8_enums",
+    "primitives.phase8_10_00_phase_8_types",
+    "tests.__init__",
+    "tests.phase8_10_00_generative_testing",
+    "phase8_00_00_data_models",
+    "phase8_20_00_recommendation_engine",
+    "phase8_20_01_recommendation_engine_adapter",
+    "phase8_30_00_signal_enriched_recommendations"
+  ],
+  "topological_analysis": {
+    "description": "Topological ordering based on actual import dependencies",
+    "layers": [
+      {
+        "layer": 0,
+        "modules": [
+          "__init__",
+          "contracts.phase8_input_contract",
+          "contracts.phase8_mission_contract",
+          "contracts.phase8_output_contract",
+          "interfaces.__init__",
+          "interfaces.phase8_10_00_interface_validator",
+          "interphase.__init__",
+          "interphase.interface_validator",
+          "phase8_10_00_schema_validation",
+          "phase8_20_02_generic_rule_engine",
+          "phase8_20_03_template_compiler",
+          "primitives.PHASE_8_CONSTANTS",
+          "primitives.PHASE_8_ENUMS",
+          "primitives.PHASE_8_TYPES",
+          "primitives.__init__",
+          "primitives.phase8_00_00_phase_8_constants",
+          "primitives.phase8_00_00_phase_8_enums",
+          "primitives.phase8_00_00_phase_8_types",
+          "primitives.phase8_10_00_phase_8_constants",
+          "primitives.phase8_10_00_phase_8_enums",
+          "primitives.phase8_10_00_phase_8_types",
+          "tests.__init__",
+          "tests.phase8_10_00_generative_testing"
+        ]
+      },
+      {
+        "layer": 1,
+        "modules": [
+          "phase8_00_00_data_models",
+          "phase8_20_00_recommendation_engine",
+          "phase8_20_01_recommendation_engine_adapter",
+          "phase8_30_00_signal_enriched_recommendations"
+        ]
+      }
+    ]
+  },
+  "orphan_files": [
+    {
+      "module": "phase8_10_00_schema_validation",
+      "path": "phase8_10_00_schema_validation.py",
+      "has_outgoing": true,
+      "has_incoming": false
+    },
+    {
+      "module": "phase8_20_03_template_compiler",
+      "path": "phase8_20_03_template_compiler.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "phase8_20_02_generic_rule_engine",
+      "path": "phase8_20_02_generic_rule_engine.py",
+      "has_outgoing": true,
+      "has_incoming": false
+    },
+    {
+      "module": "interfaces.phase8_10_00_interface_validator",
+      "path": "interfaces/phase8_10_00_interface_validator.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "contracts.phase8_mission_contract",
+      "path": "contracts/phase8_mission_contract.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "contracts.phase8_output_contract",
+      "path": "contracts/phase8_output_contract.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "contracts.phase8_input_contract",
+      "path": "contracts/phase8_input_contract.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "primitives.PHASE_8_ENUMS",
+      "path": "primitives/PHASE_8_ENUMS.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "primitives.phase8_00_00_phase_8_enums",
+      "path": "primitives/phase8_00_00_phase_8_enums.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "primitives.phase8_00_00_phase_8_types",
+      "path": "primitives/phase8_00_00_phase_8_types.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "primitives.phase8_10_00_phase_8_types",
+      "path": "primitives/phase8_10_00_phase_8_types.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "primitives.phase8_10_00_phase_8_constants",
+      "path": "primitives/phase8_10_00_phase_8_constants.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "primitives.phase8_10_00_phase_8_enums",
+      "path": "primitives/phase8_10_00_phase_8_enums.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "primitives.phase8_00_00_phase_8_constants",
+      "path": "primitives/phase8_00_00_phase_8_constants.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "primitives.PHASE_8_CONSTANTS",
+      "path": "primitives/PHASE_8_CONSTANTS.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "primitives.PHASE_8_TYPES",
+      "path": "primitives/PHASE_8_TYPES.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    },
+    {
+      "module": "interphase.interface_validator",
+      "path": "interphase/interface_validator.py",
+      "has_outgoing": false,
+      "has_incoming": false
+    }
+  ],
+  "circular_dependencies": [],
+  "label_position_mismatches": [],
+  "golden_rule_compliance": {
+    "orphans_eliminated": false,
+    "cycles_eliminated": true,
+    "status": "NON_COMPLIANT"
+  }
+}

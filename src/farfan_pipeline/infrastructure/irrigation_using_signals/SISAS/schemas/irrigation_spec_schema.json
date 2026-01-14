@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://sisas.farfan.pipeline/schemas/irrigation_spec_schema.json",
+  "title": "SISAS Irrigation Specification Schema",
+  "description": "JSON Schema for validating irrigation specification from sabana CSV",
+  "type": "object",
+  "required": ["json_file_path", "stage", "phase", "irrigability_bucket"],
+  "properties": {
+    "json_file_path": {
+      "type": "string",
+      "description": "Path to the JSON canonical file"
+    },
+    "stage": {
+      "type": "string",
+      "description": "Stage designation (phase_0, phase_1, etc., or External)"
+    },
+    "phase": {
+      "type": "string",
+      "description": "Phase designation (Phase_0, Phase_1, etc., or N/A)"
+    },
+    "vehiculos_str": {
+      "type": "string",
+      "description": "Comma-separated list of vehicles or NINGUNO"
+    },
+    "vehiculo_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of vehicles"
+    },
+    "consumidores_str": {
+      "type": "string",
+      "description": "Comma-separated list of consumers or NINGUNO"
+    },
+    "consumidor_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of consumers"
+    },
+    "irrigability_bucket": {
+      "type": "string",
+      "enum": ["irrigable_now", "not_irrigable_yet", "definitely_not"],
+      "description": "Irrigation readiness status"
+    },
+    "tiene_vehiculo": {
+      "type": "boolean",
+      "description": "Whether file has vehicle assigned"
+    },
+    "tiene_consumidor": {
+      "type": "boolean",
+      "description": "Whether file has consumer assigned"
+    },
+    "bloqueado_por_valor": {
+      "type": "boolean",
+      "description": "Whether blocked by added_value=MARGINAL"
+    },
+    "gaps_str": {
+      "type": "string",
+      "description": "Comma-separated list of gaps"
+    },
+    "accion_recomendada": {
+      "type": "string",
+      "description": "Recommended action to resolve gaps"
+    },
+    "added_value": {
+      "type": "string",
+      "enum": ["YES", "MARGINAL"],
+      "description": "Whether file adds value to system"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional notes about the file"
+    },
+    "consumer_scope": {
+      "type": "string",
+      "description": "Scope designation (Phase_0, Cross-Phase, External)"
+    },
+    "file_exists": {
+      "type": "boolean",
+      "description": "Whether the file physically exists"
+    },
+    "file_bytes": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "File size in bytes"
+    }
+  },
+  "additionalProperties": false
+}

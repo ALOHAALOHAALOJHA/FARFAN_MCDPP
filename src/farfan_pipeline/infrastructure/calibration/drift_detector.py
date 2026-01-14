@@ -59,9 +59,6 @@ _MINOR_DRIFT_THRESHOLD: Final[float] = 0.10
 _MODERATE_DRIFT_THRESHOLD: Final[float] = 0.30
 _SIGNIFICANT_DRIFT_THRESHOLD: Final[float] = 0.50
 
-# Contradiction penalty (applied when parameters conflict)
-_CONTRADICTION_PENALTY_MULTIPLIER: Final[float] = 1.5
-
 # Coverage penalty (applied when extraction coverage is low)
 _COVERAGE_PENALTY_THRESHOLD: Final[float] = 0.85
 

@@ -35,8 +35,6 @@ from typing import Final
 
 from .method_binding_validator import MethodBindingSet
 
-logger = logging.getLogger(__name__)
-
 
 # =============================================================================
 # CONSTANTS

@@ -66,7 +66,7 @@ from .type_defaults import (
 from .unit_of_analysis import UnitOfAnalysis
 
 logger = logging.getLogger(__name__)
-
+logger.debug("Calibration regime module loaded", extra={"module": __name__})
 
 # =============================================================================
 # CONSTANTS - VALIDITY WINDOWS
@@ -82,7 +82,6 @@ _PHASE1_MAX_VALIDITY_DAYS: Final[int] = 180  # 6 months
 # Phase 2: Longer validity for interaction-level calibration
 # Rationale: Epistemic constraints and fusion strategies are more stable
 _PHASE2_DEFAULT_VALIDITY_DAYS: Final[int] = 365  # 1 year
-_PHASE2_MIN_VALIDITY_DAYS: Final[int] = 180  # 6 months
 _PHASE2_MAX_VALIDITY_DAYS: Final[int] = 730  # 2 years
 
 # Evidence paths
