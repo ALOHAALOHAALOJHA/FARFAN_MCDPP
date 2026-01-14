@@ -50,7 +50,7 @@ class TestQuestionAwareArchitecture:
     @pytest.fixture
     def questionnaire_map(self, questionnaire_path: Path):
         """Load questionnaire map."""
-        from farfan_pipeline.phases.Phase_one.phase1_06_00_questionnaire_mapper import load_questionnaire_map
+        from farfan_pipeline.phases.Phase_1.phase1_06_00_questionnaire_mapper import load_questionnaire_map
         return load_questionnaire_map(questionnaire_path)
 
     # ========================================================================
@@ -73,7 +73,7 @@ class TestQuestionAwareArchitecture:
 
     def test_question_map_has_correct_structure(self, questionnaire_map):
         """Verify each question has correct PA×DIM×Q mapping."""
-        from farfan_pipeline.phases.Phase_one.phase1_06_00_questionnaire_mapper import (
+        from farfan_pipeline.phases.Phase_1.phase1_06_00_questionnaire_mapper import (
             NUM_POLICY_AREAS, NUM_DIMENSIONS, QUESTIONS_PER_DIMENSION
         )
 
@@ -95,7 +95,7 @@ class TestQuestionAwareArchitecture:
 
     def test_question_spec_has_required_fields(self, questionnaire_map):
         """Verify each question spec has all required fields."""
-        from farfan_pipeline.phases.Phase_one.phase1_06_00_questionnaire_mapper import QuestionSpec
+        from farfan_pipeline.phases.Phase_1.phase1_06_00_questionnaire_mapper import QuestionSpec
 
         for question_id, spec in questionnaire_map.questions_by_id.items():
             assert isinstance(spec, QuestionSpec), f"{question_id} should be QuestionSpec"
@@ -114,7 +114,7 @@ class TestQuestionAwareArchitecture:
 
     def test_chunk_model_has_question_fields(self):
         """Verify Chunk model has question-aware fields."""
-        from farfan_pipeline.phases.Phase_one.phase1_03_00_models import Chunk
+        from farfan_pipeline.phases.Phase_1.phase1_03_00_models import Chunk
 
         chunk = Chunk(
             chunk_id="CHUNK-PA01DIM01-Q1",
@@ -138,7 +138,7 @@ class TestQuestionAwareArchitecture:
 
     def test_phase1_constants_updated_for_300_chunks(self):
         """Verify Phase 1 constants reflect 300 chunk architecture."""
-        from farfan_pipeline.phases.Phase_one.PHASE_1_CONSTANTS import (
+        from farfan_pipeline.phases.Phase_1.PHASE_1_CONSTANTS import (
             TOTAL_CHUNK_COMBINATIONS,
             TOTAL_CHUNK_COMBINATIONS_LEGACY,
             QUESTIONS_PER_DIMENSION,
@@ -181,7 +181,7 @@ class TestQuestionAwareArchitecture:
 
     def test_sp4_question_aware_imports(self):
         """Verify SP4 question-aware module can be imported."""
-        from farfan_pipeline.phases.Phase_one import phase1_07_00_sp4_question_aware as sp4_module
+        from farfan_pipeline.phases.Phase_1 import phase1_07_00_sp4_question_aware as sp4_module
 
         assert hasattr(sp4_module, 'execute_sp4_question_aware'), (
             "SP4 module should have execute_sp4_question_aware function"
@@ -196,7 +196,7 @@ class TestQuestionAwareArchitecture:
     def test_sp4_question_aware_signature(self):
         """Verify SP4 question-aware function has correct signature."""
         import inspect
-        from farfan_pipeline.phases.Phase_one.phase1_07_00_sp4_question_aware import execute_sp4_question_aware
+        from farfan_pipeline.phases.Phase_1.phase1_07_00_sp4_question_aware import execute_sp4_question_aware
 
         sig = inspect.signature(execute_sp4_question_aware)
         params = list(sig.parameters.keys())
@@ -222,7 +222,7 @@ class TestQuestionAwareArchitecture:
 
     def test_parse_question_id(self):
         """Verify question ID parsing works correctly."""
-        from farfan_pipeline.phases.Phase_one.phase1_06_00_questionnaire_mapper import parse_question_id
+        from farfan_pipeline.phases.Phase_1.phase1_06_00_questionnaire_mapper import parse_question_id
 
         test_cases = [
             ("Q001", ("PA01", "DIM01", 1)),
@@ -242,7 +242,7 @@ class TestQuestionAwareArchitecture:
 
     def test_create_chunk_id_for_question(self):
         """Verify chunk ID creation works correctly."""
-        from farfan_pipeline.phases.Phase_one.phase1_06_00_questionnaire_mapper import create_chunk_id_for_question
+        from farfan_pipeline.phases.Phase_1.phase1_06_00_questionnaire_mapper import create_chunk_id_for_question
 
         test_cases = [
             (("PA01", "DIM01", 1), "CHUNK-PA01DIM01-Q1"),
@@ -319,7 +319,7 @@ class TestQuestionAwareArchitecture:
 
     def test_signal_enrichment_loads_questionnaire_patterns(self, questionnaire_path):
         """Verify signal enrichment can load patterns from questionnaire."""
-        from farfan_pipeline.phases.Phase_one.phase1_11_00_signal_enrichment import (
+        from farfan_pipeline.phases.Phase_1.phase1_11_00_signal_enrichment import (
             load_questionnaire_patterns,
             load_causal_patterns_from_questionnaire,
         )

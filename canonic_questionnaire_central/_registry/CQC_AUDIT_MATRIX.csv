@@ -1,0 +1,476 @@
+json_file_path,consumer,consumer_scope,scope_alignment,signalt_irrigation_source,consumer_ready,redundant_with,added_value,quality_risk,notes
+_build/integrity_report.json,BuildSystem.generate_artifacts,External,PARTIAL,None,YES,None,MARGINAL,MEDIUM,Can be regenerated or is atomic unit
+_registry/EMPIRICAL_CORPUS_INDEX.json,EmpiricalExtractor.corpus_lookup,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/SISAS_IRRIGATION_SPEC.json,Documentation.SISAS,External,YES,None,YES,None,MARGINAL,MEDIUM,Can be regenerated or is atomic unit
+_registry/capabilities/capability_definitions.json,CQCLoader.route_signal,Cross-Phase,YES,Signalt.Routing,YES,None,YES,LOW,
+_registry/capabilities/consumer_capability_declarations.json,CQCLoader.route_signal,Cross-Phase,YES,Signalt.Routing,YES,None,YES,LOW,
+_registry/capabilities/signal_capability_map.json,CQCLoader.route_signal,Cross-Phase,YES,Signalt.Routing,YES,None,YES,LOW,
+_registry/entities/corpus_empirico_calibracion_extractores.json,Phase_3.NormativeComplianceValidator,Phase_3,YES,Signalt.EntityExtraction,YES,None,YES,LOW,
+_registry/entities/corpus_empirico_integrado.json,Phase_3.NormativeComplianceValidator,Phase_3,YES,Signalt.EntityExtraction,YES,None,YES,LOW,
+_registry/entities/corpus_empirico_normatividad.json,Phase_3.NormativeComplianceValidator,Phase_3,YES,Signalt.EntityExtraction,YES,None,YES,LOW,
+_registry/entities/index.json,Phase_3.NormativeComplianceValidator,Phase_3,YES,Signalt.EntityExtraction,YES,None,YES,LOW,
+_registry/entities/institutions.json,Phase_3.NormativeComplianceValidator,Phase_3,YES,Signalt.EntityExtraction,YES,None,YES,LOW,
+_registry/entities/institutions_expanded.json,Phase_3.NormativeComplianceValidator,Phase_3,YES,Signalt.EntityExtraction,YES,None,YES,LOW,
+_registry/entities/international.json,Phase_3.NormativeComplianceValidator,Phase_3,YES,Signalt.EntityExtraction,YES,None,YES,LOW,
+_registry/entities/normative.json,Phase_3.NormativeComplianceValidator,Phase_3,YES,Signalt.EntityExtraction,YES,None,YES,LOW,
+_registry/entities/normative_compliance.json,Phase_3.NormativeComplianceValidator,Phase_3,YES,Signalt.EntityExtraction,YES,None,YES,LOW,
+_registry/entities/policy_areas_canonical.json,Phase_3.NormativeComplianceValidator,Phase_3,YES,Signalt.EntityExtraction,YES,None,YES,LOW,
+_registry/entities/populations.json,Phase_3.NormativeComplianceValidator,Phase_3,YES,Signalt.EntityExtraction,YES,None,YES,LOW,
+_registry/entities/territorial.json,Phase_3.NormativeComplianceValidator,Phase_3,YES,Signalt.EntityExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA01.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA01_mujeres_genero.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA02.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA02_violencia_conflicto.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA03.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA03_ambiente_cambio_climatico.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA04.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA04_derechos_economicos_sociales_culturales.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA05.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA05_victimas_paz.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA06.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA06_ninez_adolescencia_juventud.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA07.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA07_tierras_territorios.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA08.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA08_lideres_defensores.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA09.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA09_crisis_PPL.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA10.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/by_policy_area/PA10_migracion.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/keywords/index.json,IndustrialPolicyProcessor._detect_policy_areas,Phase_2,PARTIAL,Signalt.KeywordExtraction,YES,None,YES,LOW,
+_registry/membership_criteria/MC01_structural_markers.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/membership_criteria/MC02_quantitative_triplets.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/membership_criteria/MC03_normative_references.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/membership_criteria/MC04_programmatic_hierarchy.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/membership_criteria/MC05_financial_chains.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/membership_criteria/MC06_population_disaggregation.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/membership_criteria/MC07_temporal_markers.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/membership_criteria/MC08_causal_verbs.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/membership_criteria/MC09_institutional_network.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/membership_criteria/MC10_semantic_relationships.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/membership_criteria/_bindings/mc_to_dimensions.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/membership_criteria/_bindings/mc_to_questions.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/membership_criteria/_bindings/mc_to_scoring.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/membership_criteria/_calibration/extractor_calibration.json,EmpiricalExtractorBase._load_membership_criteria,Phase_1,YES,Signalt.Extraction,YES,None,YES,LOW,
+_registry/patterns/MASTER_INDEX.json,QuestionnaireSignalRegistry._extract_patterns_for_question,Cross-Phase,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/CAUSAL_CONNECTOR.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/CAUSAL_OUTCOME.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/DESCRIPCION.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/FUENTE_OFICIAL.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/GENERAL.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/INDICADOR.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/INSTITUCIONAL.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/INSTRUMENTO.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/MECANISMO_COMPLETO.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/MEDICION.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/POBLACION.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/PRODUCTO_TIPO.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/TEMPORAL.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/TERRITORIAL.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_category/UNIDAD_MEDIDA.json,QuestionnaireSignalRegistry.get_patterns_by_category,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_context/PDET.json,QuestionnaireSignalRegistry.get_context_patterns,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_dimension/DIM01.json,QuestionnaireSignalRegistry.get_patterns_by_dimension,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_dimension/DIM02.json,QuestionnaireSignalRegistry.get_patterns_by_dimension,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_dimension/DIM03.json,QuestionnaireSignalRegistry.get_patterns_by_dimension,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_dimension/DIM04.json,QuestionnaireSignalRegistry.get_patterns_by_dimension,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_dimension/DIM05.json,QuestionnaireSignalRegistry.get_patterns_by_dimension,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_dimension/DIM06.json,QuestionnaireSignalRegistry.get_patterns_by_dimension,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_policy_area/PA01.json,QuestionnaireSignalRegistry.get_patterns_by_pa,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/patterns/by_policy_area/PA02.json,QuestionnaireSignalRegistry.get_patterns_by_pa,Phase_2,YES,Signalt.PatternExtraction,YES,None,YES,LOW,
+_registry/questionnaire_index.json,CanonicalQuestionnaireResolver._assemble,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+_registry/questions/integration_map.json,CQCLoader.route_signal,Cross-Phase,YES,Signalt.Routing,YES,None,YES,LOW,
+_registry/questions/macro_question.json,Phase_8.MacroAggregator,Phase_8,YES,Signalt.Aggregation,YES,None,YES,LOW,
+_registry/questions/meso_questions.json,Phase_7.MesoAggregator,Phase_7,YES,Signalt.Aggregation,YES,None,YES,LOW,
+_views/capability_coverage_matrix.json,CQCLoader.get_view,Cross-Phase,PARTIAL,Signalt.ViewGeneration,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+_views/cc_pa_matrix.json,CQCLoader.get_view,Cross-Phase,PARTIAL,Signalt.ViewGeneration,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+_views/keyword_pa_matrix.json,CQCLoader.get_view,Cross-Phase,PARTIAL,Signalt.ViewGeneration,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+_views/mc_question_matrix.json,CQCLoader.get_view,Cross-Phase,PARTIAL,Signalt.ViewGeneration,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+_views/pattern_question_matrix.json,CQCLoader.get_view,Cross-Phase,PARTIAL,Signalt.ViewGeneration,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+_views/questionnaire_flat.json,CQCLoader.get_view,Cross-Phase,PARTIAL,Signalt.ViewGeneration,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+_views/signal_flow_graph.json,CQCLoader.get_view,Cross-Phase,PARTIAL,Signalt.ViewGeneration,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+clusters/CL01_seguridad_paz/aggregation_rules.json,CanonicalQuestionnaireResolver._load_clusters,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+clusters/CL01_seguridad_paz/metadata.json,CanonicalQuestionnaireResolver._load_clusters,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+clusters/CL01_seguridad_paz/questions.json,CanonicalQuestionnaireResolver._load_clusters,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+clusters/CL02_grupos_poblacionales/aggregation_rules.json,CanonicalQuestionnaireResolver._load_clusters,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+clusters/CL02_grupos_poblacionales/metadata.json,CanonicalQuestionnaireResolver._load_clusters,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+clusters/CL02_grupos_poblacionales/questions.json,CanonicalQuestionnaireResolver._load_clusters,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+clusters/CL03_territorio_ambiente/aggregation_rules.json,CanonicalQuestionnaireResolver._load_clusters,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+clusters/CL03_territorio_ambiente/contextual_enrichment.json,CanonicalQuestionnaireResolver._load_clusters,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+clusters/CL03_territorio_ambiente/metadata.json,CanonicalQuestionnaireResolver._load_clusters,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+clusters/CL03_territorio_ambiente/questions.json,CanonicalQuestionnaireResolver._load_clusters,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+clusters/CL04_derechos_sociales_crisis/aggregation_rules.json,CanonicalQuestionnaireResolver._load_clusters,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+clusters/CL04_derechos_sociales_crisis/metadata.json,CanonicalQuestionnaireResolver._load_clusters,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+clusters/CL04_derechos_sociales_crisis/questions.json,CanonicalQuestionnaireResolver._load_clusters,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+colombia_context/colombia_context.json,Phase_3.PDETContextProvider,Phase_3,YES,Signalt.ContextEnrichment,YES,None,YES,LOW,
+colombia_context/municipal_governance.json,Phase_3.PDETContextProvider,Phase_3,YES,Signalt.ContextEnrichment,YES,None,YES,LOW,
+colombia_context/pdet_municipalities.json,Phase_3.PDETContextProvider,Phase_3,YES,Signalt.ContextEnrichment,YES,None,YES,LOW,
+config/canonical_notation.json,CanonicalQuestionnaireResolver._assemble,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+cross_cutting/cross_cutting_themes.json,CanonicalQuestionnaireResolver._load_cross_cutting,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+cross_cutting/theme_integration_framework.json,CanonicalQuestionnaireResolver._load_cross_cutting,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+cross_cutting/themes/CC_COHERENCIA_NORMATIVA/detection_rules.json,CanonicalQuestionnaireResolver._load_cross_cutting,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+cross_cutting/themes/CC_CONTEXTO_PDET/detection_rules.json,CanonicalQuestionnaireResolver._load_cross_cutting,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+cross_cutting/themes/CC_ENFOQUE_DIFERENCIAL/detection_rules.json,CanonicalQuestionnaireResolver._load_cross_cutting,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+cross_cutting/themes/CC_ENTORNO_TERRITORIAL/detection_rules.json,CanonicalQuestionnaireResolver._load_cross_cutting,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+cross_cutting/themes/CC_INTEROPERABILIDAD/detection_rules.json,CanonicalQuestionnaireResolver._load_cross_cutting,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+cross_cutting/themes/CC_MECANISMOS_SEGUIMIENTO/detection_rules.json,CanonicalQuestionnaireResolver._load_cross_cutting,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+cross_cutting/themes/CC_PARTICIPACION_CIUDADANA/detection_rules.json,CanonicalQuestionnaireResolver._load_cross_cutting,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+cross_cutting/themes/CC_PERSPECTIVA_GENERO/detection_rules.json,CanonicalQuestionnaireResolver._load_cross_cutting,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+cross_cutting/themes/CC_SOSTENIBILIDAD_PRESUPUESTAL/detection_rules.json,CanonicalQuestionnaireResolver._load_cross_cutting,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM01_INSUMOS/metadata.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM01_INSUMOS/pdet_context.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM01_INSUMOS/questions.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM01_INSUMOS/questions/Q001.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q002.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q003.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q004.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q005.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q031.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q032.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q033.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q034.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q035.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q061.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q062.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q063.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q064.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q065.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q091.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q092.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q093.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q094.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q095.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q121.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q122.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q123.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q124.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q125.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q151.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q152.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q153.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q154.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q155.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q181.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q182.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q183.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q184.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q185.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q211.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q212.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q213.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q214.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q215.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q241.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q242.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q243.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q244.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q245.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q271.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q272.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q273.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q274.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM01_INSUMOS/questions/Q275.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/metadata.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM02_ACTIVIDADES/pdet_context.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM02_ACTIVIDADES/questions.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM02_ACTIVIDADES/questions/Q006.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q007.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q008.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q009.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q010.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q036.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q037.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q038.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q039.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q040.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q066.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q067.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q068.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q069.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q070.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q096.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q097.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q098.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q099.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q100.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q126.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q127.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q128.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q129.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q130.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q156.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q157.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q158.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q159.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q160.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q186.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q187.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q188.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q189.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q190.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q216.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q217.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q218.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q219.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q220.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q246.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q247.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q248.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q249.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q250.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q276.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q277.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q278.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q279.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM02_ACTIVIDADES/questions/Q280.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/metadata.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM03_PRODUCTOS/pdet_context.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM03_PRODUCTOS/questions.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM03_PRODUCTOS/questions/Q011.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q012.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q013.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q014.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q015.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q041.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q042.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q043.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q044.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q045.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q071.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q072.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q073.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q074.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q075.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q101.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q102.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q103.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q104.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q105.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q131.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q132.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q133.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q134.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q135.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q161.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q162.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q163.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q164.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q165.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q191.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q192.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q193.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q194.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q195.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q221.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q222.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q223.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q224.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q225.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q251.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q252.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q253.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q254.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q255.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q281.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q282.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q283.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q284.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM03_PRODUCTOS/questions/Q285.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/metadata.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM04_RESULTADOS/pdet_context.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM04_RESULTADOS/questions.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM04_RESULTADOS/questions/Q016.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q017.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q018.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q019.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q020.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q046.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q047.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q048.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q049.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q050.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q076.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q077.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q078.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q079.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q080.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q106.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q107.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q108.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q109.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q110.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q136.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q137.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q138.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q139.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q140.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q166.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q167.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q168.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q169.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q170.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q196.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q197.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q198.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q199.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q200.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q226.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q227.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q228.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q229.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q230.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q256.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q257.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q258.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q259.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q260.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q286.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q287.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q288.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q289.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM04_RESULTADOS/questions/Q290.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/metadata.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM05_IMPACTOS/pdet_context.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM05_IMPACTOS/questions.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM05_IMPACTOS/questions/Q021.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q022.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q023.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q024.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q025.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q051.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q052.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q053.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q054.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q055.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q081.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q082.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q083.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q084.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q085.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q111.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q112.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q113.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q114.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q115.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q141.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q142.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q143.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q144.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q145.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q171.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q172.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q173.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q174.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q175.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q201.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q202.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q203.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q204.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q205.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q231.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q232.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q233.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q234.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q235.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q261.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q262.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q263.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q264.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q265.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q291.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q292.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q293.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q294.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM05_IMPACTOS/questions/Q295.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/metadata.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM06_CAUSALIDAD/pdet_context.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM06_CAUSALIDAD/questions.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+dimensions/DIM06_CAUSALIDAD/questions/Q026.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q027.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q028.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q029.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q030.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q056.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q057.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q058.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q059.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q060.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q086.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q087.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q088.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q089.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q090.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q116.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q117.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q118.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q119.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q120.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q146.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q147.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q148.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q149.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q150.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q176.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q177.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q178.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q179.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q180.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q206.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q207.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q208.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q209.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q210.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q236.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q237.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q238.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q239.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q240.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q266.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q267.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q268.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q269.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q270.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q296.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q297.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q298.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q299.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+dimensions/DIM06_CAUSALIDAD/questions/Q300.json,CanonicalQuestionnaireResolver._load_dimensions,Phase_0,YES,Signalt.Assembly,YES,None,MARGINAL,LOW,Can be regenerated or is atomic unit
+governance/governance.json,CanonicalQuestionnaireResolver._load_governance,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA01_mujeres_genero/keywords.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,"['policy_areas/PA02_violencia_conflicto/keywords.json', 'policy_areas/PA03_ambiente_cambio_climatico/keywords.json', 'policy_areas/PA04_derechos_economicos_sociales_culturales/keywords.json', 'policy_areas/PA05_victimas_paz/keywords.json', 'policy_areas/PA06_ninez_adolescencia_juventud/keywords.json', 'policy_areas/PA07_tierras_territorios/keywords.json', 'policy_areas/PA08_lideres_defensores/keywords.json', 'policy_areas/PA09_crisis_PPL/keywords.json', 'policy_areas/PA10_migracion/keywords.json']",YES,MEDIUM,Potential duplicate of 9 file(s)
+policy_areas/PA01_mujeres_genero/metadata.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA01_mujeres_genero/questions.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA02_violencia_conflicto/keywords.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,"['policy_areas/PA01_mujeres_genero/keywords.json', 'policy_areas/PA03_ambiente_cambio_climatico/keywords.json', 'policy_areas/PA04_derechos_economicos_sociales_culturales/keywords.json', 'policy_areas/PA05_victimas_paz/keywords.json', 'policy_areas/PA06_ninez_adolescencia_juventud/keywords.json', 'policy_areas/PA07_tierras_territorios/keywords.json', 'policy_areas/PA08_lideres_defensores/keywords.json', 'policy_areas/PA09_crisis_PPL/keywords.json', 'policy_areas/PA10_migracion/keywords.json']",YES,MEDIUM,Potential duplicate of 9 file(s)
+policy_areas/PA02_violencia_conflicto/metadata.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA02_violencia_conflicto/questions.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA03_ambiente_cambio_climatico/keywords.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,"['policy_areas/PA01_mujeres_genero/keywords.json', 'policy_areas/PA02_violencia_conflicto/keywords.json', 'policy_areas/PA04_derechos_economicos_sociales_culturales/keywords.json', 'policy_areas/PA05_victimas_paz/keywords.json', 'policy_areas/PA06_ninez_adolescencia_juventud/keywords.json', 'policy_areas/PA07_tierras_territorios/keywords.json', 'policy_areas/PA08_lideres_defensores/keywords.json', 'policy_areas/PA09_crisis_PPL/keywords.json', 'policy_areas/PA10_migracion/keywords.json']",YES,MEDIUM,Potential duplicate of 9 file(s)
+policy_areas/PA03_ambiente_cambio_climatico/metadata.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA03_ambiente_cambio_climatico/questions.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA04_derechos_economicos_sociales_culturales/keywords.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,"['policy_areas/PA01_mujeres_genero/keywords.json', 'policy_areas/PA02_violencia_conflicto/keywords.json', 'policy_areas/PA03_ambiente_cambio_climatico/keywords.json', 'policy_areas/PA05_victimas_paz/keywords.json', 'policy_areas/PA06_ninez_adolescencia_juventud/keywords.json', 'policy_areas/PA07_tierras_territorios/keywords.json', 'policy_areas/PA08_lideres_defensores/keywords.json', 'policy_areas/PA09_crisis_PPL/keywords.json', 'policy_areas/PA10_migracion/keywords.json']",YES,MEDIUM,Potential duplicate of 9 file(s)
+policy_areas/PA04_derechos_economicos_sociales_culturales/metadata.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA04_derechos_economicos_sociales_culturales/questions.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA05_victimas_paz/keywords.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,"['policy_areas/PA01_mujeres_genero/keywords.json', 'policy_areas/PA02_violencia_conflicto/keywords.json', 'policy_areas/PA03_ambiente_cambio_climatico/keywords.json', 'policy_areas/PA04_derechos_economicos_sociales_culturales/keywords.json', 'policy_areas/PA06_ninez_adolescencia_juventud/keywords.json', 'policy_areas/PA07_tierras_territorios/keywords.json', 'policy_areas/PA08_lideres_defensores/keywords.json', 'policy_areas/PA09_crisis_PPL/keywords.json', 'policy_areas/PA10_migracion/keywords.json']",YES,MEDIUM,Potential duplicate of 9 file(s)
+policy_areas/PA05_victimas_paz/metadata.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA05_victimas_paz/questions.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA06_ninez_adolescencia_juventud/keywords.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,"['policy_areas/PA01_mujeres_genero/keywords.json', 'policy_areas/PA02_violencia_conflicto/keywords.json', 'policy_areas/PA03_ambiente_cambio_climatico/keywords.json', 'policy_areas/PA04_derechos_economicos_sociales_culturales/keywords.json', 'policy_areas/PA05_victimas_paz/keywords.json', 'policy_areas/PA07_tierras_territorios/keywords.json', 'policy_areas/PA08_lideres_defensores/keywords.json', 'policy_areas/PA09_crisis_PPL/keywords.json', 'policy_areas/PA10_migracion/keywords.json']",YES,MEDIUM,Potential duplicate of 9 file(s)
+policy_areas/PA06_ninez_adolescencia_juventud/metadata.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA06_ninez_adolescencia_juventud/questions.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA07_tierras_territorios/keywords.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,"['policy_areas/PA01_mujeres_genero/keywords.json', 'policy_areas/PA02_violencia_conflicto/keywords.json', 'policy_areas/PA03_ambiente_cambio_climatico/keywords.json', 'policy_areas/PA04_derechos_economicos_sociales_culturales/keywords.json', 'policy_areas/PA05_victimas_paz/keywords.json', 'policy_areas/PA06_ninez_adolescencia_juventud/keywords.json', 'policy_areas/PA08_lideres_defensores/keywords.json', 'policy_areas/PA09_crisis_PPL/keywords.json', 'policy_areas/PA10_migracion/keywords.json']",YES,MEDIUM,Potential duplicate of 9 file(s)
+policy_areas/PA07_tierras_territorios/metadata.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA07_tierras_territorios/questions.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA08_lideres_defensores/keywords.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,"['policy_areas/PA01_mujeres_genero/keywords.json', 'policy_areas/PA02_violencia_conflicto/keywords.json', 'policy_areas/PA03_ambiente_cambio_climatico/keywords.json', 'policy_areas/PA04_derechos_economicos_sociales_culturales/keywords.json', 'policy_areas/PA05_victimas_paz/keywords.json', 'policy_areas/PA06_ninez_adolescencia_juventud/keywords.json', 'policy_areas/PA07_tierras_territorios/keywords.json', 'policy_areas/PA09_crisis_PPL/keywords.json', 'policy_areas/PA10_migracion/keywords.json']",YES,MEDIUM,Potential duplicate of 9 file(s)
+policy_areas/PA08_lideres_defensores/metadata.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA08_lideres_defensores/questions.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA09_crisis_PPL/keywords.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,"['policy_areas/PA01_mujeres_genero/keywords.json', 'policy_areas/PA02_violencia_conflicto/keywords.json', 'policy_areas/PA03_ambiente_cambio_climatico/keywords.json', 'policy_areas/PA04_derechos_economicos_sociales_culturales/keywords.json', 'policy_areas/PA05_victimas_paz/keywords.json', 'policy_areas/PA06_ninez_adolescencia_juventud/keywords.json', 'policy_areas/PA07_tierras_territorios/keywords.json', 'policy_areas/PA08_lideres_defensores/keywords.json', 'policy_areas/PA10_migracion/keywords.json']",YES,MEDIUM,Potential duplicate of 9 file(s)
+policy_areas/PA09_crisis_PPL/metadata.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA09_crisis_PPL/questions.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA10_migracion/keywords.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,"['policy_areas/PA01_mujeres_genero/keywords.json', 'policy_areas/PA02_violencia_conflicto/keywords.json', 'policy_areas/PA03_ambiente_cambio_climatico/keywords.json', 'policy_areas/PA04_derechos_economicos_sociales_culturales/keywords.json', 'policy_areas/PA05_victimas_paz/keywords.json', 'policy_areas/PA06_ninez_adolescencia_juventud/keywords.json', 'policy_areas/PA07_tierras_territorios/keywords.json', 'policy_areas/PA08_lideres_defensores/keywords.json', 'policy_areas/PA09_crisis_PPL/keywords.json']",YES,MEDIUM,Potential duplicate of 9 file(s)
+policy_areas/PA10_migracion/metadata.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+policy_areas/PA10_migracion/questions.json,CanonicalQuestionnaireResolver._load_policy_areas,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+scoring/calibration/empirical_weights.json,CanonicalQuestionnaireResolver._load_scoring,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+scoring/scoring_system.json,CanonicalQuestionnaireResolver._load_scoring,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+semantic/pdet_semantic_enrichment.json,CanonicalQuestionnaireResolver._load_semantic,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+semantic/semantic_config.json,CanonicalQuestionnaireResolver._load_semantic,Phase_0,YES,Signalt.Assembly,YES,None,YES,LOW,
+validations/interdependency_mapping.json,RuntimeValidators,Cross-Phase,YES,Signalt.Validation,YES,None,YES,LOW,
+validations/normalization_report.json,RuntimeValidators,Cross-Phase,YES,Signalt.Validation,YES,None,YES,LOW,
+validations/quality_assurance_test_suite.json,RuntimeValidators,Cross-Phase,YES,Signalt.Validation,YES,None,YES,LOW,
+validations/referential_integrity.json,RuntimeValidators,Cross-Phase,YES,Signalt.Validation,YES,None,YES,LOW,
+validations/validation_templates.json,RuntimeValidators,Cross-Phase,YES,Signalt.Validation,YES,None,YES,LOW,

@@ -55,11 +55,7 @@ RECLASSIFIED_MODULES = {
 # FIXTURES
 # =============================================================================
 
-@pytest.fixture(scope="session")
-def phase1_dir() -> Path:
-    """Get Phase 1 directory path."""
-    repo_root = Path(__file__).parent.parent.parent
-    return repo_root / "src" / "farfan_pipeline" / "phases" / "Phase_1"
+# phase1_dir fixture is provided by conftest.py
 
 
 @pytest.fixture(scope="session")

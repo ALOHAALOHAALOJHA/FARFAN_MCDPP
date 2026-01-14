@@ -6,23 +6,23 @@ Owner Module: Phase 1 CPP Ingestion
 Lifecycle State: ACTIVE
 """
 
+# =============================================================================
+# PYTHON PATH CONFIGURATION - MUST BE FIRST
+# =============================================================================
 import sys
 from pathlib import Path
+
+# Add src to Python path for imports - this must happen before any other imports
+_repo_root = Path(__file__).resolve().parent.parent.parent.parent.parent
+_src_path = _repo_root / "src"
+_src_str = str(_src_path)
+if _src_str not in sys.path:
+    sys.path.insert(0, _src_str)
+
+import tempfile
 from typing import Generator
 
 import pytest
-import tempfile
-
-
-# =============================================================================
-# PYTHON PATH CONFIGURATION
-# =============================================================================
-
-# Add src to Python path for imports
-_repo_root = Path(__file__).resolve().parent.parent.parent.parent.parent
-_src_path = _repo_root / "src"
-if str(_src_path) not in sys.path:
-    sys.path.insert(0, str(_src_path))
 
 
 # =============================================================================
@@ -65,5 +65,13 @@ def sample_smart_chunk_data() -> dict:
 
 @pytest.fixture
 def phase1_dir() -> Path:
-    """Get Phase 1 directory path."""
+    """Get Phase 1 directory path (canonical location)."""
+    # We're in src/farfan_pipeline/phases/Phase_1/tests/
+    # Phase 1 directory is parent
     return Path(__file__).resolve().parent.parent
+
+
+@pytest.fixture
+def repo_root() -> Path:
+    """Get repository root path."""
+    return Path(__file__).resolve().parent.parent.parent.parent.parent

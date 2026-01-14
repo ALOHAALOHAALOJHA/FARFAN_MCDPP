@@ -49,7 +49,7 @@ class TestPhase2InputContract:
         """Test that preconditions are immutable."""
         preconditions = Phase2InputPreconditions()
         assert preconditions.EXPECTED_CHUNK_COUNT == 60
-        assert preconditions.EXPECTED_QUESTION_COUNT == 300
+        assert preconditions.EXPECTED_QUESTION_COUNT == 305  # 300 base + 5 meta questions
         assert preconditions.EXPECTED_METHOD_COUNT == 240
     
     def test_validate_cpp_valid(self):

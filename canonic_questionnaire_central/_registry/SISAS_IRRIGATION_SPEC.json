@@ -6,8 +6,8 @@
       "units": [
         {
           "unit_id": "CORE-001",
-          "file": "canonical_notation.json",
-          "irrigation_path": "resolver.py → _assemble() → assembled_data['canonical_notation']",
+          "file": "config/canonical_notation.json",
+          "irrigation_path": "resolver.py → _assemble() → config/canonical_notation.json",
           "signal": "QuestionnairePort.data['canonical_notation']",
           "consumers": [
             "QuestionnaireSignalRegistry._extract_policy_areas()",
@@ -26,8 +26,8 @@
         },
         {
           "unit_id": "CORE-002",
-          "file": "macro_question.json",
-          "irrigation_path": "resolver.py → _assemble() → assembled_data['blocks']['macro_question']",
+          "file": "_registry/questions/macro_question.json",
+          "irrigation_path": "resolver.py → _assemble() → _registry/questions/macro_question.json",
           "signal": "QuestionnairePort.data['blocks']['macro_question']",
           "consumers": [
             "Phase8Aggregator.aggregate_macro()",
@@ -46,8 +46,8 @@
         },
         {
           "unit_id": "CORE-003",
-          "file": "meso_questions.json",
-          "irrigation_path": "resolver.py → _assemble() → assembled_data['blocks']['meso_questions']",
+          "file": "_registry/questions/meso_questions.json",
+          "irrigation_path": "resolver.py → _assemble() → _registry/questions/meso_questions.json",
           "signal": "QuestionnairePort.data['blocks']['meso_questions']",
           "consumers": [
             "Phase7Aggregator.aggregate_meso()",
@@ -66,8 +66,8 @@
         },
         {
           "unit_id": "CORE-004",
-          "file": "modular_manifest.json",
-          "irrigation_path": "resolver.py → __init__() → self.manifest_path",
+          "file": "config/modular_manifest.json",
+          "irrigation_path": "resolver.py → __init__() → config/modular_manifest.json",
           "signal": "Used by resolver to locate module files (not in QuestionnairePort)",
           "consumers": [
             "CanonicalQuestionnaireResolver._assemble()"
@@ -84,8 +84,8 @@
         },
         {
           "unit_id": "CORE-005",
-          "file": "questionnaire_index.json",
-          "irrigation_path": "resolver.py → _assemble_micro_questions() (índice de lookup)",
+          "file": "_registry/questionnaire_index.json",
+          "irrigation_path": "resolver.py → _assemble_micro_questions() → _registry/questionnaire_index.json",
           "signal": "Intermediate: used to locate question files, not directly in QuestionnairePort",
           "consumers": [
             "CanonicalQuestionnaireResolver._assemble_micro_questions()",

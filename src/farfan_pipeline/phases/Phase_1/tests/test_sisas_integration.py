@@ -14,15 +14,10 @@ import ast
 class TestSISASIntegration:
     """Test SISAS integration in Phase 1."""
 
-    def test_signal_enrichment_module_exists(self):
+    def test_signal_enrichment_module_exists(self, phase1_dir: Path):
         """Verify signal_enrichment module exists."""
         signal_enrichment_path = (
-            Path(__file__).resolve().parent.parent.parent
-            / "src"
-            / "farfan_pipeline"
-            / "phases"
-            / "Phase_1"
-            / "phase1_11_00_signal_enrichment.py"
+            phase1_dir / "phase1_11_00_signal_enrichment.py"
         )
         assert signal_enrichment_path.exists(), "phase1_11_00_signal_enrichment.py must exist"
 
@@ -32,15 +27,10 @@ class TestSISASIntegration:
             size_bytes > 1000
         ), f"phase1_11_00_signal_enrichment.py should be substantial, got {size_bytes} bytes"
 
-    def test_signal_registry_parameter_in_main_function(self):
+    def test_signal_registry_parameter_in_main_function(self, phase1_dir: Path):
         """Verify execute_phase_1_with_full_contract accepts signal_registry."""
         cpp_ingestion_path = (
-            Path(__file__).resolve().parent.parent.parent
-            / "src"
-            / "farfan_pipeline"
-            / "phases"
-            / "Phase_1"
-            / "phase1_13_00_cpp_ingestion.py"
+            phase1_dir / "phase1_13_00_cpp_ingestion.py"
         )
 
         assert cpp_ingestion_path.exists(), "phase1_13_00_cpp_ingestion.py must exist"
@@ -51,17 +41,12 @@ class TestSISASIntegration:
         assert "def execute_phase_1_with_full_contract" in content
         assert "signal_registry" in content, "Function must have signal_registry parameter"
 
-    def test_sp12_irrigation_specification(self):
+    def test_sp12_irrigation_specification(self, phase1_dir: Path):
         """Verify SP12 irrigation specification is documented."""
         from pathlib import Path
 
         readme_path = (
-            Path(__file__).resolve().parent.parent.parent
-            / "src"
-            / "farfan_pipeline"
-            / "phases"
-            / "Phase_1"
-            / "README.md"
+            phase1_dir / "README.md"
         )
 
         assert readme_path.exists(), "README.md must exist"
@@ -73,17 +58,12 @@ class TestSISASIntegration:
         assert "SISAS" in readme_content, "README must document SISAS integration"
         assert "irrigation" in readme_content.lower(), "README must mention irrigation"
 
-    def test_sisas_operation_points_documented(self):
+    def test_sisas_operation_points_documented(self, phase1_dir: Path):
         """Verify SISAS operation points (SP3, SP5, SP10, SP12) are documented."""
         from pathlib import Path
 
         readme_path = (
-            Path(__file__).resolve().parent.parent.parent
-            / "src"
-            / "farfan_pipeline"
-            / "phases"
-            / "Phase_1"
-            / "README.md"
+            phase1_dir / "README.md"
         )
         readme_content = readme_path.read_text()
 
@@ -95,17 +75,12 @@ class TestSISASIntegration:
 class TestSP12IrrigationOutputs:
     """Test SP12 irrigation output specification."""
 
-    def test_irrigation_outputs_documented(self):
+    def test_irrigation_outputs_documented(self, phase1_dir: Path):
         """Verify irrigation outputs are documented in README."""
         from pathlib import Path
 
         readme_path = (
-            Path(__file__).resolve().parent.parent.parent
-            / "src"
-            / "farfan_pipeline"
-            / "phases"
-            / "Phase_1"
-            / "README.md"
+            phase1_dir / "README.md"
         )
         readme_content = readme_path.read_text()
 
