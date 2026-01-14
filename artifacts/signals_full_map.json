@@ -1,0 +1,385 @@
+{
+  "vehicle_consumer_map": [
+    {
+      "vehicle": "signal_consumption",
+      "consumers": [
+        {
+          "consumer_module": "phase0_90_02_bootstrap",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_0/phase0_90_02_bootstrap.py",
+          "phase": "Phase_0"
+        },
+        {
+          "consumer_module": "providers",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_0/primitives/providers.py",
+          "phase": "Phase_0"
+        }
+      ],
+      "assets_loaded": []
+    },
+    {
+      "vehicle": "signal_consumption_integration",
+      "consumers": [
+        {
+          "consumer_module": "phase2_60_00_base_executor_with_contract",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_60_00_base_executor_with_contract.py",
+          "phase": "Phase_2"
+        }
+      ],
+      "assets_loaded": []
+    },
+    {
+      "vehicle": "signal_context_scoper",
+      "consumers": [
+        {
+          "consumer_module": "phase1_13_00_cpp_ingestion",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_13_00_cpp_ingestion.py",
+          "phase": "Phase_1"
+        },
+        {
+          "consumer_module": "phase2_60_00_base_executor_with_contract",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_60_00_base_executor_with_contract.py",
+          "phase": "Phase_2"
+        },
+        {
+          "consumer_module": "phase2_80_00_evidence_nexus",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_80_00_evidence_nexus.py",
+          "phase": "Phase_2"
+        }
+      ],
+      "assets_loaded": []
+    },
+    {
+      "vehicle": "signal_contract_validator",
+      "consumers": [
+        {
+          "consumer_module": "phase2_60_00_base_executor_with_contract",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_60_00_base_executor_with_contract.py",
+          "phase": "Phase_2"
+        }
+      ],
+      "assets_loaded": []
+    },
+    {
+      "vehicle": "signal_intelligence_layer",
+      "consumers": [
+        {
+          "consumer_module": "phase2_10_00_factory",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_10_00_factory.py",
+          "phase": "Phase_2"
+        },
+        {
+          "consumer_module": "phase2_95_02_precision_tracking",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_95_02_precision_tracking.py",
+          "phase": "Phase_2"
+        }
+      ],
+      "assets_loaded": []
+    },
+    {
+      "vehicle": "signal_quality_metrics",
+      "consumers": [
+        {
+          "consumer_module": "phase1_01_00_cpp_models",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_1/docs/legacy/phase1_01_00_cpp_models.py",
+          "phase": "Phase_1"
+        },
+        {
+          "consumer_module": "phase1_11_00_signal_enrichment",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_11_00_signal_enrichment.py",
+          "phase": "Phase_1"
+        },
+        {
+          "consumer_module": "phase1_13_00_cpp_ingestion",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_13_00_cpp_ingestion.py",
+          "phase": "Phase_1"
+        }
+      ],
+      "assets_loaded": []
+    },
+    {
+      "vehicle": "signal_registry",
+      "consumers": [
+        {
+          "consumer_module": "phase1_11_00_signal_enrichment",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_11_00_signal_enrichment.py",
+          "phase": "Phase_1"
+        },
+        {
+          "consumer_module": "phase1_13_00_cpp_ingestion",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_13_00_cpp_ingestion.py",
+          "phase": "Phase_1"
+        },
+        {
+          "consumer_module": "phase2_10_00_factory",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_10_00_factory.py",
+          "phase": "Phase_2"
+        },
+        {
+          "consumer_module": "phase2_30_03_resource_aware_executor",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_30_03_resource_aware_executor.py",
+          "phase": "Phase_2"
+        },
+        {
+          "consumer_module": "phase2_95_00_contract_hydrator",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_95_00_contract_hydrator.py",
+          "phase": "Phase_2"
+        },
+        {
+          "consumer_module": "phase3_10_00_phase3_signal_enriched_scoring",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_3/phase3_10_00_phase3_signal_enriched_scoring.py",
+          "phase": "Phase_3"
+        },
+        {
+          "consumer_module": "phase4_00_00_signal_enriched_primitives",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_4/primitives/phase4_00_00_signal_enriched_primitives.py",
+          "phase": "Phase_4"
+        },
+        {
+          "consumer_module": "phase4_10_00_aggregation",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_aggregation.py",
+          "phase": "Phase_4"
+        },
+        {
+          "consumer_module": "phase4_10_00_signal_enriched_aggregation",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_4/enhancements/phase4_10_00_signal_enriched_aggregation.py",
+          "phase": "Phase_4"
+        },
+        {
+          "consumer_module": "phase4_10_00_signal_enriched_aggregation",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_4/phase4_10_00_signal_enriched_aggregation.py",
+          "phase": "Phase_4"
+        },
+        {
+          "consumer_module": "phase4_10_00_signal_enriched_primitives",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_4/primitives/phase4_10_00_signal_enriched_primitives.py",
+          "phase": "Phase_4"
+        },
+        {
+          "consumer_module": "phase4_95_00_signal_enriched_aggregation",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_4/enhancements/phase4_95_00_signal_enriched_aggregation.py",
+          "phase": "Phase_4"
+        },
+        {
+          "consumer_module": "signal_enriched_aggregation",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_4/enhancements/signal_enriched_aggregation.py",
+          "phase": "Phase_4"
+        },
+        {
+          "consumer_module": "phase8_30_00_signal_enriched_recommendations",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_8/phase8_30_00_signal_enriched_recommendations.py",
+          "phase": "Phase_8"
+        },
+        {
+          "consumer_module": "phase9_10_00_signal_enriched_reporting",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_9/phase9_10_00_signal_enriched_reporting.py",
+          "phase": "Phase_9"
+        }
+      ],
+      "assets_loaded": [
+        "canonic_questionnaire_central",
+        "canonic_questionnaire_central/policy_areas/PA{XX}/questions.json\n        under the policy_area_metadata.keywords field.",
+        "policy_areas/PA{XX}/questions.json"
+      ]
+    },
+    {
+      "vehicle": "signal_semantic_expander",
+      "consumers": [
+        {
+          "consumer_module": "phase2_80_00_evidence_nexus",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_80_00_evidence_nexus.py",
+          "phase": "Phase_2"
+        }
+      ],
+      "assets_loaded": []
+    },
+    {
+      "vehicle": "signals",
+      "consumers": [
+        {
+          "consumer_module": "phase0_90_02_bootstrap",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_0/phase0_90_02_bootstrap.py",
+          "phase": "Phase_0"
+        },
+        {
+          "consumer_module": "wiring_types",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_0/interphase/wiring_types.py",
+          "phase": "Phase_0"
+        },
+        {
+          "consumer_module": "phase1_01_00_cpp_models",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_1/docs/legacy/phase1_01_00_cpp_models.py",
+          "phase": "Phase_1"
+        },
+        {
+          "consumer_module": "phase1_11_00_signal_enrichment",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_11_00_signal_enrichment.py",
+          "phase": "Phase_1"
+        },
+        {
+          "consumer_module": "phase1_13_00_cpp_ingestion",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_1/phase1_13_00_cpp_ingestion.py",
+          "phase": "Phase_1"
+        },
+        {
+          "consumer_module": "phase2_40_03_irrigation_synchronizer",
+          "consumer_path": "src/farfan_pipeline/phases/Phase_2/phase2_40_03_irrigation_synchronizer.py",
+          "phase": "Phase_2"
+        }
+      ],
+      "assets_loaded": []
+    }
+  ],
+  "vehicle_assets_map": {
+    "signal_enhancement_integrator": [
+      "canonic_questionnaire_central"
+    ],
+    "signal_irrigator": [
+      "canonic_questionnaire_central",
+      "canonic_questionnaire_central\n        return Path(__file__).parent.parent.parent.parent.parent / \\"
+    ],
+    "signal_registry": [
+      "canonic_questionnaire_central",
+      "canonic_questionnaire_central/policy_areas/PA{XX}/questions.json\n        under the policy_area_metadata.keywords field.",
+      "policy_areas/PA{XX}/questions.json"
+    ]
+  },
+  "phase_summary": {
+    "Phase_0": {
+      "vehicles": [
+        "signal_consumption",
+        "signals"
+      ],
+      "consumer_modules": [
+        "phase0_90_02_bootstrap",
+        "providers",
+        "wiring_types"
+      ],
+      "assets": [],
+      "vehicle_count": 2,
+      "consumer_count": 3,
+      "asset_count": 0
+    },
+    "Phase_1": {
+      "vehicles": [
+        "signal_context_scoper",
+        "signal_quality_metrics",
+        "signal_registry",
+        "signals"
+      ],
+      "consumer_modules": [
+        "phase1_01_00_cpp_models",
+        "phase1_11_00_signal_enrichment",
+        "phase1_13_00_cpp_ingestion"
+      ],
+      "assets": [
+        "canonic_questionnaire_central",
+        "canonic_questionnaire_central/policy_areas/PA{XX}/questions.json\n        under the policy_area_metadata.keywords field.",
+        "policy_areas/PA{XX}/questions.json"
+      ],
+      "vehicle_count": 4,
+      "consumer_count": 3,
+      "asset_count": 3
+    },
+    "Phase_2": {
+      "vehicles": [
+        "signal_consumption_integration",
+        "signal_context_scoper",
+        "signal_contract_validator",
+        "signal_intelligence_layer",
+        "signal_registry",
+        "signal_semantic_expander",
+        "signals"
+      ],
+      "consumer_modules": [
+        "phase2_10_00_factory",
+        "phase2_30_03_resource_aware_executor",
+        "phase2_40_03_irrigation_synchronizer",
+        "phase2_60_00_base_executor_with_contract",
+        "phase2_80_00_evidence_nexus",
+        "phase2_95_00_contract_hydrator",
+        "phase2_95_02_precision_tracking"
+      ],
+      "assets": [
+        "canonic_questionnaire_central",
+        "canonic_questionnaire_central/policy_areas/PA{XX}/questions.json\n        under the policy_area_metadata.keywords field.",
+        "policy_areas/PA{XX}/questions.json"
+      ],
+      "vehicle_count": 7,
+      "consumer_count": 7,
+      "asset_count": 3
+    },
+    "Phase_3": {
+      "vehicles": [
+        "signal_registry"
+      ],
+      "consumer_modules": [
+        "phase3_10_00_phase3_signal_enriched_scoring"
+      ],
+      "assets": [
+        "canonic_questionnaire_central",
+        "canonic_questionnaire_central/policy_areas/PA{XX}/questions.json\n        under the policy_area_metadata.keywords field.",
+        "policy_areas/PA{XX}/questions.json"
+      ],
+      "vehicle_count": 1,
+      "consumer_count": 1,
+      "asset_count": 3
+    },
+    "Phase_4": {
+      "vehicles": [
+        "signal_registry"
+      ],
+      "consumer_modules": [
+        "phase4_00_00_signal_enriched_primitives",
+        "phase4_10_00_aggregation",
+        "phase4_10_00_signal_enriched_aggregation",
+        "phase4_10_00_signal_enriched_primitives",
+        "phase4_95_00_signal_enriched_aggregation",
+        "signal_enriched_aggregation"
+      ],
+      "assets": [
+        "canonic_questionnaire_central",
+        "canonic_questionnaire_central/policy_areas/PA{XX}/questions.json\n        under the policy_area_metadata.keywords field.",
+        "policy_areas/PA{XX}/questions.json"
+      ],
+      "vehicle_count": 1,
+      "consumer_count": 6,
+      "asset_count": 3
+    },
+    "Phase_8": {
+      "vehicles": [
+        "signal_registry"
+      ],
+      "consumer_modules": [
+        "phase8_30_00_signal_enriched_recommendations"
+      ],
+      "assets": [
+        "canonic_questionnaire_central",
+        "canonic_questionnaire_central/policy_areas/PA{XX}/questions.json\n        under the policy_area_metadata.keywords field.",
+        "policy_areas/PA{XX}/questions.json"
+      ],
+      "vehicle_count": 1,
+      "consumer_count": 1,
+      "asset_count": 3
+    },
+    "Phase_9": {
+      "vehicles": [
+        "signal_registry"
+      ],
+      "consumer_modules": [
+        "phase9_10_00_signal_enriched_reporting"
+      ],
+      "assets": [
+        "canonic_questionnaire_central",
+        "canonic_questionnaire_central/policy_areas/PA{XX}/questions.json\n        under the policy_area_metadata.keywords field.",
+        "policy_areas/PA{XX}/questions.json"
+      ],
+      "vehicle_count": 1,
+      "consumer_count": 1,
+      "asset_count": 3
+    }
+  },
+  "totals": {
+    "vehicles": 9,
+    "phases_with_signals": 7
+  }
+}
