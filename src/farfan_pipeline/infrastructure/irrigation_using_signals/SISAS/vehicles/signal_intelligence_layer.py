@@ -10,6 +10,8 @@ from ..core.event import Event
 from ..signals.types.epistemic import (
     AnswerDeterminacySignal,
     DeterminacyLevel,
+    AnswerSpecificitySignal,
+    SpecificityLevel,
     MethodApplicationSignal,
     MethodStatus
 )
@@ -20,13 +22,18 @@ class SignalIntelligenceLayerVehicle(BaseVehicle):
     """
     Vehículo: signal_intelligence_layer
     
-    Responsabilidad: Aplicar análisis de inteligencia/ML a datos y señales
-    para determinar determinación, ambigüedad, y aplicar métodos de evaluación.
+    Responsabilidad: Aplicar análisis de inteligencia/ML sobre criterios de membresía,
+    entidades y calibraciones para generar señales epistémicas.
     
-    Archivos que procesa:
-    - _registry/entities/* (análisis de entidades)
-    - responses/answers con contenido textual
-    - Datos que requieren clasificación o análisis lingüístico
+    Archivos que procesa (según spec):
+    - _registry/membership_criteria/*.json (MC01-MC13)
+    - _registry/entities/*.json
+    - scoring/calibration/*.json
+    
+    Señales que produce (según spec):
+    - MethodApplicationSignal
+    - AnswerDeterminacySignal
+    - AnswerSpecificitySignal
     """
     
     vehicle_id: str = field(default="signal_intelligence_layer")
@@ -41,8 +48,9 @@ class SignalIntelligenceLayerVehicle(BaseVehicle):
         can_validate=False,
         can_irrigate=False,
         signal_types_produced=[
+            "MethodApplicationSignal",
             "AnswerDeterminacySignal",
-            "MethodApplicationSignal"
+            "AnswerSpecificitySignal"
         ]
     ))
     
@@ -114,17 +122,23 @@ class SignalIntelligenceLayerVehicle(BaseVehicle):
         text_content = self._extract_text_content(data)
         
         if text_content:
-            # 1. Señal de determinación
+            # 1. Señal de aplicación de método (primero según spec)
+            method_signal = self._generate_method_application_signal(
+                text_content, data, context, source
+            )
+            signals.append(method_signal)
+            
+            # 2. Señal de determinación
             determinacy_signal = self._generate_determinacy_signal(
                 text_content, data, context, source
             )
             signals.append(determinacy_signal)
             
-            # 2. Señal de aplicación de método
-            method_signal = self._generate_method_application_signal(
+            # 3. Señal de especificidad
+            specificity_signal = self._generate_specificity_signal(
                 text_content, data, context, source
             )
-            signals.append(method_signal)
+            signals.append(specificity_signal)
         
         self.stats["signals_generated"] += len(signals)
         
