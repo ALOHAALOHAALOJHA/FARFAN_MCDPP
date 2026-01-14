@@ -61,6 +61,6 @@
     "governance": "governance/governance.json",
     "validations": "validations/validation_templates.json",
     "index": "questionnaire_index.json",
-    "monolith": "questionnaire_monolith.json"
+    "patterns_master": "_registry/patterns/MASTER_INDEX.json"
   }
 }

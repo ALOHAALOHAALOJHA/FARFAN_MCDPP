@@ -1,0 +1,468 @@
+{
+  "groups": [
+    {
+      "group": "CORE_DATA",
+      "description": "Entry points del módulo CQC que el resolver.py ensambla",
+      "units": [
+        {
+          "unit_id": "CORE-001",
+          "file": "canonical_notation.json",
+          "irrigation_path": "resolver.py → _assemble() → assembled_data['canonical_notation']",
+          "signal": "QuestionnairePort.data['canonical_notation']",
+          "consumers": [
+            "QuestionnaireSignalRegistry._extract_policy_areas()",
+            "QuestionnaireSignalRegistry._extract_dimensions()",
+            "IndustrialPolicyProcessor._build_canonical_point_patterns()"
+          ],
+          "value_add": "Define notación canónica: dimensions (DIM01-06), policy_areas (PA01-10), clusters (CL01-04), keywords",
+          "consumer_instrumentation": {
+            "required_keys": [
+              "dimensions",
+              "policy_areas",
+              "clusters"
+            ],
+            "validation": "Schema validation en resolver._validate_counts()"
+          }
+        },
+        {
+          "unit_id": "CORE-002",
+          "file": "macro_question.json",
+          "irrigation_path": "resolver.py → _assemble() → assembled_data['blocks']['macro_question']",
+          "signal": "QuestionnairePort.data['blocks']['macro_question']",
+          "consumers": [
+            "Phase8Aggregator.aggregate_macro()",
+            "ReportAssembly._build_macro_section()"
+          ],
+          "value_add": "Define pregunta macro (MACRO_1) con aggregation_method y scoring_modality",
+          "consumer_instrumentation": {
+            "required_keys": [
+              "question_id",
+              "aggregation_method",
+              "scoring_modality",
+              "clusters"
+            ],
+            "validation": "Validado en Phase8"
+          }
+        },
+        {
+          "unit_id": "CORE-003",
+          "file": "meso_questions.json",
+          "irrigation_path": "resolver.py → _assemble() → assembled_data['blocks']['meso_questions']",
+          "signal": "QuestionnairePort.data['blocks']['meso_questions']",
+          "consumers": [
+            "Phase7Aggregator.aggregate_meso()",
+            "ReportAssembly._build_meso_sections()"
+          ],
+          "value_add": "Define 4 preguntas MESO (MESO_1-4) vinculadas a clusters",
+          "consumer_instrumentation": {
+            "required_keys": [
+              "question_id",
+              "cluster_id",
+              "policy_areas",
+              "aggregation_method"
+            ],
+            "validation": "Validado en Phase7"
+          }
+        },
+        {
+          "unit_id": "CORE-004",
+          "file": "modular_manifest.json",
+          "irrigation_path": "resolver.py → __init__() → self.manifest_path",
+          "signal": "Used by resolver to locate module files (not in QuestionnairePort)",
+          "consumers": [
+            "CanonicalQuestionnaireResolver._assemble()"
+          ],
+          "value_add": "Manifest que define estructura modular: dimensions, policy_areas, clusters, cross_references",
+          "consumer_instrumentation": {
+            "required_keys": [
+              "structure",
+              "totals",
+              "cross_references"
+            ],
+            "validation": "Resolver valida estructura"
+          }
+        },
+        {
+          "unit_id": "CORE-005",
+          "file": "questionnaire_index.json",
+          "irrigation_path": "resolver.py → _assemble_micro_questions() (índice de lookup)",
+          "signal": "Intermediate: used to locate question files, not directly in QuestionnairePort",
+          "consumers": [
+            "CanonicalQuestionnaireResolver._assemble_micro_questions()",
+            "CQCLoader.get_question()"
+          ],
+          "value_add": "Índice que mapea question_id → file location para lazy loading",
+          "consumer_instrumentation": {
+            "required_keys": [
+              "indices.by_dimension",
+              "indices.by_policy_area"
+            ],
+            "validation": "Resolver usa para ensamblar micro_questions"
+          }
+        }
+      ],
+      "irrigation_summary": {
+        "entry_point": "CanonicalQuestionnaireResolver.resolve()",
+        "output": "CanonicalQuestionnaire (implements QuestionnairePort)",
+        "primary_signal": "QuestionnairePort.data (dict)",
+        "consumers_count": 5,
+        "flow": "Files → Resolver → QuestionnairePort → SignalRegistry → SignalPacks → Phase Executors"
+      }
+    },
+    {
+      "group": "REGISTRY_DATA",
+      "description": "Registros modulares bajo _registry/",
+      "units": [
+        {
+          "unit_id": "REG-001",
+          "path": "_registry/patterns/MASTER_INDEX.json",
+          "irrigation_path": "resolver.py → _load_patterns() → assembled_data['patterns']",
+          "signal": "QuestionnairePort.data['patterns']",
+          "consumers": [
+            "QuestionnaireSignalRegistry._extract_patterns_for_question()",
+            "signals_service._load_pattern_registry()",
+            "MicroAnsweringSignalPack.patterns"
+          ],
+          "value_add": "1,747 patterns para extracción de evidencia (regex, keywords, semantic)",
+          "consumer_instrumentation": {
+            "required_keys": [
+              "patterns",
+              "statistics"
+            ],
+            "format": "Dict[pattern_id, PatternSpec] with bindings, scoring_impact"
+          }
+        },
+        {
+          "unit_id": "REG-002",
+          "path": "_registry/entities/",
+          "irrigation_path": "Direct load by extractors (NOT via resolver)",
+          "signal": "Loaded directly by Phase3, Phase7, extractors",
+          "consumers": [
+            "NormativeComplianceValidator.__init__()",
+            "InstitutionalNERExtractor._load_entities()",
+            "SystemicGapDetector"
+          ],
+          "value_add": "Entidades colombianas: instituciones, normativas, territorios",
+          "consumer_instrumentation": {
+            "required_files": [
+              "normative_compliance.json",
+              "colombian_institutions.json"
+            ],
+            "direct_access": true
+          }
+        },
+        {
+          "unit_id": "REG-003",
+          "path": "_registry/membership_criteria/",
+          "irrigation_path": "Direct load by extractors",
+          "signal": "Loaded directly by empirical extractors",
+          "consumers": [
+            "EmpiricalExtractorBase._load_membership_criteria()",
+            "ExtractorValidator"
+          ],
+          "value_add": "Criterios de membresía para clasificación de evidencia (MC01-MC10)",
+          "consumer_instrumentation": {
+            "required_structure": "MC*.json with thresholds, calibration",
+            "calibration_file": "_calibration/extractor_calibration.json"
+          }
+        },
+        {
+          "unit_id": "REG-004",
+          "path": "_registry/keywords/",
+          "irrigation_path": "resolver.py → _load_policy_areas() (keywords embebidos)",
+          "signal": "QuestionnairePort.data['canonical_notation']['policy_areas'][PA].keywords",
+          "consumers": [
+            "IndustrialPolicyProcessor._detect_policy_areas()",
+            "QuestionnaireSignalRegistry._extract_keywords()"
+          ],
+          "value_add": "Keywords por policy area para detección temática",
+          "consumer_instrumentation": {
+            "format": "List[str] keywords per PA",
+            "merge_with": "canonical_notation.json policy_areas.keywords"
+          }
+        },
+        {
+          "unit_id": "REG-005",
+          "path": "_registry/capabilities/",
+          "irrigation_path": "CQCLoader (acupuncture optimization)",
+          "signal": "Used by CQCLoader capability routing",
+          "consumers": [
+            "CQCLoader.route_signal()",
+            "SignalQuestionIndex"
+          ],
+          "value_add": "Mapeo signal_type → question_ids para routing O(1)",
+          "consumer_instrumentation": {
+            "format": "capability_map.json with signal → questions mapping"
+          }
+        },
+        {
+          "unit_id": "REG-006",
+          "path": "_registry/questions/",
+          "irrigation_path": "CQCLoader lazy loading",
+          "signal": "LazyQuestionRegistry.get(question_id)",
+          "consumers": [
+            "CQCLoader.get_question()",
+            "CQCLoader.get_batch()"
+          ],
+          "value_add": "Preguntas atomizadas para lazy loading (312x faster)",
+          "consumer_instrumentation": {
+            "format": "atomized/*.json per question",
+            "loader": "LazyQuestionRegistry"
+          }
+        }
+      ],
+      "irrigation_summary": {
+        "patterns": "Via resolver → QuestionnairePort",
+        "entities": "Direct load by consumers",
+        "membership_criteria": "Direct load by extractors",
+        "keywords": "Embedded in canonical_notation via resolver",
+        "capabilities": "CQCLoader optimization layer",
+        "questions": "CQCLoader lazy loading"
+      }
+    },
+    {
+      "group": "DOMAIN_DATA",
+      "description": "Datos de dominio: clusters, dimensions, policy_areas",
+      "units": [
+        {
+          "unit_id": "DOM-001",
+          "path": "dimensions/DIM01_INSUMOS/ ... DIM06_CAUSALIDAD/",
+          "irrigation_path": "resolver.py → _load_dimensions() → micro_questions assembly",
+          "signal": "QuestionnairePort.data['blocks']['micro_questions'][].dimension_id",
+          "consumers": [
+            "QuestionnaireSignalRegistry._extract_valid_assembly_levels()",
+            "Phase executors filtering by dimension",
+            "Scoring system dimension weights"
+          ],
+          "value_add": "6 dimensiones de cadena de valor (Insumos→Causalidad) con 50 questions cada una",
+          "consumer_instrumentation": {
+            "files_per_dimension": [
+              "metadata.json",
+              "questions/"
+            ],
+            "expected_count": 6,
+            "questions_per_dimension": 50
+          }
+        },
+        {
+          "unit_id": "DOM-002",
+          "path": "policy_areas/PA01_mujeres_genero/ ... PA10_migracion/",
+          "irrigation_path": "resolver.py → _load_policy_areas() → micro_questions assembly",
+          "signal": "QuestionnairePort.data['blocks']['micro_questions'][].policy_area_id",
+          "consumers": [
+            "QuestionnaireSignalRegistry.get_signal_pack_for_policy_area()",
+            "IndustrialPolicyProcessor._detect_policy_areas()",
+            "Phase executors filtering by PA"
+          ],
+          "value_add": "10 policy areas de derechos humanos con 30 questions cada una",
+          "consumer_instrumentation": {
+            "files_per_pa": [
+              "metadata.json",
+              "keywords.json",
+              "questions.json"
+            ],
+            "expected_count": 10,
+            "questions_per_pa": 30
+          }
+        },
+        {
+          "unit_id": "DOM-003",
+          "path": "clusters/CL01_seguridad_paz/ ... CL04_derechos_sociales_crisis/",
+          "irrigation_path": "resolver.py → _load_clusters() → assembled_data['blocks']['niveles_abstraccion']['clusters']",
+          "signal": "QuestionnairePort.data['blocks']['niveles_abstraccion']['clusters']",
+          "consumers": [
+            "Phase7Aggregator (MESO level aggregation)",
+            "Phase8Aggregator (MACRO level aggregation)",
+            "ReportAssembly._build_cluster_sections()"
+          ],
+          "value_add": "4 clusters que agrupan PAs para agregación MESO/MACRO",
+          "consumer_instrumentation": {
+            "files_per_cluster": [
+              "metadata.json",
+              "questions.json",
+              "aggregation_rules.json"
+            ],
+            "expected_count": 4,
+            "aggregation_methods": [
+              "weighted_average",
+              "holistic_assessment"
+            ]
+          }
+        }
+      ],
+      "irrigation_summary": {
+        "total_micro_questions": 300,
+        "formula": "30 base questions × 10 policy_areas = 300",
+        "hierarchy": "MICRO (300) → MESO (4 clusters) → MACRO (1)",
+        "flow": "dimensions + policy_areas → resolver._assemble_micro_questions() → QuestionnairePort"
+      }
+    },
+    {
+      "group": "OPERATIONAL_DATA",
+      "description": "Datos operacionales: scoring, validations, cross_cutting, config, governance",
+      "units": [
+        {
+          "unit_id": "OPS-001",
+          "path": "scoring/",
+          "irrigation_path": "resolver.py → _load_scoring() → assembled_data['blocks']['scoring']",
+          "signal": "QuestionnairePort.data['blocks']['scoring']",
+          "consumers": [
+            "ScoringSignalPack",
+            "Phase4-6 scoring executors",
+            "MicroScoringEngine"
+          ],
+          "value_add": "Sistema de scoring: modalities, weights, thresholds",
+          "consumer_instrumentation": {
+            "expected_files": [
+              "scoring_system.json",
+              "calibration/",
+              "validators/"
+            ],
+            "scoring_types": [
+              "TYPE_A",
+              "TYPE_B",
+              "TYPE_C"
+            ]
+          }
+        },
+        {
+          "unit_id": "OPS-002",
+          "path": "validations/",
+          "irrigation_path": "Direct load by validators (NOT via resolver)",
+          "signal": "Used directly by validation system",
+          "consumers": [
+            "RuntimeValidators (scope, capability, channel, value_add)",
+            "QualityAssuranceTestSuite",
+            "PDETValidator"
+          ],
+          "value_add": "Reglas de validación, templates, integridad referencial",
+          "consumer_instrumentation": {
+            "runtime_validators": "validations/runtime_validators/*.py",
+            "templates": "validation_templates.json",
+            "integrity": "referential_integrity.json"
+          }
+        },
+        {
+          "unit_id": "OPS-003",
+          "path": "cross_cutting/",
+          "irrigation_path": "resolver.py → _load_cross_cutting() → assembled_data['cross_cutting']",
+          "signal": "QuestionnairePort.data['cross_cutting']",
+          "consumers": [
+            "CrossCuttingThemeDetector",
+            "EntityThemeMapper",
+            "Phase3 interdependency analysis"
+          ],
+          "value_add": "9 temas transversales (género, PDET, territorial, etc.)",
+          "consumer_instrumentation": {
+            "themes_dir": "themes/CC_*/detection_rules.json",
+            "framework": "theme_integration_framework.json",
+            "expected_themes": 9
+          }
+        },
+        {
+          "unit_id": "OPS-004",
+          "path": "config/",
+          "irrigation_path": "Direct load (schema validation)",
+          "signal": "Used by schema validators",
+          "consumers": [
+            "JSON Schema validation",
+            "Resolver schema checks"
+          ],
+          "value_add": "Schema definitions para validación estructural",
+          "consumer_instrumentation": {
+            "main_file": "questionnaire_schema.json"
+          }
+        },
+        {
+          "unit_id": "OPS-005",
+          "path": "governance/",
+          "irrigation_path": "resolver.py → _load_governance() → assembled_data['integrity', 'observability']",
+          "signal": "QuestionnairePort.data['integrity'], QuestionnairePort.data['observability']",
+          "consumers": [
+            "IntegrityVerifier",
+            "Observability dashboards",
+            "Audit trail"
+          ],
+          "value_add": "Gobernanza: versioning, integrity hashes, observability config",
+          "consumer_instrumentation": {
+            "expected_files": [
+              "governance.json",
+              "versioning.json"
+            ]
+          }
+        },
+        {
+          "unit_id": "OPS-006",
+          "path": "semantic/",
+          "irrigation_path": "resolver.py → _load_semantic() → assembled_data['blocks']['semantic_layers']",
+          "signal": "QuestionnairePort.data['blocks']['semantic_layers']",
+          "consumers": [
+            "EmbeddingPolicyProcessor",
+            "SemanticEnrichment"
+          ],
+          "value_add": "Configuración semántica y PDET enrichment",
+          "consumer_instrumentation": {
+            "files": [
+              "semantic_config.json",
+              "pdet_semantic_enrichment.json"
+            ]
+          }
+        },
+        {
+          "unit_id": "OPS-007",
+          "path": "colombia_context/",
+          "irrigation_path": "Direct load by context-aware components",
+          "signal": "Loaded directly by Phase2, Phase3 validators",
+          "consumers": [
+            "NormativeComplianceValidator",
+            "PDETContextProvider",
+            "MunicipalGovernanceValidator"
+          ],
+          "value_add": "Contexto colombiano: 170 municipios PDET, normatividad, instituciones",
+          "consumer_instrumentation": {
+            "main_files": [
+              "colombia_context.json",
+              "pdet_municipalities.json",
+              "municipal_governance.json"
+            ]
+          }
+        }
+      ],
+      "irrigation_summary": {
+        "via_resolver": [
+          "scoring",
+          "cross_cutting",
+          "governance",
+          "semantic"
+        ],
+        "direct_access": [
+          "validations",
+          "config",
+          "colombia_context"
+        ],
+        "note": "Direct access components should migrate to resolver pattern for consistency"
+      }
+    }
+  ],
+  "sisas_summary": {
+    "total_groups": 4,
+    "total_units": 21,
+    "irrigation_patterns": {
+      "via_resolver": "Core, Domain, most Operational → QuestionnairePort",
+      "direct_access": "Entities, Membership Criteria, Validations, Config, Colombia Context",
+      "optimization_layer": "CQCLoader for lazy loading and signal routing"
+    },
+    "signal_types": [
+      "QuestionnairePort.data (main payload)",
+      "QuestionnairePort.micro_questions (300 questions)",
+      "QuestionnairePort.sha256 (integrity)",
+      "QuestionnairePort.version (semantic versioning)"
+    ],
+    "consumers_hierarchy": [
+      "AnalysisPipelineFactory (injects QuestionnairePort)",
+      "QuestionnaireSignalRegistry (creates SignalPacks)",
+      "SignalPacks (ChunkingSignalPack, MicroAnsweringSignalPack, etc.)",
+      "Phase Executors (consume SignalPacks)"
+    ]
+  }
+}

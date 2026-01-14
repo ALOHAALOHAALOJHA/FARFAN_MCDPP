@@ -11,11 +11,11 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch, PropertyMock
 import tempfile
 
-from farfan_pipeline.phases.Phase_one.primitives.streaming_extractor import (
+from farfan_pipeline.phases.Phase_1.primitives.streaming_extractor import (
     StreamingPDFExtractor,
     PYMUPDF_AVAILABLE,
 )
-from farfan_pipeline.phases.Phase_one.PHASE_1_CONSTANTS import PDF_EXTRACTION_CHAR_LIMIT
+from farfan_pipeline.phases.Phase_1.PHASE_1_CONSTANTS import PDF_EXTRACTION_CHAR_LIMIT
 
 
 class TestStreamingPDFExtractorInstantiation(unittest. TestCase):
