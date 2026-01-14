@@ -189,3 +189,144 @@ class Signal(ABC):
         if details:
             entry["details"] = details
         self.audit_trail.append(entry)
+
+    def validate_integrity(self) -> tuple[bool, List[str]]:
+        """
+        Valida la integridad de la señal según los axiomas SISAS.
+        Retorna (es_válida, lista_de_errores)
+        """
+        errors = []
+
+        # Axioma 1: derived - debe tener source
+        if self.source is None:
+            errors.append("Axiom violation 'derived': Signal must have a source")
+
+        # Axioma 4: contextual - debe tener context
+        if self.context is None:
+            errors.append("Axiom violation 'contextual': Signal must have a context")
+
+        # Verificar expiración
+        if not self.is_valid():
+            errors.append("Signal has expired")
+
+        # Verificar que el signal_type está definido
+        if not hasattr(self, 'signal_type') or not self.signal_type:
+            errors.append("Signal type is not defined")
+
+        # Verificar que category es válido
+        try:
+            _ = self.category
+        except Exception as e:
+            errors.append(f"Invalid category: {str(e)}")
+
+        return (len(errors) == 0, errors)
+
+    def to_json(self) -> str:
+        """Serializa la señal a JSON"""
+        return json.dumps(self.to_dict(), default=str, indent=2)
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'Signal':
+        """
+        Deserializa una señal desde diccionario.
+        Nota: Requiere la clase específica de señal.
+        """
+        # Reconstituir context
+        context_data = data.get('context')
+        if context_data:
+            context = SignalContext.from_dict(context_data)
+        else:
+            context = None
+
+        # Reconstituir source
+        source_data = data.get('source')
+        if source_data:
+            source = SignalSource(
+                event_id=source_data['event_id'],
+                source_file=source_data['source_file'],
+                source_path=source_data['source_path'],
+                generation_timestamp=datetime.fromisoformat(source_data['generation_timestamp']),
+                generator_vehicle=source_data['generator_vehicle']
+            )
+        else:
+            source = None
+
+        # Nota: Este método debe ser sobrescrito en clases concretas
+        # para manejar campos específicos
+        return cls(
+            context=context,
+            source=source,
+            value=data.get('value'),
+            confidence=SignalConfidence(data.get('confidence', 'INDETERMINATE')),
+            rationale=data.get('rationale', ''),
+            tags=data.get('tags', [])
+        )
+
+    def compare_with(self, other: 'Signal') -> Dict[str, Any]:
+        """
+        Compara esta señal con otra y retorna diferencias.
+        Útil para debugging y análisis.
+        """
+        if not isinstance(other, Signal):
+            return {"error": "Cannot compare with non-Signal object"}
+
+        differences = {}
+
+        # Comparar hashes
+        my_hash = self.compute_hash()
+        other_hash = other.compute_hash()
+
+        if my_hash != other_hash:
+            differences['hash_mismatch'] = {
+                'self': my_hash,
+                'other': other_hash
+            }
+
+        # Comparar tipos
+        if self.signal_type != other.signal_type:
+            differences['signal_type'] = {
+                'self': self.signal_type,
+                'other': other.signal_type
+            }
+
+        # Comparar contextos
+        if self.context != other.context:
+            differences['context'] = {
+                'self': self.context.to_dict() if self.context else None,
+                'other': other.context.to_dict() if other.context else None
+            }
+
+        # Comparar valores
+        if self.value != other.value:
+            differences['value'] = {
+                'self': self.value,
+                'other': other.value
+            }
+
+        # Comparar confidence
+        if self.confidence != other.confidence:
+            differences['confidence'] = {
+                'self': self.confidence.value,
+                'other': other.confidence.value
+            }
+
+        return differences if differences else {"status": "identical"}
+
+    def get_age_seconds(self) -> float:
+        """Retorna la edad de la señal en segundos"""
+        return (datetime.utcnow() - self.created_at).total_seconds()
+
+    def is_expired(self) -> bool:
+        """Verifica si la señal ha expirado"""
+        if self.expires_at is None:
+            return False
+        return datetime.utcnow() > self.expires_at
+
+    def get_audit_summary(self) -> Dict[str, Any]:
+        """Retorna resumen del audit trail"""
+        return {
+            "total_entries": len(self.audit_trail),
+            "actions": [entry['action'] for entry in self.audit_trail],
+            "first_action": self.audit_trail[0] if self.audit_trail else None,
+            "last_action": self.audit_trail[-1] if self.audit_trail else None
+        }
