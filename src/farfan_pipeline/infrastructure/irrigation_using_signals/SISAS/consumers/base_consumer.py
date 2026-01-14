@@ -79,7 +79,7 @@ class BaseConsumer(ABC):
         self.last_activity = datetime.utcnow()
 
         try:
-            result = self.process_signal(signal)
+            self.process_signal(signal)
             self.stats["signals_processed"] += 1
         except Exception as e:
             self.stats["signals_failed"] += 1

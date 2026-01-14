@@ -1,13 +1,17 @@
 # src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/vocabulary/signal_vocabulary.py
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set, Tuple
 from enum import Enum
+from functools import lru_cache, wraps
+import time
+import hashlib
+import json
 
 
 @dataclass
 class SignalTypeDefinition:
-    """Definición canónica de un tipo de señal"""
+    """Definición canónica de un tipo de señal con metadatos enriquecidos"""
     signal_type: str
     category: str
     description: str
@@ -16,16 +20,51 @@ class SignalTypeDefinition:
     value_type: str = "any"  # "enum", "float", "string", "dict"
     value_constraints: Dict[str, Any] = field(default_factory=dict)
     version: str = "1.0.0"
+    # Enhancement: Metadata adicional
+    examples: List[Dict[str, Any]] = field(default_factory=list)
+    deprecation_info: Optional[Dict[str, str]] = None
+    performance_hints: Dict[str, str] = field(default_factory=dict)
+    related_signals: List[str] = field(default_factory=list)
+    
+    def compute_hash(self) -> str:
+        """Computa hash determinístico de la definición"""
+        content = {
+            "signal_type": self.signal_type,
+            "category": self.category,
+            "required_fields": sorted(self.required_fields),
+            "version": self.version
+        }
+        content_str = json.dumps(content, sort_keys=True)
+        return hashlib.sha256(content_str.encode()).hexdigest()[:16]
 
 
 @dataclass
 class SignalVocabulary:
     """
-    Vocabulario canónico de señales.
+    Vocabulario canónico de señales con enhancements avanzados.
     Define todos los tipos de señales válidos en el sistema.
+    
+    Enhancements:
+    - Caching de validaciones para performance
+    - Métricas de uso y validación
+    - Índices para búsqueda rápida
+    - Versionado y compatibilidad
     """
 
     definitions: Dict[str, SignalTypeDefinition] = field(default_factory=dict)
+    
+    # Enhancement: Índices para búsqueda rápida
+    _category_index: Dict[str, Set[str]] = field(default_factory=dict)
+    _field_index: Dict[str, Set[str]] = field(default_factory=dict)
+    
+    # Enhancement: Cache de validaciones
+    _validation_cache: Dict[str, Tuple[bool, List[str]]] = field(default_factory=dict)
+    _cache_hits: int = 0
+    _cache_misses: int = 0
+    
+    # Enhancement: Métricas de uso
+    _usage_stats: Dict[str, Dict[str, int]] = field(default_factory=dict)
+    _validation_times: Dict[str, List[float]] = field(default_factory=dict)
 
     def __post_init__(self):
         # Registrar tipos de señales del sistema
@@ -35,6 +74,9 @@ class SignalVocabulary:
         self._register_contrast_signals()
         self._register_operational_signals()
         self._register_consumption_signals()
+        
+        # Construir índices
+        self._build_indices()
 
     def _register_structural_signals(self):
         """Registra señales estructurales"""
@@ -221,8 +263,50 @@ class SignalVocabulary:
         ))
 
     def register(self, definition: SignalTypeDefinition):
-        """Registra una definición de tipo de señal"""
+        """Registra una definición de tipo de señal y actualiza índices"""
         self.definitions[definition.signal_type] = definition
+        
+        # Actualizar índices
+        if definition.category not in self._category_index:
+            self._category_index[definition.category] = set()
+        self._category_index[definition.category].add(definition.signal_type)
+        
+        # Indexar por campos
+        for field_name in definition.required_fields + definition.optional_fields:
+            if field_name not in self._field_index:
+                self._field_index[field_name] = set()
+            self._field_index[field_name].add(definition.signal_type)
+        
+        # Inicializar stats
+        if definition.signal_type not in self._usage_stats:
+            self._usage_stats[definition.signal_type] = {
+                "validations": 0,
+                "successes": 0,
+                "failures": 0
+            }
+    
+    def _build_indices(self):
+        """Construye índices de búsqueda"""
+        self._category_index.clear()
+        self._field_index.clear()
+        
+        for signal_type, definition in self.definitions.items():
+            # Índice por categoría
+            if definition.category not in self._category_index:
+                self._category_index[definition.category] = set()
+            self._category_index[definition.category].add(signal_type)
+            
+            # Índice por campos
+            for field_name in definition.required_fields + definition.optional_fields:
+                if field_name not in self._field_index:
+                    self._field_index[field_name] = set()
+                self._field_index[field_name].add(signal_type)
+    
+    def _compute_signal_hash(self, signal: Any) -> str:
+        """Computa hash de señal para caching"""
+        signal_type = getattr(signal, 'signal_type', '')
+        signal_id = getattr(signal, 'signal_id', '')
+        return f"{signal_type}:{signal_id}"
 
     def get(self, signal_type: str) -> Optional[SignalTypeDefinition]:
         """Obtiene definición de un tipo de señal"""
@@ -236,22 +320,34 @@ class SignalVocabulary:
         """Obtiene tipos de señal por categoría"""
         return [d for d in self.definitions.values() if d.category == category]
 
-    def validate_signal(self, signal:  Any) -> tuple[bool, List[str]]:
+    def validate_signal(self, signal: Any, use_cache: bool = True) -> tuple[bool, List[str]]:
         """
-        Valida una señal contra el vocabulario.
+        Valida una señal contra el vocabulario con caching opcional.
         Retorna (es_válido, lista_de_errores)
         """
-        errors = []
-
+        start_time = time.time()
+        
         signal_type = getattr(signal, 'signal_type', None)
         if not signal_type:
-            errors.append("Signal has no signal_type")
-            return (False, errors)
+            return (False, ["Signal has no signal_type"])
+        
+        # Intentar usar cache
+        if use_cache:
+            cache_key = self._compute_signal_hash(signal)
+            if cache_key in self._validation_cache:
+                self._cache_hits += 1
+                return self._validation_cache[cache_key]
+            self._cache_misses += 1
+        
+        errors = []
 
         definition = self.get(signal_type)
         if not definition:
             errors.append(f"Unknown signal type: {signal_type}")
-            return (False, errors)
+            result = (False, errors)
+            if use_cache:
+                self._validation_cache[self._compute_signal_hash(signal)] = result
+            return result
 
         # Verificar campos requeridos
         for field_name in definition.required_fields:
@@ -268,9 +364,34 @@ class SignalVocabulary:
                 # El valor podría ser un Enum, extraer su valor
                 value_str = value.value if hasattr(value, 'value') else str(value)
                 if value_str not in allowed:
-                    errors.append(f"Invalid value '{value_str}'.  Allowed:  {allowed}")
+                    errors.append(f"Invalid value '{value_str}'. Allowed: {allowed}")
 
-        return (len(errors) == 0, errors)
+        result = (len(errors) == 0, errors)
+        
+        # Actualizar estadísticas
+        validation_time = (time.time() - start_time) * 1000  # ms
+        if signal_type not in self._usage_stats:
+            self._usage_stats[signal_type] = {
+                "validations": 0,
+                "successes": 0,
+                "failures": 0
+            }
+        
+        self._usage_stats[signal_type]["validations"] += 1
+        if result[0]:
+            self._usage_stats[signal_type]["successes"] += 1
+        else:
+            self._usage_stats[signal_type]["failures"] += 1
+        
+        if signal_type not in self._validation_times:
+            self._validation_times[signal_type] = []
+        self._validation_times[signal_type].append(validation_time)
+        
+        # Guardar en cache
+        if use_cache:
+            self._validation_cache[self._compute_signal_hash(signal)] = result
+        
+        return result
 
     def to_dict(self) -> Dict[str, Any]:
         """Exporta vocabulario a diccionario"""
@@ -286,3 +407,76 @@ class SignalVocabulary:
             }
             for signal_type, d in self.definitions.items()
         }
+    
+    def search_by_field(self, field_name: str) -> List[str]:
+        """Búsqueda rápida de tipos de señal que usan un campo"""
+        return list(self._field_index.get(field_name, set()))
+    
+    def search_by_description(self, keyword: str) -> List[SignalTypeDefinition]:
+        """Búsqueda de tipos de señal por palabra clave en descripción"""
+        keyword_lower = keyword.lower()
+        return [
+            d for d in self.definitions.values()
+            if keyword_lower in d.description.lower()
+        ]
+    
+    def get_usage_statistics(self) -> Dict[str, Any]:
+        """Obtiene estadísticas de uso del vocabulario"""
+        total_validations = sum(s["validations"] for s in self._usage_stats.values())
+        total_successes = sum(s["successes"] for s in self._usage_stats.values())
+        total_failures = sum(s["failures"] for s in self._usage_stats.values())
+        
+        # Calcular tiempos promedio de validación
+        avg_times = {}
+        for signal_type, times in self._validation_times.items():
+            if times:
+                avg_times[signal_type] = sum(times) / len(times)
+        
+        # Top señales más usadas
+        top_used = sorted(
+            self._usage_stats.items(),
+            key=lambda x: x[1]["validations"],
+            reverse=True
+        )[:10]
+        
+        return {
+            "total_definitions": len(self.definitions),
+            "total_validations": total_validations,
+            "success_rate": (total_successes / total_validations * 100) if total_validations > 0 else 0,
+            "cache_hit_rate": (self._cache_hits / (self._cache_hits + self._cache_misses) * 100) 
+                             if (self._cache_hits + self._cache_misses) > 0 else 0,
+            "top_used_signals": [{"signal_type": st, "count": stats["validations"]} 
+                                for st, stats in top_used],
+            "average_validation_times_ms": avg_times,
+            "by_category": {
+                cat: len(signals) for cat, signals in self._category_index.items()
+            }
+        }
+    
+    def clear_cache(self):
+        """Limpia el cache de validaciones"""
+        self._validation_cache.clear()
+        self._cache_hits = 0
+        self._cache_misses = 0
+    
+    def get_related_signals(self, signal_type: str) -> List[str]:
+        """Obtiene señales relacionadas a un tipo dado"""
+        definition = self.get(signal_type)
+        if definition and definition.related_signals:
+            return definition.related_signals
+        
+        # Si no hay relaciones explícitas, buscar por categoría
+        if definition:
+            return [
+                st for st in self._category_index.get(definition.category, set())
+                if st != signal_type
+            ]
+        return []
+    
+    def validate_compatibility(self, old_version: str, new_version: str) -> List[str]:
+        """Valida compatibilidad entre versiones del vocabulario"""
+        warnings = []
+        # Implementación simplificada - en producción compararía definiciones reales
+        if old_version != new_version:
+            warnings.append(f"Version mismatch: {old_version} vs {new_version}")
+        return warnings
