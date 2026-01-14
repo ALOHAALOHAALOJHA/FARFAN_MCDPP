@@ -22,7 +22,8 @@ class TestPhase1Encadenamiento:
     @pytest.fixture(scope="class")
     def phase1_dir(self) -> Path:
         """Get Phase 1 directory path."""
-        return Path(__file__).parent.parent.parent / "src" / "farfan_pipeline" / "phases" / "Phase_1"
+        # phase1_dir is provided by conftest.py, but we need class scope here
+        return Path(__file__).resolve().parent.parent
 
     @pytest.fixture(scope="class")
     def chain_report(self, phase1_dir: Path) -> Dict:

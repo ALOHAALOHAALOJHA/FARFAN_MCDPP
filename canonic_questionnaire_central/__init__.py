@@ -497,6 +497,7 @@ from .resolver import (
     ValidationError,
     get_resolver,
     resolve_questionnaire,
+    SDO_AVAILABLE,
 )
 
 __all__.extend(
@@ -511,5 +512,27 @@ __all__.extend(
         "ValidationError",
         "get_resolver",
         "resolve_questionnaire",
+        "SDO_AVAILABLE",
     ]
 )
+
+# ============================================================================
+# SISAS 2.0 CORE (Signal Distribution Orchestrator)
+# ============================================================================
+
+if SDO_AVAILABLE:
+    from .core import (
+        Signal,
+        SignalType,
+        SignalScope,
+        SignalDistributionOrchestrator,
+    )
+    
+    __all__.extend(
+        [
+            "Signal",
+            "SignalType",
+            "SignalScope",
+            "SignalDistributionOrchestrator",
+        ]
+    )
