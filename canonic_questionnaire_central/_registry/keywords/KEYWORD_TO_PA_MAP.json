@@ -1,0 +1,5657 @@
+{
+  "version": "2.0.0",
+  "description": "Maps keywords to policy areas for fast lookup",
+  "map": {
+    "Acuerdo de Paz": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "CEDAW": [
+      "PA01"
+    ],
+    "CONPES de equidad de género": [
+      "PA01"
+    ],
+    "Casa de la Mujer": [
+      "PA01"
+    ],
+    "Comisaría de Familia": [
+      "PA01",
+      "PA06"
+    ],
+    "Consejería de la Mujer": [
+      "PA01"
+    ],
+    "Convención Belém do Pará": [
+      "PA01"
+    ],
+    "DSR": [
+      "PA01"
+    ],
+    "Hogar de Paso": [
+      "PA01"
+    ],
+    "IVE": [
+      "PA01"
+    ],
+    "Ley 1257": [
+      "PA01"
+    ],
+    "Ley 1761": [
+      "PA01"
+    ],
+    "Ley Rosa Elvira Cely": [
+      "PA01"
+    ],
+    "Mesa de Mujer": [
+      "PA01"
+    ],
+    "ODS 5": [
+      "PA01"
+    ],
+    "Objetivos de Desarrollo Sostenible": [
+      "PA01"
+    ],
+    "Observatorio de Mujer y Género": [
+      "PA01"
+    ],
+    "PDET": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "Plan de Igualdad de Oportunidades": [
+      "PA01"
+    ],
+    "Política Pública de Mujer y Género": [
+      "PA01"
+    ],
+    "Programas de Desarrollo con Enfoque Territorial": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "Ruta de atención a víctimas de VBG": [
+      "PA01"
+    ],
+    "SSR": [
+      "PA01"
+    ],
+    "Secretaría de la Mujer": [
+      "PA01"
+    ],
+    "VBG": [
+      "PA01"
+    ],
+    "VIF": [
+      "PA01"
+    ],
+    "aborto": [
+      "PA01"
+    ],
+    "abuso sexual": [
+      "PA01"
+    ],
+    "acoso callejero": [
+      "PA01"
+    ],
+    "acoso laboral por género": [
+      "PA01"
+    ],
+    "acoso sexual": [
+      "PA01"
+    ],
+    "adultas mayores": [
+      "PA01"
+    ],
+    "advocacy de género": [
+      "PA01"
+    ],
+    "anticoncepción": [
+      "PA01"
+    ],
+    "bancarización": [
+      "PA01"
+    ],
+    "brecha de género": [
+      "PA01"
+    ],
+    "brecha salarial": [
+      "PA01"
+    ],
+    "coeducación": [
+      "PA01"
+    ],
+    "colectivos de mujeres": [
+      "PA01"
+    ],
+    "comisarías de familia": [
+      "PA01"
+    ],
+    "consejos de mujer": [
+      "PA01"
+    ],
+    "construcción de paz": [
+      "PA01",
+      "PA02",
+      "PA05",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "cuotas de género": [
+      "PA01"
+    ],
+    "derechos de las mujeres": [
+      "PA01"
+    ],
+    "derechos sexuales y reproductivos": [
+      "PA01"
+    ],
+    "desarrollo territorial": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "disparidad salarial": [
+      "PA01"
+    ],
+    "economía del cuidado": [
+      "PA01"
+    ],
+    "educación con enfoque de género": [
+      "PA01"
+    ],
+    "educación no sexista": [
+      "PA01"
+    ],
+    "educación rural": [
+      "PA01",
+      "PA04",
+      "PA06"
+    ],
+    "educación sexual integral": [
+      "PA01"
+    ],
+    "emancipación": [
+      "PA01"
+    ],
+    "embarazo adolescente": [
+      "PA01"
+    ],
+    "empoderamiento femenino": [
+      "PA01"
+    ],
+    "emprendimiento femenino": [
+      "PA01"
+    ],
+    "empresas lideradas por mujeres": [
+      "PA01"
+    ],
+    "enfoque de género": [
+      "PA01"
+    ],
+    "enfoque territorial": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "equidad de género": [
+      "PA01"
+    ],
+    "estereotipos de género": [
+      "PA01"
+    ],
+    "femicidio": [
+      "PA01"
+    ],
+    "feminicidio": [
+      "PA01"
+    ],
+    "gender wage gap": [
+      "PA01"
+    ],
+    "género": [
+      "PA01"
+    ],
+    "hogares monoparentales": [
+      "PA01"
+    ],
+    "igualdad de género": [
+      "PA01"
+    ],
+    "incidencia política": [
+      "PA01",
+      "PA08"
+    ],
+    "inclusión financiera de mujeres": [
+      "PA01"
+    ],
+    "interrupción voluntaria del embarazo": [
+      "PA01"
+    ],
+    "jefatura femenina": [
+      "PA01"
+    ],
+    "licencia de maternidad": [
+      "PA01"
+    ],
+    "licencia parental": [
+      "PA01"
+    ],
+    "liderazgo femenino": [
+      "PA01"
+    ],
+    "madres solteras": [
+      "PA01"
+    ],
+    "masculinidades": [
+      "PA01"
+    ],
+    "maternidad": [
+      "PA01"
+    ],
+    "medidas de protección": [
+      "PA01",
+      "PA02",
+      "PA06",
+      "PA08"
+    ],
+    "morbilidad materna": [
+      "PA01"
+    ],
+    "mortalidad materna": [
+      "PA01"
+    ],
+    "movimiento feminista": [
+      "PA01"
+    ],
+    "mujer": [
+      "PA01"
+    ],
+    "mujeres": [
+      "PA01"
+    ],
+    "mujeres LGBTI": [
+      "PA01"
+    ],
+    "mujeres afrodescendientes": [
+      "PA01"
+    ],
+    "mujeres ancianas": [
+      "PA01"
+    ],
+    "mujeres cabeza de familia": [
+      "PA01"
+    ],
+    "mujeres campesinas": [
+      "PA01"
+    ],
+    "mujeres con discapacidad": [
+      "PA01"
+    ],
+    "mujeres en política": [
+      "PA01"
+    ],
+    "mujeres indígenas": [
+      "PA01"
+    ],
+    "mujeres rurales": [
+      "PA01"
+    ],
+    "mujeres trans": [
+      "PA01"
+    ],
+    "mujeres víctimas del conflicto": [
+      "PA01"
+    ],
+    "municipios priorizados": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "nuevas masculinidades": [
+      "PA01"
+    ],
+    "orden de protección": [
+      "PA01"
+    ],
+    "organizaciones de mujeres": [
+      "PA01"
+    ],
+    "paridad de género": [
+      "PA01"
+    ],
+    "participación política de las mujeres": [
+      "PA01"
+    ],
+    "perspectiva de género": [
+      "PA01"
+    ],
+    "planificación familiar": [
+      "PA01",
+      "PA10"
+    ],
+    "political representation": [
+      "PA01"
+    ],
+    "reconciliación": [
+      "PA01",
+      "PA02",
+      "PA05",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "roles de género": [
+      "PA01"
+    ],
+    "salud sexual y reproductiva": [
+      "PA01",
+      "PA10"
+    ],
+    "tentativa de feminicidio": [
+      "PA01"
+    ],
+    "territorios PDET": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "trabajo de cuidado": [
+      "PA01"
+    ],
+    "trabajo doméstico no remunerado": [
+      "PA01"
+    ],
+    "trabajo no remunerado": [
+      "PA01"
+    ],
+    "transformación territorial": [
+      "PA01",
+      "PA02",
+      "PA03",
+      "PA04",
+      "PA05",
+      "PA06",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "transversalización de género": [
+      "PA01"
+    ],
+    "trata de personas con fines de explotación sexual": [
+      "PA01"
+    ],
+    "violencia basada en género": [
+      "PA01"
+    ],
+    "violencia de género": [
+      "PA01"
+    ],
+    "violencia doméstica": [
+      "PA01"
+    ],
+    "violencia económica": [
+      "PA01"
+    ],
+    "violencia institucional": [
+      "PA01"
+    ],
+    "violencia intrafamiliar": [
+      "PA01"
+    ],
+    "violencia obstétrica": [
+      "PA01"
+    ],
+    "violencia patrimonial": [
+      "PA01"
+    ],
+    "violencia psicológica": [
+      "PA01"
+    ],
+    "violencia sexual": [
+      "PA01",
+      "PA05"
+    ],
+    "violencia simbólica": [
+      "PA01"
+    ],
+    "women labor participation": [
+      "PA01"
+    ],
+    "123": [
+      "PA02"
+    ],
+    "ARN": [
+      "PA02"
+    ],
+    "Agencia para la Reincorporación": [
+      "PA02"
+    ],
+    "Armada Nacional": [
+      "PA02"
+    ],
+    "BACRIM": [
+      "PA02"
+    ],
+    "CIPRAT": [
+      "PA02"
+    ],
+    "Comité de Prevención de Riesgos": [
+      "PA02"
+    ],
+    "Defensoría del Pueblo": [
+      "PA02",
+      "PA05",
+      "PA08"
+    ],
+    "ELN": [
+      "PA02"
+    ],
+    "Ejército Nacional": [
+      "PA02"
+    ],
+    "Ejército de Liberación Nacional": [
+      "PA02"
+    ],
+    "Fiscalía General": [
+      "PA02",
+      "PA08"
+    ],
+    "Fuerza Aérea": [
+      "PA02"
+    ],
+    "Fuerza Pública": [
+      "PA02"
+    ],
+    "Fuerzas Militares": [
+      "PA02"
+    ],
+    "GAO": [
+      "PA02"
+    ],
+    "GDO": [
+      "PA02"
+    ],
+    "MAP": [
+      "PA02"
+    ],
+    "MUSE": [
+      "PA02"
+    ],
+    "Personería": [
+      "PA02",
+      "PA05",
+      "PA09"
+    ],
+    "Policía Nacional": [
+      "PA02",
+      "PA08"
+    ],
+    "SAT": [
+      "PA02"
+    ],
+    "UNP": [
+      "PA02",
+      "PA08"
+    ],
+    "Unidad Nacional de Protección": [
+      "PA02",
+      "PA08"
+    ],
+    "acompañamiento": [
+      "PA02",
+      "PA05",
+      "PA09"
+    ],
+    "alertas tempranas": [
+      "PA02"
+    ],
+    "amapola": [
+      "PA02"
+    ],
+    "amenazas": [
+      "PA02",
+      "PA05",
+      "PA08"
+    ],
+    "armed actors presence": [
+      "PA02"
+    ],
+    "asesinato": [
+      "PA02",
+      "PA05"
+    ],
+    "atención a víctimas": [
+      "PA02",
+      "PA05"
+    ],
+    "bandas criminales": [
+      "PA02"
+    ],
+    "centros juveniles": [
+      "PA02"
+    ],
+    "cobro de vacunas": [
+      "PA02"
+    ],
+    "coca": [
+      "PA02"
+    ],
+    "combates": [
+      "PA02"
+    ],
+    "combos": [
+      "PA02"
+    ],
+    "comisiones de convivencia": [
+      "PA02"
+    ],
+    "conciliación comunitaria": [
+      "PA02"
+    ],
+    "confinamiento": [
+      "PA02"
+    ],
+    "conflicto armado": [
+      "PA02"
+    ],
+    "conflicto interno": [
+      "PA02"
+    ],
+    "contrabando": [
+      "PA02",
+      "PA09"
+    ],
+    "convivencia": [
+      "PA02",
+      "PA10"
+    ],
+    "convivencia ciudadana": [
+      "PA02"
+    ],
+    "corredores humanitarios": [
+      "PA02"
+    ],
+    "criminalidad": [
+      "PA02"
+    ],
+    "cultivos ilícitos": [
+      "PA02"
+    ],
+    "cultura de paz": [
+      "PA02",
+      "PA05"
+    ],
+    "defensoría": [
+      "PA02"
+    ],
+    "denuncia": [
+      "PA02"
+    ],
+    "denuncias": [
+      "PA02"
+    ],
+    "desmovilización": [
+      "PA02"
+    ],
+    "desmovilizados": [
+      "PA02"
+    ],
+    "desplazamiento": [
+      "PA02",
+      "PA05"
+    ],
+    "desplazamiento forzado": [
+      "PA02",
+      "PA05"
+    ],
+    "disidencias": [
+      "PA02"
+    ],
+    "disidencias de las FARC": [
+      "PA02"
+    ],
+    "displacement": [
+      "PA02"
+    ],
+    "economía campesina": [
+      "PA02",
+      "PA04",
+      "PA05",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "enfrentamientos": [
+      "PA02",
+      "PA09"
+    ],
+    "escuelas de paz": [
+      "PA02"
+    ],
+    "esquemas de seguridad": [
+      "PA02"
+    ],
+    "excombatientes": [
+      "PA02"
+    ],
+    "explotación ilegal": [
+      "PA02"
+    ],
+    "extorsión": [
+      "PA02"
+    ],
+    "fiscalía": [
+      "PA02"
+    ],
+    "frentes de seguridad": [
+      "PA02"
+    ],
+    "grupos armados": [
+      "PA02"
+    ],
+    "grupos armados organizados": [
+      "PA02"
+    ],
+    "grupos delictivos organizados": [
+      "PA02"
+    ],
+    "homicide rate": [
+      "PA02"
+    ],
+    "homicidio": [
+      "PA02",
+      "PA05"
+    ],
+    "homicidios": [
+      "PA02",
+      "PA08"
+    ],
+    "hostilidades": [
+      "PA02"
+    ],
+    "inseguridad": [
+      "PA02"
+    ],
+    "intimidación": [
+      "PA02",
+      "PA05",
+      "PA08"
+    ],
+    "justicia comunitaria": [
+      "PA02"
+    ],
+    "jóvenes en riesgo": [
+      "PA02"
+    ],
+    "laboratorios": [
+      "PA02"
+    ],
+    "línea 155": [
+      "PA02"
+    ],
+    "líneas de emergencia": [
+      "PA02"
+    ],
+    "marihuana": [
+      "PA02"
+    ],
+    "masacres": [
+      "PA02",
+      "PA05"
+    ],
+    "mediación": [
+      "PA02",
+      "PA05",
+      "PA07"
+    ],
+    "minas antipersona": [
+      "PA02",
+      "PA05"
+    ],
+    "minería ilegal": [
+      "PA02",
+      "PA08"
+    ],
+    "narcotráfico": [
+      "PA02",
+      "PA08"
+    ],
+    "pandillas": [
+      "PA02"
+    ],
+    "paramilitares": [
+      "PA02"
+    ],
+    "paramilitarismo": [
+      "PA02"
+    ],
+    "parches": [
+      "PA02"
+    ],
+    "personería municipal": [
+      "PA02"
+    ],
+    "planes de contingencia": [
+      "PA02",
+      "PA10"
+    ],
+    "policía": [
+      "PA02"
+    ],
+    "prevención": [
+      "PA02",
+      "PA04",
+      "PA05"
+    ],
+    "prevención de la violencia": [
+      "PA02"
+    ],
+    "prevención del reclutamiento": [
+      "PA02"
+    ],
+    "privación de la libertad": [
+      "PA02",
+      "PA05"
+    ],
+    "producción de drogas": [
+      "PA02"
+    ],
+    "protección": [
+      "PA02",
+      "PA08"
+    ],
+    "protocolos de seguridad": [
+      "PA02",
+      "PA08"
+    ],
+    "reactivación económica": [
+      "PA02",
+      "PA04",
+      "PA05",
+      "PA07",
+      "PA08",
+      "PA09",
+      "PA10"
+    ],
+    "reclutamiento forzado": [
+      "PA02",
+      "PA05",
+      "PA06"
+    ],
+    "redes de apoyo": [
+      "PA02",
+      "PA08",
+      "PA10"
+    ],
+    "reincorporación": [
+      "PA02"
+    ],
+    "reintegración": [
+      "PA02",
+      "PA09"
+    ],
+    "reportes": [
+      "PA02"
+    ],
+    "resolución de conflictos": [
+      "PA02",
+      "PA05"
+    ],
+    "restricciones a la movilidad": [
+      "PA02"
+    ],
+    "rutas del narcotráfico": [
+      "PA02"
+    ],
+    "rutas humanitarias": [
+      "PA02"
+    ],
+    "sana convivencia": [
+      "PA02"
+    ],
+    "secuestro": [
+      "PA02",
+      "PA05"
+    ],
+    "secuestros": [
+      "PA02",
+      "PA10"
+    ],
+    "seguridad": [
+      "PA02"
+    ],
+    "seguridad territorial": [
+      "PA02"
+    ],
+    "sistema de alertas": [
+      "PA02"
+    ],
+    "territorios de riesgo": [
+      "PA02"
+    ],
+    "tráfico de armas": [
+      "PA02"
+    ],
+    "tráfico de drogas": [
+      "PA02"
+    ],
+    "utilización de menores": [
+      "PA02",
+      "PA05",
+      "PA06"
+    ],
+    "vacunas": [
+      "PA02"
+    ],
+    "valoración del riesgo": [
+      "PA02"
+    ],
+    "veedurías": [
+      "PA02",
+      "PA08",
+      "PA09"
+    ],
+    "violencia": [
+      "PA02"
+    ],
+    "violencia colectiva": [
+      "PA02",
+      "PA05"
+    ],
+    "violencia juvenil": [
+      "PA02"
+    ],
+    "zonas de riesgo": [
+      "PA02",
+      "PA03",
+      "PA08"
+    ],
+    "ANLA": [
+      "PA03"
+    ],
+    "Autoridad Nacional de Licencias": [
+      "PA03"
+    ],
+    "CAR": [
+      "PA03"
+    ],
+    "CIDEAM": [
+      "PA03"
+    ],
+    "CMGRD": [
+      "PA03"
+    ],
+    "Consejo Municipal de Gestión del Riesgo": [
+      "PA03"
+    ],
+    "Corporación Autónoma Regional": [
+      "PA03"
+    ],
+    "EIA": [
+      "PA03"
+    ],
+    "GEI": [
+      "PA03"
+    ],
+    "IDEAM": [
+      "PA03"
+    ],
+    "MINAMBIENTE": [
+      "PA03"
+    ],
+    "Ministerio de Ambiente": [
+      "PA03"
+    ],
+    "PMA": [
+      "PA03"
+    ],
+    "PRAE": [
+      "PA03"
+    ],
+    "PROCEDAS": [
+      "PA03"
+    ],
+    "Parques Nacionales": [
+      "PA03"
+    ],
+    "SbN": [
+      "PA03"
+    ],
+    "Secretaría de Ambiente": [
+      "PA03"
+    ],
+    "UMATA": [
+      "PA03",
+      "PA07"
+    ],
+    "UNGRD": [
+      "PA03"
+    ],
+    "Unidad Nacional de Gestión del Riesgo": [
+      "PA03"
+    ],
+    "Unidad de Asistencia Técnica": [
+      "PA03"
+    ],
+    "actividad sísmica": [
+      "PA03"
+    ],
+    "acuíferos": [
+      "PA03"
+    ],
+    "adaptación al cambio climático": [
+      "PA03"
+    ],
+    "adaptación basada en ecosistemas": [
+      "PA03"
+    ],
+    "adaptación climática": [
+      "PA03"
+    ],
+    "agricultura sostenible": [
+      "PA03"
+    ],
+    "agroecología": [
+      "PA03"
+    ],
+    "agua": [
+      "PA03"
+    ],
+    "aguas residuales": [
+      "PA03"
+    ],
+    "ahorro energético": [
+      "PA03"
+    ],
+    "alta montaña": [
+      "PA03"
+    ],
+    "ambiental": [
+      "PA03"
+    ],
+    "ambiente": [
+      "PA03"
+    ],
+    "asentamientos en riesgo": [
+      "PA03"
+    ],
+    "avalanchas": [
+      "PA03"
+    ],
+    "basuras": [
+      "PA03"
+    ],
+    "bicicletas": [
+      "PA03"
+    ],
+    "biodiversidad": [
+      "PA03"
+    ],
+    "bosques": [
+      "PA03"
+    ],
+    "botaderos": [
+      "PA03"
+    ],
+    "calamidad": [
+      "PA03"
+    ],
+    "calentamiento global": [
+      "PA03"
+    ],
+    "calidad del aire": [
+      "PA03"
+    ],
+    "cambio climático": [
+      "PA03"
+    ],
+    "ciclorrutas": [
+      "PA03"
+    ],
+    "comunidades resilientes": [
+      "PA03"
+    ],
+    "conciencia ambiental": [
+      "PA03"
+    ],
+    "conectividad ecológica": [
+      "PA03"
+    ],
+    "conectividad territorial": [
+      "PA03",
+      "PA10"
+    ],
+    "conocimiento del riesgo": [
+      "PA03"
+    ],
+    "conservación": [
+      "PA03"
+    ],
+    "contaminación": [
+      "PA03"
+    ],
+    "contaminación auditiva": [
+      "PA03"
+    ],
+    "contaminación del agua": [
+      "PA03"
+    ],
+    "contaminación del aire": [
+      "PA03"
+    ],
+    "contaminación del suelo": [
+      "PA03"
+    ],
+    "contaminación hídrica": [
+      "PA03"
+    ],
+    "corredores biológicos": [
+      "PA03"
+    ],
+    "crecientes": [
+      "PA03"
+    ],
+    "crisis climática": [
+      "PA03"
+    ],
+    "cuencas": [
+      "PA03"
+    ],
+    "cultura ambiental": [
+      "PA03"
+    ],
+    "deforestación": [
+      "PA03",
+      "PA08"
+    ],
+    "deforestation rate": [
+      "PA03"
+    ],
+    "desarrollo sostenible": [
+      "PA03"
+    ],
+    "desastres": [
+      "PA03"
+    ],
+    "desbordamientos": [
+      "PA03"
+    ],
+    "desertificación": [
+      "PA03"
+    ],
+    "deslizamientos": [
+      "PA03"
+    ],
+    "diagnóstico ambiental": [
+      "PA03"
+    ],
+    "economía circular": [
+      "PA03"
+    ],
+    "ecosistemas": [
+      "PA03"
+    ],
+    "educación ambiental": [
+      "PA03"
+    ],
+    "efecto invernadero": [
+      "PA03"
+    ],
+    "eficiencia energética": [
+      "PA03"
+    ],
+    "emergencias": [
+      "PA03"
+    ],
+    "emisiones": [
+      "PA03"
+    ],
+    "energía limpia": [
+      "PA03"
+    ],
+    "energías renovables": [
+      "PA03"
+    ],
+    "erosión": [
+      "PA03"
+    ],
+    "erupciones volcánicas": [
+      "PA03"
+    ],
+    "especies amenazadas": [
+      "PA03"
+    ],
+    "especies en peligro": [
+      "PA03"
+    ],
+    "especies nativas": [
+      "PA03"
+    ],
+    "estudios ambientales": [
+      "PA03"
+    ],
+    "evaluación de impacto ambiental": [
+      "PA03"
+    ],
+    "eventos extremos": [
+      "PA03"
+    ],
+    "eólica": [
+      "PA03"
+    ],
+    "fauna silvestre": [
+      "PA03"
+    ],
+    "flora": [
+      "PA03"
+    ],
+    "flujos torrenciales": [
+      "PA03"
+    ],
+    "formalización tierras": [
+      "PA03",
+      "PA05"
+    ],
+    "fuentes de agua": [
+      "PA03"
+    ],
+    "gases de efecto invernadero": [
+      "PA03"
+    ],
+    "gestión de desastres": [
+      "PA03"
+    ],
+    "gestión del riesgo": [
+      "PA03"
+    ],
+    "granizadas": [
+      "PA03"
+    ],
+    "hidroeléctrica": [
+      "PA03"
+    ],
+    "huella de carbono": [
+      "PA03"
+    ],
+    "humedales": [
+      "PA03"
+    ],
+    "hábitat": [
+      "PA03"
+    ],
+    "illegal mining": [
+      "PA03"
+    ],
+    "incendios forestales": [
+      "PA03"
+    ],
+    "infraestructura rural": [
+      "PA03",
+      "PA07",
+      "PA10"
+    ],
+    "infraestructura verde": [
+      "PA03"
+    ],
+    "infraestructura vulnerable": [
+      "PA03"
+    ],
+    "inundaciones": [
+      "PA03"
+    ],
+    "licencias ambientales": [
+      "PA03"
+    ],
+    "manejo de residuos": [
+      "PA03"
+    ],
+    "medio ambiente": [
+      "PA03"
+    ],
+    "microcuencas": [
+      "PA03"
+    ],
+    "mitigación": [
+      "PA03"
+    ],
+    "movilidad sostenible": [
+      "PA03"
+    ],
+    "nacimientos de agua": [
+      "PA03"
+    ],
+    "neutralidad climática": [
+      "PA03"
+    ],
+    "ordenamiento ambiental": [
+      "PA03"
+    ],
+    "parques nacionales": [
+      "PA03"
+    ],
+    "parques naturales": [
+      "PA03"
+    ],
+    "participación comunitaria": [
+      "PA03"
+    ],
+    "permisos ambientales": [
+      "PA03"
+    ],
+    "planes de manejo ambiental": [
+      "PA03"
+    ],
+    "población vulnerable": [
+      "PA03",
+      "PA04"
+    ],
+    "polución": [
+      "PA03"
+    ],
+    "preparación": [
+      "PA03"
+    ],
+    "preservación": [
+      "PA03"
+    ],
+    "prevención de desastres": [
+      "PA03"
+    ],
+    "protección ambiental": [
+      "PA03"
+    ],
+    "protected areas": [
+      "PA03"
+    ],
+    "prácticas agrícolas": [
+      "PA03"
+    ],
+    "páramos": [
+      "PA03"
+    ],
+    "pérdida de bosque": [
+      "PA03"
+    ],
+    "quebradas": [
+      "PA03"
+    ],
+    "quemas": [
+      "PA03"
+    ],
+    "reasentamiento": [
+      "PA03",
+      "PA05"
+    ],
+    "reciclaje": [
+      "PA03"
+    ],
+    "recuperación": [
+      "PA03"
+    ],
+    "recurso hídrico": [
+      "PA03"
+    ],
+    "reducción del riesgo": [
+      "PA03"
+    ],
+    "reforestación": [
+      "PA03"
+    ],
+    "reforma rural integral": [
+      "PA03",
+      "PA05"
+    ],
+    "rellenos sanitarios": [
+      "PA03"
+    ],
+    "remoción en masa": [
+      "PA03"
+    ],
+    "reservas forestales": [
+      "PA03"
+    ],
+    "reservas naturales": [
+      "PA03"
+    ],
+    "residuos sólidos": [
+      "PA03"
+    ],
+    "resiliencia": [
+      "PA03"
+    ],
+    "respuesta a emergencias": [
+      "PA03"
+    ],
+    "restauración ecológica": [
+      "PA03"
+    ],
+    "reubicación": [
+      "PA03",
+      "PA05",
+      "PA08"
+    ],
+    "ruido": [
+      "PA03"
+    ],
+    "ríos": [
+      "PA03"
+    ],
+    "selvas": [
+      "PA03"
+    ],
+    "sensibilización": [
+      "PA03"
+    ],
+    "sequías": [
+      "PA03"
+    ],
+    "silvopastoriles": [
+      "PA03"
+    ],
+    "sismos": [
+      "PA03"
+    ],
+    "sistemas agroforestales": [
+      "PA03"
+    ],
+    "solar": [
+      "PA03"
+    ],
+    "soluciones basadas en naturaleza": [
+      "PA03"
+    ],
+    "sostenibilidad": [
+      "PA03"
+    ],
+    "sostenibilidad ambiental": [
+      "PA03"
+    ],
+    "subcuencas": [
+      "PA03"
+    ],
+    "sustentabilidad": [
+      "PA03"
+    ],
+    "tala": [
+      "PA03"
+    ],
+    "terremotos": [
+      "PA03"
+    ],
+    "tormentas": [
+      "PA03"
+    ],
+    "transporte público": [
+      "PA03"
+    ],
+    "transporte sostenible": [
+      "PA03"
+    ],
+    "uso del suelo": [
+      "PA03",
+      "PA07"
+    ],
+    "variabilidad climática": [
+      "PA03"
+    ],
+    "veedurías ambientales": [
+      "PA03"
+    ],
+    "vendavales": [
+      "PA03"
+    ],
+    "vertimientos": [
+      "PA03"
+    ],
+    "viviendas en riesgo": [
+      "PA03"
+    ],
+    "volcanes": [
+      "PA03"
+    ],
+    "vulnerabilidad": [
+      "PA03"
+    ],
+    "zonas de preservación": [
+      "PA03"
+    ],
+    "zonificación ambiental": [
+      "PA03"
+    ],
+    "áreas de amenaza": [
+      "PA03"
+    ],
+    "áreas protegidas": [
+      "PA03",
+      "PA07"
+    ],
+    "Alcaldía": [
+      "PA04"
+    ],
+    "DESC": [
+      "PA04"
+    ],
+    "DPS": [
+      "PA04"
+    ],
+    "EPS": [
+      "PA04"
+    ],
+    "ESE": [
+      "PA04"
+    ],
+    "Estado Social de Derecho": [
+      "PA04"
+    ],
+    "Familias en Acción": [
+      "PA04"
+    ],
+    "ICBF": [
+      "PA04",
+      "PA06"
+    ],
+    "ICFES": [
+      "PA04"
+    ],
+    "IPS": [
+      "PA04"
+    ],
+    "Instituto Colombiano de Bienestar Familiar": [
+      "PA04",
+      "PA06"
+    ],
+    "Mi Casa Ya": [
+      "PA04"
+    ],
+    "Ministerio de Cultura": [
+      "PA04"
+    ],
+    "Ministerio de Educación": [
+      "PA04"
+    ],
+    "Ministerio de Salud": [
+      "PA04"
+    ],
+    "Ministerio del Trabajo": [
+      "PA04"
+    ],
+    "PAE": [
+      "PA04"
+    ],
+    "PBS": [
+      "PA04"
+    ],
+    "POS": [
+      "PA04"
+    ],
+    "Plan de Beneficios en Salud": [
+      "PA04"
+    ],
+    "Programa de Alimentación Escolar": [
+      "PA04"
+    ],
+    "Prosperidad Social": [
+      "PA04"
+    ],
+    "Pruebas Saber": [
+      "PA04"
+    ],
+    "Registro Social de Hogares": [
+      "PA04"
+    ],
+    "SED": [
+      "PA04"
+    ],
+    "SENA": [
+      "PA04"
+    ],
+    "SISBEN": [
+      "PA04"
+    ],
+    "Secretaría Local de Salud": [
+      "PA04"
+    ],
+    "Secretaría de Desarrollo Social": [
+      "PA04"
+    ],
+    "Secretaría de Educación": [
+      "PA04"
+    ],
+    "Secretaría de Integración Social": [
+      "PA04",
+      "PA06"
+    ],
+    "Secretaría de Salud": [
+      "PA04"
+    ],
+    "VIP": [
+      "PA04"
+    ],
+    "VIS": [
+      "PA04"
+    ],
+    "abandono escolar": [
+      "PA04"
+    ],
+    "acceso a la educación": [
+      "PA04"
+    ],
+    "acceso a medicamentos": [
+      "PA04"
+    ],
+    "actividad física": [
+      "PA04"
+    ],
+    "acueducto": [
+      "PA04"
+    ],
+    "adulto mayor": [
+      "PA04"
+    ],
+    "adultos mayores": [
+      "PA04"
+    ],
+    "agricultura familiar": [
+      "PA04",
+      "PA07"
+    ],
+    "agricultural productivity": [
+      "PA04"
+    ],
+    "agua potable": [
+      "PA04",
+      "PA09",
+      "PA10"
+    ],
+    "alcalde": [
+      "PA04"
+    ],
+    "alcantarillado": [
+      "PA04"
+    ],
+    "alfabetización": [
+      "PA04",
+      "PA09"
+    ],
+    "alimentación": [
+      "PA04",
+      "PA09",
+      "PA10"
+    ],
+    "alimentación escolar": [
+      "PA04"
+    ],
+    "alquiler": [
+      "PA04"
+    ],
+    "analfabetismo": [
+      "PA04"
+    ],
+    "ancianos": [
+      "PA04"
+    ],
+    "arrendamiento": [
+      "PA04"
+    ],
+    "arte": [
+      "PA04"
+    ],
+    "artesanos": [
+      "PA04"
+    ],
+    "artesanía": [
+      "PA04"
+    ],
+    "artistas": [
+      "PA04"
+    ],
+    "asociatividad": [
+      "PA04"
+    ],
+    "atención en salud": [
+      "PA04",
+      "PA10"
+    ],
+    "atractivos turísticos": [
+      "PA04"
+    ],
+    "aulas": [
+      "PA04"
+    ],
+    "ayudas sociales": [
+      "PA04"
+    ],
+    "bachillerato": [
+      "PA04"
+    ],
+    "bancos de alimentos": [
+      "PA04"
+    ],
+    "becas": [
+      "PA04"
+    ],
+    "bibliotecas": [
+      "PA04"
+    ],
+    "bienes de interés cultural": [
+      "PA04"
+    ],
+    "bienestar": [
+      "PA04"
+    ],
+    "calidad de vida": [
+      "PA04"
+    ],
+    "calidad educativa": [
+      "PA04"
+    ],
+    "campañas de salud": [
+      "PA04"
+    ],
+    "canastas familiares": [
+      "PA04"
+    ],
+    "capacitación laboral": [
+      "PA04",
+      "PA09"
+    ],
+    "casas de cultura": [
+      "PA04"
+    ],
+    "centros de salud": [
+      "PA04"
+    ],
+    "cesantías": [
+      "PA04"
+    ],
+    "cobertura educativa": [
+      "PA04"
+    ],
+    "colegios": [
+      "PA04"
+    ],
+    "comedores comunitarios": [
+      "PA04",
+      "PA10"
+    ],
+    "condiciones de habitabilidad": [
+      "PA04"
+    ],
+    "condiciones laborales": [
+      "PA04"
+    ],
+    "cooperativas": [
+      "PA04"
+    ],
+    "creación de empleo": [
+      "PA04"
+    ],
+    "cultura": [
+      "PA04"
+    ],
+    "danza": [
+      "PA04"
+    ],
+    "deporte": [
+      "PA04"
+    ],
+    "derecho a la educación": [
+      "PA04"
+    ],
+    "derecho a la salud": [
+      "PA04"
+    ],
+    "derecho a la vivienda": [
+      "PA04"
+    ],
+    "derechos culturales": [
+      "PA04"
+    ],
+    "derechos económicos": [
+      "PA04"
+    ],
+    "derechos fundamentales": [
+      "PA04"
+    ],
+    "derechos laborales": [
+      "PA04"
+    ],
+    "derechos sociales": [
+      "PA04"
+    ],
+    "desarrollo humano": [
+      "PA04"
+    ],
+    "desempleo": [
+      "PA04"
+    ],
+    "deserción escolar": [
+      "PA04"
+    ],
+    "desnutrición": [
+      "PA04"
+    ],
+    "desocupación": [
+      "PA04"
+    ],
+    "dignidad humana": [
+      "PA04",
+      "PA09"
+    ],
+    "diversidad cultural": [
+      "PA04",
+      "PA10"
+    ],
+    "docentes": [
+      "PA04"
+    ],
+    "dotación escolar": [
+      "PA04"
+    ],
+    "déficit de vivienda": [
+      "PA04"
+    ],
+    "déficit habitacional": [
+      "PA04"
+    ],
+    "economía naranja": [
+      "PA04"
+    ],
+    "economía solidaria": [
+      "PA04"
+    ],
+    "educación": [
+      "PA04"
+    ],
+    "educación especial": [
+      "PA04"
+    ],
+    "educación gratuita": [
+      "PA04"
+    ],
+    "educación inclusiva": [
+      "PA04"
+    ],
+    "educación media": [
+      "PA04"
+    ],
+    "educación pública": [
+      "PA04"
+    ],
+    "educación superior": [
+      "PA04",
+      "PA06"
+    ],
+    "educación tecnológica": [
+      "PA04"
+    ],
+    "educación técnica": [
+      "PA04"
+    ],
+    "empleo": [
+      "PA04",
+      "PA10"
+    ],
+    "empleo formal": [
+      "PA04"
+    ],
+    "empleo informal": [
+      "PA04"
+    ],
+    "emprendimiento": [
+      "PA04"
+    ],
+    "empresarismo": [
+      "PA04"
+    ],
+    "energía eléctrica": [
+      "PA04"
+    ],
+    "enfermedades": [
+      "PA04",
+      "PA09"
+    ],
+    "epidemias": [
+      "PA04"
+    ],
+    "equidad social": [
+      "PA04"
+    ],
+    "escenarios deportivos": [
+      "PA04"
+    ],
+    "escrituración": [
+      "PA04",
+      "PA07"
+    ],
+    "escuelas": [
+      "PA04"
+    ],
+    "escuelas de música": [
+      "PA04"
+    ],
+    "escuelas deportivas": [
+      "PA04"
+    ],
+    "escuelas rurales": [
+      "PA04"
+    ],
+    "espacios públicos": [
+      "PA04"
+    ],
+    "evaluaciones": [
+      "PA04"
+    ],
+    "eventos culturales": [
+      "PA04"
+    ],
+    "excelencia académica": [
+      "PA04"
+    ],
+    "explotación laboral": [
+      "PA04",
+      "PA06",
+      "PA10"
+    ],
+    "expresiones artísticas": [
+      "PA04"
+    ],
+    "festivales": [
+      "PA04"
+    ],
+    "fiestas": [
+      "PA04"
+    ],
+    "formación artística": [
+      "PA04",
+      "PA06"
+    ],
+    "formación deportiva": [
+      "PA04"
+    ],
+    "formación para el trabajo": [
+      "PA04"
+    ],
+    "formal enterprises": [
+      "PA04"
+    ],
+    "garantías sociales": [
+      "PA04"
+    ],
+    "gas natural": [
+      "PA04"
+    ],
+    "generación de empleo": [
+      "PA04"
+    ],
+    "gobierno local": [
+      "PA04"
+    ],
+    "gratuidad educativa": [
+      "PA04"
+    ],
+    "grupos vulnerables": [
+      "PA04"
+    ],
+    "habitantes de calle": [
+      "PA04"
+    ],
+    "hacinamiento": [
+      "PA04",
+      "PA09"
+    ],
+    "hospitales": [
+      "PA04"
+    ],
+    "huertas comunitarias": [
+      "PA04"
+    ],
+    "identidad cultural": [
+      "PA04"
+    ],
+    "inclusión": [
+      "PA04",
+      "PA10"
+    ],
+    "inclusión social": [
+      "PA04"
+    ],
+    "indigencia": [
+      "PA04"
+    ],
+    "industrias culturales": [
+      "PA04"
+    ],
+    "informalidad": [
+      "PA04"
+    ],
+    "infraestructura educativa": [
+      "PA04"
+    ],
+    "inquilinato": [
+      "PA04"
+    ],
+    "instituciones educativas": [
+      "PA04"
+    ],
+    "jornadas de salud": [
+      "PA04"
+    ],
+    "juegos comunitarios": [
+      "PA04"
+    ],
+    "maestros": [
+      "PA04"
+    ],
+    "malnutrición": [
+      "PA04",
+      "PA06"
+    ],
+    "market access": [
+      "PA04"
+    ],
+    "material educativo": [
+      "PA04"
+    ],
+    "matrícula": [
+      "PA04"
+    ],
+    "medicamentos": [
+      "PA04",
+      "PA09"
+    ],
+    "medicina": [
+      "PA04"
+    ],
+    "mejoramiento de vivienda": [
+      "PA04"
+    ],
+    "mejoramiento habitacional": [
+      "PA04"
+    ],
+    "memoria histórica": [
+      "PA04",
+      "PA05"
+    ],
+    "multiculturalidad": [
+      "PA04"
+    ],
+    "médicos": [
+      "PA04"
+    ],
+    "música": [
+      "PA04"
+    ],
+    "nutrición": [
+      "PA04"
+    ],
+    "oficios tradicionales": [
+      "PA04"
+    ],
+    "organizaciones productivas": [
+      "PA04"
+    ],
+    "pandemias": [
+      "PA04"
+    ],
+    "parques": [
+      "PA04"
+    ],
+    "patrimonio cultural": [
+      "PA04"
+    ],
+    "patrimonio inmaterial": [
+      "PA04"
+    ],
+    "patrimonio material": [
+      "PA04"
+    ],
+    "pensiones": [
+      "PA04"
+    ],
+    "personal de salud": [
+      "PA04"
+    ],
+    "personas con discapacidad": [
+      "PA04"
+    ],
+    "personas mayores": [
+      "PA04"
+    ],
+    "población de calle": [
+      "PA04"
+    ],
+    "población en situación de calle": [
+      "PA04"
+    ],
+    "pobreza": [
+      "PA04"
+    ],
+    "pobreza extrema": [
+      "PA04",
+      "PA10"
+    ],
+    "polideportivos": [
+      "PA04"
+    ],
+    "preescolar": [
+      "PA04"
+    ],
+    "prestaciones sociales": [
+      "PA04"
+    ],
+    "primaria": [
+      "PA04"
+    ],
+    "profesores": [
+      "PA04"
+    ],
+    "programas de alimentación": [
+      "PA04"
+    ],
+    "programas sociales": [
+      "PA04"
+    ],
+    "promoción de la salud": [
+      "PA04"
+    ],
+    "psicología": [
+      "PA04"
+    ],
+    "psiquiatría": [
+      "PA04"
+    ],
+    "puestos de salud": [
+      "PA04"
+    ],
+    "recreación": [
+      "PA04"
+    ],
+    "red hospitalaria": [
+      "PA04"
+    ],
+    "red pública": [
+      "PA04"
+    ],
+    "remuneración": [
+      "PA04"
+    ],
+    "restaurante escolar": [
+      "PA04"
+    ],
+    "rutas escolares": [
+      "PA04"
+    ],
+    "régimen contributivo": [
+      "PA04"
+    ],
+    "régimen subsidiado": [
+      "PA04"
+    ],
+    "salario": [
+      "PA04"
+    ],
+    "salario mínimo": [
+      "PA04"
+    ],
+    "salud": [
+      "PA04"
+    ],
+    "salud digital": [
+      "PA04"
+    ],
+    "salud mental": [
+      "PA04"
+    ],
+    "salud pública": [
+      "PA04"
+    ],
+    "saneamiento básico": [
+      "PA04"
+    ],
+    "sano esparcimiento": [
+      "PA04"
+    ],
+    "secundaria": [
+      "PA04"
+    ],
+    "seguridad alimentaria": [
+      "PA04",
+      "PA06",
+      "PA07"
+    ],
+    "seguridad social": [
+      "PA04"
+    ],
+    "servicios de salud": [
+      "PA04"
+    ],
+    "servicios públicos": [
+      "PA04"
+    ],
+    "sistema de salud": [
+      "PA04"
+    ],
+    "soberanía alimentaria": [
+      "PA04"
+    ],
+    "subsidios": [
+      "PA04"
+    ],
+    "subsidios de vivienda": [
+      "PA04"
+    ],
+    "subsidios educativos": [
+      "PA04",
+      "PA06"
+    ],
+    "teatro": [
+      "PA04"
+    ],
+    "telemedicina": [
+      "PA04"
+    ],
+    "teletrabajo": [
+      "PA04"
+    ],
+    "tercera edad": [
+      "PA04"
+    ],
+    "titulación de vivienda": [
+      "PA04"
+    ],
+    "torneos": [
+      "PA04"
+    ],
+    "trabajo": [
+      "PA04"
+    ],
+    "trabajo infantil": [
+      "PA04",
+      "PA06"
+    ],
+    "trabajo informal": [
+      "PA04",
+      "PA10"
+    ],
+    "trabajo remoto": [
+      "PA04"
+    ],
+    "tradiciones": [
+      "PA04"
+    ],
+    "transferencias": [
+      "PA04"
+    ],
+    "transporte escolar": [
+      "PA04"
+    ],
+    "turismo": [
+      "PA04"
+    ],
+    "turismo cultural": [
+      "PA04"
+    ],
+    "universidad": [
+      "PA04"
+    ],
+    "uso del tiempo libre": [
+      "PA04"
+    ],
+    "vigilancia epidemiológica": [
+      "PA04",
+      "PA10"
+    ],
+    "vivienda": [
+      "PA04",
+      "PA10"
+    ],
+    "vivienda de interés prioritario": [
+      "PA04"
+    ],
+    "vivienda de interés social": [
+      "PA04"
+    ],
+    "vivienda digna": [
+      "PA04"
+    ],
+    "zonas verdes": [
+      "PA04"
+    ],
+    "ART": [
+      "PA05"
+    ],
+    "Agencia de Renovación del Territorio": [
+      "PA05"
+    ],
+    "CNMH": [
+      "PA05"
+    ],
+    "Centro Nacional de Memoria Histórica": [
+      "PA05"
+    ],
+    "Comisión de Esclarecimiento": [
+      "PA05"
+    ],
+    "Comisión de la Verdad": [
+      "PA05"
+    ],
+    "Contraloría": [
+      "PA05"
+    ],
+    "Enlace de Víctimas": [
+      "PA05"
+    ],
+    "FONSET": [
+      "PA05"
+    ],
+    "Fondo Nacional de Seguridad y Estabilización": [
+      "PA05"
+    ],
+    "JEP": [
+      "PA05"
+    ],
+    "Jurisdicción Especial para la Paz": [
+      "PA05"
+    ],
+    "Ley 1448": [
+      "PA05"
+    ],
+    "Ley de Víctimas": [
+      "PA05"
+    ],
+    "Mesa de Víctimas": [
+      "PA05"
+    ],
+    "PAT": [
+      "PA05"
+    ],
+    "Plan de Acción para la Transformación": [
+      "PA05"
+    ],
+    "Procuraduría": [
+      "PA05",
+      "PA08",
+      "PA09"
+    ],
+    "Punto 1": [
+      "PA05"
+    ],
+    "Punto 2": [
+      "PA05"
+    ],
+    "Punto 3": [
+      "PA05"
+    ],
+    "Punto 4": [
+      "PA05"
+    ],
+    "Punto 5": [
+      "PA05"
+    ],
+    "Punto 6": [
+      "PA05"
+    ],
+    "RRI": [
+      "PA05"
+    ],
+    "RUV": [
+      "PA05"
+    ],
+    "Reforma Rural Integral": [
+      "PA05"
+    ],
+    "Registro Único de Víctimas": [
+      "PA05"
+    ],
+    "UARIV": [
+      "PA05"
+    ],
+    "URT": [
+      "PA05"
+    ],
+    "Unidad de Búsqueda": [
+      "PA05"
+    ],
+    "Unidad de Restitución de Tierras": [
+      "PA05"
+    ],
+    "Unidad para las Víctimas": [
+      "PA05"
+    ],
+    "Ventanilla de Víctimas": [
+      "PA05"
+    ],
+    "abandono forzado": [
+      "PA05"
+    ],
+    "actos simbólicos": [
+      "PA05"
+    ],
+    "actos terroristas": [
+      "PA05"
+    ],
+    "acuerdo de paz": [
+      "PA05"
+    ],
+    "acuerdo final": [
+      "PA05"
+    ],
+    "afrodescendientes": [
+      "PA05"
+    ],
+    "archivos": [
+      "PA05"
+    ],
+    "asesoría jurídica": [
+      "PA05"
+    ],
+    "asistencia humanitaria": [
+      "PA05",
+      "PA10"
+    ],
+    "asociaciones": [
+      "PA05"
+    ],
+    "atención psicosocial": [
+      "PA05"
+    ],
+    "atentados": [
+      "PA05",
+      "PA08"
+    ],
+    "auto-reconocimiento": [
+      "PA05"
+    ],
+    "ayuda humanitaria": [
+      "PA05",
+      "PA10"
+    ],
+    "ayudas inmediatas": [
+      "PA05"
+    ],
+    "búsqueda de desaparecidos": [
+      "PA05"
+    ],
+    "caracterización": [
+      "PA05",
+      "PA07"
+    ],
+    "censo de retornados": [
+      "PA05"
+    ],
+    "compensación": [
+      "PA05"
+    ],
+    "comunidades negras": [
+      "PA05",
+      "PA07"
+    ],
+    "condiciones de seguridad": [
+      "PA05"
+    ],
+    "conmemoración": [
+      "PA05"
+    ],
+    "consejos": [
+      "PA05"
+    ],
+    "consentimiento previo": [
+      "PA05"
+    ],
+    "construcción de confianza": [
+      "PA05"
+    ],
+    "consulta previa": [
+      "PA05"
+    ],
+    "convivencia pacífica": [
+      "PA05"
+    ],
+    "cumplimiento": [
+      "PA05"
+    ],
+    "declaración como víctima": [
+      "PA05"
+    ],
+    "derecho a la justicia": [
+      "PA05"
+    ],
+    "derecho a la verdad": [
+      "PA05"
+    ],
+    "desaparecidos": [
+      "PA05"
+    ],
+    "desaparición forzada": [
+      "PA05"
+    ],
+    "desarme": [
+      "PA05"
+    ],
+    "desmantelamiento": [
+      "PA05",
+      "PA08"
+    ],
+    "desminado": [
+      "PA05"
+    ],
+    "despojo": [
+      "PA05",
+      "PA07"
+    ],
+    "despojo de tierras": [
+      "PA05"
+    ],
+    "diálogo": [
+      "PA05"
+    ],
+    "documentación": [
+      "PA05",
+      "PA06",
+      "PA10"
+    ],
+    "educación para la paz": [
+      "PA05"
+    ],
+    "encuentros": [
+      "PA05"
+    ],
+    "enfoque de género en víctimas": [
+      "PA05"
+    ],
+    "enfoque diferencial": [
+      "PA05"
+    ],
+    "enfoque étnico": [
+      "PA05"
+    ],
+    "enlace municipal": [
+      "PA05"
+    ],
+    "espacios de diálogo": [
+      "PA05"
+    ],
+    "evaluación de riesgos": [
+      "PA05"
+    ],
+    "fallos": [
+      "PA05"
+    ],
+    "fin del conflicto": [
+      "PA05"
+    ],
+    "fortalecimiento institucional": [
+      "PA05"
+    ],
+    "garantías de no repetición": [
+      "PA05"
+    ],
+    "garantías de participación": [
+      "PA05"
+    ],
+    "homenaje": [
+      "PA05"
+    ],
+    "implementación del acuerdo": [
+      "PA05"
+    ],
+    "implementación y verificación": [
+      "PA05"
+    ],
+    "incidencia": [
+      "PA05"
+    ],
+    "indemnización": [
+      "PA05"
+    ],
+    "iniciativas PDET": [
+      "PA05"
+    ],
+    "jueces de restitución": [
+      "PA05"
+    ],
+    "justicia": [
+      "PA05",
+      "PA08"
+    ],
+    "justicia restaurativa": [
+      "PA05"
+    ],
+    "justicia transicional": [
+      "PA05"
+    ],
+    "land restitution": [
+      "PA05"
+    ],
+    "limpieza de minas": [
+      "PA05"
+    ],
+    "lugares de memoria": [
+      "PA05"
+    ],
+    "líderes de víctimas": [
+      "PA05",
+      "PA08"
+    ],
+    "medidas de satisfacción": [
+      "PA05"
+    ],
+    "memoria": [
+      "PA05"
+    ],
+    "memoria colectiva": [
+      "PA05"
+    ],
+    "mesa municipal": [
+      "PA05"
+    ],
+    "mesas de participación": [
+      "PA05"
+    ],
+    "mesas de trabajo": [
+      "PA05"
+    ],
+    "micro-focalización": [
+      "PA05"
+    ],
+    "muerte violenta": [
+      "PA05"
+    ],
+    "municipios PDET": [
+      "PA05"
+    ],
+    "museos de memoria": [
+      "PA05"
+    ],
+    "negociaciones de paz": [
+      "PA05"
+    ],
+    "niños, niñas y adolescentes víctimas": [
+      "PA05"
+    ],
+    "organizaciones de víctimas": [
+      "PA05"
+    ],
+    "orientación": [
+      "PA05",
+      "PA10"
+    ],
+    "pactos comunitarios": [
+      "PA05"
+    ],
+    "participación efectiva": [
+      "PA05"
+    ],
+    "participación política": [
+      "PA05"
+    ],
+    "paz": [
+      "PA05"
+    ],
+    "pedagogía de paz": [
+      "PA05"
+    ],
+    "perdón": [
+      "PA05"
+    ],
+    "planes de retorno": [
+      "PA05"
+    ],
+    "población víctima": [
+      "PA05"
+    ],
+    "prevención de nuevas victimizaciones": [
+      "PA05"
+    ],
+    "proceso de paz": [
+      "PA05"
+    ],
+    "proceso de restitución": [
+      "PA05"
+    ],
+    "protocolos de retorno": [
+      "PA05"
+    ],
+    "pueblos indígenas": [
+      "PA05"
+    ],
+    "pueblos étnicos": [
+      "PA05"
+    ],
+    "reclamación de tierras": [
+      "PA05"
+    ],
+    "reconstrucción de memoria": [
+      "PA05"
+    ],
+    "reforma institucional": [
+      "PA05"
+    ],
+    "registered victims": [
+      "PA05"
+    ],
+    "rehabilitación": [
+      "PA05",
+      "PA09"
+    ],
+    "reparación": [
+      "PA05"
+    ],
+    "reparación colectiva": [
+      "PA05"
+    ],
+    "reparación individual": [
+      "PA05"
+    ],
+    "reparación integral": [
+      "PA05"
+    ],
+    "reparations": [
+      "PA05"
+    ],
+    "resguardos": [
+      "PA05"
+    ],
+    "restitución": [
+      "PA05"
+    ],
+    "restitución de tierras": [
+      "PA05"
+    ],
+    "retorno voluntario": [
+      "PA05",
+      "PA10"
+    ],
+    "retornos": [
+      "PA05"
+    ],
+    "rutas de atención": [
+      "PA05",
+      "PA10"
+    ],
+    "satisfacción": [
+      "PA05"
+    ],
+    "sentencias de restitución": [
+      "PA05"
+    ],
+    "sobrevivientes": [
+      "PA05"
+    ],
+    "solución al problema de drogas": [
+      "PA05"
+    ],
+    "tejido social": [
+      "PA05"
+    ],
+    "testimonios": [
+      "PA05"
+    ],
+    "tortura": [
+      "PA05"
+    ],
+    "tratos crueles": [
+      "PA05",
+      "PA09"
+    ],
+    "tribunales": [
+      "PA05"
+    ],
+    "verdad": [
+      "PA05"
+    ],
+    "violencia basada en género en conflicto": [
+      "PA05"
+    ],
+    "voceros": [
+      "PA05",
+      "PA08"
+    ],
+    "víctimas": [
+      "PA05"
+    ],
+    "víctimas de MAP y MUSE": [
+      "PA05"
+    ],
+    "víctimas del conflicto armado": [
+      "PA05"
+    ],
+    "zonas de restitución": [
+      "PA05"
+    ],
+    "CAE": [
+      "PA06"
+    ],
+    "CDI": [
+      "PA06"
+    ],
+    "Casas de la Juventud": [
+      "PA06"
+    ],
+    "Centros de Desarrollo Infantil": [
+      "PA06"
+    ],
+    "Consejos de Juventud": [
+      "PA06"
+    ],
+    "Consejos de Niños": [
+      "PA06"
+    ],
+    "Consejos de Política Social": [
+      "PA06"
+    ],
+    "Convención sobre los Derechos del Niño": [
+      "PA06"
+    ],
+    "De Cero a Siempre": [
+      "PA06"
+    ],
+    "Defensoría de Familia": [
+      "PA06"
+    ],
+    "NNA": [
+      "PA06"
+    ],
+    "Policía de Infancia y Adolescencia": [
+      "PA06"
+    ],
+    "SNBF": [
+      "PA06"
+    ],
+    "SRPA": [
+      "PA06"
+    ],
+    "Sistema Nacional de Bienestar Familiar": [
+      "PA06"
+    ],
+    "Sistema de Responsabilidad": [
+      "PA06"
+    ],
+    "abandono": [
+      "PA06"
+    ],
+    "abuso sexual infantil": [
+      "PA06"
+    ],
+    "acoso escolar": [
+      "PA06"
+    ],
+    "adolescencia": [
+      "PA06"
+    ],
+    "adolescentes": [
+      "PA06"
+    ],
+    "adopción": [
+      "PA06"
+    ],
+    "agendas juveniles": [
+      "PA06"
+    ],
+    "alimentos": [
+      "PA06"
+    ],
+    "ambientes de aprendizaje": [
+      "PA06"
+    ],
+    "amonestación": [
+      "PA06"
+    ],
+    "atención en salud para niños": [
+      "PA06"
+    ],
+    "atención integral a la primera infancia": [
+      "PA06"
+    ],
+    "atención temprana": [
+      "PA06"
+    ],
+    "becas para jóvenes": [
+      "PA06"
+    ],
+    "bibliotecas infantiles": [
+      "PA06"
+    ],
+    "bullying": [
+      "PA06"
+    ],
+    "castigo físico": [
+      "PA06"
+    ],
+    "centros de desarrollo": [
+      "PA06"
+    ],
+    "centros de internamiento": [
+      "PA06"
+    ],
+    "child mortality": [
+      "PA06"
+    ],
+    "ciberacoso": [
+      "PA06"
+    ],
+    "ciberbullying": [
+      "PA06"
+    ],
+    "comisarías": [
+      "PA06"
+    ],
+    "consultas con NNA": [
+      "PA06"
+    ],
+    "control de crecimiento": [
+      "PA06"
+    ],
+    "cuidadores": [
+      "PA06"
+    ],
+    "cultura infantil": [
+      "PA06"
+    ],
+    "cultura juvenil": [
+      "PA06"
+    ],
+    "cuota alimentaria": [
+      "PA06"
+    ],
+    "custodia": [
+      "PA06",
+      "PA09",
+      "PA10"
+    ],
+    "cédula de ciudadanía": [
+      "PA06"
+    ],
+    "declaratoria de adoptabilidad": [
+      "PA06"
+    ],
+    "defensores": [
+      "PA06",
+      "PA08"
+    ],
+    "deporte formativo": [
+      "PA06"
+    ],
+    "deporte juvenil": [
+      "PA06"
+    ],
+    "derechos de la niñez": [
+      "PA06"
+    ],
+    "derechos de los niños": [
+      "PA06"
+    ],
+    "desarrollo cognitivo": [
+      "PA06"
+    ],
+    "desarrollo emocional": [
+      "PA06"
+    ],
+    "desarrollo infantil temprano": [
+      "PA06"
+    ],
+    "desarrollo integral": [
+      "PA06"
+    ],
+    "desarrollo pleno": [
+      "PA06"
+    ],
+    "deserción": [
+      "PA06"
+    ],
+    "desnutrición infantil": [
+      "PA06"
+    ],
+    "desprotección": [
+      "PA06"
+    ],
+    "discapacidad en niños": [
+      "PA06"
+    ],
+    "educación inicial": [
+      "PA06"
+    ],
+    "educación preescolar": [
+      "PA06"
+    ],
+    "educación primaria": [
+      "PA06"
+    ],
+    "educación sexual": [
+      "PA06"
+    ],
+    "embarazo en adolescentes": [
+      "PA06"
+    ],
+    "empleo juvenil": [
+      "PA06"
+    ],
+    "emprendimiento juvenil": [
+      "PA06"
+    ],
+    "enfermedades infantiles": [
+      "PA06"
+    ],
+    "enfoque de derechos": [
+      "PA06"
+    ],
+    "entornos protectores": [
+      "PA06"
+    ],
+    "entornos seguros": [
+      "PA06"
+    ],
+    "escucha activa": [
+      "PA06"
+    ],
+    "espacios juveniles": [
+      "PA06"
+    ],
+    "espacios lúdicos": [
+      "PA06"
+    ],
+    "estimulación temprana": [
+      "PA06"
+    ],
+    "eventos deportivos": [
+      "PA06"
+    ],
+    "explotación sexual": [
+      "PA06",
+      "PA10"
+    ],
+    "expresiones juveniles": [
+      "PA06"
+    ],
+    "familia": [
+      "PA06"
+    ],
+    "familia de acogida": [
+      "PA06"
+    ],
+    "formación técnica": [
+      "PA06",
+      "PA09",
+      "PA10"
+    ],
+    "gobiernos escolares": [
+      "PA06"
+    ],
+    "hogares comunitarios": [
+      "PA06"
+    ],
+    "huérfanos": [
+      "PA06"
+    ],
+    "identidad": [
+      "PA06"
+    ],
+    "infancia temprana": [
+      "PA06"
+    ],
+    "innovación": [
+      "PA06"
+    ],
+    "interés superior del menor": [
+      "PA06"
+    ],
+    "jardines infantiles": [
+      "PA06"
+    ],
+    "juventud": [
+      "PA06"
+    ],
+    "juventudes": [
+      "PA06"
+    ],
+    "jóvenes": [
+      "PA06"
+    ],
+    "lactancia materna": [
+      "PA06"
+    ],
+    "lectura": [
+      "PA06"
+    ],
+    "libertad asistida": [
+      "PA06"
+    ],
+    "liderazgo juvenil": [
+      "PA06"
+    ],
+    "ludotecas": [
+      "PA06"
+    ],
+    "madres comunitarias": [
+      "PA06"
+    ],
+    "maltrato infantil": [
+      "PA06"
+    ],
+    "maternidad temprana": [
+      "PA06"
+    ],
+    "matoneo": [
+      "PA06"
+    ],
+    "medidas de restablecimiento": [
+      "PA06"
+    ],
+    "medidas pedagógicas": [
+      "PA06"
+    ],
+    "medio semicerrado": [
+      "PA06"
+    ],
+    "menores": [
+      "PA06"
+    ],
+    "menores de edad": [
+      "PA06"
+    ],
+    "mortalidad infantil": [
+      "PA06"
+    ],
+    "negligencia": [
+      "PA06"
+    ],
+    "niñas": [
+      "PA06"
+    ],
+    "niñez": [
+      "PA06"
+    ],
+    "niños": [
+      "PA06"
+    ],
+    "niños afrodescendientes": [
+      "PA06"
+    ],
+    "niños con discapacidad": [
+      "PA06"
+    ],
+    "niños en conflicto": [
+      "PA06"
+    ],
+    "niños en situación de calle": [
+      "PA06"
+    ],
+    "niños indígenas": [
+      "PA06"
+    ],
+    "niños migrantes": [
+      "PA06",
+      "PA10"
+    ],
+    "niños refugiados": [
+      "PA06"
+    ],
+    "niños sin familia": [
+      "PA06"
+    ],
+    "niños víctimas del conflicto": [
+      "PA06"
+    ],
+    "niños, niñas y adolescentes": [
+      "PA06"
+    ],
+    "nutrición infantil": [
+      "PA06"
+    ],
+    "obligaciones parentales": [
+      "PA06"
+    ],
+    "organizaciones juveniles": [
+      "PA06"
+    ],
+    "orientación vocacional": [
+      "PA06"
+    ],
+    "participación infantil": [
+      "PA06"
+    ],
+    "participación juvenil": [
+      "PA06"
+    ],
+    "patria potestad": [
+      "PA06"
+    ],
+    "pedagogía": [
+      "PA06"
+    ],
+    "pediatría": [
+      "PA06"
+    ],
+    "permanencia escolar": [
+      "PA06"
+    ],
+    "política pública de juventud": [
+      "PA06"
+    ],
+    "prestación de servicios comunitarios": [
+      "PA06"
+    ],
+    "presupuestos participativos": [
+      "PA06"
+    ],
+    "prevención de la violencia juvenil": [
+      "PA06"
+    ],
+    "prevención del consumo de sustancias": [
+      "PA06"
+    ],
+    "prevención del embarazo adolescente": [
+      "PA06"
+    ],
+    "primer empleo": [
+      "PA06"
+    ],
+    "primera infancia": [
+      "PA06"
+    ],
+    "protección especial": [
+      "PA06"
+    ],
+    "protección familiar": [
+      "PA06"
+    ],
+    "protección integral": [
+      "PA06"
+    ],
+    "proyectos de vida": [
+      "PA06"
+    ],
+    "reclutamiento ilícito": [
+      "PA06"
+    ],
+    "recreación infantil": [
+      "PA06"
+    ],
+    "recruitment prevention": [
+      "PA06"
+    ],
+    "reeducación": [
+      "PA06"
+    ],
+    "registro civil": [
+      "PA06"
+    ],
+    "resocialización": [
+      "PA06",
+      "PA09"
+    ],
+    "responsabilidad parental": [
+      "PA06",
+      "PA10"
+    ],
+    "responsabilidad penal adolescente": [
+      "PA06"
+    ],
+    "restablecimiento de derechos": [
+      "PA06"
+    ],
+    "salud infantil": [
+      "PA06"
+    ],
+    "salud mental infantil": [
+      "PA06"
+    ],
+    "salud rural": [
+      "PA06"
+    ],
+    "salud sexual": [
+      "PA06"
+    ],
+    "sanciones": [
+      "PA06",
+      "PA08"
+    ],
+    "school enrollment": [
+      "PA06"
+    ],
+    "servicio comunitario": [
+      "PA06"
+    ],
+    "sobrepeso y obesidad infantil": [
+      "PA06"
+    ],
+    "ubicación en hogar de paso": [
+      "PA06"
+    ],
+    "ubicación en hogar sustituto": [
+      "PA06"
+    ],
+    "vacunación": [
+      "PA06"
+    ],
+    "vinculación a servicios": [
+      "PA06"
+    ],
+    "violencia contra niños": [
+      "PA06"
+    ],
+    "violencia escolar": [
+      "PA06"
+    ],
+    "violencia intrafamiliar contra menores": [
+      "PA06"
+    ],
+    "visitas": [
+      "PA06",
+      "PA09"
+    ],
+    "voluntariado": [
+      "PA06"
+    ],
+    "voz de los niños": [
+      "PA06"
+    ],
+    "ANT": [
+      "PA07"
+    ],
+    "Agencia Nacional de Tierras": [
+      "PA07"
+    ],
+    "Banco de Tierras": [
+      "PA07"
+    ],
+    "EOT": [
+      "PA07"
+    ],
+    "Esquema de Ordenamiento Territorial": [
+      "PA07"
+    ],
+    "Fondo de Tierras": [
+      "PA07"
+    ],
+    "IGAC": [
+      "PA07"
+    ],
+    "Instituto Geográfico Agustín Codazzi": [
+      "PA07"
+    ],
+    "JAC rurales": [
+      "PA07"
+    ],
+    "MADR": [
+      "PA07"
+    ],
+    "Ministerio de Agricultura": [
+      "PA07"
+    ],
+    "OT": [
+      "PA07"
+    ],
+    "PBOT": [
+      "PA07"
+    ],
+    "POT": [
+      "PA07"
+    ],
+    "Plan Básico de Ordenamiento": [
+      "PA07"
+    ],
+    "Plan de Ordenamiento Territorial": [
+      "PA07"
+    ],
+    "SIG": [
+      "PA07"
+    ],
+    "SNR": [
+      "PA07"
+    ],
+    "Secretaría de Planeación": [
+      "PA07"
+    ],
+    "Superintendencia de Notariado": [
+      "PA07"
+    ],
+    "TIC rurales": [
+      "PA07"
+    ],
+    "UPR": [
+      "PA07"
+    ],
+    "UPRA": [
+      "PA07"
+    ],
+    "Unidad Municipal de Asistencia Técnica": [
+      "PA07"
+    ],
+    "Unidad de Planificación Rural": [
+      "PA07"
+    ],
+    "ZIDRES": [
+      "PA07"
+    ],
+    "ZRC": [
+      "PA07"
+    ],
+    "Zonas de Interés de Desarrollo": [
+      "PA07"
+    ],
+    "Zonas de Reserva Campesina": [
+      "PA07"
+    ],
+    "acaparamiento de tierras": [
+      "PA07"
+    ],
+    "accesibilidad": [
+      "PA07"
+    ],
+    "acceso a la tierra": [
+      "PA07"
+    ],
+    "actualización catastral": [
+      "PA07"
+    ],
+    "acueductos veredales": [
+      "PA07"
+    ],
+    "adjudicación": [
+      "PA07"
+    ],
+    "adjudicación de baldíos": [
+      "PA07"
+    ],
+    "agricultura": [
+      "PA07"
+    ],
+    "agroindustria": [
+      "PA07"
+    ],
+    "agua potable rural": [
+      "PA07"
+    ],
+    "alcantarillado rural": [
+      "PA07"
+    ],
+    "aptitud del suelo": [
+      "PA07"
+    ],
+    "arraigo": [
+      "PA07"
+    ],
+    "asistencia técnica": [
+      "PA07"
+    ],
+    "asociaciones campesinas": [
+      "PA07"
+    ],
+    "avalúo catastral": [
+      "PA07"
+    ],
+    "avicultura": [
+      "PA07"
+    ],
+    "baldíos": [
+      "PA07"
+    ],
+    "cadenas productivas": [
+      "PA07"
+    ],
+    "caminos veredales": [
+      "PA07"
+    ],
+    "campesinos": [
+      "PA07"
+    ],
+    "capacidad de carga": [
+      "PA07"
+    ],
+    "cartografía": [
+      "PA07"
+    ],
+    "catastro": [
+      "PA07"
+    ],
+    "catastro descentralizado": [
+      "PA07"
+    ],
+    "catastro multipropósito": [
+      "PA07"
+    ],
+    "clarificación de la propiedad": [
+      "PA07"
+    ],
+    "clases agrológicas": [
+      "PA07"
+    ],
+    "clasificación del suelo": [
+      "PA07"
+    ],
+    "colonización": [
+      "PA07"
+    ],
+    "comercialización": [
+      "PA07"
+    ],
+    "concentración de la tierra": [
+      "PA07"
+    ],
+    "conciliación": [
+      "PA07"
+    ],
+    "conectividad digital": [
+      "PA07"
+    ],
+    "conectividad rural": [
+      "PA07"
+    ],
+    "conflictos de uso": [
+      "PA07"
+    ],
+    "conflictos por la tierra": [
+      "PA07"
+    ],
+    "conflictos territoriales": [
+      "PA07"
+    ],
+    "consejos comunitarios": [
+      "PA07"
+    ],
+    "conservación catastral": [
+      "PA07"
+    ],
+    "conservación de suelos": [
+      "PA07"
+    ],
+    "control territorial": [
+      "PA07"
+    ],
+    "cooperativas agrícolas": [
+      "PA07"
+    ],
+    "cosecha": [
+      "PA07"
+    ],
+    "crédito rural": [
+      "PA07"
+    ],
+    "cultivos": [
+      "PA07"
+    ],
+    "curadurías urbanas": [
+      "PA07"
+    ],
+    "cédula catastral": [
+      "PA07"
+    ],
+    "degradación": [
+      "PA07"
+    ],
+    "desarrollo rural": [
+      "PA07"
+    ],
+    "diagnóstico territorial": [
+      "PA07"
+    ],
+    "disputas": [
+      "PA07"
+    ],
+    "disputas territoriales": [
+      "PA07",
+      "PA08"
+    ],
+    "distribución equitativa": [
+      "PA07"
+    ],
+    "electrificación rural": [
+      "PA07"
+    ],
+    "energía en el campo": [
+      "PA07"
+    ],
+    "escrituras públicas": [
+      "PA07"
+    ],
+    "expansión de frontera agrícola": [
+      "PA07"
+    ],
+    "extensión rural": [
+      "PA07"
+    ],
+    "ficha predial": [
+      "PA07"
+    ],
+    "financiamiento": [
+      "PA07"
+    ],
+    "formación catastral": [
+      "PA07"
+    ],
+    "formalización": [
+      "PA07"
+    ],
+    "formalización de la propiedad": [
+      "PA07"
+    ],
+    "fragmentación de la tierra": [
+      "PA07"
+    ],
+    "ganadería": [
+      "PA07"
+    ],
+    "georreferenciación": [
+      "PA07"
+    ],
+    "gestión catastral": [
+      "PA07"
+    ],
+    "gobernanza territorial": [
+      "PA07"
+    ],
+    "identidad territorial": [
+      "PA07"
+    ],
+    "implementos": [
+      "PA07"
+    ],
+    "incentivos": [
+      "PA07"
+    ],
+    "información catastral": [
+      "PA07"
+    ],
+    "instrumentos públicos": [
+      "PA07"
+    ],
+    "insumos agropecuarios": [
+      "PA07"
+    ],
+    "internet rural": [
+      "PA07"
+    ],
+    "jueces agrarios": [
+      "PA07"
+    ],
+    "jurisdicción agraria": [
+      "PA07"
+    ],
+    "latifundio": [
+      "PA07"
+    ],
+    "legalización": [
+      "PA07"
+    ],
+    "levantamientos topográficos": [
+      "PA07"
+    ],
+    "linderos": [
+      "PA07"
+    ],
+    "límites": [
+      "PA07"
+    ],
+    "manejo sostenible": [
+      "PA07"
+    ],
+    "mantenimiento vial": [
+      "PA07"
+    ],
+    "mapas": [
+      "PA07"
+    ],
+    "maquinaria agrícola": [
+      "PA07"
+    ],
+    "medición de predios": [
+      "PA07"
+    ],
+    "mensura": [
+      "PA07"
+    ],
+    "mercados campesinos": [
+      "PA07"
+    ],
+    "minifundio": [
+      "PA07"
+    ],
+    "modificación del POT": [
+      "PA07"
+    ],
+    "mojones": [
+      "PA07"
+    ],
+    "norma urbanística": [
+      "PA07"
+    ],
+    "notarías": [
+      "PA07"
+    ],
+    "obras civiles": [
+      "PA07"
+    ],
+    "ocupación de baldíos": [
+      "PA07"
+    ],
+    "oficinas de registro": [
+      "PA07"
+    ],
+    "ordenamiento del territorio": [
+      "PA07"
+    ],
+    "ordenamiento territorial": [
+      "PA07"
+    ],
+    "organizaciones rurales": [
+      "PA07"
+    ],
+    "peace councils": [
+      "PA07"
+    ],
+    "pequeños productores": [
+      "PA07"
+    ],
+    "piscicultura": [
+      "PA07"
+    ],
+    "planeación territorial": [
+      "PA07"
+    ],
+    "planes de desarrollo rural": [
+      "PA07"
+    ],
+    "planes parciales": [
+      "PA07"
+    ],
+    "posesión": [
+      "PA07"
+    ],
+    "predio": [
+      "PA07"
+    ],
+    "predios": [
+      "PA07"
+    ],
+    "producción agropecuaria": [
+      "PA07"
+    ],
+    "propiedad": [
+      "PA07"
+    ],
+    "propiedad de la tierra": [
+      "PA07"
+    ],
+    "proyectos agropecuarios": [
+      "PA07"
+    ],
+    "proyectos productivos": [
+      "PA07"
+    ],
+    "puentes": [
+      "PA07"
+    ],
+    "reconciliation initiatives": [
+      "PA07"
+    ],
+    "redistribución": [
+      "PA07"
+    ],
+    "reforma agraria": [
+      "PA07"
+    ],
+    "registro de propiedad": [
+      "PA07"
+    ],
+    "registros de instrumentos públicos": [
+      "PA07"
+    ],
+    "reglamentación urbanística": [
+      "PA07"
+    ],
+    "regularización": [
+      "PA07",
+      "PA10"
+    ],
+    "resguardos indígenas": [
+      "PA07"
+    ],
+    "revisión del POT": [
+      "PA07"
+    ],
+    "ruralidad": [
+      "PA07"
+    ],
+    "saneamiento de la propiedad": [
+      "PA07"
+    ],
+    "saneamiento rural": [
+      "PA07"
+    ],
+    "sector rural": [
+      "PA07"
+    ],
+    "seguridad alimentaria rural": [
+      "PA07"
+    ],
+    "semillas": [
+      "PA07"
+    ],
+    "siembra": [
+      "PA07"
+    ],
+    "sistemas de información": [
+      "PA07"
+    ],
+    "social fabric": [
+      "PA07"
+    ],
+    "subsidios agrícolas": [
+      "PA07"
+    ],
+    "suelo de expansión": [
+      "PA07"
+    ],
+    "suelo de protección": [
+      "PA07"
+    ],
+    "suelo rural": [
+      "PA07"
+    ],
+    "suelo urbano": [
+      "PA07"
+    ],
+    "telecomunicaciones": [
+      "PA07"
+    ],
+    "tenencia de la tierra": [
+      "PA07"
+    ],
+    "territorial": [
+      "PA07"
+    ],
+    "territorialidad": [
+      "PA07"
+    ],
+    "territorio": [
+      "PA07"
+    ],
+    "territorios colectivos": [
+      "PA07"
+    ],
+    "territorios indígenas": [
+      "PA07"
+    ],
+    "tierra": [
+      "PA07"
+    ],
+    "tierras": [
+      "PA07"
+    ],
+    "tierras baldías": [
+      "PA07"
+    ],
+    "tierras colectivas": [
+      "PA07"
+    ],
+    "titulación": [
+      "PA07"
+    ],
+    "transformación": [
+      "PA07"
+    ],
+    "tratamientos urbanísticos": [
+      "PA07"
+    ],
+    "títulos de propiedad": [
+      "PA07"
+    ],
+    "unidades de planificación rural": [
+      "PA07"
+    ],
+    "uso sostenible": [
+      "PA07"
+    ],
+    "usos incompatibles": [
+      "PA07"
+    ],
+    "usos permitidos": [
+      "PA07"
+    ],
+    "valor agregado": [
+      "PA07"
+    ],
+    "valor catastral": [
+      "PA07"
+    ],
+    "vocación del suelo": [
+      "PA07"
+    ],
+    "vías rurales": [
+      "PA07"
+    ],
+    "vías terciarias": [
+      "PA07"
+    ],
+    "zonificación": [
+      "PA07"
+    ],
+    "áreas rurales": [
+      "PA07"
+    ],
+    "CERREM": [
+      "PA08"
+    ],
+    "Comité de Evaluación de Riesgo": [
+      "PA08"
+    ],
+    "Congreso de los Pueblos": [
+      "PA08"
+    ],
+    "DDHH": [
+      "PA08"
+    ],
+    "Marcha Patriótica": [
+      "PA08"
+    ],
+    "Mesa de Garantías": [
+      "PA08"
+    ],
+    "ONG": [
+      "PA08"
+    ],
+    "Sistema de Alertas": [
+      "PA08"
+    ],
+    "acompañamiento internacional": [
+      "PA08"
+    ],
+    "activismo social": [
+      "PA08"
+    ],
+    "activistas": [
+      "PA08"
+    ],
+    "activistas LGBTI": [
+      "PA08"
+    ],
+    "activistas juveniles": [
+      "PA08"
+    ],
+    "acuerdos de seguridad": [
+      "PA08"
+    ],
+    "advocacy": [
+      "PA08"
+    ],
+    "agresiones": [
+      "PA08"
+    ],
+    "alertas tempranas para líderes": [
+      "PA08"
+    ],
+    "ambientalistas": [
+      "PA08"
+    ],
+    "amenazas de muerte": [
+      "PA08"
+    ],
+    "análisis de riesgo": [
+      "PA08"
+    ],
+    "articulaciones": [
+      "PA08"
+    ],
+    "asesinatos de líderes": [
+      "PA08"
+    ],
+    "ataques": [
+      "PA08"
+    ],
+    "autonomía": [
+      "PA08"
+    ],
+    "autoprotección": [
+      "PA08"
+    ],
+    "autoridades indígenas": [
+      "PA08"
+    ],
+    "blindaje": [
+      "PA08"
+    ],
+    "botones de pánico": [
+      "PA08"
+    ],
+    "capacitación en seguridad": [
+      "PA08"
+    ],
+    "chalecos antibalas": [
+      "PA08"
+    ],
+    "coaliciones": [
+      "PA08"
+    ],
+    "colectivos": [
+      "PA08"
+    ],
+    "comunicadores sociales": [
+      "PA08"
+    ],
+    "conflictos socioambientales": [
+      "PA08"
+    ],
+    "conmemoraciones": [
+      "PA08"
+    ],
+    "construcción de paz territorial": [
+      "PA08"
+    ],
+    "consultas populares": [
+      "PA08"
+    ],
+    "consultas previas": [
+      "PA08"
+    ],
+    "control social": [
+      "PA08"
+    ],
+    "coordinaciones": [
+      "PA08"
+    ],
+    "criminalización": [
+      "PA08"
+    ],
+    "cultura de respeto": [
+      "PA08"
+    ],
+    "defenders security": [
+      "PA08"
+    ],
+    "defensa del territorio": [
+      "PA08"
+    ],
+    "defensoras": [
+      "PA08"
+    ],
+    "defensores ambientales": [
+      "PA08"
+    ],
+    "defensores de comunidades étnicas": [
+      "PA08"
+    ],
+    "defensores de derechos humanos": [
+      "PA08"
+    ],
+    "defensores de la tierra": [
+      "PA08"
+    ],
+    "defensores de paz": [
+      "PA08"
+    ],
+    "defensores de territorio": [
+      "PA08"
+    ],
+    "defensores de víctimas": [
+      "PA08"
+    ],
+    "denuncia pública": [
+      "PA08"
+    ],
+    "derecho a defender derechos": [
+      "PA08"
+    ],
+    "derecho a la protesta": [
+      "PA08"
+    ],
+    "derechos humanos": [
+      "PA08"
+    ],
+    "desaparición de líderes": [
+      "PA08"
+    ],
+    "desarme de grupos": [
+      "PA08"
+    ],
+    "desplazamiento de líderes": [
+      "PA08"
+    ],
+    "dignificación de la labor social": [
+      "PA08"
+    ],
+    "dirigentes": [
+      "PA08"
+    ],
+    "dirigentes sociales": [
+      "PA08"
+    ],
+    "economías ilícitas": [
+      "PA08"
+    ],
+    "entornos seguros para la defensa": [
+      "PA08"
+    ],
+    "equidad": [
+      "PA08"
+    ],
+    "escoltas": [
+      "PA08"
+    ],
+    "espacios de participación": [
+      "PA08"
+    ],
+    "espacios libres de violencia": [
+      "PA08"
+    ],
+    "esquemas de protección": [
+      "PA08"
+    ],
+    "estigmatización": [
+      "PA08",
+      "PA10"
+    ],
+    "extractivismo": [
+      "PA08"
+    ],
+    "formación política": [
+      "PA08"
+    ],
+    "fortalecimiento organizativo": [
+      "PA08"
+    ],
+    "fuerza pública": [
+      "PA08"
+    ],
+    "garantías de no agresión": [
+      "PA08"
+    ],
+    "garantías para la defensa de DDHH": [
+      "PA08"
+    ],
+    "guardabosques comunitarios": [
+      "PA08"
+    ],
+    "homenajes": [
+      "PA08"
+    ],
+    "hostigamiento": [
+      "PA08"
+    ],
+    "huelgas": [
+      "PA08"
+    ],
+    "human rights violations": [
+      "PA08"
+    ],
+    "impunidad": [
+      "PA08"
+    ],
+    "investigaciones": [
+      "PA08"
+    ],
+    "investigación": [
+      "PA08"
+    ],
+    "judicialización": [
+      "PA08"
+    ],
+    "judicialización de casos": [
+      "PA08"
+    ],
+    "justice access": [
+      "PA08"
+    ],
+    "justicia social": [
+      "PA08"
+    ],
+    "libertad de asociación": [
+      "PA08"
+    ],
+    "libertad de expresión": [
+      "PA08"
+    ],
+    "liderazgo comunitario": [
+      "PA08"
+    ],
+    "liderazgo social": [
+      "PA08"
+    ],
+    "liderazgo territorial": [
+      "PA08"
+    ],
+    "lideresas": [
+      "PA08"
+    ],
+    "lideresas feministas": [
+      "PA08"
+    ],
+    "líderes afrodescendientes": [
+      "PA08"
+    ],
+    "líderes ambientales": [
+      "PA08"
+    ],
+    "líderes barriales": [
+      "PA08"
+    ],
+    "líderes campesinos": [
+      "PA08"
+    ],
+    "líderes comunitarios": [
+      "PA08"
+    ],
+    "líderes cívicos": [
+      "PA08"
+    ],
+    "líderes de JAC": [
+      "PA08"
+    ],
+    "líderes de LGBTI": [
+      "PA08"
+    ],
+    "líderes de comunidades negras": [
+      "PA08"
+    ],
+    "líderes de mujeres": [
+      "PA08"
+    ],
+    "líderes de organizaciones sociales": [
+      "PA08"
+    ],
+    "líderes indígenas": [
+      "PA08"
+    ],
+    "líderes juveniles": [
+      "PA08"
+    ],
+    "líderes rurales": [
+      "PA08"
+    ],
+    "líderes sindicales": [
+      "PA08"
+    ],
+    "líderes sociales": [
+      "PA08"
+    ],
+    "manifestaciones": [
+      "PA08"
+    ],
+    "marchas": [
+      "PA08"
+    ],
+    "medios de comunicación": [
+      "PA08"
+    ],
+    "megaproyectos": [
+      "PA08"
+    ],
+    "memoria de líderes asesinados": [
+      "PA08"
+    ],
+    "mesas de diálogo": [
+      "PA08"
+    ],
+    "misiones de verificación": [
+      "PA08"
+    ],
+    "monitoreo": [
+      "PA08"
+    ],
+    "movilización social": [
+      "PA08"
+    ],
+    "movimientos sociales": [
+      "PA08"
+    ],
+    "nivel de riesgo": [
+      "PA08"
+    ],
+    "observadores de derechos humanos": [
+      "PA08"
+    ],
+    "organizaciones de base": [
+      "PA08"
+    ],
+    "organizaciones sociales": [
+      "PA08"
+    ],
+    "pactos de convivencia": [
+      "PA08"
+    ],
+    "paros": [
+      "PA08"
+    ],
+    "participación ciudadana": [
+      "PA08"
+    ],
+    "pedagogía de derechos humanos": [
+      "PA08"
+    ],
+    "pedagogía social": [
+      "PA08"
+    ],
+    "periodistas": [
+      "PA08"
+    ],
+    "persecución": [
+      "PA08"
+    ],
+    "persecución política": [
+      "PA08"
+    ],
+    "plantones": [
+      "PA08"
+    ],
+    "plataformas": [
+      "PA08"
+    ],
+    "presencia de grupos armados": [
+      "PA08"
+    ],
+    "presidentes de juntas": [
+      "PA08"
+    ],
+    "prevención de agresiones": [
+      "PA08"
+    ],
+    "protección de líderes": [
+      "PA08"
+    ],
+    "protestas": [
+      "PA08"
+    ],
+    "reconocimiento de líderes": [
+      "PA08"
+    ],
+    "redes de defensores": [
+      "PA08"
+    ],
+    "representantes": [
+      "PA08"
+    ],
+    "resguardo": [
+      "PA08"
+    ],
+    "responsables": [
+      "PA08"
+    ],
+    "reubicación temporal": [
+      "PA08"
+    ],
+    "riesgo extraordinario": [
+      "PA08"
+    ],
+    "riesgo extremo": [
+      "PA08"
+    ],
+    "seguimiento a casos": [
+      "PA08"
+    ],
+    "seguimientos": [
+      "PA08"
+    ],
+    "seguridad de líderes": [
+      "PA08"
+    ],
+    "señalamientos": [
+      "PA08"
+    ],
+    "sindicalistas": [
+      "PA08"
+    ],
+    "soberanía popular": [
+      "PA08"
+    ],
+    "solidaridad": [
+      "PA08",
+      "PA10"
+    ],
+    "territorios en riesgo": [
+      "PA08"
+    ],
+    "veedurías ciudadanas": [
+      "PA08"
+    ],
+    "vehículos blindados": [
+      "PA08"
+    ],
+    "vigilancia": [
+      "PA08"
+    ],
+    "violencia contra líderes": [
+      "PA08"
+    ],
+    "visibilización": [
+      "PA08"
+    ],
+    "visibilización de la labor social": [
+      "PA08"
+    ],
+    "voceras": [
+      "PA08"
+    ],
+    "voceros de víctimas": [
+      "PA08"
+    ],
+    "Corte Constitucional": [
+      "PA09"
+    ],
+    "Código Penitenciario": [
+      "PA09"
+    ],
+    "Defensoría del Pueblo en cárceles": [
+      "PA09"
+    ],
+    "ERON": [
+      "PA09"
+    ],
+    "Establecimiento de Reclusión": [
+      "PA09"
+    ],
+    "Estado de Cosas Inconstitucional": [
+      "PA09"
+    ],
+    "INPEC": [
+      "PA09"
+    ],
+    "Instituto Nacional Penitenciario": [
+      "PA09"
+    ],
+    "Ley 1709": [
+      "PA09"
+    ],
+    "Ley 1786": [
+      "PA09"
+    ],
+    "Ley 65 de 1993": [
+      "PA09"
+    ],
+    "Ministerio de Justicia": [
+      "PA09"
+    ],
+    "PPL": [
+      "PA09"
+    ],
+    "URI": [
+      "PA09"
+    ],
+    "Unidades de Reacción Inmediata": [
+      "PA09"
+    ],
+    "VIH": [
+      "PA09"
+    ],
+    "abogados": [
+      "PA09"
+    ],
+    "abusos": [
+      "PA09"
+    ],
+    "acompañamiento espiritual": [
+      "PA09"
+    ],
+    "actividades culturales": [
+      "PA09"
+    ],
+    "actividades productivas": [
+      "PA09"
+    ],
+    "adecuaciones": [
+      "PA09"
+    ],
+    "administración penitenciaria": [
+      "PA09"
+    ],
+    "adultos mayores en prisión": [
+      "PA09"
+    ],
+    "alternativas a la privación de la libertad": [
+      "PA09"
+    ],
+    "ampliación de cupos": [
+      "PA09"
+    ],
+    "antecedentes": [
+      "PA09"
+    ],
+    "apelaciones": [
+      "PA09"
+    ],
+    "apoyo a liberados": [
+      "PA09"
+    ],
+    "armas en cárceles": [
+      "PA09"
+    ],
+    "asesoría legal": [
+      "PA09"
+    ],
+    "asistencia jurídica": [
+      "PA09"
+    ],
+    "atención médica": [
+      "PA09"
+    ],
+    "atención médica especializada": [
+      "PA09"
+    ],
+    "audiencias": [
+      "PA09"
+    ],
+    "autolesiones": [
+      "PA09"
+    ],
+    "automutilación": [
+      "PA09"
+    ],
+    "baños": [
+      "PA09"
+    ],
+    "beneficios administrativos": [
+      "PA09"
+    ],
+    "beneficios judiciales": [
+      "PA09"
+    ],
+    "bibliotecas carcelarias": [
+      "PA09"
+    ],
+    "brazaletes": [
+      "PA09"
+    ],
+    "canchas": [
+      "PA09"
+    ],
+    "capacidad instalada": [
+      "PA09"
+    ],
+    "capturados": [
+      "PA09"
+    ],
+    "celdas": [
+      "PA09"
+    ],
+    "celulares": [
+      "PA09"
+    ],
+    "centros de detención transitoria": [
+      "PA09"
+    ],
+    "centros penitenciarios": [
+      "PA09"
+    ],
+    "citas judiciales": [
+      "PA09"
+    ],
+    "clasificación de internos": [
+      "PA09"
+    ],
+    "cocinas": [
+      "PA09"
+    ],
+    "colapso del sistema": [
+      "PA09"
+    ],
+    "comedores": [
+      "PA09"
+    ],
+    "comunicación familiar": [
+      "PA09"
+    ],
+    "condenados": [
+      "PA09"
+    ],
+    "condenas": [
+      "PA09"
+    ],
+    "condiciones de reclusión": [
+      "PA09"
+    ],
+    "condiciones inhumanas": [
+      "PA09"
+    ],
+    "construcción de cárceles": [
+      "PA09"
+    ],
+    "consumo de sustancias en cárceles": [
+      "PA09"
+    ],
+    "control de ingreso": [
+      "PA09"
+    ],
+    "controles": [
+      "PA09"
+    ],
+    "correspondencia": [
+      "PA09"
+    ],
+    "corrupción penitenciaria": [
+      "PA09"
+    ],
+    "crisis carcelaria": [
+      "PA09"
+    ],
+    "crisis penitenciaria": [
+      "PA09"
+    ],
+    "cupos": [
+      "PA09"
+    ],
+    "cárceles": [
+      "PA09"
+    ],
+    "debido proceso": [
+      "PA09"
+    ],
+    "defensa técnica": [
+      "PA09"
+    ],
+    "deportes en prisión": [
+      "PA09"
+    ],
+    "derechos de los privados de libertad": [
+      "PA09"
+    ],
+    "derechos humanos en prisión": [
+      "PA09"
+    ],
+    "detención domiciliaria": [
+      "PA09"
+    ],
+    "detenidos": [
+      "PA09"
+    ],
+    "diabetes": [
+      "PA09"
+    ],
+    "dirección de cárcel": [
+      "PA09"
+    ],
+    "director": [
+      "PA09"
+    ],
+    "dormitorios": [
+      "PA09"
+    ],
+    "dragoneantes": [
+      "PA09"
+    ],
+    "educación en cárceles": [
+      "PA09"
+    ],
+    "egreso": [
+      "PA09"
+    ],
+    "elementos prohibidos": [
+      "PA09"
+    ],
+    "emergencia carcelaria": [
+      "PA09"
+    ],
+    "enfermedades crónicas": [
+      "PA09"
+    ],
+    "epidemias en cárceles": [
+      "PA09"
+    ],
+    "escapes": [
+      "PA09"
+    ],
+    "escuelas en prisión": [
+      "PA09"
+    ],
+    "establecimientos de reclusión": [
+      "PA09"
+    ],
+    "estaciones de policía": [
+      "PA09"
+    ],
+    "estigmatización de exconvictos": [
+      "PA09"
+    ],
+    "estudio y trabajo": [
+      "PA09"
+    ],
+    "evasiones": [
+      "PA09"
+    ],
+    "extorsión en cárceles": [
+      "PA09"
+    ],
+    "extranjeros privados de libertad": [
+      "PA09"
+    ],
+    "fugas": [
+      "PA09"
+    ],
+    "garantías procesales": [
+      "PA09"
+    ],
+    "gestión carcelaria": [
+      "PA09"
+    ],
+    "gimnasios": [
+      "PA09"
+    ],
+    "gobierno interno": [
+      "PA09"
+    ],
+    "guardia penitenciaria": [
+      "PA09"
+    ],
+    "habitabilidad": [
+      "PA09"
+    ],
+    "hepatitis": [
+      "PA09"
+    ],
+    "higiene": [
+      "PA09"
+    ],
+    "hijos de internas": [
+      "PA09"
+    ],
+    "iluminación": [
+      "PA09"
+    ],
+    "indignidad": [
+      "PA09"
+    ],
+    "indígenas en cárceles": [
+      "PA09"
+    ],
+    "infraestructura carcelaria": [
+      "PA09"
+    ],
+    "intentos de fuga": [
+      "PA09"
+    ],
+    "intentos de suicidio": [
+      "PA09"
+    ],
+    "internos": [
+      "PA09"
+    ],
+    "jueces de ejecución de penas": [
+      "PA09"
+    ],
+    "justice houses": [
+      "PA09"
+    ],
+    "legal assistance": [
+      "PA09"
+    ],
+    "libertad condicional": [
+      "PA09"
+    ],
+    "llamadas telefónicas": [
+      "PA09"
+    ],
+    "locutorios": [
+      "PA09"
+    ],
+    "madres en prisión": [
+      "PA09"
+    ],
+    "mecanismos sustitutivos": [
+      "PA09"
+    ],
+    "medidas no privativas": [
+      "PA09"
+    ],
+    "mejoramiento de instalaciones": [
+      "PA09"
+    ],
+    "motines": [
+      "PA09"
+    ],
+    "mujeres gestantes": [
+      "PA09"
+    ],
+    "mujeres privadas de libertad": [
+      "PA09"
+    ],
+    "niños en cárceles": [
+      "PA09"
+    ],
+    "nutrición en cárceles": [
+      "PA09"
+    ],
+    "patios": [
+      "PA09"
+    ],
+    "patios por conducta": [
+      "PA09"
+    ],
+    "penas alternativas": [
+      "PA09"
+    ],
+    "penitenciarías": [
+      "PA09"
+    ],
+    "permisos": [
+      "PA09"
+    ],
+    "personas con discapacidad en prisión": [
+      "PA09"
+    ],
+    "personas privadas de la libertad": [
+      "PA09"
+    ],
+    "población LGBTI en cárceles": [
+      "PA09"
+    ],
+    "población carcelaria": [
+      "PA09"
+    ],
+    "población penitenciaria": [
+      "PA09"
+    ],
+    "post-penitenciario": [
+      "PA09"
+    ],
+    "prisioneros": [
+      "PA09"
+    ],
+    "prisiones": [
+      "PA09"
+    ],
+    "prisión domiciliaria": [
+      "PA09"
+    ],
+    "privados de libertad": [
+      "PA09"
+    ],
+    "problemas psiquiátricos": [
+      "PA09"
+    ],
+    "procesados": [
+      "PA09"
+    ],
+    "procesados sin condena": [
+      "PA09"
+    ],
+    "programas de atención psicosocial": [
+      "PA09"
+    ],
+    "programas educativos": [
+      "PA09"
+    ],
+    "protocolos": [
+      "PA09"
+    ],
+    "rebaja de pena": [
+      "PA09"
+    ],
+    "reclusos": [
+      "PA09"
+    ],
+    "recursos": [
+      "PA09"
+    ],
+    "redención de pena": [
+      "PA09"
+    ],
+    "reincidencia": [
+      "PA09"
+    ],
+    "reingreso": [
+      "PA09"
+    ],
+    "reinserción social": [
+      "PA09"
+    ],
+    "remisiones": [
+      "PA09"
+    ],
+    "remodelación": [
+      "PA09"
+    ],
+    "requisa": [
+      "PA09"
+    ],
+    "revisiones": [
+      "PA09"
+    ],
+    "riñas": [
+      "PA09"
+    ],
+    "régimen abierto": [
+      "PA09"
+    ],
+    "régimen cerrado": [
+      "PA09"
+    ],
+    "salida de prisión": [
+      "PA09"
+    ],
+    "salidas de fin de semana": [
+      "PA09"
+    ],
+    "salubridad": [
+      "PA09"
+    ],
+    "salud de PPL": [
+      "PA09"
+    ],
+    "salud mental en prisión": [
+      "PA09"
+    ],
+    "saneamiento": [
+      "PA09",
+      "PA10"
+    ],
+    "seguimiento": [
+      "PA09"
+    ],
+    "seguridad penitenciaria": [
+      "PA09"
+    ],
+    "sentencias": [
+      "PA09"
+    ],
+    "sentencias de tutela": [
+      "PA09"
+    ],
+    "separación por delitos": [
+      "PA09"
+    ],
+    "servicios religiosos": [
+      "PA09"
+    ],
+    "sindicados": [
+      "PA09"
+    ],
+    "sobrecupo": [
+      "PA09"
+    ],
+    "sobrepoblación carcelaria": [
+      "PA09"
+    ],
+    "suicidios": [
+      "PA09"
+    ],
+    "suspensión condicional": [
+      "PA09"
+    ],
+    "talleres": [
+      "PA09"
+    ],
+    "tiempo de condena": [
+      "PA09"
+    ],
+    "torturas": [
+      "PA09"
+    ],
+    "trabajo penitenciario": [
+      "PA09"
+    ],
+    "transitional justice": [
+      "PA09"
+    ],
+    "traslados": [
+      "PA09"
+    ],
+    "tratamiento penitenciario": [
+      "PA09"
+    ],
+    "tratamientos": [
+      "PA09"
+    ],
+    "trato digno": [
+      "PA09"
+    ],
+    "tratos degradantes": [
+      "PA09"
+    ],
+    "tratos inhumanos": [
+      "PA09"
+    ],
+    "tuberculosis": [
+      "PA09"
+    ],
+    "túneles": [
+      "PA09"
+    ],
+    "ventilación": [
+      "PA09"
+    ],
+    "vigilancia electrónica": [
+      "PA09"
+    ],
+    "vigilancia interna": [
+      "PA09"
+    ],
+    "violencia carcelaria": [
+      "PA09"
+    ],
+    "violencia entre internos": [
+      "PA09"
+    ],
+    "visitas conyugales": [
+      "PA09"
+    ],
+    "visitas de inspección": [
+      "PA09"
+    ],
+    "visitas íntimas": [
+      "PA09"
+    ],
+    "zonas de visita": [
+      "PA09"
+    ],
+    "áreas comunes": [
+      "PA09"
+    ],
+    "índice de hacinamiento": [
+      "PA09"
+    ],
+    "ACNUR": [
+      "PA10"
+    ],
+    "Arauca": [
+      "PA10"
+    ],
+    "CONPES de migración": [
+      "PA10"
+    ],
+    "Cancillería": [
+      "PA10"
+    ],
+    "Convención de 1951": [
+      "PA10"
+    ],
+    "Cúcuta": [
+      "PA10"
+    ],
+    "Estatuto de Protección Temporal": [
+      "PA10"
+    ],
+    "GIFMM": [
+      "PA10"
+    ],
+    "Gerencia de Frontera": [
+      "PA10"
+    ],
+    "Grupo Interagencial": [
+      "PA10"
+    ],
+    "La Guajira": [
+      "PA10"
+    ],
+    "Ley de Migración": [
+      "PA10"
+    ],
+    "Migración Colombia": [
+      "PA10"
+    ],
+    "Ministerio de Relaciones Exteriores": [
+      "PA10"
+    ],
+    "Norte de Santander": [
+      "PA10"
+    ],
+    "OIM": [
+      "PA10"
+    ],
+    "ONG que atienden migrantes": [
+      "PA10"
+    ],
+    "Organización Internacional para las Migraciones": [
+      "PA10"
+    ],
+    "PEP": [
+      "PA10"
+    ],
+    "PPT": [
+      "PA10"
+    ],
+    "Permiso Especial de Permanencia": [
+      "PA10"
+    ],
+    "Permiso por Protección Temporal": [
+      "PA10"
+    ],
+    "Policía de Migración": [
+      "PA10"
+    ],
+    "RUMV": [
+      "PA10"
+    ],
+    "Registro Administrativo de Migrantes": [
+      "PA10"
+    ],
+    "TMF": [
+      "PA10"
+    ],
+    "Tarjeta de Movilidad Fronteriza": [
+      "PA10"
+    ],
+    "Unidad de Gestión de Riesgo": [
+      "PA10"
+    ],
+    "Venezuela": [
+      "PA10"
+    ],
+    "Vichada": [
+      "PA10"
+    ],
+    "Wayúu": [
+      "PA10"
+    ],
+    "acceso a crédito": [
+      "PA10"
+    ],
+    "acceso a servicios": [
+      "PA10"
+    ],
+    "accidentes": [
+      "PA10"
+    ],
+    "acogida": [
+      "PA10"
+    ],
+    "acompañamiento psicosocial": [
+      "PA10"
+    ],
+    "acuerdos bilaterales": [
+      "PA10"
+    ],
+    "adultos mayores migrantes": [
+      "PA10"
+    ],
+    "agencias de cooperación internacional": [
+      "PA10"
+    ],
+    "albergues": [
+      "PA10"
+    ],
+    "alojamiento": [
+      "PA10"
+    ],
+    "aplicaciones móviles": [
+      "PA10"
+    ],
+    "asilo": [
+      "PA10"
+    ],
+    "atención humanitaria": [
+      "PA10"
+    ],
+    "atención materno-infantil": [
+      "PA10"
+    ],
+    "atención médica de urgencia": [
+      "PA10"
+    ],
+    "autoridad migratoria": [
+      "PA10"
+    ],
+    "border cooperation": [
+      "PA10"
+    ],
+    "brigadas de salud": [
+      "PA10"
+    ],
+    "call centers": [
+      "PA10"
+    ],
+    "caminantes": [
+      "PA10"
+    ],
+    "caminos irregulares": [
+      "PA10"
+    ],
+    "campañas de sensibilización": [
+      "PA10"
+    ],
+    "campañas informativas": [
+      "PA10"
+    ],
+    "capacitación": [
+      "PA10"
+    ],
+    "caracterización migratoria": [
+      "PA10"
+    ],
+    "censo de migrantes": [
+      "PA10"
+    ],
+    "centros de atención temporal": [
+      "PA10"
+    ],
+    "certificación de competencias": [
+      "PA10"
+    ],
+    "cierre de fronteras": [
+      "PA10"
+    ],
+    "circulares": [
+      "PA10"
+    ],
+    "cohesión social": [
+      "PA10"
+    ],
+    "comercio": [
+      "PA10"
+    ],
+    "comités": [
+      "PA10"
+    ],
+    "comunicación pública": [
+      "PA10"
+    ],
+    "comunidad migrante": [
+      "PA10"
+    ],
+    "consulados": [
+      "PA10"
+    ],
+    "control fronterizo": [
+      "PA10"
+    ],
+    "control migratorio": [
+      "PA10"
+    ],
+    "convalidación de estudios": [
+      "PA10"
+    ],
+    "cooperación internacional": [
+      "PA10"
+    ],
+    "coordinación interinstitucional": [
+      "PA10"
+    ],
+    "corredores": [
+      "PA10"
+    ],
+    "crisis migratoria venezolana": [
+      "PA10"
+    ],
+    "cruces fronterizos": [
+      "PA10"
+    ],
+    "cédula de extranjería": [
+      "PA10"
+    ],
+    "decretos": [
+      "PA10"
+    ],
+    "deportación": [
+      "PA10"
+    ],
+    "derechos de los migrantes": [
+      "PA10"
+    ],
+    "desalojos": [
+      "PA10"
+    ],
+    "desplazamiento transfronterizo": [
+      "PA10"
+    ],
+    "discriminación": [
+      "PA10"
+    ],
+    "diálogo intercultural": [
+      "PA10"
+    ],
+    "diáspora": [
+      "PA10"
+    ],
+    "doble nacionalidad": [
+      "PA10"
+    ],
+    "documentos de viaje": [
+      "PA10"
+    ],
+    "economía informal": [
+      "PA10"
+    ],
+    "educación intercultural": [
+      "PA10"
+    ],
+    "educación para migrantes": [
+      "PA10"
+    ],
+    "emigrantes": [
+      "PA10"
+    ],
+    "emprendimiento migrante": [
+      "PA10"
+    ],
+    "enfermedades transmisibles": [
+      "PA10"
+    ],
+    "envío de dinero": [
+      "PA10"
+    ],
+    "estadísticas migratorias": [
+      "PA10"
+    ],
+    "estatus migratorio": [
+      "PA10"
+    ],
+    "estatuto de refugiado": [
+      "PA10"
+    ],
+    "eventos culturales binacionales": [
+      "PA10"
+    ],
+    "expresiones culturales": [
+      "PA10"
+    ],
+    "expulsiones": [
+      "PA10"
+    ],
+    "expulsión": [
+      "PA10"
+    ],
+    "extorsión a migrantes": [
+      "PA10"
+    ],
+    "familias migrantes": [
+      "PA10"
+    ],
+    "flujos de entrada": [
+      "PA10"
+    ],
+    "flujos de salida": [
+      "PA10"
+    ],
+    "flujos migratorios": [
+      "PA10"
+    ],
+    "fondos para migración": [
+      "PA10"
+    ],
+    "formalización laboral": [
+      "PA10"
+    ],
+    "frontera": [
+      "PA10"
+    ],
+    "frontera con Venezuela": [
+      "PA10"
+    ],
+    "fronteras": [
+      "PA10"
+    ],
+    "grupos armados en fronteras": [
+      "PA10"
+    ],
+    "homologación de títulos": [
+      "PA10"
+    ],
+    "inclusión educativa": [
+      "PA10"
+    ],
+    "indocumentados": [
+      "PA10"
+    ],
+    "información": [
+      "PA10"
+    ],
+    "información sobre trámites": [
+      "PA10"
+    ],
+    "inmigrantes": [
+      "PA10"
+    ],
+    "integración comunitaria": [
+      "PA10"
+    ],
+    "integración económica": [
+      "PA10"
+    ],
+    "integración social": [
+      "PA10"
+    ],
+    "intención de permanencia": [
+      "PA10"
+    ],
+    "international assistance": [
+      "PA10"
+    ],
+    "irregulares": [
+      "PA10"
+    ],
+    "jornadas de vacunación": [
+      "PA10"
+    ],
+    "kits de aseo": [
+      "PA10"
+    ],
+    "kits humanitarios": [
+      "PA10"
+    ],
+    "líneas de atención": [
+      "PA10"
+    ],
+    "mapeo de actores": [
+      "PA10"
+    ],
+    "matrícula de niños migrantes": [
+      "PA10"
+    ],
+    "mendicidad": [
+      "PA10"
+    ],
+    "menores no acompañados": [
+      "PA10"
+    ],
+    "mesas de migración": [
+      "PA10"
+    ],
+    "microcrédito": [
+      "PA10"
+    ],
+    "migración": [
+      "PA10"
+    ],
+    "migrante": [
+      "PA10"
+    ],
+    "migrantes": [
+      "PA10"
+    ],
+    "migrantes con discapacidad": [
+      "PA10"
+    ],
+    "migrantes en situación de calle": [
+      "PA10"
+    ],
+    "migrantes en tránsito": [
+      "PA10"
+    ],
+    "migrantes indígenas": [
+      "PA10"
+    ],
+    "migrantes irregulares": [
+      "PA10"
+    ],
+    "migrantes regulares": [
+      "PA10"
+    ],
+    "migration": [
+      "PA10"
+    ],
+    "movilidad humana": [
+      "PA10"
+    ],
+    "muertes en tránsito": [
+      "PA10"
+    ],
+    "mujeres gestantes migrantes": [
+      "PA10"
+    ],
+    "mujeres migrantes": [
+      "PA10"
+    ],
+    "nacionalidad": [
+      "PA10"
+    ],
+    "negocios": [
+      "PA10"
+    ],
+    "niños nacidos en Colombia": [
+      "PA10"
+    ],
+    "operativos": [
+      "PA10"
+    ],
+    "organizaciones de migrantes": [
+      "PA10"
+    ],
+    "papeles": [
+      "PA10"
+    ],
+    "pasaporte": [
+      "PA10"
+    ],
+    "pasos fronterizos": [
+      "PA10"
+    ],
+    "pasos ilegales": [
+      "PA10"
+    ],
+    "patrullajes": [
+      "PA10"
+    ],
+    "perfiles migratorios": [
+      "PA10"
+    ],
+    "permanencia": [
+      "PA10"
+    ],
+    "permisos de trabajo": [
+      "PA10"
+    ],
+    "personas en necesidad de protección": [
+      "PA10"
+    ],
+    "planes de respuesta": [
+      "PA10"
+    ],
+    "población LGBTI migrante": [
+      "PA10"
+    ],
+    "población migrante": [
+      "PA10"
+    ],
+    "población venezolana": [
+      "PA10"
+    ],
+    "política de fronteras": [
+      "PA10"
+    ],
+    "política migratoria": [
+      "PA10"
+    ],
+    "prevención de rumores": [
+      "PA10"
+    ],
+    "prevención de xenofobia": [
+      "PA10"
+    ],
+    "primeros auxilios": [
+      "PA10"
+    ],
+    "protección de menores": [
+      "PA10"
+    ],
+    "protección internacional": [
+      "PA10"
+    ],
+    "puntos de atención": [
+      "PA10"
+    ],
+    "rechazo": [
+      "PA10"
+    ],
+    "refugiadas": [
+      "PA10"
+    ],
+    "refugiados": [
+      "PA10"
+    ],
+    "refugio": [
+      "PA10"
+    ],
+    "refugios temporales": [
+      "PA10"
+    ],
+    "registro civil de migrantes": [
+      "PA10"
+    ],
+    "registro único": [
+      "PA10"
+    ],
+    "registros": [
+      "PA10"
+    ],
+    "registros de entrada y salida": [
+      "PA10"
+    ],
+    "regreso": [
+      "PA10"
+    ],
+    "regularización migratoria": [
+      "PA10"
+    ],
+    "remesas": [
+      "PA10"
+    ],
+    "repatriación": [
+      "PA10"
+    ],
+    "resoluciones": [
+      "PA10"
+    ],
+    "restricciones": [
+      "PA10"
+    ],
+    "retorno asistido": [
+      "PA10"
+    ],
+    "reunificación familiar": [
+      "PA10"
+    ],
+    "riesgos del tránsito": [
+      "PA10"
+    ],
+    "robos": [
+      "PA10"
+    ],
+    "rutas migratorias": [
+      "PA10"
+    ],
+    "salidas del país": [
+      "PA10"
+    ],
+    "salud para migrantes": [
+      "PA10"
+    ],
+    "salud pública fronteriza": [
+      "PA10"
+    ],
+    "seguridad fronteriza": [
+      "PA10"
+    ],
+    "sistemas de referencia": [
+      "PA10"
+    ],
+    "situación migratoria": [
+      "PA10"
+    ],
+    "socorro": [
+      "PA10"
+    ],
+    "solicitantes de asilo": [
+      "PA10"
+    ],
+    "tiempo de estadía": [
+      "PA10"
+    ],
+    "trabajo para migrantes": [
+      "PA10"
+    ],
+    "trata de personas": [
+      "PA10"
+    ],
+    "trochas": [
+      "PA10"
+    ],
+    "tráfico de migrantes": [
+      "PA10"
+    ],
+    "tránsito irregular": [
+      "PA10"
+    ],
+    "urgencias": [
+      "PA10"
+    ],
+    "vacunación de migrantes": [
+      "PA10"
+    ],
+    "validación de documentos académicos": [
+      "PA10"
+    ],
+    "venezolanas": [
+      "PA10"
+    ],
+    "venezolanos": [
+      "PA10"
+    ],
+    "ventas ambulantes": [
+      "PA10"
+    ],
+    "violencia contra migrantes": [
+      "PA10"
+    ],
+    "visa": [
+      "PA10"
+    ],
+    "visas": [
+      "PA10"
+    ],
+    "vulnerabilidad migratoria": [
+      "PA10"
+    ],
+    "xenofobia": [
+      "PA10"
+    ],
+    "éxodo venezolano": [
+      "PA10"
+    ]
+  }
+}

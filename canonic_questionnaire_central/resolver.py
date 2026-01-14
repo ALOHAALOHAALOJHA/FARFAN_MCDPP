@@ -9,15 +9,17 @@ This resolver:
 2. Maintains hash integrity across modular structure
 3. Provides provenance tracking for governance
 4. Is the ONLY authorized source for AnalysisPipelineFactory
+5. [v2.0] Integrates Signal Distribution Orchestrator for active signal routing
 
 GOVERNANCE:
 - All questionnaire access MUST go through this resolver
 - Direct file reads are PROHIBITED outside this module
 - SISAS receives questionnaire from Factory, which uses this resolver
+- [v2.0] Signal dispatch goes through SDO for validation and routing
 
 Author: F. A. R.F.A.N Pipeline Team
-Version: 1.0.0
-Date: 2026-01-09
+Version: 2.0.0
+Date: 2026-01-14
 """
 
 from __future__ import annotations
@@ -30,7 +32,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Protocol, runtime_checkable
+from typing import Any, Callable, Protocol, runtime_checkable
 
 try:
     import structlog
@@ -40,6 +42,15 @@ except ImportError:
     import logging
 
     logger = logging.getLogger(__name__)
+
+# Import SISAS 2.0 Core (SDO)
+try:
+    from .core.signal_distribution_orchestrator import SignalDistributionOrchestrator
+    from .core.signal import Signal, SignalType, SignalScope, SignalProvenance
+    SDO_AVAILABLE = True
+except ImportError:
+    SDO_AVAILABLE = False
+    logger.warning("SDO not available - running in v1.x compatibility mode")
 
 
 # ============================================================================
@@ -204,6 +215,7 @@ class CanonicalQuestionnaireResolver:
     3. HASH INTEGRITY: Computes deterministic hash over assembled content
     4. PROVENANCE: Tracks all source files and assembly metadata
     5. LAZY CACHING: Caches assembled payload until invalidated
+    6. [v2.0] SIGNAL ROUTING: Integrates SDO for active signal dispatch
 
     USAGE:
         resolver = CanonicalQuestionnaireResolver()
@@ -211,11 +223,14 @@ class CanonicalQuestionnaireResolver:
 
         # Pass to Factory
         factory = AnalysisPipelineFactory(questionnaire=questionnaire)
+        
+        # Access SDO for signal dispatch
+        resolver.sdo.dispatch(signal)
 
     THREAD SAFETY: Not thread-safe. Use separate instances per thread.
     """
 
-    RESOLVER_VERSION = "1.0.0"
+    RESOLVER_VERSION = "2.0.0"
     EXPECTED_QUESTION_COUNT = 300
     EXPECTED_DIMENSION_COUNT = 6
     EXPECTED_POLICY_AREA_COUNT = 10
@@ -226,6 +241,7 @@ class CanonicalQuestionnaireResolver:
         root: Path | None = None,
         strict_mode: bool = True,
         cache_enabled: bool = True,
+        sdo_enabled: bool = True,
     ):
         """
         Initialize resolver.
@@ -236,10 +252,12 @@ class CanonicalQuestionnaireResolver:
             strict_mode:  If True, fail on any validation error.
                         If False, log warnings and continue.
             cache_enabled: If True, cache assembled payload.
+            sdo_enabled: If True, initialize Signal Distribution Orchestrator.
         """
         self._root = root or Path(__file__).resolve().parent
         self._strict_mode = strict_mode
         self._cache_enabled = cache_enabled
+        self._sdo_enabled = sdo_enabled and SDO_AVAILABLE
 
         # Cached payload
         self._cached_questionnaire: CanonicalQuestionnaire | None = None
@@ -247,6 +265,11 @@ class CanonicalQuestionnaireResolver:
 
         # Metrics
         self._metrics = AssemblyMetrics()
+        
+        # Initialize SDO (Signal Distribution Orchestrator)
+        self._sdo: SignalDistributionOrchestrator | None = None
+        if self._sdo_enabled:
+            self._init_sdo()
 
         # Validate root exists
         if not self._root.exists():
@@ -257,7 +280,172 @@ class CanonicalQuestionnaireResolver:
             root=str(self._root),
             strict_mode=strict_mode,
             cache_enabled=cache_enabled,
+            sdo_enabled=self._sdo_enabled,
+            resolver_version=self.RESOLVER_VERSION,
         )
+    
+    def _init_sdo(self) -> None:
+        """Initialize Signal Distribution Orchestrator with routing rules."""
+        rules_path = self._root / "_registry" / "irrigation_validation_rules.json"
+        
+        if rules_path.exists():
+            self._sdo = SignalDistributionOrchestrator(str(rules_path))
+        else:
+            # Use defaults
+            self._sdo = SignalDistributionOrchestrator()
+            logger.warning("SDO initialized with default rules - irrigation_validation_rules.json not found")
+        
+        # Register phase consumers
+        self._register_phase_consumers()
+        
+        logger.info("sdo_initialized", rules_path=str(rules_path), consumers_registered=len(self._sdo.consumers))
+    
+    def _register_phase_consumers(self) -> None:
+        """Register consumers for each pipeline phase."""
+        if not self._sdo:
+            return
+        
+        # Phase 0: Assembly (this resolver handles static load)
+        self._sdo.register_consumer(
+            consumer_id="phase_0_assembly",
+            scopes=[{"phase": "phase_0", "policy_area": "ALL", "slot": "ALL"}],
+            capabilities=["STATIC_LOAD", "SIGNAL_PACK"],
+            handler=self._handle_phase_0_signal
+        )
+        
+        # Phase 1: Extraction (MC01-MC10)
+        self._sdo.register_consumer(
+            consumer_id="phase_1_extraction",
+            scopes=[{"phase": "phase_1", "policy_area": "ALL", "slot": "ALL"}],
+            capabilities=[
+                "NUMERIC_PARSING", "FINANCIAL_ANALYSIS", "CURRENCY_NORMALIZATION",
+                "CAUSAL_INFERENCE", "GRAPH_CONSTRUCTION", "VERB_ANALYSIS",
+                "NER_EXTRACTION", "ENTITY_RESOLUTION", "COREFERENCE",
+                "STRUCTURAL_PARSING", "SECTION_DETECTION",
+                "NORMATIVE_LOOKUP", "CITATION_PARSING",
+                "HIERARCHY_PARSING", "TREE_CONSTRUCTION",
+                "TRIPLET_EXTRACTION",
+                "POPULATION_PARSING", "DEMOGRAPHIC_ANALYSIS",
+                "TEMPORAL_PARSING", "DATE_NORMALIZATION",
+                "SEMANTIC_SIMILARITY", "EMBEDDING_LOOKUP"
+            ],
+            handler=self._handle_phase_1_signal
+        )
+        
+        # Phase 2: Enrichment
+        self._sdo.register_consumer(
+            consumer_id="phase_2_enrichment",
+            scopes=[{"phase": "phase_2", "policy_area": "ALL", "slot": "ALL"}],
+            capabilities=["PATTERN_MATCHING", "REGEX_ENGINE", "KEYWORD_MATCHING", "TF_IDF", "ENTITY_LINKING"],
+            handler=self._handle_phase_2_signal
+        )
+        
+        # Phase 3: Validation
+        self._sdo.register_consumer(
+            consumer_id="phase_3_validation",
+            scopes=[{"phase": "phase_3", "policy_area": "ALL", "slot": "ALL"}],
+            capabilities=["NORMATIVE_LOOKUP", "COMPLIANCE_CHECK", "ENTITY_RESOLUTION", "EXISTENCE_CHECK", "CONSISTENCY_CHECK"],
+            handler=self._handle_phase_3_signal
+        )
+        
+        # Phases 4-6: Scoring
+        for phase_num in [4, 5, 6]:
+            self._sdo.register_consumer(
+                consumer_id=f"phase_{phase_num}_scoring",
+                scopes=[{"phase": f"phase_{phase_num}", "policy_area": "ALL", "slot": "ALL"}],
+                capabilities=["SCORING_ENGINE", "WEIGHT_APPLICATION"],
+                handler=self._handle_scoring_signal
+            )
+        
+        # Phase 7: MESO Aggregation
+        self._sdo.register_consumer(
+            consumer_id="phase_7_meso",
+            scopes=[{"phase": "phase_7", "policy_area": "ALL", "slot": "ALL"}],
+            capabilities=["AGGREGATION_ENGINE", "CLUSTER_SCORING", "CLUSTER_ROUTING"],
+            handler=self._handle_meso_signal
+        )
+        
+        # Phase 8: MACRO Aggregation
+        self._sdo.register_consumer(
+            consumer_id="phase_8_macro",
+            scopes=[{"phase": "phase_8", "policy_area": "ALL", "slot": "ALL"}],
+            capabilities=["AGGREGATION_ENGINE", "HOLISTIC_SCORING", "FINAL_ASSEMBLY"],
+            handler=self._handle_macro_signal
+        )
+        
+        # Phase 9: Report
+        self._sdo.register_consumer(
+            consumer_id="phase_9_report",
+            scopes=[{"phase": "phase_9", "policy_area": "ALL", "slot": "ALL"}],
+            capabilities=["TEMPLATE_ENGINE", "MARKDOWN_GENERATION"],
+            handler=self._handle_report_signal
+        )
+    
+    # Signal handlers (placeholder implementations - to be wired to actual phase processors)
+    def _handle_phase_0_signal(self, signal: Signal) -> None:
+        """Handle Phase 0 (Assembly) signals."""
+        logger.debug("phase_0_signal_received", signal_id=signal.signal_id, signal_type=str(signal.signal_type))
+    
+    def _handle_phase_1_signal(self, signal: Signal) -> None:
+        """Handle Phase 1 (Extraction) signals - MC01-MC10."""
+        logger.debug("phase_1_signal_received", signal_id=signal.signal_id, signal_type=str(signal.signal_type))
+        # Store in extraction results buffer
+        if not hasattr(self, '_extraction_buffer'):
+            self._extraction_buffer = []
+        self._extraction_buffer.append(signal)
+    
+    def _handle_phase_2_signal(self, signal: Signal) -> None:
+        """Handle Phase 2 (Enrichment) signals."""
+        logger.debug("phase_2_signal_received", signal_id=signal.signal_id, signal_type=str(signal.signal_type))
+    
+    def _handle_phase_3_signal(self, signal: Signal) -> None:
+        """Handle Phase 3 (Validation) signals."""
+        logger.debug("phase_3_signal_received", signal_id=signal.signal_id, signal_type=str(signal.signal_type))
+    
+    def _handle_scoring_signal(self, signal: Signal) -> None:
+        """Handle Phases 4-6 (Scoring) signals."""
+        logger.debug("scoring_signal_received", signal_id=signal.signal_id, signal_type=str(signal.signal_type))
+    
+    def _handle_meso_signal(self, signal: Signal) -> None:
+        """Handle Phase 7 (MESO Aggregation) signals."""
+        logger.debug("meso_signal_received", signal_id=signal.signal_id, signal_type=str(signal.signal_type))
+    
+    def _handle_macro_signal(self, signal: Signal) -> None:
+        """Handle Phase 8 (MACRO Aggregation) signals."""
+        logger.debug("macro_signal_received", signal_id=signal.signal_id, signal_type=str(signal.signal_type))
+    
+    def _handle_report_signal(self, signal: Signal) -> None:
+        """Handle Phase 9 (Report) signals."""
+        logger.debug("report_signal_received", signal_id=signal.signal_id, signal_type=str(signal.signal_type))
+    
+    @property
+    def sdo(self) -> SignalDistributionOrchestrator | None:
+        """Access the Signal Distribution Orchestrator."""
+        return self._sdo
+    
+    def dispatch_signal(self, signal: Signal) -> bool:
+        """
+        Dispatch a signal through the SDO.
+        
+        This is the primary method for sending signals into the SISAS system.
+        
+        Args:
+            signal: The Signal to dispatch
+            
+        Returns:
+            True if signal was delivered to at least one consumer
+        """
+        if not self._sdo:
+            logger.warning("dispatch_failed_sdo_disabled", signal_id=signal.signal_id)
+            return False
+        
+        return self._sdo.dispatch(signal)
+    
+    def get_sdo_health(self) -> dict[str, Any]:
+        """Get SDO health check results."""
+        if not self._sdo:
+            return {"status": "DISABLED", "reason": "SDO not enabled"}
+        return self._sdo.health_check()
 
     # ========================================================================
     # PUBLIC API
@@ -343,7 +531,7 @@ class CanonicalQuestionnaireResolver:
 
     def get_metrics(self) -> dict[str, Any]:
         """Get resolver metrics for observability."""
-        return {
+        metrics = {
             "files_loaded": self._metrics.files_loaded,
             "questions_assembled": self._metrics.questions_assembled,
             "patterns_merged": self._metrics.patterns_merged,
@@ -351,7 +539,15 @@ class CanonicalQuestionnaireResolver:
             "warnings": self._metrics.warnings,
             "cache_enabled": self._cache_enabled,
             "cache_populated": self._cached_questionnaire is not None,
+            "sdo_enabled": self._sdo_enabled,
         }
+        
+        # Add SDO metrics if available
+        if self._sdo:
+            metrics["sdo_metrics"] = self._sdo.get_metrics()
+            metrics["sdo_health"] = self._sdo.health_check()
+        
+        return metrics
 
     # ========================================================================
     # ASSEMBLY PIPELINE
@@ -975,4 +1171,6 @@ __all__ = [
     # Factory functions
     "get_resolver",
     "resolve_questionnaire",
+    # SDO availability flag
+    "SDO_AVAILABLE",
 ]

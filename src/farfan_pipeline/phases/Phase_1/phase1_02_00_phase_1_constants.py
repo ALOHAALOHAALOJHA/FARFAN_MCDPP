@@ -31,6 +31,26 @@ __execution_pattern__ = "On-Demand"
 from typing import Final
 
 # =============================================================================
+# QUESTIONNAIRE CONSTANTS
+# =============================================================================
+
+TOTAL_QUESTIONS: Final[int] = 300
+"""
+Total number of questions in the questionnaire (10 PA × 6 DIM × 5 Q/slot).
+
+This is the constitutional invariant for Phase 1: all chunk combinations
+must map to exactly 300 question slots.
+"""
+
+QUESTIONS_PER_SLOT: Final[int] = 5
+"""
+Number of questions per chunk slot.
+
+Each chunk (PA-DIM combination) has 5 question slots, giving us
+300 total questions (10 PA × 6 DIM × 5 Q/slot).
+"""
+
+# =============================================================================
 # SPEC-001: PDF Extraction Limits
 # =============================================================================
 

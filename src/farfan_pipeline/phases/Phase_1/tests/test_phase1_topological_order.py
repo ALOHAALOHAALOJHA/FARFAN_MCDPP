@@ -58,7 +58,7 @@ RECLASSIFIED_MODULES = {
 # phase1_dir fixture is provided by conftest.py
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def dependency_graph(phase1_dir: Path) -> Dict[str, Set[str]]:
     """Build the dependency graph from actual imports."""
     graph: Dict[str, Set[str]] = {}

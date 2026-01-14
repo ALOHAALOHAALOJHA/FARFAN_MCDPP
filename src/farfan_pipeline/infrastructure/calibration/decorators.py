@@ -134,7 +134,7 @@ from typing import (
 )
 
 if TYPE_CHECKING:
-    from farfan_pipeline.core.parameters import ParameterLoaderV2
+    from farfan_pipeline.infrastructure.calibration.parameters import ParameterLoaderV2
     from farfan_pipeline.infrastructure.calibration.calibration_core import (
         CalibrationLayer,
         ClosedInterval,
@@ -430,7 +430,7 @@ def _inject_parameters(
     
     # Lazy import to avoid circular dependency
     try:
-        from farfan_pipeline.core.parameters import ParameterLoaderV2
+        from farfan_pipeline.infrastructure.calibration.parameters import ParameterLoaderV2
     except ImportError:
         logger.debug("ParameterLoaderV2 not available for injection")
         return kwargs

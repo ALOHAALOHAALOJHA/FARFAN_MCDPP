@@ -32,7 +32,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import TYPE_CHECKING, Any, TypedDict
 
-from farfan_pipeline.core.parameters import ParameterLoaderV2
+from farfan_pipeline.infrastructure.calibration.parameters import ParameterLoaderV2
 
 if TYPE_CHECKING:
     from collections.abc import Mapping

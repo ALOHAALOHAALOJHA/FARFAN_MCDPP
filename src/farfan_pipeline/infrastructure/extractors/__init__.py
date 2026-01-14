@@ -94,6 +94,15 @@ from .extractor_validator import (
     ValidationMetrics
 )
 
+# SISAS 2.0 Orchestrator
+from .extractor_orchestrator import (
+    ExtractorOrchestrator,
+    ExtractionContext,
+    OrchestrationResult,
+    create_orchestrator_from_resolver,
+    EXTRACTOR_SIGNAL_MAP
+)
+
 __version__ = "2.0.0"
 
 __all__ = [
@@ -131,7 +140,14 @@ __all__ = [
 
     # Utilities
     'load_all_extractors_from_calibration',
-    'generate_test_suite'
+    'generate_test_suite',
+    
+    # SISAS 2.0 Orchestrator
+    'ExtractorOrchestrator',
+    'ExtractionContext',
+    'OrchestrationResult',
+    'create_orchestrator_from_resolver',
+    'EXTRACTOR_SIGNAL_MAP'
 ]
 
 

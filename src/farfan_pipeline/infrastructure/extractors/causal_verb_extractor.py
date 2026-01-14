@@ -194,7 +194,8 @@ class CausalVerbExtractor(PatternBasedExtractor):
     def _build_argument_patterns(self):
         """Build patterns for extracting verb arguments."""
         # Object pattern: verb + [optional determiner] + [0-10 words] + [noun]
-        # Made determiner optional to catch "Garantizar derechos"
+        # Made determiner optional to catch "Garantizar derechos", "Implementar programas"
+        # Pattern must match at least one word (the object itself)
         self.object_pattern = re.compile(
             r"(?:(?:la|el|los|las|al|del|de|a)\s+)?((?:\w+\s+){0,10}\w+)", re.IGNORECASE
         )
@@ -378,11 +379,14 @@ class CausalVerbExtractor(PatternBasedExtractor):
 
         match = self.object_pattern.search(following_text)
         if match:
-            return {
-                "text": match.group(1).strip(),
-                "start": verb_end + match.start(),
-                "end": verb_end + match.end(),
-            }
+            captured_text = match.group(1).strip()
+            # Ensure we captured something meaningful
+            if captured_text and len(captured_text) > 0:
+                return {
+                    "text": captured_text,
+                    "start": verb_end + match.start(),
+                    "end": verb_end + match.end(),
+                }
 
         return None
 

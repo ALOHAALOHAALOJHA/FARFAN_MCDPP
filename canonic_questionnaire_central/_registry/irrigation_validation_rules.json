@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "irrigation-validation-rules-v2.0.0",
+  "_meta": {
+    "version": "2.0.0",
+    "description": "SISAS Signal Routing and Validation Rules - SOTA Configuration",
+    "created_at": "2026-01-14T01:30:00Z",
+    "author": "F.A.R.F.A.N Pipeline Team"
+  },
+  
+  "thresholds": {
+    "empirical_availability_min": 0.30,
+    "description": "Signals below this empirical availability are dead-lettered (unless enrichment=true)"
+  },
+  
+  "routing": {
+    "phase_0": ["SIGNAL_PACK", "STATIC_LOAD"],
+    "phase_1": ["MC01", "MC02", "MC03", "MC04", "MC05", "MC06", "MC07", "MC08", "MC09", "MC10"],
+    "phase_2": ["PATTERN_ENRICHMENT", "KEYWORD_ENRICHMENT", "ENTITY_ENRICHMENT"],
+    "phase_3": ["NORMATIVE_VALIDATION", "ENTITY_VALIDATION", "COHERENCE_VALIDATION"],
+    "phase_4": ["MICRO_SCORE"],
+    "phase_5": ["MICRO_SCORE"],
+    "phase_6": ["MICRO_SCORE"],
+    "phase_7": ["MESO_SCORE", "MESO_AGGREGATION"],
+    "phase_8": ["MACRO_SCORE", "MACRO_AGGREGATION"],
+    "phase_9": ["REPORT_ASSEMBLY"]
+  },
+  
+  "capabilities_required": {
+    "MC01": ["STRUCTURAL_PARSING", "SECTION_DETECTION"],
+    "MC02": ["NUMERIC_PARSING", "TRIPLET_EXTRACTION"],
+    "MC03": ["NORMATIVE_LOOKUP", "CITATION_PARSING"],
+    "MC04": ["HIERARCHY_PARSING", "TREE_CONSTRUCTION"],
+    "MC05": ["NUMERIC_PARSING", "FINANCIAL_ANALYSIS", "CURRENCY_NORMALIZATION"],
+    "MC06": ["POPULATION_PARSING", "DEMOGRAPHIC_ANALYSIS"],
+    "MC07": ["TEMPORAL_PARSING", "DATE_NORMALIZATION"],
+    "MC08": ["CAUSAL_INFERENCE", "GRAPH_CONSTRUCTION", "VERB_ANALYSIS"],
+    "MC09": ["NER_EXTRACTION", "ENTITY_RESOLUTION", "COREFERENCE"],
+    "MC10": ["SEMANTIC_SIMILARITY", "EMBEDDING_LOOKUP"],
+    "PATTERN_ENRICHMENT": ["PATTERN_MATCHING", "REGEX_ENGINE"],
+    "KEYWORD_ENRICHMENT": ["KEYWORD_MATCHING", "TF_IDF"],
+    "ENTITY_ENRICHMENT": ["NER_EXTRACTION", "ENTITY_LINKING"],
+    "NORMATIVE_VALIDATION": ["NORMATIVE_LOOKUP", "COMPLIANCE_CHECK"],
+    "ENTITY_VALIDATION": ["ENTITY_RESOLUTION", "EXISTENCE_CHECK"],
+    "COHERENCE_VALIDATION": ["SEMANTIC_SIMILARITY", "CONSISTENCY_CHECK"],
+    "MICRO_SCORE": ["SCORING_ENGINE", "WEIGHT_APPLICATION"],
+    "MESO_SCORE": ["AGGREGATION_ENGINE", "CLUSTER_SCORING"],
+    "MACRO_SCORE": ["AGGREGATION_ENGINE", "HOLISTIC_SCORING"],
+    "MESO_AGGREGATION": ["AGGREGATION_ENGINE", "CLUSTER_ROUTING"],
+    "MACRO_AGGREGATION": ["AGGREGATION_ENGINE", "FINAL_ASSEMBLY"],
+    "REPORT_ASSEMBLY": ["TEMPLATE_ENGINE", "MARKDOWN_GENERATION"]
+  },
+  
+  "dead_letter": {
+    "enabled": true,
+    "path": "_registry/dead_letter/",
+    "retention_days": 30,
+    "max_entries": 10000
+  },
+  
+  "dedup_window_seconds": 300,
+  
+  "consumer_defaults": {
+    "max_retries": 3,
+    "timeout_seconds": 30,
+    "circuit_breaker_threshold": 5
+  },
+  
+  "empirical_availability_by_type": {
+    "_description": "Pre-calibrated empirical availability from membership criteria analysis",
+    "MC01": 0.92,
+    "MC02": 0.78,
+    "MC03": 0.85,
+    "MC04": 0.71,
+    "MC05": 0.85,
+    "MC06": 0.65,
+    "MC07": 0.88,
+    "MC08": 0.72,
+    "MC09": 0.68,
+    "MC10": 0.55
+  },
+  
+  "slot_routing": {
+    "_description": "Maps signal types to canonical question slots",
+    "MC05": ["D1-Q1", "D1-Q2", "D1-Q3"],
+    "MC08": ["D6-Q1", "D6-Q2", "D6-Q3", "D6-Q4", "D6-Q5"],
+    "MC09": ["D2-Q1", "D2-Q2", "D2-Q3", "D2-Q4", "D2-Q5"]
+  },
+  
+  "value_gates": {
+    "_description": "Additional value gates beyond empirical availability",
+    "require_enrichment_for_low_availability": true,
+    "minimum_payload_fields": 2,
+    "require_provenance": true
+  }
+}

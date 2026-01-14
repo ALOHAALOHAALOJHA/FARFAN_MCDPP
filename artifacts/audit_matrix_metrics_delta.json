@@ -1,0 +1,120 @@
+{
+  "baseline_commit": "6bd69bf6",
+  "matrix_path": "canonic_questionnaire_central/_registry/CQC_AUDIT_MATRIX.csv",
+  "intrinsic_metrics": {
+    "baseline": {
+      "rows_total": 475,
+      "distinct_consumers": 25,
+      "by_consumer_scope": {
+        "External": 2,
+        "Phase_1": 15,
+        "Cross-Phase": 17,
+        "Phase_3": 15,
+        "Phase_2": 45,
+        "Phase_0": 379,
+        "Phase_8": 1,
+        "Phase_7": 1
+      },
+      "by_scope_alignment": {
+        "PARTIAL": 29,
+        "YES": 446
+      },
+      "by_signalt_irrigation_source": {
+        "None": 2,
+        "Signalt.Extraction": 15,
+        "Signalt.Routing": 4,
+        "Signalt.EntityExtraction": 12,
+        "Signalt.KeywordExtraction": 21,
+        "Signalt.PatternExtraction": 25,
+        "Signalt.Assembly": 379,
+        "Signalt.Aggregation": 2,
+        "Signalt.ViewGeneration": 7,
+        "Signalt.ContextEnrichment": 3,
+        "Signalt.Validation": 5
+      },
+      "by_consumer_ready": {
+        "YES": 475
+      },
+      "by_added_value": {
+        "MARGINAL": 309,
+        "YES": 166
+      },
+      "by_quality_risk": {
+        "MEDIUM": 12,
+        "LOW": 463
+      },
+      "redundant_with_nonempty": 10,
+      "notes_nonempty": 319
+    },
+    "current": {
+      "rows_total": 475,
+      "distinct_consumers": 25,
+      "by_consumer_scope": {
+        "External": 2,
+        "Phase_1": 15,
+        "Cross-Phase": 17,
+        "Phase_3": 15,
+        "Phase_2": 45,
+        "Phase_0": 379,
+        "Phase_8": 1,
+        "Phase_7": 1
+      },
+      "by_scope_alignment": {
+        "PARTIAL": 29,
+        "YES": 446
+      },
+      "by_signalt_irrigation_source": {
+        "None": 2,
+        "Signalt.Extraction": 15,
+        "Signalt.Routing": 4,
+        "Signalt.EntityExtraction": 12,
+        "Signalt.KeywordExtraction": 21,
+        "Signalt.PatternExtraction": 25,
+        "Signalt.Assembly": 379,
+        "Signalt.Aggregation": 2,
+        "Signalt.ViewGeneration": 7,
+        "Signalt.ContextEnrichment": 3,
+        "Signalt.Validation": 5
+      },
+      "by_consumer_ready": {
+        "YES": 475
+      },
+      "by_added_value": {
+        "MARGINAL": 309,
+        "YES": 166
+      },
+      "by_quality_risk": {
+        "MEDIUM": 12,
+        "LOW": 463
+      },
+      "redundant_with_nonempty": 10,
+      "notes_nonempty": 319
+    },
+    "delta": {}
+  },
+  "existence_metrics": {
+    "baseline": {
+      "total_paths": 475,
+      "exists_at_baseline_commit": 475,
+      "missing_at_baseline_commit": 0,
+      "exists_now": 475,
+      "missing_now": 0,
+      "missing_now_examples": [],
+      "missing_at_baseline_examples": [],
+      "ready_but_missing_now": 0,
+      "ready_but_missing_now_examples": []
+    },
+    "current": {
+      "total_paths": 475,
+      "exists_at_baseline_commit": 475,
+      "missing_at_baseline_commit": 0,
+      "exists_now": 475,
+      "missing_now": 0,
+      "missing_now_examples": [],
+      "missing_at_baseline_examples": [],
+      "ready_but_missing_now": 0,
+      "ready_but_missing_now_examples": []
+    },
+    "delta": {}
+  }
+}
