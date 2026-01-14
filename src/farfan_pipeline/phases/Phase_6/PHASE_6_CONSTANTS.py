@@ -1,15 +1,15 @@
 """
-Phase 6: Cluster Aggregation (MESO)
+Phase 6 Constants - Cluster Aggregation (MESO)
 
-This module provides the Phase 6 aggregation components for the FARFAN pipeline.
-Phase 6 aggregates 10 AreaScore outputs into 4 ClusterScore values.
+This module re-exports constants from the implementation module for backward compatibility
+and standardized naming conventions.
 
-Module: src/farfan_pipeline/phases/Phase_6/__init__.py
-Purpose: Package façade for Phase 6
+Module: src/farfan_pipeline/phases/Phase_6/PHASE_6_CONSTANTS.py
+Purpose: Constants re-export for Phase 6
 Owner: phase6_00
 Lifecycle: ACTIVE
 Version: 1.0.0
-Effective-Date: 2025-01-09
+Effective-Date: 2026-01-13
 """
 
 # METADATA
@@ -17,12 +17,13 @@ __version__ = "1.0.0"
 __phase__ = 6
 __stage__ = 0
 __order__ = 0
-__author__ = "GNEA-Enforcement"
-__created__ = "2025-01-09T00:00:00Z"
-__modified__ = "2025-01-09T00:00:00Z"
+__author__ = "F.A.R.F.A.N Core Team"
+__created__ = "2026-01-13T00:00:00Z"
+__modified__ = "2026-01-13T00:00:00Z"
 __criticality__ = "HIGH"
 __execution_pattern__ = "Per-Task"
 
+# Re-export all constants from the implementation module
 from .phase6_10_00_phase_6_constants import (
     CLUSTER_COMPOSITION,
     CLUSTERS,
@@ -37,9 +38,6 @@ from .phase6_10_00_phase_6_constants import (
     Phase6Invariants,
 )
 
-from .phase6_10_00_cluster_score import ClusterScore
-from .phase6_30_00_cluster_aggregator import ClusterAggregator
-
 __all__ = [
     "CLUSTERS",
     "CLUSTER_COMPOSITION",
@@ -52,6 +50,4 @@ __all__ = [
     "PENALTY_WEIGHT",
     "DispersionScenario",
     "Phase6Invariants",
-    "ClusterScore",
-    "ClusterAggregator",
 ]
