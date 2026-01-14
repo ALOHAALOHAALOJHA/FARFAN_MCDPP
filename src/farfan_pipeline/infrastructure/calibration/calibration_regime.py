@@ -66,7 +66,7 @@ from .type_defaults import (
 from .unit_of_analysis import UnitOfAnalysis
 
 logger = logging.getLogger(__name__)
-
+logger.debug("Calibration regime module loaded", extra={"module": __name__})
 
 # =============================================================================
 # CONSTANTS - VALIDITY WINDOWS
