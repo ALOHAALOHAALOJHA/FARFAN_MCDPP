@@ -1,6 +1,6 @@
 {
-  "category": "POBLACION",
-  "pattern_count": 3,
+  "_category": "POBLACION",
+  "_count": 3,
   "patterns": {
     "PAT-0165": {
       "id": "PAT-0165",

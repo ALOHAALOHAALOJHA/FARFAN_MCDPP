@@ -22,15 +22,15 @@ class TestSISASIntegration:
             / "farfan_pipeline"
             / "phases"
             / "Phase_1"
-            / "phase1_60_00_signal_enrichment.py"
+            / "phase1_11_00_signal_enrichment.py"
         )
-        assert signal_enrichment_path.exists(), "phase1_60_00_signal_enrichment.py must exist"
+        assert signal_enrichment_path.exists(), "phase1_11_00_signal_enrichment.py must exist"
 
         # Verify it's substantial (not a stub)
         size_bytes = signal_enrichment_path.stat().st_size
         assert (
             size_bytes > 1000
-        ), f"phase1_60_00_signal_enrichment.py should be substantial, got {size_bytes} bytes"
+        ), f"phase1_11_00_signal_enrichment.py should be substantial, got {size_bytes} bytes"
 
     def test_signal_registry_parameter_in_main_function(self):
         """Verify execute_phase_1_with_full_contract accepts signal_registry."""
@@ -40,10 +40,10 @@ class TestSISASIntegration:
             / "farfan_pipeline"
             / "phases"
             / "Phase_1"
-            / "phase1_20_00_cpp_ingestion.py"
+            / "phase1_13_00_cpp_ingestion.py"
         )
 
-        assert cpp_ingestion_path.exists(), "phase1_20_00_cpp_ingestion.py must exist"
+        assert cpp_ingestion_path.exists(), "phase1_13_00_cpp_ingestion.py must exist"
 
         content = cpp_ingestion_path.read_text()
 

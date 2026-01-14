@@ -1,6 +1,6 @@
 {
-  "category": "TERRITORIAL",
-  "pattern_count": 55,
+  "_category": "TERRITORIAL",
+  "_count": 63,
   "patterns": {
     "PAT-0148": {
       "id": "PAT-0148",
@@ -2750,6 +2750,440 @@
       "examples": {
         "positive": [],
         "negative": []
+      }
+    },
+    "PDET-TERR-001": {
+      "id": "PDET-TERR-001",
+      "canonical_id": "PDET-TERR-001",
+      "legacy_ids": [
+        "PDET-TERR-001"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "(?i)(?:municipio[s]?\\s+)?(?:ubicado[s]?|localizado[s]?|situado[s]?)\\s+en\\s+zona[s]?\\s+PDET",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "HIGH",
+        "confidence_weight": 0.95
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/territorial_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849083+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [
+          "municipios ubicados en zonas PDET",
+          "localizado en zona PDET del Alto Patía"
+        ],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "PARAGRAPH",
+        "expected_location": [
+          "Diagnóstico",
+          "Marco normativo"
+        ],
+        "pdet_relevance": "",
+        "disambiguation_rules": {
+          "required_context": [
+            "PDET",
+            "municipio"
+          ],
+          "exclude_if_present": []
+        },
+        "pdet_specific": false
+      }
+    },
+    "PDET-TERR-002": {
+      "id": "PDET-TERR-002",
+      "canonical_id": "PDET-TERR-002",
+      "legacy_ids": [
+        "PDET-TERR-002"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "(?i)(?:subregión|sub-región)\\s+(?:PDET\\s+)?(?:de(?:l)?\\s+)?(?:Chocó|Alto Patía y Norte del Cauca|Bajo Cauca y Nordeste Ant(?:ioqueño|\\.)?|Sur del Tolima|Urabá Antioqueño|Macarena\\s*[-–]\\s*Guaviare|Cuenca del Caguán|Sierra Nevada y Perijá|Montes de María|Sur de Córdoba|Putumayo|Sur de Bolívar|Pacífico y Frontera Nariñense|Arauca|Catatumbo|Pacífico Medio)",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "PDET_SUBREGION",
+        "specificity": "HIGH",
+        "confidence_weight": 0.98
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/territorial_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849300+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [
+          "subregión PDET del Alto Patía y Norte del Cauca",
+          "Sub-región de Montes de María"
+        ],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "PDET-TERR-003": {
+      "id": "PDET-TERR-003",
+      "canonical_id": "PDET-TERR-003",
+      "legacy_ids": [
+        "PDET-TERR-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "(?i)vereda[s]?\\s+(?:[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+){0,3})",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "TERRITORIAL_UNIT",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.88
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/territorial_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849311+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [
+          "vereda Bella Vista",
+          "veredas La Puentona, Las Juntas, San Joaquín"
+        ],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "PDET municipalities must disaggregate data to vereda level",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "PDET-TERR-004": {
+      "id": "PDET-TERR-004",
+      "canonical_id": "PDET-TERR-004",
+      "legacy_ids": [
+        "PDET-TERR-004"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "(?i)corregimiento[s]?\\s+(?:de\\s+)?([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+){0,2})",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "TERRITORIAL_UNIT",
+        "specificity": "HIGH",
+        "confidence_weight": 0.9
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/territorial_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849316+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [
+          "Corregimiento de Bucana",
+          "corregimientos La Mesa"
+        ],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "PDET-TERR-005": {
+      "id": "PDET-TERR-005",
+      "canonical_id": "PDET-TERR-005",
+      "legacy_ids": [
+        "PDET-TERR-005"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "(?i)(?:área|zona|sector|territorio)\\s+(?:rural|urbano|urbana)(?:\\s+y\\s+(?:rural|urbano|urbana))?",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.82
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/territorial_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849321+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [
+          "zona rural y urbana",
+          "territorio rural estratégico"
+        ],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "PDET-TERR-006": {
+      "id": "PDET-TERR-006",
+      "canonical_id": "PDET-TERR-006",
+      "legacy_ids": [
+        "PDET-TERR-006"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "(?i)(?:resguardo[s]?\\s+indígena[s]?|consejo[s]?\\s+comunitario[s]?(?:\\s+afro)?|territorio[s]?\\s+(?:indígena[s]?|de\\s+comunidades\\s+negras)|zona[s]?\\s+de\\s+reserva\\s+campesina)",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "HIGH",
+        "confidence_weight": 0.93
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/territorial_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849325+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [
+          "resguardos indígenas",
+          "Consejo Comunitario La Fortaleza",
+          "territorios de comunidades negras"
+        ],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "PARAGRAPH",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "PDET-TERR-007": {
+      "id": "PDET-TERR-007",
+      "canonical_id": "PDET-TERR-007",
+      "legacy_ids": [
+        "PDET-TERR-007"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "(?i)(?:32[.,]?808|treinta y dos mil ochocientos ocho)\\s+iniciativa[s]?",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "HIGH",
+        "confidence_weight": 0.99
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/territorial_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849362+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [
+          "32.808 iniciativas",
+          "treinta y dos mil ochocientos ocho iniciativas del PATR"
+        ],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    },
+    "PDET-TERR-008": {
+      "id": "PDET-TERR-008",
+      "canonical_id": "PDET-TERR-008",
+      "legacy_ids": [
+        "PDET-TERR-008"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "(?i)170\\s+municipio[s]?(?:\\s+PDET)?",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "",
+        "specificity": "HIGH",
+        "confidence_weight": 0.98
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/territorial_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849374+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [
+          "170 municipios PDET",
+          "ciento setenta municipios priorizados"
+        ],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "",
+        "disambiguation_rules": {},
+        "pdet_specific": false
       }
     }
   }

@@ -1,6 +1,6 @@
 {
-  "category": "CAUSAL_OUTCOME",
-  "pattern_count": 3,
+  "_category": "CAUSAL_OUTCOME",
+  "_count": 3,
   "patterns": {
     "PAT-0168": {
       "id": "PAT-0168",

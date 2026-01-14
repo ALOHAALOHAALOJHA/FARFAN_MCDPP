@@ -1,6 +1,6 @@
 {
-  "category": "DESCRIPCION",
-  "pattern_count": 1,
+  "_category": "DESCRIPCION",
+  "_count": 1,
   "patterns": {
     "PAT-1723": {
       "id": "PAT-1723",
@@ -60,9 +60,7 @@
       "pattern_spec": {
         "type": "REGEX",
         "pattern": "corresponde a|incluye|características|componentes|especificaciones|alcance técnico",
-        "flags": [
-          "IGNORECASE"
-        ],
+        "flags": "i",
         "captures": {}
       },
       "classification": {

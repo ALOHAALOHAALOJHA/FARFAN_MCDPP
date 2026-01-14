@@ -1,0 +1,60 @@
+{
+  "_context": "PDET",
+  "_description": "Patterns específicos para municipios PDET",
+  "_count": 1,
+  "patterns": {
+    "PDET-TERR-003": {
+      "id": "PDET-TERR-003",
+      "canonical_id": "PDET-TERR-003",
+      "legacy_ids": [
+        "PDET-TERR-003"
+      ],
+      "pattern_spec": {
+        "type": "REGEX",
+        "pattern": "(?i)vereda[s]?\\s+(?:[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+){0,3})",
+        "flags": [
+          "IGNORECASE",
+          "MULTILINE"
+        ],
+        "captures": {}
+      },
+      "classification": {
+        "category": "TERRITORIAL",
+        "subcategory": "TERRITORIAL_UNIT",
+        "specificity": "MEDIUM",
+        "confidence_weight": 0.88
+      },
+      "bindings": {
+        "applies_to_dimensions": [],
+        "applies_to_questions": [],
+        "applies_to_policy_areas": [],
+        "applies_to_membership_criteria": []
+      },
+      "scoring_impact": {
+        "weight_in_scoring": 0.15,
+        "boost_conditions": [],
+        "penalty_conditions": []
+      },
+      "provenance": {
+        "source_file": "semantic/patterns/territorial_patterns.json",
+        "created_at": "2026-01-14T00:01:50.849311+00:00",
+        "validated": true,
+        "validation_tests": []
+      },
+      "examples": {
+        "positive": [
+          "vereda Bella Vista",
+          "veredas La Puentona, Las Juntas, San Joaquín"
+        ],
+        "negative": []
+      },
+      "pdet_metadata": {
+        "context_scope": "SENTENCE",
+        "expected_location": [],
+        "pdet_relevance": "PDET municipalities must disaggregate data to vereda level",
+        "disambiguation_rules": {},
+        "pdet_specific": false
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
-  "category": "MEDICION",
-  "pattern_count": 1,
+  "_category": "MEDICION",
+  "_count": 1,
   "patterns": {
     "PAT-1722": {
       "id": "PAT-1722",
@@ -60,9 +60,7 @@
       "pattern_spec": {
         "type": "REGEX",
         "pattern": "línea base|meta|indicador|cuantitativ|medición|fuente de verificación|unidad de medida|número de|porcentaje",
-        "flags": [
-          "IGNORECASE"
-        ],
+        "flags": "i",
         "captures": {}
       },
       "classification": {

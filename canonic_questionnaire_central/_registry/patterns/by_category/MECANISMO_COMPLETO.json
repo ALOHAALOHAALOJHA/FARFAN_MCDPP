@@ -1,6 +1,6 @@
 {
-  "category": "MECANISMO_COMPLETO",
-  "pattern_count": 1,
+  "_category": "MECANISMO_COMPLETO",
+  "_count": 1,
   "patterns": {
     "PAT-0171": {
       "id": "PAT-0171",

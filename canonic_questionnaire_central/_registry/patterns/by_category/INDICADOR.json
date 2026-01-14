@@ -1,6 +1,6 @@
 {
-  "category": "INDICADOR",
-  "pattern_count": 108,
+  "_category": "INDICADOR",
+  "_count": 108,
   "patterns": {
     "PAT-0117": {
       "id": "PAT-0117",

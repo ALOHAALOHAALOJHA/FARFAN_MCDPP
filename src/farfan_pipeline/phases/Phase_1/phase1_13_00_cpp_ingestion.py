@@ -87,7 +87,7 @@ from .phase1_03_00_models import (
 # Remediation Imports (SPEC-001, SPEC-003, SPEC-004)
 from .primitives.truncation_audit import TruncationAudit
 from .primitives.streaming_extractor import StreamingPDFExtractor
-from .thread_safe_results import ThreadSafeResults
+from .phase1_05_00_thread_safe_results import ThreadSafeResults
 from .PHASE_1_CONSTANTS import (
     PDF_EXTRACTION_CHAR_LIMIT,
     SEMANTIC_SCORE_MAX_EXPECTED,
@@ -116,7 +116,8 @@ class PDTSectionType(Enum):
 PDT_TYPES_AVAILABLE = True
 
 # CPP models - REAL PRODUCTION MODELS (no stubs)
-from .cpp_models import (
+# NOTE: cpp_models was reclassified to docs/legacy/ - import from there
+from .docs.legacy.phase1_01_00_cpp_models import (
     CanonPolicyPackage,
     CanonPolicyPackageValidator,
     ChunkGraph,
@@ -202,12 +203,12 @@ except ImportError as e:
 
 # Methods Dispensary via factory/registry (no direct module imports)
 try:
-    from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry import MethodRegistry, MethodRegistryError
+    from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry import MethodRegistry, MethodRegistryError
 except ImportError:
     # If import fails, raise with clear message
     raise ImportError(
-        "Cannot import MethodRegistry from farfan_pipeline.phases.Phase_two.phase2_10_02_methods_registry. "
-        "Ensure Phase_two module is properly installed and accessible."
+        "Cannot import MethodRegistry from farfan_pipeline.phases.Phase_2.phase2_10_02_methods_registry. "
+        "Ensure Phase_2 module is properly installed and accessible."
     )
 
 _METHOD_REGISTRY = MethodRegistry()

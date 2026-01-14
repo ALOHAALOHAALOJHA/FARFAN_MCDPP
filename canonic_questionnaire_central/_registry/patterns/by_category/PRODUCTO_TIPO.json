@@ -1,6 +1,6 @@
 {
-  "category": "PRODUCTO_TIPO",
-  "pattern_count": 1,
+  "_category": "PRODUCTO_TIPO",
+  "_count": 1,
   "patterns": {
     "PAT-1721": {
       "id": "PAT-1721",

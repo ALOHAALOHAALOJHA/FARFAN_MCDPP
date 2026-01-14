@@ -278,12 +278,13 @@ def _load_pattern_registry() -> dict:
     from pathlib import Path
     
     try:
-        registry_file = Path(__file__).resolve().parent.parent.parent / "canonic_questionnaire_central" / "patterns" / "pattern_registry_v3.json"
+        # Primary: MASTER_INDEX.json (single source of truth)
+        registry_file = Path(__file__).resolve().parent.parent.parent / "canonic_questionnaire_central" / "_registry" / "patterns" / "MASTER_INDEX.json"
         if registry_file.exists():
             with open(registry_file, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 pattern_count = len(data.get("patterns", {}))
-                logger.info("pattern_registry_loaded", pattern_count=pattern_count)
+                logger.info("pattern_registry_loaded", pattern_count=pattern_count, source="MASTER_INDEX.json")
                 return data
     except Exception as e:
         logger.warning("failed_to_load_pattern_registry", error=str(e))

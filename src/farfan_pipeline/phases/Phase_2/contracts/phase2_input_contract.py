@@ -46,10 +46,12 @@ class Phase2InputPreconditions:
     CERTIFICATE_STATUS_VALID: Final[str] = "VALID"
     
     # PRE-005: Questionnaire validation
-    EXPECTED_QUESTION_COUNT: Final[int] = 300
+    # NOTE: Phase 1 delivers 305 questions (Q001..Q305) per delivers_to_next_phase_contract.json
+    EXPECTED_QUESTION_COUNT: Final[int] = 305
     QUESTIONS_MUST_MAP_TO_CONTRACTS: Final[bool] = True
     
     # PRE-006: Method registry validation
+    # NOTE: 240 is the base method count; 416 includes all variants per receives_contract.json
     EXPECTED_METHOD_COUNT: Final[int] = 240
     ALL_METHODS_MUST_BE_RESOLVABLE: Final[bool] = True
 
@@ -83,26 +85,39 @@ class Phase2InputValidator:
             return False, errors
         
         # PRE-002: Check chunk count
-        if hasattr(cpp, 'chunks'):
+        # NOTE: Phase 1 delivers via chunk_graph.chunks OR smart_chunks, not cpp.chunks directly
+        chunk_count = None
+        if hasattr(cpp, 'chunk_graph') and hasattr(cpp.chunk_graph, 'chunks'):
+            chunk_count = len(cpp.chunk_graph.chunks)
+        elif hasattr(cpp, 'smart_chunks'):
+            chunk_count = len(cpp.smart_chunks)
+        elif hasattr(cpp, 'chunks'):
             chunk_count = len(cpp.chunks)
-            if chunk_count != self.preconditions.EXPECTED_CHUNK_COUNT:
-                errors.append(
-                    f"PRE-002: Expected {self.preconditions.EXPECTED_CHUNK_COUNT} chunks, "
-                    f"got {chunk_count}"
-                )
-        else:
-            errors.append("PRE-002: CPP missing 'chunks' attribute")
+        
+        if chunk_count is None:
+            errors.append("PRE-002: CPP missing chunk data (expected chunk_graph.chunks, smart_chunks, or chunks)")
+        elif chunk_count != self.preconditions.EXPECTED_CHUNK_COUNT:
+            errors.append(
+                f"PRE-002: Expected {self.preconditions.EXPECTED_CHUNK_COUNT} chunks, "
+                f"got {chunk_count}"
+            )
         
         # PRE-003: Check schema version
-        if hasattr(cpp, 'schema_version'):
-            if cpp.schema_version != self.preconditions.REQUIRED_CPP_SCHEMA_VERSION:
-                errors.append(
-                    f"PRE-003: Expected schema version "
-                    f"{self.preconditions.REQUIRED_CPP_SCHEMA_VERSION}, "
-                    f"got {cpp.schema_version}"
-                )
-        else:
-            errors.append("PRE-003: CPP missing 'schema_version' attribute")
+        # NOTE: Phase 1 stores schema_version in cpp.metadata.schema_version, not cpp.schema_version
+        schema_version = None
+        if hasattr(cpp, 'metadata') and hasattr(cpp.metadata, 'schema_version'):
+            schema_version = cpp.metadata.schema_version
+        elif hasattr(cpp, 'schema_version'):
+            schema_version = cpp.schema_version
+        
+        if schema_version is None:
+            errors.append("PRE-003: CPP missing schema_version (expected metadata.schema_version or schema_version)")
+        elif schema_version != self.preconditions.REQUIRED_CPP_SCHEMA_VERSION:
+            errors.append(
+                f"PRE-003: Expected schema version "
+                f"{self.preconditions.REQUIRED_CPP_SCHEMA_VERSION}, "
+                f"got {schema_version}"
+            )
         
         return len(errors) == 0, errors
     

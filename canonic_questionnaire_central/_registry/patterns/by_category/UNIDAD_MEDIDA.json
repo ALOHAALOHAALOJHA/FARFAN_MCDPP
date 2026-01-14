@@ -1,6 +1,6 @@
 {
-  "category": "UNIDAD_MEDIDA",
-  "pattern_count": 2,
+  "_category": "UNIDAD_MEDIDA",
+  "_count": 2,
   "patterns": {
     "PAT-0123": {
       "id": "PAT-0123",

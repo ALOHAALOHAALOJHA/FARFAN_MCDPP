@@ -10,8 +10,10 @@ This package contains:
 1. Entry contract: What Phase 2 expects from Phase 1
 2. Exit contract: What Phase 2 delivers to Phase 3
 3. Protocol definitions for phase boundaries
+4. Phase1 → Phase2 Adapter for structural compatibility
+5. Phase2 → Phase3 Adapter for structural compatibility
 
-Version: 1.0.0
+Version: 1.1.0
 Date: 2026-01-13
 Author: F.A.R.F.A.N Core Architecture Team
 """
@@ -19,11 +21,63 @@ from __future__ import annotations
 
 from typing import Final, Protocol, runtime_checkable
 
+# Import Phase 1 → Phase 2 adapter components
+from farfan_pipeline.phases.Phase_2.interphase.phase1_phase2_adapter import (
+    Phase1OutputProtocol,
+    Phase2InputBundle,
+    adapt_phase1_to_phase2,
+    validate_adaptation as validate_p1_to_p2_adaptation,
+    extract_chunks,
+    extract_schema_version,
+    DEFAULT_SCHEMA_VERSION,
+    ADAPTER_VERSION as P1_P2_ADAPTER_VERSION,
+)
+
+# Import Phase 2 → Phase 3 adapter components
+from farfan_pipeline.phases.Phase_2.interphase.phase2_phase3_adapter import (
+    Phase2ResultProtocol,
+    MicroQuestionRun,
+    AdaptationResult,
+    adapt_phase2_to_phase3,
+    adapt_single_result,
+    validate_adaptation as validate_p2_to_p3_adaptation,
+    transform_question_id,
+    reverse_transform_question_id,
+    derive_dimension,
+    derive_base_slot,
+    derive_question_global,
+    ADAPTER_VERSION as P2_P3_ADAPTER_VERSION,
+)
+
 __all__ = [
+    # Protocols
     "Phase2EntryProtocol",
     "Phase2ExitProtocol",
+    "Phase1OutputProtocol",
+    "Phase2ResultProtocol",
+    # Constants
     "PHASE2_RECEIVES_FROM",
     "PHASE2_DELIVERS_TO",
+    "DEFAULT_SCHEMA_VERSION",
+    "P1_P2_ADAPTER_VERSION",
+    "P2_P3_ADAPTER_VERSION",
+    # Phase 1 → Phase 2 Adapter
+    "Phase2InputBundle",
+    "adapt_phase1_to_phase2",
+    "validate_p1_to_p2_adaptation",
+    "extract_chunks",
+    "extract_schema_version",
+    # Phase 2 → Phase 3 Adapter
+    "MicroQuestionRun",
+    "AdaptationResult",
+    "adapt_phase2_to_phase3",
+    "adapt_single_result",
+    "validate_p2_to_p3_adaptation",
+    "transform_question_id",
+    "reverse_transform_question_id",
+    "derive_dimension",
+    "derive_base_slot",
+    "derive_question_global",
 ]
 
 
