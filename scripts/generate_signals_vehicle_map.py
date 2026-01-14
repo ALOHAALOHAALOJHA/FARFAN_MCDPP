@@ -71,6 +71,39 @@ def _scan_modules_for_assets(py_files: List[Path], match_map: Dict[str, Set[str]
     return hits
 
 
+def _heuristic_vehicles(asset_path: str) -> List[str]:
+    """Best-effort mapping when no explicit string reference is found.
+
+    This encodes domain knowledge: many assets are loaded indirectly (registries/monolith)
+    without literal paths in code, so we assign the canonical vehicle.
+    """
+    p = asset_path
+    vehicles: List[str] = []
+    # Routing map
+    if "integration_map.json" in p:
+        vehicles.append("src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_irrigator.py")
+    # Signal registry loads patterns/policy areas/questions/clusters/dimensions/cross_cutting
+    if any(prefix in p for prefix in [
+        "_registry/patterns/",
+        "policy_areas/",
+        "clusters/",
+        "dimensions/",
+        "cross_cutting/",
+        "questions/",
+    ]):
+        vehicles.append("src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_registry.py")
+    # Loader legacy
+    if "questionnaire_monolith" in p or "patterns" in p:
+        vehicles.append("src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_loader.py")
+    # Enhancement / intelligence layer consumes questionnaire blocks (methods, validations, semantics, scoring)
+    if any(prefix in p for prefix in [
+        "method_", "validations", "semantic", "scoring", "capabilities", "signal_flow_graph", "macro_question", "meso_questions"
+    ]):
+        vehicles.append("src/farfan_pipeline/infrastructure/irrigation_using_signals/SISAS/signal_intelligence_layer.py")
+    # Deduplicate
+    return sorted(dict.fromkeys(vehicles))
+
+
 def _bool(val: Any) -> bool:
     return bool(val)
 
