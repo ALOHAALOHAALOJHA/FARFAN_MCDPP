@@ -99,6 +99,24 @@ from .inv_specifications import (
     get_specification_by_id,
     get_specifications_by_severity,
 )
+from .runtime_context import (
+    CalibrationContext,
+    calibration_context,
+    get_calibration_context,
+    require_calibration_context,
+    set_calibration_context,
+)
+from .uoa_sensitive import (
+    chunk_size_aware,
+    coverage_aware,
+    fully_calibrated,
+    get_calibration_phase,
+    get_required_parameters,
+    is_uoa_sensitive,
+    prior_aware,
+    uoa_sensitive,
+    veto_aware,
+)
 from .fact_registry import (
     CanonicalFactRegistry,
     DuplicateRecord,
@@ -294,6 +312,26 @@ __all__ = [
     "get_specification_by_id",
     "get_specifications_by_severity",
     "generate_grep_enforcement_script",
+    # =========================================================================
+    # RUNTIME PARAMETRIZATION (Context Management)
+    # =========================================================================
+    "CalibrationContext",
+    "calibration_context",
+    "get_calibration_context",
+    "require_calibration_context",
+    "set_calibration_context",
+    # =========================================================================
+    # UoA-SENSITIVE DECORATORS (Automatic Parameter Injection)
+    # =========================================================================
+    "uoa_sensitive",
+    "chunk_size_aware",
+    "prior_aware",
+    "veto_aware",
+    "coverage_aware",
+    "fully_calibrated",
+    "is_uoa_sensitive",
+    "get_required_parameters",
+    "get_calibration_phase",
     # =========================================================================
     # CALIBRATION AUDITOR (N3-AUD Veto Gate)
     # =========================================================================
