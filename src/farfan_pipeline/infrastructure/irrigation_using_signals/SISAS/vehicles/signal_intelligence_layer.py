@@ -401,3 +401,65 @@ class SignalIntelligenceLayerVehicle(BaseVehicle):
         }
         
         return result, [sentiment]
+    
+    def _generate_specificity_signal(
+        self,
+        text: str,
+        data: Dict[str, Any],
+        context: SignalContext,
+        source: SignalSource
+    ) -> AnswerSpecificitySignal:
+        """Genera señal de especificidad de respuesta"""
+        
+        text_lower = text.lower()
+        
+        # Elementos esperados para especificidad
+        expected_elements = ["formal_instrument", "mandatory_scope", "institutional_owner"]
+        found_elements = []
+        element_details = {}
+        
+        # Detectar instrumento formal
+        if any(word in text_lower for word in ['ley', 'decreto', 'resolución', 'acuerdo']):
+            found_elements.append("formal_instrument")
+            element_details["formal_instrument"] = {"found": True, "confidence": 0.9}
+        
+        # Detectar alcance obligatorio
+        if any(word in text_lower for word in ['obligatorio', 'debe', 'deberá', 'requiere']):
+            found_elements.append("mandatory_scope")
+            element_details["mandatory_scope"] = {"found": True, "confidence": 0.85}
+        
+        # Detectar propietario institucional
+        if any(word in text_lower for word in ['ministerio', 'secretaría', 'instituto', 'agencia']):
+            found_elements.append("institutional_owner")
+            element_details["institutional_owner"] = {"found": True, "confidence": 0.8}
+        
+        missing_elements = [e for e in expected_elements if e not in found_elements]
+        specificity_score = len(found_elements) / len(expected_elements) if expected_elements else 1.0
+        
+        # Determinar nivel
+        if specificity_score >= 0.8:
+            specificity_level = SpecificityLevel.HIGH
+            confidence = SignalConfidence.HIGH
+        elif specificity_score >= 0.5:
+            specificity_level = SpecificityLevel.MEDIUM
+            confidence = SignalConfidence.MEDIUM
+        elif specificity_score > 0:
+            specificity_level = SpecificityLevel.LOW
+            confidence = SignalConfidence.MEDIUM
+        else:
+            specificity_level = SpecificityLevel.NONE
+            confidence = SignalConfidence.LOW
+        
+        return AnswerSpecificitySignal(
+            context=context,
+            source=source,
+            question_id=context.node_id,
+            specificity_level=specificity_level,
+            expected_elements=expected_elements,
+            found_elements=found_elements,
+            missing_elements=missing_elements,
+            specificity_score=specificity_score,
+            element_details=element_details,
+            confidence=confidence,
+            rationale=f"Specificity: {len(found_elements)}/{len(expected_elements)} elements found"
+        )
