@@ -10,7 +10,7 @@ Status: ACTIVE
 """
 
 from dataclasses import dataclass
-from typing import Dict, Any, List
+from typing import Dict, Any
 from pathlib import Path
 
 
