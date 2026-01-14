@@ -6,6 +6,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional, Set, Callable
 from abc import ABC, abstractmethod
+import json
 
 
 class ContractType(Enum):
@@ -329,3 +330,111 @@ class ContractRegistry:
             if not contract.is_irrigable():
                 result.append((contract, contract.get_blocking_gaps()))
         return result
+
+    def get_contracts_by_status(self, status: ContractStatus) -> Dict[str, List]:
+        """Obtiene todos los contratos por estado"""
+        return {
+            "publication": [c for c in self.publication_contracts.values() if c.status == status],
+            "consumption": [c for c in self.consumption_contracts.values() if c.status == status],
+            "irrigation": [c for c in self.irrigation_contracts.values() if c.status == status]
+        }
+
+    def activate_contract(self, contract_id: str, contract_type: ContractType) -> bool:
+        """Activa un contrato"""
+        contract = None
+        if contract_type == ContractType.PUBLICATION:
+            contract = self.publication_contracts.get(contract_id)
+        elif contract_type == ContractType.CONSUMPTION:
+            contract = self.consumption_contracts.get(contract_id)
+        elif contract_type == ContractType.IRRIGATION:
+            contract = self.irrigation_contracts.get(contract_id)
+
+        if contract:
+            contract.status = ContractStatus.ACTIVE
+            return True
+        return False
+
+    def suspend_contract(self, contract_id: str, contract_type: ContractType) -> bool:
+        """Suspende un contrato"""
+        contract = None
+        if contract_type == ContractType.PUBLICATION:
+            contract = self.publication_contracts.get(contract_id)
+        elif contract_type == ContractType.CONSUMPTION:
+            contract = self.consumption_contracts.get(contract_id)
+        elif contract_type == ContractType.IRRIGATION:
+            contract = self.irrigation_contracts.get(contract_id)
+
+        if contract:
+            contract.status = ContractStatus.SUSPENDED
+            return True
+        return False
+
+    def get_statistics(self) -> Dict[str, Any]:
+        """Obtiene estadísticas del registro"""
+        return {
+            "total_contracts": (
+                len(self.publication_contracts) +
+                len(self.consumption_contracts) +
+                len(self.irrigation_contracts)
+            ),
+            "publication_contracts": len(self.publication_contracts),
+            "consumption_contracts": len(self.consumption_contracts),
+            "irrigation_contracts": len(self.irrigation_contracts),
+            "irrigable_contracts": len(self.get_irrigable_contracts()),
+            "blocked_contracts": len(self.get_blocked_contracts()),
+            "active_contracts": {
+                "publication": len([c for c in self.publication_contracts.values() 
+                                   if c.status == ContractStatus.ACTIVE]),
+                "consumption": len([c for c in self.consumption_contracts.values() 
+                                   if c.status == ContractStatus.ACTIVE]),
+                "irrigation": len([c for c in self.irrigation_contracts.values() 
+                                  if c.status == ContractStatus.ACTIVE])
+            }
+        }
+
+    def validate_all_contracts(self) -> Dict[str, List[str]]:
+        """Valida todos los contratos y retorna problemas encontrados"""
+        problems = {
+            "publication": [],
+            "consumption": [],
+            "irrigation": []
+        }
+
+        # Validar contratos de publicación
+        for contract_id, contract in self.publication_contracts.items():
+            if not contract.publisher_vehicle:
+                problems["publication"].append(f"{contract_id}: Missing publisher_vehicle")
+            if not contract.allowed_signal_types:
+                problems["publication"].append(f"{contract_id}: No allowed_signal_types")
+            if not contract.allowed_buses:
+                problems["publication"].append(f"{contract_id}: No allowed_buses")
+
+        # Validar contratos de consumo
+        for contract_id, contract in self.consumption_contracts.items():
+            if not contract.consumer_id:
+                problems["consumption"].append(f"{contract_id}: Missing consumer_id")
+            if not contract.subscribed_signal_types:
+                problems["consumption"].append(f"{contract_id}: No subscribed_signal_types")
+            if not contract.subscribed_buses:
+                problems["consumption"].append(f"{contract_id}: No subscribed_buses")
+
+        # Validar contratos de irrigación
+        for contract_id, contract in self.irrigation_contracts.items():
+            if not contract.vehicles:
+                problems["irrigation"].append(f"{contract_id}: No vehicles assigned")
+            if not contract.consumers:
+                problems["irrigation"].append(f"{contract_id}: No consumers assigned")
+            if not contract.vocabulary_aligned:
+                problems["irrigation"].append(f"{contract_id}: Vocabulary not aligned")
+
+        return problems
+
+    def export_to_json(self, file_path: str):
+        """Exporta todos los contratos a JSON"""
+        data = {
+            "publication_contracts": {cid: c.to_dict() for cid, c in self.publication_contracts.items()},
+            "consumption_contracts": {cid: c.to_dict() for cid, c in self.consumption_contracts.items()},
+            "irrigation_contracts": {cid: c.to_dict() for cid, c in self.irrigation_contracts.items()}
+        }
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)

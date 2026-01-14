@@ -266,3 +266,98 @@ class BusRegistry:
     def get_all_stats(self) -> Dict[str, Dict[str, int]]:
         """Estadísticas de todos los buses"""
         return {name: bus.get_stats() for name, bus in self.buses.items()}
+
+    def get_total_messages(self) -> int:
+        """Total de mensajes publicados en todos los buses"""
+        total = 0
+        for bus in self.buses.values():
+            total += bus.get_stats()["total_published"]
+        return total
+
+    def get_subscriber_counts(self) -> Dict[str, int]:
+        """Número de suscriptores por bus"""
+        return {name: bus.get_subscriber_count() for name, bus in self.buses.items()}
+
+    def broadcast_to_all(
+        self,
+        signal: Signal,
+        publisher_vehicle: str,
+        publication_contract: PublicationContract
+    ) -> Dict[str, tuple[bool, str]]:
+        """
+        Publica una señal a todos los buses permitidos en el contrato.
+        Retorna diccionario con resultado por bus.
+        """
+        results = {}
+        for bus_name in publication_contract.allowed_buses:
+            bus = self.get_bus(bus_name)
+            if bus:
+                result = bus.publish(signal, publisher_vehicle, publication_contract)
+                results[bus_name] = result
+        return results
+
+    def get_health_status(self) -> Dict[str, Any]:
+        """Obtiene estado de salud de todos los buses"""
+        health = {
+            "buses": {},
+            "overall_status": "healthy",
+            "total_messages": 0,
+            "total_errors": 0,
+            "total_rejected": 0
+        }
+
+        for name, bus in self.buses.items():
+            stats = bus.get_stats()
+            health["buses"][name] = {
+                "status": "healthy" if stats["total_errors"] == 0 else "degraded",
+                "stats": stats,
+                "subscribers": bus.get_subscriber_count(),
+                "pending_messages": len(bus.get_pending_messages())
+            }
+            health["total_messages"] += stats["total_published"]
+            health["total_errors"] += stats["total_errors"]
+            health["total_rejected"] += stats["total_rejected"]
+
+        if health["total_errors"] > 0:
+            health["overall_status"] = "degraded"
+
+        return health
+
+    def reset_statistics(self):
+        """Reinicia estadísticas de todos los buses"""
+        for bus in self.buses.values():
+            bus._stats = {
+                "total_published": 0,
+                "total_delivered": 0,
+                "total_rejected": 0,
+                "total_errors": 0
+            }
+
+    def get_bus_by_category(self, category: SignalCategory) -> SignalBus:
+        """Obtiene bus por categoría de señal"""
+        category_to_bus = {
+            SignalCategory.STRUCTURAL: BusType.STRUCTURAL,
+            SignalCategory.INTEGRITY: BusType.INTEGRITY,
+            SignalCategory.EPISTEMIC: BusType.EPISTEMIC,
+            SignalCategory.CONTRAST:  BusType.CONTRAST,
+            SignalCategory.OPERATIONAL:  BusType.OPERATIONAL,
+            SignalCategory.CONSUMPTION:  BusType.CONSUMPTION,
+        }
+        bus_type = category_to_bus.get(category, BusType.UNIVERSAL)
+        return self.buses[bus_type.value]
+
+    def drain_all_queues(self) -> Dict[str, List[BusMessage]]:
+        """
+        Drena todas las colas de mensajes.
+        Útil para pruebas o reinicio del sistema.
+        """
+        drained = {}
+        for name, bus in self.buses.items():
+            messages = []
+            while True:
+                msg = bus.consume_next(timeout=0.1)
+                if msg is None:
+                    break
+                messages.append(msg)
+            drained[name] = messages
+        return drained
